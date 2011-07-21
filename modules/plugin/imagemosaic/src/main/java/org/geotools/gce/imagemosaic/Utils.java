@@ -110,6 +110,8 @@ public class Utils {
     /** EHCache instance to cache histograms */ 
     private static Cache ehcache;    
     
+    private final static String INDEXER_PROPERTIES = "indexer.properties";
+    
     /** RGB to GRAY coefficients (for Luminance computation) */
     public final static double RGB_TO_GRAY_MATRIX [][]= {{ 0.114, 0.587, 0.299, 0 }};
     
@@ -141,8 +143,16 @@ public class Utils {
         final static String HETEROGENEOUS = "Heterogeneous";
         static final String TIME_ATTRIBUTE = "TimeAttribute";
         static final String ELEVATION_ATTRIBUTE = "ElevationAttribute";
+        static final String RUNTIME_ATTRIBUTE = "RuntimeAttribute";
         final static String CACHING= "Caching";
-        static final String RUN_TIME = "RuntimeAttribute";
+        
+        //Indexer Properties
+        static final String ABSOLUTE = "Absolute";
+        static final String RECURSIVE = "Recursive";
+        static final String WILDCARD = "Wildcard";
+        static final String SCHEMA = "Schema";
+        static final String RESOLUTION_LEVELS = "ResolutionLevels";
+        static final String PROPERTY_COLLECTORS = "PropertyCollectors";
     }
     // FORMULAE FOR FORWARD MAP are derived as follows
     //     Nearest
@@ -378,60 +388,60 @@ public class Utils {
 
 		// look for and indexed.properties file
 		final File parent = new File(location);
-		final File indexerProperties = new File(parent, "indexer.properties");
+		final File indexerProperties = new File(parent, INDEXER_PROPERTIES);
 		if (Utils.checkFileReadable(indexerProperties)) {
 			// load it and parse it
 			final Properties props = Utils.loadPropertiesFromURL(DataUtilities
 					.fileToURL(indexerProperties));
 
 			// name
-			if (props.containsKey("Name"))
-				configuration.setIndexName(props.getProperty("Name"));
+			if (props.containsKey(Prop.NAME))
+				configuration.setIndexName(props.getProperty(Prop.NAME));
 
 			// absolute
-			if (props.containsKey("Absolute"))
-				configuration.setAbsolute(Boolean.getBoolean(props
-						.getProperty("Absolute")));
+			if (props.containsKey(Prop.ABSOLUTE))
+				configuration.setAbsolute(Boolean.valueOf(props
+						.getProperty(Prop.ABSOLUTE)));
 
 			// recursive
-			if (props.containsKey("Recursive"))
+			if (props.containsKey(Prop.RECURSIVE))
 				configuration.setRecursive(Boolean.valueOf(props
-						.getProperty("Recursive")));
+						.getProperty(Prop.RECURSIVE)));
 
 			// wildcard
-			if (props.containsKey("Wildcard"))
-				configuration.setWildcard(props.getProperty("Wildcard"));
+			if (props.containsKey(Prop.WILDCARD))
+				configuration.setWildcard(props.getProperty(Prop.WILDCARD));
 
 			// schema
-			if (props.containsKey("Schema"))
-				configuration.setSchema(props.getProperty("Schema"));
+			if (props.containsKey(Prop.SCHEMA))
+				configuration.setSchema(props.getProperty(Prop.SCHEMA));
 
 			// time attr
-			if (props.containsKey("TimeAttribute"))
-				configuration.setTimeAttribute(props.getProperty("TimeAttribute"));
+			if (props.containsKey(Prop.TIME_ATTRIBUTE))
+				configuration.setTimeAttribute(props.getProperty(Prop.TIME_ATTRIBUTE));
 			
 			// elevation attr
-			if (props.containsKey("ElevationAttribute"))
-				configuration.setElevationAttribute(props.getProperty("ElevationAttribute"));			
+			if (props.containsKey(Prop.ELEVATION_ATTRIBUTE))
+				configuration.setElevationAttribute(props.getProperty(Prop.ELEVATION_ATTRIBUTE));			
 			
 			// runtime attr
-			if (props.containsKey("RuntimeAttribute"))
-				configuration.setRuntimeAttribute(props.getProperty("RuntimeAttribute"));
+			if (props.containsKey(Prop.RUNTIME_ATTRIBUTE))
+				configuration.setRuntimeAttribute(props.getProperty(Prop.RUNTIME_ATTRIBUTE));
 			
 			// imposed BBOX
-			if (props.containsKey("Envelope2D"))
-				configuration.setEnvelope2D(props.getProperty("Envelope2D"));	
+			if (props.containsKey(Prop.ENVELOPE2D))
+				configuration.setEnvelope2D(props.getProperty(Prop.ENVELOPE2D));	
 			
 			// imposed Pyramid Layout
-			if (props.containsKey("ResolutionLevels"))
-				configuration.setResolutionLevels(props.getProperty("ResolutionLevels"));			
+			if (props.containsKey(Prop.RESOLUTION_LEVELS))
+				configuration.setResolutionLevels(props.getProperty(Prop.RESOLUTION_LEVELS));			
 
 			// collectors
-			if (props.containsKey("PropertyCollectors"))
-				configuration.setPropertyCollectors(props.getProperty("PropertyCollectors"));
+			if (props.containsKey(Prop.PROPERTY_COLLECTORS))
+				configuration.setPropertyCollectors(props.getProperty(Prop.PROPERTY_COLLECTORS));
 			
-			if (props.containsKey("Caching"))
-				configuration.setCaching(Boolean.valueOf(props.getProperty("Caching")));
+			if (props.containsKey(Prop.CACHING))
+				configuration.setCaching(Boolean.valueOf(props.getProperty(Prop.CACHING)));
 		}
 
 		// create the builder
@@ -597,15 +607,15 @@ public class Utils {
 		// elevation attribute is optional
 		//
 		if (properties.containsKey(Prop.ELEVATION_ATTRIBUTE)) {
-		        final String elevationAttribute = properties.getProperty("ElevationAttribute").trim();
+		        final String elevationAttribute = properties.getProperty(Prop.ELEVATION_ATTRIBUTE).trim();
 			retValue.setElevationAttribute(elevationAttribute);
 		}
 
 		//
 		// runtime attribute is optional
 		//
-		if (properties.containsKey(Prop.RUN_TIME)) {
-		        final String runtimeAttribute = properties.getProperty("RuntimeAttribute").trim();
+		if (properties.containsKey(Prop.RUNTIME_ATTRIBUTE)) {
+		        final String runtimeAttribute = properties.getProperty(Prop.RUNTIME_ATTRIBUTE).trim();
 			retValue.setRuntimeAttribute(runtimeAttribute);
 		}
 
@@ -613,7 +623,7 @@ public class Utils {
 		// caching
 		//
 		if (properties.containsKey(Prop.CACHING)) {
-			String caching = properties.getProperty("Caching").trim();
+			String caching = properties.getProperty(Prop.CACHING).trim();
 			try {
 				retValue.setCaching(Boolean.valueOf(caching));
 			} catch (Throwable e) {
@@ -656,7 +666,7 @@ public class Utils {
 		// Absolute or relative path
 		//
 		if (!ignoreSome || !ignorePropertiesSet.contains(Prop.ABSOLUTE_PATH)) {
-			final boolean absolutePath = Boolean.parseBoolean(properties
+			final boolean absolutePath = Boolean.valueOf(properties
 					.getProperty(Prop.ABSOLUTE_PATH,
 							Boolean.toString(Utils.DEFAULT_PATH_BEHAVIOR))
 					.trim());

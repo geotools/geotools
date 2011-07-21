@@ -26,9 +26,7 @@ import org.geotools.filter.text.commons.Language;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.Filter;
-import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.temporal.Before;
@@ -146,7 +144,6 @@ public class CQLTemporalPredicateTest {
         expected = FilterCQLSample.getSample(FilterCQLSample.FILTER_BEFORE_PERIOD_YMD_HMS_DATE);
 
         Assert.assertEquals("greater filter", expected, resultFilter);
-
     }
 
     /**

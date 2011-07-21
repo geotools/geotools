@@ -2,6 +2,9 @@ package org.geotools.cql;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Logger;
 
 import org.geotools.data.DataUtilities;
@@ -11,6 +14,7 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
@@ -20,6 +24,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.temporal.During;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -48,14 +53,18 @@ public class ECQLExamples {
             for (;;) {
 
                 System.out.println("Select the ECQL Example:");
-                System.out.println("1 - CQL Compatibility");
-                System.out.println("2 - Comparison: 1000 <= POPULTATION");
-                System.out.println("3 - like pattern using String 'aabbcc' LIKE '%bb%'");
-                System.out.println("4 - Comparison: (under18YearsOld * 19541453 / 100 ) < (over65YearsOld * 19541453 / 100 )");
-                System.out.println("5 - population Between 10000 and 20000");
-                System.out.println("6 - 2006-11-30T01:00:00Z AFTER 2006-11-30T01:30:00Z");
-                System.out.println("7 - 2006-11-30T01:00:00Z BEFORE 2006-11-30T01:30:00Z");
-                
+                System.out.println(" 1 - CQL Compatibility");
+                System.out.println(" 2 - Comparison with property in the right hand: 1000 <= POPULTATION");
+                System.out.println(" 3 - like pattern using String: 'aabbcc' LIKE '%bb%'");
+                System.out.println(" 4 - like using property name: cityName LIKE 'New%");
+                System.out.println(" 5 - Insensitive like: cityName ILIKE 'new%'");
+                System.out.println(" 6 - Comparison: (under18YearsOld * 19541453 / 100 ) < (over65YearsOld * 19541453 / 100 )");
+                System.out.println(" 7 - Between: population Between 10000 and 20000");
+                System.out.println(" 8 - area( shape ) BETWEEN 10000 AND 30000");
+                System.out.println(" 9 - Temporal After: 2006-11-30T01:00:00Z AFTER 2006-11-30T01:30:00Z");
+                System.out.println("10 - Temporal Before: 2006-11-30T01:00:00Z BEFORE 2006-11-30T01:30:00Z");
+                System.out.println("11 - Temporal During: 2006-11-30T01:00:00Z DURING 2006-11-30T00:30:00Z/2006-11-30T01:30:00Z ");
+                System.out.println("12 - Temporal During: lastEarthQuake DURING 1700-01-01T00:00:00Z/2011-01-01T00:00:00Z");
                 
                 System.out.println("0 - quite");
                 System.out.print(">");
@@ -76,66 +85,95 @@ public class ECQLExamples {
                     likePredicateInString();
                     break;
                 case 4:
-                    comparisonUsingExpressions();
+                    likePredicate();
                     break;
                 case 5:
-                    betweenPredicate();
+                    ilikePredicate();
                     break;
                 case 6:
-                    afterPredicate();
+                    comparisonUsingExpressions();
                     break;
                 case 7:
-                    beforePredicate();
+                    betweenPredicate();
                     break;
-                    
+                case 8:
+                	betweenUsingExpression();
+                	break;
+                case 9:
+                    afterPredicateWithLefHandtExpression();
+                    break;
+                case 10:
+                    beforePredicateWithLefHandtExpression();
+                    break;
+                case 11:
+                    duringPredicateWithLefHandtExpression();
+                    break;
+                case 12:
+                	duringPredicateWithLefHandtAttribute();
+                	break;
                 default:
                     System.out.println("invalid option");
                 }
                 System.out.println();
             }
-
         } catch (Exception e) {
-
             LOGGER.severe(e.getMessage());
         }
     }
 
 
-    private static void afterPredicate() throws Exception{
+    private static void afterPredicateWithLefHandtExpression() throws Exception{
+    	
+    	// afterPredicateWithLefHandtExpression start
         Filter filter = ECQL.toFilter("2006-11-30T01:00:00Z AFTER 2006-11-30T01:30:00Z");
+    	// afterPredicateWithLefHandtExpression end
 		prittyPrintFilter(filter);
 		
         Boolean result = filter.evaluate(null);
         System.out.println("Result of filter evaluation: " + result);
 		
 	}
-    private static void beforePredicate() throws Exception{
+    private static void beforePredicateWithLefHandtExpression() throws Exception{
+    	
+    	// beforePredicateWithLefHandtExpression start
         Filter filter = ECQL.toFilter("2006-11-30T01:00:00Z BEFORE 2006-11-30T01:30:00Z");
+    	// beforePredicateWithLefHandtExpression end
 		prittyPrintFilter(filter);
 		
         Boolean result = filter.evaluate(null);
         System.out.println("Result of filter evaluation: " + result);
 		
 	}
+    
+    
+    private static void duringPredicateWithLefHandtExpression() throws Exception{
+    	
+    	// duringPredicateWithLefHandtExpression start
+        Filter filter = ECQL.toFilter("2006-11-30T01:00:00Z DURING 2006-11-30T00:30:00Z/2006-11-30T01:30:00Z ");
+    	// duringPredicateWithLefHandtExpression end
+		prittyPrintFilter(filter);
+		
+        Boolean result = filter.evaluate(null);
+        System.out.println("Result of filter evaluation: " + result);
+	}
 
-
-	/**
-     * Retrieves the features from a data store using the filter
-     * 
-     * @param filter
-     * @throws Exception
-     */
-    static private void retrieveFeatures(Filter filter) throws Exception {
-        SimpleFeatureSource featureSource = null; // TODO open a feature store
+    private static void duringPredicateWithLefHandtAttribute() throws Exception{
+    	
+    	// duringPredicateWithLefHandtAttribute start
+        During filter = (During) ECQL.toFilter("lastEarthQuake DURING 1700-01-01T00:00:00Z/2011-01-01T00:00:00Z");
+    	// duringPredicateWithLefHandtAttribute end
+		prittyPrintFilter(filter);
         
-        SimpleFeatureCollection features = featureSource.getFeatures(filter);
-        SimpleFeatureIterator iter = features.features();
-        while(iter.hasNext() ) {
-            SimpleFeature feature = iter.next();
-            System.out.println(feature.toString());
-        }
-        iter.close();
-    }
+        final SimpleFeature city = DataExamples.createCity();
+        Expression leftExpr = filter.getExpression1();
+        Expression rightExpr = filter.getExpression2();
+        System.out.println("left expression value: " + leftExpr.evaluate(city));
+        System.out.println("right expression value: " + rightExpr.evaluate(city));
+        
+        Boolean result = filter.evaluate(city);
+        System.out.println("Result of filter evaluation: " + result);        
+	}
+
 
     /**
      * This example shows that ECQL syntax is compatible with CQL.
@@ -172,10 +210,13 @@ public class ECQLExamples {
 
         
         // expressionLessThanOrEqualToProperty start
-        Filter filter = ECQL.toFilter("1000 <= POPULTATION");
+        Filter filter = ECQL.toFilter("1000 <= population");
         // expressionLessThanOrEqualToProperty end
         
-        retrieveFeatures(filter);
+        prittyPrintFilter(filter);
+// FIXME
+//        Boolean result = filter.evaluate(DataExamples.createCountry());
+//        System.out.println("Result of filter evaluation: " + result);
     }
 
     /**
@@ -187,7 +228,7 @@ public class ECQLExamples {
         // comparisonUsingExpressions start
         Filter filter = ECQL.toFilter("(under18YearsOld * 19541453 / 100 ) < (over65YearsOld * 19541453 / 100 )");
         // comparisonUsingExpressions end
-        SimpleFeature city = createCity();
+        SimpleFeature city = DataExamples.createCity();
         
         prittyPrintFilter(filter);
 
@@ -208,7 +249,7 @@ public class ECQLExamples {
         // betweenPredicate end
         prittyPrintFilter(filter);
 
-        SimpleFeature city = createCity();
+        SimpleFeature city = DataExamples.createCity();
 
         System.out.println("City population: " + city.getProperty("population").getValue());
         
@@ -219,70 +260,15 @@ public class ECQLExamples {
     private static void betweenUsingExpression() throws Exception {
         
         // betweenUsingExpression start
-        Filter filter = ECQL.toFilter("area( shape ) BETWEEN 10000 AND 30000");
+        Filter filter = ECQL.toFilter("area( Polygon((10 10, 20 10, 20 20, 10 10)) ) BETWEEN 10000 AND 30000");
         // betweenUsingExpression end
         prittyPrintFilter(filter);
 
-        SimpleFeature country = createCountry();
-
-        Boolean result = filter.evaluate(country);
+        Boolean result = filter.evaluate(null);
         System.out.println("Result of filter evaluation: " + result);
     }
-    
-    private static SimpleFeature createCountry() throws Exception {
-
-        final SimpleFeatureType type = DataUtilities.createType("Location",
-                "geometry:Polygon:srid=4326," + 
-                "countryName:String," + 
-                "population:Integer" 
-        );
-        SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(type);
-
-        GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory(null);
-        WKTReader reader = new WKTReader();
-        Polygon geometry = (Polygon) reader.read(""); // FIXME implement me
-
-        featureBuilder.add(geometry);
-        featureBuilder.add("USA");
-        featureBuilder.add(307006550);
-        
-        SimpleFeature feature = featureBuilder.buildFeature(null);
-
-        return feature;
-    }
 
 
-    /**
-     * Creates a feature that represent New York city
-     * @return a Feature
-     * @throws Exception
-     */
-    static private SimpleFeature createCity() throws Exception {
-
-        final SimpleFeatureType type = DataUtilities.createType("Location",
-                "geometry:Point:srid=4326," + 
-                "cityName:String," + 
-                "over65YearsOld:Double,"+ 
-                "under18YearsOld:Double," +
-                "population:Integer" +
-                "earthQuake: Date"
-        );
-        SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(type);
-
-        GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory(null);
-        
-        Point point = geometryFactory.createPoint(new Coordinate(-17.2053, 11.9517));
-
-        featureBuilder.add(point);
-        featureBuilder.add("New York");
-        featureBuilder.add(22.6);
-        featureBuilder.add(13.4);
-        featureBuilder.add(19541453);
-        
-        SimpleFeature feature = featureBuilder.buildFeature(null);
-
-        return feature;
-}
     
     /**
      *  Matching a property with a text pattern (case sensitive)
@@ -291,9 +277,15 @@ public class ECQLExamples {
      */
     static private void likePredicate() throws Exception {
         // ecql likePredicate start
-        Filter filter = ECQL.toFilter("CITY_NAME LIKE 'Ar%'");
+        Filter filter = ECQL.toFilter("cityName LIKE 'New%'");
         // ecql likePredicate end
-        retrieveFeatures(filter);
+
+        prittyPrintFilter(filter);
+
+        SimpleFeature country = DataExamples.createCity();
+
+        Boolean result = filter.evaluate(country);
+        System.out.println("Result of filter evaluation: " + result);
     }
 
     /**
@@ -304,9 +296,15 @@ public class ECQLExamples {
     static private void ilikePredicate() throws Exception {
 
         // ecql ilikePredicate start
-        Filter filter = ECQL.toFilter("CITY_NAME ILIKE 'Ar%'");
+        Filter filter = ECQL.toFilter("cityName ILIKE 'new%'");
         // ecql ilikePredicate end
-        retrieveFeatures(filter);
+
+        prittyPrintFilter(filter);
+
+        SimpleFeature country = DataExamples.createCity();
+
+        Boolean result = filter.evaluate(country);
+        System.out.println("Result of filter evaluation: " + result);
     }
 
     /**
@@ -320,14 +318,18 @@ public class ECQLExamples {
         // ecql likePredicateInString end
         
         prittyPrintFilter(filter);
+
+        Boolean result = filter.evaluate(null);
+        System.out.println("Result of filter evaluation: " + result);
     }
 
     static void inPredicate() throws Exception {
         // ecql IN predicate start
-        Filter filter = ECQL.toFilter("length IN (4100001,4100002, 4100003 )");
+        Filter filter = ECQL.toFilter("population IN (4100001,4100002, 4100003 )");
         // ecql IN predicate end
-
-        retrieveFeatures(filter);
+        
+        Boolean result = filter.evaluate(DataExamples.createCountry());
+        System.out.println("Result of filter evaluation: " + result);
     }
     
     

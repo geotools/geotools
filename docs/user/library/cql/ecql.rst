@@ -125,6 +125,39 @@ Examples
         Filter filter = ECQL.toFilter(
                 "DWITHIN(buffer(the_geom,5), POINT(1 2), 10, kilometers)");
 
+* Filter by temporal relation:
+
+  The temporal predicates allow to establish the relation between two given instant of time, or between an instant and an interval of time. 
+  In the next sample, the during predicate is used to filter the cities where an earthquake has occurred between the  specified dates:
+
+  .. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
+     :language: java
+     :start-after: // duringPredicateWithLefHandtAttribute start
+     :end-before: // duringPredicateWithLefHandtAttribute end
+
+
+  In ECQL you can write a datetime expression in the left hand of the temporal predicate:
+
+  .. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
+     :language: java
+     :start-after: // afterPredicateWithLefHandtExpression start
+     :end-before: // afterPredicateWithLefHandtExpression end
+  
+  in the Before predicate: 
+
+  .. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
+     :language: java
+     :start-after: // beforePredicateWithLefHandtExpression start
+     :end-before: // beforePredicateWithLefHandtExpression end
+
+  in the During predicate:
+
+  .. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
+     :language: java
+     :start-after: // duringPredicateWithLefHandtExpression start
+     :end-before: // duringPredicateWithLefHandtExpression end
+
+
 * Filter by Comparing time values::
   
         Filter filter = ECQL.toFilter("DATE BEFORE 2006-12-31T01:30:00Z");

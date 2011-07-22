@@ -310,10 +310,14 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
             }
         }, resizingPaintDelay, TimeUnit.MILLISECONDS);
     }
-
+    
     private void setForNewSize() {
-        
         if (mapContent != null) {
+            if (mapContent.getViewport().getScreenArea().equals(getVisibleRect())) {
+                // no action required
+                return;
+            }
+            
             mapContent.getViewport().setScreenArea(getVisibleRect());
             
             if (pendingDisplayArea != null) {

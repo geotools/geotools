@@ -206,7 +206,7 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
 	}
 
 	public Object visit(BBOX filter, Object extraData) {
-		String propertyName=filter.getPropertyName();
+	    Expression propertyName = visit(filter.getExpression1(), extraData);
 		double minx=filter.getMinX();
 		double miny=filter.getMinY();
 		double maxx=filter.getMaxX();
@@ -321,7 +321,7 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
 	}
 
 	public Object visit(PropertyName expression, Object extraData) {
-		return getFactory(extraData).property(expression.getPropertyName());
+		return getFactory(extraData).property(expression.getPropertyName(), expression.getNamespaceContext());
 	}
 
 	public Object visit(Subtract expression, Object extraData) {

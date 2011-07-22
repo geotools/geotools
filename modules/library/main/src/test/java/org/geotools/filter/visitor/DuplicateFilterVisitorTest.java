@@ -30,6 +30,9 @@ import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.spatial.BBOX;
+import org.xml.sax.helpers.NamespaceSupport;
 
 
 /**
@@ -95,4 +98,18 @@ public class DuplicateFilterVisitorTest extends TestCase {
         assertNotSame(not, clone);
         assertNotSame(like, clone.getFilter());
     }
+    
+    public void testPreservedNamespaceContext() {
+        // set GEOT-3756
+        NamespaceSupport nsContext = new NamespaceSupport();
+        nsContext.declarePrefix("f", "http://feature.example.org");
+        Expression geometry = fac.property("f:name", nsContext);
+        BBOX bbox = fac.bbox(geometry, 0, 0, 1, 1, "EPSG:4326");
+        DuplicatingFilterVisitor visitor = new DuplicatingFilterVisitor(fac);
+        BBOX clone = (BBOX) bbox.accept(visitor, null);
+        assertEquals(bbox, clone);
+        assertNotSame(bbox, clone);
+        assertSame(nsContext, ((PropertyName) clone.getExpression1()).getNamespaceContext());
+    }
+
 }

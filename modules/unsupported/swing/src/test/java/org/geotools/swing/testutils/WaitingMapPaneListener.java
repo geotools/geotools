@@ -92,10 +92,6 @@ public class WaitingMapPaneListener implements MapPaneListener {
         catchEvent(MapPaneEvent.Type.NEW_RENDERER.ordinal(), ev);
     }
 
-    public void onResized(MapPaneEvent ev) {
-        catchEvent(MapPaneEvent.Type.PANE_RESIZED.ordinal(), ev);
-    }
-
     public void onDisplayAreaChanged(MapPaneEvent ev) {
         catchEvent(MapPaneEvent.Type.DISPLAY_AREA_CHANGED.ordinal(), ev);
     }

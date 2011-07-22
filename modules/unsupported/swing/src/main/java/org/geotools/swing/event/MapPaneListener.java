@@ -43,13 +43,6 @@ public interface MapPaneListener {
     void onNewRenderer(MapPaneEvent ev);
 
     /**
-     * Called when the map pane has been resized.
-     *
-     * @param ev the event
-     */
-    void onResized(MapPaneEvent ev);
-
-    /**
      * Called the display area (world bounds) has changed.
      *
      * @param ev the event

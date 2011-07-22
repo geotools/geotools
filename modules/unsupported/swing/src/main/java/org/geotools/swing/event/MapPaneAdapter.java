@@ -42,11 +42,6 @@ public class MapPaneAdapter implements MapPaneListener {
     /**
      * {@inheritDoc}
      */
-    public void onResized(MapPaneEvent ev) {}
-
-    /**
-     * {@inheritDoc}
-     */
     public void onDisplayAreaChanged(MapPaneEvent ev) {}
 
     /**

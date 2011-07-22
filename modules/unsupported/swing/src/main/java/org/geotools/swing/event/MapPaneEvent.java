@@ -50,11 +50,6 @@ public class MapPaneEvent extends EventObject {
         NEW_RENDERER,
 
         /**
-         * The map pane has been resized.
-         */
-        PANE_RESIZED,
-
-        /**
          * The display area has been changed. This can
          * include both changes in bounds and in the
          * coordinate reference system.

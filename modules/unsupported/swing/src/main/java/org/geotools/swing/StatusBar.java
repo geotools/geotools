@@ -279,15 +279,6 @@ public class StatusBar extends JPanel {
             }
 
             @Override
-            public void onResized(MapPaneEvent ev) {
-                ReferencedEnvelope env = mapPane.getDisplayArea();
-                if (env != null) {
-                    displayBounds(env);
-                    displayCRS(env.getCoordinateReferenceSystem());
-                }
-            }
-
-            @Override
             public void onRenderingStarted(MapPaneEvent ev) {
                 renderLabel.setText("rendering");
                 renderLabel.setIcon(busyIcon);

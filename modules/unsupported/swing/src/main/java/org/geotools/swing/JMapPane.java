@@ -187,7 +187,6 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     private AtomicBoolean baseImageMoved;
     private AtomicBoolean clearLabelCache;
 
-
     /**
      * Creates a new map pane. 
      */
@@ -283,7 +282,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
         addHierarchyListener(new HierarchyListener() {
             public void hierarchyChanged(HierarchyEvent he) {
                 if ((he.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
-                    if (isShowing() && baseImage == null) {
+                    if (isShowing()) {
                         onShownOrResized();
                     }
                 }
@@ -313,32 +312,26 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     }
 
     private void setForNewSize() {
+        
         if (mapContent != null) {
             mapContent.getViewport().setScreenArea(getVisibleRect());
             
-            if (fullExtent == null) {
-                setFullExtent();
-            }
-
             if (pendingDisplayArea != null) {
                 doSetDisplayArea(pendingDisplayArea);
                 pendingDisplayArea = null;
 
             } else if (mapContent.getViewport().getBounds().isEmpty()) {
+                setFullExtent();
                 doSetDisplayArea(fullExtent);
             }
+            
+            publishEvent(new MapPaneEvent(this, 
+                    MapPaneEvent.Type.DISPLAY_AREA_CHANGED,
+                    getDisplayArea()));
 
-        }
-        
-        publishEvent( new MapPaneEvent(this, 
-                MapPaneEvent.Type.PANE_RESIZED,
-                getVisibleRect()) );
-        
-        if (mapContent != null) {
             acceptRepaintRequests = true;
             drawBaseImage(true);
         }
-
     }
 
     /**
@@ -652,11 +645,14 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
      *       way for the map pane to handle this.
      */
     private boolean equalsFullExtent(final Envelope envelope) {
-        if (fullExtent == null || envelope == null) {
+        if (envelope == null || mapContent == null) {
+            return false;
+        }
+        if (fullExtent == null && !setFullExtent()) {
             return false;
         }
 
-        final double TOL = 1.0e-6d * (fullExtent.getWidth() + fullExtent.getHeight());
+        final double TOL = 1.0e-6d * Math.min(fullExtent.getWidth(), fullExtent.getHeight());
 
         boolean touch = false;
         if (Math.abs(envelope.getMinimum(0) - fullExtent.getMinimum(0)) < TOL) {
@@ -1035,14 +1031,16 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
      * Gets the full extent of map context's layers. The only reason
      * this method is defined is to avoid having try-catch blocks all
      * through other methods.
+     * 
+     * @return {@code true} if full extent was set successfully
      */
-    private void setFullExtent() {
+    private boolean setFullExtent() {
         if (mapContent != null && !mapContent.layers().isEmpty()) {
             try {
                 fullExtent = mapContent.getMaxBounds();
 
                 /*
-                 * Guard agains degenerate envelopes (e.g. empty
+                 * Guard against degenerate envelopes (e.g. empty
                  * map layer or single point feature)
                  */
                 if (fullExtent == null ) {
@@ -1078,6 +1076,8 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
         } else {
             fullExtent = null;
         }
+        
+        return fullExtent != null;
     }
 
     /**
@@ -1095,10 +1095,6 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
 
                 case NEW_RENDERER:
                     listener.onNewRenderer(ev);
-                    break;
-
-                case PANE_RESIZED:
-                    listener.onResized(ev);
                     break;
 
                 case DISPLAY_AREA_CHANGED:

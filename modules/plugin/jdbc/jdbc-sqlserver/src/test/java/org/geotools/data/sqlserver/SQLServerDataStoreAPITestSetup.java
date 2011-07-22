@@ -27,7 +27,7 @@ public class SQLServerDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
     @Override
     protected void createRoadTable() throws Exception {
         run("CREATE TABLE road(fid int IDENTITY(0,1) PRIMARY KEY, id int, "
-            + "geom geometry, name varchar(255) )");
+            + "geom geometry, name nvarchar(255) )"); //use nvarchar to test nvarchar mappings (GEOT-3609)
         run("INSERT INTO road (id,geom,name) VALUES (0,"
             + "geometry::STGeomFromText('LINESTRING(1 1, 2 2, 4 2, 5 1)',4326)," + "'r1')");
         run("INSERT INTO road (id,geom,name) VALUES ( 1,"
@@ -39,7 +39,7 @@ public class SQLServerDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
     @Override
     protected void createRiverTable() throws Exception {
         run("CREATE TABLE river(fid int IDENTITY(0,1) PRIMARY KEY, id int, "
-            + "geom geometry, river varchar(255) , flow float )");
+            + "geom geometry, river nvarchar(255) , flow float )");
 
         run("INSERT INTO river (id,geom,river, flow)  VALUES ( 0,"
             + "geometry::STGeomFromText('MULTILINESTRING((5 5, 7 4),(7 5, 9 7, 13 7),(7 5, 9 3, 11 3))',4326),"

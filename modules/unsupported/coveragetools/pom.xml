@@ -18,8 +18,52 @@
     <artifactId>unsupported</artifactId>
     <version>8-SNAPSHOT</version>
   </parent>
-
-
+  
+  <profiles>
+    <profile>
+      <activation>
+        <os>
+          <family>mac</family>
+        </os>
+      </activation>
+      <build>
+        <plugins>
+            <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <includes>
+                <include>**/*Test.java</include>
+              </includes>
+              <excludes>
+                <exclude>**/*OverviewEmbedderTest.java</exclude>
+                <exclude>${online.skip.pattern}</exclude>
+                <exclude>${stress.skip.pattern}</exclude>
+                <exclude>${test.exclude.pattern}</exclude>
+              </excludes>
+              <argLine>-Xmx${test.maxHeapSize} ${jvm.opts} -Dorg.geotools.test.extensive=${extensive.tests} -Dorg.geotools.test.interactive=${interactive.tests} -Dorg.geotools.image.test.enabled=${image.tests} -Dorg.geotools.image.test.interactive=${interactive.image} -Djava.awt.headless=${java.awt.headless} -Djava.io.tmpdir=${java.io.tmpdir}</argLine>
+              <!-- Ignores test failure only if we are generating a       -->
+              <!-- report for publication on the web site. See the        -->
+              <!-- profiles section at the begining of this pom.xml file. -->
+              <testFailureIgnore>
+                ${allow.test.failure.ignore}
+              </testFailureIgnore>
+    
+              <!-- The two following options have the opposite value of what we would
+                   like. They are that way because they don't seem to work as expected
+                   with Surefire 2.3. TODO: Try again when Surefire 2.4 will be available. -->
+    
+              <!-- Option to print summary of test suites or just print the test cases that has errors. -->
+              <printSummary>true</printSummary>
+              <!-- Redirect the unit test standard output to a file. -->
+              <redirectTestOutputToFile>false</redirectTestOutputToFile>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+  
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->

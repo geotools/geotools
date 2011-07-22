@@ -309,9 +309,9 @@ public class ECQLExamples {
     }
 
     static private void inPredicate() throws Exception {
-        // inPredicate start
+        // ecql inPredicate start
         Filter filter = ECQL.toFilter("principalMineralResource IN ('silver','oil', 'gold' )");
-        // inPredicate end
+        // ecql inPredicate end
         
         SimpleFeature country = DataExamples.createCountry();
         System.out.println("coutry: " + country.getAttribute("countryName"));
@@ -324,6 +324,5 @@ public class ECQLExamples {
         
         System.out.println("Result of filter evaluation: " + result);
     }
-    
     
 }

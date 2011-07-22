@@ -78,25 +78,19 @@ Examples
   
         Filter filter = ECQL.toFilter("IN (300, 301)");
   
-  Filter based in a set of values::
-  
-        Filter filter = ECQL.toFilter("length IN (4100001,4100002, 4100003 )");
-        Filter filter = ECQL.toFilter("length IN ( (1+2), 3-4, [5*6] )");
-        Filter filter = ECQL.toFilter("huc_8 IN (abs(-1), area(the_geom)");
-  
   We tried a couple of experiments, not all of them worked leaving
   us with the following deprecated syntax::
   
         Filter filter = ECQL.toFilter("ID IN ('river.1', 'river.2')");
 
-* Filtering  the features which have a property's value belongs to a set of values
+* Filter based in a set of values
 
   The following filter selects the countries which have silver, oil or gold as principal mineral resource:
 
   .. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
      :language: java
-     :start-after: // inPredicate start
-     :end-before: // inPredicate end
+     :start-after: // ecql inPredicate start
+     :end-before: // ecql inPredicate end
 
 * Filter using a text pattern:
 

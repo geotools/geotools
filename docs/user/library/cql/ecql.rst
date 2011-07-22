@@ -89,6 +89,14 @@ Examples
   
         Filter filter = ECQL.toFilter("ID IN ('river.1', 'river.2')");
 
+* Filtering  the features which have a property's value belongs to a set of values
+
+  The following filter selects the countries which have silver, oil or gold as principal mineral resource:
+
+  .. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
+     :language: java
+     :start-after: // inPredicate start
+     :end-before: // inPredicate end
 
 * Filter using a text pattern:
 

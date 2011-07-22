@@ -72,7 +72,8 @@ final class DataExamples extends ECQLExamples {
         final SimpleFeatureType type = DataUtilities.createType("Location",
                 "geometry:Polygon:srid=4326," + 
                 "countryName:String," + 
-                "population:Integer" 
+                "population:Integer," +
+                "principalMineralResource:String"
         );
         SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(type);
 
@@ -82,6 +83,7 @@ final class DataExamples extends ECQLExamples {
         featureBuilder.add(geometry);
         featureBuilder.add("USA");
         featureBuilder.add(307006550);
+        featureBuilder.add("oil");
         
         SimpleFeature feature = featureBuilder.buildFeature(null);
 

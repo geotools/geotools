@@ -2,35 +2,15 @@ package org.geotools.cql;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.logging.Logger;
 
-import org.geotools.data.DataUtilities;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.feature.FeatureCollections;
-import org.geotools.feature.SchemaException;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.cql2.CQL;
-import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
-import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.temporal.During;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.io.WKTReader;
 
 /**
  * This class gathers up the ECQL examples shown in the sphinx documentation.
@@ -65,6 +45,7 @@ public class ECQLExamples {
                 System.out.println("10 - Temporal Before: 2006-11-30T01:00:00Z BEFORE 2006-11-30T01:30:00Z");
                 System.out.println("11 - Temporal During: 2006-11-30T01:00:00Z DURING 2006-11-30T00:30:00Z/2006-11-30T01:30:00Z ");
                 System.out.println("12 - Temporal During: lastEarthQuake DURING 1700-01-01T00:00:00Z/2011-01-01T00:00:00Z");
+                System.out.println("13 - In predicate: principalMineralResource IN ('silver','oil', 'gold' )");
                 
                 System.out.println("0 - quite");
                 System.out.print(">");
@@ -110,6 +91,10 @@ public class ECQLExamples {
                     break;
                 case 12:
                 	duringPredicateWithLefHandtAttribute();
+                	break;
+                	
+                case 13:
+                	inPredicate();
                 	break;
                 default:
                     System.out.println("invalid option");
@@ -323,12 +308,20 @@ public class ECQLExamples {
         System.out.println("Result of filter evaluation: " + result);
     }
 
-    static void inPredicate() throws Exception {
-        // ecql IN predicate start
-        Filter filter = ECQL.toFilter("population IN (4100001,4100002, 4100003 )");
-        // ecql IN predicate end
+    static private void inPredicate() throws Exception {
+        // inPredicate start
+        Filter filter = ECQL.toFilter("principalMineralResource IN ('silver','oil', 'gold' )");
+        // inPredicate end
         
-        Boolean result = filter.evaluate(DataExamples.createCountry());
+        SimpleFeature country = DataExamples.createCountry();
+        System.out.println("coutry: " + country.getAttribute("countryName"));
+        System.out.println("population: " + country.getAttribute("principalMineralResource"));
+        
+        prittyPrintFilter(filter);
+        
+		Boolean result = filter.evaluate(country);
+        
+        
         System.out.println("Result of filter evaluation: " + result);
     }
     

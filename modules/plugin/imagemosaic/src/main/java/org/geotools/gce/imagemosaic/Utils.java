@@ -759,11 +759,13 @@ public class Utils {
 		// serialize it
 		OutputStream outStream = null;
 		ObjectOutputStream ooStream = null;
+		SerializableRenderedImage sri = null;
 		try {
 			outStream = new BufferedOutputStream(new FileOutputStream(
 					sampleImageFile));
 			ooStream = new ObjectOutputStream(outStream);
-			ooStream.writeObject(new SerializableRenderedImage(sampleImage));
+			sri = new SerializableRenderedImage(sampleImage, true);
+			ooStream.writeObject(sri);
 		} finally {
 			try {
 				if (ooStream != null)
@@ -777,6 +779,11 @@ public class Utils {
 			} catch (Throwable e) {
 				IOUtils.closeQuietly(outStream);
 			}
+			try {
+                            if (sri != null)
+                                    sri.dispose();
+			} catch (Throwable e) {
+                        }
 		}
 	}
 

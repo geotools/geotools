@@ -29,6 +29,8 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -43,6 +45,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import net.miginfocom.layout.LC;
 import net.miginfocom.swing.MigLayout;
 
 import org.geotools.referencing.CRS;
@@ -181,9 +184,9 @@ public class JCRSChooser {
         dialog.setTitle( title == null ? "Choose Projection" : title );
         
         final int WIDTH = 400;
-        final int MARGIN = 10;
+        final String MARGIN = "10";
         
-        JPanel panel = new JPanel(new MigLayout(String.format("insets %d", MARGIN)));
+        JPanel panel = new JPanel(new MigLayout( new LC().insetsAll(MARGIN)));
         
         if (authority == null) {
             authority = DEFAULT_AUTHORITY;
@@ -210,7 +213,6 @@ public class JCRSChooser {
                 model.setFilter(filterFld.getText());
             }
         });
-        
         panel.add(filterFld, String.format("w %d!, wrap", WIDTH));
         
         final JList listBox = new JList(model);
@@ -237,10 +239,7 @@ public class JCRSChooser {
         }
         
         panel.add(listPane, String.format("w %d!, h %d!, wrap", WIDTH, WIDTH / 2));
-        
-        JButton okBtn = new JButton("OK");
-        okBtn.addActionListener(new ActionListener() {
-            @Override
+        Action okAction =  new AbstractAction("OK") {
             public void actionPerformed(ActionEvent ae) {
                 if (model.getSize() > 0) {
                     if (model.getSize() == 1) {
@@ -250,7 +249,9 @@ public class JCRSChooser {
                     }
                 }
             }
-        });
+        };
+        JButton okBtn = new JButton(okAction);
+        filterFld.setAction(okAction);
         panel.add(okBtn, "align center, split 2");
         
         JButton cancelBtn = new JButton("Cancel");

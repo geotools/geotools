@@ -313,8 +313,14 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     
     private void setForNewSize() {
         if (mapContent != null) {
+            
+            /*
+             * Compare the new pane screen size to the viewport's screen area
+             * and skip further action if the two rectangles are equal. This 
+             * check avoid extra rendering requests when redundant resize events
+             * are received (e.g. on mouse button release after drag resizing).
+             */
             if (mapContent.getViewport().getScreenArea().equals(getVisibleRect())) {
-                // no action required
                 return;
             }
             

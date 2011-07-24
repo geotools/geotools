@@ -28,7 +28,7 @@ import javax.swing.JPopupMenu;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.swing.ExceptionMonitor;
-import org.geotools.swing.JCRSChooser;
+import org.geotools.swing.dialog.JCRSChooser;
 import org.geotools.swing.JTextReporter;
 import org.geotools.swing.MapPane;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -120,20 +120,17 @@ public class CRSPopupMenu extends JPopupMenu {
      */
     private void setCRS() {
         if (mapPane != null && mapPane.getMapContent() != null) {
+            String initial = null;
             CoordinateReferenceSystem crs = mapPane.getMapContent().getCoordinateReferenceSystem();
-            String initialSelection = null;
-            try {
-                if (crs != null) {
-                    initialSelection = CRS.lookupIdentifier(Citations.EPSG, crs, false);
+            if (crs != null) {
+                try {
+                    initial = CRS.lookupIdentifier(Citations.EPSG, crs, false);
+                } catch (Exception ex) {
+                    // do nothing
                 }
-
-            } catch (Exception ex) {
-                // do nothing
             }
-
-            CoordinateReferenceSystem newCRS = JCRSChooser.showDialog(
-                    (Component) mapPane, null, 
-                    "Choose a projection for the map display", initialSelection);
+            
+            CoordinateReferenceSystem newCRS = JCRSChooser.showDialog(null, null, initial);
 
             if (newCRS != null && (crs == null || !CRS.equalsIgnoreMetadata(crs, newCRS))) {
                 try {

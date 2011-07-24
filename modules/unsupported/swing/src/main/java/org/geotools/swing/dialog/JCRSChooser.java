@@ -251,7 +251,7 @@ public class JCRSChooser {
                 }
             }
         });
-        panel.add(okBtn, "split 2");
+        panel.add(okBtn, "align center, split 2");
         
         JButton cancelBtn = new JButton("Cancel");
         cancelBtn.addActionListener(new ActionListener() {

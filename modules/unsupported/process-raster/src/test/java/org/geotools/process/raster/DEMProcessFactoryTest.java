@@ -1,4 +1,4 @@
-package org.geotools.process.dem;
+package org.geotools.process.raster;
 
 import java.util.Map;
 import java.util.Set;

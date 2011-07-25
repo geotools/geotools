@@ -31,7 +31,7 @@ import org.geotools.util.SimpleInternationalString;
  */
 public class DEMProcessFactory extends StaticMethodsProcessFactory<DEMTools> {
     public DEMProcessFactory() {
-        super(new SimpleInternationalString("Simple JTS based spatial analysis methods"), "JTS",
+        super(new SimpleInternationalString("Digitial Elevation Model"), "http://localhost/dem/",
                 DEMTools.class);
     }
 

@@ -19,6 +19,7 @@ Extension:
    :maxdepth: 1
 
    function
+   process
    abstractdatastore
    contentdatastore
 

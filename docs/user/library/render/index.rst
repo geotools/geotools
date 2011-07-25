@@ -31,9 +31,8 @@ Unsupported:
 .. toctree::
    :maxdepth: 1
    
+   wkt
    shapefile
-
-* :doc:`/unsupported/wkt`
 
 References:
 

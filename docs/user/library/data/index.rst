@@ -44,9 +44,7 @@ Unsupported plugins:
    geometryless
    georest
    ogr
-   postgis
    sfs
-   sql
    wfs
    wfs-ng
    vpf
@@ -55,7 +53,6 @@ Unsupported plugins:
 Additional DataStore plugins are available from :doc:`gt-jdbc <../jdbc/index>` for database access.
 
 The Data module is all about hoisting data (usually in the form of features) off of external services, disk files etc... into your application. This is where you can finally start putting the toolkit to work.
-
 
 .. image:: /images/gt-data.png
 

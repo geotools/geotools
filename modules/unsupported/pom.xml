@@ -108,6 +108,17 @@
        </modules>
      </profile>
      <profile>
+       <id>process</id>
+       <activation>
+         <property><name>all</name></property>
+       </activation>
+       <modules>
+         <module>process-geometry</module>
+         <module>process-raster</module>
+         <module>process-feature</module>
+       </modules>
+     </profile>
+     <profile>
        <id>epsg-h2</id>
        <activation>
          <property><name>all</name></property>

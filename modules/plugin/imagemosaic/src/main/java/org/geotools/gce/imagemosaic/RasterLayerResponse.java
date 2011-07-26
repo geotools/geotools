@@ -402,27 +402,30 @@ class RasterLayerResponse{
                 }
 
 
-		public void visit(GranuleDescriptor granuleDescriptor, Object o) {
-			
-			//
-			// load raster data
-			//
-			//create a granuleDescriptor loader
-            final Geometry bb = JTS.toGeometry((BoundingBox)mosaicBBox);
-            final Geometry inclusionGeometry = granuleDescriptor.inclusionGeometry;
-            if (!footprintManagement || inclusionGeometry == null || footprintManagement && inclusionGeometry.intersects(bb)){
-                final GranuleLoader loader = new GranuleLoader(baseReadParameters, imageChoice, mosaicBBox, finalWorldToGridCorner, granuleDescriptor, request, hints);
-                if (multithreadingAllowed && rasterManager.parent.multiThreadedLoader != null)
-                        tasks.add(rasterManager.parent.multiThreadedLoader.submit(loader));
-                    else
-                        tasks.add(new FutureTask<GranuleLoadingResult>(loader));
-                    
-                    granulesNumber++;
+        public void visit(GranuleDescriptor granuleDescriptor, Object o) {
+            // don't collect more than the specified amount of granules
+            if(granulesNumber >= request.getMaximumNumberOfGranules()) {
+                return;
             }
-                        
-			if(granulesNumber>request.getMaximumNumberOfGranules())
-				throw new IllegalStateException("The maximum number of allowed granules ("+request.getMaximumNumberOfGranules()+")has been exceeded.");
-		}
+            
+            //
+            // load raster data
+            //
+            // create a granuleDescriptor loader
+            final Geometry bb = JTS.toGeometry((BoundingBox) mosaicBBox);
+            final Geometry inclusionGeometry = granuleDescriptor.inclusionGeometry;
+            if (!footprintManagement || inclusionGeometry == null || footprintManagement
+                    && inclusionGeometry.intersects(bb)) {
+                final GranuleLoader loader = new GranuleLoader(baseReadParameters, imageChoice,
+                        mosaicBBox, finalWorldToGridCorner, granuleDescriptor, request, hints);
+                if (multithreadingAllowed && rasterManager.parent.multiThreadedLoader != null)
+                    tasks.add(rasterManager.parent.multiThreadedLoader.submit(loader));
+                else
+                    tasks.add(new FutureTask<GranuleLoadingResult>(loader));
+
+                granulesNumber++;
+            }
+        }
 		
 		
 		public void produce(){

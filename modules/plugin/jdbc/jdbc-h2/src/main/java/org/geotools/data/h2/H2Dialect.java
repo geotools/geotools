@@ -137,6 +137,9 @@ public class H2Dialect extends SQLDialect {
             finally {
                 dataStore.closeSafe(st);
             }
+            
+            //not a geometry blob, return byte[].class
+            return byte[].class;
         }
         
         //do a check for a column remark which marks this as a geometry
@@ -150,7 +153,6 @@ public class H2Dialect extends SQLDialect {
         }
         
         return null;
-
     }
     
     @Override
@@ -166,6 +168,14 @@ public class H2Dialect extends SQLDialect {
         }
     }
     
+    @Override
+    public void registerSqlTypeToClassMappings(Map<Integer, Class<?>> mappings) {
+        super.registerSqlTypeToClassMappings(mappings);
+        
+        //clear BLOB, we handle them custom
+        mappings.remove(Types.BLOB);
+    }
+
     @Override
     public void registerClassToSqlMappings(Map<Class<?>, Integer> mappings) {
         super.registerClassToSqlMappings(mappings);

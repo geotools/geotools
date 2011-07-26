@@ -37,8 +37,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL: $
- * @version $Id: $
+ * @source $URL$
+ * @version $Id$
  */
 public class CRSStatusBarItem extends StatusBarItem {
     private static final String NO_CRS = "CRS Undefined";
@@ -46,8 +46,18 @@ public class CRSStatusBarItem extends StatusBarItem {
     
     private final JButton btn;
 
+    /**
+     * Creates a new item to display CRS details of the associated map pane.
+     *
+     * @param mapPane the map pane
+     * @throws IllegalArgumentException if {@code mapPane} is {@code null}
+     */
     public CRSStatusBarItem(MapPane mapPane) {
         super("CRS");
+
+        if (mapPane == null) {
+            throw new IllegalArgumentException("mapPane must not be null");
+        }
         
         btn = new JButton(NO_CRS);
         btn.setBorder(BorderFactory.createEmptyBorder());
@@ -74,6 +84,11 @@ public class CRSStatusBarItem extends StatusBarItem {
         });
     }
 
+    /**
+     * Displays the CRS name as item text.
+     *
+     * @param crs the CRS
+     */
     private void displayCRS(CoordinateReferenceSystem crs) {
         String name = NO_CRS;
 

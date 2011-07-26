@@ -25,8 +25,8 @@ import javax.swing.JPanel;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL: $
- * @version $Id: $
+ * @source $URL$
+ * @version $Id$
  */
 public abstract class StatusBarItem extends JPanel {
     private static int ITEM_ID = 0;
@@ -78,6 +78,11 @@ public abstract class StatusBarItem extends JPanel {
         return id;
     }
 
+    /**
+     * Gets the minimum height of this item.
+     *
+     * @return minimum height
+     */
     public int getMinimumHeight() {
         return minHeight;
     }

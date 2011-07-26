@@ -32,8 +32,8 @@ import org.geotools.swing.event.MapPaneEvent;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL: $
- * @version $Id: $
+ * @source $URL$
+ * @version $Id$
  */
 public class ExtentStatusBarItem extends StatusBarItem {
     private final JLabel label;
@@ -45,11 +45,19 @@ public class ExtentStatusBarItem extends StatusBarItem {
     private final Lock lock = new ReentrantLock();
 
     /**
-     * Creates a new
-     * @param mapPane
+     * Creates a new item to display the extent of the associated
+     * map pane.
+     *
+     * @param mapPane the map pane
+     * @throws IllegalArgumentException if {@code mapPane} is {@code null}
      */
     public ExtentStatusBarItem(MapPane mapPane) {
         super("Extent");
+
+        if (mapPane == null) {
+            throw new IllegalArgumentException("mapPane must not be null");
+        }
+
         doSetPrecision(DEFAULT_NUM_DECIMALS);
         label = new JLabel();
         label.setFont(JMapStatusBar.getDefaultFont());

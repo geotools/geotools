@@ -32,8 +32,8 @@ import org.geotools.swing.event.MapMouseEvent;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL: $
- * @version $Id: $
+ * @source $URL$
+ * @version $Id$
  */
 public class CoordsStatusBarItem extends StatusBarItem {
     private static final int DEFAULT_NUM_DECIMALS = 2;
@@ -53,6 +53,10 @@ public class CoordsStatusBarItem extends StatusBarItem {
      */
     CoordsStatusBarItem(MapPane mapPane) {
         super("Coordinates");
+
+        if (mapPane == null) {
+            throw new IllegalArgumentException("mapPane must not be null");
+        }
 
         doSetPrecision(DEFAULT_NUM_DECIMALS);
         

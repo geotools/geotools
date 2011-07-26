@@ -548,13 +548,14 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         //create the reader
         FeatureReader<SimpleFeatureType, SimpleFeature> reader;
         
-        try {
-            // this allows PostGIS to page the results and respect the fetch size
+        try {            
+            SQLDialect dialect = getDataStore().getSQLDialect();
+
+            // allow dialect to override this if needed
             if(getState().getTransaction() == Transaction.AUTO_COMMIT) {
-                cx.setAutoCommit(false);
+                cx.setAutoCommit(dialect.isAutoCommitQuery());
             }
             
-            SQLDialect dialect = getDataStore().getSQLDialect();
             if ( dialect instanceof PreparedStatementSQLDialect ) {
                 PreparedStatement ps = getDataStore().selectSQLPS(querySchema, preQuery, cx);
                 reader = new JDBCFeatureReader( ps, cx, this, querySchema, query.getHints() );

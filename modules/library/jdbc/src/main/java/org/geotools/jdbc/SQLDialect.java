@@ -1037,4 +1037,16 @@ public abstract class SQLDialect {
         return 255;
     }
 
+    /**
+     * Determine if a read query should be set to autocommit.
+     * <p>
+     * Some databases (like postgres) want this enabled to respect fetch size.
+     * The default implementation is to return false.
+     * </p>
+     * @return true if read queries should remain autocommit, false otherwise
+     */
+    public boolean isAutoCommitQuery() {
+        return false;
+    }
+
 }

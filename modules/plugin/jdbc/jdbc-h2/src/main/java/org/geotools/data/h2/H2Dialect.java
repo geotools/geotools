@@ -188,6 +188,7 @@ public class H2Dialect extends SQLDialect {
         
         Statement st = cx.createStatement();
         String tableName = featureType.getTypeName();
+        schemaName = schemaName != null ? schemaName : "PUBLIC";
         
         try {
             //post process the feature type and set up constraints based on geometry type
@@ -201,12 +202,13 @@ public class H2Dialect extends SQLDialect {
                     int epsg = -1;
                     try {
                         CoordinateReferenceSystem crs = gd.getCoordinateReferenceSystem();
-                        if (crs == null) {
-                            continue;
+                        if (crs != null) {
+                            Integer code = CRS.lookupEpsgCode(crs, true); 
+                            epsg = code != null ? code : -1;
                         }
-                        
-                        Integer code = CRS.lookupEpsgCode(crs, true); 
-                        epsg = code != null ? code : -1;
+                        else {
+                            LOGGER.warning("Column " + gd.getLocalName() + " has no crs");
+                        }
                     } 
                     catch (FactoryException e) {
                         LOGGER.log(Level.FINER, "Unable to look epsg code", e);
@@ -214,12 +216,8 @@ public class H2Dialect extends SQLDialect {
 
                     StringBuffer sql = new StringBuffer();
                     sql.append("CALL AddGeometryColumn(");
-                    if (schemaName != null) {
-                        sql.append("'").append(schemaName).append("'");
-                    }
-                    else {
-                        sql.append("NULL");
-                    }
+                    sql.append("'").append(schemaName).append("'");
+
                     sql.append(", '").append(tableName).append("'");
                     sql.append(", '").append(gd.getLocalName()).append("'");
                     sql.append(", ").append(epsg);

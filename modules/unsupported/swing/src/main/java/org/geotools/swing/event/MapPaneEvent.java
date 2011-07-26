@@ -99,6 +99,16 @@ public class MapPaneEvent extends EventObject {
     }
 
     /**
+     * Gets the map pane which published this event.
+     *
+     * @return the source map pane
+     */
+    @Override
+    public MapPane getSource() {
+        return (MapPane) super.getSource();
+    }
+
+    /**
      * Get the type of this event
      * @return event type 
      */
@@ -114,4 +124,5 @@ public class MapPaneEvent extends EventObject {
     public Object getData() {
         return data;
     }
+
 }

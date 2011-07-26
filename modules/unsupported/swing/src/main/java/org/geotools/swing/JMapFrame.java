@@ -40,6 +40,7 @@ import org.geotools.swing.action.PanAction;
 import org.geotools.swing.action.ResetAction;
 import org.geotools.swing.action.ZoomInAction;
 import org.geotools.swing.action.ZoomOutAction;
+import org.geotools.swing.control.JMapStatusBar;
 
 /**
  * A Swing frame containing a map display pane and (optionally) a toolbar,
@@ -60,10 +61,8 @@ import org.geotools.swing.action.ZoomOutAction;
  *
  * @author Michael Bedward
  * @since 2.6
- *
- *
- *
  * @source $URL$
+ * @version $Id$
  */
 public class JMapFrame extends JFrame {
 
@@ -106,7 +105,6 @@ public class JMapFrame extends JFrame {
     private JMapPane mapPane;
     private MapLayerTable mapLayerTable;
     private JToolBar toolBar;
-    private StatusBar statusBar;
 
     private boolean showStatusBar;
     private boolean showLayerTable;
@@ -260,7 +258,7 @@ public class JMapFrame extends JFrame {
         }
         sb.append("[grow]"); // map pane and optionally layer table fill space
         if (showStatusBar) {
-            sb.append("[30px::]"); // status bar height
+            sb.append("[min!]"); // status bar height
         }
 
         JPanel panel = new JPanel(new MigLayout(
@@ -343,8 +341,7 @@ public class JMapFrame extends JFrame {
         }
 
         if (showStatusBar) {
-            statusBar = new StatusBar(mapPane);
-            panel.add(statusBar, "grow");
+            panel.add(JMapStatusBar.createDefaultStatusBar(mapPane), "grow");
         }
 
         this.getContentPane().add(panel);

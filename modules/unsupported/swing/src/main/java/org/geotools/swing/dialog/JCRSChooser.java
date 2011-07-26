@@ -240,12 +240,16 @@ public class JCRSChooser {
         
         panel.add(listPane, String.format("w %d!, h %d!, wrap", WIDTH, WIDTH / 2));
         Action okAction =  new AbstractAction("OK") {
+            @Override
             public void actionPerformed(ActionEvent ae) {
                 if (model.getSize() > 0) {
                     if (model.getSize() == 1) {
                         selectCRS(0);
                     } else {
-                        selectCRS(listBox.getSelectedIndex());
+                        int index = listBox.getSelectedIndex();
+                        if (index >= 0) {
+                            selectCRS(index);
+                        }
                     }
                 }
             }

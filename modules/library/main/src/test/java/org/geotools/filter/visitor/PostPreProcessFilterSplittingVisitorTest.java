@@ -345,4 +345,22 @@ public class PostPreProcessFilterSplittingVisitorTest extends AbstractPostPrePro
         
         assertEquals(f1, visitor.getFilterPost());
     }
+    
+    public void testIsNullFilter() {
+        FilterCapabilities caps = new FilterCapabilities();
+        PostPreProcessFilterSplittingVisitor visitor = 
+            new PostPreProcessFilterSplittingVisitor(caps, null, null);
+        caps.addType(PropertyIsNull.class);
+        
+        Filter f1 = ff.isNull(ff.literal("abc"));
+        f1.accept(visitor, null);
+        
+        assertEquals(f1, visitor.getFilterPre());
+        
+        visitor = new PostPreProcessFilterSplittingVisitor(caps, null, null);
+        Filter f2 = ff.isNull(ff.function("strConcat", ff.literal("abc"), ff.literal("def")));
+        f2.accept(visitor, null);
+        
+        assertEquals(f2, visitor.getFilterPost());
+    }
 }

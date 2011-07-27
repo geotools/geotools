@@ -744,8 +744,9 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
 	        if (i < postStack.size()) {
 	        	postStack.pop();
 	        	postStack.push(filter);
+	        	return null;
 	        }
-            
+                
         	preStack.pop(); // null
 	        preStack.push(filter);
             

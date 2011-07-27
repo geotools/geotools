@@ -32,6 +32,7 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -40,6 +41,8 @@ import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
 
 import org.geotools.swing.MapPane;
+import org.geotools.swing.dialog.AbstractModalDialog;
+import org.geotools.swing.dialog.DialogUtils;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -47,22 +50,27 @@ import org.geotools.util.logging.Logging;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL: $
- * @version $Id: $
+ * @source $URL$
+ * @version $Id$
  */
 public class JMapStatusBar extends JPanel {
     private static final Logger LOGGER = Logging.getLogger("org.geotools.swing");
 
     private static final int INSET = 0;
-    private static final Font DEFAULT_FONT = new Font("Courier", Font.PLAIN, 12);
 
-    private static class ItemElement {
+    // Package-private constants for use by StatusBarItem classes
+    static final Font DEFAULT_FONT = new Font("Courier", Font.PLAIN, 12);
+    static final int DEFAULT_NUM_DECIMAL_DIGITS = 2;
+
+    private int numDecimalDigits = DEFAULT_NUM_DECIMAL_DIGITS;
+
+    private static class ItemInfo {
         final StatusBarItem item;
         final boolean configurable;
         final int componentIndex;
         boolean showing;
 
-        public ItemElement(StatusBarItem item,
+        public ItemInfo(StatusBarItem item,
                 boolean configurable,
                 int componentIndex,
                 boolean showing) {
@@ -74,7 +82,7 @@ public class JMapStatusBar extends JPanel {
         }
     }
 
-    private final Map<Integer, ItemElement> itemStates;
+    private final Map<Integer, ItemInfo> itemInfo;
     private int minItemHeight;
 
     /**
@@ -135,20 +143,12 @@ public class JMapStatusBar extends JPanel {
         return statusBar;
     }
 
-    /**
-     * Gets the default font for status bar items.
-     *
-     * @return the default font
-     */
-    public static Font getDefaultFont() {
-        return DEFAULT_FONT;
-    }
-
     public JMapStatusBar() {
-        this.itemStates = new HashMap<Integer, ItemElement>();
+        this.itemInfo = new HashMap<Integer, ItemInfo>();
 
         setLayout(new MigLayout("insets " + INSET));
         setBackground(new Color(224, 224, 224));
+        setFont(DEFAULT_FONT);
 
         URL url = this.getClass().getResource("icons/configure-3.png");
         ImageIcon icon = new ImageIcon(url);
@@ -168,9 +168,9 @@ public class JMapStatusBar extends JPanel {
     }
 
     public boolean addItem(StatusBarItem item, boolean configurable, boolean showing) {
-        if (!itemStates.containsKey(item.getID())) {
-            ItemElement ie = new ItemElement(item, configurable, getComponentCount(), showing);
-            itemStates.put(item.getID(), ie);
+        if (!itemInfo.containsKey(item.getID())) {
+            ItemInfo ie = new ItemInfo(item, configurable, getComponentCount(), showing);
+            itemInfo.put(item.getID(), ie);
 
             if (showing) {
                 add(item);
@@ -194,8 +194,9 @@ public class JMapStatusBar extends JPanel {
     private JPopupMenu createItemMenu() {
         JPopupMenu menu = new JPopupMenu();
 
-        for (Entry<Integer, ItemElement> entry : itemStates.entrySet()) {
-            final ItemElement el = entry.getValue();
+        // Add menu items to toggle display of status bar elements
+        for (Entry<Integer, ItemInfo> entry : itemInfo.entrySet()) {
+            final ItemInfo el = entry.getValue();
             if (el.configurable) {
                 JMenuItem menuItem = new JCheckBoxMenuItem(el.item.getName(), el.showing);
                 menuItem.addActionListener(new ActionListener() {
@@ -217,6 +218,63 @@ public class JMapStatusBar extends JPanel {
             }
         }
 
+        menu.addSeparator();
+        JMenuItem menuItem = new JMenuItem("Set number decimal digits...");
+        menuItem.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setNumDecimals();
+            }
+        });
+        menu.add(menuItem);
+
         return menu;
+    }
+
+    private void setNumDecimals() {
+        DecimalDigitsDialog dialog = new DecimalDigitsDialog(numDecimalDigits);
+        DialogUtils.showCentred(dialog);
+        int n = dialog.getNumDigits();
+
+        if (n >= 0) {
+            numDecimalDigits = n;
+            for (ItemInfo ie : itemInfo.values()) {
+                ie.item.setNumDecimals(numDecimalDigits);
+            }
+        }
+    }
+
+    private static class DecimalDigitsDialog extends AbstractModalDialog {
+
+        private JIntegerField digitsFld;
+        private int numDigits;
+
+        public DecimalDigitsDialog(int initialValue) {
+            super("Status bar value format");
+            numDigits = initialValue;
+        }
+
+        @Override
+        public JPanel createControlPanel() {
+            JPanel panel = new JPanel(new MigLayout());
+
+            panel.add(new JLabel("Decimal digits:"), "gap related");
+            
+            digitsFld = new JIntegerField(numDigits, false);
+            panel.add(digitsFld, "w 40!");
+
+            return panel;
+        }
+
+        public int getNumDigits() {
+            return numDigits;
+        }
+
+        @Override
+        public void onOK() {
+            numDigits = digitsFld.getValue();
+            closeDialog();
+        }
     }
 }

@@ -17,9 +17,6 @@
 
 package org.geotools.swing.control;
 
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
 import javax.swing.JLabel;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -36,13 +33,13 @@ import org.geotools.swing.event.MapPaneEvent;
  * @version $Id$
  */
 public class ExtentStatusBarItem extends StatusBarItem {
+    private static final ReferencedEnvelope EMPTY_ENV = new ReferencedEnvelope();
+
     private final JLabel label;
 
-    private static final int DEFAULT_NUM_DECIMALS = 2;
-    private int numDecimals;
+    private int decLen;
     private String numFormat;
-
-    private final Lock lock = new ReentrantLock();
+    private ReferencedEnvelope lastExtent;
 
     /**
      * Creates a new item to display the extent of the associated
@@ -58,15 +55,18 @@ public class ExtentStatusBarItem extends StatusBarItem {
             throw new IllegalArgumentException("mapPane must not be null");
         }
 
-        doSetPrecision(DEFAULT_NUM_DECIMALS);
+        lastExtent = EMPTY_ENV;
+        decLen = JMapStatusBar.DEFAULT_NUM_DECIMAL_DIGITS;
+        setLabelFormat();
+        
         label = new JLabel();
-        label.setFont(JMapStatusBar.getDefaultFont());
+        label.setFont(JMapStatusBar.DEFAULT_FONT);
         add(label);
 
         mapPane.addMapPaneListener(new MapPaneAdapter() {
             @Override
             public void onDisplayAreaChanged(MapPaneEvent ev) {
-                displayExtent(ev.getSource().getDisplayArea());
+                displayExtent(ev.getSource().getDisplayArea(), true);
             }
         });
     }
@@ -75,56 +75,48 @@ public class ExtentStatusBarItem extends StatusBarItem {
      * Displays extent in world coordinates.
      * 
      * @param extent the map pane extent
+     * @param cache whether to cache a copy of {@code extent}
      */
-    private void displayExtent(ReferencedEnvelope extent) {
+    private void displayExtent(ReferencedEnvelope extent, boolean cache) {
         if (extent == null || extent.isEmpty()) {
             label.setText("Undefined extent");
+            lastExtent = EMPTY_ENV;
+
         } else {
             label.setText(String.format(numFormat,
                     extent.getMinX(), extent.getMaxX(),
                     extent.getMinY(), extent.getMaxY()));
+
+            if (cache) {
+                lastExtent = new ReferencedEnvelope(extent);
+            }
         }
     }
 
     /**
-     * Gets the current number of decimal places displayed for
-     * coordinates.
+     * Sets te number of digits to display after the decimal place.
      *
-     * @return number of decimal places
+     * @param numDecimals number of digits after decimal place
      */
-    public int getPrecision() {
-        return numDecimals;
+    @Override
+    public void setNumDecimals(int numDecimals) {
+        this.decLen = numDecimals;
+        setLabelFormat();
+        displayExtent(lastExtent, false);
     }
 
-    /**
-     * Sets the number of decimal places to display for coordinates.
-     *
-     * @param numDecimals number of decimal places
-     */
-    public void setPrecision(int numDecimals) {
-        doSetPrecision(numDecimals);
-    }
-    
     /**
      * Private helper for {@linkplain #setPrecision(int)} that can be called
      * safely from the constructor.
-     *
-     * @param numDecimals number of decimal places
      */
-    private void doSetPrecision(int numDecimals) {
-        lock.lock();
-        try {
-            this.numDecimals = numDecimals;
-
-            StringBuilder sb = new StringBuilder();
-            sb.append("x=[%.").append(numDecimals).append("f, ");
-            sb.append("%.").append(numDecimals).append("f] ");
-            sb.append("y=[%.").append(numDecimals).append("f, ");
-            sb.append("%.").append(numDecimals).append("f]");
-            numFormat = sb.toString();
-        } finally {
-            lock.unlock();
-        }
+    private void setLabelFormat() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("x=[%.").append(decLen).append("f, ");
+        sb.append("%.").append(decLen).append("f] ");
+        sb.append("y=[%.").append(decLen).append("f, ");
+        sb.append("%.").append(decLen).append("f]");
+        
+        numFormat = sb.toString();
     }
 
 }

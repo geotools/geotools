@@ -87,4 +87,13 @@ public abstract class StatusBarItem extends JPanel {
         return minHeight;
     }
 
+    /**
+     * For items that display numeric values, sets the number
+     * of digits to show to the right of the decimal place. This
+     * base implementation does nothing.
+     *
+     * @param numDecimals number of digits after decimal place
+     */
+    public void setNumDecimals(int numDecimals) {}
+
 }

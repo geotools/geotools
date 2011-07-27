@@ -17,10 +17,22 @@
 
 package org.geotools.swing.dialog;
 
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Static utility methods for common dialog-related tasks.
@@ -62,6 +74,36 @@ public class DialogUtils {
                 }
             });
         }
+    }
+
+    /**
+     * Gets all child components that are, or derive from, the given class.
+     * This method is adapted from the SwingUtils class written by Darryl Burke.
+     * (Accessed from: http://tips4java.wordpress.com/2008/11/13/swing-utils/).
+     *
+     * @param <T> Swing type derived from JComponent
+     * @param clazz the component class
+     * @param parent the parent container
+     * @param includeNested whether to recursively collect nested components
+     *
+     * @return list of child components
+     */
+    public static <T extends JComponent> List<T> getChildComponents(
+            Class<T> clazz, Container parent, boolean includeNested) {
+
+        List<T> children = new ArrayList<T>();
+
+        for (Component c : parent.getComponents()) {
+            boolean isClazz = clazz.isAssignableFrom(c.getClass());
+            if (isClazz) {
+                children.add(clazz.cast(c));
+            }
+            if (includeNested && c instanceof Container) {
+                children.addAll(getChildComponents(clazz, (Container) c, includeNested));
+            }
+        }
+
+        return children;
     }
      
     private static void doShowCentred(Window parent, Window dialog) {

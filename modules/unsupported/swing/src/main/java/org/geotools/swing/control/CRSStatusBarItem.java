@@ -61,7 +61,7 @@ public class CRSStatusBarItem extends StatusBarItem {
         
         btn = new JButton(NO_CRS);
         btn.setBorder(BorderFactory.createEmptyBorder());
-        btn.setFont(JMapStatusBar.getDefaultFont());
+        btn.setFont(JMapStatusBar.DEFAULT_FONT);
         btn.setToolTipText(TOOL_TIP);
         add(btn);
 

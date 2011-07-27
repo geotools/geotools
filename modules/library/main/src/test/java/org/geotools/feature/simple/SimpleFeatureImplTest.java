@@ -22,6 +22,7 @@ import org.geotools.data.DataUtilities;
 import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.GeometryDescriptor;
 
 public class SimpleFeatureImplTest extends TestCase {
     
@@ -56,7 +57,23 @@ public class SimpleFeatureImplTest extends TestCase {
     public void testDefaultGeometryProperty(){
         assertTrue("expected GeometryAttribute, got " + feature.getProperty("the_geom").getClass().getName(),
                 feature.getProperty("the_geom") instanceof GeometryAttribute);
-        assertNotNull(feature.getDefaultGeometryProperty());
-        assertNull(feature.getDefaultGeometryProperty().getValue());
+        GeometryAttribute defaultGeometryProperty = feature.getDefaultGeometryProperty();
+        assertNotNull(defaultGeometryProperty);
+        assertNull(defaultGeometryProperty.getValue());
+        assertNotNull(defaultGeometryProperty.getDescriptor());
+        assertTrue(defaultGeometryProperty.getDescriptor() instanceof GeometryDescriptor);
+    }
+    
+    public void testGetName(){
+        assertNotNull(feature.getName());
+        assertEquals(feature.getFeatureType().getName(), feature.getName());
+    }
+    
+    public void testGetDescriptor() {
+        assertNotNull(feature.getDescriptor());
+        assertSame(feature.getType(), feature.getDescriptor().getType());
+        assertTrue(feature.getDescriptor().isNillable());
+        assertEquals(0, feature.getDescriptor().getMinOccurs());
+        assertEquals(Integer.MAX_VALUE, feature.getDescriptor().getMaxOccurs());
     }
 }

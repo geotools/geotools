@@ -223,6 +223,9 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
             }
         };
         property.accept(this, data);
+        if( found ) return found;
+        filter.getExpression2().accept(this, data);
+
         return found;
     }
 

@@ -242,8 +242,7 @@ Running the Application
 #. We need to download some sample data to work with. The http://www.naturalearthdata.com/ project
    is a great project supported by the North American Cartographic Information Society.
    
-   * `110m-cultural.zip <http://www.naturalearthdata.com/download/110m/cultural/110m-cultural.zip>`_ 
-   
+   * `50m-cultural.zip <http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/50m/cultural/50m-cultural.zip>`_ 
    Please unzip the above data into a location you can find easily such as the desktop.
 
 #. Run the application to open a file chooser. Choose a shapefile from the example dataset.

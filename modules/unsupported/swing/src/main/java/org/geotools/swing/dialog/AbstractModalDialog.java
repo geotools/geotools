@@ -37,6 +37,7 @@ import net.miginfocom.swing.MigLayout;
  * @version $Id$
  */
 public abstract class AbstractModalDialog extends JDialog {
+    private boolean initialized = false;
 
     /**
      * Creates a new dialog with a {@code null} parent.
@@ -45,7 +46,6 @@ public abstract class AbstractModalDialog extends JDialog {
      */
     public AbstractModalDialog(String title) {
         setTitle(title);
-        init();
     }
 
     /**
@@ -56,7 +56,6 @@ public abstract class AbstractModalDialog extends JDialog {
      */
     public AbstractModalDialog(JFrame parent, String title) {
         super(parent, title);
-        init();
     }
 
     /**
@@ -67,13 +66,28 @@ public abstract class AbstractModalDialog extends JDialog {
      */
     public AbstractModalDialog(JDialog parent, String title) {
         super(parent, title);
-        init();
     }
 
     /**
-     * Creates dialog components.
+     * {@inheritDoc}
      */
-    private void init() {
+    @Override
+    public void setVisible(boolean b) {
+        if (b && !initialized) {
+            throw new IllegalStateException(
+                    "Sub-class did not call initComponents() before showing dialog");
+        }
+
+        super.setVisible(b);
+    }
+
+    /**
+     * Creates dialog components. This must be called explicitly by the
+     * sub-class. We do this to give sub-classes the change to initialize
+     * fields which can be used within {@linkplain #createControlPanel()}
+     * (called as part of this method).
+     */
+    protected void initComponents() {
         JPanel panel = new JPanel(new BorderLayout());
 
         panel.add(createControlPanel(), BorderLayout.CENTER);
@@ -84,6 +98,7 @@ public abstract class AbstractModalDialog extends JDialog {
 
         setResizable(false);
         setModalityType(ModalityType.APPLICATION_MODAL);
+        initialized = true;
     }
 
     /**

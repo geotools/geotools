@@ -253,6 +253,7 @@ public class JMapStatusBar extends JPanel {
         public DecimalDigitsDialog(int initialValue) {
             super("Status bar value format");
             numDigits = initialValue;
+            initComponents();
         }
 
         @Override

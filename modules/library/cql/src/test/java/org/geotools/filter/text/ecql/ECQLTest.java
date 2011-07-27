@@ -20,7 +20,9 @@ import java.util.List;
 
 import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.filter.IsNullImpl;
+import org.geotools.filter.function.FilterFunction_relatePattern;
 import org.geotools.filter.function.PropertyExistsFunction;
+import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
 import org.junit.Assert;
@@ -124,6 +126,28 @@ public final class ECQLTest  {
 //        PropertyIsEqualTo eq = (PropertyIsEqualTo) filter;
 //        Assert.assertTrue(eq.getExpression1()  instanceof FilterFunction_relatePattern);
 //    }
+
+    @Test
+    public void relateFuncion() throws Exception{
+    	
+    	// relate function in an equal predicate 
+        Filter resultFilter = ECQL.toFilter(
+                "ATTR = relatePattern(the_geom, 'LINESTRING (27.3 37, 27.3 37.6)', '**1****') " );
+
+        Assert.assertTrue(resultFilter instanceof PropertyIsEqualTo);
+
+    	// relate function in an equal predicate 
+        resultFilter = ECQL.toFilter(
+                "relatePattern(the_geom, 'LINESTRING (27.3 37, 27.3 37.6)', '**1****') = TRUE" );
+
+        Assert.assertTrue(resultFilter instanceof PropertyIsEqualTo);
+
+        // relate function to expression
+        Expression resultExpression = ECQL.toExpression(
+                "relatePattern(the_geom, 'LINESTRING (27.3 37, 27.3 37.6)', '**1****') " );
+
+        Assert.assertTrue(resultExpression instanceof FilterFunction_relatePattern);
+    }
     
 
     /**

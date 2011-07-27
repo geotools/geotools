@@ -275,6 +275,7 @@ public class CQLExtensionTest{
 
     }
     
+    
     /**
      * This test the following improvement: GEOT-1169 This is an extension the
      * CQL specification.

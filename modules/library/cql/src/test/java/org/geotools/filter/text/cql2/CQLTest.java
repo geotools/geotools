@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.filter.IsNullImpl;
+import org.geotools.filter.function.FilterFunction_relatePattern;
 import org.geotools.filter.function.PropertyExistsFunction;
 import org.geotools.filter.text.ecql.ECQLBetweenPredicateTest;
 import org.geotools.filter.text.ecql.ECQLBooleanValueExpressionTest;
@@ -123,6 +124,21 @@ public class CQLTest {
                 "DWITHIN(the_geom, POINT(1 2), 10, kilometers)");
 
         Assert.assertTrue(resultFilter instanceof DistanceBufferOperator);
+    }
+    @Test
+    public void relateFuncion() throws Exception{
+    	
+    	// relate function in an equal predicate 
+        Filter resultFilter = CQL.toFilter(
+                "ATTR = relatePattern(the_geom, 'LINESTRING (27.3 37, 27.3 37.6)', '**1****') " );
+
+        Assert.assertTrue(resultFilter instanceof PropertyIsEqualTo);
+
+        // relate function to expression
+        Expression resultExpression = CQL.toExpression(
+                "relatePattern(the_geom, 'LINESTRING (27.3 37, 27.3 37.6)', '**1****') " );
+
+        Assert.assertTrue(resultExpression instanceof FilterFunction_relatePattern);
     }
 
     /**

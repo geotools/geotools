@@ -243,6 +243,7 @@ Running the Application
    is a great project supported by the North American Cartographic Information Society.
    
    * `50m-cultural.zip <http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/50m/cultural/50m-cultural.zip>`_ 
+
    Please unzip the above data into a location you can find easily such as the desktop.
 
 #. Run the application to open a file chooser. Choose a shapefile from the example dataset.

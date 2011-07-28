@@ -45,7 +45,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  */
 public class CoordsStatusBarItem extends StatusBarItem {
 
-    private static final int DEFAULT_NUM_INTEGER_DIGITS = 8;
+    private static final int DEFAULT_NUM_INTEGER_DIGITS = 3;
 
     private static final String NO_COORDS = "No cursor";
 
@@ -202,8 +202,8 @@ public class CoordsStatusBarItem extends StatusBarItem {
             }
 
             if (len < 0) {
-                // Use map extent directly and add a bit for luck
-                len = getMaxIntegerLen(env) + 4;
+                // Use map extent directly
+                len = getMaxIntegerLen(env);
             }
 
         } else {

@@ -38,12 +38,14 @@ class MenuStatusBarItem extends StatusBarItem {
      *
      * @param name the item name
      * @param icon the icon to display
+     * @param toolTip tool tip text (may be {@code null}
      * @param menu the pop-up menu to launch when the item is clicked
      *
      * @throws IllegalArgumentException if {@code icon} or {@code menu} are {@code null}
      */
-    public MenuStatusBarItem(String name, final ImageIcon icon, final JPopupMenu menu) {
-        this(name, icon, new PopupMenuProvider() {
+    public MenuStatusBarItem(String name, final ImageIcon icon, final String toolTip,
+            final JPopupMenu menu) {
+        this(name, icon, toolTip, new PopupMenuProvider() {
             {
                 if (menu == null) {
                     throw new IllegalArgumentException("menu must not be null");
@@ -68,7 +70,7 @@ class MenuStatusBarItem extends StatusBarItem {
      * @throws IllegalArgumentException if {@code icon} or {@code menuPRovider}
      *     are {@code null}
      */
-    public MenuStatusBarItem(String name, final ImageIcon icon, 
+    public MenuStatusBarItem(String name, final ImageIcon icon, String toolTip,
             final PopupMenuProvider menuProvider) {
 
         super(name, false);
@@ -88,6 +90,10 @@ class MenuStatusBarItem extends StatusBarItem {
                 menuProvider.getMenu().show(btn, 0, 0);
             }
         });
+
+        if (toolTip != null && toolTip.trim().length() > 0) {
+            btn.setToolTipText(toolTip);
+        }
 
         add(btn);
     }

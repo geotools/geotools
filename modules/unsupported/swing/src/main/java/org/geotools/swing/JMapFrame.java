@@ -124,7 +124,7 @@ public class JMapFrame extends JFrame {
         frame.enableToolBar(true);
         frame.initComponents();
 
-        frame.setSize(500, 500);
+        frame.setSize(800, 600);
 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {

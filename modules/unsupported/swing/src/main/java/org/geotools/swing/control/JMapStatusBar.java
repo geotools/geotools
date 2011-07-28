@@ -49,6 +49,8 @@ import org.geotools.util.logging.Logging;
  * other data. The static {@linkplain #createDefaultStatusBar} method can be
  * used for the most common configuration.
  *
+ * @see StatusBarItem
+ *
  * @author Michael Bedward
  * @since 8.0
  * @source $URL$
@@ -219,6 +221,11 @@ public class JMapStatusBar extends JPanel {
                 minItemHeight = h;
                 setMinimumSize(new Dimension(-1, minItemHeight));
             }
+
+            // Set the status bar config menu to null so that it will
+            // be re-created when next requested.
+            configMenu = null;
+
             return true;
             
         } else {

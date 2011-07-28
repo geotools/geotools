@@ -30,6 +30,8 @@ import org.geotools.swing.event.MapPaneEvent;
 /**
  * A status bar item that displays an animated icon to indicate renderer activity.
  *
+ * @see JMapStatusBar
+ *
  * @author Michael Bedward
  * @since 8.0
  * @source $URL$

@@ -35,6 +35,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * A status bar item that displays the coordinate reference system name
  * and provides a pop-up menu to inspect or change the CRS.
  *
+ * @see JMapStatusBar
+ *
  * @author Michael Bedward
  * @since 8.0
  * @source $URL$

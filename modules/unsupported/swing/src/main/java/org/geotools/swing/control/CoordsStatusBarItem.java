@@ -38,6 +38,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * A status bar item that displays the world coordinates of the mouse cursor
  * position.
  *
+ * @see JMapStatusBar
+ *
  * @author Michael Bedward
  * @since 8.0
  * @source $URL$

@@ -27,6 +27,8 @@ import org.geotools.swing.event.MapPaneEvent;
 /**
  * A status bar item that displays the map pane's world bounds.
  *
+ * @see JMapStatusBar
+ *
  * @author Michael Bedward
  * @since 8.0
  * @source $URL$

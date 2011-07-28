@@ -26,6 +26,8 @@ import javax.swing.JPopupMenu;
 /**
  * A status bar item with an icon which displays a pop-up menu when clicked.
  *
+ * @see JMapStatusBar
+ *
  * @author Michael Bedward
  * @since 8.0
  * @source $URL$

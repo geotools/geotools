@@ -29,6 +29,7 @@ import org.geotools.feature.AttributeImpl;
 import org.geotools.feature.GeometryAttributeImpl;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.PropertyImpl;
+import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.Types;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.Converters;
@@ -40,6 +41,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.feature.type.GeometryType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.identity.Identifier;
@@ -309,12 +311,20 @@ public class SimpleFeatureImpl implements SimpleFeature {
         setValue( (Collection<Property>) newValue );
     }
     
+    /**
+     * @see org.opengis.feature.Attribute#getDescriptor()
+     */
     public AttributeDescriptor getDescriptor() {
-        return null;
+        return new AttributeDescriptorImpl(featureType, featureType.getName(), 0,
+                Integer.MAX_VALUE, true, null);
     }
 
+    /**
+     * @return same name than this feature's {@link SimpleFeatureType}
+     * @see org.opengis.feature.Property#getName()
+     */
     public Name getName() {
-        return null;
+        return featureType.getName();
     }
 
     public boolean isNillable() {
@@ -416,8 +426,12 @@ public class SimpleFeatureImpl implements SimpleFeature {
      */
     class AttributeList extends AbstractList<Property> {
 
-        public Attribute get(int index) {
-            return new Attribute( index );
+        public Property get(int index) {
+            AttributeDescriptor descriptor = featureType.getDescriptor(index);
+            if (descriptor instanceof GeometryDescriptor) {
+                return new SimpleGeometryAttribute(index);
+            }
+            return new Attribute(index);
         }
         
         public Attribute set(int index, Property element) {
@@ -546,5 +560,54 @@ public class SimpleFeatureImpl implements SimpleFeature {
         }
     }
     
-    
+    class SimpleGeometryAttribute extends Attribute implements GeometryAttribute {
+
+        SimpleGeometryAttribute(int index) {
+            super(index);
+        }
+
+        @Override
+        public GeometryType getType() {
+            return (GeometryType) super.getType();
+        }
+
+        @Override
+        public GeometryDescriptor getDescriptor() {
+            return (GeometryDescriptor) super.getDescriptor();
+        }
+
+        @Override
+        public BoundingBox getBounds() {
+            ReferencedEnvelope bounds = new ReferencedEnvelope(
+                    featureType.getCoordinateReferenceSystem());
+            Object value = getAttribute(index);
+            if (value instanceof Geometry) {
+                bounds.init(((Geometry) value).getEnvelopeInternal());
+            }
+            return bounds;
+        }
+
+        @Override
+        public void setBounds(BoundingBox bounds) {
+            // do nothing, this property is strictly derived. Shall throw unsupported operation
+            // exception?
+        }
+
+        @Override
+        public int hashCode() {
+            return 17 * super.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+
+            if (!(obj instanceof SimpleGeometryAttribute)) {
+                return false;
+            }
+            return super.equals(obj);
+        }
+    }
 }

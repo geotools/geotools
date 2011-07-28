@@ -90,6 +90,9 @@ public abstract class AbstractModalDialog extends JDialog {
      * (called as part of this method).
      */
     protected void initComponents() {
+        setResizable(false);
+        setModalityType(ModalityType.APPLICATION_MODAL);
+
         JPanel panel = new JPanel(new BorderLayout());
 
         panel.add(createControlPanel(), BorderLayout.CENTER);
@@ -98,8 +101,6 @@ public abstract class AbstractModalDialog extends JDialog {
         add(panel);
         pack();
 
-        setResizable(false);
-        setModalityType(ModalityType.APPLICATION_MODAL);
         initialized = true;
     }
 

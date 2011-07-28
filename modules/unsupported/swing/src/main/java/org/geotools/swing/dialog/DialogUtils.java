@@ -19,23 +19,17 @@ package org.geotools.swing.dialog;
 
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.awt.Window;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.AbstractAction;
-import javax.swing.JButton;
+
 import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import net.miginfocom.swing.MigLayout;
 
 /**
- * Static utility methods for common dialog-related tasks.
+ * Static utility methods for common dialog and GUI related tasks.
  * 
  * @author Michael Bedward
  * @since 8.0
@@ -105,7 +99,7 @@ public class DialogUtils {
 
         return children;
     }
-     
+
     private static void doShowCentred(Window parent, Window dialog) {
         if (parent == null) {
             doCentre(dialog, Toolkit.getDefaultToolkit().getScreenSize());

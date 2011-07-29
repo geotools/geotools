@@ -261,9 +261,12 @@ public class Schemas {
                     ".xsd"));
         xsdMainResource.setURI(uri);
         
-        xsdMainResource.load(resourceSet.getLoadOptions());
-        
-        return xsdMainResource.getSchema();
+        // schema building has effects on referenced schemas, it will alter them -> we need 
+        // to synchronize this call so that only one of these operations is active at any time
+        synchronized(Schemas.class) {
+            xsdMainResource.load(resourceSet.getLoadOptions());
+            return xsdMainResource.getSchema();
+        }
     }
 
     /**
@@ -318,13 +321,15 @@ public class Schemas {
                 XSDSchema resolvedSchema = directive.getResolvedSchema();
                 
                 if (resolvedSchema != null) {
-                    synchronized(resolvedSchema) {
+                    synchronized (Schemas.class) {
                         resolvedSchema.getReferencingDirectives().remove(directive);
-                        
                         for (XSDElementDeclaration dec : resolvedSchema.getElementDeclarations()) {
+                            if(dec == null) {
+                                continue;
+                            }
                             List<XSDElementDeclaration> toRemove = new ArrayList<XSDElementDeclaration>();
                             for (XSDElementDeclaration subs : dec.getSubstitutionGroup()) {
-                                if (subs.getContainer().equals(schema)) {
+                                if (subs != null && subs.getContainer() != null && subs.getContainer().equals(schema)) {
                                     toRemove.add(subs);
                                 }
                             }
@@ -333,7 +338,6 @@ public class Schemas {
                     }
                 }
             }
-           
         }
     }
     

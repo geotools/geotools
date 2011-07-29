@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -61,8 +60,10 @@ import org.eclipse.xsd.XSDNamedComponent;
 import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDSchemaContent;
+import org.eclipse.xsd.XSDSchemaDirective;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.eclipse.xsd.XSDTypeDefinition;
+import org.eclipse.xsd.XSDWildcard;
 import org.eclipse.xsd.util.XSDConstants;
 import org.eclipse.xsd.util.XSDResourceFactoryImpl;
 import org.eclipse.xsd.util.XSDResourceImpl;
@@ -81,7 +82,6 @@ import org.picocontainer.PicoVisitor;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-import org.eclipse.xsd.XSDWildcard;
 
 /**
  * Utility class for performing various operations.
@@ -254,9 +254,13 @@ public class Schemas {
         XSDResourceImpl xsdMainResource = (XSDResourceImpl) resourceSet.createResource(URI.createURI(
                     ".xsd"));
         xsdMainResource.setURI(uri);
-        xsdMainResource.load(resourceSet.getLoadOptions());
-
-        return xsdMainResource.getSchema();
+        
+        // schema building has effects on referenced schemas, it will alter them -> we need 
+        // to synchronize this call so that only one of these operations is active at any time
+        synchronized(Schemas.class) {
+            xsdMainResource.load(resourceSet.getLoadOptions());
+            return xsdMainResource.getSchema();
+        }
     }
 
     /**
@@ -295,6 +299,41 @@ public class Schemas {
         AdapterFactory adapterFactory = new SchemaLocatorAdapterFactory(locators);
         resource.getResourceSet().getAdapterFactories().add( adapterFactory );
         return imprt;
+    }
+    
+    /**
+     * Remove all references to a schema
+     * It is important to call this method for every dynamic schema created that is not needed
+     * anymore, because references in the static schema's will otherwise keep it alive forever
+     * 
+     * @param schema to be flushed
+     * @since 2.7.3
+     */
+    public static final void dispose(XSDSchema schema) {
+        for (XSDSchemaContent content : schema.getContents()) {
+            if (content instanceof XSDSchemaDirective) {
+                XSDSchemaDirective directive = (XSDSchemaDirective) content;
+                XSDSchema resolvedSchema = directive.getResolvedSchema();
+                
+                if (resolvedSchema != null) {
+                    synchronized (Schemas.class) {
+                        resolvedSchema.getReferencingDirectives().remove(directive);
+                        for (XSDElementDeclaration dec : resolvedSchema.getElementDeclarations()) {
+                            if(dec == null) {
+                                continue;
+                            }
+                            List<XSDElementDeclaration> toRemove = new ArrayList<XSDElementDeclaration>();
+                            for (XSDElementDeclaration subs : dec.getSubstitutionGroup()) {
+                                if (subs != null && subs.getContainer() != null && subs.getContainer().equals(schema)) {
+                                    toRemove.add(subs);
+                                }
+                            }
+                            dec.getSubstitutionGroup().removeAll(toRemove);
+                        }
+                    }
+                }
+            }
+        }
     }
     
     public static final List validateImportsIncludes(String location) throws IOException {

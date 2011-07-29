@@ -25,10 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.geotools.feature.AttributeImpl;
 import org.geotools.feature.GeometryAttributeImpl;
 import org.geotools.feature.IllegalAttributeException;
-import org.geotools.feature.PropertyImpl;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.Types;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -576,7 +574,6 @@ public class SimpleFeatureImpl implements SimpleFeature {
             return (GeometryDescriptor) super.getDescriptor();
         }
 
-        @Override
         public BoundingBox getBounds() {
             ReferencedEnvelope bounds = new ReferencedEnvelope(
                     featureType.getCoordinateReferenceSystem());
@@ -587,7 +584,6 @@ public class SimpleFeatureImpl implements SimpleFeature {
             return bounds;
         }
 
-        @Override
         public void setBounds(BoundingBox bounds) {
             // do nothing, this property is strictly derived. Shall throw unsupported operation
             // exception?

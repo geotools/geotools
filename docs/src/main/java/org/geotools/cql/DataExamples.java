@@ -28,6 +28,9 @@ import com.vividsolutions.jts.io.WKTReader;
 final class DataExamples extends ECQLExamples {
 	
 	
+	private static SimpleFeature COUNTRY = null;
+	private static SimpleFeature CITY = null;
+
 	private DataExamples(){
 		// utility class
 	}
@@ -37,8 +40,12 @@ final class DataExamples extends ECQLExamples {
      * @return a Feature
      * @throws Exception
      */
-	static public SimpleFeature createCity() throws Exception {
-
+	static public SimpleFeature getInstanceOfCity() throws Exception {
+		
+		if(CITY != null){
+			return CITY;
+		}
+		
 		final SimpleFeatureType type = DataUtilities.createType("Location",
 				"geometry:Point:srid=4326," + "cityName:String,"
 						+ "over65YearsOld:Double," + "under18YearsOld:Double,"
@@ -61,14 +68,17 @@ final class DataExamples extends ECQLExamples {
 				"yyyy-MM-dd'T'HH:mm:ss'Z'");
 		featureBuilder.add(dateFormatter.parse("1737-11-30T01:30:00Z"));
 
-		SimpleFeature feature = featureBuilder.buildFeature(null);
+		CITY  = featureBuilder.buildFeature(null);
 
-		return feature;
+		return CITY;
 	}	
 	
     
-    public static SimpleFeature createCountry() throws Exception {
+    public static SimpleFeature getInstanceOfCountry() throws Exception {
 
+    	if(COUNTRY != null){
+    		return COUNTRY;
+    	}
         final SimpleFeatureType type = DataUtilities.createType("Location",
                 "geometry:Polygon:srid=4326," + 
                 "countryName:String," + 
@@ -85,9 +95,9 @@ final class DataExamples extends ECQLExamples {
         featureBuilder.add(307006550);
         featureBuilder.add("oil");
         
-        SimpleFeature feature = featureBuilder.buildFeature(null);
+        COUNTRY = featureBuilder.buildFeature(null);
 
-        return feature;
+        return COUNTRY;
     }
 
     static private String usaGeometry() {
@@ -105,7 +115,7 @@ final class DataExamples extends ECQLExamples {
      */
     public static void main(String[] args) {
         try {
-            System.out.println(createCountry());
+            System.out.println(getInstanceOfCountry());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

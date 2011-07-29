@@ -166,3 +166,11 @@ Examples
     Filter result = CQL.toFilter( "INTERSECT(ATTR1, GEOMETRYCOLLECTION (POINT (10 10),POINT (30 30),LINESTRING (15 15, 20 20)) )" );
     Filter result = CQL.toFilter( "CROSSES(ATTR1, LINESTRING(1 2, 10 15))" );
     Filter result = CQL.toFilter( "INTERSECTS(ATTR1, GEOMETRYCOLLECTION (POINT (10 10),POINT (30 30),LINESTRING (15 15, 20 20)) )" );
+
+  The followning example shows how to make a filter using the RELATE geooperation. In this case, the DE-9IM pattern corresponds to the **contains** spatial relation, It will be true if the first geometry contains the second.
+
+  .. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
+     :language: java
+     :start-after: cql relatePattern start
+     :end-before: cql relatePattern end
+

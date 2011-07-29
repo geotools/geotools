@@ -46,8 +46,8 @@ Examples
 
   .. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
     :language: java
-    :start-after: // expressionLessThanOrEqualToProperty start
-    :end-before: // expressionLessThanOrEqualToProperty end        
+    :start-after: // ecql expressionLessThanOrEqualToProperty start
+    :end-before: // ecql expressionLessThanOrEqualToProperty end        
 
   .. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
     :language: java
@@ -56,8 +56,8 @@ Examples
         
   .. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
     :language: java
-    :start-after: // betweenPredicate start
-    :end-before: // betweenPredicate end        
+    :start-after: // ecql betweenPredicate start
+    :end-before: // ecql betweenPredicate end        
         
   .. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
     :language: java
@@ -126,6 +126,14 @@ Examples
         Filter filter = ECQL.toFilter("DISJOINT(buffer(the_geom, 10) , POINT(1 2))");
         Filter filter = ECQL.toFilter(
                 "DWITHIN(buffer(the_geom,5), POINT(1 2), 10, kilometers)");
+
+  The followning example shows how to make a filter using the RELATE geooperation. In this case, the DE-9IM pattern corresponds to the **contains** spatial relation, It will be true if the first geometry contains the second.
+
+  .. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
+     :language: java
+     :start-after: ecql relatePattern start
+     :end-before: ecql relatePattern end
+
 
 * Filter by temporal relation:
 

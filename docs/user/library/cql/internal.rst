@@ -44,7 +44,7 @@ Syntax Rules::
       <predicate>
     | <routine invocation>
     | <routine invocation>
-    | <left paren> <search condition> <right paren>
+    | "(" <search condition> ")"
   <predicate> ::=
       <comparison predicate>
     | <text predicate>
@@ -161,40 +161,46 @@ Expression::
     | <boolean literal>
     | <geography literal
   
-  <boolean literal> ::= TRUE | FALSE | UNKNOWN
+  <boolean literal> ::= "TRUE" | "FALSE" | "UNKNOWN"
   
 Georoutine and Relational Geooperations::
   
   <routine invocation> ::=
       <geoop name><georoutine argument list>
     | <relgeoop name><relgeoop argument list>
-    | BBOX <bbox argument list>
+    | <bbox geoop>
+    | <relate geop>
   
   <routine name> ::= < attribute name>
   
-  <geoop name> ::= EQUALS | DISJOINT | INTERSECTS | TOUCHES | CROSSES | WITHIN | CONTAINS | OVERLAPS | RELATE
+  <geoop name> ::= "EQUALS" | "DISJOINT" | "INTERSECTS" | "TOUCHES" | "CROSSES" | "WITHIN" | "CONTAINS" | "OVERLAPS"
   
-  <bbox argument list>::= "(" <attribute> ","<min X> ","<min Y> ","<max X> ","<max Y>["," <crs>] ")"  [1]
+  <bbox geoop>::= "BBOX" "(" <attribute> ","<min X> ","<min Y> ","<max X> ","<max Y>["," <crs>] ")"  [1]
   
   <min X> ::= <signed numerical literal>
   <min Y> ::= <signed numerical literal>
   <max X> ::= <signed numerical literal>
   <max Y> ::= <signed numerical literal>
   <crs> ::=  ... (* default: EPSG:4326. *)
+
+  <relate geop> ::= "RELATE" "(" <attribute name>"," <geometry literal>"," <DE-9IM pattern> ")"
+
+  <DE-9IM pattern> ::= <dimension simbol><dimension simbol><dimension simbol><dimension simbol><dimension simbol><dimension simbol><dimension simbol><dimension simbol><dimension simbol>
+  <dimension simbol> ::= "*"| "T" | "F" | "0" | "1" | "2"> |
   
-  <relgeoop name> ::= DWITHIN | BEYOND
+  <relgeoop name> ::= "DWITHIN" | "BEYOND"
   
-  <argument list> ::= <left paren> [ <positional arguments> ] <right paren>
+  <argument list> ::= "(" [ <positional arguments> ] ")"
   
-  <positional arguments> ::= <argument> [ \{ <comma> <argument> \} ...]
+  <positional arguments> ::= <argument> [ { "," <argument> } ...]
   
   <argument> ::= <literal> | <attribute name>
   
-  <georoutine argument list> ::=  <left paren><attribute name><comma><geometry literal><right paren>
+  <georoutine argument list> ::=  "("<attribute name>","<geometry literal>")"
   
-  <relgeoop argument list> ::= <left paren><attribute name><comma><geometry literal><comma><tolerance><right paren>
+  <relgeoop argument list> ::= "("<attribute name>","<geometry literal>","<tolerance>")"
   
-  <tolerance> ::=<unsigned numeric literal><comma><distance units>
+  <tolerance> ::=<unsigned numeric literal>","<distance units>
   
   <distance units> ::= = "feet" | "meters" | "statute miles" | "nautical miles" | "kilometers"
 
@@ -224,22 +230,22 @@ Geometry Literal::
   
   <GeometryCollection Tagged Text> ::=GEOMETRYCOLLECTION <GeometryCollection Text>
   
-  <Point Text> := EMPTY | <left paren> <Point> <right paren>
+  <Point Text> := EMPTY | "(" <Point> ")"
   <Point> := <x><space><y>
   <x> := numeric literal
   <y> := numeric literal
-  <LineString Text> := EMPTY | <left paren> <Point> \{<comma><Point >\}...<right paren>
-  <Polygon Text> := EMPTY | <left paren><LineString Text>\{<comma><LineString Text> \}...<right paren>
-  <Multipoint Text> := EMPTY | <left paren><Point Text>\{<comma><Point Text >\}...<right paren>
-  <MultiLineString Text> := EMPTY | <left paren><LineString Text>\{<comma><LineString Text>\}...<right paren>
-  <MultiPolygon Text> := EMPTY | <left paren><Polygon Text>\{<comma><Polygon Text>\}...<right paren>
-  <GeometryCollection Text> := EMPTY | <left paren><Geometry Tagged Text>\{<comma><Geometry Tagged Text>\}...<right paren>
+  <LineString Text> := EMPTY | "(" <Point> \{","<Point >\}...")"
+  <Polygon Text> := EMPTY | "("<LineString Text>\{","<LineString Text> \}...")"
+  <Multipoint Text> := EMPTY | "("<Point Text>\{","<Point Text >\}...")"
+  <MultiLineString Text> := EMPTY | "("<LineString Text>\{","<LineString Text>\}...")"
+  <MultiPolygon Text> := EMPTY | "("<Polygon Text>\{","<Polygon Text>\}...")"
+  <GeometryCollection Text> := EMPTY | "("<Geometry Tagged Text>\{","<Geometry Tagged Text>\}...")"
   <Envelope Tagged Text> ::= ENVELOPE <Envelope Text>
   <Envelope Text> ::= EMPTY |
-      <left paren><WestBoundLongitude><comma>
-        <EastBoundLongitude><comma>
-        <NorthBoundLatitude><comma>
-        <SouthBoundLatitude>< <right paren>
+      "("<WestBoundLongitude>","
+        <EastBoundLongitude>","
+        <NorthBoundLatitude>","
+        <SouthBoundLatitude>< ")"
   <WestBoundLongitude> ::= numeric literal
   <EastBoundLongitude> ::= numeric literal
   <NorthBoundLatitude> ::= numeric literal

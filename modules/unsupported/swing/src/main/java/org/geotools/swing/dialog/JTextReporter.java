@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -15,11 +15,10 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.swing;
+package org.geotools.swing.dialog;
 
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -46,13 +45,22 @@ import javax.swing.text.BadLocationException;
 import net.miginfocom.swing.MigLayout;
 
 /**
- * A dialog to display text reports to the user and, if requested,
- * save them to file.
+ * A simple dialog to display text with the option of saving it to file. Remains
+ * on top of other application windows but does not block them.
+ * <p>
+ * Example of use:
+ * <pre><code>
+ * // This code can be run safely on or off the event dispatch thread
+ * JTextReporter reporter = JTextReporter.create(
+ *         "Important message", 
+ *         -1, -1,  // for default number of rows and columns
+ *         "The gt-swing module is particularly useful");
+ *
+ * DialogUtils.showCentred( reporter );
+ * </code></pre>
  *
  * @author Michael Bedward
  * @since 2.6
- *
- *
  * @source $URL$
  * @version $URL$
  */
@@ -84,38 +92,108 @@ public class JTextReporter extends JDialog {
     private List<TextReporterListener> listeners;
 
     /**
-     * Creates a new JTextReporter with the following default options:
-     * <ul>
-     * <li> Remains on top of other application windows
-     * <li> Is not modal
-     * <li> Will be disposed of when closed
-     * </ul>
+     * Creates a new text reporter. It is better to use this method than
+     * construct JTextReporter instances directly because it can be called
+     * safely from any thread.
      *
-     * @param title title for the dialog (may be {@code null})
+     * @param title dialog title
      *
-     * @throws java.awt.HeadlessException
+     * @return new text reporter
      */
-    public JTextReporter(String title) throws HeadlessException {
+    public static JTextReporter create(String title) {
+        return create(title, DEFAULT_ROWS, DEFAULT_COLS, null);
+    }
+
+    /**
+     * Creates a new text reporter. It is better to use this method than
+     * construct JTextReporter instances directly because it can be called
+     * safely from any thread.
+     *
+     * @param title dialog title
+     * @param rows number of text area rows
+     * @param cols number of text area cols
+     *
+     * @return new text reporter
+     */
+    public static JTextReporter create(String title, int rows, int cols) {
+        return create(title, rows, cols, null);
+    }
+
+    /**
+     * Creates a new text reporter. It is better to use this method than
+     * construct JTextReporter instances directly because it can be called
+     * safely from any thread.
+     *
+     * @param title dialog title
+     * @param rows number of text area rows
+     * @param cols number of text area cols
+     * @param text initial text (may be {@code null})
+     *
+     * @return new text reporter
+     */
+    public static JTextReporter create(final String title,
+            final int rows, final int cols, final String text) {
+
+        final JTextReporter[] reporter = new JTextReporter[1];
+
+        if (SwingUtilities.isEventDispatchThread()) {
+            reporter[0] = doCreate(title, rows, cols, text);
+        } else {
+            try {
+                SwingUtilities.invokeAndWait(new Runnable() {
+                    @Override
+                    public void run() {
+                        reporter[0] = doCreate(lineSep, rows, cols, text);
+                    }
+                });
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+
+        return reporter[0];
+    }
+
+    /**
+     * Helper for static {@code create} methods. This should only be called
+     * from the event dispatch thread.
+     *
+     * @param title dialog title
+     * @param rows number of text area rows
+     * @param cols number of text area cols
+     * @param text initial text (may be {@code null})
+     *
+     * @return new text reporter
+     */
+    private static JTextReporter doCreate(String title, int rows, int cols, String text) {
+        JTextReporter reporter = new JTextReporter(title, rows, cols);
+        if (text != null) {
+            reporter.append(text);
+        }
+        return reporter;
+    }
+
+    /**
+     * Creates a new text reporter. Client code should generally use
+     * {@linkplain #create(String)} instead which is safe to call from any
+     * thread.
+     *
+     * @param title dialog title
+     */
+    public JTextReporter(String title) {
         this(title, -1, -1);
     }
 
     /**
-     * Creates a new JTextReporter with the following default options:
-     * <ul>
-     * <li> Remains on top of other application windows
-     * <li> Is not modal
-     * <li> Will be disposed of when closed
-     * </ul>
+     * Creates a new text reporter. Client code should generally use
+     * {@linkplain #create(String, int, int)} instead which is safe to call from any
+     * thread.
      *
-     * @param title title for the dialog (may be {@code null})
-     * @param rows number of text rows displayed without scrolling
-     *        (if zero or negative, the default is used)
-     * @param cols number of text columns displayed without scrolling
-     *        (if zero or negative the default is used)
-     *
-     * @throws java.awt.HeadlessException
+     * @param title dialog title
+     * @param rows number of text area rows
+     * @param cols number of text area cols
      */
-    public JTextReporter(String title, int rows, int cols) throws HeadlessException {
+    public JTextReporter(String title, int rows, int cols) {
         setTitle(title);
         this.rows = (rows >= 0 ? rows : DEFAULT_ROWS);
         this.cols = (cols >= 0 ? cols : DEFAULT_COLS);
@@ -140,29 +218,27 @@ public class JTextReporter extends JDialog {
     }
 
     /**
-     * Register an object that wishes to lisen to events published by this
-     * report frame
+     * Adds an event listener. Does nothing if the listener is already
+     * registered.
      *
-     * @param listener the listening object
-     *
-     * @return true if successfully registered; false otherwise (listener
-     * already registered)
-     *
-     * @see TextReporterListener
+     * @param listener the listener
+     * @throws IllegalArgumentException if {@code listener} ir {@code null}
      */
-    public boolean addListener(TextReporterListener listener) {
-        return listeners.add(listener);
+    public void addListener(TextReporterListener listener) {
+        if (listener == null) {
+            throw new IllegalArgumentException("listener must not be null");
+        }
+
+        if (!listeners.contains(listener)) {
+            listeners.add(listener);
+        }
     }
 
     /**
-     * Append text to the report being displayed. No additional line
+     * Appends the given text to that displayed. No additional line
      * feeds are added after the text.
-     * <p>
-     * If called from other than the AWT event dispatch thread
-     * this method puts the append task onto the dispatch thread
-     * and waits for its completion.
      * 
-     * @param text the text to be appended to the report
+     * @param text the text to append
      */
     public synchronized void append(final String text) {
         if (EventQueue.isDispatchThread()) {
@@ -171,7 +247,7 @@ public class JTextReporter extends JDialog {
         } else {
             try {
                 SwingUtilities.invokeAndWait(new Runnable() {
-
+                    @Override
                     public void run() {
                         doAppend(text);
                     }
@@ -187,7 +263,7 @@ public class JTextReporter extends JDialog {
     }
 
     /**
-     * Create and layout the components
+     * Creates the interface.
      */
     private void initComponents() {
         textArea = new JTextArea(rows, cols);
@@ -208,6 +284,7 @@ public class JTextReporter extends JDialog {
 
         JButton saveBtn = new JButton("Save");
         saveBtn.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 saveReport();
             }
@@ -216,7 +293,7 @@ public class JTextReporter extends JDialog {
 
         JButton clearBtn = new JButton("Clear");
         clearBtn.addActionListener(new ActionListener() {
-
+            @Override
             public void actionPerformed(ActionEvent e) {
                 clearReport();
             }
@@ -229,7 +306,7 @@ public class JTextReporter extends JDialog {
     }
 
     /**
-     * Append text to the report being displayed in the text area.
+     * Helper method for {@linkplain #append(String)}.
      *
      * @param text the text to be appended
      */
@@ -245,7 +322,7 @@ public class JTextReporter extends JDialog {
     }
 
     /**
-     * Clear the report currently displayed
+     * Clears the text area.
      */
     private void clearReport() {
         int len = textArea.getDocument().getLength();
@@ -259,6 +336,9 @@ public class JTextReporter extends JDialog {
         }
     }
 
+    /**
+     * Saves text to file.
+     */
     private void saveReport() {
         int len = textArea.getDocument().getLength();
         if (len > 0) {
@@ -298,6 +378,11 @@ public class JTextReporter extends JDialog {
         }
     }
 
+    /**
+     * Displays a file chooser dialog and returns the selected file.
+     *
+     * @return the selected file
+     */
     private File getFile() {
         JFileChooser chooser = new JFileChooser(cwd);
         chooser.setFileFilter(new FileFilter() {

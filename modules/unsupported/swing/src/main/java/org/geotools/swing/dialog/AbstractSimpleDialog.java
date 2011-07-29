@@ -29,8 +29,9 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 
 /**
- * An abstract base class for a simple, non-resizable, modal dialog with
- * OK and Cancel buttons. Sub-classes implement the {@linkplain #createControlPanel()}
+ * An abstract base class for simple dialogs with a single control panel
+ * (supplied by the sub-class) together with OK and Cancel buttons.
+ * The sub-class must implement the {@linkplain #createControlPanel()}
  * and {@linkplain #onOK()} methods.
  *
  * @author Michael Bedward
@@ -38,36 +39,76 @@ import net.miginfocom.swing.MigLayout;
  * @source $URL$
  * @version $Id$
  */
-public abstract class AbstractModalDialog extends JDialog {
+public abstract class AbstractSimpleDialog extends JDialog {
     private boolean initialized = false;
 
     /**
-     * Creates a new dialog with a {@code null} parent.
+     * Creates a new modal, non-resizable dialog with a {@code null} parent.
      *
      * @param title dialog title
      */
-    public AbstractModalDialog(String title) {
-        setTitle(title);
+    public AbstractSimpleDialog(String title) {
+        this((JFrame) null, title);
     }
 
     /**
-     * Creates a new dialog.
+     * Creates a new modal, non-resizable dialog.
      *
      * @param parent parent frame
      * @param title dialog title
      */
-    public AbstractModalDialog(JFrame parent, String title) {
-        super(parent, title);
+    public AbstractSimpleDialog(JFrame parent, String title) {
+        this(parent, title, true, false);
     }
 
     /**
-     * Creates a new dialog.
+     * Creates a new modal, non-resizable dialog.
      *
      * @param parent parent dialog
      * @param title dialog title
      */
-    public AbstractModalDialog(JDialog parent, String title) {
+    public AbstractSimpleDialog(JDialog parent, String title) {
+        this(parent, title, true, false);
+    }
+
+    /**
+     * Creates a new modal, non-resizable dialog.
+     *
+     * @param parent parent frame
+     * @param title dialog title
+     * @param modal whether to make the dialog application modal
+     * @param resizable whether to make the dialog resizable
+     */
+    public AbstractSimpleDialog(JFrame parent, String title,
+            boolean modal, boolean resizable) {
+
         super(parent, title);
+        commonInit(modal, resizable);
+    }
+
+    /**
+     * Creates a new modal, non-resizable dialog.
+     *
+     * @param parent parent dialog
+     * @param title dialog title
+     * @param modal whether to make the dialog application modal
+     * @param resizable whether to make the dialog resizable
+     */
+    public AbstractSimpleDialog(JDialog parent, String title,
+            boolean modal, boolean resizable) {
+
+        super(parent, title);
+        commonInit(modal, resizable);
+    }
+
+    private void commonInit(boolean modal, boolean resizable) {
+        if (modal) {
+            setModalityType(ModalityType.APPLICATION_MODAL);
+        } else {
+            setModalityType(ModalityType.MODELESS);
+        }
+
+        setResizable(resizable);
     }
 
     /**
@@ -84,15 +125,12 @@ public abstract class AbstractModalDialog extends JDialog {
     }
 
     /**
-     * Creates dialog components. This must be called explicitly by the
-     * sub-class. We do this to give sub-classes the change to initialize
+     * Creates the main control panel and components. This must be called
+     * by the sub-class. We do this to give sub-classes the chance to initialize
      * fields which can be used within {@linkplain #createControlPanel()}
      * (called as part of this method).
      */
     protected void initComponents() {
-        setResizable(false);
-        setModalityType(ModalityType.APPLICATION_MODAL);
-
         JPanel panel = new JPanel(new BorderLayout());
 
         panel.add(createControlPanel(), BorderLayout.CENTER);

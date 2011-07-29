@@ -18,7 +18,6 @@
 package org.geotools.swing.tool;
 
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
@@ -36,14 +35,15 @@ import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
-import org.geotools.swing.JTextReporter;
-import org.geotools.swing.TextReporterListener;
+import org.geotools.swing.dialog.JTextReporter;
+import org.geotools.swing.dialog.TextReporterListener;
 import org.geotools.swing.event.MapMouseEvent;
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
 
 import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.map.RasterLayer;
+import org.geotools.swing.dialog.DialogUtils;
 
 /**
  * A cursor tool to retrieve information about features that the user clicks
@@ -97,14 +97,7 @@ public class InfoTool extends CursorTool implements TextReporterListener {
     public InfoTool() {
         Toolkit tk = Toolkit.getDefaultToolkit();
         ImageIcon cursorIcon = new ImageIcon(getClass().getResource(CURSOR_IMAGE));
-
-        int iconWidth = cursorIcon.getIconWidth();
-        int iconHeight = cursorIcon.getIconHeight();
-
-        Dimension bestCursorSize = tk.getBestCursorSize(cursorIcon.getIconWidth(), cursorIcon.getIconHeight());
-
         cursor = tk.createCustomCursor(cursorIcon.getImage(), CURSOR_HOTSPOT, TOOL_TIP);
-
         helperTable = new WeakHashMap<Layer, InfoToolHelper>();
     }
 
@@ -287,10 +280,10 @@ public class InfoTool extends CursorTool implements TextReporterListener {
      */
     private void createReporter() {
         if (reporter == null) {
-            reporter = new JTextReporter("Feature info", 20, 30);
+            reporter = JTextReporter.create("Feature info", 20, 30);
             reporter.addListener(this);
 
-            reporter.setVisible(true);
+            DialogUtils.showCentred(reporter);
         }
     }
 

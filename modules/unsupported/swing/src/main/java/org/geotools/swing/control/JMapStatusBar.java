@@ -40,7 +40,7 @@ import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
 
 import org.geotools.swing.MapPane;
-import org.geotools.swing.dialog.AbstractModalDialog;
+import org.geotools.swing.dialog.AbstractSimpleDialog;
 import org.geotools.swing.dialog.DialogUtils;
 import org.geotools.util.logging.Logging;
 
@@ -344,7 +344,7 @@ public class JMapStatusBar extends JPanel {
         }
     }
 
-    private static class DecimalDigitsDialog extends AbstractModalDialog {
+    private static class DecimalDigitsDialog extends AbstractSimpleDialog {
 
         private JIntegerField digitsFld;
         private int numDigits;

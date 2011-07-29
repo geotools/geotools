@@ -405,8 +405,11 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
             case JJTROUTINEINVOCATION_GEOOP_BBOX_SRS_NODE:
                 return buildBBox(n.getType());
 
-            case JJTRELATE_NODE:
-                return this.builder.buildRelate();
+            case JJTROUTINEINVOCATION_GEOOP_RELATE_NODE:
+            	return this.builder.buildSpatialRelateFilter();
+            	
+            case JJTDE9IM_NODE:
+            	return this.builder.buildDE9IM( getToken(0).image) ;	
 
                 // ----------------------------------------
                 // Spatial Relate Like

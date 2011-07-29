@@ -347,7 +347,7 @@ public abstract class AbstractFilterBuilder {
 
         Function function = filterFactory.function("PropertyExists", args);
         Literal literalTrue = filterFactory.literal(Boolean.TRUE);
-
+        
         PropertyIsEqualTo propExistsFilter = filterFactory.equals(function,
                 literalTrue);
 
@@ -357,8 +357,7 @@ public abstract class AbstractFilterBuilder {
 	/**
 	 * Creates a literal with date time
 	 * 
-	 * @param n
-	 *            with date time
+	 * @param token with date time
 	 * @return Literal
 	 * @throws CQLException
 	 */
@@ -394,9 +393,9 @@ public abstract class AbstractFilterBuilder {
         return filterFactory.literal(Boolean.FALSE);
     }
 
-    public Literal buildLiteralInteger(final String image) {
+    public Literal buildLiteralInteger(final String tokenImage) {
         
-        return filterFactory.literal(Long.parseLong(image));
+        return filterFactory.literal(Long.parseLong(tokenImage));
     }
     public Literal buildLiteralDouble(final String tokenImage) {
         
@@ -610,6 +609,39 @@ public abstract class AbstractFilterBuilder {
 
         return ff.intersects(property, geom);
     }
+
+	public PropertyIsEqualTo buildSpatialRelateFilter() throws CQLException {
+
+		Literal pattern = this.resultStack.popLiteral();
+
+		Literal geometry = this.resultStack.popLiteral();
+
+		PropertyName property = this.resultStack.popPropertyName();
+
+		FilterFactory2 ff = (FilterFactory2) filterFactory;
+		Expression[] args = new Expression[] { property, geometry, pattern };
+
+		Function function = filterFactory.function("relatePattern", args);
+
+		assert function != null: "a relatePattern function is expected";
+
+		PropertyIsEqualTo filter = ff.equals(function, ff.literal(true));
+
+		return filter;
+	}
+	/**
+	 * Build the intersection matrix pattern
+	 * 
+	 * @param patternToken
+	 * @return
+	 */
+    public Literal buildDE9IM(final String tokenImage){
+    	
+        Literal literal = filterFactory.literal(tokenImage);
+
+        return literal;
+    }
+	
 
     public BinarySpatialOperator buildSpatialTouchesFilter() throws CQLException {
         Literal geom = this.resultStack.popLiteral();
@@ -979,6 +1011,7 @@ public abstract class AbstractFilterBuilder {
             throw new CQLException("Error building WKT Geometry: " + e.getMessage(),geometry, e, this.cqlSource);
         }
     }
+    
 
     /**
      * Extracts expression between initial token and last token in buffer.

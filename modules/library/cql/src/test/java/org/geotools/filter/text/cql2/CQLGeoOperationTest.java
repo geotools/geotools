@@ -18,11 +18,15 @@
 package org.geotools.filter.text.cql2;
 
 
+import org.geotools.filter.function.FilterFunction_relatePattern;
 import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.Language;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.filter.Filter;
+import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.Contains;
 import org.opengis.filter.spatial.Crosses;
@@ -43,9 +47,15 @@ import org.opengis.filter.spatial.Within;
  *           &lt;geoop name &gt; &lt;georoutine argument list &gt;[*]
  *       |   &lt;relgeoop name &gt; &lt;relgeoop argument list &gt;
  *       |   &lt;routine name &gt; &lt;argument list &gt;
+ *       |   &lt;relate geoop &gt; 
  *   &lt;geoop name &gt; ::=
  *           EQUALS | DISJOINT | INTERSECTS | TOUCHES | CROSSES | [*]
- *           WITHIN | CONTAINS |OVERLAPS | RELATE [*]
+ *           WITHIN | CONTAINS |OVERLAPS 
+ *   
+ *   &lt;relate geoop &gt; ::=  &lt;RELATE>&gt; &quot;(&quot; Attribute()&quot;,&quot; &lt;geometry literal&gt; &quot;,&quot; &lt;DE9IM_PATTERN&gt; &quot;)&quot;
+ *   &lt;DE9IM_PATTERN&gt; ::= &lt;DE9IM_CHAR&gt;&lt;DE9IM_CHAR&gt;&lt;DE9IM_CHAR&gt; ...
+ *   &lt;DE9IM_CHAR&gt; ::= *| T | F | 0 | 1 | 2
+ *   
  *   That rule is extended with bbox for convenience.
  *   &lt;bbox argument list &gt;::=
  *       &quot;(&quot;  &lt;attribute &gt; &quot;,&quot; &lt;min X &gt; &quot;,&quot; &lt;min Y &gt; &quot;,&quot; &lt;max X &gt; &quot;,&quot; &lt;max Y &gt;[&quot;,&quot;  &lt;srs &gt;] &quot;)&quot;
@@ -120,6 +130,43 @@ public class CQLGeoOperationTest {
         
         Assert.assertTrue("Intersects was expected", resultFilter instanceof Intersects);
 
+    }
+    
+    /**
+     * 
+     * @throws CQLException
+     */
+    @Test 
+    public void relate() throws CQLException {
+        
+        PropertyIsEqualTo resultFilter;
+        
+        resultFilter = (PropertyIsEqualTo) CompilerUtil.parseFilter(language,"RELATE(the_geom, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), T*****FF*)");
+
+        Expression relateFunction = resultFilter.getExpression1();
+        Assert.assertTrue(relateFunction instanceof FilterFunction_relatePattern); 
+        
+        Literal trueLiteral = (Literal) resultFilter.getExpression2();
+        Assert.assertTrue(trueLiteral.getValue() instanceof Boolean); 
+    }
+
+    
+    /**
+     * The length of relate pattern must be 9 (nine) dimension characters 
+     * @throws CQLException
+     */
+    @Test(expected=CQLException.class)
+    public void relateBadLongitudInPattern() throws CQLException {
+        CQL.toFilter( "RELATE(geometry, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), **1******T)");
+    }
+    
+    /**
+     * The illegal dimension character in relate pattern
+     * @throws CQLException
+     */
+    @Test(expected=CQLException.class)
+    public void relateIlegalPattern() throws CQLException {
+        CQL.toFilter( "RELATE(geometry, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), **1*****X)");
     }
 
     /**

@@ -166,42 +166,6 @@ public final class ECQLGeoOperationTest extends CQLGeoOperationTest{
         Assert.assertTrue("Intersects was expected", resultFilter instanceof Intersects);
 
     }
-
-    @Test // TODO should be in the superclass but is required improve the cql parser like ECQL
-    public void relate() throws CQLException {
-        
-        Filter resultFilter = CompilerUtil.parseFilter(language,"RELATE(geom1, POINT(1 2))");
-
-        Assert.assertTrue( resultFilter instanceof PropertyIsEqualTo);
-        
-        PropertyIsEqualTo eq = (PropertyIsEqualTo) resultFilter;
-        
-        Function expr1 = (Function) eq.getExpression1();
-        
-        Assert.assertEquals(expr1.getName(), "relate");
-        
-        Literal expr2 = (Literal) eq.getExpression2();
-
-        Assert.assertEquals(expr2.getValue() , true );
-    }
-//TODO this could be an alternative to relate like pattern sentence
-//    @Test
-//    public void relateWhithPattern() throws CQLException {
-//        
-//        Filter resultFilter = CompilerUtil.parseFilter(language,"RELATE(geom1, POINT(1 2), '2FFF1FFF2')");
-//
-//        Assert.assertTrue(resultFilter instanceof PropertyIsEqualTo);
-//        
-//        PropertyIsEqualTo eq = (PropertyIsEqualTo) resultFilter;
-//        
-//        Function expr1 = (Function) eq.getExpression1();
-//        
-//        Assert.assertEquals(expr1.getName(), "relate");
-//        
-//        Literal expr2 = (Literal) eq.getExpression2();
-//
-//        Assert.assertEquals(expr2.getValue() , true );
-//    }
     
     /**
      * This test require an extension of bbox filter

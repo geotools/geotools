@@ -231,7 +231,7 @@ public final class BuildResultStack {
             throw new CQLException("fail in geometry parsing");
         }
     }
-
+    
     public void push(Result item) {
         stack.push(item);
     }

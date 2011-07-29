@@ -352,7 +352,7 @@ public class CQLCompiler extends CQLParser implements ICompiler{
 
             // ----------------------------------------
             // routine invocation Geo Operation
-            // ----------------------------------------
+            // -------------------TokenAdapter.newAdapterFor(cqlNode.getToken())---------------------
         case JJTROUTINEINVOCATION_GEOOP_EQUAL_NODE:
         case JJTROUTINEINVOCATION_GEOOP_DISJOINT_NODE:
         case JJTROUTINEINVOCATION_GEOOP_INTERSECT_NODE:
@@ -368,12 +368,13 @@ public class CQLCompiler extends CQLParser implements ICompiler{
             return buildBBox(cqlNode.getType());
 
         case JJTROUTINEINVOCATION_GEOOP_RELATE_NODE:
-            throw new CQLException(
-                    "Unsupported geooperation RELATE (is not implemented by GeoTools)",
-                    getTokenInPosition(0), this.source);
-
+        	return this.builder.buildSpatialRelateFilter();
+        	
+        case JJTDE9IM_NODE:
+        	return this.builder.buildDE9IM( getToken(0).image) ;	
+        	
             // ----------------------------------------
-            // routine invocation RelGeo Operation
+            // routine invocation RelGeo Operatiosn
             // ----------------------------------------
         case JJTTOLERANCE_NODE:
             return this.builder.buildTolerance();

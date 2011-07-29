@@ -152,7 +152,12 @@ SKIP : /* WHITE SPACE */
  
 TOKEN:
 {
-	  < STRING_LITERAL: "'" ( "''" | ~["'"] )* "'" > : DEFAULT
+    < STRING_LITERAL: "'" ( "''" | ~["'"] )* "'" > : DEFAULT
+}
+TOKEN [IGNORE_CASE]:
+{
+    < #DIMENSION_SYMBOL: "*"| "T" | "F" | "0" | "1" | "2"> |
+    < DE9IM_PATTERN: <DIMENSION_SYMBOL><DIMENSION_SYMBOL><DIMENSION_SYMBOL><DIMENSION_SYMBOL><DIMENSION_SYMBOL><DIMENSION_SYMBOL><DIMENSION_SYMBOL><DIMENSION_SYMBOL><DIMENSION_SYMBOL> >
 }
 
 /*
@@ -438,7 +443,7 @@ void RoutineInvocationGeoOp() #void:
   |	<WITHIN> 	GeoRoutineArgumentList() #RoutineInvocation_GeoOp_Within_Node
   |	<CONTAINS> 	GeoRoutineArgumentList() #RoutineInvocation_GeoOp_Contain_Node
   |	<OVERLAPS> 	GeoRoutineArgumentList() #RoutineInvocation_GeoOp_Overlap_Node
-  |	<RELATE> 	GeoRoutineArgumentList() #RoutineInvocation_GeoOp_Relate_Node
+  |	<RELATE> 	RelateArgumentList() #RoutineInvocation_GeoOp_Relate_Node
   | <BBOX> 		BBoxArgumentList()		 
 }
 
@@ -452,6 +457,18 @@ void GeoRoutineArgumentList() #void:
 {
 	<LP> Attribute() <COMMA> GeometryLiteral() <RP>
 }
+void RelateArgumentList() #void:
+{}
+{
+    <LP> Attribute() <COMMA> GeometryLiteral() <COMMA> DE9IM() <RP>
+}
+
+void DE9IM() #DE9IM_Node:
+{}
+{
+    <DE9IM_PATTERN>
+}
+
 /*
  * <bbox argument list>::= 
  * 	"(" <attribute> "," 

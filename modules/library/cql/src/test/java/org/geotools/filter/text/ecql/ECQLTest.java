@@ -129,7 +129,7 @@ public final class ECQLTest  {
 
     @Test
     public void relateFuncion() throws Exception{
-    	
+// FIXME replace by the new relate operation    	
     	// relate function in an equal predicate 
         Filter resultFilter = ECQL.toFilter(
                 "ATTR = relatePattern(the_geom, 'LINESTRING (27.3 37, 27.3 37.6)', '**1****') " );

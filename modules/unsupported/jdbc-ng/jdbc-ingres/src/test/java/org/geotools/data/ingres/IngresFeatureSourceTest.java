@@ -27,8 +27,10 @@ import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.opengis.filter.spatial.BBOX;
 
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+
 public class IngresFeatureSourceTest extends JDBCFeatureSourceTest {
-//    ContentFeatureSource featureSource;
 
 	@Override
     protected JDBCTestSetup createTestSetup() {

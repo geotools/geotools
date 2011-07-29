@@ -50,20 +50,6 @@ public class IngresDataStoreFactory extends JDBCDataStoreFactory {
         return "select date('now')";
     }
 
-//    public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
-//        return null;
-//    }
-    
-/*    public BasicDataSource createDataSource(Map params) throws IOException {
-    	try {
-			SCHEMA.parse((String) USER.lookUp(params));
-		} catch (Throwable e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	return super.createDataSource(params);
-    }*/
-
     @Override
     protected void setupParameters(Map parameters) {    
         super.setupParameters(parameters);

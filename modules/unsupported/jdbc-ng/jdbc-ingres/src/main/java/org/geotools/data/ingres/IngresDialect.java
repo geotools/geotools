@@ -94,36 +94,15 @@ public class IngresDialect extends PreparedStatementSQLDialect {
         this.looseBBOXEnabled = looseBBOXEnabled;
     }
 
-/*    @Override
-    public void encodeGeometryValue(Geometry value, int srid, StringBuffer sql) throws IOException {
-        if(value == null) {
-            sql.append("NULL");
-        } else {
-            if (value instanceof LinearRing) {
-                //Ingres does not handle linear rings, convert to just a line string
-                value = value.getFactory().createLineString(((LinearRing) value).getCoordinateSequence());
-            }
-            
-            sql.append("GeometryFromText('" + value.toText() + "', " + srid + ")");
-        }
-    }*/
-
-    ThreadLocal<WKBReader> wkbReader = new ThreadLocal<WKBReader>();
     public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs,
             String column, GeometryFactory factory, Connection cx ) throws IOException, SQLException {
-        WKBReader reader = wkbReader.get();
-        if(reader == null) {
-            reader = new WKBReader(factory);
-            wkbReader.set(reader); 
-        }
         try {
         	byte bytes[] = rs.getBytes(column);
         	
         	if(bytes == null) {
         		return null;
         	}
-            Geometry geom = (Geometry) reader.read(bytes);
-            return geom;
+            return new WKBReader(factory).read(bytes);
         }
         catch (Exception e) {
             throw new DataSourceException("An exception occurred while parsing WKB data", e);
@@ -171,7 +150,7 @@ public class IngresDialect extends PreparedStatementSQLDialect {
             PreparedStatement ps, int column) throws SQLException {
         if (g != null) {
             if (g instanceof LinearRing ) {
-                //postgis does not handle linear rings, convert to just a line string
+                //ingres does not handle linear rings, convert to just a line string
                 g = g.getFactory().createLineString(((LinearRing) g).getCoordinateSequence());
             }
             
@@ -378,7 +357,6 @@ public class IngresDialect extends PreparedStatementSQLDialect {
         super.registerSqlTypeToClassMappings(mappings);
         mappings.put(new Integer(Types.LONGVARBINARY), byte[].class);
         mappings.put(new Integer(Types.CLOB), String.class);
-//        mappings.put(new Integer(Types.LONGVARCHAR), String.class);
     }
         	
     @Override

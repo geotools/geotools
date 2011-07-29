@@ -38,5 +38,4 @@ public class IngresBooleanTest extends JDBCBooleanTest {
     public void testGetFeatures() throws Exception {
     	//not supported yet
     }
-
 }

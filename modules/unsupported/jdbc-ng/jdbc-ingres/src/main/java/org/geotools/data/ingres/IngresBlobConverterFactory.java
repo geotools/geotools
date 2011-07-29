@@ -36,7 +36,7 @@ public class IngresBlobConverterFactory implements ConverterFactory {
 	    try {
 	        jdbcBlobClass = Class.forName("java.sql.Blob");
 	    } catch (ClassNotFoundException e) {
-	        // ojdbc*.jar not on the path
+	        // java.sql.Blob not found
 	    }
 	    if (jdbcBlobClass == null) {
 	        INGRES_BLOB = null;
@@ -63,7 +63,7 @@ public class IngresBlobConverterFactory implements ConverterFactory {
 		if (!(byte[].class.equals(target)))
 			return null;
 
-		// can only deal with oracle specific blob classes
+		// can only deal with ingres specific blob classes
 		if (!INGRES_BLOB.isAssignableFrom(source))
 			return null;
 		

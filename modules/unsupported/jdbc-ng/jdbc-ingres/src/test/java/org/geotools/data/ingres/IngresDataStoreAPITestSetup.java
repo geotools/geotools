@@ -28,7 +28,7 @@ public class IngresDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
     protected void createRiverTable() throws Exception {
     	run("CREATE SEQUENCE RIVER_FID_SEQUENCE");
         run("CREATE TABLE \"river\"(\"fid\" int PRIMARY KEY WITH DEFAULT NEXT VALUE FOR RIVER_FID_SEQUENCE, \"id\" int, "
-                + "\"geom\" MULTILINESTRING SRID 4326, \"river\" varchar , \"flow\" real )");
+                + "\"geom\" MULTILINESTRING SRID 4326, \"river\" varchar(256) , \"flow\" real )");
 //        run("CREATE INDEX RIVER_GEOM_INDEX ON \"river\" USING GIST (\"geom\") ");
         
         // advance the sequence to 1 to compensate for hand insertions

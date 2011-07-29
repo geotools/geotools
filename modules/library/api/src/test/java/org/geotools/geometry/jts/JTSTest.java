@@ -33,10 +33,13 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeocentricCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 
 import org.junit.Test;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import static org.junit.Assert.*;
+import org.opengis.referencing.operation.MathTransform;
 
 /**
  * Unit tests for the JTS utility class.
@@ -48,7 +51,7 @@ import static org.junit.Assert.*;
  * @since 2.8
  */
 public class JTSTest extends JTSTestBase {
-    
+
     @Test
     public void toGeometry_Shape_Poly() {
         Shape shape = new Polygon(XPOINTS, YPOINTS, NPOINTS);
@@ -166,4 +169,27 @@ public class JTSTest extends JTSTestBase {
         assertEquals(5.0, geomEnv.getMaxY(), TOL);
     }
  
+    
+    /**
+     * Added this test after a bug was reported in JTS.transform for converting
+     * between WGS84 (2D) and DefaultGeocentric.CARTESIAN (3D).
+     */
+    @Test
+    public void transformCoordinate2DCRSTo3D() throws Exception {
+        CoordinateReferenceSystem srcCRS = DefaultGeographicCRS.WGS84;
+        CoordinateReferenceSystem targetCRS = DefaultGeocentricCRS.CARTESIAN;
+        MathTransform transform = CRS.findMathTransform(srcCRS, targetCRS);
+
+        Coordinate srcCoord = new Coordinate(0, 0);
+        Coordinate dest0 = JTS.transform(srcCoord, null, transform);
+
+        srcCoord.x = 180;
+        Coordinate dest180 = JTS.transform(srcCoord, null, transform);
+
+        // Only a perfunctory check on the return values - mostly we
+        // just wanted to make sure there was no exception
+        assertEquals(dest0.x, -dest180.x, TOL);
+        assertEquals(dest0.y, dest180.y, TOL);
+        assertEquals(dest0.z, dest180.z, TOL);
+    }
 }

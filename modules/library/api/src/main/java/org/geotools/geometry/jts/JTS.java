@@ -261,7 +261,7 @@ public final class JTS {
             dest = new Coordinate();
         }
 
-        final double[] array = new double[transform.getSourceDimensions()];
+        final double[] array = new double[transform.getTargetDimensions()];
         copy(source, array);
         transform.transform(array, 0, array, 0, 1);
 

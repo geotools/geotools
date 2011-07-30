@@ -18,24 +18,32 @@ package org.geotools.data.shapefile;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.geotools.TestData;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
+import org.geotools.data.Transaction;
 import org.geotools.data.shapefile.shp.IndexFile;
 import org.geotools.data.shapefile.shp.ShapefileReader;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.FeatureCollections;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
 
 /**
  * 
@@ -213,6 +221,42 @@ public class ShapefileTest extends TestCaseSupport {
             reader.close();
         }
     }
+    
+	public void testNullGeometries() throws Exception {
+		// Write a point shapefile with one null geometry
+		Map<String, Serializable> params = new HashMap<String, Serializable>();
+		File tmp = File.createTempFile("test", ".dbf");
+		if (!tmp.delete()) {
+			throw new IllegalStateException("Unable to clear temp file");
+		}
+		URL shpUrl = tmp.toURI().toURL();
+		params.put("url", shpUrl);
+		ShapefileDataStore ds = (ShapefileDataStore) new ShapefileDataStoreFactory()
+				.createNewDataStore(params);
+		SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+		tb.setName("shapefile");
+		tb.add("the_geom", Point.class);
+		ds.createSchema(tb.buildFeatureType());
+		Transaction transaction = Transaction.AUTO_COMMIT;
+		FeatureWriter<SimpleFeatureType, SimpleFeature> writer = ds
+				.getFeatureWriter(transaction);
+		SimpleFeature feature = writer.next();
+		feature.setAttribute(0, null);
+		writer.close();
+		transaction.commit();
+		ds.dispose();
+
+		// Read the same file and check the geometry is null
+		ShpFiles shpFiles = new ShpFiles(shpUrl);
+		ShapefileReader reader = new ShapefileReader(shpFiles, false, true,
+				new GeometryFactory(), false);
+		try {
+			assertTrue(reader.hasNext());
+			assertTrue(reader.nextRecord().shape() == null);
+		} finally {
+			reader.close();
+		}
+	}
 
     protected void loadShapes(String resource, int expected) throws Exception {
         final URL url = TestData.url(resource);

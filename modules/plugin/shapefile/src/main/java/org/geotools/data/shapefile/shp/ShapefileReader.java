@@ -110,7 +110,11 @@ public class ShapefileReader implements FileReader {
             if (shape == null) {
                 buffer.position(start);
                 buffer.order(ByteOrder.LITTLE_ENDIAN);
-                shape = handler.read(buffer, type, flatGeometry);
+				if (type == ShapeType.NULL) {
+					shape = null;
+				} else {
+					shape = handler.read(buffer, type, flatGeometry);
+				}
             }
             return shape;
         }

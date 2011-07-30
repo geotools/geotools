@@ -401,4 +401,14 @@ public class StyleFactoryImplTest extends TestCase {
         
         assertNotNull( out );
     }
-}
+    
+    /**
+     * Test comparing the behaviors of styleFactory.createFill() with a null color and
+     * the DEFAULT fill.
+     */
+    public void testCreateFillVsDefaultFill() {
+       Fill f1 = styleFactory.createFill(null);
+       Fill f2 = styleFactory.getDefaultFill();
+       assertEquals(f1, f2);
+    }
+}   

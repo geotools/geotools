@@ -569,6 +569,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory
             fill.setColor(filterFactory.literal("#808080"));
             fill.setOpacity(filterFactory.literal(
                     new Double(1.0)));
+            fill.setBackgroundColor(filterFactory.literal("#FFFFFF"));
         } catch (org.geotools.filter.IllegalFilterException ife) {
             throw new RuntimeException("Error creating fill", ife);
         }

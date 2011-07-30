@@ -25,6 +25,7 @@ import java.awt.Shape;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
@@ -692,6 +693,10 @@ public final class StreamingRenderer implements GTRenderer {
         error = 0;
         if (java2dHints != null)
             graphics.setRenderingHints(java2dHints);
+        // add the anchor for graphic fills
+        Point2D textureAnchor = new Point2D.Double(worldToScreenTransform.getTranslateX(),
+                worldToScreenTransform.getTranslateY());
+        graphics.setRenderingHint(StyledShapePainter.TEXTURE_ANCHOR_HINT_KEY, textureAnchor);
         // reset the abort flag
         renderingStopRequested = false;
         

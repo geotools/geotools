@@ -30,11 +30,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import org.geotools.data.FeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.DefaultMapContext;
-import org.geotools.map.MapContent;
 import org.geotools.map.MapContext;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.RenderListener;
@@ -76,7 +73,7 @@ public abstract class RendererBaseTest {
      *             In the event of failure
      */
     protected static BufferedImage showRender(String testName, GTRenderer renderer, long timeOut,
-            ReferencedEnvelope bounds) throws Exception {
+            ReferencedEnvelope... bounds) throws Exception {
         return showRender(testName, renderer, timeOut, bounds, null);
     }
 
@@ -97,8 +94,12 @@ public abstract class RendererBaseTest {
      *             In the event of failure
      */
     protected static BufferedImage showRender(String testName, GTRenderer renderer, long timeOut,
-            ReferencedEnvelope bounds, RenderListener listener) throws Exception {
-        final BufferedImage image = renderImage(renderer, bounds, listener);
+            ReferencedEnvelope[] bounds, RenderListener listener) throws Exception {
+        BufferedImage[] images = new BufferedImage[bounds.length];
+        for (int i = 0; i < images.length; i++) {
+            images[i] = renderImage(renderer, bounds[i], listener);
+        }
+        final BufferedImage image = mergeImages(images);
 
         final String headless = System.getProperty("java.awt.headless", "false");
         if (!headless.equalsIgnoreCase("true") && TestData.isInteractiveTest()) {
@@ -163,6 +164,25 @@ public abstract class RendererBaseTest {
         return image;
     }
 
+    public static BufferedImage mergeImages(BufferedImage[] images) {
+        // merge horizontally
+        int totalWidth = 0;
+        int height = 0;
+        for (BufferedImage bufferedImage : images) {
+            totalWidth += bufferedImage.getWidth();
+            height = Math.max(height, bufferedImage.getHeight());
+        }
+        BufferedImage joinedImage = new BufferedImage(totalWidth, height,
+                BufferedImage.TYPE_INT_ARGB);
+        Graphics g = joinedImage.getGraphics();
+        int x = 0;
+        for (BufferedImage bufferedImage : images) {
+            g.drawImage(bufferedImage, x, 0, null);
+            x += bufferedImage.getWidth();
+        }
+        return joinedImage;
+    }
+
     /**
      * responsible for actually rendering.
      * 
@@ -178,7 +198,7 @@ public abstract class RendererBaseTest {
      *            optional rendererListener, may be null
      */
     private static void render(GTRenderer renderer, Graphics g, Rectangle rect,
-        ReferencedEnvelope bounds, RenderListener rendererListener) {
+            ReferencedEnvelope bounds, RenderListener rendererListener) {
         try {
             if (rendererListener != null) {
                 renderer.addRenderListener(rendererListener);
@@ -195,9 +215,10 @@ public abstract class RendererBaseTest {
             }
         }
     }
-    
+
     /**
      * Utility to quickly render a set of vector data on top of a buffered image
+     * 
      * @param sources
      * @param styles
      * @return

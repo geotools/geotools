@@ -22,11 +22,13 @@ import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.RenderingHints;
+import java.awt.RenderingHints.Key;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.TexturePaint;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
@@ -64,6 +66,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @source $URL$
  */
 public final class StyledShapePainter {
+    public final static Key TEXTURE_ANCHOR_HINT_KEY = new TextureAnchorKey();
     private final static AffineTransform IDENTITY_TRANSFORM = new AffineTransform();
 
     /** The logger for the rendering module. */
@@ -222,7 +225,21 @@ public final class StyledShapePainter {
                     Paint paint = ps2d.getFill();
 
                     if (paint instanceof TexturePaint) {
-                        paint = (TexturePaint) paint;
+                        TexturePaint tp = (TexturePaint) paint;
+                        BufferedImage image = tp.getImage();
+                        Rectangle2D cornerRect = tp.getAnchorRect();
+                        Point2D anchorPoint = (Point2D) graphics
+                                .getRenderingHint(TEXTURE_ANCHOR_HINT_KEY);
+                        Rectangle2D alignedRect = null;
+                        if (anchorPoint != null) {
+                            alignedRect = new Rectangle2D.Double(Math.round(anchorPoint.getX()),
+                                    Math.round(anchorPoint.getY()), cornerRect.getWidth(),
+                                    cornerRect.getHeight());
+                        } else {
+                            alignedRect = new Rectangle2D.Double(0.0, 0.0, cornerRect.getWidth(),
+                                    cornerRect.getHeight());
+                        }
+                        paint = new TexturePaint(image, alignedRect);
                     }
 
                     graphics.setPaint(paint);
@@ -717,5 +734,17 @@ public final class StyledShapePainter {
         
         return stippleShape;
     }
-    
+
+    public static class TextureAnchorKey extends Key {
+        protected TextureAnchorKey() {
+            super(0);
+        }
+
+        @Override
+        public boolean isCompatibleValue(Object val) {
+            return val instanceof Point2D;
+        }
+
+    }
+
 }

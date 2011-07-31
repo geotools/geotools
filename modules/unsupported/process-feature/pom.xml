@@ -88,11 +88,22 @@
             <artifactId>gt-process</artifactId>
             <version>${project.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-grid</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        
         <!-- Test dependencies -->
         <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-sample-data</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-property</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>

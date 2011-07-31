@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2009, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2009-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -14,7 +14,6 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-
 package org.geotools.process.factory;
 
 import java.awt.RenderingHints.Key;
@@ -40,11 +39,14 @@ import org.opengis.feature.type.Name;
 import org.opengis.util.InternationalString;
 import org.opengis.util.ProgressListener;
 
+/**
+ * A process factory that uses annotations to determine much of the metadata
+ * needed to describe a process.
+ * 
+ * @author jody
+ * @author aaime
+ */
 public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
-
-    static final String INVERT_GRID_GEOMETRY = "invertGridGeometry";
-    static final String INVERT_QUERY = "invertQuery";
-
     
     String namespace;
 
@@ -232,22 +234,32 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
         }
     }
 
+    /**
+     * Cerate a process (for the indicated name).
+     * <p>
+     * Subclasses can control the process using their implementation of:
+     * <ul>
+     * <li>{@ #method(String)}: must return a non null method</li>
+     * <li>{@link #createProcessBean(Name)}: return a bean to use; or null for static methods</li>
+     * </ul>
+     */
     public Process create(Name name) {
-    	Method meth = method(name.getLocalPart());
+    	String methodName = name.getLocalPart();
+        Method meth = method(methodName);
     	Object process = createProcessBean(name); 
-    	if (process != null && (lookupMethod(process, INVERT_GRID_GEOMETRY) != null 
-    	        || lookupMethod(process, INVERT_QUERY) != null)) {
-    		return new RenderingProcessInvocation(meth, process);
+    	if (process != null && (lookupInvertGridGeometry(process, methodName) != null 
+    	        || lookupInvertQuery(process, methodName) != null)) {
+    		return new InvokeMethodRenderingProcess(meth, process);
     	} else {
-    		return new ProcessInvocation(meth, process);
+    		return new InvokeMethodProcess(meth, process);
     	}
     }
-    
+
     /**
-     * Looks up a method in an object (by simple name)
-     * @param targetObject
+     * Looks up a method in an object by simple name (restricted to public methods).
+     * @param targetObject object, usually a java bean, on which to perform reflection
      * @param methodName
-     * @return
+     * @return Method found
      */
     Method lookupMethod(Object targetObject, String methodName) {
         Method method = null;
@@ -259,26 +271,86 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
         }
         return method;
     }
+    
+    /**
+     * Used to recognise {@link RenderingProcess} implementations; returns a non null
+     * method for {@link RenderingProcess#invertGridGeometry(Map, Query, GridGeometry)}.
+     * <p>
+     * Used to look up the method to use for "invertGridGeometry"; if a specific method name is
+     * not provided "invertGridGeometry" will be used.
+     * <p>
+     * <ul>
+     * <li>For {@literal null} method name "invertGridGeometry" will be used.</li>
+     * <li>For {@literal "execute"} method name "invertGridGeometry" will be used.</li>
+     * <li>For {@literal "buffer"} method name "bufferInvertGridGeometry" will be used</li>
+     * </ul>
+     * 
+     * @param targetObject Target object; may be null for static method lookup
+     * @param methodName method to use for "invertGridGeometry"
+     * @return method to use for RenderingProcess "invertGridGeometry", or null if not a RenderingProcess
+     */
+    protected Method lookupInvertGridGeometry( Object targetObject, String methodName ){
+        if( methodName == null || "execute".equals(methodName) ){
+            methodName = "invertGridGeometry";
+        }
+        else {
+            methodName = methodName + "InvertGridGeometry";
+        }
+        return lookupMethod( targetObject, methodName );
+    }
+
 
     /**
-     * Creates the bean upon which the process execution method will be invoked. Can be null in case
-     * the method is a static one
+     * Used to recognise {@link RenderingProcess} implementations; returns a non null
+     * method for {@link RenderingProcess#invertQuery(Map, Query, GridGeometry)}.
+     * <p>
+     * Used to look up the method to use for "invertQuery"; if a specific method name is not
+     * provided "invertGridGeometry" will be used.
+     * <p>
+     * <ul>
+     * <li>For {@literal null} method name "invertQuery" will be used.</li>
+     * <li>For {@literal "execute"} method name "invertQuery" will be used.</li>
+     * <li>For {@literal "buffer"} method name "bufferInvertQuery" will be used</li>
+     * </ul>
+     * @param targetObject Target object; may be null for static method lookup
+     * @param methodName method to use for "invertQuery"
+     * @return method to use for RenderingProcess "invertQuery", or <code>null</code> if not a RenderingProcess
+     */
+    protected Method lookupInvertQuery( Object targetObject, String methodName ){
+        if( methodName == null || "execute".equals(methodName)){
+            methodName = "invertQuery";
+        }
+        else {
+            methodName = methodName + "InvertQuery";
+        }
+        return lookupMethod( targetObject, methodName );
+    }
+
+    /**
+     * Creates the bean upon which the process execution method will be invoked.
+     * <p>
+     * Can be null in case the method is a static one
      * 
-     * @param name
-     * @return
+     * @param name Name of the process bean
+     * @return intance of process bean; or null if the method is a static method
      */
     protected abstract Object createProcessBean(Name name);
 
     /**
-     * Executes the method as a process
+     * Executes the method as a process; when process execute is called the method will be
+     * invoked to produce a result.
      */
-    class ProcessInvocation implements Process {
-
+    class InvokeMethodProcess implements Process {
+        /**
+         * Method to invoke.
+         */
         Method method;
-
+        /**
+         * Target object used to invoke method, may be null when using a static method.
+         */
         Object targetObject;
 
-        public ProcessInvocation(Method method, Object targetObject) {
+        public InvokeMethodProcess(Method method, Object targetObject) {
             this.method = method;
             this.targetObject = targetObject;
         }
@@ -444,29 +516,35 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
     
     
     /**
-     * Executes the method as a process
+     * Executes the method as a rendering process.
+     * <p>
+     * This implementation supports the additional methods required for RenderingProcess:
+     * <ul>
+     * <li>invertQuery
+     * <li>invertGridGeometry
+     * </ul>
      */
-    class RenderingProcessInvocation extends ProcessInvocation implements RenderingProcess {
-
-        public RenderingProcessInvocation(Method method, Object targetObject) {
+    class InvokeMethodRenderingProcess extends InvokeMethodProcess implements RenderingProcess {
+        
+        public InvokeMethodRenderingProcess(Method method, Object targetObject) {
             super(method, targetObject);
         }
 
         public Query invertQuery(Map<String, Object> input, Query targetQuery,
                 GridGeometry gridGeometry) throws ProcessException {
-            Method method = lookupMethod(targetObject, INVERT_QUERY);
+            Method invertQueryMethod = lookupInvertQuery(targetObject, method.getName() );
 
-            if (method == null) {
+            if (invertQueryMethod == null) {
                 return targetQuery;
             }
 
             try {
-                Object[] args = buildProcessArguments(method, input, null, true);
+                Object[] args = buildProcessArguments(invertQueryMethod, input, null, true);
                 args[args.length - 2] = targetQuery;
                 args[args.length - 1] = gridGeometry;
 
 
-                return (Query) method.invoke(targetObject, args);
+                return (Query) invertQueryMethod.invoke(targetObject, args);
             } catch (IllegalAccessException e) {
                 throw new ProcessException(e);
             } catch (InvocationTargetException e) {
@@ -482,18 +560,19 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
 
         public GridGeometry invertGridGeometry(Map<String, Object> input, Query targetQuery,
                 GridGeometry targetGridGeometry) throws ProcessException {
-           Method method = lookupMethod(targetObject, INVERT_GRID_GEOMETRY);
+            
+           Method invertGridGeometryMethod = lookupInvertGridGeometry(targetObject, this.method.getName() );
 
-            if (method == null) {
+            if (invertGridGeometryMethod == null) {
                 return targetGridGeometry;
             }
 
             try {
-                Object[] args = buildProcessArguments(method, input, null, true);
+                Object[] args = buildProcessArguments(invertGridGeometryMethod, input, null, true);
                 args[args.length - 2] = targetQuery;
                 args[args.length - 1] = targetGridGeometry;
 
-                return (GridGeometry) method.invoke(targetObject, args);
+                return (GridGeometry) invertGridGeometryMethod.invoke(targetObject, args);
             } catch (IllegalAccessException e) {
                 throw new ProcessException(e);
             } catch (InvocationTargetException e) {

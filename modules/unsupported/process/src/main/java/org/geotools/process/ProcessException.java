@@ -14,20 +14,18 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-
 package org.geotools.process;
 
 /**
- * An exception class for processes
+ * A runtime exception used when executing a process.
  * 
  * @author Michael Bedward
  * @since 2.6
- *
- *
- *
+ * @version 8.0
  * @source $URL$
  */
-public class ProcessException extends Exception {
+public class ProcessException extends RuntimeException {
+    private static final long serialVersionUID = -3953993149819064102L;
 
     public ProcessException(Throwable cause) {
         super(cause);

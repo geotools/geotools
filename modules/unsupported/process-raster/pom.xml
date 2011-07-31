@@ -36,7 +36,8 @@
     </scm>
 
     <description>
-      Processes for handling of raster information.
+      Processes for handling of raster information; often wrapping up jai-tools
+      functionality.
     </description>
   
     <licenses>
@@ -88,7 +89,38 @@
             <artifactId>gt-process</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-render</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
+        <dependency>
+          <groupId>org.jaitools</groupId>
+          <artifactId>jt-zonalstats</artifactId>
+          <version>${jt.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>org.jaitools</groupId>
+          <artifactId>jt-rangelookup</artifactId>
+          <version>${jt.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>org.jaitools</groupId>
+          <artifactId>jt-contour</artifactId>
+          <version>${jt.version}</version>
+        </dependency>    
+        <dependency>
+          <groupId>org.jaitools</groupId>
+          <artifactId>jt-vectorize</artifactId>
+          <version>${jt.version}</version>
+        </dependency>            
+        <dependency>
+          <groupId>org.jaitools</groupId>
+          <artifactId>jt-utils</artifactId>
+          <version>${jt.version}</version>
+        </dependency>
+        
         <!-- Test dependencies -->
         <dependency>
             <groupId>org.geotools</groupId>

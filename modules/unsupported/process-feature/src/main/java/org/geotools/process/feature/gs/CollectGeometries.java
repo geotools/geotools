@@ -12,7 +12,7 @@ import org.geotools.geometry.jts.GeometryCollector;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GeoServerProcess;
+import org.geotools.process.gs.GSProcess;
 import org.opengis.util.ProgressListener;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -25,7 +25,7 @@ import com.vividsolutions.jts.geom.GeometryCollection;
  * @author Andrea Aime - GeoSolutions
  */
 @DescribeProcess(title = "collectGeometries", description = "Collects all the default geometries in the feature collection and returns them as a single geometry collection")
-public class CollectGeometries implements GeoServerProcess {
+public class CollectGeometries implements GSProcess {
 
     @DescribeResult(name = "result", description = "The reprojected features")
     public GeometryCollection execute(

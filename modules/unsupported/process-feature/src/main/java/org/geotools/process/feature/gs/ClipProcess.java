@@ -12,7 +12,7 @@ import java.util.NoSuchElementException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GeoServerProcess;
+import org.geotools.process.gs.GSProcess;
 import org.geotools.process.gs.WrappingIterator;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -48,7 +48,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author Andrea Aime - GeoSolutions
  */
 @DescribeProcess(title = "rectangularClip", description = "Clips the features to the specified geometry")
-public class ClipProcess implements GeoServerProcess {
+public class ClipProcess implements GSProcess {
 
     @DescribeResult(name = "result", description = "The feature collection bounds")
     public SimpleFeatureCollection execute(

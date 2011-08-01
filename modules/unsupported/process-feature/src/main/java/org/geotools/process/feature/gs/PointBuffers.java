@@ -18,7 +18,7 @@ import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GeoServerProcess;
+import org.geotools.process.gs.GSProcess;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.GeodeticCalculator;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -36,7 +36,7 @@ import com.vividsolutions.jts.geom.Polygon;
 @DescribeProcess(title = "pointBuffers", description = "Generates a set of polygons, each representing the set of points " +
 		"within a given distance from the central point"
         + "The data layer must be a point layer, the reference layer must be a polygonal one")
-public class PointBuffers implements GeoServerProcess {
+public class PointBuffers implements GSProcess {
 
     @DescribeResult(name = "buffers", description = "The buffers. Each feature has a 'geom' attribute and a 'radius' attribute")
     public SimpleFeatureCollection execute(

@@ -7,7 +7,7 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GeoServerProcess;
+import org.geotools.process.gs.GSProcess;
 import org.geotools.process.gs.WrappingIterator;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -32,7 +32,7 @@ import org.opengis.feature.type.PropertyDescriptor;
 @DescribeProcess(title = "union", description = "Returns a SQL like union between two feature collections " +
 		"(will contain attributes from both collections, if two attributes are not the same type " +
 		"they will be turned into strings)")
-public class UnionFeatureCollection implements GeoServerProcess {
+public class UnionFeatureCollection implements GSProcess {
 
     static final String SCHEMA_NAME = "Union_Layer";
 

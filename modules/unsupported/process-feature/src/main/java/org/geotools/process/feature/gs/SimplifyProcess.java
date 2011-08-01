@@ -15,7 +15,7 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GeoServerProcess;
+import org.geotools.process.gs.GSProcess;
 import org.geotools.process.gs.WrappingIterator;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -32,7 +32,7 @@ import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
  * 
  */
 @DescribeProcess(title = "simplify", description = "Simplifies the geometry")
-public class SimplifyProcess implements GeoServerProcess {
+public class SimplifyProcess implements GSProcess {
 
     @DescribeResult(name = "result", description = "The simplified feature collection")
     public SimpleFeatureCollection execute(

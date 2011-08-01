@@ -7,7 +7,7 @@ package org.geotools.process.feature.gs;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GeoServerProcess;
+import org.geotools.process.gs.GSProcess;
 import org.geotools.data.crs.ForceCoordinateSystemFeatureResults;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.store.ReprojectingFeatureCollection;
@@ -20,7 +20,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Andrea Aime
  */
 @DescribeProcess(title = "reprojectFeatures", description = "Reprojects the specified features to another CRS, can also be used to force a known CRS onto a set of feaures that miss one (or that have a wrong one)")
-public class ReprojectProcess implements GeoServerProcess {
+public class ReprojectProcess implements GSProcess {
 
     @DescribeResult(name = "result", description = "The reprojected features")
     public SimpleFeatureCollection execute(

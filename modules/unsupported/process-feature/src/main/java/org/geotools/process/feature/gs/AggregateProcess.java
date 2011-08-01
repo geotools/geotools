@@ -26,7 +26,7 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GeoServerProcess;
+import org.geotools.process.gs.GSProcess;
 import org.geotools.util.NullProgressListener;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -39,7 +39,7 @@ import org.opengis.util.ProgressListener;
  * @author Andrea Aime
  */
 @DescribeProcess(title = "aggregateProcess", description = "Computes various attribute statistics over vector data sets")
-public class AggregateProcess implements GeoServerProcess {
+public class AggregateProcess implements GSProcess {
     // the functions this process can handle
     public enum AggregationFunction {
         Count, Average, Max, Median, Min, StdDev, Sum;

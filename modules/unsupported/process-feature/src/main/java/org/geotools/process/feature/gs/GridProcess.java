@@ -21,7 +21,7 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GeoServerProcess;
+import org.geotools.process.gs.GSProcess;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -33,7 +33,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author Andrea Aime - GeoSolutions
  */
 @DescribeProcess(title = "grid", description = "Builds a regular cell grid")
-public class GridProcess implements GeoServerProcess {
+public class GridProcess implements GSProcess {
 
     enum GridMode {
         Rectangular, HexagonFlat, HexagonAngled

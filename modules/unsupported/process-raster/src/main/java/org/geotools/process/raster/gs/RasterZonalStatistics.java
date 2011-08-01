@@ -19,7 +19,7 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GeoServerProcess;
+import org.geotools.process.gs.GSProcess;
 import org.geotools.process.gs.WrappingIterator;
 import org.geotools.process.raster.GridCoverage2DRIA;
 
@@ -76,7 +76,7 @@ import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
 @DescribeProcess(title = "Raster Zonal Statistics", description = "Provides statistics for the distribution "
         + "of a certain quantity in a set of reference areas. "
         + "The data layer is a raster layer, the reference layer must be a polygonal one")
-public class RasterZonalStatistics implements GeoServerProcess {
+public class RasterZonalStatistics implements GSProcess {
 
     private final static CoverageProcessor PROCESSOR = CoverageProcessor.getInstance();
 

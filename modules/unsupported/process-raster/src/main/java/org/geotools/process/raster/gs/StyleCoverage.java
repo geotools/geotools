@@ -9,7 +9,7 @@ import java.io.IOException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GeoServerProcess;
+import org.geotools.process.gs.GSProcess;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.renderer.lite.gridcoverage2d.RasterSymbolizerHelper;
@@ -24,7 +24,7 @@ import org.geotools.styling.Style;
  * @author ETj <etj at geo-solutions.it>
  */
 @DescribeProcess(title = "styleCoverage", description = "Applies a raster symbolizer to the coverage")
-public class StyleCoverage implements GeoServerProcess {
+public class StyleCoverage implements GSProcess {
 
     @DescribeResult(name = "result", description = "The styled raster")
     public GridCoverage2D execute(

@@ -17,7 +17,7 @@ import javax.media.jai.operator.BandSelectDescriptor;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GeoServerProcess;
+import org.geotools.process.gs.GSProcess;
 import org.geotools.process.raster.CoverageUtilities;
 
 import org.geotools.coverage.Category;
@@ -48,7 +48,7 @@ import org.opengis.util.ProgressListener;
  * @author Daniele Romagnoli - GeoSolutions
  */
 @DescribeProcess(title = "reclassify", description = "Reclassifies a continous coverage into a set of ranges identified by a number")
-public class RangeLookupProcess implements GeoServerProcess {
+public class RangeLookupProcess implements GSProcess {
 	
     private final static double DEFAULT_NODATA = 0d;
 	

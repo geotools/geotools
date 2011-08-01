@@ -17,7 +17,7 @@ import javax.media.jai.iterator.RectIterFactory;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GeoServerProcess;
+import org.geotools.process.gs.GSProcess;
 import org.geotools.process.gs.WrappingIterator;
 import org.geotools.process.raster.CoverageUtilities;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -52,7 +52,7 @@ import com.vividsolutions.jts.geom.Point;
  * 
  */
 @DescribeProcess(title = "RasterAsPointCollection", description = "Convert a Raster into a collections of points")
-public class RasterAsPointCollectionProcess implements GeoServerProcess {
+public class RasterAsPointCollectionProcess implements GSProcess {
 
     @DescribeResult(name = "result", description = "The point feature collection")
     public SimpleFeatureCollection execute(

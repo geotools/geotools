@@ -9,7 +9,7 @@ import java.util.List;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GeoServerProcess;
+import org.geotools.process.gs.GSProcess;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.store.ReTypingFeatureCollection;
 import org.geotools.feature.collection.FilteringSimpleFeatureCollection;
@@ -20,7 +20,7 @@ import org.opengis.filter.Filter;
 
 @DescribeProcess(title = "Query", description = "Applies a filter and an attribute selection to the incoming feature collection. "
         + "The process can be also used as a pure format converter when no filtering or attribute selection is performed")
-public class QueryProcess implements GeoServerProcess {
+public class QueryProcess implements GSProcess {
     @DescribeResult(name = "result", description = "The filtered collection")
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "features", description = "The feature collection to filter") SimpleFeatureCollection features,

@@ -23,7 +23,7 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GeoServerProcess;
+import org.geotools.process.gs.GSProcess;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.text.Text;
@@ -45,7 +45,7 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.operation.distance.DistanceOp;
 
 @DescribeProcess(title = "Snap", description = "Snap to the nearest feature")
-public class SnapProcess implements GeoServerProcess {
+public class SnapProcess implements GSProcess {
     private static final Logger LOGGER = Logging.getLogger(SnapProcess.class);
 
     private GeometryFactory geometryFactory = new GeometryFactory();

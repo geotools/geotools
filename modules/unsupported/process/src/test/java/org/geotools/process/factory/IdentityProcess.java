@@ -4,7 +4,7 @@
  */
 package org.geotools.process.factory;
 
-import org.geotools.process.gs.GeoServerProcess;
+import org.geotools.process.gs.GSProcess;
 
 /**
  * Simple process used to verify AnnotatedBeanProcessFactory is working.
@@ -12,7 +12,7 @@ import org.geotools.process.gs.GeoServerProcess;
  * @author Jody Garnett (LISAsoft)
  */
 @DescribeProcess(title = "Identity", description = "identiy process used for tesing")
-public class IdentityProcess implements GeoServerProcess {
+public class IdentityProcess implements GSProcess {
 
     @DescribeResult(name = "value", description = "the value provided as input")
     public Object execute(

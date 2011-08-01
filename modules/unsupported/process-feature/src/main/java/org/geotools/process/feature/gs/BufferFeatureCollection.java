@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GeoServerProcess;
+import org.geotools.process.gs.GSProcess;
 import org.geotools.process.gs.WrappingIterator;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -37,7 +37,7 @@ import com.vividsolutions.jts.geom.MultiPolygon;
  * @author Andrea Aime - GeoSolutions
  */
 @DescribeProcess(title = "buffer", description = "Buffers each feature in a collection by a fixed amount or by a value coming from a feature attribute. Works in pure cartesian mode.")
-public class BufferFeatureCollection implements GeoServerProcess {
+public class BufferFeatureCollection implements GSProcess {
     @DescribeResult(description = "The buffered feature collection")
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "feature collection", description = "Feature collection") SimpleFeatureCollection features,

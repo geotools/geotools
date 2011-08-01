@@ -15,7 +15,7 @@ import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.process.feature.gs.AggregateProcess.AggregationFunction;
 import org.geotools.process.feature.gs.AggregateProcess.Results;
-import org.geotools.process.gs.GeoServerProcess;
+import org.geotools.process.gs.GSProcess;
 import org.geotools.process.gs.WrappingIterator;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -39,7 +39,7 @@ import com.vividsolutions.jts.geom.Geometry;
 @DescribeProcess(title = "vectorZonalStatistics", description = "Provides statistics for the distribution "
         + "of a certain quantity in a set of reference areas. "
         + "The data layer must be a point layer, the reference layer must be a polygonal one")
-public class VectorZonalStatistics implements GeoServerProcess {
+public class VectorZonalStatistics implements GSProcess {
 
     @DescribeResult(name = "statistics", description = "A feature collection with all the attributes "
             + "of the zoning layer (prefixed by 'z_'), "

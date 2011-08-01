@@ -21,7 +21,7 @@ import javax.media.jai.RenderedOp;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GeoServerProcess;
+import org.geotools.process.gs.GSProcess;
 import org.geotools.process.raster.CoverageUtilities;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
@@ -51,7 +51,7 @@ import com.vividsolutions.jts.geom.util.AffineTransformation;
  * 
  */
 @DescribeProcess(title = "Contour", description = "Perform the contouring on a provided raster")
-public class ContourProcess implements GeoServerProcess {
+public class ContourProcess implements GSProcess {
 
     private static final InternationalString NO_DATA = Vocabulary
             .formatInternational(VocabularyKeys.NODATA);

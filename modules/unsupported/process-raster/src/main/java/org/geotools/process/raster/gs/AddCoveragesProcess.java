@@ -10,7 +10,7 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GeoServerProcess;
+import org.geotools.process.gs.GSProcess;
 import org.geotools.process.raster.BaseCoverageAlgebraProcess;
 import org.opengis.coverage.processing.Operation;
 import org.opengis.parameter.ParameterValueGroup;
@@ -28,7 +28,7 @@ import org.opengis.util.ProgressListener;
         "The two coverages need to have the same envelope and the same resolution. \n" +
         "The operation will do pixel by pixel addition:\n " +
         "outputCoveragePixel[i][j] = sourceCoverageAPixel[i][j] + sourceCoverageBPixel[i][j]")
-public class AddCoveragesProcess implements GeoServerProcess {
+public class AddCoveragesProcess implements GSProcess {
 
     private static final CoverageProcessor PROCESSOR = CoverageProcessor.getInstance();
     private static final Operation ADD = PROCESSOR.getOperation("Add");

@@ -9,7 +9,7 @@ import java.io.IOException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GeoServerProcess;
+import org.geotools.process.gs.GSProcess;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.geometry.GeneralEnvelope;
@@ -29,7 +29,7 @@ import com.vividsolutions.jts.geom.GeometryCollection;
  * @author ETj <etj at geo-solutions.it>
  */
 @DescribeProcess(title = "cropCoverage", description = "Collects all the default geometries in the feature collection and returns them as a single geometry collection")
-public class CropCoverage implements GeoServerProcess {
+public class CropCoverage implements GSProcess {
 
     private static final CoverageProcessor PROCESSOR = CoverageProcessor.getInstance();
     private static final Operation CROP = PROCESSOR.getOperation("CoverageCrop");

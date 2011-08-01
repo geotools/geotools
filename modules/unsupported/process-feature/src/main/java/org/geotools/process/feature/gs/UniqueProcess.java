@@ -15,7 +15,7 @@ import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GeoServerProcess;
+import org.geotools.process.gs.GSProcess;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.util.ProgressListener;
@@ -26,7 +26,7 @@ import org.opengis.util.ProgressListener;
  * @author Andrea Aime
  */
 @DescribeProcess(title = "Unique values", description = "Returns the unique values of a certain attribute")
-public class UniqueProcess implements GeoServerProcess {
+public class UniqueProcess implements GSProcess {
     // the functions this process can handle
     public enum AggregationFunction {
         Average, Max, Median, Min, StdDev, Sum;

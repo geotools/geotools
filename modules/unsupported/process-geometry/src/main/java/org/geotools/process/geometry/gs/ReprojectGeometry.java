@@ -7,7 +7,7 @@ package org.geotools.process.geometry.gs;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GeoServerProcess;
+import org.geotools.process.gs.GSProcess;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -20,7 +20,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Andrea Aime
  */
 @DescribeProcess(title = "reprojectGeometry", description = "Reprojects the specified geometry from the source CRS to the target one)")
-public class ReprojectGeometry implements GeoServerProcess {
+public class ReprojectGeometry implements GSProcess {
 
     @DescribeResult(name = "result", description = "The reprojected geometry")
     public Geometry execute(

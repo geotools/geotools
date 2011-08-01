@@ -11,7 +11,7 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GeoServerProcess;
+import org.geotools.process.gs.GSProcess;
 
 /**
  * A process clipping the geometries in the input feature collection to a specified rectangle
@@ -20,7 +20,7 @@ import org.geotools.process.gs.GeoServerProcess;
  * 
  */
 @DescribeProcess(title = "rectangularClip", description = "Clips the features to the specified bounding box")
-public class RectangularClipProcess implements GeoServerProcess {
+public class RectangularClipProcess implements GSProcess {
 
     @DescribeResult(name = "result", description = "The feature collection bounds")
     public SimpleFeatureCollection execute(

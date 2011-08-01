@@ -14,7 +14,7 @@ import org.geotools.feature.type.GeometryTypeImpl;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GeoServerProcess;
+import org.geotools.process.gs.GSProcess;
 import org.geotools.process.gs.WrappingIterator;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -39,7 +39,7 @@ import com.vividsolutions.jts.geom.Polygon;
  */
 @DescribeProcess(title = "intersection", description = "Returns the intersections between two feature " +
 		"collections adding the attributes from both of them")
-public class IntersectionFeatureCollection implements GeoServerProcess {
+public class IntersectionFeatureCollection implements GSProcess {
     @DescribeResult(description = "feature collection containg the intersections between the two feature " +
     		"collections and the attributes from both of them")
     public SimpleFeatureCollection execute(

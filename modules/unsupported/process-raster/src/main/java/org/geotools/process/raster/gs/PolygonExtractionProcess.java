@@ -17,7 +17,7 @@ import javax.media.jai.RenderedOp;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GeoServerProcess;
+import org.geotools.process.gs.GSProcess;
 import org.geotools.process.raster.CoverageUtilities;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.collection.ListFeatureCollection;
@@ -43,7 +43,7 @@ import com.vividsolutions.jts.geom.util.AffineTransformation;
  * 
  */
 @DescribeProcess(title = "PolygonExtraction", description = "Perform the polygon extraction on a provided raster")
-public class PolygonExtractionProcess implements GeoServerProcess {
+public class PolygonExtractionProcess implements GSProcess {
 	
     
     static {

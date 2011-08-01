@@ -9,7 +9,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GeoServerProcess;
+import org.geotools.process.gs.GSProcess;
 
 /**
  * Simple process with a {@link ReferencedEnvelope} as the output
@@ -17,7 +17,7 @@ import org.geotools.process.gs.GeoServerProcess;
  * @author Andrea Aime
  */
 @DescribeProcess(title = "bounds", description = "Computes the overlall bounds of the input features")
-public class BoundsProcess implements GeoServerProcess {
+public class BoundsProcess implements GSProcess {
 
     @DescribeResult(name = "bounds", description = "The feature collection bounds")
     public ReferencedEnvelope execute(

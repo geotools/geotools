@@ -20,7 +20,7 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GeoServerProcess;
+import org.geotools.process.gs.GSProcess;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.logging.Logging;
@@ -41,7 +41,7 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.operation.distance.DistanceOp;
 
 @DescribeProcess(title = "Nearest", description = "Get nearest feature")
-public class NearestProcess implements GeoServerProcess {
+public class NearestProcess implements GSProcess {
     private static final Logger LOGGER = Logging.getLogger(NearestProcess.class);
 
     private GeometryFactory geometryFactory = new GeometryFactory();

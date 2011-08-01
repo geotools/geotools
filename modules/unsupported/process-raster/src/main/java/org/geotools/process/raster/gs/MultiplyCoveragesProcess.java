@@ -7,7 +7,7 @@ package org.geotools.process.raster.gs;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GeoServerProcess;
+import org.geotools.process.gs.GSProcess;
 import org.geotools.process.raster.BaseCoverageAlgebraProcess;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.CoverageProcessor;
@@ -28,7 +28,7 @@ import org.opengis.util.ProgressListener;
         "The two coverages need to have the same envelope and the same resolution. \n" +
         "The operation will do pixel by pixel multiplication:\n " +
         "outputCoveragePixel[i][j] = sourceCoverageAPixel[i][j] * sourceCoverageBPixel[i][j]")
-public class MultiplyCoveragesProcess implements GeoServerProcess {
+public class MultiplyCoveragesProcess implements GSProcess {
 
     private static final CoverageProcessor PROCESSOR = CoverageProcessor.getInstance();
     private static final Operation MULTIPLY = PROCESSOR.getOperation("Multiply");

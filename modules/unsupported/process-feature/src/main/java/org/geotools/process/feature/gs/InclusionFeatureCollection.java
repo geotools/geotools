@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GeoServerProcess;
+import org.geotools.process.gs.GSProcess;
 import org.geotools.process.gs.WrappingIterator;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -31,7 +31,7 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 @DescribeProcess(title = "inclusion", description = "Provide a feature collection containing the features of "
         + "the first input collection included in at least one feature of the the second feature collection")
-public class InclusionFeatureCollection implements GeoServerProcess {
+public class InclusionFeatureCollection implements GSProcess {
     @DescribeResult(description = "feature collection containg the features of the first collection included in the second collection")
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "first feature collection", description = "First feature collection") SimpleFeatureCollection firstFeatures,

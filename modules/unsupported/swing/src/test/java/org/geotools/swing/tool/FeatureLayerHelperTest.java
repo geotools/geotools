@@ -17,16 +17,18 @@
 
 package org.geotools.swing.tool;
 
-import java.io.File;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
+import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+
 import org.geotools.TestData;
-import org.geotools.data.FileDataStore;
-import org.geotools.data.FileDataStoreFinder;
+import org.geotools.data.DataStore;
+import org.geotools.data.DataStoreFinder;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.DirectPosition2D;
@@ -39,7 +41,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -51,7 +52,6 @@ import static org.junit.Assert.*;
  * @source $URL$
  * @version $URL$
  */
-@Ignore
 public class FeatureLayerHelperTest {
     private FeatureLayerHelper helper;
     private MapContent mapContent;
@@ -115,9 +115,12 @@ public class FeatureLayerHelperTest {
     }
 
     private Layer getStatePopLayer() throws Exception {
-        File file = TestData.file("shapes/statepop.shp");
-        FileDataStore store = FileDataStoreFinder.getDataStore(file);
-        featureSource = store.getFeatureSource();
+        URL url = TestData.url("shapes/statepop.shp");
+        Map params = new HashMap();
+        params.put("url", url);
+        DataStore dataStore = DataStoreFinder.getDataStore(params);
+        String typeName = dataStore.getTypeNames()[0];
+        featureSource = dataStore.getFeatureSource(typeName);
 
         return new FeatureLayer(featureSource, null);
     }

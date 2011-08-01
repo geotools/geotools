@@ -33,7 +33,7 @@ import java.util.EventListener;
  */
 public interface MapBoundsListener extends EventListener {
     /**
-     * Invoked when the area of interest or the coordinate system changes
+     * Invoked when the area of interest or the coordinate system changes.
      *
      * @param event The change event.
      */

@@ -1,0 +1,3 @@
+org.geotools.swing.tool.FeatureLayerHelper
+org.geotools.swing.tool.GridCoverageLayerHelper
+org.geotools.swing.tool.GridReaderLayerHelper

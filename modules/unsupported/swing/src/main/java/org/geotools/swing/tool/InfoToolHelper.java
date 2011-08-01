@@ -17,165 +17,189 @@
 
 package org.geotools.swing.tool;
 
+import java.awt.geom.AffineTransform;
 import java.lang.ref.WeakReference;
 import java.util.logging.Logger;
 
 import org.geotools.geometry.DirectPosition2D;
+import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
+import org.geotools.map.event.MapBoundsEvent;
+import org.geotools.map.event.MapBoundsListener;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.util.logging.Logging;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
 /**
- * Abstract base class for helper classes used by {@code InfoTool} to query
- * {@code Layers}. The primary reason for having this class is to avoid
- * loading grid coverage classes unless they are really needed, and thus
- * avoid the need for users to have JAI in the classpath when working with
- * vector data.
- * <p>
- * The type parameter <code>&lt;T&gt;</code> defines the return type of the
- * {@linkplain #getInfo} method.
- *
- * @see InfoTool
+ * Abstract base class for helper classes used by {@linkplain InfoTool} to query
+ * features in map layers.
  *
  * @author Michael Bedward
  * @since 2.6
- *
- *
  * @source $URL$
  * @version $URL$
  */
-public abstract class InfoToolHelper<T> {
+public abstract class InfoToolHelper implements MapBoundsListener {
     private static final Logger LOGGER = Logging.getLogger("org.geotools.swing");
 
-    private final WeakReference<MapContent> contentRef;
-    private CoordinateReferenceSystem dataCRS;
-    private boolean transformRequired;
+    /**
+     * String key used for the position element in the {@code Map} passed to
+     * {@linkplain #getInfo( org.geotools.util.KVP )}.
+     */
+    public static final String KEY_POSITION = "pos";
+
+    protected WeakReference<MapContent> contentRef;
+    protected WeakReference<Layer> layerRef;
+
     private boolean transformFailed;
     private MathTransform transform;
 
+
     /**
-     * Protected constructor.
+     * CAlled by the helper lookup system when selecting a helper
+     * for a given layer.
      *
-     * @param content the map content
-     * @param dataCRS the coordinate reference system of the feature data that will be queried
-     *        by this helper
+     * @param layer the layer
+     *
+     * @return {@code true} is this helper can handle the layer
+     *
+     * @throws IllegalArgumentException if {@code layer} is {@code null}
      */
-    protected InfoToolHelper(MapContent content, CoordinateReferenceSystem dataCRS) {
-        this.contentRef = new WeakReference<MapContent>(content);
-        doSetCRS(dataCRS);
+    public abstract boolean isSupportedLayer(Layer layer);
+
+    /**
+     * Gets layer data at the specified position.
+     *
+     * @param pos query position
+     * @return layer data
+     *
+     * @throws Exception on error querying the layer
+     */
+    public abstract InfoToolResult getInfo(DirectPosition2D pos) throws Exception;
+
+    /**
+     * Checks if this helper is holding a reference to a {@code MapContent} and
+     * a {@code Layer}.Helpers only hold a {@code WeakReference} to both the 
+     * map content and layer to avoid blocking garbage collection when layers
+     * are discarded.
+     *
+     * @return {@code true} if both map content and layer references are valid
+     */
+    public boolean isValid() {
+        return contentRef != null && contentRef.get() != null
+                && layerRef != null && layerRef.get() != null;
     }
 
     /**
-     * Get feature data at the given position.
+     * Sets the map content for this helper.
      *
-     * @param pos the location to query
+     * @param layer the map content
      *
-     * @param params additional parameters as optionally defined by the sub-class
-     *
-     * @return data of type {@code T} as defined by the sub-class
-     *
-     * @see #isValid()
+     * @throws IllegalArgumentException if {@code content} is {@code null}
      */
-    public abstract T getInfo(DirectPosition2D pos, Object ...params) throws Exception;
+    public void setMapContent(MapContent content) {
+        if (content == null) {
+            throw new IllegalArgumentException("content must not be null");
+        }
+        
+        contentRef = new WeakReference<MapContent>(content);
+        clearTransform();
+    }
 
     /**
-     * Query if this helper has a reference to a {@code MapContent} and {@code Layer}.
-     * <p>
-     * Helpers only hold a {@linkplain WeakReference} to the map content and layer
-     * with which they are working to avoid blocking garbage collection when layers are
-     * discarded. If this method returns {@code false} the helper should be re-created.
-     * <pre><code>
-     * //
-     * // Example using a VectorLayerHelper...
-     * //
-     * VectorLayerHelper helper = ...
+     * Gets the map content associated with this helper.
      *
-     * if (helper != null && helper.isValid()) {
-     *     FeatureCollection coll = helper.getInfo(queryLocation, ...);
-     *     // do something useful with results
-     *
-     * } else {
-     *     // (Re-)create the helper
-     *     // Note: example only; this obviously depends on your use case
-     *     helper = new VectorLayerHelper(content, layer);
-     * }
-     * </code></pre>
-     *
-     * @return
-     */
-    public abstract boolean isValid();
-
-    /**
-     * Get the {@code MapContent} associated with this helper. The helper maintains
-     * only a {@linkplain WeakReference} to the content.
-     *
-     * @return the map content or null if it is no longer current.
+     * @return the map content
      */
     public MapContent getMapContent() {
         return contentRef != null ? contentRef.get() : null;
     }
 
     /**
-     * Check if queries with this helper involve transforming between coordinate
-     * systems.
+     * Sets the map layer for this helper.
      *
-     * @return true if coordinte transformation is required; false otherwise
+     * @param layer the map layer
+     *
+     * @throws IllegalArgumentException if {@code layer} is {@code null}
      */
-    protected boolean isTransformRequired() {
-        return transformRequired;
+    public void setLayer(Layer layer) {
+        if (layer == null) {
+            throw new IllegalArgumentException("layer must not be null");
+        }
+
+        layerRef = new WeakReference<Layer>(layer);
+        clearTransform();
+    }
+
+
+
+    /**
+     * Gets the map layer associated with this helper.
+     * @return
+     */
+    public Layer getLayer() {
+        return layerRef != null ? layerRef.get() : null;
     }
 
     /**
-     * Get the {@code MathTransform} to re-project data from the coordinate system of
-     * the {@code MapContent} to that of the {@code Layer}.
-     *
-     * @return the transform or {@code null} if either the layer's coordinate system is the same
-     *         as that of the map content, or either has a {@code null} CRS.
+     * A method from the {@code MapBoundsListener} interface used to listen
+     * for a change to the map content's coordinate reference system.
      */
-    public MathTransform getTransform() {
-        if (transform == null && !transformFailed && dataCRS != null) {
-            MapContent content = getMapContent();
-            if (content == null) {
-                throw new IllegalStateException("null map content");
-            }
+    @Override
+    public void mapBoundsChanged(MapBoundsEvent event) {
+        clearTransform();
+    }
 
-            CoordinateReferenceSystem contentCRS = content.getCoordinateReferenceSystem();
-            try {
-                transform = CRS.findMathTransform(contentCRS, dataCRS, true);
-            } catch (Exception ex) {
-                LOGGER.warning("Can't transform map content to layer CRS");
-                transformFailed = true;
+    /**
+     * Gets the {@code MathTransform} used to convert coordinates from the
+     * projection being used by the {@code MapContent} to that of the
+     * {@code Layer}.
+     *
+     * @return the transform or {@code null} if the layer's CRS is the same
+     *     as that of the map content, or if either has no CRS defined
+     */
+    protected MathTransform getContentToLayerTransform() {
+        if (transform == null && !transformFailed) {
+            MapContent content = getMapContent();
+            Layer layer = getLayer();
+
+            if (content != null && layer != null) {
+                CoordinateReferenceSystem contentCRS = content.getCoordinateReferenceSystem();
+                CoordinateReferenceSystem layerCRS =
+                        layer.getFeatureSource().getSchema().getCoordinateReferenceSystem();
+
+                if (contentCRS != null && layerCRS != null) {
+                    if (CRS.equalsIgnoreMetadata(contentCRS, layerCRS)) {
+                        transform = new AffineTransform2D(new AffineTransform());
+                        
+                    } else {
+                        try {
+                            transform = CRS.findMathTransform(contentCRS, layerCRS, true);
+                        } catch (Exception ex) {
+                            LOGGER.warning("Can't transform map content CRS to layer CRS");
+                            transformFailed = true;
+                        }
+                    }
+                }
+
+            } else {
+                // one or both of content and layer CRS is null
+                transform = new AffineTransform2D(new AffineTransform());
             }
         }
 
         return transform;
     }
 
-    /**
-     * Set the coordinate reference system that pertains to the feature data
-     * that will be queried by this helper.
-     *
-     * @param crs data coordinate reference system
-     */
-    protected void setCRS(CoordinateReferenceSystem crs) {
-        doSetCRS(crs);
+    protected boolean isTransformRequired() {
+        return !getContentToLayerTransform().isIdentity();
     }
 
-    private void doSetCRS(CoordinateReferenceSystem crs) {
-        this.dataCRS = crs;
-
-        MapContent content = getMapContent();
-        if (content == null) {
-            throw new IllegalStateException("null map content");
-        }
-
-        final CoordinateReferenceSystem contentCRS = content.getCoordinateReferenceSystem();
-        transformRequired = false;
-        if (contentCRS != null && crs != null && !CRS.equalsIgnoreMetadata(contentCRS, dataCRS)) {
-            transformRequired = true;
-        }
+    protected void clearTransform() {
+        transform = null;
+        transformFailed = false;
     }
+
 }
-

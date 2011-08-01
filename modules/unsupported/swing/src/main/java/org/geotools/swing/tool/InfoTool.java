@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -21,49 +21,35 @@ import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
-import java.lang.reflect.Constructor;
-import java.util.Collection;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.WeakHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
-import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.swing.dialog.JTextReporter;
 import org.geotools.swing.dialog.TextReporterListener;
 import org.geotools.swing.event.MapMouseEvent;
-import org.opengis.feature.Feature;
-import org.opengis.feature.Property;
-
-import com.vividsolutions.jts.geom.Geometry;
-import org.geotools.map.RasterLayer;
 import org.geotools.swing.dialog.DialogUtils;
+import org.geotools.util.logging.Logging;
+
 
 /**
  * A cursor tool to retrieve information about features that the user clicks
- * on with the mouse. It works with {@code InfoToolHelper} objects which do
- * the work of querying feature data. The primary reason for this design
- * is to shield this class from the grid coverage classes so that
- * users who are working purely with vector data are not forced to have
- * JAI in the classpath.
- *
- * @see InfoToolHelper
+ * on with the mouse. It works with {@linkplain InfoToolHelper} objects which do
+ * the work of querying feature data.
  *
  * @author Michael Bedward
  * @since 2.6
- *
- *
  * @source $URL$
  * @version $URL$
  */
 public class InfoTool extends CursorTool implements TextReporterListener {
-
+    private static final Logger LOGGER = Logging.getLogger("org.geotools.swing");
     private static final ResourceBundle stringRes = ResourceBundle.getBundle("org/geotools/swing/Text");
 
     /** The tool name */
@@ -77,18 +63,8 @@ public class InfoTool extends CursorTool implements TextReporterListener {
     /** Icon for the control */
     public static final String ICON_IMAGE = "/org/geotools/swing/icons/mActionIdentify.png";
 
-    /**
-     * Default distance fraction used with line and point features.
-     * When the user clicks on the map, this tool searches for features within
-     * a rectangle of width w centred on the mouse location, where w is the
-     * average map side length multiplied by the value of this constant.
-     */
-    public static final double DEFAULT_DISTANCE_FRACTION = 0.01d;
-
     private Cursor cursor;
-
     private JTextReporter reporter;
-
     private WeakHashMap<Layer, InfoToolHelper> helperTable;
 
     /**
@@ -135,76 +111,28 @@ public class InfoTool extends CursorTool implements TextReporterListener {
                     layerName = layer.getFeatureSource().getSchema().getName().getLocalPart();
                 }
 
-                
                 helper = helperTable.get(layer);
                 if (helper == null) {
-                    if (layer instanceof RasterLayer) {
-                        try {
-                            Class<?> clazz = Class.forName("org.geotools.swing.tool.GridLayerHelper");
-                            Constructor<?> ctor = clazz.getConstructor(MapContent.class, Layer.class);
-                            helper = (InfoToolHelper) ctor.newInstance(content, layer);
-                            helperTable.put(layer, helper);
+                    helper = InfoToolHelperLookup.getHelper(layer);
 
-                        } catch (Exception ex) {
-                            throw new IllegalStateException("Failed to create InfoToolHelper for grid layer", ex);
-                        }
-
-                    } else {
-                        try {
-                            Class<?> clazz = Class.forName("org.geotools.swing.tool.VectorLayerHelper");
-                            Constructor<?> ctor = clazz.getConstructor(MapContent.class, Layer.class);
-                            helper = (InfoToolHelper) ctor.newInstance(content, layer);
-                            helperTable.put(layer, helper);
-
-                        } catch (Exception ex) {
-                            throw new IllegalStateException("Failed to create InfoToolHelper for vector layer", ex);
-                        }
+                    if (helper == null) {
+                        LOGGER.log(Level.WARNING,
+                                "InfoTool cannot query {0}", layer.getClass().getName());
+                        return;
                     }
+
+                    helper.setMapContent(content);
+                    helper.setLayer(layer);
                 }
 
-                Object info = null;
-
-                if (helper instanceof VectorLayerHelper) {
-                    ReferencedEnvelope mapEnv = getMapPane().getDisplayArea();
-                    double searchWidth = DEFAULT_DISTANCE_FRACTION * (mapEnv.getWidth() + mapEnv.getHeight()) / 2;
-                    try {
-                        info = helper.getInfo(pos, Double.valueOf(searchWidth));
-                    } catch (Exception ex) {
-                        throw new IllegalStateException(ex);
-                    }
-
-                    if (info != null) {
-                        FeatureIterator<? extends Feature> iter = null;
-                        FeatureCollection selectedFeatures = (FeatureCollection) info;
-                        try {
-                            iter = selectedFeatures.features();
-                            while (iter.hasNext()) {
-                                report(layerName, iter.next());
-                            }
-
-                        } catch (Exception ex) {
-                            throw new IllegalStateException(ex);
-
-                        } finally {
-                            if (iter != null) {
-                                iter.close();
-                            }
-                        }
-                    }
-
-                } else {
-                    try {
-                        info = helper.getInfo(pos);
-                    } catch (Exception ex) {
-                        throw new IllegalStateException(ex);
-                    }
-
-                    if (info != null) {
-                        List<Number> bandValues = (List<Number>) info;
-                        if (!bandValues.isEmpty()) {
-                            report(layerName, bandValues);
-                        }
-                    }
+                try {
+                    InfoToolResult result = helper.getInfo(pos);
+                    reporter.append(layerName + "\n");
+                    reporter.append(result.toString());
+                    reporter.append("\n");
+                    
+                } catch (Exception ex) {
+                    LOGGER.log(Level.WARNING, "Unable to query layer {0}", layerName);
                 }
             }
         }
@@ -219,59 +147,6 @@ public class InfoTool extends CursorTool implements TextReporterListener {
         createReporter();
 
         reporter.append(String.format("Pos x=%.4f y=%.4f\n\n", pos.x, pos.y));
-    }
-
-    /**
-     * Write the feature attribute names and values to a
-     * {@code JTextReporter}
-     *
-     * @param layerName name of the map layer that contains this feature
-     * @param feature the feature to report on
-     */
-    private void report(String layerName, Feature feature) {
-        createReporter();
-
-        Collection<Property> props = feature.getProperties();
-        String valueStr = null;
-
-        reporter.append(layerName);
-        reporter.append("\n");
-
-        for (Property prop : props) {
-            String name = prop.getName().getLocalPart();
-            Object value = prop.getValue();
-
-            if (value instanceof Geometry) {
-                name = "  Geometry";
-                valueStr = value.getClass().getSimpleName();
-            } else {
-                valueStr = value.toString();
-            }
-
-            reporter.append(name + ": " + valueStr);
-            reporter.append("\n");
-        }
-        reporter.append("\n");
-    }
-
-    /**
-     * Write an array of grid coverage band values to a
-     * {@code JTextReporter}
-     *
-     * @param layerName name of the map layer that contains the grid coverage
-     * @param bandValues array of values
-     */
-    private void report(String layerName, List<Number> bandValues) {
-        createReporter();
-
-        reporter.append(layerName);
-        reporter.append("\n");
-
-        int k = 1;
-        for (Number value : bandValues) {
-            reporter.append(String.format("  Band %d: %s\n", k++, value.toString()));
-        }
-        reporter.append("\n");
     }
 
     /**
@@ -308,6 +183,7 @@ public class InfoTool extends CursorTool implements TextReporterListener {
      *
      * @param ev event published by the {@code JTextReporter}
      */
+    @Override
     public void onReporterClosed(WindowEvent ev) {
         reporter = null;
     }
@@ -316,6 +192,7 @@ public class InfoTool extends CursorTool implements TextReporterListener {
      * Empty method. Defined to satisfy the {@code TextReporterListener} interface.
      * @param newTextStartLine
      */
+    @Override
     public void onReporterUpdated(int newTextStartLine) {
         // no action
     }

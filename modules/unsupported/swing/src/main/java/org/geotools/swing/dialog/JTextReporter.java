@@ -235,8 +235,8 @@ public class JTextReporter extends JDialog {
     }
 
     /**
-     * Appends the given text to that displayed. No additional line
-     * feeds are added after the text.
+     * Appends the given text to that displayed. No additional newlines
+     * are added after the text.
      * 
      * @param text the text to append
      */

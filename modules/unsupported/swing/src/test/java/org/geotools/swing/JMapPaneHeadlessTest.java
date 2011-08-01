@@ -16,15 +16,19 @@
  */
 package org.geotools.swing;
 
-import javax.swing.RepaintManager;
+import com.vividsolutions.jts.geom.Polygon;
 import org.junit.BeforeClass;
 import java.awt.Rectangle;
+import java.util.Arrays;
 
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.fixture.ContainerFixture;
+import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.map.FeatureLayer;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
@@ -35,11 +39,12 @@ import org.geotools.styling.Style;
 import org.geotools.swing.event.MapPaneEvent;
 
 import org.geotools.swing.testutils.MockRenderer;
-import org.geotools.swing.testutils.TestData;
 import org.geotools.swing.testutils.WaitingMapPaneListener;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import static org.junit.Assert.*;
 
 /**
@@ -192,7 +197,7 @@ public class JMapPaneHeadlessTest {
     @Test
     public void displayAreaIsSetFromMapContent() {
         MapContent mapContent = new MapContent();
-        SimpleFeatureCollection fc = TestData.singlePolygonFeatureCollection(WORLD);
+        SimpleFeatureCollection fc = singlePolygonFeatureCollection(WORLD);
         Style style = SLD.createSimpleStyle(fc.getSchema());
         mapContent.addLayer(new FeatureLayer(fc, style));
         
@@ -204,7 +209,7 @@ public class JMapPaneHeadlessTest {
     }
     
     /**
-     * Compare requested display area (world bounds) to realized display area.
+     * Compares requested display area (world bounds) to realized display area.
      * 
      * @param requestedArea requested area
      * @param realizedArea  realized area
@@ -220,5 +225,29 @@ public class JMapPaneHeadlessTest {
         // requested area
         assertEquals(realizedArea.getMedian(0), requestedArea.getMedian(0), TOL);
         assertEquals(realizedArea.getMedian(1), requestedArea.getMedian(1), TOL);
+    }
+
+    /**
+     * Creates a feature collection containing a single feature with a
+     * polygon geometry based on the input envelope.
+     *
+     * @param env the input envelope
+     * @return new feature collection
+     */
+    private SimpleFeatureCollection singlePolygonFeatureCollection(ReferencedEnvelope env) {
+        if (env == null || env.isEmpty()) {
+            throw new IllegalArgumentException("env must not be null or empty");
+        }
+
+        SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
+        typeBuilder.setName("rectangle");
+        typeBuilder.add("shape", Polygon.class, env.getCoordinateReferenceSystem());
+        typeBuilder.add("label", String.class);
+        final SimpleFeatureType TYPE = typeBuilder.buildFeatureType();
+
+        SimpleFeature feature = SimpleFeatureBuilder.build(
+                TYPE, new Object[]{JTS.toGeometry(env), "a rectangle"}, null);
+
+        return new ListFeatureCollection(TYPE, Arrays.asList(feature));
     }
 }

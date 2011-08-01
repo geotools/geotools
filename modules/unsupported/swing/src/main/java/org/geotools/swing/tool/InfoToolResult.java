@@ -18,6 +18,7 @@
 package org.geotools.swing.tool;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,5 +91,13 @@ public class InfoToolResult {
         }
 
         return sb.toString();
+    }
+
+    public Map<String, Object> getFeatureData(int featureIndex) {
+        if (featureIndex < 0 || featureIndex >= getNumFeatures()) {
+            return Collections.emptyMap();
+        }
+
+        return Collections.unmodifiableMap(featureEntries.get(featureIndex));
     }
 }

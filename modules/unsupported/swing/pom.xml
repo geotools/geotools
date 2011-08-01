@@ -92,7 +92,14 @@
             <artifactId>gt-shapefile</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
-        </dependency>        
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-sample-data</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
         <!--   Third-party dependencies   -->
         <dependency>
             <groupId>com.miglayout</groupId>

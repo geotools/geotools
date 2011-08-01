@@ -67,18 +67,6 @@
                 <role>Java Developer</role>
             </roles>
         </developer>
-        <developer>
-            <name>Michael Bedward</name>
-            <id>mbedward</id>
-            <email>michael.bedward@gmail.com</email>
-            <organization>DECCW</organization>
-            <organizationUrl>http://www.environment.nsw.gov.au</organizationUrl>
-            <timezone>+10</timezone>
-            <roles>
-                <role>Module Maintainer</role>
-                <role>Java Developer</role>
-            </roles>
-        </developer>
     </developers>
 
     <dependencies>

@@ -39,6 +39,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -50,6 +51,7 @@ import static org.junit.Assert.*;
  * @source $URL$
  * @version $URL$
  */
+@Ignore
 public class FeatureLayerHelperTest {
     private FeatureLayerHelper helper;
     private MapContent mapContent;

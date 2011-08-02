@@ -35,45 +35,76 @@ import org.opengis.feature.type.Name;
  * @version $URL$
  */
 public class InfoToolResult {
-    private final List<Map<String, Object>> featureEntries;
-    private Map<String, Object> currentEntry;
+
+    private static class ResultItem {
+        String id;
+        Map<String, Object> data;
+        
+        ResultItem(String id) {
+            this.id = id;
+            data = new LinkedHashMap<String, Object>();
+        }
+        
+        boolean isEmpty() {
+            return data.isEmpty();
+        }
+        
+        void put(String name, Object value) {
+            data.put(name, value);
+        }
+        
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            
+            if (id != null) {
+                sb.append(id).append("\n");
+            }
+            
+            for (Entry<String, Object> e : data.entrySet()) {
+                sb.append(e.getKey()).append(": ").append(e.getValue()).append('\n');
+            }
+            
+            return sb.toString();
+        }
+    }
+    
+    private final List<ResultItem> items;
+    private ResultItem currentItem;
 
     public InfoToolResult() {
-        featureEntries = new ArrayList<Map<String, Object>>();
-        addNewFeatureEntry();
+        items = new ArrayList<ResultItem>();
     }
 
     /**
-     * Adds a new feature entry to this result. Subsequent calls to
-     * {@code #setFeatureValue} methods wiill act on the new feature.
-     * Repeated calls without intervening {@code setFeatureValue} calls
-     * are ignored.
+     * Adds a new feature entry to this result. This <strong>must</strong>
+     * be called prior to calling the {@code setFeatureValue} methods.
      */
-    public void newFeature() {
-        if (!currentEntry.isEmpty()) {
-            addNewFeatureEntry();
-        }
+    public void newFeature(String id) {
+        currentItem = new ResultItem(id);
+        items.add(currentItem);
     }
 
     public void setFeatureValue(Name name, Object value) {
-        currentEntry.put(name.toString(), value);
+        if (currentItem == null) {
+            throw new IllegalStateException("Missing prior call to newFeature method");
+        }
+        currentItem.put(name.toString(), value);
     }
 
     public void setFeatureValue(String name, Object value) {
-        currentEntry.put(name, value);
+        if (currentItem == null) {
+            throw new IllegalStateException("Missing prior call to newFeature method");
+        }
+        currentItem.put(name, value);
     }
 
     public int getNumFeatures() {
-        int n = featureEntries.size();
-        if (currentEntry.isEmpty()) {
+        int n = items.size();
+        if (currentItem.isEmpty()) {
             return n - 1;
         }
         return n;
-    }
-
-    private void addNewFeatureEntry() {
-        currentEntry = new LinkedHashMap<String, Object>();
-        featureEntries.add(currentEntry);
     }
 
     @Override
@@ -81,11 +112,9 @@ public class InfoToolResult {
         StringBuilder sb = new StringBuilder();
 
         int k = 0;
-        for (Map<String, Object> entry : featureEntries) {
-            for (Entry<String, Object> e : entry.entrySet()) {
-                sb.append(e.getKey()).append(": ").append(e.getValue()).append('\n');
-            }
-            if (++k < featureEntries.size()) {
+        for (ResultItem item : items) {
+            sb.append(item.toString());
+            if (++k < items.size()) {
                 sb.append('\n');
             }
         }
@@ -95,9 +124,18 @@ public class InfoToolResult {
 
     public Map<String, Object> getFeatureData(int featureIndex) {
         if (featureIndex < 0 || featureIndex >= getNumFeatures()) {
-            return Collections.emptyMap();
+            throw new IndexOutOfBoundsException("Invalid index value: " + featureIndex);
         }
 
-        return Collections.unmodifiableMap(featureEntries.get(featureIndex));
+        return Collections.unmodifiableMap(items.get(featureIndex).data);
     }
+    
+    public String getFeatureId(int featureIndex) {
+        if (featureIndex < 0 || featureIndex >= getNumFeatures()) {
+            throw new IndexOutOfBoundsException("Invalid index value: " + featureIndex);
+        }
+        
+        return items.get(featureIndex).id;
+    }
+    
 }

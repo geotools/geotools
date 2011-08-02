@@ -29,6 +29,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -77,6 +78,11 @@ public class JTextReporter extends JDialog {
      * preferred size
      */
     public static final int DEFAULT_COLS = 50;
+    
+    /**
+     * Default character to use for the {@linkplain #separator()} method. 
+     */
+    public static final char DEFAULT_SEPARATOR_CHAR = '-';
 
     private int rows;
     private int cols;
@@ -241,15 +247,26 @@ public class JTextReporter extends JDialog {
      * @param text the text to append
      */
     public synchronized void append(final String text) {
+        append(text, 0);
+    }
+    
+    /**
+     * Appends the given text to that displayed. No additional newlines
+     * are added after the text.
+     * 
+     * @param text the text to append
+     * @param indent indent width as number of spaces
+     */
+    public synchronized void append(final String text, final int indent) {
         if (EventQueue.isDispatchThread()) {
-            doAppend(text);
+            doAppend(text, indent);
 
         } else {
             try {
                 SwingUtilities.invokeAndWait(new Runnable() {
                     @Override
                     public void run() {
-                        doAppend(text);
+                        doAppend(text, indent);
                     }
                 });
 
@@ -309,11 +326,22 @@ public class JTextReporter extends JDialog {
      * Helper method for {@linkplain #append(String)}.
      *
      * @param text the text to be appended
+     * @param indent indent width as number of spaces
      */
-    private void doAppend(final String text) {
+    private void doAppend(final String text, final int indent) {
         int startLine = textArea.getLineCount();
 
-        textArea.append(text);
+        String appendText;
+        if (indent > 0) {
+            char[] c = new char[indent];
+            Arrays.fill(c, ' ');
+            String pad = String.valueOf(c);
+            appendText = pad + text.replaceAll("\\n", "\n" + pad);
+        } else {
+            appendText = text;
+        }
+        
+        textArea.append(appendText);
         textArea.setCaretPosition(textArea.getDocument().getLength());
 
         for (TextReporterListener listener : listeners) {
@@ -404,6 +432,26 @@ public class JTextReporter extends JDialog {
 
         cwd = chooser.getCurrentDirectory();
         return chooser.getSelectedFile();
+    }
+
+    /**
+     * Appends a line of repeated {@link #DEFAULT_SEPARATOR_CHAR}
+     * followed by a newline.
+     */
+    public void separator() {
+        separator(DEFAULT_SEPARATOR_CHAR);
+    }
+    
+    /**
+     * Appends a line of repeated character {@code c}
+     * followed by a newline.
+     */
+    public void separator(char c) {
+        int n = textArea.getColumns() - 1;
+        char[] carray = new char[n];
+        Arrays.fill(carray, c);
+        append(String.valueOf(carray));
+        append("\n");
     }
 
 }

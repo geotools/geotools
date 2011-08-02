@@ -61,12 +61,12 @@ public class FeatureLayerHelper extends InfoToolHelper {
      * average map side length multiplied by the value of this constant.
      */
     public static final double DEFAULT_DISTANCE_FRACTION = 0.01d;
+
     private static final GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory(null);
     private static final FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2(null);
 
     private String attrName;
     private Geometries geomType;
-    private double radius;
 
     /**
      * No argument constructor required by the helper lookup system.
@@ -112,7 +112,7 @@ public class FeatureLayerHelper extends InfoToolHelper {
                         filterFactory.literal(posGeom));
 
             } else {
-                ReferencedEnvelope env = createSearchEnv(pos, radius);
+                ReferencedEnvelope env = createSearchEnv(pos);
                 filter = filterFactory.bbox(filterFactory.property(attrName), env);
             }
 
@@ -127,7 +127,7 @@ public class FeatureLayerHelper extends InfoToolHelper {
             try {
                 while (iter.hasNext()) {
                     Feature f = iter.next();
-                    result.newFeature();
+                    result.newFeature(f.getIdentifier().getID());
                     for (PropertyDescriptor desc : descriptors) {
                         Name name = desc.getName();
                         Object value = f.getProperty(name).getValue();
@@ -167,15 +167,31 @@ public class FeatureLayerHelper extends InfoToolHelper {
         }
     }
 
-    private ReferencedEnvelope createSearchEnv(DirectPosition2D pos, double radius) {
-        final CoordinateReferenceSystem contentCRS = getMapContent().getCoordinateReferenceSystem();
-        ReferencedEnvelope env = new ReferencedEnvelope(pos.x - radius, pos.x + radius, pos.y - radius, pos.y + radius, contentCRS);
-        CoordinateReferenceSystem layerCRS = layerRef.get().getFeatureSource().getSchema().getCoordinateReferenceSystem();
+    private ReferencedEnvelope createSearchEnv(DirectPosition2D pos) {
+        ReferencedEnvelope mapBounds = getMapContent().getViewport().getBounds();
+        if (mapBounds == null || mapBounds.isEmpty()) {
+            // fall back to layer bounds
+            mapBounds = getLayer().getBounds();
+        }
 
-        try {
-            env = env.transform(layerCRS, true);
-        } catch (Exception ex) {
-            throw new IllegalStateException(ex);
+        double halfWidth = 0.5 * DEFAULT_DISTANCE_FRACTION *
+                (mapBounds.getWidth() + mapBounds.getHeight());
+
+        CoordinateReferenceSystem contentCRS = getMapContent().getCoordinateReferenceSystem();
+        ReferencedEnvelope env = new ReferencedEnvelope(
+            pos.x - halfWidth, pos.x + halfWidth, 
+            pos.y - halfWidth, pos.y + halfWidth, 
+            contentCRS);
+
+        if (isTransformRequired()) {
+            CoordinateReferenceSystem layerCRS = 
+                    layerRef.get().getFeatureSource().getSchema().getCoordinateReferenceSystem();
+
+            try {
+                env = env.transform(layerCRS, true);
+            } catch (Exception ex) {
+                throw new IllegalStateException(ex);
+            }
         }
 
         return env;

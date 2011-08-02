@@ -71,6 +71,7 @@ public class GridCoverageLayerHelper extends InfoToolHelper {
                 Number[] bandValues = InfoToolHelperUtils.asNumberArray(objArray);
 
                 if (bandValues != null) {
+                    result.newFeature("Raw values");
                     for (int i = 0; i < bandValues.length; i++) {
                         result.setFeatureValue("Band " + i, bandValues[i]);
                     }

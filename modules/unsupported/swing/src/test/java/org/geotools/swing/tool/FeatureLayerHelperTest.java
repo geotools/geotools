@@ -32,6 +32,7 @@ import org.geotools.data.DataStoreFinder;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.jts.Geometries;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
@@ -54,8 +55,6 @@ import static org.junit.Assert.*;
  */
 public class FeatureLayerHelperTest {
     private FeatureLayerHelper helper;
-    private MapContent mapContent;
-    private Layer layer;
     private SimpleFeatureSource featureSource;
 
     @Before
@@ -65,15 +64,28 @@ public class FeatureLayerHelperTest {
 
     @Test
     public void isLayerSupported() throws Exception {
-        layer = getStatePopLayer();
+        Layer layer = getPolygonLayer();
         assertTrue(helper.isSupportedLayer(layer));
         assertFalse(helper.isSupportedLayer(new MockLayer()));
     }
 
     @Test
-    public void getInfo() throws Exception {
-        layer = getStatePopLayer();
-        mapContent = new MapContent();
+    public void getInfoPolygonFeatures() throws Exception {
+        doGetInfoTest(getPolygonLayer(), 10);
+    }
+    
+    @Test
+    public void doGetInfoLineFeatures() throws Exception {
+        doGetInfoTest(getLineLayer(), 10);
+    }
+    
+    @Test
+    public void doGetInfoPointFeatures() throws Exception {
+        doGetInfoTest(getPointLayer(), 10);
+    }
+    
+    private void doGetInfoTest(Layer layer, int maxFeatures) throws Exception {
+        MapContent mapContent = new MapContent();
         mapContent.addLayer(layer);
 
         helper.setMapContent(mapContent);
@@ -81,23 +93,38 @@ public class FeatureLayerHelperTest {
 
         SimpleFeatureIterator iter = featureSource.getFeatures().features();
         try {
-            while (iter.hasNext()) {
+            int n = 0;
+            while (iter.hasNext() && n < maxFeatures) {
                 SimpleFeature feature = iter.next();
                 assertGetInfo(feature);
+                n++ ;
             }
 
         } finally {
             iter.close();
+            mapContent.dispose();
         }
     }
 
     private void assertGetInfo(SimpleFeature feature) throws Exception {
-        DirectPosition2D pos = getFeatureCentroid(feature);
+        DirectPosition2D pos = getFeatureQueryPos(feature);
         InfoToolResult info = helper.getInfo(pos);
+        assertFalse(info.getNumFeatures() < 1);
 
-        assertEquals(1, info.getNumFeatures());
+        // Allow that there might be more than one feature in
+        // the result
+        int index = -1;
+        String fid = feature.getIdentifier().getID();
+        for (int i = 0; i < info.getNumFeatures(); i++) {
+            if (info.getFeatureId(i).equals(fid)) {
+                index = i;
+                break;
+            }
+        }
+        
+        assertFalse("Feature not in result object", index < 0);
 
-        Map<String, Object> data = info.getFeatureData(0);
+        Map<String, Object> data = info.getFeatureData(index);
         assertEquals(feature.getAttributeCount(), data.size());
 
         for (Entry<String, Object> e : data.entrySet()) {
@@ -114,8 +141,22 @@ public class FeatureLayerHelperTest {
         }
     }
 
-    private Layer getStatePopLayer() throws Exception {
+    private Layer getPolygonLayer() throws Exception {
         URL url = TestData.url("shapes/statepop.shp");
+        return createLayer(url);
+    }
+    
+    private Layer getLineLayer() throws Exception {
+        URL url = TestData.url("shapes/roads.shp");
+        return createLayer(url);
+    }
+    
+    private Layer getPointLayer() throws Exception {
+        URL url = TestData.url("shapes/archsites.shp");
+        return createLayer(url);
+    }
+    
+    private Layer createLayer(URL url) throws Exception {
         Map params = new HashMap();
         params.put("url", url);
         DataStore dataStore = DataStoreFinder.getDataStore(params);
@@ -125,10 +166,32 @@ public class FeatureLayerHelperTest {
         return new FeatureLayer(featureSource, null);
     }
 
-    private DirectPosition2D getFeatureCentroid(SimpleFeature feature) {
+    private DirectPosition2D getFeatureQueryPos(SimpleFeature feature) {
         CoordinateReferenceSystem crs = featureSource.getSchema().getCoordinateReferenceSystem();
         Geometry geom = (Geometry) feature.getDefaultGeometry();
-        Coordinate c = geom.getCentroid().getCoordinate();
+        
+        Coordinate c = null;
+        switch (Geometries.get(geom)) {
+            case MULTIPOLYGON:
+            case POLYGON:
+                c = geom.getCentroid().getCoordinate();
+                break;
+                
+            case MULTILINESTRING:
+            case LINESTRING:
+                Coordinate[] coords = geom.getCoordinates();
+                c = coords[coords.length / 2];
+                break;
+                
+            case MULTIPOINT:
+            case POINT:
+                c = geom.getCoordinate();
+                break;
+                
+            default:
+                throw new IllegalArgumentException("Unsupported geometry type");
+        }
+        
         return new DirectPosition2D(crs, c.x, c.y);
     }
 

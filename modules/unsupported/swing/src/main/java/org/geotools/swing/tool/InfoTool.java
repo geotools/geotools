@@ -96,9 +96,12 @@ public class InfoTool extends CursorTool implements TextReporterListener {
     @Override
     public void onMouseClicked(MapMouseEvent ev) {
         DirectPosition2D pos = ev.getWorldPos();
+        createReporter();
         report(pos);
 
         MapContent content = getMapPane().getMapContent();
+        final int nlayers = content.layers().size();
+        int n = 0;
         for (Layer layer : content.layers()) {
             if (layer.isSelected()) {
                 InfoToolHelper helper = null;
@@ -128,30 +131,34 @@ public class InfoTool extends CursorTool implements TextReporterListener {
                 try {
                     InfoToolResult result = helper.getInfo(pos);
                     reporter.append(layerName + "\n");
-                    reporter.append(result.toString());
-                    reporter.append("\n");
+                    reporter.append(result.toString(), 4);
+                    
+                    if (++n < nlayers) {
+                        reporter.append("\n");
+                    }
                     
                 } catch (Exception ex) {
                     LOGGER.log(Level.WARNING, "Unable to query layer {0}", layerName);
                 }
             }
         }
+        
+        reporter.separator('-');
+        reporter.append("\n");
     }
 
     /**
-     * Write the mouse click position to a {@code JTextReporter}
+     * Writes the mouse click position to a {@code JTextReporter}
      *
-     * @param pos mouse click position (world coords)
+     * @param pos mouse click position in world coordinates
      */
     private void report(DirectPosition2D pos) {
-        createReporter();
-
-        reporter.append(String.format("Pos x=%.4f y=%.4f\n\n", pos.x, pos.y));
+        reporter.append(String.format("Pos x=%.4f y=%.4f\n", pos.x, pos.y));
     }
 
     /**
-     * Create and show a {@code JTextReporter} if one is not already active
-     * for this tool
+     * Creates and shows a {@code JTextReporter}. Does nothing if the 
+     * reporter is already active.
      */
     private void createReporter() {
         if (reporter == null) {

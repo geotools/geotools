@@ -100,11 +100,7 @@ public class InfoToolResult {
     }
 
     public int getNumFeatures() {
-        int n = items.size();
-        if (currentItem.isEmpty()) {
-            return n - 1;
-        }
-        return n;
+        return items.size();
     }
 
     @Override

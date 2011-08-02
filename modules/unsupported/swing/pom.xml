@@ -112,6 +112,12 @@
             <artifactId>fest-swing-junit</artifactId>
             <version>1.2.1</version>
             <scope>test</scope>
-        </dependency>        
+        </dependency>
+        <dependency>
+            <groupId>org.jaitools</groupId>
+            <artifactId>jt-utils</artifactId>
+            <version>${jt.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

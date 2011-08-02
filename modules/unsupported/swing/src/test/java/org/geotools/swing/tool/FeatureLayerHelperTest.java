@@ -33,6 +33,7 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.Geometries;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
@@ -82,6 +83,26 @@ public class FeatureLayerHelperTest {
     @Test
     public void doGetInfoPointFeatures() throws Exception {
         doGetInfoTest(getPointLayer(), 10);
+    }
+    
+    @Test
+    public void getInfoOutsideLayerBoundsReturnsEmptyResult() throws Exception {
+        Layer layer = getPointLayer();
+        MapContent mapContent = new MapContent();
+        mapContent.addLayer(layer);
+
+        helper.setMapContent(mapContent);
+        helper.setLayer(layer);
+        
+        ReferencedEnvelope bounds = layer.getBounds();
+        DirectPosition2D pos = new DirectPosition2D(
+                bounds.getCoordinateReferenceSystem(),
+                bounds.getMinX() - 1,
+                bounds.getMinY() - 1);
+        
+        InfoToolResult info = helper.getInfo(pos);
+        assertNotNull(info);
+        assertEquals(0, info.getNumFeatures());
     }
     
     private void doGetInfoTest(Layer layer, int maxFeatures) throws Exception {

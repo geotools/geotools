@@ -57,7 +57,7 @@ public class GridCoverageLayerHelper extends InfoToolHelper {
 
     @Override
     public InfoToolResult getInfo(DirectPosition2D pos) throws Exception {
-        InfoToolResult result = null;
+        InfoToolResult result = new InfoToolResult();
 
         if (isValid()) {
             GridCoverage2D source = ((GridCoverageLayer) layerRef.get()).getCoverage();
@@ -66,7 +66,6 @@ public class GridCoverageLayerHelper extends InfoToolHelper {
                     InfoToolHelperUtils.getTransformed(pos, getContentToLayerTransform());
 
             if (env.contains(trPos)) {
-                result = new InfoToolResult();
                 Object objArray = source.evaluate(trPos);
                 Number[] bandValues = InfoToolHelperUtils.asNumberArray(objArray);
 

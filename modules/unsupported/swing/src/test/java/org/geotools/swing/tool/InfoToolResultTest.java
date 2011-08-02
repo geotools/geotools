@@ -28,8 +28,8 @@ import static org.junit.Assert.*;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swing/src/test/java/org/geotools/swing/tool/FeatureLayerHelperTest.java $
- * @version $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swing/src/test/java/org/geotools/swing/tool/FeatureLayerHelperTest.java $
+ * @source $URL$
+ * @version $URL$
  */
 public class InfoToolResultTest {
     private InfoToolResult result;

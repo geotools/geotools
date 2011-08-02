@@ -70,7 +70,9 @@ public abstract class InfoToolHelper implements MapBoundsListener {
     public abstract boolean isSupportedLayer(Layer layer);
 
     /**
-     * Gets layer data at the specified position.
+     * Gets layer data at the specified position. If there are no feature
+     * data at the position, an empty {@code InfoToolResult} object is
+     * returned.
      *
      * @param pos query position
      * @return layer data

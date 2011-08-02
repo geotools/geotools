@@ -14,11 +14,9 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-
 package org.geotools.swing.tool;
 
 import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
 import java.lang.ref.WeakReference;
 
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -29,6 +27,7 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.map.GridReaderLayer;
 import org.geotools.map.Layer;
+import org.geotools.parameter.Parameter;
 import org.geotools.resources.geometry.XRectangle2D;
 import org.opengis.coverage.PointOutsideCoverageException;
 import org.opengis.coverage.grid.GridEnvelope;
@@ -36,6 +35,7 @@ import org.opengis.geometry.DirectPosition;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
+
 
 /**
  * Helper class used by {@linkplain InfoTool} to query values in a
@@ -48,7 +48,9 @@ import org.opengis.referencing.operation.MathTransform;
  */
 public class GridReaderLayerHelper extends InfoToolHelper {
 
+    private static final int CACHED_RASTER_WIDTH = 20;
     private WeakReference<AbstractGridCoverage2DReader> sourceRef;
+    private GridCoverage2D cachedCoverage;
 
     public GridReaderLayerHelper() {
     }
@@ -74,58 +76,82 @@ public class GridReaderLayerHelper extends InfoToolHelper {
         InfoToolResult result = new InfoToolResult();
 
         if (isValid()) {
-            AbstractGridCoverage2DReader reader = sourceRef.get();
-            DirectPosition2D trPos = 
+            DirectPosition trPos =
                     InfoToolHelperUtils.getTransformed(pos, getContentToLayerTransform());
 
-            MathTransform tr = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER).inverse();
-            DirectPosition rasterMid = tr.transform(trPos, null);
-
-            Rectangle2D.Double rasterArea = new Rectangle2D.Double();
-            rasterArea.setFrameFromCenter(rasterMid.getOrdinate(0), rasterMid.getOrdinate(1),
-                    rasterMid.getOrdinate(0) + 10, rasterMid.getOrdinate(1) + 10);
-
-            final Rectangle integerRasterArea = rasterArea.getBounds();
-
-            Rectangle originalArea = null;
-            final GridEnvelope gridEnvelope = reader.getOriginalGridRange();
-            if (gridEnvelope instanceof GridEnvelope2D) {
-                originalArea = (GridEnvelope2D) gridEnvelope;
-            } else {
-                new Rectangle();
-            }
-
-            XRectangle2D.intersect(integerRasterArea, originalArea, integerRasterArea);
-            // paranoiac check, did we fall outside the coverage raster area? This should
-            // never really happne if the request is well formed.
-            if (integerRasterArea.isEmpty()) {
-                return null;
-            }
-
-            GeneralParameterValue parameter = new org.geotools.parameter.Parameter(
-                    AbstractGridFormat.READ_GRIDGEOMETRY2D,
-                    new GridGeometry2D(new GridEnvelope2D(integerRasterArea), reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER), reader.getCrs()));
-
-            final GridCoverage2D coverage = (GridCoverage2D) reader.read(new GeneralParameterValue[]{parameter});
-            if (coverage != null) {
-                try {
-                    Object objArray = coverage.evaluate(trPos);
-                    Number[] bandValues = InfoToolHelperUtils.asNumberArray(objArray);
-
-                    if (bandValues != null) {
-                        result.newFeature("Raw values");
-                        for (int i = 0; i < bandValues.length; i++) {
-                            result.setFeatureValue("Band " + i, bandValues[i]);
-                        }
-                    }
-
-                } catch (PointOutsideCoverageException e) {
-                    // Do nothing
+            if (cachedCoverage == null || !cachedCoverage.getEnvelope2D().contains(trPos)) {
+                if (!renewCachedCoverage(trPos)) {
+                    return result;
                 }
+            }
+
+            try {
+                Object objArray = cachedCoverage.evaluate(trPos);
+                Number[] bandValues = InfoToolHelperUtils.asNumberArray(objArray);
+
+                if (bandValues != null) {
+                    result.newFeature("Raw values");
+                    for (int i = 0; i < bandValues.length; i++) {
+                        result.setFeatureValue("Band " + i, bandValues[i]);
+                    }
+                }
+
+            } catch (PointOutsideCoverageException e) {
+                // The empty result will be returned
             }
         }
 
         return result;
+    }
+
+    private boolean renewCachedCoverage(DirectPosition centrePos) {
+        final Rectangle queryRect = createQueryGridEnvelope(centrePos);
+        if (queryRect.isEmpty()) {
+            return false;
+        }
+
+        final AbstractGridCoverage2DReader reader = sourceRef.get();
+        GeneralParameterValue parameter = new Parameter(
+                AbstractGridFormat.READ_GRIDGEOMETRY2D,
+                new GridGeometry2D(new GridEnvelope2D(queryRect),
+                reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER),
+                reader.getCrs()));
+        
+        try {
+            cachedCoverage = (GridCoverage2D) reader.read(new GeneralParameterValue[]{parameter});
+            return cachedCoverage != null;
+            
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    private Rectangle createQueryGridEnvelope(DirectPosition pos) {
+        final AbstractGridCoverage2DReader reader = sourceRef.get();
+        try {
+            MathTransform worldToGridTransform =
+                    reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER).inverse();
+
+            DirectPosition midPos = worldToGridTransform.transform(pos, null);
+            int x = (int) midPos.getOrdinate(0);
+            int y = (int) midPos.getOrdinate(1);
+            int halfWidth = CACHED_RASTER_WIDTH / 2;
+
+            final Rectangle queryRect = new Rectangle(
+                    x - halfWidth, y - halfWidth,
+                    CACHED_RASTER_WIDTH, CACHED_RASTER_WIDTH);
+
+            GridEnvelope gridEnv = reader.getOriginalGridRange();
+                Rectangle rect = new Rectangle(
+                        gridEnv.getLow(0), gridEnv.getLow(1),
+                        gridEnv.getSpan(0), gridEnv.getSpan(1));
+
+            XRectangle2D.intersect(queryRect, rect, queryRect);
+            return queryRect;
+
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
 }

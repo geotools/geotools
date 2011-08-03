@@ -82,10 +82,10 @@ import org.opengis.referencing.operation.TransformException;
 public class GeoTiffWriter extends AbstractGridCoverageWriter implements
 		GridCoverageWriter {
 
-    private final Map<String, String> metadataKeyValue = new HashMap<String, String>(); 
-	/** Logger for the {@link GeoTiffReader} class. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GeoTiffWriter.class.toString());
 
+    private final Map<String, String> metadataKeyValue = new HashMap<String, String>(); 
+	/** Logger for the {@link GeoTiffReader} class. */
     /**
      * Constructor for a {@link GeoTiffWriter}.
      * 

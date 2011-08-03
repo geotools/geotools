@@ -19,11 +19,11 @@ package org.geotools.gce.geotiff;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import javax.imageio.ImageReadParam;
 import javax.imageio.ImageTypeSpecifier;
 
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -32,10 +32,10 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
 import org.geotools.factory.Hints;
+import org.geotools.gce.geotiff.OverviewsController.OverviewLevel;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.Utilities;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridEnvelope;
@@ -50,266 +50,6 @@ import org.opengis.referencing.operation.TransformException;
 class RasterManager {
 
     /**
-     * Simple support class for sorting overview resolutions
-     * 
-     * @author Andrea Aime
-     * @author Simone Giannecchini, GeoSolutions.
-     * @since 2.5
-     */
-    static class OverviewLevel implements Comparable<OverviewLevel> {
-
-        double scaleFactor;
-
-        double resolutionX;
-
-        double resolutionY;
-
-        int imageChoice;
-
-        RasterLayout rasterLayout;
-
-        public OverviewLevel(final double scaleFactor, final double resolutionX,
-                final double resolutionY, final int imageChoice, final RasterLayout rasterLayout) {
-            this.rasterLayout = rasterLayout;
-            this.scaleFactor = scaleFactor;
-            this.resolutionX = resolutionX;
-            this.resolutionY = resolutionY;
-            this.imageChoice = imageChoice;
-        }
-
-        public int compareTo(final OverviewLevel other) {
-            if (scaleFactor > other.scaleFactor) {
-                return 1;
-            } else if (scaleFactor < other.scaleFactor) {
-                return -1;
-            } else {
-                return 0;
-            }
-        }
-
-        @Override
-        public String toString() {
-            return "OverviewLevel[Choice=" + imageChoice + ",scaleFactor=" + scaleFactor + "]";
-        }
-
-        @Override
-        public int hashCode() {
-            int hash = Utilities.hash(imageChoice, 31);
-            hash = Utilities.hash(resolutionX, hash);
-            hash = Utilities.hash(resolutionY, hash);
-            hash = Utilities.hash(scaleFactor, hash);
-            hash = Utilities.hash(rasterLayout, hash);
-            return hash;
-        }
-
-    }
-
-    class OverviewsController {
-        ArrayList<RasterManager.OverviewLevel> resolutionsLevels;
-
-        public OverviewsController() {
-            resolutionsLevels = new ArrayList<OverviewLevel>();
-
-            // notice that we assume what follows:
-            // -highest resolution image is at level 0.
-            // -all the overviews share the same envelope
-            // -the aspect ratio for the overviews is constant
-            // -the provided resolutions are taken directly from the grid
-            resolutionsLevels.add(new OverviewLevel(1, highestRes[0], highestRes[1], 0,
-                    parent.hrLayout));
-            if (numberOfOverwies > 0) {
-                for (int i = 0; i < overviewsResolution.length; i++) {
-                    resolutionsLevels.add(new OverviewLevel(overviewsResolution[i][0]
-                            / highestRes[0], overviewsResolution[i][0], overviewsResolution[i][1],
-                            i + 1, parent.overViewLayouts[i]));
-                }
-                Collections.sort(resolutionsLevels);
-            }
-        }
-
-        int pickOverviewLevel(final OverviewPolicy policy, final RasterLayerRequest request) {
-
-            // //
-            //
-            // If this file has only one page we use decimation, otherwise we use the best page
-            // available. Future versions should use both.
-            //
-            // //
-            if (resolutionsLevels == null || resolutionsLevels.size() <= 0) {
-                return 0;
-            }
-
-            // Now search for the best matching resolution.
-            // Check also for the "perfect match"... unlikely in practice unless someone tunes 
-            // the clients to request exactly the resolution embedded in the overviews, 
-            // something a perf sensitive person might do in fact
-
-            // requested scale factor for least reduced axis
-            final OverviewLevel max = (OverviewLevel) resolutionsLevels.get(0);
-
-            // the requested resolutions
-            final double requestedScaleFactorX;
-            final double requestedScaleFactorY;
-            final double[] requestedRes = request.getRequestedResolution();
-            if (requestedRes != null) {
-                final double reqx = requestedRes[0];
-                final double reqy = requestedRes[1];
-
-                requestedScaleFactorX = reqx / max.resolutionX;
-                requestedScaleFactorY = reqy / max.resolutionY;
-            } else {
-                final double[] scaleFactors = request.getRequestedRasterScaleFactors();
-                if (scaleFactors == null) {
-                    return 0;
-                }
-                requestedScaleFactorX = scaleFactors[0];
-                requestedScaleFactorY = scaleFactors[1];
-            }
-            final int leastReduceAxis = requestedScaleFactorX <= requestedScaleFactorY ? 0 : 1;
-            final double requestedScaleFactor = leastReduceAxis == 0 ? requestedScaleFactorX
-                    : requestedScaleFactorY;
-
-            // are we looking for a resolution even higher than the native one?
-            if (requestedScaleFactor <= 1) {
-                return max.imageChoice;
-            }
-            // are we looking for a resolution even lower than the smallest
-            // overview?
-            final OverviewLevel min = (OverviewLevel) resolutionsLevels.get(resolutionsLevels
-                    .size() - 1);
-            if (requestedScaleFactor >= min.scaleFactor) {
-                return min.imageChoice;
-            }
-            // Ok, so we know the overview is between min and max, skip the first
-            // and search for an overview with a resolution lower than the one requested,
-            // that one and the one from the previous step will bound the searched resolution
-            OverviewLevel prev = max;
-            final int size = resolutionsLevels.size();
-            for (int i = 1; i < size; i++) {
-                final OverviewLevel curr = resolutionsLevels.get(i);
-                // perfect match check
-                if (curr.scaleFactor == requestedScaleFactor) {
-                    return curr.imageChoice;
-                }
-
-                // middle check. The first part of the condition should be sufficient, but
-                // there are cases where the x resolution is satisfied by the lowest resolution,
-                // the y by the one before the lowest (so the aspect ratio of the request is
-                // different than the one of the overviews), and we would end up going out of the 
-                // loop since not even the lowest can "top" the request for one axis
-                if (curr.scaleFactor > requestedScaleFactor || i == size - 1) {
-                    if (policy == OverviewPolicy.QUALITY) {
-                        return prev.imageChoice;
-                    } else if (policy == OverviewPolicy.SPEED) {
-                        return curr.imageChoice;
-                    } else if (requestedScaleFactor - prev.scaleFactor < curr.scaleFactor
-                            - requestedScaleFactor) {
-                        return prev.imageChoice;
-                    } else {
-                        return curr.imageChoice;
-                    }
-                }
-                prev = curr;
-            }
-            // fallback
-            return max.imageChoice;
-        }
-
-    }
-
-    /**
-     * This class is responsible for doing decimation once the best overview
-     * available has been selected (this include the case when no overview is
-     * available).
-     * 
-     * @author Simone Giannecchini, GeoSolutions SAS
-     * 
-     */
-    class DecimationController {
-
-        public DecimationController() {
-
-        }
-
-        /**
-         * This method is responsible for evaluating possible subsampling
-         * factors once the best resolution level has been found, in case we
-         * have support for overviews, or starting from the original coverage in
-         * case there are no overviews available.
-         * 
-         * Anyhow this method should not be called directly but subclasses
-         * should make use of the setReadParams method instead in order to
-         * transparently look for overviews.
-         * 
-         * @param imageIndex
-         * @param readParameters
-         * @param requestedRes
-         */
-        void computeDecimationFactors(
-                final int imageIndex, 
-                final ImageReadParam readParameters,
-                final RasterLayerRequest request) {
-
-            // the read parameters cannot be null
-            Utilities.ensureNonNull("readParameters", readParameters);
-            Utilities.ensureNonNull("request", request);
-
-            // get the requested resolution in order to guess what we are looking for
-            final double[] requestedRes = request.getRequestedResolution();
-            if (requestedRes == null) {
-                // if there is no requested resolution we don't do any subsampling
-                readParameters.setSourceSubsampling(1, 1, 0, 0);
-                return;
-            }
-            
-            final int rasterWidth, rasterHeight;
-            double selectedRes[] = new double[2];
-            
-            // are we working against a certain overview?
-            final OverviewLevel level = overviewsController.resolutionsLevels.get(imageIndex);
-            selectedRes[0] = level.resolutionX;
-            selectedRes[1] = level.resolutionY;
-            if (imageIndex == 0) {
-                // highest resolution
-                rasterWidth = domainManager.coverageRasterArea.width;
-                rasterHeight = domainManager.coverageRasterArea.height;
-            } else {
-                // work on overviews
-                final RasterLayout selectedLevelLayout = overviewsController.resolutionsLevels
-                        .get(imageIndex).rasterLayout;
-                rasterWidth = selectedLevelLayout.width;
-                rasterHeight = selectedLevelLayout.height;
-            }
-
-            // //
-            // DECIMATION ON READING
-            // Setting subsampling factors with some checks
-            // 1) the subsampling factors cannot be zero
-            // 2) the subsampling factors cannot be such that the w or h are
-            // zero
-            // //
-            int subSamplingFactorX = (int) Math.floor(requestedRes[0] / selectedRes[0]);
-            subSamplingFactorX = subSamplingFactorX == 0 ? 1 : subSamplingFactorX;
-
-            while (rasterWidth / subSamplingFactorX <= 0 && subSamplingFactorX >= 0)
-                subSamplingFactorX--;
-            subSamplingFactorX = subSamplingFactorX <= 0 ? 1 : subSamplingFactorX;
-
-            int subSamplingFactorY = (int) Math.floor(requestedRes[1] / selectedRes[1]);
-            subSamplingFactorY = subSamplingFactorY == 0 ? 1 : subSamplingFactorY;
-
-            while (rasterHeight / subSamplingFactorY <= 0 && subSamplingFactorY >= 0)
-                subSamplingFactorY--;
-            subSamplingFactorY = subSamplingFactorY <= 0 ? 1 : subSamplingFactorY;
-
-            // set the read parameters
-            readParameters.setSourceSubsampling(subSamplingFactorX, subSamplingFactorY, 0, 0);
-
-        }
-
-    }
-
-    /**
      * This class is responsible for putting together all the 2D spatial
      * information needed for a certain raster.
      * 
@@ -321,9 +61,9 @@ class RasterManager {
      * @author Simone Giannecchini, GeoSolutions SAS
      * 
      */
-    class DomainManager {
+    class SpatialDomainManager {
 
-        public DomainManager() throws TransformException, FactoryException {
+        public SpatialDomainManager() throws TransformException, FactoryException {
             setBaseParameters();
             prepareCoverageSpatialElements();
         }
@@ -373,7 +113,7 @@ class RasterManager {
             coverageGeographicBBox = new ReferencedEnvelope(CRS.transform(CRS.findMathTransform(
                     coverageEnvelope.getCoordinateReferenceSystem(), Utils.WGS84,
                     true), coverageEnvelope));
-            coverageGeographicCRS2D = coverageGeographicBBox.getCoordinateReferenceSystem();
+            coverageGeographicCRS2D = coverageGeographicBBox!=null?coverageGeographicBBox.getCoordinateReferenceSystem():null;
 
             //
             // Get the original envelope 2d and its spatial reference system
@@ -424,16 +164,10 @@ class RasterManager {
      */
     private String coverageIdentifier;
 
-    private double[] highestRes;
-
     /** The hints to be used to produce this coverage */
     private Hints hints;
 
     private URL inputURL;
-
-    private int numberOfOverwies;
-
-    private double[][] overviewsResolution;
 
     // ////////////////////////////////////////////////////////////////////////
     //
@@ -449,23 +183,19 @@ class RasterManager {
 
     OverviewPolicy overviewPolicy;
 
-    DecimationController decimationController;
-
     GeoTiffReader parent;
 
-    private String locationAttribute;
-
-    boolean expandMe;
-
-    DomainManager domainManager;
+    SpatialDomainManager spatialDomainManager;
 
     ImageTypeSpecifier baseImageType;
+
+    /** Logger. */
+    private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(RasterManager.class);
 
     public RasterManager(final GeoTiffReader reader) throws DataSourceException {
 
         Utilities.ensureNonNull("GeoTiffReader", reader);
         this.parent = reader;
-        this.expandMe = parent.expandMe;
         inputURL = reader.sourceURL;
         coverageIdentifier = reader.getName();
         hints = reader.getHints();
@@ -481,16 +211,13 @@ class RasterManager {
         coverageCRS = reader.getCrs();
         raster2Model = reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER);
 
-        // resolution values
-        highestRes = reader.getHighestRes();
-        numberOfOverwies = reader.getNumberOfOverviews();
-        overviewsResolution = reader.getOverviewsResolution();
-
-        // instantiating controller for subsampling and overviews
-        overviewsController = new OverviewsController();
-        decimationController = new DecimationController();
+        //instantiating controller for subsampling and overviews
+        overviewsController=new OverviewsController(
+                        reader.getHighestRes(),
+                        reader.getNumberOfOverviews(),
+                        reader.getOverviewsResolution());
         try {
-            domainManager = new DomainManager();
+            spatialDomainManager = new SpatialDomainManager();
         } catch (TransformException e) {
             throw new DataSourceException(e);
         } catch (FactoryException e) {
@@ -522,7 +249,7 @@ class RasterManager {
 
         // use default if not provided. Default is nearest
         if (overviewPolicy == null) {
-            overviewPolicy = OverviewPolicy.NEAREST;
+			overviewPolicy = OverviewPolicy.getDefaultPolicy();
         }
         assert overviewPolicy != null;
         return overviewPolicy;
@@ -533,6 +260,8 @@ class RasterManager {
         // create a request
         final RasterLayerRequest request = new RasterLayerRequest(params, this);
         if (request.isEmpty()) {
+            if (LOGGER.isLoggable(Level.FINE))
+                LOGGER.log(Level.FINE, "Request is empty: " + request.toString());
             return Collections.emptyList();
         }
 
@@ -551,11 +280,6 @@ class RasterManager {
     public void dispose() {
 
     }
-
-    public String getLocationAttribute() {
-        return locationAttribute;
-    }
-
     public URL getInputURL() {
         return inputURL;
     }

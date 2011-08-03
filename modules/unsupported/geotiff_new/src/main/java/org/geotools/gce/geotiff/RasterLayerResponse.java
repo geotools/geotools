@@ -17,14 +17,12 @@
 package org.geotools.gce.geotiff;
 
 import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
-import jaitools.imageutils.ImageLayout2;
 
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.ColorModel;
-import java.awt.image.IndexColorModel;
 import java.awt.image.MultiPixelPackedSampleModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
@@ -51,7 +49,7 @@ import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
-import org.geotools.gce.geotiff.RasterManager.OverviewLevel;
+import org.geotools.gce.geotiff.OverviewsController.OverviewLevel;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
@@ -60,6 +58,7 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.image.ImageUtilities;
+import org.jaitools.imageutils.ImageLayout2;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.geometry.BoundingBox;
@@ -436,28 +435,6 @@ class RasterLayerResponse{
             final boolean doTransparentColor, final Color transparentColor) {
 
         //
-        // INDEX COLOR MODEL EXPANSION
-        //
-        // Take into account the need for an expansions of the original color model.
-        //
-        // If the original color model is an index color model an expansion might be requested 
-        // in case the different palettes are not all the same. In this case the mosaic operator 
-        // from JAI would provide wrong results since it would take the first palette and use 
-        // that one for all the other images.
-        //
-        // There is a special case to take into account here. In case the input images use an 
-        // IndexColorModel it might happen that the transparent color is present in some of them 
-        // while it is not present in some others. This case is the case where for sure a color 
-        // expansion is needed. However we have to take into account that during the masking phase 
-        // the images where the requested transparent color was present  will have 4 bands, the 
-        // other 3. If we want the mosaic to work we have to add an extra band to the latter type 
-        // of images for providing alpha information to them.
-        //
-        if (rasterManager.expandMe && granule.getColorModel() instanceof IndexColorModel) {
-            granule = new ImageWorker(granule).forceComponentColorModel().getRenderedImage();
-        }
-
-        //
         // TRANSPARENT COLOR MANAGEMENT
         //
         //
@@ -552,11 +529,13 @@ class RasterLayerResponse{
         }
 
         // overviews and decimation
-        imageChoice = rasterManager.overviewsController.pickOverviewLevel(overviewPolicy, request);
-
-        // DECIMATION ON READING
-        rasterManager.decimationController.computeDecimationFactors(
-                imageChoice, readParams, request);
+        imageChoice = ReadParamsController.setReadParams(
+                request.getRequestedResolution(),
+                request.getOverviewPolicy(),
+                request.getDecimationPolicy(),
+                baseReadParameters,
+                request.rasterManager,
+                request.rasterManager.overviewsController); // use general overviews controller
         return imageChoice;
     }
 

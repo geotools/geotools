@@ -131,8 +131,6 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
 
     URL sourceURL;
 
-    boolean expandMe;
-
     RasterLayout[] overViewLayouts;
 
     RasterLayout hrLayout;

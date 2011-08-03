@@ -15,7 +15,6 @@ org.geotools.coverage.processing.operation.MedianFilter
 org.geotools.coverage.processing.operation.MinFilter
 org.geotools.coverage.processing.operation.Multiply
 org.geotools.coverage.processing.operation.MultiplyConst
-org.geotools.coverage.processing.operation.Recolor
 org.geotools.coverage.processing.operation.Resample
 org.geotools.coverage.processing.operation.Rescale
 org.geotools.coverage.processing.operation.Scale

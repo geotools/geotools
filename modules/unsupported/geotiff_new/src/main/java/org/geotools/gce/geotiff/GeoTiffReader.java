@@ -423,7 +423,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
     
             // get sample image
             final ImageReadParam readParam = reader.getDefaultReadParam();
-            readParam.setSourceRegion(new Rectangle(0, 0, 4, 4));
+            readParam.setSourceRegion(new Rectangle(0, 0, 2, 2));
             final BufferedImage sampleImage = reader.read(0, readParam);
             baseImageType = new ImageTypeSpecifier(sampleImage);
         } catch (Throwable e) {

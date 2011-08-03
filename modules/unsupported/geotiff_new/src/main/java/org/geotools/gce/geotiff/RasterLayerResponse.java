@@ -19,6 +19,7 @@ package org.geotools.gce.geotiff;
 import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
@@ -37,6 +38,7 @@ import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.media.jai.JAI;
 import javax.media.jai.operator.ConstantDescriptor;
+import javax.media.jai.operator.FormatDescriptor;
 import javax.media.jai.util.ImagingException;
 
 import org.geotools.coverage.GridSampleDimension;
@@ -390,37 +392,34 @@ class RasterLayerResponse{
                 return theImage;
 
             } else {
-                // if we get here that means that we do not have anything to load but still 
-                // we are inside the definition area for the mosaic, therefore we create a fake 
-                // coverage using the background values, if provided (defaulting to 0), as well 
-                // as the compute raster bounds, envelope and grid to world.
+                // if we get here that means that we do not have anything to load
+                // but still we are inside the definition area for the mosaic,
+                // therefore we create a fake coverage using the background values,
+                // if provided (defaulting to 0), as well as the compute raster
+                // bounds, envelope and grid to world.
 
-                // create proper layout hint
-                final ImageLayout2 il = new ImageLayout2();
-                il.setSampleModel(rasterManager.baseImageType.getSampleModel())
-                        .setColorModel(rasterManager.baseImageType.getColorModel());
-
-                final Hints hints = new Hints(rasterManager.getHints());
-                hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, il));
-
-                if (backgroundValues == null) {
-                    // we don't have background values available
-                    // TODO use code to suggest NO Data Value
-                    return ConstantDescriptor.create(
-                            Float.valueOf(rasterBounds.width), Float.valueOf(rasterBounds.height),
-                            new Number[] { CoverageUtilities.suggestNoDataValue(
-                                    rasterManager.baseImageType.getSampleModel().getDataType()) },
-                            hints);
-                } else {
-
-                    // we have background values available
-                    final Double[] values = new Double[backgroundValues.length];
-                    for (int i = 0; i < values.length; i++)
-                        values[i] = backgroundValues[i];
-                    return ConstantDescriptor.create(
-                            Float.valueOf(rasterBounds.width),
-                            Float.valueOf(rasterBounds.height), values, hints);
+                final Number[] values = ImageUtilities.getBackgroundValues(rasterManager.defaultSM, backgroundValues);
+                // create a constant image with a proper layout
+                final RenderedImage finalImage = ConstantDescriptor.create(
+                        Float.valueOf(rasterBounds.width),
+                        Float.valueOf(rasterBounds.height),
+                        values,
+                        null);
+                if(rasterManager.defaultCM!=null){
+                    final ImageLayout2 il= new ImageLayout2();
+                    il.setColorModel(rasterManager.defaultCM);
+                    Dimension tileSize= request.getTileDimensions();
+                    if(tileSize==null){
+                        tileSize=JAI.getDefaultTileSize();
+                    } 
+                    il.setSampleModel(rasterManager.defaultCM.createCompatibleSampleModel(tileSize.width, tileSize.height));
+                    il.setTileGridXOffset(0).setTileGridYOffset(0).setTileWidth((int)tileSize.getWidth()).setTileHeight((int)tileSize.getHeight());
+                    return FormatDescriptor.create(
+                            finalImage,
+                            Integer.valueOf(il.getSampleModel(null).getDataType()),
+                            new RenderingHints(JAI.KEY_IMAGE_LAYOUT,il));
                 }
+                return finalImage;
             }
 
         } catch (IOException e) {

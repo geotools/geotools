@@ -98,11 +98,6 @@ public final class GeoTiffFormat extends AbstractGridFormat implements Format {
     /** Control the background values for the output coverage */
     public static final ParameterDescriptor<double[]> BACKGROUND_VALUES = new DefaultParameterDescriptor<double[]>(
             "BackgroundValues", double[].class, null, null);
-
-//    /** Control the threading behavior for this plugin.*/
-//    public static final ParameterDescriptor<Boolean> ALLOW_MULTITHREADING = new DefaultParameterDescriptor<Boolean>(
-//            "AllowMultithreading", Boolean.class, new Boolean[]{Boolean.TRUE,Boolean.FALSE}, Boolean.FALSE);
-    
     /**
      * Creates a new instance of GeoTiffFormat
      */
@@ -122,7 +117,6 @@ public final class GeoTiffFormat extends AbstractGridFormat implements Format {
                             INPUT_TRANSPARENT_COLOR, 
                             USE_JAI_IMAGEREAD,
                             SUGGESTED_TILE_SIZE
-//                            ,ALLOW_MULTITHREADING
                             }));
 
         // writing parameters

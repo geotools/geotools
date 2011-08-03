@@ -17,6 +17,8 @@
 package org.geotools.gce.geotiff;
 
 import java.awt.Rectangle;
+import java.awt.image.ColorModel;
+import java.awt.image.SampleModel;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
@@ -25,6 +27,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageTypeSpecifier;
+import javax.media.jai.ImageLayout;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -189,6 +192,14 @@ class RasterManager {
 
     ImageTypeSpecifier baseImageType;
 
+    /** Default {@link ColorModel}.*/
+    ColorModel defaultCM;
+
+    /** Default {@link SampleModel}.*/
+    SampleModel defaultSM;
+
+    ImageLayout defaultImageLayout;
+
     /** Logger. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(RasterManager.class);
 
@@ -205,6 +216,12 @@ class RasterManager {
 
         // base image type
         baseImageType = reader.baseImageType;
+        // load SM and CM
+        defaultCM= baseImageType.getColorModel();
+        defaultSM= baseImageType.getSampleModel();
+        
+        // default ImageLayout
+        defaultImageLayout= new ImageLayout().setColorModel(defaultCM).setSampleModel(defaultSM);
 
         coverageEnvelope = reader.getOriginalEnvelope();
         coverageGridrange = reader.getOriginalGridRange();

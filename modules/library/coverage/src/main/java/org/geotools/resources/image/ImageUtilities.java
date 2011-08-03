@@ -32,6 +32,7 @@ import java.awt.image.DataBufferUShort;
 import java.awt.image.IndexColorModel;
 import java.awt.image.MultiPixelPackedSampleModel;
 import java.awt.image.RenderedImage;
+import java.awt.image.SampleModel;
 import java.awt.image.WritableRaster;
 import java.awt.image.WritableRenderedImage;
 import java.io.IOException;
@@ -1189,5 +1190,76 @@ public final class ImageUtilities {
     		return true;
     	readParameters.setSourceRegion(sourceRegion);
     	return false;
+    }
+
+    /**
+     * Build a background values array using the same dataType of the input {@link SampleModel} (if
+     * available) and the values provided in the input array.
+     * 
+     * @param sampleModel
+     * @param backgroundValues
+     * @return
+     */
+    public static Number[] getBackgroundValues(final SampleModel sampleModel, final double[] backgroundValues) {
+        Number[] values = null;
+        final int dataType = sampleModel != null ? sampleModel.getDataType() : DataBuffer.TYPE_DOUBLE;
+        final int numBands=sampleModel != null? sampleModel.getNumBands() : 1;
+        switch (dataType){
+        
+            case DataBuffer.TYPE_BYTE:
+                values = new Byte[numBands];
+                 if (backgroundValues == null){                          
+                         Arrays.fill(values, Byte.valueOf((byte)0));
+                 }
+                 else{
+                        //we have background values available
+                     for (int i = 0; i < values.length; i++)
+                         values[i] = i>=backgroundValues.length?Byte.valueOf((byte)backgroundValues[0]):Byte.valueOf((byte)backgroundValues[i]);
+                 }
+                 break;
+            case DataBuffer.TYPE_SHORT:
+            case DataBuffer.TYPE_USHORT:
+                 values = new Short[numBands] ;
+                 if (backgroundValues == null)
+                         Arrays.fill(values, Short.valueOf((short)0));
+                 else {
+                        //we have background values available
+                         for (int i = 0; i < values.length; i++)
+                             values[i] = i>=backgroundValues.length?Short.valueOf((short)backgroundValues[0]):Short.valueOf((short)backgroundValues[i]);
+                 }
+                 break;
+            case DataBuffer.TYPE_INT:
+                values = new Integer[numBands] ;
+                if (backgroundValues == null)
+                    Arrays.fill(values, Integer.valueOf((int) 0));
+                else {
+                    // we have background values available
+                    for (int i = 0; i < values.length; i++)
+                        values[i] = i >= backgroundValues.length ? Integer.valueOf((int) backgroundValues[0]) : Integer.valueOf((int) backgroundValues[i]);
+    
+                }
+                 break;
+            case DataBuffer.TYPE_FLOAT:
+                values = new Float[numBands] ;
+                 if (backgroundValues == null)
+                        Arrays.fill(values, Float.valueOf(0.f));
+                 else{
+                        //we have background values available
+                     for (int i = 0; i < values.length; i++)
+                         values[i] = i>=backgroundValues.length?Float.valueOf((float)backgroundValues[0]):Float.valueOf((float)backgroundValues[i]);
+                 }
+                 break;
+            case DataBuffer.TYPE_DOUBLE:
+                values = new Double[numBands] ;
+                 if (backgroundValues == null)
+                        Arrays.fill(values, Double.valueOf(0.d));
+                 else {
+                        //we have background values available
+                     for (int i = 0; i < values.length; i++)
+                         values[i] = i>=backgroundValues.length?Double.valueOf((Double)backgroundValues[0]):Double.valueOf((Double)backgroundValues[i]);
+                 }
+                 break;
+            }
+        return values;
     }
 }

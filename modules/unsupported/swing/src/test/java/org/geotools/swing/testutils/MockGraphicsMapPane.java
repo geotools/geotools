@@ -30,8 +30,8 @@ import org.geotools.swing.tool.MapToolManager;
  * 
  * @author Michael Bedward
  * @since 8.0
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swing/src/test/java/org/geotools/swing/testutils/MockMapPane.java $
- * @version $Id: MockMapPane.java 37675 2011-07-19 12:34:04Z mbedward $
+ * @source $URL$
+ * @version $Id$
  */
 public class MockGraphicsMapPane extends JPanel {
     private MockMapPane innerPane;

@@ -13,8 +13,8 @@ import org.geotools.swing.event.MapMouseListener;
  * 
  * @author Michael Bedward
  * @since 8.0
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swing/src/test/java/org/geotools/swing/testutils/WaitingMapPaneListener.java $
- * @version $Id: WaitingMapPaneListener.java 37699 2011-07-22 06:20:07Z mbedward $
+ * @source $URL$
+ * @version $Id$
  */
 public class WaitingMapMouseListener 
         extends WaitingListener<MapMouseEvent, WaitingMapMouseListener.Type> 

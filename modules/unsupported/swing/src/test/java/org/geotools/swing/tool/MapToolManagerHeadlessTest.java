@@ -28,8 +28,8 @@ import static org.junit.Assert.*;
  * 
  * @author Michael Bedward
  * @since 8.0
- * @source $URL: $
- * @version $Id: $
+ * @source $URL$
+ * @version $Id$
  */
 public class MapToolManagerHeadlessTest {
     private MockMapPane pane;

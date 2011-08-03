@@ -43,8 +43,8 @@ import static org.junit.Assert.*;
  * 
  * @author Michael Bedward
  * @since 8.0
- * @source $URL: $
- * @version $Id: $
+ * @source $URL$
+ * @version $Id$
  */
 @RunWith(GraphicsTestRunner.class)
 @Ignore("Still working out how to write these tests")

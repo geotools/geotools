@@ -50,7 +50,7 @@ import static org.junit.Assert.*;
  * @version $Id$
  */
 @RunWith(GraphicsTestRunner.class)
-public class JMapPaneScreenTest {
+public class JMapPaneGraphicsTest {
     private static final long WAIT_TIMEOUT = 1000;
     private static final int WIDTH = 200;
     private static final int HEIGHT = 150;

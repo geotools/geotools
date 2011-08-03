@@ -14,6 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+
 package org.geotools.swing.testutils;
 
 import java.awt.Component;
@@ -35,7 +36,7 @@ import org.opengis.geometry.Envelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
- * Mock map pane class for testing. 
+ * Mock map pane class for testing in a headless environment. 
  * 
  * @author Michael Bedward
  * @since 8.0
@@ -55,26 +56,32 @@ public class MockMapPane extends Component implements MapPane {
         toolManager = new MapToolManager(this);
     }
 
+    @Override
     public void setMapContent(MapContent content) {
         mapContent = content;
         mapContent.getViewport().setMatchingAspectRatio(true);
     }
 
+    @Override
     public MapContent getMapContent() {
         return mapContent;
     }
 
+    @Override
     public void setRenderer(GTRenderer renderer) {
     }
 
+    @Override
     public GTRenderer getRenderer() {
         return new StreamingRenderer();
     }
 
+    @Override
     public ReferencedEnvelope getDisplayArea() {
         return mapContent.getViewport().getBounds();
     }
 
+    @Override
     public void setDisplayArea(Envelope envelope) {
         CoordinateReferenceSystem crs = envelope.getCoordinateReferenceSystem();
         if (crs == null) {
@@ -91,18 +98,22 @@ public class MockMapPane extends Component implements MapPane {
         mapContent.getViewport().setScreenArea(screenArea);
     }
 
+    @Override
     public void reset() {
         // do nothing
     }
 
+    @Override
     public AffineTransform getScreenToWorldTransform() {
         return mapContent.getViewport().getScreenToWorld();
     }
 
+    @Override
     public AffineTransform getWorldToScreenTransform() {
         return mapContent.getViewport().getWorldToScreen();
     }
     
+    @Override
     public void addMapPaneListener(MapPaneListener listener) {
         if (listener == null) {
             throw new IllegalArgumentException("null listener arg");
@@ -110,12 +121,14 @@ public class MockMapPane extends Component implements MapPane {
         mapPaneListeners.add(listener);
     }
 
+    @Override
     public void removeMapPaneListener(MapPaneListener listener) {
         if (listener != null) {
             mapPaneListeners.remove(listener);
         }
     }
 
+    @Override
     public void addMouseListener(MapMouseListener listener) {
         if (listener == null) {
             throw new IllegalArgumentException("null listener arg");
@@ -123,6 +136,7 @@ public class MockMapPane extends Component implements MapPane {
         toolManager.addMouseListener(listener);
     }
 
+    @Override
     public void removeMouseListener(MapMouseListener listener) {
         if (listener != null) {
             toolManager.removeMouseListener(listener);

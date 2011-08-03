@@ -17,10 +17,6 @@
 
 package org.geotools.swing.testutils;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import org.geotools.swing.RenderingExecutorEvent;
 import org.geotools.swing.RenderingExecutorListener;
 
@@ -34,98 +30,39 @@ import org.geotools.swing.RenderingExecutorListener;
  * @source $URL$
  * @version $Id$
  */
-public class WaitingRenderingExecutorListener implements RenderingExecutorListener {
+public class WaitingRenderingExecutorListener 
+        extends WaitingListener<RenderingExecutorEvent, WaitingRenderingExecutorListener.Type> 
+        implements RenderingExecutorListener {
 
-    public static enum EventType {
+    public static enum Type {
         STARTED,
         COMPLETED,
         CANCELLED,
         FAILED;
     }
     
-    private static final int NTYPES = EventType.values().length;
-    private CountDownLatch[] latches;
-    private AtomicBoolean[] flags;
-
     public WaitingRenderingExecutorListener() {
-        latches = new CountDownLatch[NTYPES];
-        flags = new AtomicBoolean[NTYPES];
-        for (int i = 0; i < NTYPES; i++) {
-            flags[i] = new AtomicBoolean(false);
-        }
+        super(Type.values().length);
     }
     
-    /**
-     * Sets the listener to expect an event of the specified type.
-     * 
-     * @param type event type
-     */
-    public void setExpected(EventType type) {
-        latches[type.ordinal()] = new CountDownLatch(1);
-    }
-
-    /**
-     * Waits of an event of the specified type to be received.
-     * 
-     * @param type event type
-     * @param timeoutMillis maximum waiting time
-     * 
-     * @return {@code true} if the event was received
-     */
-    public boolean await(EventType type, long timeoutMillis) {
-        CountDownLatch latch = latches[type.ordinal()];
-        if (latch == null) {
-            throw new IllegalStateException("latch not set for " + type);
-        }
-
-        boolean result = false;
-        try {
-            result = latch.await(timeoutMillis, TimeUnit.MILLISECONDS);
-        } catch (InterruptedException ex) {
-            // do nothing
-        } finally {
-            return result;
-        }
-    }
-
+    @Override
     public void onRenderingStarted(RenderingExecutorEvent ev) {
-        catchEvent(EventType.STARTED.ordinal());
+        catchEvent(Type.STARTED.ordinal(), ev);
     }
 
     @Override
     public void onRenderingCompleted(RenderingExecutorEvent ev) {
-        catchEvent(EventType.COMPLETED.ordinal());
+        catchEvent(Type.COMPLETED.ordinal(), ev);
     }
 
     @Override
     public void onRenderingCancelled(RenderingExecutorEvent ev) {
-        catchEvent(EventType.CANCELLED.ordinal());
+        catchEvent(Type.CANCELLED.ordinal(), ev);
     }
 
     @Override
     public void onRenderingFailed(RenderingExecutorEvent ev) {
-        catchEvent(EventType.FAILED.ordinal());
+        catchEvent(Type.FAILED.ordinal(), ev);
     }
     
-    /**
-     * Checks if an event of the specified type has been received.
-     * 
-     * @param type event type
-     * 
-     * @return {@code true} if an event of this type has been received
-     */
-    public boolean eventReceived(EventType type) {
-        boolean b = flags[type.ordinal()].get();
-        return b;
-    }
-
-    private void catchEvent(int k) {
-        flags[k].set(true);
-        
-        CountDownLatch latch = latches[k];
-        if (latch != null) {
-            latch.countDown();
-        }
-    }
-
 }

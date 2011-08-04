@@ -1080,7 +1080,21 @@ O:
         tx.transform( new StreamSource( in ), result );
         return (Document) result.getNode();
     }
-    
+
+    /**
+     * Encodes an object directly to a string.
+     * <p>
+     * Note that this method should be used for testing or convenience since
+     * it does not stream and loads the entire encoded result into memory.
+     * </p>
+     * @since 8.0
+     */
+    public String encodeAsString(Object object, QName name ) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        encode( object, name, out );
+        return new String(out.toByteArray());
+    }
+
     protected void closeIterator(Iterator itr, Object source) {
         //special case check here for feature collection
         // we need to ensure the iterator is closed properly

@@ -244,9 +244,13 @@ public class ShapeFileIndexer implements FileWriter {
             FileSystemIndexStore store = new FileSystemIndexStore(file, order);
             
             if(leafSize > 0) {
-                LOGGER.info("Optimizing the tree (this might take some time)");
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("Optimizing the tree (this might take some time)");
+                }
                 optimizeTree(tree, tree.getRoot(), 0, reader, shpIndex);
-                LOGGER.info("Tree optimized");
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("Tree optimized");
+                }
             }
             
             if(LOGGER.isLoggable(Level.FINE)) {

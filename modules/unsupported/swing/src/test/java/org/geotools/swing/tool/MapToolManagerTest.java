@@ -17,40 +17,50 @@
 
 package org.geotools.swing.tool;
 
+import java.awt.GraphicsEnvironment;
+import org.junit.BeforeClass;
 import org.geotools.swing.testutils.MockMapPane;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Unit tests for MapToolManager that do not require a graphics environment.
+ * Unit tests for MapToolManager. Requires a graphics environment.
  * 
  * @author Michael Bedward
  * @since 8.0
  * @source $URL$
  * @version $Id$
  */
-@Ignore("temp to fix hudson build")
-public class MapToolManagerHeadlessTest {
+public class MapToolManagerTest {
+    private static boolean headless;
     private MockMapPane pane;
     private MapToolManager manager;
     
+    @BeforeClass
+    public static void setupOnce() {
+        headless = GraphicsEnvironment.getLocalGraphicsEnvironment().isHeadlessInstance();
+    }
+    
     @Before
     public void setup() {
-        pane = new MockMapPane();
-        manager = new MapToolManager(pane);
+        if (!headless) {
+            pane = new MockMapPane();
+            manager = new MapToolManager(pane);
+        }
     }
 
     @Test
     public void setAndUnsetCursorTool() {
-        CursorTool tool = new InfoTool();
-        manager.setCursorTool(tool);
-        assertTrue(tool == manager.getCursorTool());
-        
-        manager.setNoCursorTool();
-        assertNull(manager.getCursorTool());
+        if (!headless) {
+            CursorTool tool = new InfoTool();
+            manager.setCursorTool(tool);
+            assertTrue(tool == manager.getCursorTool());
+
+            manager.setNoCursorTool();
+            assertNull(manager.getCursorTool());
+        }
     }
 
 }

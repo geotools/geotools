@@ -17,6 +17,8 @@
 package org.geotools.geojson.geom;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -114,7 +116,19 @@ public class GeometryJSON {
     public void write(Geometry geometry, Object output) throws IOException {
         GeoJSONUtil.encode(create(geometry), output);
     }
-    
+
+    /**
+     * Writes a Geometry instance as GeoJSON.
+     * <p>
+     * This method calls through to {@link #write(Geometry, Object)}
+     * </p>
+     * @param geometry The geometry.
+     * @param output The output stream.
+     */
+    public void write(Geometry geometry, OutputStream output) throws IOException {
+        GeoJSONUtil.encode(create(geometry), output);
+    }
+
     /**
      * Writes a Geometry instance as GeoJSON returning the result as a string.
      * 
@@ -168,7 +182,7 @@ public class GeometryJSON {
     
     /**
      * Reads a Geometry instance from GeoJSON.
-     * 
+     *
      * @param input The input. See {@link GeoJSONUtil#toReader(Object)} for details.
      * 
      * @return The geometry instance.
@@ -176,7 +190,20 @@ public class GeometryJSON {
     public Geometry read(Object input) throws IOException {
         return parse(new GeometryHandler(factory), input); 
     }
-    
+
+    /**
+     * Reads a Geometry instance from GeoJSON.
+     * <p>
+     * This method calls through to {@link #read(Object)}
+     * </p>
+     * @param input The input stream.
+     * 
+     * @return The geometry instance.
+     */
+    public Geometry read(InputStream input) throws IOException {
+        return read((Object)input); 
+    }
+
     /**
      * Writes a Point as GeoJSON.
      * 
@@ -187,6 +214,20 @@ public class GeometryJSON {
      */
     public void writePoint(Point point, Object output) throws IOException {
         encode(createPoint(point), output);
+    }
+
+    /**
+     * Writes a Point as GeoJSON.
+     * <p>
+     * This method calls through to {@link #writePoint(Point, Object)}
+     * </p>
+     * @param point The point.
+     * @param output The output stream.
+     * 
+     * @throws IOException In the event of a parsing error or if the input json is invalid.
+     */
+    public void writePoint(Point point, OutputStream output) throws IOException {
+        writePoint(point, (Object) output);
     }
 
     Map<String,Object> createPoint(Point point) {
@@ -209,7 +250,22 @@ public class GeometryJSON {
     public Point readPoint(Object input) throws IOException {
         return parse(new PointHandler(factory), input);
     }
-    
+
+    /**
+     * Reads a Point from GeoJSON.
+     * <p>
+     * This method calls through to {@link #readPoint(Object)}
+     * </p>
+     * @param input The input stream.
+     * 
+     * @return The point.
+     * 
+     * @throws IOException In the event of a parsing error or if the input json is invalid.
+     */
+    public Point readPoint(InputStream input) throws IOException {
+        return readPoint((Object)input);
+    }
+
     /**
      * Writes a LineString as GeoJSON.
      * 
@@ -219,7 +275,19 @@ public class GeometryJSON {
     public void writeLine(LineString line, Object output) throws IOException {
         encode(createLine(line), output);
     }
-    
+
+    /**
+     * Writes a LineString as GeoJSON.
+     * <p>
+     * This method calls through to {@link #writeLine(LineString, Object)}
+     * </p>
+     * @param line The line string.
+     * @param output The output stream.
+     */
+    public void writeLine(LineString line, OutputStream output) throws IOException {
+        writeLine(line, (Object)output);
+    }
+
     Map<String,Object> createLine(LineString line) {
         LinkedHashMap obj = new LinkedHashMap();
         
@@ -240,7 +308,22 @@ public class GeometryJSON {
     public LineString readLine(Object input) throws IOException {
         return parse(new LineHandler(factory), input);
     }
-    
+
+    /**
+     * Reads a LineString from GeoJSON.
+     * <p>
+     * This method calls through to {@link #readLine(Object)}
+     * </p>
+     * @param input The input stream.
+     * 
+     * @return The line string.
+     * 
+     * @throws IOException In the event of a parsing error or if the input json is invalid.
+     */
+    public LineString readLine(InputStream input) throws IOException {
+        return readLine((Object)input);
+    }
+
     /**
      * Writes a Polygon as GeoJSON.
      * 
@@ -250,7 +333,19 @@ public class GeometryJSON {
     public void writePolygon(Polygon poly, Object output) throws IOException {
         encode(createPolygon(poly), output);
     }
-    
+
+    /**
+     * Writes a Polygon as GeoJSON.
+     * <p>
+     * This method calls through to {@link #writePolygon(Polygon, Object)}
+     * </p>
+     * @param poly The polygon.
+     * @param output The output stream.
+     */
+    public void writePolygon(Polygon poly, OutputStream output) throws IOException {
+        writePolygon(poly, (Object)output);
+    }
+
     Map<String,Object> createPolygon(Polygon poly) {
         LinkedHashMap obj = new LinkedHashMap();
         
@@ -261,7 +356,7 @@ public class GeometryJSON {
     
     /**
      * Reads a Polygon from GeoJSON.
-     * 
+     *
      * @param input The input. See {@link GeoJSONUtil#toReader(Object)} for details.
      * 
      * @return The polygon.
@@ -271,7 +366,22 @@ public class GeometryJSON {
     public Polygon readPolygon(Object input) throws IOException {
         return parse(new PolygonHandler(factory), input);
     }
-    
+
+    /**
+     * Reads a Polygon from GeoJSON.
+     * <p>
+     * This method calls through to {@link #readPolygon(Object)}
+     * </p>
+     * @param input The input stream.
+     * 
+     * @return The polygon.
+     * 
+     * @throws IOException In the event of a parsing error or if the input json is invalid.
+     */
+    public Polygon readPolygon(InputStream input) throws IOException {
+        return readPolygon((Object)input);
+    }
+
     /**
      * Writes a MultiPoint as GeoJSON.
      * 
@@ -281,7 +391,19 @@ public class GeometryJSON {
     public void writeMultiPoint(MultiPoint mpoint, Object output) throws IOException {
         encode(createMultiPoint(mpoint), output);
     }
-    
+
+    /**
+     * Writes a MultiPoint as GeoJSON.
+     * <p>
+     * This method calls through to {@link #writeMultiPoint(MultiPoint, Object)}
+     * </p>
+     * @param mpoint The multi point.
+     * @param output The output stream.
+     */
+    public void writeMultiPoint(MultiPoint mpoint, OutputStream output) throws IOException {
+        writeMultiPoint(mpoint, (Object)output);
+    }
+
     Map<String,Object> createMultiPoint(MultiPoint mpoint) {
         LinkedHashMap obj = new LinkedHashMap();
         
@@ -302,7 +424,23 @@ public class GeometryJSON {
     public MultiPoint readMultiPoint(Object input) throws IOException {
         return parse(new MultiPointHandler(factory), input);
     }
-    
+
+    /**
+     * Reads a MultiPoint from GeoJSON.
+     * <p>
+     * This method calls through to {@link #readMultiPoint(Object)}
+     * </p>
+     * 
+     * @param input The input stream.
+     * 
+     * @return The multi point.
+     * 
+     * @throws IOException In the event of a parsing error or if the input json is invalid.
+     */
+    public MultiPoint readMultiPoint(InputStream input) throws IOException {
+        return readMultiPoint((Object)input);
+    }
+
     /**
      * Writes a MultiLineString as GeoJSON.
      * 
@@ -312,7 +450,19 @@ public class GeometryJSON {
     public void writeMultiLine(MultiLineString mline, Object output) throws IOException {
         encode(createMultiLine(mline), output);
     }
-    
+
+    /**
+     * Writes a MultiLineString as GeoJSON.
+     * <p>
+     * This method calls through to {@link #writeMultiLine(MultiLineString, Object)}
+     * </p>
+     * @param mline The multi line string.
+     * @param output The output stream.
+     */
+    public void writeMultiLine(MultiLineString mline, OutputStream output) throws IOException {
+        writeMultiLine(mline, (Object)output);
+    }
+
     Map<String,Object> createMultiLine(MultiLineString mline) {
         LinkedHashMap obj = new LinkedHashMap();
         
@@ -333,7 +483,22 @@ public class GeometryJSON {
     public MultiLineString readMultiLine(Object input) throws IOException {
         return parse(new MultiLineHandler(factory), input);
     }
-    
+
+    /**
+     * Reads a MultiLineString from GeoJSON.
+     * <p>
+     * This method calls through to {@link #readMultiLine(Object)}
+     * </p>
+     * @param input The input stream.
+     * 
+     * @return The multi line string.
+     * 
+     * @throws IOException In the event of a parsing error or if the input json is invalid.
+     */
+    public MultiLineString readMultiLine(InputStream input) throws IOException {
+        return readMultiLine((Object)input);
+    }
+
     /**
      * Writes a MultiPolygon as GeoJSON.
      * 
@@ -343,7 +508,19 @@ public class GeometryJSON {
     public void writeMultiPolygon(MultiPolygon mpoly, Object output) throws IOException {
         encode(createMultiPolygon(mpoly), output);
     }
-    
+
+    /**
+     * Writes a MultiPolygon as GeoJSON.
+     * <p>
+     * This method calls through to {@link #writeMultiPolygon(MultiPolygon, Object)}
+     * </p>
+     * @param mpoly The multi polygon.
+     * @param output The output stream.
+     */
+    public void writeMultiPolygon(MultiPolygon mpoly, OutputStream output) throws IOException {
+        writeMultiPolygon(mpoly, (Object)output);
+    }
+
     Map<String,Object> createMultiPolygon(MultiPolygon mpoly) {
         LinkedHashMap obj = new LinkedHashMap();
 
@@ -364,7 +541,22 @@ public class GeometryJSON {
     public MultiPolygon readMultiPolygon(Object input) throws IOException {
         return parse(new MultiPolygonHandler(factory), input);
     }
-    
+
+    /**
+     * Reads a MultiPolygon from GeoJSON.
+     * <p>
+     * This method calls through to {@link #readMultiPolygon(Object)}
+     * </p>
+     * @param input The input stream.
+     * 
+     * @return The multi polygon.
+     * 
+     * @throws IOException In the event of a parsing error or if the input json is invalid.
+     */
+    public MultiPolygon readMultiPolygon(InputStream input) throws IOException {
+        return readMultiPolygon((Object)input);
+    }
+
     /**
      * Writes a GeometryCollection as GeoJSON.
      * 
@@ -374,7 +566,19 @@ public class GeometryJSON {
     public void writeGeometryCollection(GeometryCollection gcol, Object output) throws IOException {
         encode(createGeometryCollection(gcol), output);
     }
-    
+
+    /**
+     * Writes a GeometryCollection as GeoJSON.
+     * <p>
+     * This method calls through to {@link #writeGeometryCollection(GeometryCollection, Object)}
+     * </p>
+     * @param gcol The geometry collection.
+     * @param output The output stream.
+     */
+    public void writeGeometryCollection(GeometryCollection gcol, OutputStream output) throws IOException {
+        writeGeometryCollection(gcol, (Object)output);
+    }
+
     Map<String,Object> createGeometryCollection(GeometryCollection gcol) {
         LinkedHashMap obj = new LinkedHashMap();
         
@@ -400,7 +604,22 @@ public class GeometryJSON {
     public GeometryCollection readGeometryCollection(Object input) throws IOException {
         return parse(new GeometryCollectionHandler(factory), input);
     }
-    
+
+    /**
+     * Reads a GeometryCollection from GeoJSON.
+     * <p>
+     * This method calls through to {@link #readGeometryCollection(Object)}
+     * </p>
+     * @param input The input stream.
+     * 
+     * @return The geometry collection.
+     * 
+     * @throws IOException In the event of a parsing error or if the input json is invalid.
+     */
+    public GeometryCollection readGeometryCollection(InputStream input) throws IOException {
+        return readGeometryCollection((Object)input);
+    }
+
     /**
      * Writes an BoundingBox instance as GeoJSON returning the result as a string.
      * 

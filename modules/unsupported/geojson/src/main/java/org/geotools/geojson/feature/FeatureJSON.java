@@ -21,6 +21,8 @@ import static org.geotools.geojson.GeoJSONUtil.entry;
 import static org.geotools.geojson.GeoJSONUtil.string;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -200,6 +202,18 @@ public class FeatureJSON {
     }
 
     /**
+     * Writes a feature as GeoJSON.
+     * <p>
+     * This method calls through to {@link #writeFeature(FeatureCollection, Object)}
+     * </p>
+     * @param feature The feature.
+     * @param output The output stream.
+     */
+    public void writeFeature(SimpleFeature feature, OutputStream output) throws IOException {
+        writeFeature(feature, (Object)output);
+    }
+
+    /**
      * Writes a feature as GeoJSON returning the result as a string.
      * 
      * @param geometry The geometry.
@@ -225,7 +239,21 @@ public class FeatureJSON {
             featureType != null ? new SimpleFeatureBuilder(featureType): null, attio
         ), input, false);
     }
-    
+
+    /**
+     * Reads a feature from GeoJSON.
+     * <p>
+     * This method calls through to {@link #readFeature(Object)}
+     * </p>
+     * @param input The input stream.
+     * @return The feature.
+     * 
+     * @throws IOException In the event of a parsing error or if the input json is invalid.
+     */
+    public SimpleFeature readFeature(InputStream input) throws IOException {
+        return readFeature((Object)input);
+    }
+
     /**
      * Writes a feature collection as GeoJSON.
      * 
@@ -254,7 +282,19 @@ public class FeatureJSON {
         obj.put("features", new FeatureCollectionEncoder(features, gjson));
         GeoJSONUtil.encode(obj, output);
     }
-    
+
+    /**
+     * Writes a feature collection as GeoJSON.
+     * <p>
+     * This method calls through to {@link #writeFeatureCollection(FeatureCollection, Object)}
+     * </p>
+     * @param features The feature collection.
+     * @param output The output strema to write to.
+     */
+    public void writeFeatureCollection(FeatureCollection features, OutputStream output) throws IOException {
+        writeFeatureCollection(features, (Object)output);
+    }
+
     /**
      * Reads a feature collection from GeoJSON.
      * <p>
@@ -275,7 +315,26 @@ public class FeatureJSON {
         }
         return features;
     }
-    
+
+    /**
+     * Reads a feature collection from GeoJSON.
+     * <p>
+     * Warning that this method will load the entire feature collection into memory. For large 
+     * feature collections {@link #streamFeatureCollection(Object)} should be used. 
+     * </p>
+     * <p>
+     * This method calls through to {@link #readFeatureCollection(Object)}.
+     * </p>
+     * 
+     * @param input The input stream.
+     * @return The feature collection.
+     * 
+     * @throws IOException In the event of a parsing error or if the input json is invalid.
+     */
+    public FeatureCollection readFeatureCollection(InputStream input) throws IOException {
+        return readFeatureCollection((Object)input);
+    }
+
     /**
      * Reads a feature collection from GeoJSON streaming back the contents via an iterator.
      * 
@@ -311,7 +370,19 @@ public class FeatureJSON {
     public void writeCRS(CoordinateReferenceSystem crs, Object output) throws IOException {
         GeoJSONUtil.encode(createCRS(crs), output);
     }
-    
+
+    /**
+     * Writes a coordinate reference system as GeoJSON.
+     * <p>
+     * This method calls through to {@link #writeCRS(CoordinateReferenceSystem, Object)}
+     * </p>
+     * @param crs The coordinate reference system. 
+     * @param output The output stream.
+     */
+    public void writeCRS(CoordinateReferenceSystem crs, OutputStream output) throws IOException {
+        writeCRS(crs, (Object) output);
+    }
+
     Map<String,Object> createCRS(CoordinateReferenceSystem crs) throws IOException {
         Map<String,Object> obj = new LinkedHashMap<String,Object>();
         obj.put("type", "name");
@@ -342,7 +413,25 @@ public class FeatureJSON {
     public CoordinateReferenceSystem readCRS(Object input) throws IOException {
         return GeoJSONUtil.parse(new CRSHandler(), input, false);
     }
-    
+
+    /**
+     * Reads a coordinate reference system from GeoJSON.
+     * <p>
+     * This method only handles named coordinate reference system objects.
+     * </p>
+     * <p>
+     * This method calls through to {@link #readCRS(Object)}
+     * </p>
+     * 
+     * @param input The input. See {@link GeoJSONUtil#toReader(Object)} for details.
+     * @return The coordinate reference system.
+     * 
+     * @throws IOException In the event of a parsing error or if the input json is invalid.
+     */
+    public CoordinateReferenceSystem readCRS(InputStream input) throws IOException {
+        return readCRS((Object)input);
+    }
+
     /**
      * Writes a coordinate reference system as GeoJSON returning the result as a string.
      * 

@@ -1028,16 +1028,8 @@ class RasterLayerRequest {
         return inputTransparentColor;
     }
 
-    // public Color getOutputTransparentColor() {
-    // return outputTransparentColor;
-    // }
-    //
-    // public int getMaximumNumberOfGranules() {
-    // return maximumNumberOfGranules;
-    // }
-    //
      public double[] getBackgroundValues() {
-     return backgroundValues;
+         return backgroundValues;
      }
 
     public ReadType getReadType() {
@@ -1064,10 +1056,6 @@ class RasterLayerRequest {
         return requestedRasterScaleFactors != null ? requestedRasterScaleFactors.clone()
                 : requestedRasterScaleFactors;
     }
-    
-//    public boolean isMultithreadingAllowed() {
-//        return multithreadingAllowed;
-//    }
 
     @Override
     public String toString() {

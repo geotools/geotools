@@ -116,7 +116,8 @@ public final class GeoTiffFormat extends AbstractGridFormat implements Format {
                             READ_GRIDGEOMETRY2D,
                             INPUT_TRANSPARENT_COLOR, 
                             USE_JAI_IMAGEREAD,
-                            SUGGESTED_TILE_SIZE
+                            SUGGESTED_TILE_SIZE,
+                            BACKGROUND_VALUES
                             }));
 
         // writing parameters

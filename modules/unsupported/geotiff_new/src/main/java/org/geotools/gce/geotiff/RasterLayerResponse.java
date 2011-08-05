@@ -115,7 +115,6 @@ class RasterLayerResponse{
         public void produce() {
 
             // reusable parameters
-            int granuleIndex = 0;
             inputTransparentColor = request.getInputTransparentColor();
             doInputTransparency = inputTransparentColor != null;
             // execute them all
@@ -127,8 +126,7 @@ class RasterLayerResponse{
                         finalWorldToGridCorner, request, request.getTileDimensions());
                 if (loadedImage == null) {
                     if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.log(Level.FINE, "Unable to load the raster for rasterGranuleLoader "
-                            + granuleIndex + " with request " + request.toString());
+                        LOGGER.log(Level.FINE, "Unable to load the raster with request " + request.toString());
                     }
 
                 }
@@ -142,14 +140,12 @@ class RasterLayerResponse{
 
             } catch (ImagingException e) {
                 if (LOGGER.isLoggable(Level.INFO)) {
-                    LOGGER.fine("Adding to mosaic image number " + granuleIndex
-                            + " failed, original request was " + request);
+                    LOGGER.fine("Unable to load the raster with request "  + request);
                 }
                 loadedImage = null;
             } catch (Throwable e) {
                 if (LOGGER.isLoggable(Level.INFO)) {
-                    LOGGER.fine("Adding to mosaic image number " + granuleIndex
-                            + " failed, original request was " + request);
+                    LOGGER.fine("Unable to load the raster with request " + request);
                 }
                 loadedImage = null;
             }
@@ -165,7 +161,7 @@ class RasterLayerResponse{
                 LOGGER.fine("Processing loaded raster data ");
             }
 
-            final RenderedImage raster = processGranuleRaster(loadedImage, granuleIndex, alphaIn, 
+            final RenderedImage raster = processRaster(loadedImage, alphaIn, 
                     doInputTransparency, inputTransparentColor);
 
             theImage = raster;
@@ -344,7 +340,7 @@ class RasterLayerResponse{
                 bbox = new ReferencedEnvelope(coverageEnvelope);
             }
 
-            XAffineTransform.getFlip((AffineTransform) baseGridToWorld);
+            
             // compute final world to grid base grid to world for the center of pixels
             final AffineTransform g2w = new AffineTransform((AffineTransform) baseGridToWorld);
             // move it to the corner
@@ -429,8 +425,7 @@ class RasterLayerResponse{
         }
     }
 
-    private RenderedImage processGranuleRaster(RenderedImage granule,
-            final int granuleIndex, final boolean alphaIn,
+    private RenderedImage processRaster(RenderedImage granule, final boolean alphaIn,
             final boolean doTransparentColor, final Color transparentColor) {
 
         //
@@ -439,7 +434,7 @@ class RasterLayerResponse{
         //
         if (doTransparentColor) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("Support for alpha on input image number " + granuleIndex);
+                LOGGER.fine("Support for alpha on input image ");
             }
             granule = ImageUtilities.maskColor(transparentColor, granule);
         }

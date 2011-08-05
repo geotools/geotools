@@ -89,6 +89,15 @@ public class MySQLDialect extends SQLDialect {
         return storageEngine;
     }
     
+    @Override
+    public boolean includeTable(String schemaName, String tableName, Connection cx)
+            throws SQLException {
+        if ("geometry_columns".equalsIgnoreCase(tableName)) {
+            return false;
+        }
+        return super.includeTable(schemaName, tableName, cx);
+    }
+    
     public String getNameEscape() {
         return "";
     }

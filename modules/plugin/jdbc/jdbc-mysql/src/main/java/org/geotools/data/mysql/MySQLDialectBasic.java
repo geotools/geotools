@@ -58,7 +58,13 @@ public class MySQLDialectBasic extends BasicSQLDialect {
     public void setStorageEngine(String storageEngine) {
         delegate.setStorageEngine(storageEngine);
     }
-    
+
+    @Override
+    public boolean includeTable(String schemaName, String tableName, Connection cx)
+            throws SQLException {
+        return delegate.includeTable(schemaName, tableName, cx);
+    }
+
     @Override
     public String getNameEscape() {
         return delegate.getNameEscape();

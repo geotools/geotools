@@ -29,6 +29,7 @@ import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.gce.grassraster.GrassCoverageReader;
 import org.geotools.gce.grassraster.GrassCoverageWriter;
+import org.geotools.gce.grassraster.JGrassUtilities;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
 import org.opengis.coverage.grid.Format;
@@ -98,7 +99,10 @@ public final class GrassCoverageFormat extends AbstractGridFormat implements For
         if (!fileToUse.exists()) {
             return false;
         }
-        return true;
+        if (JGrassUtilities.isGrass(fileToUse.getAbsolutePath())) {
+            return true;
+        }
+        return false;
     }
 
     public GrassCoverageReader getReader( final Object o, Hints hints ) {

@@ -82,7 +82,6 @@ public class JGrassUtilities {
 
     public static Interpolation interpolation = Interpolation.getInstance(Interpolation.INTERP_NEAREST);
 
-
     /**
      * Returns the list of files involved in the raster map issues. If for example a map has to be
      * deleted, then all these files have to.
@@ -623,6 +622,22 @@ public class JGrassUtilities {
             }
         }
         return raster;
+    }
+
+    /**
+     * Checks if the given path is a GRASS raster file.
+     * 
+     * <p>Note that there is no check on the existence of the file.
+     * 
+     * @param path the path to check.
+     * @return true if the file is a grass raster.
+     */
+    public static boolean isGrass( String path ) {
+        File file = new File(path);
+        File cellFolderFile = file.getParentFile();
+        File mapsetFile = cellFolderFile.getParentFile();
+        File windFile = new File(mapsetFile, "WIND");
+        return cellFolderFile.getName().toLowerCase().equals("cell") && windFile.exists();
     }
 
     public static void printImage( GridCoverage2D coverage2D ) {

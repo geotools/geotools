@@ -1,6 +1,19 @@
-/* Copyright (c) 2001 - 2007 TOPP - www.openplans.org. All rights reserved.
- * This code is licensed under the GPL 2.0 license, available at the root
- * application directory.
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2001-2007 TOPP - www.openplans.org.
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
  */
 package org.geotools.process.feature.gs;
 
@@ -33,6 +46,11 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
+/**
+ * Generates a set of polygons, each representing the set of points 
+ * within a given distance from the central point The data layer must
+ * be a point layer, the reference layer must be a polygonal one"
+ */
 @DescribeProcess(title = "pointBuffers", description = "Generates a set of polygons, each representing the set of points " +
 		"within a given distance from the central point"
         + "The data layer must be a point layer, the reference layer must be a polygonal one")

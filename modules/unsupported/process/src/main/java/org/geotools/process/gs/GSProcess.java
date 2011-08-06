@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 20011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2008-2011 TOPP - www.openplans.org.
  *
  *    This library is free software; you can redistribute it and/or
@@ -18,7 +18,7 @@
 package org.geotools.process.gs;
 
 /**
- * A marker interface used to lookup the processes
+ * A marker interface used to lookup the processes.
  * 
  * @author Andrea Aime - OpenGeo
  */

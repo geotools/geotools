@@ -40,7 +40,7 @@ class IntersectionProcess extends SimpleProcess {
     }
 
     public void process() {
-	    Geometry geom1 = (Geometry) get( IntersectionFactory.GEOM1.key );
+	Geometry geom1 = (Geometry) get( IntersectionFactory.GEOM1.key );
         Geometry geom2 = (Geometry) get( IntersectionFactory.GEOM2.key );
         
         result.put( IntersectionFactory.RESULT.key, geom1.intersection( geom2 ) );

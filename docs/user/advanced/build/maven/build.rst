@@ -9,6 +9,7 @@ Your First Build
 1. Start by going to where you have the source code::
      
      cd C:\java\geotools\trunk
+     
 2. And check that we actually have the source code::
      
      C:\java\geotools\trunk>dir
@@ -81,14 +82,15 @@ Depending on your hardware and internet connection:
 
 * Building the first time, where maven needs to download everything, may take 20 to 30 minuets.
 * Future builds check for the most recent .jar files from the internet. The checking is based of md5 checksums and does not take long. Building subsequently may take 10 minuets depending on your hardware and internet connection.
-* After everything is downloaded can build “offline” and avoid the checking of mdf5 checksums resulting in a faster build of 5-7 minuets.
+* After everything is downloaded can build "offline" and avoid the checking of mdf5 checksums resulting in a faster build of 5-7 minuets.
 * Finally you can turn off tests (danger!) and build offline to get a build under 2 minuets
 
 Tips to speed up a build:
 
-* Do not do a “clean” build if you do not have to
+* Do not do a "clean" build if you do not have to
+* Experiment with the best use of Maven 3 "threading" for your computer
 * Rebuild a single module after you have modified it
-* Update your “settings.xml” file to point to a “mirror” in your country - allowing you to download closer to home
+* Update your "settings.xml" file to point to a "mirror" in your country - allowing you to download closer to home
 * Build offline (when everything is downloaded to your local repository)
 
 Really Building All Modules
@@ -100,7 +102,7 @@ GeoTools plays host to a number of experiment "unsupported" modules; if you woul
 
 The "-Dall" acts as a switch to part engages several profiles; you can also do this by hand with -P
 
-The following “profiles” are included by the “-Dall”:
+The following "profiles" are included by the "-Dall":
 
 =================== ========== ===================================================================
 Profile             \-Dall     Builds
@@ -112,6 +114,21 @@ Profile             \-Dall     Builds
 ``-Pworkflow``      included   process and wps support
 ``-Parchive``                  modules that no longer work
 =================== ========== ===================================================================
+
+Parallel Builds
+^^^^^^^^^^^^^^^
+
+Maven 3 allows you to contorl your computing resources a bit more::
+  
+  mvn install -Dall -T 2C
+
+The above command builds using two threads for each cpu core available.
+
+You can also set an exact number of threads to use::
+  
+  mvn install -Dall -T 3
+  
+You can experiment with different settings to determine what works best for your machine.
 
 Building Offline
 ^^^^^^^^^^^^^^^^
@@ -285,4 +302,4 @@ to "unable to delete directory". If that happens please try to disable
 Windows Indexing Service for the entire svn working copy and try
 again. Hopefully this will fix the problem.
 
-With this in mind it is also advisable for mac developers to “ignore” build directories from Time Machine (as the files change constantly and Time Machine will burn up your space trying to keep track of it all).
+With this in mind it is also advisable for mac developers to "ignore" build directories from Time Machine (as the files change constantly and Time Machine will burn up your space trying to keep track of it all).

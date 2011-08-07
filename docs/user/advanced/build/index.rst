@@ -8,7 +8,7 @@ Covers the development environment and building instructions for working on the 
    :maxdepth: 1
    
    java
-   install/install
+   install/index
    source
    subversion
    maven/index

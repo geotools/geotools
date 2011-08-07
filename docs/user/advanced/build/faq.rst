@@ -50,6 +50,24 @@ Gowever what is new is that you can ask it to use more than one core::
   
 The above asks the build to go in "threaded" mode; using two threads for each core.
 
+What the fastest build?
+^^^^^^^^^^^^^^^^^^^^^^^
+
+This is the fastest build on my machine::
+
+  mvn install -DskipTests -o -T 2C
+
+The above options:
+
+* install (without clean) only recompiles modified code
+* no profiles or flags are used to build optional code; onlt the core library is built
+* skipTests - the tests are still built; they are just not run
+* o - allows the build to work "offline" (thus no external servers are checked during the build)
+* T 2C - builds with two threads per core
+
+I use this configuration to quickly push all local changes into my local maven repository so I can
+test in a downstream application such as uDig or GeoServer.
+
 How do I create an executable jar for my GeoTools app?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

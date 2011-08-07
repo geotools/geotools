@@ -18,9 +18,10 @@ User Guide
 The GeoTools user guide is available online:
 
 `User Guide <http://docs.geotools.org/latest/userguide/>`_ ( `stable <http://docs.geotools.org/stable/userguide/>`_ )
-    Tutorials, module reference and examples illustrating the uses of GeoTools.
+    Tutorials, module reference and examples illustrating the uses of GeoTools. Updated with
+    build instructions and advanced tutorials and integration instructions.
     
-    The user guide is also available for `download <http://sourceforge.net/projects/geotools/files/>`_
+    The user guide is available for `download <http://sourceforge.net/projects/geotools/files/>`_
     as a zip file.
        
 `Tutorials <http://docs.geotools.org/latest/userguide/tutorial/>`_ ( `stable <http://docs.geotools.org/stable/tutorials/>`_ )
@@ -32,8 +33,8 @@ The GeoTools user guide is available online:
 Developing GeoTools
 -------------------
 
-See the `Get Involved <http://geotools.org/getinvolved.html>`_ page for instructions on building the library, the Developer's Guide,
-issue tracking and more!
+See the `Get Involved <http://geotools.org/getinvolved.html>`_ page for the Developer's Guide,
+issue tracking and how to join the GeoTools community.
 
 Welcome Developers
 ------------------

@@ -25,3 +25,4 @@ Please direct any comments or suggestions about this page to the `GeoTools user 
 .. include:: /extension/brewer/faq.rst
 .. include:: /extension/wms/faq.rst
 .. include:: /unsupported/swing/faq.rst
+.. include:: /advanced/build/faq.rst

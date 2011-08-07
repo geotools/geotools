@@ -37,11 +37,14 @@ We have a "relaxed" set of requirements for "unsupported" modules - providing a 
 1. Thine module shalt not break the build.
 2. You must keep your module up to date
    
-    * Set up a module wiki page (see Module Matrix for the complete list)
-    * Recommended: user documentation will help reduce the amount of email you recieve (see 16 Unsupported for examples)
-
-We have no process for "volunteering" to work on an unsupported module at this time; email the developer list and we will figure it out.
+    * Set up a module wiki page (see `Module Matrix <http://docs.codehaus.org/display/GEOTOOLS/Module+Matrix>`_ for the complete list)
+    * Recommended: user documentation will help reduce the amount of email you recieve
+    
+3. We have no process for "volunteering" to work on an unsupported module at this time; email the
+   developer list and we will figure it out.
 
 Reference:
- * Creating your own Module
- * Supporting your module
+
+ * :doc:`/procedures/create`
+ * :doc:`/procedures/supported`
+ 

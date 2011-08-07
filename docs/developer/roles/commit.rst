@@ -1,7 +1,14 @@
 Comitters
 =========
 
-Contributors who give frequent and valuable contributions to a subproject of GeoTools can have their status promoted to that of a formal "Committer" to GeoTools.
+Contributors who give frequent and valuable contributions to GeoTools (docs and bug fixes) can have
+their status promoted to that of a formal "Committer" to GeoTools.
+
+Advantages
+----------
+
+* Work on your own unsupported module
+* Apply your own patches - after they have been reviewed
 
 Responsibilities
 ----------------
@@ -21,54 +28,75 @@ Otherwise, Committers have one primordial responsibility:
 
 This means that all code should be run through a full maven install and test cycle::
    
-   mvn clean install
+   mvn clean install -Dall
    
 prior to commit. Yes, this takes time; yes, it is necessary.
 
 Process
 -------
 
-In order for a Contributor to become a Committer, another Committer can nominate that Contributor or the Contributor can ask for Committer status.
-
-Once a Contributor is nominated, all existing committers will vote. If there are at least 3 positive votes and no negative votes, the Contributor will be considered a Committer and can gain write access to the source code repository.
-
-Welcome letter
---------------
-
-This is an example offer letter that should be sent to the volunteer after 3 positive votes have been received::
-
-   Dear Contributor,
+1. In order for a Contributor to become a Committer we need an email:
    
-   The GeoTools project would like to offer you commit privileges. If you are interested in having commit
-   privileges, please create an OSGeo user id on this page http://www.osgeo.org/osgeo_userid/
-   and pass on your user id to myself or any other member of GeoTools.
+   * Another Committer can nominate that Contributor; or
+   * Contributor can ask for Committer status
    
-   GeoTools is a member of the Open Source Geospatial Foundation, we have attached a copy of the
-   GeoToolsContributorsAgreement to this email. The attachment contains instructions for use, and the
-   mailing address for the OSGeo foundation is on the first page.
+   Please keep in mind that this process is for contributors so we need to see a history
+   of patches and documentation that follow the developers guide.
    
-   We all hope that you accept this invitation.
+2. Once a Contributor is nominated, all existing committers will vote.
+
+   * If there are at least three positive votes; and
+   * no negative votes
    
-   GeoTools Project Management Committee
+   The Contributor will be considered a Committer and can be set up with write access to
+   the source code repository.
 
-Attachment:
+3. Welcome letter
+   
+   This is an example offer letter that should be sent to the volunteer after 3 positive votes
+   have been received::
 
-* :download:`GeotoolsAssignmentToOSGeo.pdf</artifacts/GeotoolsAssignmentToOSGeo.pdf>`
+       Dear Contributor,
+       
+       The GeoTools project would like to offer you commit privileges. If you are interested in
+       having commit privileges, please create an OSGeo user id on this page:
+          
+          http://www.osgeo.org/osgeo_userid/
+          
+       And send your user id to myself or any other member of GeoTools.
+       
+       GeoTools is a member of the Open Source Geospatial Foundation, we have attached a copy of the
+       GeoToolsContributorsAgreement to this email. The attachment contains instructions for use,
+       and the mailing address for the OSGeo foundation is on the first page.
+       
+       We all hope that you accept this invitation, welcome to the project!
+       
+       GeoTools Project Management Committee
 
-Getting write access to the repository
-------------------------------------------
+   Attachment:
 
-Once we have confirmation that you have sent in the document any GeoTools committer can grant you access to the project:
+   * :download:`GeotoolsAssignmentToOSGeo.pdf</artifacts/GeotoolsAssignmentToOSGeo.pdf>`
 
-1. Create an osgeo login id using this page:
-   http://www.osgeo.org/osgeo_userid/
+4. Getting write access to the repository
+   
+   Once we have confirmation that you have sent in the document any GeoTools committer can grant
+   you access to the project:
 
-2. Send an email with your id to the mailing list (or any GeoTools committer you know) and they can add you using the following link:
-   https://www.osgeo.org/cgi-bin/auth/ldap_group.py?group=geotools
+   * Create an osgeo login id using this page:
+  
+     http://www.osgeo.org/osgeo_userid/
+   
+   * Send an email with your id to the mailing list (or any GeoTools committer you know) and they
+     can add you using the following link:
+     
+     https://www.osgeo.org/cgi-bin/auth/ldap_group.py?group=geotools
 
-For more information on the OSGeo SVN Repository facilities you can visit http://wiki.osgeo.org/wiki/Subversion
+   For more information on the OSGeo SVN Repository facilities:
+   
+   * http://wiki.osgeo.org/wiki/Subversion
 
-Lapses due to Inactivity
-------------------------
-
-At times, Committers may go inactive for a variety of reasons. A Committer who has been inactive for 12 months or more may lose their status as a Committer. Getting access back is as simple as re-requesting it on the project's Developer mailing list.
+5. Lapses due to Inactivity
+   
+   At times, Committers may go inactive for a variety of reasons. A Committer who has been inactive
+   for 12 months or more may lose their status as a Committer. Getting access back is as simple as
+   re-requesting it on the project's Developer mailing list.

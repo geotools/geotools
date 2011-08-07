@@ -11,7 +11,7 @@ Covers the development environment and building instructions for working on the 
    install/install
    source
    subversion
-   maven/maven
+   maven/index
 
 Frequently Asked Questions:
 

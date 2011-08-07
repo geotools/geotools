@@ -11,20 +11,20 @@ Reference:
 Download and Install Maven
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1. Download Maven. Last tested with Maven 2.2.1
+1. Download Maven. Last tested with Maven 3.0.3.
 2. Unzip the maven download to your computer:
    
-   Example: C:\java\apache-maven-2.2.1.
+   Example: C:\java\apache-maven-3.0.3.
    
    If you do not have an unzip program may we recommend: http://www.7-zip.org/
 
 3. You need to have the following environmental variables set for maven to work:
    
-   * JAVA_HOME = C:\j2sdk1.4.2_07\
+   * JAVA_HOME = C:\Program Files\java\jdk1.6.0_27\
     
      Location of your JDK installation
    
-   * M2_HOME = C:\java\apache-maven-2.2.1
+   * M2_HOME = C:\java\apache-maven-3.0.3
      
      Location of your maven installation
    
@@ -34,12 +34,13 @@ Download and Install Maven
 
 4. Open up a cmd window and type the following::
      
-     >mvn --version
-     Apache Maven 2.2.1 (r801777; 2009-08-07 05:16:01+1000)
-     Java version: 1.6.0_17
-     Java home: /System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home
+     > mvn -version
+     Apache Maven 3.0.3 (r1075438; 2011-03-01 03:31:09+1000)
+     Maven home: /usr/local/Cellar/maven/3.0.3/libexec
+     Java version: 1.6.0_26, vendor: Apple Inc.
+     Java home: /System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home
      Default locale: en_US, platform encoding: MacRoman
-     OS name: "mac os x" version: "10.6.3" arch: "x86_64" Family: "mac"
+     OS name: "mac os x", version: "10.7", arch: "x86_64", family: "mac"
 
 Do not use Apt-Get
 ^^^^^^^^^^^^^^^^^^
@@ -73,20 +74,20 @@ References:
 
 * http://usingmaven.bachew.net/manually-install-maven-on-linux
 
-1. Download apache-maven-2.2.1-bin.tar.gz
+1. Download apache-maven-3.0.3-bin.tar.gz
    
-   * http://www.apache.org/dyn/closer.cgi/maven/binaries/apache-maven-2.2.1-bin.tar.gz
+   * http://www.apache.org/dyn/closer.cgi/maven/binaries/apache-maven-3.0.3-bin.tar.gz
 
 2. Unpack into /usr/local/lib (or any other path you choose)::
      
      > cd /usr/local/lib
-     > sudo tar -xzf apache-maven-2.2.1-bin.tar.gz
+     > sudo tar -xzf apache-maven-3.0.3-bin.tar.gz
 
-   This unpacks the folder apache-maven-2.2.1 to pwd
+   This unpacks the folder apache-maven-3.0.3 to pwd
 
    ..note::
      
-     At this point > usr/local/lib/apache-maven-2.2.1/bin/mvn --version will complain::
+     At this point > usr/local/lib/apache-maven-3.0.3/bin/mvn --version will complain::
    
        Warning: JAVA_HOME environment variable is not set. 
 
@@ -94,9 +95,9 @@ References:
      also set the M2_HOME and PATH variables. Note that step 5 registers the script with
      current session.
 
-3. Link apache-maven-2.2.1 to apache-maven (optional)::
+3. Link apache-maven-3.0.3 to apache-maven (optional)::
      
-     > ln -sT apache-maven-2.2.1 apache-maven
+     > ln -sT apache-maven-3.0.3 apache-maven
      
    This makes it easier to upgrade later on
 
@@ -109,10 +110,10 @@ References:
      <Ctrl-D>
      > . /etc/profile 
 
-5. Test Maven2. The following command should not produce any warnings::
+5. Test Maven. The following command should not produce any warnings::
      
      > mvn --version
-     Apache Maven 2.2.1 (r801777; 2009-08-06 21:16:01+0200)
+     Apache Maven 3.0.3 (r1075438; 2011-03-01 03:31:09+1000)
      Java version: 1.6.0_24
      Java home: /usr/lib/jvm/java-6-sun-1.6.0.24/jre
      Default locale: nb_NO, platform encoding: UTF-8

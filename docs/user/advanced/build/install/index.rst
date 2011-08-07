@@ -16,9 +16,9 @@ Download Links
 Before using or developing GeoTools you should download the software listed here. You can start
 downloading now before proceeding on to the install instructions.
 
-* Apache Maven 2.2.1
+* Apache Maven 3.0.3
   
-  * http://maven.apache.org/download.html
+  * http://maven.apache.org/download.html  
   * Apache build tool used for GeoTools. Excels at managing dependencies.
 
 * Java 2 Software Developers Kit (Java 6)

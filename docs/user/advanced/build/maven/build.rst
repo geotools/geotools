@@ -118,7 +118,7 @@ Profile             \-Dall     Builds
 Parallel Builds
 ^^^^^^^^^^^^^^^
 
-Maven 3 allows you to contorl your computing resources a bit more::
+Maven 3 allows you to control your computing resources a bit more::
   
   mvn install -Dall -T 2C
 

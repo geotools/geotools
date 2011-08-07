@@ -63,7 +63,7 @@ PMC members:
 
 * Vote promptly on change management proposals
   
-  * :doc:`/guide/procedures/proposal`
+  * :doc:`/procedures/proposal`
   * respond to request for new modules
 
 * Must be willing to do whatever dirty work is necessary to keep the project moving forward.

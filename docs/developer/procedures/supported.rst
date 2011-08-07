@@ -34,13 +34,9 @@ The GeoTools Module Matrix defines a couple quick QA tests allowing you to rate 
 
 1. The first step is to rate your module:
    
-   Gold Star Quality Assurance Check
+   :doc:`check`
 
-2. The second step is to ensure you meet the standard set for the release:
-   
-   * GeoTools 2.3 - just rate your module
-   * GeoTools 2.4 - three stars are required to be included
-   * GeoTools 2.5 - four stars are required
+2. GeoTools 2.5 and onward expects four stars for a supported module.
 
 3. Create a Module Matrix page:
    
@@ -48,6 +44,9 @@ The GeoTools Module Matrix defines a couple quick QA tests allowing you to rate 
    * list jira issues (from as many projects as possible)
    
 4. The goal here is to make your module status visible to end users.
+   
+   * Blog posts
+   * Email on the user list
 
 Intellectual Property Check
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -81,7 +80,7 @@ Follow the Developers Guide
 The developers guide lists a number of coding conventions, we would like to ensure you
 line up with the following for a consistent project.
 
-1. Coding Style        This is easy to check, load up the code formatting in eclipse and hit auto format.
+1. Coding Style: This is easy to check, load up the code formatting in eclipse and hit auto format.
 
 2. Do not return null.
    
@@ -101,6 +100,7 @@ line up with the following for a consistent project.
 6. Converting URLs to Files
 
 7. Use of Assertions, IllegalArgumentException and NPE
+
 8. Naming Conventions
    
    Running "FindBugs" will often catch inconsistent names.
@@ -120,38 +120,30 @@ Test Coverage and Maven Profiles
 
 The one most likely to cause grief is the JUnit testing requirement.
 
-1. Please be aware that the tests may be performed by hudson.
+1. Please be aware that the tests may be performed by a build box such as hudson.
    Especially if they are on-line tests requiring the use of web services.
 
-2. Initially the GeoTools library aimed for 60% test coverage, for now we will stick with:
-   
-   * GeoTools 2.3
-     
-     * correct use of Online-Test
-   
-   * GeoTools 2.4
-     
-     * Test Coverage measured and published to Module Matrix page
-     * Coverage of 30% measured by a hudson control profile.
-       You can supply a test fixture so the nightly builds can run against your database.
-     * Making use of a Conformance test if available.
+2. The test coverage expectation for the GeoTools library is 40%.
+       
+   * Test Coverage measured and published to Module Matrix page
+   * Coverage of 40% measured by a hudson control profile.
+     You can supply a test fixture so the nightly builds can run against your database.
+   * Plugins can extend provided "conformance test" if available to quickly reach 40%.
 
 3. For help setting up your test fixture and maven profile for the nightly build box please
    contact the geotools-devel list.
 
 How to measure test coverage:
 
-1. Test coverage measured with clover
+1. Test coverage measured with cobertura or clover.
 2. Run the following for your plugin::
      
      run mvn site
 
-3. Review at the clover report.
-
 How to use a conformance test:
 
-1. We are looking into the creation of conformance tests to verify plug-in completeness
-   and correctness.
+1. The author of an interface or abstract class may have provided a sample "conformance" test
+   used to verify plug-in completeness and correctness.
 2. For JDBC-NG datastore implementations
    
    * When implementing a new JDBC datastore please extend the provided abstract test class
@@ -167,10 +159,15 @@ User Documentation
 ^^^^^^^^^^^^^^^^^^
 
 1. Currently have a very simple requirement for user documentation.
-2. Please make something (anything!) available in GeoTools User Guide wiki
-3. Link to the documentation page from your module matrix page.
-4. It is recommended that you make a single example showing how to use your module or plugin
-5. You may wish to refer to the writing guidelines for the user guide
+   
+   * Please make something (anything!) available in GeoTools User Guide
+   
+2. Link to the documentation page from your module matrix page.
+3. It is recommended that you make a single example showing how to use your module
+   or plugin (you can use a a code example if you must).
+4. You may wish to refer to the writing guidelines for the user guide
+   
+   * :doc:`/docs/index`
 
 Ask to be included in the next release
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

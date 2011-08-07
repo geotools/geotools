@@ -28,4 +28,4 @@ as it provides an cooks tour of the plugin system.
 
 References:
 
-* :doc:`/library/internal/index`
+* :doc:`/advanced/index`

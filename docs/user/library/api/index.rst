@@ -10,7 +10,6 @@ The **gt-api** module is where we publish out stable interfaces that are impleme
       :maxdepth: 1
       
       faq
-      status
       internal
 
 .. toctree::

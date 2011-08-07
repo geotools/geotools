@@ -49,3 +49,8 @@ and :doc:`extension </extension/index>`.
    :maxdepth: 2
 
    unsupported/index
+   
+.. toctree::
+   :maxdepth: 2
+   
+   advanced/index

@@ -22,10 +22,3 @@ support for common spatial formats such as shapefiles.
    cql/index
    xml/index
    render/index
-
-Implementation details:
-
-.. toctree::
-   :maxdepth: 1
-   
-   internal/index

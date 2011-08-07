@@ -1,14 +1,17 @@
 Module Directory Structure
 ==========================
 
-Geotools 2.4 and above complies to the Maven 2 standard layout with an extension regarding module hierarchy.
+Geotools 2.4 and above complies to the Maven standard layout regarding nested modules; and the lauout
+of source code directories.
 
-This section provides a summary where module is the module name and category is one of library, plugin, extension, demo or unsupported.
+This section provides a summary of module structure and a examples how we have groupled modules
+into library, plugin, extension, docs or unsupported.
 
 Module Structure
 ^^^^^^^^^^^^^^^^^
 
-Module is strucutured 
+Module is structured:
+
 * modules/category/module/pom.xml
   
   Provides metadata about the module for maven
@@ -74,6 +77,8 @@ Module Targets:
 Module Categories
 ^^^^^^^^^^^^^^^^^^
 
+The modules are are organised according to their role (some examples are shown below):
+
 * modules/library/ - this is the core library
   
   * opengis - interfaces for standard GIS concepts
@@ -84,7 +89,9 @@ Module Categories
   * jdbc - enables database support
   * render - implementation of SLD based rendering system
   * cql - implementation of plain text filter
-  * Xml - support for xml 
+  * xml - support for xml 
+
+* ogc/ - used to store OGC schemas and associated xml (and target data structures if needed)
 
 * modules/plugin/ - modules that dynamically integrate to the GeoTools library at runtime
   
@@ -95,11 +102,13 @@ Module Categories
 * modules/extension/ - extensions and extras built using the library
   
   * brewer - generate styles from for a feature collection
+  * xsd - bindings for xml parsing / encoding
 
 * modules/unsupported/ - modules that are not ready yet, or are orphaned and no longer have a contact person
   
-  * oracle - legacy oracle datastore
   * process - framework for spatial processes
+  * swing
+  * swt
   * wps - client for web processing service
 
-* demo/ - small working examples, usually part of a tutorial
+* doc/ - example code used as part of documentation and tutoirals

@@ -280,6 +280,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
          * is often accompanied by resizing this is not reliable in Swing.
          */
         addHierarchyListener(new HierarchyListener() {
+            @Override
             public void hierarchyChanged(HierarchyEvent he) {
                 if ((he.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
                     if (isShowing()) {
@@ -305,6 +306,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
         }
         
         resizedFuture = paneTaskExecutor.schedule(new Runnable() {
+            @Override
             public void run() {
                 setForNewSize();
             }
@@ -347,6 +349,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setCursorTool(CursorTool tool) {
         if (tool == null) {
             toolManager.setNoCursorTool();
@@ -363,6 +366,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addMouseListener(MapMouseListener listener) {
         if (listener == null) {
             throw new IllegalArgumentException("listener must not be null");
@@ -374,6 +378,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeMouseListener(MapMouseListener listener) {
         if (listener != null) {
             toolManager.removeMouseListener(listener);
@@ -383,6 +388,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addMapPaneListener(MapPaneListener listener) {
         if (listener == null) {
             throw new IllegalArgumentException("listener must not be null");
@@ -394,6 +400,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeMapPaneListener(MapPaneListener listener) {
         if (listener != null) {
             listeners.remove(listener);
@@ -430,6 +437,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setRenderer(GTRenderer renderer) {
         doSetRenderer(renderer);
     }
@@ -437,6 +445,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     /**
      * {@inheritDoc}
      */
+    @Override
     public GTRenderer getRenderer() {
         return renderer;
     }
@@ -503,6 +512,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setMapContent(MapContent content) {
         doSetMapContent(content);
     }
@@ -510,6 +520,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     /**
      * {@inheritDoc}
      */
+    @Override
     public MapContent getMapContent() {
         return mapContent;
     }
@@ -565,6 +576,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     /**
      * {@inheritDoc}
      */
+    @Override
     public ReferencedEnvelope getDisplayArea() {
         if (mapContent != null) {
             return mapContent.getViewport().getBounds();
@@ -578,6 +590,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setDisplayArea(Envelope envelope) {
         if (envelope == null) {
             throw new IllegalArgumentException("envelope must not be null");
@@ -688,6 +701,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     /**
      * {@inheritDoc}
      */
+    @Override
     public void reset() {
         if (fullExtent != null) {
             setDisplayArea(fullExtent);
@@ -786,6 +800,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     /**
      * {@inheritDoc}
      */
+    @Override
     public AffineTransform getScreenToWorldTransform() {
         if (mapContent != null) {
             return mapContent.getViewport().getScreenToWorld();
@@ -797,6 +812,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     /**
      * {@inheritDoc}
      */
+    @Override
     public AffineTransform getWorldToScreenTransform() {
         if (mapContent != null) {
             return mapContent.getViewport().getWorldToScreen();
@@ -828,6 +844,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
         }
 
         imageMovedFuture = paneTaskExecutor.schedule(new Runnable() {
+            @Override
             public void run() {
                 afterImageMoved();
                 clearLabelCache.set(true);
@@ -882,6 +899,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
      * Publishes a {@linkplain MapPaneEvent} of type
      * {@code MapPaneEvent.Type.RENDERING_STARTED} to listeners.
      */
+    @Override
     public void onRenderingStarted(RenderingExecutorEvent ev) {
         publishEvent(new MapPaneEvent(this, MapPaneEvent.Type.RENDERING_STARTED));
     }
@@ -892,6 +910,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
      * Publishes a {@linkplain MapPaneEvent} of type
      * {@code MapPaneEvent.Type.RENDERING_STOPPED} to listeners.
      */
+    @Override
     public void onRenderingCompleted(RenderingExecutorEvent event) {
         if (clearLabelCache.get()) {
             labelCache.clear();
@@ -907,6 +926,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
      * Publishes a {@linkplain MapPaneEvent} of type
      * {@code MapPaneEvent.Type.RENDERING_STOPPED} to listeners.
      */
+    @Override
     public void onRenderingCancelled(RenderingExecutorEvent event) {
         publishEvent(new MapPaneEvent(this, MapPaneEvent.Type.RENDERING_STOPPED));
     }
@@ -916,6 +936,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
      * Publishes a {@linkplain MapPaneEvent} of type
      * {@code MapPaneEvent.Type.RENDERING_STOPPED} to listeners.
      */
+    @Override
     public void onRenderingFailed(RenderingExecutorEvent ev) {
         publishEvent(new MapPaneEvent(this, MapPaneEvent.Type.RENDERING_STOPPED));
     }
@@ -943,6 +964,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
      * as selected (for queries) and, if the layer table is being
      * used, adds the new layer to the table.
      */
+    @Override
     public void layerAdded(MapLayerListEvent event) {
         Layer layer = event.getElement();
         
@@ -967,6 +989,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     /**
      * Called when a map layer has been removed
      */
+    @Override
     public void layerRemoved(MapLayerListEvent event) {
         Layer layer = event.getElement();
         if (layerTable != null) {
@@ -991,6 +1014,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
      * Called when a map layer has changed, e.g. features added
      * to a displayed feature collection
      */
+    @Override
     public void layerChanged(MapLayerListEvent event) {
         if (layerTable != null) {
             layerTable.repaint(event.getElement());
@@ -1013,6 +1037,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     /**
      * Called when the bounds of a map layer have changed
      */
+    @Override
     public void layerMoved(MapLayerListEvent event) {
         drawBaseImage(false);
         repaint();
@@ -1023,6 +1048,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
      * here to watch for a changed CRS, in which case the map is
      * redisplayed at (new) full extent.
      */
+    @Override
     public void mapBoundsChanged(MapBoundsEvent event) {
 
         int type = event.getType();

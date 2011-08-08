@@ -1,7 +1,25 @@
 Java Install
 -------------
 
-As mentioned in the previous section you should use the Java version corresponding to your geotools version.
+GeoTools is written in the Java Programming Language. The library is targeted for Java 6.
+
+Java Runtime Environment:
+
+* Java 7 - currently untested (if you try it email the list)
+* Java 6 - Geotools 8.0.x and above
+* Java 5 - GeoTools 2.5.x and above
+* Java 1.4 - GeoTools versions 2.4.x and below
+* GeoTools is known to work with JRE provided by IBM, Apple and OpenJDK.
+
+Java Extension:
+
+* Java Advanced Imaging is used to process rasters. If you have installed the native support into your JRE you can take advantage of hardware acceleration.
+* Java Image IO - used to support additional raster formats
+* ImageIO-Ext - used to support additional geospatial raster formats
+
+When developing GeoTools please change your compile options to:
+
+* Produce 6.0 compliant code 
 
 Java 2 Standard Edition Software Developers Kit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -94,7 +94,7 @@ SVN Netbeans
 ^^^^^^^^^^^^
 
 1. A netbeans profile is available here: http://vcsgeneric.netbeans.org/profiles/
-2. To ignore the ubiquitous .svn folders click the filesystem node and set the “Ignored Files” property to include: .svn
+2. Netbeans already "autoignores"the ubiquitous .svn folders.
 
 SVN Tortoise for Windows
 ^^^^^^^^^^^^^^^^^^^^^^^^

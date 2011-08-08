@@ -2,6 +2,13 @@
 Building FAQ
 ------------
 
+What version of JDK?
+^^^^^^^^^^^^^^^^^^^^
+
+Our policy is waiting for the majority of our users before migrating to a new version of the Java
+language. In general we are held up by the slow migration of Java Enterprise Edition environments
+such as websphere.
+
 How do I build from source code?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

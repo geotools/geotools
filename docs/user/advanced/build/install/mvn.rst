@@ -1,7 +1,8 @@
 Maven Install
 -------------
 
-We use Maven 2 for our build environment, this page simply set's it up for you. Actual build instructions will happen later.
+We use Maven for our build environment, this page simply set's it up for you. Actual build
+instructions will happen later.
 
 Reference:
 

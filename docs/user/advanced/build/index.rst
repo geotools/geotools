@@ -7,7 +7,6 @@ Covers the development environment and building instructions for working on the 
 .. toctree::
    :maxdepth: 1
    
-   java
    install/index
    source
    subversion

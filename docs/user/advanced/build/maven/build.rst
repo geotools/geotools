@@ -212,7 +212,9 @@ The following common problems occur during a::
 Unable to find org.geotools.maven:javadoc:jar
 '''''''''''''''''''''''''''''''''''''''''''''
 
-We have a little of a chicken-and-the-egg problem here. To build the jar by hand.
+We have a little of a chicken-and-the-egg problem here when building a tag for the first time.
+
+To fix you need to build the javadoc jar by hand.
 
 1. Change to the module directory::
       

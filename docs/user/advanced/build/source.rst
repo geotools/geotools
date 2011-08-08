@@ -5,10 +5,10 @@ The GeoTools source code is organised into the following structure:
 
 ======================== =========================================================================
 ``build/``               java projects that help with our build process
-``demo/``                example code and demos
 ``docs/``                documentation and website source in rich structured text
 ``modules/library/``     the core library allowing your application to be spatial
 ``modules/extensions/``  extensions built on top of the library that do useful things
+``modules/ogc/``         OGC schemas and data structures
 ``modules/plugins/``     plugins that work with the core library to support additional formats
 ``modules/unsupported/`` community code that is not ready yet, but you may find interesting
 ``spike/``               scratch space for ideas and experiments and collaboration

@@ -8,25 +8,19 @@ Javadoc can be generated using the standard mvn javadoc:javadoc command.
      cd modules/main/cql
      mvn javadoc:javadoc
 
-* “Aggregated” javadocs for the entire GeoTools project can be generated from root using::
+* Aggregated javadocs for the entire GeoTools project can be generated using::
      
-     mvn javadoc:javadoc
+     cd modules
+     mvn javadoc:aggregate
 
 Dependencies in aggregated javadoc
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-As of October 2006, aggregated javadoc using maven-javadoc-plugin version 2.0 fails to resolve all external dependencies like JTS or GeoAPI. It may be related to MJAVADOC-66, but the later said that the bug is already fixed.
+As of October 2006, aggregated javadoc using maven-javadoc-plugin version 2.0 fails to resolve all
+external dependencies like JTS. It may be related to MJAVADOC-66, but the later said that the bug
+is already fixed.
 
 Waiting for the next maven-javadoc-plugin release in the hope that it will be fixed there.
-
-JAR files for distribution
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Use Java 6 for this; because we use some fancy tags (mentioned below) you will need to use Java 6 here
-JAR files are created by invoking:
-
-1. mvn javadoc:javadoc
-2. mvn javadoc:jar
-3. The javadocs are created in the target directory for each module.
 
 Custom javadoc tags
 ^^^^^^^^^^^^^^^^^^^
@@ -65,9 +59,11 @@ GeoTools javadocs produce a lot of warnings making it difficult to spot the erro
       
       mvn javadoc:javadoc | grep "error"
    
-2. The above gives a much smaller output, typically only about 5 lines. So we can spot immediately the cause of javadoc failure, for example something like::
+2. The above gives a much smaller output, typically only about 5 lines. So we can spot immediately
+   the cause of javadoc failure, for example something like::
       
       modules/library/referencing/src/main/java/org/geotools/referencing/factory/epsg/package.html:
       error - Close body tag missing from HTML file
    
-3. In the above example  adding the missing </BODY> tag as suggested by the error message would the javadoc generation.
+3. In the above example  adding the missing </BODY> tag as suggested by the error message would the
+   javadoc generation.

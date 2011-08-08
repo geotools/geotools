@@ -9,6 +9,8 @@ Our policy is waiting for the majority of our users before migrating to a new ve
 language. In general we are held up by the slow migration of Java Enterprise Edition environments
 such as websphere.
 
+GeoTools 8 uses Java 6.
+
 How do I build from source code?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

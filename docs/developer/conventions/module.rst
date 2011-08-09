@@ -1,7 +1,7 @@
 Module Directory Structure
 ==========================
 
-Geotools 2.4 and above complies to the Maven standard layout regarding nested modules; and the lauout
+Geotools 2.4 and above complies to the Maven standard layout regarding nested modules; and the layout
 of source code directories.
 
 This section provides a summary of module structure and a examples how we have groupled modules
@@ -30,7 +30,7 @@ Module is structured:
 
 * modules/category/module/src/main/java
   
-  Module Java source files
+  Module Java source files, andy an "doc-files" used for javadoc attachments such as images.
 
 * modules/category/module/src/main/resources
   
@@ -42,7 +42,8 @@ Module is structured:
 
 * modules/category/module/src/test/resources
   
-  Resources required for tests only
+  Resources required for tests only, often these are placed in a "test-data" folder to prevent
+  confusion with normal java packages.
 
 * modules/category/module/target
   
@@ -97,10 +98,11 @@ The modules are are organised according to their role (some examples are shown b
   
   * jdbc-postgis - plugin allowing jdbc to work with postgis database
   * epsg-hsql - plugin allowing referencing to work with epsg codes
-  * Shapefile - plugin providing shapefile support
+  * shapefile - plugin providing shapefile support
 
 * modules/extension/ - extensions and extras built using the library
   
+  * app-schmea - support the mapping of content to an applicaiton schema
   * brewer - generate styles from for a feature collection
   * xsd - bindings for xml parsing / encoding
 

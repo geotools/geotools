@@ -46,8 +46,7 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.util.ProgressListener;
 
 /**
- * Will reproject the features to another CRS. Can also be used to force a known CRS onto a dataset
- * that does not have ones
+ * Computes various attribute statistics over vector data sets.
  * 
  * @author Andrea Aime
  */

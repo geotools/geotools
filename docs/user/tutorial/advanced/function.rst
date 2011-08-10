@@ -48,9 +48,22 @@ SnapFunction
       org.geotools.tutorial.function.ExampleFunctionFactory
     
 9. That is it SnapFunction is now published!
+   
+   You can use the "snap" function from your SLD documents; or in normal java programs.
 
 Things to Try
 ^^^^^^^^^^^^^
+
+* Create a quick test case to show that the above function is available using::
+    
+    FunctionFactory ff = CommonFactoryFinder.getFactoryFinder( null );
+    Expression expr = ff.function( "snap", ff.property("the_geom"), ff.literal( lines ) );
+
+* The function should be very slow as written (when called to snap thousands of points).
+  
+  Have a check if you can detect the use of a literal MultiLineStinrg; and cache your
+  LocationIndexedLine between calls to the function. A lot of GeoTools functions have been
+  optimised in this fashion.
 
 * A fair bit of the code above is "boilerplate" and could be simplified with an appropriate
   "AbstractFunction" class.

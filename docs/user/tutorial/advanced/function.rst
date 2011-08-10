@@ -5,6 +5,12 @@
 Function Tutorial
 -----------------
 
+Adding a Function to GeoTools a very useful introduction to extending the library. This is often
+used to generate values when styling that you cannot otherwise accomplish using expressions.
+
+SnapFunction
+^^^^^^^^^^^^
+
 1. Here is a quick implementation of snapping a point to a line:
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/function/SnapFunction.java
@@ -39,6 +45,24 @@ Function Tutorial
 
 8. Fill in the following contents (one implementation class per line)::
    
-      or.geotools.tutorial.function.ExampleFunctionFactory
+      org.geotools.tutorial.function.ExampleFunctionFactory
     
 9. That is it SnapFunction is now published!
+
+Things to Try
+^^^^^^^^^^^^^
+
+* A fair bit of the code above is "boilerplate" and could be simplified with an appropriate
+  "AbstractFunction" class.
+  
+  GeoTools does provide a couple Abstract classes you can extend when defining your own functions.
+  Have a look **FunctionImpl** and see if you find it easier then just starting from scratch.
+
+Function
+^^^^^^^^
+
+Normally we have a little background information on the concepts covered; in this case there is an
+article on how GeoTools uses Factories; and the steps to consider when creating your own
+factory system for others to use.
+
+* :doc:`factory`

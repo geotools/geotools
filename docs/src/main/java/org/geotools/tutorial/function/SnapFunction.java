@@ -23,7 +23,9 @@ import com.vividsolutions.jts.linearref.LocationIndexedLine;
  */
 public class SnapFunction implements Function {
 
-static FunctionName NAME = new FunctionNameImpl("snap", "point", "line");
+    static FunctionName NAME = new FunctionNameImpl("snap", Point.class,
+            FunctionNameImpl.parameter("point",Point.class),
+            FunctionNameImpl.parameter("line",Geometry.class));
 
     private final List<Expression> parameters;
     

@@ -12,9 +12,6 @@ Welcome to the Geotools Users Guide. This space serves as a reference to the Geo
    support
    architecture
    use
-   api
-   create
-   factory
    standards
    upgrade
 

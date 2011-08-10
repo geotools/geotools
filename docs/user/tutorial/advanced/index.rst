@@ -12,6 +12,7 @@ Background information:
    :maxdepth: 1
    
    affinetransform
+   factory
 
 Extension:
 

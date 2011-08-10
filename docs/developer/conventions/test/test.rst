@@ -53,7 +53,8 @@ Code Coverage vs Regression Testing
 
 Code Coverage reports are available via::
    
-   mvn site
+   mvn clean install
+   mvn cobertura:cobertura
 
 The percentage reported is based on the lines of code your test cases manage to test, please limit
 this to "real" tests - although we demand 40% test coverage for supported modules we would much

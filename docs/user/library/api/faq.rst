@@ -15,4 +15,4 @@ ideas and data structures.
 Additional public methods and classes are added by other modules, but
 they are focused on doing rather than defining.
 
-For more information review welcome :doc:`/welcome/api` page.
+For more information review welcome :doc:`/welcome/use` page.

@@ -48,9 +48,16 @@ import org.opengis.filter.spatial.Touches;
  *           &lt;geoop name &gt; &lt;georoutine argument list &gt;
  *       |   &lt;relgeoop name &gt; &lt;relgeoop argument list &gt;
  *       |   &lt;routine name &gt; &lt;argument list &gt;
+ *       |   &lt;relate geoop &gt; 
+ *       
  *   &lt;geoop name &gt; ::=
  *           EQUALS | DISJOINT | INTERSECTS | TOUCHES | CROSSES | 
- *           WITHIN | CONTAINS |OVERLAPS | RELATE 
+ *           WITHIN | CONTAINS |OVERLAPS  
+ *           
+ *   &lt;relate geoop &gt; ::=  &lt;RELATE>&gt; &quot;(&quot; Attribute()&quot;,&quot; &lt;geometry literal&gt; &quot;,&quot; &lt;DE9IM_PATTERN&gt; &quot;)&quot;
+ *   &lt;DE9IM_PATTERN&gt; ::= &lt;DIMENSION_CHAR&gt;&lt;DIMENSION_CHAR&gt;&lt;DIMENSION_CHAR&gt; ...
+ *   &lt;DIMENSION_CHAR&gt; ::= *| T | F | 0 | 1 | 2
+ *           
  *   That rule is extended with bbox for convenience.
  *   &lt;bbox argument list &gt;::=
  *       &quot;(&quot;  &lt;attribute &gt; &quot;,&quot; &lt;min X &gt; &quot;,&quot; &lt;min Y &gt; &quot;,&quot; &lt;max X &gt; &quot;,&quot; &lt;max Y &gt;[&quot;,&quot;  &lt;srs &gt;] &quot;)&quot;
@@ -96,6 +103,13 @@ public final class ECQLGeoOperationTest extends CQLGeoOperationTest{
         Assert.assertTrue("Intersects was expected", resultFilter instanceof Intersects);
     }
 
+    @Test
+    public void IntersectsWithExpressions() throws CQLException {
+
+        Filter resultFilter = CompilerUtil.parseFilter(language,"INTERSECTS(POLYGON((1 2, 2 2, 2 3, 1 2)), POINT(1 2))");
+
+        Assert.assertTrue("Intersects was expected", resultFilter instanceof Intersects);
+    }
 
     @Test
     public void touches() throws CQLException{

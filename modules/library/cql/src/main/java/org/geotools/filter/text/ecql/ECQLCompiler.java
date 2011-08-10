@@ -224,7 +224,7 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
                 // ----------------------------------------
                 // Date, Time and Timestamp Strings
                 // ----------------------------------------
-//				TODO under debate in ogc cs list
+//				TODO under debate in ogc csw list
 //            case   JJTDATESTRING_NODE:
 //            case   JJTTIMESTRING_NODE:
 //            case   JJTTIMESTAMPSTRING_NODE:
@@ -411,18 +411,6 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
             case JJTDE9IM_NODE:
             	return this.builder.buildDE9IM( getToken(0).image) ;	
 
-                // ----------------------------------------
-                // Spatial Relate Like
-                // ----------------------------------------
-//                TODO  these will be extensions in the ECQL (under analysis)
-//            case JJTPATTERN9IM_NODE:
-//                return this.builder.buildPattern9IM();
-//
-//            case JJTSPATIALRELATELIKE_NODE:
-//                return this.builder.buildRelatePattern();
-//                
-//            case JJTNOT_SPATIALRELATELIKE_NODE:
-//                return this.builder.buildNotRelatePattern();
                 // ----------------------------------------
                 // routine invocation RelGeo Operation
                 // ----------------------------------------

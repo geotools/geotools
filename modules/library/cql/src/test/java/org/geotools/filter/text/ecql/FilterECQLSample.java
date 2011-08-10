@@ -24,6 +24,7 @@ import org.geotools.factory.Hints;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Not;
+import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Expression;
@@ -73,7 +74,7 @@ final class FilterECQLSample {
 
     public static final String           FUNCTION_LIKE_ECQL_PATTERN                = "strConcat('aa', 'bbcc') like '%bb%'";
 
-    public static final String           LITERAL_LIKE_ECQL_PATTERN                 = "'aabbcc' like '%bb%'";
+    public static final String           LITERAL_LIKE_ECQL_PATTERN                 = "'aabbcc' LIKE '%bb%'";
 
     public static final String           LITERAL_NOT_LIKE_ECQL_PATTERN             = "'aabbcc' not like '%bb%'";
 
@@ -223,14 +224,14 @@ final class FilterECQLSample {
         SAMPLES.put( FUNCTION_LIKE_ECQL_PATTERN, filter );
         
         // 'aabbcc' like '%bb%'
-        filter = FACTORY.like(FACTORY.literal("aabbcc"), "%bb%");
+        PropertyIsLike like = FACTORY.like(FACTORY.literal("aabbcc"), "%bb%", "%","?", "\\", true );
 
-        SAMPLES.put( LITERAL_LIKE_ECQL_PATTERN, filter );
+        SAMPLES.put( LITERAL_LIKE_ECQL_PATTERN, like );
         
         // 'aabbcc' not like '%bb%'
-        filter = FACTORY.not( FACTORY.like(FACTORY.literal("aabbcc"), "%bb%"));
+        Not notLike = FACTORY.not( like );
 
-        SAMPLES.put( LITERAL_NOT_LIKE_ECQL_PATTERN, filter );
+        SAMPLES.put( LITERAL_NOT_LIKE_ECQL_PATTERN, notLike );
     
         // ----------------------------------------------------
         // Between samples

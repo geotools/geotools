@@ -115,6 +115,13 @@ public class CQLTest {
         Assert.assertTrue("Disjoint was expected", filter instanceof Disjoint);
     }
     
+    @Test 
+    public void relateGeoOperation() throws CQLException{
+    	Filter filter = CQL.toFilter("RELATE(the_geom, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), T*****FF*)");
+    	
+    	Assert.assertTrue(filter instanceof PropertyIsEqualTo);
+    }
+    
     @Test
     public void functionDwithinGeometry() throws Exception{
         Filter resultFilter;
@@ -239,7 +246,7 @@ public class CQLTest {
     }
     
     @Test
-    public void expression() throws Exception{
+    public void addExpression() throws Exception{
 
         Expression expr = CQL.toExpression("QUANTITY + 1");
         
@@ -258,6 +265,38 @@ public class CQLTest {
         Assert.assertTrue(list.get(1) instanceof PropertyIsLessThan );
     }
     
+    @Test
+    public void filterListToCQL() throws Exception{
+    	
+        String expectedCQL = "QUANTITY = 1; YEAR < 1963";
+		List<Filter> list = CQL.toFilterList(expectedCQL);
+        
+        Assert.assertTrue(list.size() == 2);
+        
+        String cqlResult = CQL.toCQL(list);
+        
+        Assert.assertEquals(expectedCQL, cqlResult );
+    }
+    
+    @Test
+    public void filterToCQL() throws Exception{
+    	
+        String expectedCQL = "QUANTITY = 1";
+		Filter list = CQL.toFilter(expectedCQL);
+        String cqlResult = CQL.toCQL(list);
+        
+        Assert.assertEquals(expectedCQL, cqlResult );
+    }
+    
+    @Test
+    public void expressionToCQLExpression() throws Exception{
+    	
+        String expectedCQL = "abs(-10) + 1";
+		Expression list = CQL.toExpression(expectedCQL);
+        String cqlResult = CQL.toCQL(list);
+        
+        Assert.assertEquals(expectedCQL, cqlResult );
+    }
     
     /**
      * Verify the parser uses the provided FilterFactory implementation

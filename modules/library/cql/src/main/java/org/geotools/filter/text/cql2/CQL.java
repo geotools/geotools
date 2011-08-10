@@ -19,12 +19,14 @@ package org.geotools.filter.text.cql2;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.transform.TransformerException;
 
 import org.geotools.filter.FilterTransformer;
 import org.geotools.filter.text.commons.CompilerUtil;
+import org.geotools.filter.text.commons.ExpressionToText;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
@@ -189,45 +191,49 @@ public class CQL {
     }
 
     /**
-     * WARNING THIS IS A WORK IN PROGRESS.
+     * Generates the ecql predicates associated to the {@link List} of {@link Filter}s object.
      * 
-     * @param filterList
-     * @return
+     * @param filterList 
+     * @return ecql predicates separated by ";"
      */
     public static String toCQL( List<Filter> filterList ){
         FilterToCQL toCQL = new FilterToCQL();
         
-        StringBuffer output = new StringBuffer();
-        for( Filter filter : filterList ){
+        StringBuilder output = new StringBuilder();
+        Iterator<Filter> iter = filterList.iterator();
+        while( iter.hasNext() ){
+        	Filter filter = iter.next();
             filter.accept( toCQL, output );
-            output.append("; ");
+            if(iter.hasNext() ){
+                output.append("; ");
+            } 
         }        
         return output.toString();        
     }
     
     /**
-     * WARNING THIS IS A WORK IN PROGRESS.
+     * Generates the cql predicate associated to the {@link Filter} object.
      * 
      * @param filter
-     * @return
+     * @return cql predicate
      */
     public static String toCQL( Filter filter ){
         FilterToCQL toCQL = new FilterToCQL();
         
-        StringBuffer output = (StringBuffer) filter.accept( toCQL, new StringBuffer() );
+        StringBuilder output = (StringBuilder) filter.accept( toCQL, new StringBuilder() );
         
         return output.toString();        
     }
     /**
-     * WARNING THIS IS A WORK IN PROGRESS.
+     * Generates the expression text associated to the {@link Expression} object.
      * 
-     * @param filter
-     * @return
+     * @param expression
+     * @return expression as text
      */
     public static String toCQL( Expression expression ){
-        FilterToCQL toCQL = new FilterToCQL();
+        ExpressionToText toCQL = new ExpressionToText();
         
-        StringBuffer output = (StringBuffer) expression.accept( toCQL, new StringBuffer() );
+        StringBuilder output = (StringBuilder) expression.accept( toCQL, new StringBuilder() );
         
         return output.toString();        
     }

@@ -18,13 +18,14 @@ package org.geotools.filter.text.ecql;
 
 import java.util.List;
 
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.factory.Hints;
 import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.filter.IsNullImpl;
 import org.geotools.filter.function.FilterFunction_relatePattern;
 import org.geotools.filter.function.PropertyExistsFunction;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
-import org.geotools.filter.text.ecql.ECQL;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.filter.And;
@@ -338,6 +339,42 @@ public final class ECQLTest  {
     }
     
     
+    @Test
+    public void greaterFilterToCQL() throws Exception {
+    	
+    	String expectedECQL = FilterECQLSample.PROPERTY_GREATER_MINUS_INGEGER;
+		Filter filter = FilterECQLSample.getSample(expectedECQL);
+		
+    	String resultECQL = ECQL.toCQL(filter );
+
+    	Assert.assertEquals(expectedECQL, resultECQL);
+    }
+
+    @Test
+    public void likeFilterToCQL() throws Exception {
+    	
+    	String expectedECQL = FilterECQLSample.LITERAL_LIKE_ECQL_PATTERN;
+		Filter filter = FilterECQLSample.getSample(expectedECQL);
+		
+    	String resultECQL = ECQL.toCQL(filter );
+
+    	Assert.assertEquals(expectedECQL, resultECQL);
+    }
+    
+    
+    @Test
+    public void functionExpressionToCQL() throws Exception {
+    	
+        Expression[] absArgs = new Expression[1];
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
+        absArgs[0] = ff.literal(10);
+        Function abs = ff.function("abs", absArgs);
+		
+    	String resultECQL = ECQL.toCQL(abs);
+
+    	Assert.assertEquals("abs(10)", resultECQL);
+    }
+    
     /**
      * Verify the parser uses the provided FilterFactory implementation
      * @throws Exception
@@ -357,6 +394,44 @@ public final class ECQLTest  {
         ECQL.toFilter("attName > 20", ff);
         Assert.assertTrue("Provided FilterFactory was not called", called[0]);
     }
+    
+    
+    
+    @Test
+    public void filterListToECQL() throws Exception{
+    	
+        String expectedECQL = "QUANTITY = 1; YEAR < 1963";
+		List<Filter> list = ECQL.toFilterList(expectedECQL);
+        
+        Assert.assertTrue(list.size() == 2);
+        
+        String cqlResult = ECQL.toCQL(list);
+        
+        Assert.assertEquals(expectedECQL, cqlResult );
+    }
+    
+    @Test
+    public void filterToECQL() throws Exception{
+    	
+        String expectedECQL = "QUANTITY = 1";
+		Filter list = ECQL.toFilter(expectedECQL);
+        String cqlResult = ECQL.toCQL(list);
+        
+        Assert.assertEquals(expectedECQL, cqlResult );
+    }
+    
+    @Test
+    public void filterListToCQL() throws Exception{
+    	
+        String expectedCQL = "QUANTITY = 1; YEAR < 1963";
+		List<Filter> list = CQL.toFilterList(expectedCQL);
+        
+        Assert.assertTrue(list.size() == 2);
+        
+        String cqlResult = CQL.toCQL(list);
+        
+        Assert.assertEquals(expectedCQL, cqlResult );
+    }    
     /**
      * Verify the parser uses the provided FilterFactory implementation
      * @throws Exception

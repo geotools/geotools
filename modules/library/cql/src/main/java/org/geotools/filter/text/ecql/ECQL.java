@@ -19,13 +19,14 @@ package org.geotools.filter.text.ecql;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.transform.TransformerException;
 
 import org.geotools.filter.FilterTransformer;
 import org.geotools.filter.text.commons.CompilerUtil;
-import org.geotools.filter.text.cql2.CQL;
+import org.geotools.filter.text.commons.ExpressionToText;
 import org.geotools.filter.text.cql2.CQLException;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
@@ -62,9 +63,11 @@ import org.opengis.filter.expression.Expression;
  *       List &lt;Filter&gt; list = ECQL.toFilterList(<b>"LENGHT = 100; NAME like '%omer%'"</b>);
  *
  *       Expression expression = ECQL.toExpression(<b>"LENGHT + 100"</b>);
- *
+ *       
  * </code>
  * </pre>
+ * 
+ * The reverse process is possible too. To generate the ECQL associated to a filter you should use the <b>toCQL(...)</b> methods.
  * </p>
  * @author Jody Garnett
  * @author Mauricio Pazos (Axios Engineering)
@@ -194,32 +197,51 @@ public class ECQL {
     
 
     /**
-     * WARNING THIS IS A WORK IN PROGRESS.
+     * Generates the ecql predicates associated to the {@link List} of {@link Filter}s object.
      * 
-     * @param filterList
-     * @return
+     * @param filterList 
+     * @return ecql predicates separated by ";"
      */
     public static String toCQL( List<Filter> filterList ){
-        return CQL.toCQL( filterList );        
+        FilterToECQL toECQL = new FilterToECQL();
+        
+        StringBuilder output = new StringBuilder();
+        Iterator<Filter> iter = filterList.iterator();
+        while( iter.hasNext() ){
+        	Filter filter = iter.next();
+            filter.accept( toECQL, output );
+            if(iter.hasNext() ){
+                output.append("; ");
+            } 
+        }        
+        return output.toString();        
     }
     
     /**
-     * WARNING THIS IS A WORK IN PROGRESS.
+     * Generates the ecql predicate associated to the {@link Filter} object.
      * 
      * @param filter
-     * @return
+     * @return ecql predicate
      */
     public static String toCQL( Filter filter ){
-        return CQL.toCQL( filter );        
+        FilterToECQL toCQL = new FilterToECQL();
+        
+        StringBuilder output = (StringBuilder) filter.accept( toCQL, new StringBuilder() );
+        
+        return output.toString();        
     }
     /**
-     * WARNING THIS IS A WORK IN PROGRESS.
+     * Generates the expression text associated to the {@link Expression} object.
      * 
      * @param filter
-     * @return
+     * @return expression as text
      */
     public static String toCQL( Expression expression ){
-        return CQL.toCQL( expression );        
+        ExpressionToText toECQL = new ExpressionToText();
+        
+        StringBuilder output = (StringBuilder) expression.accept( toECQL, new StringBuilder() );
+        
+        return output.toString();        
     }
     
     /**

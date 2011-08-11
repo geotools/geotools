@@ -1,44 +1,29 @@
 package org.geotools.styling.builder;
 
-import org.geotools.Builder;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.expression.ChildExpressionBuilder;
-import org.geotools.filter.expression.ExpressionBuilder;
 import org.geotools.styling.Halo;
-import org.geotools.styling.StyleFactory;
+import org.opengis.filter.expression.Expression;
 
-public class HaloBuilder<P> implements Builder<org.opengis.style.Halo> {
-    StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+public class HaloBuilder extends AbstractStyleBuilder<org.opengis.style.Halo> {
+    Expression radius;
 
-    P parent;
-
-    boolean unset;
-
-    ChildExpressionBuilder<HaloBuilder<P>> radius = new ChildExpressionBuilder<HaloBuilder<P>>(this);
-
-    FillBuilder<HaloBuilder<P>> fill = new FillBuilder<HaloBuilder<P>>(this);
+    FillBuilder fill = new FillBuilder(this);
 
     public HaloBuilder() {
         this(null);
     }
 
-    public HaloBuilder(P parent) {
-        this.parent = parent;
+    public HaloBuilder(AbstractStyleBuilder<?> parent) {
+        super(parent);
         reset();
     }
 
     /**
-     * Set the HaloBuilder
-     * <P>
-     * to produce <code>node</code>
+     * Set the HaloBuilder to produce <code>node</code>
      * 
-     * @return current HaloBuilder
-     *         <P>
-     *         for chaining operations
+     * @return current HaloBuilder for chaining operations
      */
-    public HaloBuilder<P> unset() {
-        unset = true;
-        return this;
+    public HaloBuilder unset() {
+        return (HaloBuilder) super.unset();
     }
 
     /**
@@ -50,61 +35,62 @@ public class HaloBuilder<P> implements Builder<org.opengis.style.Halo> {
      *         <P>
      *         for chaining operations
      */
-    public HaloBuilder<P> reset() {
-        unset = false; // 
-        radius.reset();
+    public HaloBuilder reset() {
+        unset = false; //
+        radius = literal(0);
         fill.reset();
 
         return this;
     }
 
     /**
-     * Set the HaloBuilder
-     * <P>
-     * to produce the provided Halo.
+     * Set the HaloBuilder to produce the provided Halo.
      * 
-     * @param halo
-     *            Halo under construction; if null HaloBuilder
-     *            <P>
-     *            will be unset()
-     * @return current HaloBuilder
-     *         <P>
-     *         for chaining operations
+     * @param halo Halo under construction; if null HaloBuilder will be unset()
+     * @return current HaloBuilder for chaining operations
      */
-    public HaloBuilder<P> reset(org.opengis.style.Halo halo) {
+    public HaloBuilder reset(org.opengis.style.Halo halo) {
         if (halo == null) {
             return unset();
         }
-        fill = new FillBuilder<HaloBuilder<P>>(this).reset(halo.getFill());
-        radius = new ChildExpressionBuilder<HaloBuilder<P>>(this).reset(halo.getRadius());
+        fill = new FillBuilder(this).reset(halo.getFill());
+        radius = halo.getRadius();
 
         return this;
     }
 
-    public HaloBuilder<P> radius(Object radius) {
-        this.radius.literal(radius);
+    public HaloBuilder radius(Expression radius) {
+        unset = false;
+        this.radius = radius;
         return this;
     }
 
-    public ExpressionBuilder radius() {
-        return radius;
+    public HaloBuilder radius(double radius) {
+        return radius(literal(radius));
     }
 
-    public HaloBuilder<P> fill(Object color) {
-        this.fill.color().literal(color);
-        return this;
+    public HaloBuilder radius(String cqlExpression) {
+        return radius(cqlExpression(cqlExpression));
     }
 
-    public FillBuilder<HaloBuilder<P>> fill() {
+    public FillBuilder fill() {
+        unset = false;
         return fill;
     }
 
     public Halo build() {
-        if( unset ) return null;
-        
-        Halo halo = sf.createHalo(fill.build(), radius.build());
-        if( parent == null ) reset();
-        
+        if (unset)
+            return null;
+
+        Halo halo = sf.createHalo(fill.build(), radius);
+        if (parent == null)
+            reset();
+
         return halo;
     }
+
+    protected void buildStyleInternal(StyleBuilder sb) {
+        sb.featureTypeStyle().rule().text().halo().init(this);
+    }
+
 }

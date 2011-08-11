@@ -1,33 +1,40 @@
 package org.geotools.styling.builder;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
 
-import org.geotools.Builder;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.FeatureTypeConstraint;
 import org.geotools.styling.NamedLayer;
-import org.geotools.styling.StyleFactory;
+import org.geotools.styling.Style;
 
-public class NamedLayerBuilder<P> implements Builder<NamedLayer> {
-    private StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+public class NamedLayerBuilder extends AbstractSLDBuilder<NamedLayer> {
 
-    private P parent;
-
-    boolean unset = true; // current value is null
-
-    private LinkedHashSet<FeatureTypeConstraintBuilder<NamedLayerBuilder<P>>> constraints = new LinkedHashSet<FeatureTypeConstraintBuilder<NamedLayerBuilder<P>>>();
+    List<FeatureTypeConstraintBuilder> featureTypeConstraint = new ArrayList<FeatureTypeConstraintBuilder>();
 
     private String name;
+
+    List<StyleBuilder> styles = new ArrayList<StyleBuilder>();
 
     public NamedLayerBuilder() {
         this(null);
     }
 
-    public NamedLayerBuilder(P parent) {
-        this.parent = parent;
+    public NamedLayerBuilder(AbstractSLDBuilder<?> parent) {
+        super(parent);
         reset();
+    }
+
+    public NamedLayerBuilder name(String name) {
+        this.unset = false;
+        this.name = name;
+        return this;
+    }
+
+    public StyleBuilder style() {
+        this.unset = false;
+        StyleBuilder sb = new StyleBuilder(this);
+        styles.add(sb);
+        return sb;
     }
 
     @SuppressWarnings("unchecked")
@@ -38,43 +45,55 @@ public class NamedLayerBuilder<P> implements Builder<NamedLayer> {
         NamedLayer layer = sf.createNamedLayer();
         layer.setName(name);
         List<FeatureTypeConstraint> list = new ArrayList<FeatureTypeConstraint>();
-        for( FeatureTypeConstraintBuilder<NamedLayerBuilder<P>> constraint : constraints ){
-            list.add( constraint.build() );
+        for (FeatureTypeConstraintBuilder constraint : featureTypeConstraint) {
+            list.add(constraint.build());
         }
         layer.layerFeatureConstraints().addAll(list);
-        
-        if( parent == null ) reset();
+        for (StyleBuilder sb : styles) {
+            layer.addStyle(sb.build());
+        }
+
+        if (parent == null) {
+            reset();
+        }
+
         return layer;
     }
 
-    public P end() {
-        return parent;
-    }
-
-    public NamedLayerBuilder<P> reset() {
+    public NamedLayerBuilder reset() {
         unset = false;
-        constraints.clear();
+        this.name = null;
+        featureTypeConstraint.clear();
         return this;
     }
 
-    public NamedLayerBuilder<P> reset(NamedLayer layer) {
+    public NamedLayerBuilder reset(NamedLayer layer) {
         if (layer == null) {
-            return reset();
+            return unset();
         }
         this.name = layer.getName();
-        constraints.clear();
-        if( layer.layerFeatureConstraints() != null ){
-            for( FeatureTypeConstraint featureConstraint : layer.layerFeatureConstraints() ){
-                constraints.add( new FeatureTypeConstraintBuilder(this).reset( featureConstraint));
+        featureTypeConstraint.clear();
+        if (layer.layerFeatureConstraints() != null) {
+            for (FeatureTypeConstraint featureConstraint : layer.layerFeatureConstraints()) {
+                featureTypeConstraint.add(new FeatureTypeConstraintBuilder(this)
+                        .reset(featureConstraint));
             }
+        }
+        styles.clear();
+        for (Style style : layer.getStyles()) {
+            styles.add(new StyleBuilder().reset(style));
         }
         unset = false;
         return this;
     }
 
-    public NamedLayerBuilder<P> unset() {
-        unset = true;
-        return this;
+    public NamedLayerBuilder unset() {
+        return (NamedLayerBuilder) super.unset();
+    }
+
+    @Override
+    protected void buildSLDInternal(StyledLayerDescriptorBuilder sb) {
+        sb.namedLayer().init(this);
     }
 
 }

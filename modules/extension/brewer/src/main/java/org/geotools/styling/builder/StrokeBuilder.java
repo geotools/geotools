@@ -2,67 +2,62 @@ package org.geotools.styling.builder;
 
 import java.awt.Color;
 
-import org.geotools.Builder;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.expression.ChildExpressionBuilder;
-import org.geotools.filter.expression.ExpressionBuilder;
 import org.geotools.styling.Stroke;
-import org.geotools.styling.StyleFactory;
+import org.geotools.util.Converters;
 import org.opengis.filter.expression.Expression;
 
-public class StrokeBuilder<P> implements Builder<Stroke> {
-    P parent;
-    
-    StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
-    
-    ChildExpressionBuilder<StrokeBuilder<P>> color = new ChildExpressionBuilder<StrokeBuilder<P>>(this);
+public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
+    Expression color;
 
-    ChildExpressionBuilder<StrokeBuilder<P>> width = new ChildExpressionBuilder<StrokeBuilder<P>>(this);
+    Expression width;
 
-    ChildExpressionBuilder<StrokeBuilder<P>> opacity = new ChildExpressionBuilder<StrokeBuilder<P>>(this);
+    Expression opacity;
 
-    ChildExpressionBuilder<StrokeBuilder<P>> lineCap = new ChildExpressionBuilder<StrokeBuilder<P>>(this);
+    Expression lineCap;
 
-    ChildExpressionBuilder<StrokeBuilder<P>> lineJoin = new ChildExpressionBuilder<StrokeBuilder<P>>(this);
+    Expression lineJoin;
 
     float[] dashArray = null;
 
-    ChildExpressionBuilder<StrokeBuilder<P>> dashOffset = new ChildExpressionBuilder<StrokeBuilder<P>>(this);
+    Expression dashOffset;
 
-    GraphicBuilder<StrokeBuilder<P>> graphicFill = new GraphicBuilder<StrokeBuilder<P>>();
+    GraphicBuilder graphicFill = new GraphicBuilder(this).unset();
 
-    GraphicBuilder<StrokeBuilder<P>> graphicStroke = new GraphicBuilder<StrokeBuilder<P>>();
-
-    private boolean unset;
+    GraphicBuilder graphicStroke = new GraphicBuilder(this).unset();
 
     public StrokeBuilder() {
+        this(null);
+    }
+
+    public StrokeBuilder(AbstractStyleBuilder<?> parent) {
+        super(parent);
         reset();
     }
-    public StrokeBuilder(P parent) {
-        this.parent = parent;
-        reset();
-    }
-    public StrokeBuilder<P> unset() {
-        reset();
-        unset = true;
-        return this;
+
+    public StrokeBuilder unset() {
+        return (StrokeBuilder) super.unset();
     }
 
     /**
      * Reset stroke to default values.
      */
-    public StrokeBuilder<P> reset() {
-        color.reset(Stroke.DEFAULT.getColor());
-        width.reset(Stroke.DEFAULT.getWidth());
-        opacity.reset(Stroke.DEFAULT.getOpacity());
-        lineCap.reset(Stroke.DEFAULT.getLineCap());
-        lineJoin.reset(Stroke.DEFAULT.getLineJoin());
+    public StrokeBuilder reset() {
+        color = Stroke.DEFAULT.getColor();
+        width = Stroke.DEFAULT.getWidth();
+        opacity = Stroke.DEFAULT.getOpacity();
+        lineCap = Stroke.DEFAULT.getLineCap();
+        lineJoin = Stroke.DEFAULT.getLineJoin();
         dashArray = Stroke.DEFAULT.getDashArray();
-        dashOffset.reset(Stroke.DEFAULT.getDashOffset());
+        dashOffset = Stroke.DEFAULT.getDashOffset();
         graphicFill.unset();
-        graphicStroke.reset();
+        graphicStroke.unset();
         unset = false;
         return this;
+    }
+
+    @Override
+    public StrokeBuilder reset(Stroke original) {
+        return reset((org.opengis.style.Stroke) original);
     }
 
     /**
@@ -70,134 +65,127 @@ public class StrokeBuilder<P> implements Builder<Stroke> {
      * 
      * @param stroke
      */
-    public StrokeBuilder<P> reset(Stroke stroke) {
-        color.reset(stroke.getColor());
-        width.reset(stroke.getWidth());
-        opacity.reset(stroke.getOpacity());
-        lineCap.reset(stroke.getLineCap());
-        lineJoin.reset(stroke.getLineJoin());
+    public StrokeBuilder reset(org.opengis.style.Stroke stroke) {
+        if (stroke == null) {
+            return unset();
+        }
+        color = stroke.getColor();
+        width = stroke.getWidth();
+        opacity = stroke.getOpacity();
+        lineCap = stroke.getLineCap();
+        lineJoin = stroke.getLineJoin();
         dashArray = stroke.getDashArray();
-        dashOffset.reset(stroke.getDashOffset());
+        dashOffset = stroke.getDashOffset();
         graphicFill.reset(stroke.getGraphicFill());
         graphicStroke.reset(stroke.getGraphicStroke());
         unset = false;
         return this;
     }
 
-    public StrokeBuilder<P> color(Expression color) {
-        this.color.reset(color);
+    public StrokeBuilder color(Expression color) {
         unset = false;
-        return this;
-    }
-    public StrokeBuilder<P> color(Color color) {
-        this.color.literal(color);
-        unset = false;
-        return this;
-    }
-    public StrokeBuilder<P> color(String color) {
-        this.color.literal(color);
-        unset = false;
+        this.color = color;
         return this;
     }
 
-    public ExpressionBuilder color() {
-        return color;
+    public StrokeBuilder color(Color color) {
+        return color(literal(color));
     }
 
-    public StrokeBuilder<P> width(Expression width) {
-        this.width.reset(width);
-        unset = false;
-        return this;
-    }
-    
-    public StrokeBuilder<P> width(int width) {
-        this.width.literal( width );
-        unset = false;
-        return this;
-    }
-    
-    public StrokeBuilder<P> width(double width) {
-        this.width.literal( width );
-        unset = false;
-        return this;
+    public StrokeBuilder color(String cqlExpression) {
+        return color(cqlExpression(cqlExpression));
     }
 
-    public ChildExpressionBuilder<StrokeBuilder<P>> width() {
-        return width;
+    public StrokeBuilder colorHex(String hex) {
+        Color color = Converters.convert(hex, Color.class);
+        if (color == null) {
+            throw new IllegalArgumentException(
+                    "The provided expression could not be turned into a color: " + hex);
+        }
+        return color(color);
     }
 
-    public StrokeBuilder<P> opacity(Expression opacity) {
-        this.opacity.reset(opacity);
+    public StrokeBuilder width(Expression width) {
         unset = false;
-        return this;
-    }
-    public StrokeBuilder<P> opacity(double opacity) {
-        this.opacity.literal(opacity);
-        unset = false;
-        return this;
-    }
-    public ExpressionBuilder opacity() {
-        return opacity;
-    }
-
-    public StrokeBuilder<P> lineCap(Expression lineCap) {
-        this.lineCap.reset(lineCap);
-        unset = false;
+        this.width = width;
         return this;
     }
 
-    public ChildExpressionBuilder<StrokeBuilder<P>> lineCap() {
-        return lineCap;
+    public StrokeBuilder width(double width) {
+        return width(literal(width));
     }
 
-    public StrokeBuilder<P> lineJoin(Expression lineJoin) {
-        this.lineJoin.reset(lineJoin);
+    public StrokeBuilder width(String cqlExpression) {
+        return width(cqlExpression(cqlExpression));
+    }
+
+    public StrokeBuilder opacity(Expression opacity) {
         unset = false;
+        this.opacity = opacity;
         return this;
     }
 
-    public ChildExpressionBuilder<StrokeBuilder<P>> lineJoin() {
-        return lineJoin;
+    public StrokeBuilder opacity(double opacity) {
+        return opacity(literal(opacity));
     }
 
-    public StrokeBuilder<P> dashArray(float[] dashArray) {
+    public StrokeBuilder opacity(String cqlExpression) {
+        return opacity(cqlExpression(cqlExpression));
+    }
+
+    public StrokeBuilder lineCap(Expression lineCap) {
+        unset = false;
+        this.lineCap = lineCap;
+        return this;
+    }
+
+    public StrokeBuilder lineCap(String cqlExpression) {
+        return lineCap(cqlExpression(cqlExpression));
+    }
+
+    public StrokeBuilder lineCapName(String cap) {
+        return lineCap(literal(cap));
+    }
+
+    public StrokeBuilder lineJoin(Expression lineJoin) {
+        unset = false;
+        this.lineJoin = lineJoin;
+        return this;
+    }
+
+    public StrokeBuilder lineJoin(String cqlExpression) {
+        return lineJoin(cqlExpression(cqlExpression));
+    }
+
+    public StrokeBuilder lineJoinName(String join) {
+        return lineJoin(literal(join));
+    }
+
+    public StrokeBuilder dashArray(float... dashArray) {
         this.dashArray = dashArray;
         unset = false;
         return this;
     }
 
-    public float[] dashArray() {
-        return dashArray;
-    }
-
-    public StrokeBuilder<P> dashOffet(Expression dashOffet) {
-        this.dashOffset.reset(dashOffet);
-        unset = false;
+    public StrokeBuilder dashOffset(Expression dashOffset) {
+        this.dashOffset = dashOffset;
         return this;
     }
 
-    public StrokeBuilder<P> dashOffet(int offset) {
-        this.dashOffset.literal( offset );
-        unset = false;
-        return this;
-    }
-    
-    public StrokeBuilder<P> dashOffet(double offset) {
-        this.dashOffset.literal( offset );
-        unset = false;
-        return this;
-    }
-    
-    public ChildExpressionBuilder<StrokeBuilder<P>> dashOffset() {
-        return dashOffset;
+    public StrokeBuilder dashOffset(double dashOffset) {
+        return dashOffset(literal(dashOffset));
     }
 
-    public GraphicBuilder<StrokeBuilder<P>> graphicStroke() {
+    public StrokeBuilder dashOffset(String cqlExpression) {
+        return dashOffset(cqlExpression(cqlExpression));
+    }
+
+    public GraphicBuilder graphicStroke() {
         unset = false;
         return graphicStroke;
     }
 
-    public GraphicBuilder<StrokeBuilder<P>> fillBuilder() {
+    public GraphicBuilder fillBuilder() {
         unset = false;
         return graphicFill;
     }
@@ -206,10 +194,17 @@ public class StrokeBuilder<P> implements Builder<Stroke> {
         if (unset) {
             return null;
         }
-        Stroke stroke = sf.createStroke(color.build(), width.build(), opacity.build(), lineJoin
-                .build(), lineCap.build(), dashArray, dashOffset.build(), graphicFill.build(),
-                this.graphicStroke.build());
-        reset();
+        Stroke stroke = sf.createStroke(color, width, opacity, lineJoin, lineCap, dashArray,
+                dashOffset, graphicFill.build(), this.graphicStroke.build());
+        if (parent == null) {
+            reset();
+        }
         return stroke;
     }
+
+    @Override
+    protected void buildStyleInternal(StyleBuilder sb) {
+        sb.featureTypeStyle().rule().line().stroke().init(this);
+    }
+
 }

@@ -3,31 +3,20 @@ package org.geotools.styling.builder;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geotools.Builder;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.expression.ChildExpressionBuilder;
 import org.geotools.styling.ColorReplacement;
-import org.geotools.styling.StyleFactory;
 import org.opengis.filter.expression.Expression;
 
-public class ColorReplacementBuilder<P> implements Builder<ColorReplacement> {
-    private StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+public class ColorReplacementBuilder extends AbstractStyleBuilder<ColorReplacement> {
+    private Expression propertyName;
 
-    private P parent;
-
-    private ChildExpressionBuilder<ColorReplacementBuilder<P>> propertyName = new ChildExpressionBuilder<ColorReplacementBuilder<P>>(
-            this);
-
-    private List<ChildExpressionBuilder<ColorReplacementBuilder<P>>> mapping = new ArrayList<ChildExpressionBuilder<ColorReplacementBuilder<P>>>();
-
-    boolean unset = true; // current value is null
+    private List<Expression> mapping = new ArrayList<Expression>();
 
     public ColorReplacementBuilder() {
         this(null);
     }
 
-    public ColorReplacementBuilder(P parent) {
-        this.parent = parent;
+    public ColorReplacementBuilder(AbstractStyleBuilder<?> parent) {
+        super(parent);
         reset();
     }
 
@@ -35,45 +24,52 @@ public class ColorReplacementBuilder<P> implements Builder<ColorReplacement> {
         if (unset) {
             return null;
         }
-        List<Expression> list = new ArrayList<Expression>();
-        for( ChildExpressionBuilder<ColorReplacementBuilder<P>> expressionBuilder : mapping ){
-            list.add( expressionBuilder.build() );
-        }
-        Expression array[] = list.toArray(new Expression[list.size()]);
-        
-        ColorReplacement replacement = sf.colorReplacement(propertyName.build(), array);
-        if( parent == null ){
+        Expression array[] = mapping.toArray(new Expression[mapping.size()]);
+        ColorReplacement replacement = sf.colorReplacement(propertyName, array);
+        if (parent == null) {
             reset();
         }
         return replacement;
     }
 
-    public P end() {
-        return parent;
-    }
-
-    public ColorReplacementBuilder<P> reset() {
-        propertyName.reset().property("Raster");
+    public ColorReplacementBuilder reset() {
+        propertyName = property("Raster");
         mapping.clear();
         unset = false;
         return this;
     }
 
-    public ColorReplacementBuilder<P> reset(ColorReplacement replacement) {
+    @Override
+    public ColorReplacementBuilder reset(ColorReplacement original) {
+        return reset((org.opengis.style.ColorReplacement) original);
+    }
+
+    public ColorReplacementBuilder reset(org.opengis.style.ColorReplacement replacement) {
         if (replacement == null) {
             return unset();
         }
-        propertyName.reset( replacement.getRecoding() );
         mapping.clear();
+        if (replacement.getRecoding() != null
+                && replacement.getRecoding().getParameters().size() > 0) {
+            List<Expression> params = replacement.getRecoding().getParameters();
+            propertyName = params.get(0);
+            for (int i = 0; i < params.size(); i++) {
+                mapping.add(params.get(i));
+            }
+        }
+
         unset = false;
         return this;
     }
 
-    public ColorReplacementBuilder<P> unset() {
-        propertyName.unset();
-        mapping.clear();
-        unset = true;
-        return this;
+    public ColorReplacementBuilder unset() {
+        return (ColorReplacementBuilder) super.unset();
+    }
+
+    @Override
+    protected void buildStyleInternal(StyleBuilder sb) {
+        // TODO: build a raster style
+        throw new UnsupportedOperationException("Can't build a style out of a color replacement");
     }
 
 }

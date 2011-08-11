@@ -1,95 +1,101 @@
 package org.geotools.styling.builder;
 
-import org.geotools.Builder;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.expression.ChildExpressionBuilder;
 import org.geotools.styling.Mark;
-import org.geotools.styling.StyleFactory;
 import org.opengis.filter.expression.Expression;
 
-public class MarkBuilder<P> implements Builder<Mark> {
-    StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
-    P parent;
-    
-    StrokeBuilder<MarkBuilder<P>> strokeBuilder = new StrokeBuilder<MarkBuilder<P>>(this);
+public class MarkBuilder extends AbstractStyleBuilder<Mark> {
+    StrokeBuilder strokeBuilder = new StrokeBuilder(this).unset();
 
-    FillBuilder<MarkBuilder<P>> fill = new FillBuilder<MarkBuilder<P>>(this);
+    FillBuilder fill = new FillBuilder(this).unset();
 
-    ExternalMarkBuilder<MarkBuilder<P>> externalMark = new ExternalMarkBuilder<MarkBuilder<P>>(this);
+    ExternalMarkBuilder externalMark = new ExternalMarkBuilder(this);
 
-    ChildExpressionBuilder<MarkBuilder<P>> wellKnownName = new ChildExpressionBuilder<MarkBuilder<P>>(this);
-    
+    Expression wellKnownName;
+
     public MarkBuilder() {
-        this( null );
+        this(null);
     }
-    public MarkBuilder(P parent) {
-        this.parent = parent;
+
+    MarkBuilder(GraphicBuilder parent) {
+        super(parent);
         reset();
     }
-    public ChildExpressionBuilder<MarkBuilder<P>> wellKnownName() {
-        externalMark.unset();
-        return wellKnownName;
-    }
-    public MarkBuilder<P> wellKnownName(Expression name) {
-        this.wellKnownName.reset(name);
-        this.externalMark.unset();        
+
+    public MarkBuilder name(Expression name) {
+        this.wellKnownName = name;
+        this.externalMark.unset();
         return this;
     }
-    public MarkBuilder<P> name(Expression name) {
-        return wellKnownName(name);
+
+    public MarkBuilder name(String name) {
+        return name(literal(name));
     }
 
-    public ExternalMarkBuilder<MarkBuilder<P>> externalMark() {
+    public ExternalMarkBuilder externalMark() {
         return externalMark;
     }
-    
-    public StrokeBuilder<MarkBuilder<P>> stroke() {
+
+    public StrokeBuilder stroke() {
         return strokeBuilder;
     }
 
-    public FillBuilder<MarkBuilder<P>> fill() {
+    public FillBuilder fill() {
         return fill;
     }
 
-    public MarkBuilder<P> reset() {
+    public MarkBuilder reset() {
         // TODO: where is the default mark?
-        this.wellKnownName.reset().literal("square");
+        this.wellKnownName = literal("square");
         this.externalMark.unset();
         this.strokeBuilder.reset();
-        this.fill.reset();
-        
+        this.fill.unset();
+        this.stroke().unset();
+        this.unset = false;
+
         return this;
     }
 
     public Mark build() {
+        if (unset) {
+            return null;
+        }
+
         Mark mark = null;
-        if( !externalMark.isUnset() ){
-            mark = sf.mark( externalMark.build(), fill.build(), strokeBuilder.build());
+        if (!externalMark.isUnset()) {
+            mark = sf.mark(externalMark.build(), fill.build(), strokeBuilder.build());
         }
-        if( !wellKnownName.isUnset() ){
-            mark = sf.mark(wellKnownName.build(), fill.build(), strokeBuilder.build());
+        if (wellKnownName != null) {
+            mark = sf.mark(wellKnownName, fill.build(), strokeBuilder.build());
         }
-        if( parent == null ){
+        if (parent == null) {
             reset();
         }
         return mark;
     }
 
-    public MarkBuilder<P> reset(Mark mark) {
-        if( mark == null) return unset();
-        this.wellKnownName.reset( mark.getWellKnownName() );
-        this.externalMark.reset( mark.getExternalMark() );
-        this.strokeBuilder.reset( mark.getStroke() );
-        this.fill.reset( mark.getFill() );
-        
-        return null;
+    public MarkBuilder reset(Mark mark) {
+        return reset((org.opengis.style.Mark) mark);
     }
 
-    public MarkBuilder<P> unset() {
-        externalMark.unset();
-        wellKnownName.unset();
-        fill.unset();
-        strokeBuilder.unset();
+    public MarkBuilder reset(org.opengis.style.Mark mark) {
+        if (mark == null) {
+            return unset();
+        }
+        this.wellKnownName = mark.getWellKnownName();
+        this.externalMark.reset(mark.getExternalMark());
+        this.strokeBuilder.reset(mark.getStroke());
+        this.fill.reset(mark.getFill());
+        this.unset = false;
+
         return this;
     }
+
+    public MarkBuilder unset() {
+        return (MarkBuilder) super.unset();
+    }
+
+    protected void buildStyleInternal(StyleBuilder sb) {
+        sb.featureTypeStyle().rule().point().graphic().mark().init(this);
+    }
+
 }

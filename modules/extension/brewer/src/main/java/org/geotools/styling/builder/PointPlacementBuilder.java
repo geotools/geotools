@@ -1,59 +1,84 @@
 package org.geotools.styling.builder;
 
-import org.geotools.Builder;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.expression.ChildExpressionBuilder;
 import org.geotools.styling.PointPlacement;
-import org.geotools.styling.StyleFactory;
-import org.opengis.style.Displacement;
+import org.opengis.filter.expression.Expression;
 
-public class PointPlacementBuilder<P> implements Builder<PointPlacement> {
-    private StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
-    private P parent;
-    private ChildExpressionBuilder<PointPlacementBuilder<P>> rotation = new ChildExpressionBuilder<PointPlacementBuilder<P>>(this);
-    boolean unset = true; // current value is null
-    private org.opengis.style.AnchorPoint anchor;
-    private Displacement displacement;
-    public PointPlacementBuilder(){
-        parent = null;
+public class PointPlacementBuilder extends AbstractStyleBuilder<PointPlacement> {
+    private Expression rotation;
+
+    private AnchorPointBuilder anchor = new AnchorPointBuilder(this).unset();
+
+    private DisplacementBuilder displacement = new DisplacementBuilder(this).unset();
+
+    public PointPlacementBuilder() {
+        this(null);
+    }
+
+    public PointPlacementBuilder(AbstractStyleBuilder<?> parent) {
+        super(parent);
         reset();
     }
-    public PointPlacementBuilder(P parent){
-        this.parent = null;
-        reset();
-    }
-    
+
     public PointPlacement build() {
-        if( unset ){
+        if (unset) {
             return null;
         }
-        PointPlacement placement = sf.pointPlacement(anchor, displacement, rotation.build());
+        PointPlacement placement = sf
+                .pointPlacement(anchor.build(), displacement.build(), rotation);
+        if (parent == null) {
+            reset();
+        }
         return placement;
     }
-    
-    public P end(){
-        return parent;
+
+    public AnchorPointBuilder anchor() {
+        unset = false;
+        return anchor;
     }
 
-    public PointPlacementBuilder<P> reset() {
-        rotation.reset();
-        unset = false;        
+    public DisplacementBuilder displacement() {
+        unset = false;
+        return displacement;
+    }
+
+    public PointPlacementBuilder rotation(Expression rotation) {
+        this.rotation = rotation;
         return this;
     }
 
-    public PointPlacementBuilder<P> reset(PointPlacement placement) {
-        if( placement == null ){
+    public PointPlacementBuilder rotation(double rotation) {
+        return rotation(literal(rotation));
+    }
+
+    public PointPlacementBuilder rotation(String cqlExpression) {
+        return rotation(cqlExpression(cqlExpression));
+    }
+
+    public PointPlacementBuilder reset() {
+        rotation = literal(0);
+        anchor.reset();
+        displacement.reset();
+        unset = false;
+        return this;
+    }
+
+    public PointPlacementBuilder reset(PointPlacement placement) {
+        if (placement == null) {
             return reset();
         }
-        rotation.reset( placement.getRotation() );
-        unset = false; 
+        rotation = placement.getRotation();
+        anchor.reset(placement.getAnchorPoint());
+        displacement.reset(placement.getDisplacement());
+        unset = false;
         return this;
     }
 
-    public PointPlacementBuilder<P> unset() {
-        rotation.unset();
-        unset = true;        
-        return this;
+    public PointPlacementBuilder unset() {
+        return (PointPlacementBuilder) super.unset();
+    }
+
+    protected void buildStyleInternal(StyleBuilder sb) {
+        sb.featureTypeStyle().rule().text().labelText("label").pointPlacement().init(this);
     }
 
 }

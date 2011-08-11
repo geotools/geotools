@@ -3,20 +3,12 @@ package org.geotools.styling.builder;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geotools.Builder;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
 import org.geotools.util.SimpleInternationalString;
 
-public class StyleBuilder<P> implements Builder<Style> {
-    StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
-    P parent;
-    
-    List<FeatureTypeStyle> fts = new ArrayList<FeatureTypeStyle>();
-
-    FeatureTypeStyleBuilder ftsBuilder;
+public class StyleBuilder extends AbstractStyleBuilder<Style> {
+    List<FeatureTypeStyleBuilder> fts = new ArrayList<FeatureTypeStyleBuilder>();
 
     String name;
 
@@ -26,17 +18,17 @@ public class StyleBuilder<P> implements Builder<Style> {
 
     boolean isDefault;
 
-    private boolean unset;
-
-    public StyleBuilder(){
-        this(null);
-    }
-    public StyleBuilder(P parent){
-        parent = null;
+    public StyleBuilder() {
+        super(null);
         reset();
     }
-    
-    public StyleBuilder<P> name(String name) {
+
+    StyleBuilder(AbstractSLDBuilder<?> parent) {
+        super(parent);
+        reset();
+    }
+
+    public StyleBuilder name(String name) {
         this.name = name;
         return this;
     }
@@ -51,43 +43,46 @@ public class StyleBuilder<P> implements Builder<Style> {
         return this;
     }
 
-    public FeatureTypeStyleBuilder newFeatureTypeStyle() {
-        if (ftsBuilder == null)
-            ftsBuilder = new FeatureTypeStyleBuilder();
-        else
-            fts.add(ftsBuilder.build());
+    public FeatureTypeStyleBuilder featureTypeStyle() {
+        this.unset = unset;
+        FeatureTypeStyleBuilder ftsBuilder = new FeatureTypeStyleBuilder(this);
+        fts.add(ftsBuilder);
+
         return ftsBuilder;
     }
 
     public Style build() {
-        if( unset ){
+        if (unset) {
             return null;
         }
-        if (ftsBuilder == null)
-            ftsBuilder = new FeatureTypeStyleBuilder();
-        fts.add(ftsBuilder.build());
 
-        Style s = sf.createStyle();
-        s.setName(name);
-        if (styleAbstract != null)
-            s.getDescription().setAbstract(new SimpleInternationalString(styleAbstract));
-        if (title != null)
-            s.getDescription().setTitle(new SimpleInternationalString(title));
-        s.featureTypeStyles().addAll(fts);
-        s.setDefault(isDefault);
+        Style s;
+        if (fts.size() == 0) {
+            s = sf.createNamedStyle();
+            s.setName(name);
+        } else {
+            s = sf.createStyle();
+            s.setName(name);
+            if (styleAbstract != null)
+                s.getDescription().setAbstract(new SimpleInternationalString(styleAbstract));
+            if (title != null)
+                s.getDescription().setTitle(new SimpleInternationalString(title));
+            for (FeatureTypeStyleBuilder builder : fts) {
+                s.featureTypeStyles().add(builder.build());
+            }
+            s.setDefault(isDefault);
+        }
 
-        if( parent == null ) reset();
+        reset();
         return s;
     }
 
     public StyleBuilder unset() {
-        reset();
-        unset = true;
-        return this;
+        return (StyleBuilder) super.unset();
     }
+
     public StyleBuilder reset() {
         fts.clear();
-        ftsBuilder = null;
         name = null;
         styleAbstract = null;
         title = null;
@@ -95,18 +90,30 @@ public class StyleBuilder<P> implements Builder<Style> {
         unset = false;
         return this;
     }
+
     public StyleBuilder reset(Style style) {
-        if( style == null ){
+        if (style == null) {
             return unset();
         }
         fts.clear();
-        fts.addAll( style.featureTypeStyles() ); // TODO: copy into builders
-        ftsBuilder = null;
+        for (FeatureTypeStyle ft : style.featureTypeStyles()) {
+            fts.add(new FeatureTypeStyleBuilder(this).reset(ft));
+        }
         name = style.getName();
         styleAbstract = style.getAbstract();
         title = style.getTitle();
         isDefault = style.isDefault();
         unset = false;
         return this;
+    }
+
+    @Override
+    public Style buildStyle() {
+        return build();
+    }
+
+    @Override
+    protected void buildStyleInternal(StyleBuilder sb) {
+        // no-op
     }
 }

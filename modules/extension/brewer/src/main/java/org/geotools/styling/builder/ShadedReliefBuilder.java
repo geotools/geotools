@@ -1,58 +1,74 @@
 package org.geotools.styling.builder;
 
-import org.geotools.Builder;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.expression.ChildExpressionBuilder;
 import org.geotools.styling.ShadedRelief;
-import org.geotools.styling.StyleFactory;
+import org.opengis.filter.expression.Expression;
 
-public class ShadedReliefBuilder<P> implements Builder<ShadedRelief> {
-    private StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
-    private P parent;
-    private ChildExpressionBuilder<ShadedReliefBuilder<P>> reliefFactor = new ChildExpressionBuilder<ShadedReliefBuilder<P>>(this);
+public class ShadedReliefBuilder extends AbstractStyleBuilder<ShadedRelief> {
+    private Expression factor;
+
     private boolean brightnessOnly;
 
-    boolean unset = true; // current value is null
-    public ShadedReliefBuilder(){
-        this( null );
+    public ShadedReliefBuilder() {
+        this(null);
     }
-    public ShadedReliefBuilder(P parent){
-        this.parent = parent;
+
+    public ShadedReliefBuilder(AbstractStyleBuilder<?> parent) {
+        super(parent);
         reset();
     }
-    
+
+    public ShadedReliefBuilder factor(Expression factor) {
+        this.factor = factor;
+        unset = false;
+        return this;
+    }
+
+    public ShadedReliefBuilder factor(double factor) {
+        return factor(literal(factor));
+    }
+
+    public ShadedReliefBuilder factor(String cqlExpression) {
+        return factor(cqlExpression(cqlExpression));
+    }
+
+    public ShadedReliefBuilder brightnessOnly(boolean brightnessOnly) {
+        this.brightnessOnly = brightnessOnly;
+        unset = false;
+        return this;
+    }
+
     public ShadedRelief build() {
-        if( unset ){
+        if (unset) {
             return null;
         }
-        ShadedRelief relief = sf.shadedRelief(reliefFactor.build(), brightnessOnly);
+        ShadedRelief relief = sf.shadedRelief(factor, brightnessOnly);
         return relief;
     }
-    
-    public P end(){
-        return parent;
-    }
 
-    public ShadedReliefBuilder<P> reset() {
-        reliefFactor.reset().literal(0);
-        brightnessOnly=false;
-        unset = false;        
+    public ShadedReliefBuilder reset() {
+        factor = literal(0);
+        brightnessOnly = false;
+        unset = false;
         return this;
     }
 
-    public ShadedReliefBuilder<P> reset(ShadedRelief relief) {
-        if( relief == null ){
+    public ShadedReliefBuilder reset(ShadedRelief relief) {
+        if (relief == null) {
             return reset();
         }
-        unset = false; 
+        brightnessOnly = relief.isBrightnessOnly();
+        factor = relief.getReliefFactor();
+        unset = false;
         return this;
     }
 
-    public ShadedReliefBuilder<P> unset() {
-        reliefFactor.unset();
-        brightnessOnly=false;
-        unset = true;        
-        return this;
+    public ShadedReliefBuilder unset() {
+        return (ShadedReliefBuilder) super.unset();
+    }
+
+    @Override
+    protected void buildStyleInternal(StyleBuilder sb) {
+        sb.featureTypeStyle().rule().raster().shadedRelief().init(this);
     }
 
 }

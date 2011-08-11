@@ -3,66 +3,114 @@ package org.geotools.styling.builder;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geotools.Builder;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.expression.ChildExpressionBuilder;
 import org.geotools.styling.Font;
-import org.geotools.styling.StyleFactory;
 import org.opengis.filter.expression.Expression;
 
-public class FontBuilder<P> implements Builder<Font> {
-    private StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
-    private P parent;
-    private ChildExpressionBuilder<FontBuilder<P>> x = new ChildExpressionBuilder<FontBuilder<P>>(this);
-    private ChildExpressionBuilder<FontBuilder<P>> y = new ChildExpressionBuilder<FontBuilder<P>>(this);
-    boolean unset = true; // current value is null
-    private List<ChildExpressionBuilder<GraphicBuilder<P>>> family;
-    private ChildExpressionBuilder<GraphicBuilder<P>> style;
-    private ChildExpressionBuilder<GraphicBuilder<P>> weight;
-    private ChildExpressionBuilder<GraphicBuilder<P>> size;
-    public FontBuilder(){
-        parent = null;
+public class FontBuilder extends AbstractStyleBuilder<Font> {
+    private List<Expression> families = new ArrayList<Expression>();
+
+    private Expression style;
+
+    private Expression weight;
+
+    private Expression size;
+
+    public FontBuilder() {
+        this(null);
+    }
+
+    public FontBuilder(TextSymbolizerBuilder parent) {
+        super(parent);
         reset();
     }
-    public FontBuilder(P parent){
-        this.parent = parent;
-        reset();
-    }
-    
+
     public Font build() {
-        if( unset ){
+        if (unset) {
             return null;
         }
-        List<Expression> list = new ArrayList<Expression>();
-        for(ChildExpressionBuilder<?> face : family ){
-            list.add( face.build() );
+        Font font = sf.font(families, style, weight, size);
+        if (parent == null) {
+            reset();
         }
-        Font font = sf.font( list, style.build(), weight.build(), size.build() );
         return font;
     }
-    
-    public P end(){
-        return parent;
-    }
 
-    public FontBuilder<P> reset() {
-        x.reset().literal(0);
-        y.reset().literal(0);
-        unset = false;        
+    public FontBuilder family(Expression family) {
+        this.families.add(family);
         return this;
     }
 
-    public FontBuilder<P> reset(Font font) {
-        if( font == null ){
+    public FontBuilder familyName(String family) {
+        return family(literal(family));
+    }
+
+    public FontBuilder family(String cqlExpression) {
+        return family(cqlExpression(cqlExpression));
+    }
+
+    public FontBuilder style(Expression style) {
+        this.style = style;
+        return this;
+    }
+
+    public FontBuilder styleName(String style) {
+        return style(literal(style));
+    }
+
+    public FontBuilder style(String cqlExpression) {
+        return style(cqlExpression(cqlExpression));
+    }
+
+    public FontBuilder weight(Expression weight) {
+        this.weight = weight;
+        return this;
+    }
+
+    public FontBuilder weightName(String weight) {
+        return weight(literal(weight));
+    }
+
+    public FontBuilder weight(String cqlExpression) {
+        return weight(cqlExpression(cqlExpression));
+    }
+
+    public FontBuilder size(Expression size) {
+        this.size = size;
+        return this;
+    }
+
+    public FontBuilder size(double size) {
+        return size(literal(size));
+    }
+
+    public FontBuilder size(String cqlExpression) {
+        return size(cqlExpression(cqlExpression));
+    }
+
+    public FontBuilder reset() {
+        unset = false;
+        return this;
+    }
+
+    public FontBuilder reset(Font font) {
+        if (font == null) {
             return reset();
         }
-        unset = false; 
+        this.families = font.getFamily() != null ? font.getFamily() : new ArrayList<Expression>();
+        this.size = font.getSize();
+        this.style = font.getStyle();
+        this.weight = font.getWeight();
+        unset = false;
         return this;
     }
 
-    public FontBuilder<P> unset() {
-        unset = true;        
-        return this;
+    public FontBuilder unset() {
+        return (FontBuilder) super.unset();
+    }
+
+    @Override
+    protected void buildStyleInternal(StyleBuilder sb) {
+        sb.featureTypeStyle().rule().text().labelText("label").newFont().init(this);
     }
 
 }

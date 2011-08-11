@@ -142,7 +142,8 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
         else return legends.get(0);
     }
     public void setLegend(GraphicLegend legend) {
-        legends.set(0, (Graphic) legend );
+        legends.clear();
+        legends.add((Graphic) legend );
     }
 
     public List<Symbolizer> symbolizers() {

@@ -2,80 +2,123 @@ package org.geotools.styling.builder;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.measure.unit.Unit;
 
-import org.geotools.Builder;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.expression.ChildExpressionBuilder;
 import org.geotools.styling.ExtensionSymbolizer;
-import org.geotools.styling.StyleFactory;
 import org.opengis.filter.expression.Expression;
-import org.opengis.style.Description;
 
-public class ExtensionSymbolizerBuilder<P> implements Builder<ExtensionSymbolizer> {
-    private StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
-
-    private P parent;
-
-    boolean unset = true; // current value is null
-
+public class ExtensionSymbolizerBuilder extends AbstractStyleBuilder<ExtensionSymbolizer> {
     private String name;
 
-    private String geometry;
+    private Expression geometry;
 
-    private Description description;
+    private DescriptionBuilder description = new DescriptionBuilder(this).unset();
 
-    private Unit<?> unit;
+    private Unit<?> uom;
 
     private String extensionName;
 
-    private Map<String, ChildExpressionBuilder<ExtensionSymbolizerBuilder<P>>> parameters = new HashMap<String, ChildExpressionBuilder<ExtensionSymbolizerBuilder<P>>>();
+    private Map<String, Expression> parameters = new HashMap<String, Expression>();
 
     public ExtensionSymbolizerBuilder() {
         this(null);
     }
 
-    public ExtensionSymbolizerBuilder(P parent) {
-        this.parent = parent;
+    public ExtensionSymbolizerBuilder(AbstractStyleBuilder<?> parent) {
+        super(parent);
         reset();
+    }
+
+    public ExtensionSymbolizerBuilder name(String name) {
+        unset = false;
+        this.name = name;
+        return this;
+    }
+
+    public ExtensionSymbolizerBuilder geometry(Expression geometry) {
+        this.geometry = geometry;
+        this.unset = false;
+        return this;
+    }
+
+    public ExtensionSymbolizerBuilder geometryName(String geometry) {
+        return geometry(property(geometry));
+    }
+
+    public ExtensionSymbolizerBuilder geometry(String cqlExpression) {
+        return geometry(cqlExpression(cqlExpression));
+    }
+
+    public ExtensionSymbolizerBuilder uom(Unit<?> uom) {
+        unset = false;
+        this.uom = uom;
+        return this;
+    }
+
+    public ExtensionSymbolizerBuilder extensionName(String extensionName) {
+        unset = false;
+        this.extensionName = extensionName;
+        return this;
+    }
+
+    public DescriptionBuilder description() {
+        unset = false;
+        return description;
+    }
+
+    public ExtensionSymbolizerBuilder param(String name, Expression param) {
+        this.unset = false;
+        parameters.put(name, param);
+        return this;
     }
 
     public ExtensionSymbolizer build() {
         if (unset) {
             return null;
         }
-        Map<String, Expression> params = new HashMap<String, Expression>();
-        for (Entry<String, ChildExpressionBuilder<ExtensionSymbolizerBuilder<P>>> entry : parameters
-                .entrySet()) {
-            params.put(entry.getKey(), entry.getValue().build());
+        ExtensionSymbolizer symbolizer = sf.extensionSymbolizer(name, null, description.build(),
+                uom, extensionName, parameters);
+        symbolizer.setGeometry(geometry);
+        if (parent == null) {
+            reset();
         }
-        ExtensionSymbolizer symbolizer = sf.extensionSymbolizer(name, geometry, description, unit,
-                extensionName, params);
         return symbolizer;
     }
 
-    public P end() {
-        return parent;
-    }
-
-    public ExtensionSymbolizerBuilder<P> reset() {
+    public ExtensionSymbolizerBuilder reset() {
+        name = null;
+        geometry = null;
+        description.unset();
+        uom = null;
+        extensionName = null;
+        parameters = new HashMap<String, Expression>();
         unset = false;
         return this;
     }
 
-    public ExtensionSymbolizerBuilder<P> reset(ExtensionSymbolizer symbolizer) {
+    public ExtensionSymbolizerBuilder reset(ExtensionSymbolizer symbolizer) {
         if (symbolizer == null) {
-            return reset();
+            return unset();
         }
+        this.name = symbolizer.getName();
+        this.geometry = symbolizer.getGeometry();
+        this.description.reset(symbolizer.getDescription());
+        this.uom = symbolizer.getUnitOfMeasure();
+        this.extensionName = symbolizer.getExtensionName();
+        this.parameters.clear();
+        this.parameters.putAll(symbolizer.getParameters());
         unset = false;
         return this;
     }
 
-    public ExtensionSymbolizerBuilder<P> unset() {
-        unset = true;
-        return this;
+    public ExtensionSymbolizerBuilder unset() {
+        return (ExtensionSymbolizerBuilder) super.unset();
+    }
+
+    @Override
+    protected void buildStyleInternal(StyleBuilder sb) {
+        sb.featureTypeStyle().rule().extension().init(this);
     }
 
 }

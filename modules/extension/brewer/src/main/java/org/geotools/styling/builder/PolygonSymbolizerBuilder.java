@@ -1,79 +1,115 @@
 package org.geotools.styling.builder;
 
-import org.geotools.Builder;
-import org.geotools.factory.CommonFactoryFinder;
+import javax.measure.quantity.Length;
+import javax.measure.unit.Unit;
+
 import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.StyleFactory;
+import org.opengis.filter.expression.Expression;
 
-public class PolygonSymbolizerBuilder<P> implements Builder<PolygonSymbolizer> {
-    StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+public class PolygonSymbolizerBuilder extends AbstractStyleBuilder<PolygonSymbolizer> {
+    StrokeBuilder stroke = new StrokeBuilder(this).unset();
 
-    P parent;
+    FillBuilder fill = new FillBuilder(this).unset();
 
-    StrokeBuilder<PolygonSymbolizerBuilder<P>> stroke = new StrokeBuilder<PolygonSymbolizerBuilder<P>>();
+    Expression geometry = null;
 
-    FillBuilder<PolygonSymbolizerBuilder<P>> fill = new FillBuilder<PolygonSymbolizerBuilder<P>>();
-
-    String geometry = null;
-
-    boolean unset = false;
+    Unit<Length> uom;
 
     public PolygonSymbolizerBuilder() {
         this(null);
     }
 
-    PolygonSymbolizerBuilder(P parent) {
-        this.parent = parent;
+    PolygonSymbolizerBuilder(AbstractStyleBuilder<?> parent) {
+        super(parent);
         reset();
     }
 
-    public P end() {
-        return parent;
-    }
-    
-    PolygonSymbolizerBuilder<P> geometry(String geometry) {
+    public PolygonSymbolizerBuilder geometry(Expression geometry) {
         this.geometry = geometry;
-        unset = false;
         return this;
+    }
+
+    public PolygonSymbolizerBuilder geometry(String cqlExpression) {
+        return geometry(cqlExpression(cqlExpression));
     }
 
     public StrokeBuilder stroke() {
         unset = false;
+        stroke.reset();
         return stroke;
     }
 
     public FillBuilder fill() {
         unset = false;
+        fill.reset();
         return fill;
+    }
+
+    public PolygonSymbolizerBuilder uom(Unit<Length> uom) {
+        unset = false;
+        this.uom = uom;
+        return this;
     }
 
     public PolygonSymbolizer build() {
         if (unset) {
             return null;
         }
-        PolygonSymbolizer ps = sf.createPolygonSymbolizer(stroke.build(), fill.build(), geometry);
-        reset();
+        PolygonSymbolizer ps = sf.createPolygonSymbolizer(stroke.build(), fill.build(), null);
+        if (geometry != null) {
+            ps.setGeometry(geometry);
+        }
+        if (uom != null) {
+            ps.setUnitOfMeasure(uom);
+        }
+        if (parent == null) {
+            reset();
+        }
         return ps;
     }
 
-    public PolygonSymbolizerBuilder<P> reset() {
-        stroke.reset(); // TODO: check what default stroke is for Polygon
-        fill.reset(); // TODO: check what default fill is for Polygon
-        unset = false;
-        return this;
-    }
-
-    public PolygonSymbolizerBuilder<P> reset(PolygonSymbolizer symbolizer) {
-        stroke.reset(symbolizer.getStroke());
-        fill.reset(symbolizer.getFill());
-        unset = false;
-        return this;
-    }
-
-    public PolygonSymbolizerBuilder<P> unset() {
+    public PolygonSymbolizerBuilder reset() {
         stroke.unset();
         fill.unset();
-        unset = true;
+        unset = false;
         return this;
+    }
+
+    public PolygonSymbolizerBuilder reset(org.opengis.style.PolygonSymbolizer symbolizer) {
+        if (symbolizer == null) {
+            return unset();
+        }
+        if (symbolizer instanceof PolygonSymbolizer) {
+            return reset((PolygonSymbolizer) symbolizer);
+        }
+        stroke.reset(symbolizer.getStroke());
+        fill.reset(symbolizer.getFill());
+        uom = symbolizer.getUnitOfMeasure();
+        geometry = property(symbolizer.getGeometryPropertyName());
+
+        unset = false;
+        return this;
+    }
+
+    public PolygonSymbolizerBuilder reset(PolygonSymbolizer symbolizer) {
+        if (symbolizer == null) {
+            return unset();
+        }
+        stroke.reset(symbolizer.getStroke());
+        fill.reset(symbolizer.getFill());
+        uom = symbolizer.getUnitOfMeasure();
+        geometry = symbolizer.getGeometry();
+
+        unset = false;
+        return this;
+    }
+
+    public PolygonSymbolizerBuilder unset() {
+        return (PolygonSymbolizerBuilder) super.unset();
+    }
+
+    @Override
+    protected void buildStyleInternal(StyleBuilder sb) {
+        sb.featureTypeStyle().rule().polygon().init(this);
     }
 }

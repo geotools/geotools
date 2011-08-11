@@ -1,60 +1,97 @@
 package org.geotools.styling.builder;
 
-import org.geotools.Builder;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.expression.ChildExpressionBuilder;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.StyleFactory;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-public class ColorMapBuilder<P> implements Builder<AnchorPoint> {
-    private StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
-    private P parent;
-    private ChildExpressionBuilder<ColorMapBuilder<P>> x = new ChildExpressionBuilder<ColorMapBuilder<P>>(this);
-    private ChildExpressionBuilder<ColorMapBuilder<P>> y = new ChildExpressionBuilder<ColorMapBuilder<P>>(this);
-    boolean unset = true; // current value is null
-    public ColorMapBuilder(){
-        parent = null;
+import org.geotools.styling.ColorMap;
+import org.geotools.styling.ColorMapEntry;
+
+public class ColorMapBuilder extends AbstractStyleBuilder<ColorMap> {
+
+    int type = ColorMap.TYPE_RAMP;
+
+    boolean extended = false;
+
+    List<ColorMapEntry> entries = new ArrayList<ColorMapEntry>();
+
+    ColorMapEntryBuilder colorMapEntryBuilder = null;
+
+    public ColorMapBuilder() {
+        this(null);
+    }
+
+    public ColorMapBuilder(AbstractStyleBuilder<?> parent) {
+        super(parent);
         reset();
     }
-    public ColorMapBuilder(AnchorPoint anchorPoint){
-        parent = null;
-        reset();
+
+    public ColorMapBuilder type(int type) {
+        this.type = type;
+        unset = false;
+        return this;
     }
-    
-    public AnchorPoint build() {
-        if( unset ){
+
+    public ColorMapBuilder extended(boolean extended) {
+        this.extended = extended;
+        unset = false;
+        return this;
+    }
+
+    public ColorMapEntryBuilder entry() {
+        if (colorMapEntryBuilder != null && !colorMapEntryBuilder.isUnset()) {
+            entries.add(colorMapEntryBuilder.build());
+            unset = false;
+        }
+        colorMapEntryBuilder = new ColorMapEntryBuilder();
+        return colorMapEntryBuilder;
+    }
+
+    public ColorMap build() {
+        // force the dump of the last entry builder
+        entry();
+
+        if (unset) {
             return null;
         }
-        AnchorPoint anchorPoint = sf.anchorPoint(x.build(), y.build());
-        return anchorPoint;
-    }
-    
-    public P end(){
-        return parent;
+        ColorMap colorMap = sf.createColorMap();
+        colorMap.setType(type);
+        colorMap.setExtendedColors(extended);
+        for (ColorMapEntry entry : entries) {
+            colorMap.addColorMapEntry(entry);
+        }
+        if (parent == null) {
+            reset();
+        }
+        return colorMap;
     }
 
-    public ColorMapBuilder<P> reset() {
-        x.reset().literal(0);
-        y.reset().literal(0);
-        unset = false;        
+    public ColorMapBuilder reset() {
+        type = ColorMap.TYPE_RAMP;
+        extended = false;
+        entries = new ArrayList<ColorMapEntry>();
+        unset = false;
         return this;
     }
 
-    public ColorMapBuilder<P> reset(AnchorPoint original) {
-        if( original == null ){
+    public ColorMapBuilder reset(ColorMap original) {
+        if (original == null) {
             return reset();
         }
-        x.reset().literal(original.getAnchorPointX());
-        y.reset().literal(original.getAnchorPointY());
-        unset = false; 
+        type = original.getType();
+        extended = original.getExtendedColors();
+        entries = new ArrayList<ColorMapEntry>(Arrays.asList(original.getColorMapEntries()));
+        unset = false;
         return this;
     }
 
-    public ColorMapBuilder<P> unset() {
-        x.unset();
-        y.unset();
-        unset = true;        
-        return this;
+    public ColorMapBuilder unset() {
+        return (ColorMapBuilder) super.unset();
+    }
+
+    @Override
+    protected void buildStyleInternal(StyleBuilder sb) {
+        sb.featureTypeStyle().rule().raster().colorMap().init(this);
     }
 
 }

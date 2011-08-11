@@ -4,17 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geotools.Builder;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.SubFilterBuilder;
+import org.geotools.styling.GraphicLegend;
 import org.geotools.styling.Rule;
-import org.geotools.styling.StyleFactory;
 import org.geotools.styling.Symbolizer;
 import org.opengis.filter.Filter;
 
-public class RuleBuilder<P> implements Builder<Rule> {
-    StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
-    P parent;
-    
+public class RuleBuilder extends AbstractStyleBuilder<Rule> {
     List<Symbolizer> symbolizers = new ArrayList<Symbolizer>();
 
     Builder<? extends Symbolizer> symbolizerBuilder;
@@ -27,42 +22,47 @@ public class RuleBuilder<P> implements Builder<Rule> {
 
     double maxScaleDenominator;
 
-    SubFilterBuilder<RuleBuilder<P>> filter = new SubFilterBuilder<RuleBuilder<P>>(this);
+    Filter filter = null;
 
     boolean elseFilter;
 
     String title;
 
-    private boolean unset = false;
+    private GraphicLegendBuilder legend = new GraphicLegendBuilder(this).unset();
 
     public RuleBuilder() {
-        this( null );
+        this(null);
     }
-    
-    public RuleBuilder(P parent) {
-        this.parent = parent;
+
+    public RuleBuilder(FeatureTypeStyleBuilder parent) {
+        super(parent);
         reset();
     }
 
-    public RuleBuilder<P> name(String name) {
+    public RuleBuilder name(String name) {
         unset = false;
         this.name = name;
         return this;
     }
 
-    public RuleBuilder<P> title(String title) {
+    public RuleBuilder title(String title) {
         unset = false;
         this.title = title;
         return this;
     }
 
-    public RuleBuilder<P> ruleAbstract(String ruleAbstract) {
+    public RuleBuilder ruleAbstract(String ruleAbstract) {
         unset = false;
         this.ruleAbstract = ruleAbstract;
         return this;
     }
 
-    public RuleBuilder<P> min(double minScaleDenominator) {
+    public GraphicLegendBuilder legend() {
+        unset = false;
+        return legend;
+    }
+
+    public RuleBuilder min(double minScaleDenominator) {
         unset = false;
         if (minScaleDenominator < 0)
             throw new IllegalArgumentException(
@@ -71,7 +71,7 @@ public class RuleBuilder<P> implements Builder<Rule> {
         return this;
     }
 
-    public RuleBuilder<P> max(double maxScaleDenominator) {
+    public RuleBuilder max(double maxScaleDenominator) {
         unset = false;
         if (maxScaleDenominator < 0)
             throw new IllegalArgumentException(
@@ -80,53 +80,85 @@ public class RuleBuilder<P> implements Builder<Rule> {
         return this;
     }
 
-    public RuleBuilder<P> elseFilter() {
+    public RuleBuilder elseFilter() {
         unset = false;
         this.elseFilter = true;
-        this.filter.unset();
+        this.filter = null;
         return this;
     }
 
-    public RuleBuilder<P> filter(Filter filter) {
+    public RuleBuilder filter(Filter filter) {
         unset = false;
         this.elseFilter = false;
-        this.filter.reset(filter);
+        this.filter = filter;
         return this;
     }
 
-    public PointSymbolizerBuilder<RuleBuilder<P>> newPoint() {
+    public RuleBuilder filter(String cql) {
+        unset = false;
+        this.elseFilter = false;
+        this.filter = cqlFilter(cql);
+        return this;
+    }
+
+    public PointSymbolizerBuilder point() {
         unset = false;
         if (symbolizerBuilder != null)
             symbolizers.add(symbolizerBuilder.build());
-        symbolizerBuilder = new PointSymbolizerBuilder<RuleBuilder<P>>(this);
+        symbolizerBuilder = new PointSymbolizerBuilder(this);
         return (PointSymbolizerBuilder) symbolizerBuilder;
     }
 
-    public LineSymbolizerBuilder<RuleBuilder<P>> newLine() {
+    public LineSymbolizerBuilder line() {
         unset = false;
         if (symbolizerBuilder != null)
             symbolizers.add(symbolizerBuilder.build());
-        symbolizerBuilder = new LineSymbolizerBuilder<RuleBuilder<P>>(this);
+        symbolizerBuilder = new LineSymbolizerBuilder(this);
         return (LineSymbolizerBuilder) symbolizerBuilder;
     }
 
-    public PolygonSymbolizerBuilder<RuleBuilder<P>> newPolygon() {
+    public PolygonSymbolizerBuilder polygon() {
         unset = false;
         if (symbolizerBuilder != null)
             symbolizers.add(symbolizerBuilder.build());
-        symbolizerBuilder = new PolygonSymbolizerBuilder<RuleBuilder<P>>(this);
+        symbolizerBuilder = new PolygonSymbolizerBuilder(this);
         return (PolygonSymbolizerBuilder) symbolizerBuilder;
     }
 
+    public TextSymbolizerBuilder text() {
+        unset = false;
+        if (symbolizerBuilder != null)
+            symbolizers.add(symbolizerBuilder.build());
+        symbolizerBuilder = new TextSymbolizerBuilder(this);
+        return (TextSymbolizerBuilder) symbolizerBuilder;
+    }
+
+    public RasterSymbolizerBuilder raster() {
+        unset = false;
+        if (symbolizerBuilder != null)
+            symbolizers.add(symbolizerBuilder.build());
+        symbolizerBuilder = new RasterSymbolizerBuilder(this);
+        return (RasterSymbolizerBuilder) symbolizerBuilder;
+    }
+
+    public ExtensionSymbolizerBuilder extension() {
+        unset = false;
+        if (symbolizerBuilder != null)
+            symbolizers.add(symbolizerBuilder.build());
+        symbolizerBuilder = new ExtensionSymbolizerBuilder(this);
+        return (ExtensionSymbolizerBuilder) symbolizerBuilder;
+    }
+
     public Rule build() {
-        if( unset ){
+        if (unset) {
             return null;
         }
-        if (symbolizerBuilder == null) {
+        if (symbolizerBuilder == null && symbolizers.size() == 0) {
             symbolizerBuilder = new PointSymbolizerBuilder();
         }
-        // cascade build operation
-        symbolizers.add(symbolizerBuilder.build());
+        if (symbolizerBuilder != null) {
+            symbolizers.add(symbolizerBuilder.build());
+        }
 
         Rule rule = sf.createRule();
         rule.setName(name);
@@ -135,46 +167,59 @@ public class RuleBuilder<P> implements Builder<Rule> {
         rule.setAbstract(ruleAbstract);
         rule.setMinScaleDenominator(minScaleDenominator);
         rule.setMaxScaleDenominator(maxScaleDenominator);
-        rule.setFilter(filter.build());
+        rule.setFilter(filter);
         rule.setElseFilter(elseFilter);
         rule.symbolizers().addAll(symbolizers);
+        GraphicLegend gl = legend.build();
+        if (gl != null) {
+            rule.setLegend(gl);
+        }
 
-        reset();
+        if (parent == null) {
+            reset();
+        }
         return rule;
     }
 
-    public RuleBuilder<P> unset(){
-        reset();
-        unset = true;
-        return this;
+    public RuleBuilder unset() {
+        return (RuleBuilder) super.unset();
     }
-    public RuleBuilder<P> reset() {
+
+    public RuleBuilder reset() {
         name = null;
         title = null;
         ruleAbstract = null;
         minScaleDenominator = 0;
         maxScaleDenominator = Double.POSITIVE_INFINITY;
-        filter.reset( Filter.INCLUDE);
+        filter = Filter.INCLUDE;
         elseFilter = false;
         symbolizers.clear();
+        legend.unset();
         unset = false;
         return this;
     }
-    public RuleBuilder<P> reset( Rule rule ){
-        if( rule == null ){
-            return unset();            
+
+    public RuleBuilder reset(Rule rule) {
+        if (rule == null) {
+            return unset();
         }
         name = rule.getName();
         title = rule.getTitle();
         ruleAbstract = rule.getAbstract();
         minScaleDenominator = rule.getMinScaleDenominator();
         maxScaleDenominator = rule.getMaxScaleDenominator();
-        filter.reset( rule.getFilter() );
+        filter = rule.getFilter();
         elseFilter = rule.isElseFilter();
         symbolizers.clear();
-        symbolizers.addAll( rule.symbolizers() ); // TODO: unpack into builders in order to "copy"
+        symbolizers.addAll(rule.symbolizers()); // TODO: unpack into builders in order to "copy"
+        symbolizerBuilder = null;
         unset = false;
+        legend.reset(rule.getLegend());
         return this;
+    }
+
+    protected void buildStyleInternal(StyleBuilder sb) {
+        sb.featureTypeStyle().rule().init(this);
     }
 
 }

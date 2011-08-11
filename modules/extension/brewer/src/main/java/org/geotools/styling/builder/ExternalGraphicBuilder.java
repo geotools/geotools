@@ -6,78 +6,68 @@ import java.util.Set;
 
 import javax.swing.Icon;
 
-import org.geotools.Builder;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.StyleFactory;
 import org.opengis.metadata.citation.OnLineResource;
 import org.opengis.style.ColorReplacement;
 
-public class ExternalGraphicBuilder<P> implements Builder<ExternalGraphic> {
-    private StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
-
-    private P parent;
-
-    boolean unset = true; // current value is null
-
+public class ExternalGraphicBuilder extends AbstractStyleBuilder<ExternalGraphic> {
     private Icon inline;
 
     private String format;
 
     private OnLineResource resource;
 
-    private Set<ColorReplacementBuilder<ExternalGraphicBuilder<P>>> replacements = new HashSet<ColorReplacementBuilder<ExternalGraphicBuilder<P>>>();
+    private Set<ColorReplacementBuilder> replacements = new HashSet<ColorReplacementBuilder>();
 
     public ExternalGraphicBuilder() {
         this(null);
     }
 
-    public ExternalGraphicBuilder(P parent) {
-        this.parent = parent;
+    public ExternalGraphicBuilder(AbstractStyleBuilder<?> parent) {
+        super(parent);
         reset();
     }
 
     public String format() {
         return format;
     }
-    public ExternalGraphicBuilder<P> format(String format) {
+
+    public ExternalGraphicBuilder format(String format) {
         this.format = format;
         return this;
     }
+
     public Icon inline() {
         return inline;
     }
-    public ExternalGraphicBuilder<P> inline(Icon icon) {
+
+    public ExternalGraphicBuilder inline(Icon icon) {
         this.inline = icon;
         return this;
     }
-    public Set<ColorReplacementBuilder<ExternalGraphicBuilder<P>>> replacements() {
+
+    public Set<ColorReplacementBuilder> replacements() {
         return replacements;
     }
-    
-    public ColorReplacementBuilder<ExternalGraphicBuilder<P>> replacement() {
-        ColorReplacementBuilder<ExternalGraphicBuilder<P>> replacement = new ColorReplacementBuilder<ExternalGraphicBuilder<P>>(this);
-        this.replacements.add( replacement );
+
+    public ColorReplacementBuilder replacement() {
+        ColorReplacementBuilder replacement = new ColorReplacementBuilder(this);
+        this.replacements.add(replacement);
         return replacement;
     }
-    
-    public OnLineResource resource() {
-        return resource;
-    }
-    
-    public ExternalGraphicBuilder<P> resource(OnLineResource resource) {
+
+    public ExternalGraphicBuilder resource(OnLineResource resource) {
         this.resource = resource;
-        return this;        
+        return this;
     }
-    
+
     public ExternalGraphic build() {
         if (unset) {
             return null;
         }
         ExternalGraphic externalGraphic;
         Collection<ColorReplacement> set = new HashSet<ColorReplacement>();
-        for (ColorReplacementBuilder<ExternalGraphicBuilder<P>> replacement : replacements) {
+        for (ColorReplacementBuilder replacement : replacements) {
             set.add(replacement.build());
         }
         if (inline != null) {
@@ -86,35 +76,38 @@ public class ExternalGraphicBuilder<P> implements Builder<ExternalGraphic> {
             externalGraphic = sf.externalGraphic(resource, format, set);
 
         }
-        if (parent == null) reset();
-        
+        if (parent == null)
+            reset();
+
         return externalGraphic;
     }
 
-    public P end() {
-        return parent;
-    }
-
-    public ExternalGraphicBuilder<P> reset() {
+    public ExternalGraphicBuilder reset() {
         unset = false;
         return this;
     }
 
-    public ExternalGraphicBuilder<P> reset(AnchorPoint original) {
-        if (original == null) {
-            return reset();
+    public ExternalGraphicBuilder unset() {
+        return (ExternalGraphicBuilder) super.unset();
+    }
+
+    public ExternalGraphicBuilder reset(ExternalGraphic original) {
+        this.unset = false;
+        this.format = original.getFormat();
+        this.inline = original.getInlineContent();
+        this.replacements.clear();
+        this.resource = original.getOnlineResource();
+        if (original.getColorReplacements() != null) {
+            for (ColorReplacement cr : original.getColorReplacements()) {
+                replacements.add(new ColorReplacementBuilder().reset(cr));
+            }
         }
-        unset = false;
         return this;
     }
 
-    public ExternalGraphicBuilder<P> unset() {
-        unset = true;
-        return this;
-    }
-
-    public ExternalGraphicBuilder<P> reset(ExternalGraphic original) {
-        return null;
+    @Override
+    protected void buildStyleInternal(StyleBuilder sb) {
+        sb.featureTypeStyle().rule().point().graphic().externalGraphic().init(this);
     }
 
 }

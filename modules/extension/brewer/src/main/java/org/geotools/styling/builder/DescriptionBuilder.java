@@ -1,78 +1,81 @@
 package org.geotools.styling.builder;
 
-import org.geotools.Builder;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.Description;
-import org.geotools.styling.StyleFactory;
 import org.geotools.util.SimpleInternationalString;
 import org.opengis.util.InternationalString;
 
-public class DescriptionBuilder<P> implements Builder<Description> {
-    StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
-    P parent;
-    private boolean unset;
+public class DescriptionBuilder extends AbstractStyleBuilder<Description> {
+
     private InternationalString title;
+
     private InternationalString description;
 
-    public DescriptionBuilder(){
+    public DescriptionBuilder() {
         this(null);
     }
-    public DescriptionBuilder(P parent) {
-        this.parent = parent;
+
+    public DescriptionBuilder(AbstractStyleBuilder<?> parent) {
+        super(parent);
         reset();
     }
+
     public Description build() {
-        if( unset ){
+        if (unset) {
             return null;
         }
         Description descript = sf.description(title, description);
-        if( parent == null ){
+        if (parent == null) {
             reset();
         }
         return descript;
     }
 
-    public DescriptionBuilder<P> reset() {
+    public DescriptionBuilder reset() {
         unset = false;
         title = null;
         description = null;
         return this;
     }
-    public DescriptionBuilder<P> title(InternationalString title) {
+
+    public DescriptionBuilder title(InternationalString title) {
         this.title = title;
+        unset = false;
         return this;
     }
-    public DescriptionBuilder<P> title(String title) {
-        this.title = new SimpleInternationalString(title);
-        return this;
+
+    public DescriptionBuilder title(String title) {
+        return title(new SimpleInternationalString(title));
     }
-    public InternationalString title() {
-        return title;
-    }
-    public DescriptionBuilder<P> description(InternationalString description) {
+
+    public DescriptionBuilder description(InternationalString description) {
         this.description = description;
+        unset = false;
         return this;
     }
-    public DescriptionBuilder<P> description(String description) {
-        this.description = new SimpleInternationalString( description );
-        return this;
+
+    public DescriptionBuilder description(String description) {
+        return description(new SimpleInternationalString(description));
     }
-    public InternationalString description() {
-        return description;
-    }
-    
-    public DescriptionBuilder<P> reset(Description original) {
+
+    public DescriptionBuilder reset(Description original) {
         unset = false;
         title = original.getTitle();
         description = original.getAbstract();
         return this;
     }
 
-    public DescriptionBuilder<P> unset() {
+    public DescriptionBuilder unset() {
         unset = true;
         title = null;
         description = null;
         return this;
+    }
+
+    @Override
+    protected void buildStyleInternal(StyleBuilder sb) {
+        throw new UnsupportedOperationException(
+                "Does not make sense to build a style out of a description");
+
     }
 
 }

@@ -1,17 +1,8 @@
 package org.geotools.styling.builder;
 
-import org.geotools.Builder;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.RemoteOWS;
-import org.geotools.styling.StyleFactory;
 
-public class RemoteOWSBuilder<P> implements Builder<RemoteOWS> {
-    private StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
-
-    private P parent;
-
-    boolean unset = true; // current value is null
-
+public class RemoteOWSBuilder extends AbstractSLDBuilder<RemoteOWS> {
     private String service;
 
     private String onlineResource;
@@ -20,26 +11,18 @@ public class RemoteOWSBuilder<P> implements Builder<RemoteOWS> {
         this(null);
     }
 
-    public RemoteOWSBuilder(P parent) {
-        this.parent = parent;
+    public RemoteOWSBuilder(AbstractSLDBuilder<?> parent) {
+        super(parent);
         reset();
     }
 
-    public String resource() {
-        return onlineResource;
-    }
-
-    public RemoteOWSBuilder<P> resource(String onlineResource) {
+    public RemoteOWSBuilder resource(String onlineResource) {
         this.onlineResource = onlineResource;
         this.unset = false;
         return this;
     }
 
-    public String service() {
-        return service;
-    }
-
-    public RemoteOWSBuilder<P> service(String service) {
+    public RemoteOWSBuilder service(String service) {
         this.service = service;
         this.unset = false;
         return this;
@@ -53,20 +36,16 @@ public class RemoteOWSBuilder<P> implements Builder<RemoteOWS> {
         return remote;
     }
 
-    public P end() {
-        return parent;
-    }
-
-    public RemoteOWSBuilder<P> reset() {
+    public RemoteOWSBuilder reset() {
         unset = true;
         this.onlineResource = null;
         this.service = null;
         return this;
     }
 
-    public RemoteOWSBuilder<P> reset(RemoteOWS remote) {
+    public RemoteOWSBuilder reset(RemoteOWS remote) {
         if (remote == null) {
-            return reset();
+            return unset();
         }
         this.onlineResource = remote.getOnlineResource();
         this.service = remote.getService();
@@ -74,12 +53,14 @@ public class RemoteOWSBuilder<P> implements Builder<RemoteOWS> {
         return this;
     }
 
-    public RemoteOWSBuilder<P> unset() {
-        unset = true;
-        this.onlineResource = null;
-        this.service = null;
+    public RemoteOWSBuilder unset() {
+        return (RemoteOWSBuilder) super.unset();
+    }
 
-        return this;
+    @Override
+    protected void buildSLDInternal(StyledLayerDescriptorBuilder sb) {
+        throw new UnsupportedOperationException(
+                "Cannot build a SLD out of a simple remote ows spec");
     }
 
 }

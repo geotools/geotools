@@ -1,24 +1,58 @@
 package org.geotools.styling.builder;
 
-import org.geotools.Builder;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.StyleFactory;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.geotools.styling.NamedLayer;
+import org.geotools.styling.StyledLayer;
 import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.styling.UserLayer;
 
-public class StyledLayerDescriptorBuilder implements Builder<StyledLayerDescriptor> {
-    StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+public class StyledLayerDescriptorBuilder extends AbstractSLDBuilder<StyledLayerDescriptor> {
 
-    private boolean unset;
+    List<AbstractSLDBuilder<? extends StyledLayer>> layers = new ArrayList<AbstractSLDBuilder<? extends StyledLayer>>();
+
+    String name;
+
+    String title;
+
+    String sldAbstract;
 
     public StyledLayerDescriptorBuilder() {
+        super(null);
         reset();
     }
 
-    public StyledLayerDescriptorBuilder unset() {
-        reset();
-        unset = true;
+    public StyledLayerDescriptorBuilder name(String name) {
+        unset = false;
+        this.name = name;
         return this;
+    }
+
+    public StyledLayerDescriptorBuilder title(String title) {
+        unset = false;
+        this.title = title;
+        return this;
+    }
+
+    public StyledLayerDescriptorBuilder sldAbstract(String sldAbstract) {
+        unset = false;
+        this.sldAbstract = sldAbstract;
+        return this;
+    }
+
+    public NamedLayerBuilder namedLayer() {
+        unset = false;
+        NamedLayerBuilder nlb = new NamedLayerBuilder(this);
+        layers.add(nlb);
+        return nlb;
+    }
+
+    public UserLayerBuilder userLayer() {
+        unset = false;
+        UserLayerBuilder ulb = new UserLayerBuilder(this);
+        layers.add(ulb);
+        return ulb;
     }
 
     /**
@@ -26,6 +60,10 @@ public class StyledLayerDescriptorBuilder implements Builder<StyledLayerDescript
      */
     public StyledLayerDescriptorBuilder reset() {
         unset = false;
+        this.name = null;
+        this.title = null;
+        this.sldAbstract = null;
+        this.layers.clear();
         return this;
     }
 
@@ -34,7 +72,22 @@ public class StyledLayerDescriptorBuilder implements Builder<StyledLayerDescript
      * 
      * @param stroke
      */
-    public StyledLayerDescriptorBuilder reset(Stroke stroke) {
+    public StyledLayerDescriptorBuilder reset(StyledLayerDescriptor other) {
+        if(other == null) {
+            return unset();
+        }
+        this.name = other.getName();
+        this.title = other.getTitle();
+        this.sldAbstract = other.getAbstract();
+        this.layers.clear();
+        for (StyledLayer layer : other.getStyledLayers()) {
+            if(layer instanceof UserLayer) {
+                layers.add(new UserLayerBuilder().reset((UserLayer) layer)); 
+            } else if(layer instanceof NamedLayer) {
+                layers.add(new NamedLayerBuilder().reset((NamedLayer) layer));
+            }
+        }
+        
         unset = false;
         return this;
     }
@@ -44,11 +97,29 @@ public class StyledLayerDescriptorBuilder implements Builder<StyledLayerDescript
             return null;
         }
         StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
+        sld.setName(name);
+        sld.setTitle(title);
+        sld.setAbstract(sldAbstract);
+        for (AbstractSLDBuilder<? extends StyledLayer> builder : layers) {
+            sld.addStyledLayer(builder.build());
+        }
+        reset();
         return sld;
     }
 
-    public StyledLayerDescriptorBuilder reset(StyledLayerDescriptor original) {
-        return this;
+    @Override
+    public StyledLayerDescriptor buildSLD() {
+        return build();
+    }
+
+    @Override
+    protected void buildSLDInternal(StyledLayerDescriptorBuilder sb) {
+        sb.init(this);
     }
     
+    @Override
+    public StyledLayerDescriptorBuilder unset() {
+        return (StyledLayerDescriptorBuilder) super.unset();
+    }
+
 }

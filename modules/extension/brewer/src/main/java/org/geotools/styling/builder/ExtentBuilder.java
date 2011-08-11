@@ -7,53 +7,57 @@ import org.geotools.styling.StyleFactory;
 
 public class ExtentBuilder<P> implements Builder<Extent> {
     private StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+
     private P parent;
+
     boolean unset = true; // current value is null
+
     private String name;
+
     private String value;
-    
-    public ExtentBuilder(){
+
+    public ExtentBuilder() {
         this(null);
     }
-    
-    public ExtentBuilder(P parent){
+
+    public ExtentBuilder(P parent) {
         this.parent = parent;
         reset();
     }
-    
+
     public Extent build() {
-        if( unset ){
+        if (unset) {
             return null;
         }
         Extent extent = sf.createExtent(name, value);
         return extent;
     }
-    
-    public P end(){
+
+    public P end() {
         return parent;
     }
 
     public ExtentBuilder<P> reset() {
         this.name = null;
         this.value = null;
-        unset = false;        
+        unset = false;
         return this;
     }
 
     public ExtentBuilder<P> reset(Extent extent) {
-        if( extent == null ){
+        if (extent == null) {
             return reset();
         }
         this.value = extent.getValue();
         this.name = extent.getName();
-        unset = false; 
+        unset = false;
         return this;
     }
 
     public ExtentBuilder<P> unset() {
         this.name = null;
         this.value = null;
-        unset = true;        
+        unset = true;
         return this;
     }
 

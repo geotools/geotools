@@ -1,27 +1,20 @@
 package org.geotools.styling.builder;
 
-import org.geotools.Builder;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.SelectedChannelType;
-import org.geotools.styling.StyleFactory;
 
-public class SelectedChannelTypeBuilder<P> implements Builder<SelectedChannelType> {
-    private StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
-
-    private P parent;
-
-    boolean unset = true; // current value is null
+public class SelectedChannelTypeBuilder extends AbstractStyleBuilder<SelectedChannelType> {
 
     private String channelName;
 
-    private ContrastEnhancementBuilder<SelectedChannelTypeBuilder<P>> contrastEnhancement = new ContrastEnhancementBuilder<SelectedChannelTypeBuilder<P>>(this);
+    private ContrastEnhancementBuilder contrastEnhancement = new ContrastEnhancementBuilder(this)
+            .unset();
 
     public SelectedChannelTypeBuilder() {
-        this( null );
+        this(null);
     }
 
-    public SelectedChannelTypeBuilder(P parent) {
-        this.parent = parent;
+    public SelectedChannelTypeBuilder(AbstractStyleBuilder<?> parent) {
+        super(parent);
         reset();
     }
 
@@ -34,18 +27,14 @@ public class SelectedChannelTypeBuilder<P> implements Builder<SelectedChannelTyp
         return selectedChannelType;
     }
 
-    public P end() {
-        return parent;
-    }
-
-    public SelectedChannelTypeBuilder<P> reset() {
+    public SelectedChannelTypeBuilder reset() {
         contrastEnhancement.reset();
         channelName = null;
         unset = false;
         return this;
     }
 
-    public SelectedChannelTypeBuilder<P> reset(SelectedChannelType selectedChannelType) {
+    public SelectedChannelTypeBuilder reset(SelectedChannelType selectedChannelType) {
         if (selectedChannelType == null) {
             return reset();
         }
@@ -55,11 +44,13 @@ public class SelectedChannelTypeBuilder<P> implements Builder<SelectedChannelTyp
         return this;
     }
 
-    public SelectedChannelTypeBuilder<P> unset() {
-        contrastEnhancement.unset();
-        channelName = null;
-        unset = true;
-        return this;
+    public SelectedChannelTypeBuilder unset() {
+        return (SelectedChannelTypeBuilder) super.unset();
+    }
+
+    @Override
+    protected void buildStyleInternal(StyleBuilder sb) {
+        sb.featureTypeStyle().rule().raster().channelSelection().gray().init(this);
     }
 
 }

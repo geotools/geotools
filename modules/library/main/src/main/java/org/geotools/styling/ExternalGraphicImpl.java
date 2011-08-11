@@ -17,6 +17,8 @@
 package org.geotools.styling;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
@@ -26,6 +28,7 @@ import java.util.TreeSet;
 
 import javax.swing.Icon;
 
+import org.geotools.metadata.iso.citation.OnLineResourceImpl;
 import org.geotools.util.Utilities;
 import org.opengis.metadata.citation.OnLineResource;
 import org.opengis.style.ColorReplacement;
@@ -209,6 +212,15 @@ public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
     }
 
     public OnLineResource getOnlineResource() {
+        if(online == null) {
+            OnLineResourceImpl impl = new OnLineResourceImpl();
+            try {
+                impl.setLinkage(new URI(uri));
+            } catch (URISyntaxException e) {
+                throw new IllegalArgumentException(e);
+            }
+            online = impl;
+        }
         return online;
     }
     

@@ -1,31 +1,19 @@
 package org.geotools.styling.builder;
 
-import org.geotools.Builder;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.expression.ChildExpressionBuilder;
 import org.geotools.styling.Displacement;
-import org.geotools.styling.StyleFactory;
+import org.opengis.filter.expression.Expression;
 
-public class DisplacementBuilder<P> implements Builder<Displacement> {
-    private StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+public class DisplacementBuilder extends AbstractStyleBuilder<Displacement> {
+    private Expression x = null;
 
-    private P parent;
-
-    private ChildExpressionBuilder<DisplacementBuilder<P>> x = new ChildExpressionBuilder<DisplacementBuilder<P>>(
-            this);
-
-    private ChildExpressionBuilder<DisplacementBuilder<P>> y = new ChildExpressionBuilder<DisplacementBuilder<P>>(
-            this);
-
-    boolean unset = true; // current value is null
+    private Expression y = null;
 
     public DisplacementBuilder() {
-        parent = null;
-        reset();
+        this(null);
     }
 
-    public DisplacementBuilder(P parent) {
-        this.parent = parent;
+    public DisplacementBuilder(AbstractStyleBuilder<?> parent) {
+        super(parent);
         reset();
     }
 
@@ -33,46 +21,71 @@ public class DisplacementBuilder<P> implements Builder<Displacement> {
         if (unset) {
             return null;
         }
-        Displacement displacement = sf.displacement(x.build(), y.build());
+        Displacement displacement = sf.displacement(x, y);
         return displacement;
     }
 
-    public P end() {
-        return parent;
+    public DisplacementBuilder x(Expression x) {
+        this.x = x;
+        return this;
     }
 
-    public DisplacementBuilder<P> reset() {
-        x.reset().literal(0);
-        y.reset().literal(0);
+    public DisplacementBuilder x(double x) {
+        return x(literal(x));
+    }
+
+    public DisplacementBuilder x(String cqlExpression) {
+        return x(cqlExpression(cqlExpression));
+    }
+
+    public DisplacementBuilder y(Expression y) {
+        this.y = y;
+        return this;
+    }
+
+    public DisplacementBuilder y(double y) {
+        return y(literal(y));
+    }
+
+    public DisplacementBuilder y(String cqlExpression) {
+        return y(cqlExpression(cqlExpression));
+    }
+
+    public DisplacementBuilder reset() {
+        x = literal(0);
+        y = literal(0);
         unset = false;
         return this;
     }
 
-    public DisplacementBuilder<P> reset(Displacement displacement) {
+    public DisplacementBuilder reset(Displacement displacement) {
         if (displacement == null) {
             return reset();
         }
-        x.reset().literal(displacement.getDisplacementX());
-        y.reset().literal(displacement.getDisplacementY());
+        x = literal(displacement.getDisplacementX());
+        y = literal(displacement.getDisplacementY());
         unset = false;
         return this;
     }
 
-    public DisplacementBuilder<P> unset() {
-        x.unset();
-        y.unset();
-        unset = true;
-        return this;
+    public DisplacementBuilder unset() {
+        return (DisplacementBuilder) super.unset();
     }
 
-    public DisplacementBuilder<P> reset(org.opengis.style.Displacement displacement) {
+    public DisplacementBuilder reset(org.opengis.style.Displacement displacement) {
         if (displacement == null) {
             return reset();
         }
-        x.reset().literal(displacement.getDisplacementX());
-        y.reset().literal(displacement.getDisplacementY());
+        x = displacement.getDisplacementX();
+        y = displacement.getDisplacementY();
         unset = false;
         return this;
+    }
+
+    @Override
+    protected void buildStyleInternal(StyleBuilder sb) {
+        sb.featureTypeStyle().rule().text().labelText("label").pointPlacement()
+                .displacement().init(this);
     }
 
 }

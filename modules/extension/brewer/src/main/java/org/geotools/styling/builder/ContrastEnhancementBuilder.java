@@ -1,59 +1,83 @@
 package org.geotools.styling.builder;
 
-import org.geotools.Builder;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.expression.ChildExpressionBuilder;
 import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.StyleFactory;
+import org.opengis.filter.expression.Expression;
 import org.opengis.style.ContrastMethod;
 
-public class ContrastEnhancementBuilder<P> implements Builder<ContrastEnhancement> {
-    private StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
-    private P parent;
-    boolean unset = true; // current value is null
-    private ChildExpressionBuilder<ContrastEnhancementBuilder<P>> gamma = new ChildExpressionBuilder<ContrastEnhancementBuilder<P>>(this);
+public class ContrastEnhancementBuilder extends AbstractStyleBuilder<ContrastEnhancement> {
+    private Expression gamma = null;
+
     private ContrastMethod method;
-    public ContrastEnhancementBuilder(){
+
+    public ContrastEnhancementBuilder() {
         this(null);
     }
-    public ContrastEnhancementBuilder(P parent){
-        this.parent = parent;
+
+    public ContrastEnhancementBuilder(AbstractStyleBuilder<?> parent) {
+        super(parent);
         reset();
     }
-    
+
+    public ContrastEnhancementBuilder gamma(Expression gamma) {
+        this.gamma = gamma;
+        this.unset = false;
+        return this;
+    }
+
+    public ContrastEnhancementBuilder gamma(double gamma) {
+        return gamma(literal(gamma));
+    }
+
+    public ContrastEnhancementBuilder normalize() {
+        this.method = ContrastMethod.NORMALIZE;
+        this.unset = false;
+        return this;
+    }
+
+    public ContrastEnhancementBuilder histogram() {
+        this.method = ContrastMethod.HISTOGRAM;
+        this.unset = false;
+        return this;
+    }
+
+    public ContrastEnhancementBuilder gamma(String cqlExpression) {
+        return gamma(cqlExpression(cqlExpression));
+    }
+
     public ContrastEnhancement build() {
-        if( unset ){
+        if (unset) {
             return null;
         }
-        ContrastEnhancement contrastEnhancement = sf.contrastEnhancement(gamma.build(), method);
+        ContrastEnhancement contrastEnhancement = sf.contrastEnhancement(gamma, method);
         return contrastEnhancement;
     }
-    
-    public P end(){
-        return parent;
-    }
 
-    public ContrastEnhancementBuilder<P> reset() {
-        gamma.reset();
-        unset = false;        
+    public ContrastEnhancementBuilder reset() {
+        gamma = null;
+        method = ContrastMethod.NONE;
+        unset = false;
         return this;
     }
 
-    public ContrastEnhancementBuilder<P> reset(ContrastEnhancement contrastEnhancement) {
-        if( contrastEnhancement == null ){
+    public ContrastEnhancementBuilder reset(ContrastEnhancement contrastEnhancement) {
+        if (contrastEnhancement == null) {
             return reset();
         }
-        gamma.reset( contrastEnhancement.getGammaValue() );
+        gamma = contrastEnhancement.getGammaValue();
         method = contrastEnhancement.getMethod();
-        unset = false; 
+        unset = false;
         return this;
     }
 
-    public ContrastEnhancementBuilder<P> unset() {
-        gamma.unset();
-        method = ContrastMethod.NONE;
-        unset = true;        
-        return this;
+    public ContrastEnhancementBuilder unset() {
+        return (ContrastEnhancementBuilder) super.unset();
+    }
+
+    @Override
+    protected void buildStyleInternal(StyleBuilder sb) {
+        throw new UnsupportedOperationException(
+                "Cannot build a meaningful style out of a contrast enhancement alone");
+
     }
 
 }

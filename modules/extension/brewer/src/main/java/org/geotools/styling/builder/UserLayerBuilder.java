@@ -1,34 +1,72 @@
 package org.geotools.styling.builder;
 
-import org.geotools.Builder;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.StyleFactory;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.geotools.data.DataStore;
+import org.geotools.styling.FeatureTypeConstraint;
+import org.geotools.styling.Style;
 import org.geotools.styling.UserLayer;
+import org.opengis.feature.simple.SimpleFeatureType;
 
-public class UserLayerBuilder<P> implements Builder<UserLayer> {
-    P parent;
-    StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+public class UserLayerBuilder extends AbstractSLDBuilder<UserLayer> {
 
-    private boolean unset;
+    DataStore inlineFeatureDataStore;
+
+    SimpleFeatureType inlineFeatureType;
+
+    RemoteOWSBuilder remoteOWS = new RemoteOWSBuilder().unset();
+
+    List<FeatureTypeConstraintBuilder> featureTypeConstraint = new ArrayList<FeatureTypeConstraintBuilder>();
+
+    List<StyleBuilder> userStyles = new ArrayList<StyleBuilder>();
 
     public UserLayerBuilder() {
-        this( null );
+        this(null);
     }
-    public UserLayerBuilder(P parent) {
-        this.parent = parent;
+
+    public UserLayerBuilder(AbstractSLDBuilder<?> parent) {
+        super(parent);
         reset();
     }
-    public UserLayerBuilder<P> unset() {
-        reset();
-        unset = true;
+
+    public UserLayerBuilder inlineData(DataStore store, SimpleFeatureType sft) {
+        this.unset = false;
+        this.inlineFeatureDataStore = store;
+        this.inlineFeatureType = sft;
         return this;
+    }
+
+    public UserLayerBuilder remoteOWS(String onlineResource, String service) {
+        this.unset = false;
+        remoteOWS.resource(onlineResource).service(service);
+        return this;
+    }
+
+    public FeatureTypeConstraintBuilder featureTypeConstraint() {
+        this.unset = false;
+        FeatureTypeConstraintBuilder builder = new FeatureTypeConstraintBuilder(this);
+        featureTypeConstraint.add(builder);
+        return builder;
+    }
+
+    public StyleBuilder style() {
+        this.unset = false;
+        StyleBuilder sb = new StyleBuilder(this);
+        userStyles.add(sb);
+        return sb;
     }
 
     /**
      * Reset stroke to default values.
      */
-    public UserLayerBuilder<P> reset() {
+    public UserLayerBuilder reset() {
         unset = false;
+        inlineFeatureDataStore = null;
+        inlineFeatureType = null;
+        remoteOWS.unset();
+        featureTypeConstraint.clear();
+        userStyles.clear();
         return this;
     }
 
@@ -37,9 +75,30 @@ public class UserLayerBuilder<P> implements Builder<UserLayer> {
      * 
      * @param stroke
      */
-    public UserLayerBuilder<P> reset(UserLayer stroke) {
+    public UserLayerBuilder reset(UserLayer other) {
+        if (other == null) {
+            return unset();
+        }
+
+        inlineFeatureDataStore = other.getInlineFeatureDatastore();
+        inlineFeatureType = other.getInlineFeatureType();
+        remoteOWS.reset(other.getRemoteOWS());
+        featureTypeConstraint.clear();
+        for (FeatureTypeConstraint ftc : other.getLayerFeatureConstraints()) {
+            featureTypeConstraint.add(new FeatureTypeConstraintBuilder(this).reset(ftc));
+        }
+        userStyles.clear();
+        for (Style style : other.getUserStyles()) {
+            userStyles.add(new StyleBuilder(this).reset(style));
+        }
+
         unset = false;
         return this;
+    }
+
+    @Override
+    public UserLayerBuilder unset() {
+        return (UserLayerBuilder) super.unset();
     }
 
     public UserLayer build() {
@@ -47,10 +106,25 @@ public class UserLayerBuilder<P> implements Builder<UserLayer> {
             return null;
         }
         UserLayer layer = sf.createUserLayer();
+        layer.setRemoteOWS(remoteOWS.build());
+        layer.setInlineFeatureDatastore(inlineFeatureDataStore);
+        layer.setInlineFeatureType(inlineFeatureType);
+        if (featureTypeConstraint.size() > 0) {
+            FeatureTypeConstraint[] constraints = new FeatureTypeConstraint[featureTypeConstraint
+                    .size()];
+            for (int i = 0; i < constraints.length; i++) {
+                constraints[i] = featureTypeConstraint.get(i).build();
+            }
+            layer.setLayerFeatureConstraints(constraints);
+        }
+        for (StyleBuilder sb : userStyles) {
+            layer.addUserStyle(sb.build());
+        }
         return layer;
     }
-    
-    public P end(){
-        return parent;
+
+    @Override
+    protected void buildSLDInternal(StyledLayerDescriptorBuilder sb) {
+        sb.userLayer().init(this);
     }
 }

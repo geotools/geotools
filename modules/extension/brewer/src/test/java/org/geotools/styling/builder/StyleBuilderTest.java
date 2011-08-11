@@ -1,8 +1,6 @@
 package org.geotools.styling.builder;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 import java.awt.Color;
 
@@ -57,11 +55,11 @@ public class StyleBuilderTest {
 
     @Test
     public void emailExample() {
-        StyleBuilder<?> builder = new StyleBuilder();
+        StyleBuilder builder = new StyleBuilder();
 
-        RuleBuilder rule = builder.newFeatureTypeStyle().featureTypeName("Feature").rule();
-        rule.newPoint().graphic().externalGraphic("file:///C:/images/house.gif", "image/gid").mark(
-                "circle");
+        RuleBuilder rule = builder.featureTypeStyle().featureTypeName("Feature").rule();
+        rule.point().graphic().externalGraphic("file:///C:/images/house.gif", "image/gid").mark()
+                .name("circle");
 
         Style style = builder.build();
 
@@ -70,7 +68,7 @@ public class StyleBuilderTest {
 
     @Test
     public void anchorPoint() {
-        AnchorPointBuilder<?> b = new AnchorPointBuilder();
+        AnchorPointBuilder b = new AnchorPointBuilder();
 
         AnchorPoint anchor = b.build();
         assertEquals(0.0, anchor.getAnchorPointX().evaluate(null, Double.class), 0.0);
@@ -84,7 +82,7 @@ public class StyleBuilderTest {
 
     @Test
     public void description() {
-        DescriptionBuilder<?> b = new DescriptionBuilder();
+        DescriptionBuilder b = new DescriptionBuilder();
         Description d = b.build();
         assertNull(d.getTitle());
         assertNull(d.getAbstract());
@@ -98,35 +96,30 @@ public class StyleBuilderTest {
         assertEquals("here be dragons", d.getAbstract().toString());
         assertNull(b.build().getAbstract());
 
-        b = new DescriptionBuilder(this);
+        b = new DescriptionBuilder();
         b.description("here be dragons");
         d = b.build();
 
         assertEquals("here be dragons", d.getAbstract().toString());
-        assertNotNull(b.build().getAbstract());
     }
 
     @Test
     public void testDisplacementBuilder() {
-        DisplacementBuilder<?> b = new DisplacementBuilder();
+        DisplacementBuilder b = new DisplacementBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
-
-        b = new DisplacementBuilder(this);
     }
 
     @Test
     public void testExtensionSymbolizerBuilder() {
-        ExtensionSymbolizerBuilder<?> b = new ExtensionSymbolizerBuilder();
+        ExtensionSymbolizerBuilder b = new ExtensionSymbolizerBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
-
-        b = new ExtensionSymbolizerBuilder(this);
     }
 
     @Test
     public void testExtentBuilder() {
-        ExtentBuilder<?> b = new ExtentBuilder();
+        ExtentBuilder b = new ExtentBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
 
@@ -135,106 +128,70 @@ public class StyleBuilderTest {
 
     @Test
     public void testExternalGraphicBuilder() {
-        ExternalGraphicBuilder<?> b = new ExternalGraphicBuilder();
+        ExternalGraphicBuilder b = new ExternalGraphicBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
-
-        b = new ExternalGraphicBuilder(this);
     }
 
     @Test
     public void testExternalMarkBuilder() {
-        ExternalMarkBuilder<?> b = new ExternalMarkBuilder();
+        ExternalMarkBuilder b = new ExternalMarkBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
-
-        b = new ExternalMarkBuilder(this);
     }
 
     @Test
     public void testFeatureTypeConstraintBuilder() {
-        FeatureTypeConstraintBuilder<?> b = new FeatureTypeConstraintBuilder();
+        FeatureTypeConstraintBuilder b = new FeatureTypeConstraintBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
-
-        b = new FeatureTypeConstraintBuilder(this);
     }
 
     @Test
     public void testFeatureTypeStyleBuilder() {
-        FeatureTypeStyleBuilder<?> b = new FeatureTypeStyleBuilder();
+        FeatureTypeStyleBuilder b = new FeatureTypeStyleBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
-
-        b = new FeatureTypeStyleBuilder(this);
     }
 
     @Test
     public void testFillBuilder() {
-        FillBuilder<?> b = new FillBuilder();
+        FillBuilder b = new FillBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
-
-        b = new FillBuilder(this);
     }
 
     @Test
     public void testFontBuilder() {
-        DisplacementBuilder<?> b = new DisplacementBuilder();
+        DisplacementBuilder b = new DisplacementBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
-
-        b = new DisplacementBuilder(this);
     }
 
     @Test
     public void testGraphicBuilder() {
-        GraphicBuilder<?> b = new GraphicBuilder();
+        GraphicBuilder b = new GraphicBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
-
-        b = new GraphicBuilder(this);
     }
 
     @Test
     public void testGraphicLegendBuilder() {
-        GraphicLegendBuilder<?> b = new GraphicLegendBuilder();
+        GraphicLegendBuilder b = new GraphicLegendBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
-
-        b = new GraphicLegendBuilder(this);
     }
 
     @Test
     public void testHaloBuilder() {
-        HaloBuilder<?> b = new HaloBuilder();
+        HaloBuilder b = new HaloBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
-
-        b = new HaloBuilder(this);
-    }
-
-    @Test
-    public void testImageOutlineBuilder() {
-        ImageOutlineBuilder<?> b = new ImageOutlineBuilder();
-        assertNull(b.unset().build());
-        assertNotNull(b.reset().build());
-
-        b = new ImageOutlineBuilder(this);
-    }
-
-    @Test
-    public void testLabelPlacementBuilder() {
-        LabelPlacementBuilder<?> b = new LabelPlacementBuilder();
-        assertNull(b.unset().build());
-        assertNotNull(b.reset().build());
-
-        b = new LabelPlacementBuilder(this);
     }
 
     @Test
     public void testLayerFeatureConstraintsBuilder() {
-        LayerFeatureConstraintsBuilder<?> b = new LayerFeatureConstraintsBuilder();
+        LayerFeatureConstraintsBuilder b = new LayerFeatureConstraintsBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
 
@@ -243,137 +200,100 @@ public class StyleBuilderTest {
 
     @Test
     public void testLinePlacementBuilder() {
-        LinePlacementBuilder<?> b = new LinePlacementBuilder();
+        LinePlacementBuilder b = new LinePlacementBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
-
-        b = new LinePlacementBuilder(this);
     }
 
     @Test
     public void testLineSymbolizerBuilder() {
-        LineSymbolizerBuilder<?> b = new LineSymbolizerBuilder();
+        LineSymbolizerBuilder b = new LineSymbolizerBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
-
-        b = new LineSymbolizerBuilder(this);
     }
 
     @Test
     public void testMarkBuilder() {
-        MarkBuilder<?> b = new MarkBuilder();
+        MarkBuilder b = new MarkBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
-
-        b = new MarkBuilder(this);
     }
 
     @Test
     public void testNamedLayerBuilder() {
-        NamedLayerBuilder<?> b = new NamedLayerBuilder();
+        NamedLayerBuilder b = new NamedLayerBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
-
-        b = new NamedLayerBuilder(this);
     }
 
     @Test
     public void testPointPlacementBuilder() {
-        PointPlacementBuilder<?> b = new PointPlacementBuilder();
+        PointPlacementBuilder b = new PointPlacementBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
-
-        b = new PointPlacementBuilder(this);
     }
 
     @Test
     public void testPointSymbolizerBuilder() {
-        PointSymbolizerBuilder<?> b = new PointSymbolizerBuilder();
+        PointSymbolizerBuilder b = new PointSymbolizerBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
-
-        b = new PointSymbolizerBuilder(this);
     }
 
     @Test
     public void testPolygonSymbolizerBuilder() {
-        PolygonSymbolizerBuilder<?> b = new PolygonSymbolizerBuilder();
+        PolygonSymbolizerBuilder b = new PolygonSymbolizerBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
-
-        b = new PolygonSymbolizerBuilder(this);
     }
 
     @Test
     public void testRasterSymbolizerBuilder() {
-        RasterSymbolizerBuilder<?> b = new RasterSymbolizerBuilder();
+        RasterSymbolizerBuilder b = new RasterSymbolizerBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
-
-        b = new RasterSymbolizerBuilder(this);
     }
 
     @Test
     public void testRemoteOWSBuilder() {
-        RemoteOWSBuilder<?> b = new RemoteOWSBuilder();
+        RemoteOWSBuilder b = new RemoteOWSBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().resource("localhost").service("WMS").build());
-
-        b = new RemoteOWSBuilder(this);
     }
 
     @Test
     public void testRuleBuilder() {
-        RuleBuilder<?> b = new RuleBuilder();
+        RuleBuilder b = new RuleBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
-
-        b = new RuleBuilder(this);
     }
 
     @Test
     public void testSelectedChannelTypeBuilder() {
-        SelectedChannelTypeBuilder<?> b = new SelectedChannelTypeBuilder();
+        SelectedChannelTypeBuilder b = new SelectedChannelTypeBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
-
-        b = new SelectedChannelTypeBuilder(this);
     }
 
     @Test
     public void testShadedReliefBuilder() {
-        ShadedReliefBuilder<?> b = new ShadedReliefBuilder();
+        ShadedReliefBuilder b = new ShadedReliefBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
-
-        b = new ShadedReliefBuilder(this);
     }
 
     @Test
     public void testStrokeBuilder() {
-        StrokeBuilder<?> b = new StrokeBuilder();
+        StrokeBuilder b = new StrokeBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
-
-        b = new StrokeBuilder(this);
     }
 
     @Test
     public void testStyleBuilder() {
-        StyleBuilder<?> b = new StyleBuilder();
+        StyleBuilder b = new StyleBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
-
-        b = new StyleBuilder(this);
-    }
-
-    @Test
-    public void testStyledLayerBuilder() {
-        StyledLayerBuilder<?> b = new StyledLayerBuilder();
-        assertNull(b.unset().build());
-        assertNotNull(b.reset().build());
-
-        b = new StyledLayerBuilder(this);
     }
 
     @Test
@@ -385,38 +305,23 @@ public class StyleBuilderTest {
 
     @Test
     public void testSymbolBuilder() {
-        DisplacementBuilder<?> b = new DisplacementBuilder();
+        DisplacementBuilder b = new DisplacementBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
-
-        b = new DisplacementBuilder(this);
-    }
-
-    @Test
-    public void testSymbolizerBuilder() {
-        SymbolizerBuilder<?> b = new SymbolizerBuilder();
-        assertNull(b.unset().build());
-        assertNotNull(b.reset().build());
-
-        b = new SymbolizerBuilder(this);
     }
 
     @Test
     public void testTextSymbolizerBuilder() {
-        TextSymbolizerBuilder<?> b = new TextSymbolizerBuilder();
+        TextSymbolizerBuilder b = new TextSymbolizerBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
-
-        b = new TextSymbolizerBuilder(this);
     }
 
     @Test
     public void testUserLayerBuilder() {
-        UserLayerBuilder<?> b = new UserLayerBuilder();
+        UserLayerBuilder b = new UserLayerBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
-
-        b = new UserLayerBuilder(this);
     }
 
     @Test
@@ -457,8 +362,8 @@ public class StyleBuilderTest {
 
     @Test
     public void fill() throws Exception {
-        FillBuilder<?> b = new FillBuilder();
-        Fill fill = b.color("#0000FF").opacity(0.75).build();
+        FillBuilder b = new FillBuilder();
+        Fill fill = b.color(Color.BLUE).opacity(0.75).build();
         assertNotNull(fill);
         assertNotNull(b.color);
         assertEquals(Color.BLUE, fill.getColor().evaluate(null, Color.class));
@@ -466,7 +371,7 @@ public class StyleBuilderTest {
 
     @Test
     public void halo() {
-        HaloBuilder<?> b = new HaloBuilder(null);
+        HaloBuilder b = new HaloBuilder(null);
         Halo halo = b.build();
 
         assertNotNull(halo);
@@ -477,8 +382,8 @@ public class StyleBuilderTest {
     public void testPolygonStyle() {
         StyleBuilder sb = new StyleBuilder();
 
-        PolygonSymbolizerBuilder symb = sb.newFeatureTypeStyle().name("Simple polygon style")
-                .rule().newPolygon();
+        PolygonSymbolizerBuilder symb = sb.featureTypeStyle().name("Simple polygon style").rule()
+                .polygon();
         symb.stroke().color(Color.BLUE).width(1).opacity(0.5);
         symb.fill().color(Color.CYAN).opacity(0.5);
 

@@ -23,8 +23,8 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.measure.quantity.Length;
@@ -37,7 +37,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterTransformer;
 import org.geotools.gml.producer.FeatureTransformer;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.NamedIdentifier;
+import org.geotools.util.Converters;
 import org.geotools.xml.transform.TransformerBase;
 import org.geotools.xml.transform.Translator;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -49,7 +49,10 @@ import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.style.ContrastMethod;
+import org.opengis.style.LabelPlacement;
 import org.opengis.style.SemanticType;
+import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
@@ -238,11 +241,19 @@ public class SLDTransformer extends TransformerBase {
             if( expr == null || expr == Expression.NIL ) return;
             
             // skip encoding if we are using the default value
-            if (expr instanceof Literal && defaultValue != null) {
-                Object value = expr.evaluate(null, defaultValue.getClass());
-                if(value != null && value.equals(defaultValue)) {
-                    return;
+            if (expr instanceof Literal) {
+                if(defaultValue != null) {
+                    Object value = expr.evaluate(null, defaultValue.getClass());
+                    if(value != null && !value.equals(defaultValue)) {
+                        element(element, value.toString(), atts);
+                    } 
+                } else {
+                    String value = expr.evaluate(null, String.class);
+                    if(value != null) {
+                        element(element, value, atts);
+                    }
                 }
+                return;
             }
             
             start(element, atts);
@@ -278,7 +289,7 @@ public class SLDTransformer extends TransformerBase {
             
             visit( pp.getDisplacement() );
 
-            element("Rotation", pp.getRotation());
+            encodeValue("Rotation", null, pp.getRotation(), Double.valueOf(0.0));
             end("PointPlacement");
             end("LabelPlacement");
         }
@@ -311,7 +322,10 @@ public class SLDTransformer extends TransformerBase {
                 StringBuffer sb = new StringBuffer();
     
                 for (int i = 0; i < dash.length; i++) {
-                    sb.append(dash[i] + " ");
+                    sb.append(dash[i]);
+                    if(i < dash.length - 1) {
+                        sb.append(" ");
+                    }
                 }
     
                 encodeCssParam("stroke-dasharray", ff.literal(sb.toString()));
@@ -525,7 +539,7 @@ public class SLDTransformer extends TransformerBase {
         public void visit(ColorMapEntry colorEntry) {
         	if (colorEntry != null) {
                 AttributesImpl atts = new AttributesImpl();
-                atts.addAttribute("", "color", "color", "", colorEntry.getColor().toString());
+                atts.addAttribute("", "color", "color", "",colorEntry.getColor().evaluate(null, String.class));
                 if (colorEntry.getOpacity() != null) {
                 	atts.addAttribute("", "opacity", "opacity", "", colorEntry.getOpacity().toString());
                 }
@@ -578,13 +592,9 @@ public class SLDTransformer extends TransformerBase {
             start("ExternalGraphic");
 
             AttributesImpl atts = new AttributesImpl();
-            try {
-            	atts.addAttribute(XMLNS_NAMESPACE, "xlink", "xmlns:xlink", "", XLINK_NAMESPACE);
-                atts.addAttribute(XLINK_NAMESPACE, "type", "xlink:type", "", "simple");
-                atts.addAttribute(XLINK_NAMESPACE, "xlink", "xlink:href","", exgr.getLocation().toString());
-            } catch (java.net.MalformedURLException murle) {
-                throw new Error("SOMEONE CODED THE X LINK NAMESPACE WRONG!!");
-            }
+        	atts.addAttribute(XMLNS_NAMESPACE, "xlink", "xmlns:xlink", "", XLINK_NAMESPACE);
+            atts.addAttribute(XLINK_NAMESPACE, "type", "xlink:type", "", "simple");
+            atts.addAttribute(XLINK_NAMESPACE, "xlink", "xlink:href","", exgr.getOnlineResource().getLinkage().toString());
             element("OnlineResource", (String) null, atts);
 
             element("Format", exgr.getFormat());
@@ -642,15 +652,8 @@ public class SLDTransformer extends TransformerBase {
             Filter filter = rule.getFilter();
             if( filter == null || filter == Filter.INCLUDE ){
                 // no filter
-            }
-            else {
-                try {
-                    contentHandler.startElement("", "", "ogc:Filter", NULL_ATTS);
-                    filterTranslator.encode(filter);
-                    contentHandler.endElement("","","ogc:Filter");
-                } catch (SAXException se) {
-                    throw new RuntimeException(se);
-                }
+            } else {
+                visit(filter);
             }
 
             if (rule.isElseFilter()) {
@@ -716,9 +719,7 @@ public class SLDTransformer extends TransformerBase {
         public void visit(Halo halo) {
         	start("Halo");
         	if (halo.getRadius() != null) {
-	            start("Radius");
-	            filterTranslator.encode(halo.getRadius());
-	            end("Radius");
+	            encodeValue("Radius", null, halo.getRadius(), null);
         	}
             if (halo.getFill() != null) {
             	halo.getFill().accept(this);
@@ -939,7 +940,13 @@ public class SLDTransformer extends TransformerBase {
         }
 
 		public void visit(Filter filter) {
-			// TODO: implement this visitor
+		    try {
+                contentHandler.startElement("", "", "ogc:Filter", NULL_ATTS);
+                filterTranslator.encode(filter);
+                contentHandler.endElement("","","ogc:Filter");
+            } catch (SAXException se) {
+                throw new RuntimeException(se);
+            }
 		}
 
         public void visit(Style style) {
@@ -1057,6 +1064,16 @@ public class SLDTransformer extends TransformerBase {
             if (expression == null) {
                 return; // protect ourselves from things like a null Stroke Color
             }
+
+            AttributesImpl atts = new AttributesImpl();
+            atts.addAttribute("", "name", "name", "", name);
+            encodeValue("CssParameter", atts, expression, defaultValue);
+        }
+        
+        void encodeValue(String elementName, Attributes atts, Expression expression, Object defaultValue) {
+            if (expression == null) {
+                return; // protect ourselves from things like a null Stroke Color
+            }
             
             // skip encoding if we are using the default value
             if (expression instanceof Literal && defaultValue != null) {
@@ -1066,16 +1083,16 @@ public class SLDTransformer extends TransformerBase {
                 }
             }
 
-            AttributesImpl atts = new AttributesImpl();
-            atts.addAttribute("", "name", "name", "", name);
-            
+            if(atts == null) {
+                atts = NULL_ATTS;
+            }
             if(expression instanceof Literal) {
                 // use more compact encoding
-                element("CssParameter", expression.evaluate(null, String.class), atts);
+                element(elementName, expression.evaluate(null, String.class), atts);
             } else {
-                start("CssParameter", atts);
+                start(elementName, atts);
                 filterTranslator.encode(expression);
-                end("CssParameter");
+                end(elementName);
             }
         }
 
@@ -1155,15 +1172,16 @@ public class SLDTransformer extends TransformerBase {
 			
 			start("ContrastEnhancement");
 			// histogram
-			Literal exp = (Literal) ce.getType();
-			if (exp != null) {
-				final String val = (String) exp.getValue();
+			ContrastMethod method = ce.getMethod();
+			if (method != null && !ContrastMethod.NONE.equals(method)) {
+				String val = method.name();
+				val = val.substring(0, 1).toUpperCase() + val.substring(1).toLowerCase();
 				start(val);
 				end(val);
 			}
 			
 			//gamma
-			exp=(Literal)ce.getGammaValue();
+			Expression exp = (Literal)ce.getGammaValue();
 			if (exp != null) {
 				//gamma is a double so the actual value needs to be printed here
 				element("GammaValue",  ((Literal)exp).getValue().toString());

@@ -435,17 +435,19 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     }
 
     /**
-     * {@inheritDoc}
+     * Sets the renderer to be used by this map pane.
+     *
+     * @param renderer the renderer to use
      */
-    @Override
     public void setRenderer(GTRenderer renderer) {
         doSetRenderer(renderer);
     }
 
     /**
-     * {@inheritDoc}
+     * Gets the renderer used by this map pane.
+     *
+     * @return the renderer
      */
-    @Override
     public GTRenderer getRenderer() {
         return renderer;
     }

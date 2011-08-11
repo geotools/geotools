@@ -52,20 +52,6 @@ public interface MapPane {
     MapContent getMapContent();
 
     /**
-     * Sets the renderer to be used by this map pane.
-     *
-     * @param renderer the renderer to use
-     */
-    void setRenderer(GTRenderer renderer);
-    
-    /**
-     * Gets the renderer used by this map pane.
-     *
-     * @return the renderer
-     */
-    GTRenderer getRenderer();
-
-    /**
      * Gets the current display area in world coordinates. This is a
      * short-cut for {@code mapPane.getMapContent().getViewport().getBounds()}.
      * If a MapContent object has not yet been associated with the map pane, an

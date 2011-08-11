@@ -25,8 +25,6 @@ import java.util.List;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
-import org.geotools.renderer.GTRenderer;
-import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.swing.MapPane;
 import org.geotools.swing.event.MapMouseListener;
 import org.geotools.swing.event.MapPaneListener;
@@ -55,6 +53,10 @@ public class MockMapPane extends Component implements MapPane {
         mapPaneListeners = new ArrayList<MapPaneListener>();
         toolManager = new MapToolManager(this);
     }
+    
+    public MapToolManager getMapToolManager() {
+        return toolManager;
+    }
 
     @Override
     public void setMapContent(MapContent content) {
@@ -65,15 +67,6 @@ public class MockMapPane extends Component implements MapPane {
     @Override
     public MapContent getMapContent() {
         return mapContent;
-    }
-
-    @Override
-    public void setRenderer(GTRenderer renderer) {
-    }
-
-    @Override
-    public GTRenderer getRenderer() {
-        return new StreamingRenderer();
     }
 
     @Override

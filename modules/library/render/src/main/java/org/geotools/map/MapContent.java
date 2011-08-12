@@ -494,6 +494,15 @@ public class MapContent {
                     fireLayerRemoved(null, 0, size() - 1);
                     return removed;
                 }
+
+                @Override
+                public Layer set(int index, Layer element) {
+                    Layer set = super.set(index, element);
+                    fireLayerMoved(element, index);
+                    return set;
+                }
+                
+                
             };
         }
         return layerList;
@@ -533,6 +542,23 @@ public class MapContent {
         }
     }
 
+    protected void fireLayerMoved(Layer element, int toIndex) {
+        if (mapListeners == null) {
+            return;
+        }
+        MapLayerListEvent event = new MapLayerListEvent(this, element, toIndex);
+        for (MapLayerListListener mapLayerListListener : mapListeners) {
+            try {
+                mapLayerListListener.layerMoved(event);
+            } catch (Throwable t) {
+                if (LOGGER.isLoggable(Level.FINER)) {
+                    LOGGER.logp(Level.FINE, mapLayerListListener.getClass().getName(),
+                            "layerMoved", t.getLocalizedMessage(), t);
+                }
+            }
+        }
+    }
+
     protected void fireLayerEvent(Layer element, int index, MapLayerEvent layerEvent) {
         if (mapListeners == null) {
             return;
@@ -561,39 +587,46 @@ public class MapContent {
      * @throws IOException
      *             if an IOException occurs while accessing the FeatureSource bounds
      */
-    public ReferencedEnvelope getMaxBounds() throws IOException {
-        CoordinateReferenceSystem mapCrs = getCoordinateReferenceSystem();
+    public ReferencedEnvelope getMaxBounds() {
+        CoordinateReferenceSystem mapCrs = null;
+        if (viewport != null) {
+            mapCrs = viewport.getCoordianteReferenceSystem();
+        }
         ReferencedEnvelope maxBounds = null;
 
         for (Layer layer : layers()) {
             if (layer == null) {
                 continue;
             }
-            ReferencedEnvelope layerBounds = layer.getBounds();
-            if (layerBounds == null || layerBounds.isEmpty() || layerBounds.isNull()) {
-                continue;
-            }
-            if (mapCrs == null) {
-                // crs for the map is not defined; let us start with the first CRS we see then!
-                maxBounds = new ReferencedEnvelope(layerBounds);
-                mapCrs = layerBounds.getCoordinateReferenceSystem();
-                continue;
-            }
-            ReferencedEnvelope normalized;
-            if (CRS.equalsIgnoreMetadata(mapCrs, layerBounds.getCoordinateReferenceSystem())) {
-                normalized = layerBounds;
-            } else {
-                try {
-                    normalized = layerBounds.transform(mapCrs, true);
-                } catch (Exception e) {
-                    LOGGER.log(Level.FINE, "Unable to transform: {0}", e);
+            try {
+                ReferencedEnvelope layerBounds = layer.getBounds();
+                if (layerBounds == null || layerBounds.isEmpty() || layerBounds.isNull()) {
                     continue;
                 }
-            }
-            if (maxBounds == null) {
-                maxBounds = normalized;
-            } else {
-                maxBounds.expandToInclude(normalized);
+                if (mapCrs == null) {
+                    // crs for the map is not defined; let us start with the first CRS we see then!
+                    maxBounds = new ReferencedEnvelope(layerBounds);
+                    mapCrs = layerBounds.getCoordinateReferenceSystem();
+                    continue;
+                }
+                ReferencedEnvelope normalized;
+                if (CRS.equalsIgnoreMetadata(mapCrs, layerBounds.getCoordinateReferenceSystem())) {
+                    normalized = layerBounds;
+                } else {
+                    try {
+                        normalized = layerBounds.transform(mapCrs, true);
+                    } catch (Exception e) {
+                        LOGGER.log(Level.FINE, "Unable to transform: {0}", e);
+                        continue;
+                    }
+                }
+                if (maxBounds == null) {
+                    maxBounds = normalized;
+                } else {
+                    maxBounds.expandToInclude(normalized);
+                }
+            } catch (Throwable eek) {
+                LOGGER.warning("Unable to determine bounds of " + layer + ":" + eek);
             }
         }
         if (maxBounds == null && mapCrs != null) {
@@ -618,6 +651,18 @@ public class MapContent {
             viewport = new MapViewport();
         }
         return viewport;
+    }
+
+    /**
+     * Sets the viewport for this map content and returns the previously
+     * set one (which may be {@code null}). The {@code viewport} argument may
+     * be {@code null}, in which case a subsequent to {@linkplain #getViewport()}
+     * will return a new instance with default settings.
+     * 
+     * @param viewport the new viewport
+     */
+    public synchronized void setViewport(MapViewport viewport) {
+        this.viewport = viewport;
     }
 
     /**

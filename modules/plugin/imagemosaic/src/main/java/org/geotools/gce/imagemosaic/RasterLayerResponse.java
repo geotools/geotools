@@ -926,7 +926,7 @@ class RasterLayerResponse{
 			final Filter filter = request.getFilter();
 			final boolean hasTime=(times!=null&&times.size()>0);
 			final boolean hasElevation=(elevations!=null && elevations.size()>0);
-			final boolean hasFilter = filter != null;
+			final boolean hasFilter = filter != null && !Filter.INCLUDE.equals(filter);
 
 			final SimpleFeatureType type = rasterManager.granuleCatalog.getType();
 			Query query = null;

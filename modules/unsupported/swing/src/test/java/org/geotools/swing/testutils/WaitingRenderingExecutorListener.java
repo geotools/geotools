@@ -37,7 +37,6 @@ public class WaitingRenderingExecutorListener
     public static enum Type {
         STARTED,
         COMPLETED,
-        CANCELLED,
         FAILED;
     }
     
@@ -53,11 +52,6 @@ public class WaitingRenderingExecutorListener
     @Override
     public void onRenderingCompleted(RenderingExecutorEvent ev) {
         catchEvent(Type.COMPLETED.ordinal(), ev);
-    }
-
-    @Override
-    public void onRenderingCancelled(RenderingExecutorEvent ev) {
-        catchEvent(Type.CANCELLED.ordinal(), ev);
     }
 
     @Override

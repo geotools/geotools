@@ -1,13 +1,29 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
  */
+
 package org.geotools.swing;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.RenderListener;
@@ -15,32 +31,25 @@ import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * A rendering task to be run by a {@code RenderingExecutor}.
+ * 
+ * @author Michael Bedward
+ * @since 8.0
+ * @source $URL$
+ * @version $Id$
  */
-public class RenderingTask implements Callable<RenderingTask.Status>, RenderListener {
+public class RenderingTask implements Callable<Boolean>, RenderListener {
     
-    private static long NEXT_ID = 1L;
-
-    /**
-     * Constants to indicate the result of a rendering task
-     */
-    public static enum Status {
-        PENDING,
-        COMPLETED,
-        CANCELLED,
-        FAILED;
-    }
-
-    private final long taskId;
-    private final MapContent mapContent;
+    private final Graphics2D destinationGraphics;
+    private final Rectangle deviceArea;
+    private final ReferencedEnvelope worldArea;
+    private final AffineTransform worldToScreenTransform;
     private final GTRenderer renderer;
-    private final Graphics2D graphics;
 
     private final AtomicBoolean running;
-    private final AtomicBoolean cancelled;
     private final AtomicBoolean failed;
     
     private long numFeaturesRendered;
-
+    
     /**
      * Creates a new rendering task.
      * 
@@ -49,8 +58,8 @@ public class RenderingTask implements Callable<RenderingTask.Status>, RenderList
      * @param graphics 
      */
     public RenderingTask(MapContent mapContent, 
-            GTRenderer renderer, 
-            Graphics2D graphics) {
+            Graphics2D destinationGraphics,
+            GTRenderer renderer) {
         
         if (mapContent == null) {
             throw new IllegalArgumentException("mapContent must not be null");
@@ -58,71 +67,43 @@ public class RenderingTask implements Callable<RenderingTask.Status>, RenderList
         if (renderer == null) {
             throw new IllegalArgumentException("renderer must not be null");
         }
-        if (graphics == null) {
+        if (destinationGraphics == null) {
             throw new IllegalArgumentException("graphics must not be null");
         }
         
-        this.taskId = NEXT_ID++;
-        this.mapContent = mapContent;
+        this.destinationGraphics = destinationGraphics;
+        this.deviceArea = mapContent.getViewport().getScreenArea();
+        this.worldArea = mapContent.getViewport().getBounds();
+        this.worldToScreenTransform = mapContent.getViewport().getWorldToScreen();
         this.renderer = renderer;
-        this.graphics = graphics;
         
         running = new AtomicBoolean(false);
-        cancelled = new AtomicBoolean(false);
         failed = new AtomicBoolean(false);
         
         numFeaturesRendered = 0;
     }
 
     /**
-     * Gets the unique ID value assigned to this task.
-     * 
-     * @return ID value
-     */
-    public long getId() {
-        return taskId;
-    }
-    
-    /**
      * Called by the executor to run this rendering task.
      *
-     * @return result of the task: completed, cancelled or failed
+     * @return result of the task: completed or failed
      * @throws Exception
      */
-    public Status call() throws Exception {
-        if (!isCancelled()) {
-            try {
-                renderer.addRenderListener(this);
-                running.set(true);
-                renderer.paint(graphics, 
-                        mapContent.getViewport().getScreenArea(), 
-                        mapContent.getViewport().getBounds(), 
-                        mapContent.getViewport().getWorldToScreen());
-            } finally {
-                renderer.removeRenderListener(this);
-                running.set(false);
-            }
-        }
-        
-        if (isCancelled()) {
-            return Status.CANCELLED;
-        } else if (isFailed()) {
-            return Status.FAILED;
-        } else {
-            return Status.COMPLETED;
-        }
-    }
-
-    /**
-     * Cancel the rendering task if it is running. If called before
-     * being run the task will be abandoned.
-     */
-    public synchronized void cancel() {
-        cancelled.set(true);
-        if (isRunning()) {
-            renderer.stopRendering();
+    @Override
+    public Boolean call() throws Exception {
+        try {
+            renderer.addRenderListener(this);
+            running.set(true);
+            renderer.paint(destinationGraphics,
+                    deviceArea, 
+                    worldArea, 
+                    worldToScreenTransform);
+        } finally {
+            renderer.removeRenderListener(this);
             running.set(false);
         }
+        
+        return !isFailed();
     }
 
     /**
@@ -130,6 +111,7 @@ public class RenderingTask implements Callable<RenderingTask.Status>, RenderList
      *
      * @param feature the feature just drawn
      */
+    @Override
     public void featureRenderer(SimpleFeature feature) {
         numFeaturesRendered++ ;
     }
@@ -139,6 +121,7 @@ public class RenderingTask implements Callable<RenderingTask.Status>, RenderList
      *
      * @param e cause of the error
      */
+    @Override
     public void errorOccurred(Exception e) {
         running.set(false);
         failed.set(true);
@@ -146,10 +129,6 @@ public class RenderingTask implements Callable<RenderingTask.Status>, RenderList
     
     public boolean isRunning() {
         return running.get();
-    }
-    
-    public boolean isCancelled() {
-        return cancelled.get();
     }
     
     public boolean isFailed() {

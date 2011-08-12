@@ -32,26 +32,25 @@ public class MapPaneAdapter implements MapPaneListener {
     /**
      * {@inheritDoc}
      */
-    public void onNewContent(MapPaneEvent ev) {}
+    @Override
+    public void onNewMapContent(MapPaneEvent ev) {}
 
     /**
      * {@inheritDoc}
      */
-    public void onNewRenderer(MapPaneEvent ev) {}
-
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void onDisplayAreaChanged(MapPaneEvent ev) {}
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void onRenderingStarted(MapPaneEvent ev) {}
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void onRenderingStopped(MapPaneEvent ev) {}
 
 }

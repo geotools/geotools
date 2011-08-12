@@ -37,6 +37,7 @@ public class MapMouseAdapter implements MapMouseListener {
      *
      * @param ev the mouse event
      */
+    @Override
     public void onMouseClicked(MapMouseEvent ev) {}
 
     /**
@@ -44,6 +45,7 @@ public class MapMouseAdapter implements MapMouseListener {
      *
      * @param ev the mouse event
      */
+    @Override
     public void onMouseDragged(MapMouseEvent ev) {}
 
     /**
@@ -51,6 +53,7 @@ public class MapMouseAdapter implements MapMouseListener {
      *
      * @param ev the mouse event
      */
+    @Override
     public void onMouseEntered(MapMouseEvent ev) {}
 
     /**
@@ -58,6 +61,7 @@ public class MapMouseAdapter implements MapMouseListener {
      *
      * @param ev the mouse event
      */
+    @Override
     public void onMouseExited(MapMouseEvent ev) {}
 
     /**
@@ -65,6 +69,7 @@ public class MapMouseAdapter implements MapMouseListener {
      *
      * @param ev the mouse event
      */
+    @Override
     public void onMouseMoved(MapMouseEvent ev) {}
 
     /**
@@ -72,6 +77,7 @@ public class MapMouseAdapter implements MapMouseListener {
      *
      * @param ev the mouse event
      */
+    @Override
     public void onMousePressed(MapMouseEvent ev) {}
 
     /**
@@ -79,6 +85,7 @@ public class MapMouseAdapter implements MapMouseListener {
      *
      * @param ev the mouse event
      */
+    @Override
     public void onMouseReleased(MapMouseEvent ev) {}
 
     /**
@@ -86,6 +93,7 @@ public class MapMouseAdapter implements MapMouseListener {
      *
      * @param ev the mouse event
      */
+    @Override
     public void onMouseWheelMoved(MapMouseEvent ev) {}
 
 }

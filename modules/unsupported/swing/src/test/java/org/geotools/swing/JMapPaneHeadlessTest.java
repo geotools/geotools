@@ -88,7 +88,7 @@ public class JMapPaneHeadlessTest {
     public void defaultRenderingExecutorCreated() {
         RenderingExecutor executor = mapPane.getRenderingExecutor();
         assertNotNull(executor);
-        assertTrue(executor instanceof SingleTaskRenderingExecutor);
+        assertTrue(executor instanceof DefaultRenderingExecutor);
     }
     
     @Test
@@ -111,23 +111,6 @@ public class JMapPaneHeadlessTest {
         mapPane.setMapContent(mapContent);
         
         assertTrue(renderer.getMapContent() == mapContent);
-    }
-    
-    @Test
-    public void setRendererFiresEvent() {
-        mapPane.addMapPaneListener(listener);
-        listener.setExpected(MapPaneEvent.Type.NEW_RENDERER);
-        
-        GTRenderer renderer = new MockRenderer();
-        mapPane.setRenderer(renderer);
-        
-        assertTrue(listener.await(MapPaneEvent.Type.NEW_RENDERER, WAIT_TIMEOUT));
-        
-        MapPaneEvent event = listener.getEvent(MapPaneEvent.Type.NEW_RENDERER);
-        Object o = event.getData();
-        assertNotNull(o);
-        assertTrue(o instanceof GTRenderer);
-        assertTrue(o == renderer);
     }
     
     @Test

@@ -37,12 +37,6 @@ public interface RenderingExecutorListener {
     void onRenderingCompleted(RenderingExecutorEvent ev);
     
     /**
-     * Called by the executor when rendering was cancelled at the request
-     * of the client.
-     */
-    void onRenderingCancelled(RenderingExecutorEvent ev);
-    
-    /**
      * Called by the executor when rendering failed for some reason.
      */
     void onRenderingFailed(RenderingExecutorEvent ev);

@@ -33,14 +33,7 @@ public interface MapPaneListener {
      *
      * @param ev the event
      */
-    void onNewContent(MapPaneEvent ev);
-
-    /**
-     * Called when a new renderer has been set for the map pane.
-     *
-     * @param ev the event
-     */
-    void onNewRenderer(MapPaneEvent ev);
+    void onNewMapContent(MapPaneEvent ev);
 
     /**
      * Called the display area (world bounds) has changed.

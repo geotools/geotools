@@ -14,9 +14,11 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-
 package org.geotools.swing.testutils;
 
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import javax.swing.JPanel;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -34,15 +36,13 @@ import org.geotools.swing.tool.MapToolManager;
  * @version $Id$
  */
 public class MockGraphicsMapPane extends JPanel {
+
     private MockMapPane innerPane;
-    private MapToolManager toolManager;
 
     public MockGraphicsMapPane() {
         innerPane = new MockMapPane();
-        
-        toolManager = new MapToolManager(innerPane);
-        addMouseListener(toolManager);
-        addMouseMotionListener(toolManager);
+        addMouseListener(new DelegatingMouseListener(innerPane.getMapToolManager()));
+        addMouseMotionListener(new DelegatingMouseListener(innerPane.getMapToolManager()));
     }
 
     public void setMapContent(MapContent content) {
@@ -57,4 +57,48 @@ public class MockGraphicsMapPane extends JPanel {
         innerPane.addMouseListener(listener);
     }
     
+
+    class DelegatingMouseListener implements MouseListener, MouseMotionListener {
+
+        private final MapToolManager delegate;
+
+        DelegatingMouseListener(MapToolManager delegate) {
+            this.delegate = delegate;
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent me) {
+            delegate.mouseClicked(me);
+        }
+
+        @Override
+        public void mousePressed(MouseEvent me) {
+            delegate.mousePressed(me);
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent me) {
+            delegate.mouseReleased(me);
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent me) {
+            delegate.mouseEntered(me);
+        }
+
+        @Override
+        public void mouseExited(MouseEvent me) {
+            delegate.mouseExited(me);
+        }
+
+        @Override
+        public void mouseDragged(MouseEvent me) {
+            delegate.mouseDragged(me);
+        }
+
+        @Override
+        public void mouseMoved(MouseEvent me) {
+            delegate.mouseMoved(me);
+        }
+    }
 }

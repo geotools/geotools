@@ -24,6 +24,7 @@ import java.util.Set;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
@@ -33,7 +34,6 @@ import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
 
 import org.geotools.map.MapContent;
-import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.swing.action.InfoAction;
 import org.geotools.swing.action.PanAction;
@@ -102,7 +102,7 @@ public class JMapFrame extends JFrame {
     /*
      * UI elements
      */
-    private JMapPane mapPane;
+    private MapPane mapPane;
     private MapLayerTable mapLayerTable;
     private JToolBar toolBar;
 
@@ -127,6 +127,7 @@ public class JMapFrame extends JFrame {
         frame.setSize(800, 600);
 
         SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 frame.setVisible(true);
             }
@@ -142,22 +143,11 @@ public class JMapFrame extends JFrame {
     }
 
     /**
-     * Constructs a new {@code JMapFrame} object with specified content
-     * and a default renderer (an instance of {@link StreamingRenderer}).
+     * Constructs a new {@code JMapFrame} object with specified map content.
      *
      * @param content the map content
      */
     public JMapFrame(MapContent content) {
-        this(content, new StreamingRenderer());
-    }
-
-    /**
-     * Constructs a new {@code JMapFrame} object with specified content and renderer
-     *
-     * @param content the map content
-     * @param renderer the renderer to be used
-     */
-    public JMapFrame(MapContent content, GTRenderer renderer) {
         super(content == null ? "" : content.getTitle());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -166,8 +156,8 @@ public class JMapFrame extends JFrame {
         toolSet = EnumSet.noneOf(Tool.class);
 
         // the map pane is the one element that is always displayed
-        mapPane = new JMapPane(renderer, content);
-        mapPane.setBackground(Color.WHITE);
+        mapPane = new JMapPane(new StreamingRenderer(), content);
+        ((JComponent) mapPane).setBackground(Color.WHITE);
     }
 
     /**
@@ -330,14 +320,17 @@ public class JMapFrame extends JFrame {
              * JSplitPane divider
              */
             mapLayerTable.setPreferredSize(new Dimension(200, -1));
-            JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false, mapLayerTable, mapPane);
+            JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, 
+                    false, 
+                    mapLayerTable, 
+                    (JComponent) mapPane);
             panel.add(splitPane, "grow");
 
         } else {
             /*
              * No layer table, just the map pane
              */
-            panel.add(mapPane, "grow");
+            panel.add((JComponent) mapPane, "grow");
         }
 
         if (showStatusBar) {
@@ -374,37 +367,12 @@ public class JMapFrame extends JFrame {
     }
 
     /**
-     * Get the renderer being used by this frame.
-     * Returns {@code null} if no renderer was set via the constructor
-     * or {@link #setRenderer}.
-     *
-     * @return the current {@code GTRenderer} object
-     */
-    public GTRenderer getRenderer() {
-        return mapPane.getRenderer();
-    }
-
-    /**
-     * Set the renderer to be used by this frame.
-     *
-     * @param renderer a GTRenderer instance
-     * @throws IllegalArgumentException if renderer is null
-     */
-    public void setRenderer(GTRenderer renderer) {
-        if (renderer == null) {
-            throw new IllegalArgumentException("renderer must not be null");
-        }
-
-        mapPane.setRenderer(renderer);
-    }
-
-    /**
      * Provides access to the instance of {@code JMapPane} being used
      * by this frame.
      *
      * @return the {@code JMapPane} object
      */
-    public JMapPane getMapPane() {
+    public MapPane getMapPane() {
         return mapPane;
     }
 

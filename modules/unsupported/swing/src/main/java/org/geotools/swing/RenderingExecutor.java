@@ -18,6 +18,10 @@
 package org.geotools.swing;
 
 import java.awt.Graphics2D;
+import java.util.List;
+import java.util.Map;
+
+import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.renderer.GTRenderer;
 
@@ -67,11 +71,33 @@ public interface RenderingExecutor {
      *     all executors and rendering tasks) if the task was accepted; 
      *     or {@link #TASK_REJECTED}
      * 
+     * 
      * @throws IllegalArgumentException if any arguments are {@code null}
      * @throws IllegalStateException if called after the executor has been shut down
      */
      long submit(MapContent mapContent, GTRenderer renderer, Graphics2D graphics,
              RenderingExecutorListener listener);
+     
+    /**
+     * Submits a new rendering task to the executor. The specified listener
+     * will be notified of task progress. If the task is rejected by the
+     * executor for any reason, this method returns {@link #TASK_REJECTED}
+     * instead of a task ID value.
+     *
+     * @param mapContent the map content holding the layers to be rendered
+     * @param operands operands for each of the sub-tasks composing this task
+     * @param listener the listener to be notified of task progress
+     *
+     * @return either a task ID value (which should be positive and unique across 
+     *     all executors and rendering tasks) if the task was accepted; 
+     *     or {@link #TASK_REJECTED}
+     * 
+     * 
+     * @throws IllegalArgumentException if any arguments are {@code null}
+     * @throws IllegalStateException if called after the executor has been shut down
+     */
+     long submit(MapContent mapContent, List<RenderingOperands> operands,
+            RenderingExecutorListener listener);
      
      /**
       * Cancels a specific rendering task.
@@ -94,4 +120,5 @@ public interface RenderingExecutor {
       * @return {@code true} if the executor has been shut down
       */
      boolean isShutdown();
+
 }

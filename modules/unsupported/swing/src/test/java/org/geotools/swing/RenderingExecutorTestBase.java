@@ -53,7 +53,7 @@ public abstract class RenderingExecutorTestBase {
     protected MockRenderer renderer;
     
     protected void setup() {
-        executor = new SingleTaskRenderingExecutor();
+        executor = new DefaultRenderingExecutor();
         listener = new WaitingRenderingExecutorListener();
         mapContent = new MapContent();
         mapContent.getViewport().setBounds(WORLD);

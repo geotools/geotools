@@ -45,11 +45,6 @@ public class MapPaneEvent extends EventObject {
         NEW_MAPCONTENT,
 
         /**
-         * A new renderer has been set for the map pane.
-         */
-        NEW_RENDERER,
-
-        /**
          * The display area has been changed. This can
          * include both changes in bounds and in the
          * coordinate reference system.

@@ -31,20 +31,16 @@ import org.geotools.swing.event.MapPaneListener;
  * @source $URL$
  * @version $Id$
  */
-public class WaitingMapPaneListener extends WaitingListener<MapPaneEvent, MapPaneEvent.Type> implements MapPaneListener {
+public class WaitingMapPaneListener extends WaitingListener<MapPaneEvent, MapPaneEvent.Type>
+        implements MapPaneListener {
 
     public WaitingMapPaneListener() {
         super(MapPaneEvent.Type.values().length);
     }
     
     @Override
-    public void onNewContent(MapPaneEvent ev) {
+    public void onNewMapContent(MapPaneEvent ev) {
         catchEvent(MapPaneEvent.Type.NEW_MAPCONTENT.ordinal(), ev);
-    }
-
-    @Override
-    public void onNewRenderer(MapPaneEvent ev) {
-        catchEvent(MapPaneEvent.Type.NEW_RENDERER.ordinal(), ev);
     }
 
     @Override

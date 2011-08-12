@@ -32,10 +32,14 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
@@ -67,24 +71,9 @@ import org.opengis.geometry.Envelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
- * A map display pane that works with a renderer ({@code StreamingRenderer} by default)
- * to display map layers contained in a {@code MapContent} instance. It supports the 
- * use of tool classes to implement, for example, mouse-controlled zooming and panning.
- * <p>
- * Rendering is performed on a background thread and is managed by
- * the {@linkplain RenderingExecutor} class.
- *
- * @see JMapFrame
- * @see MapPaneListener
- * @see CursorTool
- *
- * @author Michael Bedward
- * @author Ian Turton
- * @since 2.6
- * @source $URL$
- * @version $Id$
+ * DO NOT USE - NOT WORKING YET !
  */
-public class JMapPane extends JPanel implements MapPane, MapLayerListListener, MapBoundsListener,
+public class JLayeredMapPane extends JPanel implements MapPane, MapLayerListListener, MapBoundsListener,
         RenderingExecutorListener {
 
     /**
@@ -146,7 +135,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
         @Override
         public void mouseDragged(MouseEvent e) {
             if (enabled) {
-                Graphics2D g2D = (Graphics2D) JMapPane.this.getGraphics();
+                Graphics2D g2D = (Graphics2D) JLayeredMapPane.this.getGraphics().create();
                 g2D.setColor(Color.WHITE);
                 g2D.setXORMode(Color.RED);
                 if (dragged) {
@@ -163,7 +152,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
         @Override
         public void mouseReleased(MouseEvent e) {
             if (dragged) {
-                Graphics2D g2D = (Graphics2D) JMapPane.this.getGraphics();
+                Graphics2D g2D = (Graphics2D) JLayeredMapPane.this.getGraphics().create();
                 g2D.setColor(Color.WHITE);
                 g2D.setXORMode(Color.RED);
                 g2D.drawRect(rect.x, rect.y, rect.width, rect.height);
@@ -178,10 +167,9 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     private LabelCache labelCache;
     private RenderingExecutor renderingExecutor;
     private MapToolManager toolManager;
-    //private MapLayerTable layerTable;
+    private MapLayerTable layerTable;
     private Set<MapPaneListener> listeners = new HashSet<MapPaneListener>();
-    private BufferedImage baseImage;
-    private Graphics2D baseImageGraphics;
+    private ConcurrentMap<Layer, BufferedImage> baseImages;
     private Point imageOrigin;
     
     private AtomicBoolean baseImageMoved;
@@ -190,7 +178,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     /**
      * Creates a new map pane. 
      */
-    public JMapPane() {
+    public JLayeredMapPane() {
         this(null, null);
     }
 
@@ -205,7 +193,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
      * @param content the {@code MapContent} instance containing layers to 
      *     display
      */
-    public JMapPane(GTRenderer renderer, MapContent content) {
+    public JLayeredMapPane(GTRenderer renderer, MapContent content) {
         this(renderer, content, null);
     }
     
@@ -223,10 +211,10 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
      *     display
      * @param executor the rendering executor
      */
-    public JMapPane(GTRenderer renderer, MapContent content, RenderingExecutor executor) {
+    public JLayeredMapPane(GTRenderer renderer, MapContent content, RenderingExecutor executor) {
         imageOrigin = new Point(0, 0);
         setBackground(DEFAULT_BACKGROUND_COLOR);
-
+        baseImages = new ConcurrentHashMap<Layer, BufferedImage>();
         acceptRepaintRequests = true;
         baseImageMoved = new AtomicBoolean();
         clearLabelCache = new AtomicBoolean();
@@ -268,7 +256,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
                 super.mouseEntered(e);
                 CursorTool tool = toolManager.getCursorTool();
                 if (tool != null) {
-                    JMapPane.this.setCursor(tool.getCursor());
+                    JLayeredMapPane.this.setCursor(tool.getCursor());
                 }
             }
         });
@@ -342,7 +330,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
                     getDisplayArea()));
 
             acceptRepaintRequests = true;
-            drawBaseImage(true);
+            drawBaseImages(true);
         }
     }
 
@@ -406,23 +394,32 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
             listeners.remove(listener);
         }
     }
-    
-    /**
-     * Sets the renderer to be used by this map pane.
-     *
-     * @param renderer the renderer to use
-     */
-    public void setRenderer(GTRenderer renderer) {
-        doSetRenderer(renderer);
-    }
 
     /**
-     * Gets the renderer used by this map pane.
+     * Registers a {@linkplain MapLayerTable} object to be receive
+     * layer change events from this map pane and to control layer
+     * ordering, visibility and selection.
      *
-     * @return the renderer
+     * @param layerTable an instance of MapLayerTable
+     *
+     * @throws IllegalArgumentException if layerTable is null
      */
-    public GTRenderer getRenderer() {
-        return renderer;
+    public void setMapLayerTable(MapLayerTable layerTable) {
+        if (layerTable == null) {
+            throw new IllegalArgumentException("layerTable must not be null");
+        }
+
+        this.layerTable = layerTable;
+        resetMapLayerTable();
+    }
+    
+    private void resetMapLayerTable() {
+        if (layerTable != null && mapContent != null) {
+            layerTable.clear();
+            for (Layer layer : mapContent.layers()) {
+                layerTable.onAddLayer(layer);
+            }
+        }
     }
 
     private void doSetRenderer(GTRenderer newRenderer) {
@@ -517,6 +514,8 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
                 mapContent.addMapLayerListListener(this);
                 mapContent.addMapBoundsListener(this);
 
+                resetMapLayerTable();
+                
                 if (!mapContent.layers().isEmpty()) {
                     // set all layers as selected by default for the info tool
                     for (Layer layer : mapContent.layers()) {
@@ -540,7 +539,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
                     this, MapPaneEvent.Type.NEW_MAPCONTENT, mapContent);
             publishEvent(event);
             
-            drawBaseImage(false);
+            drawBaseImages(false);
         }
     }
     
@@ -570,7 +569,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
         doSetDisplayArea(envelope);
         if (mapContent != null) {
             clearLabelCache.set(true);
-            drawBaseImage(false);
+            drawBaseImages(false);
         }
     }
 
@@ -705,7 +704,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
         // we also want to accept / ignore system requests for repainting
         setIgnoreRepaint(!repaint);
     }
-    
+
     @Override
     public void setIgnoreRepaint(boolean ignoreRepaint) {
         super.setIgnoreRepaint(ignoreRepaint);
@@ -740,7 +739,8 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
      * @return a live reference to the current base image
      */
     public RenderedImage getBaseImage() {
-        return this.baseImage;
+        //return combineBaseImages();
+        return null;
     }
 
     /**
@@ -825,7 +825,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
             public void run() {
                 afterImageMoved();
                 clearLabelCache.set(true);
-                drawBaseImage(false);
+                drawBaseImages(false);
                 repaint();
             }
         }, resizingPaintDelay, TimeUnit.MILLISECONDS);
@@ -835,39 +835,67 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        if (baseImage != null) {
-            Graphics2D g2 = (Graphics2D) g;
-            g2.drawImage(baseImage, imageOrigin.x, imageOrigin.y, null);
-            return;
+        if (checkBaseImages()) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            
+            for (Layer layer : mapContent.layers()) {
+                if (layer.isVisible()) {
+                    BufferedImage image = baseImages.get(layer);
+                    if (image != null) {
+                        g2.drawImage(image, imageOrigin.x, imageOrigin.y, null);
+                    }
+                }
+            }
+            
+            g2.dispose();
         }
     }
+    
+    private boolean checkBaseImages() {
+        if (baseImages.isEmpty()) {
+            return false;
+        }
+        
+        for (Layer layer : mapContent.layers()) {
+            if (layer.isVisible() && baseImages.get(layer) == null) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
 
-    private void drawBaseImage(boolean createNewImage) {
+    private void drawBaseImages(boolean createNew) {
         if (mapContent != null
                 && !mapContent.getViewport().isEmpty()
                 && acceptRepaintRequests) {
             
             Rectangle r = getVisibleRect();
-            if (baseImage == null || createNewImage) {
-                baseImage = GraphicsEnvironment.getLocalGraphicsEnvironment().
-                        getDefaultScreenDevice().getDefaultConfiguration().
-                        createCompatibleImage(r.width, r.height, Transparency.TRANSLUCENT);
-
-                if (baseImageGraphics != null) {
-                    baseImageGraphics.dispose();
-                }
-
-                baseImageGraphics = baseImage.createGraphics();
+            if (!checkBaseImages() || createNew) {
+                createNewBaseImages();
                 clearLabelCache.set(true);
-                
-            } else {
-                baseImageGraphics.setBackground(getBackground());
-                baseImageGraphics.clearRect(0, 0, r.width, r.height);
             }
 
-            if (renderer != null && mapContent != null && !mapContent.layers().isEmpty()) {
-                renderingExecutor.submit(mapContent, renderer, baseImageGraphics, this);
+            if (mapContent != null && !mapContent.layers().isEmpty()) {
+                List<RenderingOperands> ops = new ArrayList<RenderingOperands>();
+                for (Layer layer : mapContent.layers()) {
+                    Graphics2D g2D = baseImages.get(layer).createGraphics();
+                    ops.add(new RenderingOperands(layer, g2D, new StreamingRenderer()));
+                }
+                
+                renderingExecutor.submit(mapContent, ops, this);
             }
+        }
+    }
+    
+    private void createNewBaseImages() {
+        Rectangle r = getVisibleRect();
+        for (Layer layer : mapContent.layers()) {
+            BufferedImage image = GraphicsEnvironment.getLocalGraphicsEnvironment().
+                    getDefaultScreenDevice().getDefaultConfiguration().
+                    createCompatibleImage(r.width, r.height, Transparency.TRANSLUCENT);
+            
+            baseImages.put(layer, image);
         }
     }
 
@@ -935,6 +963,10 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     public void layerAdded(MapLayerListEvent event) {
         Layer layer = event.getElement();
         
+        if (layerTable != null) {
+            layerTable.onAddLayer(layer);
+        }
+
         if( layer instanceof ComponentListener ){
             addComponentListener( (ComponentListener) layer );
         }
@@ -945,7 +977,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
             reset();
         }
 
-        drawBaseImage(false);
+        drawBaseImages(false);
         repaint();
     }
 
@@ -955,6 +987,9 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     @Override
     public void layerRemoved(MapLayerListEvent event) {
         Layer layer = event.getElement();
+        if (layerTable != null) {
+            layerTable.onRemoveLayer(layer);
+        }
 
         if( layer instanceof ComponentListener ){
             addComponentListener( (ComponentListener) layer );
@@ -966,7 +1001,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
             setFullExtent();
         }
 
-        drawBaseImage(false);
+        drawBaseImages(false);
         repaint();
     }
 
@@ -976,6 +1011,10 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
      */
     @Override
     public void layerChanged(MapLayerListEvent event) {
+        if (layerTable != null) {
+            layerTable.repaint(event.getElement());
+        }
+
         int reason = event.getMapLayerEvent().getReason();
 
         if (reason == MapLayerEvent.DATA_CHANGED) {
@@ -984,18 +1023,18 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
 
         if (reason != MapLayerEvent.SELECTION_CHANGED) {
             clearLabelCache.set(true);
-            drawBaseImage(false);
+            drawBaseImages(false);
         }
 
         repaint();
     }
 
     /**
-     * {@inheritDoc}
+     * Called when the bounds of a map layer have changed
      */
     @Override
     public void layerMoved(MapLayerListEvent event) {
-        drawBaseImage(false);
+        drawBaseImages(false);
         repaint();
     }
 
@@ -1006,6 +1045,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
      */
     @Override
     public void mapBoundsChanged(MapBoundsEvent event) {
+
         int type = event.getType();
         if ((type & MapBoundsEvent.COORDINATE_SYSTEM_MASK) != 0) {
             /*

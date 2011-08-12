@@ -18,6 +18,9 @@
 package org.geotools.swing;
 
 import java.awt.Graphics2D;
+import java.util.List;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -26,15 +29,17 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.geotools.map.MapContent;
 import org.geotools.renderer.GTRenderer;
 
 /**
- * A single threaded, non-queueing {@code RenderingExecutor}. Only one 
- * rendering task can run at any given time and, while it is running, any 
- * other submitted tasks will be rejected.
+ * The default implementation of {@code RenderingExecutor} which is used by 
+ * {@linkplain JMapPane} and {@linkplain JLayeredMapPane}. It runs no more than 
+ * one rendering task at any given time, although that task may involve multiple
+ * threads (e.g. each layer of a map being rendered into separate destinations.
+ * While a task is running any other submitted tasks are rejected.
  * <p>
  * Whether a rendering task is accepted or rejected can be tested on submission:
  * <pre><code>
@@ -49,8 +54,7 @@ import org.geotools.renderer.GTRenderer;
  * polling can be adjusted which might be useful to tune the executor for particular
  * applications:
  * <pre><code>
- *     RenderingExecutor re = new RenderingExecutor( mapPane );
- *     re.setPollingInterval( 10 );  // 10 milliseconds
+ *     executor.setPollingInterval( 10 );  // 10 milliseconds
  * </code></pre>
  *
  * @author Michael Bedward
@@ -60,24 +64,23 @@ import org.geotools.renderer.GTRenderer;
  * 
  * @see RenderingExecutorListener
  */
-public class SingleTaskRenderingExecutor implements RenderingExecutor {
+public class DefaultRenderingExecutor implements RenderingExecutor {
 
-    //private final JMapPane mapPane;
+    private final AtomicLong NEXT_ID = new AtomicLong(1);
+    
     private final ExecutorService taskExecutor;
     private final ScheduledExecutorService watchExecutor;
+    private ScheduledFuture<?> watcher;
+    
+    private CountDownLatch tasksLatch = new CountDownLatch(0);
 
     /** The default interval (milliseconds) for polling the result of a rendering task */
     public static final long DEFAULT_POLLING_INTERVAL = 20L;
 
     private long pollingInterval;
 
-    /*
-     * This latch is used to avoid a race between the cancellation of
-     * a current task and the submittal of a new task
-     */
-    private CountDownLatch cancelLatch;
-
     private static class DaemonThreadFactory implements ThreadFactory {
+        @Override
         public Thread newThread(Runnable r) {
             Thread t = new Thread(r);
             t.setDaemon(true);
@@ -85,20 +88,30 @@ public class SingleTaskRenderingExecutor implements RenderingExecutor {
         }
     }
 
-    private RenderingTask task;
-    private Future<RenderingTask.Status> taskFuture;
-    private RenderingExecutorListener listener;
-    private ScheduledFuture<?> watcher;
-    private AtomicBoolean notifiedStart;
+    private static class TaskInfo {
+        final long id;
+        final Future<Boolean> future;
+        final RenderingExecutorListener listener;
+        boolean polledDone;
+
+        TaskInfo(long id, Future<Boolean> future, RenderingExecutorListener listener) {
+            this.id = id;
+            this.future = future;
+            this.listener = listener;
+            this.polledDone = false;
+        }
+    }
+    
+    private List<TaskInfo> currentTasks;
 
     /**
      * Creates a new executor.
      */
-    public SingleTaskRenderingExecutor() {
-        taskExecutor = Executors.newSingleThreadExecutor();
+    public DefaultRenderingExecutor() {
+        currentTasks = new CopyOnWriteArrayList<TaskInfo>();
+        
+        taskExecutor = Executors.newCachedThreadPool();
         pollingInterval = DEFAULT_POLLING_INTERVAL;
-        cancelLatch = new CountDownLatch(0);
-        notifiedStart = new AtomicBoolean();
         
         watchExecutor = Executors.newSingleThreadScheduledExecutor(new DaemonThreadFactory());
         startPolling();
@@ -107,6 +120,7 @@ public class SingleTaskRenderingExecutor implements RenderingExecutor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public long getPollingInterval() {
         return pollingInterval;
     }
@@ -114,6 +128,7 @@ public class SingleTaskRenderingExecutor implements RenderingExecutor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setPollingInterval(long interval) {
         if (interval > 0 && interval != pollingInterval) {
             pollingInterval = interval;
@@ -126,6 +141,7 @@ public class SingleTaskRenderingExecutor implements RenderingExecutor {
      * If no rendering task is presently running this new task will be accepted, 
      * otherwise it will be rejected (ie. there is no task queue).
      */
+    @Override
     public synchronized long submit(MapContent mapContent, GTRenderer renderer,
             Graphics2D graphics,
             RenderingExecutorListener listener) {
@@ -150,34 +166,75 @@ public class SingleTaskRenderingExecutor implements RenderingExecutor {
         }
         
         
-        if (!hasUnfinishedTask()) {
-            try {
-                // wait for any cancelled task to finish its shutdown
-                cancelLatch.await();
-            } catch (InterruptedException ex) {
-                throw new RuntimeException(ex);
-            }
+        if (tasksLatch.getCount() == 0) {
+            tasksLatch = new CountDownLatch(1);
 
-            task = new RenderingTask(mapContent, renderer, graphics);
-            this.listener = listener;
-            notifiedStart.set(false);
-            taskFuture = taskExecutor.submit(task);
-            rtnValue = task.getId();
+            long id = NEXT_ID.getAndIncrement();
+            RenderingExecutorEvent event = new RenderingExecutorEvent(this, id);
+            listener.onRenderingStarted(event);
+            
+            RenderingTask task = new RenderingTask(mapContent, graphics, renderer);
+            Future<Boolean> future = taskExecutor.submit(task);
+            currentTasks.add( new TaskInfo(id, future, listener) );
+            rtnValue = id;
         }
         
         return rtnValue;
     }
     
+    @Override
+    public long submit(MapContent mapContent, 
+            List<RenderingOperands> operands,
+            RenderingExecutorListener listener) {
+        
+        long rtnValue = RenderingExecutor.TASK_REJECTED;
+        
+        if (taskExecutor.isShutdown()) {
+            throw new IllegalStateException("Calling submit after the executor has been shutdown");
+        }
+        
+        if (mapContent == null) {
+            throw new IllegalArgumentException("mapContent must not be null");
+        }
+        if (mapContent.getViewport().isEmpty()) {
+            throw new IllegalArgumentException("The viewport must not be empty");
+        }
+        if (operands == null || operands.isEmpty()) {
+            throw new IllegalArgumentException("operands list must not be null or empty");
+        }
+        if (listener == null) {
+            throw new IllegalArgumentException("listener must not be null");
+        }
+        
+        if (tasksLatch.getCount() == 0) {
+            tasksLatch = new CountDownLatch(operands.size());
+            
+            long id = NEXT_ID.getAndIncrement();
+            RenderingExecutorEvent event = new RenderingExecutorEvent(this, id);
+            listener.onRenderingStarted(event);
+            
+            for (RenderingOperands op : operands) {
+                MapContent mc = new MapContent();
+                mc.setViewport(mapContent.getViewport());
+                mc.addLayer(op.getLayer());
+                
+                RenderingTask task = new RenderingTask(mapContent, op.getGraphics(), op.getRenderer());
+                Future<Boolean> future = taskExecutor.submit(task);
+                currentTasks.add( new TaskInfo(id, future, listener) );
+            }
+            rtnValue = id;
+        }
+        
+        return rtnValue;
+    }
+
     /**
      * {@inheritDoc}
-     * Since this task can only ever have a single task running, 
-     * and no tasks queued, this method simply checks if the running
-     * task has the specified ID value and, if so, cancels it.
      */
+    @Override
     public synchronized void cancel(long taskId) {
-        if (hasUnfinishedTask(taskId)) {
-            task.cancel();
-            cancelLatch = new CountDownLatch(1);
+        if (!currentTasks.isEmpty() && currentTasks.get(0).id == taskId) {
+            cancelAll();
         }
     }
     
@@ -187,16 +244,17 @@ public class SingleTaskRenderingExecutor implements RenderingExecutor {
      * no tasks queued, this method simply checks for a running task 
      * and, if one exists, cancels it.
      */
+    @Override
     public synchronized void cancelAll() {
-        if (hasUnfinishedTask()) {
-            task.cancel();
-            cancelLatch = new CountDownLatch(1);
+        for (TaskInfo info : currentTasks) {
+            info.future.cancel(true);
         }
     }
     
     /**
      * {@inheritDoc}
      */
+    @Override
     public void shutdown() {
         if (taskExecutor != null && !taskExecutor.isShutdown()) {
             taskExecutor.shutdown();
@@ -207,88 +265,42 @@ public class SingleTaskRenderingExecutor implements RenderingExecutor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isShutdown() {
         return taskExecutor.isShutdown();
     }
     
-    /**
-     * Checks if the executor is holding a specific task that is either running
-     * or yet to start running.
-     * 
-     * @param taskId the task ID value
-     * 
-     * @return {@code true} if the given task exists and is unfinished
-     */
-    private boolean hasUnfinishedTask(long taskId) {
-        return (task != null && task.getId() == taskId &&
-                taskFuture != null && !taskFuture.isDone());
-    }
-    
-    /**
-     * Checks if the executor is holding a task that is either running
-     * or yet to start running.
-     * 
-     * @return {@code true} if a task exists and is unfinished
-     */
-    private boolean hasUnfinishedTask() {
-        return (task != null && taskFuture != null && !taskFuture.isDone());
-    }
-
-    private void notifyStarted(boolean force) {
-        if (!notifiedStart.get() && (force || task.isRunning())) {
-            RenderingExecutorEvent event = new RenderingExecutorEvent(this, task.getId());
-            listener.onRenderingStarted(event);
-            notifiedStart.set(true);
-        }
-    }
-    
     private void pollTaskResult() {
-        if (taskFuture == null) {
-            return;
-        } else if (!taskFuture.isDone()) {
-            notifyStarted(false);
-            return;
-        }
+        for (TaskInfo info : currentTasks) {
+            if (!info.polledDone && info.future.isDone()) {
+                info.polledDone = true;
+                Boolean result = null;
+                try {
+                    result = info.future.get();
+                } catch (CancellationException ex) {
+                    result = false;
+                } catch (Exception ex) {
+                    throw new IllegalStateException("When getting rendering result", ex);
+                }
 
-        // call again in case the task was so quick we missed the start
-        notifyStarted(true);
-        
-        RenderingTask.Status result = null;
-        long taskId = task.getId();
-        try {
-            result = taskFuture.get();
-        } catch (Exception ex) {
-            throw new IllegalStateException("When getting rendering result", ex);
-        }
-        
-        taskFuture = null;
-
-        /*
-         * We zero the cancel latch here because it's possible that the job
-         * completed (or failed) before it could be cancelled. When this statement 
-         * was only executed for the CANCELLED case (below) it caused apps
-         * to freeze occasionally.
-         */
-        cancelLatch.countDown();
-        
-        RenderingExecutorEvent event = new RenderingExecutorEvent(this, taskId);
-        switch (result) {
-            case CANCELLED:
-                listener.onRenderingCancelled(event);
-                break;
-
-            case COMPLETED:
-                listener.onRenderingCompleted(event);
-                break;
-
-            case FAILED:
-                listener.onRenderingFailed(event);
-                break;
+                RenderingExecutorEvent event = new RenderingExecutorEvent(this, info.id);
+                if (!result) {
+                    info.listener.onRenderingFailed(event);
+                } else {
+                    tasksLatch.countDown();
+                    if (tasksLatch.getCount() == 0) {
+                        info.listener.onRenderingCompleted(event);
+                        currentTasks.clear();
+                        break;
+                    }
+                }
+            }
         }
     }
 
     private void startPolling() {
         watcher = watchExecutor.scheduleAtFixedRate(new Runnable() {
+            @Override
                 public void run() {
                     pollTaskResult();
                 }

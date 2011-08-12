@@ -17,7 +17,6 @@
 
 package org.geotools.swing.tool;
 
-import org.junit.Ignore;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
@@ -39,7 +38,8 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
 
 /**
- * Unit tests for MapToolManager that require a graphics environment.
+ * Unit tests for MapToolManager. Requires a graphics environment and displays
+ * windows during tests.
  * 
  * @author Michael Bedward
  * @since 8.0
@@ -47,12 +47,11 @@ import static org.junit.Assert.*;
  * @version $Id$
  */
 @RunWith(GraphicsTestRunner.class)
-@Ignore("Still working out how to write these tests")
 public class MapToolManagerGraphicsTest {
     private static final int WIDTH = 300;
     private static final int HEIGHT = 300;
     
-    private static final long AWAIT_TIMEOUT = 2000;
+    private static final long AWAIT_TIMEOUT = 500;
     
     private MockGraphicsMapPane mapPane;
     private FrameFixture window;
@@ -61,6 +60,7 @@ public class MapToolManagerGraphicsTest {
     public static void setUpOnce() {
         FailOnThreadViolationRepaintManager.install();
     }
+    private WaitingMapMouseListener listener;
     
     @Before
     public void setup() {
@@ -73,6 +73,10 @@ public class MapToolManagerGraphicsTest {
         });
         
         window = new FrameFixture(frame);
+        
+        listener = new WaitingMapMouseListener();
+        mapPane.addMouseListener(listener);
+
         window.show(new Dimension(WIDTH, HEIGHT));
     }
 
@@ -83,11 +87,8 @@ public class MapToolManagerGraphicsTest {
     
     @Test
     public void testMouseClicked() {
-        WaitingMapMouseListener listener = new WaitingMapMouseListener();
-        mapPane.addMouseListener(listener);
-        
         listener.setExpected(WaitingMapMouseListener.Type.CLICKED);
-        window.robot.click(mapPane);
+        window.click();
         assertTrue(listener.await(WaitingMapMouseListener.Type.CLICKED, AWAIT_TIMEOUT));
     }
 

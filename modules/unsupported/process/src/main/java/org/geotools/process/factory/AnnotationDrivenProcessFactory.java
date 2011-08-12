@@ -48,7 +48,7 @@ import org.opengis.util.ProgressListener;
  */
 public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
     
-    String namespace;
+    protected String namespace;
 
     InternationalString title;
 

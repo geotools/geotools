@@ -494,6 +494,15 @@ public class MapContent {
                     fireLayerRemoved(null, 0, size() - 1);
                     return removed;
                 }
+
+                @Override
+                public Layer set(int index, Layer element) {
+                    Layer set = super.set(index, element);
+                    fireLayerMoved(element, index);
+                    return set;
+                }
+                
+                
             };
         }
         return layerList;
@@ -528,6 +537,23 @@ public class MapContent {
                 if (LOGGER.isLoggable(Level.FINER)) {
                     LOGGER.logp(Level.FINE, mapLayerListListener.getClass().getName(),
                             "layerAdded", t.getLocalizedMessage(), t);
+                }
+            }
+        }
+    }
+    
+    protected void fireLayerMoved(Layer element, int toIndex) {
+        if (mapListeners == null) {
+            return;
+        }
+        MapLayerListEvent event = new MapLayerListEvent(this, element, toIndex);
+        for (MapLayerListListener mapLayerListListener : mapListeners) {
+            try {
+                mapLayerListListener.layerMoved(event);
+            } catch (Throwable t) {
+                if (LOGGER.isLoggable(Level.FINER)) {
+                    LOGGER.logp(Level.FINE, mapLayerListListener.getClass().getName(),
+                            "layerMoved", t.getLocalizedMessage(), t);
                 }
             }
         }

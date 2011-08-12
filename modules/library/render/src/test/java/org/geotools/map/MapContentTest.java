@@ -178,22 +178,18 @@ public class MapContentTest {
             return result;
         }
 
-        @Override
         public void layerAdded(MapLayerListEvent event) {
             catchEvent(Type.ADDED);
         }
 
-        @Override
         public void layerRemoved(MapLayerListEvent event) {
             catchEvent(Type.REMOVED);
         }
 
-        @Override
         public void layerChanged(MapLayerListEvent event) {
             catchEvent(Type.CHANGED);
         }
 
-        @Override
         public void layerMoved(MapLayerListEvent event) {
             catchEvent(Type.MOVED);
         }

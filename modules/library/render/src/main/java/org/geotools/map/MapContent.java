@@ -637,6 +637,18 @@ public class MapContent {
     }
 
     /**
+     * Sets the viewport for this map content and returns the previously
+     * set one (which may be {@code null}). The {@code viewport} argument may
+     * be {@code null}, in which case a subsequent to {@linkplain #getViewport()}
+     * will return a new instance with default settings.
+     * 
+     * @param viewport the new viewport
+     */
+    public synchronized void setViewport(MapViewport viewport) {
+        this.viewport = viewport;
+    }
+
+    /**
      * Register interest in receiving {@link MapBoundsEvent}s.
      * 
      * @param listener

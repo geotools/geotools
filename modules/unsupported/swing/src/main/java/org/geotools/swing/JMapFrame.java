@@ -24,7 +24,6 @@ import java.util.Set;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
@@ -102,7 +101,7 @@ public class JMapFrame extends JFrame {
     /*
      * UI elements
      */
-    private MapPane mapPane;
+    private JMapPane mapPane;
     private MapLayerTable mapLayerTable;
     private JToolBar toolBar;
 
@@ -157,7 +156,7 @@ public class JMapFrame extends JFrame {
 
         // the map pane is the one element that is always displayed
         mapPane = new JMapPane(new StreamingRenderer(), content);
-        ((JComponent) mapPane).setBackground(Color.WHITE);
+        mapPane.setBackground(Color.WHITE);
     }
 
     /**
@@ -323,14 +322,14 @@ public class JMapFrame extends JFrame {
             JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, 
                     false, 
                     mapLayerTable, 
-                    (JComponent) mapPane);
+                    mapPane);
             panel.add(splitPane, "grow");
 
         } else {
             /*
              * No layer table, just the map pane
              */
-            panel.add((JComponent) mapPane, "grow");
+            panel.add(mapPane, "grow");
         }
 
         if (showStatusBar) {
@@ -372,7 +371,7 @@ public class JMapFrame extends JFrame {
      *
      * @return the {@code JMapPane} object
      */
-    public MapPane getMapPane() {
+    public JMapPane getMapPane() {
         return mapPane;
     }
 

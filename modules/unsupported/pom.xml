@@ -151,6 +151,12 @@
          <module>swt</module>
        </modules>
      </profile>
+     <profile>
+       <id>feature-aggreate</id>
+       <modules>
+         <module>feature-aggreate</module>
+       </modules>
+     </profile>
 
      <profile>
        <id>unsupported</id>
@@ -166,6 +172,7 @@
          <module>matfile5</module>
          <module>sfs</module>
          <module>mark-wkt</module>
+         <module>feature-aggregate</module>
        </modules>
      </profile>
   </profiles>

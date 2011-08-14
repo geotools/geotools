@@ -28,7 +28,11 @@ import org.geotools.data.FeatureListener;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.Transaction;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 
@@ -108,6 +112,36 @@ public class PropertyFeatureStore extends AbstractFeatureLocking {
         // return super.getCount(query); // super class checks transaction state diff
     }
     // getCount end
+    
+    @Override
+    public ReferencedEnvelope getBounds(Query query) throws IOException {
+        if(query.getFilter() == Filter.INCLUDE) {
+            return getBounds();
+        }
+        ReferencedEnvelope result = getBoundsInternal(query);
+        
+        return result; 
+    }
+    
+    ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
+        SimpleFeatureCollection fc = getFeatures(query);
+        SimpleFeatureIterator fi = null;
+        ReferencedEnvelope result = new ReferencedEnvelope(getSchema().getCoordinateReferenceSystem());
+        try {
+            fi = fc.features();
+            while(fi.hasNext()) {
+                SimpleFeature f = fi.next();
+                if(f != null && f.getBounds() != null) {
+                    result.expandToInclude(ReferencedEnvelope.reference(f.getBounds()));
+                }
+            }
+        } catch(Exception e) {
+            if(fi != null) {
+                fi.close();
+            }
+        }
+        return result;
+    }
 
     // getBounds start
     public ReferencedEnvelope getBounds() {
@@ -118,7 +152,7 @@ public class PropertyFeatureStore extends AbstractFeatureLocking {
         }
         try {
             // calculate and store in cache                    
-            cacheBounds = getFeatures().getBounds();
+            cacheBounds = getBoundsInternal(Query.ALL);
             cacheTimestamp = file.lastModified();            
             return cacheBounds;
         } catch (IOException e) {            

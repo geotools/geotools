@@ -149,6 +149,9 @@ public class DefaultEngineeringCRS extends AbstractSingleCRS implements Engineer
      */
     public DefaultEngineeringCRS(final EngineeringCRS crs) {
         super(crs);
+        if(crs instanceof DefaultEngineeringCRS) {
+            this.wildcard = ((DefaultEngineeringCRS) crs).wildcard;
+        }
     }
 
     /**

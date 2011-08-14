@@ -17,6 +17,7 @@ The following modules are provided for your amusement only to encourage collabor
    :maxdepth: 1
    :hidden:
    
+   efeature/index
    geojson
    grid
    geometry/index
@@ -55,6 +56,7 @@ Unsupported DataStore implementations:
 * :doc:`/library/data/csv` (Active) support for the comma-separated values (CSV) file format used for tutorial
 * :doc:`/library/data/dxf` (Inactive) Support for DXF format files 
 * :doc:`/library/data/edigeo` (Inactive) Support for EDIGEO file format
+* :doc:`efeature/index` (Active) Adds spatial support to (any) EMF model 
 * :doc:`/library/data/excel` (Unknown) Support for Microsoft Excel files
 * :doc:`/library/data/georest` (Unknown) Support for a REST service using GeoJSON
 * :doc:`/library/data/ogr` (Inactive) Support for a range of vector file formats using the OGR library

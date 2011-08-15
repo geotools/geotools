@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -117,69 +117,16 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
      * layers.
      */
     private ReferencedEnvelope fullExtent;
-
-    /**
-     * Encapsulates XOR box drawing logic used with mouse dragging
-     */
-    private class DragBox extends MouseInputAdapter {
-
-        private Point startPos;
-        private Rectangle rect;
-        private boolean dragged;
-        private boolean enabled;
-
-        DragBox() {
-            rect = new Rectangle();
-            dragged = false;
-            enabled = false;
-        }
-
-        void setEnabled(boolean state) {
-            enabled = state;
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-            startPos = new Point(e.getPoint());
-        }
-
-        @Override
-        public void mouseDragged(MouseEvent e) {
-            if (enabled) {
-                Graphics2D g2D = (Graphics2D) JMapPane.this.getGraphics();
-                g2D.setColor(Color.WHITE);
-                g2D.setXORMode(Color.RED);
-                if (dragged) {
-                    g2D.drawRect(rect.x, rect.y, rect.width, rect.height);
-                }
-
-                rect.setFrameFromDiagonal(startPos, e.getPoint());
-                g2D.drawRect(rect.x, rect.y, rect.width, rect.height);
-
-                dragged = true;
-            }
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            if (dragged) {
-                Graphics2D g2D = (Graphics2D) JMapPane.this.getGraphics();
-                g2D.setColor(Color.WHITE);
-                g2D.setXORMode(Color.RED);
-                g2D.drawRect(rect.x, rect.y, rect.width, rect.height);
-                dragged = false;
-            }
-        }
-    }
-
-    private DragBox dragBox;
+    
+    private final MapToolManager toolManager;
+    private final MouseDragBox dragBox;
+    
     private MapContent mapContent;
     private GTRenderer renderer;
     private LabelCache labelCache;
     private RenderingExecutor renderingExecutor;
-    private MapToolManager toolManager;
-    //private MapLayerTable layerTable;
     private Set<MapPaneListener> listeners = new HashSet<MapPaneListener>();
+
     private BufferedImage baseImage;
     private Graphics2D baseImageGraphics;
     private Point imageOrigin;
@@ -248,7 +195,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
 
         toolManager = new MapToolManager(this);
 
-        dragBox = new DragBox();
+        dragBox = new MouseDragBox(this);
         this.addMouseListener(dragBox);
         this.addMouseMotionListener(dragBox);
 

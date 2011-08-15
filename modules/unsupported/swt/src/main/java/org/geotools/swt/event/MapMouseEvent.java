@@ -62,7 +62,7 @@ public final class MapMouseEvent {
             AffineTransform tr = pane.getScreenToWorldTransform();
             geoCoords = new DirectPosition2D(event.x, event.y);
             tr.transform(geoCoords, geoCoords);
-            geoCoords.setCoordinateReferenceSystem(pane.getMapContext().getCoordinateReferenceSystem());
+            geoCoords.setCoordinateReferenceSystem(pane.getMapContent().getCoordinateReferenceSystem());
         } else {
             wheelAmount = 3;// event.getWheelRotation();
         }

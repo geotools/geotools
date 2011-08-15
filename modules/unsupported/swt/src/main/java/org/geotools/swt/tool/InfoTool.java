@@ -31,8 +31,8 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.MapContext;
-import org.geotools.map.MapLayer;
+import org.geotools.map.Layer;
+import org.geotools.map.MapContent;
 import org.geotools.swt.control.JTextReporter;
 import org.geotools.swt.event.MapMouseEvent;
 import org.geotools.swt.utils.CursorManager;
@@ -80,7 +80,7 @@ public class InfoTool extends CursorTool {
 
     private JTextReporter reporter;
 
-    private WeakHashMap<MapLayer, InfoToolHelper<?>> helperTable;
+    private WeakHashMap<Layer, InfoToolHelper<?>> helperTable;
 
     /**
      * Constructor
@@ -89,7 +89,7 @@ public class InfoTool extends CursorTool {
 
         cursor = CursorManager.getInstance().getInfoCursor();
 
-        helperTable = new WeakHashMap<MapLayer, InfoToolHelper<?>>();
+        helperTable = new WeakHashMap<Layer, InfoToolHelper<?>>();
     }
 
     /**
@@ -113,8 +113,8 @@ public class InfoTool extends CursorTool {
         DirectPosition2D pos = ev.getMapPosition();
         report(pos);
 
-        MapContext context = getMapPane().getMapContext();
-        for( MapLayer layer : context.getLayers() ) {
+        MapContent context = getMapPane().getMapContent();
+        for( Layer layer : context.layers() ) {
             if (layer.isSelected()) {
                 InfoToolHelper<?> helper = null;
 
@@ -131,7 +131,7 @@ public class InfoTool extends CursorTool {
                     if (Utils.isGridLayer(layer)) {
                         try {
                             Class< ? > clazz = Class.forName("org.geotools.swt.tool.GridLayerHelper");
-                            Constructor< ? > ctor = clazz.getConstructor(MapContext.class, MapLayer.class);
+                            Constructor< ? > ctor = clazz.getConstructor(MapContent.class, Layer.class);
                             helper = (InfoToolHelper<?>) ctor.newInstance(context, layer);
                             helperTable.put(layer, helper);
 
@@ -142,7 +142,7 @@ public class InfoTool extends CursorTool {
                     } else {
                         try {
                             Class< ? > clazz = Class.forName("org.geotools.swt.tool.VectorLayerHelper");
-                            Constructor< ? > ctor = clazz.getConstructor(MapContext.class, MapLayer.class);
+                            Constructor< ? > ctor = clazz.getConstructor(MapContent.class, Layer.class);
                             helper = (InfoToolHelper<?>) ctor.newInstance(context, layer);
                             helperTable.put(layer, helper);
 

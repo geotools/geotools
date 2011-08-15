@@ -26,8 +26,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
-import org.geotools.map.MapContext;
-import org.geotools.map.MapLayer;
+import org.geotools.map.GridReaderLayer;
+import org.geotools.map.Layer;
+import org.geotools.map.MapContent;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.SLD;
 import org.geotools.styling.Style;
@@ -61,10 +62,10 @@ public class OpenGeotiffAction extends MapAction implements ISelectionChangedLis
             RasterSymbolizer symbolizer = sf.getDefaultRasterSymbolizer();
             Style defaultStyle = SLD.wrapSymbolizers(symbolizer);
 
-            MapContext mapContext = mapPane.getMapContext();
-            MapLayer layer = new MapLayer(tiffReader, defaultStyle);
+            MapContent mapContent = mapPane.getMapContent();
+            Layer layer = new GridReaderLayer(tiffReader, defaultStyle);
             layer.setTitle(openFile.getName());
-            mapContext.addLayer(layer);
+            mapContent.addLayer(layer);
             mapPane.redraw();
         }
     }

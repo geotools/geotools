@@ -19,7 +19,7 @@ package org.geotools.swt.tool;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 
-import org.geotools.data.DefaultQuery;
+import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.DirectPosition2D;
@@ -27,8 +27,8 @@ import org.geotools.geometry.jts.Geometries;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.MapContext;
-import org.geotools.map.MapLayer;
+import org.geotools.map.Layer;
+import org.geotools.map.MapContent;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
@@ -61,7 +61,7 @@ public class VectorLayerHelper extends InfoToolHelper<SimpleFeatureCollection> {
 
     private static final GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory(null);
     private static final FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2(null);
-    private final WeakReference<MapLayer> layerRef;
+    private final WeakReference<Layer> layerRef;
     private final String attrName;
     private final boolean isPolygonGeometry;
 
@@ -75,10 +75,10 @@ public class VectorLayerHelper extends InfoToolHelper<SimpleFeatureCollection> {
      * @param geomClass the geometry class
      */
     @SuppressWarnings("unchecked")
-    public VectorLayerHelper( MapContext context, MapLayer layer ) {
+    public VectorLayerHelper( MapContent context, Layer layer ) {
         super(context, layer.getFeatureSource().getSchema().getCoordinateReferenceSystem());
 
-        this.layerRef = new WeakReference<MapLayer>(layer);
+        this.layerRef = new WeakReference<Layer>(layer);
 
         final GeometryDescriptor geomDesc = layer.getFeatureSource().getSchema().getGeometryDescriptor();
         this.attrName = geomDesc.getLocalName();
@@ -92,7 +92,7 @@ public class VectorLayerHelper extends InfoToolHelper<SimpleFeatureCollection> {
      * {@inheritDoc}
      */
     public boolean isValid() {
-        return getMapContext() != null && layerRef != null && layerRef.get() != null;
+        return getMapContent() != null && layerRef != null && layerRef.get() != null;
     }
 
     /**
@@ -102,7 +102,7 @@ public class VectorLayerHelper extends InfoToolHelper<SimpleFeatureCollection> {
      *
      * @see #isValid()
      */
-    public MapLayer getMapLayer() {
+    public Layer getMapLayer() {
         return layerRef != null ? layerRef.get() : null;
     }
 
@@ -127,7 +127,7 @@ public class VectorLayerHelper extends InfoToolHelper<SimpleFeatureCollection> {
     public SimpleFeatureCollection getInfo( DirectPosition2D pos, Object... params ) throws IOException {
 
         SimpleFeatureCollection collection = null;
-        MapLayer layer = layerRef.get();
+        Layer layer = layerRef.get();
 
         if (layer != null) {
             Filter filter = null;
@@ -147,8 +147,8 @@ public class VectorLayerHelper extends InfoToolHelper<SimpleFeatureCollection> {
                 filter = filterFactory.bbox(filterFactory.property(attrName), env);
             }
 
-            DefaultQuery query = new DefaultQuery(null, filter);
-            query.setCoordinateSystemReproject(getMapContext().getCoordinateReferenceSystem());
+            Query query = new Query(null, filter);
+            query.setCoordinateSystemReproject(getMapContent().getCoordinateReferenceSystem());
             collection = (SimpleFeatureCollection) layer.getFeatureSource().getFeatures(query);
         }
 
@@ -172,7 +172,7 @@ public class VectorLayerHelper extends InfoToolHelper<SimpleFeatureCollection> {
     }
 
     private ReferencedEnvelope createSearchEnv( DirectPosition2D pos, double radius ) {
-        final CoordinateReferenceSystem contextCRS = getMapContext().getCoordinateReferenceSystem();
+        final CoordinateReferenceSystem contextCRS = getMapContent().getCoordinateReferenceSystem();
         ReferencedEnvelope env = new ReferencedEnvelope(pos.x - radius, pos.x + radius, pos.y - radius, pos.y + radius,
                 contextCRS);
         if (isTransformRequired()) {

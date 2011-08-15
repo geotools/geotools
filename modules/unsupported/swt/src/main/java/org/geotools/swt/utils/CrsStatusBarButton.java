@@ -63,7 +63,7 @@ public class CrsStatusBarButton extends ControlContribution implements MapBounds
     protected Control createControl( Composite parent ) {
         createListeners();
         mapPane.addMapPaneListener(mapPaneListener);
-        mapPane.getMapContext().addMapBoundsListener(this);
+        mapPane.getMapContent().addMapBoundsListener(this);
 
         Composite mainComposite = new Composite(parent, SWT.NONE);
         GridLayout gridLayout = new GridLayout(1, false);
@@ -94,7 +94,7 @@ public class CrsStatusBarButton extends ControlContribution implements MapBounds
     }
 
     private CoordinateReferenceSystem getCrs() {
-        return mapPane.getMapContext().getCoordinateReferenceSystem();
+        return mapPane.getMapContent().getCoordinateReferenceSystem();
     }
 
     private void displayCRS( CoordinateReferenceSystem crs ) {

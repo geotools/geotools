@@ -19,6 +19,7 @@ package org.geotools.swt;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -28,8 +29,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.geotools.map.MapContext;
-import org.geotools.map.MapLayer;
+import org.geotools.map.Layer;
+import org.geotools.map.MapContent;
 import org.geotools.swt.control.MaplayerTableViewer;
 import org.geotools.swt.utils.ImageCache;
 import org.geotools.swt.utils.Messages;
@@ -73,9 +74,9 @@ public class MapLayerComposite extends Composite {
         pane.setMapLayerTable(this);
         mapLayerTableViewer.setPane(pane);
 
-        MapContext mapContext = pane.getMapContext();
-        MapLayer[] layers = mapContext.getLayers();
-        for( MapLayer mapLayer : layers ) {
+        MapContent mapContent = pane.getMapContent();
+        CopyOnWriteArrayList<Layer> layers = mapContent.layers();
+        for( Layer mapLayer : layers ) {
             mapLayerTableViewer.addLayer(mapLayer);
         }
     }
@@ -87,7 +88,7 @@ public class MapLayerComposite extends Composite {
      *
      * @param layer the map layer
      */
-    public void onAddLayer( MapLayer layer ) {
+    public void onAddLayer( Layer layer ) {
         mapLayerTableViewer.addLayer(layer);
     }
 
@@ -98,7 +99,7 @@ public class MapLayerComposite extends Composite {
      *
      * @param layer the map layer
      */
-    public void onRemoveLayer( MapLayer layer ) {
+    public void onRemoveLayer( Layer layer ) {
         mapLayerTableViewer.removeLayer(layer);
     }
 
@@ -107,7 +108,7 @@ public class MapLayerComposite extends Composite {
      *
      * @param layer the map layer
      */
-    public void repaint( MapLayer layer ) {
+    public void repaint( Layer layer ) {
         mapLayerTableViewer.refresh(layer, true);
     }
 
@@ -137,11 +138,11 @@ public class MapLayerComposite extends Composite {
         removeLayerButton.setImage(ImageCache.getInstance().getImage(ImageCache.REMOVE_LAYER));
         removeLayerButton.addSelectionListener(new SelectionAdapter(){
             public void widgetSelected( SelectionEvent e ) {
-                MapLayer selectedMapLayer = mapLayerTableViewer.getSelectedMapLayer();
+                Layer selectedMapLayer = mapLayerTableViewer.getSelectedMapLayer();
                 if (selectedMapLayer == null) {
                     return;
                 }
-                MapContext mapContext = pane.getMapContext();
+                MapContent mapContext = pane.getMapContent();
                 mapContext.removeLayer(selectedMapLayer);
                 mapLayerTableViewer.selectionChanged(null);
             }
@@ -196,13 +197,13 @@ public class MapLayerComposite extends Composite {
      * @param ev the event
      */
     private void moveLayer( int delta ) {
-        MapLayer selectedMapLayer = mapLayerTableViewer.getSelectedMapLayer();
+        Layer selectedMapLayer = mapLayerTableViewer.getSelectedMapLayer();
         if (selectedMapLayer == null)
             return;
-        List<MapLayer> layersList = mapLayerTableViewer.getLayersList();
-        MapContext mapContext = pane.getMapContext();
+        List<Layer> layersList = mapLayerTableViewer.getLayersList();
+        MapContent mapContent = pane.getMapContent();
 
-        int contextIndex = mapContext.indexOf(selectedMapLayer);
+        int contextIndex = mapContent.layers().indexOf(selectedMapLayer);
 
         int viewerIndex = layersList.indexOf(selectedMapLayer);
         int newViewerIndex = viewerIndex + delta;
@@ -215,12 +216,12 @@ public class MapLayerComposite extends Composite {
         * DefaultMapContext (see comment in javadocs for this class)
         */
         int newContextIndex = contextIndex - delta;
-        if (newContextIndex < 0 || newContextIndex > mapContext.getLayerCount() - 1) {
+        if (newContextIndex < 0 || newContextIndex > mapContent.layers().size() - 1) {
             return;
         }
 
         if (contextIndex != newContextIndex) {
-            mapContext.moveLayer(contextIndex, newContextIndex);
+            mapContent.moveLayer(contextIndex, newContextIndex);
             pane.redraw();
             Collections.swap(layersList, viewerIndex, newViewerIndex);
             mapLayerTableViewer.refresh();
@@ -229,8 +230,8 @@ public class MapLayerComposite extends Composite {
     }
 
     private void onShowAllLayers() {
-        if (pane != null && pane.getMapContext() != null) {
-            for( MapLayer layer : pane.getMapContext().getLayers() ) {
+        if (pane != null && pane.getMapContent() != null) {
+            for( Layer layer : pane.getMapContent().layers() ) {
                 if (!layer.isVisible()) {
                     layer.setVisible(true);
                 }
@@ -241,8 +242,8 @@ public class MapLayerComposite extends Composite {
     }
 
     private void onHideAllLayers() {
-        if (pane != null && pane.getMapContext() != null) {
-            for( MapLayer layer : pane.getMapContext().getLayers() ) {
+        if (pane != null && pane.getMapContent() != null) {
+            for( Layer layer : pane.getMapContent().layers() ) {
                 if (layer.isVisible()) {
                     layer.setVisible(false);
                 }

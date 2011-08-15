@@ -47,8 +47,8 @@ import org.eclipse.swt.widgets.Listener;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.MapContext;
-import org.geotools.map.MapLayer;
+import org.geotools.map.Layer;
+import org.geotools.map.MapContent;
 import org.geotools.map.event.MapBoundsEvent;
 import org.geotools.map.event.MapBoundsListener;
 import org.geotools.map.event.MapLayerEvent;
@@ -109,7 +109,7 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
      */
     private ReferencedEnvelope fullExtent;
 
-    private MapContext context;
+    private MapContent content;
     private GTRenderer renderer;
     private LabelCache labelCache;
     private MapToolManager toolManager;
@@ -157,9 +157,9 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
      * renderer and map context.
      *
      * @param renderer a renderer object
-     * @param context an instance of MapContext
+     * @param content an instance of MapContext
      */
-    public SwtMapPane( Composite parent, int style, GTRenderer renderer, MapContext context ) {
+    public SwtMapPane( Composite parent, int style, GTRenderer renderer, MapContent content ) {
         super(parent, style);
 
         addListener(SWT.Paint, this);
@@ -174,7 +174,7 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
         clearLabelCache = false;
 
         setRenderer(renderer);
-        setMapContext(context);
+        setMapContent(content);
 
         toolManager = new MapToolManager(this);
 
@@ -202,7 +202,7 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
         addControlListener(new ControlAdapter(){
             public void controlResized( ControlEvent e ) {
                 curPaintArea = getVisibleRect();
-                doSetDisplayArea(SwtMapPane.this.context.getAreaOfInterest());
+                doSetDisplayArea(SwtMapPane.this.content.getViewport().getBounds());
             }
         });
 
@@ -316,8 +316,8 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
                 }
                 renderer.setRendererHints(hints);
 
-                if (this.context != null) {
-                    renderer.setContext(this.context);
+                if (this.content != null) {
+                    renderer.setMapContent(this.content);
                 }
 
             }
@@ -327,22 +327,22 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
     }
 
     /**
-     * Get the map context associated with this map pane
+     * Get the map content associated with this map pane
      * @return a live reference to the current map context
      */
-    public MapContext getMapContext() {
-        return context;
+    public MapContent getMapContent() {
+        return content;
     }
 
     /**
      * Set the map context for this map pane to display
-     * @param context the map context
+     * @param content the map context
      */
-    public void setMapContext( MapContext context ) {
-        if (this.context != context) {
+    public void setMapContent( MapContent content ) {
+        if (this.content != content) {
 
-            if (this.context != null) {
-                this.context.removeMapLayerListListener(this);
+            if (this.content != null) {
+                this.content.removeMapLayerListListener(this);
                 // for( MapLayer layer : this.context.getLayers() ) {
                 // if (layer instanceof ComponentListener) {
                 // removeComponentListener((ComponentListener) layer);
@@ -350,14 +350,14 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
                 // }
             }
 
-            this.context = context;
+            this.content = content;
 
-            if (context != null) {
-                this.context.addMapLayerListListener(this);
-                this.context.addMapBoundsListener(this);
+            if (content != null) {
+                this.content.addMapLayerListListener(this);
+                this.content.addMapBoundsListener(this);
 
                 // set all layers as selected by default for the info tool
-                for( MapLayer layer : context.getLayers() ) {
+                for( Layer layer : content.layers() ) {
                     layer.setSelected(true);
                     // if (layer instanceof ComponentListener) {
                     // addComponentListener((ComponentListener) layer);
@@ -368,7 +368,7 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
             }
 
             if (renderer != null) {
-                renderer.setContext(this.context);
+                renderer.setMapContent(this.content);
             }
 
             MapPaneEvent ev = new MapPaneEvent(this, MapPaneEvent.Type.NEW_CONTEXT);
@@ -399,7 +399,7 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
             screenToWorld.transform(p1, p1);
 
             aoi = new ReferencedEnvelope(Math.min(p0.getX(), p1.getX()), Math.max(p0.getX(), p1.getX()), Math.min(p0.getY(),
-                    p1.getY()), Math.max(p0.getY(), p1.getY()), context.getCoordinateReferenceSystem());
+                    p1.getY()), Math.max(p0.getY(), p1.getY()), content.getCoordinateReferenceSystem());
         }
 
         return aoi;
@@ -407,7 +407,7 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
 
     public void setCrs( CoordinateReferenceSystem crs ) {
         try {
-            System.out.println(context.getLayerCount());
+            System.out.println(content.layers().size());
             ReferencedEnvelope rEnv = getDisplayArea();
             System.out.println(rEnv);
 
@@ -418,7 +418,7 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
             com.vividsolutions.jts.geom.Envelope newJtsEnv = JTS.transform(rEnv, transform);
 
             ReferencedEnvelope newEnvelope = new ReferencedEnvelope(newJtsEnv, targetCRS);
-            context.setAreaOfInterest(newEnvelope);
+            content.getViewport().setBounds(newEnvelope);
             fullExtent = null;
             doSetDisplayArea(newEnvelope);
 
@@ -451,7 +451,7 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
      * @throws IllegalStateException if a map context is not set
      */
     public void setDisplayArea( Envelope envelope ) {
-        if (context != null) {
+        if (content != null) {
             if (curPaintArea == null || curPaintArea.isEmpty()) {
                 return;
             } else {
@@ -473,7 +473,7 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
      * @param envelope requested display area
      */
     private void doSetDisplayArea( Envelope envelope ) {
-        assert (context != null && curPaintArea != null && !curPaintArea.isEmpty());
+        assert (content != null && curPaintArea != null && !curPaintArea.isEmpty());
 
         if (equalsFullExtent(envelope)) {
             setTransforms(fullExtent, curPaintArea);
@@ -481,7 +481,7 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
             setTransforms(envelope, curPaintArea);
         }
         ReferencedEnvelope adjustedEnvelope = getDisplayArea();
-        context.setAreaOfInterest(adjustedEnvelope);
+        content.getViewport().setBounds(adjustedEnvelope);
 
         MapPaneEvent ev = new MapPaneEvent(this, MapPaneEvent.Type.DISPLAY_AREA_CHANGED);
         publishEvent(ev);
@@ -550,7 +550,7 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
             setFullExtent();
         }
         try {
-            fullExtent = new ReferencedEnvelope(CRS.transform(fullExtent, context.getCoordinateReferenceSystem()));
+            fullExtent = new ReferencedEnvelope(CRS.transform(fullExtent, content.getCoordinateReferenceSystem()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -756,7 +756,7 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
      * @param paintArea the current drawing area (screen units)
      */
     private void afterImageMove() {
-        final ReferencedEnvelope env = context.getAreaOfInterest();
+        final ReferencedEnvelope env = content.getViewport().getBounds();
         if (env == null)
             return;
         int dx = imageOrigin.x;
@@ -777,13 +777,13 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
      */
     public void layerAdded( MapLayerListEvent event ) {
         if (layerTable != null) {
-            layerTable.onAddLayer(event.getLayer());
+            layerTable.onAddLayer(event.getElement());
         }
-        MapLayer layer = event.getLayer();
+        Layer layer = event.getElement();
         layer.setSelected(true);
 
         boolean atFullExtent = equalsFullExtent(getDisplayArea());
-        boolean firstLayer = context.getLayerCount() == 1;
+        boolean firstLayer = content.layers().size() == 1;
         if (firstLayer || atFullExtent) {
             reset();
             if (firstLayer) {
@@ -799,12 +799,12 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
      * Called when a map layer has been removed
      */
     public void layerRemoved( MapLayerListEvent event ) {
-        MapLayer layer = event.getLayer();
+        Layer layer = event.getElement();
         if (layerTable != null) {
             layerTable.onRemoveLayer(layer);
         }
 
-        if (context.getLayerCount() == 0) {
+        if (content.layers().size() == 0) {
             clearFields();
         } else {
             setFullExtent();
@@ -819,7 +819,7 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
      */
     public void layerChanged( MapLayerListEvent event ) {
         if (layerTable != null) {
-            layerTable.repaint(event.getLayer());
+            layerTable.repaint(event.getElement());
         }
 
         int reason = event.getMapLayerEvent().getReason();
@@ -865,10 +865,10 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
      * through other methods.
      */
     private void setFullExtent() {
-        if (context != null && context.getLayerCount() > 0) {
+        if (content != null && content.layers().size() > 0) {
             try {
 
-                fullExtent = context.getLayerBounds();
+                fullExtent = content.getMaxBounds();
 
                 /*
                  * Guard agains degenerate envelopes (e.g. empty
@@ -929,7 +929,7 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
             refEnv = new ReferencedEnvelope(envelope);
         } else {
             refEnv = worldEnvelope();
-            context.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
+            // FIXME content.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         }
 
         java.awt.Rectangle awtPaintArea = Utils.toAwtRectangle(paintArea);
@@ -1095,16 +1095,16 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
                     }
                 }
                 System.out.println("PAINT");
-                if (curPaintArea == null || context == null || renderer == null) {
+                if (curPaintArea == null || content == null || renderer == null) {
                     return;
                 }
-                if (context.getLayerCount() == 0) {
+                if (content.layers().size() == 0) {
                     gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_YELLOW));
                     gc.fillRectangle(0, 0, curPaintArea.width + 1, curPaintArea.height + 1);
                     if (overlayImage == null)
                         return;
                 }
-                final ReferencedEnvelope mapAOI = context.getAreaOfInterest();
+                final ReferencedEnvelope mapAOI = content.getViewport().getBounds();
                 if (mapAOI == null) {
                     return;
                 }
@@ -1158,6 +1158,7 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
         }
     }
 
+    @SuppressWarnings("deprecation")
     private void doOverlayImage( GC gc ) {
         Point2D lowerLeft = new Point2D.Double(overlayEnvelope.getMinX(), overlayEnvelope.getMinY());
         worldToScreen.transform(lowerLeft, lowerLeft);

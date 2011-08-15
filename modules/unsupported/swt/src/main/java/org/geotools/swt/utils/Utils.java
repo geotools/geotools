@@ -14,6 +14,7 @@ import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
+import org.geotools.map.Layer;
 import org.geotools.map.MapLayer;
 import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.ContrastEnhancement;
@@ -365,7 +366,7 @@ public class Utils {
      *
      * @return true if this is a grid layer; false otherwise
      */
-    public static boolean isGridLayer( MapLayer layer ) {
+    public static boolean isGridLayer( Layer layer ) {
 
         Collection<PropertyDescriptor> descriptors = layer.getFeatureSource().getSchema().getDescriptors();
         for( PropertyDescriptor desc : descriptors ) {
@@ -379,7 +380,7 @@ public class Utils {
         return false;
     }
 
-    public static String getGridAttributeName( MapLayer layer ) {
+    public static String getGridAttributeName( Layer layer ) {
         String attrName = null;
 
         Collection<PropertyDescriptor> descriptors = layer.getFeatureSource().getSchema().getDescriptors();

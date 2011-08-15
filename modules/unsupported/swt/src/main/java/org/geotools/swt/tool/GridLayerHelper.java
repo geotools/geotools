@@ -26,8 +26,8 @@ import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.MapContext;
-import org.geotools.map.MapLayer;
+import org.geotools.map.Layer;
+import org.geotools.map.MapContent;
 import org.geotools.swt.utils.Utils;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.operation.MathTransform;
@@ -51,12 +51,12 @@ public class GridLayerHelper extends InfoToolHelper<List<Number>> {
     /**
      * Create a new helper to work with the given raster data source.
      *
-     * @param context the {@code MapContext} associated with this helper
+     * @param content the {@code MapContext} associated with this helper
      * @param rasterSource an instance of either
      *        {@code GridCoverage2D} or {@code AbstractGridCoverage2DReader
      */
-    public GridLayerHelper( MapContext context, MapLayer layer ) {
-        super(context, null);
+    public GridLayerHelper( MapContent content, Layer layer ) {
+        super(content, null);
 
         Object rasterSource = null;
         try {
@@ -124,7 +124,7 @@ public class GridLayerHelper extends InfoToolHelper<List<Number>> {
      */
     @Override
     public boolean isValid() {
-        return (getMapContext() != null && covRef != null && covRef.get() != null);
+        return (getMapContent() != null && covRef != null && covRef.get() != null);
     }
 
     /**

@@ -36,11 +36,10 @@ import org.eclipse.swt.widgets.Label;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.map.DefaultMapContext;
-import org.geotools.map.MapContext;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.MapContent;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.lite.StreamingRenderer;
-import org.geotools.swt.action.DrawShapeAction;
 import org.geotools.swt.action.InfoAction;
 import org.geotools.swt.action.OpenGeotiffAction;
 import org.geotools.swt.action.OpenShapefileAction;
@@ -115,7 +114,7 @@ public class SwtMapFrame extends ApplicationWindow {
 
     private HashSet<Tool> toolSet;
     private final boolean showLayerTable;
-    private final MapContext context;
+    private final MapContent content;
     private final GTRenderer renderer;
     private InfoAction infoAction;
     private PanAction panAction;
@@ -139,10 +138,10 @@ public class SwtMapFrame extends ApplicationWindow {
      * AWT event dispatching thread. The context's title is used as the frame's
      * title.
      *
-     * @param context the map context containing the layers to display
+     * @param content the map context containing the layers to display
      */
-    public static void showMap( MapContext context ) {
-        final SwtMapFrame frame = new SwtMapFrame(true, true, true, true, context);
+    public static void showMap( MapContent content ) {
+        final SwtMapFrame frame = new SwtMapFrame(true, true, true, true, content);
         // frame.getShell().setSize(500, 500);
         frame.setBlockOnOpen(true);
         frame.open();
@@ -162,10 +161,10 @@ public class SwtMapFrame extends ApplicationWindow {
      * 
      * @param showLayerTable 
      * @param showStatusBar 
-     * @param context the map context with layers to be displayed
+     * @param content the map context with layers to be displayed
      */
-    public SwtMapFrame( boolean showMenu, boolean showToolBar, boolean showStatusBar, boolean showLayerTable, MapContext context ) {
-        this(showMenu, showToolBar, showStatusBar, showLayerTable, context, new StreamingRenderer());
+    public SwtMapFrame( boolean showMenu, boolean showToolBar, boolean showStatusBar, boolean showLayerTable, MapContent content ) {
+        this(showMenu, showToolBar, showStatusBar, showLayerTable, content, new StreamingRenderer());
     }
 
     /**
@@ -176,11 +175,11 @@ public class SwtMapFrame extends ApplicationWindow {
      * @param context the map context with layers to be displayed
      * @param renderer the renderer to be used
      */
-    public SwtMapFrame( boolean showMenu, boolean showToolBar, boolean showStatusBar, boolean showLayerTable, MapContext context,
+    public SwtMapFrame( boolean showMenu, boolean showToolBar, boolean showStatusBar, boolean showLayerTable, MapContent content,
             GTRenderer renderer ) {
         super(null);
         this.showLayerTable = showLayerTable;
-        this.context = context;
+        this.content = content;
         this.renderer = renderer;
 
         // drawAction = new DrawShapeAction();
@@ -224,8 +223,8 @@ public class SwtMapFrame extends ApplicationWindow {
     }
 
     protected Control createContents( Composite parent ) {
-        String title = context.getTitle();
-        context.layers();
+        String title = content.getTitle();
+        content.layers();
         if (title != null) {
             getShell().setText(title);
         }
@@ -236,13 +235,13 @@ public class SwtMapFrame extends ApplicationWindow {
             mainComposite = sashForm;
             MapLayerComposite mapLayerTable = new MapLayerComposite(mainComposite, SWT.BORDER);
             mapPane = new SwtMapPane(mainComposite, SWT.BORDER | SWT.NO_BACKGROUND);
-            mapPane.setMapContext(context);
+            mapPane.setMapContent(content);
             mapLayerTable.setMapPane(mapPane);
             sashForm.setWeights(new int[]{1, 3});
         } else {
             mainComposite = parent;
             mapPane = new SwtMapPane(mainComposite, SWT.BORDER | SWT.NO_BACKGROUND);
-            mapPane.setMapContext(context);
+            mapPane.setMapContent(content);
         }
 
         // the map pane is the one element that is always displayed
@@ -316,26 +315,26 @@ public class SwtMapFrame extends ApplicationWindow {
     /**
      * Get the map context associated with this frame.
      * Returns {@code null} if no map context has been set explicitly with the
-     * constructor or {@linkplain #setMapContext}.
+     * constructor or {@linkplain #setMapContent}.
      *
-     * @return the current {@code MapContext} object
+     * @return the current {@code MapContent} object
      */
-    public MapContext getMapContext() {
-        return mapPane.getMapContext();
+    public MapContent getMapContent() {
+        return mapPane.getMapContent();
     }
 
     /**
-     * Set the MapContext object used by this frame.
+     * Set the MapContent object used by this frame.
      *
-     * @param context a MapContext instance
+     * @param content a MapContent instance
      * @throws IllegalArgumentException if context is null
      */
-    public void setMapContext( MapContext context ) {
-        if (context == null) {
-            throw new IllegalArgumentException("context must not be null");
+    public void setMapContext( MapContent content ) {
+        if (content == null) {
+            throw new IllegalArgumentException("content must not be null");
         }
 
-        mapPane.setMapContext(context);
+        mapPane.setMapContent(content);
     }
 
     /**
@@ -374,7 +373,7 @@ public class SwtMapFrame extends ApplicationWindow {
 
     public static void main( String[] args ) throws Exception {
         // just as an example to start up with an existing map
-        MapContext context = new DefaultMapContext();
+        MapContent context = new MapContent();
         context.setTitle("The SWT Map is in the game");
         // args = new String[]{"/home/moovida/data/world_adm0/countries.shp"};
         if (args.length > 0) {
@@ -382,7 +381,9 @@ public class SwtMapFrame extends ApplicationWindow {
             ShapefileDataStore store = new ShapefileDataStore(shapeFile.toURI().toURL());
             SimpleFeatureSource featureSource = store.getFeatureSource();
             SimpleFeatureCollection shapefile = featureSource.getFeatures();
-            context.addLayer(shapefile, null);
+            
+            FeatureLayer featureLayer = new FeatureLayer(shapefile, null);
+            context.addLayer(featureLayer);
         }
 
         SwtMapFrame.showMap(context);

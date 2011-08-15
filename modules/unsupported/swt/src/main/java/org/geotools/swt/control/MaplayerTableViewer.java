@@ -36,7 +36,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.geotools.data.FeatureSource;
-import org.geotools.map.MapLayer;
+import org.geotools.map.Layer;
+import org.geotools.map.StyleLayer;
 import org.geotools.styling.Style;
 import org.geotools.swt.SwtMapPane;
 import org.geotools.swt.styling.SimpleStyleConfigurator;
@@ -44,7 +45,7 @@ import org.geotools.swt.utils.ImageCache;
 import org.geotools.swt.utils.Utils;
 
 /**
- * A {@link TableViewer table viewer} for {@link MapLayer map layers}.
+ * A {@link TableViewer table viewer} for {@link Layer map layers}.
  *
  * @author Andrea Antonello (www.hydrologis.com)
  *
@@ -52,8 +53,8 @@ import org.geotools.swt.utils.Utils;
  * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/MaplayerTableViewer.java $
  */
 public class MaplayerTableViewer extends TableViewer implements ISelectionChangedListener {
-    private List<MapLayer> layersList = new ArrayList<MapLayer>();
-    private MapLayer selectedMapLayer;
+    private List<Layer> layersList = new ArrayList<Layer>();
+    private Layer selectedMapLayer;
 
     private String[] titles = {"Layer name", "Visible", "Style"};
     private SwtMapPane pane;
@@ -98,16 +99,16 @@ public class MaplayerTableViewer extends TableViewer implements ISelectionChange
      * 
      * @return the list of map layers.
      */
-    public List<MapLayer> getLayersList() {
+    public List<Layer> getLayersList() {
         return layersList;
     }
 
     /**
-     * Getter for the selected {@link MapLayer}.
+     * Getter for the selected {@link Layer}.
      * 
      * @return the selected layer or <code>null</code>.
      */
-    public MapLayer getSelectedMapLayer() {
+    public Layer getSelectedMapLayer() {
         return selectedMapLayer;
     }
 
@@ -119,8 +120,8 @@ public class MaplayerTableViewer extends TableViewer implements ISelectionChange
         col.setLabelProvider(new ColumnLabelProvider(){
             @Override
             public Image getImage( Object element ) {
-                if (element instanceof MapLayer) {
-                    MapLayer p = (MapLayer) element;
+                if (element instanceof Layer) {
+                    Layer p = (Layer) element;
                     if (Utils.isGridLayer(p)) {
                         return ImageCache.getInstance().getImage(ImageCache.GRID);
                     }
@@ -131,8 +132,8 @@ public class MaplayerTableViewer extends TableViewer implements ISelectionChange
 
             @Override
             public String getText( Object element ) {
-                if (element instanceof MapLayer) {
-                    MapLayer p = (MapLayer) element;
+                if (element instanceof Layer) {
+                    Layer p = (Layer) element;
                     String title = p.getTitle();
                     if (title == null || title.length() == 0) {
                         @SuppressWarnings("rawtypes")
@@ -151,8 +152,8 @@ public class MaplayerTableViewer extends TableViewer implements ISelectionChange
         col.setLabelProvider(new ColumnLabelProvider(){
             @Override
             public Image getImage( Object element ) {
-                if (element instanceof MapLayer) {
-                    MapLayer p = (MapLayer) element;
+                if (element instanceof Layer) {
+                    Layer p = (Layer) element;
                     if (p.isVisible()) {
                         return ImageCache.getInstance().getImage(ImageCache.CHECKED);
                     }
@@ -196,8 +197,8 @@ public class MaplayerTableViewer extends TableViewer implements ISelectionChange
         }
         IStructuredSelection selection = (IStructuredSelection) arg0.getSelection();
         Object firstElement = selection.getFirstElement();
-        if (firstElement instanceof MapLayer) {
-            selectedMapLayer = (MapLayer) firstElement;
+        if (firstElement instanceof Layer) {
+            selectedMapLayer = (Layer) firstElement;
         }
     }
 
@@ -207,12 +208,12 @@ public class MaplayerTableViewer extends TableViewer implements ISelectionChange
         ViewerCell source = (ViewerCell) event.getSource();
         int columnIndex = source.getColumnIndex();
         if (columnIndex == 1) {
-            MapLayer element = (MapLayer) source.getElement();
+            Layer element = (Layer) source.getElement();
             element.setVisible(!element.isVisible());
             refresh();
             pane.redraw();
         } else if (columnIndex == 2) {
-            MapLayer element = (MapLayer) source.getElement();
+            Layer element = (Layer) source.getElement();
             try {
                 doSetStyle(element);
             } catch (IOException e) {
@@ -228,29 +229,32 @@ public class MaplayerTableViewer extends TableViewer implements ISelectionChange
      * @param layer the layer to be styled
      * @throws IOException 
      */
-    private void doSetStyle( MapLayer layer ) throws IOException {
-        Style style = SimpleStyleConfigurator.showDialog(this.getTable().getShell(), layer);
-        if (style != null) {
-            layer.setStyle(style);
+    private void doSetStyle( Layer layer ) throws IOException {
+        if (layer instanceof StyleLayer) {
+            StyleLayer styleLayer = (StyleLayer) layer;
+            Style style = SimpleStyleConfigurator.showDialog(this.getTable().getShell(), layer);
+            if (style != null) {
+                styleLayer.setStyle(style);
+            }
         }
     }
 
     /**
-     * Adds a {@link MapLayer} to the viewer and updates.
+     * Adds a {@link Layer} to the viewer and updates.
      * 
      * @param layer the layer to add.
      */
-    public void addLayer( MapLayer layer ) {
+    public void addLayer( Layer layer ) {
         layersList.add(0, layer);
         refresh();
     }
-    
+
     /**
-     * Removes a {@link MapLayer} from the viewer and updates.
+     * Removes a {@link Layer} from the viewer and updates.
      * 
      * @param layer the layer to remove.
      */
-    public void removeLayer( MapLayer layer ) {
+    public void removeLayer( Layer layer ) {
         layersList.remove(layer);
         refresh();
     }

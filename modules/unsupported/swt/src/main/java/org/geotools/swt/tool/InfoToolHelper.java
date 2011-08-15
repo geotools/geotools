@@ -21,7 +21,7 @@ import java.lang.ref.WeakReference;
 import java.util.logging.Logger;
 
 import org.geotools.geometry.DirectPosition2D;
-import org.geotools.map.MapContext;
+import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
@@ -49,7 +49,7 @@ import org.opengis.referencing.operation.MathTransform;
 public abstract class InfoToolHelper<T> {
     private static final Logger LOGGER = Logger.getLogger(VectorLayerHelper.class.getName());
 
-    private final WeakReference<MapContext> contextRef;
+    private final WeakReference<MapContent> contentRef;
     private CoordinateReferenceSystem dataCRS;
     private boolean transformRequired;
     private boolean transformFailed;
@@ -58,12 +58,12 @@ public abstract class InfoToolHelper<T> {
     /**
      * Protected constructor.
      *
-     * @param context the map context
+     * @param content the map context
      * @param dataCRS the coordinate reference system of the feature data that will be queried
      *        by this helper
      */
-    protected InfoToolHelper(MapContext context, CoordinateReferenceSystem dataCRS) {
-        this.contextRef = new WeakReference<MapContext>(context);
+    protected InfoToolHelper( MapContent content, CoordinateReferenceSystem dataCRS ) {
+        this.contentRef = new WeakReference<MapContent>(content);
         setCRS(dataCRS);
     }
 
@@ -78,7 +78,7 @@ public abstract class InfoToolHelper<T> {
      *
      * @see #isValid()
      */
-    public abstract T getInfo(DirectPosition2D pos, Object ...params) throws Exception;
+    public abstract T getInfo( DirectPosition2D pos, Object... params ) throws Exception;
 
     /**
      * Query if this helper has a reference to a {@code MapContext} and {@code MapLayer}.
@@ -108,13 +108,13 @@ public abstract class InfoToolHelper<T> {
     public abstract boolean isValid();
 
     /**
-     * Get the {@code MapContext} associated with this helper. The helper maintains
+     * Get the {@code MapContent} associated with this helper. The helper maintains
      * only a {@linkplain WeakReference} to the context.
      *
      * @return the map context or null if it is no longer current.
      */
-    public MapContext getMapContext() {
-        return contextRef != null ? contextRef.get() : null;
+    public MapContent getMapContent() {
+        return contentRef != null ? contentRef.get() : null;
     }
 
     /**
@@ -136,12 +136,12 @@ public abstract class InfoToolHelper<T> {
      */
     public MathTransform getTransform() {
         if (transform == null && !transformFailed && dataCRS != null) {
-            MapContext context = getMapContext();
-            if (context == null) {
+            MapContent content = getMapContent();
+            if (content == null) {
                 throw new IllegalStateException("map context should not be null");
             }
 
-            CoordinateReferenceSystem contextCRS = context.getCoordinateReferenceSystem();
+            CoordinateReferenceSystem contextCRS = content.getCoordinateReferenceSystem();
             try {
                 transform = CRS.findMathTransform(contextCRS, dataCRS, true);
             } catch (Exception ex) {
@@ -159,15 +159,15 @@ public abstract class InfoToolHelper<T> {
      *
      * @param crs data coordinate reference system
      */
-    protected void setCRS(CoordinateReferenceSystem crs) {
+    protected void setCRS( CoordinateReferenceSystem crs ) {
         this.dataCRS = crs;
 
-        MapContext context = getMapContext();
-        if (context == null) {
+        MapContent content = getMapContent();
+        if (content == null) {
             throw new IllegalStateException("map context should not be null");
         }
 
-        final CoordinateReferenceSystem contextCRS = context.getCoordinateReferenceSystem();
+        final CoordinateReferenceSystem contextCRS = content.getCoordinateReferenceSystem();
         transformRequired = false;
         if (contextCRS != null && crs != null && !CRS.equalsIgnoreMetadata(contextCRS, dataCRS)) {
             transformRequired = true;
@@ -175,4 +175,3 @@ public abstract class InfoToolHelper<T> {
     }
 
 }
-

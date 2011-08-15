@@ -61,7 +61,7 @@ public class DrawShapeAction extends MapAction implements MapBoundsListener {
      */
     public void run() {
         if (first) {
-            getMapPane().getMapContext().addMapBoundsListener(this);
+            getMapPane().getMapContent().addMapBoundsListener(this);
             first = false;
         }
 

@@ -27,7 +27,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFinder;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.map.MapContext;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.MapContent;
 import org.geotools.styling.Style;
 import org.geotools.swt.control.JFileDataStoreChooser;
 import org.geotools.swt.utils.ImageCache;
@@ -54,11 +55,12 @@ public class OpenShapefileAction extends MapAction implements ISelectionChangedL
 
         try {
             if (openFile != null && openFile.exists()) {
-                MapContext mapContext = mapPane.getMapContext();
+                MapContent mapContent = mapPane.getMapContent();
                 FileDataStore store = FileDataStoreFinder.getDataStore(openFile);
                 SimpleFeatureSource featureSource = store.getFeatureSource();
                 Style style = Utils.createStyle(openFile, featureSource);
-                mapContext.addLayer(featureSource, style);
+                FeatureLayer featureLayer = new FeatureLayer(featureSource, style);
+                mapContent.addLayer(featureLayer);
                 mapPane.redraw();
             }
         } catch (IOException e) {

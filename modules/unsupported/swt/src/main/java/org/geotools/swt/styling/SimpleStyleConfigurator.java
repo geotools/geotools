@@ -39,7 +39,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
-import org.geotools.map.MapLayer;
+import org.geotools.map.Layer;
 import org.geotools.styling.FeatureTypeConstraint;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
@@ -571,7 +571,7 @@ public class SimpleStyleConfigurator extends AbstractSimpleConfigurator {
     //
     // }
 
-    public static Style showDialog( Shell parent, MapLayer layer ) throws IOException {
+    public static Style showDialog( Shell parent, Layer layer ) throws IOException {
         if (!Utils.isGridLayer(layer)) {
             SimpleFeatureSource featureSource = (SimpleFeatureSource) layer.getFeatureSource();
             Style style = layer.getStyle();

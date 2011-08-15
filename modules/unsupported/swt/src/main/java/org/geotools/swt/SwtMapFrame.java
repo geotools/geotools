@@ -371,22 +371,22 @@ public class SwtMapFrame extends ApplicationWindow {
         return mapPane;
     }
 
-    public static void main( String[] args ) throws Exception {
-        // just as an example to start up with an existing map
-        MapContent context = new MapContent();
-        context.setTitle("The SWT Map is in the game");
-        // args = new String[]{"/home/moovida/data/world_adm0/countries.shp"};
-        if (args.length > 0) {
-            File shapeFile = new File(args[0]);
-            ShapefileDataStore store = new ShapefileDataStore(shapeFile.toURI().toURL());
-            SimpleFeatureSource featureSource = store.getFeatureSource();
-            SimpleFeatureCollection shapefile = featureSource.getFeatures();
-            
-            FeatureLayer featureLayer = new FeatureLayer(shapefile, null);
-            context.addLayer(featureLayer);
-        }
-
-        SwtMapFrame.showMap(context);
-    }
+//    public static void main( String[] args ) throws Exception {
+//        // just as an example to start up with an existing map
+//        MapContent context = new MapContent();
+//        context.setTitle("The SWT Map is in the game");
+//        // args = new String[]{"/home/moovida/data/world_adm0/countries.shp"};
+//        if (args.length > 0) {
+//            File shapeFile = new File(args[0]);
+//            ShapefileDataStore store = new ShapefileDataStore(shapeFile.toURI().toURL());
+//            SimpleFeatureSource featureSource = store.getFeatureSource();
+//            SimpleFeatureCollection shapefile = featureSource.getFeatures();
+//            
+//            FeatureLayer featureLayer = new FeatureLayer(shapefile, null);
+//            context.addLayer(featureLayer);
+//        }
+//
+//        SwtMapFrame.showMap(context);
+//    }
 
 }

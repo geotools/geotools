@@ -33,13 +33,11 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.geotools.map.MapContent;
-import org.geotools.map.MapContext;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.swt.action.InfoAction;
 import org.geotools.swt.action.OpenGeotiffAction;
 import org.geotools.swt.action.OpenShapefileAction;
-import org.geotools.swt.action.OpenWorldimageAction;
 import org.geotools.swt.action.PanAction;
 import org.geotools.swt.action.ResetAction;
 import org.geotools.swt.action.ZoomInAction;
@@ -48,27 +46,11 @@ import org.geotools.swt.utils.CrsStatusBarButton;
 import org.geotools.swt.utils.StatusBarNotifier;
 
 /**
- * A Swing frame containing a map display pane and (optionally) a toolbar,
+ * An SWT frame containing a map display pane and a toolbar,
  * status bar and map layer table.
- * <p>
- * Simplest use is with the static {@linkplain #showMap(MapContext)} method:
- * <pre>{@code \u0000
- * MapContext context = new DefaultMapContext();
- * context.setTitle("Maps R Us");
- *
- * // add some layers to the MapContext...
- *
- * JMapFrame.showMap(context);
- * }</pre>
- *
- * @see MapLayerComposite
- * @see StatusBar
  *
  * @author Michael Bedward
  * @author Andrea Antonello (www.hydrologis.com)
- *
- *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/SwtMapFrame.java $
  */
 public class SwtMapFrame extends ApplicationWindow {
 
@@ -120,7 +102,6 @@ public class SwtMapFrame extends ApplicationWindow {
 
     private OpenShapefileAction openShapeAction;
     private OpenGeotiffAction openCoverageAction;
-    private OpenWorldimageAction openWorldimageAction;
 
     /*
      * to see how overlay of shapes works, uncomment all the lines that
@@ -130,7 +111,7 @@ public class SwtMapFrame extends ApplicationWindow {
 
     /**
      * Creates a new {@code JMapFrame} object with a toolbar, map pane and status
-     * bar; sets the supplied {@code MapContext}; and displays the frame on the
+     * bar; sets the supplied {@code MapContent}; and displays the frame on the
      * AWT event dispatching thread. The context's title is used as the frame's
      * title.
      *
@@ -186,7 +167,6 @@ public class SwtMapFrame extends ApplicationWindow {
         zoomoutAction = new ZoomOutAction();
         openShapeAction = new OpenShapefileAction();
         openCoverageAction = new OpenGeotiffAction();
-        openWorldimageAction = new OpenWorldimageAction();
 
         toolSet = new HashSet<Tool>();
         toolSet.addAll(EnumSet.allOf(Tool.class));
@@ -252,7 +232,6 @@ public class SwtMapFrame extends ApplicationWindow {
         zoomoutAction.setMapPane(mapPane);
         openShapeAction.setMapPane(mapPane);
         openCoverageAction.setMapPane(mapPane);
-        openWorldimageAction.setMapPane(mapPane);
 
         StatusLineManager statusLineManager = getStatusLineManager();
         if (statusLineManager != null) {
@@ -294,7 +273,6 @@ public class SwtMapFrame extends ApplicationWindow {
         MenuManager file_menu = new MenuManager("&File");
         file_menu.add(openShapeAction);
         file_menu.add(openCoverageAction);
-        file_menu.add(openWorldimageAction);
 
         MenuManager navigation_menu = new MenuManager("&Navigation");
         bar_menu.add(file_menu);
@@ -325,7 +303,7 @@ public class SwtMapFrame extends ApplicationWindow {
      * @param content a MapContent instance
      * @throws IllegalArgumentException if context is null
      */
-    public void setMapContext( MapContent content ) {
+    public void setMapContent( MapContent content ) {
         if (content == null) {
             throw new IllegalArgumentException("content must not be null");
         }
@@ -366,23 +344,5 @@ public class SwtMapFrame extends ApplicationWindow {
     public SwtMapPane getMapPane() {
         return mapPane;
     }
-
-//    public static void main( String[] args ) throws Exception {
-//        // just as an example to start up with an existing map
-//        MapContent context = new MapContent();
-//        context.setTitle("The SWT Map is in the game");
-//        // args = new String[]{"/home/moovida/data/world_adm0/countries.shp"};
-//        if (args.length > 0) {
-//            File shapeFile = new File(args[0]);
-//            ShapefileDataStore store = new ShapefileDataStore(shapeFile.toURI().toURL());
-//            SimpleFeatureSource featureSource = store.getFeatureSource();
-//            SimpleFeatureCollection shapefile = featureSource.getFeatures();
-//            
-//            FeatureLayer featureLayer = new FeatureLayer(shapefile, null);
-//            context.addLayer(featureLayer);
-//        }
-//
-//        SwtMapFrame.showMap(context);
-//    }
 
 }

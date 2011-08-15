@@ -47,7 +47,7 @@ import org.geotools.swt.utils.ImageCache;
 public class OpenGeotiffAction extends MapAction implements ISelectionChangedListener {
 
     public OpenGeotiffAction() {
-        super("Open Geotiff", "Load a geotiff into the viewer.", ImageCache.getInstance().getImage(ImageCache.OPEN));
+        super("Open Image", "Load an image file into the viewer.", ImageCache.getInstance().getImage(ImageCache.OPEN));
     }
 
     public void run() {

@@ -16,7 +16,6 @@
  */
 package org.geotools.swt;
 
-import java.io.File;
 import java.util.EnumSet;
 import java.util.HashSet;
 
@@ -33,11 +32,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.geotools.data.shapefile.ShapefileDataStore;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
+import org.geotools.map.MapContext;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.swt.action.InfoAction;

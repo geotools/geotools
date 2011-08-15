@@ -53,10 +53,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * @author Michael Bedward
  * @since 2.6
  *
- *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/tool/VectorLayerHelper.java $
  */
-@SuppressWarnings("deprecation")
 public class VectorLayerHelper extends InfoToolHelper<SimpleFeatureCollection> {
 
     private static final GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory(null);

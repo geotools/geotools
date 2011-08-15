@@ -17,8 +17,9 @@
 package org.geotools.swt.utils;
 
 import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -90,10 +91,24 @@ public class ImageCache {
     private Image createImage( String key ) {
         Image image = null;
         try {
-            URL resourceUrl = getClass().getResource(key);
-            File resourceFile = new File(resourceUrl.toURI());
-            image = new Image(Display.getCurrent(), resourceFile.getAbsolutePath());
-        } catch (URISyntaxException e) {
+
+            File tempDir = new File(System.getProperty("java.io.tmpdir"));
+            File temporaryFile = new File(tempDir, key);
+            temporaryFile.getParentFile().mkdirs();
+            InputStream in = getClass().getResourceAsStream(key);
+            FileOutputStream out = new FileOutputStream(temporaryFile);
+            byte[] buffer = new byte[1024];
+            int len;
+            while( (len = in.read(buffer)) != -1 ) {
+                out.write(buffer, 0, len);
+            }
+
+            // File resourceFile = new File(resourceUrl.toURI());
+            image = new Image(Display.getCurrent(), temporaryFile.getAbsolutePath());
+            // } catch (URISyntaxException e) {
+            // e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return image;

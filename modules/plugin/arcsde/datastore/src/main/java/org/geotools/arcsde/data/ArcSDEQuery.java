@@ -180,7 +180,7 @@ class ArcSDEQuery {
         }
         // create the set of filters to work over
         final ArcSDEQuery.FilterSet filters = new ArcSDEQuery.FilterSet(sdeTable, sdeLayer, filter,
-                fullSchema, null, null, fidReader);
+                fullSchema, null, null, fidReader, session);
 
         final Filter unsupportedFilter = filters.getUnsupportedFilter();
         final String[] queryProperties = query.getPropertyNames();
@@ -238,7 +238,7 @@ class ArcSDEQuery {
 
         // create the set of filters to work over
         final ArcSDEQuery.FilterSet filters = new ArcSDEQuery.FilterSet(sdeTable, sdeLayer, filter,
-                fullSchema, definitionQuery, viewSelectStatement, fidReader);
+                fullSchema, definitionQuery, viewSelectStatement, fidReader, session);
 
         final Filter unsupportedFilter = filters.getUnsupportedFilter();
         final String[] queryProperties = query.getPropertyNames();
@@ -827,8 +827,8 @@ class ArcSDEQuery {
      * 
      * @author $author$
      * 
- *
- * @source $URL$
+     * 
+     * @source $URL$
      *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java
      *         /org/geotools/arcsde/data/ArcSDEQuery.java $
      * @version $Revision: 1.9 $
@@ -869,15 +869,19 @@ class ArcSDEQuery {
 
         private SimpleFeatureType featureType;
 
+        private final ISession conn;
+
         /**
          * Creates a new FilterSet object.
          * 
          * @param sdeLayer
          * @param sourceFilter
+         * @param session
          */
         public FilterSet(SeTable table, SeLayer sdeLayer, Filter sourceFilter,
                 SimpleFeatureType ft, SeQueryInfo definitionQuery,
-                PlainSelect layerSelectStatement, FIDReader fidReader) {
+                PlainSelect layerSelectStatement, FIDReader fidReader, ISession session) {
+            this.conn = session;
             assert table != null;
             // sdeLayer may be null if it is a registered, non spatial table
             // assert sdeLayer != null;
@@ -899,6 +903,8 @@ class ArcSDEQuery {
          * filters, one for the supported SQL based filter, another for the supported Geometry based
          * filter, and the last one for the unsupported filter. All of them can be retrieved from
          * its corresponding getter.
+         * 
+         * @param conn
          */
         private void createGeotoolsFilters() {
             FilterToSQLSDE sqlEncoder = getSqlEncoder();
@@ -1101,7 +1107,7 @@ class ArcSDEQuery {
                 final String layerName = sdeTable.getQualifiedName();
                 String fidColumn = fidReader.getFidColumn();
                 _sqlEncoder = new FilterToSQLSDE(layerName, fidColumn, featureType,
-                        layerSelectStatement);
+                        layerSelectStatement, this.conn);
             }
             return _sqlEncoder;
         }

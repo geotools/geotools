@@ -29,12 +29,16 @@ import static org.opengis.filter.sort.SortOrder.DESCENDING;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.TreeSet;
 import java.util.logging.Logger;
 
@@ -74,7 +78,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * {@link ArcSdeFeatureSource} test cases
  * 
  * @author Gabriel Roldan
- *
+ * 
  * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
  *         /org/geotools/arcsde/data/ArcSDEDataStoreTest.java $
@@ -604,6 +608,33 @@ public class ArcSDEFeatureSourceTest {
 
         assertTrue(queryCapabilities.supportsSorting(supported));
 
+    }
+
+    @Test
+    public void testFilterDateColumn() throws Exception {
+        final String typeName = testData.getTempTableName();
+        SimpleFeatureSource fs = store.getFeatureSource(typeName);
+
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        // Year, month, date, hour, minute, second.
+        cal.set(2004, 06, 1, 0, 0, 0);
+
+        Filter filter = ff.equals(ff.property("DATE_COL"), ff.literal(cal.getTime()));
+        testFilter(filter, fs, 1);
+
+        cal.set(Calendar.DAY_OF_MONTH, 2);
+        filter = ff.greaterOrEqual(ff.property("DATE_COL"), ff.literal(cal));
+        testFilter(filter, fs, 7);
+
+        Date date1 = cal.getTime();
+        cal.set(Calendar.DAY_OF_MONTH, 6);
+        Date date2 = cal.getTime();
+
+        filter = ff.and(Arrays.asList(//
+                (Filter) ff.greater(ff.property("DATE_COL"), ff.literal(date1)),//
+                (Filter) ff.less(ff.property("DATE_COL"), ff.literal(date2))//
+                ));
+        testFilter(filter, fs, 3);
     }
 
     @Test

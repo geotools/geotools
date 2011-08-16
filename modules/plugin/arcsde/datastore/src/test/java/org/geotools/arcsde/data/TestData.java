@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TimeZone;
 import java.util.logging.Logger;
 
 import org.geotools.arcsde.ArcSDEDataStoreFactory;
@@ -77,7 +78,7 @@ import com.vividsolutions.jts.operation.valid.TopologyValidationError;
  * Provides access to the ArcSDEDataStore test data configuration.
  * 
  * @author Gabriel Roldan, Axios Engineering
- *
+ * 
  * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
  *         /org/geotools/arcsde/data/TestData.java $
@@ -551,7 +552,7 @@ public class TestData {
      * <li>3. Float - values: 0.1 -> 0.8
      * <li>4. Double - values: 0.1 -> 0.8
      * <li>5. String - values: <code>"FEATURE_" + ["1" -> "8"]</code>
-     * <li>6. Date - values: July 1 2004 -> July 8 2004
+     * <li>6. Date - values: July 1 2004 -> July 8 2004, GMT
      * <li>7. Shape - values:
      * <ul>
      * <li> <code>POINT(0 0)</code>
@@ -641,7 +642,7 @@ public class TestData {
                 insert.intoTable(layer.getName(), columns);
                 insert.setWriteMode(true);
 
-                Calendar cal = Calendar.getInstance();
+                Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
                 // Year, month, date, hour, minute, second.
                 cal.set(2004, 06, 1, 0, 0, 0);
 

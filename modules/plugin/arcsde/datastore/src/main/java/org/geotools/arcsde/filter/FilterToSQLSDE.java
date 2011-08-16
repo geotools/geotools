@@ -18,12 +18,15 @@
 package org.geotools.arcsde.filter;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,7 +35,10 @@ import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.SelectExpressionItem;
 import net.sf.jsqlparser.statement.select.SelectItem;
 
+import org.geotools.arcsde.ArcSdeException;
 import org.geotools.arcsde.data.ArcSDEAdapter;
+import org.geotools.arcsde.session.Command;
+import org.geotools.arcsde.session.ISession;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.jdbc.FilterToSQLException;
 import org.geotools.filter.FilterCapabilities;
@@ -50,6 +56,10 @@ import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.Identifier;
 
+import com.esri.sde.sdk.client.SeConnection;
+import com.esri.sde.sdk.client.SeDate;
+import com.esri.sde.sdk.client.SeException;
+
 /**
  * Encodes an attribute filter into a SQL WHERE statement for arcsde.
  * <p>
@@ -62,7 +72,7 @@ import org.opengis.filter.identity.Identifier;
  * @author Saul Farber
  * @author Gabriel Roldan
  * @see org.geotools.data.sde.GeometryEncoderSDE
- *
+ * 
  * @source $URL$
  *         http://gtsvn.refractions.net/geotools/branches/2.4.x/modules/unsupported/arcsde/datastore
  *         /src/main/java/org/geotools/arcsde/filter/FilterToSQLSDE.java $
@@ -82,6 +92,8 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
      */
     private Map attributeNames = Collections.EMPTY_MAP;
 
+    private final ISession conn;
+
     /**
      * @param layerQName
      *            full qualified name of the ArcSDE layer
@@ -89,13 +101,17 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
      *            name of the column that holds fids
      * @param ft
      * @param definitionQuery
+     * @param conn2
+     *            only used to encode date literals in a RDBMS specific format according to
+     *            {@link SeDate#toWhereStr(SeConnection)}
      */
     public FilterToSQLSDE(String layerQName, String layerFidColName, SimpleFeatureType ft,
-            PlainSelect definitionQuery) {
+            PlainSelect definitionQuery, ISession session) {
         this.layerQualifiedName = layerQName;
         this.layerFidFieldName = layerFidColName;
         this.featureType = ft;
         this.definitionQuery = definitionQuery;
+        this.conn = session;
 
         if (definitionQuery != null) {
             attributeNames = new HashMap();
@@ -334,5 +350,29 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
             throw new RuntimeException(IO_ERROR, ioe);
         }
         return extraData;
+    }
+
+    @Override
+    protected void writeLiteral(final Object literal) throws IOException {
+
+        if (literal instanceof Date || literal instanceof Calendar) {
+            final String dateLiteral = conn.issue(new Command<String>() {
+                @Override
+                public String execute(ISession session, SeConnection connection)
+                        throws SeException, IOException {
+                    if (literal instanceof Date) {
+                        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+                        cal.setTimeInMillis(((Date) literal).getTime());
+                        return new SeDate(cal).toWhereStr(connection);
+                    } else if (literal instanceof Calendar) {
+                        return new SeDate((Calendar) literal).toWhereStr(connection);
+                    }
+                    throw new IllegalStateException("can't reach here");
+                }
+            });
+            out.write(dateLiteral);
+        } else {
+            super.writeLiteral(literal);
+        }
     }
 }

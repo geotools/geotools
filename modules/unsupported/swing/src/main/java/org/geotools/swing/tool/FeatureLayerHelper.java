@@ -103,7 +103,6 @@ public class FeatureLayerHelper extends InfoToolHelper {
         InfoToolResult result = new InfoToolResult();
 
         if (isValid()) {
-            Layer layer = layerRef.get();
             Filter filter = null;
             if (geomType == Geometries.POLYGON || geomType == Geometries.MULTIPOLYGON) {
                 Geometry posGeom = createSearchPoint(pos);
@@ -118,7 +117,7 @@ public class FeatureLayerHelper extends InfoToolHelper {
 
             Query query = new Query(null, filter);
             query.setCoordinateSystemReproject(getMapContent().getCoordinateReferenceSystem());
-            FeatureSource featureSource = layer.getFeatureSource();
+            FeatureSource featureSource = getLayer().getFeatureSource();
             Collection<PropertyDescriptor> descriptors = featureSource.getSchema().getDescriptors();
 
             FeatureCollection queryResult = featureSource.getFeatures(query);
@@ -171,21 +170,26 @@ public class FeatureLayerHelper extends InfoToolHelper {
         ReferencedEnvelope mapBounds = getMapContent().getViewport().getBounds();
         if (mapBounds == null || mapBounds.isEmpty()) {
             // fall back to layer bounds
+            Layer layer = getLayer();
+            if (layer == null) {
+                // this should never happen
+                throw new IllegalStateException("Target layer has been lost");
+            }
             mapBounds = getLayer().getBounds();
         }
 
-        double halfWidth = 0.5 * DEFAULT_DISTANCE_FRACTION *
-                (mapBounds.getWidth() + mapBounds.getHeight());
+        double halfWidth = 0.5 * DEFAULT_DISTANCE_FRACTION
+                * (mapBounds.getWidth() + mapBounds.getHeight());
 
         CoordinateReferenceSystem contentCRS = getMapContent().getCoordinateReferenceSystem();
         ReferencedEnvelope env = new ReferencedEnvelope(
-            pos.x - halfWidth, pos.x + halfWidth, 
-            pos.y - halfWidth, pos.y + halfWidth, 
-            contentCRS);
+                pos.x - halfWidth, pos.x + halfWidth,
+                pos.y - halfWidth, pos.y + halfWidth,
+                contentCRS);
 
         if (isTransformRequired()) {
-            CoordinateReferenceSystem layerCRS = 
-                    layerRef.get().getFeatureSource().getSchema().getCoordinateReferenceSystem();
+            CoordinateReferenceSystem layerCRS =
+                    getLayer().getFeatureSource().getSchema().getCoordinateReferenceSystem();
 
             try {
                 env = env.transform(layerCRS, true);
@@ -196,5 +200,4 @@ public class FeatureLayerHelper extends InfoToolHelper {
 
         return env;
     }
-
 }

@@ -149,7 +149,7 @@ public class JWizard extends JDialog {
 
     public void setCancelEnabled(Boolean isEnabled) {
         Boolean oldValue = cancelButton.isEnabled();
-        if (isEnabled != oldValue) {
+        if (!isEnabled.equals( oldValue )) {
             firePropertyChange("isCancelEnabled", oldValue, isEnabled);
             cancelButton.setEnabled(isEnabled);
         }
@@ -161,14 +161,14 @@ public class JWizard extends JDialog {
 
     public void setNextEnabled(Boolean isEnabled) {
         Boolean oldValue = nextButton.isEnabled();
-        if (isEnabled != oldValue) {
+        if (!isEnabled.equals( oldValue )) {
             firePropertyChange("isNextEnabled", oldValue, isEnabled);
             nextButton.setEnabled(isEnabled);
         }
     }
     public void setFinishEnabled(Boolean isEnabled) {
         Boolean oldValue = finishButton.isEnabled();
-        if (isEnabled != oldValue) {
+        if (!isEnabled.equals( oldValue )) {
             firePropertyChange("isFinishEnabled", oldValue, isEnabled);
             finishButton.setEnabled(isEnabled);
         }
@@ -179,7 +179,7 @@ public class JWizard extends JDialog {
 
     public void setBackEnabled(Boolean isEnabled) {
         Boolean oldValue = backButton.isEnabled();
-        if (isEnabled != oldValue) {
+        if (!isEnabled.equals( oldValue )) {
             firePropertyChange("isBackEnabled", oldValue, isEnabled);
             backButton.setEnabled(isEnabled);
         }

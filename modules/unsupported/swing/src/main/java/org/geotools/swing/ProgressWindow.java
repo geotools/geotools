@@ -331,7 +331,7 @@ public class ProgressWindow implements ProgressListener {
                                              final String warning)
     {
         final StringBuffer buffer = new StringBuffer(warning.length()+16);
-        if (!source.equals(lastSource)) {
+        if (source == null || !source.equals(lastSource)) {
             lastSource = source;
             if (warningArea != null) {
                 buffer.append('\n');

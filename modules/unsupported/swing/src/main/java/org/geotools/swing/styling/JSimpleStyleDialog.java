@@ -103,9 +103,9 @@ public class JSimpleStyleDialog extends JDialog {
 
     /**
      * Well known text names for symbol options
-     * @todo these must be defined somwhere else ?
+     * @todo these must be defined somewhere else ?
      */
-    public static final String WELL_KNOWN_SYMBOL_NAMES[] = {
+    private static final String WELL_KNOWN_SYMBOL_NAMES[] = {
         "Circle", "Square", "Cross", "X", "Triangle", "Star"};
 
     public static final Color DEFAULT_LINE_COLOR = Color.BLACK;

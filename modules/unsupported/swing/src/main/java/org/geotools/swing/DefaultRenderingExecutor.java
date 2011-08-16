@@ -217,7 +217,7 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
                 MapContent mc = new MapContent();
                 mc.setViewport(mapContent.getViewport());
                 mc.addLayer(op.getLayer());
-                
+                op.getRenderer().setMapContent(mc);
                 RenderingTask task = new RenderingTask(mapContent, op.getGraphics(), op.getRenderer());
                 Future<Boolean> future = taskExecutor.submit(task);
                 currentTasks.add( new TaskInfo(id, future, listener) );

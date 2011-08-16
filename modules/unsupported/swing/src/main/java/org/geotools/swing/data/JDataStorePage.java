@@ -65,7 +65,7 @@ public class JDataStorePage extends JPage {
     private String level = null;
 
     /** max line length of parameter description labels (chars) */
-    private final int MAX_DESCRIPTION_WIDTH = 60;
+    private static final int MAX_DESCRIPTION_WIDTH = 60;
 
     public JDataStorePage(DataStoreFactorySpi format) {
         this(format, null);

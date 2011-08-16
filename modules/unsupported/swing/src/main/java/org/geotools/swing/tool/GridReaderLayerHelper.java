@@ -70,6 +70,11 @@ public class GridReaderLayerHelper extends InfoToolHelper {
         sourceRef = new WeakReference<AbstractGridCoverage2DReader>(
                 ((GridReaderLayer) layer).getReader());
     }
+    
+    @Override
+    public boolean isValid() {
+        return super.isValid() && sourceRef != null && sourceRef.get() != null;
+    }
 
     @Override
     public InfoToolResult getInfo(DirectPosition2D pos) throws Exception {

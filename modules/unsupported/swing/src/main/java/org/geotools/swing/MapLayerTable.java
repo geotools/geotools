@@ -509,6 +509,11 @@ public class MapLayerTable extends JPanel {
         public void onNewMapContent(MapPaneEvent ev) {
             table.clear();
             MapContent newMapContent = (MapContent) ev.getData();
+            if (newMapContent != null) {
+                for (Layer layer : newMapContent.layers()) {
+                    table.onAddLayer(layer);
+                }
+            }
         }
 
         @Override

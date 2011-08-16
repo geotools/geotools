@@ -32,8 +32,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
 import java.util.concurrent.atomic.AtomicBoolean;
+
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
 
@@ -477,9 +477,9 @@ public abstract class AbstractMapPane extends JPanel
             }
 
             mapContent = newMapContent;
-            mapContent.getViewport().setMatchingAspectRatio(true);
 
             if (mapContent != null) {
+                mapContent.getViewport().setMatchingAspectRatio(true);
                 mapContent.addMapLayerListListener(this);
                 mapContent.addMapBoundsListener(this);
 

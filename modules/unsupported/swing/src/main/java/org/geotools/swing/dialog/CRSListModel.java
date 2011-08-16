@@ -41,12 +41,10 @@ public class CRSListModel extends AbstractListModel {
     private static class Item {
         String code;
         String desc;
-        boolean visible;
 
         Item(String code, String desc) {
             this.code = code;
             this.desc = desc;
-            visible = true;
         }
 
         @Override

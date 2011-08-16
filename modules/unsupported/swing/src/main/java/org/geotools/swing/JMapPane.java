@@ -45,7 +45,6 @@ import org.geotools.renderer.lite.StreamingRenderer;
 public class JMapPane extends AbstractMapPane {
 
     protected GTRenderer renderer;
-
     protected BufferedImage baseImage;
     protected Graphics2D baseImageGraphics;
     
@@ -161,7 +160,6 @@ public class JMapPane extends AbstractMapPane {
         if (baseImage != null) {
             Graphics2D g2 = (Graphics2D) g;
             g2.drawImage(baseImage, imageOrigin.x, imageOrigin.y, null);
-            return;
         }
     }
 

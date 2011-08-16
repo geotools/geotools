@@ -93,7 +93,7 @@ public class JDataStoreWizard extends JWizard {
 
     @SuppressWarnings("unchecked")
     public JDataStoreWizard(DataStoreFactorySpi format, Map params) {        
-        super(format == null ? "Connect" : format == null ? "" : format.getDisplayName());
+        super(format == null ? "Connect" : format.getDisplayName());
         
         if (params == null) {
             connectionParameters = new HashMap<String, Object>();

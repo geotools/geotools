@@ -19,9 +19,7 @@ package org.geotools.swing;
 
 import java.awt.Graphics2D;
 import java.util.List;
-import java.util.Map;
 
-import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.renderer.GTRenderer;
 

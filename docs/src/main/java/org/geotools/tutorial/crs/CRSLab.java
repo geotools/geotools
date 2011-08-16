@@ -15,10 +15,15 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
+import javax.swing.SwingWorker;
+
+import com.vividsolutions.jts.geom.Geometry;
+
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DefaultTransaction;
@@ -44,7 +49,6 @@ import org.geotools.swing.JMapFrame;
 import org.geotools.swing.ProgressWindow;
 import org.geotools.swing.action.SafeAction;
 import org.geotools.swing.data.JFileDataStoreChooser;
-import org.jdesktop.swingworker.SwingWorker;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
@@ -53,7 +57,6 @@ import org.opengis.feature.type.FeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.util.ProgressListener;
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * This is a visual example of changing the coordinate reference system of a feature layer.

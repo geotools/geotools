@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.SwingWorker;
 import javax.swing.table.AbstractTableModel;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.util.NullProgressListener;
-import org.jdesktop.swingworker.SwingWorker;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;

@@ -33,7 +33,9 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Lock;
 
+import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
 
@@ -76,7 +78,7 @@ public abstract class AbstractMapPane extends JPanel
      * resizing the pane or moving the displayed image. This avoids flickering 
      * and redundant rendering.
      */
-    public static final int DEFAULT_PAINT_DELAY = 500;  // delay in milliseconds
+    public static final int DEFAULT_PAINT_DELAY = 500;
 
     /**
      * Default background color (white).
@@ -92,6 +94,9 @@ public abstract class AbstractMapPane extends JPanel
     protected final AtomicBoolean baseImageMoved;
     protected Future<?> imageMovedFuture;
     protected final Point imageOrigin;
+    
+    protected final Lock drawingLock;
+
     
 
     /*
@@ -119,23 +124,19 @@ public abstract class AbstractMapPane extends JPanel
 
     
     public AbstractMapPane(MapContent content, RenderingExecutor executor) {
-        doSetMapContent(content);
-        doSetRenderingExecutor(executor);
-
         setBackground(DEFAULT_BACKGROUND_COLOR);
-        
+
+        drawingLock = new ReentrantLock();
         paneTaskExecutor = Executors.newSingleThreadScheduledExecutor();
-
         paintDelay = DEFAULT_PAINT_DELAY;
-        
-        toolManager = new MapToolManager(this);
-
         acceptRepaintRequests = new AtomicBoolean(true);
         clearLabelCache = new AtomicBoolean(true);
-        imageOrigin = new Point(0, 0);
         baseImageMoved = new AtomicBoolean();
-
+        imageOrigin = new Point(0, 0);
+        
         dragBox = new MouseDragBox(this);
+        toolManager = new MapToolManager(this);
+
         this.addMouseListener(dragBox);
         this.addMouseMotionListener(dragBox);
 
@@ -185,6 +186,9 @@ public abstract class AbstractMapPane extends JPanel
                 }
             }
         });
+        
+        doSetMapContent(content);
+        doSetRenderingExecutor(executor);
     }
     
     /**
@@ -364,35 +368,41 @@ public abstract class AbstractMapPane extends JPanel
     }
     
     protected void setForNewSize() {
-        if (mapContent != null) {
-            
-            /*
-             * Compare the new pane screen size to the viewport's screen area
-             * and skip further action if the two rectangles are equal. This 
-             * check avoid extra rendering requests when redundant resize events
-             * are received (e.g. on mouse button release after drag resizing).
-             */
-            if (mapContent.getViewport().getScreenArea().equals(getVisibleRect())) {
-                return;
+        drawingLock.lock();
+        try {
+            if (mapContent != null) {
+
+                /*
+                 * Compare the new pane screen size to the viewport's screen area
+                 * and skip further action if the two rectangles are equal. This 
+                 * check avoid extra rendering requests when redundant resize events
+                 * are received (e.g. on mouse button release after drag resizing).
+                 */
+                if (mapContent.getViewport().getScreenArea().equals(getVisibleRect())) {
+                    return;
+                }
+
+                mapContent.getViewport().setScreenArea(getVisibleRect());
+
+                if (pendingDisplayArea != null) {
+                    doSetDisplayArea(pendingDisplayArea);
+                    pendingDisplayArea = null;
+
+                } else if (mapContent.getViewport().getBounds().isEmpty()) {
+                    setFullExtent();
+                    doSetDisplayArea(fullExtent);
+                }
+
+                publishEvent(new MapPaneEvent(this,
+                        MapPaneEvent.Type.DISPLAY_AREA_CHANGED,
+                        getDisplayArea()));
+
+                acceptRepaintRequests.set(true);
+                drawLayers(true);
             }
             
-            mapContent.getViewport().setScreenArea(getVisibleRect());
-            
-            if (pendingDisplayArea != null) {
-                doSetDisplayArea(pendingDisplayArea);
-                pendingDisplayArea = null;
-
-            } else if (mapContent.getViewport().getBounds().isEmpty()) {
-                setFullExtent();
-                doSetDisplayArea(fullExtent);
-            }
-            
-            publishEvent(new MapPaneEvent(this, 
-                    MapPaneEvent.Type.DISPLAY_AREA_CHANGED,
-                    getDisplayArea()));
-
-            acceptRepaintRequests.set(true);
-            drawLayers(true);
+        } finally {
+            drawingLock.unlock();
         }
     }
 

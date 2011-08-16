@@ -44,9 +44,9 @@ import org.geotools.renderer.lite.StreamingRenderer;
  */
 public class JMapPane extends AbstractMapPane {
 
-    protected GTRenderer renderer;
-    protected BufferedImage baseImage;
-    protected Graphics2D baseImageGraphics;
+    private GTRenderer renderer;
+    private BufferedImage baseImage;
+    private Graphics2D baseImageGraphics;
     
     /**
      * Creates a new map pane. 
@@ -156,40 +156,49 @@ public class JMapPane extends AbstractMapPane {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        if (baseImage != null) {
-            Graphics2D g2 = (Graphics2D) g;
-            g2.drawImage(baseImage, imageOrigin.x, imageOrigin.y, null);
+        drawingLock.lock();
+        try {
+            if (baseImage != null) {
+                Graphics2D g2 = (Graphics2D) g;
+                g2.drawImage(baseImage, imageOrigin.x, imageOrigin.y, null);
+            }
+        } finally {
+            drawingLock.unlock();
         }
     }
 
     @Override
     protected void drawLayers(boolean createNewImage) {
-        if (mapContent != null
-                && !mapContent.getViewport().isEmpty()
-                && acceptRepaintRequests.get()) {
-            
-            Rectangle r = getVisibleRect();
-            if (baseImage == null || createNewImage) {
-                baseImage = GraphicsEnvironment.getLocalGraphicsEnvironment().
-                        getDefaultScreenDevice().getDefaultConfiguration().
-                        createCompatibleImage(r.width, r.height, Transparency.TRANSLUCENT);
+        drawingLock.lock();
+        try {
+            if (mapContent != null
+                    && !mapContent.getViewport().isEmpty()
+                    && acceptRepaintRequests.get()) {
 
-                if (baseImageGraphics != null) {
-                    baseImageGraphics.dispose();
+                Rectangle r = getVisibleRect();
+                if (baseImage == null || createNewImage) {
+                    baseImage = GraphicsEnvironment.getLocalGraphicsEnvironment().
+                            getDefaultScreenDevice().getDefaultConfiguration().
+                            createCompatibleImage(r.width, r.height, Transparency.TRANSLUCENT);
+
+                    if (baseImageGraphics != null) {
+                        baseImageGraphics.dispose();
+                    }
+
+                    baseImageGraphics = baseImage.createGraphics();
+                    clearLabelCache.set(true);
+
+                } else {
+                    baseImageGraphics.setBackground(getBackground());
+                    baseImageGraphics.clearRect(0, 0, r.width, r.height);
                 }
 
-                baseImageGraphics = baseImage.createGraphics();
-                clearLabelCache.set(true);
-                
-            } else {
-                baseImageGraphics.setBackground(getBackground());
-                baseImageGraphics.clearRect(0, 0, r.width, r.height);
+                if (mapContent != null && !mapContent.layers().isEmpty()) {
+                    getRenderingExecutor().submit(mapContent, getRenderer(), baseImageGraphics, this);
+                }
             }
-
-            if (mapContent != null && !mapContent.layers().isEmpty()) {
-                getRenderingExecutor().submit(mapContent, getRenderer(), baseImageGraphics, this);
-            }
+        } finally {
+            drawingLock.unlock();
         }
     }
 

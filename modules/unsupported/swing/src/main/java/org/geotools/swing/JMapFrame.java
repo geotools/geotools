@@ -109,27 +109,36 @@ public class JMapFrame extends JFrame {
     private boolean uiSet;
 
     /**
-     * Creates a new {@code JMapFrame} object with a toolbar, map pane and status
-     * bar; sets the supplied {@code MapContent}; and displays the frame on the
-     * AWT event dispatching thread. The map content's title is used as the frame's
-     * title.
+     * Creates a new map frame with a toolbar, map pane and status
+     * bar; sets the supplied {@code MapContent}; and displays the frame.
+     * If {@linkplain MapContent#getTitle()} returns a non-empty string,
+     * this is used as the frame's title.
+     * <p>
+     * This method can be called safely from any thread.
      *
      * @param content the map content
      */
-    public static void showMap(MapContent content) {
+    public static void showMap(final MapContent content) {
+        if (SwingUtilities.isEventDispatchThread()) {
+            doShowMap(content);
+        } else {
+            SwingUtilities.invokeLater(new Runnable() {
+
+                @Override
+                public void run() {
+                    doShowMap(content);
+                }
+            });
+        }
+    }
+    
+    private static void doShowMap(MapContent content) {
         final JMapFrame frame = new JMapFrame(content);
         frame.enableStatusBar(true);
         frame.enableToolBar(true);
         frame.initComponents();
-
         frame.setSize(800, 600);
-
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                frame.setVisible(true);
-            }
-        });
+        frame.setVisible(true);
     }
 
     /**

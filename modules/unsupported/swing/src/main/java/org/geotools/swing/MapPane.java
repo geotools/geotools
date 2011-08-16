@@ -17,9 +17,9 @@
 package org.geotools.swing;
 
 import java.awt.geom.AffineTransform;
+
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
-import org.geotools.renderer.GTRenderer;
 import org.geotools.swing.event.MapMouseListener;
 import org.geotools.swing.event.MapPaneListener;
 import org.geotools.swing.tool.CursorTool;
@@ -36,20 +36,20 @@ import org.opengis.geometry.Envelope;
 public interface MapPane {
 
     /**
-     * Sets the {@code MapContent} instance containing the layers
-     * to display.
-     *
-     * @param content the map content
-     */
-    void setMapContent(MapContent content);
-
-    /**
      * Gets the {@code MapConent} instance containing the layers
      * being displayed by this map pane.
      *
      * @return the map content
      */
     MapContent getMapContent();
+
+    /**
+     * Sets the {@code MapContent} instance containing the layers
+     * to display.
+     *
+     * @param content the map content
+     */
+    void setMapContent(MapContent content);
 
     /**
      * Gets the current display area in world coordinates. This is a

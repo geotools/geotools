@@ -196,17 +196,22 @@ public abstract class AbstractMapPane extends JPanel
     protected abstract void drawLayers(boolean recreate);
     
     /**
-     * Gets the rendering executor.
+     * Gets the rendering executor, creating a default one if
+     * necessary.
      * 
      * @return the rendering executor
      */
     public RenderingExecutor getRenderingExecutor() {
+        if (renderingExecutor == null) {
+            doSetRenderingExecutor( new DefaultRenderingExecutor() );
+        }
         return renderingExecutor;
     }
     
     /**
      * Sets the rendering executor. If {@code executor} is {@code null},
-     * the default {@linkplain DefaultRenderingExecutor} will be set.
+     * the default {@linkplain DefaultRenderingExecutor} will be set on
+     * the next call to {@linkplain #getRenderingExecutor()}.
      * 
      * @param newExecutor the rendering executor
      */
@@ -215,10 +220,6 @@ public abstract class AbstractMapPane extends JPanel
     }
     
     private void doSetRenderingExecutor(RenderingExecutor newExecutor) {
-        if (newExecutor == null) {
-            newExecutor = new DefaultRenderingExecutor();
-        }
-        
         if (renderingExecutor != null) {
             renderingExecutor.shutdown();
         }

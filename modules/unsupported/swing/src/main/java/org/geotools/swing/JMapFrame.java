@@ -33,7 +33,6 @@ import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
 
 import org.geotools.map.MapContent;
-import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.swing.action.InfoAction;
 import org.geotools.swing.action.PanAction;
 import org.geotools.swing.action.ResetAction;
@@ -155,7 +154,7 @@ public class JMapFrame extends JFrame {
         toolSet = EnumSet.noneOf(Tool.class);
 
         // the map pane is the one element that is always displayed
-        mapPane = new JMapPane(new StreamingRenderer(), content);
+        mapPane = new JMapPane(content);
         mapPane.setBackground(Color.WHITE);
     }
 

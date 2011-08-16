@@ -53,39 +53,27 @@ public class JMapPane extends AbstractMapPane {
      * Creates a new map pane. 
      */
     public JMapPane() {
-        this(null, null);
-    }
-
-    /**
-     * Creates a new map pane with the given renderer and map content.
-     * Either or both of {@code renderer} and {@code content} may be
-     * {@code null} when the {@link #setRenderer(GTRenderer)} and 
-     * {@link #setMapContent(MapContent)} methods are to be called 
-     * subsequently.
-     *
-     * @param renderer the renderer to use for drawing layers
-     * @param content the {@code MapContent} instance containing layers to 
-     *     display
-     */
-    public JMapPane(GTRenderer renderer, MapContent content) {
-        this(renderer, content, null);
+        this(null);
     }
     
     /**
-     * Creates a new map pane with the given renderer and map content.
-     * Either or both of {@code renderer} and {@code content} may be
-     * {@code null} when the {@link #setRenderer(GTRenderer)} and 
-     * {@link #setMapContent(MapContent)} methods are to be called 
-     * subsequently. If {@code executor} is {@code null}, a default
-     * rendering executor (an instance of {@linkplain DefaultRenderingExecutor})
-     * will be set.
+     * Creates a new map pane.
      *
-     * @param renderer the renderer to use for drawing layers
-     * @param content the {@code MapContent} instance containing layers to 
-     *     display
-     * @param executor the rendering executor
+     * @param content the map content containing the layers to display
+     *     (may be {@code null})
      */
-    public JMapPane(GTRenderer renderer, MapContent content, RenderingExecutor executor) {
+    public JMapPane(MapContent content) {
+        this(content, null, null);
+    }
+
+    /**
+     * Creates a new map pane. Any or all arguments may be {@code null}
+     *
+     * @param content the map content containing the layers to display
+     * @param executor the rendering executor to manage drawing
+     * @param renderer the renderer to use for drawing layers
+     */
+    public JMapPane(MapContent content, RenderingExecutor executor, GTRenderer renderer) {
         super(content, executor);
         doSetRenderer(renderer);
     }
@@ -102,11 +90,14 @@ public class JMapPane extends AbstractMapPane {
     }
 
     /**
-     * Gets the renderer used by this map pane.
+     * Gets the renderer, creating a default one if required.
      *
      * @return the renderer
      */
     public GTRenderer getRenderer() {
+        if (renderer == null) {
+            doSetRenderer(new StreamingRenderer());
+        }
         return renderer;
     }
 

@@ -31,20 +31,10 @@ import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.label.LabelCacheImpl;
 import org.geotools.renderer.lite.LabelCache;
 import org.geotools.renderer.lite.StreamingRenderer;
-import org.geotools.swing.event.MapPaneListener;
-import org.geotools.swing.tool.CursorTool;
 
 /**
- * A map display pane that works with a renderer ({@code StreamingRenderer} by default)
- * to display map layers contained in a {@code MapContent} instance. It supports the 
- * use of tool classes to implement, for example, mouse-controlled zooming and panning.
- * <p>
- * Rendering is performed on a background thread and is managed by
- * the {@linkplain RenderingExecutor} class.
- *
- * @see JMapFrame
- * @see MapPaneListener
- * @see CursorTool
+ * A lightweight map pane which uses a single renderer and backing image.
+ * Used by {@linkplain JMapFrame} for the GeoTools tutorial applications.
  *
  * @author Michael Bedward
  * @author Ian Turton

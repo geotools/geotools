@@ -189,8 +189,8 @@ public class JMapPane extends AbstractMapPane {
                 baseImageGraphics.clearRect(0, 0, r.width, r.height);
             }
 
-            if (renderer != null && mapContent != null && !mapContent.layers().isEmpty()) {
-                renderingExecutor.submit(mapContent, renderer, baseImageGraphics, this);
+            if (mapContent != null && !mapContent.layers().isEmpty()) {
+                getRenderingExecutor().submit(mapContent, getRenderer(), baseImageGraphics, this);
             }
         }
     }

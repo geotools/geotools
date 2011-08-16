@@ -95,7 +95,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * </p>
  * 
  * @author Gabriel Rold?n
- *
+ * 
  * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
  *         /org/geotools/arcsde/filter/GeometryEncoderSDE.java $
@@ -185,9 +185,29 @@ public class GeometryEncoderSDE implements FilterVisitor {
     private void addSpatialFilter(final BinarySpatialOperator filter, final int sdeMethod,
             final boolean truth, final Object extraData) {
         boolean appliedTruth = truth;
-        if (extraData instanceof Boolean) {
+
+        // At the time of writing, extraData can only be null or false.
+        // appliedTruth is calculated from following matrix.
+        //
+        // appliedTruth truth extraData
+        // true ........false....false
+        // false........true.....false
+        // false........false....null
+        // true.........true.....null
+        if (extraData != null && extraData instanceof Boolean) {
             boolean andValue = ((Boolean) extraData).booleanValue();
-            appliedTruth = truth && andValue;
+            if (andValue) {
+                /**
+                 * TRUE ... should not occur, so fallback to old behaviour.
+                 */
+                appliedTruth = truth && andValue;
+            } else {
+                /**
+                 * FALSE ... toggle truth Parameter, so for example NOT DISJOINT works properly see
+                 * http://jira.codehaus.org/browse/GEOS-3735 for more information.
+                 */
+                appliedTruth = !truth;
+            }
         }
         org.opengis.filter.expression.Expression left, right;
         PropertyName propertyExpr;
@@ -432,7 +452,7 @@ public class GeometryEncoderSDE implements FilterVisitor {
     public Object visitNullFilter(Object arg0) {
         return arg0;
     }
-    
+
     public Object visit(After after, Object extraData) {
         return extraData;
     }

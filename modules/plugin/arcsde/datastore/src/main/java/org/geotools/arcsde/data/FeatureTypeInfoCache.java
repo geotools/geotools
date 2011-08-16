@@ -18,8 +18,10 @@ package org.geotools.arcsde.data;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -368,6 +370,21 @@ final class FeatureTypeInfoCache {
         @Override
         public List<String> execute(ISession session, SeConnection connection) throws SeException,
                 IOException {
+
+            final Set<String> systemTables;
+            {
+                final String sdeDbaName = connection.getSdeDbaName().toUpperCase();
+                final String dbName = connection.getDatabaseName();
+                final String prefix = (dbName != null && dbName.length() > 0 ? (dbName
+                        .toUpperCase() + ".") : "") + sdeDbaName + ".";
+                systemTables = new HashSet<String>(Arrays.asList(//
+                        prefix + "GDB_ITEMRELATIONSHIPS", //
+                        prefix + "GDB_ITEMRELATIONSHIPTYPES", //
+                        prefix + "GDB_ITEMS", //
+                        prefix + "GDB_ITEMTYPES", //
+                        prefix + "GDB_REPLICALOG" //
+                ));
+            }
             /*
              * Note we could do almost the same by calling
              * connection.getRegisteredTables():Vector<SeRegistration> but SeRegistration does not
@@ -384,11 +401,17 @@ final class FeatureTypeInfoCache {
 
             final List<String> typeNames = new ArrayList<String>(registeredTables.size());
             for (SeTable table : registeredTables) {
-                String tableName = table.getQualifiedName().toUpperCase();
+                final String tableName = table.getQualifiedName().toUpperCase();
+                if (rasterColumns.contains(tableName)) {
+                    continue;
+                }
+                if (systemTables.contains(tableName)) {
+                    continue;
+                }
                 SeRegistration reg;
                 try {
                     reg = new SeRegistration(connection, tableName);
-                    // do not call getInfo or it failst with tables owned by other user than the
+                    // do not call getInfo or it'll fail with tables owned by other user than the
                     // connection one
                     // reg.getInfo();
                 } catch (SeException e) {
@@ -399,18 +422,24 @@ final class FeatureTypeInfoCache {
                     throw e;
                 }
 
-                boolean isSystemTable = reg.getRowIdAllocation() == SeRegistration.SE_REGISTRATION_ROW_ID_ALLOCATION_SINGLE;
-                if (isSystemTable) {
-                    LOGGER.finer("Ignoring ArcSDE registered table " + tableName
-                            + " as it is a system table");
-                    continue;
-                }
+                /*
+                 * disable 'row ID allocation' check for featureclass see
+                 * http://jira.codehaus.org/browse/GEOT-3486 for more infos
+                 */
+                // boolean isSystemTable = reg.getRowIdAllocation() ==
+                // SeRegistration.SE_REGISTRATION_ROW_ID_ALLOCATION_SINGLE;
+                // if (isSystemTable) {
+                // LOGGER.finer("Ignoring ArcSDE registered table " + tableName
+                // + " as it is a system table");
+                // continue;
+                // }
 
                 if (reg.isHidden()) {
                     LOGGER.finer("Ignoring ArcSDE registered table " + tableName
                             + " as it is hidden");
                     continue;
                 }
+
                 boolean hasLayer = reg.hasLayer();
 
                 if (!hasLayer) {
@@ -427,9 +456,7 @@ final class FeatureTypeInfoCache {
 
                 }
 
-                if (!rasterColumns.contains(tableName)) {
-                    typeNames.add(tableName);
-                }
+                typeNames.add(tableName);
             }
 
             return typeNames;

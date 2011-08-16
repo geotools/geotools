@@ -422,7 +422,7 @@ public class ArcSDEDataStoreNonSpatialTest {
                  */
                 assertEquals(1, ds.getFeatureSource(tableName).getCount(Query.ALL));
             } else {
-                assertEquals(1, ds.getFeatureSource(tableName).getCount(Query.ALL));
+                assertEquals(0, ds.getFeatureSource(tableName).getCount(Query.ALL));
             }
             transaction.commit();
             assertEquals(1, ds.getFeatureSource(tableName).getCount(Query.ALL));

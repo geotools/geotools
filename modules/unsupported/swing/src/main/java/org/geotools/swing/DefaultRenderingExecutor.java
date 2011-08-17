@@ -90,12 +90,17 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
 
     private static class TaskInfo {
         final long id;
+        final MapContent mapContent;
+        final boolean disposeMapContent;
         final Future<Boolean> future;
         final RenderingExecutorListener listener;
         boolean polledDone;
 
-        TaskInfo(long id, Future<Boolean> future, RenderingExecutorListener listener) {
+        TaskInfo(long id, MapContent mapContent, boolean dispose, 
+                Future<Boolean> future, RenderingExecutorListener listener) {
             this.id = id;
+            this.mapContent = mapContent;
+            this.disposeMapContent = dispose;
             this.future = future;
             this.listener = listener;
             this.polledDone = false;
@@ -175,7 +180,7 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
             
             RenderingTask task = new RenderingTask(mapContent, graphics, renderer);
             Future<Boolean> future = taskExecutor.submit(task);
-            currentTasks.add( new TaskInfo(id, future, listener) );
+            currentTasks.add( new TaskInfo(id, mapContent, false, future, listener) );
             rtnValue = id;
         }
         
@@ -220,7 +225,7 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
                 op.getRenderer().setMapContent(mc);
                 RenderingTask task = new RenderingTask(mapContent, op.getGraphics(), op.getRenderer());
                 Future<Boolean> future = taskExecutor.submit(task);
-                currentTasks.add( new TaskInfo(id, future, listener) );
+                currentTasks.add( new TaskInfo(id, mc, true, future, listener) );
             }
             rtnValue = id;
         }
@@ -274,6 +279,11 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
         for (TaskInfo info : currentTasks) {
             if (!info.polledDone && info.future.isDone()) {
                 info.polledDone = true;
+                
+                if (info.disposeMapContent) {
+                    info.mapContent.dispose();
+                }
+                
                 Boolean result = null;
                 try {
                     result = info.future.get();

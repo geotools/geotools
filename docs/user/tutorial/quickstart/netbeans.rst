@@ -34,7 +34,7 @@ These sessions are applicable to both server side and client side development.
 
 We would like thank members of the GeoTools users list for their feedback while were preparing the
 course material, with special thanks to Tom Williamson for reviewing early drafts.
-    
+
 Java Install
 ============
 

@@ -11,6 +11,7 @@ This tutorial is available for:
    
    eclipse
    netbeans
+   maven
 
 If you are interested in porting this tutorial to an additional IDE please contact us on the
 users list.

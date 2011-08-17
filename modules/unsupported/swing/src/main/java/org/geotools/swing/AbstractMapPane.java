@@ -363,6 +363,10 @@ public abstract class AbstractMapPane extends JPanel
             @Override
             public void run() {
                 setForNewSize();
+                
+                // Call repaint here rather than within setForNewSize so that 
+                // drawingLock will be available in paintComponent
+                repaint();
             }
         }, paintDelay, TimeUnit.MILLISECONDS);
     }

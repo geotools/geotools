@@ -36,6 +36,9 @@ public class MapViewportTest {
     // World bounds with aspect ratio 1:1
     private static final ReferencedEnvelope WORLD_1_1 = new ReferencedEnvelope(
             150, 152, -33, -35, DefaultGeographicCRS.WGS84);
+    
+    private static final ReferencedEnvelope BIG_WORLD_1_1 = new ReferencedEnvelope(
+            140, 160, -30, -50, DefaultGeographicCRS.WGS84);
 
     // Screen area with aspect ratio 1:1
     private static final Rectangle SCREEN_1_1 = new Rectangle(100, 100);
@@ -137,18 +140,52 @@ public class MapViewportTest {
                 WORLD_1_1.getMinY(), WORLD_1_1.getMaxY(),
                 WORLD_1_1.getCoordinateReferenceSystem());
         
-        assertTrue( expectedBounds.boundsEquals2D(vp.getBounds(), TOL));
+        assertTrue( expectedBounds.boundsEquals2D(vp.getBounds(), TOL) );
     }
     
     @Test
-    public void getWorldToScreenTransformReturnsNullWhenNotSet() {
+    public void newBoundsAreHonoured_NoAspectMatching() {
+        MapViewport vp = new MapViewport(false);
+        vp.setScreenArea(SCREEN_1_1);
+        vp.setBounds(WORLD_1_1);
+        
+        vp.setBounds(BIG_WORLD_1_1);
+        assertTrue( BIG_WORLD_1_1.boundsEquals2D(vp.getBounds(), TOL) );
+    }
+    
+    @Test
+    public void newBoundsAreHonoured_AspectMatching() {
+        MapViewport vp = new MapViewport(true);
+        vp.setScreenArea(SCREEN_1_1);
+        vp.setBounds(WORLD_1_1);
+        
+        vp.setBounds(BIG_WORLD_1_1);
+        assertTrue( BIG_WORLD_1_1.boundsEquals2D(vp.getBounds(), TOL) );
+    }
+    
+    @Test
+    public void boundsCtorSetsNullWorldToScreen() {
         MapViewport vp = new MapViewport(WORLD_1_1);
         assertNull( vp.getWorldToScreen() );
     }
 
     @Test
-    public void getScreenToWorldTransformReturnsNullWhenNotSet() {
+    public void boundsCtorSetNullScreenToWorld() {
         MapViewport vp = new MapViewport(WORLD_1_1);
         assertNull( vp.getScreenToWorld() );
+    }
+    
+    @Test
+    public void noArgCtorThenSetBoundsGivesNullWorldToScreen() {
+        MapViewport vp = new MapViewport();
+        vp.setBounds(WORLD_1_1);
+        assertNull( vp.getWorldToScreen() );
+    }
+    
+    @Test
+    public void noArgCtorThenSetBoundsGivesNullScreenToWorld() {
+        MapViewport vp = new MapViewport();
+        vp.setBounds(WORLD_1_1);
+        assertNull( vp.getWorldToScreen() );
     }
 }

@@ -46,6 +46,21 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * that aspect ratio adjustment should not be enabled when the viewport is used with a service
  * such as WMS which mandates that specified screen and world bounds must be honoured exactly,
  * regardless of the resulting aspect ratio differences.
+ * <p>
+ * The {@code AffineTransforms} can be retrieved with the methods 
+ * {@linkplain #getScreenToWorld()} and {@linkplain #getWorldToScreen()}.
+ * The following rules apply to the return values of these methods:
+ * <ul>
+ * <li>
+ * If screen area is not defined, {@code null} is returned.
+ * </li>
+ * <li>
+ * If screen area only is defined, the identity transform is returned.
+ * </li>
+ * <li>
+ * If both screen area and world extent are defined, calculated transforms are returned.
+ * </li>
+ * </ul>
  * 
  * @author Jody Garnett
  * @author Michael Bedward
@@ -85,6 +100,7 @@ public class MapViewport {
     private CopyOnWriteArrayList<MapBoundsListener> boundsListeners;
 
     private boolean matchingAspectRatio;
+    private boolean hasCenteringTransforms;
 
     /**
      * Creates a new view port. The viewport bounds, in both screen and world coordinates,
@@ -134,16 +150,17 @@ public class MapViewport {
      */
     public MapViewport(ReferencedEnvelope bounds, boolean matchAspectRatio) {
         this.screenArea = new Rectangle();
+        this.hasCenteringTransforms = false;
         this.matchingAspectRatio = matchAspectRatio;
         
         if (bounds == null || bounds.isEmpty()) { 
-            setEmptyBounds();
+            this.bounds = new ReferencedEnvelope(DefaultGeographicCRS.WGS84);
             
         } else {
-            // At this point we just store the bounds, copying them defensively.
-            
             this.bounds = new ReferencedEnvelope(bounds);
         }
+        
+        setTransforms(true);
     }
     
     /**
@@ -155,7 +172,7 @@ public class MapViewport {
     public void setMatchingAspectRatio(boolean enabled) {
         if (enabled != matchingAspectRatio) {
             matchingAspectRatio = enabled;
-            doSetBounds(bounds);
+            setTransforms(true);
         }
     }
     
@@ -231,12 +248,12 @@ public class MapViewport {
     public void setBounds(ReferencedEnvelope requestedBounds) {
         ReferencedEnvelope old = this.bounds;
         if (requestedBounds == null || requestedBounds.isEmpty()) {
-            this.bounds = new ReferencedEnvelope(this.bounds.getCoordinateReferenceSystem());
-            setDefaultTransforms();
-            
+            bounds = new ReferencedEnvelope(this.bounds.getCoordinateReferenceSystem());
         } else {
-            doSetBounds(requestedBounds);
+            bounds = new ReferencedEnvelope(requestedBounds);
         }
+        
+        setTransforms(true);
         
         // Note the bounds communicated by the event are the actual world bounds
         // rather than the user-requested bounds (unless empty)
@@ -244,11 +261,12 @@ public class MapViewport {
     }
 
     /**
-     * Screen area to render into when drawing.
+     * Gets a copy of the current screen area.
+     * 
      * @return screen area to render into when drawing.
      */
     public Rectangle getScreenArea() {
-        return screenArea;
+        return new Rectangle(screenArea);
     }
 
     /**
@@ -259,20 +277,11 @@ public class MapViewport {
     public void setScreenArea(Rectangle screenArea) {
         if (screenArea == null || screenArea.isEmpty()) {
             this.screenArea = new Rectangle();
-            setDefaultTransforms();
-            
         } else {
-            boolean wasEmpty = this.screenArea.isEmpty();
-            
-            // defensive copy
             this.screenArea = new Rectangle(screenArea);
-            
-            if (wasEmpty) {
-                doSetBounds(bounds);
-            } else if (!bounds.isEmpty()) {
-                bounds = calculateActualBounds();
-            }
         }
+        
+        setTransforms(false);
     }
     
     /**
@@ -304,7 +313,10 @@ public class MapViewport {
                 try {
                     ReferencedEnvelope old = bounds;
                     bounds = bounds.transform(crs, true);
+                    setTransforms(true);
+                    
                     fireMapBoundsListenerMapBoundsChanged(MapBoundsEvent.Type.CRS, old, bounds);
+                    
                 } catch (Exception e) {
                     LOGGER.log(Level.FINE, "Difficulty transforming to {0}", crs);
                 }
@@ -362,69 +374,68 @@ public class MapViewport {
     }
 
     /**
-     * Sets the screen and world bounds to empty rectangles and the 
-     * coordinate reference system to WGS84.
-     */
-    private void setEmptyBounds() {
-        bounds = new ReferencedEnvelope(DefaultGeographicCRS.WGS84);
-        screenArea = new Rectangle();
-        setDefaultTransforms();
-    }
-
-    /**
-     * Sets the transforms to the default identity transforms.
-     */
-    private void setDefaultTransforms() {
-        screenToWorld = new AffineTransform();
-        worldToScreen = new AffineTransform();
-    }
-
-    /**
-     * Calculates the affine transforms used to convert between screen
-     * and world coordinates. If aspect ratio matching is enabled, the
-     * transforms will be calculated to centre the requested bounds in the
+     * Sets the affine transforms used to convert between screen
+     * and world coordinates. 
+     * <p>
+     * If screen area is undefined, the transforms are set to {@code null}.
+     * <p>
+     * If screen area is defined but not world bounds, the transforms are set 
+     * to identity. 
+     * <p>
+     * When both screen area and world bounds are defined, the transforms are
+     * set as follows. If aspect ratio matching is enabled, the transforms
+     * transforms are calculated to centre the world bounds in the
      * screen area, after which the bounds will be adjusted if necessary to have
      * the same aspect ratio as the screen area. If aspect ratio matching is not
-     * enabled, no such centering and adjustment happen, and the resulting world 
-     * bounds will be equal to the requested bounds.
+     * enabled, basic transforms are calculated without centering or bounds 
+     * adjustment.
      * 
-     * @param requestedBounds requested display area in world coordinates
+     * @param newBounds indicates whether world bounds have just been changed
      */
-    private void doSetBounds(ReferencedEnvelope requestedBounds) {
-        if (matchingAspectRatio && !screenArea.isEmpty()) {
-            calculateCenteringTransforms(requestedBounds);
+    private void setTransforms(boolean newBounds) {
+        if (screenArea.isEmpty()) {
+            screenToWorld = worldToScreen = null;
+            hasCenteringTransforms = false;
+
+        } else if (bounds.isEmpty()) {
+            screenToWorld = new AffineTransform();
+            worldToScreen = new AffineTransform();
+            hasCenteringTransforms = false;
+            
+        } else if (matchingAspectRatio) {
+            if (newBounds || !hasCenteringTransforms) {
+                calculateCenteringTransforms();
+            }
             bounds = calculateActualBounds();
             
         } else {
-            calculateSimpleTransforms(requestedBounds);
-            bounds = new ReferencedEnvelope(requestedBounds);
+            calculateSimpleTransforms(bounds);
+            hasCenteringTransforms = false;
         }
     }
-    
+
     /**
-     * Calculates transforms suitable for aspect ratio matching. The requested
+     * Calculates transforms suitable for aspect ratio matching. The
      * world bounds will be centred in the screen area.
-     * 
-     * @param requestedBounds requested display area in world coordinates
      */
-    private void calculateCenteringTransforms(ReferencedEnvelope requestedBounds) {
-        if (!( requestedBounds.isEmpty() || screenArea.isEmpty() )) {
-            double xscale = screenArea.getWidth() / requestedBounds.getWidth();
-            double yscale = screenArea.getHeight() / requestedBounds.getHeight();
+    private void calculateCenteringTransforms() {
+        double xscale = screenArea.getWidth() / bounds.getWidth();
+        double yscale = screenArea.getHeight() / bounds.getHeight();
 
-            double scale = Math.min(xscale, yscale);
+        double scale = Math.min(xscale, yscale);
 
-            double xoff = requestedBounds.getMedian(0) * scale - screenArea.getCenterX();
-            double yoff = requestedBounds.getMedian(1) * scale + screenArea.getCenterY();
+        double xoff = bounds.getMedian(0) * scale - screenArea.getCenterX();
+        double yoff = bounds.getMedian(1) * scale + screenArea.getCenterY();
 
-            worldToScreen = new AffineTransform(scale, 0, 0, -scale, -xoff, yoff);
-            try {
-                screenToWorld = worldToScreen.createInverse();
+        worldToScreen = new AffineTransform(scale, 0, 0, -scale, -xoff, yoff);
+        try {
+            screenToWorld = worldToScreen.createInverse();
 
-            } catch (NoninvertibleTransformException ex) {
-                throw new RuntimeException("Unable to create coordinate transforms.", ex);
-            }
+        } catch (NoninvertibleTransformException ex) {
+            throw new RuntimeException("Unable to create coordinate transforms.", ex);
         }
+        
+        hasCenteringTransforms = true;
     }
     
     /**
@@ -433,18 +444,16 @@ public class MapViewport {
      * @param requestedBounds requested display area in world coordinates
      */
     private void calculateSimpleTransforms(ReferencedEnvelope requestedBounds) {
-        if (!( requestedBounds.isEmpty() || screenArea.isEmpty() )) {
-            double xscale = screenArea.getWidth() / requestedBounds.getWidth();
-            double yscale = screenArea.getHeight() / requestedBounds.getHeight();
-            double scale = Math.min(xscale, yscale);
-            worldToScreen = new AffineTransform(scale, 0, 0, -scale, 
-                    -requestedBounds.getMinX(), requestedBounds.getMaxY());
-            try {
-                screenToWorld = worldToScreen.createInverse();
+        double xscale = screenArea.getWidth() / requestedBounds.getWidth();
+        double yscale = screenArea.getHeight() / requestedBounds.getHeight();
+        double scale = Math.min(xscale, yscale);
+        worldToScreen = new AffineTransform(scale, 0, 0, -scale, 
+                -requestedBounds.getMinX(), requestedBounds.getMaxY());
+        try {
+            screenToWorld = worldToScreen.createInverse();
 
-            } catch (NoninvertibleTransformException ex) {
-                throw new RuntimeException("Unable to create coordinate transforms.", ex);
-            }
+        } catch (NoninvertibleTransformException ex) {
+            throw new RuntimeException("Unable to create coordinate transforms.", ex);
         }
     }
 
@@ -452,22 +461,17 @@ public class MapViewport {
      * Calculates the world bounds of the current screen area.
      */
     private ReferencedEnvelope calculateActualBounds() {
-        if (screenArea.isEmpty()) {
-            throw new IllegalStateException("Screen area is empty");
-            
-        } else {
-            Point2D p0 = new Point2D.Double(screenArea.getMinX(), screenArea.getMinY());
-            Point2D p1 = new Point2D.Double(screenArea.getMaxX(), screenArea.getMaxY());
-            screenToWorld.transform(p0, p0);
-            screenToWorld.transform(p1, p1);
+        Point2D p0 = new Point2D.Double(screenArea.getMinX(), screenArea.getMinY());
+        Point2D p1 = new Point2D.Double(screenArea.getMaxX(), screenArea.getMaxY());
+        screenToWorld.transform(p0, p0);
+        screenToWorld.transform(p1, p1);
 
-            return new ReferencedEnvelope(
-                    Math.min(p0.getX(), p1.getX()),
-                    Math.max(p0.getX(), p1.getX()),
-                    Math.min(p0.getY(), p1.getY()),
-                    Math.max(p0.getY(), p1.getY()),
-                    bounds.getCoordinateReferenceSystem());
-        }
+        return new ReferencedEnvelope(
+                Math.min(p0.getX(), p1.getX()),
+                Math.max(p0.getX(), p1.getX()),
+                Math.min(p0.getY(), p1.getY()),
+                Math.max(p0.getY(), p1.getY()),
+                bounds.getCoordinateReferenceSystem());
     }
 
     /**

@@ -533,7 +533,6 @@ public class MapLayerTable extends JPanel {
 
         @Override
         public void layerMoved(MapLayerListEvent event) {
-            System.out.println("moved");
         }
 
 

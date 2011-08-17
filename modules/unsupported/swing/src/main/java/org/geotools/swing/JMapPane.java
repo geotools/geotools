@@ -157,13 +157,13 @@ public class JMapPane extends AbstractMapPane {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (drawingLock.tryLock()) {
-            if (baseImage != null) {
-                try {
+            try {
+                if (baseImage != null) {
                     Graphics2D g2 = (Graphics2D) g;
                     g2.drawImage(baseImage, imageOrigin.x, imageOrigin.y, null);
-                } finally {
-                    drawingLock.unlock();
                 }
+            } finally {
+                drawingLock.unlock();
             }
         }
     }

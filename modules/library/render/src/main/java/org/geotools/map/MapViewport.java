@@ -169,7 +169,7 @@ public class MapViewport {
      * 
      * @param enabled whether to enable aspect ratio adjustment
      */
-    public void setMatchingAspectRatio(boolean enabled) {
+    public synchronized void setMatchingAspectRatio(boolean enabled) {
         if (enabled != matchingAspectRatio) {
             matchingAspectRatio = enabled;
             setTransforms(true);
@@ -227,7 +227,7 @@ public class MapViewport {
      * 
      * @return a copy of the current bounds
      */
-    public ReferencedEnvelope getBounds() {
+    public synchronized ReferencedEnvelope getBounds() {
         return new ReferencedEnvelope(bounds);
     }
     
@@ -245,7 +245,7 @@ public class MapViewport {
      * 
      * @param requestedBounds the requested bounds (may be {@code null})
      */
-    public void setBounds(ReferencedEnvelope requestedBounds) {
+    public synchronized void setBounds(ReferencedEnvelope requestedBounds) {
         ReferencedEnvelope old = this.bounds;
         if (requestedBounds == null || requestedBounds.isEmpty()) {
             bounds = new ReferencedEnvelope(this.bounds.getCoordinateReferenceSystem());
@@ -265,7 +265,7 @@ public class MapViewport {
      * 
      * @return screen area to render into when drawing.
      */
-    public Rectangle getScreenArea() {
+    public synchronized Rectangle getScreenArea() {
         return new Rectangle(screenArea);
     }
 
@@ -274,7 +274,7 @@ public class MapViewport {
      * 
      * @param screenArea display area in screen coordinates (may be {@code null})
      */
-    public void setScreenArea(Rectangle screenArea) {
+    public synchronized void setScreenArea(Rectangle screenArea) {
         if (screenArea == null || screenArea.isEmpty()) {
             this.screenArea = new Rectangle();
         } else {
@@ -294,7 +294,7 @@ public class MapViewport {
      * 
      * @return coordinate reference system used for rendering the map.
      */
-    public CoordinateReferenceSystem getCoordianteReferenceSystem() {
+    public synchronized CoordinateReferenceSystem getCoordianteReferenceSystem() {
         return bounds == null ? null : bounds.getCoordinateReferenceSystem();
     }
 
@@ -305,7 +305,7 @@ public class MapViewport {
      * @throws FactoryException
      * @throws TransformException
      */
-    public void setCoordinateReferenceSystem(CoordinateReferenceSystem crs) {
+    public synchronized void setCoordinateReferenceSystem(CoordinateReferenceSystem crs) {
         if (bounds.getCoordinateReferenceSystem() != crs) {
             if (bounds.isEmpty()) {
                 bounds = new ReferencedEnvelope(crs);
@@ -359,7 +359,7 @@ public class MapViewport {
      * @return a copy of the current screen to world transform or
      *     {@code null} if the transform is not set
      */
-    public AffineTransform getScreenToWorld() {
+    public synchronized AffineTransform getScreenToWorld() {
         return screenToWorld == null ? null : new AffineTransform(screenToWorld);
     }
 
@@ -369,7 +369,7 @@ public class MapViewport {
      * @return a copy of the current world to screen transform or
      *     {@code null} if the transform is not set
      */
-    public AffineTransform getWorldToScreen() {
+    public synchronized AffineTransform getWorldToScreen() {
         return worldToScreen == null ? null : new AffineTransform(worldToScreen);
     }
 

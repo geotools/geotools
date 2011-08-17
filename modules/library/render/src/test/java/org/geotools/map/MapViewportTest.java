@@ -18,8 +18,10 @@
 package org.geotools.map;
 
 import java.awt.Rectangle;
+
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -136,5 +138,17 @@ public class MapViewportTest {
                 WORLD_1_1.getCoordinateReferenceSystem());
         
         assertTrue( expectedBounds.boundsEquals2D(vp.getBounds(), TOL));
+    }
+    
+    @Test
+    public void getWorldToScreenTransformReturnsNullWhenNotSet() {
+        MapViewport vp = new MapViewport(WORLD_1_1);
+        assertNull( vp.getWorldToScreen() );
+    }
+
+    @Test
+    public void getScreenToWorldTransformReturnsNullWhenNotSet() {
+        MapViewport vp = new MapViewport(WORLD_1_1);
+        assertNull( vp.getScreenToWorld() );
     }
 }

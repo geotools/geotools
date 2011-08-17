@@ -342,23 +342,23 @@ public class MapViewport {
     }
 
     /**
-     * Gets the current screen to world coordinate transform. If 
-     * the display area is empty the identity transform is returned.
+     * Gets the current screen to world coordinate transform.
      * 
-     * @return a copy of the current screen to world transform
+     * @return a copy of the current screen to world transform or
+     *     {@code null} if the transform is not set
      */
     public AffineTransform getScreenToWorld() {
-        return new AffineTransform(screenToWorld);
+        return screenToWorld == null ? null : new AffineTransform(screenToWorld);
     }
 
     /**
-     * Gets the current world to screen coordinate transform. If 
-     * the display area is empty the identity transform is returned.
+     * Gets the current world to screen coordinate transform.
      * 
-     * @return a copy of the current world to screen transform
+     * @return a copy of the current world to screen transform or
+     *     {@code null} if the transform is not set
      */
     public AffineTransform getWorldToScreen() {
-        return new AffineTransform(worldToScreen);
+        return worldToScreen == null ? null : new AffineTransform(worldToScreen);
     }
 
     /**

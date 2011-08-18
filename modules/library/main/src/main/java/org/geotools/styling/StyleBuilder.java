@@ -1336,7 +1336,7 @@ public class StyleBuilder {
         Symbolizer symbolizer,
         double minScaleDenominator,
         double maxScaleDenominator) {
-        return createRule(new Symbolizer[] { symbolizer }, Double.NaN, Double.NaN);
+        return createRule(new Symbolizer[] { symbolizer }, minScaleDenominator, maxScaleDenominator);
     }
 
     /**

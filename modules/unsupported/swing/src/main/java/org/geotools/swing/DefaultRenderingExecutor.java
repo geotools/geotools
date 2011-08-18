@@ -92,17 +92,15 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
         final long id;
         final RenderingTask task;
         final MapContent mapContent;
-        final boolean disposeMapContent;
         final Future<Boolean> future;
         final RenderingExecutorListener listener;
         boolean polledDone;
 
-        TaskInfo(long id, RenderingTask task, MapContent mapContent, boolean dispose,
+        TaskInfo(long id, RenderingTask task, MapContent mapContent,
                 Future<Boolean> future, RenderingExecutorListener listener) {
             this.id = id;
             this.task = task;
             this.mapContent = mapContent;
-            this.disposeMapContent = dispose;
             this.future = future;
             this.listener = listener;
             this.polledDone = false;
@@ -182,7 +180,7 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
             
             RenderingTask task = new RenderingTask(mapContent, graphics, renderer);
             Future<Boolean> future = taskExecutor.submit(task);
-            currentTasks.add( new TaskInfo(id, task, mapContent, false, future, listener) );
+            currentTasks.add( new TaskInfo(id, task, mapContent, future, listener) );
             rtnValue = id;
         }
         
@@ -221,13 +219,12 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
             listener.onRenderingStarted(event);
             
             for (RenderingOperands op : operands) {
-                MapContent mc = new MapContent();
+                MapContent mc = new SingleLayerMapContent(op.getLayer());
                 mc.setViewport(mapContent.getViewport());
-                mc.addLayer(op.getLayer());
                 op.getRenderer().setMapContent(mc);
                 RenderingTask task = new RenderingTask(mapContent, op.getGraphics(), op.getRenderer());
                 Future<Boolean> future = taskExecutor.submit(task);
-                currentTasks.add( new TaskInfo(id, task, mc, true, future, listener) );
+                currentTasks.add( new TaskInfo(id, task, mc, future, listener) );
             }
             rtnValue = id;
         }
@@ -281,13 +278,6 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
         for (TaskInfo info : currentTasks) {
             if (!info.polledDone && info.future.isDone()) {
                 info.polledDone = true;
-                
-                if (info.disposeMapContent) {
-                    // Dispose the temp mapContent but clear the layer list first
-                    // so that the layer(s) are not disposed
-                    info.mapContent.layers().clear();
-                    info.mapContent.dispose();
-                }
                 
                 Boolean result = null;
                 try {

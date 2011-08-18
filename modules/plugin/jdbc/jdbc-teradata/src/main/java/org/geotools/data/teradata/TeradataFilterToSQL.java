@@ -204,7 +204,7 @@ public class TeradataFilterToSQL extends PreparedFilterToSQL {
             return false;
         }
         
-        if (primaryKey == null) {
+        if (primaryKey == null || primaryKey.getColumns().isEmpty()) {
             LOGGER.info("No primary key for " + featureType.getTypeName() + 
                 ", unable to perform spatially indexed query");
             return false;

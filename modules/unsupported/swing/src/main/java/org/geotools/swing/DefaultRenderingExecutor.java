@@ -283,6 +283,9 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
                 info.polledDone = true;
                 
                 if (info.disposeMapContent) {
+                    // Dispose the temp mapContent but clear the layer list first
+                    // so that the layer(s) are not disposed
+                    info.mapContent.layers().clear();
                     info.mapContent.dispose();
                 }
                 

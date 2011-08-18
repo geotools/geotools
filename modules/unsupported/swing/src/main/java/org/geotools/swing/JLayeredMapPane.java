@@ -31,6 +31,7 @@ import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.lite.StreamingRenderer;
+import org.geotools.renderer.lite.SynchronizedLabelCache;
 
 /**
  *
@@ -44,6 +45,7 @@ public class JLayeredMapPane extends AbstractMapPane {
     }
 
     private final Map<Layer, LayerOperands> operandLookup;
+    private final Map<Object, Object> renderingHints;
     
     
     public JLayeredMapPane() {
@@ -57,32 +59,50 @@ public class JLayeredMapPane extends AbstractMapPane {
     public JLayeredMapPane(MapContent content, RenderingExecutor executor) {
         super(content, executor);
         operandLookup = new HashMap<Layer, LayerOperands>();
+        labelCache = new SynchronizedLabelCache();
+        
+        renderingHints = new HashMap<Object, Object>();
+        renderingHints.put(StreamingRenderer.LABEL_CACHE_KEY, labelCache);
     }
 
     @Override
     protected void drawLayers(boolean recreate) {
-        if (mapContent != null
-                && !mapContent.layers().isEmpty()
-                && !mapContent.getViewport().isEmpty()
-                && acceptRepaintRequests.get()) {
-            
-            if (mapContent != null ) {
-                getRenderingExecutor().submit(mapContent, getOperands(recreate), this);
+        drawingLock.lock();
+        try {
+            if (mapContent != null
+                    && !mapContent.layers().isEmpty()
+                    && !mapContent.getViewport().isEmpty()
+                    && acceptRepaintRequests.get()) {
+
+                if (mapContent != null) {
+                    getRenderingExecutor().submit(mapContent, getOperands(recreate), this);
+                }
             }
+        } finally {
+            drawingLock.unlock();
         }
     }
     
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        
-        Graphics2D g2 = (Graphics2D) g;
-        for (Layer layer : mapContent.layers()) {
-            LayerOperands op = operandLookup.get(layer);
-            if (op != null) {
-                g2.drawImage(op.image, imageOrigin.x, imageOrigin.y, null);
+
+        if (drawingLock.tryLock()) {
+            try {
+                if (mapContent != null) {
+                    Graphics2D g2 = (Graphics2D) g;
+                    for (Layer layer : mapContent.layers()) {
+                        LayerOperands op = operandLookup.get(layer);
+                        if (op != null) {
+                            g2.drawImage(op.image, imageOrigin.x, imageOrigin.y, null);
+                        }
+                    }
+                }
+            } finally {
+                drawingLock.unlock();
             }
         }
+
     }
     
     private List<RenderingOperands> getOperands(boolean recreate) {
@@ -122,6 +142,7 @@ public class JLayeredMapPane extends AbstractMapPane {
         
         if (op.renderer == null) {
             op.renderer = new StreamingRenderer();
+            op.renderer.setRendererHints(renderingHints);
         }
         
         return new RenderingOperands(layer, op.graphics, op.renderer);

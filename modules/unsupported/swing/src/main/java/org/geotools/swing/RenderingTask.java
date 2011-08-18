@@ -83,7 +83,7 @@ public class RenderingTask implements Callable<Boolean>, RenderListener {
     }
     
     public void cancel() {
-        if (running.getAndSet(false)) {
+        if (running.get()) {
             renderer.stopRendering();
         }
         
@@ -99,19 +99,19 @@ public class RenderingTask implements Callable<Boolean>, RenderListener {
     @Override
     public Boolean call() throws Exception {
         if (!cancelled.get()) {
-        try {
-            renderer.addRenderListener(this);
-            running.set(true);
-            renderer.paint(destinationGraphics,
-                    deviceArea, 
-                    worldArea, 
-                    worldToScreenTransform);
-        } finally {
-            renderer.removeRenderListener(this);
-            running.set(false);
+            try {
+                renderer.addRenderListener(this);
+                running.set(true);
+                renderer.paint(destinationGraphics,
+                        deviceArea,
+                        worldArea,
+                        worldToScreenTransform);
+            } finally {
+                renderer.removeRenderListener(this);
+                running.set(false);
+            }
         }
-        }
-        
+
         return !(isFailed() || isCancelled());
     }
 

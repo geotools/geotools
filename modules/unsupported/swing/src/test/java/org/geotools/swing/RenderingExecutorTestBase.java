@@ -61,7 +61,7 @@ public abstract class RenderingExecutorTestBase {
     }
 
     protected void createSubmitObjects() {
-        image = new BufferedImage(SingleTaskRenderingExecutorTest.PANE.width, SingleTaskRenderingExecutorTest.PANE.height, BufferedImage.TYPE_INT_ARGB);
+        image = new BufferedImage(PANE.width, PANE.height, BufferedImage.TYPE_INT_ARGB);
         graphics = image.createGraphics();
         renderer = new MockRenderer(mapContent);
     }

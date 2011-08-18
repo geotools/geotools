@@ -47,8 +47,8 @@ public class RenderingTask implements Callable<Boolean>, RenderListener {
 
     private final AtomicBoolean running;
     private final AtomicBoolean failed;
+    private final AtomicBoolean cancelled;
     
-    private long numFeaturesRendered;
     
     /**
      * Creates a new rendering task.
@@ -79,8 +79,15 @@ public class RenderingTask implements Callable<Boolean>, RenderListener {
         
         running = new AtomicBoolean(false);
         failed = new AtomicBoolean(false);
+        cancelled = new AtomicBoolean(false);
+    }
+    
+    public void cancel() {
+        if (running.getAndSet(false)) {
+            renderer.stopRendering();
+        }
         
-        numFeaturesRendered = 0;
+        cancelled.set(true);
     }
 
     /**
@@ -91,6 +98,7 @@ public class RenderingTask implements Callable<Boolean>, RenderListener {
      */
     @Override
     public Boolean call() throws Exception {
+        if (!cancelled.get()) {
         try {
             renderer.addRenderListener(this);
             running.set(true);
@@ -102,19 +110,19 @@ public class RenderingTask implements Callable<Boolean>, RenderListener {
             renderer.removeRenderListener(this);
             running.set(false);
         }
+        }
         
-        return !isFailed();
+        return !(isFailed() || isCancelled());
     }
 
     /**
-     * Called by the renderer when each feature is drawn.
+     * Called by the renderer when each feature is drawn. This
+     * implementation does nothing.
      *
      * @param feature the feature just drawn
      */
     @Override
-    public void featureRenderer(SimpleFeature feature) {
-        numFeaturesRendered++ ;
-    }
+    public void featureRenderer(SimpleFeature feature) {}
 
     /**
      * Called by the renderer on error
@@ -133,6 +141,10 @@ public class RenderingTask implements Callable<Boolean>, RenderListener {
     
     public boolean isFailed() {
         return failed.get();
+    }
+    
+    public boolean isCancelled() {
+        return cancelled.get();
     }
     
 }

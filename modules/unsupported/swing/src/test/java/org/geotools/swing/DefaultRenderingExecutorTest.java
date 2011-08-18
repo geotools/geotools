@@ -29,10 +29,10 @@ import static org.junit.Assert.*;
  * @source $URL$
  * @version $Id$
  */
-public class SingleTaskRenderingExecutorTest extends RenderingExecutorTestBase {
+public class DefaultRenderingExecutorTest extends RenderingExecutorTestBase {
     
     @Before
-    public void setup() {
+    public void localSetup() {
         super.setup();
     }
     

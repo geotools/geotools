@@ -90,15 +90,17 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
 
     private static class TaskInfo {
         final long id;
+        final RenderingTask task;
         final MapContent mapContent;
         final boolean disposeMapContent;
         final Future<Boolean> future;
         final RenderingExecutorListener listener;
         boolean polledDone;
 
-        TaskInfo(long id, MapContent mapContent, boolean dispose, 
+        TaskInfo(long id, RenderingTask task, MapContent mapContent, boolean dispose,
                 Future<Boolean> future, RenderingExecutorListener listener) {
             this.id = id;
+            this.task = task;
             this.mapContent = mapContent;
             this.disposeMapContent = dispose;
             this.future = future;
@@ -180,7 +182,7 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
             
             RenderingTask task = new RenderingTask(mapContent, graphics, renderer);
             Future<Boolean> future = taskExecutor.submit(task);
-            currentTasks.add( new TaskInfo(id, mapContent, false, future, listener) );
+            currentTasks.add( new TaskInfo(id, task, mapContent, false, future, listener) );
             rtnValue = id;
         }
         
@@ -225,7 +227,7 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
                 op.getRenderer().setMapContent(mc);
                 RenderingTask task = new RenderingTask(mapContent, op.getGraphics(), op.getRenderer());
                 Future<Boolean> future = taskExecutor.submit(task);
-                currentTasks.add( new TaskInfo(id, mc, true, future, listener) );
+                currentTasks.add( new TaskInfo(id, task, mc, true, future, listener) );
             }
             rtnValue = id;
         }
@@ -252,7 +254,7 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
     @Override
     public synchronized void cancelAll() {
         for (TaskInfo info : currentTasks) {
-            info.future.cancel(true);
+            info.task.cancel();
         }
     }
     

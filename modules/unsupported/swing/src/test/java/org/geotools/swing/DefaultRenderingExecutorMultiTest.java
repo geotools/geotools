@@ -40,7 +40,7 @@ import static org.junit.Assert.*;
  * @version $Id$
  */
 @RunWith(MultiRepTestRunner.class)
-public class SingleTaskRenderingExecutorMultiTest extends RenderingExecutorTestBase {
+public class DefaultRenderingExecutorMultiTest extends RenderingExecutorTestBase {
     
     private static final Random rand = new Random();
     

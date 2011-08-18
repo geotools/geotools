@@ -159,21 +159,4 @@ public class MapViewport {
         this.screenArea = screenArea;
     }
     
-    public void transform(AffineTransform transform) {
-        ReferencedEnvelope old = this.bounds;
-
-        double[] coords = new double[4];
-        coords[0] = bounds.getMinX();
-        coords[1] = bounds.getMinY();
-        coords[2] = bounds.getMaxX();
-        coords[3] = bounds.getMaxY();
-
-        transform.transform(coords, 0, coords, 0, 2);
-
-        this.bounds = new ReferencedEnvelope(coords[0], coords[2], coords[1], coords[3], bounds
-                .getCoordinateReferenceSystem());
-
-        fireMapBoundsListenerMapBoundsChanged(MapBoundsEvent.Type.BOUNDS, old, bounds);
-    }
-
 }

@@ -576,14 +576,30 @@ public class MapContext extends MapContent {
     }
 
     /**
-     * Transform the current area of interest for this context using the provided transform. This
-     * may be useful for zooming and panning processes.
+     * Transform the current area of interest for this context using the provided 
+     * transform. This may be useful for zooming and panning processes. Does nothing
+     * if no area of interest is set.
      * 
      * @param transform
      *            The transform to change map viewport
      */
     public void transform(AffineTransform transform) {
-        getViewport().transform(transform);
+        ReferencedEnvelope oldBounds = getAreaOfInterest();
+        if (!(oldBounds == null || oldBounds.isEmpty())) {
+            double[] coords = new double[4];
+            coords[0] = oldBounds.getMinX();
+            coords[1] = oldBounds.getMinY();
+            coords[2] = oldBounds.getMaxX();
+            coords[3] = oldBounds.getMaxY();
+
+            transform.transform(coords, 0, coords, 0, 2);
+
+            ReferencedEnvelope newBounds = new ReferencedEnvelope(
+                    coords[0], coords[2], coords[1], coords[3],
+                    oldBounds.getCoordinateReferenceSystem());
+
+            setAreaOfInterest(newBounds);
+        }
     }
 
     

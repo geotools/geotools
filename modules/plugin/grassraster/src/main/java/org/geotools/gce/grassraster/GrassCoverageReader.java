@@ -52,6 +52,7 @@ import org.geotools.gce.grassraster.metadata.GrassBinaryImageMetadata;
 import org.geotools.gce.grassraster.spi.GrassBinaryImageReaderSpi;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
@@ -122,6 +123,18 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
             imageReader.setInput(input);
             jgMapEnvironment = new JGrassMapEnvironment(file);
             name = file.getName();
+            try {
+                crs = jgMapEnvironment.getCoordinateReferenceSystem();
+                JGrassRegion fileRegion = jgMapEnvironment.getFileRegion();
+                com.vividsolutions.jts.geom.Envelope env = fileRegion.getEnvelope();
+                originalEnvelope = new GeneralEnvelope(new ReferencedEnvelope(env.getMinX(), env.getMaxX(), env.getMinY(),
+                        env.getMaxY(), crs));
+                originalGridRange = new GridEnvelope2D(0, 0, fileRegion.getCols(), fileRegion.getRows());
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
         } else {
             throw new IllegalArgumentException("Illegal input argument!");
         }

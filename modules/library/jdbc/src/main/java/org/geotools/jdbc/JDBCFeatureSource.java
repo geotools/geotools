@@ -82,6 +82,15 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         primaryKey = ((JDBCDataStore) entry.getDataStore()).getPrimaryKey(entry);
     }
     
+    /**
+     * Copy existing feature source
+     * @param featureSource jdbc feature source
+     * @throws IOException
+     */
+    protected JDBCFeatureSource(JDBCFeatureSource featureSource) throws IOException{
+        super(featureSource.entry, featureSource.query);
+    }
+    
     @Override
     protected QueryCapabilities buildQueryCapabilities() {
         return new JDBCQueryCapabilities(this);
@@ -539,13 +548,14 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         //create the reader
         FeatureReader<SimpleFeatureType, SimpleFeature> reader;
         
-        try {
-            // this allows PostGIS to page the results and respect the fetch size
+        try {            
+            SQLDialect dialect = getDataStore().getSQLDialect();
+
+            // allow dialect to override this if needed
             if(getState().getTransaction() == Transaction.AUTO_COMMIT) {
-                cx.setAutoCommit(false);
+                cx.setAutoCommit(dialect.isAutoCommitQuery());
             }
             
-            SQLDialect dialect = getDataStore().getSQLDialect();
             if ( dialect instanceof PreparedStatementSQLDialect ) {
                 PreparedStatement ps = getDataStore().selectSQLPS(querySchema, preQuery, cx);
                 reader = new JDBCFeatureReader( ps, cx, this, querySchema, query.getHints() );

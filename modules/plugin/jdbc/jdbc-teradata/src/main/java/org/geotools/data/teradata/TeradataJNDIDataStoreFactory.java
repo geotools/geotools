@@ -26,7 +26,8 @@ import static org.geotools.data.teradata.TeradataDataStoreFactory.LOOSEBBOX;
  * JNDI DataStoreFactory for Teradata database.
  * 
  * @author Jesse Eichar
- * @source $URL$
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/jdbc/jdbc-teradata/src/main/java/org/geotools/data/teradata/TeradataJNDIDataStoreFactory.java $
  */
 public class TeradataJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
 

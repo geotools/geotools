@@ -257,15 +257,15 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
     public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, String column,
             GeometryFactory factory, Connection cx) throws IOException, SQLException {
         try {
-            //first check for the inline geometry value, applied in td 13 and above
-            byte[] wkb = null;
+            // first check for the inline geometry value, applied in td 13 and above
+            String wkt = null;
             try {
-                wkb = rs.getBytes(column + "_inline");
+                wkt = rs.getString(column + "_inline");
             }
             catch(SQLException e) {}
             
-            if (wkb != null) {
-                return new WKBReader(factory).read(wkb);
+            if (wkt != null) {
+                return new WKTReader(factory).read(wkt);
             }
             
             //in "locator" form the geometry comes across as text
@@ -280,7 +280,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
             }
             
             if ("java.lang.String".equals(rs.getMetaData().getColumnClassName(index))) {
-                String wkt = rs.getString(index);
+                wkt = rs.getString(index);
                 if (wkt == null) {
                     return null;
                 }
@@ -465,6 +465,18 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
         
         
         return envs;
+    }
+
+    /**
+     * Prevent deadlock - old behavior in JDBCFeatureSource was to disable
+     * autocommit in getReaderInternal to work around a postgres bug. This caused
+     * database deadlock many times as the 'read' transaction would never complete
+     * and subsequent writes would lock.
+     * @return true
+     */
+    @Override
+    public boolean isAutoCommitQuery() {
+        return true;
     }
     
     public void encodePrimaryKey(String column, StringBuffer sql) {

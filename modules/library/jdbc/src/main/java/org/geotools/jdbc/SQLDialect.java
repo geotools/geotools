@@ -264,7 +264,9 @@ public abstract class SQLDialect {
         mappings.put(new Integer(Types.VARCHAR), String.class);
         mappings.put(new Integer(Types.CHAR), String.class);
         mappings.put(new Integer(Types.LONGVARCHAR), String.class);
-
+        mappings.put(new Integer(Types.NVARCHAR), String.class);
+        mappings.put(new Integer(Types.NCHAR), String.class);
+        
         mappings.put(new Integer(Types.BIT), Boolean.class);
         mappings.put(new Integer(Types.BOOLEAN), Boolean.class);
 
@@ -1033,6 +1035,18 @@ public abstract class SQLDialect {
      */
     public int getDefaultVarcharSize(){
         return 255;
+    }
+
+    /**
+     * Determine if a read query should be set to autocommit.
+     * <p>
+     * Some databases (like postgres) want this enabled to respect fetch size.
+     * The default implementation is to return false.
+     * </p>
+     * @return true if read queries should remain autocommit, false otherwise
+     */
+    public boolean isAutoCommitQuery() {
+        return false;
     }
 
 }

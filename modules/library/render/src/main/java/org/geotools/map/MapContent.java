@@ -73,11 +73,13 @@ public class MapContent {
     /**
      * Viewport for map rendering.
      * 
-     * While the map maintains one viewport internally to better reflect a map context document you
-     * are free to maintain a seperate viewport; or indeed construct many viewports representing
-     * tiles to be renderered.
+     * While the map maintains one viewport internally to better reflect a map 
+     * context document you are free to maintain a separate viewport; or indeed 
+     * construct many viewports representing tiles to be rendered.
      */
     protected MapViewport viewport;
+    
+    private MapViewport defaultViewport;
 
     /** Listener used to watch individual layers and report changes to MapLayerListListeners */
     private MapLayerListener layerListener;
@@ -622,7 +624,7 @@ public class MapContent {
      */
     public ReferencedEnvelope getMaxBounds() {
         CoordinateReferenceSystem mapCrs = null;
-        if (viewport != null) {
+        if (viewport != null && viewport.isExplicitCoordinateReferenceSystem()) {
             mapCrs = viewport.getCoordinateReferenceSystem();
         }
         ReferencedEnvelope maxBounds = null;
@@ -662,7 +664,7 @@ public class MapContent {
                 LOGGER.warning("Unable to determine bounds of " + layer + ":" + eek);
             }
         }
-        if (maxBounds == null && mapCrs != null) {
+        if (maxBounds == null) {
             maxBounds = new ReferencedEnvelope(mapCrs);
         }
         return maxBounds;
@@ -690,7 +692,7 @@ public class MapContent {
      */
     public synchronized MapViewport getViewport() {
         if (viewport == null) {
-            viewport = new MapViewport( getMaxBounds() );
+            viewport = new MapViewport(getMaxBounds());
         }
         return viewport;
     }
@@ -706,7 +708,7 @@ public class MapContent {
     public synchronized void setViewport(MapViewport viewport) {
         this.viewport = viewport;
     }
-
+    
     /**
      * Register interest in receiving {@link MapBoundsEvent}s.
      * 

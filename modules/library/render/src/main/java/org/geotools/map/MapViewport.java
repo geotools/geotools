@@ -29,6 +29,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.event.MapBoundsEvent;
 import org.geotools.map.event.MapBoundsListener;
 import org.geotools.map.event.MapBoundsEvent.Type;
+import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.util.logging.Logging;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -77,6 +78,12 @@ public class MapViewport {
      * ({@linkplain DefaultEngineeringCRS#GENERIC_2D}).
      */
     public static CoordinateReferenceSystem DEFAULT_CRS = DefaultEngineeringCRS.GENERIC_2D;
+    
+    /* 
+     * Flags whether this viewport's CRS has been set by the client
+     * or if it is the default.
+     */
+    private boolean userCRS;
 
     /* 
      * The current display area expressed in window coordinates 
@@ -155,14 +162,7 @@ public class MapViewport {
         this.screenArea = new Rectangle();
         this.hasCenteringTransforms = false;
         this.matchingAspectRatio = matchAspectRatio;
-        
-        if (bounds == null || bounds.isEmpty()) { 
-            this.bounds = new ReferencedEnvelope(DEFAULT_CRS);
-            
-        } else {
-            this.bounds = new ReferencedEnvelope(bounds);
-        }
-        
+        copyBounds(bounds);
         setTransforms(true);
     }
     
@@ -238,29 +238,45 @@ public class MapViewport {
      * Sets the display area in world coordinates. 
      * <p>
      * If {@code bounds} is {@code null} or empty, default identity coordinate
-     * transforms will be set. The viewport's existing coordinate reference system
-     * will be preserved.
+     * transforms and {@linkplain #DEFAULT_CRS} will be set.
      * <p>
      * If {@code bounds} is not empty, and aspect ratio matching is enabled,
      * the coordinate transforms will be calculated to centre the requested bounds
      * in the current screen area (if defined), after which the world bounds will
      * be adjusted (enlarged) as required to match the screen area's aspect ratio.
+     * <p>
+     * A {@code MapBoundsEvent} will be fired to inform listeners of the change from
+     * old to new bounds. Note that when aspect ratio matching is enabled, the new
+     * bounds carried by the event will be the viewport's adjusted bounds, not the
+     * originally requested bounds.
      * 
      * @param requestedBounds the requested bounds (may be {@code null})
      */
     public synchronized void setBounds(ReferencedEnvelope requestedBounds) {
-        ReferencedEnvelope old = this.bounds;
-        if (requestedBounds == null || requestedBounds.isEmpty()) {
-            bounds = new ReferencedEnvelope(this.bounds.getCoordinateReferenceSystem());
-        } else {
-            bounds = new ReferencedEnvelope(requestedBounds);
-        }
-        
+        ReferencedEnvelope old = bounds;
+        copyBounds(requestedBounds);
         setTransforms(true);
-        
-        // Note the bounds communicated by the event are the actual world bounds
-        // rather than the user-requested bounds (unless empty)
-        fireMapBoundsListenerMapBoundsChanged(Type.BOUNDS, old, this.bounds);
+        fireMapBoundsListenerMapBoundsChanged(Type.BOUNDS, old, bounds);
+    }
+    
+    private void copyBounds(ReferencedEnvelope newBounds) {
+        if (newBounds == null || newBounds.isEmpty()) { 
+            this.bounds = new ReferencedEnvelope(DEFAULT_CRS);
+            userCRS = false;
+            
+        } else if (newBounds.getCoordinateReferenceSystem() == null) {
+            // If a CRS is already set, preserve it
+            if (userCRS) {
+                bounds = new ReferencedEnvelope(newBounds, 
+                        bounds.getCoordinateReferenceSystem());
+            } else {
+                bounds = new ReferencedEnvelope(newBounds, DEFAULT_CRS);
+            }
+            
+        } else {
+            this.bounds = new ReferencedEnvelope(newBounds);
+            userCRS = true;
+        }
     }
 
     /**
@@ -303,20 +319,30 @@ public class MapViewport {
     }
 
     /**
-     * Set the <code>CoordinateReferenceSystem</code> for this map's internal viewport.
+     * Set the {@code CoordinateReferenceSystem} for the viewport. If {@code crs}
+     * is null, {@linkplain #DEFAULT_CRS} will be set.
      * 
-     * @param crs
-     * @throws FactoryException
-     * @throws TransformException
+     * @param crs the new coordinate reference system, or {@code null} for the default
      */
     public synchronized void setCoordinateReferenceSystem(CoordinateReferenceSystem crs) {
-        if (bounds.getCoordinateReferenceSystem() != crs) {
+        if (crs == null) {
+            bounds = new ReferencedEnvelope(bounds, DEFAULT_CRS);
+            userCRS = false;
+        
+        } else if (!userCRS) {
+            bounds = new ReferencedEnvelope(bounds, crs);
+            userCRS = true;
+            
+        } else if (!CRS.equalsIgnoreMetadata(crs, bounds.getCoordinateReferenceSystem())) {
             if (bounds.isEmpty()) {
                 bounds = new ReferencedEnvelope(crs);
+                userCRS = true;
+                
             } else {
                 try {
                     ReferencedEnvelope old = bounds;
                     bounds = bounds.transform(crs, true);
+                    userCRS = true;
                     setTransforms(true);
                     
                     fireMapBoundsListenerMapBoundsChanged(MapBoundsEvent.Type.CRS, old, bounds);
@@ -326,6 +352,19 @@ public class MapViewport {
                 }
             }
         }
+    }
+    
+    /**
+     * Checks whether a coordinate reference system has been explicitly set
+     * for this viewport. The CRS can be set directly with 
+     * {@linkplain #setCoordinateReferenceSystem(CoordinateReferenceSystem)},
+     * or indirectly via the constructor or {@linkplain #setBounds(ReferencedEnvelope) }.
+     * 
+     * @return {@code true} if the CRS has been set; {@code false} if the
+     *     viewport is using its default CRS
+     */
+    public synchronized boolean isExplicitCoordinateReferenceSystem() {
+        return userCRS;
     }
 
     /**

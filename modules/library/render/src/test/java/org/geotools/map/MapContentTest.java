@@ -73,22 +73,14 @@ public class MapContentTest {
      * Test DefaultMapContext handles layers that return null bounds.
      */
     @Test
-    public void testNPELayerBounds() throws IOException {
+    public void testNPELayerBounds() {
         Layer mapLayerBoundsNull = new MockLayer(null);
-        MapContent map = new MapContent(DefaultGeographicCRS.WGS84);
+        MapContent map = new MapContent();
         map.addLayer(mapLayerBoundsNull);
                 
         ReferencedEnvelope maxBounds = map.getMaxBounds();
         assertNotNull(maxBounds);
-        assertEquals( "wgs84", DefaultGeographicCRS.WGS84, maxBounds.getCoordinateReferenceSystem() );
         assertTrue( maxBounds.isEmpty() );
-        map.dispose();
-        
-        map = new MapContent();
-        map.addLayer(mapLayerBoundsNull);
-        
-        maxBounds = map.getMaxBounds();
-        assertNull(maxBounds);
     }
     
     /**

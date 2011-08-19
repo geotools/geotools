@@ -16,21 +16,10 @@
  */
 package org.geotools.map;
 
-import java.io.IOException;
-
-import org.geotools.data.DefaultQuery;
-import org.geotools.data.FeatureEvent;
-import org.geotools.data.FeatureListener;
 import org.geotools.data.FeatureSource;
-import org.geotools.data.Query;
-import org.geotools.data.memory.CollectionSource;
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.event.MapLayerEvent;
 import org.geotools.styling.Style;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Implementation of {@link MapLayer} without restricting the return type of {@link #getFeatureSource()}

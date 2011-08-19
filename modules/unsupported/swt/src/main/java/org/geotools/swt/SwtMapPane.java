@@ -1213,4 +1213,9 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
 
         return swtImageData;
     }
+
+    @Override
+    public void layerPreDispose( MapLayerListEvent event ) {
+        
+    }
 }

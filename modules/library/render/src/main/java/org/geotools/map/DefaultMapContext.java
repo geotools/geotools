@@ -366,7 +366,7 @@ public class DefaultMapContext extends MapContext {
      * This amounts to the viewport taking its default CRS from the first provided layer.
      */
 //    private void checkCRS(CoordinateReferenceSystem crs) {
-//        if( viewport != null && viewport.getCoordianteReferenceSystem() != null ){
+//        if( viewport != null && viewport.getCoordinateReferenceSystem() != null ){
 //            if (crs != null) {
 //                getViewport().setCoordinateReferenceSystem(crs);
 //            }

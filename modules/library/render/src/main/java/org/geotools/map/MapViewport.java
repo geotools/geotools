@@ -29,7 +29,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.event.MapBoundsEvent;
 import org.geotools.map.event.MapBoundsListener;
 import org.geotools.map.event.MapBoundsEvent.Type;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.util.logging.Logging;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -71,6 +71,12 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public class MapViewport {
     /** The logger for the map module. */
     static protected final Logger LOGGER = Logging.getLogger("org.geotools.map");
+    
+    /**
+     * The default coordinate reference system for the viewport
+     * ({@linkplain DefaultEngineeringCRS#GENERIC_2D}).
+     */
+    public static CoordinateReferenceSystem DEFAULT_CRS = DefaultEngineeringCRS.GENERIC_2D;
 
     /* 
      * The current display area expressed in window coordinates 
@@ -103,19 +109,17 @@ public class MapViewport {
     private boolean hasCenteringTransforms;
 
     /**
-     * Creates a new view port. The viewport bounds, in both screen and world coordinates,
-     * will be empty rectangles, a default coordinate reference system (WGS84) will
-     * be set, and aspect ratio matching will not be enabled.
+     * Creates a new view port. Screen area and world bounds will be empty;
+     * the {@linkplain #DEFAULT_CRS} will be set; and aspect ratio matching will
+     * be disabled.
      */
     public MapViewport(){
         this(null);
     }
     
     /**
-     * Creates a new view port with aspect ratio matching enabled or disabled according
-     * to {@code matchAspectRatio}. The viewport bounds, in both screen and world coordinates,
-     * will be empty rectangles and a default coordinate reference system (WGS84) will
-     * be set.
+     * Creates a new view port. Screen area and world bounds will be empty;
+     * the {@linkplain #DEFAULT_CRS} will be set
      * 
      * @param matchAspectRatio whether to enable aspect ratio matching
      */
@@ -128,8 +132,8 @@ public class MapViewport {
      * The input envelope is copied so subsequent changes to it will not affect the
      * viewport.
      * <p>
-     * The initial screen area will be empty and aspect ratio matching will not
-     * be enabled.
+     * The initial screen area will be empty and aspect ratio matching will be
+     * disabled.
      * 
      * @param bounds display area in world coordinates (may be {@code null})
      */
@@ -138,12 +142,11 @@ public class MapViewport {
     }
     
     /**
-     * Creates a new view port  with the specified display area in world coordinates.
+     * Creates a new viewport with the specified world bounds.
      * The input envelope is copied so subsequent changes to it will not affect the
      * viewport.
      * <p>
-     * The initial screen area will be empty and aspect ratio matching will be enabled
-     * or disabled according to {@code matchAspectRatio}.
+     * The initial screen area will be empty.
      * 
      * @param bounds display area in world coordinates (may be {@code null})
      * @param matchAspectRatio whether to enable aspect ratio matching
@@ -154,7 +157,7 @@ public class MapViewport {
         this.matchingAspectRatio = matchAspectRatio;
         
         if (bounds == null || bounds.isEmpty()) { 
-            this.bounds = new ReferencedEnvelope(DefaultGeographicCRS.WGS84);
+            this.bounds = new ReferencedEnvelope(DEFAULT_CRS);
             
         } else {
             this.bounds = new ReferencedEnvelope(bounds);
@@ -285,7 +288,8 @@ public class MapViewport {
     }
     
     /**
-     * The coordinate reference system used for rendering the map.
+     * The coordinate reference system used for rendering the map. If not yet
+     * set, {@linkplain #DEFAULT_CRS} is returned.
      * <p>
      * The coordinate reference system used for rendering is often considered to be the "world"
      * coordinate reference system; this is distinct from the coordinate reference system used for
@@ -294,8 +298,8 @@ public class MapViewport {
      * 
      * @return coordinate reference system used for rendering the map.
      */
-    public synchronized CoordinateReferenceSystem getCoordianteReferenceSystem() {
-        return bounds == null ? null : bounds.getCoordinateReferenceSystem();
+    public synchronized CoordinateReferenceSystem getCoordinateReferenceSystem() {
+        return bounds == null ? DEFAULT_CRS : bounds.getCoordinateReferenceSystem();
     }
 
     /**

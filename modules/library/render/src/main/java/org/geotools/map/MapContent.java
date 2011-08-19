@@ -623,7 +623,7 @@ public class MapContent {
     public ReferencedEnvelope getMaxBounds() {
         CoordinateReferenceSystem mapCrs = null;
         if (viewport != null) {
-            mapCrs = viewport.getCoordianteReferenceSystem();
+            mapCrs = viewport.getCoordinateReferenceSystem();
         }
         ReferencedEnvelope maxBounds = null;
 
@@ -749,7 +749,7 @@ public class MapContent {
      * @return coordinate reference system used for rendering the map.
      */
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
-        return getViewport().getCoordianteReferenceSystem();
+        return getViewport().getCoordinateReferenceSystem();
     }
 
     /**

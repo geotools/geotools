@@ -470,7 +470,7 @@ public class MapContext extends MapContent {
         // (I would prefer to skip these layers as getMaxBounds() does however some test cases
         // depend on this feature)
         ReferencedEnvelope maxBounds = null;
-        CoordinateReferenceSystem mapCRS = viewport != null ? viewport.getCoordianteReferenceSystem() : null;
+        CoordinateReferenceSystem mapCRS = viewport != null ? viewport.getCoordinateReferenceSystem() : null;
 
         for (Layer layer : layers()) {
             if (layer == null) {

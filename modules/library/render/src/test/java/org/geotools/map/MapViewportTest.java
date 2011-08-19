@@ -20,6 +20,7 @@ package org.geotools.map;
 import java.awt.Rectangle;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 
 import org.junit.Test;
@@ -52,10 +53,15 @@ public class MapViewportTest {
     @Test
     public void defaultCtor() {
         MapViewport vp = new MapViewport();
-        assertTrue(vp.isEmpty());
+        
         assertFalse(vp.isMatchingAspectRatio());
+        
+        assertTrue(vp.isEmpty());
         assertTrue(vp.getBounds().isEmpty());
         assertTrue(vp.getScreenArea().isEmpty());
+        
+        assertTrue(CRS.equalsIgnoreMetadata(MapViewport.DEFAULT_CRS, 
+                vp.getCoordinateReferenceSystem()));
     }
     
     @Test
@@ -125,6 +131,20 @@ public class MapViewportTest {
         vp.setScreenArea(screenArea);
         
         assertTrue( expectedBounds.boundsEquals2D(vp.getBounds(), TOL) );
+    }
+    
+    @Test
+    public void settingBoundsSetsTheViewportCRS() {
+        MapViewport vp = new MapViewport();
+        assertFalse(CRS.equalsIgnoreMetadata(
+                WORLD_1_1.getCoordinateReferenceSystem(), 
+                vp.getCoordinateReferenceSystem()));
+        
+        vp.setBounds(WORLD_1_1);
+        assertTrue(CRS.equalsIgnoreMetadata(
+                WORLD_1_1.getCoordinateReferenceSystem(), 
+                vp.getCoordinateReferenceSystem()));
+        
     }
     
     @Test

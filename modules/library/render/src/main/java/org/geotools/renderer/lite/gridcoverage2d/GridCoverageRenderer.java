@@ -17,6 +17,7 @@
 package org.geotools.renderer.lite.gridcoverage2d;
 
 // J2SE dependencies
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -871,7 +872,12 @@ public final class GridCoverageRenderer {
             //debug
             if (DEBUG) {
                 writeRenderedImage(finalImage,"final");
-            }               
+            }        
+            
+            // force solid alpha, the transparency has already been
+            // dealt with in the image preparation, and we have to make
+            // sure previous vector rendering code did not leave a non solid alpha
+            graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
 
             // //
             // Drawing the Image

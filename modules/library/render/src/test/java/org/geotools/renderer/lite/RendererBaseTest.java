@@ -156,7 +156,7 @@ public abstract class RendererBaseTest {
         return image;
     }
 
-    private static BufferedImage renderImage(GTRenderer renderer, ReferencedEnvelope bounds,
+    public static BufferedImage renderImage(GTRenderer renderer, ReferencedEnvelope bounds,
             RenderListener listener) {
         int w = 300;
         int h = 300;

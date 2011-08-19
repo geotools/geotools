@@ -59,7 +59,7 @@ public class GridCoverageLayer extends Layer {
 
     @Override
     public void dispose() {
-        if( coverage == null ){
+        if( coverage != null ){
             try{
                 coverage.dispose(true);
             }catch (Exception e) {
@@ -67,8 +67,8 @@ public class GridCoverageLayer extends Layer {
             }            
             coverage = null;
         }
-        if( style == null ){
-            this.style = null;
+        if( style != null ){
+            style = null;
         }
         super.dispose();
     }

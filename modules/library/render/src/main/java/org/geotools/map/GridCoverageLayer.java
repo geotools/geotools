@@ -72,19 +72,20 @@ public class GridCoverageLayer extends RasterLayer {
 
     @Override
     public void dispose() {
-        if( coverage == null ){
+        if( coverage != null ){
             try{
                 coverage.dispose(true);
             }catch (Exception e) {
                 // eat me
-            }
+            }            
             coverage = null;
         }
-        if( style == null ){
-            this.style = null;
+        if( style != null ){
+            style = null;
         }
         super.dispose();
     }
+
     /**
      * Access to the grid coverage being drawn.
      * @return grid coverage being drawn.

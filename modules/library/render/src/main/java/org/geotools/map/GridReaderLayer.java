@@ -24,7 +24,6 @@ import org.geotools.factory.FactoryRegistryException;
 import org.geotools.feature.SchemaException;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.event.MapLayerEvent;
 import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.styling.Style;
 import org.opengis.parameter.GeneralParameterValue;

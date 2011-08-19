@@ -815,58 +815,71 @@ public class SLDStyleFactory {
 		return (Geometry) property.evaluate(feature, Geometry.class);
 	}
 
-	/**
-	 * Returns the first font associated to the feature that can be found on the
-	 * current machine
-	 * 
-	 * @param feature
-	 *            The feature whose font is to be found
-	 * @param fonts
-	 *            An array of fonts dependent of the feature, the first that is
-	 *            found on the current machine is returned
-	 * 
-	 * @return The first of the specified fonts found on this machine or null if
-	 *         none found
-	 */
-	private java.awt.Font getFont(Object feature, Font[] fonts) {
-		if (fonts != null) {
-			for (int k = 0; k < fonts.length; k++) {
-				String requestedFont = evalToString(fonts[k].getFontFamily(),
-						feature, null);
-				java.awt.Font javaFont = FontCache.getDefaultInstance()
-						.getFont(requestedFont);
+    /**
+     * Returns the first font associated to the feature that can be found on the
+     * current machine
+     *
+     * @param feature
+     *            The feature whose font is to be found
+     * @param fonts
+     *            An array of fonts dependent of the feature, the first that is
+     *            found on the current machine is returned
+     *
+     * @return The first of the specified fonts found on this machine or null if
+     *         none found
+     */
+    private java.awt.Font getFont(Object feature, Font[] fonts) {
 
-				if (javaFont != null) {
-					String reqStyle = evalToString(fonts[k].getFontStyle(),
-							feature, null);
+        // try to build a font using the full spec
+        if (fonts != null) {
 
-					int styleCode;
-					if (fontStyleLookup.containsKey(reqStyle)) {
-						styleCode = ((Integer) fontStyleLookup.get(reqStyle))
-								.intValue();
-					} else {
-						styleCode = java.awt.Font.PLAIN;
-					}
+            for (int k = 0; k < fonts.length; k++) {
+                Font curr = fonts[k];
+                String requestedFont = evalToString(curr.getFontFamily(),
+                        feature, null);
+                java.awt.Font javaFont = FontCache.getDefaultInstance().getFont(
+                        requestedFont);
 
-					String reqWeight = evalToString(fonts[k].getFontWeight(),
-							feature, null);
+                if (javaFont != null) {
+                    return styleFont(feature, curr, javaFont);
+                }
+            }
+        }
 
-					if ("Bold".equalsIgnoreCase(reqWeight)) {
-						styleCode = styleCode | java.awt.Font.BOLD;
-					}
+        // could not find the requested font, see if we can at least use the
+        // requested styling
+        java.awt.Font result = new java.awt.Font("Serif", java.awt.Font.PLAIN,
+                12);
 
-					int size = evalToInt(fonts[k].getFontSize(), feature, 10);
+        if ((fonts != null) && (fonts.length > 0)) {
+            return styleFont(feature, fonts[0], result);
+        } else {
+            return result;
+        }
+    }
 
-					return javaFont.deriveFont(styleCode, size);
-				}
-			}
-		}
+    private java.awt.Font styleFont(Object feature, Font curr,
+        java.awt.Font javaFont) {
+        String reqStyle = evalToString(curr.getFontStyle(), feature, null);
 
-		// if everything else fails fall back on a default font distributed
-		// along with the jdk (default font size is 10 pixels by spec... here we
-		// are using points thoughts)
-		return new java.awt.Font("Serif", java.awt.Font.PLAIN, 12);
-	}
+        int styleCode;
+
+        if (fontStyleLookup.containsKey(reqStyle)) {
+            styleCode = ((Integer) fontStyleLookup.get(reqStyle)).intValue();
+        } else {
+            styleCode = java.awt.Font.PLAIN;
+        }
+
+        String reqWeight = evalToString(curr.getFontWeight(), feature, null);
+
+        if ("Bold".equalsIgnoreCase(reqWeight)) {
+            styleCode = styleCode | java.awt.Font.BOLD;
+        }
+
+        int size = evalToInt(curr.getFontSize(), feature, 10);
+
+        return javaFont.deriveFont(styleCode, size);
+    }
 
 	void setScaleRange(Style style, Range scaleRange) {
 		double min = ((Number) scaleRange.getMinValue()).doubleValue();

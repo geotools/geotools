@@ -36,12 +36,14 @@ import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.renderer.style.SLDStyleFactory.SymbolizerKey;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.Fill;
+import org.geotools.styling.Font;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Mark;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.StyleFactory;
+import org.geotools.styling.TextSymbolizer;
 import org.geotools.util.NumberRange;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -291,6 +293,7 @@ public class SLDStyleFactoryTest extends TestCase {
         assertEquals( Color.BLUE, s2.getContour() );
         assertNotNull( s2.getStroke() );
     }
+    
     public void testTexturePaintNoSize() throws Exception {
         PolygonSymbolizer symb = sf.createPolygonSymbolizer();
         Mark myMark = sf.createMark();
@@ -303,4 +306,15 @@ public class SLDStyleFactoryTest extends TestCase {
         assertTrue(ps.getFill() instanceof TexturePaint);
     }
     
+    public void testUnknownFont() throws Exception {
+    	TextSymbolizer ts = sf.createTextSymbolizer();
+    	ts.setFill(sf.createFill(null));
+    	Font font = sf.createFont(ff.literal("notExistingFont"), ff.literal("italic"), ff.literal("bold"), ff.literal(20));
+    	ts.setFont(font);
+    	
+    	TextStyle2D tsd = (TextStyle2D) sld.createTextStyle(feature, ts, range);
+    	assertEquals(20, tsd.getFont().getSize());
+    	assertEquals(java.awt.Font.ITALIC | java.awt.Font.BOLD, tsd.getFont().getStyle());
+    	assertEquals("Serif", tsd.getFont().getName());
+    }
 }

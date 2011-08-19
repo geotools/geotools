@@ -1,12 +1,25 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
+
 package org.geotools.map;
 
-import java.util.concurrent.CountDownLatch;
 import java.io.IOException;
 
-import java.util.concurrent.TimeUnit;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.event.MapLayerListEvent;
-import org.geotools.map.event.MapLayerListListener;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 
 import org.junit.Test;
@@ -14,7 +27,12 @@ import static org.junit.Assert.*;
 
 /**
  * Tests to ensure the consistency of MapContent and MapViewport functionality.
+ * 
  * @author Jody Garnett
+ * @author Michael Bedward
+ * @since 8.0
+ * @source $URL$
+ * @version $Id$
  */
 public class MapContentTest {
     
@@ -105,12 +123,12 @@ public class MapContentTest {
     @Test
     public void addLayerAndGetEvent() {
         MapContent map = new MapContent();
-        WaitingListener listener = new WaitingListener();
+        WaitingMapListener listener = new WaitingMapListener();
         map.addMapLayerListListener(listener);
         
-        listener.setExpected(WaitingListener.Type.ADDED);
+        listener.setExpected(WaitingMapListener.Type.ADDED);
         map.addLayer(new MockLayer(WORLD_ENV));
-        assertTrue(listener.await(WaitingListener.Type.ADDED, LISTENER_TIMEOUT));
+        assertTrue(listener.await(WaitingMapListener.Type.ADDED, LISTENER_TIMEOUT));
     }
     
     @Test
@@ -119,12 +137,12 @@ public class MapContentTest {
         Layer layer = new MockLayer(WORLD_ENV);
         map.addLayer(layer);
         
-        WaitingListener listener = new WaitingListener();
+        WaitingMapListener listener = new WaitingMapListener();
         map.addMapLayerListListener(listener);
-        listener.setExpected(WaitingListener.Type.REMOVED);
+        listener.setExpected(WaitingMapListener.Type.REMOVED);
 
         map.removeLayer(layer);
-        assertTrue(listener.await(WaitingListener.Type.REMOVED, LISTENER_TIMEOUT));
+        assertTrue(listener.await(WaitingMapListener.Type.REMOVED, LISTENER_TIMEOUT));
     }
     
     @Test
@@ -135,12 +153,12 @@ public class MapContentTest {
         map.addLayer(layer0);
         map.addLayer(layer1);
         
-        WaitingListener listener = new WaitingListener();
+        WaitingMapListener listener = new WaitingMapListener();
         map.addMapLayerListListener(listener);
-        listener.setExpected(WaitingListener.Type.MOVED, 2);
+        listener.setExpected(WaitingMapListener.Type.MOVED, 2);
         
         map.moveLayer(0, 1);
-        assertTrue(listener.await(WaitingListener.Type.MOVED, LISTENER_TIMEOUT));
+        assertTrue(listener.await(WaitingMapListener.Type.MOVED, LISTENER_TIMEOUT));
     }
     
     @Test
@@ -149,83 +167,11 @@ public class MapContentTest {
         Layer layer = new MockLayer(WORLD_ENV);
         map.addLayer(layer);
         
-        WaitingListener listener = new WaitingListener();
+        WaitingMapListener listener = new WaitingMapListener();
         map.addMapLayerListListener(listener);
-        listener.setExpected(WaitingListener.Type.PRE_DISPOSE);
+        listener.setExpected(WaitingMapListener.Type.PRE_DISPOSE);
         
         map.dispose();
-        assertTrue(listener.await(WaitingListener.Type.PRE_DISPOSE, LISTENER_TIMEOUT));
+        assertTrue(listener.await(WaitingMapListener.Type.PRE_DISPOSE, LISTENER_TIMEOUT));
     }
-    
-    private static class WaitingListener implements MapLayerListListener {
-
-        static enum Type {
-            ADDED,
-            REMOVED,
-            CHANGED,
-            MOVED,
-            PRE_DISPOSE;
-        }
-        
-        private final static int N = Type.values().length;
-        CountDownLatch[] latches = new CountDownLatch[N];
-        
-        void setExpected(Type type) {
-            setExpected(type, 1);
-        }
-        
-        void setExpected(Type type, int count) {
-            latches[type.ordinal()] = new CountDownLatch(count);
-        }
-        
-        boolean await(Type type, long timeoutMillis) {
-            int index = type.ordinal();
-            if (latches[index] == null) {
-                throw new IllegalStateException("Event type not expected: " + type);
-            }
-            
-            boolean result = false;
-            try {
-                result = latches[index].await(timeoutMillis, TimeUnit.MILLISECONDS);
-            } catch (InterruptedException ex) {
-                throw new RuntimeException(ex);
-            }
-            
-            return result;
-        }
-
-        @Override
-        public void layerAdded(MapLayerListEvent event) {
-            catchEvent(Type.ADDED);
-        }
-
-        @Override
-        public void layerRemoved(MapLayerListEvent event) {
-            catchEvent(Type.REMOVED);
-        }
-
-        @Override
-        public void layerChanged(MapLayerListEvent event) {
-            catchEvent(Type.CHANGED);
-        }
-
-        @Override
-        public void layerMoved(MapLayerListEvent event) {
-            catchEvent(Type.MOVED);
-        }
-        
-        @Override
-        public void layerPreDispose(MapLayerListEvent event) {
-            catchEvent(Type.PRE_DISPOSE);
-        }
-
-        private void catchEvent(Type type) {
-            int index = type.ordinal();
-            if (latches[index] == null) {
-                throw new IllegalStateException("Event type not expected: " + type);
-            }
-            latches[index].countDown();
-        }
-        
-   }
 }

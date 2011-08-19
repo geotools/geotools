@@ -104,39 +104,41 @@ public class MapContent {
      * Please note that open connections (FeatureSources and GridCoverage readers) are
      * the responsibility of your application and are not cleaned up by this method.
      */
-    public void dispose(){
-        if( this.mapListeners != null ){
+    public void dispose() {
+        if (this.layerList != null) {
+            for (Layer layer : layerList) {
+                if (layer != null) {
+                    // Layer.dispose will inform listeners of the impending
+                    // disposal, then remove listeners from this layer
+                    layer.dispose();
+                }
+            }
+            layerList.clear();
+            layerList = null;
+        }
+        
+        if (this.mapListeners != null) {
             this.mapListeners.clear();
             this.mapListeners = null;
         }
-        if( this.layerList != null ){
-            // remove mapListeners prior to removing layers
-           for( Layer layer : layerList ){
-               if( layer == null ) continue;
-               if( this.layerListener != null ){
-                   layer.removeMapLayerListener(layerListener);
-               }
-               layer.dispose();
-           }
-           layerList.clear();
-           layerList = null;
-       }
-       if( this.layerListener != null ){
-           this.layerListener = null;
-       }
-       
-       if( this.propertyListeners != null ){
-           this.propertyListeners.clear();
-           this.propertyListeners = null;
-       }
-       this.title = null;
-       if( this.userData != null ){
-           // remove property listeners prior to removing userData
-           this.userData.clear();
-           this.userData = null;
-       }
+        
+        if (this.layerListener != null) {
+            this.layerListener = null;
+        }
+
+        if (this.propertyListeners != null) {
+            this.propertyListeners.clear();
+            this.propertyListeners = null;
+        }
+        
+        this.title = null;
+        if (this.userData != null) {
+            // remove property listeners prior to removing userData
+            this.userData.clear();
+            this.userData = null;
+        }
     }
-    
+
    
     public MapContent(MapContext context){
         for( MapLayer mapLayer : context.getLayers() ){
@@ -270,6 +272,13 @@ public class MapContent {
                     int index = layers().indexOf(layer);
                     fireLayerEvent(layer, index, event);
                 }
+
+                public void layerPreDispose(MapLayerEvent event) {
+                    Layer layer = (Layer) event.getSource();
+                    int index = layers().indexOf(layer);
+                    fireLayerEvent(layer, index, event);
+                }
+                
             };
         }
         if (listen) {
@@ -559,6 +568,23 @@ public class MapContent {
         }
     }
 
+    protected void fireLayerPreDispose(Layer element, int toIndex) {
+        if (mapListeners == null) {
+            return;
+        }
+        MapLayerListEvent event = new MapLayerListEvent(this, element, toIndex);
+        for (MapLayerListListener mapLayerListListener : mapListeners) {
+            try {
+                mapLayerListListener.layerPreDispose(event);
+            } catch (Throwable t) {
+                if (LOGGER.isLoggable(Level.FINER)) {
+                    LOGGER.logp(Level.FINE, mapLayerListListener.getClass().getName(),
+                            "layerMoved", t.getLocalizedMessage(), t);
+                }
+            }
+        }
+    }
+
     protected void fireLayerEvent(Layer element, int index, MapLayerEvent layerEvent) {
         if (mapListeners == null) {
             return;
@@ -566,7 +592,14 @@ public class MapContent {
         MapLayerListEvent mapEvent = new MapLayerListEvent(this, element, index, layerEvent);
         for (MapLayerListListener mapLayerListListener : mapListeners) {
             try {
-                mapLayerListListener.layerChanged(mapEvent);
+                switch (layerEvent.getReason()) {
+                    case MapLayerEvent.PRE_DISPOSE:
+                        mapLayerListListener.layerPreDispose(mapEvent);
+                        break;
+                        
+                    default:
+                        mapLayerListListener.layerChanged(mapEvent);
+                }
             } catch (Throwable t) {
                 if (LOGGER.isLoggable(Level.FINER)) {
                     LOGGER.logp(Level.FINE, mapLayerListListener.getClass().getName(),

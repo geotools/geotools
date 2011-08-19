@@ -756,6 +756,14 @@ public abstract class AbstractMapPane extends JPanel
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void layerPreDispose(MapLayerListEvent event) {
+        getRenderingExecutor().cancelAll();
+    }
+
+    /**
      * Called by the map context when its bounds have changed. Used
      * here to watch for a changed CRS, in which case the map is
      * redisplayed at (new) full extent.

@@ -113,6 +113,7 @@ public class FeatureLayer extends StyleLayer {
 
     @Override
     public void dispose() {
+        preDispose();
         if (featureSource != null) {
             if (sourceListener != null) {
                 featureSource.removeFeatureListener(sourceListener);

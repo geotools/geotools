@@ -54,4 +54,11 @@ public interface MapLayerListListener extends EventListener {
      * @param event encapsulating the event information
      */
     public void layerMoved(MapLayerListEvent event);
+    
+    /**
+     * Triggered when a layer is about to be disposed.
+     * 
+     * @param event encapsulating the event information
+     */
+    public void layerPreDispose(MapLayerListEvent event);
 }

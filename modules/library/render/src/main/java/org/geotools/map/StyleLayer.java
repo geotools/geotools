@@ -54,6 +54,9 @@ public abstract class StyleLayer extends Layer {
 
     @Override
     public void dispose() {
+        // We assume that preDispose has been called by 
+        // the sub-class
+        
         style = null;
         super.dispose();
     }

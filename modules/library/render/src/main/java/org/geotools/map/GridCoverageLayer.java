@@ -72,6 +72,7 @@ public class GridCoverageLayer extends RasterLayer {
 
     @Override
     public void dispose() {
+        preDispose();
         if( coverage != null ){
             try{
                 coverage.dispose(true);

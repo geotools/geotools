@@ -71,6 +71,9 @@ public abstract class RasterLayer extends StyleLayer {
 
     @Override
     public void dispose() {
+        // We assume that preDispose() has been called by the 
+        // by the sub-class
+        
         if( source != null ){
             getUserData().remove("source");
             source = null;

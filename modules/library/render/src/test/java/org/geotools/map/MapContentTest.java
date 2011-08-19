@@ -42,17 +42,15 @@ public class MapContentTest {
         public ReferencedEnvelope getBounds() {
             return bounds;
         }
+        
+        @Override
+        public void dispose() {
+            preDispose();
+            bounds = null;
+            super.dispose();
+        }
     }
     
-    @Test
-    public void testDispose() {
-        MapContent map = new MapContent();
-        map.dispose();
-
-        map = new MapContent(DefaultGeographicCRS.WGS84);
-        map.dispose();
-    }
-
     /**
      * Test DefaultMapContext handles layers that return null bounds.
      */
@@ -145,12 +143,28 @@ public class MapContentTest {
         assertTrue(listener.await(WaitingListener.Type.MOVED, LISTENER_TIMEOUT));
     }
     
+    @Test
+    public void disposeMapContentAndGetLayerPreDisposeEvent() {
+        MapContent map = new MapContent();
+        Layer layer = new MockLayer(WORLD_ENV);
+        map.addLayer(layer);
+        
+        WaitingListener listener = new WaitingListener();
+        map.addMapLayerListListener(listener);
+        listener.setExpected(WaitingListener.Type.PRE_DISPOSE);
+        
+        map.dispose();
+        assertTrue(listener.await(WaitingListener.Type.PRE_DISPOSE, LISTENER_TIMEOUT));
+    }
+    
     private static class WaitingListener implements MapLayerListListener {
+
         static enum Type {
             ADDED,
             REMOVED,
             CHANGED,
-            MOVED;
+            MOVED,
+            PRE_DISPOSE;
         }
         
         private final static int N = Type.values().length;
@@ -200,6 +214,11 @@ public class MapContentTest {
             catchEvent(Type.MOVED);
         }
         
+        @Override
+        public void layerPreDispose(MapLayerListEvent event) {
+            catchEvent(Type.PRE_DISPOSE);
+        }
+
         private void catchEvent(Type type) {
             int index = type.ordinal();
             if (latches[index] == null) {

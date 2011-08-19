@@ -126,6 +126,7 @@ public class GridReaderLayer extends RasterLayer {
 
     @Override
     public void dispose() {
+        preDispose();
         if (reader != null) {
             try{
                 reader.dispose();

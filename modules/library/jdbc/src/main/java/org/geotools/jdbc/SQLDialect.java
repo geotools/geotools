@@ -264,8 +264,6 @@ public abstract class SQLDialect {
         mappings.put(new Integer(Types.VARCHAR), String.class);
         mappings.put(new Integer(Types.CHAR), String.class);
         mappings.put(new Integer(Types.LONGVARCHAR), String.class);
-        mappings.put(new Integer(Types.NVARCHAR), String.class);
-        mappings.put(new Integer(Types.NCHAR), String.class);
         
         mappings.put(new Integer(Types.BIT), Boolean.class);
         mappings.put(new Integer(Types.BOOLEAN), Boolean.class);

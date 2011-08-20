@@ -54,7 +54,6 @@ public class TeradataDataStoreTest extends JDBCDataStoreTest {
         for (int i = 0; i < t.length; i++) {
             final int id = i+1;
             t[i] = new Thread(new Runnable() {
-                @Override
                 public void run() {
                     for (int j = 0; j < 50; j++) {
                         try {

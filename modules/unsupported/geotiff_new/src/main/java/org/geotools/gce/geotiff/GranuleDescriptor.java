@@ -285,12 +285,16 @@ class GranuleDescriptor {
         }
     }
 
-    public RenderedImage loadRaster(final ImageReadParam readParameters, final int imageIndex,
-            final ReferencedEnvelope cropBBox, final MathTransform2D mosaicWorldToGrid,
-            final RasterLayerRequest request, final Dimension tileDimension) throws IOException {
+    public RenderedImage loadRaster(
+            final ImageReadParam readParameters, 
+            final int imageIndex,
+            final ReferencedEnvelope cropBBox, 
+            final MathTransform2D requestedWorldToGrid,
+            final RasterLayerRequest request, 
+            final Dimension tileDimension) throws IOException {
 
         if (LOGGER.isLoggable(java.util.logging.Level.FINE)) {
-            LOGGER.fine("Loading raster data for rasterGranuleLoader " + this.toString());
+            LOGGER.fine("Loading raster data for GranuleDescriptor " + this.toString());
         }
         ImageInputStream inStream = null;
         int imageChoice = imageIndex;
@@ -306,11 +310,9 @@ class GranuleDescriptor {
             //
             // get info about the raster we have to read
             //
-            if (request.rasterManager.parent.extOvrImgChoice >= 0 && 
-                    imageIndex >= request.rasterManager.parent.extOvrImgChoice) {
+            if (request.rasterManager.parent.extOvrImgChoice >= 0 && imageIndex >= request.rasterManager.parent.extOvrImgChoice) {
                 file = request.rasterManager.parent.ovrSource;
-                inStream = request.rasterManager.parent.ovrInStreamSPI.createInputStreamInstance(
-                        file, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
+                inStream = request.rasterManager.parent.ovrInStreamSPI.createInputStreamInstance(file, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
                 imageChoice = imageIndex - request.rasterManager.parent.extOvrImgChoice;
             } else {
                 inStream = ImageIOExt.createImageInputStream(file);    
@@ -325,14 +327,13 @@ class GranuleDescriptor {
             reader.setInput(inStream);
 
             // get selected level and base level dimensions
-            final Level selectedlevel = getLevel(request, imageIndex);
+            final Level selectedlevel = getLevel(reader,request, imageIndex);
 
             // now create the crop grid to world which can be used to decide
             // which source area we need to crop in the selected level taking
             // into account the scale factors imposed by the selection of this
             // level together with the base level grid to world transformation
-            final MathTransform2D cropGridToWorldCorner = (MathTransform2D) ProjectiveTransform
-                    .create(selectedlevel.gridToWorldTransform);
+            final MathTransform2D cropGridToWorldCorner = (MathTransform2D) ProjectiveTransform.create(selectedlevel.gridToWorldTransform);
             final MathTransform2D cropWorldToGrid = cropGridToWorldCorner.inverse();
 
             // computing the crop source area which leaves straight into the
@@ -340,9 +341,7 @@ class GranuleDescriptor {
             // take into account the fact that we might also decimate therefore
             // we cannot just use the crop grid to world but we need to correct
             // it.
-            final Rectangle sourceArea = CRS
-                    .transform(cropWorldToGrid, new GeneralEnvelope(intersection)).toRectangle2D()
-                    .getBounds();
+            final Rectangle sourceArea = CRS.transform(cropWorldToGrid, new GeneralEnvelope(intersection)).toRectangle2D().getBounds();
             XRectangle2D.intersect(sourceArea, selectedlevel.rasterDimensions, sourceArea);
             // make sure roundings don't bother us
 
@@ -362,8 +361,7 @@ class GranuleDescriptor {
             readParameters.setSourceRegion(sourceArea);
 
             // read
-            RenderedImage raster = request.getReadType().read(readParameters, imageChoice,
-                    file, selectedlevel.rasterDimensions, tileDimension);
+            RenderedImage raster = request.getReadType().read(readParameters, imageChoice, file, selectedlevel.rasterDimensions, tileDimension);
             if (raster == null) {
                 return null;
             }
@@ -394,33 +392,21 @@ class GranuleDescriptor {
             // place it in the mosaic using the coords created above;
             double decimationScaleX = ((1.0 * sourceArea.width) / raster.getWidth());
             double decimationScaleY = ((1.0 * sourceArea.height) / raster.getHeight());
-            final AffineTransform decimationScaleTranform = XAffineTransform.getScaleInstance(
-                    decimationScaleX, decimationScaleY);
+            final AffineTransform decimationScaleTranform = XAffineTransform.getScaleInstance(decimationScaleX, decimationScaleY);
 
             // keep into account translation to work into the selected level
             // raster space
-            final AffineTransform afterDecimationTranslateTranform = XAffineTransform
-                    .getTranslateInstance(sourceArea.x, sourceArea.y);
-
-            // now we need to go back to the base level raster space
-            final AffineTransform backToBaseLevelScaleTransform = selectedlevel.levelToBaseTransform;
+            final AffineTransform afterDecimationTranslateTranform = XAffineTransform.getTranslateInstance(sourceArea.x, sourceArea.y);
 
             // now create the overall transform
-            final AffineTransform tempRaster2Model = new AffineTransform(baseGridToWorld);
-            tempRaster2Model.concatenate(CoverageUtilities.CENTER_TO_CORNER);
-            if (!XAffineTransform.isIdentity(backToBaseLevelScaleTransform, Utils.AFFINE_IDENTITY_EPS)) {
-                tempRaster2Model.concatenate(backToBaseLevelScaleTransform);
-            }
+            final AffineTransform finalTransform = AffineTransform.getRotateInstance(0);
             if (!XAffineTransform.isIdentity(afterDecimationTranslateTranform, Utils.AFFINE_IDENTITY_EPS)) {
-                tempRaster2Model.concatenate(afterDecimationTranslateTranform);
+                finalTransform.concatenate(afterDecimationTranslateTranform);
             }
             if (!XAffineTransform.isIdentity(decimationScaleTranform, Utils.AFFINE_IDENTITY_EPS)) {
-                tempRaster2Model.concatenate(decimationScaleTranform);
+                finalTransform.concatenate(decimationScaleTranform);
             }
 
-            // keep into account translation factors to place this tile
-            final AffineTransform finalTransform = tempRaster2Model;
-            finalTransform.preConcatenate((AffineTransform) mosaicWorldToGrid);
 
             final InterpolationNearest interpolation = new InterpolationNearest();
             // paranoiac check to avoid that JAI freaks out when computing its
@@ -507,51 +493,46 @@ class GranuleDescriptor {
 
     }
 
-    Level getLevel(RasterLayerRequest request, final int index) {
+    Level getLevel(ImageReader reader, RasterLayerRequest request,  int imageChoice) {
         synchronized (granuleLevels) {
-            if (granuleLevels.containsKey(Integer.valueOf(index))) {
-                return granuleLevels.get(Integer.valueOf(index));
+            if (granuleLevels.containsKey(Integer.valueOf(imageChoice))) {
+                return granuleLevels.get(Integer.valueOf(imageChoice));
             } else {
                 // load level
                 // create the base grid to world transformation
                 ImageInputStream inStream = null;
-                ImageReader reader = null;
+                boolean disposeReader =false;
                 File file = granuleFile; 
-                int imageChoice = index;
                 try {
                     //
                     // get info about the raster we have to read
                     //
                     if (request.rasterManager.parent.extOvrImgChoice >= 0 && 
-                            index >= request.rasterManager.parent.extOvrImgChoice) {
+                            imageChoice >= request.rasterManager.parent.extOvrImgChoice) {
                         file = request.rasterManager.parent.ovrSource;
                         inStream = request.rasterManager.parent.ovrInStreamSPI.createInputStreamInstance(
                                 file, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
-                        imageChoice = index - request.rasterManager.parent.extOvrImgChoice;
-                    } else {
-                        inStream = ImageIOExt.createImageInputStream(file);    
+                        imageChoice = imageChoice - request.rasterManager.parent.extOvrImgChoice;
+
+                        // get a reader
+                        reader = Utils.TIFFREADERFACTORY.createReaderInstance();
+                        reader.setInput(inStream);                        
+                        disposeReader=true;
                     }
-                    if (inStream == null) {
+                    if (reader == null) {
                         throw new IllegalArgumentException();
                     }
 
-                    // get a reader
-                    reader = Utils.TIFFREADERFACTORY.createReaderInstance();
-                    reader.setInput(inStream);
-
                     // get selected level and base level dimensions
-                    final Rectangle levelDimension = ImageUtilities.getDimension(imageChoice, inStream,
-                            reader);
+                    final Rectangle levelDimension =  new Rectangle(0, 0, reader.getWidth(imageChoice), reader.getHeight(imageChoice));
 
                     final Level baseLevel = granuleLevels.get(0);
                     final double scaleX = baseLevel.width / (1.0 * levelDimension.width);
                     final double scaleY = baseLevel.height / (1.0 * levelDimension.height);
 
                     // add the base level
-                    final Level newLevel = new Level(scaleX, scaleY, levelDimension.width,
-                            levelDimension.height);
-                    this.granuleLevels.put(Integer.valueOf(index), newLevel);
-
+                    final Level newLevel = new Level(scaleX, scaleY, levelDimension.width,levelDimension.height);
+                    this.granuleLevels.put(Integer.valueOf(imageChoice), newLevel);
                     return newLevel;
 
                 } catch (IllegalStateException e) {
@@ -566,7 +547,7 @@ class GranuleDescriptor {
                     } catch (Throwable e) {
                         throw new IllegalArgumentException(e);
                     } finally {
-                        if (reader != null)
+                        if (reader != null&& disposeReader)
                             reader.dispose();
                     }
                 }

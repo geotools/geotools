@@ -8,7 +8,6 @@ import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageWriterSpi;
 
 import java.awt.Color;
-import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -16,19 +15,15 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.channels.FileChannel;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.IIOException;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
 import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.metadata.IIOInvalidTreeException;
 import javax.imageio.metadata.IIOMetadata;
-import javax.imageio.stream.ImageInputStream;
 
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffConstants;
@@ -38,7 +33,6 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.PrjFileReader;
 import org.geotools.data.WorldFileReader;
 import org.geotools.referencing.CRS;
-import org.geotools.util.Utilities;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -62,9 +56,7 @@ class Utils {
     /** Logger for the {@link Utils} class. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger(Utils.class.toString());
-    
-    static final double EPSILON = 10E-6;
-    
+        
     static CoordinateReferenceSystem WGS84;
     
     static {

@@ -346,11 +346,6 @@ class GranuleDescriptor {
             XRectangle2D.intersect(sourceArea, selectedlevel.rasterDimensions, sourceArea);
             // make sure roundings don't bother us
 
-            // final Rectangle sourceAreaWithCollar= (Rectangle)
-            // sourceArea.clone();
-            // sourceAreaWithCollar.grow((int)(sourceArea.width*0.05),(int)(
-            // sourceArea.height*0.05));
-
             // is it empty??
             if (sourceArea.isEmpty()) {
                 if (LOGGER.isLoggable(java.util.logging.Level.WARNING)) {
@@ -413,28 +408,28 @@ class GranuleDescriptor {
             // now create the overall transform
             final AffineTransform tempRaster2Model = new AffineTransform(baseGridToWorld);
             tempRaster2Model.concatenate(CoverageUtilities.CENTER_TO_CORNER);
-            if (!XAffineTransform.isIdentity(backToBaseLevelScaleTransform, Utils.EPSILON)) {
+            if (!XAffineTransform.isIdentity(backToBaseLevelScaleTransform, Utils.AFFINE_IDENTITY_EPS)) {
                 tempRaster2Model.concatenate(backToBaseLevelScaleTransform);
             }
-            if (!XAffineTransform.isIdentity(afterDecimationTranslateTranform, Utils.EPSILON)) {
+            if (!XAffineTransform.isIdentity(afterDecimationTranslateTranform, Utils.AFFINE_IDENTITY_EPS)) {
                 tempRaster2Model.concatenate(afterDecimationTranslateTranform);
             }
-            if (!XAffineTransform.isIdentity(decimationScaleTranform, Utils.EPSILON)) {
+            if (!XAffineTransform.isIdentity(decimationScaleTranform, Utils.AFFINE_IDENTITY_EPS)) {
                 tempRaster2Model.concatenate(decimationScaleTranform);
             }
 
             // keep into account translation factors to place this tile
-            final AffineTransform translationTransform = tempRaster2Model;
-            translationTransform.preConcatenate((AffineTransform) mosaicWorldToGrid);
+            final AffineTransform finalTransform = tempRaster2Model;
+            finalTransform.preConcatenate((AffineTransform) mosaicWorldToGrid);
 
-            final InterpolationNearest nearest = new InterpolationNearest();
+            final InterpolationNearest interpolation = new InterpolationNearest();
             // paranoiac check to avoid that JAI freaks out when computing its
             // internal layouT on images that are too small
             Rectangle2D finalLayout = ImageUtilities.layoutHelper(raster,
-                    (float) translationTransform.getScaleX(),
-                    (float) translationTransform.getScaleY(),
-                    (float) translationTransform.getTranslateX(),
-                    (float) translationTransform.getTranslateY(), nearest);
+                    (float) finalTransform.getScaleX(),
+                    (float) finalTransform.getScaleY(),
+                    (float) finalTransform.getTranslateX(),
+                    (float) finalTransform.getTranslateY(), interpolation);
             if (finalLayout.isEmpty()) {
                 if (LOGGER.isLoggable(java.util.logging.Level.FINE)) {
                     LOGGER.fine("Unable to create a rasterGranuleLoader " + this.toString()
@@ -444,9 +439,8 @@ class GranuleDescriptor {
             }
 
             // apply the affine transform conserving indexed color model
-            final RenderingHints localHints = new RenderingHints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL,
-                    Boolean.FALSE);
-            if (XAffineTransform.isIdentity(translationTransform, Utils.EPSILON)) {
+            final RenderingHints localHints = new RenderingHints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL,interpolation instanceof InterpolationNearest? Boolean.FALSE:Boolean.TRUE);
+            if (XAffineTransform.isIdentity(finalTransform, Utils.AFFINE_IDENTITY_EPS)) {
                 return raster;
             } else {
                 //
@@ -455,19 +449,21 @@ class GranuleDescriptor {
                 // buffered images comes up untiled and this can affect the
                 // performances of the subsequent affine operation.
                 //
-                final Dimension tileDimensions = request.getTileDimensions();
-                if (tileDimensions != null && request.getReadType().equals(ReadType.DIRECT_READ)) {
-                    final ImageLayout layout = new ImageLayout();
-                    layout.setTileHeight(tileDimensions.width).setTileWidth(tileDimensions.height);
-                    localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
-                }
+                final Dimension tileDimensions=request.getTileDimensions();
+                if(tileDimensions!=null&&request.getReadType().equals(ReadType.DIRECT_READ)) {
+                        final ImageLayout layout = new ImageLayout();
+                        layout.setTileHeight(tileDimensions.width).setTileWidth(tileDimensions.height);
+                        localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT,layout));
+                } 
                 // border extender
-                // return WarpDescriptor.create(raster, new
-                // WarpAffine(translationTransform.createInverse()),new
-                // InterpolationNearest(),
-                // request.getBackgroundValues(),localHints);
-                return AffineDescriptor.create(raster, translationTransform, nearest, null,
-                        localHints);
+                localHints.add(ImageUtilities.BORDER_EXTENDER_HINTS);
+
+//                ImageWorker iw = new ImageWorker(raster);
+//                iw.setRenderingHints(localHints);
+//                iw.affine(finalTransform, interpolation, request.getBackgroundValues());
+//                return iw.getRenderedImage();
+                
+                return AffineDescriptor.create(raster, finalTransform, interpolation,request.getBackgroundValues(),localHints);
             }
 
         } catch (IllegalStateException e) {

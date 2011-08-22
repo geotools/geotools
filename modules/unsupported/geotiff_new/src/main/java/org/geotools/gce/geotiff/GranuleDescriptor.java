@@ -57,7 +57,7 @@ import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
 
 /**
- * A rasterGranuleLoader is an elementar piece of data image, with its own
+ * A GranuleDescriptor is an elementar piece of data image, with its own
  * overviews and everything.
  * 
  * <p>
@@ -72,11 +72,11 @@ import org.opengis.referencing.operation.TransformException;
  * @author Simone Giannecchini, GeoSolutions S.A.S.
  * @since 2.5.5
  */
-class GranuleLoader {
+class GranuleDescriptor {
 
     /** Logger. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(GranuleLoader.class);
+            .getLogger(GranuleDescriptor.class);
 
     /**
      * This class represent an overview level in a single rasterGranuleLoader.
@@ -168,7 +168,7 @@ class GranuleLoader {
 
     AffineTransform baseGridToWorld;
 
-    public GranuleLoader(final BoundingBox granuleBBOX, final File granuleFile,
+    public GranuleDescriptor(final BoundingBox granuleBBOX, final File granuleFile,
             final MathTransform gridToWorld) {
 
         this.granuleBBOX = ReferencedEnvelope.reference(granuleBBOX);
@@ -212,8 +212,7 @@ class GranuleLoader {
                 this.baseGridToWorld = (AffineTransform) gridToWorld;
 
             // add the base level
-            this.granuleLevels.put(Integer.valueOf(0), new Level(1, 1, originalDimension.width,
-                    originalDimension.height));
+            this.granuleLevels.put(Integer.valueOf(0), new Level(1, 1, originalDimension.width,originalDimension.height));
 
         } catch (IllegalStateException e) {
             throw new IllegalArgumentException(e);
@@ -332,31 +331,6 @@ class GranuleLoader {
                 return null;
             }
 
-            // ////
-            // //
-            // // collar management
-            // //
-            // ////
-            // if(!sourceArea.equals(sourceAreaWithCollar))
-            // {
-            // if(raster instanceof BufferedImage)
-            // {
-            // final BufferedImage image= (BufferedImage) raster;
-            // raster=image.getSubimage(
-            // sourceArea.x-sourceAreaWithCollar.x,
-            // sourceArea.y-sourceAreaWithCollar.y,
-            // sourceArea.width,
-            // sourceArea.height);
-            // }
-            // else
-            // raster=CropDescriptor.create(
-            // raster,
-            // (float)sourceArea.x-sourceAreaWithCollar.x,
-            // (float)sourceArea.y-sourceAreaWithCollar.y,
-            // (float)sourceArea.width,
-            // (float)sourceArea.height,
-            // null);
-            // }
             // use fixed source area
             sourceArea.setRect(readParameters.getSourceRegion());
 

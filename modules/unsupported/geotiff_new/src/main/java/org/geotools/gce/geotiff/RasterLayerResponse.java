@@ -94,13 +94,13 @@ import org.opengis.util.InternationalString;
  */
 class RasterLayerResponse{
 	
-    class GranuleWorker {
+    class GranuleLoader {
 
         private boolean doInputTransparency;
 
         private Color inputTransparentColor;
 
-        private GranuleLoader granuleLoader;
+        private GranuleDescriptor granuleDescriptor;
 
         /**
          * Default {@link Constructor}
@@ -108,7 +108,7 @@ class RasterLayerResponse{
          * @param aoi
          * @param gridToWorldCorner
          */
-        public GranuleWorker(ReferencedEnvelope aoi, MathTransform gridToWorldCorner) {
+        public GranuleLoader(ReferencedEnvelope aoi, MathTransform gridToWorldCorner) {
             init(aoi, gridToWorldCorner);
         }
 
@@ -117,12 +117,12 @@ class RasterLayerResponse{
             // Get location and envelope of the image to load.
             final ReferencedEnvelope granuleBBox = aoi;
 
-            // Load a granuleLoader from disk as requested.
-            // If the granuleLoader is not there, dump a message and continue
+            // Load a granuleDescriptor from disk as requested.
+            // If the granuleDescriptor is not there, dump a message and continue
             final File rasterFile = new File(location);
 
-            // granuleLoader creation
-            granuleLoader = new GranuleLoader(granuleBBox, rasterFile, gridToWorld);
+            // granuleDescriptor creation
+            granuleDescriptor = new GranuleDescriptor(granuleBBox, rasterFile, gridToWorld);
 
         }
 
@@ -136,7 +136,7 @@ class RasterLayerResponse{
             RenderedImage loadedImage;
             try {
 
-                loadedImage = granuleLoader.loadRaster(baseReadParameters, imageChoice, bbox,
+                loadedImage = granuleDescriptor.loadRaster(baseReadParameters, imageChoice, finalBBox,
                         finalWorldToGridCorner, request, request.getTileDimensions());
                 if (loadedImage == null) {
                     if (LOGGER.isLoggable(Level.FINE)) {
@@ -319,7 +319,7 @@ class RasterLayerResponse{
 
     private RenderedImage theImage;
 
-    private ReferencedEnvelope bbox;
+    private ReferencedEnvelope finalBBox;
 
     private Rectangle rasterBounds;
 
@@ -342,6 +342,8 @@ class RasterLayerResponse{
     private double[] backgroundValues;
 
     private Hints hints;
+
+    private boolean oversampledRequest = false;
 
     /**
      * Construct a {@code RasterLayerResponse} given a specific
@@ -445,7 +447,7 @@ class RasterLayerResponse{
             // select the relevant overview, notice that at this time we have relaxed a bit the 
             // requirement to have the same exact resolution for all the overviews, but still we 
             // do not allow for reading the various grid to world transform directly from the 
-            // input files, therefore we are assuming that each granuleLoader has a scale 
+            // input files, therefore we are assuming that each granuleDescriptor has a scale 
             // and translate only grid to world that can be deduced from its base level dimension 
             // and envelope. The grid to world transforms for the other levels can be computed 
             // accordingly knowning the scale factors.
@@ -463,11 +465,35 @@ class RasterLayerResponse{
 
             final BoundingBox cropBBOX = request.getCropBBox();
             if (cropBBOX != null) {
-                bbox = ReferencedEnvelope.reference(cropBBOX);
+                finalBBox = ReferencedEnvelope.reference(cropBBOX);
             } else {
-                bbox = new ReferencedEnvelope(coverageEnvelope);
+                finalBBox = new ReferencedEnvelope(coverageEnvelope);
             }
 
+            
+            // compute final world to grid
+            
+//            // base grid to world for the center of pixels
+//            final AffineTransform g2w;
+//            final OverviewLevel baseLevel = rasterManager.overviewsController.resolutionsLevels.get(0);
+//            final OverviewLevel selectedLevel = rasterManager.overviewsController.resolutionsLevels.get(imageChoice);
+//            final double resX = baseLevel.resolutionX;
+//            final double resY = baseLevel.resolutionY;
+//            final double[] requestRes = request.getRequestedResolution();
+//
+//            g2w = new AffineTransform((AffineTransform) baseGridToWorld);
+//            g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
+//            
+//            if ((requestRes[0] < resX || requestRes[1] < resY) ) {
+//                // Using the best available resolution
+//                oversampledRequest = true;
+//            } else {
+//                    
+//                // SG going back to working on a per level basis to do the composition
+//                // g2w = new AffineTransform(request.getRequestedGridToWorld());
+//                g2w.concatenate(AffineTransform.getScaleInstance(selectedLevel.scaleFactor,selectedLevel.scaleFactor));
+//                g2w.concatenate(AffineTransform.getScaleInstance(baseReadParameters.getSourceXSubsampling(), baseReadParameters.getSourceYSubsampling()));
+//            }
             
             // compute final world to grid base grid to world for the center of pixels
             final AffineTransform g2w = new AffineTransform((AffineTransform) baseGridToWorld);
@@ -475,8 +501,7 @@ class RasterLayerResponse{
             g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
 
             // keep into account overviews and subsampling
-            final OverviewLevel level = rasterManager.overviewsController.resolutionsLevels
-                .get(imageChoice);
+            final OverviewLevel level = rasterManager.overviewsController.resolutionsLevels.get(imageChoice);
             final OverviewLevel baseLevel = rasterManager.overviewsController.resolutionsLevels.get(0);
             final AffineTransform2D adjustments = new AffineTransform2D(
                     (level.resolutionX / baseLevel.resolutionX)
@@ -484,15 +509,28 @@ class RasterLayerResponse{
                     (level.resolutionY / baseLevel.resolutionY)
                             * baseReadParameters.getSourceYSubsampling(), 0, 0);
             g2w.concatenate(adjustments);
-            finalGridToWorldCorner = new AffineTransform2D(g2w);
-            finalWorldToGridCorner = finalGridToWorldCorner.inverse();
             
-            // compute raster bounds
-            rasterBounds = new GeneralGridEnvelope(CRS.transform(finalWorldToGridCorner, bbox), 
-                    PixelInCell.CELL_CORNER, false).toRectangle();
+            // move it to the corner
+            finalGridToWorldCorner = new AffineTransform2D(g2w);
+            finalWorldToGridCorner = finalGridToWorldCorner.inverse();            
+            final GeneralEnvelope tempRasterBounds = CRS.transform(finalWorldToGridCorner, finalBBox);
+            rasterBounds=tempRasterBounds.toRectangle2D().getBounds();
+            if (rasterBounds.width == 0)
+                rasterBounds.width++;
+            if (rasterBounds.height == 0)
+                rasterBounds.height++;
+            
+            final double[] requestRes = request.getRequestedResolution();
+            final double resX = baseLevel.resolutionX;
+            final double resY = baseLevel.resolutionY;            
+            if ((requestRes[0] < resX || requestRes[1] < resY) ) {
+                // Using the best available resolution
+                oversampledRequest = true;
+            }             
+            if(oversampledRequest)
+                rasterBounds.grow(2, 2);            
 
-            final GranuleWorker worker = new GranuleWorker(
-                    new ReferencedEnvelope(coverageEnvelope), baseGridToWorld);
+            final GranuleLoader worker = new GranuleLoader(new ReferencedEnvelope(coverageEnvelope), baseGridToWorld);
             worker.produce();
 
             //
@@ -509,8 +547,8 @@ class RasterLayerResponse{
                 // color involves removing transparency information from the input images.
                 //
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("Loaded bbox " + bbox.toString()
-                            + " while crop bbox " + request.getCropBBox());
+                    LOGGER.fine("Loaded finalBBox " + finalBBox.toString()
+                            + " while crop finalBBox " + request.getCropBBox());
                 }
 
                 return theImage;

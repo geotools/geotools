@@ -94,7 +94,7 @@ import org.opengis.util.InternationalString;
  */
 class RasterLayerResponse{
 	
-    class GranuleLoader {
+    class RasterProducer {
 
         private boolean doInputTransparency;
 
@@ -108,21 +108,10 @@ class RasterLayerResponse{
          * @param aoi
          * @param gridToWorldCorner
          */
-        public GranuleLoader(ReferencedEnvelope aoi, MathTransform gridToWorldCorner) {
-            init(aoi, gridToWorldCorner);
-        }
-
-        private void init(final ReferencedEnvelope aoi, final MathTransform gridToWorld) {
-
-            // Get location and envelope of the image to load.
-            final ReferencedEnvelope granuleBBox = aoi;
-
-            // Load a granuleDescriptor from disk as requested.
-            // If the granuleDescriptor is not there, dump a message and continue
-            final File rasterFile = new File(location);
+        public RasterProducer() {
 
             // granuleDescriptor creation
-            granuleDescriptor = new GranuleDescriptor(granuleBBox, rasterFile, gridToWorld);
+            granuleDescriptor = new GranuleDescriptor(rasterManager,DataUtilities.urlToFile(rasterManager.parent.sourceURL));
 
         }
 
@@ -333,8 +322,6 @@ class RasterLayerResponse{
 
     private boolean alphaIn = false;
 
-    private String location;
-
     private MathTransform baseGridToWorld;
 
     private boolean needsReprojection;
@@ -369,7 +356,6 @@ class RasterLayerResponse{
             throw new IllegalArgumentException("unsupported input:" + inputURL.toString());
         }
         hints = rasterManager.getHints();
-        location = tempFile.getAbsolutePath();
         coverageEnvelope = rasterManager.getCoverageEnvelope();
         baseGridToWorld = rasterManager.getRaster2Model();
         coverageFactory = rasterManager.getCoverageFactory();
@@ -530,7 +516,7 @@ class RasterLayerResponse{
             if(oversampledRequest)
                 rasterBounds.grow(2, 2);            
 
-            final GranuleLoader worker = new GranuleLoader(new ReferencedEnvelope(coverageEnvelope), baseGridToWorld);
+            final RasterProducer worker = new RasterProducer(new ReferencedEnvelope(coverageEnvelope), baseGridToWorld);
             worker.produce();
 
             //

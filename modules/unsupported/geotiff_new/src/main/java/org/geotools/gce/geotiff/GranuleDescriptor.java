@@ -168,6 +168,58 @@ class GranuleDescriptor {
 
     AffineTransform baseGridToWorld;
 
+    public GranuleDescriptor(RasterManager rasterManager, final File granuleFile) {
+
+        this.granuleBBOX = new ReferencedEnvelope(rasterManager.spatialDomainManager.coverageBBox);
+        this.granuleFile = granuleFile;
+        this.baseGridToWorld=new AffineTransform((AffineTransform) rasterManager.spatialDomainManager.coverageGridToWorld2D);
+
+        // create the base grid to world transformation
+        ImageInputStream inStream = null;
+        ImageReader reader = null;
+        try {
+            //
+            // get info about the raster we have to read
+            //
+
+            // get a stream
+            inStream = ImageIOExt.createImageInputStream(granuleFile);
+            if (inStream == null) {
+                throw new IllegalArgumentException(
+                        "Unable to get an input stream for the provided file "
+                                + granuleFile.toString());
+            }
+
+            // get a reader
+            reader = Utils.TIFFREADERFACTORY.createReaderInstance();
+            reader.setInput(inStream);
+
+            // get selected level and base level dimensions
+            final Rectangle originalDimension = ImageUtilities.getDimension(0, inStream, reader);
+
+            // add the base level
+            this.granuleLevels.put(Integer.valueOf(0), new Level(1, 1, originalDimension.width,originalDimension.height));
+
+        } catch (IllegalStateException e) {
+            throw new IllegalArgumentException(e);
+
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+        } finally {
+            try {
+                if (inStream != null) {
+                    inStream.close();
+                }
+            } catch (Throwable e) {
+                throw new IllegalArgumentException(e);
+            } finally {
+                if (reader != null)
+                    reader.dispose();
+            }
+        }
+    }
+
+    
     public GranuleDescriptor(final BoundingBox granuleBBOX, final File granuleFile,
             final MathTransform gridToWorld) {
 

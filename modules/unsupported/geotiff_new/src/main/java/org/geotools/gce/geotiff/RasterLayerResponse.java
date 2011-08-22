@@ -48,7 +48,6 @@ import javax.media.jai.util.ImagingException;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
-import org.geotools.coverage.grid.GeneralGridEnvelope;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -109,10 +108,7 @@ class RasterLayerResponse{
          * @param gridToWorldCorner
          */
         public RasterProducer() {
-
-            // granuleDescriptor creation
-            granuleDescriptor = new GranuleDescriptor(rasterManager,DataUtilities.urlToFile(rasterManager.parent.sourceURL));
-
+            granuleDescriptor=rasterManager.granuleDescriptor;
         }
 
         public void produce() {
@@ -516,8 +512,9 @@ class RasterLayerResponse{
             if(oversampledRequest)
                 rasterBounds.grow(2, 2);            
 
-            final RasterProducer worker = new RasterProducer(new ReferencedEnvelope(coverageEnvelope), baseGridToWorld);
-            worker.produce();
+
+            RasterProducer rasterProducer = new RasterProducer();
+            rasterProducer.produce();
 
             //
             // Did we actually load anything?? Notice that it might happen that either we have 

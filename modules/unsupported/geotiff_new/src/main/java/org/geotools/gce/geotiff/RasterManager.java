@@ -34,8 +34,10 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
+import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.gce.geotiff.OverviewsController.OverviewLevel;
+import org.geotools.gce.geotiff.RasterLayerResponse.RasterProducer;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -160,17 +162,17 @@ class RasterManager {
     private GeneralEnvelope coverageEnvelope;
 
     /** The coverage factory producing a {@link GridCoverage} from an image */
-    private GridCoverageFactory coverageFactory;
+    GridCoverageFactory coverageFactory;
 
     /**
      * The name of the input coverage TODO consider URI
      */
-    private String coverageIdentifier;
+    String coverageIdentifier;
 
     /** The hints to be used to produce this coverage */
-    private Hints hints;
+    Hints hints;
 
-    private URL inputURL;
+     URL inputURL;
 
     // ////////////////////////////////////////////////////////////////////////
     //
@@ -178,7 +180,7 @@ class RasterManager {
     //
     // ////////////////////////////////////////////////////////////////////////
     /** The coverage grid to world transformation */
-    private MathTransform raster2Model;
+    MathTransform raster2Model;
 
     OverviewsController overviewsController;
 
@@ -199,6 +201,10 @@ class RasterManager {
     SampleModel defaultSM;
 
     ImageLayout defaultImageLayout;
+
+    RasterProducer rasterProducer;
+
+    GranuleDescriptor granuleDescriptor;
 
     /** Logger. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(RasterManager.class);
@@ -240,7 +246,8 @@ class RasterManager {
         } catch (FactoryException e) {
             throw new DataSourceException(e);
         }
-
+        // granuleDescriptor creation
+        granuleDescriptor = new GranuleDescriptor(this,DataUtilities.urlToFile(this.inputURL));
     }
 
     /**

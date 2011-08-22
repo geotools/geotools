@@ -7,6 +7,8 @@ import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageMetadata;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageWriterSpi;
 
+import java.awt.Color;
+import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -121,39 +123,6 @@ class Utils {
             sourceURL = null;
         }
         return sourceURL;
-    }
-
-    /**
-     * Look for an {@link ImageReader} instance that is able to read the
-     * provided {@link ImageInputStream}, which must be non null.
-     * 
-     * <p>
-     * In case no reader is found, <code>null</code> is returned.
-     * 
-     * @param inStream
-     *            an instance of {@link ImageInputStream} for which we need to
-     *            find a suitable {@link ImageReader}.
-     * @return a suitable instance of {@link ImageReader} or <code>null</code>
-     *         if one cannot be found.
-     */
-    static ImageReader getReader(final ImageInputStream inStream) {
-        Utilities.ensureNonNull("inStream", inStream);
-        try {
-            // get a reader
-            inStream.mark();
-            final Iterator<ImageReader> readersIt = ImageIO.getImageReaders(inStream);
-            if (!readersIt.hasNext()) {
-                return null;
-            }
-            return readersIt.next();
-        } finally {
-            try {
-                inStream.reset();
-            } catch (IOException e) {
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
-            }
-        }
     }
 
     /**
@@ -329,4 +298,11 @@ class Utils {
 
     /** SPI for creating tiff readers in ImageIO tools */
     final static TIFFImageReaderSpi TIFFREADERFACTORY = new TIFFImageReaderSpi();
+
+    static final double AFFINE_IDENTITY_EPS = 1E-6;
+
+    /**
+     * A transparent color for missing data.
+     */
+    static final Color TRANSPARENT = new Color(0, 0, 0, 0);
 }

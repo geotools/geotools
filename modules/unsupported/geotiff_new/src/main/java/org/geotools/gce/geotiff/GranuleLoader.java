@@ -72,11 +72,11 @@ import org.opengis.referencing.operation.TransformException;
  * @author Simone Giannecchini, GeoSolutions S.A.S.
  * @since 2.5.5
  */
-class RasterGranuleLoader {
+class GranuleLoader {
 
     /** Logger. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(RasterGranuleLoader.class);
+            .getLogger(GranuleLoader.class);
 
     /**
      * This class represent an overview level in a single rasterGranuleLoader.
@@ -168,7 +168,7 @@ class RasterGranuleLoader {
 
     AffineTransform baseGridToWorld;
 
-    public RasterGranuleLoader(final BoundingBox granuleBBOX, final File granuleFile,
+    public GranuleLoader(final BoundingBox granuleBBOX, final File granuleFile,
             final MathTransform gridToWorld) {
 
         this.granuleBBOX = ReferencedEnvelope.reference(granuleBBOX);
@@ -191,10 +191,8 @@ class RasterGranuleLoader {
             }
 
             // get a reader
-            reader = Utils.getReader(inStream);
-            if (reader == null) {
-
-            }
+            reader = Utils.TIFFREADERFACTORY.createReaderInstance();
+            reader.setInput(inStream);
 
             // get selected level and base level dimensions
             final Rectangle originalDimension = ImageUtilities.getDimension(0, inStream, reader);
@@ -272,13 +270,8 @@ class RasterGranuleLoader {
             }
 
             // get a reader
-            reader = Utils.getReader(inStream);
-            if (reader == null) {
-                if (LOGGER.isLoggable(java.util.logging.Level.WARNING))
-                    LOGGER.warning("Unable to get reader for rasterGranuleLoader "
-                            + this.toString() + " with request " + request.toString());
-                return null;
-            }
+            reader = Utils.TIFFREADERFACTORY.createReaderInstance();
+            reader.setInput(inStream);
 
             // get selected level and base level dimensions
             final Level selectedlevel = getLevel(request, imageIndex);
@@ -521,10 +514,8 @@ class RasterGranuleLoader {
                     }
 
                     // get a reader
-                    reader = Utils.getReader(inStream);
-                    if (reader == null) {
-                        throw new IllegalArgumentException();
-                    }
+                    reader = Utils.TIFFREADERFACTORY.createReaderInstance();
+                    reader.setInput(inStream);
 
                     // get selected level and base level dimensions
                     final Rectangle levelDimension = ImageUtilities.getDimension(imageChoice, inStream,

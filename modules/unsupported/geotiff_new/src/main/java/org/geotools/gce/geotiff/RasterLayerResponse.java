@@ -23,8 +23,8 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.ColorModel;
-import java.awt.image.MultiPixelPackedSampleModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import java.io.File;
@@ -36,16 +36,22 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
+import javax.measure.unit.Unit;
+import javax.media.jai.BorderExtender;
+import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
+import javax.media.jai.PlanarImage;
 import javax.media.jai.operator.ConstantDescriptor;
 import javax.media.jai.operator.FormatDescriptor;
 import javax.media.jai.util.ImagingException;
 
+import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
 import org.geotools.coverage.grid.GeneralGridEnvelope;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
+import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
@@ -59,15 +65,23 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.resources.i18n.Vocabulary;
+import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.resources.image.ImageUtilities;
+import org.geotools.util.NumberRange;
+import org.geotools.util.SimpleInternationalString;
 import org.jaitools.imageutils.ImageLayout2;
 import org.opengis.coverage.ColorInterpretation;
+import org.opengis.coverage.SampleDimension;
+import org.opengis.coverage.SampleDimensionType;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.MathTransform1D;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
+import org.opengis.util.InternationalString;
 
 /**
  * A RasterLayerResponse. An instance of this class is produced everytime a
@@ -86,7 +100,7 @@ class RasterLayerResponse{
 
         private Color inputTransparentColor;
 
-        private RasterGranuleLoader rasterGranuleLoader;
+        private GranuleLoader granuleLoader;
 
         /**
          * Default {@link Constructor}
@@ -103,12 +117,12 @@ class RasterLayerResponse{
             // Get location and envelope of the image to load.
             final ReferencedEnvelope granuleBBox = aoi;
 
-            // Load a rasterGranuleLoader from disk as requested.
-            // If the rasterGranuleLoader is not there, dump a message and continue
+            // Load a granuleLoader from disk as requested.
+            // If the granuleLoader is not there, dump a message and continue
             final File rasterFile = new File(location);
 
-            // rasterGranuleLoader creation
-            rasterGranuleLoader = new RasterGranuleLoader(granuleBBox, rasterFile, gridToWorld);
+            // granuleLoader creation
+            granuleLoader = new GranuleLoader(granuleBBox, rasterFile, gridToWorld);
 
         }
 
@@ -122,7 +136,7 @@ class RasterLayerResponse{
             RenderedImage loadedImage;
             try {
 
-                loadedImage = rasterGranuleLoader.loadRaster(baseReadParameters, imageChoice, bbox,
+                loadedImage = granuleLoader.loadRaster(baseReadParameters, imageChoice, bbox,
                         finalWorldToGridCorner, request, request.getTileDimensions());
                 if (loadedImage == null) {
                     if (LOGGER.isLoggable(Level.FINE)) {
@@ -170,6 +184,115 @@ class RasterLayerResponse{
 
     }
 
+    private static final class SimplifiedGridSampleDimension extends GridSampleDimension implements SampleDimension{
+    
+    	/**
+    	 * 
+    	 */
+    	private static final long serialVersionUID = 2227219522016820587L;
+    
+    
+    	private double nodata;
+    	private double minimum;
+    	private double maximum;
+    	private double scale;
+    	private double offset;
+    	private Unit<?> unit;
+    	private SampleDimensionType type;
+    	private ColorInterpretation color;
+    	private Category bkg;
+    
+    	public SimplifiedGridSampleDimension(
+    			CharSequence description,
+    			SampleDimensionType type, 
+    			ColorInterpretation color,
+    			double nodata,
+    			double minimum, 
+    			double maximum, 
+    			double scale, 
+    			double offset,
+    			Unit<?> unit) {
+    		super(description,!Double.isNaN(nodata)?
+    				new Category[]{new Category(Vocabulary
+    	                    .formatInternational(VocabularyKeys.NODATA), new Color[]{new Color(0, 0, 0, 0)} , NumberRange
+    	                    .create(nodata, nodata), NumberRange
+    	                    .create(nodata, nodata))}:null,unit);
+    		this.nodata=nodata;
+    		this.minimum=minimum;
+    		this.maximum=maximum;
+    		this.scale=scale;
+    		this.offset=offset;
+    		this.unit=unit;
+    		this.type=type;
+    		this.color=color;
+    		this.bkg=new Category("Background", Utils.TRANSPARENT, 0);
+    	}
+    
+    
+    
+    	@Override
+    	public double getMaximumValue() {
+    		return maximum;
+    	}
+    
+    	@Override
+    	public double getMinimumValue() {
+    		return minimum;
+    	}
+    
+    	@Override
+    	public double[] getNoDataValues() throws IllegalStateException {
+    		return new double[]{nodata};
+    	}
+    
+    	@Override
+    	public double getOffset() throws IllegalStateException {
+    		return offset;
+    	}
+    
+    	@Override
+    	public NumberRange<? extends Number> getRange() {
+    		return super.getRange();
+    	}
+    
+    	@Override
+    	public SampleDimensionType getSampleDimensionType() {
+    		return type;
+    	}
+    
+    	@Override
+    	public MathTransform1D getSampleToGeophysics() {
+    		return super.getSampleToGeophysics();
+    	}
+    
+    	@Override
+    	public Unit<?> getUnits() {
+    		return unit;
+    	}
+    	
+    	@Override
+    	public double getScale() {
+    		return scale;
+    	}
+    	
+    	@Override
+    	public ColorInterpretation getColorInterpretation() {
+    		return color;
+    	}
+    
+    
+    	@Override
+    	public Category getBackground() {
+    		return bkg;
+    	}
+    
+    	@Override
+    	public InternationalString[] getCategoryNames()
+    			throws IllegalStateException {
+    		return new InternationalString[]{SimpleInternationalString.wrap("Background")};
+    	}
+    }
+
     /** Logger. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger(RasterLayerResponse.class);
@@ -214,6 +337,12 @@ class RasterLayerResponse{
 
     private MathTransform baseGridToWorld;
 
+    private boolean needsReprojection;
+    
+    private double[] backgroundValues;
+
+    private Hints hints;
+
     /**
      * Construct a {@code RasterLayerResponse} given a specific
      * {@link RasterLayerRequest}, a {@code GridCoverageFactory} to produce
@@ -237,13 +366,15 @@ class RasterLayerResponse{
         } else {
             throw new IllegalArgumentException("unsupported input:" + inputURL.toString());
         }
-
+        hints = rasterManager.getHints();
         location = tempFile.getAbsolutePath();
         coverageEnvelope = rasterManager.getCoverageEnvelope();
         baseGridToWorld = rasterManager.getRaster2Model();
         coverageFactory = rasterManager.getCoverageFactory();
         this.rasterManager = rasterManager;
+        backgroundValues = request.getBackgroundValues();
         transparentColor = request.getInputTransparentColor();
+        needsReprojection = request.isNeedsReprojection();        
 
     }
 
@@ -270,37 +401,39 @@ class RasterLayerResponse{
     public RasterLayerRequest getOriginatingCoverageRequest() {
         return request;
     }
-
     /**
      * This method creates the GridCoverage2D from the underlying file given a
      * specified envelope, and a requested dimension.
      * 
      * @param iUseJAI
      *            specify if the underlying read process should leverage on a
-     *            JAI ImageRead operation or a simple direct call to the
-     *            {@code read} method of a proper {@code ImageReader}.
+     *            JAI ImageRead operation or a simple direct call to the {@code
+     *            read} method of a proper {@code ImageReader}.
      * @param overviewPolicy
      *            the overview policy which need to be adopted
      * @return a {@code GridCoverage}
      * 
      * @throws java.io.IOException
      */
-    private void processRequest() throws IOException {
+    private  void processRequest() throws IOException {
 
-        if (request.isEmpty()) {
-            throw new DataSourceException("Empty request: " + request.toString());
-        }
-
-        // assemble granules
-        final RenderedImage image = prepareResponse();
-
-        RenderedImage finalRaster = postProcessRaster(image);
-
-        // create the coverage
-        gridCoverage = prepareCoverage(finalRaster);
-
+            if (request.isEmpty())
+            {
+                    if(LOGGER.isLoggable(Level.FINE))
+                            LOGGER.log(Level.FINE,"Request is empty: "+request.toString());
+                    this.gridCoverage=null;
+                    return;
+            }
+            
+            // assemble granules
+            final RenderedImage mosaic = prepareResponse();
+            
+            //postproc
+            RenderedImage finalRaster = postProcessRaster(mosaic);
+            //create the coverage
+            gridCoverage = prepareCoverage(finalRaster);
+            
     }
-
     /**
      * This method loads the granules which overlap the requested {@link GeneralEnvelope} using 
      * the provided values for alpha and input ROI.
@@ -309,15 +442,10 @@ class RasterLayerResponse{
 
         try {
 
-            //
-            // prepare the params for executing a mosaic operation.
-            //
-            final double[] backgroundValues = request.getBackgroundValues();
-
             // select the relevant overview, notice that at this time we have relaxed a bit the 
             // requirement to have the same exact resolution for all the overviews, but still we 
             // do not allow for reading the various grid to world transform directly from the 
-            // input files, therefore we are assuming that each rasterGranuleLoader has a scale 
+            // input files, therefore we are assuming that each granuleLoader has a scale 
             // and translate only grid to world that can be deduced from its base level dimension 
             // and envelope. The grid to world transforms for the other levels can be computed 
             // accordingly knowning the scale factors.
@@ -441,29 +569,125 @@ class RasterLayerResponse{
         return granule;
 
     }
-
-    private GridCoverage2D prepareCoverage(final RenderedImage data) throws IOException {
-        // creating bands
-        final SampleModel sm = data.getSampleModel();
-        final ColorModel cm = data.getColorModel();
-        final int numBands = sm.getNumBands();
-        final GridSampleDimension[] bands = new GridSampleDimension[numBands];
-        // setting bands names.
-        for (int i = 0; i < numBands; i++) {
-            final ColorInterpretation colorInterpretation = TypeMap.getColorInterpretation(cm, i);
-            if (colorInterpretation == null) {
-                throw new IOException("Unrecognized sample dimension type");
+    /**
+     * This method is responsible for creating a coverage from the supplied {@link RenderedImage}.
+     * 
+     * @param image
+     * @return
+     * @throws IOException
+     */
+    private GridCoverage2D prepareCoverage(RenderedImage image) throws IOException {
+            
+            // creating bands
+    final SampleModel sm=image.getSampleModel();
+    final ColorModel cm=image.getColorModel();
+            final int numBands = sm.getNumBands();
+            final GridSampleDimension[] bands = new GridSampleDimension[numBands];
+            // setting bands names.
+            for (int i = 0; i < numBands; i++) {
+                    // color interpretation
+            final ColorInterpretation colorInterpretation=TypeMap.getColorInterpretation(cm, i);
+            if(colorInterpretation==null)
+                   throw new IOException("Unrecognized sample dimension type");
+            
+            // sample dimension type
+            final SampleDimensionType st=TypeMap.getSampleDimensionType(sm, i);
+                
+            // set some no data values, as well as Min and Max values
+            final double noData;
+            double min=-Double.MAX_VALUE,max=Double.MAX_VALUE;
+            if(backgroundValues!=null)
+            {
+                    // sometimes background values are not specified as 1 per each band, therefore we need to be careful
+                    noData= backgroundValues[backgroundValues.length > i ? i:0];
             }
-            bands[i] = new GridSampleDimension(colorInterpretation.name()).geophysics(true);
-        }
+            else
+            {
+                    if(st.compareTo(SampleDimensionType.REAL_32BITS)==0)
+                            noData= Float.NaN;
+                    else
+                            if(st.compareTo(SampleDimensionType.REAL_64BITS)==0)
+                                    noData= Double.NaN;
+                            else
+                                    if(st.compareTo(SampleDimensionType.SIGNED_16BITS)==0)
+                                    {
+                                            noData=Short.MIN_VALUE;
+                                            min=Short.MIN_VALUE;
+                                            max=Short.MAX_VALUE;
+                                    }
+                                    else
+                                            if(st.compareTo(SampleDimensionType.SIGNED_32BITS)==0)
+                                            {
+                                                    noData= Integer.MIN_VALUE;
 
-        // creating the final coverage by keeping into account th4e fact that we
-        // can just use the envelope, but we need to use the G2W
-        return coverageFactory.create(rasterManager.getCoverageIdentifier(), data, 
-                new GridGeometry2D(new GeneralGridEnvelope(data, 2), PixelInCell.CELL_CORNER, 
-                        finalGridToWorldCorner, this.rasterManager.getCoverageCRS(), null), 
-                        bands, null, null);
+                                                    min=Integer.MIN_VALUE;
+                                                    max=Integer.MAX_VALUE;                                                  
+                                            }
+                                            else
+                                                    if(st.compareTo(SampleDimensionType.SIGNED_8BITS)==0)
+                                                    {
+                                                            noData= -128;
+                                                            min=-128;
+                                                            max=127;
+                                                    }
+                                                    else
+                                                    {
+                                                            //unsigned
+                                                            noData= 0;
+                                                            min=0;
+                                                            
+                                                            
+                                                            // compute max
+                                                            if(st.compareTo(SampleDimensionType.UNSIGNED_1BIT)==0)
+                                                                    max=1;
+                                                            else
+                                                                    if(st.compareTo(SampleDimensionType.UNSIGNED_2BITS)==0)
+                                                                            max=3;
+                                                                    else
+                                                                            if(st.compareTo(SampleDimensionType.UNSIGNED_4BITS)==0)
+                                                                                    max=7;
+                                                                            else
+                                                                                    if(st.compareTo(SampleDimensionType.UNSIGNED_8BITS)==0)
+                                                                                            max=255;
+                                                                                    else
+                                                                                            if(st.compareTo(SampleDimensionType.UNSIGNED_16BITS)==0)
+                                                                                                    max=65535;
+                                                                                            else
+                                                                                                    if(st.compareTo(SampleDimensionType.UNSIGNED_32BITS)==0)
+                                                                                                            max=Math.pow(2, 32)-1;
+                                                                                                                            
+                                                    }
+                    
+                                         
+            }
+            bands[i] = new SimplifiedGridSampleDimension(
+                            colorInterpretation.name(),
+                            st,
+                            colorInterpretation,
+                            noData,
+                            min,
+                            max,
+                            1,                                                      //no scale 
+                            0,                                                      //no offset
+                            null
+                            ).geophysics(true);
+            }
+
+    return coverageFactory.create(
+            rasterManager.getCoverageIdentifier(),
+            image,
+            new GridGeometry2D(
+                    new GridEnvelope2D(PlanarImage.wrapRenderedImage(image).getBounds()), 
+                    PixelInCell.CELL_CORNER,
+                    finalGridToWorldCorner,
+                    this.rasterManager.getCoverageCRS(),
+                    hints),
+            bands,
+            null, 
+            null);          
+
     }
+
 
     /**
      * This method is responsible for preparing the read param for doing an
@@ -533,19 +757,64 @@ class RasterLayerResponse{
         return imageChoice;
     }
 
-    private RenderedImage postProcessRaster(RenderedImage finalImage) {
-        // alpha on the final mosaic
+    private RenderedImage postProcessRaster(RenderedImage image) {
+     // alpha on the final mosaic
         if (transparentColor != null) {
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("Support for alpha on final mosaic");
-            }
-            final ImageWorker w = new ImageWorker(finalImage);
-            if (finalImage.getSampleModel() instanceof MultiPixelPackedSampleModel) {
-                w.forceComponentColorModel();
-            }
-            return w.makeColorTransparent(transparentColor).getRenderedImage();
+                if (LOGGER.isLoggable(Level.FINE))
+                        LOGGER.fine("Support for alpha on final mosaic");
+                return ImageUtilities.maskColor(transparentColor,image);
 
         }
-        return finalImage;
+        if (!needsReprojection){
+            try {
+                
+                // creating source grid to world corrected to the pixel corner
+                final AffineTransform sourceGridToWorld = new AffineTransform((AffineTransform) finalGridToWorldCorner);
+                
+                // target world to grid at the corner
+                final AffineTransform targetGridToWorld = new AffineTransform(request.getRequestedGridToWorld());
+                targetGridToWorld.concatenate(CoverageUtilities.CENTER_TO_CORNER);
+                
+                // target world to grid at the corner
+                final AffineTransform targetWorldToGrid=targetGridToWorld.createInverse();
+                // final complete transformation
+                targetWorldToGrid.concatenate(sourceGridToWorld);
+                
+                //update final grid to world
+                finalGridToWorldCorner=new AffineTransform2D(targetGridToWorld);
+                //
+                // Check and see if the affine transform is doing a copy.
+                // If so call the copy operation.
+                //
+                // we are in raster space here, so 1E-3 is safe
+                if(XAffineTransform.isIdentity(targetWorldToGrid, Utils.AFFINE_IDENTITY_EPS))
+                    return image;
+                
+                // create final image
+                // TODO this one could be optimized further depending on how the affine is created
+                //
+                // In case we are asked to use certain tile dimensions we tile
+                // also at this stage in case the read type is Direct since
+                // buffered images comes up untiled and this can affect the
+                // performances of the subsequent affine operation.
+                //
+                final Hints localHints= new Hints(hints);
+                if (hints != null && !hints.containsKey(JAI.KEY_BORDER_EXTENDER)) {
+                    final Object extender = hints.get(JAI.KEY_BORDER_EXTENDER);
+                    if (!(extender != null && extender instanceof BorderExtender)) {
+                        localHints.add(ImageUtilities.EXTEND_BORDER_BY_COPYING);
+                    }
+                }
+                ImageWorker iw = new ImageWorker(image);
+                iw.setRenderingHints(localHints);
+                iw.affine(targetWorldToGrid, new InterpolationNearest(), backgroundValues);
+                image = iw.getRenderedImage();
+            } catch (NoninvertibleTransformException e) {
+                if (LOGGER.isLoggable(Level.SEVERE)){
+                    LOGGER.log(Level.SEVERE, "Unable to create the requested mosaic ", e );
+                }
+            }
+        }
+        return image;
     }
 }

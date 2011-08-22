@@ -67,16 +67,7 @@ enum ReadType {
                     return null;
                 }
 
-                reader = Utils.getReader(inStream);
-                if (reader == null) {
-                    if (LOGGER.isLoggable(Level.WARNING)) {
-                        LOGGER.warning("Unable to get reader for file "
-                                + rasterFile.getAbsolutePath());
-                    }
-                    return null;
-                }
-
-                inStream.reset();
+                reader = Utils.TIFFREADERFACTORY.createReaderInstance();
                 reader.setInput(inStream);
 
                 // check source regione
@@ -136,16 +127,7 @@ enum ReadType {
                     return null;
                 }
                 // get a reader
-                reader = Utils.getReader(inStream);
-                if (reader == null) {
-                    if (LOGGER.isLoggable(Level.WARNING)) {
-                        LOGGER.warning("Unable to get reader for file "
-                                + rasterFile.getAbsolutePath());
-                    } 
-                    return null;
-                }
-
-                inStream.reset();
+                reader = Utils.TIFFREADERFACTORY.createReaderInstance();
                 reader.setInput(inStream);
 
                 // check source regionepbjMosaic,

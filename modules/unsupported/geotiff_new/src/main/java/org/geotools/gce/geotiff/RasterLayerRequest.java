@@ -107,6 +107,8 @@ class RasterLayerRequest {
     private double[] requestedResolution;
 
     private double[] backgroundValues;
+    
+    private boolean needsReprojection = false;
 
     RasterManager rasterManager;
 
@@ -517,6 +519,7 @@ class RasterLayerRequest {
         if (destinationToSourceTransform != null && destinationToSourceTransform.isIdentity()) {
             destinationToSourceTransform = null;// the CRS is basically the same
         } else if (destinationToSourceTransform instanceof AffineTransform) {
+            needsReprojection = true;
             //
             // k, the transformation between the various CRS is not null or the
             // Identity, let's see if it is an affine transform, which case we
@@ -898,6 +901,7 @@ class RasterLayerRequest {
                         requestedBBox);
                 temp.setCoordinateReferenceSystem(rasterManager.spatialDomainManager.coverageCRS2D);
                 cropBBox = new ReferencedEnvelope(temp);
+                needsReprojection = true;
 
             } else {
                 // we do not need to do anything, but we do this in order to aboid problems with the
@@ -1070,5 +1074,9 @@ class RasterLayerRequest {
 
     public DecimationPolicy getDecimationPolicy() {
             return decimationPolicy;
+    }
+
+    public boolean isNeedsReprojection() {
+        return needsReprojection;
     }
 }

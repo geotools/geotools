@@ -218,4 +218,24 @@ public class MapContentTest {
         assertFalse(WORLD_ENV.getCoordinateReferenceSystem().equals(
                 map.getCoordinateReferenceSystem()));
     }
+    
+    @Test
+    public void crsIsAutoSetWhenGetViewportCalledBeforeAddingLayers() {
+        MapContent map = new MapContent();
+        
+        // Call getViewport to force creation of a default viewport
+        MapViewport vp = map.getViewport();
+        assertEquals(MapViewport.DEFAULT_CRS, vp.getCoordinateReferenceSystem());
+        
+        CoordinateReferenceSystem startCRS = map.getCoordinateReferenceSystem();
+        
+        ReferencedEnvelope envNoCRS = new ReferencedEnvelope(WORLD_ENV, null);
+        Layer layerNoCRS = new MockLayer(envNoCRS);
+        map.addLayer(layerNoCRS);
+        assertEquals(startCRS, map.getCoordinateReferenceSystem());
+        
+        Layer layerWithCRS = new MockLayer(WORLD_ENV);
+        map.addLayer(layerWithCRS);
+        assertEquals(WORLD_ENV.getCoordinateReferenceSystem(), vp.getCoordinateReferenceSystem());
+    }
 }

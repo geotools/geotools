@@ -74,9 +74,7 @@ public class JLayeredMapPane extends AbstractMapPane {
                     && !mapContent.getViewport().isEmpty()
                     && acceptRepaintRequests.get()) {
 
-                if (mapContent != null) {
-                    getRenderingExecutor().submit(mapContent, getOperands(recreate), this);
-                }
+                getRenderingExecutor().submit(mapContent, getOperands(recreate), this);
             }
         } finally {
             drawingLock.unlock();

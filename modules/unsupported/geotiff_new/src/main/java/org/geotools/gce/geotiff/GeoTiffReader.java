@@ -220,30 +220,27 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
             }
 
             this.sourceURL = Utils.checkSource(source);
-            // /////////////////////////////////////////////////////////////////////
-            //
-            // Informations about multiple levels and such
-            //
-            // /////////////////////////////////////////////////////////////////////
-            checkForExternalOverviews();
-            getHRInfo(this.hints);
-
-            // /////////////////////////////////////////////////////////////////////
+            
             //
             // Coverage name
             //
-            // /////////////////////////////////////////////////////////////////////
             coverageName = source instanceof File ? ((File) source).getName() : "geotiff_coverage";
             final int dotIndex = coverageName.lastIndexOf('.');
             if (dotIndex != -1 && dotIndex != coverageName.length()) {
                 coverageName = coverageName.substring(0, dotIndex);
             }
+            
+            
+            //
+            // Informations about multiple levels and such
+            //
+            checkForExternalOverviews();
+            getHRInfo(this.hints);
 
-            // /////////////////////////////////////////////////////////////////////
+
             //
             // Freeing streams
             //
-            // /////////////////////////////////////////////////////////////////////
             if (closeMe) {
                 inStream.close();
             }
@@ -255,6 +252,10 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
             throw new DataSourceException(e);
         }
 
+        
+        //
+        // create the raster manager for this geotiff
+        //
         rasterManager = new RasterManager(this);
     }
 

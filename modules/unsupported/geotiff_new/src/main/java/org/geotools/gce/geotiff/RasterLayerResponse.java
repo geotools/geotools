@@ -81,182 +81,117 @@ import org.opengis.util.InternationalString;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini, GeoSolutions
  * 
- * @todo handle the fact that we have multiple transparent colors
  */
 class RasterLayerResponse{
 	
-//    class RasterProducer {
-//
-//        private GranuleDescriptor granuleDescriptor;
-//
-//        /**
-//         * Default {@link Constructor}
-//         * 
-//         * @param aoi
-//         * @param gridToWorldCorner
-//         */
-//        public RasterProducer() {
-//            granuleDescriptor=rasterManager.granuleDescriptor;
-//        }
-//
-//        public void produce() {
-//
-//
-//            RenderedImage loadedImage;
-//            try {
-//
-//                GranuleLoadingResult result = granuleDescriptor.loadRaster(baseReadParameters, imageChoice, finalBBox,
-//                        finalWorldToGridCorner, request, request.getTileDimensions());
-//                loadedImage =result.getRaster();
-//                if (loadedImage == null) {
-//                    if (LOGGER.isLoggable(Level.FINE)) {
-//                        LOGGER.log(Level.FINE, "Unable to load the raster with request " + request.toString());
-//                    }
-//
-//                }
-//                
-//                //
-//                // Set final transformation
-//                //
-//                RasterLayerResponse.this.finalGridToWorldCorner=new AffineTransform2D(result.gridToWorld);
-//
-//
-//            } catch (ImagingException e) {
-//                if (LOGGER.isLoggable(Level.INFO)) {
-//                    LOGGER.fine("Unable to load the raster with request "  + request);
-//                }
-//                loadedImage = null;
-//            } catch (Throwable e) {
-//                if (LOGGER.isLoggable(Level.INFO)) {
-//                    LOGGER.fine("Unable to load the raster with request " + request);
-//                }
-//                loadedImage = null;
-//            }
-//
-//            if (loadedImage == null) {
-//                if (LOGGER.isLoggable(Level.INFO)) {
-//                    LOGGER.log(Level.FINE, "Unable to load any data ");
-//                }
-//                return;
-//            }
-//
-//            if (LOGGER.isLoggable(Level.FINE)) {
-//                LOGGER.fine("Processing loaded raster data ");
-//            }
-//            theImage = transparentColor!=null?processRaster(loadedImage, transparentColor):loadedImage;;
-//
-//        }
-//
-//    }
-
     private static final class SimplifiedGridSampleDimension extends GridSampleDimension implements SampleDimension{
-    
-    	/**
-    	 * 
-    	 */
-    	private static final long serialVersionUID = 2227219522016820587L;
-    
-    
-    	private double nodata;
-    	private double minimum;
-    	private double maximum;
-    	private double scale;
-    	private double offset;
-    	private Unit<?> unit;
-    	private SampleDimensionType type;
-    	private ColorInterpretation color;
-    	private Category bkg;
-    
-    	public SimplifiedGridSampleDimension(
-    			CharSequence description,
-    			SampleDimensionType type, 
-    			ColorInterpretation color,
-    			double nodata,
-    			double minimum, 
-    			double maximum, 
-    			double scale, 
-    			double offset,
-    			Unit<?> unit) {
-    		super(description,!Double.isNaN(nodata)?
-    				new Category[]{new Category(Vocabulary
-    	                    .formatInternational(VocabularyKeys.NODATA), new Color[]{new Color(0, 0, 0, 0)} , NumberRange
-    	                    .create(nodata, nodata), NumberRange
-    	                    .create(nodata, nodata))}:null,unit);
-    		this.nodata=nodata;
-    		this.minimum=minimum;
-    		this.maximum=maximum;
-    		this.scale=scale;
-    		this.offset=offset;
-    		this.unit=unit;
-    		this.type=type;
-    		this.color=color;
-    		this.bkg=new Category("Background", Utils.TRANSPARENT, 0);
-    	}
-    
-    
-    
-    	@Override
-    	public double getMaximumValue() {
-    		return maximum;
-    	}
-    
-    	@Override
-    	public double getMinimumValue() {
-    		return minimum;
-    	}
-    
-    	@Override
-    	public double[] getNoDataValues() throws IllegalStateException {
-    		return new double[]{nodata};
-    	}
-    
-    	@Override
-    	public double getOffset() throws IllegalStateException {
-    		return offset;
-    	}
-    
-    	@Override
-    	public NumberRange<? extends Number> getRange() {
-    		return super.getRange();
-    	}
-    
-    	@Override
-    	public SampleDimensionType getSampleDimensionType() {
-    		return type;
-    	}
-    
-    	@Override
-    	public MathTransform1D getSampleToGeophysics() {
-    		return super.getSampleToGeophysics();
-    	}
-    
-    	@Override
-    	public Unit<?> getUnits() {
-    		return unit;
-    	}
-    	
-    	@Override
-    	public double getScale() {
-    		return scale;
-    	}
-    	
-    	@Override
-    	public ColorInterpretation getColorInterpretation() {
-    		return color;
-    	}
-    
-    
-    	@Override
-    	public Category getBackground() {
-    		return bkg;
-    	}
-    
-    	@Override
-    	public InternationalString[] getCategoryNames()
-    			throws IllegalStateException {
-    		return new InternationalString[]{SimpleInternationalString.wrap("Background")};
-    	}
-    }
+        
+        	/**
+        	 * 
+        	 */
+        	private static final long serialVersionUID = 2227219522016820587L;
+        
+        
+        	private double nodata;
+        	private double minimum;
+        	private double maximum;
+        	private double scale;
+        	private double offset;
+        	private Unit<?> unit;
+        	private SampleDimensionType type;
+        	private ColorInterpretation color;
+        	private Category bkg;
+        
+        	public SimplifiedGridSampleDimension(
+        			CharSequence description,
+        			SampleDimensionType type, 
+        			ColorInterpretation color,
+        			double nodata,
+        			double minimum, 
+        			double maximum, 
+        			double scale, 
+        			double offset,
+        			Unit<?> unit) {
+        		super(description,!Double.isNaN(nodata)?
+        				new Category[]{new Category(Vocabulary
+        	                    .formatInternational(VocabularyKeys.NODATA), new Color[]{new Color(0, 0, 0, 0)} , NumberRange
+        	                    .create(nodata, nodata), NumberRange
+        	                    .create(nodata, nodata))}:null,unit);
+        		this.nodata=nodata;
+        		this.minimum=minimum;
+        		this.maximum=maximum;
+        		this.scale=scale;
+        		this.offset=offset;
+        		this.unit=unit;
+        		this.type=type;
+        		this.color=color;
+        		this.bkg=new Category("Background", Utils.TRANSPARENT, 0);
+        	}
+        
+        
+        
+        	@Override
+        	public double getMaximumValue() {
+        		return maximum;
+        	}
+        
+        	@Override
+        	public double getMinimumValue() {
+        		return minimum;
+        	}
+        
+        	@Override
+        	public double[] getNoDataValues() throws IllegalStateException {
+        		return new double[]{nodata};
+        	}
+        
+        	@Override
+        	public double getOffset() throws IllegalStateException {
+        		return offset;
+        	}
+        
+        	@Override
+        	public NumberRange<? extends Number> getRange() {
+        		return super.getRange();
+        	}
+        
+        	@Override
+        	public SampleDimensionType getSampleDimensionType() {
+        		return type;
+        	}
+        
+        	@Override
+        	public MathTransform1D getSampleToGeophysics() {
+        		return super.getSampleToGeophysics();
+        	}
+        
+        	@Override
+        	public Unit<?> getUnits() {
+        		return unit;
+        	}
+        	
+        	@Override
+        	public double getScale() {
+        		return scale;
+        	}
+        	
+        	@Override
+        	public ColorInterpretation getColorInterpretation() {
+        		return color;
+        	}
+        
+        
+        	@Override
+        	public Category getBackground() {
+        		return bkg;
+        	}
+        
+        	@Override
+        	public InternationalString[] getCategoryNames()
+        			throws IllegalStateException {
+        		return new InternationalString[]{SimpleInternationalString.wrap("Background")};
+        	}
+        }
 
     /** Logger. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging
@@ -554,114 +489,114 @@ class RasterLayerResponse{
      * @throws IOException
      */
     private GridCoverage2D prepareCoverage(RenderedImage image) throws IOException {
+        
+        // creating bands
+        final SampleModel sm=image.getSampleModel();
+        final ColorModel cm=image.getColorModel();
+        final int numBands = sm.getNumBands();
+        final GridSampleDimension[] bands = new GridSampleDimension[numBands];
+        // setting bands names.
+        for (int i = 0; i < numBands; i++) {
+                // color interpretation
+        final ColorInterpretation colorInterpretation=TypeMap.getColorInterpretation(cm, i);
+        if(colorInterpretation==null)
+               throw new IOException("Unrecognized sample dimension type");
+        
+        // sample dimension type
+        final SampleDimensionType st=TypeMap.getSampleDimensionType(sm, i);
             
-            // creating bands
-    final SampleModel sm=image.getSampleModel();
-    final ColorModel cm=image.getColorModel();
-            final int numBands = sm.getNumBands();
-            final GridSampleDimension[] bands = new GridSampleDimension[numBands];
-            // setting bands names.
-            for (int i = 0; i < numBands; i++) {
-                    // color interpretation
-            final ColorInterpretation colorInterpretation=TypeMap.getColorInterpretation(cm, i);
-            if(colorInterpretation==null)
-                   throw new IOException("Unrecognized sample dimension type");
-            
-            // sample dimension type
-            final SampleDimensionType st=TypeMap.getSampleDimensionType(sm, i);
+        // set some no data values, as well as Min and Max values
+        final double noData;
+        double min=-Double.MAX_VALUE,max=Double.MAX_VALUE;
+        if(backgroundValues!=null)
+        {
+                // sometimes background values are not specified as 1 per each band, therefore we need to be careful
+                noData= backgroundValues[backgroundValues.length > i ? i:0];
+        }
+        else
+        {
+                if(st.compareTo(SampleDimensionType.REAL_32BITS)==0)
+                        noData= Float.NaN;
+                else
+                        if(st.compareTo(SampleDimensionType.REAL_64BITS)==0)
+                                noData= Double.NaN;
+                        else
+                                if(st.compareTo(SampleDimensionType.SIGNED_16BITS)==0)
+                                {
+                                        noData=Short.MIN_VALUE;
+                                        min=Short.MIN_VALUE;
+                                        max=Short.MAX_VALUE;
+                                }
+                                else
+                                        if(st.compareTo(SampleDimensionType.SIGNED_32BITS)==0)
+                                        {
+                                                noData= Integer.MIN_VALUE;
+    
+                                                min=Integer.MIN_VALUE;
+                                                max=Integer.MAX_VALUE;                                                  
+                                        }
+                                        else
+                                                if(st.compareTo(SampleDimensionType.SIGNED_8BITS)==0)
+                                                {
+                                                        noData= -128;
+                                                        min=-128;
+                                                        max=127;
+                                                }
+                                                else
+                                                {
+                                                        //unsigned
+                                                        noData= 0;
+                                                        min=0;
+                                                        
+                                                        
+                                                        // compute max
+                                                        if(st.compareTo(SampleDimensionType.UNSIGNED_1BIT)==0)
+                                                                max=1;
+                                                        else
+                                                                if(st.compareTo(SampleDimensionType.UNSIGNED_2BITS)==0)
+                                                                        max=3;
+                                                                else
+                                                                        if(st.compareTo(SampleDimensionType.UNSIGNED_4BITS)==0)
+                                                                                max=7;
+                                                                        else
+                                                                                if(st.compareTo(SampleDimensionType.UNSIGNED_8BITS)==0)
+                                                                                        max=255;
+                                                                                else
+                                                                                        if(st.compareTo(SampleDimensionType.UNSIGNED_16BITS)==0)
+                                                                                                max=65535;
+                                                                                        else
+                                                                                                if(st.compareTo(SampleDimensionType.UNSIGNED_32BITS)==0)
+                                                                                                        max=Math.pow(2, 32)-1;
+                                                                                                                        
+                                                }
                 
-            // set some no data values, as well as Min and Max values
-            final double noData;
-            double min=-Double.MAX_VALUE,max=Double.MAX_VALUE;
-            if(backgroundValues!=null)
-            {
-                    // sometimes background values are not specified as 1 per each band, therefore we need to be careful
-                    noData= backgroundValues[backgroundValues.length > i ? i:0];
-            }
-            else
-            {
-                    if(st.compareTo(SampleDimensionType.REAL_32BITS)==0)
-                            noData= Float.NaN;
-                    else
-                            if(st.compareTo(SampleDimensionType.REAL_64BITS)==0)
-                                    noData= Double.NaN;
-                            else
-                                    if(st.compareTo(SampleDimensionType.SIGNED_16BITS)==0)
-                                    {
-                                            noData=Short.MIN_VALUE;
-                                            min=Short.MIN_VALUE;
-                                            max=Short.MAX_VALUE;
-                                    }
-                                    else
-                                            if(st.compareTo(SampleDimensionType.SIGNED_32BITS)==0)
-                                            {
-                                                    noData= Integer.MIN_VALUE;
-
-                                                    min=Integer.MIN_VALUE;
-                                                    max=Integer.MAX_VALUE;                                                  
-                                            }
-                                            else
-                                                    if(st.compareTo(SampleDimensionType.SIGNED_8BITS)==0)
-                                                    {
-                                                            noData= -128;
-                                                            min=-128;
-                                                            max=127;
-                                                    }
-                                                    else
-                                                    {
-                                                            //unsigned
-                                                            noData= 0;
-                                                            min=0;
-                                                            
-                                                            
-                                                            // compute max
-                                                            if(st.compareTo(SampleDimensionType.UNSIGNED_1BIT)==0)
-                                                                    max=1;
-                                                            else
-                                                                    if(st.compareTo(SampleDimensionType.UNSIGNED_2BITS)==0)
-                                                                            max=3;
-                                                                    else
-                                                                            if(st.compareTo(SampleDimensionType.UNSIGNED_4BITS)==0)
-                                                                                    max=7;
-                                                                            else
-                                                                                    if(st.compareTo(SampleDimensionType.UNSIGNED_8BITS)==0)
-                                                                                            max=255;
-                                                                                    else
-                                                                                            if(st.compareTo(SampleDimensionType.UNSIGNED_16BITS)==0)
-                                                                                                    max=65535;
-                                                                                            else
-                                                                                                    if(st.compareTo(SampleDimensionType.UNSIGNED_32BITS)==0)
-                                                                                                            max=Math.pow(2, 32)-1;
-                                                                                                                            
-                                                    }
-                    
-                                         
-            }
-            bands[i] = new SimplifiedGridSampleDimension(
-                            colorInterpretation.name(),
-                            st,
-                            colorInterpretation,
-                            noData,
-                            min,
-                            max,
-                            1,                                                      //no scale 
-                            0,                                                      //no offset
-                            null
-                            ).geophysics(true);
-            }
-
-    return coverageFactory.create(
-            rasterManager.getCoverageIdentifier(),
-            image,
-            new GridGeometry2D(
-                    new GridEnvelope2D(PlanarImage.wrapRenderedImage(image).getBounds()), 
-                    PixelInCell.CELL_CORNER,
-                    finalGridToWorldCorner,
-                    this.rasterManager.getCoverageCRS(),
-                    hints),
-            bands,
-            null, 
-            null);          
+                                     
+        }
+        bands[i] = new SimplifiedGridSampleDimension(
+                        colorInterpretation.name(),
+                        st,
+                        colorInterpretation,
+                        noData,
+                        min,
+                        max,
+                        1,                                                      //no scale 
+                        0,                                                      //no offset
+                        null
+                        ).geophysics(true);
+        }
+    
+        return coverageFactory.create(
+                rasterManager.getCoverageIdentifier(),
+                image,
+                new GridGeometry2D(
+                        new GridEnvelope2D(PlanarImage.wrapRenderedImage(image).getBounds()), 
+                        PixelInCell.CELL_CORNER,
+                        finalGridToWorldCorner,
+                        this.rasterManager.getCoverageCRS(),
+                        hints),
+                bands,
+                null, 
+                null);          
 
     }
 

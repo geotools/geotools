@@ -23,22 +23,16 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.ColorModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
-import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.measure.unit.Unit;
-import javax.media.jai.BorderExtender;
-import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.operator.ConstantDescriptor;
@@ -54,15 +48,12 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.gce.geotiff.GranuleDescriptor.GranuleLoadingResult;
 import org.geotools.gce.geotiff.OverviewsController.OverviewLevel;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.i18n.Vocabulary;
@@ -94,88 +85,69 @@ import org.opengis.util.InternationalString;
  */
 class RasterLayerResponse{
 	
-    class RasterProducer {
-
-        private boolean doInputTransparency;
-
-        private Color inputTransparentColor;
-
-        private GranuleDescriptor granuleDescriptor;
-
-        /**
-         * Default {@link Constructor}
-         * 
-         * @param aoi
-         * @param gridToWorldCorner
-         */
-        public RasterProducer() {
-            granuleDescriptor=rasterManager.granuleDescriptor;
-        }
-
-        public void produce() {
-
-            // reusable parameters
-            inputTransparentColor = request.getInputTransparentColor();
-            doInputTransparency = inputTransparentColor != null;
-            // execute them all
-
-            RenderedImage loadedImage;
-            try {
-
-                GranuleLoadingResult result = granuleDescriptor.loadRaster(baseReadParameters, imageChoice, finalBBox,
-                        finalWorldToGridCorner, request, request.getTileDimensions());
-                loadedImage =result.getRaster();
-                if (loadedImage == null) {
-                    if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.log(Level.FINE, "Unable to load the raster with request " + request.toString());
-                    }
-
-                }
-                
-                //
-                // Set final transformation
-                //
-                RasterLayerResponse.this.finalGridToWorldCorner=new AffineTransform2D(result.gridToWorld);
-                
-                //
-                // We check here if the images have an alpha channel or some
-                // other sort of transparency. In case we have transparency
-                // I also save the index of the transparent channel.
-                //
-                final ColorModel cm = loadedImage.getColorModel();
-                alphaIn = cm.hasAlpha();
-
-            } catch (ImagingException e) {
-                if (LOGGER.isLoggable(Level.INFO)) {
-                    LOGGER.fine("Unable to load the raster with request "  + request);
-                }
-                loadedImage = null;
-            } catch (Throwable e) {
-                if (LOGGER.isLoggable(Level.INFO)) {
-                    LOGGER.fine("Unable to load the raster with request " + request);
-                }
-                loadedImage = null;
-            }
-
-            if (loadedImage == null) {
-                if (LOGGER.isLoggable(Level.INFO)) {
-                    LOGGER.log(Level.FINE, "Unable to load any data ");
-                }
-                return;
-            }
-
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("Processing loaded raster data ");
-            }
-
-            final RenderedImage raster = processRaster(loadedImage, alphaIn, 
-                    doInputTransparency, inputTransparentColor);
-
-            theImage = raster;
-
-        }
-
-    }
+//    class RasterProducer {
+//
+//        private GranuleDescriptor granuleDescriptor;
+//
+//        /**
+//         * Default {@link Constructor}
+//         * 
+//         * @param aoi
+//         * @param gridToWorldCorner
+//         */
+//        public RasterProducer() {
+//            granuleDescriptor=rasterManager.granuleDescriptor;
+//        }
+//
+//        public void produce() {
+//
+//
+//            RenderedImage loadedImage;
+//            try {
+//
+//                GranuleLoadingResult result = granuleDescriptor.loadRaster(baseReadParameters, imageChoice, finalBBox,
+//                        finalWorldToGridCorner, request, request.getTileDimensions());
+//                loadedImage =result.getRaster();
+//                if (loadedImage == null) {
+//                    if (LOGGER.isLoggable(Level.FINE)) {
+//                        LOGGER.log(Level.FINE, "Unable to load the raster with request " + request.toString());
+//                    }
+//
+//                }
+//                
+//                //
+//                // Set final transformation
+//                //
+//                RasterLayerResponse.this.finalGridToWorldCorner=new AffineTransform2D(result.gridToWorld);
+//
+//
+//            } catch (ImagingException e) {
+//                if (LOGGER.isLoggable(Level.INFO)) {
+//                    LOGGER.fine("Unable to load the raster with request "  + request);
+//                }
+//                loadedImage = null;
+//            } catch (Throwable e) {
+//                if (LOGGER.isLoggable(Level.INFO)) {
+//                    LOGGER.fine("Unable to load the raster with request " + request);
+//                }
+//                loadedImage = null;
+//            }
+//
+//            if (loadedImage == null) {
+//                if (LOGGER.isLoggable(Level.INFO)) {
+//                    LOGGER.log(Level.FINE, "Unable to load any data ");
+//                }
+//                return;
+//            }
+//
+//            if (LOGGER.isLoggable(Level.FINE)) {
+//                LOGGER.fine("Processing loaded raster data ");
+//            }
+//            theImage = transparentColor!=null?processRaster(loadedImage, transparentColor):loadedImage;;
+//
+//        }
+//
+//    }
 
     private static final class SimplifiedGridSampleDimension extends GridSampleDimension implements SampleDimension{
     
@@ -304,13 +276,9 @@ class RasterLayerResponse{
     /** The base envelope related to the input coverage */
     private GeneralEnvelope coverageEnvelope;
 
-    private URL inputURL;
-
     private RasterManager rasterManager;
 
     private Color transparentColor;
-
-    private RenderedImage theImage;
 
     private ReferencedEnvelope finalBBox;
 
@@ -323,13 +291,9 @@ class RasterLayerResponse{
     private int imageChoice = 0;
 
     private EnhancedImageReadParam baseReadParameters = new EnhancedImageReadParam();
-
-    private boolean alphaIn = false;
-
+    
     private MathTransform baseGridToWorld;
 
-    private boolean needsReprojection;
-    
     private double[] backgroundValues;
 
     private Hints hints;
@@ -352,21 +316,13 @@ class RasterLayerResponse{
      */
     public RasterLayerResponse(final RasterLayerRequest request, final RasterManager rasterManager) {
         this.request = request;
-        inputURL = rasterManager.getInputURL();
-        File tempFile = null;
-        if (inputURL.getProtocol().equalsIgnoreCase("file")) {
-            tempFile = DataUtilities.urlToFile(inputURL);
-        } else {
-            throw new IllegalArgumentException("unsupported input:" + inputURL.toString());
-        }
         hints = rasterManager.getHints();
         coverageEnvelope = rasterManager.getCoverageEnvelope();
         baseGridToWorld = rasterManager.getRaster2Model();
         coverageFactory = rasterManager.getCoverageFactory();
         this.rasterManager = rasterManager;
         backgroundValues = request.getBackgroundValues();
-        transparentColor = request.getInputTransparentColor();
-        needsReprojection = request.isNeedsReprojection();        
+        transparentColor = request.getInputTransparentColor();        
 
     }
 
@@ -495,8 +451,42 @@ class RasterLayerResponse{
                 rasterBounds.grow(2, 2);            
 
 
-            RasterProducer rasterProducer = new RasterProducer();
-            rasterProducer.produce();
+
+            RenderedImage theImage=null;
+            try {
+
+                GranuleLoadingResult result = rasterManager.granuleDescriptor.loadRaster(baseReadParameters, imageChoice, finalBBox,
+                        finalWorldToGridCorner, request, request.getTileDimensions());
+                theImage =result.getRaster();
+                if (theImage == null) {
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.log(Level.FINE, "Unable to load the raster with request " + request.toString());
+                    }
+
+                }
+                
+                //
+                // Set final transformation
+                //
+                RasterLayerResponse.this.finalGridToWorldCorner=new AffineTransform2D(result.gridToWorld);
+
+
+            } catch (ImagingException e) {
+                if (LOGGER.isLoggable(Level.INFO)) {
+                    LOGGER.fine("Unable to load the raster with request "  + request);
+                }
+                theImage = null;
+            } catch (Throwable e) {
+                if (LOGGER.isLoggable(Level.INFO)) {
+                    LOGGER.fine("Unable to load the raster with request " + request);
+                }
+                theImage = null;
+            }
+
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("Processing loaded raster data ");
+            }
+
 
             //
             // Did we actually load anything?? Notice that it might happen that either we have 
@@ -556,22 +546,6 @@ class RasterLayerResponse{
         }
     }
 
-    private RenderedImage processRaster(RenderedImage granule, final boolean alphaIn,
-            final boolean doTransparentColor, final Color transparentColor) {
-
-        //
-        // TRANSPARENT COLOR MANAGEMENT
-        //
-        //
-        if (doTransparentColor) {
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("Support for alpha on input image ");
-            }
-            granule = ImageUtilities.maskColor(transparentColor, granule);
-        }
-        return granule;
-
-    }
     /**
      * This method is responsible for creating a coverage from the supplied {@link RenderedImage}.
      * 
@@ -761,13 +735,19 @@ class RasterLayerResponse{
     }
 
     private RenderedImage postProcessRaster(RenderedImage image) {
-//     // alpha on the final mosaic
-//        if (transparentColor != null) {
-//                if (LOGGER.isLoggable(Level.FINE))
-//                        LOGGER.fine("Support for alpha on final mosaic");
-//                return ImageUtilities.maskColor(transparentColor,image);
-//
-//        }
+        // alpha on the final mosaic
+        if (transparentColor != null) {
+
+            //
+            // TRANSPARENT COLOR MANAGEMENT
+            //
+            //
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("Support for alpha on input image ");
+            }
+            return ImageUtilities.maskColor(transparentColor, image);
+
+        }
 //        if (!needsReprojection){
 //            try {
 //                

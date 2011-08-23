@@ -31,19 +31,16 @@ import javax.media.jai.ImageLayout;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
-import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.gce.geotiff.OverviewsController.OverviewLevel;
-import org.geotools.gce.geotiff.RasterLayerResponse.RasterProducer;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.util.Utilities;
 import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -68,8 +65,17 @@ class RasterManager {
      */
     class SpatialDomainManager {
 
-        public SpatialDomainManager() throws TransformException, FactoryException {
-            setBaseParameters();
+        public SpatialDomainManager(
+                CoordinateReferenceSystem coverageCRS,
+                GeneralEnvelope coverageEnvelope, 
+                double[] coverageFullResolution,
+                MathTransform2D coverageGridToWorld2D, 
+                Rectangle coverageRasterArea) throws TransformException, FactoryException {
+            this.coverageCRS = coverageCRS;
+            this.coverageEnvelope = coverageEnvelope;
+            this.coverageFullResolution = coverageFullResolution;
+            this.coverageGridToWorld2D = coverageGridToWorld2D;
+            this.coverageRasterArea = coverageRasterArea;
             prepareCoverageSpatialElements();
         }
 
@@ -137,29 +143,7 @@ class RasterManager {
             }
 
         }
-
-        /**
-         * Set the main parameters of this coverage request, getting basic
-         * information from the reader.
-         */
-        private void setBaseParameters() {
-            this.coverageEnvelope = RasterManager.this.getCoverageEnvelope().clone();
-            this.coverageRasterArea = ((GridEnvelope2D) RasterManager.this.getCoverageGridrange()).clone();
-            this.coverageCRS = RasterManager.this.getCoverageCRS();
-            this.coverageGridToWorld2D = (MathTransform2D) RasterManager.this.getRaster2Model();
-            this.coverageFullResolution = new double[2];
-            final OverviewLevel highestLevel = RasterManager.this.overviewsController.resolutionsLevels.get(0);
-            coverageFullResolution[0] = highestLevel.resolutionX;
-            coverageFullResolution[1] = highestLevel.resolutionY;
-        }
-
     }
-
-    /** The CRS of the input coverage */
-    private CoordinateReferenceSystem coverageCRS;
-
-    /** The base envelope related to the input coverage */
-    private GeneralEnvelope coverageEnvelope;
 
     /** The coverage factory producing a {@link GridCoverage} from an image */
     GridCoverageFactory coverageFactory;
@@ -174,17 +158,7 @@ class RasterManager {
 
      URL inputURL;
 
-    // ////////////////////////////////////////////////////////////////////////
-    //
-    // Information obtained by the coverageRequest instance
-    //
-    // ////////////////////////////////////////////////////////////////////////
-    /** The coverage grid to world transformation */
-    MathTransform raster2Model;
-
     OverviewsController overviewsController;
-
-    private GridEnvelope coverageGridrange;
 
     OverviewPolicy overviewPolicy;
 
@@ -201,8 +175,6 @@ class RasterManager {
     SampleModel defaultSM;
 
     ImageLayout defaultImageLayout;
-
-    RasterProducer rasterProducer;
 
     GranuleDescriptor granuleDescriptor;
 
@@ -229,10 +201,6 @@ class RasterManager {
         // default ImageLayout
         defaultImageLayout= new ImageLayout().setColorModel(defaultCM).setSampleModel(defaultSM);
 
-        coverageEnvelope = reader.getOriginalEnvelope();
-        coverageGridrange = reader.getOriginalGridRange();
-        coverageCRS = reader.getCrs();
-        raster2Model = reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER);
 
         //instantiating controller for subsampling and overviews
         overviewsController=new OverviewsController(
@@ -240,7 +208,16 @@ class RasterManager {
                         reader.getNumberOfOverviews(),
                         reader.getOverviewsResolution());
         try {
-            spatialDomainManager = new SpatialDomainManager();
+            double[] coverageFullResolution = new double[2];
+            final OverviewLevel highestLevel = RasterManager.this.overviewsController.resolutionsLevels.get(0);
+            coverageFullResolution[0] = highestLevel.resolutionX;
+            coverageFullResolution[1] = highestLevel.resolutionY;
+            spatialDomainManager = new SpatialDomainManager(
+                    reader.getCrs(),
+                    reader.getOriginalEnvelope(),
+                    coverageFullResolution,
+                    (MathTransform2D)reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER),
+                    (Rectangle) reader.getOriginalGridRange());
         } catch (TransformException e) {
             throw new DataSourceException(e);
         } catch (FactoryException e) {
@@ -317,23 +294,23 @@ class RasterManager {
     }
 
     public CoordinateReferenceSystem getCoverageCRS() {
-        return coverageCRS;
+        return spatialDomainManager.coverageCRS;
     }
 
     public GeneralEnvelope getCoverageEnvelope() {
-        return coverageEnvelope;
+        return spatialDomainManager.coverageEnvelope;
     }
 
     public GridCoverageFactory getCoverageFactory() {
         return coverageFactory;
     }
 
-    public MathTransform getRaster2Model() {
-        return raster2Model;
+    public MathTransform2D getRaster2Model() {
+        return spatialDomainManager.coverageGridToWorld2D;
     }
 
-    public GridEnvelope getCoverageGridrange() {
-        return coverageGridrange;
+    public Rectangle getCoverageGridrange() {
+        return spatialDomainManager.coverageRasterArea;
     }
 
 }

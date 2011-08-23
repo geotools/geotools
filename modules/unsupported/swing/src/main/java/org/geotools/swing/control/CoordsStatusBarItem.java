@@ -74,12 +74,8 @@ public class CoordsStatusBarItem extends StatusBarItem {
         add(label);
 
         decLen = JMapStatusBar.DEFAULT_NUM_DECIMAL_DIGITS;
-        intLen = DEFAULT_NUM_INTEGER_DIGITS;
 
-        ReferencedEnvelope env = mapPane.getDisplayArea();
-        if (env != null && !env.isEmpty()) {
-            setFormatFromEnvelope(env);
-        }
+        setFormat(mapPane.getDisplayArea());
 
         mapPane.addMouseListener(new MapMouseAdapter() {
             @Override
@@ -101,7 +97,7 @@ public class CoordsStatusBarItem extends StatusBarItem {
         mapPane.addMapPaneListener(new MapPaneAdapter() {
             @Override
             public void onDisplayAreaChanged(MapPaneEvent ev) {
-                setFormatFromEnvelope(((Envelope) ev.getData()));
+                setFormat(((ReferencedEnvelope) ev.getData()));
             }
         });
 
@@ -143,11 +139,15 @@ public class CoordsStatusBarItem extends StatusBarItem {
      *
      * @param env map extent
      */
-    private void setFormatFromEnvelope(Envelope env) {
-        setIntegerLen(env);
+    private void setFormat(ReferencedEnvelope env) {
+        if (env == null || env.isEmpty()) {
+            intLen = DEFAULT_NUM_INTEGER_DIGITS;
+        } else {
+            setIntegerLen(env);
+        }
         setLabelSizeAndFormat();
     }
-
+    
     /**
      * Sets the minimum width of the coordinate display label and the
      * format string used to print values.

@@ -79,6 +79,11 @@ public class MapViewport {
      */
     public static CoordinateReferenceSystem DEFAULT_CRS = DefaultEngineeringCRS.GENERIC_2D;
     
+    /*
+     * Flags whether this viewport can be changed
+     */
+    private boolean editable;
+    
     /* 
      * Flags whether this viewport's CRS has been set by the client
      * or if it is the default.
@@ -159,11 +164,34 @@ public class MapViewport {
      * @param matchAspectRatio whether to enable aspect ratio matching
      */
     public MapViewport(ReferencedEnvelope bounds, boolean matchAspectRatio) {
+        this.editable = true;
         this.screenArea = new Rectangle();
         this.hasCenteringTransforms = false;
         this.matchingAspectRatio = matchAspectRatio;
         copyBounds(bounds);
         setTransforms(true);
+    }
+
+    /**
+     * Tests whether this viewport's attributes can be changed. Viewports are
+     * editable by default. A non-editable viewport will not allow the value
+     * of any of its attributes to be changed and will issue a log message 
+     * (fine level) on any attempt to do so.
+     * 
+     * @return {@code true} if this viewport is editable
+     */
+    public boolean isEditable() {
+        return editable;
+    }
+
+    /**
+     * Sets whether the value of this viewport's attributes can be changed.
+     * Viewports are editable by default.
+     * 
+     * @param editable {@code true} to allow changes
+     */
+    public synchronized void setEditable(boolean editable) {
+        this.editable = editable;
     }
     
     /**
@@ -173,9 +201,11 @@ public class MapViewport {
      * @param enabled whether to enable aspect ratio adjustment
      */
     public synchronized void setMatchingAspectRatio(boolean enabled) {
-        if (enabled != matchingAspectRatio) {
-            matchingAspectRatio = enabled;
-            setTransforms(true);
+        if (checkEditable("setMatchingAspectRatio")) {
+            if (enabled != matchingAspectRatio) {
+                matchingAspectRatio = enabled;
+                setTransforms(true);
+            }
         }
     }
     
@@ -253,10 +283,12 @@ public class MapViewport {
      * @param requestedBounds the requested bounds (may be {@code null})
      */
     public synchronized void setBounds(ReferencedEnvelope requestedBounds) {
-        ReferencedEnvelope old = bounds;
-        copyBounds(requestedBounds);
-        setTransforms(true);
-        fireMapBoundsListenerMapBoundsChanged(Type.BOUNDS, old, bounds);
+        if (checkEditable("setBounds")) {
+            ReferencedEnvelope old = bounds;
+            copyBounds(requestedBounds);
+            setTransforms(true);
+            fireMapBoundsListenerMapBoundsChanged(Type.BOUNDS, old, bounds);
+        }
     }
     
     private void copyBounds(ReferencedEnvelope newBounds) {
@@ -294,13 +326,15 @@ public class MapViewport {
      * @param screenArea display area in screen coordinates (may be {@code null})
      */
     public synchronized void setScreenArea(Rectangle screenArea) {
-        if (screenArea == null || screenArea.isEmpty()) {
-            this.screenArea = new Rectangle();
-        } else {
-            this.screenArea = new Rectangle(screenArea);
+        if (checkEditable("setScreenArea")) {
+            if (screenArea == null || screenArea.isEmpty()) {
+                this.screenArea = new Rectangle();
+            } else {
+                this.screenArea = new Rectangle(screenArea);
+            }
+
+            setTransforms(false);
         }
-        
-        setTransforms(false);
     }
     
     /**
@@ -325,30 +359,32 @@ public class MapViewport {
      * @param crs the new coordinate reference system, or {@code null} for the default
      */
     public synchronized void setCoordinateReferenceSystem(CoordinateReferenceSystem crs) {
-        if (crs == null) {
-            bounds = new ReferencedEnvelope(bounds, DEFAULT_CRS);
-            userCRS = false;
-        
-        } else if (!userCRS) {
-            bounds = new ReferencedEnvelope(bounds, crs);
-            userCRS = true;
-            
-        } else if (!CRS.equalsIgnoreMetadata(crs, bounds.getCoordinateReferenceSystem())) {
-            if (bounds.isEmpty()) {
-                bounds = new ReferencedEnvelope(crs);
+        if (checkEditable("setCoordinateReferenceSystem")) {
+            if (crs == null) {
+                bounds = new ReferencedEnvelope(bounds, DEFAULT_CRS);
+                userCRS = false;
+
+            } else if (!userCRS) {
+                bounds = new ReferencedEnvelope(bounds, crs);
                 userCRS = true;
-                
-            } else {
-                try {
-                    ReferencedEnvelope old = bounds;
-                    bounds = bounds.transform(crs, true);
+
+            } else if (!CRS.equalsIgnoreMetadata(crs, bounds.getCoordinateReferenceSystem())) {
+                if (bounds.isEmpty()) {
+                    bounds = new ReferencedEnvelope(crs);
                     userCRS = true;
-                    setTransforms(true);
-                    
-                    fireMapBoundsListenerMapBoundsChanged(MapBoundsEvent.Type.CRS, old, bounds);
-                    
-                } catch (Exception e) {
-                    LOGGER.log(Level.FINE, "Difficulty transforming to {0}", crs);
+
+                } else {
+                    try {
+                        ReferencedEnvelope old = bounds;
+                        bounds = bounds.transform(crs, true);
+                        userCRS = true;
+                        setTransforms(true);
+
+                        fireMapBoundsListenerMapBoundsChanged(MapBoundsEvent.Type.CRS, old, bounds);
+
+                    } catch (Exception e) {
+                        LOGGER.log(Level.FINE, "Difficulty transforming to {0}", crs);
+                    }
                 }
             }
         }
@@ -517,4 +553,19 @@ public class MapViewport {
                 bounds.getCoordinateReferenceSystem());
     }
 
+    /**
+     * Helper for setter methods which checkst that this viewport
+     * is editable and issues a log message if not.
+     */
+    private boolean checkEditable(String methodName) {
+        if (!editable) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.log(Level.FINE, "Ignored call to {0} because viewport is not editable", 
+                        methodName);
+            }
+        }
+        
+        return editable;
+    }
+    
 }

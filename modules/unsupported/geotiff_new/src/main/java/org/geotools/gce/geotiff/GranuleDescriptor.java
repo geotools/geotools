@@ -287,7 +287,7 @@ class GranuleDescriptor {
 
     public RenderedImage loadRaster(
             final ImageReadParam readParameters, 
-            final int imageIndex,
+            final int overviewIndex,
             final ReferencedEnvelope cropBBox, 
             final MathTransform2D requestedWorldToGrid,
             final RasterLayerRequest request, 
@@ -297,7 +297,7 @@ class GranuleDescriptor {
             LOGGER.fine("Loading raster data for GranuleDescriptor " + this.toString());
         }
         ImageInputStream inStream = null;
-        int imageChoice = imageIndex;
+        int imageChoice = overviewIndex;
         File file = granuleFile;
 
         final ReferencedEnvelope bbox = new ReferencedEnvelope(granuleBBOX);
@@ -310,10 +310,12 @@ class GranuleDescriptor {
             //
             // get info about the raster we have to read
             //
-            if (request.rasterManager.parent.extOvrImgChoice >= 0 && imageIndex >= request.rasterManager.parent.extOvrImgChoice) {
+            
+            // EXTERNAL Overviews management
+            if (request.rasterManager.parent.extOvrImgChoice >= 0 && overviewIndex >= request.rasterManager.parent.extOvrImgChoice) {
                 file = request.rasterManager.parent.ovrSource;
                 inStream = request.rasterManager.parent.ovrInStreamSPI.createInputStreamInstance(file, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
-                imageChoice = imageIndex - request.rasterManager.parent.extOvrImgChoice;
+                imageChoice = overviewIndex - request.rasterManager.parent.extOvrImgChoice;
             } else {
                 inStream = ImageIOExt.createImageInputStream(file);    
             }
@@ -327,7 +329,7 @@ class GranuleDescriptor {
             reader.setInput(inStream);
 
             // get selected level and base level dimensions
-            final Level selectedlevel = getLevel(reader,request, imageIndex);
+            final Level selectedlevel = getLevel(reader,request, imageChoice, overviewIndex);
 
             // now create the crop grid to world which can be used to decide
             // which source area we need to crop in the selected level taking
@@ -354,7 +356,7 @@ class GranuleDescriptor {
                 return null;
 
             } else if (LOGGER.isLoggable(java.util.logging.Level.FINE)) {
-                LOGGER.fine("Loading level " + imageIndex + " with source region " + sourceArea);
+                LOGGER.fine("Loading level " + overviewIndex + " with source region " + sourceArea);
             }
             // set the source region
             // readParameters.setSourceRegion(sourceAreaWithCollar);
@@ -493,36 +495,17 @@ class GranuleDescriptor {
 
     }
 
-    Level getLevel(ImageReader reader, RasterLayerRequest request,  int imageChoice) {
+    private Level getLevel(ImageReader reader, RasterLayerRequest request,  int imageChoice, int overviewIndex) {
         synchronized (granuleLevels) {
-            if (granuleLevels.containsKey(Integer.valueOf(imageChoice))) {
-                return granuleLevels.get(Integer.valueOf(imageChoice));
+            if (granuleLevels.containsKey(Integer.valueOf(overviewIndex))) {
+                return granuleLevels.get(Integer.valueOf(overviewIndex));
             } else {
                 // load level
                 // create the base grid to world transformation
-                ImageInputStream inStream = null;
-                boolean disposeReader =false;
-                File file = granuleFile; 
                 try {
                     //
                     // get info about the raster we have to read
                     //
-                    if (request.rasterManager.parent.extOvrImgChoice >= 0 && 
-                            imageChoice >= request.rasterManager.parent.extOvrImgChoice) {
-                        file = request.rasterManager.parent.ovrSource;
-                        inStream = request.rasterManager.parent.ovrInStreamSPI.createInputStreamInstance(
-                                file, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
-                        imageChoice = imageChoice - request.rasterManager.parent.extOvrImgChoice;
-
-                        // get a reader
-                        reader = Utils.TIFFREADERFACTORY.createReaderInstance();
-                        reader.setInput(inStream);                        
-                        disposeReader=true;
-                    }
-                    if (reader == null) {
-                        throw new IllegalArgumentException();
-                    }
-
                     // get selected level and base level dimensions
                     final Rectangle levelDimension =  new Rectangle(0, 0, reader.getWidth(imageChoice), reader.getHeight(imageChoice));
 
@@ -532,7 +515,7 @@ class GranuleDescriptor {
 
                     // add the base level
                     final Level newLevel = new Level(scaleX, scaleY, levelDimension.width,levelDimension.height);
-                    this.granuleLevels.put(Integer.valueOf(imageChoice), newLevel);
+                    this.granuleLevels.put(Integer.valueOf(overviewIndex), newLevel);
                     return newLevel;
 
                 } catch (IllegalStateException e) {
@@ -540,17 +523,7 @@ class GranuleDescriptor {
 
                 } catch (IOException e) {
                     throw new IllegalArgumentException(e);
-                } finally {
-                    try {
-                        if (inStream != null)
-                            inStream.close();
-                    } catch (Throwable e) {
-                        throw new IllegalArgumentException(e);
-                    } finally {
-                        if (reader != null&& disposeReader)
-                            reader.dispose();
-                    }
-                }
+                } 
             }
 
         }

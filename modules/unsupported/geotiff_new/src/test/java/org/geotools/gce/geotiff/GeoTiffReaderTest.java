@@ -42,6 +42,7 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.test.TestData;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
@@ -277,15 +278,27 @@ public class GeoTiffReaderTest extends Assert {
         final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         final GeneralEnvelope envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
-        dim.setSize(reader.getOriginalGridRange().getSpan(0) / 4.0, reader.getOriginalGridRange()
-                .getSpan(1) / 4.0);
-        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        dim.setSize(reader.getOriginalGridRange().getSpan(0) / 2.0, reader.getOriginalGridRange()
+                .getSpan(1) / 2.0);
+        Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
         rasterArea.setSize(dim);
-        final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
+        GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
 
         GridCoverage2D coverage = reader.read(new GeneralParameterValue[] { gg });
         RenderedImage image = coverage.getRenderedImage();
+        assertEquals(image.getWidth(), 180);
+        assertEquals(image.getHeight(), 90);
+        
+        dim.setSize(reader.getOriginalGridRange().getSpan(0) / 4.0, reader.getOriginalGridRange()
+                .getSpan(1) / 4.0);
+        rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        rasterArea.setSize(dim);
+        range = new GridEnvelope2D(rasterArea);
+        gg.setValue(new GridGeometry2D(range, envelope));
+
+        coverage = reader.read(new GeneralParameterValue[] { gg });
+        image = coverage.getRenderedImage();
         assertEquals(image.getWidth(), 90);
         assertEquals(image.getHeight(), 45);
 

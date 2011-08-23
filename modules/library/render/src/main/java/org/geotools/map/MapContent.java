@@ -876,6 +876,12 @@ public class MapContent {
         }
     }
 
+    /**
+     * Sets the CRS of the viewport, if one exists, based on the first Layer
+     * with a non-null CRS. This is called when a new Layer is added to the
+     * Layer list. Does nothing if the viewport already has an explicitly set
+     * CRS or has been set as non-editable.
+     */
     private void checkViewportCRS() {
         if (viewport != null && viewport.isEditable() && 
                 !viewport.isExplicitCoordinateReferenceSystem()) {

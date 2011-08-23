@@ -30,24 +30,21 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
+import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.ROIShape;
 
-import org.geotools.coverage.grid.GridEnvelope2D;
+import org.geotools.data.DataUtilities;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.geometry.XRectangle2D;
-import org.geotools.resources.image.ImageUtilities;
 import org.opengis.geometry.BoundingBox;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
 
@@ -79,7 +76,13 @@ class GranuleDescriptor {
      * @author Simone Giannecchini, GeoSolutions S.A.S.
      * 
      */
-    class GranuleOverviewLevelDescriptor {
+    class GranuleLevelDescriptor {
+
+        public ImageInputStreamSpi getStreamSPI() {
+            return streamSPI;
+        }
+
+
 
         final double scaleX;
 
@@ -91,9 +94,23 @@ class GranuleDescriptor {
 
         final AffineTransform2D baseToLevelTransform;
 
-        final AffineTransform2D gridToWorldTransform;
+        final AffineTransform2D gridToWorldTransformCorner;
 
         final Rectangle rasterDimensions;
+        
+        final File source;
+        
+        final int imageIndex;
+
+        ImageInputStreamSpi streamSPI;
+
+        public File getSource() {
+            return source;
+        }
+
+        public int getImageIndex() {
+            return imageIndex;
+        }
 
         public AffineTransform getBaseToLevelTransform() {
             return baseToLevelTransform;
@@ -115,16 +132,24 @@ class GranuleDescriptor {
             return height;
         }
 
-        public GranuleOverviewLevelDescriptor(final double scaleX, final double scaleY, final int width, final int height) {
+        public GranuleLevelDescriptor(
+                final int imageIndex,
+                final File ovrSource,
+                final ImageInputStreamSpi streamSPI, 
+                final double scaleX, 
+                final double scaleY, 
+                final int width, 
+                final int height) {
+            this.source=ovrSource;
+            this.streamSPI=streamSPI;
+            this.imageIndex=imageIndex;
             this.scaleX = scaleX;
             this.scaleY = scaleY;
-            this.baseToLevelTransform = new AffineTransform2D(XAffineTransform.getScaleInstance(
-                    scaleX, scaleY, 0, 0));
-
+            this.baseToLevelTransform = new AffineTransform2D(XAffineTransform.getScaleInstance(scaleX, scaleY, 0, 0));
             final AffineTransform gridToWorldTransform_ = new AffineTransform(baseToLevelTransform);
             gridToWorldTransform_.preConcatenate(CoverageUtilities.CENTER_TO_CORNER);
             gridToWorldTransform_.preConcatenate(baseGridToWorld);
-            this.gridToWorldTransform = new AffineTransform2D(gridToWorldTransform_);
+            this.gridToWorldTransformCorner = new AffineTransform2D(gridToWorldTransform_);
             this.width = width;
             this.height = height;
             this.rasterDimensions = new Rectangle(0, 0, width, height);
@@ -134,22 +159,19 @@ class GranuleDescriptor {
             return (Rectangle) rasterDimensions.clone();
         }
 
-        public AffineTransform2D getGridToWorldTransform() {
-            return gridToWorldTransform;
+        public AffineTransform2D getGridToWorldTransformCorner() {
+            return gridToWorldTransformCorner;
         }
+
+
 
         @Override
         public String toString() {
-            // build a decent representation for this level
-            final StringBuilder buffer = new StringBuilder();
-            buffer.append("Description of a rasterGranuleLoader level").append("\n")
-                    .append("width:\t\t").append(width).append("\n").append("height:\t\t")
-                    .append(height).append("\n").append("scaleX:\t\t").append(scaleX).append("\n")
-                    .append("scaleY:\t\t").append(scaleY).append("\n")
-                    .append("baseToLevelTransform:\t\t").append(baseToLevelTransform.toString())
-                    .append("\n").append("gridToWorldTransform:\t\t")
-                    .append(gridToWorldTransform.toString()).append("\n");
-            return buffer.toString();
+            return "GranuleLevelDescriptor [scaleX=" + scaleX + ", scaleY=" + scaleY + ", width="
+                    + width + ", height=" + height + ", baseToLevelTransform="
+                    + baseToLevelTransform + ", gridToWorldTransformCorner=" + gridToWorldTransformCorner
+                    + ", rasterDimensions=" + rasterDimensions + ", source=" + source
+                    + ", imageIndex=" + imageIndex + "]";
         }
 
     }
@@ -183,27 +205,26 @@ class GranuleDescriptor {
 
     ReferencedEnvelope granuleBBOX;
 
-    File granuleFile;
-
-    final Map<Integer, GranuleOverviewLevelDescriptor> granuleLevels = Collections
-            .synchronizedMap(new HashMap<Integer, GranuleOverviewLevelDescriptor>());
+    final Map<Integer, GranuleLevelDescriptor> granuleLevels = Collections
+            .synchronizedMap(new HashMap<Integer, GranuleLevelDescriptor>());
 
     AffineTransform baseGridToWorld;
 
-    public GranuleDescriptor(RasterManager rasterManager, final File granuleFile) {
+    public GranuleDescriptor(RasterManager rasterManager) {
 
+        // get basic info
         this.granuleBBOX = new ReferencedEnvelope(rasterManager.spatialDomainManager.coverageBBox);
-        this.granuleFile = granuleFile;
         this.baseGridToWorld=new AffineTransform((AffineTransform) rasterManager.spatialDomainManager.coverageGridToWorld2D);
-
+        final File granuleFile = DataUtilities.urlToFile(rasterManager.parent.sourceURL);
+        
         // create the base grid to world transformation
         ImageInputStream inStream = null;
         ImageReader reader = null;
         try {
             //
-            // get info about the raster we have to read
+            // LOAD INFO FROM MAIN FILE
             //
-
+            
             // get a stream
             inStream = ImageIOExt.createImageInputStream(granuleFile);
             if (inStream == null) {
@@ -215,12 +236,92 @@ class GranuleDescriptor {
             // get a reader
             reader = Utils.TIFFREADERFACTORY.createReaderInstance();
             reader.setInput(inStream);
+            
+            // cache stream SPI
+            ImageInputStreamSpi streamSPI=ImageIOExt.getImageInputStreamSPI(granuleFile);
 
-            // get selected level and base level dimensions
-            final Rectangle originalDimension = ImageUtilities.getDimension(0, inStream, reader);
+            GranuleLevelDescriptor baseLevel=null;
+            // load info from main source
+            int numRasters=reader.getNumImages(true);
+            int i=0;
+            for(;i<numRasters;i++){
+                final Rectangle rasterDimension =  new Rectangle(0, 0, reader.getWidth(i), reader.getHeight(i));
 
-            // add the base level
-            this.granuleLevels.put(Integer.valueOf(0), new GranuleOverviewLevelDescriptor(1, 1, originalDimension.width,originalDimension.height));
+                // add the base level
+                if(i==0) {
+                    
+                    this.granuleLevels.put(Integer.valueOf(i), new GranuleLevelDescriptor(i,granuleFile,streamSPI,1, 1, rasterDimension.width,rasterDimension.height));
+                    baseLevel=granuleLevels.get(Integer.valueOf(0));
+                }
+                else {
+                    final double scaleX = baseLevel.width / (1.0 * rasterDimension.width);
+                    final double scaleY = baseLevel.height / (1.0 * rasterDimension.height);
+                    // add the base level
+                    this.granuleLevels.put(Integer.valueOf(i), new GranuleLevelDescriptor(
+                            i,
+                            granuleFile,
+                            streamSPI,
+                            scaleX, 
+                            scaleY, 
+                            rasterDimension.width,
+                            rasterDimension.height));
+                }
+                    
+            }
+            
+            //
+            // EXTERNAL Overviews management
+            //
+            if (rasterManager.parent.extOvrImgChoice >= 0 ) {
+                
+                // close current stream and reopen new one
+                try {
+                    if (inStream != null) {
+                        inStream.close();
+                    }
+                } catch (Throwable e) {
+                    
+                } 
+                
+                try {
+                    if (reader != null)
+                        reader.dispose();
+                } catch (Throwable e) {
+                    
+                } 
+                
+                // get a stream
+                inStream = rasterManager.parent.ovrInStreamSPI.createInputStreamInstance(rasterManager.parent.ovrSource, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
+                if (inStream == null) {
+                    throw new IllegalArgumentException(
+                            "Unable to get an input stream for the provided file "
+                                    + granuleFile.toString());
+                }
+                streamSPI=ImageIOExt.getImageInputStreamSPI(rasterManager.parent.ovrSource);
+                // get a reader
+                reader = Utils.TIFFREADERFACTORY.createReaderInstance();
+                reader.setInput(inStream);               
+
+                // load info from main source
+                numRasters=reader.getNumImages(true);
+                for(int k=0;k<numRasters;k++,i++){
+                    final Rectangle rasterDimension =  new Rectangle(0, 0, reader.getWidth(k), reader.getHeight(k));
+                    final double scaleX = baseLevel.width / (1.0 * rasterDimension.width);
+                    final double scaleY = baseLevel.height / (1.0 * rasterDimension.height);
+                    // add the base level
+                    this.granuleLevels.put(Integer.valueOf(i), new GranuleLevelDescriptor(
+                            k,
+                            rasterManager.parent.ovrSource,
+                            streamSPI,
+                            scaleX, 
+                            scaleY, 
+                            rasterDimension.width,
+                            rasterDimension.height));
+                }
+
+
+            }           
+            
 
         } catch (IllegalStateException e) {
             throw new IllegalArgumentException(e);
@@ -242,71 +343,6 @@ class GranuleDescriptor {
     }
 
     
-    public GranuleDescriptor(final BoundingBox granuleBBOX, final File granuleFile,
-            final MathTransform gridToWorld) {
-
-        this.granuleBBOX = ReferencedEnvelope.reference(granuleBBOX);
-        this.granuleFile = granuleFile;
-
-        // create the base grid to world transformation
-        ImageInputStream inStream = null;
-        ImageReader reader = null;
-        try {
-            //
-            // get info about the raster we have to read
-            //
-
-            // get a stream
-            inStream = ImageIOExt.createImageInputStream(granuleFile);
-            if (inStream == null) {
-                throw new IllegalArgumentException(
-                        "Unable to get an input stream for the provided file "
-                                + granuleFile.toString());
-            }
-
-            // get a reader
-            reader = Utils.TIFFREADERFACTORY.createReaderInstance();
-            reader.setInput(inStream);
-
-            // get selected level and base level dimensions
-            final Rectangle originalDimension = ImageUtilities.getDimension(0, inStream, reader);
-
-            // build the g2W for this tile, in principle we should get it
-            // somehow from the tile itself or from the index, but at the moment
-            // we do not have such info, hence we assume that it is a simple
-            // scale and translate
-            if (gridToWorld == null) {
-                final GridToEnvelopeMapper geMapper = new GridToEnvelopeMapper(new GridEnvelope2D(
-                        originalDimension), granuleBBOX);
-                // this is the default behavior but it is nice to write it down
-                // anyway
-                geMapper.setPixelAnchor(PixelInCell.CELL_CENTER);
-                this.baseGridToWorld = geMapper.createAffineTransform();
-            } else
-                this.baseGridToWorld = (AffineTransform) gridToWorld;
-
-            // add the base level
-            this.granuleLevels.put(Integer.valueOf(0), new GranuleOverviewLevelDescriptor(1, 1, originalDimension.width,originalDimension.height));
-
-        } catch (IllegalStateException e) {
-            throw new IllegalArgumentException(e);
-
-        } catch (IOException e) {
-            throw new IllegalArgumentException(e);
-        } finally {
-            try {
-                if (inStream != null) {
-                    inStream.close();
-                }
-            } catch (Throwable e) {
-                throw new IllegalArgumentException(e);
-            } finally {
-                if (reader != null)
-                    reader.dispose();
-            }
-        }
-    }
-
     public GranuleLoadingResult loadRaster(
             final ImageReadParam readParameters, 
             final int overviewIndex,
@@ -319,8 +355,6 @@ class GranuleDescriptor {
             LOGGER.fine("Loading raster data for GranuleDescriptor " + this.toString());
         }
         ImageInputStream inStream = null;
-        int imageChoice = overviewIndex;
-        File file = granuleFile;
 
         final ReferencedEnvelope bbox = new ReferencedEnvelope(granuleBBOX);
         // intersection of this tile bound with the current crop bbox
@@ -332,15 +366,11 @@ class GranuleDescriptor {
             //
             // get info about the raster we have to read
             //
-            
-            // EXTERNAL Overviews management
-            if (request.rasterManager.parent.extOvrImgChoice >= 0 && overviewIndex >= request.rasterManager.parent.extOvrImgChoice) {
-                file = request.rasterManager.parent.ovrSource;
-                inStream = request.rasterManager.parent.ovrInStreamSPI.createInputStreamInstance(file, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
-                imageChoice = overviewIndex - request.rasterManager.parent.extOvrImgChoice;
-            } else {
-                inStream = ImageIOExt.createImageInputStream(file);    
-            }
+            // get selected level and base level dimensions
+            final GranuleLevelDescriptor selectedlevel=granuleLevels.get(Integer.valueOf(overviewIndex));
+            final File input = selectedlevel.source;
+            inStream = selectedlevel.streamSPI.createInputStreamInstance(input, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
+            int imageChoice= selectedlevel.imageIndex;
             
             if (inStream == null) {
                 return null;
@@ -350,14 +380,11 @@ class GranuleDescriptor {
             reader = Utils.TIFFREADERFACTORY.createReaderInstance();
             reader.setInput(inStream);
 
-            // get selected level and base level dimensions
-            final GranuleOverviewLevelDescriptor selectedlevel = getLevel(reader,request, imageChoice, overviewIndex);
-
             // now create the crop grid to world which can be used to decide
             // which source area we need to crop in the selected level taking
             // into account the scale factors imposed by the selection of this
             // level together with the base level grid to world transformation
-            final MathTransform2D cropGridToWorldCorner = (MathTransform2D) ProjectiveTransform.create(selectedlevel.gridToWorldTransform);
+            final MathTransform2D cropGridToWorldCorner = (MathTransform2D) ProjectiveTransform.create(selectedlevel.gridToWorldTransformCorner);
             final MathTransform2D cropWorldToGrid = cropGridToWorldCorner.inverse();
 
             // computing the crop source area which leaves straight into the
@@ -385,7 +412,7 @@ class GranuleDescriptor {
             readParameters.setSourceRegion(sourceArea);
 
             // read
-            RenderedImage raster = request.getReadType().read(readParameters, imageChoice, file, selectedlevel.rasterDimensions, tileDimension);
+            RenderedImage raster = request.getReadType().read(readParameters, imageChoice, input, selectedlevel.rasterDimensions, tileDimension);
             if (raster == null) {
                 return null;
             }
@@ -481,52 +508,51 @@ class GranuleDescriptor {
 
     }
 
-    private GranuleOverviewLevelDescriptor getLevel(ImageReader reader, RasterLayerRequest request,  int imageChoice, int overviewIndex) {
-        synchronized (granuleLevels) {
-            if (granuleLevels.containsKey(Integer.valueOf(overviewIndex))) {
-                return granuleLevels.get(Integer.valueOf(overviewIndex));
-            } else {
-                // load level
-                // create the base grid to world transformation
-                try {
-                    //
-                    // get info about the raster we have to read
-                    //
-                    // get selected level and base level dimensions
-                    final Rectangle levelDimension =  new Rectangle(0, 0, reader.getWidth(imageChoice), reader.getHeight(imageChoice));
-
-                    final GranuleOverviewLevelDescriptor baseLevel = granuleLevels.get(0);
-                    final double scaleX = baseLevel.width / (1.0 * levelDimension.width);
-                    final double scaleY = baseLevel.height / (1.0 * levelDimension.height);
-
-                    // add the base level
-                    final GranuleOverviewLevelDescriptor newLevel = new GranuleOverviewLevelDescriptor(scaleX, scaleY, levelDimension.width,levelDimension.height);
-                    this.granuleLevels.put(Integer.valueOf(overviewIndex), newLevel);
-                    return newLevel;
-
-                } catch (IllegalStateException e) {
-                    throw new IllegalArgumentException(e);
-
-                } catch (IOException e) {
-                    throw new IllegalArgumentException(e);
-                } 
-            }
-
-        }
-    }
+//    private GranuleLevelDescriptor getLevel(ImageReader reader, RasterLayerRequest request,  int imageChoice, int overviewIndex) {
+//        synchronized (granuleLevels) {
+//            if (granuleLevels.containsKey(Integer.valueOf(overviewIndex))) {
+//                return granuleLevels.get(Integer.valueOf(overviewIndex));
+//            } else {
+//                // load level
+//                // create the base grid to world transformation
+//                try {
+//                    //
+//                    // get info about the raster we have to read
+//                    //
+//                    // get selected level and base level dimensions
+//                    final Rectangle levelDimension =  new Rectangle(0, 0, reader.getWidth(imageChoice), reader.getHeight(imageChoice));
+//
+//                    final GranuleLevelDescriptor baseLevel = granuleLevels.get(0);
+//                    final double scaleX = baseLevel.width / (1.0 * levelDimension.width);
+//                    final double scaleY = baseLevel.height / (1.0 * levelDimension.height);
+//
+//                    // add the base level
+//                    final GranuleLevelDescriptor newLevel = new GranuleLevelDescriptor(scaleX, scaleY, levelDimension.width,levelDimension.height);
+//                    this.granuleLevels.put(Integer.valueOf(overviewIndex), newLevel);
+//                    return newLevel;
+//
+//                } catch (IllegalStateException e) {
+//                    throw new IllegalArgumentException(e);
+//
+//                } catch (IOException e) {
+//                    throw new IllegalArgumentException(e);
+//                } 
+//            }
+//
+//        }
+//    }
 
     @Override
     public String toString() {
         // build a decent representation for this level
         final StringBuilder buffer = new StringBuilder();
         buffer.append("Description of a rasterGranuleLoader ").append("\n").append("BBOX:\t\t")
-                .append(granuleBBOX.toString()).append("file:\t\t").append(granuleFile)
-                .append("gridToWorld:\t\t").append(baseGridToWorld);
+                .append(granuleBBOX.toString()).append("gridToWorld:\t\t").append(baseGridToWorld);
         int i = 1;
-        for (final GranuleOverviewLevelDescriptor granuleOverviewLevelDescriptor : granuleLevels.values()) {
+        for (final GranuleLevelDescriptor granuleLevelDescriptor : granuleLevels.values()) {
             i++;
             buffer.append("Description of level ").append(i++).append("\n")
-                    .append(granuleOverviewLevelDescriptor.toString()).append("\n");
+                    .append(granuleLevelDescriptor.toString()).append("\n");
         }
         return super.toString();
     }

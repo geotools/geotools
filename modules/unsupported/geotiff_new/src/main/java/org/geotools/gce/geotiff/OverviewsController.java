@@ -18,6 +18,7 @@ package org.geotools.gce.geotiff;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.util.Utilities;
@@ -31,7 +32,7 @@ import org.geotools.util.Utilities;
  */
 final  class OverviewsController {
 
-    final ArrayList<OverviewLevel> resolutionsLevels = new ArrayList<OverviewLevel>();
+    final List<OverviewLevel> resolutionsLevels = new ArrayList<OverviewLevel>();
 
     /**
      * Constructor.
@@ -168,8 +169,11 @@ final  class OverviewsController {
          * @param resolutionY
          * @param imageChoice
          */
-        public OverviewLevel(final double scaleFactor, final double resolutionX, 
-                final double resolutionY, final int imageChoice) {
+        public OverviewLevel(
+                final double scaleFactor, 
+                final double resolutionX, 
+                final double resolutionY, 
+                final int imageChoice) {
             this.scaleFactor = scaleFactor;
             this.resolutionX = resolutionX;
             this.resolutionY = resolutionY;

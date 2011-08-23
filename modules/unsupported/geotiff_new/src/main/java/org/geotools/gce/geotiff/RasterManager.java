@@ -17,10 +17,7 @@
 package org.geotools.gce.geotiff;
 
 import java.awt.Rectangle;
-import java.awt.image.ColorModel;
-import java.awt.image.SampleModel;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.logging.Level;
@@ -33,7 +30,6 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.gce.geotiff.OverviewsController.OverviewLevel;
 import org.geotools.geometry.GeneralEnvelope;
@@ -156,8 +152,6 @@ class RasterManager {
     /** The hints to be used to produce this coverage */
     Hints hints;
 
-     URL inputURL;
-
     OverviewsController overviewsController;
 
     OverviewPolicy overviewPolicy;
@@ -167,12 +161,6 @@ class RasterManager {
     SpatialDomainManager spatialDomainManager;
 
     ImageTypeSpecifier baseImageType;
-
-    /** Default {@link ColorModel}.*/
-    ColorModel defaultCM;
-
-    /** Default {@link SampleModel}.*/
-    SampleModel defaultSM;
 
     ImageLayout defaultImageLayout;
 
@@ -185,7 +173,6 @@ class RasterManager {
 
         Utilities.ensureNonNull("GeoTiffReader", reader);
         this.parent = reader;
-        inputURL = reader.sourceURL;
         coverageIdentifier = reader.getName();
         hints = reader.getHints();
         coverageFactory = reader.getGridCoverageFactory();
@@ -194,12 +181,9 @@ class RasterManager {
 
         // base image type
         baseImageType = reader.baseImageType;
-        // load SM and CM
-        defaultCM= baseImageType.getColorModel();
-        defaultSM= baseImageType.getSampleModel();
         
         // default ImageLayout
-        defaultImageLayout= new ImageLayout().setColorModel(defaultCM).setSampleModel(defaultSM);
+        defaultImageLayout= new ImageLayout().setColorModel( baseImageType.getColorModel()).setSampleModel(baseImageType.getSampleModel());
 
 
         //instantiating controller for subsampling and overviews
@@ -224,7 +208,7 @@ class RasterManager {
             throw new DataSourceException(e);
         }
         // granuleDescriptor creation
-        granuleDescriptor = new GranuleDescriptor(this,DataUtilities.urlToFile(this.inputURL));
+        granuleDescriptor = new GranuleDescriptor(this);
     }
 
     /**
@@ -280,9 +264,6 @@ class RasterManager {
 
     public void dispose() {
 
-    }
-    public URL getInputURL() {
-        return inputURL;
     }
 
     public String getCoverageIdentifier() {

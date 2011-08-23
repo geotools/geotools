@@ -122,9 +122,6 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
         return 1;
     }
 
-    /** Adapter for the GeoTiff crs. */
-    private GeoTiffMetadata2CRSAdapter gtcs;
-
     private double noData = Double.NaN;
 
     private RasterManager rasterManager;
@@ -304,7 +301,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
             GeoTiffIIOMetadataDecoder metadata = null; 
 
             metadata = new GeoTiffIIOMetadataDecoder(iioMetadata);
-            gtcs = new GeoTiffMetadata2CRSAdapter(hints);
+            GeoTiffMetadata2CRSAdapter gtcs = new GeoTiffMetadata2CRSAdapter(hints);
             
             // //
             //

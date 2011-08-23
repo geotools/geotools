@@ -515,21 +515,21 @@ class RasterLayerResponse{
                 // if provided (defaulting to 0), as well as the compute raster
                 // bounds, envelope and grid to world.
 
-                final Number[] values = ImageUtilities.getBackgroundValues(rasterManager.defaultSM, backgroundValues);
+                final Number[] values = ImageUtilities.getBackgroundValues(rasterManager.baseImageType.getSampleModel(), backgroundValues);
                 // create a constant image with a proper layout
                 final RenderedImage finalImage = ConstantDescriptor.create(
                         Float.valueOf(rasterBounds.width),
                         Float.valueOf(rasterBounds.height),
                         values,
                         null);
-                if(rasterManager.defaultCM!=null){
+                if(rasterManager.baseImageType!=null&&rasterManager.baseImageType.getColorModel()!=null){
                     final ImageLayout2 il= new ImageLayout2();
-                    il.setColorModel(rasterManager.defaultCM);
+                    il.setColorModel(rasterManager.baseImageType.getColorModel());
                     Dimension tileSize= request.getTileDimensions();
                     if(tileSize==null){
                         tileSize=JAI.getDefaultTileSize();
                     } 
-                    il.setSampleModel(rasterManager.defaultCM.createCompatibleSampleModel(tileSize.width, tileSize.height));
+                    il.setSampleModel(rasterManager.baseImageType.getColorModel().createCompatibleSampleModel(tileSize.width, tileSize.height));
                     il.setTileGridXOffset(0).setTileGridYOffset(0).setTileWidth((int)tileSize.getWidth()).setTileHeight((int)tileSize.getHeight());
                     return FormatDescriptor.create(
                             finalImage,

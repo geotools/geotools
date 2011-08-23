@@ -18,9 +18,7 @@ package org.geotools.gce.geotiff;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -33,10 +31,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
-import javax.media.jai.ImageLayout;
-import javax.media.jai.InterpolationNearest;
-import javax.media.jai.JAI;
-import javax.media.jai.operator.AffineDescriptor;
+import javax.media.jai.ROIShape;
 
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.geometry.GeneralEnvelope;
@@ -84,7 +79,7 @@ class GranuleDescriptor {
      * @author Simone Giannecchini, GeoSolutions S.A.S.
      * 
      */
-    class Level {
+    class GranuleOverviewLevelDescriptor {
 
         final double scaleX;
 
@@ -94,14 +89,14 @@ class GranuleDescriptor {
 
         final int height;
 
-        final AffineTransform2D levelToBaseTransform;
+        final AffineTransform2D baseToLevelTransform;
 
         final AffineTransform2D gridToWorldTransform;
 
         final Rectangle rasterDimensions;
 
         public AffineTransform getBaseToLevelTransform() {
-            return levelToBaseTransform;
+            return baseToLevelTransform;
         }
 
         public double getScaleX() {
@@ -120,13 +115,13 @@ class GranuleDescriptor {
             return height;
         }
 
-        public Level(final double scaleX, final double scaleY, final int width, final int height) {
+        public GranuleOverviewLevelDescriptor(final double scaleX, final double scaleY, final int width, final int height) {
             this.scaleX = scaleX;
             this.scaleY = scaleY;
-            this.levelToBaseTransform = new AffineTransform2D(XAffineTransform.getScaleInstance(
+            this.baseToLevelTransform = new AffineTransform2D(XAffineTransform.getScaleInstance(
                     scaleX, scaleY, 0, 0));
 
-            final AffineTransform gridToWorldTransform_ = new AffineTransform(levelToBaseTransform);
+            final AffineTransform gridToWorldTransform_ = new AffineTransform(baseToLevelTransform);
             gridToWorldTransform_.preConcatenate(CoverageUtilities.CENTER_TO_CORNER);
             gridToWorldTransform_.preConcatenate(baseGridToWorld);
             this.gridToWorldTransform = new AffineTransform2D(gridToWorldTransform_);
@@ -151,7 +146,7 @@ class GranuleDescriptor {
                     .append("width:\t\t").append(width).append("\n").append("height:\t\t")
                     .append(height).append("\n").append("scaleX:\t\t").append(scaleX).append("\n")
                     .append("scaleY:\t\t").append(scaleY).append("\n")
-                    .append("levelToBaseTransform:\t\t").append(levelToBaseTransform.toString())
+                    .append("baseToLevelTransform:\t\t").append(baseToLevelTransform.toString())
                     .append("\n").append("gridToWorldTransform:\t\t")
                     .append(gridToWorldTransform.toString()).append("\n");
             return buffer.toString();
@@ -159,12 +154,39 @@ class GranuleDescriptor {
 
     }
 
+    /**
+     * Simple placeholder class to store the result of a Granule Loading
+     * which comprises of a raster as well as a {@link ROIShape} for its footprint.
+     * 
+     * @author Daniele Romagnoli, GeoSolutions S.A.S.
+     * 
+     */
+    static class GranuleLoadingResult {
+
+        RenderedImage raster;
+
+        AffineTransform gridToWorld;
+
+        public AffineTransform getGridToWorld() {
+            return gridToWorld;
+        }
+
+        public RenderedImage getRaster() {
+            return raster;
+        }
+
+        GranuleLoadingResult(RenderedImage raster, final AffineTransform gridToWorld) {
+            this.raster = raster;
+            this.gridToWorld = gridToWorld;
+        }
+    }
+
     ReferencedEnvelope granuleBBOX;
 
     File granuleFile;
 
-    final Map<Integer, Level> granuleLevels = Collections
-            .synchronizedMap(new HashMap<Integer, Level>());
+    final Map<Integer, GranuleOverviewLevelDescriptor> granuleLevels = Collections
+            .synchronizedMap(new HashMap<Integer, GranuleOverviewLevelDescriptor>());
 
     AffineTransform baseGridToWorld;
 
@@ -198,7 +220,7 @@ class GranuleDescriptor {
             final Rectangle originalDimension = ImageUtilities.getDimension(0, inStream, reader);
 
             // add the base level
-            this.granuleLevels.put(Integer.valueOf(0), new Level(1, 1, originalDimension.width,originalDimension.height));
+            this.granuleLevels.put(Integer.valueOf(0), new GranuleOverviewLevelDescriptor(1, 1, originalDimension.width,originalDimension.height));
 
         } catch (IllegalStateException e) {
             throw new IllegalArgumentException(e);
@@ -264,7 +286,7 @@ class GranuleDescriptor {
                 this.baseGridToWorld = (AffineTransform) gridToWorld;
 
             // add the base level
-            this.granuleLevels.put(Integer.valueOf(0), new Level(1, 1, originalDimension.width,originalDimension.height));
+            this.granuleLevels.put(Integer.valueOf(0), new GranuleOverviewLevelDescriptor(1, 1, originalDimension.width,originalDimension.height));
 
         } catch (IllegalStateException e) {
             throw new IllegalArgumentException(e);
@@ -285,7 +307,7 @@ class GranuleDescriptor {
         }
     }
 
-    public RenderedImage loadRaster(
+    public GranuleLoadingResult loadRaster(
             final ImageReadParam readParameters, 
             final int overviewIndex,
             final ReferencedEnvelope cropBBox, 
@@ -329,7 +351,7 @@ class GranuleDescriptor {
             reader.setInput(inStream);
 
             // get selected level and base level dimensions
-            final Level selectedlevel = getLevel(reader,request, imageChoice, overviewIndex);
+            final GranuleOverviewLevelDescriptor selectedlevel = getLevel(reader,request, imageChoice, overviewIndex);
 
             // now create the crop grid to world which can be used to decide
             // which source area we need to crop in the selected level taking
@@ -400,59 +422,23 @@ class GranuleDescriptor {
             // raster space
             final AffineTransform afterDecimationTranslateTranform = XAffineTransform.getTranslateInstance(sourceArea.x, sourceArea.y);
 
+            // now we need to go back to the base level raster space
+            final AffineTransform backToBaseLevelScaleTransform =selectedlevel.getBaseToLevelTransform();
+            
             // now create the overall transform
-            final AffineTransform finalTransform = AffineTransform.getRotateInstance(0);
-            if (!XAffineTransform.isIdentity(afterDecimationTranslateTranform, Utils.AFFINE_IDENTITY_EPS)) {
-                finalTransform.concatenate(afterDecimationTranslateTranform);
-            }
-            if (!XAffineTransform.isIdentity(decimationScaleTranform, Utils.AFFINE_IDENTITY_EPS)) {
-                finalTransform.concatenate(decimationScaleTranform);
-            }
-
-
-            final InterpolationNearest interpolation = new InterpolationNearest();
-            // paranoiac check to avoid that JAI freaks out when computing its
-            // internal layouT on images that are too small
-            Rectangle2D finalLayout = ImageUtilities.layoutHelper(raster,
-                    (float) finalTransform.getScaleX(),
-                    (float) finalTransform.getScaleY(),
-                    (float) finalTransform.getTranslateX(),
-                    (float) finalTransform.getTranslateY(), interpolation);
-            if (finalLayout.isEmpty()) {
-                if (LOGGER.isLoggable(java.util.logging.Level.FINE)) {
-                    LOGGER.fine("Unable to create a rasterGranuleLoader " + this.toString()
-                            + " due to jai scale bug");
-                }
-                return null;
-            }
-
-            // apply the affine transform conserving indexed color model
-            final RenderingHints localHints = new RenderingHints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL,interpolation instanceof InterpolationNearest? Boolean.FALSE:Boolean.TRUE);
-            if (XAffineTransform.isIdentity(finalTransform, Utils.AFFINE_IDENTITY_EPS)) {
-                return raster;
-            } else {
-                //
-                // In case we are asked to use certain tile dimensions we tile
-                // also at this stage in case the read type is Direct since
-                // buffered images comes up untiled and this can affect the
-                // performances of the subsequent affine operation.
-                //
-                final Dimension tileDimensions=request.getTileDimensions();
-                if(tileDimensions!=null&&request.getReadType().equals(ReadType.DIRECT_READ)) {
-                        final ImageLayout layout = new ImageLayout();
-                        layout.setTileHeight(tileDimensions.width).setTileWidth(tileDimensions.height);
-                        localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT,layout));
-                } 
-                // border extender
-                localHints.add(ImageUtilities.BORDER_EXTENDER_HINTS);
-
-//                ImageWorker iw = new ImageWorker(raster);
-//                iw.setRenderingHints(localHints);
-//                iw.affine(finalTransform, interpolation, request.getBackgroundValues());
-//                return iw.getRenderedImage();
-                
-                return AffineDescriptor.create(raster, finalTransform, interpolation,request.getBackgroundValues(),localHints);
-            }
+            final AffineTransform finalRaster2Model = new AffineTransform(baseGridToWorld);
+            finalRaster2Model.concatenate(CoverageUtilities.CENTER_TO_CORNER);
+            
+            if(!XAffineTransform.isIdentity(backToBaseLevelScaleTransform, Utils.AFFINE_IDENTITY_EPS))
+                    finalRaster2Model.concatenate(backToBaseLevelScaleTransform);
+            if(!XAffineTransform.isIdentity(afterDecimationTranslateTranform, Utils.AFFINE_IDENTITY_EPS))
+                    finalRaster2Model.concatenate(afterDecimationTranslateTranform);
+            if(!XAffineTransform.isIdentity(decimationScaleTranform, Utils.AFFINE_IDENTITY_EPS))
+                    finalRaster2Model.concatenate(decimationScaleTranform);
+            
+            // return raster + its own transformation
+            return  new GranuleLoadingResult(raster, finalRaster2Model);
+            
 
         } catch (IllegalStateException e) {
             if (LOGGER.isLoggable(java.util.logging.Level.WARNING)) {
@@ -495,7 +481,7 @@ class GranuleDescriptor {
 
     }
 
-    private Level getLevel(ImageReader reader, RasterLayerRequest request,  int imageChoice, int overviewIndex) {
+    private GranuleOverviewLevelDescriptor getLevel(ImageReader reader, RasterLayerRequest request,  int imageChoice, int overviewIndex) {
         synchronized (granuleLevels) {
             if (granuleLevels.containsKey(Integer.valueOf(overviewIndex))) {
                 return granuleLevels.get(Integer.valueOf(overviewIndex));
@@ -509,12 +495,12 @@ class GranuleDescriptor {
                     // get selected level and base level dimensions
                     final Rectangle levelDimension =  new Rectangle(0, 0, reader.getWidth(imageChoice), reader.getHeight(imageChoice));
 
-                    final Level baseLevel = granuleLevels.get(0);
+                    final GranuleOverviewLevelDescriptor baseLevel = granuleLevels.get(0);
                     final double scaleX = baseLevel.width / (1.0 * levelDimension.width);
                     final double scaleY = baseLevel.height / (1.0 * levelDimension.height);
 
                     // add the base level
-                    final Level newLevel = new Level(scaleX, scaleY, levelDimension.width,levelDimension.height);
+                    final GranuleOverviewLevelDescriptor newLevel = new GranuleOverviewLevelDescriptor(scaleX, scaleY, levelDimension.width,levelDimension.height);
                     this.granuleLevels.put(Integer.valueOf(overviewIndex), newLevel);
                     return newLevel;
 
@@ -537,12 +523,17 @@ class GranuleDescriptor {
                 .append(granuleBBOX.toString()).append("file:\t\t").append(granuleFile)
                 .append("gridToWorld:\t\t").append(baseGridToWorld);
         int i = 1;
-        for (final Level level : granuleLevels.values()) {
+        for (final GranuleOverviewLevelDescriptor granuleOverviewLevelDescriptor : granuleLevels.values()) {
             i++;
             buffer.append("Description of level ").append(i++).append("\n")
-                    .append(level.toString()).append("\n");
+                    .append(granuleOverviewLevelDescriptor.toString()).append("\n");
         }
         return super.toString();
+    }
+
+
+    public BoundingBox getGranuleBBOX() {
+    	return granuleBBOX;
     }
 
 }

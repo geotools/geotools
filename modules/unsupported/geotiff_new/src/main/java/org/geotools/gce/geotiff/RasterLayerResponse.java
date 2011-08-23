@@ -56,6 +56,7 @@ import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
+import org.geotools.gce.geotiff.GranuleDescriptor.GranuleLoadingResult;
 import org.geotools.gce.geotiff.OverviewsController.OverviewLevel;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -121,14 +122,21 @@ class RasterLayerResponse{
             RenderedImage loadedImage;
             try {
 
-                loadedImage = granuleDescriptor.loadRaster(baseReadParameters, imageChoice, finalBBox,
+                GranuleLoadingResult result = granuleDescriptor.loadRaster(baseReadParameters, imageChoice, finalBBox,
                         finalWorldToGridCorner, request, request.getTileDimensions());
+                loadedImage =result.getRaster();
                 if (loadedImage == null) {
                     if (LOGGER.isLoggable(Level.FINE)) {
                         LOGGER.log(Level.FINE, "Unable to load the raster with request " + request.toString());
                     }
 
                 }
+                
+                //
+                // Set final transformation
+                //
+                RasterLayerResponse.this.finalGridToWorldCorner=new AffineTransform2D(result.gridToWorld);
+                
                 //
                 // We check here if the images have an alpha channel or some
                 // other sort of transparency. In case we have transparency
@@ -451,32 +459,6 @@ class RasterLayerResponse{
             } else {
                 finalBBox = new ReferencedEnvelope(coverageEnvelope);
             }
-
-            
-            // compute final world to grid
-            
-//            // base grid to world for the center of pixels
-//            final AffineTransform g2w;
-//            final OverviewLevel baseLevel = rasterManager.overviewsController.resolutionsLevels.get(0);
-//            final OverviewLevel selectedLevel = rasterManager.overviewsController.resolutionsLevels.get(imageChoice);
-//            final double resX = baseLevel.resolutionX;
-//            final double resY = baseLevel.resolutionY;
-//            final double[] requestRes = request.getRequestedResolution();
-//
-//            g2w = new AffineTransform((AffineTransform) baseGridToWorld);
-//            g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
-//            
-//            if ((requestRes[0] < resX || requestRes[1] < resY) ) {
-//                // Using the best available resolution
-//                oversampledRequest = true;
-//            } else {
-//                    
-//                // SG going back to working on a per level basis to do the composition
-//                // g2w = new AffineTransform(request.getRequestedGridToWorld());
-//                g2w.concatenate(AffineTransform.getScaleInstance(selectedLevel.scaleFactor,selectedLevel.scaleFactor));
-//                g2w.concatenate(AffineTransform.getScaleInstance(baseReadParameters.getSourceXSubsampling(), baseReadParameters.getSourceYSubsampling()));
-//            }
-            
             // compute final world to grid base grid to world for the center of pixels
             final AffineTransform g2w = new AffineTransform((AffineTransform) baseGridToWorld);
             // move it to the corner
@@ -779,63 +761,63 @@ class RasterLayerResponse{
     }
 
     private RenderedImage postProcessRaster(RenderedImage image) {
-     // alpha on the final mosaic
-        if (transparentColor != null) {
-                if (LOGGER.isLoggable(Level.FINE))
-                        LOGGER.fine("Support for alpha on final mosaic");
-                return ImageUtilities.maskColor(transparentColor,image);
-
-        }
-        if (!needsReprojection){
-            try {
-                
-                // creating source grid to world corrected to the pixel corner
-                final AffineTransform sourceGridToWorld = new AffineTransform((AffineTransform) finalGridToWorldCorner);
-                
-                // target world to grid at the corner
-                final AffineTransform targetGridToWorld = new AffineTransform(request.getRequestedGridToWorld());
-                targetGridToWorld.concatenate(CoverageUtilities.CENTER_TO_CORNER);
-                
-                // target world to grid at the corner
-                final AffineTransform targetWorldToGrid=targetGridToWorld.createInverse();
-                // final complete transformation
-                targetWorldToGrid.concatenate(sourceGridToWorld);
-                
-                //update final grid to world
-                finalGridToWorldCorner=new AffineTransform2D(targetGridToWorld);
-                //
-                // Check and see if the affine transform is doing a copy.
-                // If so call the copy operation.
-                //
-                // we are in raster space here, so 1E-3 is safe
-                if(XAffineTransform.isIdentity(targetWorldToGrid, Utils.AFFINE_IDENTITY_EPS))
-                    return image;
-                
-                // create final image
-                // TODO this one could be optimized further depending on how the affine is created
-                //
-                // In case we are asked to use certain tile dimensions we tile
-                // also at this stage in case the read type is Direct since
-                // buffered images comes up untiled and this can affect the
-                // performances of the subsequent affine operation.
-                //
-                final Hints localHints= new Hints(hints);
-                if (hints != null && !hints.containsKey(JAI.KEY_BORDER_EXTENDER)) {
-                    final Object extender = hints.get(JAI.KEY_BORDER_EXTENDER);
-                    if (!(extender != null && extender instanceof BorderExtender)) {
-                        localHints.add(ImageUtilities.EXTEND_BORDER_BY_COPYING);
-                    }
-                }
-                ImageWorker iw = new ImageWorker(image);
-                iw.setRenderingHints(localHints);
-                iw.affine(targetWorldToGrid, new InterpolationNearest(), backgroundValues);
-                image = iw.getRenderedImage();
-            } catch (NoninvertibleTransformException e) {
-                if (LOGGER.isLoggable(Level.SEVERE)){
-                    LOGGER.log(Level.SEVERE, "Unable to create the requested mosaic ", e );
-                }
-            }
-        }
+//     // alpha on the final mosaic
+//        if (transparentColor != null) {
+//                if (LOGGER.isLoggable(Level.FINE))
+//                        LOGGER.fine("Support for alpha on final mosaic");
+//                return ImageUtilities.maskColor(transparentColor,image);
+//
+//        }
+//        if (!needsReprojection){
+//            try {
+//                
+//                // creating source grid to world corrected to the pixel corner
+//                final AffineTransform sourceGridToWorld = new AffineTransform((AffineTransform) finalGridToWorldCorner);
+//                
+//                // target world to grid at the corner
+//                final AffineTransform targetGridToWorld = new AffineTransform(request.getRequestedGridToWorld());
+//                targetGridToWorld.concatenate(CoverageUtilities.CENTER_TO_CORNER);
+//                
+//                // target world to grid at the corner
+//                final AffineTransform targetWorldToGrid=targetGridToWorld.createInverse();
+//                // final complete transformation
+//                targetWorldToGrid.concatenate(sourceGridToWorld);
+//                
+//                //update final grid to world
+//                finalGridToWorldCorner=new AffineTransform2D(targetGridToWorld);
+//                //
+//                // Check and see if the affine transform is doing a copy.
+//                // If so call the copy operation.
+//                //
+//                // we are in raster space here, so 1E-3 is safe
+//                if(XAffineTransform.isIdentity(targetWorldToGrid, Utils.AFFINE_IDENTITY_EPS))
+//                    return image;
+//                
+//                // create final image
+//                // TODO this one could be optimized further depending on how the affine is created
+//                //
+//                // In case we are asked to use certain tile dimensions we tile
+//                // also at this stage in case the read type is Direct since
+//                // buffered images comes up untiled and this can affect the
+//                // performances of the subsequent affine operation.
+//                //
+//                final Hints localHints= new Hints(hints);
+//                if (hints != null && !hints.containsKey(JAI.KEY_BORDER_EXTENDER)) {
+//                    final Object extender = hints.get(JAI.KEY_BORDER_EXTENDER);
+//                    if (!(extender != null && extender instanceof BorderExtender)) {
+//                        localHints.add(ImageUtilities.EXTEND_BORDER_BY_COPYING);
+//                    }
+//                }
+//                ImageWorker iw = new ImageWorker(image);
+//                iw.setRenderingHints(localHints);
+//                iw.affine(targetWorldToGrid, new InterpolationNearest(), backgroundValues);
+//                image = iw.getRenderedImage();
+//            } catch (NoninvertibleTransformException e) {
+//                if (LOGGER.isLoggable(Level.SEVERE)){
+//                    LOGGER.log(Level.SEVERE, "Unable to create the requested mosaic ", e );
+//                }
+//            }
+//        }
         return image;
     }
 }

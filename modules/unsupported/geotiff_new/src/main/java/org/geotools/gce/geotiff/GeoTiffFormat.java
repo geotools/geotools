@@ -36,7 +36,6 @@ package org.geotools.gce.geotiff;
 
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 
-import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -44,7 +43,6 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.ImageInputStream;

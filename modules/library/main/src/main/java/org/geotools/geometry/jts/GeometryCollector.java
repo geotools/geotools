@@ -19,6 +19,8 @@ package org.geotools.geometry.jts;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -56,6 +58,10 @@ public class GeometryCollector {
     long coordinates = 0;
 
     long maxCoordinates = -1;
+    
+    CoordinateReferenceSystem crs = null;
+    
+    int srid = -1;
 
     /**
      * Returns the maximum number of coordinates this collector is allowed to keep in the resulting
@@ -96,13 +102,25 @@ public class GeometryCollector {
     public void setFactory(GeometryFactory factory) {
         this.factory = factory;
     }
-
+    
     /**
      * Returns a geometry collection containing all of the geometries collected in the process
      * 
      * @return
      */
     public GeometryCollection collect() {
+        GeometryCollection gc = collectInternal();
+        // preserve the srid and crs, if any
+        if(srid > 0) {
+            gc.setSRID(srid);
+        }
+        if(crs != null) {
+            gc.setUserData(crs);
+        }
+        return gc;
+    }
+    
+    public GeometryCollection collectInternal() {
         // empty case, we return an empty collection (it's what JTS returns when a geometry
         // operation returns an empty result)
         if (geometries.isEmpty()) {
@@ -185,7 +203,10 @@ public class GeometryCollector {
     public void add(Geometry g) {
         if (g == null) {
             return;
-        } else if (g instanceof GeometryCollection) {
+        } 
+        
+        initCRS(g);
+        if (g instanceof GeometryCollection) {
             GeometryCollection gc = (GeometryCollection) g;
             for (int i = 0; i < gc.getNumGeometries(); i++) {
                 add(gc.getGeometryN(i));
@@ -204,6 +225,16 @@ public class GeometryCollector {
                 g = factory.createGeometry(g);
             }
             geometries.add(g);
+        }
+    }
+
+    private void initCRS(Geometry g) {
+        // see if we have a native CRS in the mix
+        if(crs == null && g.getUserData() instanceof CoordinateReferenceSystem) {
+            crs = (CoordinateReferenceSystem) g.getUserData();
+        }
+        if(srid == -1 && g.getSRID() > 0) {
+            srid = g.getSRID();
         }
     }
 }

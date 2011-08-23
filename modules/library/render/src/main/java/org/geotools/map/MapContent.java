@@ -421,6 +421,7 @@ public class MapContent {
                 public boolean addIfAbsent(Layer element) {
                     boolean added = super.addIfAbsent(element);
                     if (added) {
+                        checkViewportCRS();
                         if (layerListener != null) {
                             element.addMapLayerListener(layerListener);
                         }
@@ -875,4 +876,20 @@ public class MapContent {
         }
     }
 
+    private void checkViewportCRS() {
+        if (viewport != null && viewport.isEditable() && 
+                !viewport.isExplicitCoordinateReferenceSystem()) {
+            
+            for (Layer layer : layers()) {
+                ReferencedEnvelope bounds = layer.getBounds();
+                if (bounds != null) {
+                    CoordinateReferenceSystem crs = bounds.getCoordinateReferenceSystem();
+                    if (crs != null) {
+                        viewport.setCoordinateReferenceSystem(crs);
+                        return;
+                    }
+                }
+            }
+        }
+    }
 }

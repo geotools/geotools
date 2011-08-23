@@ -17,13 +17,12 @@
 
 package org.geotools.map;
 
-import java.io.IOException;
-
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Tests to ensure the consistency of MapContent and MapViewport functionality.
@@ -165,5 +164,58 @@ public class MapContentTest {
         
         map.dispose();
         assertTrue(listener.await(WaitingMapListener.Type.PRE_DISPOSE, LISTENER_TIMEOUT));
+    }
+    
+    @Test
+    public void crsIsAutoSetFromFirstLayerWithNonNullCRS() {
+        MapContent map = new MapContent();
+        CoordinateReferenceSystem startCRS = map.getCoordinateReferenceSystem();
+        
+        ReferencedEnvelope envNoCRS = new ReferencedEnvelope(WORLD_ENV, null);
+        Layer layerNoCRS = new MockLayer(envNoCRS);
+        map.addLayer(layerNoCRS);
+        assertEquals(startCRS, map.getCoordinateReferenceSystem());
+        
+        Layer layerWithCRS = new MockLayer(WORLD_ENV);
+        map.addLayer(layerWithCRS);
+        assertEquals(WORLD_ENV.getCoordinateReferenceSystem(), map.getCoordinateReferenceSystem());
+    }
+    
+    @Test
+    public void crsIsNotAutoSetIfViewportIsNotEditable() {
+        MapContent map = new MapContent();
+        MapViewport viewport = new MapViewport();
+        viewport.setEditable(false);
+        map.setViewport(viewport);
+        
+        Layer layerWithCRS = new MockLayer(WORLD_ENV);
+        map.addLayer(layerWithCRS);
+
+        assertEquals(MapViewport.DEFAULT_CRS, map.getCoordinateReferenceSystem());
+
+        assertFalse(WORLD_ENV.getCoordinateReferenceSystem().equals(
+                map.getCoordinateReferenceSystem()));
+    }
+    
+    @Test
+    public void crsIsNotAutoSetIfViewportHasExplicitCRS() {
+        MapContent map = new MapContent();
+        MapViewport viewport = new MapViewport();
+        
+        // Explicitly set the CRS. Even though it is the default viewport CRS
+        // it will be treated as an explicit (user-set) value
+        viewport.setCoordinateReferenceSystem(MapViewport.DEFAULT_CRS);
+
+        map.setViewport(viewport);
+        
+        Layer layerWithCRS = new MockLayer(WORLD_ENV);
+        map.addLayer(layerWithCRS);
+
+        assertTrue(viewport.isEditable());
+        
+        assertEquals(MapViewport.DEFAULT_CRS, map.getCoordinateReferenceSystem());
+
+        assertFalse(WORLD_ENV.getCoordinateReferenceSystem().equals(
+                map.getCoordinateReferenceSystem()));
     }
 }

@@ -32,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.geotools.map.MapContent;
+import org.geotools.map.MapViewport;
 import org.geotools.renderer.GTRenderer;
 
 /**
@@ -218,9 +219,14 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
             RenderingExecutorEvent event = new RenderingExecutorEvent(this, id);
             listener.onRenderingStarted(event);
             
+            // Clone the viewport and mark it as not editable to prevent
+            // the temporary MapContents created below from changing it
+            MapViewport vp = new MapViewport(mapContent.getViewport());
+            vp.setEditable(false);
+            
             for (RenderingOperands op : operands) {
                 MapContent mc = new SingleLayerMapContent(op.getLayer());
-                mc.setViewport(mapContent.getViewport());
+                mc.setViewport(vp);
                 op.getRenderer().setMapContent(mc);
                 RenderingTask task = new RenderingTask(mapContent, op.getGraphics(), op.getRenderer());
                 Future<Boolean> future = taskExecutor.submit(task);

@@ -29,10 +29,20 @@ import org.geotools.map.Layer;
  * @version $URL$
  */
 public class MockLayer extends Layer {
+    
+    private ReferencedEnvelope bounds;
+    
+    public MockLayer() {
+        this(null);
+    }
 
+    public MockLayer(ReferencedEnvelope bounds) {
+        this.bounds = bounds == null ? new ReferencedEnvelope() : new ReferencedEnvelope(bounds);
+    }
+    
     @Override
     public ReferencedEnvelope getBounds() {
-        throw new UnsupportedOperationException("Should not be called");
+        return bounds;
     }
 
 }

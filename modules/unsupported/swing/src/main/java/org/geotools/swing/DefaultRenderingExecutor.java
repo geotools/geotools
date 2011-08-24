@@ -31,8 +31,6 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.geotools.map.DirectLayer;
-import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.map.MapViewport;
 import org.geotools.renderer.GTRenderer;
@@ -93,13 +91,13 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
 
     private static class TaskInfo {
         final long id;
-        final DefaultRenderingTask task;
+        final RenderingTask task;
         final MapContent mapContent;
         final Future<Boolean> future;
         final RenderingExecutorListener listener;
         boolean polledDone;
 
-        TaskInfo(long id, DefaultRenderingTask task, MapContent mapContent,
+        TaskInfo(long id, RenderingTask task, MapContent mapContent,
                 Future<Boolean> future, RenderingExecutorListener listener) {
             this.id = id;
             this.task = task;
@@ -181,7 +179,7 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
             RenderingExecutorEvent event = new RenderingExecutorEvent(this, id);
             listener.onRenderingStarted(event);
             
-            DefaultRenderingTask task = new DefaultRenderingTask(mapContent, graphics, renderer);
+            RenderingTask task = new RenderingTask(mapContent, graphics, renderer);
             Future<Boolean> future = taskExecutor.submit(task);
             currentTasks.add( new TaskInfo(id, task, mapContent, future, listener) );
             rtnValue = id;
@@ -227,21 +225,12 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
             vp.setEditable(false);
             
             for (RenderingOperands op : operands) {
-                Layer layer = op.getLayer();
-                MapContent mc = new SingleLayerMapContent(layer);
+                MapContent mc = new SingleLayerMapContent(op.getLayer());
                 mc.setViewport(vp);
-                
-                // DirectLayers paint themselves, other Layer classes are
-                // painted by a renderer
-                if (layer instanceof DirectLayer) {
-                    RenderingTask task = new DirectRenderingTask(mapContent, op.getGraphics());
-                    
-                } else {
-                    op.getRenderer().setMapContent(mc);
-                    DefaultRenderingTask task = new DefaultRenderingTask(mapContent, op.getGraphics(), op.getRenderer());
-                    Future<Boolean> future = taskExecutor.submit(task);
-                    currentTasks.add( new TaskInfo(id, task, mc, future, listener) );
-                }
+                op.getRenderer().setMapContent(mc);
+                RenderingTask task = new RenderingTask(mapContent, op.getGraphics(), op.getRenderer());
+                Future<Boolean> future = taskExecutor.submit(task);
+                currentTasks.add( new TaskInfo(id, task, mc, future, listener) );
             }
             rtnValue = id;
         }

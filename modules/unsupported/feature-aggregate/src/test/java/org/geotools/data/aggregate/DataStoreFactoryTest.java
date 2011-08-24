@@ -31,7 +31,7 @@ public class DataStoreFactoryTest extends AbstractAggregatingStoreTest {
     public void testOneStore() throws IOException {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put(REPOSITORY_PARAM.key, repository);
-        params.put(STORES_PARAM.key, Arrays.asList("gt:store3"));
+        params.put(STORES_PARAM.key, new String[] {"gt:store3"});
 
         AggregatingDataStore store = (AggregatingDataStore) DataStoreFinder.getDataStore(params);
         assertNotNull(store);

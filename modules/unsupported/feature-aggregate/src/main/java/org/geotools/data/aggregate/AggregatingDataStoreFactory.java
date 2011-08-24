@@ -19,6 +19,7 @@ package org.geotools.data.aggregate;
 import java.awt.RenderingHints.Key;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -35,7 +36,7 @@ public class AggregatingDataStoreFactory extends AbstractDataStoreFactory {
             "The repository that will provide the store intances", true, null, new KVP(Param.LEVEL,
                     "advanced"));
 
-    public static final Param STORES_PARAM = new Param("stores", List.class,
+    public static final Param STORES_PARAM = new Param("stores", String[].class,
             "List of data stores to connect to", false, null, new KVP(Param.ELEMENT, String.class));
 
     public static final Param TOLERATE_CONNECTION_FAILURE = new Param("tolerateConnectionFailure",
@@ -71,7 +72,7 @@ public class AggregatingDataStoreFactory extends AbstractDataStoreFactory {
 
     public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
         Repository repository = lookup(REPOSITORY_PARAM, params, Repository.class);
-        List<String> stores = lookup(STORES_PARAM, params, List.class);
+        String[] stores = lookup(STORES_PARAM, params, String[].class);
         boolean tolerant = lookup(TOLERATE_CONNECTION_FAILURE, params, Boolean.class);
         String namespace = lookup(NAMESPACE, params, String.class);
         ExecutorService executor;
@@ -85,7 +86,9 @@ public class AggregatingDataStoreFactory extends AbstractDataStoreFactory {
         AggregatingDataStore store = new AggregatingDataStore(repository, executor);
         store.setNamespaceURI(namespace);
         store.setTolerant(tolerant);
-        store.autoConfigureStores(stores);
+        if(stores != null) {
+            store.autoConfigureStores(Arrays.asList(stores));
+        }
 
         return store;
     }

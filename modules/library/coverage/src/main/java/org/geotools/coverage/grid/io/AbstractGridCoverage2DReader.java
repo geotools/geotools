@@ -40,8 +40,10 @@ import javax.media.jai.PlanarImage;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
+import org.geotools.coverage.grid.GeneralGridEnvelope;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
+import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DefaultServiceInfo;
 import org.geotools.data.ServiceInfo;
@@ -711,14 +713,19 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverageReader
 	}
 
 	/**
-	 * Retrieves the {@link GeneralGridRange} that represents the raster grid
+	 * Retrieves the {@link GeneralGridEnvelope} that represents the raster grid
 	 * dimensions of the highest resolution level in this dataset.
 	 * 
-	 * @return the {@link GeneralGridRange} that represents the raster grid
+	 * @return the {@link GeneralGridEnvelope} that represents the raster grid
 	 *         dimensions of the highest resolution level in this dataset.
 	 */
 	public final GridEnvelope getOriginalGridRange() {
-		return originalGridRange;
+	    assert originalGridRange.getDimension()==2;
+		return new GridEnvelope2D(
+		        originalGridRange.getLow(0),
+		        originalGridRange.getLow(1),
+		        originalGridRange.getSpan(0),
+		        originalGridRange.getSpan(1));
 	}
 
 	/**
@@ -729,7 +736,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverageReader
 	 *         {@link AbstractGridCoverage2DReader}.
 	 */
 	public final GeneralEnvelope getOriginalEnvelope() {
-		return originalEnvelope;
+		return new GeneralEnvelope(originalEnvelope);
 	}
 	
 	/**

@@ -126,7 +126,7 @@ public class MapViewport {
      * be disabled.
      */
     public MapViewport(){
-        this(null);
+        this(false);
     }
     
     /**
@@ -169,6 +169,26 @@ public class MapViewport {
         this.hasCenteringTransforms = false;
         this.matchingAspectRatio = matchAspectRatio;
         copyBounds(bounds);
+        setTransforms(true);
+    }
+    
+    /**
+     * Creates a new viewport based on an existing instance. The world bounds,
+     * screen area and aspect ratio matching setting of {@code sourceViewport} are
+     * copied. 
+     * <p>
+     * <strong>Note:</strong> The new viewport will be editable even if
+     * {@code sourceViewport} is not editable.
+     * 
+     * @param sourceViewport the viewport to copy
+     * 
+     * @throws IllegalArgumentException if {@code viewport} is {@code null}
+     */
+    public MapViewport(MapViewport sourceViewport) {
+        this.editable = true;
+        this.matchingAspectRatio = sourceViewport.matchingAspectRatio;
+        copyBounds(sourceViewport.bounds);
+        doSetScreenArea(sourceViewport.screenArea);
         setTransforms(true);
     }
 
@@ -327,14 +347,18 @@ public class MapViewport {
      */
     public synchronized void setScreenArea(Rectangle screenArea) {
         if (checkEditable("setScreenArea")) {
-            if (screenArea == null || screenArea.isEmpty()) {
-                this.screenArea = new Rectangle();
-            } else {
-                this.screenArea = new Rectangle(screenArea);
-            }
-
-            setTransforms(false);
+            doSetScreenArea(screenArea);
         }
+    }
+    
+    private void doSetScreenArea(Rectangle screenArea) {
+        if (screenArea == null || screenArea.isEmpty()) {
+            this.screenArea = new Rectangle();
+        } else {
+            this.screenArea = new Rectangle(screenArea);
+        }
+
+        setTransforms(false);
     }
     
     /**

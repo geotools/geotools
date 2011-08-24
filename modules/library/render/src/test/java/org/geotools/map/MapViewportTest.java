@@ -123,6 +123,39 @@ public class MapViewportTest {
     }
     
     @Test
+    public void copyCtor() {
+        MapViewport vp = new MapViewport(WORLD_1_1, true);
+        vp.setScreenArea(SCREEN_1_1);
+        vp.setEditable(false);
+        
+        MapViewport copy = new MapViewport(vp);
+        assertTrue(copy.isEditable());
+        assertViewportsEqual(vp, copy);
+    }
+    
+    @Test
+    public void copyCtorHandlesEmtpyViewport() {
+        MapViewport vp = new MapViewport();
+        MapViewport copy = new MapViewport(vp);
+        assertViewportsEqual(vp, copy);
+    }
+    
+    /**
+     * Checks if two viewports have equal attributes other than their
+     * editable setting.
+     * 
+     * @param vp1 first viewport
+     * @param vp2 second viewport
+     */
+    private void assertViewportsEqual(MapViewport vp1, MapViewport vp2) {
+        assertEquals(vp1.getBounds(), vp2.getBounds());
+        assertEquals(vp1.getScreenArea(), vp2.getScreenArea());
+        assertEquals(vp1.getScreenToWorld(), vp2.getScreenToWorld());
+        assertEquals(vp1.isExplicitCoordinateReferenceSystem(), vp2.isExplicitCoordinateReferenceSystem());
+        assertEquals(vp1.isMatchingAspectRatio(), vp2.isMatchingAspectRatio());
+    }
+    
+    @Test
     public void setBoundsNoAspectCorrection() {
         MapViewport vp = new MapViewport();
         vp.setScreenArea(SCREEN_2_1);

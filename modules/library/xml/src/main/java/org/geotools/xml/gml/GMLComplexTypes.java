@@ -65,6 +65,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotSupportedException;
@@ -178,21 +179,7 @@ public class GMLComplexTypes {
         	throw new IOException("Bad Point Data");
         }
 
-        AttributesImpl ai = new AttributesImpl();
-
-        // no GID
-        if (g.getUserData() != null) {
-            // TODO Fix this when parsing is better ... should be a coord reference system
-            ai.addAttribute("", "srsName", "", "anyURI",
-                g.getUserData().toString());
-        } else {
-//            if (g.getSRID() != 0) {
-//                // deprecated version
-//                ai.addAttribute("", "srsName", "", "anyURI", "" + g.getSRID());
-//            } else {
-                ai = null;
-//            }
-        }
+        AttributesImpl ai = getSrsNameAttribute(g);
 
         if (e == null) {
             output.startElement(GMLSchema.NAMESPACE, "Point", ai);
@@ -209,19 +196,26 @@ public class GMLComplexTypes {
         }
     }
 
-    static void encode(Element e, LineString g, PrintHandler output)
-        throws IOException {
-        if ((g == null) || (g.getNumPoints() == 0)) {
-        	throw new IOException("Bad LineString Data");
-        }
-
+    private static AttributesImpl getSrsNameAttribute(Geometry g) {
         AttributesImpl ai = new AttributesImpl();
 
         // no GID
         if (g.getUserData() != null) {
             // TODO Fix this when parsing is better ... should be a coord reference system
-            ai.addAttribute("", "srsName", "", "anyURI",
-                g.getUserData().toString());
+            if(g.getUserData() instanceof String) {
+                ai.addAttribute("", "srsName", "", "anyURI",
+                    (String) g.getUserData());
+            } else if(g.getUserData() instanceof CoordinateReferenceSystem) {
+                CoordinateReferenceSystem crs = (CoordinateReferenceSystem) g.getUserData();
+                try {
+                    Integer code = CRS.lookupEpsgCode(crs, false);
+                    if(code != null) {
+                        ai.addAttribute("", "srsName", "", "anyURI", "EPSG:" + code);
+                    }
+                } catch(Exception ex) {
+                    logger.log(Level.WARNING, "Could not encode the srsName for geometry, no EPSG code found", ex);
+                }
+            }
         } else {
 //            if (g.getSRID() != 0) {
 //                // deprecated version
@@ -230,6 +224,16 @@ public class GMLComplexTypes {
                 ai = null;
 //            }
         }
+        return ai;
+    }
+
+    static void encode(Element e, LineString g, PrintHandler output)
+        throws IOException {
+        if ((g == null) || (g.getNumPoints() == 0)) {
+        	throw new IOException("Bad LineString Data");
+        }
+
+        AttributesImpl ai = getSrsNameAttribute(g);
 
         if (e == null) {
             output.startElement(GMLSchema.NAMESPACE, "LineString", ai);
@@ -265,21 +269,7 @@ public class GMLComplexTypes {
         	throw new IOException("Bad Polygon Data");
         }
 
-        AttributesImpl ai = new AttributesImpl();
-
-        // no GID
-        if (g.getUserData() != null) {
-            // TODO Fix this when parsing is better ... should be a coord reference system
-            ai.addAttribute("", "srsName", "", "anyURI",
-                g.getUserData().toString());
-        } else {
-//            if (g.getSRID() != 0) {
-//                // deprecated version
-//                ai.addAttribute("", "srsName", "", "anyURI", "" + g.getSRID());
-//            } else {
-                ai = null;
-//            }
-        }
+        AttributesImpl ai = getSrsNameAttribute(g);
 
         if (e == null) {
             output.startElement(GMLSchema.NAMESPACE, "Polygon", ai);
@@ -307,20 +297,7 @@ public class GMLComplexTypes {
         	throw new IOException("Bad MultiPoint Data");
         }
 
-        AttributesImpl ai = new AttributesImpl();
-
-        // 	no GID
-        if (g.getUserData() != null) {
-            ai.addAttribute("", "srsName", "", "anyURI",
-                g.getUserData().toString());
-        } else {
-            if (g.getSRID() != 0) {
-                // deprecated version
-                ai.addAttribute("", "srsName", "", "anyURI", "" + g.getSRID());
-            } else {
-            	throw new IOException("srsName required for MultiPoint "+e.getName());
-            }
-        }
+        AttributesImpl ai = getSrsNameAttribute(g);
 
         if (e == null) {
             output.startElement(GMLSchema.NAMESPACE, "MultiPoint", ai);
@@ -348,20 +325,7 @@ public class GMLComplexTypes {
         	throw new IOException("Bad MultiLineString Data");
         }
 
-        AttributesImpl ai = new AttributesImpl();
-
-        // 	no GID
-        if (g.getUserData() != null) {
-            ai.addAttribute("", "srsName", "", "anyURI",
-                g.getUserData().toString());
-        } else {
-            if (g.getSRID() != 0) {
-                // deprecated version
-                ai.addAttribute("", "srsName", "", "anyURI", "" + g.getSRID());
-            } else {
-            	throw new IOException("srsName required for MultiPoint "+(e==null?"":e.getName()));
-            }
-        }
+        AttributesImpl ai = getSrsNameAttribute(g);
 
         if (e == null) {
             output.startElement(GMLSchema.NAMESPACE, "MultiLineString", ai);
@@ -388,25 +352,7 @@ public class GMLComplexTypes {
         	throw new IOException("Bad MultiPolygon Data");
         }
 
-        AttributesImpl ai = new AttributesImpl();
-
-        // 	no GID
-        if (g.getUserData() != null) {
-            ai.addAttribute("", "srsName", "", "anyURI",
-                g.getUserData().toString());
-        } else {
-            if (g.getSRID() != 0) {
-                // deprecated version
-                ai.addAttribute("", "srsName", "", "anyURI", "" + g.getSRID());
-            } else {
-                if( e == null ){
-                    throw new IOException("srsName required for MultiPolygon" );
-                }
-                else {
-                    throw new IOException("srsName required for MultiPolygon "+e.getName());
-                }                
-            }
-        }
+        AttributesImpl ai = getSrsNameAttribute(g);
 
         if (e == null) {
             output.startElement(GMLSchema.NAMESPACE, "MultiPolygon", ai);
@@ -433,21 +379,7 @@ public class GMLComplexTypes {
         	throw new IOException("Bad GeometryCollection Data");
         }
 
-        AttributesImpl ai = new AttributesImpl();
-
-        // 	no GID
-        if (g.getUserData() != null) {
-            // TODO Fix this when parsing is better ... should be a coord reference system
-            ai.addAttribute("", "srsName", "", "anyURI",
-                g.getUserData().toString());
-        } else {
-//            if (g.getSRID() != 0) {
-//                // deprecated version
-//                ai.addAttribute("", "srsName", "", "anyURI", "" + g.getSRID());
-//            } else {
-                ai = null;
-//            }
-        }
+        AttributesImpl ai = getSrsNameAttribute(g);
 
         if (e == null) {
             output.startElement(GMLSchema.NAMESPACE, "MultiGeometry", ai);
@@ -2817,27 +2749,12 @@ public class GMLComplexTypes {
             else {
                 Geometry g = (Geometry) value;
     
-                AttributesImpl ai = new AttributesImpl();
-    
-                // no GID
-                if ( g != null && g.getUserData() != null) {
-                    // TODO Fix this when parsing is better ... should be a coord reference system
-                    ai.addAttribute("", "srsName", "", "anyURI",
-                        g.getUserData().toString());
-                } else {
-    //                if (g.getSRID() != 0) {
-    //                    // deprecated version
-    //                    ai.addAttribute("", "srsName", "", "anyURI",
-    //                        "" + g.getSRID());
-    //                } else {
-                        ai = null;
-    //                }
-                }
-    
                 if ((g == null) || (g.getNumPoints() == 0)
                         || (g.getCoordinates().length == 0)) {
                     return;
                 }
+                
+                AttributesImpl ai = getSrsNameAttribute(g);
     
                 //we handle the case for a null element, see canEncode for details
                 if (element != null) {

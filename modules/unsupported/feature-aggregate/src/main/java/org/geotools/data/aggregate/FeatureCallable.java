@@ -78,7 +78,7 @@ class FeatureCallable implements Callable<Void> {
             Query q = new Query(query);
             q.setTypeName(typeName);
             Filter originalFilter = q.getFilter();
-            if (originalFilter != null && Filter.INCLUDE.equals(originalFilter)) {
+            if (originalFilter != null && !Filter.INCLUDE.equals(originalFilter)) {
                 // eliminate the extra attribute the delegate source does not know about
                 FilterAttributeExtractor extractor = new FilterAttributeExtractor();
                 originalFilter.accept(extractor, null);

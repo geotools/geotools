@@ -34,6 +34,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
+import org.opengis.filter.sort.SortBy;
 
 class AggregatingFeatureSource extends ContentFeatureSource {
 
@@ -95,10 +96,17 @@ class AggregatingFeatureSource extends ContentFeatureSource {
         }
 
         // aggregate the counts
-        long total = 0;
+        long total = -1;
         for (Future<Long> future : counts) {
             try {
-                total += future.get();
+                long count = future.get();
+                if(count > 0) {
+                    if(total > 0) {
+                        total += count;
+                    } else {
+                        total = count;
+                    }
+                }
             } catch (Exception e) {
                 throw new IOException("Failed to count on a delegate store", e);
             }
@@ -129,7 +137,7 @@ class AggregatingFeatureSource extends ContentFeatureSource {
             }
 
             // return the feature collection reading from the queue
-            if (query.getSortBy() != null && query.getSortBy() != null) {
+            if (query.getSortBy() != null && query.getSortBy().length > 0) {
                 throw new UnsupportedOperationException("We can't sort at the moment");
             } else {
                 return new QueueReader(queue, target);
@@ -166,5 +174,15 @@ class AggregatingFeatureSource extends ContentFeatureSource {
         schema = tb.buildFeatureType();
         return schema;
     }
-
+    
+    @Override
+    protected boolean canFilter() {
+        return true;
+    }
+    
+    @Override
+    protected boolean canRetype() {
+        return true;
+    }
+    
 }

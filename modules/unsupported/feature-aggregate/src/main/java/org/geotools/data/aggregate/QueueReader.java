@@ -52,11 +52,7 @@ public class QueueReader implements FeatureReader<SimpleFeatureType, SimpleFeatu
             return true;
         }
         
-        // did we get any exception? if so the queue is closing anyways
-        Exception e = queue.getException();
-        if (e != null) {
-            throw new IOException("Data retrieval failed", e);
-        }
+        checkException();
 
         // loop and see if we can grab a feature, or if we just get the end markers
         try {
@@ -65,11 +61,24 @@ public class QueueReader implements FeatureReader<SimpleFeatureType, SimpleFeatu
                     return false;
                 }
                 next = queue.take();
+                checkException();
             }
         } catch (InterruptedException ie) {
             throw new IOException("Error while waiting for next feature", ie);
         }
         return true;
+    }
+
+    /**
+     * Checks if the queue contains an exception, if so rethrows it
+     * @throws IOException
+     */
+    void checkException() throws IOException {
+        // did we get any exception? if so the queue is closing anyways
+        Exception e = queue.getException();
+        if (e != null) {
+            throw new IOException("Data retrieval failed", e);
+        }
     }
 
     @Override
@@ -81,6 +90,7 @@ public class QueueReader implements FeatureReader<SimpleFeatureType, SimpleFeatu
             }
         }
 
+        checkException();
         SimpleFeature result = null;
         result = next;
         next = null;

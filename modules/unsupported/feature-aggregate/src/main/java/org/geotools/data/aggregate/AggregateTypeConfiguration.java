@@ -22,7 +22,12 @@ import java.util.Map;
 import org.geotools.feature.NameImpl;
 import org.opengis.feature.type.Name;
 
-class AggregateTypeConfiguration {
+/**
+ * Maps a set of source datastores and type names into an aggregated feature type
+ * 
+ * @author Andrea Aime - GeoSolutions
+ */
+public class AggregateTypeConfiguration {
 
     /**
      * The feature type name
@@ -89,7 +94,25 @@ class AggregateTypeConfiguration {
         this.storeMap.putAll(other.getStoreMap());
     }
 
-    void addStore(Name storeName, String typeName) {
+    /**
+     * Adds a source store/type for this aggregated feature type
+     * @param storeName
+     * @param typeName
+     */
+    public void addStore(Name storeName, String typeName) {
+        if (storeMap.isEmpty()) {
+            primaryStore = storeName;
+        }
+        storeMap.put(storeName, typeName);
+    }
+
+    /**
+     * Adds a source store/type for this aggregated feature type
+     * @param storeName
+     * @param typeName
+     */
+    public void addStore(String localName, String typeName) {
+        Name storeName = buildName(localName);
         if (storeMap.isEmpty()) {
             primaryStore = storeName;
         }
@@ -120,11 +143,29 @@ class AggregateTypeConfiguration {
     public int getStoreIndex(Name storeName) {
         int i = 0;
         for (Name name : storeMap.keySet()) {
-            if(name.equals(storeName)) {
+            if (name.equals(storeName)) {
                 return i;
             }
             i++;
         }
         return -1;
+    }
+    
+    /**
+     * Builds a qualified name from a name containing the ":" separator, otherwise the given name
+     * will be used as the local part
+     * 
+     * @param name
+     * @return
+     */
+    static Name buildName(String name) {
+        int idx = name.indexOf(":");
+        if (idx == -1) {
+            return new NameImpl(name);
+        } else {
+            String ns = name.substring(0, idx);
+            String local = name.substring(idx + 1);
+            return new NameImpl(ns, local);
+        }
     }
 }

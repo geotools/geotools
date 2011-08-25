@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AggregateTypes version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <AggregateType name="BasicPolygons">
+    <Source store="store1" type="BasicPolygons"/>
+    <Source store="store2" type="BasicPolygons2"/>
+  </AggregateType>
+  <AggregateType name="RoadSegments">
+    <Source store="store1" type="RoadSegments"/>
+    <Source store="store3" type="RoadSegments2"/>
+  </AggregateType>
+</AggregateTypes>

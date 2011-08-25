@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:element name="AggregateTypes" type="AggregateTypesType" />
+  <xsd:complexType name="AggregateTypesType">
+    <xsd:sequence>
+      <xsd:element name="AggregateType" maxOccurs="unbounded"
+        type="AggregateTypeType" />
+    </xsd:sequence>
+    <xsd:attribute name="version" type="xsd:string" use="optional"
+      default="1.0" />
+  </xsd:complexType>
+  <xsd:complexType name="AggregateTypeType">
+    <xsd:sequence>
+      <xsd:element name="Source" minOccurs="1" maxOccurs="unbounded"
+        type="SourceType" />
+    </xsd:sequence>
+    <xsd:attribute name="name" type="xsd:string" use="required" />
+  </xsd:complexType>
+  <xsd:complexType name="SourceType">
+    <xsd:attribute name="store" type="xsd:string" use="required" />
+    <xsd:attribute name="type" type="xsd:string" use="required" />
+  </xsd:complexType>
+</xsd:schema>

@@ -115,11 +115,11 @@ public class AggregatingDataStore extends ContentDataStore {
             Set<String> baseNames = allNames.get(storeName);
             for (String baseName : baseNames) {
                 AggregateTypeConfiguration config = new AggregateTypeConfiguration(baseName);
-                config.addStore(buildName(storeName), baseName);
+                config.addStore(storeName, baseName);
                 for (int j = i + 1; j < storeNames.size(); j++) {
                     String otherStore = storeNames.get(j);
                     if (allNames.get(otherStore).remove(baseName)) {
-                        config.addStore(buildName(otherStore), baseName);
+                        config.addStore(otherStore, baseName);
                     }
                 }
 
@@ -130,10 +130,7 @@ public class AggregatingDataStore extends ContentDataStore {
     }
 
     /**
-     * Adds a virtual table to the data store. If a virtual table with the same name was registered
-     * this method will replace it with the new one. * @param vt
-     * 
-     * @throws IOException If the view definition is not valid
+     * Adds a new aggregate type to the store
      */
     public void addType(AggregateTypeConfiguration config) throws IOException {
         try {
@@ -145,6 +142,16 @@ public class AggregatingDataStore extends ContentDataStore {
         } catch (IOException e) {
             typeMap.remove(config.getName());
         }
+    }
+
+    /**
+     * Returns the configuration for the specified type, or null if not found
+     * 
+     * @param name
+     * @return
+     */
+    public AggregateTypeConfiguration getConfiguration(String name) {
+        return typeMap.get(name);
     }
 
     /**
@@ -161,7 +168,7 @@ public class AggregatingDataStore extends ContentDataStore {
         }
         return config;
     }
-    
+
     /**
      * Resets the store configuration, leaving no feature types
      */
@@ -191,7 +198,7 @@ public class AggregatingDataStore extends ContentDataStore {
      * @throws IOException
      */
     DataStore getStore(String storeName, boolean tolerant) throws IOException {
-        Name name = buildName(storeName);
+        Name name = AggregateTypeConfiguration.buildName(storeName);
         return getStore(name, tolerant);
     }
 
@@ -207,24 +214,6 @@ public class AggregatingDataStore extends ContentDataStore {
             return store;
         } else {
             throw new IOException("Could not locate store " + name, e);
-        }
-    }
-
-    /**
-     * Builds a qualified name from a name containing the ":" separator, otherwise the given name
-     * will be used as the local part
-     * 
-     * @param name
-     * @return
-     */
-    Name buildName(String name) {
-        int idx = name.indexOf(":");
-        if (idx == -1) {
-            return new NameImpl(name);
-        } else {
-            String ns = name.substring(0, idx);
-            String local = name.substring(idx + 1);
-            return new NameImpl(ns, local);
         }
     }
 

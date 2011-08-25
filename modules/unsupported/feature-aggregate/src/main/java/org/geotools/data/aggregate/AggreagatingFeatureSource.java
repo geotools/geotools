@@ -29,6 +29,7 @@ import org.geotools.data.Query;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.SchemaException;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -110,8 +111,12 @@ class AggregatingFeatureSource extends ContentFeatureSource {
             throws IOException {
         try {
             // get the target schema from the primary store
-            DataStore ps = getStore().getStore(config.getPrimaryStore(), false);
-            SimpleFeatureType target = DataUtilities.createView(ps, query).getSchema();
+            Query psQuery = new Query(query);
+            Name psName = config.getPrimaryStore();
+            psQuery.setTypeName(config.getStoreMap().get(psName));
+            DataStore ps = getStore().getStore(psName, false);
+            SimpleFeatureType target = DataUtilities.createView(ps, psQuery).getSchema();
+            target = retypeNameSchema(target);
 
             // schedule all the data retrieval operations
             FeatureQueue queue = new FeatureQueue(config.getStoreMap().size());
@@ -136,11 +141,29 @@ class AggregatingFeatureSource extends ContentFeatureSource {
 
     @Override
     protected SimpleFeatureType buildFeatureType() throws IOException {
-        DataStore store = getStore().getStore(config.getPrimaryStore(), false);
-        SimpleFeatureType schema = store.getSchema(config.getName());
+        Name ps = config.getPrimaryStore();
+        DataStore store = getStore().getStore(ps, false);
+        SimpleFeatureType schema = store.getSchema(config.getStoreMap().get(ps));
         if (schema == null) {
             throw new IOException("Could not find feature type " + schema + " in the primary store");
         }
+        
+        schema = retypeNameSchema(schema);
+        
+        return schema;
+    }
+
+    /**
+     * Given a source store schema it renames it and forces in the right namespace
+     * @param schema
+     * @return
+     */
+    private SimpleFeatureType retypeNameSchema(SimpleFeatureType schema) {
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        tb.init(schema);
+        tb.setName(config.getName());
+        tb.setNamespaceURI(getStore().getNamespaceURI());
+        schema = tb.buildFeatureType();
         return schema;
     }
 

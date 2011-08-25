@@ -16,6 +16,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
@@ -133,6 +134,36 @@ public class AggregatingDataStoreTest extends AbstractAggregatingStoreTest {
         assertSchema(features.values(), store1.getSchema(BASIC_POLYGONS));
         assertEquals(4, features.size());
     }
+    
+    @Test
+    public void testReadInvalidStore() throws Exception {
+        store.resetConfiguration();
+        AggregateTypeConfiguration config = new AggregateTypeConfiguration(BASIC_POLYGONS);
+        config.addStore("store1", BASIC_POLYGONS);
+        config.addStore("store3", "ABCDE");
+        store.addType(config);
+        
+        try {
+            store.getFeatureSource(BASIC_POLYGONS).getBounds();
+            fail("Should have thrown an exception, the store is not tolerant");
+        } catch(Exception e) {
+            // fine
+        }
+        
+        try {
+            store.getFeatureSource(BASIC_POLYGONS).getCount(new Query(BASIC_POLYGONS));
+            fail("Should have thrown an exception, the store is not tolerant");
+        } catch(Exception e) {
+            // fine
+        }
+        
+        try {
+            collectFeatures(new Query(BASIC_POLYGONS));
+            fail("Should have thrown an exception, the store is not tolerant");
+        } catch(Exception e) {
+            // fine
+        }
+    }
 
     void assertSchema(Collection<SimpleFeature> features, SimpleFeatureType schema) {
         for (SimpleFeature sf : features) {
@@ -155,6 +186,48 @@ public class AggregatingDataStoreTest extends AbstractAggregatingStoreTest {
         store.autoConfigureStores(Arrays.asList("store1", "store2", "gt:store3"));
         features = collectFeatures(q);
         assertSchema(features.values(), store1.getSchema(BASIC_POLYGONS));
+        assertEquals(2, features.size());
+    }
+    
+    @Test
+    public void testReadFilteredManualConfig() throws Exception {
+        Query q = new Query(BASIC_POLYGONS);
+        q.setFilter(ff.greater(ff.function("strLength", ff.property("ID")), ff.literal(3)));
+
+        store.resetConfiguration();
+        AggregateTypeConfiguration config = new AggregateTypeConfiguration(BASIC_POLYGONS);
+        config.addStore("store1", BASIC_POLYGONS);
+        store.addType(config);
+        Map<String, SimpleFeature> features = collectFeatures(q);
+        assertSchema(features.values(), store1.getSchema(BASIC_POLYGONS));
+        assertEquals(1, features.size());
+
+        config.addStore("store4", "BasicPolygons2");
+        features = collectFeatures(q);
+        assertSchema(features.values(), store1.getSchema(BASIC_POLYGONS));
+        assertEquals(2, features.size());
+    }
+    
+    @Test
+    public void testReadFilteredManualConfigInverted() throws Exception {
+        Query q = new Query(BASIC_POLYGONS);
+        q.setFilter(ff.greater(ff.function("strLength", ff.property("ID")), ff.literal(3)));
+
+        store.resetConfiguration();
+        AggregateTypeConfiguration config = new AggregateTypeConfiguration(BASIC_POLYGONS);
+        config.addStore("store4", "BasicPolygons2");
+        store.addType(config);
+        Map<String, SimpleFeature> features = collectFeatures(q);
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        tb.init(store4.getSchema("BasicPolygons2"));
+        tb.setName(BASIC_POLYGONS);
+        SimpleFeatureType expectedType = tb.buildFeatureType();
+        assertSchema(features.values(), expectedType);
+        assertEquals(1, features.size());
+
+        config.addStore("store1", BASIC_POLYGONS);
+        features = collectFeatures(q);
+        assertSchema(features.values(), expectedType);
         assertEquals(2, features.size());
     }
 

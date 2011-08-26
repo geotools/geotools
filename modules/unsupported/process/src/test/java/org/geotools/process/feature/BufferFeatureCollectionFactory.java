@@ -19,6 +19,7 @@ package org.geotools.process.feature;
 import java.util.Map;
 
 import org.geotools.data.Parameter;
+import org.geotools.process.feature.FeatureToFeatureProcessFactory;
 import org.geotools.text.Text;
 import org.opengis.util.InternationalString;
 

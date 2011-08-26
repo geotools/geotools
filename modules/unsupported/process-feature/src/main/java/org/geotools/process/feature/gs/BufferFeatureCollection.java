@@ -54,7 +54,7 @@ public class BufferFeatureCollection implements GSProcess {
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "feature collection", description = "Feature collection") SimpleFeatureCollection features,
             @DescribeParameter(name = "width of the buffer", description = "The width of the buffer") Double distance,
-            @DescribeParameter(name = "name of the layer attribute containing the width of the buffer", description = "Name of the layer attribute") String attribute) {
+            @DescribeParameter(name = "name of the layer attribute containing the width of the buffer", description = "Name of the layer attribute",min=0) String attribute) {
 
         if (distance == null && (attribute == null || attribute == "")) {
             throw new IllegalArgumentException("Buffer distance was not specified");

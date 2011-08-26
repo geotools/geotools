@@ -239,7 +239,7 @@ public class RasterToVectorProcessTest {
 
         final double ROUND_OFF_TOLERANCE = 1.0e-4D;
 
-        URL url = getClass().getResource("data/viewshed.tif");
+        URL url = getClass().getResource("gs/test-data/viewshed.tif");
         BufferedImage img = ImageIO.read(url);
 
         ReferencedEnvelope env = new ReferencedEnvelope(

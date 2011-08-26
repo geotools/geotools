@@ -19,6 +19,7 @@ package org.geotools.process.feature;
 import java.util.Map;
 
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.process.feature.FeatureToFeatureProcess;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -64,7 +65,7 @@ public class BufferFeatureCollectionProcess extends FeatureToFeatureProcess {
     }
 
     @Override
-    SimpleFeatureType getTargetSchema(SimpleFeatureType sourceSchema, Map<String, Object> input) {
+    protected SimpleFeatureType getTargetSchema(SimpleFeatureType sourceSchema, Map<String, Object> input) {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         for (AttributeDescriptor ad : sourceSchema.getAttributeDescriptors()) {
             GeometryDescriptor defaultGeometry = sourceSchema.getGeometryDescriptor();

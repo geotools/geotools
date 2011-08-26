@@ -59,7 +59,7 @@ public abstract class FeatureToFeatureProcessFactory extends AbstractFeatureColl
      * This can be the input FeatureCollection, modified by the process
      * or a new FeatureCollection.
      */
-    static final Parameter<FeatureCollection> RESULT = new Parameter<FeatureCollection>(
+    public static final Parameter<FeatureCollection> RESULT = new Parameter<FeatureCollection>(
             "result", FeatureCollection.class, Text.text("Result"), Text
                     .text("Buffered features"));
     

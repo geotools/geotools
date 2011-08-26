@@ -17,6 +17,7 @@
 package org.geotools.process;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
@@ -64,7 +65,7 @@ public class Processors extends FactoryFinder {
     private static FactoryRegistry getServiceRegistry() {
         synchronized (Processors.class) {
             if (registry == null) {
-                registry = new FactoryCreator(Arrays.asList(new Class<?>[]{ProcessFactory.class}));
+                registry = new FactoryCreator(ProcessFactory.class);
             }
         }
         return registry;
@@ -96,8 +97,9 @@ public class Processors extends FactoryFinder {
      * @return Set of ProcessFactory
      */
     public static Set<ProcessFactory> getProcessFactories() {
-        return new LazySet<ProcessFactory>(getServiceRegistry().getServiceProviders(
-                        ProcessFactory.class, null, null));
+        Iterator<ProcessFactory> serviceProviders = getServiceRegistry().getServiceProviders(
+                        ProcessFactory.class, null, null);
+        return new LazySet<ProcessFactory>(serviceProviders);
     }
 
     /** Cache of last factory found */

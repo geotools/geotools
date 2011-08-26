@@ -32,7 +32,7 @@ import org.opengis.util.ProgressListener;
  * Abstract implementation of Process for feature collections.
  * <p>
  * Subclasses need to implement {@link #processFeature(SimpleFeature, Map)}. This method
- * should perform the operation on the feature, changing any attributes on the feature in 
+ * should perform the operation on the feature, changing any attributes on the feature 
  * as necessary.
  * </p>
  * 
@@ -114,7 +114,7 @@ public abstract class FeatureToFeatureProcess extends AbstractFeatureCollectionP
      * @param input
      * @return
      */
-    SimpleFeatureType getTargetSchema(SimpleFeatureType sourceSchema, Map<String, Object> input) {
+    protected SimpleFeatureType getTargetSchema(SimpleFeatureType sourceSchema, Map<String, Object> input) {
         return sourceSchema;
     }
     

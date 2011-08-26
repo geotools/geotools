@@ -143,6 +143,7 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
+import org.geotools.map.DirectLayer;
 
 /**
  * A streaming implementation of the GTRenderer interface.
@@ -764,12 +765,11 @@ public final class StreamingRenderer implements GTRenderer {
                 ((LabelCacheImpl) labelCache).setLabelRenderingMode(LabelRenderingMode.valueOf(getTextRenderingMethod()));
             }
             final int layersNumber = mapContent.layers().size();
-            MapLayer currLayer;
             for (int i = 0; i < layersNumber; i++) // DJB: for each layer (ie. one
             {
-                currLayer = new MapLayer(mapContent.layers().get(i));
+                Layer layer = mapContent.layers().get(i);
     
-                if (!currLayer.isVisible()) {
+                if (!layer.isVisible()) {
                     // Only render layer when layer is visible
                     continue;
                 }
@@ -778,14 +778,27 @@ public final class StreamingRenderer implements GTRenderer {
                     return;
                 }
                 labelCache.startLayer(i+"");
-                try {
-    
-                    // extract the feature type stylers from the style object
-                    // and process them
-                    processStylers(graphics, currLayer, worldToScreenTransform,
-                            destinationCrs, mapExtent, screenSize, i+"");
-                } catch (Throwable t) {
-                    fireErrorEvent(t);
+                
+                if (layer instanceof DirectLayer) {
+                    RenderingRequest request = new RenderDirectLayerRequest(
+                            graphics, (DirectLayer) layer);
+                    try {
+                        requests.put(request);
+                    } catch (InterruptedException e) {
+                        fireErrorEvent(e);
+                    }
+                    
+                } else {
+                    MapLayer currLayer = new MapLayer(layer);
+                    try {
+
+                        // extract the feature type stylers from the style object
+                        // and process them
+                        processStylers(graphics, currLayer, worldToScreenTransform,
+                                destinationCrs, mapExtent, screenSize, i + "");
+                    } catch (Throwable t) {
+                        fireErrorEvent(t);
+                    }
                 }
     
                 labelCache.endLayer(i+"", graphics, screenSize);
@@ -3236,6 +3249,35 @@ public final class StreamingRenderer implements GTRenderer {
                 fireErrorEvent(e);
             }
         }
+    }
+    
+    class RenderDirectLayerRequest extends RenderingRequest {
+        private final Graphics2D graphics;
+        private final DirectLayer layer;
+
+        public RenderDirectLayerRequest(Graphics2D graphics, DirectLayer layer) {
+            this.graphics = graphics;
+            this.layer = layer;
+        }
+
+        @Override
+        void execute() {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("Rendering DirectLayer: " + layer);
+            }
+
+            try {
+                layer.draw(graphics, mapContent, mapContent.getViewport());
+                
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("Layer rendered");
+                }
+            } catch (Exception e) {
+                LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
+                fireErrorEvent(e);
+            }
+        }
+        
     }
     
     /**

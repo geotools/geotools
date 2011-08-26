@@ -12,8 +12,6 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.process.feature.BufferFeatureCollectionFactory;
-import org.geotools.process.feature.BufferFeatureCollectionProcess;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory2;
 

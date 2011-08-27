@@ -20,10 +20,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.geotools.data.DataUtilities;
@@ -38,19 +38,17 @@ import org.geotools.feature.CollectionEvent;
 import org.geotools.feature.CollectionListener;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
+import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.SortBy;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.util.NullProgressListener;
-import org.geotools.util.ProgressListener;
-import org.opengis.feature.GeometryAttribute;
-import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.identity.FeatureId;
+
+import com.vividsolutions.jts.geom.Point;
 
 /**
  * A FeatureCollection that completely delegates to a backing FetaureSource#getReader
@@ -279,13 +277,76 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
     }
     
     public int size() {
+        FeatureReader fr = null;
         try {
-           return featureSource.getCount(query);
+           int size = featureSource.getCount(query);
+           if(size >= 0) {
+               return size;
+           } else {
+               // we have to iterate, probably best if we do a minimal query that
+               // only loads a short attribute
+               AttributeDescriptor chosen = null;
+               for (AttributeDescriptor ad : getSchema().getAttributeDescriptors()) {
+                   if(chosen == null || size(ad) < size(chosen)) {
+                       chosen = ad;
+                   } 
+               }
+               // build the minimal query
+               Query q = new Query(query);
+               if(chosen != null) {
+                   q.setPropertyNames(Collections.singletonList(chosen.getLocalName()));
+               }
+               // bean counting...
+               fr = featureSource.getReader(q);
+               int count = 0;
+               while(fr.hasNext()) {
+                   fr.next();
+                   count++;
+               }
+               return count;
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } finally {
+            if(fr != null) {
+                try {
+                    fr.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
     }
     
+    /**
+     * Quick heuristic used to find a small attribute to use when 
+     * scanning over the entire collection just to get the size of the 
+     * collection. 
+     * The result is indicative, just an heuristic to quickly compare attributes
+     * in order to find a suitably small one,
+     * it's not meant to be the actual size of an attribute in bytes.
+     * @param ad
+     * @return
+     */
+    int size(AttributeDescriptor ad) {
+         Class<?> binding = ad.getType().getBinding();
+         if(binding.isPrimitive() || Number.class.isAssignableFrom(binding) || 
+                 Date.class.isAssignableFrom(binding)) {
+             return 4;
+         } else if(binding.equals(String.class)) {
+             int fieldLen = FeatureTypes.getFieldLength(ad);
+             if(fieldLen > 0) {
+                 return fieldLen * 2;
+             } else {
+                 return Integer.MAX_VALUE;
+             }
+         } else if(Point.class.isAssignableFrom(binding)) {
+             return 4 * 3;
+         } else {
+             return Integer.MAX_VALUE;
+         }
+    }
+
     public boolean isEmpty() {
         return size() == 0;
     }

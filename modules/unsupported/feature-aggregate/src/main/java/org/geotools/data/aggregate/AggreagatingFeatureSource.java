@@ -96,16 +96,15 @@ class AggregatingFeatureSource extends ContentFeatureSource {
         }
 
         // aggregate the counts
-        long total = -1;
+        long total = 0;
         for (Future<Long> future : counts) {
             try {
                 long count = future.get();
-                if(count > 0) {
-                    if(total > 0) {
-                        total += count;
-                    } else {
-                        total = count;
-                    }
+                if (count > 0) {
+                    total += count;
+                } else {
+                    // one of the sources found it was too costly to count
+                    return -1;
                 }
             } catch (Exception e) {
                 throw new IOException("Failed to count on a delegate store", e);

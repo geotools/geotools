@@ -20,7 +20,6 @@ import java.awt.RenderingHints.Key;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Serializable;
-import java.io.StringReader;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -116,6 +115,14 @@ public class AggregatingDataStoreFactory extends AbstractDataStoreFactory {
         }
 
         return store;
+    }
+    
+    public List<AggregateTypeConfiguration> parseConfiguration(String xml) throws IOException {
+        if(xml != null && !"".equals(xml.trim())) {
+            return new AggregateTypeParser().parseConfigurations(new ByteArrayInputStream(xml.getBytes()));
+        } else {
+            return null;
+        }
     }
 
     public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {

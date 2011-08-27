@@ -183,25 +183,24 @@ public final class GeodeticCalculatorTest {
         }
     }
 
-    /**
-     * Tests the points reported in
-     * <a href="http://jira.codehaus.org/browse/GEOT-1535">GEOT-1535</a>.
-     *
-     * @todo Disabled for now, because the error still presents.
-     */
     @Test
-    @Ignore
     public void testGEOT1535() {
         final GeodeticCalculator calculator = new GeodeticCalculator();
 
         calculator.setStartingGeographicPoint(10, 40);
         calculator.setDestinationGeographicPoint(-175, -30);
-        System.out.println(calculator.getOrthodromicDistance());
-        System.out.println(calculator.getAzimuth());
 
         calculator.setStartingGeographicPoint(180, 40);
         calculator.setDestinationGeographicPoint(-5, -30);
-        System.out.println(calculator.getOrthodromicDistance());
-        System.out.println(calculator.getAzimuth());
+    }
+    
+    @Test
+    public void testGEOT3826() {
+        final GeodeticCalculator calculator = new GeodeticCalculator();
+
+        calculator.setStartingGeographicPoint(0, 0);
+        calculator.setDestinationGeographicPoint(0, 90);
+        assertEquals(0.0, calculator.getAzimuth(), 0.0);
+        assertEquals(1.0001966E7, calculator.getOrthodromicDistance(), 1);
     }
 }

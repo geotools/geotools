@@ -948,6 +948,8 @@ public class GeodeticCalculator {
             final double DF = sin(P2*10.0) - sin(P1*10.0);
             // Compute the S2 part of the series expansion
             S2 = -DB*B/2.0 + DC*C/4.0 - DD*D/6.0 + DE*E/8.0 - DF*F/10.0;
+        } else {
+            S2  = 0;
         }
         // Compute the S1 part of the series expansion
         S1 = DA * A;
@@ -1063,7 +1065,7 @@ public class GeodeticCalculator {
         double xy, w, q2, q4, q6, r2, r3, sig, ssig, slon, clon, sinalf, ab=dlon;
         int kcount = 0;
         do {
-            if (++kcount > 8) {
+            if (++kcount > 12) {
                 throw new ArithmeticException(getNoConvergenceErrorMessage());
             }
             clon = cos(ab);

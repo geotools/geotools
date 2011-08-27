@@ -8,6 +8,8 @@ import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
@@ -228,6 +230,7 @@ public class OverviewEmbedderTest extends Assert{
         }
 
     @Test
+    @Ignore
         public void filtered() throws FileNotFoundException, IOException{
     //        JAI.getDefaultInstance().getTileCache().setMemoryCapacity(512*1024*1024);
     //        JAI.getDefaultInstance().getTileScheduler().setParallelism(10);
@@ -242,6 +245,7 @@ public class OverviewEmbedderTest extends Assert{
             oe.setTileWidth(256);
             oe.setTileHeight(256);
             oe.setSourcePath(TestData.file(this, "DEM_.tiff").getAbsolutePath());
+            final List<Throwable> exceptions = new ArrayList<Throwable>();
             oe.addProcessingEventListener(new ProcessingEventListener() {
                 
                 @Override
@@ -252,16 +256,23 @@ public class OverviewEmbedderTest extends Assert{
                 
                 @Override
                 public void exceptionOccurred(ExceptionEvent event) {
-                    LOGGER.warning(event.toString());                
+                    LOGGER.warning(event.toString());
+                    exceptions.add(event.getException());
+                    event.getException().printStackTrace();
                 }
                 
             });
             oe.run();
             
+            // fail if any exception was reported
+            if(exceptions.size() > 0) {
+                fail("Failed with " + exceptions.size() + " exceptions during overview embedding");
+            }
+            
             // now red it back and check that things are coherent
             final ImageReader reader= new TIFFImageReaderSpi().createReaderInstance();
             reader.setInput(ImageIO.createImageInputStream(org.geotools.test.TestData.file(this, "DEM_.tiff")));
-            assertTrue(reader.getNumImages(true)==2);
+            assertEquals(6, reader.getNumImages(true));
             
         }
 

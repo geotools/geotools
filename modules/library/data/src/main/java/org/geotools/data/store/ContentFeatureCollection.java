@@ -45,6 +45,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.identity.FeatureId;
 
@@ -268,11 +269,55 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
     }
     
     public ReferencedEnvelope getBounds() {
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader = null;
         try {
-            return featureSource.getBounds(query);    
-        }
-        catch( IOException e ) {
+             ReferencedEnvelope result = featureSource.getBounds(query);
+             if(result != null) {
+                 return result;
+             }
+             
+             // ops, we have to compute the results by hand. Let's load just the
+             // geometry attributes though
+             Query q = new Query(query);
+             List<String> geometries = new ArrayList<String>();
+             for (AttributeDescriptor ad : getSchema().getAttributeDescriptors()) {
+                if(ad instanceof GeometryDescriptor) {
+                    geometries.add(ad.getLocalName());
+                }
+            }
+            // no geometries, no bounds
+            if(geometries.size() == 0) {
+                return new ReferencedEnvelope();
+            } else {
+                q.setPropertyNames(geometries);
+            }
+            // grab the features and scan through them
+            reader = featureSource.getReader(q);
+            while(reader.hasNext()) {
+                SimpleFeature f = reader.next();
+                ReferencedEnvelope featureBounds = ReferencedEnvelope.reference(f.getBounds());
+                if(result == null) {
+                    result = featureBounds;
+                } else if(featureBounds != null){
+                    result.expandToInclude(featureBounds);
+                }
+            }
+            // return the results if we got any, or return an empty one otherwise
+            if(result != null) {
+                return result;
+            } else {
+                return new ReferencedEnvelope(getSchema().getCoordinateReferenceSystem());
+            }
+        } catch( IOException e ) {
             throw new RuntimeException( e );
+        } finally {
+            if(reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException ex) {
+                    // we tried...
+                }
+            }
         }
     }
     

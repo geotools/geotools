@@ -151,7 +151,7 @@ public class SortedReaderTest {
         // make it so that we are not going to hit the disk
         SimpleFeatureReader sr = null;
         try {
-            sr = SortedReaderFactory.getSortedReader(fr, peopleDesc, 1000, 20);
+            sr = SortedReaderFactory.getSortedReader(fr, fidAsc, 1000, 20);
             String prev = null;
             while (fr.hasNext()) {
                 SimpleFeature f = fr.next();

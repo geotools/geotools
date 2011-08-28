@@ -48,4 +48,23 @@ public class GeometryTypeImpl extends AttributeTypeImpl implements GeometryType 
 		return CRS;
 	}
 
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof GeometryType)) {
+            return false;
+        }
+        if (!super.equals(other)) {
+            return false;
+        }
+        GeometryType o = (GeometryType) other;
+        if (CRS == null) {
+            return o.getCoordinateReferenceSystem() == null;
+        }
+        if (o.getCoordinateReferenceSystem() == null) {
+            return false;
+        }
+        return org.geotools.referencing.CRS.equalsIgnoreMetadata(CRS,
+                o.getCoordinateReferenceSystem());
+    }
+
 }

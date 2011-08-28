@@ -3,10 +3,12 @@ package org.geotools.data.aggregate;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Executors;
@@ -24,6 +26,8 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.sort.SortBy;
+import org.opengis.filter.sort.SortOrder;
 
 public class AggregatingDataStoreTest extends AbstractAggregatingStoreTest {
 
@@ -134,7 +138,25 @@ public class AggregatingDataStoreTest extends AbstractAggregatingStoreTest {
         assertSchema(features.values(), store1.getSchema(BASIC_POLYGONS));
         assertEquals(4, features.size());
     }
-    
+
+    @Test
+    public void testReadSorted() throws Exception {
+        store.autoConfigureStores(Arrays.asList("store1", "store2"));
+        Query q = new Query(BASIC_POLYGONS);
+        q.setSortBy(new SortBy[] { ff.sort("ID", SortOrder.DESCENDING) });
+        List<SimpleFeature> features = listFeatures(q);
+        
+        assertEquals(4, features.size());
+        String prev = null;
+        for (SimpleFeature f : features) {
+            String id = (String) f.getAttribute("ID");
+            if(prev != null) {
+                assertTrue(prev.compareTo(id) >= 0);
+            }
+            prev = id;
+        }
+    }
+
     @Test
     public void testReadInvalidStore() throws Exception {
         store.resetConfiguration();
@@ -142,25 +164,25 @@ public class AggregatingDataStoreTest extends AbstractAggregatingStoreTest {
         config.addStore("store1", BASIC_POLYGONS);
         config.addStore("store3", "ABCDE");
         store.addType(config);
-        
+
         try {
             store.getFeatureSource(BASIC_POLYGONS).getBounds();
             fail("Should have thrown an exception, the store is not tolerant");
-        } catch(Exception e) {
+        } catch (Exception e) {
             // fine
         }
-        
+
         try {
             store.getFeatureSource(BASIC_POLYGONS).getCount(new Query(BASIC_POLYGONS));
             fail("Should have thrown an exception, the store is not tolerant");
-        } catch(Exception e) {
+        } catch (Exception e) {
             // fine
         }
-        
+
         try {
             collectFeatures(new Query(BASIC_POLYGONS));
             fail("Should have thrown an exception, the store is not tolerant");
-        } catch(Exception e) {
+        } catch (Exception e) {
             // fine
         }
     }
@@ -188,7 +210,7 @@ public class AggregatingDataStoreTest extends AbstractAggregatingStoreTest {
         assertSchema(features.values(), store1.getSchema(BASIC_POLYGONS));
         assertEquals(2, features.size());
     }
-    
+
     @Test
     public void testReadFilteredManualConfig() throws Exception {
         Query q = new Query(BASIC_POLYGONS);
@@ -207,7 +229,7 @@ public class AggregatingDataStoreTest extends AbstractAggregatingStoreTest {
         assertSchema(features.values(), store1.getSchema(BASIC_POLYGONS));
         assertEquals(2, features.size());
     }
-    
+
     @Test
     public void testReadFilteredManualConfigInverted() throws Exception {
         Query q = new Query(BASIC_POLYGONS);
@@ -259,6 +281,24 @@ public class AggregatingDataStoreTest extends AbstractAggregatingStoreTest {
             while (fi.hasNext()) {
                 SimpleFeature f = fi.next();
                 result.put(f.getID(), f);
+            }
+        } finally {
+            if (fi != null) {
+                fi.close();
+            }
+        }
+        return result;
+    }
+
+    private List<SimpleFeature> listFeatures(Query query) throws IOException {
+        List<SimpleFeature> result = new ArrayList<SimpleFeature>();
+        SimpleFeatureCollection fc = store.getFeatureSource(query.getTypeName()).getFeatures(query);
+        SimpleFeatureIterator fi = null;
+        try {
+            fi = fc.features();
+            while (fi.hasNext()) {
+                SimpleFeature f = fi.next();
+                result.add(f);
             }
         } finally {
             if (fi != null) {

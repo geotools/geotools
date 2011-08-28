@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 
 import org.geotools.data.FeatureReader;
+import org.geotools.data.simple.SimpleFeatureReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -28,7 +29,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * 
  * @author Andrea Aime - GeoSolutions
  */
-public class QueueReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
+public class QueueReader implements SimpleFeatureReader {
 
     private FeatureQueue queue;
 

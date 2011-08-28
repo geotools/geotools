@@ -77,6 +77,7 @@ class FeatureCallable implements Callable<Void> {
             SimpleFeatureSource source = ds.getFeatureSource(typeName);
             Query q = new Query(query);
             q.setTypeName(typeName);
+            q.setSortBy(null);
             Filter originalFilter = q.getFilter();
             if (originalFilter != null && !Filter.INCLUDE.equals(originalFilter)) {
                 // eliminate the extra attribute the delegate source does not know about

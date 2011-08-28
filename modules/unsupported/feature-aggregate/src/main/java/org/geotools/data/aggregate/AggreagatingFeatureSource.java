@@ -26,6 +26,9 @@ import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
+import org.geotools.data.QueryCapabilities;
+import org.geotools.data.aggregate.sort.SortedReaderFactory;
+import org.geotools.data.simple.SimpleFeatureReader;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.SchemaException;
@@ -135,12 +138,14 @@ class AggregatingFeatureSource extends ContentFeatureSource {
                 store.submit(fc);
             }
 
+            // build a reader out of the queue
+            SimpleFeatureReader reader = new QueueReader(queue, target);
+
             // return the feature collection reading from the queue
             if (query.getSortBy() != null && query.getSortBy().length > 0) {
-                throw new UnsupportedOperationException("We can't sort at the moment");
-            } else {
-                return new QueueReader(queue, target);
+                reader = SortedReaderFactory.getSortedReader(reader, query.getSortBy(), 1000, 20);
             }
+            return reader;
         } catch (SchemaException e) {
             throw new IOException("Failed to compute target feature type", e);
         }
@@ -154,14 +159,15 @@ class AggregatingFeatureSource extends ContentFeatureSource {
         if (schema == null) {
             throw new IOException("Could not find feature type " + schema + " in the primary store");
         }
-        
+
         schema = retypeNameSchema(schema);
-        
+
         return schema;
     }
 
     /**
      * Given a source store schema it renames it and forces in the right namespace
+     * 
      * @param schema
      * @return
      */
@@ -173,15 +179,29 @@ class AggregatingFeatureSource extends ContentFeatureSource {
         schema = tb.buildFeatureType();
         return schema;
     }
-    
+
     @Override
     protected boolean canFilter() {
         return true;
     }
-    
+
     @Override
     protected boolean canRetype() {
         return true;
     }
-    
+
+    @Override
+    protected boolean canSort() {
+        return true;
+    }
+
+    protected QueryCapabilities buildQueryCapabilities() {
+        return new QueryCapabilities() {
+            @Override
+            public boolean supportsSorting(SortBy[] sortAttributes) {
+                return SortedReaderFactory.canSort(schema, sortAttributes);
+            }
+        };
+    }
+
 }

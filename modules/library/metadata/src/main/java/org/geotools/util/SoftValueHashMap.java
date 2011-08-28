@@ -93,7 +93,7 @@ public class SoftValueHashMap<K,V> extends AbstractMap<K,V> {
     /**
      * The eventual cleaner
      */
-    private final ValueCleaner cleaner;
+    protected ValueCleaner cleaner;
 
     /**
      * Creates a map with the default hard references count.
@@ -121,6 +121,14 @@ public class SoftValueHashMap<K,V> extends AbstractMap<K,V> {
     public SoftValueHashMap(final int hardReferencesCount, ValueCleaner cleaner) {
         this.cleaner = cleaner;
         this.hardReferencesCount = hardReferencesCount;
+    }
+    
+    /**
+     * Returns the number of hard references kept in this cache
+     * @return
+     */
+    public int getHardReferencesCount() {
+    	return this.hardReferencesCount;
     }
 
     /**
@@ -252,7 +260,7 @@ public class SoftValueHashMap<K,V> extends AbstractMap<K,V> {
             assert value!=null && !(value instanceof Reference) : toRemove;
             @SuppressWarnings("unchecked")
             final V v = (V) value;
-            hash.put(toRemove, new Reference<K,V>(hash, toRemove, v));
+            hash.put(toRemove, new Reference<K,V>(hash, toRemove, v, cleaner));
             assert hardCache.size() == hardReferencesCount;
         }
         assert isValid();
@@ -343,7 +351,7 @@ public class SoftValueHashMap<K,V> extends AbstractMap<K,V> {
             for (final Iterator it=hash.values().iterator(); it.hasNext();) {
                 final Object value = it.next();
                 if (value instanceof Reference) {
-                    ((Reference) value).getAndClear();
+                	((Reference) value).getAndClear();
                 }
             }
             hash.clear();
@@ -632,11 +640,13 @@ public class SoftValueHashMap<K,V> extends AbstractMap<K,V> {
         /**
          * Creates a soft reference for the specified key-value pair.
          */
-        Reference(final Map<K,Object> hash, final K key, final V value) {
+        Reference(final Map<K,Object> hash, final K key, final V value, final ValueCleaner cleaner) {
             super(value, WeakCollectionCleaner.DEFAULT.referenceQueue);
             this.hash = hash;
             this.key  = key;
+            this.cleaner = cleaner;
         }
+
 
         /**
          * Gets and clear this reference object. This method performs no additional operation.
@@ -666,7 +676,7 @@ public class SoftValueHashMap<K,V> extends AbstractMap<K,V> {
                 final Object value = get();
                 if(value != null) {
                     try {
-                        cleaner.clean(value);
+                        cleaner.clean(key, value);
                     } catch(Throwable t) {
                         // never let a bad implementation break soft reference cleaning
                         LOGGER.log(Level.SEVERE, "Exception occurred while cleaning soft referenced object", t);
@@ -700,6 +710,6 @@ public class SoftValueHashMap<K,V> extends AbstractMap<K,V> {
          * Cleans the specified object
          * @param object
          */
-        public void clean(Object object);
+        public void clean(Object key, Object object);
     }
 }

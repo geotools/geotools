@@ -7,7 +7,11 @@ import javax.swing.JOptionPane;
 import org.geotools.data.DataStore;
 
 public class TypeNameChooser {
-    
+    /**
+     * Prompt the user to choose a layer of content as represented by a "type name".
+     * @param dataStore
+     * @return selected "typename"
+     */
     public static String showTypeNameChooser( DataStore dataStore ){
         if( dataStore == null ){
             return null; // could not connect

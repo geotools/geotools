@@ -281,7 +281,14 @@ public class JWizard extends JDialog {
         cardLayout.show(cardPanel, id);
         page.postDisplayPanel();
     }
-
+    /**
+     * Registers the page with this JWizard. The page
+     * is stored by its identifier (so other pages can look it up).
+     * The page.setJWizard() method is also called so the page
+     * can refer to its containing wizard at runtime.
+     * 
+     * @param page
+     */
     public void registerWizardPanel(JPage page) {
         page.setJWizard(this);
         model.put(page.getPageIdentifier(), page);

@@ -84,9 +84,11 @@ public class CoverageTiler extends BaseArgumentsManager implements
 		ProcessingEventListener, Runnable {
 	/** Default Logger * */
 	private final static Logger LOGGER = Logger.getLogger(CoverageTiler.class.toString());
+	
+	private static final AbstractGridFormat GEOTIFF_FORMAT = new GeoTiffFormat();
 
 	/** Program Version */
-	private final static String VERSION = "0.3";
+	private final static String VERSION = "0.4";
 
 	private static final String NAME = "CoverageTiler";
 
@@ -275,7 +277,6 @@ public class CoverageTiler extends BaseArgumentsManager implements
 	 * 
 	 * @see it.geosolutions.utils.progress.ProgressManager#run()
 	 */
-	@SuppressWarnings("deprecation")
 	public void run() {
 
 		// /////////////////////////////////////////////////////////////////////
@@ -420,7 +421,7 @@ public class CoverageTiler extends BaseArgumentsManager implements
 				// Write this coverage out as a geotiff
 				//
 				// //
-				final AbstractGridFormat outFormat = new GeoTiffFormat();
+				GeoTiffWriter writerWI=null;
 				try {
 
 					final GeoTiffWriteParams wp = new GeoTiffWriteParams();
@@ -432,15 +433,23 @@ public class CoverageTiler extends BaseArgumentsManager implements
 						wp.setCompressionType(compressionScheme);
 						wp.setCompressionQuality((float) this.compressionRatio);
 					}
-					final ParameterValueGroup params = outFormat.getWriteParameters();
+					final ParameterValueGroup params = GEOTIFF_FORMAT.getWriteParameters();
 					params.parameter(AbstractGridFormat.GEOTOOLS_WRITE_PARAMS.getName().toString()).setValue(wp);
 
-					final GeoTiffWriter writerWI = new GeoTiffWriter(fileOut);
+					writerWI = new GeoTiffWriter(fileOut);
 					writerWI.write(gc, (GeneralParameterValue[]) params.values().toArray(new GeneralParameterValue[1]));
-					writerWI.dispose();
+					
 				} catch (IOException e) {
 					fireException(e);
 					return;
+				} finally {
+				    if(writerWI!=null){
+				        try{
+				            writerWI.dispose();
+				        } catch (Exception e) {
+                                            // eat me
+                                        }
+				    }
 				}
 
 			}

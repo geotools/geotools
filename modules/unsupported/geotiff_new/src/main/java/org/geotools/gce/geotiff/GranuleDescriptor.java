@@ -77,13 +77,7 @@ class GranuleDescriptor {
      * 
      */
     class GranuleLevelDescriptor {
-
-        public ImageInputStreamSpi getStreamSPI() {
-            return streamSPI;
-        }
-
-
-
+        
         final double scaleX;
 
         final double scaleY;
@@ -103,7 +97,11 @@ class GranuleDescriptor {
         final int imageIndex;
 
         ImageInputStreamSpi streamSPI;
-
+        
+        public ImageInputStreamSpi getStreamSPI() {
+            return streamSPI;
+        }
+        
         public File getSource() {
             return source;
         }

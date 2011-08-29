@@ -254,7 +254,7 @@ class RasterLayerResponse{
         hints = rasterManager.getHints();
         coverageEnvelope = rasterManager.getCoverageEnvelope();
         baseGridToWorld = rasterManager.getRaster2Model();
-        coverageFactory = rasterManager.getCoverageFactory();
+        coverageFactory = rasterManager.parent.getGridCoverageFactory();
         this.rasterManager = rasterManager;
         backgroundValues = request.getBackgroundValues();
         transparentColor = request.getInputTransparentColor();        

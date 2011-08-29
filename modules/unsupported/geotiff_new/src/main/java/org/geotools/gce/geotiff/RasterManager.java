@@ -27,16 +27,13 @@ import javax.imageio.ImageTypeSpecifier;
 import javax.media.jai.ImageLayout;
 
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
 import org.geotools.factory.Hints;
-import org.geotools.gce.geotiff.OverviewsController.OverviewLevel;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.util.Utilities;
-import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -64,12 +61,10 @@ class RasterManager {
         public SpatialDomainManager(
                 CoordinateReferenceSystem coverageCRS,
                 GeneralEnvelope coverageEnvelope, 
-                double[] coverageFullResolution,
                 MathTransform2D coverageGridToWorld2D, 
                 Rectangle coverageRasterArea) throws TransformException, FactoryException {
             this.coverageCRS = coverageCRS;
             this.coverageEnvelope = coverageEnvelope;
-            this.coverageFullResolution = coverageFullResolution;
             this.coverageGridToWorld2D = coverageGridToWorld2D;
             this.coverageRasterArea = coverageRasterArea;
             prepareCoverageSpatialElements();
@@ -90,9 +85,8 @@ class RasterManager {
         //
         // ////////////////////////////////////////////////////////////////////////
         /** The base envelope read from file */
-        GeneralEnvelope coverageEnvelope = null;
+        GeneralEnvelope coverageEnvelope;
 
-        double[] coverageFullResolution;
 
         /** WGS84 envelope 2D for this coverage */
         ReferencedEnvelope coverageGeographicBBox;
@@ -141,9 +135,6 @@ class RasterManager {
         }
     }
 
-    /** The coverage factory producing a {@link GridCoverage} from an image */
-    GridCoverageFactory coverageFactory;
-
     /**
      * The name of the input coverage TODO consider URI
      */
@@ -168,40 +159,63 @@ class RasterManager {
 
     /** Logger. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(RasterManager.class);
+    public RasterManager(
+            String identifier,
+            Hints hints,
+            CoordinateReferenceSystem crs,
+            GeneralEnvelope envelope,
+            MathTransform2D gridToWorld,
+            Rectangle originalRasterRange,
+            double [][] resolutions,
+            ImageTypeSpecifier baseImageType,
+            GeoTiffReader reader) throws DataSourceException {
+        Utilities.ensureNonNull("GeoTiffReader", reader);        
+        initialize(
+                identifier,
+                hints,
+                crs,
+                envelope,
+                gridToWorld,
+                originalRasterRange,
+                resolutions,
+                baseImageType,
+                reader);
 
-    public RasterManager(final GeoTiffReader reader) throws DataSourceException {
-
+        
+    }
+    
+    private void initialize(
+            String identifier, 
+            Hints hints, 
+            CoordinateReferenceSystem crs,
+            GeneralEnvelope envelope, 
+            MathTransform2D gridToWorld, 
+            Rectangle originalRasterRange,
+            double[][] resolutions, 
+            ImageTypeSpecifier baseImageType, 
+            GeoTiffReader reader) throws DataSourceException {
         Utilities.ensureNonNull("GeoTiffReader", reader);
         this.parent = reader;
-        coverageIdentifier = reader.getName();
+        this.coverageIdentifier = identifier;
         hints = reader.getHints();
-        coverageFactory = reader.getGridCoverageFactory();
-        // get the overviews policy
+        // get the default overviews policy from the hints
         extractOverviewPolicy();
 
         // base image type
-        baseImageType = reader.baseImageType;
+        this.baseImageType = baseImageType;
         
         // default ImageLayout
         defaultImageLayout= new ImageLayout().setColorModel( baseImageType.getColorModel()).setSampleModel(baseImageType.getSampleModel());
 
 
         //instantiating controller for subsampling and overviews
-        overviewsController=new OverviewsController(
-                        reader.getHighestRes(),
-                        reader.getNumberOfOverviews(),
-                        reader.getOverviewsResolution());
+        overviewsController=new OverviewsController(resolutions);
         try {
-            double[] coverageFullResolution = new double[2];
-            final OverviewLevel highestLevel = RasterManager.this.overviewsController.resolutionsLevels.get(0);
-            coverageFullResolution[0] = highestLevel.resolutionX;
-            coverageFullResolution[1] = highestLevel.resolutionY;
             spatialDomainManager = new SpatialDomainManager(
-                    reader.getCrs(),
-                    reader.getOriginalEnvelope(),
-                    coverageFullResolution,
-                    (MathTransform2D)reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER),
-                    (Rectangle) reader.getOriginalGridRange());
+                    crs,
+                    envelope,
+                    gridToWorld,
+                    originalRasterRange);
         } catch (TransformException e) {
             throw new DataSourceException(e);
         } catch (FactoryException e) {
@@ -209,6 +223,28 @@ class RasterManager {
         }
         // granuleDescriptor creation
         granuleDescriptor = new GranuleDescriptor(this);
+        
+    }
+
+    public RasterManager(final GeoTiffReader reader) throws DataSourceException {
+        Utilities.ensureNonNull("GeoTiffReader", reader);
+        
+        // extract overviews
+        double [][]resolutions = new double[reader.getNumberOfOverviews()+1][2];
+        double[][] overviewResolutions=reader.getOverviewsResolution();
+        resolutions[0]=reader.getHighestRes();
+        for(int i=1; i<resolutions.length;i++)
+            resolutions[i]=overviewResolutions[i-1];
+        initialize(
+                reader.getName(),
+                reader.getHints(),
+                reader.getCrs(),
+                reader.getOriginalEnvelope(),
+                (MathTransform2D)reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER), 
+                (Rectangle) reader.getOriginalGridRange(), 
+                resolutions,
+                reader.baseImageType, 
+                reader);
     }
 
     /**
@@ -280,10 +316,6 @@ class RasterManager {
 
     public GeneralEnvelope getCoverageEnvelope() {
         return spatialDomainManager.coverageEnvelope;
-    }
-
-    public GridCoverageFactory getCoverageFactory() {
-        return coverageFactory;
     }
 
     public MathTransform2D getRaster2Model() {

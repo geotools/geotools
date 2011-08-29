@@ -29,7 +29,7 @@ import java.io.Serializable;
  * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/geotiff_new/src/main/java/org/geotools/gce/geotiff/RasterLayout.java $
  * @todo there is some duplication with the ImageCollectionReader
  */
-class RasterLayout extends Object implements Cloneable, Serializable {
+public class RasterLayout extends Object implements Cloneable, Serializable {
 
     private static final long serialVersionUID = 1L;
 

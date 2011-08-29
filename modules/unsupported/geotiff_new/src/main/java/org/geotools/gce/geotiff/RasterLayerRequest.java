@@ -34,6 +34,7 @@ import org.geotools.coverage.grid.io.DecimationPolicy;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
 import org.geotools.factory.Hints;
+import org.geotools.gce.geotiff.OverviewsController.OverviewLevel;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.metadata.iso.spatial.PixelTranslation;
@@ -488,7 +489,11 @@ class RasterLayerRequest {
             cropBBox = rasterManager.spatialDomainManager.coverageBBox;
             requestedRasterArea = (Rectangle) rasterManager.spatialDomainManager.coverageRasterArea.clone();
             destinationRasterArea = (Rectangle) rasterManager.spatialDomainManager.coverageRasterArea.clone();
-            requestedResolution = rasterManager.spatialDomainManager.coverageFullResolution.clone();
+            final OverviewLevel highestResLevel = rasterManager.overviewsController.resolutionsLevels.get(0);
+            requestedResolution = new double[]{
+                    highestResLevel.resolutionX,
+                    highestResLevel.resolutionY,
+            };
             // TODO harmonize the various types of transformations
             requestedGridToWorld = (AffineTransform) rasterManager.spatialDomainManager.coverageGridToWorld2D;
             return;
@@ -877,7 +882,11 @@ class RasterLayerRequest {
         // use the coverage resolution since we cannot compute the requested one
         //
         LOGGER.log(Level.WARNING, "Unable to compute requested resolution, using highest available");
-        requestedResolution = rasterManager.spatialDomainManager.coverageFullResolution;
+        final OverviewLevel highestResLevel = rasterManager.overviewsController.resolutionsLevels.get(0);
+        requestedResolution = new double[]{
+                highestResLevel.resolutionX,
+                highestResLevel.resolutionY,
+        };
 
     }
 

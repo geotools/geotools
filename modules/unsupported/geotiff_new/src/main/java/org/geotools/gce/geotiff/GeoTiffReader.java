@@ -109,6 +109,7 @@ import org.opengis.referencing.operation.TransformException;
  */
 public class GeoTiffReader extends AbstractGridCoverage2DReader implements
 		GridCoverageReader {
+    
     /** Logger for the {@link GeoTiffReader} class. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GeoTiffReader.class.toString());
 
@@ -612,7 +613,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
      * @return this {@link Hints} used by this reader.
      */
     Hints getHints() {
-        return super.hints;
+        return super.hints.clone();
     }
 
     /**
@@ -621,7 +622,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
      * @return the highest resolution values.
      */
     double[] getHighestRes() {
-        return super.highestRes;
+        return super.highestRes.clone();
     }
 
     /**
@@ -629,7 +630,9 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
      * @return
      */
     double[][] getOverviewsResolution() {
-        return super.overViewResolutions;
+        if(overViewResolutions!=null)
+            return super.overViewResolutions.clone();
+        return null;
     }
 
     int getNumberOfOverviews() {

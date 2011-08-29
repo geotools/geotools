@@ -32,7 +32,7 @@ import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.PrjFileReader;
 import org.geotools.data.WorldFileReader;
-import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -40,7 +40,6 @@ import org.jdom.Parent;
 import org.jdom.input.DOMBuilder;
 import org.jdom.output.DOMOutputter;
 import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
@@ -57,21 +56,7 @@ class Utils {
     private final static Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger(Utils.class.toString());
         
-    static CoordinateReferenceSystem WGS84;
-    
-    static {
-        try {
-            WGS84 = CRS.decode("EPSG:4326", true);
-        } catch (NoSuchAuthorityCodeException e) {
-            if (LOGGER.isLoggable(Level.WARNING)){
-                LOGGER.log(Level.WARNING, "Unable to decode the EPSG:4326 crs." + e.getLocalizedMessage(), e);
-            }
-        } catch (FactoryException e) {
-            if (LOGGER.isLoggable(Level.WARNING)){
-                LOGGER.log(Level.WARNING, "Unable to decode the EPSG:4326 crs." + e.getLocalizedMessage(), e);
-            }
-        }
-    }
+    static CoordinateReferenceSystem WGS84 = DefaultGeographicCRS.WGS84;
 
     static URL checkSource(Object source) throws MalformedURLException, DataSourceException {
         URL sourceURL = null;

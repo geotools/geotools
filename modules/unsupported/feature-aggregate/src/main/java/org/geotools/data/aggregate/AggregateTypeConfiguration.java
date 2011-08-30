@@ -16,6 +16,7 @@
  */
 package org.geotools.data.aggregate;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -27,7 +28,7 @@ import org.opengis.feature.type.Name;
  * 
  * @author Andrea Aime - GeoSolutions
  */
-public class AggregateTypeConfiguration {
+public class AggregateTypeConfiguration implements Serializable {
 
     /**
      * The feature type name
@@ -92,6 +93,7 @@ public class AggregateTypeConfiguration {
     public AggregateTypeConfiguration(AggregateTypeConfiguration other) {
         this.name = other.name;
         this.storeMap.putAll(other.getStoreMap());
+        this.primaryStore = other.primaryStore;
     }
 
     /**
@@ -137,7 +139,8 @@ public class AggregateTypeConfiguration {
 
     @Override
     public String toString() {
-        return "AggregateTypeConfiguration [name=" + name + ", storeMap=" + storeMap + "]";
+        return "AggregateTypeConfiguration [name=" + name + ", storeMap=" + storeMap
+                + ", primaryStore=" + primaryStore + "]";
     }
 
     public int getStoreIndex(Name storeName) {
@@ -167,5 +170,42 @@ public class AggregateTypeConfiguration {
             String local = name.substring(idx + 1);
             return new NameImpl(ns, local);
         }
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((primaryStore == null) ? 0 : primaryStore.hashCode());
+        result = prime * result + ((storeMap == null) ? 0 : storeMap.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        AggregateTypeConfiguration other = (AggregateTypeConfiguration) obj;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
+        if (primaryStore == null) {
+            if (other.primaryStore != null)
+                return false;
+        } else if (!primaryStore.equals(other.primaryStore))
+            return false;
+        if (storeMap == null) {
+            if (other.storeMap != null)
+                return false;
+        } else if (!storeMap.equals(other.storeMap))
+            return false;
+        return true;
     }
 }

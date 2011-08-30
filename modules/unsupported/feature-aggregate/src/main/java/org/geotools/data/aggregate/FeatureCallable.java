@@ -71,7 +71,7 @@ class FeatureCallable implements Callable<Void> {
         try {
             // get the feature list
             DataStore ds = store.getStore(storeName, store.isTolerant());
-            AggregateTypeConfiguration config = store.getTypeConfigurations().get(
+            AggregateTypeConfiguration config = store.getConfigurations().get(
                     builder.getFeatureType().getTypeName());
             storeId = config.getStoreIndex(storeName);
             SimpleFeatureSource source = ds.getFeatureSource(typeName);

@@ -27,6 +27,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.xml.transform.TransformerException;
+
 import org.geotools.data.AbstractDataStoreFactory;
 import org.geotools.data.DataStore;
 import org.geotools.data.Repository;
@@ -41,8 +43,9 @@ public class AggregatingDataStoreFactory extends AbstractDataStoreFactory {
     public static final Param STORES_PARAM = new Param("stores", String[].class,
             "List of data stores to connect to", false, null, new KVP(Param.ELEMENT, String.class));
 
-    public static final Param TOLERATE_CONNECTION_FAILURE = new Param("tolerate connection failure",
-            Boolean.class, "Is failure to connect to a store tolerated", false, Boolean.TRUE);
+    public static final Param TOLERATE_CONNECTION_FAILURE = new Param(
+            "tolerate connection failure", Boolean.class,
+            "Is failure to connect to a store tolerated", false, Boolean.TRUE);
 
     public static final Param NAMESPACE = new Param("namespace", String.class, "Namespace prefix",
             false);
@@ -50,14 +53,12 @@ public class AggregatingDataStoreFactory extends AbstractDataStoreFactory {
     public static final Param PARALLELISM = new Param("parallelism", Integer.class,
             "Number of allowed concurrent queries on the delegate stores (unlimited by default)",
             false, new Integer(-1));
-    
+
     public static final Param CONFIGURATION = new Param("configuration", URL.class,
-            "Location of the aggregated type configuration file",
-            false, null);
-    
+            "Location of the aggregated type configuration file", false, null);
+
     public static final Param CONFIGURATION_XML = new Param("configuration xml", String.class,
-            "The aggregated type configuration, as a xml document in a string",
-            false, null);
+            "The aggregated type configuration, as a xml document in a string", false, null);
 
     public String getDisplayName() {
         return "Aggregating data store";
@@ -87,28 +88,29 @@ public class AggregatingDataStoreFactory extends AbstractDataStoreFactory {
         String namespace = lookup(NAMESPACE, params, String.class);
         ExecutorService executor;
         int parallelism = lookup(PARALLELISM, params, Integer.class);
-        if(parallelism <= 0) {
+        if (parallelism <= 0) {
             executor = Executors.newCachedThreadPool();
         } else {
             executor = Executors.newFixedThreadPool(parallelism);
         }
         List<AggregateTypeConfiguration> configs = null;
         URL configuration = lookup(CONFIGURATION, params, URL.class);
-        if(configuration != null) {
+        if (configuration != null) {
             configs = new AggregateTypeParser().parseConfigurations(configuration.openStream());
-        } 
+        }
         String configurationXml = lookup(CONFIGURATION_XML, params, String.class);
-        if(configurationXml != null && !"".equals(configurationXml.trim())) {
-            configs = new AggregateTypeParser().parseConfigurations(new ByteArrayInputStream(configurationXml.getBytes()));
+        if (configurationXml != null && !"".equals(configurationXml.trim())) {
+            configs = new AggregateTypeParser().parseConfigurations(new ByteArrayInputStream(
+                    configurationXml.getBytes()));
         }
 
         AggregatingDataStore store = new AggregatingDataStore(repository, executor);
         store.setNamespaceURI(namespace);
         store.setTolerant(tolerant);
-        if(stores != null) {
+        if (stores != null) {
             store.autoConfigureStores(Arrays.asList(stores));
         }
-        if(configs != null) {
+        if (configs != null) {
             for (AggregateTypeConfiguration config : configs) {
                 store.addType(config);
             }
@@ -116,12 +118,23 @@ public class AggregatingDataStoreFactory extends AbstractDataStoreFactory {
 
         return store;
     }
-    
+
     public List<AggregateTypeConfiguration> parseConfiguration(String xml) throws IOException {
-        if(xml != null && !"".equals(xml.trim())) {
-            return new AggregateTypeParser().parseConfigurations(new ByteArrayInputStream(xml.getBytes()));
+        if (xml != null && !"".equals(xml.trim())) {
+            return new AggregateTypeParser().parseConfigurations(new ByteArrayInputStream(xml
+                    .getBytes()));
         } else {
             return null;
+        }
+    }
+
+    public String encodeConfiguration(List<AggregateTypeConfiguration> configs) throws IOException {
+        try {
+            AggregateTypeEncoder encoder = new AggregateTypeEncoder();
+            encoder.setIndentation(2);
+            return encoder.transform(configs);
+        } catch (TransformerException e) {
+            throw new IOException("Failed to encode the configuration back in xml", e);
         }
     }
 

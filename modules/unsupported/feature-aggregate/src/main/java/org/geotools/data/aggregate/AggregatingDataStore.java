@@ -182,7 +182,7 @@ public class AggregatingDataStore extends ContentDataStore {
      * 
      * @return
      */
-    public Map<String, AggregateTypeConfiguration> getTypeConfigurations() {
+    public Map<String, AggregateTypeConfiguration> getConfigurations() {
         Map<String, AggregateTypeConfiguration> result = new HashMap<String, AggregateTypeConfiguration>();
         for (String key : typeMap.keySet()) {
             result.put(key, new AggregateTypeConfiguration(typeMap.get(key)));

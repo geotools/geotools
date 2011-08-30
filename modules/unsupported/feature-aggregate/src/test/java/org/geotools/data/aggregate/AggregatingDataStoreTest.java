@@ -53,20 +53,20 @@ public class AggregatingDataStoreTest extends AbstractAggregatingStoreTest {
         assertArrayEquals(expected, store.getTypeNames());
 
         // grab the BasicPolygon type map and check it looks fine
-        AggregateTypeConfiguration config = store.getTypeConfigurations().get(BASIC_POLYGONS);
+        AggregateTypeConfiguration config = store.getConfigurations().get(BASIC_POLYGONS);
         assertEquals(BASIC_POLYGONS, config.getName());
         assertEquals(2, config.getStoreMap().size());
         assertEquals(BASIC_POLYGONS, config.getStoreMap().get(new NameImpl("store1")));
         assertEquals(BASIC_POLYGONS, config.getStoreMap().get(new NameImpl("store2")));
 
         // grab the Streams type map and check it looks fine
-        config = store.getTypeConfigurations().get("Streams");
+        config = store.getConfigurations().get("Streams");
         assertEquals("Streams", config.getName());
         assertEquals(1, config.getStoreMap().size());
         assertEquals("Streams", config.getStoreMap().get(new NameImpl("store2")));
 
         // grab the RoadSegments type map and check it looks fine
-        config = store.getTypeConfigurations().get(ROAD_SEGMENTS);
+        config = store.getConfigurations().get(ROAD_SEGMENTS);
         assertEquals(ROAD_SEGMENTS, config.getName());
         assertEquals(2, config.getStoreMap().size());
         assertEquals(ROAD_SEGMENTS, config.getStoreMap().get(new NameImpl("store1")));

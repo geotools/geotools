@@ -7,8 +7,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
@@ -33,14 +35,14 @@ public class DataStoreFactoryTest extends AbstractAggregatingStoreTest {
     public void testOneStore() throws IOException {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put(REPOSITORY_PARAM.key, repository);
-        params.put(STORES_PARAM.key, new String[] {"gt:store3"});
+        params.put(STORES_PARAM.key, new String[] { "gt:store3" });
 
         AggregatingDataStore store = (AggregatingDataStore) DataStoreFinder.getDataStore(params);
         assertNotNull(store);
         assertEquals(1, store.getTypeNames().length);
         assertTrue(store.isTolerant());
     }
-    
+
     @Test
     public void testConfigurationUrl() throws IOException {
         Map<String, Object> params = new HashMap<String, Object>();
@@ -49,7 +51,7 @@ public class DataStoreFactoryTest extends AbstractAggregatingStoreTest {
 
         checkManualConfiguration(params);
     }
-    
+
     @Test
     public void testConfigurationXml() throws IOException {
         Map<String, Object> params = new HashMap<String, Object>();
@@ -65,20 +67,38 @@ public class DataStoreFactoryTest extends AbstractAggregatingStoreTest {
         assertNotNull(store);
         assertEquals(2, store.getTypeNames().length);
         assertTrue(store.isTolerant());
-        
+
         AggregateTypeConfiguration bp = store.getConfiguration("BasicPolygons");
         assertNotNull(bp);
         assertEquals("BasicPolygons", bp.getName());
         assertEquals(2, bp.getStoreMap().size());
         assertEquals("BasicPolygons", bp.getStoreMap().get(new NameImpl("store1")));
         assertEquals("BasicPolygons2", bp.getStoreMap().get(new NameImpl("store2")));
-        
+
         AggregateTypeConfiguration rs = store.getConfiguration("RoadSegments");
         assertNotNull(rs);
         assertEquals("RoadSegments", rs.getName());
         assertEquals(2, rs.getStoreMap().size());
         assertEquals("RoadSegments", rs.getStoreMap().get(new NameImpl("store1")));
         assertEquals("RoadSegments2", rs.getStoreMap().get(new NameImpl("store3")));
+    }
+
+    @Test
+    public void testEncodeDecode() throws Exception {
+        // build the store so that we have a ready to use configuration
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put(REPOSITORY_PARAM.key, repository);
+        params.put(STORES_PARAM.key, new String[] { "store1", "gt:store3" });
+
+        AggregatingDataStore store = (AggregatingDataStore) DataStoreFinder.getDataStore(params);
+        List<AggregateTypeConfiguration> configs = new ArrayList<AggregateTypeConfiguration>(store
+                .getConfigurations().values());
+        
+        AggregatingDataStoreFactory factory = new AggregatingDataStoreFactory();
+        String xml = factory.encodeConfiguration(configs);
+        
+        List<AggregateTypeConfiguration> configs2 = factory.parseConfiguration(xml);
+        assertEquals(configs, configs2);
     }
 
 }

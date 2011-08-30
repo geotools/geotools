@@ -30,6 +30,7 @@ import org.geotools.data.crs.ReprojectFeatureResults;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.store.EmptyFeatureCollection;
+import org.geotools.factory.Hints;
 import org.geotools.feature.SchemaException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -81,10 +82,11 @@ public abstract class AbstractFeatureSource implements SimpleFeatureSource {
     
     protected Set hints = Collections.EMPTY_SET;
     
-    protected QueryCapabilities queryCapabilities = new QueryCapabilities();
+    protected QueryCapabilities queryCapabilities;
     
     public AbstractFeatureSource() {
         // just to keep the default constructor around
+        queryCapabilities = new QueryCapabilities();
     }
     
     /**
@@ -110,6 +112,12 @@ public abstract class AbstractFeatureSource implements SimpleFeatureSource {
      */
     public AbstractFeatureSource(Set hints) {
         this.hints = Collections.unmodifiableSet(new HashSet(hints));
+        queryCapabilities = new QueryCapabilities() {
+            @Override
+            public boolean isUseProvidedFIDSupported() {
+                return AbstractFeatureSource.this.hints.contains(Hints.USE_PROVIDED_FID);
+            }
+        };
     }
     
     public ResourceInfo getInfo() {

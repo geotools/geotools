@@ -21,6 +21,7 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -31,7 +32,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.processing.AbstractProcessor;
-import org.geotools.coverage.processing.DefaultProcessor;
+import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.Operations;
 import org.geotools.factory.Hints;
 import org.geotools.gce.image.WorldImageReader;
@@ -49,6 +50,7 @@ import org.geotools.referencing.operation.builder.algorithm.TPSInterpolation;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
 import org.opengis.parameter.ParameterValueGroup;
+import org.opengis.referencing.IdentifiedObject;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
@@ -58,11 +60,11 @@ public class GridDemo {
         double deltas, CoordinateReferenceSystem crs) {
     	crs = DefaultEngineeringCRS.CARTESIAN_2D;
         List /*<MappedPositions>*/ vectors = new ArrayList();
-        double minx = env.getLowerCorner().getCoordinates()[0];
-        double miny = env.getLowerCorner().getCoordinates()[1];
+        double minx = env.getLowerCorner().getCoordinate()[0];
+        double miny = env.getLowerCorner().getCoordinate()[1];
 
-        double maxx = env.getUpperCorner().getCoordinates()[0];
-        double maxy = env.getUpperCorner().getCoordinates()[1];
+        double maxx = env.getUpperCorner().getCoordinate()[0];
+        double maxy = env.getUpperCorner().getCoordinate()[1];
 
         final Random random = new Random(8578348921369L);
 
@@ -81,11 +83,11 @@ public class GridDemo {
     private static HashMap /*<MappedPositions>*/ generatePositionsWithValues(Envelope env,
         int number, double approxValue) {
         HashMap positions = new HashMap();
-        double minx = env.getLowerCorner().getCoordinates()[0];
-        double miny = env.getLowerCorner().getCoordinates()[1];
+        double minx = env.getLowerCorner().getCoordinate()[0];
+        double miny = env.getLowerCorner().getCoordinate()[1];
 
-        double maxx = env.getUpperCorner().getCoordinates()[0];
-        double maxy = env.getUpperCorner().getCoordinates()[1];
+        double maxx = env.getUpperCorner().getCoordinate()[0];
+        double maxy = env.getUpperCorner().getCoordinate()[1];
 
         final Random random = new Random(8578348921369L);
 
@@ -219,10 +221,10 @@ public class GridDemo {
             List vectors = generateMappedPositions(env, 15, 0.158,
                     env.getCoordinateReferenceSystem());
 
-            //  System.out.println(env.getCoordinateReferenceSystem().getCoordinateSystem().getClass());
+            //  System.out.println(env.getCoordinateReferenceSystem().getCoordinateystem().getClass());
             //  WarpGridBuilder gridBuilder = new TPSGridBuilder(vectors, 0.01,0.01, env, coverage.getGridGeometry().getGridToCRS().inverse());
 
-            // System.out.println(DefaultEngineeringCRS.CARTESIAN_2D.getCoordinateSystem().getClass().isAssignableFrom(DefaultCartesianCS.class));            
+            // System.out.println(DefaultEngineeringCRS.CARTESIAN_2D.getCoordinateystem().getClass().isAssignableFrom(DefaultCartesianCS.class));            
 
             //    MathTransformBuilder gridBuilder = new AffineTransformBuilder(vectors);//, env);
 
@@ -250,15 +252,18 @@ public class GridDemo {
             System.out.println(trans.getTargetDimensions());
 
             /* Make New reference System */
-            CoordinateReferenceSystem gridCRS = new DefaultDerivedCRS("gridCRS",
-                    new DefaultOperationMethod(trans), coverage.getCoordinateReferenceSystem(),
-                    trans, DefaultCartesianCS.GENERIC_2D);
+            CoordinateReferenceSystem gridCRS = new DefaultDerivedCRS(
+                    Collections.singletonMap(IdentifiedObject.NAME_KEY, "gridCRS"),
+                    new DefaultOperationMethod(trans), 
+                    coverage.getCoordinateReferenceSystem(),
+                    trans,
+                    DefaultCartesianCS.GENERIC_2D);
 
             //////******************Show Source***************************///////
 
             // coverage.show();
             /* Reproject the image */
-            AbstractProcessor processor = AbstractProcessor.getInstance();
+            CoverageProcessor processor = CoverageProcessor.getInstance();
             coverage = coverage.geophysics(false);
 
             final ParameterValueGroup param = processor.getOperation("Resample").getParameters();
@@ -304,8 +309,8 @@ public class GridDemo {
     private static GridCoverage2D projectTo(final GridCoverage2D coverage,
         final CoordinateReferenceSystem targetCRS, final GridGeometry2D geometry,
         final Hints hints, final boolean useGeophysics) {
-        final AbstractProcessor processor = (hints != null) ? new DefaultProcessor(hints)
-                                                            : AbstractProcessor.getInstance();
+        final CoverageProcessor processor = (hints != null) ? CoverageProcessor.getInstance(hints)
+                                                            : CoverageProcessor.getInstance();
         final String arg1;
         final Object value1;
         final String arg2;

@@ -191,12 +191,12 @@ public class TPSInterpolation extends AbstractInterpolation {
             DirectPosition source = (DirectPosition) iter.next();
 
             L.setElement(i, number + 0, 1);
-            L.setElement(i, number + 1, source.getCoordinates()[0]);
-            L.setElement(i, number + 2, source.getCoordinates()[1]);
+            L.setElement(i, number + 1, source.getCoordinate()[0]);
+            L.setElement(i, number + 2, source.getCoordinate()[1]);
 
             L.setElement(number + 0, i, 1);
-            L.setElement(number + 1, i, source.getCoordinates()[0]);
-            L.setElement(number + 2, i, source.getCoordinates()[1]);
+            L.setElement(number + 1, i, source.getCoordinate()[0]);
+            L.setElement(number + 2, i, source.getCoordinate()[1]);
         }
     }
 

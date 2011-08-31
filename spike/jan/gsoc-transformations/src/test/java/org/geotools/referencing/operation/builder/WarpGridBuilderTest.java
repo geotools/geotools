@@ -88,11 +88,11 @@ public class WarpGridBuilderTest extends TestCase {
     private List<MappedPosition> generateMappedPositions(Envelope env, int number,
         double deltas, CoordinateReferenceSystem crs) {
         List<MappedPosition> vectors = new ArrayList<MappedPosition>();
-        double minx = env.getLowerCorner().getCoordinates()[0];
-        double miny = env.getLowerCorner().getCoordinates()[1];
+        double minx = env.getLowerCorner().getCoordinate()[0];
+        double miny = env.getLowerCorner().getCoordinate()[1];
 
-        double maxx = env.getUpperCorner().getCoordinates()[0];
-        double maxy = env.getUpperCorner().getCoordinates()[1];
+        double maxx = env.getUpperCorner().getCoordinate()[0];
+        double maxy = env.getUpperCorner().getCoordinate()[1];
 
         final Random random = new Random(8578348921369L);
 

@@ -23,7 +23,6 @@ import java.util.Map;
 import javax.media.jai.RasterFactory;
 
 import org.geotools.geometry.DirectPosition2D;
-import org.opengis.coverage.Coverage;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
 import org.opengis.referencing.operation.TransformException;
@@ -88,8 +87,8 @@ public abstract class AbstractInterpolation {
         this.yNumCells = yNumOfCells;
         this.env = env;
 
-        dx = env.getLength(0) / xNumOfCells;
-        dy = env.getLength(1) / yNumOfCells;
+        dx = env.getSpan(0) / xNumOfCells;
+        dy = env.getSpan(1) / yNumOfCells;
 
         //gridValues = new float[xNumCells*yNumCells];
     }
@@ -103,8 +102,8 @@ public abstract class AbstractInterpolation {
         this.dx = dx;
         this.dy = dy;
 
-        this.xNumCells = (int) Math.floor(env.getLength(0) / dx);
-        this.yNumCells = (int) Math.floor(env.getLength(1) / dy);
+        this.xNumCells = (int) Math.floor(env.getSpan(0) / dx);
+        this.yNumCells = (int) Math.floor(env.getSpan(1) / dy);
     }
 
     /**
@@ -116,8 +115,8 @@ public abstract class AbstractInterpolation {
         this.xNumCells = xNumOfCells;
         this.yNumCells = yNumOfCells;
 
-        dx = env.getLength(0) / xNumOfCells;
-        dy = env.getLength(1) / yNumOfCells;
+        dx = env.getSpan(0) / xNumOfCells;
+        dy = env.getSpan(1) / yNumOfCells;
     }
 
     /**

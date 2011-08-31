@@ -218,8 +218,8 @@ public abstract class WarpGridBuilder extends MathTransformBuilder {
 				.iterator(); i.hasNext();) {
 			MappedPosition mp = ((MappedPosition) i.next());
 			poitnsToDeltas.put(mp.getSource(), k
-					* new Float(mp.getSource().getCoordinates()[dim]
-							- mp.getTarget().getCoordinates()[dim]));
+					* new Float(mp.getSource().getCoordinate()[dim]
+							- mp.getTarget().getCoordinate()[dim]));
 		}
 
 		return poitnsToDeltas;
@@ -664,8 +664,8 @@ public abstract class WarpGridBuilder extends MathTransformBuilder {
 
 		try {
 			this.gridParameters = GridParameters.createGridParameters(envelope,
-					this.envelope.getLength(0) / width, this.envelope
-							.getLength(1)
+					this.envelope.getSpan(0) / width, this.envelope
+							.getSpan(1)
 							/ height, (AffineTransform2D) worldToGrid, true);
 		} catch (TransformException e) {
 			// TODO Auto-generated catch block
@@ -697,8 +697,8 @@ public abstract class WarpGridBuilder extends MathTransformBuilder {
 
 		try {
 			this.gridParameters = GridParameters.createGridParameters(envelope,
-					this.envelope.getLength(0) / width, this.envelope
-							.getLength(1)
+					this.envelope.getSpan(0) / width, this.envelope
+							.getSpan(1)
 							/ height, (AffineTransform2D) worldToGrid, true);
 
 		} catch (TransformException e) {

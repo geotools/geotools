@@ -29,7 +29,6 @@ import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.geometry.MismatchedReferenceSystemException;
-import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchIdentifierException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -64,7 +63,7 @@ public class RSGridBuilder extends WarpGridBuilder {
 
         Envelope gridEnvelope = CRS.transform(worldToGrid, envelope);
              
-        double enlarge = gridEnvelope.getLength(0)*0.01;
+        double enlarge = gridEnvelope.getSpan(0)*0.01;
         DirectPosition p0 = new DirectPosition2D(
         		gridEnvelope.getLowerCorner().getOrdinate(0)-enlarge,
         		gridEnvelope.getLowerCorner().getOrdinate(1)-enlarge);

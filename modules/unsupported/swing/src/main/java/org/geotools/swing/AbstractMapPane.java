@@ -412,12 +412,8 @@ public abstract class AbstractMapPane extends JPanel
 
     /**
      * Moves the image displayed by the map pane from its current
-     * origin (x,y) to (x+dx, y+dy). Calling this method repeatedly
-     * at intervals less than 
+     * origin (x,y) to (x+dx, y+dy) where all ordinates are pixels.
      * 
-     * For example, it is used by
-     * {@link org.geotools.swing.tool.PanTool}.
-     *
      * @param dx the x offset in pixels
      * @param dy the y offset in pixels.
      */

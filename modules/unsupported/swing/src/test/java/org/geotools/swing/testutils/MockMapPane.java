@@ -17,11 +17,12 @@
 
 package org.geotools.swing.testutils;
 
-import java.awt.Component;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JPanel;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
@@ -29,7 +30,7 @@ import org.geotools.swing.MapPane;
 import org.geotools.swing.event.MapMouseListener;
 import org.geotools.swing.event.MapPaneListener;
 import org.geotools.swing.tool.CursorTool;
-import org.geotools.swing.tool.MapToolManager;
+import org.geotools.swing.tool.DefaultMapToolManager;
 import org.opengis.geometry.Envelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -41,20 +42,20 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @source $URL$
  * @version $Id$
  */
-public class MockMapPane extends Component implements MapPane {
+public class MockMapPane extends JPanel implements MapPane {
     private MapContent mapContent;
     private List<MapPaneListener> mapPaneListeners;
-    private MapToolManager toolManager;
+    private DefaultMapToolManager toolManager;
 
     public MockMapPane() {
         mapContent = new MapContent();
         mapContent.getViewport().setMatchingAspectRatio(true);
         
         mapPaneListeners = new ArrayList<MapPaneListener>();
-        toolManager = new MapToolManager(this);
+        toolManager = new DefaultMapToolManager(this);
     }
     
-    public MapToolManager getMapToolManager() {
+    public DefaultMapToolManager getMapToolManager() {
         return toolManager;
     }
 

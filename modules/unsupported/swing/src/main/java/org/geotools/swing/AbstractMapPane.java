@@ -54,7 +54,7 @@ import org.geotools.swing.event.MapMouseListener;
 import org.geotools.swing.event.MapPaneEvent;
 import org.geotools.swing.event.MapPaneListener;
 import org.geotools.swing.tool.CursorTool;
-import org.geotools.swing.tool.MapToolManager;
+import org.geotools.swing.tool.DefaultMapToolManager;
 import org.opengis.geometry.Envelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -121,7 +121,7 @@ public abstract class AbstractMapPane extends JPanel
     protected AtomicBoolean clearLabelCache;
     
     protected final Set<MapPaneListener> listeners = new HashSet<MapPaneListener>();
-    protected final MapToolManager toolManager;
+    protected final DefaultMapToolManager toolManager;
     protected final MouseDragBox dragBox;
 
     
@@ -137,7 +137,7 @@ public abstract class AbstractMapPane extends JPanel
         imageOrigin = new Point(0, 0);
         
         dragBox = new MouseDragBox(this);
-        toolManager = new MapToolManager(this);
+        toolManager = new DefaultMapToolManager(this);
 
         addMouseListener(dragBox);
         addMouseMotionListener(dragBox);

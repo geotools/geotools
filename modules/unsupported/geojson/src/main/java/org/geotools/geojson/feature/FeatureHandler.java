@@ -199,10 +199,12 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
             typeBuilder.setCRS(crs);
         }
 
-        for (int i = 0; i < properties.size(); i++) {
-            String prop = properties.get(i);
-            Object valu = values.get(i);
-            typeBuilder.add(prop, valu != null ? valu.getClass() : Object.class);
+        if (properties != null) {
+            for (int i = 0; i < properties.size(); i++) {
+                String prop = properties.get(i);
+                Object valu = values.get(i);
+                typeBuilder.add(prop, valu != null ? valu.getClass() : Object.class);
+            }
         }
         if (geometry != null) {
             typeBuilder.add("geometry", geometry != null ? geometry.getClass() : Geometry.class);
@@ -214,7 +216,8 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
     
     SimpleFeature buildFeature() {
       
-        SimpleFeatureType featureType = builder.getFeatureType();
+        SimpleFeatureBuilder builder = this.builder != null ? this.builder : createBuilder();
+      SimpleFeatureType featureType = builder.getFeatureType();
         if (geometry != null) {
             builder.set(featureType.getGeometryDescriptor().getLocalName(), geometry);    
         }

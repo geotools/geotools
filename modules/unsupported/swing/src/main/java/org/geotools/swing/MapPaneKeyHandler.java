@@ -127,6 +127,31 @@ public class MapPaneKeyHandler extends KeyAdapter {
     }
     
     /**
+     * Gets the current key binding for the given action. The object
+     * returned is a copy.
+     * 
+     * @param action the action
+     * @return the key binding; or {@code null} if there is no binding
+     * @throws IllegalArgumentException if {@code action} is {@code null}
+     */
+    public KeyId getBindingForAction(Action action) {
+        if (action == null) {
+            throw new IllegalArgumentException("action must not be null");
+        }
+        
+        KeyId keyId = null;
+        
+        for (Map.Entry<KeyId, Action> e : bindings.entrySet()) {
+            if (e.getValue() == action) {
+                keyId = new KeyId(e.getKey());
+                break;
+            }
+        }
+
+        return keyId;
+    }
+
+    /**
      * Sets the key binding for a single action.
      * 
      * @param keyId the key binding

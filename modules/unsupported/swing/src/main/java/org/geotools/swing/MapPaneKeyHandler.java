@@ -31,8 +31,8 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
  * 
  * @author Michael Bedward
  * @since 8.0
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swing/src/main/java/org/geotools/swing/JMapFrame.java $
- * @version $Id: JMapFrame.java 37840 2011-08-16 04:26:41Z mbedward $
+ * @source $URL$
+ * @version $Id$
  */
 public class MapPaneKeyHandler extends KeyAdapter {
     

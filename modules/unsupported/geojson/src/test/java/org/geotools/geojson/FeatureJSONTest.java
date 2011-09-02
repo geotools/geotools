@@ -321,6 +321,28 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         assertEquals(1.3, (Double) l.get(3), 0.1d);
     }
     
+    public void testFeatureWithoutPropertiesRead() throws Exception {
+        SimpleFeature f = fjson.readFeature(reader(strip(featureWithoutPropertiesText())));
+        assertEquals(1, f.getFeatureType().getAttributeCount());
+        assertEquals("geometry", f.getFeatureType().getDescriptor(0).getLocalName());
+
+        assertEquals(1.2, ((Point)f.getDefaultGeometry()).getX());
+        assertEquals(3.4, ((Point)f.getDefaultGeometry()).getY());
+    }
+
+    String featureWithoutPropertiesText() {
+        String json = 
+            "{" + 
+            "   'type': 'Feature'," +
+            "   'geometry': {" +
+            "     'type': 'Point'," +
+            "     'coordinates': [1.2, 3.4]" +
+            "   }," +
+            "   'id': 'feature.1'" +
+            " }";
+        return json;
+    }
+
     public void testFeatureWithBoundedByAttributeWrite() throws Exception {
         StringWriter writer = new StringWriter();
         fjson.writeFeature(featureWithBoundedByAttribute(), writer);

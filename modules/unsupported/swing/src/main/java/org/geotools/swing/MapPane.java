@@ -138,4 +138,12 @@ public interface MapPane {
      */
     void setCursorTool(CursorTool tool);
     
+    /**
+     * Moves the image(s) displayed by the map pane from the current
+     * origin (x,y) (device pixels) to (x+dx, y+dy).
+     * 
+     * @param dx the x offset in pixels
+     * @param dy the y offset in pixels.
+     */
+    void moveImage(int dx, int dy);
 }

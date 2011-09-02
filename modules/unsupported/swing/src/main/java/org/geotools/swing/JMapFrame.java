@@ -18,6 +18,8 @@ package org.geotools.swing;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Set;
@@ -165,6 +167,14 @@ public class JMapFrame extends JFrame {
         // the map pane is the one element that is always displayed
         mapPane = new JMapPane(content);
         mapPane.setBackground(Color.WHITE);
+        
+        // give keyboard focus to the map pane
+        addWindowFocusListener(new WindowAdapter() {
+            @Override
+            public void windowGainedFocus(WindowEvent e) {
+                mapPane.requestFocusInWindow();
+            }
+        });
     }
 
     /**

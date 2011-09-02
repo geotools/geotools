@@ -28,8 +28,8 @@ import org.geotools.map.MapContent;
  * 
  * @author Michael Bedward
  * @since 8.0
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swing/src/main/java/org/geotools/swing/DefaultRenderingExecutor.java $
- * @version $Id: DefaultRenderingExecutor.java 37862 2011-08-18 13:09:50Z mbedward $
+ * @source $URL$
+ * @version $Id$
  */
 public class SingleLayerMapContent extends MapContent {
 

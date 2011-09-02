@@ -24,6 +24,7 @@ import java.awt.event.ComponentListener;
 import java.awt.event.HierarchyBoundsAdapter;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.util.HashSet;
@@ -114,11 +115,12 @@ public abstract class AbstractMapPane extends JPanel
     
     protected MapContent mapContent;
     protected RenderingExecutor renderingExecutor;
+    protected KeyListener keyHandler;
 
     protected LabelCache labelCache;
     protected AtomicBoolean clearLabelCache;
     
-    protected Set<MapPaneListener> listeners = new HashSet<MapPaneListener>();
+    protected final Set<MapPaneListener> listeners = new HashSet<MapPaneListener>();
     protected final MapToolManager toolManager;
     protected final MouseDragBox dragBox;
 
@@ -137,12 +139,12 @@ public abstract class AbstractMapPane extends JPanel
         dragBox = new MouseDragBox(this);
         toolManager = new MapToolManager(this);
 
-        this.addMouseListener(dragBox);
-        this.addMouseMotionListener(dragBox);
+        addMouseListener(dragBox);
+        addMouseMotionListener(dragBox);
 
-        this.addMouseListener(toolManager);
-        this.addMouseMotionListener(toolManager);
-        this.addMouseWheelListener(toolManager);
+        addMouseListener(toolManager);
+        addMouseMotionListener(toolManager);
+        addMouseWheelListener(toolManager);
 
         /*
          * Listen for mouse entered events to (re-)set the
@@ -150,7 +152,7 @@ public abstract class AbstractMapPane extends JPanel
          * default to the standard cursor sometimes (at least
          * on OSX)
          */
-        this.addMouseListener(new MouseInputAdapter() {
+        addMouseListener(new MouseInputAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 super.mouseEntered(e);
@@ -161,6 +163,8 @@ public abstract class AbstractMapPane extends JPanel
             }
         });
 
+        keyHandler = new MapPaneKeyHandler(this);
+        addKeyListener(keyHandler);
 
         /*
          * Note: we listen for both resizing events (with HierarchyBoundsListener) 
@@ -229,7 +233,37 @@ public abstract class AbstractMapPane extends JPanel
         }
         
         renderingExecutor = newExecutor;
-    }    
+    }
+    
+    /**
+     * Gets the current handler for keyboard actions.
+     * 
+     * @return current handler (may be {@code null})
+     */
+    public KeyListener getKeyHandler() {
+        return keyHandler;
+    }
+    
+    /**
+     * Sets a handler for keyboard actions which control the map pane's
+     * display. The default handler is {@linkplain MapPaneKeyHandler} which
+     * provides for scrolling and zooming.
+     * 
+     * @param controller the new handler or {@code null} to disable key handling
+     */
+    public void setKeyHandler(KeyListener controller) {
+        if (keyHandler != null) {
+            removeKeyListener(keyHandler);
+        }
+        
+        if (controller != null) {
+            addKeyListener(controller);
+        }
+        
+        keyHandler = controller;
+    }
+    
+    
 
     /**
      * Check if the envelope corresponds to full extent. It will probably not
@@ -411,12 +445,9 @@ public abstract class AbstractMapPane extends JPanel
     }
 
     /**
-     * Moves the image displayed by the map pane from its current
-     * origin (x,y) to (x+dx, y+dy) where all ordinates are pixels.
-     * 
-     * @param dx the x offset in pixels
-     * @param dy the y offset in pixels.
+     * {@inheritDoc}
      */
+    @Override
     public void moveImage(int dx, int dy) {
         imageOrigin.translate(dx, dy);
         baseImageMoved.set(true);

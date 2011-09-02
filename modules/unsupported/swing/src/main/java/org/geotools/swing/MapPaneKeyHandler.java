@@ -22,7 +22,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.swing.JComponent;
+
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
@@ -38,129 +40,6 @@ public class MapPaneKeyHandler extends KeyAdapter {
     
     private static final double SCROLL_FRACTION = 0.05;
     private static final double ZOOM_FRACTION = 1.5;
-    
-    /**
-     * Represents a keyboard key, identified by key code and optional modifiers.
-     * <p>
-     * Create instances using values of {@code keyCode} and {@code modifiers} 
-     * taken from constants in the {@linkplain KeyEvent} class. For example:
-     * <pre><code>
-     * KeyId left = new KeyId(KeyEvent.VK_LEFT, 0, "Left");
-     * KeyId shiftUp = new KeyId(KeyEvent.VK_UP, KeyEvent.SHIFT_DOWN_MASK, "Shift+Up");
-     * </code></pre>
-     */
-    public static class KeyId {
-        private final int keyCode;
-        private final int modifiers;
-        private final String desc;
-        
-        /**
-         * Creates a new instance. 
-         * 
-         * @param keyCode key code
-         * @param modifiers modifiers (0 for none)
-         * @param desc short description suitable for GUI labels etc.
-         */
-        public KeyId(int keyCode, int modifiers, String desc) {
-            this.keyCode = keyCode;
-            this.modifiers = modifiers;
-            this.desc = desc;
-        }
-
-        /**
-         * Creates a copy of an existing instance.
-         * 
-         * @param keyId the instance to copy
-         * @throws IllegalArgumentException if {@code keyId} is {@code null}
-         */
-        private KeyId(KeyId keyId) {
-            if (keyId == null) {
-                throw new IllegalArgumentException("keyId must not be null");
-            }
-            
-            this.keyCode = keyId.keyCode;
-            this.modifiers = keyId.modifiers;
-            this.desc = keyId.desc;
-        }
-
-        /**
-         * Gets the key code.
-         * 
-         * @return the key code
-         */
-        public int getKeyCode() {
-            return keyCode;
-        }
-
-        /**
-         * Gets the modifiers.
-         * 
-         * @return the modifiers
-         */
-        public int getModifiers() {
-            return modifiers;
-        }
-
-        /**
-         * Gets the short text description for this object. This can be useful for
-         * GUI labels, menu items etc.
-         * 
-         * @return the description
-         */
-        @Override
-        public String toString() {
-            return desc;
-        }
-        
-        /**
-         * Tests whether the key code and modifiers of this {@code KeyId}
-         * match that of a given {@code KeyEvent}. For convenience, this
-         * method will return {@code false} if the input event is {@code null}.
-         * 
-         * @param e the input event
-         * 
-         * @return {@code true} if the key code and modifier values match those
-         *     of the input event
-         */
-        public boolean matchesEvent(KeyEvent e) {
-            if (e != null && e.getKeyCode() == keyCode) {
-                int emod = e.getModifiersEx();
-                if (modifiers == 0) {
-                    return emod == 0;
-                } else {
-                    return (emod & modifiers) == modifiers;
-                }
-            }
-            
-            return false;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (obj == null) {
-                return false;
-            }
-            if (getClass() != obj.getClass()) {
-                return false;
-            }
-            final KeyId other = (KeyId) obj;
-            if (this.keyCode != other.keyCode) {
-                return false;
-            }
-            if (this.modifiers != other.modifiers) {
-                return false;
-            }
-            return true;
-        }
-
-        @Override
-        public int hashCode() {
-            int hash = 5;
-            hash = 59 * hash + this.keyCode;
-            hash = 59 * hash + this.modifiers;
-            return hash;
-        }
-    }
 
     /**
      * Constants for supported actions.

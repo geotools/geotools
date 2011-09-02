@@ -38,6 +38,9 @@ import java.awt.HeadlessException;
  * description and is a good example of an dynamic wizard.
  * 
  * @author Jody Garnett (LISAsoft)
+ * @since 8.0
+ * @source $URL$
+ * @version $Id$
  */
 public class JProcessWizard extends JWizard {
     private static final long serialVersionUID = -5885825548881784615L;

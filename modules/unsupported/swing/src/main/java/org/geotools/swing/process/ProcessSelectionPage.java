@@ -27,18 +27,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JTree;
-import javax.swing.ListSelectionModel;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -57,6 +52,9 @@ import org.opengis.util.InternationalString;
  * process page.
  * 
  * @author gdavis (Refractions)
+ * @since 8.0
+ * @source $URL$
+ * @version $Id$
  */
 public class ProcessSelectionPage extends JPage {
     /**

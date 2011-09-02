@@ -141,4 +141,9 @@ public class MockMapPane extends Component implements MapPane {
         // empty method
     }
 
+    @Override
+    public void moveImage(int dx, int dy) {
+        // empty method
+    }
+
 }

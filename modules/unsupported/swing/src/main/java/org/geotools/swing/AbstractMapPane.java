@@ -728,7 +728,6 @@ public abstract class AbstractMapPane extends JPanel
     public void setCursorTool(CursorTool tool) {
         if (currentCursorTool != null) {
             mouseEventDispatcher.removeMouseListener(currentCursorTool);
-            currentCursorTool.setMapPane(null);
         }
         
         currentCursorTool = tool;

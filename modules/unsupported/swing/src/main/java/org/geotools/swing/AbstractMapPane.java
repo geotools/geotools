@@ -50,11 +50,12 @@ import org.geotools.map.event.MapLayerEvent;
 import org.geotools.map.event.MapLayerListEvent;
 import org.geotools.map.event.MapLayerListListener;
 import org.geotools.renderer.lite.LabelCache;
+import org.geotools.swing.event.DefaultMapMouseEventDispatcher;
+import org.geotools.swing.event.MapMouseEventDispatcher;
 import org.geotools.swing.event.MapMouseListener;
 import org.geotools.swing.event.MapPaneEvent;
 import org.geotools.swing.event.MapPaneListener;
 import org.geotools.swing.tool.CursorTool;
-import org.geotools.swing.tool.DefaultMapToolManager;
 import org.opengis.geometry.Envelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -98,7 +99,9 @@ public abstract class AbstractMapPane extends JPanel
     
     protected final Lock drawingLock;
 
-    
+    protected final Set<MapPaneListener> listeners = new HashSet<MapPaneListener>();
+    protected final MouseDragBox dragBox;
+
 
     /*
      * If the user sets the display area before the pane is shown on
@@ -116,14 +119,13 @@ public abstract class AbstractMapPane extends JPanel
     protected MapContent mapContent;
     protected RenderingExecutor renderingExecutor;
     protected KeyListener keyHandler;
+    protected MapMouseEventDispatcher mouseEventDispatcher;
 
     protected LabelCache labelCache;
     protected AtomicBoolean clearLabelCache;
     
-    protected final Set<MapPaneListener> listeners = new HashSet<MapPaneListener>();
-    protected final DefaultMapToolManager toolManager;
-    protected final MouseDragBox dragBox;
-
+    protected CursorTool currentCursorTool;
+    
     
     public AbstractMapPane(MapContent content, RenderingExecutor executor) {
         setBackground(DEFAULT_BACKGROUND_COLOR);
@@ -137,14 +139,14 @@ public abstract class AbstractMapPane extends JPanel
         imageOrigin = new Point(0, 0);
         
         dragBox = new MouseDragBox(this);
-        toolManager = new DefaultMapToolManager(this);
+        mouseEventDispatcher = new DefaultMapMouseEventDispatcher(this);
 
         addMouseListener(dragBox);
         addMouseMotionListener(dragBox);
 
-        addMouseListener(toolManager);
-        addMouseMotionListener(toolManager);
-        addMouseWheelListener(toolManager);
+        addMouseListener(mouseEventDispatcher);
+        addMouseMotionListener(mouseEventDispatcher);
+        addMouseWheelListener(mouseEventDispatcher);
 
         /*
          * Listen for mouse entered events to (re-)set the
@@ -156,9 +158,8 @@ public abstract class AbstractMapPane extends JPanel
             @Override
             public void mouseEntered(MouseEvent e) {
                 super.mouseEntered(e);
-                CursorTool tool = toolManager.getCursorTool();
-                if (tool != null) {
-                    setCursor(tool.getCursor());
+                if (currentCursorTool != null) {
+                    setCursor(currentCursorTool.getCursor());
                 }
             }
         });
@@ -214,6 +215,26 @@ public abstract class AbstractMapPane extends JPanel
             doSetRenderingExecutor( new DefaultRenderingExecutor() );
         }
         return renderingExecutor;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MapMouseEventDispatcher getMouseEventDispatcher() {
+        return mouseEventDispatcher;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setMouseEventDispatcher(MapMouseEventDispatcher dispatcher) {
+        if (mouseEventDispatcher != null) {
+            mouseEventDispatcher.removeAllListeners();
+        }
+        
+        mouseEventDispatcher = dispatcher;
     }
     
     /**
@@ -679,7 +700,7 @@ public abstract class AbstractMapPane extends JPanel
             throw new IllegalArgumentException("listener must not be null");
         }
 
-        toolManager.addMouseListener(listener);
+        mouseEventDispatcher.addMouseListener(listener);
     }
 
     /**
@@ -688,24 +709,39 @@ public abstract class AbstractMapPane extends JPanel
     @Override
     public void removeMouseListener(MapMouseListener listener) {
         if (listener != null) {
-            toolManager.removeMouseListener(listener);
+            mouseEventDispatcher.removeMouseListener(listener);
         }
     }
-
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CursorTool getCursorTool() {
+        return currentCursorTool;
+    }
+    
     /**
      * {@inheritDoc}
      */
     @Override
     public void setCursorTool(CursorTool tool) {
-        if (tool == null) {
-            toolManager.setNoCursorTool();
-            this.setCursor(Cursor.getDefaultCursor());
+        if (currentCursorTool != null) {
+            mouseEventDispatcher.removeMouseListener(currentCursorTool);
+            currentCursorTool.setMapPane(null);
+        }
+        
+        currentCursorTool = tool;
+        
+        if (currentCursorTool == null) {
+            setCursor(Cursor.getDefaultCursor());
             dragBox.setEnabled(false);
 
         } else {
-            this.setCursor(tool.getCursor());
-            toolManager.setCursorTool(tool);
-            dragBox.setEnabled(tool.drawDragBox());
+            setCursor(currentCursorTool.getCursor());
+            dragBox.setEnabled(currentCursorTool.drawDragBox());
+            currentCursorTool.setMapPane(this);
+            mouseEventDispatcher.addMouseListener(currentCursorTool);
         }
     }
 

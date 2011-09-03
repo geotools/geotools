@@ -27,10 +27,11 @@ import javax.swing.JPanel;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
 import org.geotools.swing.MapPane;
+import org.geotools.swing.event.DefaultMapMouseEventDispatcher;
+import org.geotools.swing.event.MapMouseEventDispatcher;
 import org.geotools.swing.event.MapMouseListener;
 import org.geotools.swing.event.MapPaneListener;
 import org.geotools.swing.tool.CursorTool;
-import org.geotools.swing.tool.DefaultMapToolManager;
 import org.opengis.geometry.Envelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -45,20 +46,16 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public class MockMapPane extends JPanel implements MapPane {
     private MapContent mapContent;
     private List<MapPaneListener> mapPaneListeners;
-    private DefaultMapToolManager toolManager;
+    private MapMouseEventDispatcher mouseEventDispatcher;
 
     public MockMapPane() {
         mapContent = new MapContent();
         mapContent.getViewport().setMatchingAspectRatio(true);
         
         mapPaneListeners = new ArrayList<MapPaneListener>();
-        toolManager = new DefaultMapToolManager(this);
+        mouseEventDispatcher = new DefaultMapMouseEventDispatcher(this);
     }
     
-    public DefaultMapToolManager getMapToolManager() {
-        return toolManager;
-    }
-
     @Override
     public void setMapContent(MapContent content) {
         mapContent = content;
@@ -127,14 +124,19 @@ public class MockMapPane extends JPanel implements MapPane {
         if (listener == null) {
             throw new IllegalArgumentException("null listener arg");
         }
-        toolManager.addMouseListener(listener);
+        mouseEventDispatcher.addMouseListener(listener);
     }
 
     @Override
     public void removeMouseListener(MapMouseListener listener) {
         if (listener != null) {
-            toolManager.removeMouseListener(listener);
+            mouseEventDispatcher.removeMouseListener(listener);
         }
+    }
+
+    @Override
+    public CursorTool getCursorTool() {
+        return null;
     }
 
     @Override
@@ -145,6 +147,16 @@ public class MockMapPane extends JPanel implements MapPane {
     @Override
     public void moveImage(int dx, int dy) {
         // empty method
+    }
+
+    @Override
+    public MapMouseEventDispatcher getMouseEventDispatcher() {
+        return mouseEventDispatcher;
+    }
+
+    @Override
+    public void setMouseEventDispatcher(MapMouseEventDispatcher dispatcher) {
+        mouseEventDispatcher = dispatcher;
     }
 
 }

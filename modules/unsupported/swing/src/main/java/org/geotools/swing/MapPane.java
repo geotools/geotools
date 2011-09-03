@@ -20,6 +20,7 @@ import java.awt.geom.AffineTransform;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
+import org.geotools.swing.event.MapMouseEventDispatcher;
 import org.geotools.swing.event.MapMouseListener;
 import org.geotools.swing.event.MapPaneListener;
 import org.geotools.swing.tool.CursorTool;
@@ -50,6 +51,24 @@ public interface MapPane {
      * @param content the map content
      */
     void setMapContent(MapContent content);
+    
+    /**
+     * Gets the current mouse event dispatcher which is responsible for converting
+     * each input Java AWT mouse event into a {@linkplain org.geotools.swing.event.MapMouseEvent}
+     * and forwarding it to each {@linkplain MapMouseListener}.
+     * 
+     * @return the current mouse event dispatcher (may be {@code null})
+     */
+    MapMouseEventDispatcher getMouseEventDispatcher();
+    
+    /**
+     * Replaces the current mouse event dispatcher. All current listeners will
+     * be removed. It is the responsibility of the client to add them to the new 
+     * dispatcher if this is desired.
+     * 
+     * @param dispatcher the new dispatcher (may be {@code null})
+     */
+    void setMouseEventDispatcher(MapMouseEventDispatcher dispatcher);
 
     /**
      * Gets the current display area in world coordinates. This is a
@@ -129,12 +148,18 @@ public interface MapPane {
      * @param listener the listener to remove
      */
     void removeMouseListener(MapMouseListener listener);
+    
+    /**
+     * Gets the current cursor tool.
+     * 
+     * @return the current cursor tool (may be {@code null})
+     */
+    CursorTool getCursorTool();
 
     /**
-     * Sets the current cursor tool. A {@code null} argument means no
-     * current cursor tool.
+     * Sets the current cursor tool.
      *
-     * @param tool the tool to set or {@code null}
+     * @param tool the tool; or {@code null} for no cursor tool
      */
     void setCursorTool(CursorTool tool);
     

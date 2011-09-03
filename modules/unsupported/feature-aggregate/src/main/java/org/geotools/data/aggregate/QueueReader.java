@@ -25,7 +25,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
- * Returns all the features stored ina {@link FeatureQueue}
+ * Returns all the features stored in a {@link FeatureQueue}
  * 
  * @author Andrea Aime - GeoSolutions
  */

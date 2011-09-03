@@ -27,7 +27,7 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
-import org.geotools.data.aggregate.sort.SortedReaderFactory;
+import org.geotools.data.aggregate.sort.SortedFeatureReader;
 import org.geotools.data.simple.SimpleFeatureReader;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
@@ -143,7 +143,7 @@ class AggregatingFeatureSource extends ContentFeatureSource {
 
             // return the feature collection reading from the queue
             if (query.getSortBy() != null && query.getSortBy().length > 0) {
-                reader = SortedReaderFactory.getSortedReader(reader, query.getSortBy(), 1000, 20);
+                reader = new SortedFeatureReader(reader, query.getSortBy(), 1000, 20);
             }
             return reader;
         } catch (SchemaException e) {
@@ -199,7 +199,7 @@ class AggregatingFeatureSource extends ContentFeatureSource {
         return new QueryCapabilities() {
             @Override
             public boolean supportsSorting(SortBy[] sortAttributes) {
-                return SortedReaderFactory.canSort(schema, sortAttributes);
+                return SortedFeatureReader.canSort(schema, sortAttributes);
             }
         };
     }

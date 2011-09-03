@@ -62,9 +62,9 @@ public class SortedReaderTest {
 
     @Test
     public void testCanSort() {
-        assertTrue(SortedReaderFactory.canSort(schema, peopleAsc));
-        assertTrue(SortedReaderFactory.canSort(schema, peopleDesc));
-        assertTrue(SortedReaderFactory.canSort(schema, fidAsc));
+        assertTrue(SortedFeatureReader.canSort(schema, peopleAsc));
+        assertTrue(SortedFeatureReader.canSort(schema, peopleDesc));
+        assertTrue(SortedFeatureReader.canSort(schema, fidAsc));
     }
 
     @Test
@@ -72,7 +72,7 @@ public class SortedReaderTest {
         // make it so that we are not going to hit the disk
         SimpleFeatureReader sr = null;
         try {
-            sr = SortedReaderFactory.getSortedReader(fr, peopleAsc, 1000, 20);
+            sr = new SortedFeatureReader(fr, peopleAsc, 1000, 20);
             assertSortedOnPeopleAsc(sr);
         } finally {
             if (sr != null) {
@@ -86,7 +86,7 @@ public class SortedReaderTest {
         // make it so that we are not going to hit the disk
         SimpleFeatureReader sr = null;
         try {
-            sr = SortedReaderFactory.getSortedReader(fr, peopleAsc, 5, 20);
+            sr = new SortedFeatureReader(fr, peopleAsc, 5, 20);
             assertSortedOnPeopleAsc(sr);
         } finally {
             if (sr != null) {
@@ -101,7 +101,7 @@ public class SortedReaderTest {
         // generate multiple files
         SimpleFeatureReader sr = null;
         try {
-            sr = SortedReaderFactory.getSortedReader(fr, peopleAsc, 5, 2);
+            sr = new SortedFeatureReader(fr, peopleAsc, 5, 2);
             assertSortedOnPeopleAsc(sr);
         } finally {
             if (sr != null) {
@@ -115,7 +115,7 @@ public class SortedReaderTest {
         // make it so that we are not going to hit the disk
         SimpleFeatureIterator fi = null;
         try {
-            fi = SortedReaderFactory.getSortedIterator(fc.features(), schema, peopleAsc, 1000, 20);
+            fi = new SortedFeatureIterator(fc.features(), schema, peopleAsc, 1000, 20);
             assertSortedOnPeopleAsc(fi);
         } finally {
             if (fi != null) {
@@ -129,7 +129,7 @@ public class SortedReaderTest {
         // make it so that we are not going to hit the disk
         SimpleFeatureReader sr = null;
         try {
-            sr = SortedReaderFactory.getSortedReader(fr, peopleDesc, 1000, 20);
+            sr = new SortedFeatureReader(fr, peopleDesc, 1000, 20);
             double prev = -1;
             while (fr.hasNext()) {
                 SimpleFeature f = fr.next();
@@ -151,7 +151,7 @@ public class SortedReaderTest {
         // make it so that we are not going to hit the disk
         SimpleFeatureReader sr = null;
         try {
-            sr = SortedReaderFactory.getSortedReader(fr, fidAsc, 1000, 20);
+            sr = new SortedFeatureReader(fr, fidAsc, 1000, 20);
             String prev = null;
             while (fr.hasNext()) {
                 SimpleFeature f = fr.next();

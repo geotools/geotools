@@ -1,19 +1,3 @@
-/*
- *    GeoTools - The Open Source Java GIS Toolkit
- *    http://geotools.org
- * 
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
- *    This library is free software; you can redistribute it and/or
- *    modify it under the terms of the GNU Lesser General Public
- *    License as published by the Free Software Foundation;
- *    version 2.1 of the License.
- *
- *    This library is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *    Lesser General Public License for more details.
- */
 package org.geotools.data.aggregate.sort;
 
 import java.io.File;
@@ -25,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.DelegateSimpleFeatureReader;
@@ -36,12 +21,9 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
-/**
- * Builds a sorted reader out of a unsorted one plus a list of SortBy directives
- * 
- * @author Andrea Aime - GeoSolutions
- */
-public class SortedReaderFactory {
+public class SortedFeatureReader implements SimpleFeatureReader {
+
+    SimpleFeatureReader delegate;
 
     /**
      * Checks if the schema and the sortBy are suitable for merge/sort. All attributes need to be
@@ -78,38 +60,13 @@ public class SortedReaderFactory {
         return true;
     }
 
-    /**
-     * Builds a feature iterator that will sort the specified iterator contents following the
-     * {@link SortBy} directives given. The iterator provided will be closed by this routine.
-     * 
-     * @param reader The reader whose contents need sorting
-     * @param sortBy The sorting directives
-     * @param maxFeatures The max number of features to keep in memory
-     * @param maxFiles The max number of files the merge/sort algorithm can keep open concurrently
-     * @return
-     * @throws IOException
-     */
-    public static final SimpleFeatureIterator getSortedIterator(SimpleFeatureIterator iterator,
-            SimpleFeatureType schema, SortBy[] sortBy, int maxFeatures, int maxFiles)
-            throws IOException {
-        DelegateSimpleFeatureReader reader = new DelegateSimpleFeatureReader(schema, iterator);
-        SimpleFeatureReader sorted = getSortedReader(reader, sortBy, maxFeatures, maxFiles);
-        return new FeatureReaderFeatureIterator(sorted);
+    public SortedFeatureReader(SimpleFeatureReader reader, SortBy[] sortBy, int maxFeatures,
+            int maxFiles) throws IOException {
+        this.delegate = getDelegateReader(reader, sortBy, maxFeatures, maxFiles);
     }
 
-    /**
-     * Builds a reader that will sort the specified reader contents following the {@link SortBy}
-     * directives given. The reader provided will be closed by this routine.
-     * 
-     * @param reader The reader whose contents need sorting
-     * @param sortBy The sorting directives
-     * @param maxFeatures The max number of features to keep in memory
-     * @param maxFiles The max number of files the merge/sort algorithm can keep open concurrently
-     * @return
-     * @throws IOException
-     */
-    public static final SimpleFeatureReader getSortedReader(SimpleFeatureReader reader,
-            SortBy[] sortBy, int maxFeatures, int maxFiles) throws IOException {
+    SimpleFeatureReader getDelegateReader(SimpleFeatureReader reader, SortBy[] sortBy,
+            int maxFeatures, int maxFiles) throws IOException {
         Comparator<SimpleFeature> comparator = getComparator(sortBy);
 
         // easy case, no sorting needed
@@ -188,7 +145,7 @@ public class SortedReaderFactory {
      * @param files
      * @param maxFiles
      */
-    static void reduceFiles(List<File> files, int maxFiles, SimpleFeatureType schema,
+    void reduceFiles(List<File> files, int maxFiles, SimpleFeatureType schema,
             Comparator<SimpleFeature> comparator) throws IOException {
         while (files.size() > maxFiles) {
             // merge the first batch into a single file
@@ -210,7 +167,7 @@ public class SortedReaderFactory {
      * @return
      * @throws IOException
      */
-    static File storeToFile(List<SimpleFeature> features) throws IOException {
+    File storeToFile(List<SimpleFeature> features) throws IOException {
         SimpleFeatureType schema = features.get(0).getFeatureType();
         SimpleFeatureIterator fi = new ListFeatureCollection(schema, features).features();
         return storeToFile(new DelegateSimpleFeatureReader(schema, fi));
@@ -223,7 +180,7 @@ public class SortedReaderFactory {
      * @return
      * @throws IOException
      */
-    static File storeToFile(SimpleFeatureReader reader) throws IOException {
+    File storeToFile(SimpleFeatureReader reader) throws IOException {
         File file = File.createTempFile("sorted", ".features");
 
         ObjectOutputStream os = null;
@@ -256,7 +213,7 @@ public class SortedReaderFactory {
      * @param sortBy
      * @return
      */
-    static Comparator<SimpleFeature> getComparator(SortBy[] sortBy) {
+    Comparator<SimpleFeature> getComparator(SortBy[] sortBy) {
         // handle the easy cases, no sorting or natural sorting
         if (sortBy == SortBy.UNSORTED || sortBy == null) {
             return null;
@@ -284,4 +241,26 @@ public class SortedReaderFactory {
         }
 
     }
+
+    @Override
+    public SimpleFeatureType getFeatureType() {
+        return delegate.getFeatureType();
+    }
+
+    @Override
+    public SimpleFeature next() throws IOException, IllegalArgumentException,
+            NoSuchElementException {
+        return delegate.next();
+    }
+
+    @Override
+    public boolean hasNext() throws IOException {
+        return delegate.hasNext();
+    }
+
+    @Override
+    public void close() throws IOException {
+        delegate.close();
+    }
+
 }

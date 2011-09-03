@@ -24,65 +24,65 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Unit tests for KeyId class.
+ * Unit tests for KeyInfo class.
  * 
  * @author Michael Bedward
  * @since 8.0
  * @source $URL$
  * @version $Id$
  */
-public class KeyIdTest {
+public class KeyInfoTest {
     
     @Test
     public void createInstanceAndRetrieveValues() {
-        KeyId keyId = new KeyId(KeyEvent.VK_UP, KeyEvent.SHIFT_DOWN_MASK, "Shift+Up");
+        KeyInfo keyInfo = new KeyInfo(KeyEvent.VK_UP, KeyEvent.SHIFT_DOWN_MASK, "Shift+Up");
         
-        assertEquals(KeyEvent.VK_UP, keyId.getKeyCode());
-        assertEquals(KeyEvent.SHIFT_DOWN_MASK, keyId.getModifiers());
-        assertEquals("Shift+Up", keyId.toString());
+        assertEquals(KeyEvent.VK_UP, keyInfo.getKeyCode());
+        assertEquals(KeyEvent.SHIFT_DOWN_MASK, keyInfo.getModifiers());
+        assertEquals("Shift+Up", keyInfo.toString());
     }
     
     @Test
     public void createInstanceWithNoDescription() {
-        String regex = "\\s*KeyId\\(\\s*38,\\s*64\\)\\s*";
+        String regex = "\\s*KeyInfo\\(\\s*38,\\s*64\\)\\s*";
         
-        KeyId keyId = new KeyId(38, 64, null);
-        assertTrue(keyId.toString().matches(regex));
+        KeyInfo keyInfo = new KeyInfo(38, 64, null);
+        assertTrue(keyInfo.toString().matches(regex));
         
-        keyId = new KeyId(38, 64, " ");
-        assertTrue(keyId.toString().matches(regex));
+        keyInfo = new KeyInfo(38, 64, " ");
+        assertTrue(keyInfo.toString().matches(regex));
     }
     
     @Test
     public void copyConstructor() {
-        KeyId keyId1 = new KeyId(KeyEvent.VK_UP, KeyEvent.SHIFT_DOWN_MASK, "Shift+Up");
-        KeyId keyId2 = new KeyId(keyId1);
+        KeyInfo keyInfo1 = new KeyInfo(KeyEvent.VK_UP, KeyEvent.SHIFT_DOWN_MASK, "Shift+Up");
+        KeyInfo keyInfo2 = new KeyInfo(keyInfo1);
         
-        assertEquals(keyId1.getKeyCode(), keyId2.getKeyCode());
-        assertEquals(keyId1.getModifiers(), keyId2.getModifiers());
-        assertEquals(keyId1.toString(), keyId2.toString());
+        assertEquals(keyInfo1.getKeyCode(), keyInfo2.getKeyCode());
+        assertEquals(keyInfo1.getModifiers(), keyInfo2.getModifiers());
+        assertEquals(keyInfo1.toString(), keyInfo2.toString());
     }
     
     @Test
     public void equalsIgnoresDescription() {
-        KeyId keyId1 = new KeyId(KeyEvent.VK_UP, KeyEvent.SHIFT_DOWN_MASK, "Shift+Up");
-        KeyId keyId2 = new KeyId(KeyEvent.VK_UP, KeyEvent.SHIFT_DOWN_MASK, "");
-        assertEquals(keyId1, keyId2);
+        KeyInfo keyInfo1 = new KeyInfo(KeyEvent.VK_UP, KeyEvent.SHIFT_DOWN_MASK, "Shift+Up");
+        KeyInfo keyInfo2 = new KeyInfo(KeyEvent.VK_UP, KeyEvent.SHIFT_DOWN_MASK, "");
+        assertEquals(keyInfo1, keyInfo2);
     }
     
     @Test
     public void matchKeyEvent() {
-        KeyId keyId = new KeyId(KeyEvent.VK_UP, KeyEvent.SHIFT_DOWN_MASK, "Shift+Up");
+        KeyInfo keyInfo = new KeyInfo(KeyEvent.VK_UP, KeyEvent.SHIFT_DOWN_MASK, "Shift+Up");
         
         KeyEvent sameCodeDiffMods = createKeyEvent(KeyEvent.VK_UP, KeyEvent.CTRL_DOWN_MASK);
         KeyEvent sameCodeZeroMods = createKeyEvent(KeyEvent.VK_UP, 0);
         KeyEvent diffCodeSameMods = createKeyEvent(KeyEvent.VK_DOWN, KeyEvent.SHIFT_DOWN_MASK);
         KeyEvent sameCodeSameMods = createKeyEvent(KeyEvent.VK_UP, KeyEvent.SHIFT_DOWN_MASK);
         
-        assertFalse(keyId.matchesEvent(sameCodeDiffMods));
-        assertFalse(keyId.matchesEvent(sameCodeZeroMods));
-        assertFalse(keyId.matchesEvent(diffCodeSameMods));
-        assertTrue(keyId.matchesEvent(sameCodeSameMods));
+        assertFalse(keyInfo.matchesEvent(sameCodeDiffMods));
+        assertFalse(keyInfo.matchesEvent(sameCodeZeroMods));
+        assertFalse(keyInfo.matchesEvent(diffCodeSameMods));
+        assertTrue(keyInfo.matchesEvent(sameCodeSameMods));
     }
 
     private KeyEvent createKeyEvent(int keyCode, int modifiers) {

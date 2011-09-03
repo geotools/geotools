@@ -20,6 +20,7 @@ package org.geotools.swing;
 import java.awt.Rectangle;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,8 +29,41 @@ import javax.swing.JComponent;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
- * The default key event handler which provides scrolling and zooming of
- * a map pane display using the keyboard.
+ * Handles keyboard events for a map pane. This is the default handler for classes derived from
+ * {@linkplain AbstractMapPane}. It provides for keyboard-controlled scrolling and zooming of 
+ * the display. The default key bindings for actions should be suitable for most keyboards.
+ * <p>
+ * 
+ * While the Java Swing toolkit provides its own mechanism for linking key events to actions,
+ * this class is somewhat easier to use and provides a model that could be implemented in other
+ * toolkits such as SWT. However, you are free to ignore this class and use your own key 
+ * handler instead since the map pane classes only require that the handler implements 
+ * the {@linkplain java.awt.event.KeyListener} interface.
+ * 
+ * <p>
+ * Key bindings for an individual action can be set like this:
+ * <pre><code>
+ * // Bind left-scroll action to the 'h' key (for Vim fans)
+ * KeyInfo key = new KeyInfo(KeyEvent.VK_H, 0);
+ * mapPaneKeyHandler.setBinding(key, MapPaneKeyHandler.Action.SCROLL_LEFT);
+ * </code></pre>
+ * 
+ * Multiple bindings can be set with the {@linkplain #setBindings(Map)} or 
+ * {@linkplain #setAllBindings(Map)} methods:
+ * <pre><code>
+ * Map&lt;KeyInfo, MapPaneKeyHandler.Action&gt; bindings =
+ *         new HashMap&lt;KeyInfo, MapPaneKeyHandler.Action&gt;();
+ * 
+ * bindings.put(new KeyInfo(KeyEvent.VK_H, 0), MapPaneKeyHandler.Action.SCROLL_LEFT);
+ * bindings.put(new KeyInfo(KeyEvent.VK_L, 0), MapPaneKeyHandler.Action.SCROLL_RIGHT);
+ * bindings.put(new KeyInfo(KeyEvent.VK_K, 0), MapPaneKeyHandler.Action.SCROLL_UP);
+ * bindings.put(new KeyInfo(KeyEvent.VK_J, 0), MapPaneKeyHandler.Action.SCROLL_DOWN);
+ * 
+ * mapPaneKeyHandler.setBindings( bindings );
+ * </code></pre>
+ * 
+ * @see KeyInfo
+ * @see AbstractMapPane#setKeyHandler(java.awt.event.KeyListener)
  * 
  * @author Michael Bedward
  * @since 8.0
@@ -57,39 +91,39 @@ public class MapPaneKeyHandler extends KeyAdapter {
     /*
      * Default key bindings
      */
-    private static final Map<KeyId, Action> defaultBindings = new HashMap<KeyId, Action>();
+    private static final Map<KeyInfo, Action> defaultBindings = new HashMap<KeyInfo, Action>();
     
     static {
         defaultBindings.put(
-                new KeyId(KeyEvent.VK_LEFT, 0, "Left"),
+                new KeyInfo(KeyEvent.VK_LEFT, 0, "Left"),
                 Action.SCROLL_LEFT);
         
         defaultBindings.put( 
-                new KeyId(KeyEvent.VK_RIGHT, 0, "Right"),
+                new KeyInfo(KeyEvent.VK_RIGHT, 0, "Right"),
                 Action.SCROLL_RIGHT);
         
         defaultBindings.put(
-                new KeyId(KeyEvent.VK_UP, 0, "Up"),
+                new KeyInfo(KeyEvent.VK_UP, 0, "Up"),
                 Action.SCROLL_UP);
         
         defaultBindings.put(
-                new KeyId(KeyEvent.VK_DOWN, 0, "Down"),
+                new KeyInfo(KeyEvent.VK_DOWN, 0, "Down"),
                 Action.SCROLL_DOWN);
         
         defaultBindings.put(
-                new KeyId(KeyEvent.VK_UP, KeyEvent.SHIFT_DOWN_MASK, "Shift+Up"),
+                new KeyInfo(KeyEvent.VK_UP, KeyEvent.SHIFT_DOWN_MASK, "Shift+Up"),
                 Action.ZOOM_IN);
         
         defaultBindings.put(
-                new KeyId(KeyEvent.VK_DOWN, KeyEvent.SHIFT_DOWN_MASK, "Shift+Down"),
+                new KeyInfo(KeyEvent.VK_DOWN, KeyEvent.SHIFT_DOWN_MASK, "Shift+Down"),
                 Action.ZOOM_OUT);
         
         defaultBindings.put(
-                new KeyId(KeyEvent.VK_EQUALS, 0, "="),
+                new KeyInfo(KeyEvent.VK_EQUALS, 0, "="),
                 Action.ZOOM_FULL_EXTENT);
     }
     
-    private final Map<KeyId, Action> bindings;
+    private final Map<KeyInfo, Action> bindings;
     private final MapPane mapPane;
 
     /**
@@ -98,7 +132,7 @@ public class MapPaneKeyHandler extends KeyAdapter {
      * @param mapPane the map pane associated with this handler
      */
     MapPaneKeyHandler(MapPane mapPane) {
-        this.bindings = new HashMap<KeyId, Action>(defaultBindings);
+        this.bindings = new HashMap<KeyInfo, Action>(defaultBindings);
         this.mapPane = mapPane;
     }
     
@@ -117,11 +151,11 @@ public class MapPaneKeyHandler extends KeyAdapter {
      * 
      * @return the current key bindings
      */
-    public Map<KeyId, Action> getBindings() {
-        Map<KeyId, Action> map = new HashMap<KeyId, Action>();
+    public Map<KeyInfo, Action> getBindings() {
+        Map<KeyInfo, Action> map = new HashMap<KeyInfo, Action>();
         
-        for (Map.Entry<KeyId, Action> e : bindings.entrySet()) {
-            map.put(new KeyId(e.getKey()), e.getValue());
+        for (Map.Entry<KeyInfo, Action> e : bindings.entrySet()) {
+            map.put(new KeyInfo(e.getKey()), e.getValue());
         }
         return map;
     }
@@ -134,39 +168,39 @@ public class MapPaneKeyHandler extends KeyAdapter {
      * @return the key binding; or {@code null} if there is no binding
      * @throws IllegalArgumentException if {@code action} is {@code null}
      */
-    public KeyId getBindingForAction(Action action) {
+    public KeyInfo getBindingForAction(Action action) {
         if (action == null) {
             throw new IllegalArgumentException("action must not be null");
         }
         
-        KeyId keyId = null;
+        KeyInfo keyInfo = null;
         
-        for (Map.Entry<KeyId, Action> e : bindings.entrySet()) {
+        for (Map.Entry<KeyInfo, Action> e : bindings.entrySet()) {
             if (e.getValue() == action) {
-                keyId = new KeyId(e.getKey());
+                keyInfo = new KeyInfo(e.getKey());
                 break;
             }
         }
 
-        return keyId;
+        return keyInfo;
     }
 
     /**
      * Sets the key binding for a single action.
      * 
-     * @param keyId the key binding
+     * @param keyInfo the key binding
      * @param action the action
      * @throws IllegalArgumentException if either argument is {@code null}
      */
-    public void setBinding(KeyId keyId, Action action) {
-        if (keyId == null) {
-            throw new IllegalArgumentException("keyId must not be null");
+    public void setBinding(KeyInfo keyInfo, Action action) {
+        if (keyInfo == null) {
+            throw new IllegalArgumentException("keyInfo must not be null");
         }
         if (action == null) {
             throw new IllegalArgumentException("action must not be null");
         }
         
-        bindings.put(new KeyId(keyId), action);
+        bindings.put(new KeyInfo(keyInfo), action);
     }
     
     /**
@@ -176,12 +210,12 @@ public class MapPaneKeyHandler extends KeyAdapter {
      * @param newBindings new key bindings
      * @throws IllegalArgumentException if {@code newBindings} is {@code null}
      */
-    public void setBindings(Map<KeyId, Action> newBindings) {
+    public void setBindings(Map<KeyInfo, Action> newBindings) {
         if (newBindings == null) {
             throw new IllegalArgumentException("argument must not be null");
         }
         
-        for (Map.Entry<KeyId, Action> e : newBindings.entrySet()) {
+        for (Map.Entry<KeyInfo, Action> e : newBindings.entrySet()) {
             setBinding(e.getKey(), e.getValue());
         }
     }
@@ -194,7 +228,7 @@ public class MapPaneKeyHandler extends KeyAdapter {
      * @param newBindings new key bindings
      * @throws IllegalArgumentException if {@code newBindings} is {@code null}
      */
-    public void setAllBindings(Map<KeyId, Action> newBindings) {
+    public void setAllBindings(Map<KeyInfo, Action> newBindings) {
         if (newBindings == null) {
             throw new IllegalArgumentException("argument must not be null");
         }
@@ -210,9 +244,9 @@ public class MapPaneKeyHandler extends KeyAdapter {
      */
     @Override
     public void keyPressed(KeyEvent e) {
-        for (KeyId keyId : bindings.keySet()) {
-            if (keyId.matchesEvent(e)) {
-                processAction(bindings.get(keyId));
+        for (KeyInfo keyInfo : bindings.keySet()) {
+            if (keyInfo.matchesEvent(e)) {
+                processAction(bindings.get(keyInfo));
             }
         }
     }

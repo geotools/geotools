@@ -152,7 +152,7 @@ public class MapPaneKeyHandlerTest {
      * @return a new KeyPressInfo object
      */
     private KeyPressInfo getKeyPressInfo(MapPaneKeyHandler.Action action) {
-        KeyId keyId = handler.getBindingForAction(action);
+        KeyInfo keyId = handler.getBindingForAction(action);
         return keyCode(keyId.getKeyCode()).modifiers(keyId.getModifiers());
     }
     

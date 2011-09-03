@@ -20,17 +20,16 @@ package org.geotools.swing;
 import java.awt.event.KeyEvent;
 
 /**
- * Represents a keyboard key or key combination. It is used by 
- * {@linkplain MapPaneKeyHandler} to store key bindings associated
- * with map pane actions. 
+ * Represents a keyboard key or key combination. It is used by {@linkplain MapPaneKeyHandler}
+ * to store key bindings associated with map pane actions. 
  * <p>
- * You create instances using values of {@code keyCode} and {@code modifiers}
- * taken from constants in the {@linkplain KeyEvent} class:
+ * You create instances using values of {@code keyCode} and {@code modifiers} taken from 
+ * constants in the {@linkplain KeyEvent} class:
  * <pre><code>
- *    KeyId left = new KeyId(KeyEvent.VK_LEFT, 0, "Left");
- *    KeyId shiftUp = new KeyId(KeyEvent.VK_UP, KeyEvent.SHIFT_DOWN_MASK, "Shift+Up");
+ *    KeyInfo left = new KeyInfo(KeyEvent.VK_LEFT, 0, "Left");
+ *    KeyInfo shiftUp = new KeyInfo(KeyEvent.VK_UP, KeyEvent.SHIFT_DOWN_MASK, "Shift+Up");
  * </code></pre>
- * The String argument can later be retrieved with {@linkplain KeyId#toString()}
+ * The String argument can later be retrieved with {@linkplain KeyInfo#toString()}
  * and can be useful for GUI elements such as menu items.
  * 
  * @author Michael Bedward
@@ -38,25 +37,25 @@ import java.awt.event.KeyEvent;
  * @source $URL$
  * @version $Id$
  */
-public class KeyId {
+public class KeyInfo {
     private final int keyCode;
     private final int modifiers;
     private final String desc;
 
     /**
      * Creates a new instance. If {@code desc} is {@code null} or empty, 
-     * the description will be set to "KeyId(keyCode, modifiers)".
+     * the description will be set to "KeyInfo(keyCode, modifiers)".
      *
      * @param keyCode key code
      * @param modifiers modifiers (0 for none)
      * @param desc short description suitable for GUI labels etc.
      */
-    public KeyId(int keyCode, int modifiers, String desc) {
+    public KeyInfo(int keyCode, int modifiers, String desc) {
         this.keyCode = keyCode;
         this.modifiers = modifiers;
         
         if (desc == null || desc.trim().length() == 0) {
-            this.desc = String.format("KeyId(%d, %d)", keyCode, modifiers);
+            this.desc = String.format("KeyInfo(%d, %d)", keyCode, modifiers);
         } else {
             this.desc = desc;
         }
@@ -65,16 +64,16 @@ public class KeyId {
     /**
      * Creates a copy of an existing instance.
      *
-     * @param keyId the instance to copy
-     * @throws IllegalArgumentException if {@code keyId} is {@code null}
+     * @param keyInfo the instance to copy
+     * @throws IllegalArgumentException if {@code keyInfo} is {@code null}
      */
-    public KeyId(KeyId keyId) {
-        if (keyId == null) {
-            throw new IllegalArgumentException("keyId must not be null");
+    public KeyInfo(KeyInfo keyInfo) {
+        if (keyInfo == null) {
+            throw new IllegalArgumentException("keyInfo must not be null");
         }
-        this.keyCode = keyId.keyCode;
-        this.modifiers = keyId.modifiers;
-        this.desc = keyId.desc;
+        this.keyCode = keyInfo.keyCode;
+        this.modifiers = keyInfo.modifiers;
+        this.desc = keyInfo.desc;
     }
 
     /**
@@ -107,7 +106,7 @@ public class KeyId {
     }
 
     /**
-     * Tests whether the key code and modifiers of this {@code KeyId}
+     * Tests whether the key code and modifiers of this {@code KeyInfo}
      * match that of a given {@code KeyEvent}. For convenience, this
      * method will return {@code false} if the input event is {@code null}.
      *
@@ -128,7 +127,7 @@ public class KeyId {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final KeyId other = (KeyId) obj;
+        final KeyInfo other = (KeyInfo) obj;
         if (this.keyCode != other.keyCode) {
             return false;
         }

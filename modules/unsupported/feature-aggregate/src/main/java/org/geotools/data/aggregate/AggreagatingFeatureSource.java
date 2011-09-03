@@ -143,7 +143,7 @@ class AggregatingFeatureSource extends ContentFeatureSource {
 
             // return the feature collection reading from the queue
             if (query.getSortBy() != null && query.getSortBy().length > 0) {
-                reader = new SortedFeatureReader(reader, query.getSortBy(), 1000, 20);
+                reader = new SortedFeatureReader(reader, query.getSortBy(), 1000);
             }
             return reader;
         } catch (SchemaException e) {

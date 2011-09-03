@@ -18,7 +18,7 @@ package org.geotools.data.aggregate.sort;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.RandomAccessFile;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -27,22 +27,32 @@ import org.geotools.data.simple.SimpleFeatureReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-public class MergeSortReader implements SimpleFeatureReader {
+/**
+ * Reads from a list of {@link FeatureBlockReader} backed by a {@link RandomAccessFile} and performs
+ * the classic merge-sort algorithm
+ * 
+ * @author Andrea Aime - GeoSolutions
+ * 
+ */
+class MergeSortReader implements SimpleFeatureReader {
 
-    List<FeatureFileReader> readers;
+    List<FeatureBlockReader> readers;
+
+    RandomAccessFile raf;
+
+    File file;
 
     SimpleFeatureType schema;
 
     Comparator<SimpleFeature> comparator;
 
-    public MergeSortReader(SimpleFeatureType schema, List<File> files,
-            Comparator<SimpleFeature> comparator) throws IOException {
+    public MergeSortReader(SimpleFeatureType schema, RandomAccessFile raf, File file,
+            List<FeatureBlockReader> readers, Comparator<SimpleFeature> comparator) {
         this.schema = schema;
         this.comparator = comparator;
-        this.readers = new ArrayList<FeatureFileReader>();
-        for (File file : files) {
-            readers.add(new FeatureFileReader(file, schema));
-        }
+        this.readers = readers;
+        this.raf = raf;
+        this.file = file;
     }
 
     @Override
@@ -68,7 +78,7 @@ public class MergeSortReader implements SimpleFeatureReader {
         }
 
         // move on the reader of the selected feature
-        FeatureFileReader reader = readers.get(selected);
+        FeatureBlockReader reader = readers.get(selected);
         SimpleFeature sf = reader.feature();
         if (reader.next() == null) {
             readers.remove(selected);
@@ -85,8 +95,10 @@ public class MergeSortReader implements SimpleFeatureReader {
 
     @Override
     public void close() throws IOException {
-        for (FeatureFileReader reader : readers) {
-            reader.close();
+        try {
+            raf.close();
+        } finally {
+            file.delete();
         }
     }
 

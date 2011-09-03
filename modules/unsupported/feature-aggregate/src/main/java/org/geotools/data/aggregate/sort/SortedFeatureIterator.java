@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ * 
+ *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.data.aggregate.sort;
 
 import java.io.IOException;
@@ -24,13 +40,13 @@ public class SortedFeatureIterator implements SimpleFeatureIterator {
      * @return
      */
     public static final boolean canSort(SimpleFeatureType schema, SortBy[] sortBy) {
-        return SortedFeatureReader.canSort(schema, sortBy);
+        return MergeSortDumper.canSort(schema, sortBy);
     }
 
     public SortedFeatureIterator(SimpleFeatureIterator iterator, SimpleFeatureType schema,
-            SortBy[] sortBy, int maxFeatures, int maxFiles) throws IOException {
+            SortBy[] sortBy, int maxFeatures) throws IOException {
         DelegateSimpleFeatureReader reader = new DelegateSimpleFeatureReader(schema, iterator);
-        SimpleFeatureReader sorted = new SortedFeatureReader(reader, sortBy, maxFeatures, maxFiles);
+        SimpleFeatureReader sorted = new SortedFeatureReader(reader, sortBy, maxFeatures);
         this.delegate = new FeatureReaderFeatureIterator(sorted);
     }
 

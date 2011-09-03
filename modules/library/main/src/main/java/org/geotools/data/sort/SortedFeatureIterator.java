@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.aggregate.sort;
+package org.geotools.data.sort;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -50,17 +50,14 @@ public class SortedFeatureIterator implements SimpleFeatureIterator {
         this.delegate = new FeatureReaderFeatureIterator(sorted);
     }
 
-    @Override
     public boolean hasNext() {
         return delegate.hasNext();
     }
 
-    @Override
     public SimpleFeature next() throws NoSuchElementException {
         return delegate.next();
     }
 
-    @Override
     public void close() {
         delegate.close();
 

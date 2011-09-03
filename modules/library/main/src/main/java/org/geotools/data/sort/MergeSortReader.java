@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.aggregate.sort;
+package org.geotools.data.sort;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,12 +55,10 @@ class MergeSortReader implements SimpleFeatureReader {
         this.file = file;
     }
 
-    @Override
     public SimpleFeatureType getFeatureType() {
         return schema;
     }
 
-    @Override
     public SimpleFeature next() throws IOException, IllegalArgumentException,
             NoSuchElementException {
         if (readers.size() == 0) {
@@ -88,12 +86,10 @@ class MergeSortReader implements SimpleFeatureReader {
         return sf;
     }
 
-    @Override
     public boolean hasNext() throws IOException {
         return readers.size() > 0;
     }
 
-    @Override
     public void close() throws IOException {
         try {
             raf.close();

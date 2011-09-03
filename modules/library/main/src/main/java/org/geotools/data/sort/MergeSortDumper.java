@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.aggregate.sort;
+package org.geotools.data.sort;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

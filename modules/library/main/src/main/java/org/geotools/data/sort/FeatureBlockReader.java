@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.aggregate.sort;
+package org.geotools.data.sort;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -114,7 +114,7 @@ class FeatureBlockReader {
             } else if (binding == Short.class || binding == short.class) {
                 return raf.readShort();
             } else if (binding == Integer.class || binding == int.class) {
-                return raf.readByte();
+                return raf.readInt();
             } else if (binding == Long.class || binding == long.class) {
                 return raf.readLong();
             } else if (binding == Float.class || binding == float.class) {

@@ -14,31 +14,34 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.aggregate.sort;
+package org.geotools.data.sort;
 
 import java.util.Comparator;
 
 import org.opengis.feature.simple.SimpleFeature;
 
 /**
- * Compares two feature based on their feature id
+ * Compares two feature based on an attribute value
  * 
  * @author Andrea Aime - GeoSolutions
  */
-class FidComparator implements Comparator<SimpleFeature> {
+class PropertyComparator implements Comparator<SimpleFeature> {
+
+    String propertyName;
 
     boolean ascending;
 
     /**
      * Builds a new comparator
      * 
+     * @param propertyName The property name to be used
      * @param inverse If true the comparator will force an ascending order (descending otherwise)
      */
-    public FidComparator(boolean ascending) {
+    public PropertyComparator(String propertyName, boolean ascending) {
+        this.propertyName = propertyName;
         this.ascending = ascending;
     }
 
-    @Override
     public int compare(SimpleFeature f1, SimpleFeature f2) {
         int result = compareAscending(f1, f2);
         if (ascending) {
@@ -49,19 +52,19 @@ class FidComparator implements Comparator<SimpleFeature> {
     }
 
     private int compareAscending(SimpleFeature f1, SimpleFeature f2) {
-        String id1 = f1.getID();
-        String id2 = f2.getID();
+        Comparable o1 = (Comparable) f1.getAttribute(propertyName);
+        Comparable o2 = (Comparable) f2.getAttribute(propertyName);
 
-        if (id1 == null) {
-            if (id2 == null) {
+        if (o1 == null) {
+            if (o2 == null) {
                 return 0;
             } else {
                 return -1;
             }
-        } else if (id2 == null) {
+        } else if (o2 == null) {
             return 1;
         } else {
-            return id1.compareTo(id2);
+            return o1.compareTo(o2);
         }
     }
 

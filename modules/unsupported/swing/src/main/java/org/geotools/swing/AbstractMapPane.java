@@ -129,6 +129,7 @@ public abstract class AbstractMapPane extends JPanel
     
     public AbstractMapPane(MapContent content, RenderingExecutor executor) {
         setBackground(DEFAULT_BACKGROUND_COLOR);
+        setFocusable(true);
 
         drawingLock = new ReentrantLock();
         paneTaskExecutor = Executors.newSingleThreadScheduledExecutor();

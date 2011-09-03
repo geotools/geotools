@@ -35,8 +35,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
-
 import java.util.concurrent.locks.ReentrantLock;
+
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
 
@@ -54,6 +54,7 @@ import org.geotools.swing.event.DefaultMapMouseEventDispatcher;
 import org.geotools.swing.event.MapMouseEventDispatcher;
 import org.geotools.swing.event.MapMouseListener;
 import org.geotools.swing.event.MapPaneEvent;
+import org.geotools.swing.event.MapPaneKeyHandler;
 import org.geotools.swing.event.MapPaneListener;
 import org.geotools.swing.tool.CursorTool;
 import org.opengis.geometry.Envelope;

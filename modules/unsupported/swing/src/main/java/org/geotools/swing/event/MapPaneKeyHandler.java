@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.swing;
+package org.geotools.swing.event;
 
 import java.awt.Rectangle;
 import java.awt.event.KeyAdapter;
@@ -27,6 +27,7 @@ import java.util.Map;
 import javax.swing.JComponent;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.swing.MapPane;
 
 /**
  * Handles keyboard events for a map pane. This is the default handler for classes derived from
@@ -131,7 +132,7 @@ public class MapPaneKeyHandler extends KeyAdapter {
      * 
      * @param mapPane the map pane associated with this handler
      */
-    MapPaneKeyHandler(MapPane mapPane) {
+    public MapPaneKeyHandler(MapPane mapPane) {
         this.bindings = new HashMap<KeyInfo, Action>(defaultBindings);
         this.mapPane = mapPane;
     }

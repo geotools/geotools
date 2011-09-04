@@ -22,6 +22,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.sql.Statement;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -552,6 +554,18 @@ public class PostGISDialect extends BasicSQLDialect {
 
         mappings.put("geometry", Geometry.class);
         mappings.put("text", String.class);
+        mappings.put("int8", Long.class);
+        mappings.put("int4", Integer.class);
+        mappings.put("bool", Boolean.class);
+        mappings.put("character", String.class);
+        mappings.put("float8", Double.class);
+        mappings.put("int", Integer.class);
+        mappings.put("float4", Float.class);
+        mappings.put("int2", Short.class);
+        mappings.put("time", Time.class);
+        mappings.put("timetz", Time.class);
+        mappings.put("timestamp", Timestamp.class);
+        mappings.put("timestamptz", Timestamp.class);
     }
     
     @Override

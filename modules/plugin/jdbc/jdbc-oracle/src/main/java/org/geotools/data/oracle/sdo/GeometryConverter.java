@@ -168,7 +168,7 @@ public class GeometryConverter {
         
         if( point == null ) {
             final Envelope env = geom.getEnvelopeInternal();
-            if(env.getWidth() > 0 && env.getHeight() > 0 && geom.getEnvelope().equals(geom)) {
+            if(env.getWidth() > 0 && env.getHeight() > 0 && !(geom instanceof GeometryCollection) && geom.getEnvelope().equals(geom)) {
                 // rectangle optimization. Actually, more than an optimization. A few operators
                 // do not work properly if they don't get rectangular geoms encoded as rectangles
                 // SDO_FILTER is an example of this silly situation

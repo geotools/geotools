@@ -54,7 +54,6 @@ public class MySQLFilterToSQL extends FilterToSQL {
         caps.addType(Overlaps.class);
         caps.addType(Touches.class);
         caps.addType(Within.class);
-        caps.addType(DWithin.class);
         caps.addType(Beyond.class);
         return caps;
     }

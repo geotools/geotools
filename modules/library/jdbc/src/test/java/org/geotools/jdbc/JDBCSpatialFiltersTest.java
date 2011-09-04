@@ -16,26 +16,34 @@
  */
 package org.geotools.jdbc;
 
+import org.geotools.data.Query;
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.Contains;
 import org.opengis.filter.spatial.Crosses;
+import org.opengis.filter.spatial.DWithin;
 import org.opengis.filter.spatial.Disjoint;
 import org.opengis.filter.spatial.Equals;
 import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.PrecisionModel;
 import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
 
 /**
@@ -198,5 +206,29 @@ public abstract class JDBCSpatialFiltersTest extends JDBCTestSupport {
         assertEquals(name, f.getAttribute(aname("name")));
         assertFalse(fr.hasNext());
         fr.close();
+    }
+    
+    public void testGeometryCollection() throws Exception{
+      PrecisionModel precisionModel = new PrecisionModel();
+    
+      int SRID = 4326;
+      GeometryFactory gf = new GeometryFactory(precisionModel, SRID);
+      Coordinate[] points = { new Coordinate(30, 40), new Coordinate(50, 60) };
+      LineString[] geometries = new LineString[2];
+      geometries [0] = gf.createLineString(points);
+      Coordinate[] points2 = { new Coordinate(40, 30), new Coordinate(70, 40) };
+      geometries[1] = gf.createLineString(points2);
+      GeometryFactory factory = new GeometryFactory();
+      GeometryCollection geometry = new GeometryCollection(geometries, factory );
+      
+      FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+      
+      PropertyName p = ff.property(aname("geom"));        
+      Literal collect = ff.literal(geometry);
+    
+      DWithin dwithinGeomCo  = ((FilterFactory2) ff).dwithin(p, collect, 5, "meter");
+      Query dq = new Query(tname("road"), dwithinGeomCo);
+      SimpleFeatureCollection features = dataStore.getFeatureSource(tname("road")).getFeatures(dq);
+      assertEquals(0, features.size());
     }
 }

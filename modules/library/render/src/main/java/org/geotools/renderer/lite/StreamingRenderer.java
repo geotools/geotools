@@ -3032,9 +3032,9 @@ public final class StreamingRenderer implements GTRenderer {
                     Decimator d = getDecimator(sa.xform);
                     d.decimateTransformGeneralize(geom, sa.crsxform);
                     geom.geometryChanged();
-
-                    // then post process it                    
-                    geom = projectionHandler.postProcess(geom);
+                    // then post process it (provide reverse transform if available)                   
+                    MathTransform reverse = sa.crsxform == null ? null : sa.crsxform.inverse();
+                    geom = projectionHandler.postProcess(reverse, geom);
                     if(geom == null) {
                         shape = null;
                     } else {

@@ -32,6 +32,7 @@ import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import org.opengis.referencing.operation.MathTransform2D;
 
 /**
  * A {@link ProjectionHandler} for projections that do warp in the East/West direction, it will
@@ -77,7 +78,7 @@ public class WrappingProjectionHandler extends ProjectionHandler {
     }
 
     @Override
-    public Geometry postProcess(Geometry geometry) {
+    public Geometry postProcess(MathTransform mt,Geometry geometry) {
         // First let's check if the geometry is undoubtedly not going to need
         // processing
         Envelope env = geometry.getEnvelopeInternal();
@@ -91,7 +92,7 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         // if it's touching both datelines then don't wrap it, as it might be something
         // like antarctica
         if (env.getWidth() > radius && env.getWidth() < radius * 2) {
-            geometry.apply(new WrappingCoordinateFilter(radius, radius * 2));
+            geometry.apply(new WrappingCoordinateFilter(radius, radius * 2, mt));
             geometry.geometryChanged();
             env = geometry.getEnvelopeInternal();
         }
@@ -128,7 +129,7 @@ public class WrappingProjectionHandler extends ProjectionHandler {
                 // in all other cases we make a copy and offset it
                 Geometry offseted = (Geometry) geometry.clone();
                 offseted.apply(new OffsetOrdinateFilter(0, offset));
-                offseted.geometryChanged();
+                offseted.geometryChanged();               
                 geomType = accumulate(geoms, offseted, geomType);
             }
 

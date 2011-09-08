@@ -20,6 +20,10 @@ import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryComponentFilter;
 import com.vividsolutions.jts.geom.LineString;
+import java.util.logging.Level;
+import org.geotools.util.logging.Logging;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
 
 /**
  * Wraps the coordinates at the discontinuity so that they are always moved towards East
@@ -33,10 +37,12 @@ class WrappingCoordinateFilter implements GeometryComponentFilter {
     static final int WEST_TO_EAST = 1;
 
     static final int NOWRAP = 2;
-
-    double wrapLimit;
-
-    double offset;
+    
+    final double wrapLimit;
+    
+    final double offset;
+    
+    final MathTransform mt;
 
     /**
      * Builds a new wrapper
@@ -47,9 +53,10 @@ class WrappingCoordinateFilter implements GeometryComponentFilter {
      * @param offset
      *            The offset to be applied to coordinates to unwrap them
      */
-    public WrappingCoordinateFilter(double wrapLimit, double offset) {
+    public WrappingCoordinateFilter(double wrapLimit, double offset, MathTransform mt) {
         this.wrapLimit = wrapLimit;
         this.offset = offset;
+        this.mt = mt;
     }
 
     public void filter(Geometry geom) {
@@ -61,7 +68,7 @@ class WrappingCoordinateFilter implements GeometryComponentFilter {
             int direction = getDisconinuityDirection(cs);
             if (direction == NOWRAP)
                 return;
-
+            
             applyOffset(cs, direction == EAST_TO_WEST ? 0 : wrapLimit * 2);
         }
     }
@@ -82,22 +89,52 @@ class WrappingCoordinateFilter implements GeometryComponentFilter {
     }
 
     private void applyOffset(CoordinateSequence cs, double offset) {
+        final double maxWrap = wrapLimit * 1.9;
         double lastX = cs.getX(0);
         for (int i = 0; i < cs.size(); i++) {
-            double x = cs.getX(i);
+            final double x = cs.getX(i);
             final double distance = Math.abs(x - lastX);
             // heuristic: an object crossing the dateline is not as big as the world, if it
             // is, it's probably something like Antarctica that does not need coordinate rewrapping
-            if (distance > wrapLimit && distance < wrapLimit * 1.9) {
-                if (offset != 0)
-                    offset = 0;
-                else
-                    offset = wrapLimit * 2;
+            if (distance > wrapLimit) {
+                boolean wraps = distance < maxWrap;
+                // if we fail here, revert to more expensive calculation if
+                // we have a reverse transform
+                // this is analagous to the technique mentioned here:
+                // http://trac.osgeo.org/mapserver/ticket/15
+                if (!wraps && mt != null) {
+                    // convert back to projected coordinates
+                    double[] src = new double[]{lastX, cs.getY(i - 1), x, cs.getY(i)};
+                    double[] dest = new double[4];
+                    try {
+                        mt.transform(src, 0, dest, 0, 2);
+                        // find the midpoint coordinate
+                        src[0] = Math.min(dest[0], dest[2]) + Math.abs(dest[2] - dest[0]) / 2;
+                        src[1] = Math.min(dest[1], dest[3]) + Math.abs(dest[3] - dest[1]) / 2;
+                        // and convert back again
+                        mt.inverse().transform(src, 0, dest, 0, 1);
+                        // if the midpoint isn't between the two end points, it's a wrap
+                        wraps = !(dest[0] > Math.min(lastX, x) && dest[0] < Math.max(lastX, x));
+                    } catch (TransformException ex) {
+                        Logging.getLogger("org.geotools.rendering").log(Level.WARNING,
+                                "Unable to perform transform to detect dateline wrapping", ex);
+                    }
+                }
+                // toggle between offset
+                if (wraps) {
+                    if (offset != 0) {
+                        offset = 0;
+                    } else {
+                        offset = wrapLimit * 2;
+                    }
+                }
             }
+
             if (offset != 0)
                 cs.setOrdinate(i, 0, x + offset);
+            
             lastX = x;
         }
     }
-
+    
 }

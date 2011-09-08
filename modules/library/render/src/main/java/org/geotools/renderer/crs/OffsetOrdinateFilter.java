@@ -25,9 +25,9 @@ import com.vividsolutions.jts.geom.CoordinateSequenceFilter;
  * @author Andrea Aime - OpenGeo
  */
 class OffsetOrdinateFilter implements CoordinateSequenceFilter {
-    double offset;
+    final double offset;
 
-    int ordinateIndex;
+    final int ordinateIndex;
 
     public OffsetOrdinateFilter(int ordinateIndex, double offset) {
         this.ordinateIndex = ordinateIndex;

@@ -19,6 +19,7 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.io.WKTReader;
+import org.opengis.referencing.operation.MathTransform;
 
 public class ProjectionHandlerTest {
 
@@ -156,12 +157,38 @@ public class ProjectionHandlerTest {
         // no cutting expected
         assertEquals(g, preProcessed);
         // transform and post process
-        Geometry transformed = JTS.transform(g, CRS.findMathTransform(WGS84, MERCATOR, true));
-        Geometry postProcessed = handler.postProcess(transformed);
+        MathTransform mt = CRS.findMathTransform(WGS84, MERCATOR, true);
+        Geometry transformed = JTS.transform(g, mt);
+        Geometry postProcessed = handler.postProcess(mt.inverse(),transformed);
         Envelope env = postProcessed.getEnvelopeInternal();
         // check the geometry is in the same area as the rendering envelope
         assertEquals(mercatorEnvelope.getMinX(), env.getMinX(), EPS);
         assertEquals(mercatorEnvelope.getMaxX(), env.getMaxX(), EPS);
+    }
+    
+    @Test
+    public void testWrapGeometrySmall() throws Exception {
+        // projected dateline CRS
+        CoordinateReferenceSystem FIJI = CRS.decode("EPSG:3460");
+        // a small geometry that will cross the dateline
+        Geometry g = new WKTReader().read("POLYGON ((2139122 5880020, 2139122 5880030, 2139922 5880030, 2139122 5880020))");
+        Geometry original = (Geometry) g.clone();
+
+        // rendering bounds only slightly bigger than geometry
+        ReferencedEnvelope world = new ReferencedEnvelope(178, 181, -1, 1, WGS84);
+
+        // make sure the geometry is not wrapped, but it is preserved
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(world, true);
+        assertTrue(handler.requiresProcessing(WGS84, g));
+        Geometry preProcessed = handler.preProcess(WGS84, g);
+        // no cutting expected
+        assertTrue(original.equals(preProcessed));
+        // post process
+        MathTransform mt = CRS.findMathTransform(FIJI, WGS84);
+        Geometry transformed = JTS.transform(g, mt);
+        Geometry postProcessed = handler.postProcess(mt.inverse(), transformed);
+        // check the geometry is in the same area as the rendering envelope
+        assertTrue(transformed.equals(postProcessed));
     }
     
     @Test
@@ -179,8 +206,8 @@ public class ProjectionHandlerTest {
         Geometry preProcessed = handler.preProcess(WGS84, g);
         // no cutting expected
         assertTrue(original.equals(preProcessed));
-        // post process
-        Geometry postProcessed = handler.postProcess(g);
+        // post process (provide identity transform to force wrap heuristic)
+        Geometry postProcessed = handler.postProcess(CRS.findMathTransform(WGS84, WGS84), g);
         // check the geometry is in the same area as the rendering envelope
         assertTrue(original.equals(postProcessed));
     }
@@ -201,7 +228,7 @@ public class ProjectionHandlerTest {
         // no cutting expected
         assertTrue(original.equals(preProcessed));
         // post process
-        Geometry postProcessed = handler.postProcess(g);
+        Geometry postProcessed = handler.postProcess(null,g);                
         // check we have replicated the geometry in both directions
         Envelope ppEnvelope = postProcessed.getEnvelopeInternal();
         Envelope expected = new Envelope(-538, 538, -90, 90);
@@ -225,8 +252,9 @@ public class ProjectionHandlerTest {
         // no cutting expected
         assertEquals(g, preProcessed);
         // transform and post process
-        Geometry transformed = JTS.transform(g, CRS.findMathTransform(WGS84, MERCATOR, true));
-        Geometry postProcessed = handler.postProcess(transformed);
+        MathTransform mt = CRS.findMathTransform(WGS84, MERCATOR, true);
+        Geometry transformed = JTS.transform(g, mt);
+        Geometry postProcessed = handler.postProcess(mt,transformed);
         // should have been duplicated in two parts
         assertTrue(postProcessed instanceof MultiLineString);
         MultiLineString mls = (MultiLineString) postProcessed;

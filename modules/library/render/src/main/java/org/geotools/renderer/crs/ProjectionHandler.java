@@ -33,6 +33,7 @@ import org.opengis.referencing.operation.TransformException;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
+import org.opengis.referencing.operation.MathTransform;
 
 /**
  * A class that can perform transformations on geometries to handle the singularity of the rendering
@@ -182,7 +183,7 @@ public class ProjectionHandler {
 
         // turn the envelope into a geometry and perform the intersection
         Geometry result = geometry.intersection(JTS.toGeometry((Envelope) envInt));
-
+        
         // handle in special way empty intersections
         if (result instanceof GeometryCollection && ((GeometryCollection) result).isEmpty())
             return null;
@@ -192,9 +193,10 @@ public class ProjectionHandler {
 
     /**
      * Processes the geometry already projected to the target SRS. May return null if the geometry
-     * is not to be drawn
+     * is not to be drawn.
+     * @param mt optional reverse transformation to facilitate unwrapping
      */
-    public Geometry postProcess(Geometry geometry) {
+    public Geometry postProcess(MathTransform mt,Geometry geometry) {
         return geometry;
     }
     

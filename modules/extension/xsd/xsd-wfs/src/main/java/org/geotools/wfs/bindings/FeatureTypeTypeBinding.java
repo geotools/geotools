@@ -160,6 +160,9 @@ public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
                 URI uri = (URI) value;
                 value = uri.toString();
             }
+        } else if ("DefaultCRS".equals(property)) {
+            String crs = value == null ? null : String.valueOf(value);
+            ((FeatureTypeType) eObject).setDefaultSRS(crs);
         }
         super.setProperty(eObject, property, value, lax);
     }

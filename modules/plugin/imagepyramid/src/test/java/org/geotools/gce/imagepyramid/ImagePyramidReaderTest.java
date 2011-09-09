@@ -158,14 +158,13 @@ public class ImagePyramidReaderTest extends Assert {
 
 
 	@Test
-	@Ignore
 	public void testDefaultParameterValue() throws IOException,
 			MismatchedDimensionException, NoSuchAuthorityCodeException {
 		
 		//
 		// Get the resource.
 		//
-		final URL testFile = new File("C:\\work\\data\\bigtiff\\tiles").toURI().toURL();//
+	        final URL testFile = TestData.getResource(this, TEST_FILE);//
 		assertNotNull(testFile);
 
 		//
@@ -176,25 +175,22 @@ public class ImagePyramidReaderTest extends Assert {
 		final ImagePyramidReader reader = (ImagePyramidReader) format
 				.getReader(testFile);
 		assertNotNull(reader);
-		       // prepare a request that crosses the bounds for a really minimal part
-	        GeneralEnvelope ge = reader.getOriginalEnvelope();
-	        final Parameter<GridGeometry2D> readGG = new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D);
-	        readGG.setValue(new GridGeometry2D(new GridEnvelope2D(0, 0, 1024, 1024), ge));
 	        
 		//
 		// Show the coverage
 		//
-		final GridCoverage2D coverage = (GridCoverage2D) reader.read(new GeneralParameterValue[] {readGG});
-//		assertEquals("pyramid", coverage.getName().toString());
-		assertNotNull("Null value returned instead of a coverage", coverage);
-//		assertTrue("coverage dimensions different from what we expected",
-//				coverage.getGridGeometry().getGridRange().getSpan(0) == 250
-//						&& coverage.getGridGeometry().getGridRange().getSpan(
-//								1) == 250);
-//		coverage.show("testDefaultParameterValue");
+                final GridCoverage2D coverage = (GridCoverage2D) reader.read(null);
+                assertEquals("pyramid", coverage.getName().toString());
+                assertNotNull("Null value returned instead of a coverage", coverage);
+                assertTrue("coverage dimensions different from what we expected",
+                                coverage.getGridGeometry().getGridRange().getSpan(0) == 250
+                                                && coverage.getGridGeometry().getGridRange().getSpan(
+                                                                1) == 250);
 		
-		ImageIOUtilities.visualize(((GridCoverage2D) coverage).getRenderedImage(), "", true);
-		PlanarImage.wrapRenderedImage(((GridCoverage2D) coverage).getRenderedImage()).getTiles();
+                if (TestData.isInteractiveTest())
+                    coverage.show("testDefaultParameterValue");
+                else
+                    PlanarImage.wrapRenderedImage(((GridCoverage2D) coverage).getRenderedImage()).getTiles();
 
 	}
 	@Test

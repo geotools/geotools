@@ -19,11 +19,13 @@ package org.geotools.swing.control;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPopupMenu;
-import org.geotools.geometry.jts.ReferencedEnvelope;
 
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.swing.LocaleUtils;
 import org.geotools.swing.MapPane;
 import org.geotools.swing.event.MapPaneAdapter;
 import org.geotools.swing.event.MapPaneEvent;
@@ -43,8 +45,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @version $Id$
  */
 public class CRSStatusBarItem extends StatusBarItem {
-    private static final String NO_CRS = "CRS Undefined";
-    private static final String TOOL_TIP = "Click to view or set CRS";
+    private static final String NO_CRS = 
+            LocaleUtils.getValue("StatusBar", "CRSUndefined");
+    
+    private static final String TOOL_TIP = 
+            LocaleUtils.getValue("StatusBar", "CRSTooltip");
     
     private final JButton btn;
 

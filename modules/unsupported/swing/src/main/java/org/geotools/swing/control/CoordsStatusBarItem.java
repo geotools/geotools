@@ -26,6 +26,7 @@ import javax.swing.JLabel;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.swing.LocaleUtils;
 import org.geotools.swing.MapPane;
 import org.geotools.swing.event.MapMouseAdapter;
 import org.geotools.swing.event.MapMouseEvent;
@@ -46,10 +47,10 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @version $Id$
  */
 public class CoordsStatusBarItem extends StatusBarItem {
-
+    private static final String TOOL_TIP = LocaleUtils.getValue("StatusBar", "CoordsTooltip");
     private static final int DEFAULT_NUM_INTEGER_DIGITS = 3;
 
-    private static final String NO_COORDS = "No cursor";
+    private static final String NO_COORDS = LocaleUtils.getValue("StatusBar", "CoordsNone");
 
     private final JLabel label;
 
@@ -72,6 +73,8 @@ public class CoordsStatusBarItem extends StatusBarItem {
         label = new JLabel();
         label.setFont(JMapStatusBar.DEFAULT_FONT);
         add(label);
+        
+        setToolTipText(TOOL_TIP);
 
         decLen = JMapStatusBar.DEFAULT_NUM_DECIMAL_DIGITS;
 

@@ -22,17 +22,17 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.geom.Point2D;
-import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
+import org.geotools.swing.LocaleUtils;
 import org.geotools.swing.event.MapMouseEvent;
 
 /**
- * A zoom-in tool.
+ * A cursor tool to zoom in the map pane display.
  * <p>
  * For mouse clicks, the display will be zoomed-in such that the 
  * map centre is the position of the mouse click and the map
@@ -52,16 +52,18 @@ import org.geotools.swing.event.MapMouseEvent;
  */
 public class ZoomInTool extends AbstractZoomTool {
     
-    private static final ResourceBundle stringRes = ResourceBundle.getBundle("org/geotools/swing/Text");
-
     /** Tool name */
-    public static final String TOOL_NAME = stringRes.getString("tool_name_zoom_in");
+    public static final String TOOL_NAME = LocaleUtils.getValue("CursorTool", "ZoomInKey");
+    
     /** Tool tip text */
-    public static final String TOOL_TIP = stringRes.getString("tool_tip_zoom_in");
+    public static final String TOOL_TIP = LocaleUtils.getValue("CursorTool", "ZoomInTooltipKey");
+    
     /** Cursor */
     public static final String CURSOR_IMAGE = "/org/geotools/swing/icons/mActionZoomIn.png";
+    
     /** Cursor hotspot coordinates */
     public static final Point CURSOR_HOTSPOT = new Point(14, 9);
+    
     /** Icon for the control */
     public static final String ICON_IMAGE = "/org/geotools/swing/icons/mActionZoomIn.png";
     

@@ -21,17 +21,17 @@ import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
-import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
+import org.geotools.swing.LocaleUtils;
 import org.geotools.swing.event.MapMouseEvent;
 
 /**
- * A zoom-out tool.
+ * A cursor tool to zoom out the map pane display.
  * <p>
  * For mouse clicks, the display will be zoomed-out such that the 
  * map centre is the position of the mouse click and the map
@@ -41,23 +41,23 @@ import org.geotools.swing.event.MapMouseEvent;
  * 
  * @author Michael Bedward
  * @since 2.6
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class ZoomOutTool extends AbstractZoomTool {
 
-    private static final ResourceBundle stringRes = ResourceBundle.getBundle("org/geotools/swing/Text");
-
     /** Tool name */
-    public static final String TOOL_NAME = stringRes.getString("tool_name_zoom_out");
+    public static final String TOOL_NAME = LocaleUtils.getValue("CursorTool", "ZoomOutKey");
+
     /** Tool tip text */
-    public static final String TOOL_TIP = stringRes.getString("tool_tip_zoom_out");
+    public static final String TOOL_TIP = LocaleUtils.getValue("CursorTool", "ZoomOutTooltipKey");
+
     /** Cursor */
     public static final String CURSOR_IMAGE = "/org/geotools/swing/icons/mActionZoomOut.png";
+    
     /** Cursor hotspot coordinates */
     public static final Point CURSOR_HOTSPOT = new Point(14, 9);
+    
     /** Icon for the control */
     public static final String ICON_IMAGE = "/org/geotools/swing/icons/mActionZoomOut.png";
     

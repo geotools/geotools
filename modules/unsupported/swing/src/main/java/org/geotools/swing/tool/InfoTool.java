@@ -21,7 +21,6 @@ import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
-import java.util.ResourceBundle;
 import java.util.WeakHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,6 +30,7 @@ import javax.swing.ImageIcon;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
+import org.geotools.swing.LocaleUtils;
 import org.geotools.swing.dialog.JTextReporter;
 import org.geotools.swing.dialog.TextReporterListener;
 import org.geotools.swing.event.MapMouseEvent;
@@ -50,16 +50,19 @@ import org.geotools.util.logging.Logging;
  */
 public class InfoTool extends CursorTool implements TextReporterListener {
     private static final Logger LOGGER = Logging.getLogger("org.geotools.swing");
-    private static final ResourceBundle stringRes = ResourceBundle.getBundle("org/geotools/swing/Text");
 
     /** The tool name */
-    public static final String TOOL_NAME = stringRes.getString("tool_name_info");
+    public static final String TOOL_NAME = LocaleUtils.getValue("CursorTool", "InfoKey");
+    
     /** Tool tip text */
-    public static final String TOOL_TIP = stringRes.getString("tool_tip_info");
+    public static final String TOOL_TIP = LocaleUtils.getValue("CursorTool", "InfoTooltipKey");
+    
     /** Cursor */
     public static final String CURSOR_IMAGE = "/org/geotools/swing/icons/mActionIdentify.png";
+    
     /** Cursor hotspot coordinates */
     public static final Point CURSOR_HOTSPOT = new Point(0, 0);
+    
     /** Icon for the control */
     public static final String ICON_IMAGE = "/org/geotools/swing/icons/mActionIdentify.png";
 

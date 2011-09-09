@@ -39,6 +39,7 @@ import javax.swing.SwingUtilities;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.geotools.swing.LocaleUtils;
 import org.geotools.swing.MapPane;
 import org.geotools.swing.dialog.AbstractSimpleDialog;
 import org.geotools.swing.dialog.DialogUtils;
@@ -58,7 +59,20 @@ import org.geotools.util.logging.Logging;
  */
 public class JMapStatusBar extends JPanel {
     private static final Logger LOGGER = Logging.getLogger("org.geotools.swing");
+    
+    private static final String CONFIGURE_TOOL_TIP = 
+            LocaleUtils.getValue("StatusBar", "ConfigureTooltip");
+    
+    private static final String SET_DECIMALS_STRING =
+            LocaleUtils.getValue("StatusBar", "ConfigureSetNumDecimals");
+    
+    private static final String DECIMAL_DIALOG_TITLE =
+            LocaleUtils.getValue("StatusBar", "ConfigureDecimalDialogTitle");
 
+    private static final String DECIMAL_DIALOG_LABEL =
+            LocaleUtils.getValue("StatusBar", "ConfigureDecimalDialogLabel");
+
+    
     private static final int INSET = 0;
 
     // Package-private constants for use by StatusBarItem classes
@@ -176,7 +190,7 @@ public class JMapStatusBar extends JPanel {
         };
 
         StatusBarItem item = new MenuStatusBarItem("", icon, 
-                "Configure status bar", menuProvider);
+                CONFIGURE_TOOL_TIP, menuProvider);
         addItem(item, false, true);
     }
 
@@ -318,7 +332,7 @@ public class JMapStatusBar extends JPanel {
         }
 
         menu.addSeparator();
-        JMenuItem menuItem = new JMenuItem("Set number decimal digits...");
+        JMenuItem menuItem = new JMenuItem(SET_DECIMALS_STRING);
         menuItem.addActionListener(new ActionListener() {
 
             @Override
@@ -350,7 +364,7 @@ public class JMapStatusBar extends JPanel {
         private int numDigits;
 
         public DecimalDigitsDialog(int initialValue) {
-            super("Status bar value format");
+            super(DECIMAL_DIALOG_TITLE);
             numDigits = initialValue;
             initComponents();
         }
@@ -359,7 +373,7 @@ public class JMapStatusBar extends JPanel {
         public JPanel createControlPanel() {
             JPanel panel = new JPanel(new MigLayout());
 
-            panel.add(new JLabel("Decimal digits:"), "gap related");
+            panel.add(new JLabel(DECIMAL_DIALOG_LABEL), "gap related");
             
             digitsFld = new JIntegerField(numDigits, false);
             panel.add(digitsFld, "w 40!");

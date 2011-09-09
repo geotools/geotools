@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -18,31 +18,25 @@
 package org.geotools.swing.action;
 
 import java.awt.event.ActionEvent;
-import java.util.ResourceBundle;
 
+import org.geotools.swing.LocaleUtils;
 import org.geotools.swing.MapPane;
 
 
 /**
- * An action for connect a control (probably a JButton) to
- * the MapPane.reset() method which sets the bounds of the
- * map area to include the full extent of all map layers
+ * An action to reset a map pane display to its full extent.
  * 
  * @author Michael Bedward
  * @since 2.6
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class ResetAction extends MapAction {
     /** Name for this tool */
-    public static final String TOOL_NAME = 
-            ResourceBundle.getBundle("org/geotools/swing/Text").getString("tool_name_reset");
+    public static final String TOOL_NAME = LocaleUtils.getValue("CursorTool", "ResetKey");
     
     /** Tool tip text */
-    public static final String TOOL_TIP = 
-            ResourceBundle.getBundle("org/geotools/swing/Text").getString("tool_tip_reset");
+    public static final String TOOL_TIP = LocaleUtils.getValue("CursorTool", "ResetTooltipKey");
     
     /** Icon for the control */
     public static final String ICON_IMAGE = "/org/geotools/swing/icons/mActionZoomFullExtent.png";
@@ -76,6 +70,7 @@ public class ResetAction extends MapAction {
      *
      * @param ev the event (not used)
      */
+    @Override
     public void actionPerformed(ActionEvent ev) {
         getMapPane().reset();
     }

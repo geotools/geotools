@@ -23,6 +23,7 @@ import java.awt.Insets;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+import org.geotools.swing.LocaleUtils;
 import org.geotools.swing.MapPane;
 import org.geotools.swing.event.MapPaneAdapter;
 import org.geotools.swing.event.MapPaneEvent;
@@ -38,7 +39,7 @@ import org.geotools.swing.event.MapPaneEvent;
  * @version $Id$
  */
 public class RendererStatusBarItem extends StatusBarItem {
-    private static final String TOOL_TIP = "Renderer activity";
+    private static final String TOOL_TIP = LocaleUtils.getValue("StatusBar", "RendererTooltip");
     private static final String BUSY_IMAGE = "icons/busy.gif";
     private static final String IDLE_IMAGE = "icons/idle.gif";
 

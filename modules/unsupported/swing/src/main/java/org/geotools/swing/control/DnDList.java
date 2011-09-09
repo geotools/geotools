@@ -32,7 +32,6 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import javax.swing.JList;
 
@@ -53,8 +52,6 @@ import javax.swing.JList;
  */
 public class DnDList<T> extends JList implements DragGestureListener, DragSourceListener, DropTargetListener {
     private static final long serialVersionUID = 3310751294076288683L;
-
-    private static final ResourceBundle stringRes = ResourceBundle.getBundle("org/geotools/swing/Text");
 
     private DragSource src;
     
@@ -81,7 +78,7 @@ public class DnDList<T> extends JList implements DragGestureListener, DragSource
     public DnDList(DnDListModel<T> model) {
         super( model );
         if (model == null) {
-            throw new IllegalArgumentException(stringRes.getString("arg_null_error"));
+            throw new IllegalArgumentException("model must not be null");
         }
         //this.setModel(model);
 
@@ -102,6 +99,7 @@ public class DnDList<T> extends JList implements DragGestureListener, DragSource
     /**
      * Called by the system when a drag gesture starts
      */
+    @Override
     public void dragGestureRecognized(DragGestureEvent dge) {
         dragIndices = getSelectedIndices();
         if (dragIndices.length > 0) {
@@ -125,6 +123,7 @@ public class DnDList<T> extends JList implements DragGestureListener, DragSource
      * <li> The drop site accepts the drag.
      * </ul>
      */
+    @Override
     public void dragEnter(DragSourceDragEvent dsde) {
         // do nothing
     }
@@ -142,6 +141,7 @@ public class DnDList<T> extends JList implements DragGestureListener, DragSource
      * <li> The drop site accepts the drag.
      * </ul>
      */
+    @Override
     public void dragOver(DragSourceDragEvent dsde) {
         // do nothing
     }
@@ -155,6 +155,7 @@ public class DnDList<T> extends JList implements DragGestureListener, DragSource
      * Such devices are typically the mouse buttons or keyboard modifiers that the
      * user is interacting with.
      */
+    @Override
     public void dropActionChanged(DragSourceDragEvent dsde) {
         // do nothing
     }
@@ -174,6 +175,7 @@ public class DnDList<T> extends JList implements DragGestureListener, DragSource
      * has rejected the drag.
      * </ul>
      */
+    @Override
     public void dragExit(DragSourceEvent dse) {
         // do nothing
     }
@@ -187,6 +189,7 @@ public class DnDList<T> extends JList implements DragGestureListener, DragSource
      * Once this method is complete, the current DragSourceContext and associated
      * resources become invalid.
      */
+    @Override
     public void dragDropEnd(DragSourceDropEvent dsde) {
         movingItems = false;
         overIndex = -1;
@@ -200,6 +203,7 @@ public class DnDList<T> extends JList implements DragGestureListener, DragSource
      * the operable part of the drop site for the DropTarget registered with
      * this listener.
      */
+    @Override
     public void dragEnter(DropTargetDragEvent dtde) {
         overIndex = this.locationToIndex(dtde.getLocation());
         setSelectedIndex(overIndex);
@@ -214,6 +218,7 @@ public class DnDList<T> extends JList implements DragGestureListener, DragSource
      * over the operable part of the drop site for the DropTarget registered with
      * this listener.
      */
+    @Override
     public void dragOver(DropTargetDragEvent dtde) {
         int index = this.locationToIndex(dtde.getLocation());
         if (index >= 0 && index != overIndex) {
@@ -228,6 +233,7 @@ public class DnDList<T> extends JList implements DragGestureListener, DragSource
      * Description copied from interface:<br>
      * Called if the user has modified the current drop gesture.
      */
+    @Override
     public void dropActionChanged(DropTargetDragEvent dtde) {
         // do nothing
     }
@@ -238,6 +244,7 @@ public class DnDList<T> extends JList implements DragGestureListener, DragSource
      * the operable part of the drop site for the DropTarget registered with this
      * listener.
      */
+    @Override
     public void dragExit(DropTargetEvent dte) {
         overIndex = -1;
     }
@@ -272,6 +279,7 @@ public class DnDList<T> extends JList implements DragGestureListener, DragSource
      * transfer is local; that is, only if DropTargetDropEvent.isLocalTransfer()
      * returns true. Otherwise, the behavior of the call is implementation-dependent.
      */
+    @Override
     public void drop(DropTargetDropEvent dtde) {
         //Transferable stuff = dtde.getTransferable();
         

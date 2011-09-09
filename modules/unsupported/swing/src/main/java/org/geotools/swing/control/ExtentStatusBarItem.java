@@ -20,6 +20,7 @@ package org.geotools.swing.control;
 import javax.swing.JLabel;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.swing.LocaleUtils;
 import org.geotools.swing.MapPane;
 import org.geotools.swing.event.MapPaneAdapter;
 import org.geotools.swing.event.MapPaneEvent;
@@ -35,6 +36,7 @@ import org.geotools.swing.event.MapPaneEvent;
  * @version $Id$
  */
 public class ExtentStatusBarItem extends StatusBarItem {
+    private static final String TOOL_TIP = LocaleUtils.getValue("StatusBar", "ExtentTooltip");
     private static final ReferencedEnvelope EMPTY_ENV = new ReferencedEnvelope();
 
     private final JLabel label;
@@ -56,6 +58,8 @@ public class ExtentStatusBarItem extends StatusBarItem {
         if (mapPane == null) {
             throw new IllegalArgumentException("mapPane must not be null");
         }
+        
+        setToolTipText(TOOL_TIP);
 
         lastExtent = EMPTY_ENV;
         decLen = JMapStatusBar.DEFAULT_NUM_DECIMAL_DIGITS;

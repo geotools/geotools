@@ -18,7 +18,8 @@
 package org.geotools.swing.action;
 
 import java.awt.event.ActionEvent;
-import java.util.ResourceBundle;
+
+import org.geotools.swing.LocaleUtils;
 import org.geotools.swing.MapPane;
 
 /**
@@ -31,12 +32,10 @@ import org.geotools.swing.MapPane;
  */
 public class NoToolAction extends MapAction {
     /** Name for this tool */
-    public static final String TOOL_NAME = 
-            ResourceBundle.getBundle("org/geotools/swing/Text").getString("tool_name_no_tool");
+    public static final String TOOL_NAME = LocaleUtils.getValue("CursorTool", "NoneKey");
     
     /** Tool tip text */
-    public static final String TOOL_TIP = 
-            ResourceBundle.getBundle("org/geotools/swing/Text").getString("tool_tip_no_tool");
+    public static final String TOOL_TIP = LocaleUtils.getValue("CursorTool", "NoneTooltipKey");
     
     /** Icon for the control */
     public static final String ICON_IMAGE = "/org/geotools/swing/icons/pointer.png";

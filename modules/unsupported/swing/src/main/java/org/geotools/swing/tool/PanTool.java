@@ -20,38 +20,37 @@ package org.geotools.swing.tool;
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Toolkit;
-import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 
 import org.geotools.swing.MapPane;
 import org.geotools.swing.JMapPane;
 
+import org.geotools.swing.LocaleUtils;
 import org.geotools.swing.event.MapMouseEvent;
 
 /**
- * A map panning tool for MapPane.  Allows the user to drag the map
- * with the mouse.
+ * A cursor tool to pan the map pane display.
  * 
  * @author Michael Bedward
  * @since 2.6
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class PanTool extends CursorTool {
     
-    private static final ResourceBundle stringRes = ResourceBundle.getBundle("org/geotools/swing/Text");
-
     /** Tool name */
-    public static final String TOOL_NAME = stringRes.getString("tool_name_pan");
+    public static final String TOOL_NAME = LocaleUtils.getValue("CursorTool", "PanKey");
+    
     /** Tool tip text */
-    public static final String TOOL_TIP = stringRes.getString("tool_tip_pan");
+    public static final String TOOL_TIP = LocaleUtils.getValue("CursorTool", "PanTooltipKey");
+    
     /** Cursor */
     public static final String CURSOR_IMAGE = "/org/geotools/swing/icons/mActionPan.png";
+    
     /** Cursor hotspot coordinates */
     public static final Point CURSOR_HOTSPOT = new Point(15, 15);
+    
     /** Icon for the control */
     public static final String ICON_IMAGE = "/org/geotools/swing/icons/mActionPan.png";
     

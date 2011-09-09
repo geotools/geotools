@@ -16,7 +16,6 @@
  */
 package org.geotools.gce.imagepyramid;
 
-import java.awt.Color;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,15 +32,12 @@ import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.PrjFileReader;
 import org.geotools.factory.Hints;
-import org.geotools.parameter.DefaultParameterDescriptor;
+import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
 import org.opengis.coverage.grid.Format;
-import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.coverage.grid.GridCoverageWriter;
 import org.opengis.parameter.GeneralParameterDescriptor;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -58,49 +54,7 @@ public final class ImagePyramidFormat extends AbstractGridFormat implements Form
 	/** Logger. */
 	private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.gce.imagepyramid");
 	
-    /** The {@code String} representing the parameter to customize tile sizes */
-    private static final String SUGGESTED_TILESIZE = "SUGGESTED_TILE_SIZE";
-
     /**
-     * This {@link GeneralParameterValue} can be provided to the
-     * {@link GridCoverageReader}s through the
-     * {@link GridCoverageReader#read(GeneralParameterValue[])} method in order
-     * to specify the suggested size of tiles to avoid long time reading
-     * occurring with JAI ImageRead on striped images. (Images with tiles Nx1)
-     * Value should be a String in the form of "W,H" (without quotes) where W is
-     * a number representing the suggested tileWidth and H is a number
-     * representing the suggested tileHeight.
-     */
-    public static final DefaultParameterDescriptor<String> SUGGESTED_TILE_SIZE = new DefaultParameterDescriptor<String>(
-    		SUGGESTED_TILESIZE, String.class, null, "512,512");
-
-    public static final String TILE_SIZE_SEPARATOR = ",";
-    
-    /** Control the type of the final mosaic. */
-    public static final ParameterDescriptor<Boolean> FADING = new DefaultParameterDescriptor<Boolean>(
-            "Fading", Boolean.class, new Boolean[]{Boolean.TRUE,Boolean.FALSE}, Boolean.FALSE);
-
-    /** Control the transparency of the input coverages. */
-    public static final ParameterDescriptor<Color> INPUT_TRANSPARENT_COLOR = new DefaultParameterDescriptor<Color>(
-            "InputTransparentColor", Color.class, null, null);
-
-    /** Control the transparency of the output coverage. */
-    public static final ParameterDescriptor<Color> OUTPUT_TRANSPARENT_COLOR = new DefaultParameterDescriptor<Color>(
-            "OutputTransparentColor", Color.class, null, null);
-
-    /** Control the thresholding on the input coverage */
-    public static final ParameterDescriptor<Integer> MAX_ALLOWED_TILES = new DefaultParameterDescriptor<Integer>(
-            "MaxAllowedTiles", Integer.class, null, Integer.MAX_VALUE);
-    
-    /** Control the threading behavior for this plugin. This parameter contains the number of thread that we should use to load the granules. Default value is 0 which means not additional thread, max value is 8.*/
-    public static final ParameterDescriptor<Boolean> ALLOW_MULTITHREADING = new DefaultParameterDescriptor<Boolean>(
-            "AllowMultithreading", Boolean.class, new Boolean[]{Boolean.TRUE,Boolean.FALSE}, Boolean.FALSE);
-    
-    /** Control the background values for the output coverage */
-    public static final ParameterDescriptor<double[]> BACKGROUND_VALUES = new DefaultParameterDescriptor<double[]>(
-            "BackgroundValues", double[].class, null, null);
-    
-	/**
 	 * Creates an instance and sets the metadata.
 	 */
 	public ImagePyramidFormat() {
@@ -124,12 +78,15 @@ public final class ImagePyramidFormat extends AbstractGridFormat implements Form
                 new GeneralParameterDescriptor[]{
         		READ_GRIDGEOMETRY2D,
         		INPUT_TRANSPARENT_COLOR,
-                OUTPUT_TRANSPARENT_COLOR,
+                ImageMosaicFormat.OUTPUT_TRANSPARENT_COLOR,
                 USE_JAI_IMAGEREAD,
-                BACKGROUND_VALUES,
+                ImageMosaicFormat.BACKGROUND_VALUES,
                 SUGGESTED_TILE_SIZE,
-                ALLOW_MULTITHREADING,
-                MAX_ALLOWED_TILES}));
+                ImageMosaicFormat.ALLOW_MULTITHREADING,
+                ImageMosaicFormat.MAX_ALLOWED_TILES,
+                ImageMosaicFormat.ELEVATION,
+                ImageMosaicFormat.TIME,
+                ImageMosaicFormat.FADING}));
 
 		// reading parameters
 		writeParameters = null;

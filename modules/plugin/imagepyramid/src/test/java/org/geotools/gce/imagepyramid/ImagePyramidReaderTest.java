@@ -16,6 +16,8 @@
  */
 package org.geotools.gce.imagepyramid;
 
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
+
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.io.File;
@@ -156,71 +158,57 @@ public class ImagePyramidReaderTest extends Assert {
 
 
 	@Test
+	@Ignore
 	public void testDefaultParameterValue() throws IOException,
 			MismatchedDimensionException, NoSuchAuthorityCodeException {
-		//
-		// /////////////////////////////////////////////////////////////////
+		
 		//
 		// Get the resource.
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
-		final URL testFile = TestData.getResource(this, TEST_FILE);//
+		final URL testFile = new File("C:\\work\\data\\bigtiff\\tiles").toURI().toURL();//
 		assertNotNull(testFile);
 
 		//
-		// /////////////////////////////////////////////////////////////////
-		//
 		// Get a reader
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		final AbstractGridFormat format = new ImagePyramidFormat();
 		assertTrue(format.accepts(testFile));
 		final ImagePyramidReader reader = (ImagePyramidReader) format
 				.getReader(testFile);
 		assertNotNull(reader);
-
-		//
-		// /////////////////////////////////////////////////////////////////
+		       // prepare a request that crosses the bounds for a really minimal part
+	        GeneralEnvelope ge = reader.getOriginalEnvelope();
+	        final Parameter<GridGeometry2D> readGG = new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D);
+	        readGG.setValue(new GridGeometry2D(new GridEnvelope2D(0, 0, 1024, 1024), ge));
+	        
 		//
 		// Show the coverage
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
-		final GridCoverage2D coverage = (GridCoverage2D) reader.read(null);
-		assertEquals("pyramid", coverage.getName().toString());
+		final GridCoverage2D coverage = (GridCoverage2D) reader.read(new GeneralParameterValue[] {readGG});
+//		assertEquals("pyramid", coverage.getName().toString());
 		assertNotNull("Null value returned instead of a coverage", coverage);
-		assertTrue("coverage dimensions different from what we expected",
-				coverage.getGridGeometry().getGridRange().getSpan(0) == 250
-						&& coverage.getGridGeometry().getGridRange().getSpan(
-								1) == 250);
-		if (TestData.isInteractiveTest())
-			coverage.show("testDefaultParameterValue");
-		else
-			PlanarImage.wrapRenderedImage(((GridCoverage2D) coverage).getRenderedImage()).getTiles();
+//		assertTrue("coverage dimensions different from what we expected",
+//				coverage.getGridGeometry().getGridRange().getSpan(0) == 250
+//						&& coverage.getGridGeometry().getGridRange().getSpan(
+//								1) == 250);
+//		coverage.show("testDefaultParameterValue");
+		
+		ImageIOUtilities.visualize(((GridCoverage2D) coverage).getRenderedImage(), "", true);
+		PlanarImage.wrapRenderedImage(((GridCoverage2D) coverage).getRenderedImage()).getTiles();
 
 	}
 	@Test
 	public void testDefaultParameterValueFile() throws IOException,
 			MismatchedDimensionException, NoSuchAuthorityCodeException {
 		//
-		// /////////////////////////////////////////////////////////////////
-		//
 		// Get the resource.
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		final File testFile = TestData.file(this, TEST_FILE);//
 		assertNotNull(testFile);
 
 		//
-		// /////////////////////////////////////////////////////////////////
-		//
 		// Get a reader
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		final AbstractGridFormat format = new ImagePyramidFormat();
 		assertTrue(format.accepts(testFile));
 		final ImagePyramidReader reader = (ImagePyramidReader) format
@@ -228,12 +216,8 @@ public class ImagePyramidReaderTest extends Assert {
 		assertNotNull(reader);
 
 		//
-		// /////////////////////////////////////////////////////////////////
-		//
 		// Show the coverage
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		final GridCoverage2D coverage = (GridCoverage2D) reader.read(null);
 		assertNotNull("Null value returned instead of a coverage", coverage);
 		assertTrue("coverage dimensions different from what we expected",
@@ -243,30 +227,23 @@ public class ImagePyramidReaderTest extends Assert {
 		if (TestData.isInteractiveTest())
 			coverage.show("testDefaultParameterValueFile");
 		else
-			((GridCoverage2D) coverage).getRenderedImage().getData();
+			PlanarImage.wrapRenderedImage(((GridCoverage2D) coverage).getRenderedImage()).getTiles();
 
 	}
 	@Test
 	public void testDefaultParameterValueString() throws IOException,
 			MismatchedDimensionException, NoSuchAuthorityCodeException {
-		//
-		// /////////////////////////////////////////////////////////////////
+		
 		//
 		// Get the resource.
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		final String testFile = TestData.file(this, TEST_FILE)
 				.getCanonicalPath();//
 		assertNotNull(testFile);
 
 		//
-		// /////////////////////////////////////////////////////////////////
-		//
 		// Get a reader
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		final AbstractGridFormat format = new ImagePyramidFormat();
 		assertTrue(format.accepts(testFile));
 		final ImagePyramidReader reader = (ImagePyramidReader) format
@@ -274,12 +251,8 @@ public class ImagePyramidReaderTest extends Assert {
 		assertNotNull(reader);
 
 		//
-		// /////////////////////////////////////////////////////////////////
-		//
 		// Show the coverage
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		final GridCoverage2D coverage = (GridCoverage2D) reader.read(null);
 		assertNotNull("Null value returned instead of a coverage", coverage);
 		assertTrue("coverage dimensions different from what we expected",
@@ -289,28 +262,22 @@ public class ImagePyramidReaderTest extends Assert {
 		if (TestData.isInteractiveTest())
 			coverage.show("testDefaultParameterValueString");
 		else
-			((GridCoverage2D) coverage).getRenderedImage().getData();
+		    PlanarImage.wrapRenderedImage(((GridCoverage2D) coverage).getRenderedImage()).getTiles();
 
 	}
 	@Test
 	public void testForErrors() throws IOException,
 			MismatchedDimensionException, NoSuchAuthorityCodeException {
 		//
-		// /////////////////////////////////////////////////////////////////
-		//
 		// Get the resource.
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		final File testFile = TestData.file(this, TEST_FILE);//
 		assertNotNull(testFile);
 
-		// /////////////////////////////////////////////////////////////////
+
 		//
 		// Null argument
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		ImagePyramidReader reader = null;
 		try {
 			reader = new ImagePyramidReader(null, new Hints(
@@ -320,12 +287,9 @@ public class ImagePyramidReaderTest extends Assert {
 		}
 		assertNull(reader);
 
-		// /////////////////////////////////////////////////////////////////
 		//
 		// Illegal arguments
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		try {
 			reader = new ImagePyramidReader(new FileInputStream(testFile),
 					new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER,
@@ -343,12 +307,8 @@ public class ImagePyramidReaderTest extends Assert {
 		}
 		assertNull(reader);
 
-		// /////////////////////////////////////////////////////////////////
 		//
-		// Unsopported operations
-		//
-		//
-		// /////////////////////////////////////////////////////////////////
+		// Unsopported operation
 		reader = new ImagePyramidReader(testFile, new Hints(
 				Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE));
 
@@ -381,43 +341,28 @@ public class ImagePyramidReaderTest extends Assert {
 			MismatchedDimensionException, NoSuchAuthorityCodeException {
 
 		//
-		// /////////////////////////////////////////////////////////////////
-		//
 		// Get the resource.
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		final URL testFile = TestData.getResource(this, TEST_FILE);
 		assertNotNull(testFile);
 
 		//
-		// /////////////////////////////////////////////////////////////////
-		//
 		// Get a reader
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		final ImagePyramidReader reader = new ImagePyramidReader(
 				testFile,
 				new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE));
 		assertNotNull(reader);
 
 		//
-		// /////////////////////////////////////////////////////////////////
-		//
 		// alpha on output
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		final ParameterValue<Color> transp = ImageMosaicFormat.INPUT_TRANSPARENT_COLOR.createValue();
 		transp.setValue(Color.black);
 
-		// /////////////////////////////////////////////////////////////////
 		//
 		// Show the coverage
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		GridCoverage2D coverage = (GridCoverage2D) reader.read(new GeneralParameterValue[] {  transp });
 		assertNotNull(coverage);
 		assertTrue("coverage dimensions different from what we expected",coverage.getGridGeometry().getGridRange().getSpan(0) == 250&& coverage.getGridGeometry().getGridRange().getSpan(1) == 250);
@@ -474,32 +419,20 @@ public class ImagePyramidReaderTest extends Assert {
 	@Test
 	public void testCropHighestLevel() throws IOException,
 			MismatchedDimensionException, NoSuchAuthorityCodeException {
-
-		// /////////////////////////////////////////////////////////////////
-		//
+	        //
 		// Get the resource.
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		final URL testFile = TestData.getResource(this, TEST_FILE);
 
 		//
-		// /////////////////////////////////////////////////////////////////
-		//
 		// Get a reader
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		final AbstractGridFormat format = new ImagePyramidFormat();
 		final ImagePyramidReader reader = (ImagePyramidReader) format.getReader(testFile);
 		assertNotNull(reader);
-
-		// /////////////////////////////////////////////////////////////////
 		//
 		// crop
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		final ParameterValue<GridGeometry2D> gg =  ImageMosaicFormat.READ_GRIDGEOMETRY2D.createValue();
 		final GeneralEnvelope oldEnvelop = reader.getOriginalEnvelope();
 		final GeneralEnvelope cropEnvelope = new GeneralEnvelope(new double[] {
@@ -514,12 +447,8 @@ public class ImagePyramidReaderTest extends Assert {
 				250, 250)), cropEnvelope));
 
 		//
-		// /////////////////////////////////////////////////////////////////
-		//
 		// Show the coverage
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		GridCoverage2D coverage = ((GridCoverage2D) reader
 				.read(new GeneralParameterValue[] { gg }));
 		assertNotNull("Null value returned instead of a coverage", coverage);
@@ -553,31 +482,22 @@ public class ImagePyramidReaderTest extends Assert {
 	public void testCropLevel1() throws IOException,
 			MismatchedDimensionException, NoSuchAuthorityCodeException {
 
-		// /////////////////////////////////////////////////////////////////
 		//
 		// Get the resource.
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		final URL testFile = TestData.getResource(this, TEST_FILE);
 
-		//
-		// /////////////////////////////////////////////////////////////////
+		
 		//
 		// Get a reader
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		final AbstractGridFormat format = new ImagePyramidFormat();
 		final ImagePyramidReader reader = (ImagePyramidReader) format.getReader(testFile);
 		assertNotNull(reader);
 
-		// /////////////////////////////////////////////////////////////////
 		//
 		// crop
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		final ParameterValue<GridGeometry2D> gg = ImageMosaicFormat.READ_GRIDGEOMETRY2D.createValue();
 		final GeneralEnvelope oldEnvelop = reader.getOriginalEnvelope();
 		final GeneralEnvelope cropEnvelope = new GeneralEnvelope(new double[] {
@@ -592,12 +512,8 @@ public class ImagePyramidReaderTest extends Assert {
 				125, 125)), cropEnvelope));
 
 		//
-		// /////////////////////////////////////////////////////////////////
-		//
 		// Show the coverage
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		GridCoverage2D coverage = ((GridCoverage2D) reader
 				.read(new GeneralParameterValue[] { gg }));
 		assertNotNull("Null value returned instead of a coverage", coverage);
@@ -608,7 +524,7 @@ public class ImagePyramidReaderTest extends Assert {
 		if (TestData.isInteractiveTest())
 			coverage.show("testCropLevel1");
 		else
-			coverage.getRenderedImage().getData();
+		    PlanarImage.wrapRenderedImage(((GridCoverage2D) coverage).getRenderedImage()).getTiles();
 
 	}
 
@@ -640,22 +556,15 @@ public class ImagePyramidReaderTest extends Assert {
 		final URL testFile = TestData.getResource(this, TEST_FILE);
 
 		//
-		// /////////////////////////////////////////////////////////////////
-		//
 		// Get a reader
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		final AbstractGridFormat format = new ImagePyramidFormat();
 		final ImagePyramidReader reader = (ImagePyramidReader) format.getReader(testFile);
 		assertNotNull(reader);
 
-		// /////////////////////////////////////////////////////////////////
 		//
 		// crop
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		final ParameterValue<GridGeometry2D> gg =  ImageMosaicFormat.READ_GRIDGEOMETRY2D
 				.createValue();
 		final GeneralEnvelope oldEnvelop = reader.getOriginalEnvelope();
@@ -671,12 +580,8 @@ public class ImagePyramidReaderTest extends Assert {
 				62, 62)), cropEnvelope));
 
 		//
-		// /////////////////////////////////////////////////////////////////
-		//
 		// Show the coverage
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		GridCoverage2D coverage = ((GridCoverage2D) reader
 				.read(new GeneralParameterValue[] { gg }));
 		assertNotNull("Null value returned instead of a coverage", coverage);
@@ -687,7 +592,7 @@ public class ImagePyramidReaderTest extends Assert {
 		if (TestData.isInteractiveTest())
 			coverage.show("testCropLevel1");
 		else
-			coverage.getRenderedImage().getData();
+		    PlanarImage.wrapRenderedImage(((GridCoverage2D) coverage).getRenderedImage()).getTiles();
 
 	}
 
@@ -710,31 +615,20 @@ public class ImagePyramidReaderTest extends Assert {
 	public void testCropLevel3() throws IOException,
 			MismatchedDimensionException, NoSuchAuthorityCodeException {
 
-		// /////////////////////////////////////////////////////////////////
-		//
 		// Get the resource.
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		final URL testFile = TestData.getResource(this, TEST_FILE);
 
 		//
-		// /////////////////////////////////////////////////////////////////
-		//
 		// Get a reader
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		final AbstractGridFormat format = new ImagePyramidFormat();
 		final ImagePyramidReader reader = (ImagePyramidReader) format.getReader(testFile);
 		assertNotNull(reader);
 		
-		// /////////////////////////////////////////////////////////////////
 		//
 		// crop
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		final ParameterValue<GridGeometry2D> gg = ImageMosaicFormat.READ_GRIDGEOMETRY2D.createValue();
 		final GeneralEnvelope oldEnvelop = reader.getOriginalEnvelope();
 		final GeneralEnvelope cropEnvelope = new GeneralEnvelope(new double[] {
@@ -749,12 +643,8 @@ public class ImagePyramidReaderTest extends Assert {
 				25, 25)), cropEnvelope));
 
 		//
-		// /////////////////////////////////////////////////////////////////
-		//
 		// Show the coverage
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		GridCoverage2D coverage = ((GridCoverage2D) reader
 				.read(new GeneralParameterValue[] { gg }));
 		assertNotNull("Null value returned instead of a coverage", coverage);
@@ -765,7 +655,7 @@ public class ImagePyramidReaderTest extends Assert {
 		if (TestData.isInteractiveTest())
 			coverage.show("testCropLevel1");
 		else
-			coverage.getRenderedImage().getData();
+		        PlanarImage.wrapRenderedImage(((GridCoverage2D) coverage).getRenderedImage()).getTiles();
 
 	}
 	
@@ -777,13 +667,10 @@ public class ImagePyramidReaderTest extends Assert {
 	@Ignore
 	public void testDefaultParameterValueURLtoJAR() throws IOException,
 			MismatchedDimensionException, NoSuchAuthorityCodeException {
-		//
-		// /////////////////////////////////////////////////////////////////
+		
 		//
 		// Get the resource.
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		final URL testJarFile = TestData.getResource(this, TEST_JAR_FILE);
 		assertNotNull(testJarFile);
 		
@@ -793,12 +680,8 @@ public class ImagePyramidReaderTest extends Assert {
 		assertNotNull(testFile);
 
 		//
-		// /////////////////////////////////////////////////////////////////
-		//
 		// Get a reader
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		final AbstractGridFormat format = new ImagePyramidFormat();
 		assertTrue(format.accepts(testFile));
 		final ImagePyramidReader reader = (ImagePyramidReader) format
@@ -806,12 +689,8 @@ public class ImagePyramidReaderTest extends Assert {
 		assertNotNull(reader);
 
 		//
-		// /////////////////////////////////////////////////////////////////
-		//
 		// Show the coverage
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		final GridCoverage2D coverage = (GridCoverage2D) reader.read(null);
 		assertNotNull("Null value returned instead of a coverage", coverage);
 		assertTrue("coverage dimensions different from what we expected",
@@ -833,13 +712,10 @@ public class ImagePyramidReaderTest extends Assert {
 	@Ignore
 	public void testDefaultParameterValueStringtoURLtoJAR() throws IOException,
 			MismatchedDimensionException, NoSuchAuthorityCodeException {
-		//
-		// /////////////////////////////////////////////////////////////////
+
 		//
 		// Get the resource.
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		final URL testJarFile = TestData.getResource(this, TEST_JAR_FILE);
 		assertNotNull(testJarFile);
 		
@@ -848,12 +724,9 @@ public class ImagePyramidReaderTest extends Assert {
 		assertNotNull(spec);
 
 		//
-		// /////////////////////////////////////////////////////////////////
-		//
 		// Get a reader
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
+
 		final AbstractGridFormat format = new ImagePyramidFormat();
 		assertTrue(format.accepts(spec));
 		final ImagePyramidReader reader = (ImagePyramidReader) format
@@ -861,12 +734,8 @@ public class ImagePyramidReaderTest extends Assert {
 		assertNotNull(reader);
 
 		//
-		// /////////////////////////////////////////////////////////////////
-		//
 		// Show the coverage
 		//
-		//
-		// /////////////////////////////////////////////////////////////////
 		final GridCoverage2D coverage = (GridCoverage2D) reader.read(null);
 		assertNotNull("Null value returned instead of a coverage", coverage);
 		assertTrue("coverage dimensions different from what we expected",

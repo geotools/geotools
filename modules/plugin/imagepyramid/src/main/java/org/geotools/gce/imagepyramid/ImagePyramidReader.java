@@ -25,6 +25,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -335,7 +336,6 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
 	 * 
 	 * @see org.opengis.coverage.grid.GridCoverageReader#read(org.opengis.parameter.GeneralParameterValue[])
 	 */
-	@SuppressWarnings("unchecked")
 	public GridCoverage2D read(GeneralParameterValue[] params) throws IOException {
 
 		GeneralEnvelope requestedEnvelope = null;
@@ -349,7 +349,8 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
 			// /////////////////////////////////////////////////////////////////////
 			if (params != null) {
 				for (int i = 0; i < params.length; i++) {
-					final ParameterValue param = (ParameterValue) params[i];
+					@SuppressWarnings("rawtypes")
+                    final ParameterValue param = (ParameterValue) params[i];
 					if (param == null){
 						continue;
 					}
@@ -521,6 +522,8 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
 	@Override
 	public synchronized void dispose() {
 		super.dispose();
+		for(Entry<Integer, ImageMosaicReader> element:readers.entrySet())
+		    element.getValue().dispose();
 		readers.clear();
 	}
 	

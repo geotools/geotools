@@ -18,12 +18,17 @@ package org.geotools.swing;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Set;
 
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -36,6 +41,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.geotools.map.MapContent;
 import org.geotools.swing.action.InfoAction;
+import org.geotools.swing.action.NoToolAction;
 import org.geotools.swing.action.PanAction;
 import org.geotools.swing.action.ResetAction;
 import org.geotools.swing.action.ZoomInAction;
@@ -72,31 +78,32 @@ public class JMapFrame extends JFrame {
      */
     public enum Tool {
         /**
-         * Used to request that an empty toolbar be created
+         * Simple mouse cursor, used to unselect previous cursor tool.
          */
-        NONE,
+        POINTER,
 
         /**
-         * Requests the feature info cursor tool
+         * The feature info cursor tool
          */
         INFO,
 
         /**
-         * Requests the pan cursor tool
+         * The panning cursor tool.
          */
         PAN,
 
         /**
-         * Requests the reset map extent cursor tool
+         * The reset map extent cursor tool.
          */
         RESET,
 
         /**
-         * Requests the zoom in and out cursor tools
+         * The zoom display cursor tools.
          */
         ZOOM;
     }
 
+    private boolean showToolBar;
     private Set<Tool> toolSet;
 
     /*
@@ -162,16 +169,39 @@ public class JMapFrame extends JFrame {
 
         showLayerTable = false;
         showStatusBar = false;
+        showToolBar = false;
         toolSet = EnumSet.noneOf(Tool.class);
 
         // the map pane is the one element that is always displayed
         mapPane = new JMapPane(content);
         mapPane.setBackground(Color.WHITE);
+        mapPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         
         // give keyboard focus to the map pane
         addWindowFocusListener(new WindowAdapter() {
             @Override
             public void windowGainedFocus(WindowEvent e) {
+                mapPane.requestFocusInWindow();
+            }
+        });
+        
+        mapPane.addFocusListener(new FocusAdapter() {
+
+            @Override
+            public void focusGained(FocusEvent e) {
+                mapPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                mapPane.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+            }
+        });
+        
+        mapPane.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mousePressed(MouseEvent e) {
                 mapPane.requestFocusInWindow();
             }
         });
@@ -183,38 +213,48 @@ public class JMapFrame extends JFrame {
      * calling {@link #enableTool} with all {@link JMapFrame.Tool}
      * constants.
      * 
-     * @param state whether the toolbar is required
+     * @param enabled whether the toolbar is required
      */
-    public void enableToolBar(boolean state) {
-        if (state) {
+    public void enableToolBar(boolean enabled) {
+        if (enabled) {
             toolSet = EnumSet.allOf(Tool.class);
         } else {
             toolSet.clear();
         }
+        showToolBar = enabled;
     }
 
     /**
      * This method is an alternative to {@link #enableToolBar(boolean)}.
      * It requests that a tool bar be created with specific tools, identified
      * by {@link JMapFrame.Tool} constants.
+     * 
      * <code><pre>
      * myMapFrame.enableTool(Tool.PAN, Tool.ZOOM);
      * </pre></code>
+     * 
+     * Calling this method with no arguments or {@code null} is equivalent
+     * to {@code enableToolBar(false)}.
      *
-     * @param tool one or more {@link JMapFrame.Tool} constants
+     * @param tool tools to display on the toolbar
      */
     public void enableTool(Tool ...tool) {
-        toolSet = EnumSet.copyOf(Arrays.asList(tool));
+        if (tool == null || tool.length == 0) {
+            enableToolBar(false);
+        } else {
+            toolSet = EnumSet.copyOf(Arrays.asList(tool));
+            showToolBar = true;
+        }
     }
 
     /**
      * Set whether a status bar will be displayed to display cursor position
      * and map bounds.
      *
-     * @param state whether the status bar is required.
+     * @param enabled whether the status bar is required.
      */
-    public void enableStatusBar(boolean state) {
-        showStatusBar = state;
+    public void enableStatusBar(boolean enabled) {
+        showStatusBar = enabled;
     }
 
     /**
@@ -222,10 +262,10 @@ public class JMapFrame extends JFrame {
      * of layers in the map content and set their order, visibility and
      * selected status.
      *
-     * @param state whether the map layer table is required.
+     * @param enabled whether the map layer table is required.
      */
-    public void enableLayerTable(boolean state) {
-        showLayerTable = state;
+    public void enableLayerTable(boolean enabled) {
+        showLayerTable = enabled;
     }
 
     /**
@@ -284,43 +324,50 @@ public class JMapFrame extends JFrame {
          * Note the use of the XXXAction objects which makes constructing
          * the tool bar buttons very simple.
          */
-        if (!toolSet.isEmpty()) {
+        if (showToolBar) {
             toolBar = new JToolBar();
             toolBar.setOrientation(JToolBar.HORIZONTAL);
             toolBar.setFloatable(false);
 
+            JButton btn;
             ButtonGroup cursorToolGrp = new ButtonGroup();
+            
+            if (toolSet.contains(Tool.POINTER)) {
+                btn = new JButton(new NoToolAction(mapPane));
+                toolBar.add(btn);
+                cursorToolGrp.add(btn);
+            }
 
             if (toolSet.contains(Tool.ZOOM)) {
-                JButton zoomInBtn = new JButton(new ZoomInAction(mapPane));
-                toolBar.add(zoomInBtn);
-                cursorToolGrp.add(zoomInBtn);
+                btn = new JButton(new ZoomInAction(mapPane));
+                toolBar.add(btn);
+                cursorToolGrp.add(btn);
 
-                JButton zoomOutBtn = new JButton(new ZoomOutAction(mapPane));
-                toolBar.add(zoomOutBtn);
-                cursorToolGrp.add(zoomOutBtn);
+                btn = new JButton(new ZoomOutAction(mapPane));
+                toolBar.add(btn);
+                cursorToolGrp.add(btn);
 
                 toolBar.addSeparator();
             }
 
             if (toolSet.contains(Tool.PAN)) {
-                JButton panBtn = new JButton(new PanAction(mapPane));
-                toolBar.add(panBtn);
-                cursorToolGrp.add(panBtn);
+                btn = new JButton(new PanAction(mapPane));
+                toolBar.add(btn);
+                cursorToolGrp.add(btn);
 
                 toolBar.addSeparator();
             }
 
             if (toolSet.contains(Tool.INFO)) {
-                JButton infoBtn = new JButton(new InfoAction(mapPane));
-                toolBar.add(infoBtn);
+                btn = new JButton(new InfoAction(mapPane));
+                toolBar.add(btn);
 
                 toolBar.addSeparator();
             }
 
             if (toolSet.contains(Tool.RESET)) {
-                JButton resetBtn = new JButton(new ResetAction(mapPane));
-                toolBar.add(resetBtn);
+                btn = new JButton(new ResetAction(mapPane));
+                toolBar.add(btn);
             }
 
             panel.add(toolBar, "grow");

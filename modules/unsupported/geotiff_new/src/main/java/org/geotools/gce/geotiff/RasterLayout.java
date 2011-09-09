@@ -16,6 +16,7 @@
  */
 package org.geotools.gce.geotiff;
 
+import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -26,8 +27,8 @@ import java.io.Serializable;
  * A class describing the layout of a Raster element of the {@link HorizontalDomain}.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/geotiff_new/src/main/java/org/geotools/gce/geotiff/RasterLayout.java $
- * @todo there is some duplication with the ImageCollectionReader
+ * @sourceFile $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/geotiff_new/src/main/java/org/geotools/gce/geotiff/RasterLayout.java $
+ * @todo Extend {@link Rectangle}??
  */
 public class RasterLayout extends Object implements Cloneable, Serializable {
 
@@ -283,7 +284,14 @@ public class RasterLayout extends Object implements Cloneable, Serializable {
     }
 
 
-
+    /**
+     * Retrieves the bounds of this {@link RasterLayout} as a {@link Rectangle}.
+     * 
+     * @return retrieves the bounds of this {@link RasterLayout} as a {@link Rectangle}.
+     */
+    public Rectangle getBounds(){
+        return new Rectangle(minX,minY,width,height);
+    }
 
     /** Returns a String containing the values of all valid fields. */
     public String toString() {

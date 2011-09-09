@@ -1,5 +1,5 @@
 /*
- *    GeoTools - The Open Source Java GIS Toolkit
+ *    GeoTool s - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
@@ -56,7 +56,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Simone Giannecchini
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/geotiff_new/src/test/java/org/geotools/gce/geotiff/GeoTiffReaderTest.java $
+ * @sourceFile $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/geotiff_new/src/test/java/org/geotools/gce/geotiff/GeoTiffReaderTest.java $
  */
 public class GeoTiffReaderTest extends Assert {
     private final static Logger LOGGER = org.geotools.util.logging.Logging
@@ -70,7 +70,7 @@ public class GeoTiffReaderTest extends Assert {
      * @throws FactoryException
      */
     @Test
-//    @Ignore
+    @Ignore
     public void testReaderBadGeotiff() throws IllegalArgumentException, IOException,
             FactoryException {
 

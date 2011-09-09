@@ -500,7 +500,7 @@ class RasterLayerRequest {
         }
 
         //
-        // Adjust requested bounding box and source region in order to fall within the source
+        // Adjust requested bounding box and sourceFile region in order to fall within the sourceFile
         // coverage
         //
         computeRequestSpatialElements();
@@ -520,7 +520,7 @@ class RasterLayerRequest {
             } catch (FactoryException e) {
                 throw new DataSourceException("Unable to inspect request CRS", e);
             }
-        // now transform the requested envelope to source crs
+        // now transform the requested envelope to sourceFile crs
         if (destinationToSourceTransform != null && destinationToSourceTransform.isIdentity()) {
             destinationToSourceTransform = null;// the CRS is basically the same
         } else if (destinationToSourceTransform instanceof AffineTransform) {
@@ -532,7 +532,7 @@ class RasterLayerRequest {
             //
             // we should not have any problems with regards to BBOX reprojection
 
-            // update the requested grid to world transformation by pre concatenating the destination to source transform
+            // update the requested grid to world transformation by pre concatenating the destination to sourceFile transform
             AffineTransform mutableTransform = (AffineTransform) requestedGridToWorld.clone();
             mutableTransform.preConcatenate((AffineTransform) destinationToSourceTransform);
 
@@ -684,7 +684,7 @@ class RasterLayerRequest {
      * coverage envelope.
      * 
      * <p>
-     * While adjusting the requested envelope this methods also compute the source region as a
+     * While adjusting the requested envelope this methods also compute the sourceFile region as a
      * rectangle which is suitable for a successive read operation with {@link ImageIO} to do
      * crop-on-read.
      * 
@@ -754,7 +754,7 @@ class RasterLayerRequest {
         if (LOGGER.isLoggable(Level.FINE)) {
             final String loggedMessage = "Adjusted Requested Envelope = " + requestedBBox.toString() + "\n" +
                 "Requested raster dimension = " + requestedRasterArea.toString() + "\n" + 
-                "Corresponding raster source region = " + requestedRasterArea.toString();
+                "Corresponding raster sourceFile region = " + requestedRasterArea.toString();
             LOGGER.log(Level.FINE, loggedMessage);
         }
         //
@@ -904,7 +904,7 @@ class RasterLayerRequest {
             //
 
             // STEP 1: reproject requested BBox to native CRS if needed
-            // now transform the requested envelope to source crs
+            // now transform the requested envelope to sourceFile crs
             if (destinationToSourceTransform != null && !destinationToSourceTransform.isIdentity()) {
                 final GeneralEnvelope temp = CRS.transform(destinationToSourceTransform,
                         requestedBBox);

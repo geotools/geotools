@@ -49,7 +49,7 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
 import org.geotools.factory.Hints;
-import org.geotools.gce.geotiff.GranuleDescriptor.GranuleLoadingResult;
+import org.geotools.gce.geotiff.RasterDescriptor.RasterLoadingResult;
 import org.geotools.gce.geotiff.OverviewsController.OverviewLevel;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -223,7 +223,7 @@ class RasterLayerResponse{
 
     private MathTransform2D finalWorldToGridCorner;
 
-    private int imageChoice = 0;
+    private int overviewsLevel = 0;
 
     private EnhancedImageReadParam baseReadParameters = new EnhancedImageReadParam();
     
@@ -328,18 +328,18 @@ class RasterLayerResponse{
             // select the relevant overview, notice that at this time we have relaxed a bit the 
             // requirement to have the same exact resolution for all the overviews, but still we 
             // do not allow for reading the various grid to world transform directly from the 
-            // input files, therefore we are assuming that each granuleDescriptor has a scale 
+            // input files, therefore we are assuming that each rasterDescriptor has a scale 
             // and translate only grid to world that can be deduced from its base level dimension 
             // and envelope. The grid to world transforms for the other levels can be computed 
             // accordingly knowning the scale factors.
             if (request.getRequestedBBox() != null && request.getRequestedRasterArea() != null) {
-                imageChoice = setReadParams(request.getOverviewPolicy(), baseReadParameters, request);
+                overviewsLevel = setReadParams(request.getOverviewPolicy(), baseReadParameters, request);
             } else {
-                imageChoice = 0;
+                overviewsLevel = 0;
             }
-            assert imageChoice >= 0;
+            assert overviewsLevel >= 0;
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("Loading level " + imageChoice + " with subsampling factors "
+                LOGGER.fine("Loading level " + overviewsLevel + " with subsampling factors "
                         + baseReadParameters.getSourceXSubsampling() + " "
                         + baseReadParameters.getSourceYSubsampling());
             }
@@ -356,7 +356,7 @@ class RasterLayerResponse{
             g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
 
             // keep into account overviews and subsampling
-            final OverviewLevel level = rasterManager.overviewsController.resolutionsLevels.get(imageChoice);
+            final OverviewLevel level = rasterManager.overviewsController.resolutionsLevels.get(overviewsLevel);
             final OverviewLevel baseLevel = rasterManager.overviewsController.resolutionsLevels.get(0);
             final AffineTransform2D adjustments = new AffineTransform2D(
                     (level.resolutionX / baseLevel.resolutionX)
@@ -390,7 +390,7 @@ class RasterLayerResponse{
             RenderedImage theImage=null;
             try {
 
-                GranuleLoadingResult result = rasterManager.granuleDescriptor.loadRaster(baseReadParameters, imageChoice, finalBBox,
+                RasterLoadingResult result = rasterManager.rasterDescriptor.loadRaster(baseReadParameters, overviewsLevel, finalBBox,
                         finalWorldToGridCorner, request, request.getTileDimensions());
                 theImage =result.getRaster();
                 if (theImage == null) {
@@ -627,7 +627,7 @@ class RasterLayerResponse{
      *            the {@link GeneralEnvelope} we are requesting.
      * @param requestedDim
      *            the requested dimensions.
-     * @return the index of the raster to read in the underlying data source.
+     * @return the index of the raster to read in the underlying data sourceFile.
      * @throws IOException
      * @throws TransformException
      */
@@ -686,7 +686,7 @@ class RasterLayerResponse{
 //        if (!needsReprojection){
 //            try {
 //                
-//                // creating source grid to world corrected to the pixel corner
+//                // creating sourceFile grid to world corrected to the pixel corner
 //                final AffineTransform sourceGridToWorld = new AffineTransform((AffineTransform) finalGridToWorldCorner);
 //                
 //                // target world to grid at the corner

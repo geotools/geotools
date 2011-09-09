@@ -155,7 +155,7 @@ class RasterManager {
 
     ImageLayout defaultImageLayout;
 
-    GranuleDescriptor granuleDescriptor;
+    RasterDescriptor rasterDescriptor;
 
     /** Logger. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(RasterManager.class);
@@ -221,8 +221,8 @@ class RasterManager {
         } catch (FactoryException e) {
             throw new DataSourceException(e);
         }
-        // granuleDescriptor creation
-        granuleDescriptor = new GranuleDescriptor(this);
+        // rasterDescriptor creation
+        rasterDescriptor = new RasterDescriptor(this);
         
     }
 

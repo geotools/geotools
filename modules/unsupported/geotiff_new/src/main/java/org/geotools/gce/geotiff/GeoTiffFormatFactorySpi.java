@@ -66,7 +66,7 @@ import org.geotools.coverage.grid.io.GridFormatFactorySpi;
  * @author Simone Giannecchini
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/geotiff_new/src/main/java/org/geotools/gce/geotiff/GeoTiffFormatFactorySpi.java $
+ * @sourceFile $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/geotiff_new/src/main/java/org/geotools/gce/geotiff/GeoTiffFormatFactorySpi.java $
  * @todo I do not like the registration code. Even if JAI is not around we should be able to work out of a pure read.
  */
 public final class GeoTiffFormatFactorySpi implements GridFormatFactorySpi {    

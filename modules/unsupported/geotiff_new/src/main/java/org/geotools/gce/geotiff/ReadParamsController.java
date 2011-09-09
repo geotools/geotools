@@ -34,7 +34,7 @@ import org.opengis.referencing.operation.TransformException;
  * @author Simone Giannecchini, GeoSolutions SAS
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/imagemosaic/src/main/java/org/geotools/gce/imagemosaic/ReadParamsController.java $
+ * @sourceFile $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/imagemosaic/src/main/java/org/geotools/gce/imagemosaic/ReadParamsController.java $
  */
 public class ReadParamsController {
 
@@ -141,7 +141,7 @@ public class ReadParamsController {
      *            the {@link GeneralEnvelope} we are requesting.
      * @param requestedDim
      *            the requested dimensions.
-     * @return the index of the raster to read in the underlying data source.
+     * @return the index of the raster to read in the underlying data sourceFile.
      * @throws IOException
      * @throws TransformException
      */

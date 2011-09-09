@@ -70,7 +70,7 @@ enum ReadType {
                 reader = Utils.TIFFREADERFACTORY.createReaderInstance();
                 reader.setInput(inStream);
 
-                // check source regione
+                // check sourceFile regione
                 if (ImageUtilities.checkEmptySourceRegion(readP, readDimension)) {
                     return null;
                 }
@@ -83,7 +83,7 @@ enum ReadType {
                 return reader.read(imageIndex, readP);
             } catch (IOException e) {
                 if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.log(Level.WARNING, "Unable to compute source area for file "
+                    LOGGER.log(Level.WARNING, "Unable to compute sourceFile area for file "
                             + rasterFile.getAbsolutePath(), e);
                 }
                 return null;
@@ -130,14 +130,14 @@ enum ReadType {
                 reader = Utils.TIFFREADERFACTORY.createReaderInstance();
                 reader.setInput(inStream);
 
-                // check source regionepbjMosaic,
+                // check sourceFile regionepbjMosaic,
                 if (ImageUtilities.checkEmptySourceRegion(readP, readDimension)) {
                     return null;
                 }
 
             } catch (IOException e) {
                 if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.log(Level.WARNING, "Unable to compute source area for file "
+                    LOGGER.log(Level.WARNING, "Unable to compute sourceFile area for file "
                             + rasterFile.getAbsolutePath(), e);
                 }
                 return null;
@@ -222,7 +222,7 @@ enum ReadType {
     }
 
     /**
-     * Load the raster data from the underlying source with the specified read
+     * Load the raster data from the underlying sourceFile with the specified read
      * type.
      * 
      * @param readParameters

@@ -62,7 +62,7 @@ class Utils {
         URL sourceURL = null;
 
         //
-        // Check source
+        // Check sourceFile
         //
 
         // if it is a URL or a String let's try to see if we can get a file to

@@ -105,7 +105,7 @@ import org.opengis.referencing.operation.TransformException;
  * @since 2.1
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/geotiff_new/src/main/java/org/geotools/gce/geotiff/GeoTiffReader.java $
+ * @sourceFile $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/geotiff_new/src/main/java/org/geotools/gce/geotiff/GeoTiffReader.java $
  */
 public class GeoTiffReader extends AbstractGridCoverage2DReader implements
 		GridCoverageReader {
@@ -192,10 +192,10 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
         }
 
         //
-        // Set the source being careful in case it is an URL pointing to a file
+        // Set the sourceFile being careful in case it is an URL pointing to a file
         //
         try {
-            // setting source
+            // setting sourceFile
             if (input instanceof URL) {
                 final URL sourceURL = (URL) input;
                 source = DataUtilities.urlToFile(sourceURL);
@@ -217,7 +217,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
                 inStream = ImageIO.createImageInputStream(source);
             }
             if (inStream == null) {
-                throw new IllegalArgumentException("No input stream for the provided source");
+                throw new IllegalArgumentException("No input stream for the provided sourceFile");
             }
 
             this.sourceURL = Utils.checkSource(source);
@@ -298,40 +298,8 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
             //
             // //
             reader.setInput(inStream);
-    
-            final IIOMetadata iioMetadata = reader.getImageMetadata(0);
-            GeoTiffIIOMetadataDecoder metadata = null; 
-
-            metadata = new GeoTiffIIOMetadataDecoder(iioMetadata);
-            GeoTiffMetadata2CRSAdapter gtcs = new GeoTiffMetadata2CRSAdapter(hints);
             
-            // //
-            //
-            // get the CRS INFO
-            //
-            // //
-            final Object tempCRS = this.hints.get(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM);
-            if (tempCRS != null) {
-                this.crs = (CoordinateReferenceSystem) tempCRS;
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.log(Level.FINE, "Using forced coordinate reference system");
-            } else {
-                // check metadata first
-                if (metadata.hasGeoKey()&& gtcs != null)
-                    crs = gtcs.createCoordinateSystem(metadata);
 
-                if (crs == null)
-                    crs = Utils.getCRS(source);
-            }
-
-            if (crs == null){
-            if(LOGGER.isLoggable(Level.WARNING))
-                LOGGER.warning("Coordinate Reference System is not available");
-                crs = AbstractGridFormat.getDefaultCRS();
-            }
-    
-            if (metadata.hasNoData())
-                noData = metadata.getNoData();
             // //
             //
             // get the dimension of the hr image and build the model as well as
@@ -345,6 +313,41 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
             hrLayout = new RasterLayout(0, 0, hrWidth, hrHeight, 0, 0, hrTileW, hrTileH);
             final Rectangle actualDim = new Rectangle(0, 0, hrWidth, hrHeight);
             originalGridRange = new GridEnvelope2D(actualDim);
+            
+    
+            final IIOMetadata iioMetadata = reader.getImageMetadata(0);
+            GeoTiffIIOMetadataDecoder metadata = new GeoTiffIIOMetadataDecoder(iioMetadata);
+            if (metadata.hasNoData())
+                noData = metadata.getNoData();
+            // //
+            //
+            // get the CRS INFO
+            //
+            // //
+            // metadata decoder            
+            GeoTiffMetadata2CRSAdapter gtcs=new GeoTiffMetadata2CRSAdapter(hints);
+            final Object tempCRS = this.hints.get(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM);
+            if (tempCRS != null) {
+                this.crs = (CoordinateReferenceSystem) tempCRS;
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(Level.FINE, "Using forced coordinate reference system");
+            } else {
+
+                // check metadata first
+                if (metadata.hasGeoKey()&& gtcs != null)
+                    crs = gtcs.createCoordinateSystem(metadata);
+
+                if (crs == null)
+                    crs = Utils.getCRS(source);
+            }
+
+            if (crs == null){
+                if(LOGGER.isLoggable(Level.WARNING)){
+                    LOGGER.warning("Coordinate Reference System is not available");
+                }
+                crs = AbstractGridFormat.getDefaultCRS();
+            }
+
 
             if (gtcs != null&& metadata!=null&& (metadata.hasModelTrasformation()||(metadata.hasPixelScales()&&metadata.hasTiePoints()))) {
                 this.raster2Model = GeoTiffMetadata2CRSAdapter.getRasterToModel(metadata);
@@ -486,64 +489,64 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
         }
     }
 
-    /**
-     * Returns the geotiff metadata for this geotiff file.
-     * 
-     * @return the metadata
-     */
-    public GeoTiffIIOMetadataDecoder getMetadata() {
-        GeoTiffIIOMetadataDecoder metadata = null;
-        ImageReader reader = null;
-        boolean closeMe = true;
-        ImageInputStream stream = null;
-        
-        try {
-            if ((source instanceof InputStream)|| (source instanceof ImageInputStream)){
-                closeMe = false;
-            }
-            if (source instanceof ImageInputStream ) {
-                    stream =(ImageInputStream) source;
-            } else {
-                inStreamSPI = ImageIOExt.getImageInputStreamSPI(source);
-                if (inStreamSPI == null) {
-                    throw new IllegalArgumentException("No input stream for the provided source");
-                }
-                stream = inStreamSPI.createInputStreamInstance(source, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
-            }
-            if (stream == null) {
-                    throw new IllegalArgumentException("No input stream for the provided source");
-            }
-            stream.mark();
-            reader = Utils.TIFFREADERFACTORY.createReaderInstance();
-            reader.setInput(stream);
-            final IIOMetadata iioMetadata = reader.getImageMetadata(0);
-            metadata = new GeoTiffIIOMetadataDecoder(iioMetadata);
-        } catch (IOException e) {
-            if (LOGGER.isLoggable(Level.SEVERE)) {
-                LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            }
-        } finally {
-            if (reader != null)
-                try {
-                    reader.dispose();
-                } catch (Throwable t) {
-                }
-
-            if (stream != null){
-                try {
-                    stream.reset();
-                } catch (Throwable t) {
-                }
-                if (closeMe){
-                    try {
-                        stream.close();
-                    } catch (Throwable t) {
-                    }
-                }
-            }
-        }
-        return metadata;
-    }
+//    /**
+//     * Returns the geotiff metadata for this geotiff file.
+//     * 
+//     * @return the metadata
+//     */
+//    public GeoTiffIIOMetadataDecoder getMetadata() {
+//        GeoTiffIIOMetadataDecoder metadata = null;
+//        ImageReader reader = null;
+//        boolean closeMe = true;
+//        ImageInputStream stream = null;
+//    
+//        try {
+//            if ((sourceFile instanceof InputStream) || (sourceFile instanceof ImageInputStream)) {
+//                closeMe = false;
+//            }
+//            if (sourceFile instanceof ImageInputStream) {
+//                stream = (ImageInputStream) sourceFile;
+//            } else {
+//                inStreamSPI = ImageIOExt.getImageInputStreamSPI(sourceFile);
+//                if (inStreamSPI == null) {
+//                    throw new IllegalArgumentException("No input stream for the provided sourceFile");
+//                }
+//                stream = inStreamSPI.createInputStreamInstance(sourceFile, ImageIO.getUseCache(),
+//                        ImageIO.getCacheDirectory());
+//            }
+//            if (stream == null) {
+//                throw new IllegalArgumentException("No input stream for the provided sourceFile");
+//            }
+//            reader = Utils.TIFFREADERFACTORY.createReaderInstance();
+//            reader.setInput(stream);
+//            final IIOMetadata iioMetadata = reader.getImageMetadata(0);
+//            metadata = new GeoTiffIIOMetadataDecoder(iioMetadata);
+//        } catch (IOException e) {
+//            if (LOGGER.isLoggable(Level.SEVERE)) {
+//                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+//            }
+//        } finally {
+//            if (reader != null)
+//                try {
+//                    reader.dispose();
+//                } catch (Throwable t) {
+//                }
+//    
+//            if (stream != null) {
+//                try {
+//                    stream.reset();
+//                } catch (Throwable t) {
+//                }
+//                if (closeMe) {
+//                    try {
+//                        stream.close();
+//                    } catch (Throwable t) {
+//                    }
+//                }
+//            }
+//        }
+//        return metadata;
+//    }
 	
 	/**
          * Creates a {@link GridCoverage} for the provided {@link PlanarImage} using

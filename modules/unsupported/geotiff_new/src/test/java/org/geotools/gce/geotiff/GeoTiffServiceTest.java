@@ -30,7 +30,7 @@ import org.geotools.coverage.grid.io.GridFormatFinder;
  * 
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/geotiff_new/src/test/java/org/geotools/gce/geotiff/GeoTiffServiceTest.java $
+ * @sourceFile $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/geotiff_new/src/test/java/org/geotools/gce/geotiff/GeoTiffServiceTest.java $
  */
 public class GeoTiffServiceTest extends TestCase {
 

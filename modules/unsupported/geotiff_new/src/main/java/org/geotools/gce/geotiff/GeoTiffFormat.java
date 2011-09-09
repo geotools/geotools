@@ -74,7 +74,7 @@ import org.opengis.referencing.operation.MathTransform;
  * @author Simone Giannecchini
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/geotiff_new/src/main/java/org/geotools/gce/geotiff/GeoTiffFormat.java $
+ * @sourceFile $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/geotiff_new/src/main/java/org/geotools/gce/geotiff/GeoTiffFormat.java $
  */
 public final class GeoTiffFormat extends AbstractGridFormat implements Format {
     /** SPI for the writer. */
@@ -131,7 +131,7 @@ public final class GeoTiffFormat extends AbstractGridFormat implements Format {
      * file, we deal with that when we try and read it.
      * 
      * @param o
-     *            the source object to test for compatibility with this format.
+     *            the sourceFile object to test for compatibility with this format.
      * 
      * 
      * @return true if "o" is a File or a URL that points to a GeoTiff with a
@@ -188,8 +188,7 @@ public final class GeoTiffFormat extends AbstractGridFormat implements Format {
             //
             // parse metadata and be resilient with CRS
             //
-            final GeoTiffIIOMetadataDecoder metadataAdapter = new GeoTiffIIOMetadataDecoder(
-                    metadata);
+            final GeoTiffIIOMetadataDecoder metadataAdapter = new GeoTiffIIOMetadataDecoder(metadata);
             if (!metadataAdapter.hasGeoKey() && LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Unable to find geokey directory for this tif file");
             }
@@ -237,10 +236,10 @@ public final class GeoTiffFormat extends AbstractGridFormat implements Format {
     }
 
     /**
-     * If <CODE>source</CODE> is a file, this will return a reader object. This
+     * If <CODE>sourceFile</CODE> is a file, this will return a reader object. This
      * file does not use hints in the construction of the geotiff reader.
      * 
-     * @param source
+     * @param sourceFile
      *            must be a GeoTiff File
      * 
      * @return a GeoTiffReader object initialized to the specified File.
@@ -251,10 +250,10 @@ public final class GeoTiffFormat extends AbstractGridFormat implements Format {
     }
 
     /**
-     * If <CODE>source</CODE> is a file, this will return a reader object. This
+     * If <CODE>sourceFile</CODE> is a file, this will return a reader object. This
      * file does not use hints in the construction of the geotiff reader.
      * 
-     * @param source
+     * @param sourceFile
      *            must be a GeoTiff File
      * @param hints
      *            Hints to pass the hypothetic {@link GridCoverageReader} to
@@ -264,8 +263,8 @@ public final class GeoTiffFormat extends AbstractGridFormat implements Format {
      */
     @Override
     public GeoTiffReader getReader(Object source, Hints hints) {
-        // if (source instanceof CatalogEntry) {
-        // source = ((CatalogEntry) source).resource();
+        // if (sourceFile instanceof CatalogEntry) {
+        // sourceFile = ((CatalogEntry) sourceFile).resource();
         // }
 
         if (source instanceof URL) {

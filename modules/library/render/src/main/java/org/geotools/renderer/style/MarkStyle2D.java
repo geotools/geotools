@@ -33,6 +33,9 @@ import org.geotools.resources.Classes;
  * @version $Id$
  */
 public class MarkStyle2D extends PolygonStyle2D {
+    
+    static boolean maxMarkSizeEnabled = Boolean.getBoolean("org.geotools.maxMarkSizeEnabled");
+    
     Shape shape;
     int size;
     float rotation;
@@ -79,7 +82,7 @@ public class MarkStyle2D extends PolygonStyle2D {
     public Shape getTransformedShape(float x, float y, float rotation) {
         if (shape != null) {
             Rectangle2D bounds = shape.getBounds2D();
-            double shapeSize = bounds.getHeight();
+            double shapeSize = (maxMarkSizeEnabled ? Math.max(bounds.getWidth(), bounds.getHeight()) : bounds.getHeight());
             double scale = size / shapeSize;
             TransformedShape ts = new TransformedShape();
             ts.shape = shape;
@@ -136,5 +139,22 @@ public class MarkStyle2D extends PolygonStyle2D {
      */
     public String toString() {
         return Classes.getShortClassName(this) + '[' + shape + ']';
+    }
+
+    public static boolean isMaxMarkSizeEnabled() {
+        return maxMarkSizeEnabled;
+    }
+
+    /**
+     * When true makes the mark scale itself to size using the max between the original
+     * width and height, otherwise it defaults to the mark height (which has been the
+     * original behavior of this class) 
+     *  
+     * @since 2.7.3
+     *  
+     * @param useMaxMarkSize
+     */
+    public static void setMaxMarkSizeEnabled(boolean useMaxMarkSize) {
+        MarkStyle2D.maxMarkSizeEnabled = useMaxMarkSize;
     }
 }

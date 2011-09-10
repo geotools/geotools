@@ -194,6 +194,7 @@ public class TransactionStateDiff implements State {
         SimpleFeature feature;
         SimpleFeature update;
 
+        Throwable cause = null;
         try {
             while (writer.hasNext()) {
                 feature = (SimpleFeature) writer.next();
@@ -264,10 +265,28 @@ public class TransactionStateDiff implements State {
             		}
             	}
             }
+        } catch(IOException e) {
+            cause = e;
+            throw e;
+        } catch(RuntimeException e) {
+            cause = e;
+            throw e;
         } finally {
-            writer.close();
-            store.listenerManager.fireChanged(typeName, transaction, true);
-            diff.clear();
+            try {
+                writer.close();
+                store.listenerManager.fireChanged(typeName, transaction, true);
+                diff.clear();
+            } catch (IOException e) {
+                if (cause != null) {
+                    e.initCause(cause);
+                }
+                throw e;
+            } catch (RuntimeException e) {
+                if (cause != null) {
+                    e.initCause(cause);
+                }
+                throw e;
+            }
         }
     }
 

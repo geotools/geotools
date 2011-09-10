@@ -25,7 +25,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.geotools.data.DataUtilities;
-import org.geotools.data.Query;
 import org.geotools.data.FeatureListener;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureSource;
@@ -38,6 +37,7 @@ import org.geotools.data.ResourceInfo;
 import org.geotools.data.Transaction;
 import org.geotools.data.crs.ReprojectFeatureReader;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.data.sort.SortedFeatureReader;
 import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -48,9 +48,9 @@ import org.geotools.filter.function.Collection_MedianFunction;
 import org.geotools.filter.function.Collection_MinFunction;
 import org.geotools.filter.function.Collection_SumFunction;
 import org.geotools.filter.function.Collection_UniqueFunction;
-import org.geotools.filter.visitor.PropertyNameResolvingVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.NullProgressListener;
+import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -472,10 +472,6 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         // see if we need to enable native sorting in order to support stable paging
         final int offset = query.getStartIndex() != null ? query.getStartIndex() : 0;
         if(offset > 0 & query.getSortBy() == null) {
-            if(!getQueryCapabilities().supportsSorting(query.getSortBy()))
-                throw new IOException("Feature source does not support this sorting " +
-                        "so there is no way a stable paging (offset/limit) can be performed");
-            
             Query dq = new Query(query);
             dq.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
             query = dq;
@@ -493,19 +489,28 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
             }    
         }
         
-        // reprojection
-        if ( !canReproject() ) {
-            if (query.getCoordinateSystemReproject() != null) {
-                try {
-                    reader = new ReprojectFeatureReader(reader, query.getCoordinateSystemReproject());
-                } catch (Exception e) {
-                    if(e instanceof IOException)
-                        throw (IOException) e;
-                    else
-                        throw (IOException) new IOException("Error occurred trying to reproject data").initCause(e);
+        //retyping
+        if ( !canRetype() ) {
+            if ( query.getPropertyNames() != Query.ALL_NAMES ) {
+                //rebuild the type and wrap the reader
+                SimpleFeatureType target = 
+                    SimpleFeatureTypeBuilder.retype(getSchema(), query.getPropertyNames());
+                
+                // do an equals check because we may have needlessly retyped (that is,
+                // the subclass might be able to only partially retype)
+                if ( !target.equals( reader.getFeatureType() ) ) {
+                    reader = new ReTypeFeatureReader( reader, target, false );    
                 }
-            }    
+            }
         }
+        
+        // sorting
+        if ( query.getSortBy() != null && query.getSortBy().length != 0 ) {
+            if ( !canSort() ) {
+                reader = new SortedFeatureReader(DataUtilities.simple(reader), query);
+            } 
+        }
+
         
         // offset
         if( !canOffset() && offset > 0 ) {
@@ -522,26 +527,18 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
             }    
         }
         
-        //sorting
-        if ( !canSort() ) {
-            if ( query.getSortBy() != null && query.getSortBy().length != 0 ) {
-                throw new UnsupportedOperationException( "sorting unsupported" );
-            }
-        }
-        
-        //retyping
-        if ( !canRetype() ) {
-            if ( query.getPropertyNames() != Query.ALL_NAMES ) {
-                //rebuild the type and wrap the reader
-                SimpleFeatureType target = 
-                    SimpleFeatureTypeBuilder.retype(getSchema(), query.getPropertyNames());
-                
-                // do an equals check because we may have needlessly retyped (that is,
-                // the subclass might be able to only partially retype)
-                if ( !target.equals( reader.getFeatureType() ) ) {
-                    reader = new ReTypeFeatureReader( reader, target, false );    
+        // reprojection
+        if ( !canReproject() ) {
+            if (query.getCoordinateSystemReproject() != null) {
+                try {
+                    reader = new ReprojectFeatureReader(reader, query.getCoordinateSystemReproject());
+                } catch (Exception e) {
+                    if(e instanceof IOException)
+                        throw (IOException) e;
+                    else
+                        throw (IOException) new IOException("Error occurred trying to reproject data").initCause(e);
                 }
-            }
+            }    
         }
         
         return reader;
@@ -867,16 +864,6 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * feature source.
      */
     protected Query joinQuery( Query query ) {
-        // if the defining query is unset or ALL just return the query passed in
-//        if ( this.query == null || this.query == Query.ALL ) {
-//            return query;
-//        }
-        
-        // if the query passed in is unset or ALL return the defining query
-//        if ( query == null ) {
-//            return this.query;
-//        }
-        
         // join the queries
         return DataUtilities.mixQueries(this.query, query, null);
     }
@@ -890,24 +877,11 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      *</p>
      */
     protected Query resolvePropertyNames( Query query ) {
-//        Filter resolved = resolvePropertyNames( query.getFilter() );
-//        if ( resolved == query.getFilter() ) {
-//            return query;
-//        }
-//        
-//        Query newQuery = new Query(query);
-//        newQuery.setFilter( resolved );
-//        return newQuery;
         return DataUtilities.resolvePropertyNames(query, getSchema() );
     }
     
     /** Transform provided filter; resolving property names */
     protected Filter resolvePropertyNames( Filter filter ) {
-//        if ( filter == null || filter == Filter.INCLUDE || filter == Filter.EXCLUDE ) {
-//            return filter;
-//        }
-//        
-//        return (Filter) filter.accept( new PropertyNameResolvingVisitor(getSchema()) , null);
         return DataUtilities.resolvePropertyNames(filter, getSchema() );
     }
     /**
@@ -940,63 +914,6 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
     }
 
     /**
-     * Returns a new feature collection containing all the features of the 
-     * feature source.
-     * <p>
-     * Subclasses are encouraged to provide a feature collection implementation 
-     * which provides optimized access to the underlying data format.
-     * </p>
-     *
-     * @param state The state the feature collection must work from.
-     */
-    //protected abstract ContentFeatureCollection all(ContentState state);
-
-    /**
-     * Returns a new feature collection containing all the features of the 
-     * feature source which match the specified filter.
-     * <p>
-     * Subclasses are encouraged to provide a feature collection implementation 
-     * which provides optimized access to the underlying data format.
-     * </p>
-     * @param state The state the feature collection must work from.
-     * @param filter The constraint filtering the data to return.
-     * 
-     */
-    //protected abstract ContentFeatureCollection filtered(ContentState state, Filter filter);
-
-    /**
-     * Returns a new feautre collection containing all the features of the 
-     * feature source sorted by a particular set of attributes.
-     * <p>
-     * This method accepts a filter optionally to filter returned content. This 
-     * parameter may be <code>null</code>, which which case no filtering should
-     * occur.
-     * </p>
-     * @param state The state the feature collection must work from.
-     * @param sort The sort criteria
-     * @param filter A filter, possibly <code>null</code>
-     * @return
-     */
-    //protected abstract ContentFeatureCollection sorted(ContentState state, SortBy[] sort, Filter filter);
-    
-    /**
-     * FeatureList representing sorted content.
-     * <p>
-     * Available via getFeatureSource():
-     * <ul>
-     * <li>getFeatures().sort( sort )
-     * <li>getFeatures( filter ).sort( sort )
-     * <li>getFeatures( filter ).sort( sort ).sort( sort1 );
-     * </ul>
-     * @param state
-     * @param filter
-     * @param order List<SortBy> used to determine sort order
-     * @return subset of content
-     */
-
-    //protected abstract FeatureList sorted(ContentState state, Filter filter, List order);
-
-    /**
      * SimpleFeatureCollection optimized for read-only access.
      * <p>
      * Available via getView( filter ):
@@ -1022,6 +939,32 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         if(queryCapabilities == null) {
             queryCapabilities = buildQueryCapabilities();
         }
-        return queryCapabilities;
+        
+        // we have to glaze the subclass query capabilities since we always support offset
+        // and we support more sorting cases using the sorting wrappers
+        return new QueryCapabilities() {
+            public boolean isOffsetSupported() {
+                // we always support offset since we support sorting
+                return true;
+            }
+
+            public boolean supportsSorting(SortBy[] sortAttributes) {
+                if(queryCapabilities.supportsSorting(sortAttributes)) {
+                    // natively supported
+                    return true;
+                } else {
+                    // check if we can use the merge-sort support
+                    return SortedFeatureReader.canSort(getSchema(), sortAttributes);
+                }
+            }
+
+            public boolean isReliableFIDSupported() {
+                return queryCapabilities.isReliableFIDSupported();
+            }
+            
+            public boolean isUseProvidedFIDSupported() {
+                return queryCapabilities.isUseProvidedFIDSupported();
+            }
+        };
     }
 }

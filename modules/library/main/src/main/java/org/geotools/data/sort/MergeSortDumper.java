@@ -28,10 +28,12 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import org.geotools.data.Query;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.DelegateSimpleFeatureReader;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureReader;
+import org.geotools.factory.Hints;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -61,13 +63,28 @@ class MergeSortDumper {
             if (sb != SortBy.NATURAL_ORDER && sb != SortBy.REVERSE_ORDER) {
                 AttributeDescriptor ad = schema.getDescriptor(sb.getPropertyName()
                         .getPropertyName());
-                if (ad == null || !Comparable.class.isAssignableFrom(ad.getType().getBinding())) {
+                Class<?> binding = ad.getType().getBinding();
+                if (ad == null || !Comparable.class.isAssignableFrom(binding) 
+                        || Geometry.class.isAssignableFrom(binding)) {
                     return false;
                 }
             }
         }
 
         return true;
+    }
+
+    static SimpleFeatureReader getDelegateReader(SimpleFeatureReader reader, Query query)
+            throws IOException {
+        Hints hints = query.getHints();
+        int maxFeatures = 1000;
+        if (hints != null && hints.get(Hints.MAX_MEMORY_SORT) != null) {
+            maxFeatures = (Integer) hints.get(Hints.MAX_MEMORY_SORT);
+        } else if (Hints.getSystemDefault(Hints.MAX_MEMORY_SORT) != null) {
+            maxFeatures = (Integer) Hints.getSystemDefault(Hints.MAX_MEMORY_SORT);
+        }
+
+        return getDelegateReader(reader, query.getSortBy(), maxFeatures);
     }
 
     static SimpleFeatureReader getDelegateReader(SimpleFeatureReader reader, SortBy[] sortBy,
@@ -252,4 +269,5 @@ class MergeSortDumper {
         }
 
     }
+
 }

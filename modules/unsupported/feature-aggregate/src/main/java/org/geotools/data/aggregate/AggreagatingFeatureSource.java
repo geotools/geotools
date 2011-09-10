@@ -26,9 +26,7 @@ import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
-import org.geotools.data.QueryCapabilities;
 import org.geotools.data.simple.SimpleFeatureReader;
-import org.geotools.data.sort.SortedFeatureReader;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.SchemaException;
@@ -37,7 +35,6 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
-import org.opengis.filter.sort.SortBy;
 
 class AggregatingFeatureSource extends ContentFeatureSource {
 
@@ -140,11 +137,6 @@ class AggregatingFeatureSource extends ContentFeatureSource {
 
             // build a reader out of the queue
             SimpleFeatureReader reader = new QueueReader(queue, target);
-
-            // return the feature collection reading from the queue
-            if (query.getSortBy() != null && query.getSortBy().length > 0) {
-                reader = new SortedFeatureReader(reader, query.getSortBy(), 1000);
-            }
             return reader;
         } catch (SchemaException e) {
             throw new IOException("Failed to compute target feature type", e);
@@ -188,20 +180,6 @@ class AggregatingFeatureSource extends ContentFeatureSource {
     @Override
     protected boolean canRetype() {
         return true;
-    }
-
-    @Override
-    protected boolean canSort() {
-        return true;
-    }
-
-    protected QueryCapabilities buildQueryCapabilities() {
-        return new QueryCapabilities() {
-            @Override
-            public boolean supportsSorting(SortBy[] sortAttributes) {
-                return SortedFeatureReader.canSort(schema, sortAttributes);
-            }
-        };
     }
 
 }

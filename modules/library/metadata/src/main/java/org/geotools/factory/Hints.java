@@ -590,6 +590,15 @@ public class Hints extends RenderingHints {
     public static final Key FEATURE_2D = new Key(Boolean.class);
     
     /**
+     * Key to control the maximum number of features that will be kept in memory
+     * when performing a fallback merge-sort (used when the datastore does not have
+     * native means to handle feature sorting)
+     *
+     * @since 2.7.3
+     */
+    public static final Key MAX_MEMORY_SORT = new Key(Integer.class);
+    
+    /**
      * Asks a datastore having a vector pyramid (pre-generalized geometries)
      * to return the geometry version whose points have been generalized
      * less than the spefiedi distance (further generalization might be

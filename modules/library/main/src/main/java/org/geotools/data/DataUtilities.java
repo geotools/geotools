@@ -56,6 +56,7 @@ import org.geotools.data.collection.TreeSetFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureLocking;
+import org.geotools.data.simple.SimpleFeatureReader;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.data.store.ArrayDataStore;
@@ -1226,6 +1227,14 @@ public class DataUtilities {
         }
         throw new IllegalArgumentException(
                 "The provided feature collection contains complex features, cannot be bridged to a simple one");
+    }
+    
+    public static SimpleFeatureReader simple(FeatureReader<SimpleFeatureType, SimpleFeature> reader) {
+        if(reader instanceof SimpleFeatureReader) {
+            return (SimpleFeatureReader) reader;
+        } else {
+            return new SimpleFeatureReaderBrige(reader);
+        }
     }
 
     /**

@@ -20,11 +20,8 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.geotools.data.DefaultQuery;
-import org.geotools.data.FeatureStore;
-import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
-import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureSource;
@@ -41,10 +38,8 @@ import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.Not;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsLike;
-import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.opengis.filter.spatial.BBOX;
@@ -357,7 +352,7 @@ public abstract class JDBCFeatureSourceTest extends JDBCTestSupport {
         assertTrue(caps.supportsSorting(new SortBy[] {ff.sort(aname("intProperty"), SortOrder.ASCENDING)}));
         assertTrue(caps.supportsSorting(new SortBy[] {ff.sort(aname("stringProperty"), SortOrder.DESCENDING)}));
         assertTrue(caps.supportsSorting(new SortBy[] {ff.sort(aname("doubleProperty"), SortOrder.ASCENDING)}));
-        
+
         // but we cannot sort geometries
         assertFalse(caps.supportsSorting(new SortBy[] {ff.sort(aname("geometry"), SortOrder.ASCENDING)}));
     }

@@ -21,7 +21,9 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.TexturePaint;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.PathIterator;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 
@@ -89,6 +91,7 @@ public class SLDStyleFactoryTest extends TestCase {
     @Override
     protected void tearDown() throws Exception {
         sld.setVectorRenderingEnabled(false);
+        MarkStyle2D.setMaxMarkSizeEnabled(false);
     }
     
     /** This test created from Render2DTest.testSimplePointRender */
@@ -317,4 +320,41 @@ public class SLDStyleFactoryTest extends TestCase {
     	assertEquals(java.awt.Font.ITALIC | java.awt.Font.BOLD, tsd.getFont().getStyle());
     	assertEquals("Serif", tsd.getFont().getName());
     }
+    
+    public void testAlternativeMarkSizeCalculation() {
+        MarkStyle2D ms = new MarkStyle2D();
+        ms.setSize(1);
+        GeneralPath gp=new GeneralPath();
+        gp.moveTo(500,0);gp.lineTo(-500,0);
+        gp.moveTo(200,-275);gp.lineTo(200,275);
+        ms.setShape(gp);
+        
+        Shape shape = ms.getTransformedShape(0, 0);
+        
+        Rectangle2D rect = shape.getBounds2D();
+        assertEquals(1.0,rect.getHeight(), 0.0001);
+        assertEquals(1000.0/550.0, rect.getWidth(), 0.0001);
+        
+        MarkStyle2D.setMaxMarkSizeEnabled(true);
+        shape = ms.getTransformedShape(0, 0);
+        
+        rect = shape.getBounds2D();
+        assertEquals(550.0 / 1000.0,rect.getHeight(), 0.0001);
+        assertEquals(1.0,rect.getWidth(), 0.0001);
+     }
+    
+    public void testMarkSizeCalculation() throws Exception {
+        assertFalse(MarkStyle2D.isMaxMarkSizeEnabled());
+        
+         PointSymbolizer symb = sf.createPointSymbolizer();
+         Mark myMark = sf.createMark();
+         myMark.setWellKnownName(ff.literal("square"));
+         symb.getGraphic().graphicalSymbols().add(myMark);
+         MarkStyle2D ms = (MarkStyle2D) sld.createPointStyle(feature, symb, range);
+         assertFalse(MarkStyle2D.isMaxMarkSizeEnabled());
+        
+         MarkStyle2D.setMaxMarkSizeEnabled(true);
+         ms = (MarkStyle2D) sld.createPointStyle(feature, symb, range);
+         assertTrue(MarkStyle2D.isMaxMarkSizeEnabled());
+     }
 }

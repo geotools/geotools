@@ -69,7 +69,8 @@ public class ZoomInTool extends AbstractZoomTool {
     
     private Cursor cursor;
     
-    private Point2D startDragPos;
+    private final Point startPosDevice;
+    private final Point2D startPosWorld;
     private boolean dragged;
     
     /**
@@ -80,7 +81,8 @@ public class ZoomInTool extends AbstractZoomTool {
         ImageIcon imgIcon = new ImageIcon(getClass().getResource(CURSOR_IMAGE));
         cursor = tk.createCustomCursor(imgIcon.getImage(), CURSOR_HOTSPOT, TOOL_NAME);
         
-        startDragPos = new DirectPosition2D();
+        startPosDevice = new Point();
+        startPosWorld = new DirectPosition2D();
         dragged = false;
     }
     
@@ -116,8 +118,8 @@ public class ZoomInTool extends AbstractZoomTool {
      */
     @Override
     public void onMousePressed(MapMouseEvent ev) {
-        startDragPos = new DirectPosition2D();
-        startDragPos.setLocation(ev.getWorldPos());
+        startPosDevice.setLocation(ev.getPoint());
+        startPosWorld.setLocation(ev.getWorldPos());
     }
 
     /**
@@ -139,9 +141,9 @@ public class ZoomInTool extends AbstractZoomTool {
      */
     @Override
     public void onMouseReleased(MapMouseEvent ev) {
-        if (dragged && !ev.getPoint().equals(startDragPos)) {
+        if (dragged && !ev.getPoint().equals(startPosDevice)) {
             Envelope2D env = new Envelope2D();
-            env.setFrameFromDiagonal(startDragPos, ev.getWorldPos());
+            env.setFrameFromDiagonal(startPosWorld, ev.getWorldPos());
             dragged = false;
             getMapPane().setDisplayArea(env);
         }

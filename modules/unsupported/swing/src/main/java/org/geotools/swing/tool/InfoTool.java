@@ -247,11 +247,15 @@ public class InfoTool extends CursorTool implements TextReporterListener {
             String name = prop.getName().getLocalPart();
             Object value = prop.getValue();
 
-            if (value instanceof Geometry) {
-                name = "  Geometry";
-                valueStr = value.getClass().getSimpleName();
+            if (value != null) {
+                if (value instanceof Geometry) {
+                    name = "  Geometry";
+                    valueStr = value.getClass().getSimpleName();
+                } else {
+                    valueStr = value.toString();
+                }
             } else {
-                valueStr = value.toString();
+                valueStr = "null";
             }
 
             reporter.append(name + ": " + valueStr);

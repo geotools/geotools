@@ -1,3 +1,12 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2009-2011, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This file is hereby placed into the Public Domain. This means anyone is
+ *    free to do whatever they wish with this file. Use it well and enjoy!
+ */
 package org.geotools.data;
 
 import java.io.IOException;
@@ -59,8 +68,9 @@ import com.vividsolutions.jts.index.strtree.STRtree;
  * worthy
  *
  * @author Andrea Aime - GeoSolutions
- *
+ * @since 2.6
  * @source $URL$
+ * @version $Id$
  */
 public class CachingFeatureSource implements SimpleFeatureSource {
     private SimpleFeatureSource wrapped;

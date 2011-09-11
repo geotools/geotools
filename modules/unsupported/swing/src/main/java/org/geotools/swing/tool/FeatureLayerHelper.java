@@ -131,10 +131,14 @@ public class FeatureLayerHelper extends InfoToolHelper {
                         Name name = desc.getName();
                         Object value = f.getProperty(name).getValue();
 
-                        if (value instanceof Geometry) {
-                            result.setFeatureValue(name, value.getClass().getSimpleName());
+                        if (value != null) {
+                            if (value instanceof Geometry) {
+                                result.setFeatureValue(name, value.getClass().getSimpleName());
+                            } else {
+                                result.setFeatureValue(name, value);
+                            }
                         } else {
-                            result.setFeatureValue(name, value);
+                            result.setFeatureValue(name, "null");
                         }
                     }
                 }

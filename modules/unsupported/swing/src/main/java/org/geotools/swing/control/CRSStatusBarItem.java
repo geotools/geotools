@@ -45,6 +45,9 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @version $Id$
  */
 public class CRSStatusBarItem extends StatusBarItem {
+    private static final String COMPONENT_NAME =
+            LocaleUtils.getValue("StatusBar", "CRSItemName");
+    
     private static final String NO_CRS = 
             LocaleUtils.getValue("StatusBar", "CRSUndefined");
     
@@ -60,7 +63,7 @@ public class CRSStatusBarItem extends StatusBarItem {
      * @throws IllegalArgumentException if {@code mapPane} is {@code null}
      */
     public CRSStatusBarItem(MapPane mapPane) {
-        super("CRS");
+        super(COMPONENT_NAME);
 
         if (mapPane == null) {
             throw new IllegalArgumentException("mapPane must not be null");

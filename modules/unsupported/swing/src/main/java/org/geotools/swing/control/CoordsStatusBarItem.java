@@ -47,6 +47,9 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @version $Id$
  */
 public class CoordsStatusBarItem extends StatusBarItem {
+    private static final String COMPONENT_NAME =
+            LocaleUtils.getValue("StatusBar", "CoordsItemName");
+    
     private static final String TOOL_TIP = LocaleUtils.getValue("StatusBar", "CoordsTooltip");
     private static final int DEFAULT_NUM_INTEGER_DIGITS = 3;
 
@@ -64,7 +67,7 @@ public class CoordsStatusBarItem extends StatusBarItem {
      * @param mapPane the map pane
      */
     CoordsStatusBarItem(MapPane mapPane) {
-        super("Coordinates");
+        super(COMPONENT_NAME);
 
         if (mapPane == null) {
             throw new IllegalArgumentException("mapPane must not be null");

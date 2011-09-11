@@ -36,6 +36,9 @@ import org.geotools.swing.event.MapPaneEvent;
  * @version $Id$
  */
 public class ExtentStatusBarItem extends StatusBarItem {
+    private static final String COMPONENT_NAME =
+            LocaleUtils.getValue("StatusBar", "ExtentItemName");
+    
     private static final String TOOL_TIP = LocaleUtils.getValue("StatusBar", "ExtentTooltip");
     private static final ReferencedEnvelope EMPTY_ENV = new ReferencedEnvelope();
 
@@ -53,7 +56,7 @@ public class ExtentStatusBarItem extends StatusBarItem {
      * @throws IllegalArgumentException if {@code mapPane} is {@code null}
      */
     public ExtentStatusBarItem(MapPane mapPane) {
-        super("Extent");
+        super(COMPONENT_NAME);
 
         if (mapPane == null) {
             throw new IllegalArgumentException("mapPane must not be null");

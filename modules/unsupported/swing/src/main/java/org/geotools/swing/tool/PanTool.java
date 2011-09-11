@@ -40,10 +40,10 @@ import org.geotools.swing.event.MapMouseEvent;
 public class PanTool extends CursorTool {
     
     /** Tool name */
-    public static final String TOOL_NAME = LocaleUtils.getValue("CursorTool", "PanKey");
+    public static final String TOOL_NAME = LocaleUtils.getValue("CursorTool", "Pan");
     
     /** Tool tip text */
-    public static final String TOOL_TIP = LocaleUtils.getValue("CursorTool", "PanTooltipKey");
+    public static final String TOOL_TIP = LocaleUtils.getValue("CursorTool", "PanTooltip");
     
     /** Cursor */
     public static final String CURSOR_IMAGE = "/org/geotools/swing/icons/mActionPan.png";

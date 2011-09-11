@@ -53,10 +53,10 @@ import org.geotools.swing.event.MapMouseEvent;
 public class ZoomInTool extends AbstractZoomTool {
     
     /** Tool name */
-    public static final String TOOL_NAME = LocaleUtils.getValue("CursorTool", "ZoomInKey");
+    public static final String TOOL_NAME = LocaleUtils.getValue("CursorTool", "ZoomIn");
     
     /** Tool tip text */
-    public static final String TOOL_TIP = LocaleUtils.getValue("CursorTool", "ZoomInTooltipKey");
+    public static final String TOOL_TIP = LocaleUtils.getValue("CursorTool", "ZoomInTooltip");
     
     /** Cursor */
     public static final String CURSOR_IMAGE = "/org/geotools/swing/icons/mActionZoomIn.png";

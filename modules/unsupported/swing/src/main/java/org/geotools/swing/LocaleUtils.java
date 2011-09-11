@@ -32,10 +32,25 @@ import java.util.logging.Logger;
 import org.geotools.util.logging.Logging;
 
 /**
- * Centralizes {@linkplain Locale} and {@linkplain ResourceBundle} handling for
- * GUI elements.
+ * Provides localized text strings to GUI elements. This class hides the most of 
+ * the fiddly bits associated with {@linkplain Locale} and {@linkplain ResourceBundle}
+ * from other gt-swing classes.
  * <p>
- * Please note: This class is little more than a stub at the moment.
+ * You do not create instances of this class since it is basically just a wrapper
+ * around static data. Client code will normally call just two methods: 
+ * {@linkplain #setLocale(String, String)} during application startup and before any
+ * GUI elements have been displayed; and {@linkplain #getValue(String, String)} to
+ * retrieve localized text. 
+ * <p>
+ * If the {@code setLocale} method is not called, the locale defaults to
+ * {@linkplain Locale#ENGLISH} (for no better reason than that is the language 
+ * of the module maintainer).
+ * <p>
+ * Text strings are stored in properties files in 
+ * {@code {module.resources.dir}/org/geotools/swing}. Adding support for
+ * a new language involves adding the new locale to each of these files and then 
+ * updating the {@code {module.resources.dir}/META-INF/LocaleUtils.properties} file
+ * to record the newly added locale.
  * 
  * @author Michael Bedward
  * @since 8.0
@@ -47,6 +62,7 @@ public class LocaleUtils {
     
     private static final String PROPERTIES_FILE = "META-INF/LocaleUtils.properties";
     private static final String PREFIX = "org/geotools/swing/";
+    private static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
     
     private static final Properties properties;
     
@@ -55,7 +71,7 @@ public class LocaleUtils {
 
     private static final List<Locale> supportedLocales;
     
-    private static Locale currentLocale = Locale.getDefault();
+    private static Locale currentLocale = DEFAULT_LOCALE;
 
     static {
         InputStream in = LocaleUtils.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE);
@@ -76,6 +92,12 @@ public class LocaleUtils {
     }
     
     /**
+     * Private constructor to prevent clients creating instances.
+     */
+    private LocaleUtils() {}
+    
+    
+    /**
      * Returns the locales supported by the gt-swing module.
      * 
      * @return supported locales as an unmodifiable list
@@ -92,24 +114,28 @@ public class LocaleUtils {
      * @param country uppercase two-letter ISO-3166 code.
      */
     public static void setLocale(String language, String country) {
-        if (language == null) {
-            language = "";
-        }
-        if (country == null) {
-            country = "";
-        }
+        language = language == null ? "" : language.trim();
+        country = country == null ? "" : country.trim();
         
-        Locale l = new Locale(language, country);
-        if (!supportedLocales.contains(l)) {
-            LOGGER.log(Level.WARNING, 
-                    "{0} is not currently supported by the gt-swing module", l);
-            return;
+        Locale lnew;
+        if (language.trim().isEmpty() && country.trim().isEmpty()) {
+            lnew = DEFAULT_LOCALE;
+        } else {
+            lnew = new Locale(language, country);
         }
         
-        currentLocale = l;
-        
-        if (bundles != null) {
-            bundles.clear();
+        if (!lnew.equals(currentLocale)) {
+            if (!supportedLocales.contains(lnew)) {
+                LOGGER.log(Level.WARNING,
+                        "{0} is not currently supported by the gt-swing module", lnew);
+                return;
+            }
+
+            currentLocale = lnew;
+
+            if (bundles != null) {
+                bundles.clear();
+            }
         }
     }
     

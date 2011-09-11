@@ -33,10 +33,10 @@ import org.geotools.swing.MapPane;
  */
 public class ResetAction extends MapAction {
     /** Name for this tool */
-    public static final String TOOL_NAME = LocaleUtils.getValue("CursorTool", "ResetKey");
+    public static final String TOOL_NAME = LocaleUtils.getValue("CursorTool", "Reset");
     
     /** Tool tip text */
-    public static final String TOOL_TIP = LocaleUtils.getValue("CursorTool", "ResetTooltipKey");
+    public static final String TOOL_TIP = LocaleUtils.getValue("CursorTool", "ResetTooltip");
     
     /** Icon for the control */
     public static final String ICON_IMAGE = "/org/geotools/swing/icons/mActionZoomFullExtent.png";

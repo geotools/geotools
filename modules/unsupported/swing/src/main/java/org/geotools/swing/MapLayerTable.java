@@ -25,7 +25,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.ref.WeakReference;
-import java.util.ResourceBundle;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -61,15 +60,33 @@ import org.geotools.swing.styling.JSimpleStyleDialog;
  *
  * @author Michael Bedward
  * @since 2.6
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class MapLayerTable extends JPanel {
-    private static final long serialVersionUID = -8461593609237317561L;
-
-    private static final ResourceBundle stringRes = ResourceBundle.getBundle("org/geotools/swing/Text");
+    // used to get localized strings from LocaleUtils class
+    private static final String CLASS_NAME = "MapLayerTable";
+    
+    private static final String LIST_TITLE = LocaleUtils.getValue(CLASS_NAME, "ListTitle");
+    
+    private static final String SHOW_HIDE_LAYER = LocaleUtils.getValue(CLASS_NAME, "ShowHideLayer");
+    private static final String SHOW_ALL_LAYERS = LocaleUtils.getValue(CLASS_NAME, "ShowAllLayers");
+    private static final String HIDE_ALL_LAYERS = LocaleUtils.getValue(CLASS_NAME, "HideAllLayers");
+    
+    private static final String SELECT_LAYER = LocaleUtils.getValue(CLASS_NAME, "SelectLayer");
+    private static final String SELECT_ALL_LAYERS = LocaleUtils.getValue(CLASS_NAME, "SelectAllLayers");
+    private static final String DESELECT_ALL_LAYERS = LocaleUtils.getValue(CLASS_NAME, "DeselectAllLayers");
+    
+    private static final String RENAME_LAYER = LocaleUtils.getValue(CLASS_NAME, "RenameLayer");
+    private static final String RENAME_LAYER_MESSAGE = LocaleUtils.getValue(CLASS_NAME, "RenameLayer_Message");
+    
+    private static final String REMOVE_LAYER = LocaleUtils.getValue(CLASS_NAME, "RemoveLayer");
+    private static final String REMOVE_LAYER_MESSAGE = LocaleUtils.getValue(CLASS_NAME, "RemoveLayer_ConfirmMessage");
+    private static final String REMOVE_LAYER_TITLE = LocaleUtils.getValue(CLASS_NAME, "RemoveLayer_ConfirmTitle");
+    
+    
+    private static final String STYLE_LAYER = LocaleUtils.getValue(CLASS_NAME, "StyleLayer");
+    
 
     private MapPane mapPane;
     private DnDListModel<Layer> listModel;
@@ -189,19 +206,19 @@ public class MapLayerTable extends JPanel {
                         Point p = new Point(e.getPoint().x, e.getPoint().y - r.y);
 
                         if (MapLayerTableCellRenderer.hitSelectionLabel(p)) {
-                            return stringRes.getString("select_layer");
+                            return SELECT_LAYER;
 
                         } else if (MapLayerTableCellRenderer.hitVisibilityLabel(p)) {
-                            return stringRes.getString("show_layer");
+                            return SHOW_HIDE_LAYER;
 
                         } else if (MapLayerTableCellRenderer.hitStyleLabel(p)) {
-                            return stringRes.getString("style_layer");
+                            return STYLE_LAYER;
 
                         } else if (MapLayerTableCellRenderer.hitRemoveLabel(p)) {
-                            return stringRes.getString("remove_layer");
+                            return REMOVE_LAYER;
 
                         } else if (MapLayerTableCellRenderer.hitNameLabel(p)) {
-                            return stringRes.getString("rename_layer");
+                            return RENAME_LAYER;
                         }
                     }
                 }
@@ -244,14 +261,14 @@ public class MapLayerTable extends JPanel {
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
-        scrollPane.setBorder(BorderFactory.createTitledBorder(stringRes.getString("layers_list_title")));
+        scrollPane.setBorder(BorderFactory.createTitledBorder(LIST_TITLE));
 
         JPanel btnPanel = new JPanel();
         Icon showIcon = MapLayerTableCellRenderer.LayerControlItem.VISIBLE.getIcon();
         JButton btn = null;
         
         btn = new JButton(showIcon);
-        btn.setToolTipText(stringRes.getString("show_all_layers"));
+        btn.setToolTipText(SHOW_ALL_LAYERS);
         btn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -262,7 +279,7 @@ public class MapLayerTable extends JPanel {
 
         Icon hideIcon = MapLayerTableCellRenderer.LayerControlItem.VISIBLE.getOffIcon();
         btn = new JButton(hideIcon);
-        btn.setToolTipText(stringRes.getString("hide_all_layers"));
+        btn.setToolTipText(HIDE_ALL_LAYERS);
         btn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -273,7 +290,7 @@ public class MapLayerTable extends JPanel {
 
         Icon onIcon = MapLayerTableCellRenderer.LayerControlItem.SELECTED.getIcon();
         btn = new JButton(onIcon);
-        btn.setToolTipText(stringRes.getString("select_all_layers"));
+        btn.setToolTipText(SELECT_ALL_LAYERS);
         btn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -284,7 +301,7 @@ public class MapLayerTable extends JPanel {
 
         Icon offIcon = MapLayerTableCellRenderer.LayerControlItem.SELECTED.getOffIcon();
         btn = new JButton(offIcon);
-        btn.setToolTipText(stringRes.getString("unselect_all_layers"));
+        btn.setToolTipText(DESELECT_ALL_LAYERS);
         btn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -356,7 +373,7 @@ public class MapLayerTable extends JPanel {
      * @param layer the layer to be renamed
      */
     private void doSetLayerName(Layer layer) {
-        String name = JOptionPane.showInputDialog(stringRes.getString("new_layer_name_message"));
+        String name = JOptionPane.showInputDialog(RENAME_LAYER_MESSAGE);
         if (name != null && name.trim().length() > 0) {
             layer.setTitle(name.trim());
         }
@@ -370,8 +387,8 @@ public class MapLayerTable extends JPanel {
     private void doRemoveLayer(Layer layer) {
         if (confirmRemove) {
             int confirm = JOptionPane.showConfirmDialog(null,
-                    stringRes.getString("confirm_remove_layer_message"),
-                    stringRes.getString("confirm_remove_layer_title"),
+                    REMOVE_LAYER_MESSAGE,
+                    REMOVE_LAYER_TITLE,
                     JOptionPane.YES_NO_OPTION);
 
             if (confirm != JOptionPane.YES_OPTION) {

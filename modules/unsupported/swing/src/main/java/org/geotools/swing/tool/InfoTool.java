@@ -52,10 +52,10 @@ public class InfoTool extends CursorTool implements TextReporterListener {
     private static final Logger LOGGER = Logging.getLogger("org.geotools.swing");
 
     /** The tool name */
-    public static final String TOOL_NAME = LocaleUtils.getValue("CursorTool", "InfoKey");
+    public static final String TOOL_NAME = LocaleUtils.getValue("CursorTool", "Info");
     
     /** Tool tip text */
-    public static final String TOOL_TIP = LocaleUtils.getValue("CursorTool", "InfoTooltipKey");
+    public static final String TOOL_TIP = LocaleUtils.getValue("CursorTool", "InfoTooltip");
     
     /** Cursor */
     public static final String CURSOR_IMAGE = "/org/geotools/swing/icons/mActionIdentify.png";

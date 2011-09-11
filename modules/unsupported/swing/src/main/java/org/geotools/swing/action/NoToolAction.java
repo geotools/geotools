@@ -32,10 +32,10 @@ import org.geotools.swing.MapPane;
  */
 public class NoToolAction extends MapAction {
     /** Name for this tool */
-    public static final String TOOL_NAME = LocaleUtils.getValue("CursorTool", "NoneKey");
+    public static final String TOOL_NAME = LocaleUtils.getValue("CursorTool", "None");
     
     /** Tool tip text */
-    public static final String TOOL_TIP = LocaleUtils.getValue("CursorTool", "NoneTooltipKey");
+    public static final String TOOL_TIP = LocaleUtils.getValue("CursorTool", "NoneTooltip");
     
     /** Icon for the control */
     public static final String ICON_IMAGE = "/org/geotools/swing/icons/pointer.png";

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -21,7 +21,6 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.ResourceBundle;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -37,15 +36,11 @@ import org.geotools.map.Layer;
  *
  * @author Michael Bedward
  * @since 2.6
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class MapLayerTableCellRenderer extends JPanel implements ListCellRenderer {
     private static final long serialVersionUID = 7907189175227502588L;
-
-    private static final ResourceBundle stringRes = ResourceBundle.getBundle("org/geotools/swing/Text");
 
     /**
      * Items used to display layer states and controls. Each item has
@@ -249,6 +244,7 @@ public class MapLayerTableCellRenderer extends JPanel implements ListCellRendere
         add(nameLabel);
     }
 
+    @Override
     public Component getListCellRendererComponent(
             JList list,
             Object value, // value to display

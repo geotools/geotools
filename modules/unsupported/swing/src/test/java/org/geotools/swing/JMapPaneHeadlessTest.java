@@ -17,6 +17,7 @@
 package org.geotools.swing;
 
 import com.vividsolutions.jts.geom.Polygon;
+import org.geotools.map.Layer;
 import org.junit.BeforeClass;
 import java.awt.Rectangle;
 import java.util.Arrays;
@@ -64,6 +65,9 @@ public class JMapPaneHeadlessTest {
     
     private static final ReferencedEnvelope WORLD =
             new ReferencedEnvelope(-10, 10, -5, 5, DefaultEngineeringCRS.CARTESIAN_2D);
+    
+    private static final ReferencedEnvelope SMALL_WORLD =
+            new ReferencedEnvelope(-4, 4, -2, 2, DefaultEngineeringCRS.CARTESIAN_2D);
     
     private WaitingMapPaneListener listener;
     private JMapPane mapPane;
@@ -180,15 +184,24 @@ public class JMapPaneHeadlessTest {
     @Test
     public void displayAreaIsSetFromMapContent() {
         MapContent mapContent = new MapContent();
-        SimpleFeatureCollection fc = singlePolygonFeatureCollection(WORLD);
-        Style style = SLD.createSimpleStyle(fc.getSchema());
-        mapContent.addLayer(new FeatureLayer(fc, style));
+        mapContent.addLayer(createLayer(WORLD));
         
         mapPane.setMapContent(mapContent);
         
         // Since no screen area has been set the map pane's bounds should
         // be equal to the feature collection bounds
         assertTrue(WORLD.boundsEquals2D(mapPane.getDisplayArea(), TOL));
+    }
+    
+    @Test
+    public void addingLayerBeyondCurrentBoundsDoesNotChangeDisplayArea() {
+        MapContent mapContent = new MapContent();
+        mapContent.addLayer(createLayer(SMALL_WORLD));
+        mapPane.setMapContent(mapContent);
+
+        // add larger layer and check that display area is unchanged
+        mapContent.addLayer(createLayer(WORLD));
+        assertTrue(SMALL_WORLD.boundsEquals2D(mapPane.getDisplayArea(), TOL));
     }
     
     /**
@@ -208,6 +221,18 @@ public class JMapPaneHeadlessTest {
         // requested area
         assertEquals(realizedArea.getMedian(0), requestedArea.getMedian(0), TOL);
         assertEquals(realizedArea.getMedian(1), requestedArea.getMedian(1), TOL);
+    }
+
+    /**
+     * Creates a new feature layer.
+     * 
+     * @param env layer bounds
+     * @return the new layer
+     */
+    private Layer createLayer(ReferencedEnvelope env) {
+        SimpleFeatureCollection fc = singlePolygonFeatureCollection(env);
+        Style style = SLD.createSimpleStyle(fc.getSchema());
+        return new FeatureLayer(fc, style);
     }
 
     /**
@@ -233,4 +258,5 @@ public class JMapPaneHeadlessTest {
 
         return new ListFeatureCollection(TYPE, Arrays.asList(feature));
     }
+
 }

@@ -759,12 +759,7 @@ public abstract class AbstractMapPane extends JPanel
             addComponentListener( (ComponentListener) layer );
         }
 
-        boolean atFullExtent = equalsFullExtent(getDisplayArea());
         setFullExtent();
-        if (mapContent.layers().size() == 1 || atFullExtent) {
-            reset();
-        }
-
         drawLayers(false);
         repaint();
     }
@@ -875,9 +870,7 @@ public abstract class AbstractMapPane extends JPanel
     }
 
     /**
-     * Gets the full extent of map context's layers. The only reason
-     * this method is defined is to avoid having try-catch blocks all
-     * through other methods.
+     * Determines the full extent of of 
      * 
      * @return {@code true} if full extent was set successfully
      */

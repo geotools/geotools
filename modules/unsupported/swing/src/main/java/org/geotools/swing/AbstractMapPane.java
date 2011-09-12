@@ -286,65 +286,6 @@ public abstract class AbstractMapPane extends JPanel
         keyHandler = controller;
     }
     
-    
-
-    /**
-     * Check if the envelope corresponds to full extent. It will probably not
-     * equal the full extent envelope because of slack space in the display
-     * area, so we check that at least one pair of opposite edges are
-     * equal to the full extent envelope, allowing for slack space on the
-     * other two sides.
-     * <p>
-     * Note: this method returns {@code false} if the full extent envelope
-     * is wholly within the requested envelope (e.g. user has zoomed out
-     * from full extent), only touches one edge, or touches two adjacent edges.
-     * In all these cases we assume that the user wants to maintain the slack
-     * space in the display.
-     * <p>
-     * This method is part of the work-around that the map pane needs because
-     * of the differences in how raster and vector layers are treated by the
-     * renderer classes.
-     *
-     * @param envelope a pending display envelope to compare to the full extent
-     *        envelope
-     *
-     * @return true if the envelope is coincident with the full extent evenlope
-     *         on at least two edges; false otherwise
-     *
-     * @todo My logic here seems overly complex - I'm sure there must be a simpler
-     *       way for the map pane to handle this.
-     */
-    protected boolean equalsFullExtent(final Envelope envelope) {
-        if (envelope == null || mapContent == null) {
-            return false;
-        }
-        if (fullExtent == null && !setFullExtent()) {
-            return false;
-        }
-
-        final double TOL = 1.0e-6d * Math.min(fullExtent.getWidth(), fullExtent.getHeight());
-
-        boolean touch = false;
-        if (Math.abs(envelope.getMinimum(0) - fullExtent.getMinimum(0)) < TOL) {
-            touch = true;
-        }
-        if (Math.abs(envelope.getMaximum(0) - fullExtent.getMaximum(0)) < TOL) {
-            if (touch) {
-                return true;
-            }
-        }
-        if (Math.abs(envelope.getMinimum(1) - fullExtent.getMinimum(1)) < TOL) {
-            touch = true;
-        }
-        if (Math.abs(envelope.getMaximum(1) - fullExtent.getMaximum(1)) < TOL) {
-            if (touch) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     /**
      * Gets the current paint delay interval in milliseconds. The map pane
      * uses this delay period to avoid flickering and redundant rendering
@@ -611,24 +552,19 @@ public abstract class AbstractMapPane extends JPanel
      */
     protected void doSetDisplayArea(Envelope envelope) {
         if (mapContent != null) {
-            //if (equalsFullExtent(envelope)) {
-            //    mapContent.getViewport().setBounds(fullExtent);
+            CoordinateReferenceSystem crs = envelope.getCoordinateReferenceSystem();
+            if (crs == null) {
+                // assume that it is the current CRS
+                crs = mapContent.getCoordinateReferenceSystem();
+            }
 
-            //} else {
-                CoordinateReferenceSystem crs = envelope.getCoordinateReferenceSystem();
-                if (crs == null) {
-                    // assume that it is the current CRS
-                    crs = mapContent.getCoordinateReferenceSystem();
-                }
+            ReferencedEnvelope refEnv = new ReferencedEnvelope(
+                    envelope.getMinimum(0), envelope.getMaximum(0),
+                    envelope.getMinimum(1), envelope.getMaximum(1),
+                    crs);
 
-                ReferencedEnvelope refEnv = new ReferencedEnvelope(
-                        envelope.getMinimum(0), envelope.getMaximum(0),
-                        envelope.getMinimum(1), envelope.getMaximum(1),
-                        crs);
+            mapContent.getViewport().setBounds(refEnv);
 
-                mapContent.getViewport().setBounds(refEnv);
-            //}
-            
         } else {
             pendingDisplayArea = new ReferencedEnvelope(envelope);
         }

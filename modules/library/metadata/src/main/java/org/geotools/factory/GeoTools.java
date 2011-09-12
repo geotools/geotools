@@ -165,6 +165,23 @@ public final class GeoTools {
     static {
         bind(FORCE_LONGITUDE_FIRST_AXIS_ORDER, Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
     }
+    
+    /**
+     * The {@linkplain System#getProperty(String) system property} key for the default
+     * value to be assigned to the {@link Hints#
+     * RESAMPLE_TOLERANCE} hint.
+     *
+     * This setting specifies the tolerance used when linearizing warp transformation into
+     * piecewise linear ones, by default it is 0.333 pixels
+     *
+     * @see Hints#RESAMPLE_TOLERANCE
+     * @see #getDefaultHints
+     */
+    public static final String RESAMPLE_TOLERANCE =
+            "org.geotools.referencing.resampleTolerance";
+    static {
+        bind(RESAMPLE_TOLERANCE, Hints.RESAMPLE_TOLERANCE);
+    }
 
     /**
      * The initial context. Will be created only when first needed.

@@ -45,6 +45,8 @@ public class WaitingMapPaneListener extends WaitingListener<MapPaneEvent, MapPan
 
     @Override
     public void onDisplayAreaChanged(MapPaneEvent ev) {
+        System.out.println("got dac");
+        System.out.flush();
         catchEvent(MapPaneEvent.Type.DISPLAY_AREA_CHANGED.ordinal(), ev);
     }
 

@@ -33,7 +33,6 @@ import org.fest.swing.fixture.FrameFixture;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
@@ -46,7 +45,6 @@ import static org.junit.Assert.*;
  * @source $URL$
  * @version $Id$
  */
-@Ignore("Having trouble with conditional event handling in tests")
 @RunWith(GraphicsTestRunner.class)
 public class JMapPaneGraphicsTest extends JMapPaneGraphicsTestBase {
     
@@ -93,33 +91,38 @@ public class JMapPaneGraphicsTest extends JMapPaneGraphicsTestBase {
     @Test
     public void moveImageUp() {
         // remeber: moving image up means negative dy
-        assertMoveImage(0, -100);
+        assertMoveImage(0, -10);
     }
     
     @Test
     public void moveImageDown() {
         // remeber: moving image up means positive dy
-        assertMoveImage(0, 100);
+        assertMoveImage(0, 10);
     }
     
     @Test
     public void moveImageLeft() {
-        assertMoveImage(-100, 0);
+        assertMoveImage(-10, 0);
     }
     
     @Test
     public void moveImageRight() {
-        assertMoveImage(100, 0);
+        assertMoveImage(10, 0);
     }
     
     private void assertMoveImage(int dx, int dy) {
+        System.out.println("assertMoveImage");
+        System.out.flush();
+        
         MapContent mapContent = createMapContent(createMatchedBounds());
         mapPane.addMapPaneListener(listener);
-        mapPane.setMapContent(mapContent);
-        ReferencedEnvelope startEnv = mapContent.getViewport().getBounds();
         
-        // Wait for events associated with the initial display area to settle down
-        window.robot.waitForIdle();
+        // Setting the map content spawns two display area events
+        // (need to work out why)
+        listener.setExpected(MapPaneEvent.Type.DISPLAY_AREA_CHANGED, 2);
+        mapPane.setMapContent(mapContent);
+        assertTrue(listener.await(MapPaneEvent.Type.DISPLAY_AREA_CHANGED, WAIT_TIMEOUT));
+        ReferencedEnvelope startEnv = mapContent.getViewport().getBounds();
         
         listener.setExpected(MapPaneEvent.Type.DISPLAY_AREA_CHANGED);
         mapPane.moveImage(dx, dy);

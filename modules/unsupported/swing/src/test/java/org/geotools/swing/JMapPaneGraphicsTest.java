@@ -111,9 +111,6 @@ public class JMapPaneGraphicsTest extends JMapPaneGraphicsTestBase {
     }
     
     private void assertMoveImage(int dx, int dy) {
-        System.out.println("assertMoveImage");
-        System.out.flush();
-        
         MapContent mapContent = createMapContent(createMatchedBounds());
         mapPane.addMapPaneListener(listener);
         

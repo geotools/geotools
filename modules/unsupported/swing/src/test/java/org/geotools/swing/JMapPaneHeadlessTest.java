@@ -16,27 +16,16 @@
  */
 package org.geotools.swing;
 
-import com.vividsolutions.jts.geom.Polygon;
-import org.geotools.map.Layer;
 import org.junit.BeforeClass;
 import java.awt.Rectangle;
-import java.util.Arrays;
 
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
-import org.geotools.data.collection.ListFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.geometry.jts.JTS;
-import org.geotools.map.FeatureLayer;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.renderer.GTRenderer;
-import org.geotools.styling.SLD;
-import org.geotools.styling.Style;
 import org.geotools.swing.event.MapPaneEvent;
 
 import org.geotools.swing.testutils.MockRenderer;
@@ -44,8 +33,6 @@ import org.geotools.swing.testutils.WaitingMapPaneListener;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
 import static org.junit.Assert.*;
 
 /**
@@ -56,10 +43,7 @@ import static org.junit.Assert.*;
  * @source $URL$
  * @version $Id$
  */
-public class JMapPaneHeadlessTest {
-    
-    private static final long WAIT_TIMEOUT = 500;
-    private static final double TOL = 1.0E-6;
+public class JMapPaneHeadlessTest extends JMapPaneTestBase {
     
     private static final Rectangle PANE = new Rectangle(100, 100);
     
@@ -68,9 +52,6 @@ public class JMapPaneHeadlessTest {
     
     private static final ReferencedEnvelope SMALL_WORLD =
             new ReferencedEnvelope(-4, 4, -2, 2, DefaultEngineeringCRS.CARTESIAN_2D);
-    
-    private WaitingMapPaneListener listener;
-    private JMapPane mapPane;
     
     @BeforeClass
     public static void setupOnce() {
@@ -243,57 +224,4 @@ public class JMapPaneHeadlessTest {
         assertEquals(realizedArea.getMedian(1), requestedArea.getMedian(1), TOL);
     }
     
-    /**
-     * Creates a new MapContent optionally populated with single-feature Layers
-     * having the specified bounds.
-     * 
-     * @param boundsOfLayers 0 or more bounds for layers
-     * @return new map content
-     */
-    private MapContent createMapContent(ReferencedEnvelope ...boundsOfLayers) {
-        MapContent mapContent = new MapContent();
-        if (boundsOfLayers != null) {
-            for (ReferencedEnvelope env : boundsOfLayers) {
-                mapContent.addLayer(createLayer(env));
-            }
-        }
-        return mapContent;
-    }
-
-    /**
-     * Creates a new feature layer.
-     * 
-     * @param env layer bounds
-     * @return the new layer
-     */
-    private Layer createLayer(ReferencedEnvelope env) {
-        SimpleFeatureCollection fc = singlePolygonFeatureCollection(env);
-        Style style = SLD.createSimpleStyle(fc.getSchema());
-        return new FeatureLayer(fc, style);
-    }
-
-    /**
-     * Creates a feature collection containing a single feature with a
-     * polygon geometry based on the input envelope.
-     *
-     * @param env the input envelope
-     * @return new feature collection
-     */
-    private SimpleFeatureCollection singlePolygonFeatureCollection(ReferencedEnvelope env) {
-        if (env == null || env.isEmpty()) {
-            throw new IllegalArgumentException("env must not be null or empty");
-        }
-
-        SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
-        typeBuilder.setName("rectangle");
-        typeBuilder.add("shape", Polygon.class, env.getCoordinateReferenceSystem());
-        typeBuilder.add("label", String.class);
-        final SimpleFeatureType TYPE = typeBuilder.buildFeatureType();
-
-        SimpleFeature feature = SimpleFeatureBuilder.build(
-                TYPE, new Object[]{JTS.toGeometry(env), "a rectangle"}, null);
-
-        return new ListFeatureCollection(TYPE, Arrays.asList(feature));
-    }
-
 }

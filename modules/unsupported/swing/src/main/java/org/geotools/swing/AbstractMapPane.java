@@ -472,10 +472,12 @@ public abstract class AbstractMapPane extends JPanel
      */
     @Override
     public void moveImage(int dx, int dy) {
-        imageOrigin.translate(dx, dy);
-        baseImageMoved.set(true);
-        repaint();
-        onImageMoved();
+        if (isShowing() && !getVisibleRect().isEmpty()) {
+            imageOrigin.translate(dx, dy);
+            baseImageMoved.set(true);
+            repaint();
+            onImageMoved();
+        }
     }
 
     protected void onImageMoved() {
@@ -609,10 +611,10 @@ public abstract class AbstractMapPane extends JPanel
      */
     protected void doSetDisplayArea(Envelope envelope) {
         if (mapContent != null) {
-            if (equalsFullExtent(envelope)) {
-                mapContent.getViewport().setBounds(fullExtent);
+            //if (equalsFullExtent(envelope)) {
+            //    mapContent.getViewport().setBounds(fullExtent);
 
-            } else {
+            //} else {
                 CoordinateReferenceSystem crs = envelope.getCoordinateReferenceSystem();
                 if (crs == null) {
                     // assume that it is the current CRS
@@ -625,7 +627,7 @@ public abstract class AbstractMapPane extends JPanel
                         crs);
 
                 mapContent.getViewport().setBounds(refEnv);
-            }
+            //}
             
         } else {
             pendingDisplayArea = new ReferencedEnvelope(envelope);
@@ -823,9 +825,9 @@ public abstract class AbstractMapPane extends JPanel
     }
 
     /**
-     * Called by the map context when its bounds have changed. Used
-     * here to watch for a changed CRS, in which case the map is
-     * redisplayed at (new) full extent.
+     * Called by the map content's viewport when its bounds have changed. Used
+     * here to watch for a changed CRS, in which case the map is re-displayed
+     * at full extent.
      */
     @Override
     public void mapBoundsChanged(MapBoundsEvent event) {

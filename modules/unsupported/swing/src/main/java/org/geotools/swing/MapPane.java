@@ -165,7 +165,9 @@ public interface MapPane {
     
     /**
      * Moves the image(s) displayed by the map pane from the current
-     * origin (x,y) (device pixels) to (x+dx, y+dy).
+     * origin (x,y) (device pixels) to (x+dx, y+dy). If this method is
+     * called when the map pane is not visible, or when the pane's 
+     * visible rectangle is empty, it is ignored.
      * 
      * @param dx the x offset in pixels
      * @param dy the y offset in pixels.

@@ -53,12 +53,22 @@ public abstract class WaitingListener<T extends EventObject, E extends Enum> {
     }
     
     /**
-     * Sets the listener to expect an event of the specified type.
+     * Sets the listener to expect one event of the specified type.
      * 
      * @param type event type
      */
-    public void setExpected(E type) {
-        latches[type.ordinal()] = new CountDownLatch(1);
+    public synchronized void setExpected(E type) {
+        setExpected(type, 1);
+    }
+    
+    /**
+     * Sets the listener to expect {@code count} events of the specified type.
+     * 
+     * @param type event type
+     * @param count number of events
+     */
+    public synchronized void setExpected(E type, int count) {
+        latches[type.ordinal()] = new CountDownLatch(count);
     }
     
     /**
@@ -69,18 +79,19 @@ public abstract class WaitingListener<T extends EventObject, E extends Enum> {
      * 
      * @return {@code true} if the event was received
      */
-    public boolean await(E type, long timeoutMillis) {
+    public synchronized boolean await(E type, long timeoutMillis) {
         CountDownLatch latch = latches[type.ordinal()];
         if (latch == null) {
             throw new IllegalStateException("latch not set for " + type);
         }
-
+        
         boolean result = false;
         try {
             result = latch.await(timeoutMillis, TimeUnit.MILLISECONDS);
         } catch (InterruptedException ex) {
             // do nothing
         } finally {
+            latches[type.ordinal()] = null;
             return result;
         }
     }
@@ -92,7 +103,7 @@ public abstract class WaitingListener<T extends EventObject, E extends Enum> {
      * 
      * @return {@code true} if an event of this type has been received
      */
-    public boolean eventReceived(E type) { // MapPaneEvent.Type type) {
+    public synchronized boolean eventReceived(E type) { // MapPaneEvent.Type type) {
         return flags[type.ordinal()].get();
     }
 

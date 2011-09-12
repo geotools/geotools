@@ -43,6 +43,7 @@ public class FeatureGSProcessFactory extends AnnotatedBeanProcessFactory {
                 ClipProcess.class,
                 CollectGeometries.class,
                 CountProcess.class,
+                FeatureProcess.class,
                 GridProcess.class,
                 InclusionFeatureCollection.class,
                 IntersectionFeatureCollection.class,

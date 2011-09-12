@@ -183,9 +183,7 @@ public class JMapPaneHeadlessTest {
     
     @Test
     public void displayAreaIsSetFromMapContent() {
-        MapContent mapContent = new MapContent();
-        mapContent.addLayer(createLayer(WORLD));
-        
+        MapContent mapContent = createMapContent(WORLD);
         mapPane.setMapContent(mapContent);
         
         // Since no screen area has been set the map pane's bounds should
@@ -195,13 +193,35 @@ public class JMapPaneHeadlessTest {
     
     @Test
     public void addingLayerBeyondCurrentBoundsDoesNotChangeDisplayArea() {
-        MapContent mapContent = new MapContent();
-        mapContent.addLayer(createLayer(SMALL_WORLD));
+        MapContent mapContent = createMapContent(SMALL_WORLD);
         mapPane.setMapContent(mapContent);
 
         // add larger layer and check that display area is unchanged
         mapContent.addLayer(createLayer(WORLD));
         assertTrue(SMALL_WORLD.boundsEquals2D(mapPane.getDisplayArea(), TOL));
+    }
+    
+    @Test
+    public void resetWithNoMapContentIsIgnored() {
+        // just checking no exception is thrown
+        mapPane.reset();
+    }
+    
+    @Test
+    public void resetWithNoLayersIsIgnored() {
+        // just checking no exception is thrown
+        mapPane.setMapContent(createMapContent());
+        mapPane.reset();
+    }
+    
+    @Test
+    public void resetAfterRemovingAllLayersIsIgnored() {
+        MapContent mapContent = createMapContent(WORLD);
+        mapPane.setMapContent(mapContent);
+        mapContent.removeLayer(mapContent.layers().get(0));
+
+        // just checking no exception is thrown
+        mapPane.reset();
     }
     
     /**
@@ -221,6 +241,23 @@ public class JMapPaneHeadlessTest {
         // requested area
         assertEquals(realizedArea.getMedian(0), requestedArea.getMedian(0), TOL);
         assertEquals(realizedArea.getMedian(1), requestedArea.getMedian(1), TOL);
+    }
+    
+    /**
+     * Creates a new MapContent optionally populated with single-feature Layers
+     * having the specified bounds.
+     * 
+     * @param boundsOfLayers 0 or more bounds for layers
+     * @return new map content
+     */
+    private MapContent createMapContent(ReferencedEnvelope ...boundsOfLayers) {
+        MapContent mapContent = new MapContent();
+        if (boundsOfLayers != null) {
+            for (ReferencedEnvelope env : boundsOfLayers) {
+                mapContent.addLayer(createLayer(env));
+            }
+        }
+        return mapContent;
     }
 
     /**

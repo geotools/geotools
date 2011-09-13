@@ -9,37 +9,30 @@
 **********************
 
 .. sectionauthor:: Jody Garnett <jody.garnett@gmail.org>
+.. sectionauthor:: Michael Bedward <michael.bedward@gmail.org>
 
-Welcome Maven Developers
-========================
+Welcome 
+=======
 
-This quickstart is under construction; it provides a command line quickstart for those who perfer
-the plesent company of a text editor and a trusty command prompt.
+This tutorial is for those who prefer the pleasant company of a text editor and a trusty command
+prompt. Even if you routinely use an IDE, you will find that it's often quicker and easier to
+compile, test and install your applications from the command line. We'll be using Maven
+(http://maven.apache.org/) to manage the large number of jars that a GeoTools projects depend on.
+Don't worry if you're not familiar with Maven because we will explain everythign step by step.
 
-Welcome to **Geospatial for Java** this workbook is aimed at Java developers who are new to
-geospatial and would like to get started.
+The example application is the same one used for the NetBeans and Eclipse Quickstart tutorials: a
+simple program to load and display a shapefile.
 
-The build tool Maven (http://maven.apache.org/) is our preferred option for downloading and
-managing jars for GeoTools projects because there tend to a large number of jars involved. If
-you are already familiar with Maven that is an advantage but if not, don't worry, we will be
-explaining things step by step.
-
-Extra care has been taken to these tutorials visual right from the get go. While these the
-examples will make use of Swing please be assured that that this is only an aid in making the
-examples easy and fun to use so if your own work is based on another GUI framework the material
-that we cover here will still be relevant.
-
-These sessions are applicable to both server side and client side development.
-
-We would like thank members of the GeoTools users list for their feedback while were preparing the
-course material, with special thanks to Tom Williamson for reviewing early drafts.
+We would like thank members of the `GeoTools User mailing list
+<https://lists.sourceforge.net/lists/listinfo/geotools-gt2-users>`_ for their feedback while we were
+preparing the course material, with special thanks to Tom Williamson for reviewing early drafts. If
+you have any questions or comments about this tutorial, please post them to the user list.
 
 Java Install
 ============
 
-We are going to be making use of Java so if you don't have a Java Development Kit installed now is
-the time to do so. Even if you have Java installed already check out the optional Java Advanced
-Imaging and Java Image IO section – both of these libraries are used by GeoTools.
+We are going to be making use of Java so if you don't have a Java Development Kit (JDK) installed now is
+the time to do so. 
 
 #. Download the latest JDK from the the java.sun.com website:
 
@@ -54,59 +47,45 @@ Imaging and Java Image IO section – both of these libraries are used by GeoToo
    
    C:\\Program Files\\Java\\jdk1.6.0_20\\
      
-#. Optional: Java Advanced Imaging is used by GeoTools for raster support. If you install JAI 1.1.3 
-   performance will be improved:   
+.. Note::
+   In this tutorial we refer to file and directory paths as used by Windows. If you are fortunate
+   enough to be using another operating system such as Linux or OSX all of the commands and source
+   code below will work, just modify the paths to suit. 
+
+
+Maven (and why it's not so bad)
+===============================
+
+Maven is a widely-used build tool which works by describing the contents of a project. This is a
+different approach than that used by the Make or Ant tools which list the steps required to build.
+
+It takes a while to get used to Maven and, for some, it remains a love-hate relationship, but it
+definitely makes working with GeoTools much easier:
+
+* You only download as much of GeoTools as your application requires.
+ 
+* Jars are downloaded into a single location in your home directory (e.g. C:\\Documents and
+  Settings\<user\>\\.m2\\ on Windows). This is your *local repository*.
+
+* The correct versions of all of the third-party jars required by GeoTools will be downloaded for
+  you. This helps you to avoid obscure errors than can be caused by mis-matched dependencies which
+  can be very difficult to track down.
+
+* The single *local repository* makes it easier to work on other multiple open source projects.
+
+
+Installing Maven
+----------------
+
+#. Download Maven from http://maven.apache.org/download.html 
    
-   http://download.java.net/media/jai/builds/release/
-      
-   Both a JDK and JRE installer are available:
+   In this tutorial we refer to Maven version 2.2.1 which is the one used by many GeoTools
+   developers and users, at the time of writing. You can also use Maven version 3 but we don't have
+   as much experience using that version with GeoTools yet.
    
-   * jai-1_1_3-lib-windows-i586-jdk.exe
-   * jai-1_1_3-lib-windows-i586-jre.exe
-     
-#. Optional: ImageIO Is used to read and write raster files. GeoTools uses version 1_1 of the
-   ImageIO library:
-   
-   http://download.java.net/media/jai-imageio/builds/
-   
-   Both a JDK and JRE installer are available:   
-   
-   * jai_imageio-1_1-lib-windows-i586-jdk.exe 
-   * jai_imageio-1_1-lib-windows-i586-jre.exe
+#. Unzip the file apache-maven-2.2.1-bin.zip to C:\java\apache-maven-2.2.1
 
-Quickstart
-==========
-
-The GeoTools development community uses the build tool Maven which is integrated into the latest
-releases of NetBeans.
-
-The advantages of using Maven are:
-
-* You only download as much of GeoTools as your application requires Jars are downloaded to a single
-  location in your home directory (in a hidden folder called .m2/repository)
-
-* You can work on several open source projects at once; the build process will
-  "install" the jars into the local maven repository allowing you to share
-  between local work and community projects seemlessly 
-
-Although Maven is a build tool it works by describing the contents of a project. This is a different
-approach then used by the Make or Ant tools which list the steps required to build.
-
-Part of the description of a project is the required jars and a repository on the internet where
-they can be downloaded from. We will be using these facilities to bring GeoTools jars as needed
-into our project.
-
-Maven Command Line
--------------------
-
-The maven build tool works directly on the command line.
-
-1. Download Maven from http://maven.apache.org/download.html 
-   
-   The last version we tested with was: Maven 2.2.1
-   
-2. Unzip the file apache-maven-2.2.1-bin.zip to C:\java\apache-maven-2.2.1
-3. You need to have a couple of environmental variables set for maven to work. Use
+#. You need to have a couple of environmental variables set for maven to work. Use
    :menuselection:`Control Panel --> System --> Advanced --> Environmental Variables` to set the following.
 
    * JAVA_HOME = :file:`C:\Program Files\Java\jdk1.6.0_16`
@@ -116,33 +95,45 @@ The maven build tool works directly on the command line.
    .. image:: images/env-variables.jpg
       :scale: 60
    
-4. Open up a commands prompt :menuselection:`Accessories --> Command Prompt`
-5. Type the following command to confirm you are set up correctly::
+#. Open up a commands prompt :menuselection:`Accessories --> Command Prompt`
+
+#. Type the following command to confirm you are set up correctly::
    
-      C:java> mvn -version
+      C:java> mvn --version
       
-6. This should produce the following output
+#. This should produce something similar to the following output
 
    .. image:: images/maven-version.png
       :scale: 60
+
+
+Creating the Quickstart project
+-------------------------------
    
-7. We can now create our project with::
+#. We can now create our project with::
 
       C:>cd C:\java
       C:java> mvn archetype:create -DgroupId=org.geotools -DartifactId=tutorial
 
-8. The above command creates a simple proejct including ...
+#. The above command creates the following files and directories::
    
-   Several soruce directories:
+        tutorial
+        tutorial\pom.xml
+        tutorial\src
+        tutorial\src\main
+        tutorial\src\main\java
+        tutorial\src\main\java\org
+        tutorial\src\main\java\org\geotools
+        tutorial\src\main\java\org\geotools\App.java
+        tutorial\src\test
+        tutorial\src\test\java
+        tutorial\src\test\java\org
+        tutorial\src\test\java\org\geotools
+        tutorial\src\test\java\org\geotools\AppTest.java
+
+   App.java and AppTest.java are just placeholder files not used in this tutorial.
    
-   * src/main/java
-   * src/main/resources
-   * src/test/java
-   * src/test/resources
-   
-   And one target directory with a similar structure.
-   
-9. During the build progress your local maven repository will be used to store both
+#. During the build progress your local maven repository will be used to store both
    downloaded jars; and those you build locally.
    
    Your local Maven repository is located in your home folder.
@@ -155,83 +146,88 @@ The maven build tool works directly on the command line.
        Linux and Mac:   :file:`~/.m2/repository`
     ==================  ========================================================
 
-10. Open up the pom.xml file in your editor.
-11. We are going to start by defining the version number of GeoTools we wish to use. This workbook
-    was written for |release| although you may wish to try a newer version, or make use of a
-    nightly build by using 8-SNAPSHOT.
+#. Open the **pom.xml** file in your favourite text editor. If your editor has an XML syntax mode
+   switch into that now because it will make it a lot easier to find errors such as mis-matched
+   brackets. Some editors, such as `vim <http://www.vim.org/>`_, will do this automatically on
+   loading the file.
+
+#. We are going to start by defining the version number of GeoTools we wish to use. This workbook
+   was written for |release| although you may wish to try a newer version, or make use of a nightly
+   build by using 8-SNAPSHOT.
     
-.. literalinclude:: artifacts/pom.xml
+   .. literalinclude:: artifacts/pom.xml
         :language: xml
         :start-after: <url>http://maven.apache.org</url>
         :end-before: <dependencies>
 
-12. The following dependencies:
+#. We specify the following dependencies (GeoTools modules which your application will need):
 
-.. literalinclude:: artifacts/pom.xml
+   .. literalinclude:: artifacts/pom.xml
         :language: xml
         :start-after: </properties>
         :end-before: <repositories>
 
-13. Finally several repositories to download from:
+#. Finally, we tell maven which repositories to download jars from:
    
-.. literalinclude:: artifacts/pom.xml
+   .. literalinclude:: artifacts/pom.xml
         :language: xml
         :start-after: </dependencies>
         :end-before: </project>
 
-14. You may find it easier to cut and paste into your existing file; or just
-    :download:`download pom.xml<artifacts/pom.xml>` directly.
-   
-    And easy way to pick up typing mistakes with tags is to turn your editor into
-    an "xml" mode if it supports such things.
-    
-15. Return to the command line and maven to download the required jars and build your project::
+#. Return to the command line and get maven to download the required jars for your project with this
+   command::
     
       C:\java\example> mvn install
     
-Tips:
-
-* If maven has trouble downloading any jar; you can try again by selecting
-  :menuselection:`Project --> Update All Maven Dependencies`.
+#. If maven has trouble downloading any jar; you can try again by selecting
+   :menuselection:`Project --> Update All Maven Dependencies`.
     
-  If it really cannot connect you will need to switch to 8-SNAPSHOT and add the following
-  snap shot repository.
+   If it really cannot connect you can switch to edit the `geotools.version` property in your
+   pom.xml to 8-SNAPSHOT (GeoTools development version) and then add a reference to the snapshot
+   repository as shown below:
     
-  .. literalinclude:: artifacts/pom2.xml
-     :language: xml
-     :start-after: </dependencies>
-     :end-before: </project>
+   .. literalinclude:: artifacts/pom2.xml
+        :language: xml
+        :start-after: </dependencies>
+        :end-before: </project>
    
-Quickstart Application
-----------------------
+Creating the application
+------------------------
 
-Now that your environment is setup we can put together a simple Quickstart. This example will
-display a shapefile on screen.
+Now we are ready to create the application.
 
-1. Create the org.geotools.tutorial.Quickstart class using your text editor.
-   
-2. Fill in the following code:
+#. Go to the directory tutorial\\src\\main\\java\\org\\geotools and create a **tutorial** sub-directory.
+
+#. In the new sub-directory, create a new file **Quickstart.java** using your text editor.
+
+#. Fill in the following code:
   
   .. literalinclude:: /../src/main/java/org/geotools/tutorial/quickstart/Quickstart.java
         :language: java
+
+#. Go back to the top project directory (the one that contains your pom.xml file) and build the
+   application with the command::
+
+     mvn clean install
         
-3. We need to download some sample data to work with. The http://www.naturalearthdata.com/ project
-   is a great project supported by the North American Cartographic Information Society.
+#. If you need some shapefiles to work with you will find a selection of data at the
+   http://www.naturalearthdata.com/ project which is supported by the North American Cartographic
+   Information Society.
    
    * `50m-cultural.zip <http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/50m/cultural/50m-cultural.zip>`_ 
 
-   Please unzip the above data into a location you can find easily such as the desktop.
+   Unzip the above data into a location you can find easily such as the desktop.
 
-4. We can run the applicaiton using maven on the command line:
+#. You can run the application using Maven on the command line::
    
-   mvn exec:java -Dexec.mainClass="org.geotools.tutorial.quickstart.Quickstart"
+     mvn exec:java -Dexec.mainClass=org.geotools.tutorial.Quickstart
    
-5. The application will connect to your shapefile, produce a map context, and display the shapefile.
+#. The application will connect to your shapefile, produce a map context, and display the shapefile.
 
    .. image:: images/QuickstartMap.png
       :scale: 60
    
-6. A couple of things to note about the code example:
+#. A couple of things to note about the code example:
    
 * The shapefile is not loaded into memory. Instead it is read from disk each and every time it is needed
   This approach allows you to work with data sets larger than available memory.
@@ -242,19 +238,14 @@ display a shapefile on screen.
 Things to Try
 =============
 
-Each tutorial consists of very detailed steps followed by a series of extra questions. If you get
-stuck at any point please ask your instructor; or sign up to the geotools-users email list.
+* Try out the different sample data sets.
 
-Here are some additional challenges for you to try:
-
-* Try out the different sample data sets
-
-* You can zoom in, zoom out and show the full extents and Use the select tool to examine individual
-  countries in the sample countries.shp file
+* You can zoom in, zoom out and show the full extent and use the info tool to examine individual
+  countries in the sample countries.shp file.
 
 * Download the largest shapefile you can find and see how quickly it can be rendered. You should
   find that the very first time it will take a while as a spatial index is generated. After that
-  performance should be very good when zoomed in.
+  rendering will become much faster.
   
 * Fast: We know that one of the ways people select a spatial library is based on speed. By design
   GeoTools does not load the above shapefile into memory (instead it streams it off of disk
@@ -267,12 +258,17 @@ Here are some additional challenges for you to try:
      :start-after: // docs start cache
      :end-before:  // docs end cache
   
-  For the above example to compile hit :kbd:`Control-Shift-O` to organise imports; it will pull
-  in the following import:
-    
+  You will also need to add this import statement:
+
   .. code-block:: java
 
      import org.geotools.data.CachingFeatureSource;
+
+
+  .. Hint::
+     When working in a text editor instead of an IDE use the `GeoTools javadocs 
+     <http://docs.geotools.org/latest/javadocs/>`_ to work out what import statements are required
+     in your source. The javadocs also list the GeoTools module in which each class is found.
 
 ..  The ability to grab figure out what classes to import is a key skill; we are
     starting off here with a simple example with a single import.

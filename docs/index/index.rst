@@ -5,6 +5,7 @@ Quickstart to get up and running with GeoTools in minutes:
 
 * `Eclipse Quickstart <http://docs.geotools.org/latest/userguide/tutorial/quickstart/eclipse.html>`_ ( `stable <http://docs.geotools.org/stable/tutorials/quickstart/eclipse.html>`_ )
 * `NetBeans Quickstart <http://docs.geotools.org/latest/userguide/tutorial/quickstart/netbeans.html>`_ ( `stable <http://docs.geotools.org/stable/tutorials/quickstart/netbeans.html>`_ )
+* `Maven command line Quickstart <http://docs.geotools.org/latest/userguide/tutorial/quickstart/maven.html>`_ 
 
 GeoTools API
 ------------

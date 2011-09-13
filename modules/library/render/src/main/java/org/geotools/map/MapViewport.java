@@ -22,6 +22,9 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -82,7 +85,7 @@ public class MapViewport {
     /*
      * Flags whether this viewport can be changed
      */
-    private boolean editable;
+    private final AtomicBoolean editable;
     
     /* 
      * Flags whether this viewport's CRS has been set by the client
@@ -119,6 +122,8 @@ public class MapViewport {
 
     private boolean matchingAspectRatio;
     private boolean hasCenteringTransforms;
+    
+    private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
     /**
      * Creates a new view port. Screen area and world bounds will be empty;
@@ -164,7 +169,7 @@ public class MapViewport {
      * @param matchAspectRatio whether to enable aspect ratio matching
      */
     public MapViewport(ReferencedEnvelope bounds, boolean matchAspectRatio) {
-        this.editable = true;
+        this.editable = new AtomicBoolean(true);
         this.screenArea = new Rectangle();
         this.hasCenteringTransforms = false;
         this.matchingAspectRatio = matchAspectRatio;
@@ -185,7 +190,7 @@ public class MapViewport {
      * @throws IllegalArgumentException if {@code viewport} is {@code null}
      */
     public MapViewport(MapViewport sourceViewport) {
-        this.editable = true;
+        this.editable = new AtomicBoolean(true);
         this.matchingAspectRatio = sourceViewport.matchingAspectRatio;
         copyBounds(sourceViewport.bounds);
         doSetScreenArea(sourceViewport.screenArea);
@@ -201,7 +206,7 @@ public class MapViewport {
      * @return {@code true} if this viewport is editable
      */
     public boolean isEditable() {
-        return editable;
+        return editable.get();
     }
 
     /**
@@ -210,8 +215,8 @@ public class MapViewport {
      * 
      * @param editable {@code true} to allow changes
      */
-    public synchronized void setEditable(boolean editable) {
-        this.editable = editable;
+    public void setEditable(boolean editable) {
+        this.editable.set(editable);
     }
     
     /**
@@ -220,12 +225,17 @@ public class MapViewport {
      * 
      * @param enabled whether to enable aspect ratio adjustment
      */
-    public synchronized void setMatchingAspectRatio(boolean enabled) {
+    public void setMatchingAspectRatio(boolean enabled) {
+        lock.writeLock().lock();
+        try {
         if (checkEditable("setMatchingAspectRatio")) {
             if (enabled != matchingAspectRatio) {
                 matchingAspectRatio = enabled;
                 setTransforms(true);
             }
+        }
+        } finally {
+            lock.writeLock().unlock();
         }
     }
     
@@ -236,7 +246,12 @@ public class MapViewport {
      * @return {@code true} if enabled
      */
     public boolean isMatchingAspectRatio() {
-        return matchingAspectRatio;
+        lock.readLock().lock();
+        try {
+            return matchingAspectRatio;
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 
     /**
@@ -245,13 +260,16 @@ public class MapViewport {
      * @param listener
      */
     public void addMapBoundsListener(MapBoundsListener listener) {
-        if (boundsListeners == null) {
-            synchronized ( this ){
+        lock.writeLock().lock();
+        try {
+            if (boundsListeners == null) {
                 boundsListeners = new CopyOnWriteArrayList<MapBoundsListener>();
             }
-        }
-        if (!boundsListeners.contains(listener)) {
-            boundsListeners.add(listener);
+            if (!boundsListeners.contains(listener)) {
+                boundsListeners.add(listener);
+            }
+        } finally {
+            lock.writeLock().unlock();
         }
     }
 
@@ -269,7 +287,12 @@ public class MapViewport {
      * @return {@code true} if empty
      */
     public boolean isEmpty() {
-        return screenArea.isEmpty() || bounds.isEmpty();
+        lock.readLock().lock();
+        try {
+            return screenArea.isEmpty() || bounds.isEmpty();
+        } finally {
+            lock.readLock().unlock();
+        }
     }
     
     /**
@@ -280,8 +303,13 @@ public class MapViewport {
      * 
      * @return a copy of the current bounds
      */
-    public synchronized ReferencedEnvelope getBounds() {
-        return new ReferencedEnvelope(bounds);
+    public ReferencedEnvelope getBounds() {
+        lock.readLock().lock();
+        try {
+            return new ReferencedEnvelope(bounds);
+        } finally {
+            lock.readLock().unlock();
+        }
     }
     
     /**
@@ -302,12 +330,17 @@ public class MapViewport {
      * 
      * @param requestedBounds the requested bounds (may be {@code null})
      */
-    public synchronized void setBounds(ReferencedEnvelope requestedBounds) {
-        if (checkEditable("setBounds")) {
-            ReferencedEnvelope old = bounds;
-            copyBounds(requestedBounds);
-            setTransforms(true);
-            fireMapBoundsListenerMapBoundsChanged(Type.BOUNDS, old, bounds);
+    public void setBounds(ReferencedEnvelope requestedBounds) {
+        lock.writeLock().lock();
+        try {
+            if (checkEditable("setBounds")) {
+                ReferencedEnvelope old = bounds;
+                copyBounds(requestedBounds);
+                setTransforms(true);
+                fireMapBoundsListenerMapBoundsChanged(Type.BOUNDS, old, bounds);
+            }
+        } finally {
+            lock.writeLock().unlock();
         }
     }
     
@@ -336,8 +369,13 @@ public class MapViewport {
      * 
      * @return screen area to render into when drawing.
      */
-    public synchronized Rectangle getScreenArea() {
-        return new Rectangle(screenArea);
+    public Rectangle getScreenArea() {
+        lock.readLock().lock();
+        try {
+            return new Rectangle(screenArea);
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 
     /**
@@ -345,9 +383,14 @@ public class MapViewport {
      * 
      * @param screenArea display area in screen coordinates (may be {@code null})
      */
-    public synchronized void setScreenArea(Rectangle screenArea) {
-        if (checkEditable("setScreenArea")) {
-            doSetScreenArea(screenArea);
+    public void setScreenArea(Rectangle screenArea) {
+        lock.writeLock().lock();
+        try {
+            if (checkEditable("setScreenArea")) {
+                doSetScreenArea(screenArea);
+            }
+        } finally {
+            lock.writeLock().unlock();
         }
     }
     
@@ -372,8 +415,13 @@ public class MapViewport {
      * 
      * @return coordinate reference system used for rendering the map.
      */
-    public synchronized CoordinateReferenceSystem getCoordinateReferenceSystem() {
-        return bounds == null ? DEFAULT_CRS : bounds.getCoordinateReferenceSystem();
+    public CoordinateReferenceSystem getCoordinateReferenceSystem() {
+        lock.readLock().lock();
+        try {
+            return bounds == null ? DEFAULT_CRS : bounds.getCoordinateReferenceSystem();
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 
     /**
@@ -382,35 +430,40 @@ public class MapViewport {
      * 
      * @param crs the new coordinate reference system, or {@code null} for the default
      */
-    public synchronized void setCoordinateReferenceSystem(CoordinateReferenceSystem crs) {
-        if (checkEditable("setCoordinateReferenceSystem")) {
-            if (crs == null) {
-                bounds = new ReferencedEnvelope(bounds, DEFAULT_CRS);
-                userCRS = false;
+    public void setCoordinateReferenceSystem(CoordinateReferenceSystem crs) {
+        lock.writeLock().lock();
+        try {
+            if (checkEditable("setCoordinateReferenceSystem")) {
+                if (crs == null) {
+                    bounds = new ReferencedEnvelope(bounds, DEFAULT_CRS);
+                    userCRS = false;
 
-            } else if (!userCRS) {
-                bounds = new ReferencedEnvelope(bounds, crs);
-                userCRS = true;
-
-            } else if (!CRS.equalsIgnoreMetadata(crs, bounds.getCoordinateReferenceSystem())) {
-                if (bounds.isEmpty()) {
-                    bounds = new ReferencedEnvelope(crs);
+                } else if (!userCRS) {
+                    bounds = new ReferencedEnvelope(bounds, crs);
                     userCRS = true;
 
-                } else {
-                    try {
-                        ReferencedEnvelope old = bounds;
-                        bounds = bounds.transform(crs, true);
+                } else if (!CRS.equalsIgnoreMetadata(crs, bounds.getCoordinateReferenceSystem())) {
+                    if (bounds.isEmpty()) {
+                        bounds = new ReferencedEnvelope(crs);
                         userCRS = true;
-                        setTransforms(true);
 
-                        fireMapBoundsListenerMapBoundsChanged(MapBoundsEvent.Type.CRS, old, bounds);
+                    } else {
+                        try {
+                            ReferencedEnvelope old = bounds;
+                            bounds = bounds.transform(crs, true);
+                            userCRS = true;
+                            setTransforms(true);
 
-                    } catch (Exception e) {
-                        LOGGER.log(Level.FINE, "Difficulty transforming to {0}", crs);
+                            fireMapBoundsListenerMapBoundsChanged(MapBoundsEvent.Type.CRS, old, bounds);
+
+                        } catch (Exception e) {
+                            LOGGER.log(Level.FINE, "Difficulty transforming to {0}", crs);
+                        }
                     }
                 }
             }
+        } finally {
+            lock.writeLock().unlock();
         }
     }
     
@@ -423,8 +476,13 @@ public class MapViewport {
      * @return {@code true} if the CRS has been set; {@code false} if the
      *     viewport is using its default CRS
      */
-    public synchronized boolean isExplicitCoordinateReferenceSystem() {
-        return userCRS;
+    public boolean isExplicitCoordinateReferenceSystem() {
+        lock.readLock().lock();
+        try {
+            return userCRS;
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 
     /**
@@ -462,8 +520,13 @@ public class MapViewport {
      * @return a copy of the current screen to world transform or
      *     {@code null} if the transform is not set
      */
-    public synchronized AffineTransform getScreenToWorld() {
-        return screenToWorld == null ? null : new AffineTransform(screenToWorld);
+    public AffineTransform getScreenToWorld() {
+        lock.readLock().lock();
+        try {
+            return screenToWorld == null ? null : new AffineTransform(screenToWorld);
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 
     /**
@@ -472,8 +535,13 @@ public class MapViewport {
      * @return a copy of the current world to screen transform or
      *     {@code null} if the transform is not set
      */
-    public synchronized AffineTransform getWorldToScreen() {
-        return worldToScreen == null ? null : new AffineTransform(worldToScreen);
+    public AffineTransform getWorldToScreen() {
+        lock.readLock().lock();
+        try {
+            return worldToScreen == null ? null : new AffineTransform(worldToScreen);
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 
     /**
@@ -582,14 +650,15 @@ public class MapViewport {
      * is editable and issues a log message if not.
      */
     private boolean checkEditable(String methodName) {
-        if (!editable) {
+        final boolean state = editable.get();
+        if (!state) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.log(Level.FINE, "Ignored call to {0} because viewport is not editable", 
                         methodName);
             }
         }
         
-        return editable;
+        return state;
     }
     
 }

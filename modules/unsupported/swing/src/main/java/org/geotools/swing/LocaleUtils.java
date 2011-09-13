@@ -27,6 +27,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.util.logging.Logging;
@@ -72,6 +74,8 @@ public class LocaleUtils {
     private static final List<Locale> supportedLocales;
     
     private static Locale currentLocale = DEFAULT_LOCALE;
+    
+    private static final Lock localeLock = new ReentrantLock();
 
     static {
         InputStream in = LocaleUtils.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE);
@@ -103,6 +107,7 @@ public class LocaleUtils {
      * @return supported locales as an unmodifiable list
      */
     public static List<Locale> getSupportedLocales() {
+        localeLock.lock();
         return Collections.unmodifiableList(supportedLocales);
     }
     
@@ -114,33 +119,43 @@ public class LocaleUtils {
      * @param country uppercase two-letter ISO-3166 code.
      */
     public static void setLocale(String language, String country) {
-        language = language == null ? "" : language.trim();
-        country = country == null ? "" : country.trim();
-        
-        Locale lnew;
-        if (language.trim().isEmpty() && country.trim().isEmpty()) {
-            lnew = DEFAULT_LOCALE;
-        } else {
-            lnew = new Locale(language, country);
-        }
-        
-        if (!lnew.equals(currentLocale)) {
-            if (!supportedLocales.contains(lnew)) {
-                LOGGER.log(Level.WARNING,
-                        "{0} is not currently supported by the gt-swing module", lnew);
-                return;
+        localeLock.lock();
+        try {
+            language = language == null ? "" : language.trim();
+            country = country == null ? "" : country.trim();
+
+            Locale lnew;
+            if (language.trim().isEmpty() && country.trim().isEmpty()) {
+                lnew = DEFAULT_LOCALE;
+            } else {
+                lnew = new Locale(language, country);
             }
 
-            currentLocale = lnew;
+            if (!lnew.equals(currentLocale)) {
+                if (!supportedLocales.contains(lnew)) {
+                    LOGGER.log(Level.WARNING,
+                            "{0} is not currently supported by the gt-swing module", lnew);
+                    return;
+                }
 
-            if (bundles != null) {
-                bundles.clear();
+                currentLocale = lnew;
+
+                if (bundles != null) {
+                    bundles.clear();
+                }
             }
+        } finally {
+            localeLock.unlock();
         }
     }
     
     public static String getValue(String resBundleName, String key) {
-        return getBundle(resBundleName).getString(key);
+        localeLock.lock();
+        try {
+            return getBundle(resBundleName).getString(key);
+        } finally {
+            localeLock.unlock();
+        }
     }
 
     private static ResourceBundle getBundle(String resBundleName) {

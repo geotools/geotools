@@ -115,30 +115,46 @@ Examples
 
 * Filter by Comparing Time values
   
-  Before a date::
-    
-    Filter result = CQL.toFilter( "ATTR1 BEFORE 2006-11-30T01:30:00Z" );
-  
+  Before a date:
+
+  .. literalinclude:: /../src/main/java/org/geotools/cql/CQLExamples.java
+     :language: java
+     :start-after: // cql_beforePredicate start
+     :end-before: // cql_beforePredicate end
+
   Before a period::
     
     Filter result = CQL.toFilter( "ATTR1 BEFORE 2006-11-30T01:30:00Z/2006-12-31T01:30:00Z" );
 
-   After a date::
+  After a date:
     
-    Filter result = CQL.toFilter( "ATTR1 AFTER 2006-11-30T01:30:00Z" );
+  .. literalinclude:: /../src/main/java/org/geotools/cql/CQLExamples.java
+     :language: java
+     :start-after: // cql_afterPredicate start
+     :end-before: // cql_afterPredicate end
   
+  After a date using time zone GMT+3:
+    
+  .. literalinclude:: /../src/main/java/org/geotools/cql/CQLExamples.java
+     :language: java
+     :start-after: // cql_afterPredicateGMT3 start
+     :end-before: // cql_afterPredicateGMT3 end
+
   After a period::
     
     Filter result = CQL.toFilter( "ATTR1 AFTER 2006-11-30T01:30:00Z/2006-12-31T01:30:00Z" );
 
   Temporal predicate with duration (ten day after 2006-11-30T01:30:00Z )::
     
-    Filter result = CQL.toFilter( "ATTR1 AFTER 2006-11-30T01:30:00Z/    P10D" );
+    Filter result = CQL.toFilter( "ATTR1 AFTER 2006-11-30T01:30:00Z/P10D" );
     Filter result = CQL.toFilter( "ATTR1 AFTER 2006-11-30T01:30:00Z/T10H" );
   
-  During predicate::
+  During predicate:
     
-    Filter result = CQL.toFilter( "ATTR1 DURING 2006-11-30T01:30:00Z/2006-12-31T01:30:00Z" );
+  .. literalinclude:: /../src/main/java/org/geotools/cql/CQLExamples.java
+     :language: java
+     :start-after: // cql_duringPredicate start
+     :end-before: // cql_duringPredicate end
 
 * Filter based on Existence
   

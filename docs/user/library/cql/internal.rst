@@ -112,7 +112,9 @@ Temporal Predicate::
   <date-year> ::= <digit><digit><digit><digit>
   <date-month> ::= <digit><digit>
   <date-day> ::= <digit><digit>
-  <UTC-time> ::= <time-hour> ":" <time-minute> ":" <time-second> "Z"
+  <UTC-time> ::=<time-hour>":"<time-minute>":"<time-second> [<time-zone-offset>]
+  <time-zone-offset> ::= "Z" | <sign> <time-hour>":"<time-minute>
+
   <time-hour> ::= <digit><digit>
   <time-minute> ::= <digit><digit>
   <time-second> ::= <digit><digit>[.<digit>...]

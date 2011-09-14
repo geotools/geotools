@@ -167,10 +167,12 @@ Examples
      :start-after: // duringPredicateWithLefHandtExpression start
      :end-before: // duringPredicateWithLefHandtExpression end
 
+  The following example presents a time predicate that includes the UTC time zone (GMT +3) in date-time expression:
 
-* Filter by Comparing time values::
-  
-        Filter filter = ECQL.toFilter("DATE BEFORE 2006-12-31T01:30:00Z");
+  .. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
+     :language: java
+     :start-after: // utcTimeZone start
+     :end-before: // utcTimeZone end
 
 * Filter Nulls::
   

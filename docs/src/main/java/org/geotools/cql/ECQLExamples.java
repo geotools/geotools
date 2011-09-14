@@ -2,6 +2,9 @@ package org.geotools.cql;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 import java.util.logging.Logger;
 
 import org.geotools.filter.text.cql2.CQL;
@@ -10,6 +13,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 import org.opengis.filter.temporal.During;
 
 /**
@@ -43,11 +47,13 @@ public class ECQLExamples {
                 System.out.println(" 8 - Between: population Between 10000 and 20000");
                 System.out.println(" 9 - area( shape ) BETWEEN 10000 AND 30000");
                 System.out.println("10 - Spatial Operation using the contains DE-9IM: RELATE(geometry, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), T*****FF*)"); 
-                System.out.println("11 - Temporal After: 2006-11-30T01:00:00Z AFTER 2006-11-30T01:30:00Z");
-                System.out.println("12 - Temporal Before: 2006-11-30T01:00:00Z BEFORE 2006-11-30T01:30:00Z");
-                System.out.println("13 - Temporal During: 2006-11-30T01:00:00Z DURING 2006-11-30T00:30:00Z/2006-11-30T01:30:00Z ");
-                System.out.println("14 - Temporal During: lastEarthQuake DURING 1700-01-01T00:00:00Z/2011-01-01T00:00:00Z");
-                System.out.println("15 - In predicate: principalMineralResource IN ('silver','oil', 'gold' )");
+                System.out.println("11 - Spatial Operation using geometry expressions: INTERSECTS(POLYGON((1 2, 2 2, 2 3, 1 2)), POINT(1 2))"); // TODO 
+                System.out.println("12 - Temporal After: 2006-11-30T01:00:00Z AFTER 2006-11-30T01:30:00Z");
+                System.out.println("13 - Temporal Before: 2006-11-30T01:00:00Z BEFORE 2006-11-30T01:30:00Z");
+                System.out.println("14 - Temporal During: 2006-11-30T01:00:00Z DURING 2006-11-30T00:30:00Z/2006-11-30T01:30:00Z ");
+                System.out.println("15 - Temporal During: lastEarthQuake DURING 1700-01-01T00:00:00Z/2011-01-01T00:00:00Z");
+                System.out.println("16 - In predicate: principalMineralResource IN ('silver','oil', 'gold' )");
+                System.out.println("17 - Temporal During using UTC Zone +3: 2006-11-30T01:00:00+03:00 DURING 2006-11-30T00:30:00+03:00/2006-11-30T01:30:00+03:00");
                 
                 System.out.println("0 - quite");
                 System.out.print(">");
@@ -85,28 +91,34 @@ public class ECQLExamples {
                 	betweenUsingExpression();
                 	break;
                 case 10:
-                    relatePattern();
+                    //TODO
                     break;
                 case 11:
-                    afterPredicateWithLefHandtExpression();
+                    relatePattern();
                     break;
                 case 12:
-                    beforePredicateWithLefHandtExpression();
+                    afterPredicateWithLefHandtExpression();
                     break;
                 case 13:
-                    duringPredicateWithLefHandtExpression();
+                    beforePredicateWithLefHandtExpression();
                     break;
                 case 14:
+                    duringPredicateWithLefHandtExpression();
+                    break;
+                case 15:
                 	duringPredicateWithLefHandtAttribute();
                 	break;
                 	
-                case 15:
+                case 16:
                 	inPredicate();
+                	break;
+                case 17: 
+                	utcTimeZone();
                 	break;
                 default:
                     System.out.println("invalid option");
                 }
-                System.out.println();
+                System.out.println("Press a key to continue.");
             }
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());
@@ -153,8 +165,7 @@ public class ECQLExamples {
         Utility.prittyPrintFilter(filter);
 		
         Boolean result = filter.evaluate(null);
-        System.out.println("Result of filter evaluation: " + result);
-		
+        System.out.println("Result of filter evaluation: " + result);		
 	}
     
     
@@ -168,6 +179,26 @@ public class ECQLExamples {
         Boolean result = filter.evaluate(null);
         System.out.println("Result of filter evaluation: " + result);
 	}
+
+    private static void utcTimeZone() throws Exception{
+    	
+    	// utcTimeZone start
+        Filter filter = ECQL.toFilter("2006-11-30T01:00:00+03:00 DURING 2006-11-30T00:30:00+03:00/2006-11-30T01:30:00+03:00 ");
+    	// utcTimeZone end
+        Utility.prittyPrintFilter(filter);
+        
+        Boolean result = filter.evaluate(null);
+        System.out.println("Result of filter evaluation: " + result);
+
+        During during = (During) filter;
+        Literal literal = (Literal)during.getExpression1();
+        Date date = (Date)literal.getValue();
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ");
+        TimeZone tz = TimeZone.getTimeZone("GMT+0300");
+        sdf.setTimeZone(tz);
+        System.out.println("Expression 1 as Date: " +sdf.format(date));
+    }
 
     private static void duringPredicateWithLefHandtAttribute() throws Exception{
     	

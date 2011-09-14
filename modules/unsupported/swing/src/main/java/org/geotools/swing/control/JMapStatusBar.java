@@ -39,7 +39,7 @@ import javax.swing.SwingUtilities;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.geotools.swing.LocaleUtils;
+import org.geotools.swing.locale.LocaleUtils;
 import org.geotools.swing.MapPane;
 import org.geotools.swing.dialog.AbstractSimpleDialog;
 import org.geotools.swing.dialog.DialogUtils;

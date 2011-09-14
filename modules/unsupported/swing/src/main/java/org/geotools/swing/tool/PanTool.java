@@ -26,7 +26,7 @@ import javax.swing.ImageIcon;
 import org.geotools.swing.MapPane;
 import org.geotools.swing.JMapPane;
 
-import org.geotools.swing.LocaleUtils;
+import org.geotools.swing.locale.LocaleUtils;
 import org.geotools.swing.event.MapMouseEvent;
 
 /**

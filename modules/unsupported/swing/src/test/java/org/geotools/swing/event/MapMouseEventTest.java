@@ -28,6 +28,7 @@ import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiTask;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.swing.testutils.MockMapPane;
 
@@ -72,6 +73,7 @@ public class MapMouseEventTest {
             @Override
             protected void executeInEDT() throws Throwable {
                 pane = new MockMapPane();
+                pane.setMapContent(new MapContent());
                 pane.setScreenArea(SCREEN);
                 pane.setDisplayArea(WORLD);
             }

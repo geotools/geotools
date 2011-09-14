@@ -17,6 +17,7 @@
 
 package org.geotools.swing;
 
+import org.geotools.swing.locale.LocaleUtils;
 import java.awt.BorderLayout;
 import java.awt.Point;
 import java.awt.Rectangle;

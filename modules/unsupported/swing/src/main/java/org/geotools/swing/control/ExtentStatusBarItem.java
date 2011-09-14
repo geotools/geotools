@@ -20,7 +20,7 @@ package org.geotools.swing.control;
 import javax.swing.JLabel;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.swing.LocaleUtils;
+import org.geotools.swing.locale.LocaleUtils;
 import org.geotools.swing.MapPane;
 import org.geotools.swing.event.MapPaneAdapter;
 import org.geotools.swing.event.MapPaneEvent;

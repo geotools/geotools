@@ -19,7 +19,7 @@ package org.geotools.swing.action;
 
 import java.awt.event.ActionEvent;
 
-import org.geotools.swing.LocaleUtils;
+import org.geotools.swing.locale.LocaleUtils;
 import org.geotools.swing.MapPane;
 
 

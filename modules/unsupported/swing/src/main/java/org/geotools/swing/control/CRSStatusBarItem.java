@@ -25,7 +25,8 @@ import javax.swing.JButton;
 import javax.swing.JPopupMenu;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.swing.LocaleUtils;
+import org.geotools.map.MapContent;
+import org.geotools.swing.locale.LocaleUtils;
 import org.geotools.swing.MapPane;
 import org.geotools.swing.event.MapPaneAdapter;
 import org.geotools.swing.event.MapPaneEvent;
@@ -75,7 +76,12 @@ public class CRSStatusBarItem extends StatusBarItem {
         btn.setToolTipText(TOOL_TIP);
         add(btn);
 
-        displayCRS(mapPane.getMapContent().getCoordinateReferenceSystem());
+        CoordinateReferenceSystem crs = null;
+        MapContent mapContent = mapPane.getMapContent();
+        if (mapContent != null) {
+            crs = mapContent.getCoordinateReferenceSystem();
+        }
+        displayCRS(crs);
 
         mapPane.addMapPaneListener(new MapPaneAdapter() {
             @Override

@@ -19,7 +19,7 @@ package org.geotools.swing.action;
 
 import java.awt.event.ActionEvent;
 
-import org.geotools.swing.LocaleUtils;
+import org.geotools.swing.locale.LocaleUtils;
 import org.geotools.swing.MapPane;
 
 /**
@@ -27,8 +27,8 @@ import org.geotools.swing.MapPane;
  * 
  * @author Michael Bedward
  * @since 8.0
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swing/src/main/java/org/geotools/swing/action/PanAction.java $
- * @version $Id: PanAction.java 37635 2011-07-13 13:39:39Z mbedward $
+ * @source $URL$
+ * @version $Id$
  */
 public class NoToolAction extends MapAction {
     /** Name for this tool */

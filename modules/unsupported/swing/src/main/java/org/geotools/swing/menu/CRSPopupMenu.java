@@ -27,7 +27,7 @@ import javax.swing.JPopupMenu;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.swing.ExceptionMonitor;
-import org.geotools.swing.LocaleUtils;
+import org.geotools.swing.locale.LocaleUtils;
 import org.geotools.swing.dialog.JCRSChooser;
 import org.geotools.swing.dialog.JTextReporter;
 import org.geotools.swing.MapPane;

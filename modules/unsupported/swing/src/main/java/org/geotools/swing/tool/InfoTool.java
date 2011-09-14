@@ -30,7 +30,7 @@ import javax.swing.ImageIcon;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
-import org.geotools.swing.LocaleUtils;
+import org.geotools.swing.locale.LocaleUtils;
 import org.geotools.swing.dialog.JTextReporter;
 import org.geotools.swing.dialog.TextReporterListener;
 import org.geotools.swing.event.MapMouseEvent;

@@ -29,8 +29,8 @@ import org.fest.swing.fixture.FrameFixture;
  * 
  * @author Michael Bedward
  * @since 8.0
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swing/src/test/java/org/geotools/swing/JMapPaneGraphicsTest.java $
- * @version $Id: JMapPaneGraphicsTest.java 37777 2011-08-03 13:19:58Z mbedward $
+ * @source $URL$
+ * @version $Id$
  */
 public class JMapPaneGraphicsTestBase extends JMapPaneTestBase {
     

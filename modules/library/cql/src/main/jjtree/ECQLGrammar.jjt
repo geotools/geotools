@@ -258,7 +258,8 @@ TOKEN [IGNORE_CASE]: /* Literals */
 	< DURATION:  ("P" <DUR_DATE> |  "T" <DUR_TIME>) > |
 	
 	< #FULL_DATE: <DIGIT><DIGIT><DIGIT><DIGIT> "-" <DIGIT><DIGIT> "-" <DIGIT><DIGIT> > |
-	< #UTC_TIME: <DIGIT><DIGIT> ":" <DIGIT><DIGIT> ":" <DIGIT><DIGIT> ("." (<DIGIT>)+)? "Z" > |
+    < #TIME_ZONE: ("Z") | (("+"|"-") <DIGIT><DIGIT> ":" <DIGIT><DIGIT>) > | 
+    < #UTC_TIME: <DIGIT><DIGIT> ":" <DIGIT><DIGIT> ":" <DIGIT><DIGIT> ("." (<DIGIT>)+)? (<TIME_ZONE>)? > |
 	< DATE_TIME : <FULL_DATE>"T"<UTC_TIME> > |
 
     < IDENTIFIER: (<LETTER> (<LETTER>|<DIGIT>)*) | <DOUBLE_QUOTE> (<ANY>)+ <DOUBLE_QUOTE> > |

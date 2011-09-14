@@ -17,33 +17,17 @@
 
 package org.geotools.filter.text.cql2;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
-import org.geotools.filter.FilterFactoryFinder;
 import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.Language;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.capability.Operator;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.spatial.BinarySpatialOperator;
 
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.io.WKTReader;
 
 /**
@@ -95,7 +79,7 @@ public class CQLLiteralTest {
         BinarySpatialOperator result;
         Literal geom;
 
-        // Point
+        // Point":" <time-second> "Z"
         result = (BinarySpatialOperator) CompilerUtil.parseFilter(this.language, "WITHIN(ATTR1, POINT(1 2))");
 
         geom = (Literal) result.getExpression2();

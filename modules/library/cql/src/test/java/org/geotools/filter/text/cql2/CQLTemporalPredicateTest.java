@@ -34,10 +34,21 @@ import org.opengis.filter.temporal.Before;
 /**
  * Test for Temporal Predicate
  *
- * @author Mauricio Pazos (Axios Engineering)
+ * <pre>
+ * &lt;temporal predicate  &gt;::=
+ *      &lt;attribute_name &gt; BEFORE &lt;date-time expression &gt; 
+ *  |   &lt;attribute_name &gt; BEFORE OR DURING  &lt;period &gt;
+ *  |   &lt;attribute_name &gt; DURING  &lt;period &gt;
+ *  |   &lt;attribute_name &gt; DURING OR AFTER  &lt;period &gt;
+ *  |   &lt;attribute_name &gt; AFTER  &lt;date-time expression &gt;
+ * &lt;date-time expression &gt; ::=  &lt;date-time &gt; |  &lt;period &gt;
+ * &lt;period &gt; ::=
+ *      &lt;date-time &gt; &quot;/&quot;  &lt;date-time &gt;
+ *  |   &lt;date-time &gt; &quot;/&quot;  &lt;duration &gt; 
+ *  |   &lt;duration &gt; &quot;/&quot;  &lt;date-time &gt; 
+ * </pre>
  * @since 2.5
- *
- *
+ * @author Mauricio Pazos (Axios Engineering)
  * @source $URL$
  */
 public class CQLTemporalPredicateTest {
@@ -65,24 +76,7 @@ public class CQLTemporalPredicateTest {
     
 
     /**
-     * Test temporal predicate. This test <b>BEFORE</b> rule [*]
-     * <p>
-     *
-     * <pre>
-     * &lt;temporal predicate  &gt;::=
-     *      &lt;attribute_name &gt; &lt;b&gt;BEFORE&lt;/b&gt;  &lt;date-time expression &gt; [*]
-     *  |   &lt;attribute_name &gt; BEFORE OR DURING  &lt;period &gt;
-     *  |   &lt;attribute_name &gt; DURING  &lt;period &gt;
-     *  |   &lt;attribute_name &gt; DURING OR AFTER  &lt;period &gt;
-     *  |   &lt;attribute_name &gt; AFTER  &lt;date-time expression &gt;
-     * &lt;date-time expression &gt; ::=  &lt;date-time &gt; |  &lt;period &gt;[*]
-     * &lt;period &gt; ::=
-     *      &lt;date-time &gt; &quot;/&quot;  &lt;date-time &gt;[*]
-     *  |   &lt;date-time &gt; &quot;/&quot;  &lt;duration &gt; [*]
-     *  |   &lt;duration &gt; &quot;/&quot;  &lt;date-time &gt; [*]
-     * </pre>
-     *
-     * </p>
+     * This test for BEFORE rule
      */
     @Test
     public void before() throws Exception {
@@ -151,10 +145,32 @@ public class CQLTemporalPredicateTest {
      * 
      * @throws Exception
      */
+    @Test(expected=CQLException.class) 
+    public void lostTime() throws CQLException{
+                
+        CompilerUtil.parseFilter(this.language, "ZONE_VALID_FROM BEFORE 2008-09-09");
+
+        Assert.fail("CQLException is expected. The \"date-time\" rule requires a time");
+    }
+
+    @Test(expected=CQLException.class) 
+    public void badTime() throws CQLException{
+                
+        CompilerUtil.parseFilter(this.language, "ZONE_VALID_FROM BEFORE 2008-09-09 17:00:00");
+
+        Assert.fail("CQLException is expected. The \"date-time\" rule require a time preceded by \"T\"");
+    }
+    
+    /**
+     * It must produce a filter with an instance of Date object
+     * 
+     * @throws Exception
+     */
     @Test 
     public void dateTime() throws Exception{
                 
-        Filter resultFilter = CompilerUtil.parseFilter(this.language, "ZONE_VALID_FROM BEFORE 2008-09-09T17:00:00Z");
+    	final String cqlDateTime = "2008-09-09T17:00:00Z";
+        Filter resultFilter = CompilerUtil.parseFilter(this.language, "ZONE_VALID_FROM BEFORE " + cqlDateTime);
 
         Before comparation = (Before) resultFilter;
 
@@ -166,11 +182,66 @@ public class CQLTemporalPredicateTest {
         
         final DateFormat dateFormatter = new SimpleDateFormat(DATE_FORMAT);
 
-        Date expectedDate = dateFormatter.parse("2008-09-09T17:00:00Z");
+        Date expectedDate = dateFormatter.parse(cqlDateTime);
         Date actualDate = (Date) literalDate.getValue();
         
         Assert.assertEquals(expectedDate, actualDate);
         
+    }
+
+    /**
+     * Test local time
+     * 
+     * @throws Exception
+     */
+    @Test 
+    public void dateTimeWithLocalTime() throws Exception{
+                
+        String localTime = "2008-09-09T17:00:00";
+
+        Filter resultFilter = CompilerUtil.parseFilter(this.language, "ZONE_VALID_FROM BEFORE " + localTime);
+
+        Before comparation = (Before) resultFilter;
+
+        // date test 
+        Expression expr2 = comparation.getExpression2();
+        Literal literalDate = (Literal)expr2;
+        
+        final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
+        
+        final DateFormat dateFormatter = new SimpleDateFormat(DATE_FORMAT);
+
+		Date expectedDate = dateFormatter.parse(localTime);
+        Date actualDate = (Date) literalDate.getValue();
+        
+        Assert.assertEquals(expectedDate, actualDate);
+        
+    }
+
+    /**
+     * Test time zone offset
+     * 
+     * @throws Exception
+     */
+    @Test 
+    public void dateTimeWithOffset() throws Exception{
+                
+        String expectedTime = "2008-09-09T17:00:00+01:00";
+
+        Filter resultFilter = CompilerUtil.parseFilter(this.language, "ZONE_VALID_FROM BEFORE " + expectedTime);
+
+        Before comparation = (Before) resultFilter;
+
+        // date test 
+        Expression expr2 = comparation.getExpression2();
+        Literal literalDate = (Literal)expr2;
+        
+        final DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+		Date expectedDate = dateFormatter.parse("2008-09-09T17:00:00+0100");
+
+		Date actualDate =  (Date) literalDate.getValue();
+        
+        Assert.assertEquals(expectedDate, actualDate);
     }
     /**
      * before with compound attribute

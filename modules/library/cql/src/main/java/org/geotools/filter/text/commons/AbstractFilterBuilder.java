@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.text.cql2.CQLException;
@@ -83,8 +84,6 @@ import com.vividsolutions.jts.io.WKTReader;
  * @source $URL$
  */
 public abstract class AbstractFilterBuilder {
-
-    private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
     private final FilterFactory filterFactory;
 
@@ -366,12 +365,34 @@ public abstract class AbstractFilterBuilder {
 		return asLiteralDate(token.toString());
 	}
 
-	private Literal asLiteralDate(final String strDate) throws CQLException {
+	/**
+	 * Transforms the cqlDateTime to a literal date. 
+	 * @param cqlDateTime a string with the format yyyy-MM-ddTHH:mm:ss.s[(+|-)HH:mm]
+	 * @return a literal Date
+	 * @throws CQLException
+	 */
+	private Literal asLiteralDate(final String cqlDateTime) throws CQLException {
 		try {
+			
+			final String date = extractDate(cqlDateTime);
+			final String time = extractTime(cqlDateTime);
+			final String timeZone = extractTimeZone(cqlDateTime);
+			
+			StringBuilder format = new StringBuilder( "yyyy-MM-dd" );
+			if(! "".equals(time)){
+			    format.append("'T'HH:mm:ss"); 
+			}
+			if(! "".equals(timeZone)){
+				if("Z".equals(timeZone)){ // it is Zulu or 0000 zone (old semantic)
+					format.append("'Z'");
+				} else { // GMT zone [+|-]0000 // new semantic
+					format.append("Z");
+				}
+			}
+			String dateTimeFormat = format.toString();
+			DateFormat formatter = new SimpleDateFormat(dateTimeFormat);
 
-			DateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
-
-			Date dateTime = formatter.parse(strDate);
+			Date dateTime = formatter.parse(date + "T"+ time + timeZone);
 			Literal literalDate = filterFactory.literal(dateTime);
 
 			return literalDate;
@@ -381,7 +402,79 @@ public abstract class AbstractFilterBuilder {
 		}
 	}
 
-    public Not buildNotFilter(Filter eq) {
+	/**
+	 * Extracts the time zone from the parameter
+	 * @param cqlDateTime 
+	 * @return String with the time zone
+	 */
+    private String extractTimeZone(final String cqlDateTime) throws CQLException {
+    	
+		String strUpper = cqlDateTime.toUpperCase();
+		assert strUpper.indexOf("T") != 0: "the time is not optional in the date-time syntax rule"; 
+		
+		String time = strUpper.split("T")[1];
+		
+		int index;
+		index = time.indexOf("Z");
+		if(index != -1 ){
+			return "Z";
+		} 
+		index = time.indexOf("+");
+		if(index != -1 ){
+			return toTimeZone(time.substring(index));
+		}
+		index = time.indexOf("-");
+		if(index != -1 ){
+			return toTimeZone(time.substring(index));
+		} else {
+			return ""; // it will use the locale zone
+		}
+	}
+
+    /**
+     * Remove the ":". The Z format is [sign]hhmm 
+     * @param cqlTimeZone  [sign]hh:mm
+     * @return [sign]hhmm
+     */
+    private String toTimeZone(final String cqlTimeZone) {
+		
+    	String[] str = cqlTimeZone.split(":");
+    	assert str.length == 2;
+    	return  str[0].concat(str[1]);
+	}
+
+	/**
+     * Extracts the time
+     * 
+     * @param cqlDateTime
+     * @return the time or a null string
+     */
+	private String extractTime(String cqlDateTime) {
+		
+		// splits dateTime to get the Time and time zone in the second array element
+		String strUpper = cqlDateTime.toUpperCase();
+		String[] dateTime = strUpper.split("T");
+		assert dateTime.length >= 2 : "date and time is required by the sintax rule";
+		
+		// splits the time and time zone 
+		String[] time = dateTime[1].split("[+|-|Z]");
+		
+		return time[0]; // the time
+	}
+
+	/**
+	 * Extracts the Date from cql date time
+	 * @param cqlDateTime
+	 * @return String with the date
+	 */
+	private String extractDate(final String cqlDateTime) {
+		String strUpper = cqlDateTime.toUpperCase();
+		String[] dateTime = strUpper.split("T");
+		assert dateTime.length > 0 : "must have a date";
+		return dateTime[0];
+	}
+
+	public Not buildNotFilter(Filter eq) {
         return filterFactory.not(eq);
     }
 

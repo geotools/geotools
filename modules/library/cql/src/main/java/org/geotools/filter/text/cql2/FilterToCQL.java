@@ -18,9 +18,13 @@ package org.geotools.filter.text.cql2;
 
 import java.util.logging.Logger;
 
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.factory.Hints;
 import org.geotools.filter.text.commons.FilterToTextUtil;
 import org.opengis.filter.And;
+import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.ExcludeFilter;
+import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.Id;
 import org.opengis.filter.IncludeFilter;
@@ -145,32 +149,6 @@ class FilterToCQL implements FilterVisitor {
     	checkLeftExpressionIsProperty(filter.getExpression1());
     	return FilterToTextUtil.buildComparison(filter, extraData, "!=");
     }
-
-    
-    /**
-     * Checks if the comparison filter has a literal date.
-     * @param filter
-     * @return true if the comparison has a literal date , false in other case.
-     */
-//FIXME    private boolean comparisonHasDate( Filter filter) {
-//    	
-//    	if(!(filter instanceof BinaryComparisonOperator)){
-//    		return false;
-//    		
-//    	}
-//    	BinaryComparisonOperator  comparison  = (BinaryComparisonOperator) filter;
-//    	boolean bool;
-//        if( comparison.getExpression2() instanceof Literal){
-//            Literal literal = (Literal) comparison.getExpression2();
-//            bool =  literal.getValue() instanceof Date;
-//        } else {
-//            Literal literal = (Literal) comparison.getExpression1();
-//            bool =  literal.getValue() instanceof Date;
-//        }
-//        return bool;
-//	}
-    
-    
 
     
     public Object visit(PropertyIsGreaterThan filter, Object extraData) {

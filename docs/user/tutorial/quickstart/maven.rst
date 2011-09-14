@@ -107,8 +107,8 @@ Installing Maven
       :scale: 60
 
 
-Creating the Quickstart project
--------------------------------
+Creating a new project
+----------------------
    
 #. We can now create our project with::
 
@@ -191,8 +191,9 @@ Creating the Quickstart project
         :start-after: </dependencies>
         :end-before: </project>
    
-Creating the application
-------------------------
+
+Creating the Quickstart application
+-----------------------------------
 
 Now we are ready to create the application.
 
@@ -209,6 +210,10 @@ Now we are ready to create the application.
    application with the command::
 
      mvn clean install
+
+
+Running the application
+-----------------------
         
 #. If you need some shapefiles to work with you will find a selection of data at the
    http://www.naturalearthdata.com/ project which is supported by the North American Cartographic
@@ -234,6 +239,7 @@ Now we are ready to create the application.
       
 * We are using a very basic display style here that just shows feature outlines. In the examples
   that follow we will see how to specify more sophisticated styles.
+
 
 Things to Try
 =============

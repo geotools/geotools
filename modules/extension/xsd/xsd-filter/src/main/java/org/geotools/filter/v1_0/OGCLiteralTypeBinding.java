@@ -25,6 +25,7 @@ import org.opengis.filter.expression.Literal;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.geotools.xml.Text;
 
 
 /**
@@ -108,7 +109,11 @@ public class OGCLiteralTypeBinding extends AbstractComplexBinding {
 
         //1. has child elements
         if (!node.getChildren().isEmpty()) {
-            return factory.literal(node.getChildValue(0));
+            Object childValue = node.getChildValue(0);
+            if(childValue instanceof Text){
+                childValue = ((Text)childValue).getValue();
+            }
+            return factory.literal(childValue);
         }
 
         //2. no child elements, just return the text if any

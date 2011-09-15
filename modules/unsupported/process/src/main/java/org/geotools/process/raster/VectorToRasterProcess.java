@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -46,6 +46,10 @@ import java.util.logging.Logger;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.TiledImage;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+
 import org.geotools.coverage.grid.GridCoordinates2D;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -72,9 +76,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 import org.opengis.util.ProgressListener;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
  * A Process to rasterize vector features in an input FeatureCollection.
@@ -88,9 +89,9 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  *
  * @author Steve Ansari, NOAA
  * @author Michael Bedward
- *
- *
+ * @since 2.6
  * @source $URL$
+ * @version $Id$
  */
 public class VectorToRasterProcess extends AbstractFeatureCollectionProcess {
 
@@ -287,6 +288,7 @@ public class VectorToRasterProcess extends AbstractFeatureCollectionProcess {
                 case LINESTRING:
                 case POINT:
                     drawGeometry(geomType, geometry);
+                    break;
                     
                 default:
                     throw new UnsupportedOperationException(
@@ -389,6 +391,45 @@ public class VectorToRasterProcess extends AbstractFeatureCollectionProcess {
         } else if (attribute instanceof Expression) {
             valueSource = ValueSource.EXPRESSION;
 
+            SimpleFeature feature = features.features().next();
+            Object value = ((Expression)attribute).evaluate(feature);
+            
+            // if the expression evaluates to a string check if the
+            // value can be cast to a Number
+            if (value.getClass().equals(String.class)) {
+                Boolean hasException = false;
+                try {
+                    Integer.valueOf((String)value);
+                    transferType = TransferType.INTEGRAL;
+                } catch (NumberFormatException e) {
+                    hasException = true;
+                }
+                if (hasException) {
+                    hasException = false;
+                    try {
+                        Float.valueOf((String)value);
+                        transferType = TransferType.FLOAT;
+                    } catch (NumberFormatException e) {
+                        hasException = true;
+                    }
+                }
+                if (hasException) {
+                    throw new VectorToRasterException(((Expression)attribute).toString() + " does not evaluate to a number");
+                }
+            } else if (!Number.class.isAssignableFrom(value.getClass())) {
+                throw new VectorToRasterException(((Expression)attribute).toString() + " does not evaluate to a number");
+            } else if (Float.class.isAssignableFrom(value.getClass())) {
+                transferType = TransferType.FLOAT;
+            } else if (Double.class.isAssignableFrom(value.getClass())) {
+                transferType = TransferType.FLOAT;
+                Logger.getLogger(VectorToRasterProcess.class.getName()).log(Level.WARNING, "coercing double feature values to float raster values");
+            } else if (Long.class.isAssignableFrom(value.getClass())) {
+                transferType = TransferType.INTEGRAL;
+                Logger.getLogger(VectorToRasterProcess.class.getName()).log(Level.WARNING, "coercing long feature values to int raster values");
+        } else {
+                transferType = TransferType.INTEGRAL;
+            }
+            
         } else {
             throw new VectorToRasterException(
                     "value attribute must be a feature property name" +
@@ -542,13 +583,14 @@ public class VectorToRasterProcess extends AbstractFeatureCollectionProcess {
                 WritableRaster destTile = destImage.getWritableTile(xt, yt);
 
                 int[] data = new int[srcTile.getDataBuffer().getSize()];
-                srcTile.getDataElements(srcTile.getMinX(), srcTile.getMinY(), data);
+                srcTile.getDataElements(srcTile.getMinX(), srcTile.getMinY(),
+                        srcTile.getWidth(), srcTile.getHeight(), data);
 
                 Rectangle bounds = destTile.getBounds();
 
                 int k = 0;
                 for (int dy = bounds.y, drow = 0; drow < bounds.height; dy++, drow++) {
-                    for (int dx = bounds.x, dcol = 0; dcol < bounds.width; dx++, dcol++) {
+                    for (int dx = bounds.x, dcol = 0; dcol < bounds.width; dx++, dcol++, k++) {
                         destTile.setSample(dx, dy, 0, Float.intBitsToFloat(data[k]));
                     }
                 }

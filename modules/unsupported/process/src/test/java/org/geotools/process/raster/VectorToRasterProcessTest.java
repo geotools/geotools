@@ -28,7 +28,19 @@ import java.util.Random;
 import javax.media.jai.iterator.RectIter;
 import javax.media.jai.iterator.RectIterFactory;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKTReader;
+
+import org.geotools.coverage.grid.GridCoordinates2D;
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.grid.GridEnvelope2D;
+import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.FeatureCollections;
@@ -38,6 +50,8 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.process.Process;
 import org.geotools.process.Processors;
+import org.geotools.process.feature.AbstractFeatureCollectionProcessFactory;
+import org.geotools.referencing.crs.DefaultEngineeringCRS;
 
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -47,20 +61,6 @@ import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
 import org.opengis.util.ProgressListener;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTReader;
-import org.geotools.coverage.grid.GridCoordinates2D;
-import org.geotools.coverage.grid.GridEnvelope2D;
-import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.referencing.crs.DefaultEngineeringCRS;
-import org.geotools.referencing.cs.DefaultCartesianCS;
-
-
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -68,8 +68,6 @@ import static org.junit.Assert.*;
  * Unit tests for rasterizing vector features.
  * 
  * @author Michael Bedward
- *
- *
  * @source $URL$
  */
 public class VectorToRasterProcessTest {
@@ -168,6 +166,107 @@ public class VectorToRasterProcessTest {
         }
         
     }
+    
+    /**
+     * Runs the Process.execute method using LineStrings with float values.
+     */
+    @Test
+    public void executeProcessWithFloat() throws Exception {
+        System.out.println("   execute process using float values");
+        Process p = Processors.createProcess(new NameImpl("gt", "VectorToRaster"));
+        assertNotNull(p);
+
+        SimpleFeatureCollection features = createFloatLines();
+        ReferencedEnvelope bounds = features.getBounds();
+        
+        Dimension gridDim = new Dimension(
+                (int)bounds.getWidth(),
+                (int)bounds.getHeight());
+
+        ProgressListener monitor = null;
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(AbstractFeatureCollectionProcessFactory.FEATURES.key, features);
+        map.put(VectorToRasterFactory.ATTRIBUTE.key, "value");
+        map.put(VectorToRasterFactory.RASTER_WIDTH.key, gridDim.width);
+        map.put(VectorToRasterFactory.RASTER_HEIGHT.key, gridDim.height);
+        map.put(VectorToRasterFactory.BOUNDS.key, bounds);
+
+        Map<String, Object> result = p.execute(map, monitor);
+        GridCoverage2D cov = (GridCoverage2D) result.get(VectorToRasterFactory.RESULT.key);
+        
+        //textPrintFloat(cov);
+        
+        /*
+         * Verify each vertex is the correct value
+         */
+        SimpleFeatureIterator iter = features.features();
+        float[] covValue = new float[1];
+        GridCoordinates2D gridP = new GridCoordinates2D();
+        while (iter.hasNext()) {
+            SimpleFeature feature = iter.next();
+            Coordinate[] coords = ((Geometry)feature.getDefaultGeometry()).getCoordinates();
+            for (Coordinate coord : coords) {
+                gridP.x = coord.x == gridDim.width ? (int)coord.x-1 : (int)coord.x;
+                gridP.y = coord.y == gridDim.height ? (int)coord.y-1 : (int)coord.y;
+
+                cov.evaluate(gridP, covValue);
+                Float value = (Float)feature.getAttribute("value");
+                assertEquals(value.floatValue(), covValue[0], .01);
+            }
+        }
+    }
+    
+    /**
+     * Runs the Process.execute method using LineStrings with String values that 
+     * evaluate to integers.
+     */
+    @Test
+    public void executeProcessWithString() throws Exception {
+        System.out.println("   execute process using String values");
+        Process p = Processors.createProcess(new NameImpl("gt", "VectorToRaster"));
+        assertNotNull(p);
+
+        SimpleFeatureCollection features = createStringLines();
+        ReferencedEnvelope bounds = features.getBounds();
+
+        Dimension gridDim = new Dimension(
+                (int)bounds.getWidth(),
+                (int)bounds.getHeight());
+
+        ProgressListener monitor = null;
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(AbstractFeatureCollectionProcessFactory.FEATURES.key, features);
+        map.put(VectorToRasterFactory.ATTRIBUTE.key, "value");
+        map.put(VectorToRasterFactory.RASTER_WIDTH.key, gridDim.width);
+        map.put(VectorToRasterFactory.RASTER_HEIGHT.key, gridDim.height);
+        map.put(VectorToRasterFactory.BOUNDS.key, bounds);
+
+        Map<String, Object> result = p.execute(map, monitor);
+        GridCoverage2D cov = (GridCoverage2D) result.get(VectorToRasterFactory.RESULT.key);
+        
+        //textPrint(cov);
+        
+        /*
+         * Verify each vertex is the correct value
+         */
+        SimpleFeatureIterator iter = features.features();
+        int[] covValue = new int[1];
+        GridCoordinates2D gridP = new GridCoordinates2D();
+        while (iter.hasNext()) {
+            SimpleFeature feature = iter.next();
+            Coordinate[] coords = ((Geometry)feature.getDefaultGeometry()).getCoordinates();
+            for (Coordinate coord : coords) {
+                gridP.x = coord.x == gridDim.width ? (int)coord.x-1 : (int)coord.x;
+                gridP.y = coord.y == gridDim.height ? (int)coord.y-1 : (int)coord.y;
+
+                cov.evaluate(gridP, covValue);
+                int value = Integer.valueOf((String)feature.getAttribute("value"));
+                assertEquals(covValue[0], value);
+            }
+        }
+    }
 
 
     /**
@@ -265,7 +364,114 @@ public class VectorToRasterProcessTest {
         }
         return fc;
     }
+    
+    /**
+     * Creates three lines using a String as the feature's value
+     */
+    private SimpleFeatureCollection createStringLines() {
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        tb.setName("testContourType");
+        tb.add("line", LineString.class);
+        tb.add("name", String.class);
+        tb.add("value", String.class);
 
+        SimpleFeatureType type = tb.buildFeatureType();
+        SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
+        WKTReader reader = new WKTReader();
+
+        SimpleFeatureCollection fc = FeatureCollections.newCollection();
+        SimpleFeature feature;
+        
+        feature = buildFeature(builder, reader,
+                "LINESTRING(10 0, 10 20)", "horizontal", "1");
+        fc.add(feature);
+
+        feature = buildFeature(builder, reader,
+                "LINESTRING(0 10, 20 10)", "vertical", "2");
+        fc.add(feature);
+
+        feature = buildFeature(builder, reader,
+                "LINESTRING(0 20,0 0,20 0,20 20,0 20)", "box", "3");
+        fc.add(feature);
+        
+        return fc;
+    }
+    
+    /**
+     * Creates three lines using a float as the feature's value
+     */
+    private SimpleFeatureCollection createFloatLines() {
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        tb.setName("testContourType");
+        tb.add("line", LineString.class);
+        tb.add("name", String.class);
+        tb.add("value", Float.class);
+
+        SimpleFeatureType type = tb.buildFeatureType();
+        SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
+        WKTReader reader = new WKTReader();
+
+        SimpleFeatureCollection fc = FeatureCollections.newCollection();
+        SimpleFeature feature;
+        
+        feature = buildFeature(builder, reader,
+                "LINESTRING(10 0, 10 20)", "horizontal", (float)1.1);
+        fc.add(feature);
+
+        feature = buildFeature(builder, reader,
+                "LINESTRING(0 10, 20 10)", "vertical", (float)2.2);
+        fc.add(feature);
+
+        feature = buildFeature(builder, reader,
+                "LINESTRING(0 20,0 0,20 0,20 20,0 20)", "box", (float)3.3);
+        fc.add(feature);
+        
+        return fc;
+    }
+
+    
+    /**
+     * Build the feature using a String value
+     */
+    private SimpleFeature buildFeature(SimpleFeatureBuilder builder,
+            WKTReader reader,
+            String wkt, String name, String value) {
+        try {
+            Geometry geom = reader.read(wkt);
+
+            builder.add(geom);
+            builder.add(name);
+            builder.add(value);
+            return builder.buildFeature(null);
+
+        } catch (ParseException pex) {
+            throw new RuntimeException("Error in the wkt: " + pex);
+        }
+    }
+    
+    /**
+     * Build the feature using a float value
+     */
+    private SimpleFeature buildFeature(SimpleFeatureBuilder builder,
+            WKTReader reader,
+            String wkt, String name, float value) {
+
+        try {
+            Geometry geom = reader.read(wkt);
+
+            builder.add(geom);
+            builder.add(name);
+            builder.add(value);
+            return builder.buildFeature(null);
+
+        } catch (ParseException pex) {
+            throw new RuntimeException("Error in the wkt: " + wkt);
+        }
+    }
+
+    /**
+     * Build the feature using an int value
+     */
     private SimpleFeature buildFeature(SimpleFeatureBuilder builder,
             WKTReader reader,
             String wkt, String name, int value) {
@@ -284,7 +490,27 @@ public class VectorToRasterProcessTest {
     }
 
     /**
-     * Dump the values in a (small) grid coverage to the console
+     * Dump the float values in a (small) grid coverage to the console
+     */
+    private void textPrintFloat(GridCoverage2D cov) {
+        RenderedImage img = cov.getRenderedImage();
+        int nb = img.getSampleModel().getNumBands();
+        RectIter iter = RectIterFactory.create(img, null);
+        float[] pixel = new float[nb];
+        do {
+            do {
+                iter.getPixel(pixel);
+                for (int i = 0; i < nb; i++) {
+                    System.out.print(pixel[i]);
+                }
+            } while (!iter.nextPixelDone());
+            iter.startPixels();
+            System.out.println();
+        } while (!iter.nextLineDone());
+    }
+    
+    /**
+     * Dump the int values in a (small) grid coverage to the console
      */
     private void textPrint(GridCoverage2D cov) {
         RenderedImage img = cov.getRenderedImage();

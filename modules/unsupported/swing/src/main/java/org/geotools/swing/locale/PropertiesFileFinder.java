@@ -20,6 +20,7 @@ package org.geotools.swing.locale;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,6 +30,8 @@ import java.util.ListIterator;
 import java.util.Locale;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
+
+import org.geotools.data.DataUtilities;
 
 /**
  * Searches for properties files in a resource directory within the gt-swing module
@@ -99,9 +102,26 @@ public class PropertiesFileFinder {
      * @return path to this class
      */
     private String getSelfPath() {
-        String className = getClass().getSimpleName() + ".class";
-        URL url = getClass().getResource(className);
-        return url.getPath();
+        try {
+            String className = getClass().getSimpleName() + ".class";
+            URL url = getClass().getResource(className);
+            
+            /*
+             * DataUtiltiies.urlToFile doesn't deal with the jar protocol
+             * so if that's what we've got we remove the "jar:" prefix. 
+             * TODO: It would be better to add proper support to the DataUtilities
+             * class.
+             */
+            if (url.getProtocol().equals("jar")) {
+                String urlStr = url.toExternalForm();
+                url = new URL(urlStr.substring(4));
+                
+            }
+            return DataUtilities.urlToFile(url).getPath();
+            
+        } catch (MalformedURLException ex) {
+            throw new RuntimeException(ex);
+        }
     }
     
     /**
@@ -123,15 +143,17 @@ public class PropertiesFileFinder {
      * @throws IOException on error opening file
      */
     private JarInputStream getAsJarFile(String jarPath) throws IOException {
-        boolean filePrefix = jarPath.startsWith("file:");
+        if (jarPath.startsWith("file:")) {
+            jarPath = jarPath.substring(5);
+        }
+        
         int pos = jarPath.indexOf(".jar!");
-
-        if (!filePrefix || pos <= 0) {
+        if (pos <= 0) {
             throw new IllegalArgumentException("Not a valid jar path");
         }
         
-        String trimmed = jarPath.substring(5, pos + 4);
-        File file = new File(trimmed);
+        jarPath = jarPath.substring(0, pos + 4);
+        File file = new File(jarPath);
         if (!file.exists()) {
             throw new IllegalArgumentException("File not found: " + file);
         }

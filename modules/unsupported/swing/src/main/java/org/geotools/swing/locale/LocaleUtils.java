@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -79,8 +80,8 @@ public class LocaleUtils {
     private static final Logger LOGGER = Logging.getLogger("org.geotools.swing");
     private static final String PREFIX = "org/geotools/swing/locale/";
 
-    /**
-     * Represents a fully or partially supported locale.
+    /*
+     * Represents a supported locale.
      */
     private static class LocaleInfo {
         Locale locale;
@@ -94,15 +95,26 @@ public class LocaleUtils {
 
     private static final List<LocaleInfo> supportedLocales;
     
+    /*
+     * Locales in order of client preference. Always has Locale.ROOT
+     * as the final element.
+     */
+    private static final List<Locale> workingLocales;
+    
+    /* 
+     * Cached resource bundles. Each bundle will be that of the 
+     * highest available preference locale.
+     */
     private static final Map<String, ResourceBundle> bundles = 
             new ConcurrentHashMap<String, ResourceBundle>();
     
-    
-    // A list of one or more Locales in priority order
-    private static final List<Locale> workingLocales;
-    
     private static final ReadWriteLock lock = new ReentrantReadWriteLock();
 
+    /*
+     * Scan properties files for GUI text strings to record the 
+     * locales present and, for each, whether it is fully or partially
+     * supported.
+     */
     static {
         try {
             supportedLocales = loadLocaleInfo();
@@ -122,7 +134,7 @@ public class LocaleUtils {
     
     /**
      * Tests whether the given {@code Locale} is fully supported (ie. has been
-     * provided for every properties file in the locales resource directory.
+     * provided for every GUI text string properties file.
      * 
      * @param locale the locale
      * @return {@code true} if fully supported; {@code false} if partially or
@@ -139,10 +151,14 @@ public class LocaleUtils {
     }
     
     /**
-     * Tests whether the given {@code Locale} is supported fully or partially.
+     * Tests whether the given {@code Locale} is supported. A locale is treated
+     * as supported if it has been provided for at least one GUI text string
+     * properties file.
      * 
      * @param locale the locale
      * @return {@code true} if the locale is at least partially supported
+     * 
+     * @see #isFullySupportedLocale(Locale) 
      */
     public static boolean isSupportedLocale(Locale locale) {
         for (LocaleInfo li : supportedLocales) {
@@ -154,14 +170,32 @@ public class LocaleUtils {
         return false;
     }
     
-    public static void setLocale(Locale newLocale) {
-        setLocale(Collections.singletonList(newLocale));
+    /**
+     * Sets a single preferred locale for text string retrieval. Any text
+     * strings for which this locale has not been provided will fall back
+     * to the default {@linkplain Locale#ROOT} (English language). If
+     * {@code preferredLocale} is {@code null} the working locale will be set
+     * to {@linkplain  Locale#ROOT}.
+     * 
+     * @param preferredLocale the locale
+     */
+    public static void setLocale(Locale preferredLocale) {
+        setLocale(Collections.singletonList(preferredLocale));
     }
     
-    public static void setLocale(List<Locale> requestedLocales) {
+    /**
+     * Sets the preferred locales for text string retrieval. The input list
+     * is ordered from highest (first element) to lowest (last element) preference. 
+     * There is no need to include {@linkplain Locale#ROOT} in the input list.
+     * It will be added automatically. If {@code preferredLocales} is {@code null}
+     * or empty, the working locale will be set to {@linkplain  Locale#ROOT}.
+     * 
+     * @param preferredLocales locales in descending order of preference
+     */
+    public static void setLocale(List<Locale> preferredLocales) {
         lock.writeLock().lock();
         try {
-            filterAndCopy(requestedLocales);
+            filterAndCopy(preferredLocales);
             bundles.clear();
             
         } finally {
@@ -169,15 +203,42 @@ public class LocaleUtils {
         }
     }
     
-    public static String getValue(String resBundleName, String key) {
+    /**
+     * Retrieves a GUI text string identified by the base name of a
+     * properties file and a key within that file.
+     * <pre><code>
+     * String localName = LocaleUtils.getValue("CursorTool", "ZoomIn");
+     * </code></pre>
+     * 
+     * @param baseFileName base name of the properties file containing the text string
+     * @param key key for the text string
+     * @return the localized text string
+     * 
+     * @throws MissingResourceException if the {@code baseFileName:key} pair
+     *     cannot be found
+     * @throws IllegalArgumentException if either argument is {@code null}
+     */
+    public static String getValue(String baseFileName, String key) {
         lock.readLock().lock();
         try {
-            return getBundle(resBundleName).getString(key);
+            if (baseFileName == null || key == null) {
+                throw new IllegalArgumentException("arguments must not be null");
+            }
+            return getBundle(baseFileName).getString(key);
+            
         } finally {
             lock.readLock().unlock();
         }
     }
 
+    /**
+     * Loads a {@linkplain ResourceBundle} into the cache according to
+     * the current order of locale preferences.
+     * 
+     * @param resBundleName bundle name
+     * @return the resource bundle
+     * @throws MissingResourceException if the bundle is not found
+     */
     private static ResourceBundle getBundle(String resBundleName) {
         ResourceBundle rb = bundles.get(resBundleName);
         if (rb == null) {

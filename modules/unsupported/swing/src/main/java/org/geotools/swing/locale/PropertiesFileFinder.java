@@ -104,19 +104,33 @@ public class PropertiesFileFinder {
         return url.getPath();
     }
     
+    /**
+     * Tests if a path refers to a jar file.
+     * 
+     * @param path the path
+     * @return {@code true} if a jar file
+     */
     private boolean isJarPath(String path) {
         return path.contains(".jar!");
     }
     
-    private JarInputStream getAsJarFile(String path) throws IOException {
-        boolean filePrefix = path.startsWith("file:");
-        int pos = path.indexOf(".jar!");
+    /**
+     * Returns a {@code JarInputStream} for the given jar.
+     * 
+     * @param jarPath the path
+     * @return the input stream
+     * @throws IllegalArgumentException if the jar cannot be found
+     * @throws IOException on error opening file
+     */
+    private JarInputStream getAsJarFile(String jarPath) throws IOException {
+        boolean filePrefix = jarPath.startsWith("file:");
+        int pos = jarPath.indexOf(".jar!");
 
         if (!filePrefix || pos <= 0) {
             throw new IllegalArgumentException("Not a valid jar path");
         }
         
-        String trimmed = path.substring(5, pos + 4);
+        String trimmed = jarPath.substring(5, pos + 4);
         File file = new File(trimmed);
         if (!file.exists()) {
             throw new IllegalArgumentException("File not found: " + file);
@@ -125,18 +139,32 @@ public class PropertiesFileFinder {
         return new JarInputStream(new FileInputStream(file));
     }
     
-    private File getAsLocalDir(String path) {
-        int pos = path.lastIndexOf(File.separatorChar);
-        File file = new File(path.substring(0, pos));
+    /**
+     * Returns a {@code File} object for the given directory path.
+     * @param dirPath the directory path
+     * @return a new {@code File} object
+     * @throws IllegalArgumentException if the path does not match a valid directory
+     */
+    private File getAsLocalDir(String dirPath) {
+        int pos = dirPath.lastIndexOf(File.separatorChar);
+        File file = new File(dirPath.substring(0, pos));
         if (!file.exists() || !file.isDirectory()) {
             throw new IllegalArgumentException("Invalid directory path: " + file);
         }
         return file;
     }
 
-    private SingleFileInfo parseEntry(int prefixLength, String name) {
-        name = name.substring(prefixLength, name.indexOf(".properties"));
-        String[] parts = name.split("_");
+    /**
+     * Parses an entry (either a jar file entry or local file name) and extracts
+     * the base name and locale.
+     * 
+     * @param prefixLength length of entry prefix to discard
+     * @param entry the entry
+     * @return base name and locale information
+     */
+    private SingleFileInfo parseEntry(int prefixLength, String entry) {
+        entry = entry.substring(prefixLength, entry.indexOf(".properties"));
+        String[] parts = entry.split("_");
         String baseName = parts[0];
         String language = "";
         String country = "";
@@ -162,6 +190,13 @@ public class PropertiesFileFinder {
         return new SingleFileInfo(baseName, locale);
     }
 
+    /**
+     * Converts a list of single file information (base name plus locale) into
+     * a list of {@linkplain PropertiesFileInfo} objects.
+     * 
+     * @param infoList list of single file information
+     * @return a new list of {@code PropertiesFileInfo} objects
+     */
     private List<PropertiesFileInfo> createReturnList(List<SingleFileInfo> infoList) {
         List<PropertiesFileInfo> pfiList = new ArrayList<PropertiesFileInfo>();
 
@@ -192,6 +227,9 @@ public class PropertiesFileFinder {
         return pfiList;
     }
 
+    /**
+     * Holds base name and locale for a single file.
+     */
     private static class SingleFileInfo {
         String name;
         Locale locale;

@@ -186,6 +186,14 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
     public SimpleFeature getValue() {
         return feature;
     }
+
+    public CoordinateReferenceSystem getCRS() {
+        return crs;
+    }
+    
+    public void setCRS(CoordinateReferenceSystem crs) {
+        this.crs = crs;
+    }
     
     public void init() {
         feature = null;

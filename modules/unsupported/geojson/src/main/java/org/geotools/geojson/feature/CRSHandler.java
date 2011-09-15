@@ -22,6 +22,7 @@ import org.geotools.geojson.HandlerBase;
 import org.geotools.geojson.IContentHandler;
 import org.geotools.referencing.CRS;
 import org.json.simple.parser.ParseException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class CRSHandler extends HandlerBase implements IContentHandler<CoordinateReferenceSystem> {
@@ -33,7 +34,7 @@ public class CRSHandler extends HandlerBase implements IContentHandler<Coordinat
         if ("properties".equals(key)) {
             state = 1;
         }
-        else if ("name".equals(key) && state == 1) {
+        else if (("name".equals(key) || "code".equals(key)) && state == 1) {
             state = 2;
         }
         return true;
@@ -42,7 +43,19 @@ public class CRSHandler extends HandlerBase implements IContentHandler<Coordinat
     public boolean primitive(Object value) throws ParseException, IOException {
         if (state == 2) {
             try {
-                crs = CRS.decode(value.toString());
+                try {
+                    crs = CRS.decode(value.toString());
+                }
+                catch(NoSuchAuthorityCodeException e) {
+                    //try pending on EPSG
+                    try {
+                        crs = CRS.decode("EPSG:" + value.toString());
+                    }
+                    catch(Exception e1) {
+                        //throw the original
+                        throw e;
+                    }
+                }
             }
             catch(Exception e) {
                 throw (IOException) new IOException("Error parsing " + value + " as crs id").initCause(e);

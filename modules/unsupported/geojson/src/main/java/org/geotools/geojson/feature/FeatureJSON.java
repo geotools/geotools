@@ -31,9 +31,11 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.geotools.data.crs.ForceCoordinateSystemFeatureResults;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
+import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geojson.GeoJSONUtil;
 import org.geotools.geojson.geom.GeometryJSON;
@@ -308,10 +310,20 @@ public class FeatureJSON {
      * @throws IOException In the event of a parsing error or if the input json is invalid.
      */
     public FeatureCollection readFeatureCollection(Object input) throws IOException {
-        DefaultFeatureCollection features = new DefaultFeatureCollection(null, null);
+        FeatureCollection features = new DefaultFeatureCollection(null, null);
         FeatureCollectionIterator it = (FeatureCollectionIterator) streamFeatureCollection(input);
         while(it.hasNext()) {
             features.add(it.next());
+        }
+
+        //check for the case of a crs specified post features in the json
+        if (features.getSchema().getCoordinateReferenceSystem() == null 
+                && it.getHandler().getCRS() != null ) {
+            try {
+                features = new ForceCoordinateSystemFeatureResults(features, it.getHandler().getCRS());
+            } catch (SchemaException e) {
+                throw (IOException) new IOException().initCause(e);
+            }
         }
         return features;
     }
@@ -587,7 +599,7 @@ public class FeatureJSON {
     class FeatureCollectionIterator implements FeatureIterator<SimpleFeature> {
 
         Reader reader;
-        IFeatureCollectionHandler handler;
+        FeatureCollectionHandler handler;
         JSONParser parser;
         SimpleFeature next;
         
@@ -599,6 +611,10 @@ public class FeatureJSON {
                 throw new RuntimeException(e);
             }
             this.parser = new JSONParser();
+        }
+        
+        FeatureCollectionHandler getHandler() {
+            return handler;
         }
         
         public boolean hasNext() {

@@ -21,10 +21,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geojson.DelegatingHandler;
 import org.json.simple.parser.ParseException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class FeatureCollectionHandler extends DelegatingHandler<SimpleFeature> 
     implements IFeatureCollectionHandler {
@@ -33,6 +35,7 @@ public class FeatureCollectionHandler extends DelegatingHandler<SimpleFeature>
     AttributeIO attio;
     
     SimpleFeature feature;
+    CoordinateReferenceSystem crs;
     List stack;
    
     public FeatureCollectionHandler(SimpleFeatureType featureType, AttributeIO attio) {
@@ -59,6 +62,11 @@ public class FeatureCollectionHandler extends DelegatingHandler<SimpleFeature>
             
             return true;
         }
+        else if ("crs".equals(key)) {
+            delegate = new CRSHandler();
+            return true;
+        }
+
         return super.startObjectEntry(key);
     }
     
@@ -66,7 +74,11 @@ public class FeatureCollectionHandler extends DelegatingHandler<SimpleFeature>
     public boolean startArray() throws ParseException, IOException {
         if (delegate == UNINITIALIZED) {
             delegate = new FeatureHandler(builder, attio);
-            
+            if (crs != null) {
+                //build might not be initialized yet, since its build for the first feature, if 
+                // we have already seen a crs, ensure we set it
+                ((FeatureHandler)delegate).setCRS(crs);
+            }
             //maintain a stack to track when the "features" array ends
             stack = new ArrayList();
             
@@ -105,12 +117,23 @@ public class FeatureCollectionHandler extends DelegatingHandler<SimpleFeature>
                 //check for a null builder, if it is null set it with the feature type
                 // from this feature
                 if (builder == null) {
-                    builder = new SimpleFeatureBuilder(feature.getFeatureType());
+                    SimpleFeatureType featureType = feature.getFeatureType();
+                    if (featureType.getCoordinateReferenceSystem() == null && crs != null){
+                        //retype with a crs
+                        featureType = SimpleFeatureTypeBuilder.retype(featureType, crs);
+                    }
+                    builder = new SimpleFeatureBuilder(featureType);
                 }
                 
                 ((FeatureHandler)delegate).init();
                 //we want to pause at this point
                 return false;
+            }
+        }
+        else if (delegate instanceof CRSHandler) {
+            crs = ((CRSHandler) delegate).getValue();  
+            if ( crs != null) {
+                delegate = NULL;
             }
         }
         
@@ -121,12 +144,17 @@ public class FeatureCollectionHandler extends DelegatingHandler<SimpleFeature>
     public void endJSON() throws ParseException, IOException {
         delegate = null;
         feature = null;
+        //crs = null; //JD: keep crs around because we need it post parsing json
     }
     
 //    public boolean hasMoreFeatures() {
 //        return delegate != null;
 //    }
-    
+
+    public CoordinateReferenceSystem getCRS() {
+        return crs;
+    }
+
     @Override
     public SimpleFeature getValue() {
         return feature;

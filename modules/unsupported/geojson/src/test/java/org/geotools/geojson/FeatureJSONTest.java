@@ -410,6 +410,28 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         fjson.setEncodeFeatureCollectionCRS(true);
         assertEquals(strip(collectionText(false, true)), fjson.toString(collection()));
     }
+
+    public void testFeatureCollectionWithCRSRead() throws Exception {
+        String json = collectionText(true, true);
+        FeatureCollection fcol = fjson.readFeatureCollection(strip(collectionText(true, true)));
+        assertNotNull(fcol.getSchema().getCoordinateReferenceSystem());
+
+        FeatureIterator it = fcol.features();
+        while(it.hasNext()) {
+            assertNotNull(it.next().getType().getCoordinateReferenceSystem());
+        }
+    }
+
+    public void testFeatureCollectionWithCRSPostFeaturesRead() throws Exception {
+        String json = collectionText(true, true);
+        FeatureCollection fcol = fjson.readFeatureCollection(strip(collectionText(true, true, true)));
+        assertNotNull(fcol.getSchema().getCoordinateReferenceSystem());
+
+        FeatureIterator it = fcol.features();
+        while(it.hasNext()) {
+            assertNotNull(it.next().getType().getCoordinateReferenceSystem());
+        }
+    }
     
     public void testCRSWrite() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("EPSG:4326");
@@ -475,6 +497,10 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
     }
     
     String collectionText(boolean withBounds, boolean withCRS) {
+        return collectionText(withBounds, withCRS, false);
+    }
+    
+    String collectionText(boolean withBounds, boolean withCRS, boolean crsAfter) {
         StringBuffer sb = new StringBuffer();
         sb.append("{'type':'FeatureCollection',");
         if (withBounds) {
@@ -485,7 +511,7 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
                 .append(bbox.getMaxX()).append(",").append(bbox.getMaxY());
             sb.append("],");
         }
-        if (withCRS) {
+        if (withCRS && !crsAfter) {
             sb.append("'crs': {");
             sb.append("  'type': 'name',");
             sb.append("  'properties': {");
@@ -498,7 +524,16 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
             sb.append(featureText(i)).append(",");
         }
         sb.setLength(sb.length()-1);
-        sb.append("]}");
+        sb.append("]");
+        if (withCRS && crsAfter) {
+            sb.append(",'crs': {");
+            sb.append("  'type': 'name',");
+            sb.append("  'properties': {");
+            sb.append("    'name': 'EPSG:4326'");
+            sb.append("   }");
+            sb.append("}");
+        }
+        sb.append("}");
         return sb.toString();
     }
     

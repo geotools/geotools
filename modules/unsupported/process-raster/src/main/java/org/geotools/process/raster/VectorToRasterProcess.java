@@ -194,6 +194,7 @@ public class VectorToRasterProcess extends AbstractFeatureCollectionProcess {
      *
      * @see VectorToRasterFactory#getResultInfo(java.util.Map)
      */
+    @Override
     public Map<String, Object> execute( Map<String, Object> input, ProgressListener monitor )
         throws VectorToRasterException {
 
@@ -288,6 +289,7 @@ public class VectorToRasterProcess extends AbstractFeatureCollectionProcess {
                 case LINESTRING:
                 case POINT:
                     drawGeometry(geomType, geometry);
+                    break;
                     
                 default:
                     throw new UnsupportedOperationException(
@@ -390,6 +392,45 @@ public class VectorToRasterProcess extends AbstractFeatureCollectionProcess {
         } else if (attribute instanceof Expression) {
             valueSource = ValueSource.EXPRESSION;
 
+            SimpleFeature feature = features.features().next();
+            Object value = ((Expression)attribute).evaluate(feature);
+            
+            // if the expression evaluates to a string check if the
+            // value can be cast to a Number
+            if (value.getClass().equals(String.class)) {
+                Boolean hasException = false;
+                try {
+                    Integer.valueOf((String)value);
+                    transferType = TransferType.INTEGRAL;
+                } catch (NumberFormatException e) {
+                    hasException = true;
+                }
+                if (hasException) {
+                    hasException = false;
+                    try {
+                        Float.valueOf((String)value);
+                        transferType = TransferType.FLOAT;
+                    } catch (NumberFormatException e) {
+                        hasException = true;
+                    }
+                }
+                if (hasException) {
+                    throw new VectorToRasterException(((Expression)attribute).toString() + " does not evaluate to a number");
+                }
+            } else if (!Number.class.isAssignableFrom(value.getClass())) {
+                throw new VectorToRasterException(((Expression)attribute).toString() + " does not evaluate to a number");
+            } else if (Float.class.isAssignableFrom(value.getClass())) {
+                transferType = TransferType.FLOAT;
+            } else if (Double.class.isAssignableFrom(value.getClass())) {
+                transferType = TransferType.FLOAT;
+                Logger.getLogger(VectorToRasterProcess.class.getName()).log(Level.WARNING, "coercing double feature values to float raster values");
+            } else if (Long.class.isAssignableFrom(value.getClass())) {
+                transferType = TransferType.INTEGRAL;
+                Logger.getLogger(VectorToRasterProcess.class.getName()).log(Level.WARNING, "coercing long feature values to int raster values");
+            } else {
+                transferType = TransferType.INTEGRAL;
+            }
+            
         } else {
             throw new VectorToRasterException(
                     "value attribute must be a feature property name" +
@@ -543,13 +584,14 @@ public class VectorToRasterProcess extends AbstractFeatureCollectionProcess {
                 WritableRaster destTile = destImage.getWritableTile(xt, yt);
 
                 int[] data = new int[srcTile.getDataBuffer().getSize()];
-                srcTile.getDataElements(srcTile.getMinX(), srcTile.getMinY(), data);
-
+                srcTile.getDataElements(srcTile.getMinX(), srcTile.getMinY(),
+                        srcTile.getWidth(), srcTile.getHeight(), data);
+                
                 Rectangle bounds = destTile.getBounds();
-
+                
                 int k = 0;
                 for (int dy = bounds.y, drow = 0; drow < bounds.height; dy++, drow++) {
-                    for (int dx = bounds.x, dcol = 0; dcol < bounds.width; dx++, dcol++) {
+                    for (int dx = bounds.x, dcol = 0; dcol < bounds.width; dx++, dcol++, k++) {
                         destTile.setSample(dx, dy, 0, Float.intBitsToFloat(data[k]));
                     }
                 }

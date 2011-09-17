@@ -32,7 +32,7 @@
  *   - http://www.copyright.gov/title17/92chap1.html#105
  *   - http://www.gpoaccess.gov/uscode/  (enter "17USC105" in the search box.)
  */
-package org.geotools.coverage.grid.imageio.geotiff;
+package org.geotools.gce.geotiff;
 
 import java.awt.geom.AffineTransform;
 import java.io.IOException;

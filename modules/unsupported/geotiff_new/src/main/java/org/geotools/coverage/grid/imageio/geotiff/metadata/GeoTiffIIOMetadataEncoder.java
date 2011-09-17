@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.coverage.grid.imageio.geotiff;
+package org.geotools.coverage.grid.imageio.geotiff.metadata;
 
 import it.geosolutions.imageio.plugins.tiff.BaselineTIFFTagSet;
 import it.geosolutions.imageio.plugins.tiff.GeoTIFFTagSet;
@@ -27,9 +27,7 @@ import java.util.Map;
 
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoKeyEntry;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffConstants;
-import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataEncoder;
 import org.geotools.coverage.grid.io.imageio.geotiff.PixelScale;
-import org.geotools.coverage.grid.io.imageio.geotiff.TagSet;
 import org.geotools.coverage.grid.io.imageio.geotiff.TiePoint;
 import org.geotools.util.KeySortedList;
 import org.jdom.Element;

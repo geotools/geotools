@@ -47,7 +47,7 @@ import javax.imageio.ImageReader;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.ImageInputStream;
 
-import org.geotools.coverage.grid.imageio.geotiff.GeoTiffIIOMetadataDecoder;
+import org.geotools.coverage.grid.imageio.geotiff.metadata.GeoTiffIIOMetadataDecoder;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.data.DataSourceException;

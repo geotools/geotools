@@ -33,7 +33,7 @@ import javax.media.jai.TileCache;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.imageio.geotiff.GeoTiffIIOMetadataDecoder;
+import org.geotools.coverage.grid.imageio.geotiff.metadata.GeoTiffIIOMetadataDecoder;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataEncoder.TagSet;

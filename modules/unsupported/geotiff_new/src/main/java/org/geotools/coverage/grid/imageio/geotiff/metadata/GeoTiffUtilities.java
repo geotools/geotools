@@ -1,4 +1,4 @@
-package org.geotools.coverage.grid.imageio.geotiff;
+package org.geotools.coverage.grid.imageio.geotiff.metadata;
 
 import it.geosolutions.imageio.plugins.tiff.GeoTIFFTagSet;
 

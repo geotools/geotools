@@ -14,14 +14,12 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.coverage.grid.imageio.geotiff;
+package org.geotools.coverage.grid.imageio.geotiff.metadata;
+
+import it.geosolutions.imageio.plugins.tiff.TIFFTag;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffConstants;
-
-import it.geosolutions.imageio.plugins.tiff.TIFFTag;
 
 /**
  * @author simone

@@ -32,7 +32,7 @@
  *   - http://www.copyright.gov/title17/92chap1.html#105
  *   - http://www.gpoaccess.gov/uscode/  (enter "17USC105" in the search box.)
  */
-package org.geotools.coverage.grid.imageio.geotiff;
+package org.geotools.coverage.grid.imageio.geotiff.metadata;
 
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
@@ -52,7 +52,6 @@ import org.geotools.coverage.grid.imageio.geotiff.metadata.codes.GeoTiffPCSCodes
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffConstants;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffException;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataDecoder;
-import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffMetadata2CRSAdapter;
 import org.geotools.coverage.grid.io.imageio.geotiff.PixelScale;
 import org.geotools.coverage.grid.io.imageio.geotiff.TiePoint;
 import org.geotools.factory.Hints;

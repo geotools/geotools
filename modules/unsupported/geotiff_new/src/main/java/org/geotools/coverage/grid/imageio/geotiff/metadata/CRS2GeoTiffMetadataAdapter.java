@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.coverage.grid.imageio.geotiff;
+package org.geotools.coverage.grid.imageio.geotiff.metadata;
 
 import java.text.ParseException;
 import java.util.Iterator;
@@ -29,7 +29,6 @@ import org.geotools.coverage.grid.imageio.geotiff.metadata.codes.GeoTiffCoordina
 import org.geotools.coverage.grid.imageio.geotiff.metadata.codes.GeoTiffGCSCodes;
 import org.geotools.coverage.grid.imageio.geotiff.metadata.codes.GeoTiffPCSCodes;
 import org.geotools.coverage.grid.imageio.geotiff.metadata.codes.GeoTiffUoMCodes;
-import org.geotools.coverage.grid.io.imageio.geotiff.CRS2GeoTiffMetadataAdapter;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffConstants;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffException;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataEncoder;

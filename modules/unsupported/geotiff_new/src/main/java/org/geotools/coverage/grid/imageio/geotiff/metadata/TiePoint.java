@@ -15,10 +15,9 @@
  *    Lesser General Public License for more details.
  *
  */
-package org.geotools.coverage.grid.imageio.geotiff;
+package org.geotools.coverage.grid.imageio.geotiff.metadata;
 
 import org.geotools.coverage.grid.io.imageio.geotiff.PixelScale;
-import org.geotools.coverage.grid.io.imageio.geotiff.TiePoint;
 import org.geotools.util.Utilities;
 
 

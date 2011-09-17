@@ -46,12 +46,12 @@ Imaging and Java Image IO section.
    
 #. At the time of writing the latest JDK was:
    
-   jdk-6u20-windows-i586.exe
+   jdk-7-windows-i586.exe
    
 #. Click through the installer you will need to set an acceptance a license agreement and so forth.
    By default this will install to:     
    
-   C:\\Program Files\\Java\\jdk1.6.0_20\\
+   C:\\Program Files\\Java\\jdk1.7.0\\
      
 #. Optional: Java Advanced Imaging is used by GeoTools for raster support. If you install JAI 1.1.3 
    performance will be improved:   
@@ -84,18 +84,18 @@ Eclipse
 Eclipse is a popular integrated development environment most often used for all kinds of Java
 development. For this tutorial we are doing straight up Java programming using the smallest
 download available - if you already have an Eclipse download please go ahead and use it and
-switch to the “Java Perspective”.
+switch to the "Java Perspective".
    
-1. Visit the Eclipse download page (http://www.eclipse.org/downloads/) and download “Eclipse IDE for
-   Java developers”.
+1. Visit the Eclipse download page (http://www.eclipse.org/downloads/) and download "Eclipse IDE for
+   Java developers".
    
    At the time of writing the latest release was:
    
-   * eclipse-java-helios-win32.zip 
+   * eclipse-java-indigo-win32.zip 
    
 2. Eclipse does not provide an installer; just a directory to unzip and run.
 3. To start out with create the folder C:\\java to keep all our java development in one spot.
-4. Unzip the downloaded eclipse-java-galileo-SR1-win32.zip file to your C:\\java directory – the
+4. Unzip the downloaded eclipse-java-indigo-win32.zip file to your C:\\java directory - the
    folder C:\\java\\eclipse will be created.
 5. Navigate to C:\\java\\eclipse and right-click on the eclipse.exe file and select
    Send To -> Desktop (create shortcut).
@@ -127,50 +127,7 @@ so we encourage the use of a tool such as maven.
 In previous years we used the command line (gasp!) when working with maven. This year we are going
 to be using the M2Eclipse plugin from Sonyatype.
 
-To install the M2Eclipse plugin:
-
-1. Open the *Install* dialog using :menuselection:`Select Help --> Install New Software` from the
-   menubar.
-
-2. In the *work with:* field enter the update site url:
-    
-   m2eclipse - http://m2eclipse.sonatype.org/sites/m2e
-   
-3. You be prompted by an *Add Repository* dialog, check the Name and Location and press OK
-
-   .. image: images/AddM2EclipseRepository.png
-      :width: 60%
-	  
-4. From the list of available plugins and components select *Maven Integration for Eclipse* and
-   press *Next*
-
-   .. image: images/AddM2EclipseInstall.png
-      :width: 60%
-	  
-5. The *Install Details* page checks to see if the plugin will work with you eclipse, press *Next*
-
-6. For *Review Licenses* we get check *I accept the terms of the license agreement* and *Finish*
-
-.. sidebar:: While you Wait
-
-   The download often takes five minutes, you may wish to read ahead.
-   
-7. The *Installing Software* dialog will download the software.
-  
-   .. image: images/InstallingSoftware.png
-      :width: 60%
- 
-8.   When it is ready Eclipse will ask you to restart your IDE. Please choose **Restart Now**.
-
-   .. image: images/SoftwareUpdates.png
-   
-At the end of this workbook we offer two alternatives to using the M2Eclipse plugin:
-
-* Using maven from the command line
-
-* Downloading GeoTools and throwing out the parts that conflict
-
-.. _eclipse-m2-start:
+The M2Eclipse plugin is included by default in Eclipse 3.7.
 
 Quickstart
 ==========
@@ -347,7 +304,7 @@ Now that your environment is setup we can put together a simple Quickstart. This
    
 6. A couple of things to note about the code example:
    
-* The shapefile is not loaded into memory – instead it is read from disk each and every time it is needed
+* The shapefile is not loaded into memory - instead it is read from disk each and every time it is needed
   This approach allows you to work with data sets larger than available memory.
       
 * We are using a very basic display style here that just shows feature outlines. In the examples that follow we will see how to specify more sophisticated styles.
@@ -390,8 +347,8 @@ Here are some additional challenges for you to try:
 ..  The ability to grab figure out what classes to import is a key skill; we are
     starting off here with a simple example with a single import.
   
-* Try and sort out what all the different “side car” files are – and what they are for. The sample
-  data set includes “shp”, “dbf” and “shx”. How many other side car files are there?
+* Try and sort out what all the different "side car" files are - and what they are for. The sample
+  data set includes "shp", "dbf" and "shx". How many other side car files are there?
 
 .. This exercise asks users to locate the geotools user guide or wikipedia
   
@@ -405,8 +362,8 @@ Here are some additional challenges for you to try:
    :end-before:  // end datastore
      
 
-* Important: GeoTools is an active open source project – you can quickly use maven to try out the
-  latest nightly build by changing your pom.xml file to use a “SNAPSHOT” release.
+* Important: GeoTools is an active open source project - you can quickly use maven to try out the
+  latest nightly build by changing your pom.xml file to use a "SNAPSHOT" release.
   
   At the time of writing |version|-SNAPSHOT under active development.
 
@@ -485,7 +442,7 @@ generating eclipse :file:`.project` and :file:`.classpath` files.
       C:java> cd tutorial
       C:java\tutorial> mvn eclipse:eclipse
 
-9. You can now give Eclipse the background information it needs to talk to your “maven repository”
+9. You can now give Eclipse the background information it needs to talk to your "maven repository"
    (maven downloaded something like 30 jars for you)
 10. Return to Eclipse
 11. Use :menuselection:`Windows --> Preferences` to open the Preference Dialog. 
@@ -495,7 +452,7 @@ generating eclipse :file:`.project` and :file:`.classpath` files.
    .. image:: images/classpath-variables.png
       :scale: 60
    
-12. Add an **M2_REPO** classpath variable pointing to your “local repository” 
+12. Add an **M2_REPO** classpath variable pointing to your "local repository" 
 
     ==================  ========================================================
        PLATFORM           LOCAL REPOSITORY
@@ -575,7 +532,7 @@ time.
 
    Select File > New > Java Project to open the New Java Project wizard
 
-3. Type in “GeoTools Download” as the name of the project and press Finish.
+3. Type in "GeoTools Download" as the name of the project and press Finish.
 
 4. Choose File > Import to open the Import Wizard.
 
@@ -583,7 +540,7 @@ time.
 
 6. Navigate to the geotools-bin.zip download and import the contents into your project.
 
-7. GeoTools includes a copy of the “EPSG” database; but also allows you to hook up your own copy of the EPSG database as an option..
+7. GeoTools includes a copy of the "EPSG" database; but also allows you to hook up your own copy of the EPSG database as an option..
 
    However only one copy can be used at a time so we will need to remove the following jars from the Library Manager:
 

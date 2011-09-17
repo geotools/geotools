@@ -15,7 +15,7 @@ Step One: Email the List
 Someone on the list may already have plans, or they might help, they may even do step number two for you...
 
   To: geotools-devel@lists.sourceforge.net
-  CC: jgarnett@refractions.net
+  CC: jgarnett@lisasoft.com
   Subject: Proposed Fish module
   
   Hi Jody, I noticed that the geotools library lacks support for the small fish POJO objects you keep mentioning in your examples.

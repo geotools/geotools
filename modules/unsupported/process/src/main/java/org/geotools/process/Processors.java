@@ -179,7 +179,9 @@ public class Processors extends FactoryFinder {
             }            
         };
     }
-    
+    public static ProcessExecutor newProcessExecutor( int nThreads ){
+        return newProcessExecutor(nThreads, Executors.defaultThreadFactory() );
+    }
     public static ProcessExecutor newProcessExecutor( int nThreads, ThreadFactory threadFactory ){
         if( threadFactory == null ) threadFactory = Executors.defaultThreadFactory();
         

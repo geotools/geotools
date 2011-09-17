@@ -6,13 +6,21 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.geotools.data.Parameter;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.process.Process;
+import org.geotools.process.ProcessExecutor;
+import org.geotools.process.Processors;
+import org.geotools.process.Progress;
+import org.geotools.util.KVP;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.FilterFactory2;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -29,10 +37,44 @@ public class ProcessExample {
      */
     public static void main(String[] args) throws Exception {
         example1();
-        example2();
+//        example2();
+//        example3();
     }
 
     public static void example1() throws Exception {
+        // octo start
+        WKTReader wktReader = new WKTReader(new GeometryFactory());
+        Geometry geom = wktReader.read("MULTIPOINT (1 1, 5 4, 7 9, 5 5, 2 2)");
+        
+        Name name = new NameImpl("tutorial","octagonalEnvelope");
+        Process process = Processors.createProcess( name );
+        
+        ProcessExecutor engine = Processors.newProcessExecutor(2);
+        
+        // quick map of inputs
+        Map<String,Object> input = new KVP("geom", geom);
+        Progress working = engine.submit(process, input );
+        
+        // you could do other stuff whle working is doing its thing
+        if( working.isCancelled() ){
+            return;
+        }
+        
+        Map<String,Object> result = working.get(); // get is BLOCKING
+        Geometry octo = (Geometry) result.get("result");
+        
+        System.out.println( octo );
+        // octo end
+    }
+    public static void exampleParam() throws Exception {
+        // param start
+        Name name = new NameImpl("tutorial","octagonalEnvelope");
+
+        Map<String, Parameter<?>> paramInfo = Processors.getParameterInfo(name);
+        // param end
+    }
+    
+    public static void example2() throws Exception {
 
         WKTReader reader = new WKTReader(new GeometryFactory());
 
@@ -50,7 +92,7 @@ public class ProcessExample {
         Geometry bufferedGeom = geom1.buffer(buffer);
     }
 
-    public static void example2() {
+    public static void example3() {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("featureType");

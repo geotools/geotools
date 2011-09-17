@@ -76,3 +76,20 @@ Things to Try
 ^^^^^^^^^^^^^
 
 * Try calling your process using the *Processors* utility class
+
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/process/ProcessExample.java
+      :language: java
+      :start-after: // octo start
+      :end-before: // octo end
+  
+  Here is what that looks like:
+  
+  .. image:: images/octagonal_envelope.png
+
+* The Processors class can also list a Map<String,Parameter> allowing you to show a wizard
+  for data entry (just like when connecting to a DataStore).
+  
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/process/ProcessExample.java
+      :language: java
+      :start-after: // param start
+      :end-before: // param end

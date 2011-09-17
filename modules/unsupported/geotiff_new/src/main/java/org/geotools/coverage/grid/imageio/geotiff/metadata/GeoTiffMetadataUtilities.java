@@ -14,10 +14,10 @@ import org.geotools.coverage.grid.io.imageio.geotiff.TiePoint;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class GeoTiffUtilities {
+public class GeoTiffMetadataUtilities {
 
     /** {@link Logger}. */
-    private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GeoTiffUtilities.class);
+    private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GeoTiffMetadataUtilities.class);
 
     static PixelScale calculateModelPixelScales(Node rootNode) {
         final double[] pixScales = getTiffDoubles(getTiffField(rootNode,

@@ -138,44 +138,44 @@ public final class GeoTiffIIOMetadataDecoder {
         }
 
         // getting the geokey directory
-        IIOMetadataNode geoKeyDir = GeoTiffUtilities.getTiffField(rootNode, GeoTIFFTagSet.TAG_GEO_KEY_DIRECTORY);
+        IIOMetadataNode geoKeyDir = GeoTiffMetadataUtilities.getTiffField(rootNode, GeoTIFFTagSet.TAG_GEO_KEY_DIRECTORY);
         geoKeys = new HashMap<Integer, GeoKeyEntry>();
         if (geoKeyDir != null) {
             NodeList geoKeyDirEntries = geoKeyDir.getFirstChild().getChildNodes();
             for (int i = 4; i < geoKeyDirEntries.getLength(); i += 4) {
-                int keyID = GeoTiffUtilities.getIntValueAttribute(geoKeyDirEntries.item(i));
+                int keyID = GeoTiffMetadataUtilities.getIntValueAttribute(geoKeyDirEntries.item(i));
                 GeoKeyEntry key = new GeoKeyEntry(keyID,// key
-                        GeoTiffUtilities.getIntValueAttribute(geoKeyDirEntries.item(i + 1)),// location
-                        GeoTiffUtilities.getIntValueAttribute(geoKeyDirEntries.item(i + 2)),// count
-                        GeoTiffUtilities.getIntValueAttribute(geoKeyDirEntries.item(i + 3)));// offset
+                        GeoTiffMetadataUtilities.getIntValueAttribute(geoKeyDirEntries.item(i + 1)),// location
+                        GeoTiffMetadataUtilities.getIntValueAttribute(geoKeyDirEntries.item(i + 2)),// count
+                        GeoTiffMetadataUtilities.getIntValueAttribute(geoKeyDirEntries.item(i + 3)));// offset
 
                 if (!geoKeys.containsKey(keyID)) {
                     geoKeys.put(keyID, key);
                 }
             }
             // GeoKeyDirVersion and the other parameters
-            geoKeyDirVersion = GeoTiffUtilities.getTiffShort(geoKeyDir,
+            geoKeyDirVersion = GeoTiffMetadataUtilities.getTiffShort(geoKeyDir,
                     GeoTiffGCSCodes.GEO_KEY_DIRECTORY_VERSION_INDEX);
-            geoKeyRevision = GeoTiffUtilities.getTiffShort(geoKeyDir, GeoTiffGCSCodes.GEO_KEY_REVISION_INDEX);
+            geoKeyRevision = GeoTiffMetadataUtilities.getTiffShort(geoKeyDir, GeoTiffGCSCodes.GEO_KEY_REVISION_INDEX);
             if (geoKeyRevision != 1) {
                 geoKeyRevision = 1;
                 // I had to remove this because I did not want to have wrong
                 // revision numbers blocking us.
                 // throw new UnsupportedOperationException("Unsupported revision");
             }
-            geoKeyMinorRevision = GeoTiffUtilities.getTiffShort(geoKeyDir,
+            geoKeyMinorRevision = GeoTiffMetadataUtilities.getTiffShort(geoKeyDir,
                     GeoTiffGCSCodes.GEO_KEY_MINOR_REVISION_INDEX);
             // loading the number of geokeys inside the geokeydirectory
-            geoKeyDirTagsNum = GeoTiffUtilities.getTiffShort(geoKeyDir, GeoTiffGCSCodes.GEO_KEY_NUM_KEYS_INDEX);
+            geoKeyDirTagsNum = GeoTiffMetadataUtilities.getTiffShort(geoKeyDir, GeoTiffGCSCodes.GEO_KEY_NUM_KEYS_INDEX);
         } else {
             if(LOGGER.isLoggable(Level.FINE))
                 LOGGER.log(Level.FINE,"Unable to find the geo key directory tag");
         }
         
-        pixelScale = GeoTiffUtilities.calculateModelPixelScales(rootNode);
-        tiePoints = GeoTiffUtilities.calculateTiePoints(rootNode);
-        noData = GeoTiffUtilities.calculateNoData(rootNode);
-        modelTransformation = GeoTiffUtilities.calculateModelTransformation(rootNode);
+        pixelScale = GeoTiffMetadataUtilities.calculateModelPixelScales(rootNode);
+        tiePoints = GeoTiffMetadataUtilities.calculateTiePoints(rootNode);
+        noData = GeoTiffMetadataUtilities.calculateNoData(rootNode);
+        modelTransformation = GeoTiffMetadataUtilities.calculateModelTransformation(rootNode);
 
        
 
@@ -256,7 +256,7 @@ public final class GeoTiffIIOMetadataDecoder {
 
         // value is stored externally
         // get the TIFF field where the data is actually stored
-        final IIOMetadataNode field = GeoTiffUtilities.getTiffField(rootNode, rec.getTiffTagLocation());
+        final IIOMetadataNode field = GeoTiffMetadataUtilities.getTiffField(rootNode, rec.getTiffTagLocation());
         if (field == null) {
             return null;
         }
@@ -266,9 +266,9 @@ public final class GeoTiffIIOMetadataDecoder {
             return null;
         }
 
-        return sequence.getNodeName().equals(GeoTiffConstants.GEOTIFF_ASCIIS_TAG) ? GeoTiffUtilities.getTiffAscii(
+        return sequence.getNodeName().equals(GeoTiffConstants.GEOTIFF_ASCIIS_TAG) ? GeoTiffMetadataUtilities.getTiffAscii(
                 (IIOMetadataNode) sequence, rec.getValueOffset(), rec.getCount())
-                : GeoTiffUtilities.getValueAttribute(sequence.getChildNodes().item(rec.getValueOffset()));
+                : GeoTiffMetadataUtilities.getValueAttribute(sequence.getChildNodes().item(rec.getValueOffset()));
     }
 
     /**

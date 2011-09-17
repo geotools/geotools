@@ -42,7 +42,7 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
 
-class RasterManager {
+public class RasterManager {
 
     /**
      * This class is responsible for putting together all the 2D spatial
@@ -112,7 +112,7 @@ class RasterManager {
             // basic initialization
             //
             coverageGeographicBBox = new ReferencedEnvelope(CRS.transform(CRS.findMathTransform(
-                    coverageEnvelope.getCoordinateReferenceSystem(), Utils.WGS84,
+                    coverageEnvelope.getCoordinateReferenceSystem(), GeoTiffUtils.WGS84,
                     true), coverageEnvelope));
             coverageGeographicCRS2D = coverageGeographicBBox!=null?coverageGeographicBBox.getCoordinateReferenceSystem():null;
 

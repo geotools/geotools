@@ -1,4 +1,4 @@
-package org.geotools.gce.geotiff;
+package org.geotools.coverage.grid.io.imageio.geotiff;
 
 import it.geosolutions.imageio.plugins.tiff.TIFFField;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFIFD;
@@ -21,9 +21,13 @@ import javax.imageio.metadata.IIOMetadata;
 
 import org.geotools.coverage.grid.RasterLayout;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataDecoder;
-import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffMetadata2CRSAdapter;
+import org.geotools.coverage.grid.io.imageio.ImageReaderSource;
 import org.geotools.factory.Hints;
+import org.geotools.gce.geotiff.GeoTiffUtils;
+import org.geotools.gce.geotiff.RasterDescriptor;
+import org.geotools.gce.geotiff.RasterManager;
+import org.geotools.gce.geotiff.RasterManagerBuilder;
+import org.geotools.gce.geotiff.RasterSlice;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -34,27 +38,13 @@ import org.opengis.referencing.operation.TransformException;
 
 
 public class TiffRasterManagerBuilder extends RasterManagerBuilder<TIFFImageReader> {
-    public final class RasterSlice{
-        RasterLayout rasterDimensions;
-        
-        ReferencedEnvelope envelope;
-        
-        AffineTransform gridToWorld;
-                
-        boolean overview;
-        
-        ImageReaderSource source;
-
-        public ImageTypeSpecifier imageType;
-        
-    }
 
     /** Logger. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(TiffRasterManagerBuilder.class);
     
     private List<RasterDescriptor> descriptors = new ArrayList<RasterDescriptor>();
     
-    private List<RasterSlice> slices= new ArrayList<TiffRasterManagerBuilder.RasterSlice>();
+    private List<RasterSlice> slices= new ArrayList<RasterSlice>();
     
     public TiffRasterManagerBuilder() {
         super(new Hints());
@@ -176,7 +166,7 @@ public class TiffRasterManagerBuilder extends RasterManagerBuilder<TIFFImageRead
                     }
 
                 if (crs == null)
-                    crs = Utils.getCRS(source.getSource());
+                    crs = GeoTiffUtils.getCRS(source.getSource());
             }
 
             if (crs == null){
@@ -191,7 +181,7 @@ public class TiffRasterManagerBuilder extends RasterManagerBuilder<TIFFImageRead
                 raster2Model = (AffineTransform) GeoTiffMetadata2CRSAdapter.getRasterToModel(decoder);
             } else {
                 // TODO I hate all thiese casts                
-                raster2Model = (AffineTransform) Utils.parseWorldFile(source);
+                raster2Model = (AffineTransform) GeoTiffUtils.parseWorldFile(source);
             }
     
             if (raster2Model == null) {

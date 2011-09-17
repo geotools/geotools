@@ -34,8 +34,8 @@ import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.ROIShape;
 
 import org.geotools.coverage.grid.RasterLayout;
+import org.geotools.coverage.grid.io.imageio.ImageReaderSource;
 import org.geotools.data.DataUtilities;
-import org.geotools.gce.geotiff.TiffRasterManagerBuilder.RasterSlice;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.io.ImageIOExt;
@@ -65,7 +65,7 @@ import org.opengis.referencing.operation.TransformException;
  * @author Simone Giannecchini, GeoSolutions S.A.S.
  * @since 2.5.5
  */
-class RasterDescriptor {
+public class RasterDescriptor {
 
     /** Logger. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging
@@ -199,7 +199,7 @@ class RasterDescriptor {
             }
 
             // get a reader
-            reader = Utils.TIFFREADERFACTORY.createReaderInstance();
+            reader = GeoTiffUtils.TIFFREADERFACTORY.createReaderInstance();
             reader.setInput(inStream);
             
             // cache stream SPI
@@ -218,7 +218,7 @@ class RasterDescriptor {
                     baseLevelHeight=height;
                     this.levels.add(
                             new RasterLevelDescriptor(
-                                    ImageReaderSource.wrapFile(i,granuleFile, streamSPI, Utils.TIFFREADERFACTORY),
+                                    ImageReaderSource.wrapFile(i,granuleFile, streamSPI, GeoTiffUtils.TIFFREADERFACTORY),
                                     1,
                                     1,
                                     new RasterLayout(0, 0, width, height,reader.getTileGridXOffset(i),reader.getTileGridYOffset(i),reader.getTileWidth(i),reader.getTileHeight(i))                                    
@@ -231,7 +231,7 @@ class RasterDescriptor {
                     // add the base level
                     this.levels.add(
                             new RasterLevelDescriptor(
-                                    ImageReaderSource.wrapFile(i,granuleFile, streamSPI, Utils.TIFFREADERFACTORY),
+                                    ImageReaderSource.wrapFile(i,granuleFile, streamSPI, GeoTiffUtils.TIFFREADERFACTORY),
                                     scaleX,
                                     scaleY,
                                     new RasterLayout(0, 0, width, height,reader.getTileGridXOffset(i),reader.getTileGridYOffset(i),reader.getTileWidth(i),reader.getTileHeight(i))
@@ -271,7 +271,7 @@ class RasterDescriptor {
                 }
                 streamSPI=ImageIOExt.getImageInputStreamSPI(rasterManager.parent.ovrSource);
                 // get a reader
-                reader = Utils.TIFFREADERFACTORY.createReaderInstance();
+                reader = GeoTiffUtils.TIFFREADERFACTORY.createReaderInstance();
                 reader.setInput(inStream);               
 
                 // load info from main sourceFile
@@ -284,7 +284,7 @@ class RasterDescriptor {
                     // add the level
                     this.levels.add(
                             new RasterLevelDescriptor(
-                                    ImageReaderSource.wrapFile(k,rasterManager.parent.ovrSource, rasterManager.parent.ovrInStreamSPI, Utils.TIFFREADERFACTORY),
+                                    ImageReaderSource.wrapFile(k,rasterManager.parent.ovrSource, rasterManager.parent.ovrInStreamSPI, GeoTiffUtils.TIFFREADERFACTORY),
                                     scaleX,
                                     scaleY,
                                     new RasterLayout(0, 0, width, height,reader.getTileGridXOffset(k),reader.getTileGridYOffset(k),reader.getTileWidth(k),reader.getTileHeight(k))
@@ -368,7 +368,7 @@ class RasterDescriptor {
             }
 
             // get a reader
-            reader = Utils.TIFFREADERFACTORY.createReaderInstance();
+            reader = GeoTiffUtils.TIFFREADERFACTORY.createReaderInstance();
             reader.setInput(inStream);
 
             // now create the crop grid to world which can be used to decide
@@ -448,11 +448,11 @@ class RasterDescriptor {
             final AffineTransform finalRaster2Model = new AffineTransform(baseGridToWorld);
             finalRaster2Model.concatenate(CoverageUtilities.CENTER_TO_CORNER);
             
-            if(!XAffineTransform.isIdentity(backToBaseLevelScaleTransform, Utils.AFFINE_IDENTITY_EPS))
+            if(!XAffineTransform.isIdentity(backToBaseLevelScaleTransform, GeoTiffUtils.AFFINE_IDENTITY_EPS))
                     finalRaster2Model.concatenate(backToBaseLevelScaleTransform);
-            if(!XAffineTransform.isIdentity(afterDecimationTranslateTranform, Utils.AFFINE_IDENTITY_EPS))
+            if(!XAffineTransform.isIdentity(afterDecimationTranslateTranform, GeoTiffUtils.AFFINE_IDENTITY_EPS))
                     finalRaster2Model.concatenate(afterDecimationTranslateTranform);
-            if(!XAffineTransform.isIdentity(decimationScaleTranform, Utils.AFFINE_IDENTITY_EPS))
+            if(!XAffineTransform.isIdentity(decimationScaleTranform, GeoTiffUtils.AFFINE_IDENTITY_EPS))
                     finalRaster2Model.concatenate(decimationScaleTranform);
             
             // return raster + its own transformation

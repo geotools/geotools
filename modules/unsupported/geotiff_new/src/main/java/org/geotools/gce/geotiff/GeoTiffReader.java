@@ -221,7 +221,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
                 throw new IllegalArgumentException("No input stream for the provided sourceFile");
             }
 
-            this.sourceURL = Utils.checkSource(source);
+            this.sourceURL = GeoTiffUtils.checkSource(source);
             
             //
             // Coverage name
@@ -289,7 +289,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
         // Get a reader for this format
         //
         // //
-        final ImageReader reader = Utils.TIFFREADERFACTORY.createReaderInstance();
+        final ImageReader reader = GeoTiffUtils.TIFFREADERFACTORY.createReaderInstance();
         ImageReader ovrReader = null;
         ImageInputStream ovrStream = null;
         try {
@@ -339,7 +339,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
                     crs = gtcs.createCoordinateSystem(metadata);
 
                 if (crs == null)
-                    crs = Utils.getCRS(source);
+                    crs = GeoTiffUtils.getCRS(source);
             }
 
             if (crs == null){
@@ -353,7 +353,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
             if (gtcs != null&& metadata!=null&& (metadata.hasModelTrasformation()||(metadata.hasPixelScales()&&metadata.hasTiePoints()))) {
                 this.raster2Model = GeoTiffMetadata2CRSAdapter.getRasterToModel(metadata);
             } else {
-                this.raster2Model = Utils.parseWorldFile(source);
+                this.raster2Model = GeoTiffUtils.parseWorldFile(source);
             }
     
             if (this.raster2Model == null) {
@@ -376,7 +376,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
             highestRes[1] = XAffineTransform.getScaleY0(tempTransform);
     
             if (ovrInStreamSPI != null) {
-                ovrReader = Utils.TIFFREADERFACTORY.createReaderInstance();
+                ovrReader = GeoTiffUtils.TIFFREADERFACTORY.createReaderInstance();
                 ovrStream = ovrInStreamSPI.createInputStreamInstance(ovrSource,
                         ImageIO.getUseCache(), ImageIO.getCacheDirectory());
                 ovrReader.setInput(ovrStream);
@@ -518,7 +518,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
 //            if (stream == null) {
 //                throw new IllegalArgumentException("No input stream for the provided sourceFile");
 //            }
-//            reader = Utils.TIFFREADERFACTORY.createReaderInstance();
+//            reader = GeoTiffUtils.TIFFREADERFACTORY.createReaderInstance();
 //            reader.setInput(stream);
 //            final IIOMetadata iioMetadata = reader.getImageMetadata(0);
 //            metadata = new GeoTiffIIOMetadataDecoder(iioMetadata);

@@ -125,7 +125,7 @@ class RasterLayerResponse{
         		this.unit=unit;
         		this.type=type;
         		this.color=color;
-        		this.bkg=new Category("Background", Utils.TRANSPARENT, 0);
+        		this.bkg=new Category("Background", GeoTiffUtils.TRANSPARENT, 0);
         	}
         
         
@@ -705,7 +705,7 @@ class RasterLayerResponse{
 //                // If so call the copy operation.
 //                //
 //                // we are in raster space here, so 1E-3 is safe
-//                if(XAffineTransform.isIdentity(targetWorldToGrid, Utils.AFFINE_IDENTITY_EPS))
+//                if(XAffineTransform.isIdentity(targetWorldToGrid, GeoTiffUtils.AFFINE_IDENTITY_EPS))
 //                    return image;
 //                
 //                // create final image

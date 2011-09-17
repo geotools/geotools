@@ -50,11 +50,11 @@ import org.opengis.referencing.operation.MathTransform;
  * @author Simone Giannecchini, GeoSolutions S.A.S.
  * 
  */
-class Utils {
+public class GeoTiffUtils {
 
-    /** Logger for the {@link Utils} class. */
+    /** Logger for the {@link GeoTiffUtils} class. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(Utils.class.toString());
+            .getLogger(GeoTiffUtils.class.toString());
         
     static CoordinateReferenceSystem WGS84 = DefaultGeographicCRS.WGS84;
 
@@ -130,7 +130,7 @@ class Utils {
     /**
      * @throws IOException
      */
-    static MathTransform parseWorldFile(Object source) throws IOException {
+    public static MathTransform parseWorldFile(Object source) throws IOException {
         MathTransform raster2Model = null;
 
         // TODO: Add support for FileImageInputStreamExt
@@ -166,7 +166,7 @@ class Utils {
         return raster2Model;
     }
 
-    static CoordinateReferenceSystem getCRS(Object source) {
+    public static CoordinateReferenceSystem getCRS(Object source) {
         CoordinateReferenceSystem crs = null;
         if (source instanceof File
                 || (source instanceof URL && (((URL) source).getProtocol() == "file"))) {
@@ -271,12 +271,12 @@ class Utils {
     }
 
     /** factory for getting tiff writers. */
-    final static TIFFImageWriterSpi TIFFWRITERFACTORY = new TIFFImageWriterSpi();
+    public final static TIFFImageWriterSpi TIFFWRITERFACTORY = new TIFFImageWriterSpi();
 
     /** SPI for creating tiff readers in ImageIO tools */
-    final static TIFFImageReaderSpi TIFFREADERFACTORY = new TIFFImageReaderSpi();
+    public final static TIFFImageReaderSpi TIFFREADERFACTORY = new TIFFImageReaderSpi();
 
-    static final double AFFINE_IDENTITY_EPS = 1E-6;
+    public static final double AFFINE_IDENTITY_EPS = 1E-6;
 
     /**
      * A transparent color for missing data.

@@ -6,12 +6,13 @@ import java.util.List;
 import javax.imageio.ImageReader;
 import javax.imageio.metadata.IIOMetadata;
 
+import org.geotools.coverage.grid.io.imageio.ImageReaderSource;
 import org.geotools.factory.Hints;
 import org.geotools.util.Utilities;
 
 
 public abstract class RasterManagerBuilder<T extends ImageReader> {
-    
+
     protected final Hints hints;
 
     public abstract void parseStreamMetadata(IIOMetadata streamMetadata)throws IOException ;

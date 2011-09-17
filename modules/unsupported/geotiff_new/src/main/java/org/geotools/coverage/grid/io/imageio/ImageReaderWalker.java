@@ -1,4 +1,4 @@
-package org.geotools.gce.geotiff;
+package org.geotools.coverage.grid.io.imageio;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -15,6 +15,8 @@ import javax.imageio.stream.ImageInputStream;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
+import org.geotools.gce.geotiff.RasterManager;
+import org.geotools.gce.geotiff.RasterManagerBuilder;
 
 public abstract class ImageReaderWalker extends AbstractList<RasterManager> implements List<RasterManager>  {
    

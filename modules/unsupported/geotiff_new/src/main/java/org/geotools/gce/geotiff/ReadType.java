@@ -67,7 +67,7 @@ enum ReadType {
                     return null;
                 }
 
-                reader = Utils.TIFFREADERFACTORY.createReaderInstance();
+                reader = GeoTiffUtils.TIFFREADERFACTORY.createReaderInstance();
                 reader.setInput(inStream);
 
                 // check sourceFile regione
@@ -127,7 +127,7 @@ enum ReadType {
                     return null;
                 }
                 // get a reader
-                reader = Utils.TIFFREADERFACTORY.createReaderInstance();
+                reader = GeoTiffUtils.TIFFREADERFACTORY.createReaderInstance();
                 reader.setInput(inStream);
 
                 // check sourceFile regionepbjMosaic,

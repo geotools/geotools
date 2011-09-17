@@ -1,4 +1,4 @@
-package org.geotools.gce.geotiff;
+package org.geotools.coverage.grid.io.imageio.geotiff;
 
 import java.io.IOException;
 import java.net.URL;
@@ -9,7 +9,10 @@ import javax.imageio.ImageReader;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.ImageInputStream;
 
+import org.geotools.coverage.grid.io.imageio.FileBasedImageReaderWalker;
+import org.geotools.coverage.grid.io.imageio.ImageReaderSource;
 import org.geotools.factory.Hints;
+import org.geotools.gce.geotiff.GeoTiffUtils;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 
@@ -28,7 +31,7 @@ public class GeotiffImageReaderWalker extends FileBasedImageReaderWalker {
     private ImageInputStream externalOvrImageInputStream;
 
     public GeotiffImageReaderWalker(URL sourceURL, Hints hints) throws IOException {
-        super(sourceURL, hints, Utils.TIFFREADERFACTORY);
+        super(sourceURL, hints, GeoTiffUtils.TIFFREADERFACTORY);
 
         
     }
@@ -90,7 +93,7 @@ public class GeotiffImageReaderWalker extends FileBasedImageReaderWalker {
         if(hasExternalOverviews){
             externalOvrImageInputStream=this.inStreamSPI.createInputStreamInstance(externalOverviewsFile,ImageIO.getUseCache(),ImageIO.getCacheDirectory());
             // create the main reader
-            externalOvrImageReader=Utils.TIFFREADERFACTORY.createReaderInstance();
+            externalOvrImageReader=GeoTiffUtils.TIFFREADERFACTORY.createReaderInstance();
             externalOvrImageReader.setInput(externalOvrImageInputStream);
         }
         
@@ -159,7 +162,7 @@ public class GeotiffImageReaderWalker extends FileBasedImageReaderWalker {
         if(imageIndex<mainFileNumImages)
             return super.getSource(imageIndex);
         if(imageIndex<mainFileNumImages+extOvrFileNumImages)
-            return ImageReaderSource.wrapFile(imageIndex,externalOverviewsFile, super.inStreamSPI, Utils.TIFFREADERFACTORY);
+            return ImageReaderSource.wrapFile(imageIndex,externalOverviewsFile, super.inStreamSPI, GeoTiffUtils.TIFFREADERFACTORY);
         throw new IOException(Errors.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1));
     }
 

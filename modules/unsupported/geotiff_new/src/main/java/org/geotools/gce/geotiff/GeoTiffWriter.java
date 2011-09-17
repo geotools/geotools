@@ -405,8 +405,8 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements
         //
         // GETTING READER AND METADATA
         //
-        final ImageWriter writer = Utils.TIFFWRITERFACTORY.createWriterInstance();
-        final IIOMetadata metadata = Utils.createGeoTiffIIOMetadata(writer,
+        final ImageWriter writer = GeoTiffUtils.TIFFWRITERFACTORY.createWriterInstance();
+        final IIOMetadata metadata = GeoTiffUtils.createGeoTiffIIOMetadata(writer,
                 ImageTypeSpecifier.createFromRenderedImage(image), geoTIFFMetadata, params);
 
         try {

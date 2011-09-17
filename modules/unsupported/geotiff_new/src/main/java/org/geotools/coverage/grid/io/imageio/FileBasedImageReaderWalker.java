@@ -1,4 +1,4 @@
-package org.geotools.gce.geotiff;
+package org.geotools.coverage.grid.io.imageio;
 
 import java.io.File;
 import java.io.IOException;

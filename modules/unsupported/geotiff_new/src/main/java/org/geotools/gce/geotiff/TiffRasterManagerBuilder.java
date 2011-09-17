@@ -9,6 +9,7 @@ import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,6 +19,7 @@ import javax.imageio.ImageReader;
 import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.metadata.IIOMetadata;
 
+import org.geotools.coverage.grid.RasterLayout;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataDecoder;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffMetadata2CRSAdapter;
@@ -32,9 +34,27 @@ import org.opengis.referencing.operation.TransformException;
 
 
 public class TiffRasterManagerBuilder extends RasterManagerBuilder<TIFFImageReader> {
+    public final class RasterSlice{
+        RasterLayout rasterDimensions;
+        
+        ReferencedEnvelope envelope;
+        
+        AffineTransform gridToWorld;
+                
+        boolean overview;
+        
+        ImageReaderSource source;
+
+        public ImageTypeSpecifier imageType;
+        
+    }
 
     /** Logger. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(TiffRasterManagerBuilder.class);
+    
+    private List<RasterDescriptor> descriptors = new ArrayList<RasterDescriptor>();
+    
+    private List<RasterSlice> slices= new ArrayList<TiffRasterManagerBuilder.RasterSlice>();
     
     public TiffRasterManagerBuilder() {
         super(new Hints());
@@ -47,6 +67,9 @@ public class TiffRasterManagerBuilder extends RasterManagerBuilder<TIFFImageRead
 
     @Override
     public void addElement(int index, TIFFImageReader reader, ImageReaderSource<?> source) throws IOException {
+    
+        final RasterSlice slice = new RasterSlice();
+        slice.source=source;
         
         // get metadata and check if this is an overview or not
         final TIFFImageMetadata metadata = (TIFFImageMetadata) reader.getImageMetadata(index);
@@ -56,7 +79,7 @@ public class TiffRasterManagerBuilder extends RasterManagerBuilder<TIFFImageRead
         // Overviews or full resolution?
         //
         boolean fullResolution=true;
-        boolean multipage=false;
+//        boolean multipage=false;
         final int newSubfileType;
         TIFFField tifField=null;
         if((tifField=IFD.getTIFFField(254))!=null)
@@ -64,16 +87,20 @@ public class TiffRasterManagerBuilder extends RasterManagerBuilder<TIFFImageRead
         else
             newSubfileType=0;// default is single independent image
         fullResolution=(newSubfileType&0x1)!=1?true:false;
-        multipage=((newSubfileType>>1)&0x2)!=1?true:false;
-        
-        //
-        // Page number 
-        //
-        final int pageNumber;
-        if((tifField=IFD.getTIFFField(254))!=null)
-            pageNumber=tifField.getAsInt(0);
-        else
-            pageNumber=-1;// default is single independent image
+//        multipage=((newSubfileType>>1)&0x2)!=1?true:false;
+        slice.overview=!fullResolution;
+        if(!slice.overview&& !slices.isEmpty())
+            createRasterDescriptor();
+//        //
+//        // Page number 
+//        //
+//        final int pageNumber;
+//        if((tifField=IFD.getTIFFField(297))!=null){
+//            pageNumber=tifField.getAsInt(0);
+//            slice.pageIndex=pageNumber;
+//        }
+//        else
+//            pageNumber=-1;// default is single independent image
 
         //
         // Raster dimensions
@@ -91,6 +118,7 @@ public class TiffRasterManagerBuilder extends RasterManagerBuilder<TIFFImageRead
                 reader.getTileGridXOffset(index),
                 hrTileW,
                 hrTileH);
+        slice.rasterDimensions=rasterLayout;
         
         //
         // get sample image
@@ -99,7 +127,7 @@ public class TiffRasterManagerBuilder extends RasterManagerBuilder<TIFFImageRead
         readParam.setSourceRegion(new Rectangle(0, 0, 2, 2));
         final BufferedImage sampleImage = reader.read(index, readParam);
         final ImageTypeSpecifier imageType = new ImageTypeSpecifier(sampleImage);
-
+        slice.imageType=imageType;
         
         double noDataValue;
         CoordinateReferenceSystem crs=null;
@@ -170,7 +198,8 @@ public class TiffRasterManagerBuilder extends RasterManagerBuilder<TIFFImageRead
                 // TODO test this
                 raster2Model=AffineTransform.getScaleInstance(0, 0);
             }
-    
+            slice.gridToWorld=raster2Model;
+            
             final AffineTransform tempTransform = new AffineTransform(raster2Model);
             tempTransform.translate(-0.5, -0.5);
             try {
@@ -181,20 +210,20 @@ public class TiffRasterManagerBuilder extends RasterManagerBuilder<TIFFImageRead
             } catch (TransformException e) {
                 new IOException(e);
             }
+            slice.envelope=bbox;
             
-        } else {
-            
-            ////
-            //
-            // THIS IS A REDUCED RESOLUTION PAGE
-            //
-            ////
-        }
-        
+        } 
+        slices.add(slice);
         
         
 //        System.out.println(new IIOMetadataDumper(metadata,metadata.getNativeMetadataFormatName()).getMetadata());
 
+    }
+
+    private void createRasterDescriptor() {
+        descriptors.add(new RasterDescriptor(slices));
+        slices.clear();
+        
     }
 
     /**
@@ -208,12 +237,28 @@ public class TiffRasterManagerBuilder extends RasterManagerBuilder<TIFFImageRead
 
     @Override
     public List<RasterManager> create() {
+        // do one last internal create
+        if(!slices.isEmpty())
+            this.descriptors.add(new RasterDescriptor(slices));
+//        return new ArrayList<RasterManager>(descriptors);ù
         return null;
     }
 
     @Override
     public void parseStreamMetadata(IIOMetadata streamMetadata) throws IOException {
         // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void dispose() {
+        if(descriptors!=null)
+            descriptors.clear();
+        descriptors=null;
+        
+        if(slices!=null)
+            slices.clear();
+        slices=null;
         
     }
 

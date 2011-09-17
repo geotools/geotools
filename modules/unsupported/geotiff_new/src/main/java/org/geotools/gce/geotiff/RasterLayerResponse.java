@@ -326,7 +326,7 @@ class RasterLayerResponse{
         try {
 
             // select the relevant overview, notice that at this time we have relaxed a bit the 
-            // requirement to have the same exact resolution for all the overviews, but still we 
+            // requirement to have the same exact resolution for all the levels, but still we 
             // do not allow for reading the various grid to world transform directly from the 
             // input files, therefore we are assuming that each rasterDescriptor has a scale 
             // and translate only grid to world that can be deduced from its base level dimension 
@@ -355,7 +355,7 @@ class RasterLayerResponse{
             // move it to the corner
             g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
 
-            // keep into account overviews and subsampling
+            // keep into account levels and subsampling
             final OverviewLevel level = rasterManager.overviewsController.resolutionsLevels.get(overviewsLevel);
             final OverviewLevel baseLevel = rasterManager.overviewsController.resolutionsLevels.get(0);
             final AffineTransform2D adjustments = new AffineTransform2D(
@@ -619,7 +619,7 @@ class RasterLayerResponse{
      *            {@link Hints#VALUE_OVERVIEW_POLICY_NEAREST},
      *            {@link Hints#VALUE_OVERVIEW_POLICY_QUALITY} or
      *            {@link Hints#VALUE_OVERVIEW_POLICY_SPEED}. It specifies the
-     *            policy to compute the overviews level upon request.
+     *            policy to compute the levels level upon request.
      * @param readParams
      *            an instance of {@link ImageReadParam} for setting the
      *            subsampling factors.
@@ -653,19 +653,19 @@ class RasterLayerResponse{
             policy = overviewPolicy;
         }
 
-        // requested to ignore overviews
+        // requested to ignore levels
         if (policy.equals(OverviewPolicy.IGNORE)) {
             return imageChoice;
         }
 
-        // overviews and decimation
+        // levels and decimation
         imageChoice = ReadParamsController.setReadParams(
                 request.getRequestedResolution(),
                 request.getOverviewPolicy(),
                 request.getDecimationPolicy(),
                 baseReadParameters,
                 request.rasterManager,
-                request.rasterManager.overviewsController); // use general overviews controller
+                request.rasterManager.overviewsController); // use general levels controller
         return imageChoice;
     }
 

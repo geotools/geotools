@@ -765,7 +765,7 @@ class RasterLayerRequest {
     }
 
     /**
-     * Computes the requested resolution which is going to be used for selecting overviews and or
+     * Computes the requested resolution which is going to be used for selecting levels and or
      * deciding decimation factors on the target coverage.
      * 
      * <p>

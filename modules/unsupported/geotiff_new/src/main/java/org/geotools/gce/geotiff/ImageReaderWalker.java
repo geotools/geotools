@@ -108,6 +108,7 @@ public abstract class ImageReaderWalker extends AbstractList<RasterManager> impl
         // Create raster managers
         //
         this.elements=rasterManagerBuilder.create();
+        rasterManagerBuilder.dispose();
  
     }
 

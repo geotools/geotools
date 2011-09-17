@@ -42,5 +42,7 @@ public abstract class RasterManagerBuilder<T extends ImageReader> {
 
     public abstract List<RasterManager> create() ;
 
+    public abstract void dispose() ;
+
 }
     

@@ -198,7 +198,7 @@ class RasterManager {
         this.parent = reader;
         this.coverageIdentifier = identifier;
         hints = reader.getHints();
-        // get the default overviews policy from the hints
+        // get the default levels policy from the hints
         extractOverviewPolicy();
 
         // base image type
@@ -208,7 +208,7 @@ class RasterManager {
         defaultImageLayout= new ImageLayout().setColorModel( baseImageType.getColorModel()).setSampleModel(baseImageType.getSampleModel());
 
 
-        //instantiating controller for subsampling and overviews
+        //instantiating controller for subsampling and levels
         overviewsController=new OverviewsController(resolutions);
         try {
             spatialDomainManager = new SpatialDomainManager(
@@ -229,7 +229,7 @@ class RasterManager {
     public RasterManager(final GeoTiffReader reader) throws DataSourceException {
         Utilities.ensureNonNull("GeoTiffReader", reader);
         
-        // extract overviews
+        // extract levels
         double [][]resolutions = new double[reader.getNumberOfOverviews()+1][2];
         double[][] overviewResolutions=reader.getOverviewsResolution();
         resolutions[0]=reader.getHighestRes();

@@ -10,7 +10,6 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.ImageInputStream;
 
 import org.geotools.factory.Hints;
-import org.geotools.gce.geotiff.ImageReaderSource.FileImageReaderSource;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 
@@ -100,7 +99,7 @@ public class GeotiffImageReaderWalker extends FileBasedImageReaderWalker {
         if(hasExternalOverviews){
             extOvrFileNumImages=externalOvrImageReader.getNumImages(true);
             
-            // TODO if we have ext ovr we should somehow ignore additional pages that might bring overviews themselves
+            // TODO if we have ext ovr we should somehow ignore additional pages that might bring levels themselves
             }
             
         

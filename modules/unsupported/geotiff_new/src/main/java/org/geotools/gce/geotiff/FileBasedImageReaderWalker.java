@@ -46,7 +46,7 @@ public abstract class FileBasedImageReaderWalker extends ImageReaderWalker {
         super(URLToParams(sourceURL), hints, ImageIOExt.getImageInputStreamSPI(DataUtilities.urlToFile(sourceURL), true), readerSPI);
       this.sourceURL = sourceURL;
       
-      // look for external overviews
+      // look for external levels
       sourceFile= DataUtilities.urlToFile(getSource());
       externalOverviewsFile= new File(sourceFile.getCanonicalPath()+".ovr");
       hasExternalOverviews=externalOverviewsFile.exists()&&externalOverviewsFile.isFile()&&externalOverviewsFile.canRead();

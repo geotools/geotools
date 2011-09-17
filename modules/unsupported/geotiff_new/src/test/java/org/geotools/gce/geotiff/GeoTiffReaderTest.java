@@ -270,7 +270,7 @@ public class GeoTiffReaderTest extends Assert {
         GeoTiffReaderTester reader = new GeoTiffReaderTester(file);
         
         final int nOvrs = reader.getNumOverviews();
-        LOGGER.info("Number of external overviews: " + nOvrs);
+        LOGGER.info("Number of external levels: " + nOvrs);
         assertEquals(4, nOvrs);
         double[][] overviewResolutions = reader.getOverviewResolutions();
         assertEquals(overviewResolutions.length, 4);

@@ -22,9 +22,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
@@ -34,7 +33,9 @@ import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.ROIShape;
 
+import org.geotools.coverage.grid.RasterLayout;
 import org.geotools.data.DataUtilities;
+import org.geotools.gce.geotiff.TiffRasterManagerBuilder.RasterSlice;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.io.ImageIOExt;
@@ -50,7 +51,7 @@ import org.opengis.referencing.operation.TransformException;
 
 /**
  * A RasterDescriptor is an elementar piece of data image, with its own
- * overviews and everything.
+ * levels and everything.
  * 
  * <p>
  * This class is responsible for caching the various size of the different
@@ -58,7 +59,7 @@ import org.opengis.referencing.operation.TransformException;
  * 
  * <p>
  * Right now we are making the assumption that a single rasterGranuleLoader is
- * made a by a single file with embedded overviews, either explicit or intrinsic
+ * made a by a single file with embedded levels, either explicit or intrinsic
  * through wavelets like MrSID, ECW or JPEG2000.
  * 
  * @author Simone Giannecchini, GeoSolutions S.A.S.
@@ -76,7 +77,7 @@ class RasterDescriptor {
      * @author Simone Giannecchini, GeoSolutions S.A.S.
      * 
      */
-    class OverviewDescriptor {
+    public class RasterLevelDescriptor {
         
         final ImageReaderSource source;
         
@@ -107,7 +108,7 @@ class RasterDescriptor {
             return scaleY;
         }
 
-        public OverviewDescriptor(
+        public RasterLevelDescriptor(
                 final ImageReaderSource source,
                 final double scaleX, 
                 final double scaleY, 
@@ -133,7 +134,7 @@ class RasterDescriptor {
 
         @Override
         public String toString() {
-            return "OverviewDescriptor [source=" + source + ", scaleX=" + scaleX + ", scaleY="
+            return "RasterLevelDescriptor [source=" + source + ", scaleX=" + scaleX + ", scaleY="
                     + scaleY + ", baseToLevelTransform=" + baseToLevelTransform
                     + ", gridToWorldTransformCorner=" + gridToWorldTransformCorner
                     + ", rasterDimensions=" + rasterDimensions + "]";
@@ -170,7 +171,7 @@ class RasterDescriptor {
 
     ReferencedEnvelope rasterBBOX;
 
-    final Map<Integer, OverviewDescriptor> overviews =new HashMap<Integer, OverviewDescriptor>();
+    final List<RasterLevelDescriptor> levels =new ArrayList<RasterLevelDescriptor>();
 
     AffineTransform baseGridToWorld;
 
@@ -215,9 +216,8 @@ class RasterDescriptor {
                 if(i==0) {
                     baseLevelWidth=width;
                     baseLevelHeight=height;
-                    this.overviews.put(
-                            Integer.valueOf(i), 
-                            new OverviewDescriptor(
+                    this.levels.add(
+                            new RasterLevelDescriptor(
                                     ImageReaderSource.wrapFile(i,granuleFile, streamSPI, Utils.TIFFREADERFACTORY),
                                     1,
                                     1,
@@ -229,9 +229,8 @@ class RasterDescriptor {
                     final double scaleX = baseLevelWidth / (1.0 * width);
                     final double scaleY = baseLevelHeight / (1.0 * height);
                     // add the base level
-                    this.overviews.put(
-                            Integer.valueOf(i), 
-                            new OverviewDescriptor(
+                    this.levels.add(
+                            new RasterLevelDescriptor(
                                     ImageReaderSource.wrapFile(i,granuleFile, streamSPI, Utils.TIFFREADERFACTORY),
                                     scaleX,
                                     scaleY,
@@ -283,9 +282,8 @@ class RasterDescriptor {
                     final double scaleX = baseLevelWidth / (1.0 * width);
                     final double scaleY = baseLevelHeight / (1.0 * height);
                     // add the level
-                    this.overviews.put(
-                            Integer.valueOf(i), 
-                            new OverviewDescriptor(
+                    this.levels.add(
+                            new RasterLevelDescriptor(
                                     ImageReaderSource.wrapFile(k,rasterManager.parent.ovrSource, rasterManager.parent.ovrInStreamSPI, Utils.TIFFREADERFACTORY),
                                     scaleX,
                                     scaleY,
@@ -317,6 +315,24 @@ class RasterDescriptor {
         }
     }
 
+    public RasterDescriptor(final List<RasterSlice> slices) {
+        final RasterSlice fullRes= slices.get(0);
+        // get basic info
+        this.rasterBBOX = new ReferencedEnvelope(new ReferencedEnvelope(fullRes.envelope));
+        this.baseGridToWorld = new AffineTransform((AffineTransform) fullRes.gridToWorld.clone());
+        this.levels.add(new RasterLevelDescriptor(fullRes.source, 1.0, 1.0, fullRes.rasterDimensions));
+        
+        final int baseLevelWidth=fullRes.rasterDimensions.getWidth(), baseLevelHeight=fullRes.rasterDimensions.getHeight();
+        final int size= slices.size();
+        for(int i =1;i<size;i++){
+            final RasterSlice slice= slices.get(i);
+            final double scaleX = baseLevelWidth / (1.0 * slice.rasterDimensions.getWidth());
+            final double scaleY = baseLevelHeight / (1.0 * slice.rasterDimensions.getHeight());
+            this.levels.add(new RasterLevelDescriptor(slice.source, scaleX, scaleY, slice.rasterDimensions));
+            
+        }
+
+    }
     
     public RasterLoadingResult loadRaster(
             final ImageReadParam readParameters, 
@@ -342,7 +358,7 @@ class RasterDescriptor {
             // get info about the raster we have to read
             //
             // get selected level and base level dimensions
-            final OverviewDescriptor selectedlevel=overviews.get(Integer.valueOf(overviewIndex));
+            final RasterLevelDescriptor selectedlevel=levels.get(Integer.valueOf(overviewIndex));
             final Object input = selectedlevel.source.getSource();
             inStream = selectedlevel.source.getInputStreamSPI().createInputStreamInstance(input, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
             int imageChoice= selectedlevel.source.getImageIndex();
@@ -484,10 +500,10 @@ class RasterDescriptor {
 
     }
 
-//    private OverviewDescriptor getLevel(ImageReader reader, RasterLayerRequest request,  int imageChoice, int overviewIndex) {
-//        synchronized (overviews) {
-//            if (overviews.containsKey(Integer.valueOf(overviewIndex))) {
-//                return overviews.get(Integer.valueOf(overviewIndex));
+//    private RasterLevelDescriptor getLevel(ImageReader reader, RasterLayerRequest request,  int imageChoice, int overviewIndex) {
+//        synchronized (levels) {
+//            if (levels.containsKey(Integer.valueOf(overviewIndex))) {
+//                return levels.get(Integer.valueOf(overviewIndex));
 //            } else {
 //                // load level
 //                // create the base grid to world transformation
@@ -498,12 +514,12 @@ class RasterDescriptor {
 //                    // get selected level and base level dimensions
 //                    final Rectangle levelDimension =  new Rectangle(0, 0, reader.getWidth(imageChoice), reader.getHeight(imageChoice));
 //
-//                    final OverviewDescriptor baseLevel = overviews.get(0);
+//                    final RasterLevelDescriptor baseLevel = levels.get(0);
 //                    final double scaleX = baseLevel.width / (1.0 * levelDimension.width);
 //                    final double scaleY = baseLevel.height / (1.0 * levelDimension.height);
 //
 //                    // add the base level
-//                    final OverviewDescriptor newLevel = new OverviewDescriptor(scaleX, scaleY, levelDimension.width,levelDimension.height);
+//                    final RasterLevelDescriptor newLevel = new RasterLevelDescriptor(scaleX, scaleY, levelDimension.width,levelDimension.height);
 //                    this.granuleLevels.put(Integer.valueOf(overviewIndex), newLevel);
 //                    return newLevel;
 //
@@ -525,16 +541,16 @@ class RasterDescriptor {
         buffer.append("Description of a rasterGranuleLoader ").append("\n").append("BBOX:\t\t")
                 .append(rasterBBOX.toString()).append("gridToWorld:\t\t").append(baseGridToWorld);
         int i = 1;
-        for (final OverviewDescriptor overviewDescriptor : overviews.values()) {
+        for (final RasterLevelDescriptor rasterLevelDescriptor : levels) {
             i++;
             buffer.append("Description of level ").append(i++).append("\n")
-                    .append(overviewDescriptor.toString()).append("\n");
+                    .append(rasterLevelDescriptor.toString()).append("\n");
         }
         return super.toString();
     }
 
 
-    public BoundingBox getGranuleBBOX() {
+    public BoundingBox getBBOX() {
     	return rasterBBOX;
     }
 

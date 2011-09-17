@@ -24,7 +24,7 @@ import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.util.Utilities;
 
 /**
- * A class to handle overviews resolution levels. It stores overviews resolution levels information
+ * A class to handle levels resolution levels. It stores levels resolution levels information
  * and suggests the level to be used depending on the current request and the {@link OverviewPolicy}.
  * 
  * @author Simone Giannecchini, GeoSolutions SAS
@@ -45,8 +45,8 @@ final  class OverviewsController {
 
         // notice that we assume what follows:
         // -highest resolution image is at level 0.
-        // -all the overviews share the same envelope
-        // -the aspect ratio for the overviews is constant
+        // -all the levels share the same envelope
+        // -the aspect ratio for the levels is constant
         // -the provided resolutions are taken directly from the grid
         double[] highestRes = overviewsResolution[0];
         for (int i = 0; i < overviewsResolution.length; i++) {
@@ -78,7 +78,7 @@ final  class OverviewsController {
         // Now search for the best matching resolution.
         // Check also for the "perfect match"... unlikely in practice unless someone
         // tunes the clients to request exactly the resolution embedded in
-        // the overviews, something a perf sensitive person might do in fact
+        // the levels, something a perf sensitive person might do in fact
 
         // requested scale factor for least reduced axis
         final OverviewLevel max = (OverviewLevel) resolutionsLevels.get(0);
@@ -121,7 +121,7 @@ final  class OverviewsController {
             // middle check. The first part of the condition should be sufficient, but
             // there are cases where the x resolution is satisfied by the lowest resolution,
             // the y by the one before the lowest (so the aspect ratio of the request is
-            // different than the one of the overviews), and we would end up going out of the 
+            // different than the one of the levels), and we would end up going out of the 
             // loop since not even the lowest can "top" the request for one axis
             if (curr.scaleFactor > requestedScaleFactor || i == size - 1) {
                 if (policy == OverviewPolicy.QUALITY) {

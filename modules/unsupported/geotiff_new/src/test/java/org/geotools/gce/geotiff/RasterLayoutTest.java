@@ -30,6 +30,7 @@ import java.util.Map;
 
 import javax.media.jai.TiledImage;
 
+import org.geotools.coverage.grid.RasterLayout;
 import org.junit.Assert;
 import org.junit.Test;
 

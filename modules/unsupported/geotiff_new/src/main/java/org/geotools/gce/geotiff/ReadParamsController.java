@@ -41,12 +41,12 @@ public class ReadParamsController {
     /**
      * This method is responsible for evaluating possible subsampling factors
      * once the best resolution level has been found, in case we have support
-     * for overviews, or starting from the original coverage in case there are
-     * no overviews available.
+     * for levels, or starting from the original coverage in case there are
+     * no levels available.
      * 
      * Anyhow this method should not be called directly but subclasses should
      * make use of the setReadParams method instead in order to transparently
-     * look for overviews.
+     * look for levels.
      * 
      * @param levelIndex
      * @param readParameters
@@ -84,7 +84,7 @@ public class ReadParamsController {
             rasterWidth = spatialDomainManager.coverageRasterArea.width;
             rasterHeight = spatialDomainManager.coverageRasterArea.height;
         } else {
-            // work on overviews
+            // work on levels
             // TODO this is bad side effect of how the Overviews are managed
             // right now. There are two problems here,
             // first we are assuming that we are working with LON/LAT,
@@ -133,7 +133,7 @@ public class ReadParamsController {
      *            {@link Hints#VALUE_OVERVIEW_POLICY_NEAREST},
      *            {@link Hints#VALUE_OVERVIEW_POLICY_QUALITY} or
      *            {@link Hints#VALUE_OVERVIEW_POLICY_SPEED}. It specifies the
-     *            policy to compute the overviews level upon request.
+     *            policy to compute the levels level upon request.
      * @param readParams
      *            an instance of {@link ImageReadParam} for setting the
      *            subsampling factors.
@@ -171,7 +171,7 @@ public class ReadParamsController {
             // default values for subsampling
             readParams.setSourceSubsampling(1, 1, 0, 0);
 
-            // requested to ignore overviews
+            // requested to ignore levels
             if (overviewPolicy.equals(OverviewPolicy.IGNORE) && decimationPolicy.equals(DecimationPolicy.DISALLOW))
                     return imageChoice;
 

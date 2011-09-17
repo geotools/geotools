@@ -68,6 +68,7 @@ import org.geotools.coverage.TypeMap;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
+import org.geotools.coverage.grid.RasterLayout;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataDecoder;
@@ -395,7 +396,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
             if (numOverviews >= 1) {
                 overViewResolutions = new double[numOverviews][2];
                 overViewLayouts = new RasterLayout[numOverviews];
-                // Internal overviews start at 1, so lastInternalOverview matches numOverviews if no
+                // Internal levels start at 1, so lastInternalOverview matches numOverviews if no
                 // external.
                 int firstExternalOverview = extOvrImgChoice == -1 ? numOverviews : extOvrImgChoice - 1;
                 double spanRes0 = highestRes[0] * this.originalGridRange.getSpan(0);

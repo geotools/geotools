@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.coverage.grid.io.imageio.geotiff.codes;
+package org.geotools.coverage.grid.imageio.geotiff.metadata.codes;
 
 /**
  * 6.3.2.1 Geographic CS Type Codes Note: A Geographic coordinate system

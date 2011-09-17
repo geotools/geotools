@@ -15,8 +15,8 @@ import javax.imageio.stream.ImageInputStream;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
-import org.geotools.gce.geotiff.RasterManager;
-import org.geotools.gce.geotiff.RasterManagerBuilder;
+import org.geotools.gce.RasterManager;
+import org.geotools.gce.RasterManagerBuilder;
 
 public abstract class ImageReaderWalker extends AbstractList<RasterManager> implements List<RasterManager>  {
    

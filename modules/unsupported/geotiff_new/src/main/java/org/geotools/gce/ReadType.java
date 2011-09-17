@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.gce.geotiff;
+package org.geotools.gce;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -33,6 +33,7 @@ import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.RenderedOp;
 
+import org.geotools.gce.geotiff.GeoTiffUtils;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;

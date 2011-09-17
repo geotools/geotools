@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.gce.geotiff;
+package org.geotools.gce;
 
 import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
 
@@ -49,8 +49,9 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
 import org.geotools.factory.Hints;
-import org.geotools.gce.geotiff.RasterDescriptor.RasterLoadingResult;
-import org.geotools.gce.geotiff.OverviewsController.OverviewLevel;
+import org.geotools.gce.OverviewsController.OverviewLevel;
+import org.geotools.gce.RasterDescriptor.RasterLoadingResult;
+import org.geotools.gce.geotiff.GeoTiffUtils;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -254,7 +255,7 @@ class RasterLayerResponse{
         hints = rasterManager.getHints();
         coverageEnvelope = rasterManager.getCoverageEnvelope();
         baseGridToWorld = rasterManager.getRaster2Model();
-        coverageFactory = rasterManager.parent.getGridCoverageFactory();
+        coverageFactory = rasterManager.getGridCoverageFactory();
         this.rasterManager = rasterManager;
         backgroundValues = request.getBackgroundValues();
         transparentColor = request.getInputTransparentColor();        

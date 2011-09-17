@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.gce.geotiff;
+package org.geotools.gce;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -36,6 +36,7 @@ import javax.media.jai.ROIShape;
 import org.geotools.coverage.grid.RasterLayout;
 import org.geotools.coverage.grid.io.imageio.ImageReaderSource;
 import org.geotools.data.DataUtilities;
+import org.geotools.gce.geotiff.GeoTiffUtils;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.io.ImageIOExt;
@@ -174,146 +175,146 @@ public class RasterDescriptor {
     final List<RasterLevelDescriptor> levels =new ArrayList<RasterLevelDescriptor>();
 
     AffineTransform baseGridToWorld;
-
-    public RasterDescriptor(RasterManager rasterManager) {
-
-        // get basic info
-        this.rasterBBOX = new ReferencedEnvelope(rasterManager.spatialDomainManager.coverageBBox);
-        this.baseGridToWorld=new AffineTransform((AffineTransform) rasterManager.spatialDomainManager.coverageGridToWorld2D);
-        final File granuleFile = DataUtilities.urlToFile(rasterManager.parent.sourceURL);
-        
-        // create the base grid to world transformation
-        ImageInputStream inStream = null;
-        ImageReader reader = null;
-        try {
-            //
-            // LOAD INFO FROM MAIN FILE
-            //
-            
-            // get a stream
-            inStream = ImageIOExt.createImageInputStream(granuleFile);
-            if (inStream == null) {
-                throw new IllegalArgumentException(
-                        "Unable to get an input stream for the provided file "
-                                + granuleFile.toString());
-            }
-
-            // get a reader
-            reader = GeoTiffUtils.TIFFREADERFACTORY.createReaderInstance();
-            reader.setInput(inStream);
-            
-            // cache stream SPI
-            ImageInputStreamSpi streamSPI=ImageIOExt.getImageInputStreamSPI(granuleFile);
-
-            // load info from main sourceFile
-            int numRasters=reader.getNumImages(true);
-            int i=0;
-            int baseLevelWidth=-1, baseLevelHeight=-1;
-            for(;i<numRasters;i++){
-                final int width=reader.getWidth(i);
-                final int height=reader.getHeight(i);
-                // add the base level
-                if(i==0) {
-                    baseLevelWidth=width;
-                    baseLevelHeight=height;
-                    this.levels.add(
-                            new RasterLevelDescriptor(
-                                    ImageReaderSource.wrapFile(i,granuleFile, streamSPI, GeoTiffUtils.TIFFREADERFACTORY),
-                                    1,
-                                    1,
-                                    new RasterLayout(0, 0, width, height,reader.getTileGridXOffset(i),reader.getTileGridYOffset(i),reader.getTileWidth(i),reader.getTileHeight(i))                                    
-                                    )
-                            );
-                }
-                else {
-                    final double scaleX = baseLevelWidth / (1.0 * width);
-                    final double scaleY = baseLevelHeight / (1.0 * height);
-                    // add the base level
-                    this.levels.add(
-                            new RasterLevelDescriptor(
-                                    ImageReaderSource.wrapFile(i,granuleFile, streamSPI, GeoTiffUtils.TIFFREADERFACTORY),
-                                    scaleX,
-                                    scaleY,
-                                    new RasterLayout(0, 0, width, height,reader.getTileGridXOffset(i),reader.getTileGridYOffset(i),reader.getTileWidth(i),reader.getTileHeight(i))
-                                    )
-                            );
-                }
-                    
-            }
-            
-            //
-            // EXTERNAL Overviews management
-            //
-            if (rasterManager.parent.extOvrImgChoice >= 0 ) {
-                
-                // close current stream and reopen new one
-                try {
-                    if (inStream != null) {
-                        inStream.close();
-                    }
-                } catch (Throwable e) {
-                    
-                } 
-                
-                try {
-                    if (reader != null)
-                        reader.dispose();
-                } catch (Throwable e) {
-                    
-                } 
-                
-                // get a stream
-                inStream = rasterManager.parent.ovrInStreamSPI.createInputStreamInstance(rasterManager.parent.ovrSource, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
-                if (inStream == null) {
-                    throw new IllegalArgumentException(
-                            "Unable to get an input stream for the provided file "
-                                    + granuleFile.toString());
-                }
-                streamSPI=ImageIOExt.getImageInputStreamSPI(rasterManager.parent.ovrSource);
-                // get a reader
-                reader = GeoTiffUtils.TIFFREADERFACTORY.createReaderInstance();
-                reader.setInput(inStream);               
-
-                // load info from main sourceFile
-                numRasters=reader.getNumImages(true);
-                for(int k=0;k<numRasters;k++,i++){
-                    final int width=reader.getWidth(k);
-                    final int height=reader.getHeight(k);
-                    final double scaleX = baseLevelWidth / (1.0 * width);
-                    final double scaleY = baseLevelHeight / (1.0 * height);
-                    // add the level
-                    this.levels.add(
-                            new RasterLevelDescriptor(
-                                    ImageReaderSource.wrapFile(k,rasterManager.parent.ovrSource, rasterManager.parent.ovrInStreamSPI, GeoTiffUtils.TIFFREADERFACTORY),
-                                    scaleX,
-                                    scaleY,
-                                    new RasterLayout(0, 0, width, height,reader.getTileGridXOffset(k),reader.getTileGridYOffset(k),reader.getTileWidth(k),reader.getTileHeight(k))
-                                    )
-                            );                    
-                }
-
-
-            }           
-            
-
-        } catch (IllegalStateException e) {
-            throw new IllegalArgumentException(e);
-
-        } catch (IOException e) {
-            throw new IllegalArgumentException(e);
-        } finally {
-            try {
-                if (inStream != null) {
-                    inStream.close();
-                }
-            } catch (Throwable e) {
-                throw new IllegalArgumentException(e);
-            } finally {
-                if (reader != null)
-                    reader.dispose();
-            }
-        }
-    }
+//
+//    public RasterDescriptor(RasterManager rasterManager) {
+//
+//        // get basic info
+//        this.rasterBBOX = new ReferencedEnvelope(rasterManager.spatialDomainManager.coverageBBox);
+//        this.baseGridToWorld=new AffineTransform((AffineTransform) rasterManager.spatialDomainManager.coverageGridToWorld2D);
+//        final File granuleFile = DataUtilities.urlToFile(rasterManager.parent.sourceURL);
+//        
+//        // create the base grid to world transformation
+//        ImageInputStream inStream = null;
+//        ImageReader reader = null;
+//        try {
+//            //
+//            // LOAD INFO FROM MAIN FILE
+//            //
+//            
+//            // get a stream
+//            inStream = ImageIOExt.createImageInputStream(granuleFile);
+//            if (inStream == null) {
+//                throw new IllegalArgumentException(
+//                        "Unable to get an input stream for the provided file "
+//                                + granuleFile.toString());
+//            }
+//
+//            // get a reader
+//            reader = GeoTiffUtils.TIFFREADERFACTORY.createReaderInstance();
+//            reader.setInput(inStream);
+//            
+//            // cache stream SPI
+//            ImageInputStreamSpi streamSPI=ImageIOExt.getImageInputStreamSPI(granuleFile);
+//
+//            // load info from main sourceFile
+//            int numRasters=reader.getNumImages(true);
+//            int i=0;
+//            int baseLevelWidth=-1, baseLevelHeight=-1;
+//            for(;i<numRasters;i++){
+//                final int width=reader.getWidth(i);
+//                final int height=reader.getHeight(i);
+//                // add the base level
+//                if(i==0) {
+//                    baseLevelWidth=width;
+//                    baseLevelHeight=height;
+//                    this.levels.add(
+//                            new RasterLevelDescriptor(
+//                                    ImageReaderSource.wrapFile(i,granuleFile, streamSPI, GeoTiffUtils.TIFFREADERFACTORY),
+//                                    1,
+//                                    1,
+//                                    new RasterLayout(0, 0, width, height,reader.getTileGridXOffset(i),reader.getTileGridYOffset(i),reader.getTileWidth(i),reader.getTileHeight(i))                                    
+//                                    )
+//                            );
+//                }
+//                else {
+//                    final double scaleX = baseLevelWidth / (1.0 * width);
+//                    final double scaleY = baseLevelHeight / (1.0 * height);
+//                    // add the base level
+//                    this.levels.add(
+//                            new RasterLevelDescriptor(
+//                                    ImageReaderSource.wrapFile(i,granuleFile, streamSPI, GeoTiffUtils.TIFFREADERFACTORY),
+//                                    scaleX,
+//                                    scaleY,
+//                                    new RasterLayout(0, 0, width, height,reader.getTileGridXOffset(i),reader.getTileGridYOffset(i),reader.getTileWidth(i),reader.getTileHeight(i))
+//                                    )
+//                            );
+//                }
+//                    
+//            }
+//            
+//            //
+//            // EXTERNAL Overviews management
+//            //
+//            if (rasterManager.parent.extOvrImgChoice >= 0 ) {
+//                
+//                // close current stream and reopen new one
+//                try {
+//                    if (inStream != null) {
+//                        inStream.close();
+//                    }
+//                } catch (Throwable e) {
+//                    
+//                } 
+//                
+//                try {
+//                    if (reader != null)
+//                        reader.dispose();
+//                } catch (Throwable e) {
+//                    
+//                } 
+//                
+//                // get a stream
+//                inStream = rasterManager.parent.ovrInStreamSPI.createInputStreamInstance(rasterManager.parent.ovrSource, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
+//                if (inStream == null) {
+//                    throw new IllegalArgumentException(
+//                            "Unable to get an input stream for the provided file "
+//                                    + granuleFile.toString());
+//                }
+//                streamSPI=ImageIOExt.getImageInputStreamSPI(rasterManager.parent.ovrSource);
+//                // get a reader
+//                reader = GeoTiffUtils.TIFFREADERFACTORY.createReaderInstance();
+//                reader.setInput(inStream);               
+//
+//                // load info from main sourceFile
+//                numRasters=reader.getNumImages(true);
+//                for(int k=0;k<numRasters;k++,i++){
+//                    final int width=reader.getWidth(k);
+//                    final int height=reader.getHeight(k);
+//                    final double scaleX = baseLevelWidth / (1.0 * width);
+//                    final double scaleY = baseLevelHeight / (1.0 * height);
+//                    // add the level
+//                    this.levels.add(
+//                            new RasterLevelDescriptor(
+//                                    ImageReaderSource.wrapFile(k,rasterManager.parent.ovrSource, rasterManager.parent.ovrInStreamSPI, GeoTiffUtils.TIFFREADERFACTORY),
+//                                    scaleX,
+//                                    scaleY,
+//                                    new RasterLayout(0, 0, width, height,reader.getTileGridXOffset(k),reader.getTileGridYOffset(k),reader.getTileWidth(k),reader.getTileHeight(k))
+//                                    )
+//                            );                    
+//                }
+//
+//
+//            }           
+//            
+//
+//        } catch (IllegalStateException e) {
+//            throw new IllegalArgumentException(e);
+//
+//        } catch (IOException e) {
+//            throw new IllegalArgumentException(e);
+//        } finally {
+//            try {
+//                if (inStream != null) {
+//                    inStream.close();
+//                }
+//            } catch (Throwable e) {
+//                throw new IllegalArgumentException(e);
+//            } finally {
+//                if (reader != null)
+//                    reader.dispose();
+//            }
+//        }
+//    }
 
     public RasterDescriptor(final List<RasterSlice> slices) {
         final RasterSlice fullRes= slices.get(0);

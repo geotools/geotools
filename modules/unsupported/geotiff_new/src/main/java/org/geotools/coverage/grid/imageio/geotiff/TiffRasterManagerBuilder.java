@@ -1,4 +1,4 @@
-package org.geotools.coverage.grid.io.imageio.geotiff;
+package org.geotools.coverage.grid.imageio.geotiff;
 
 import it.geosolutions.imageio.plugins.tiff.TIFFField;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFIFD;
@@ -22,12 +22,14 @@ import javax.imageio.metadata.IIOMetadata;
 import org.geotools.coverage.grid.RasterLayout;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.ImageReaderSource;
+import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataDecoder;
+import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffMetadata2CRSAdapter;
 import org.geotools.factory.Hints;
+import org.geotools.gce.RasterDescriptor;
+import org.geotools.gce.RasterManager;
+import org.geotools.gce.RasterManagerBuilder;
+import org.geotools.gce.RasterSlice;
 import org.geotools.gce.geotiff.GeoTiffUtils;
-import org.geotools.gce.geotiff.RasterDescriptor;
-import org.geotools.gce.geotiff.RasterManager;
-import org.geotools.gce.geotiff.RasterManagerBuilder;
-import org.geotools.gce.geotiff.RasterSlice;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;

@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.gce.geotiff;
+package org.geotools.gce;
 
 import java.awt.Rectangle;
 import java.io.IOException;
@@ -27,9 +27,12 @@ import javax.imageio.ImageTypeSpecifier;
 import javax.media.jai.ImageLayout;
 
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
 import org.geotools.factory.Hints;
+import org.geotools.gce.geotiff.GeoTiffReader;
+import org.geotools.gce.geotiff.GeoTiffUtils;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -324,6 +327,10 @@ public class RasterManager {
 
     public Rectangle getCoverageGridrange() {
         return spatialDomainManager.coverageRasterArea;
+    }
+
+    public GridCoverageFactory getGridCoverageFactory() {
+        return null;
     }
 
 }

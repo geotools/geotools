@@ -1,4 +1,4 @@
-package org.geotools.coverage.grid.io.imageio.geotiff;
+package org.geotools.coverage.grid.imageio.geotiff;
 
 import java.io.IOException;
 import java.net.URL;

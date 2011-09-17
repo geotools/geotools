@@ -1,4 +1,4 @@
-package org.geotools.gce.geotiff;
+package org.geotools.gce;
 
 import java.awt.geom.AffineTransform;
 

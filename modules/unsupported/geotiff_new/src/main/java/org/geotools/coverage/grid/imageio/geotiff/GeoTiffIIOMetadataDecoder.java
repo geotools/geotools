@@ -33,7 +33,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.coverage.grid.io.imageio.geotiff;
+package org.geotools.coverage.grid.imageio.geotiff;
 
 import it.geosolutions.imageio.plugins.tiff.GeoTIFFTagSet;
 
@@ -46,7 +46,12 @@ import java.util.logging.Logger;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 
-import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffGCSCodes;
+import org.geotools.coverage.grid.imageio.geotiff.metadata.codes.GeoTiffGCSCodes;
+import org.geotools.coverage.grid.io.imageio.geotiff.GeoKeyEntry;
+import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffConstants;
+import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataDecoder;
+import org.geotools.coverage.grid.io.imageio.geotiff.PixelScale;
+import org.geotools.coverage.grid.io.imageio.geotiff.TiePoint;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.w3c.dom.Node;

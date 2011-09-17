@@ -56,7 +56,7 @@ public class GeoTiffUtils {
     private final static Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger(GeoTiffUtils.class.toString());
         
-    static CoordinateReferenceSystem WGS84 = DefaultGeographicCRS.WGS84;
+    public static CoordinateReferenceSystem WGS84 = DefaultGeographicCRS.WGS84;
 
     static URL checkSource(Object source) throws MalformedURLException, DataSourceException {
         URL sourceURL = null;
@@ -281,5 +281,5 @@ public class GeoTiffUtils {
     /**
      * A transparent color for missing data.
      */
-    static final Color TRANSPARENT = new Color(0, 0, 0, 0);
+    public static final Color TRANSPARENT = new Color(0, 0, 0, 0);
 }

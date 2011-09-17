@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.gce.geotiff;
+package org.geotools.gce;
 
 import java.io.IOException;
 
@@ -24,8 +24,8 @@ import javax.imageio.ImageReader;
 import org.geotools.coverage.grid.io.DecimationPolicy;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.factory.Hints;
-import org.geotools.gce.geotiff.OverviewsController.OverviewLevel;
-import org.geotools.gce.geotiff.RasterManager.SpatialDomainManager;
+import org.geotools.gce.OverviewsController.OverviewLevel;
+import org.geotools.gce.RasterManager.SpatialDomainManager;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.util.Utilities;
 import org.opengis.referencing.operation.TransformException;

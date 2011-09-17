@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.coverage.grid.io.imageio.geotiff;
+package org.geotools.coverage.grid.imageio.geotiff;
 
 import java.text.ParseException;
 import java.util.Iterator;
@@ -25,10 +25,14 @@ import javax.measure.unit.NonSI;
 import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
 
-import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffCoordinateTransformationsCodes;
-import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffGCSCodes;
-import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffPCSCodes;
-import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffUoMCodes;
+import org.geotools.coverage.grid.imageio.geotiff.metadata.codes.GeoTiffCoordinateTransformationsCodes;
+import org.geotools.coverage.grid.imageio.geotiff.metadata.codes.GeoTiffGCSCodes;
+import org.geotools.coverage.grid.imageio.geotiff.metadata.codes.GeoTiffPCSCodes;
+import org.geotools.coverage.grid.imageio.geotiff.metadata.codes.GeoTiffUoMCodes;
+import org.geotools.coverage.grid.io.imageio.geotiff.CRS2GeoTiffMetadataAdapter;
+import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffConstants;
+import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffException;
+import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataEncoder;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.crs.DefaultGeographicCRS;

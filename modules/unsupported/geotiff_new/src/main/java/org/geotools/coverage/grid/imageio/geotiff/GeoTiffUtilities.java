@@ -1,4 +1,4 @@
-package org.geotools.coverage.grid.io.imageio.geotiff;
+package org.geotools.coverage.grid.imageio.geotiff;
 
 import it.geosolutions.imageio.plugins.tiff.GeoTIFFTagSet;
 
@@ -8,6 +8,9 @@ import java.util.logging.Logger;
 
 import javax.imageio.metadata.IIOMetadataNode;
 
+import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffConstants;
+import org.geotools.coverage.grid.io.imageio.geotiff.PixelScale;
+import org.geotools.coverage.grid.io.imageio.geotiff.TiePoint;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 

@@ -32,12 +32,17 @@
  *   - http://www.copyright.gov/title17/92chap1.html#105
  *   - http://www.gpoaccess.gov/uscode/  (enter "17USC105" in the search box.)
  */
-package org.geotools.coverage.grid.io.imageio.geotiff;
+package org.geotools.coverage.grid.imageio.geotiff;
 
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+
+import org.geotools.coverage.grid.io.imageio.geotiff.GeoKeyEntry;
+import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataDecoder;
+import org.geotools.coverage.grid.io.imageio.geotiff.PixelScale;
+import org.geotools.coverage.grid.io.imageio.geotiff.TiePoint;
 
 /**
  * This exception is thrown when the problem with reading the GeoTiff file has

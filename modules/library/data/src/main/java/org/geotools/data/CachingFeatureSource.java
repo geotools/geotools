@@ -71,6 +71,7 @@ import com.vividsolutions.jts.index.strtree.STRtree;
  * @since 2.6
  * @source $URL$
  * @version $Id$
+ * @deprecated This class is not tested enough to be considered production ready
  */
 public class CachingFeatureSource implements SimpleFeatureSource {
     private SimpleFeatureSource wrapped;
@@ -310,11 +311,6 @@ public class CachingFeatureSource implements SimpleFeatureSource {
     }
 
     private BBOX bboxFilter(Envelope bbox) {
-        // GeometryFilterImpl gf = (GeometryFilterImpl) ff
-        // .createGeometryFilter(GeometryFilter.GEOMETRY_BBOX);
-        // gf.setExpression1(ff.createAttributeExpression(wrapped.getSchema().getDefaultGeometry()));
-        // gf.setExpression2(ff.createBBoxExpression(bbox));
-        // return gf;
         return ff.bbox(wrapped.getSchema().getGeometryDescriptor().getLocalName(), bbox.getMinX(),
                 bbox.getMinY(), bbox.getMaxX(), bbox.getMaxY(), null);
     }

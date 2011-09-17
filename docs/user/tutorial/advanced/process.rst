@@ -30,26 +30,34 @@ Process Annotations
 This is the fastest way to create a process; and is great (as long as your process produces a
 single result).
 
-1. To start with we need to create a class that extends StaticMethodsProcessFactory:
+1. Add a dependency on **gt-process** to your project::
+
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-process</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+2. To start with we need to create a class that extends StaticMethodsProcessFactory:
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/process/ProcessTutorial.java
       :language: java
       :end-before: // constructor start
       
-2. We have a little bit of work to fill in the constructor
+3. We have a little bit of work to fill in the constructor
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/process/ProcessTutorial.java
       :language: java
       :start-after: // constructor start
       :end-before: // constructor end
 
-3. We can now implement our function::
+4. We can now implement our function::
 
     static public Geometry octagonalEnvelope( Geometry geom) {
         return new OctagonalEnvelope(geom).toGeometry(geom.getFactory());
     }
     
-4. And then we can fill in the annotations to desribe our process, result and parameters.
+5. And then we can fill in the annotations to desribe our process, result and parameters.
    
    * @DescribeProcess
    * @DescribeParameter
@@ -60,17 +68,17 @@ single result).
       :start-after: // octagonalEnvelope start
       :end-before: // octagonalEnvelope end
    
-5. And then hook it up to Factory SPI (as was done for the Function tutorial).
+6. And then hook it up to Factory SPI (as was done for the Function tutorial).
    
    Create the file:
    
    * META_INF/services/org.geotools.process.ProcessFactory
 
-6. Fill in the following contents (one implementation class per line)::
+7. Fill in the following contents (one implementation class per line)::
    
       org.geotools.tutorial.process.ProcessTutorial
 
-7. That is it octagnalEnvelope is now published.
+8. That is it octagnalEnvelope is now published.
 
 Things to Try
 ^^^^^^^^^^^^^

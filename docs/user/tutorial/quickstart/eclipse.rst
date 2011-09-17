@@ -297,7 +297,7 @@ Now that your environment is setup we can put together a simple Quickstart. This
    .. image:: images/QuickstartOpen.png
       :scale: 60
    
-5. The application will connect to your shapefile, produce a map context, and display the shapefile.
+5. The application will connect to your shapefile, produce a map content, and display the shapefile.
 
    .. image:: images/QuickstartMap.png
       :scale: 60

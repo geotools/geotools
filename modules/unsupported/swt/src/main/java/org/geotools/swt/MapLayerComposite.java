@@ -65,12 +65,15 @@ public class MapLayerComposite extends Composite {
     }
 
     /**
-     * Set the map pane that this MapLayerTable will service.
+     * Set the map pane that the MapLayerTable will service.
      *
      * @param pane the map pane
      */
     public void setMapPane( SwtMapPane pane ) {
         this.pane = pane;
+        
+        mapLayerTableViewer.clear();
+
         pane.setMapLayerTable(this);
         mapLayerTableViewer.setPane(pane);
 

@@ -35,6 +35,7 @@ import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -42,6 +43,7 @@ import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.geotools.geometry.DirectPosition2D;
@@ -144,6 +146,11 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
 
     private boolean overlayDoXor;
 
+    private int alpha = 255;
+
+    private Color white;
+    private Color yellow;
+
     /**
      * Constructor - creates an instance of JMapPane with no map
      * context or renderer initially
@@ -161,6 +168,8 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
      */
     public SwtMapPane( Composite parent, int style, GTRenderer renderer, MapContent content ) {
         super(parent, style);
+        white = getDisplay().getSystemColor(SWT.COLOR_WHITE);
+        yellow = getDisplay().getSystemColor(SWT.COLOR_YELLOW);
 
         addListener(SWT.Paint, this);
         addListener(SWT.MouseDown, this);
@@ -194,7 +203,8 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
                     endX = event.x;
                     endY = event.y;
                     isDragging = true;
-                    redraw();
+                    if (!isDisposed())
+                        redraw();
                 }
             }
         });
@@ -457,7 +467,8 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
             } else {
                 doSetDisplayArea(envelope);
                 clearLabelCache = true;
-                redraw();
+                if (!isDisposed())
+                    redraw();
             }
 
         } else {
@@ -688,7 +699,8 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
         imageOrigin.translate(dx, dy);
         redrawBaseImage = false;
         baseImageMoved = true;
-        redraw();
+        if (!isDisposed())
+            redraw();
     }
 
     /**
@@ -791,8 +803,8 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
                 return;
             }
         }
-
-        redraw();
+        if (!isDisposed())
+            redraw();
     }
 
     /**
@@ -809,8 +821,8 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
         } else {
             setFullExtent();
         }
-
-        redraw();
+        if (!isDisposed())
+            redraw();
     }
 
     /**
@@ -829,7 +841,8 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
         }
 
         if (reason != MapLayerEvent.SELECTION_CHANGED) {
-            redraw();
+            if (!isDisposed())
+                redraw();
         }
     }
 
@@ -837,7 +850,8 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
      * Called when the bounds of a map layer have changed
      */
     public void layerMoved( MapLayerListEvent event ) {
-        redraw();
+        if (!isDisposed())
+            redraw();
     }
 
     /**
@@ -1028,7 +1042,17 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
         } else {
             redrawBaseImage = false;
         }
-        redraw();
+        if (!isDisposed())
+            redraw();
+    }
+
+    /**
+     * Sets the transparency value for the base image (overlays not considered).
+     * 
+     * @param alpha the transparency value (0 - 255).
+     */
+    public void setBaseImageAlpha( int alpha ) {
+        this.alpha = alpha;
     }
 
     @SuppressWarnings("deprecation")
@@ -1052,8 +1076,8 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
 
             mouseDown = false;
             isDragging = false;
-
         } else if (event.type == SWT.Paint) {
+
             if (acceptRepaintRequests) {
                 // System.out.println("paint");
                 gc = event.gc;
@@ -1068,6 +1092,8 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
                          */
                         Image tmpImage = new Image(getDisplay(), curPaintArea.width, curPaintArea.height);
                         GC tmpGc = new GC(tmpImage);
+                        tmpGc.setBackground(white);
+                        tmpGc.fillRectangle(0, 0, curPaintArea.width, curPaintArea.height);
                         tmpGc.drawImage(swtImage, imageOrigin.x, imageOrigin.y);
                         gc.drawImage(tmpImage, 0, 0);
                         tmpImage.dispose();
@@ -1086,7 +1112,7 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
 
                         org.eclipse.swt.graphics.Color fC = gc.getForeground();
                         gc.setLineWidth(2);
-                        gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_YELLOW));
+                        gc.setForeground(yellow);
                         gc.drawRectangle(startX, startY, endX - startX, endY - startY);
 
                         gc.setForeground(fC);
@@ -1099,7 +1125,7 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
                     return;
                 }
                 if (content.layers().size() == 0) {
-                    gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_YELLOW));
+                    gc.setForeground(yellow);
                     gc.fillRectangle(0, 0, curPaintArea.width + 1, curPaintArea.height + 1);
                     if (overlayImage == null)
                         return;
@@ -1145,16 +1171,22 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
     }
 
     private void drawFinalImage( Image swtImage ) {
+        Display display = getDisplay();
         if (overlayImage != null) {
-            Image tmpImage = new Image(getDisplay(), curPaintArea.width, curPaintArea.height);
+            Image tmpImage = new Image(display, curPaintArea.width, curPaintArea.height);
             GC tmpGc = new GC(tmpImage);
+            tmpGc.setBackground(white);
+            tmpGc.fillRectangle(0, 0, curPaintArea.width, curPaintArea.height);
+            tmpGc.setAlpha(alpha);
             tmpGc.drawImage(swtImage, imageOrigin.x, imageOrigin.y);
+            tmpGc.setAlpha(255);
             doOverlayImage(tmpGc);
             if (gc != null && !gc.isDisposed() && swtImage != null)
                 gc.drawImage(tmpImage, imageOrigin.x, imageOrigin.y);
         } else {
-            if (gc != null && !gc.isDisposed() && swtImage != null)
+            if (gc != null && !gc.isDisposed() && swtImage != null) {
                 gc.drawImage(swtImage, imageOrigin.x, imageOrigin.y);
+            }
         }
     }
 
@@ -1216,6 +1248,6 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
 
     @Override
     public void layerPreDispose( MapLayerListEvent event ) {
-        
+
     }
 }

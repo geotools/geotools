@@ -48,6 +48,7 @@ public class ImageCache {
     public static final String UP = "/icons/up.gif";
     public static final String DOWN = "/icons/down.gif";
     public static final String OPEN = "/icons/open.gif";
+    public static final String ALPHA = "/icons/alpha.gif";
     public static final String REMOVE_LAYER = "/icons/remove_layer.gif";
     public static final String IMAGE_INFO = "/icons/info_mode.gif";
     public static final String IMAGE_INFO_ICON = "/icons/info_source.gif";

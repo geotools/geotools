@@ -259,4 +259,12 @@ public class MaplayerTableViewer extends TableViewer implements ISelectionChange
         refresh();
     }
 
+    /**
+     * Clears all the layers from the viewer.
+     */
+    public void clear() {
+        layersList.clear();
+        refresh();
+    }
+
 }

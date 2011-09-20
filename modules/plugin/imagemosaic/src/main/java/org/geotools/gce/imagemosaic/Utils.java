@@ -19,11 +19,9 @@ package org.geotools.gce.imagemosaic;
 import it.geosolutions.imageio.stream.input.spi.URLImageInputStreamSpi;
 
 import java.awt.Color;
-import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
-import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import java.awt.image.WritableRaster;
@@ -53,12 +51,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.Histogram;
 import javax.media.jai.RasterFactory;
-import javax.media.jai.RenderedOp;
 import javax.media.jai.remote.SerializableRenderedImage;
 
 import net.sf.ehcache.Cache;
@@ -80,13 +76,9 @@ import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilder.ProcessingEven
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
-import org.geotools.resources.XArray;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Converters;
 import org.geotools.util.Utilities;
 
-import com.sun.media.jai.operator.ImageReadDescriptor;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -100,11 +92,12 @@ import com.vividsolutions.jts.geom.Geometry;
  * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/imagemosaic/src/main/java/org/geotools/gce/imagemosaic/Utils.java $
  */
 public class Utils {
+
+    public final static String INDEXER_PROPERTIES = "indexer.properties";
     
     /** EHCache instance to cache histograms */ 
     private static Cache ehcache;    
     
-    private final static String INDEXER_PROPERTIES = "indexer.properties";
     
     /** RGB to GRAY coefficients (for Luminance computation) */
     public final static double RGB_TO_GRAY_MATRIX [][]= {{ 0.114, 0.587, 0.299, 0 }};
@@ -124,29 +117,27 @@ public class Utils {
         }
     }
     
-    static class Prop {
-        final static String LOCATION_ATTRIBUTE = "LocationAttribute";
-        final static String ENVELOPE2D = "Envelope2D";
-        final static String LEVELS_NUM = "LevelsNum";
-        final static String LEVELS = "Levels";
-        final static String SUGGESTED_SPI = "SuggestedSPI";
-        final static String EXP_RGB = "ExpandToRGB";
-        final static String ABSOLUTE_PATH = "AbsolutePath";
-        final static String NAME = "Name";
-        final static String FOOTPRINT_MANAGEMENT = "FootprintManagement";
-        final static String HETEROGENEOUS = "Heterogeneous";
-        static final String TIME_ATTRIBUTE = "TimeAttribute";
-        static final String ELEVATION_ATTRIBUTE = "ElevationAttribute";
-        static final String RUNTIME_ATTRIBUTE = "RuntimeAttribute";
-        final static String CACHING= "Caching";
+    public static class Prop {
+        public final static String LOCATION_ATTRIBUTE = "LocationAttribute";
+        public final static String ENVELOPE2D = "Envelope2D";
+        public final static String LEVELS_NUM = "LevelsNum";
+        public final static String LEVELS = "Levels";
+        public final static String SUGGESTED_SPI = "SuggestedSPI";
+        public final static String EXP_RGB = "ExpandToRGB";
+        public final static String ABSOLUTE_PATH = "AbsolutePath";
+        public final static String NAME = "Name";
+        public final static String FOOTPRINT_MANAGEMENT = "FootprintManagement";
+        public final static String HETEROGENEOUS = "Heterogeneous";
+        public static final String TIME_ATTRIBUTE = "TimeAttribute";
+        public static final String ELEVATION_ATTRIBUTE = "ElevationAttribute";
+        public final static String CACHING= "Caching";
         
-        //Indexer Properties
-        static final String ABSOLUTE = "Absolute";
-        static final String RECURSIVE = "Recursive";
-        static final String WILDCARD = "Wildcard";
-        static final String SCHEMA = "Schema";
-        static final String RESOLUTION_LEVELS = "ResolutionLevels";
-        static final String PROPERTY_COLLECTORS = "PropertyCollectors";
+        //Indexer Properties specific properties
+        public  static final String RECURSIVE = "Recursive";
+        public static final String WILDCARD = "Wildcard";
+        public static final String SCHEMA = "Schema";
+        public static final String RESOLUTION_LEVELS = "ResolutionLevels";
+        public static final String PROPERTY_COLLECTORS = "PropertyCollectors";
     }
         /**
 	 * Logger.
@@ -206,64 +197,6 @@ public class Utils {
 		configuration.setRootMosaicDirectory(location);
 		configuration.setIndexingDirectories(Arrays.asList(location));
 		configuration.setIndexName(indexName);
-
-		// look for and indexed.properties file
-		final File parent = new File(location);
-		final File indexerProperties = new File(parent, INDEXER_PROPERTIES);
-		if (Utils.checkFileReadable(indexerProperties)) {
-			// load it and parse it
-			final Properties props = Utils.loadPropertiesFromURL(DataUtilities
-					.fileToURL(indexerProperties));
-
-			// name
-			if (props.containsKey(Prop.NAME))
-				configuration.setIndexName(props.getProperty(Prop.NAME));
-
-			// absolute
-			if (props.containsKey(Prop.ABSOLUTE))
-				configuration.setAbsolute(Boolean.valueOf(props
-						.getProperty(Prop.ABSOLUTE)));
-
-			// recursive
-			if (props.containsKey(Prop.RECURSIVE))
-				configuration.setRecursive(Boolean.valueOf(props
-						.getProperty(Prop.RECURSIVE)));
-
-			// wildcard
-			if (props.containsKey(Prop.WILDCARD))
-				configuration.setWildcard(props.getProperty(Prop.WILDCARD));
-
-			// schema
-			if (props.containsKey(Prop.SCHEMA))
-				configuration.setSchema(props.getProperty(Prop.SCHEMA));
-
-			// time attr
-			if (props.containsKey(Prop.TIME_ATTRIBUTE))
-				configuration.setTimeAttribute(props.getProperty(Prop.TIME_ATTRIBUTE));
-			
-			// elevation attr
-			if (props.containsKey(Prop.ELEVATION_ATTRIBUTE))
-				configuration.setElevationAttribute(props.getProperty(Prop.ELEVATION_ATTRIBUTE));			
-			
-			// runtime attr
-			if (props.containsKey(Prop.RUNTIME_ATTRIBUTE))
-				configuration.setRuntimeAttribute(props.getProperty(Prop.RUNTIME_ATTRIBUTE));
-			
-			// imposed BBOX
-			if (props.containsKey(Prop.ENVELOPE2D))
-				configuration.setEnvelope2D(props.getProperty(Prop.ENVELOPE2D));	
-			
-			// imposed Pyramid Layout
-			if (props.containsKey(Prop.RESOLUTION_LEVELS))
-				configuration.setResolutionLevels(props.getProperty(Prop.RESOLUTION_LEVELS));			
-
-			// collectors
-			if (props.containsKey(Prop.PROPERTY_COLLECTORS))
-				configuration.setPropertyCollectors(props.getProperty(Prop.PROPERTY_COLLECTORS));
-			
-			if (props.containsKey(Prop.CACHING))
-				configuration.setCaching(Boolean.valueOf(props.getProperty(Prop.CACHING)));
-		}
 
 		// create the builder
 		final CatalogBuilder catalogBuilder = new CatalogBuilder(configuration);
@@ -432,13 +365,6 @@ public class Utils {
 			retValue.setElevationAttribute(elevationAttribute);
 		}
 
-		//
-		// runtime attribute is optional
-		//
-		if (properties.containsKey(Prop.RUNTIME_ATTRIBUTE)) {
-		        final String runtimeAttribute = properties.getProperty(Prop.RUNTIME_ATTRIBUTE).trim();
-			retValue.setRuntimeAttribute(runtimeAttribute);
-		}
 
 		//
 		// caching
@@ -860,78 +786,7 @@ public class Utils {
 	
 	public static final boolean DEFAULT_CONFIGURATION_CACHING = true;
 
-            /**
-             * Build a background values array using the same dataType of the input {@link SampleModel} (if
-             * available) and the values provided in the input array.
-             * 
-             * @param sampleModel
-             * @param backgroundValues
-             * @return
-             */
-	    static Number[] getBackgroundValues(final SampleModel sampleModel, final double[] backgroundValues) {
-	        Number[] values = null;
-	        final int dataType = sampleModel != null ? sampleModel.getDataType() : DataBuffer.TYPE_DOUBLE;
-	        final int numBands=sampleModel != null? sampleModel.getNumBands() : 1;
-	        switch (dataType){
-	        
-	            case DataBuffer.TYPE_BYTE:
-	                values = new Byte[numBands];
-	                 if (backgroundValues == null){                          
-	                         Arrays.fill(values, Byte.valueOf((byte)0));
-	                 }
-	                 else{
-	                        //we have background values available
-	                     for (int i = 0; i < values.length; i++)
-	                         values[i] = i>=backgroundValues.length?Byte.valueOf((byte)backgroundValues[0]):Byte.valueOf((byte)backgroundValues[i]);
-	                 }
-	                 break;
-	            case DataBuffer.TYPE_SHORT:
-	            case DataBuffer.TYPE_USHORT:
-	                 values = new Short[numBands] ;
-	                 if (backgroundValues == null)
-	                         Arrays.fill(values, Short.valueOf((short)0));
-	                 else {
-	                        //we have background values available
-        	                 for (int i = 0; i < values.length; i++)
-        	                     values[i] = i>=backgroundValues.length?Short.valueOf((short)backgroundValues[0]):Short.valueOf((short)backgroundValues[i]);
-	                 }
-	                 break;
-	            case DataBuffer.TYPE_INT:
-	                values = new Integer[numBands] ;
-                        if (backgroundValues == null)
-                            Arrays.fill(values, Integer.valueOf((int) 0));
-                        else {
-                            // we have background values available
-                            for (int i = 0; i < values.length; i++)
-                                values[i] = i >= backgroundValues.length ? Integer.valueOf((int) backgroundValues[0]) : Integer.valueOf((int) backgroundValues[i]);
-            
-                        }
-	                 break;
-	            case DataBuffer.TYPE_FLOAT:
-	                values = new Float[numBands] ;
-	                 if (backgroundValues == null)
-	                        Arrays.fill(values, Float.valueOf(0.f));
-	                 else{
-	                        //we have background values available
-	                     for (int i = 0; i < values.length; i++)
-	                         values[i] = i>=backgroundValues.length?Float.valueOf((float)backgroundValues[0]):Float.valueOf((float)backgroundValues[i]);
-	                 }
-	                 break;
-	            case DataBuffer.TYPE_DOUBLE:
-	                values = new Double[numBands] ;
-	                 if (backgroundValues == null)
-	                        Arrays.fill(values, Double.valueOf(0.d));
-	                 else {
-	                        //we have background values available
-	                     for (int i = 0; i < values.length; i++)
-	                         values[i] = i>=backgroundValues.length?Double.valueOf((Double)backgroundValues[0]):Double.valueOf((Double)backgroundValues[i]);
-	                 }
-	                 break;
-	            }
-	        return values;
-	    }
-
-	public static Map<String, Serializable> createDataStoreParamsFromPropertiesFile(
+            public static Map<String, Serializable> createDataStoreParamsFromPropertiesFile(
 			Properties properties, DataStoreFactorySpi spi) throws IOException {
 		// get the params
 		final Map<String, Serializable> params = new HashMap<String, Serializable>();

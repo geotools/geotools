@@ -22,6 +22,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.sql.Array;
 import java.sql.Blob;
@@ -105,6 +106,8 @@ public class JDBCAccessOracleGeoRaster extends JDBCAccessCustom {
 
     private String stmtPixel;
     private String stmtExport;
+    // special Oracle BLOB Method
+    protected Method freeTemporary=null;
 
 
 
@@ -525,6 +528,15 @@ public class JDBCAccessOracleGeoRaster extends JDBCAccessCustom {
             cs.execute();
             Blob blob = cs.getBlob(3);
             byte[] bytes = blob.getBytes(1, (int) blob.length());
+            if (freeTemporary==null) {
+                try {
+                    freeTemporary = blob.getClass().getMethod("freeTemporary");
+                } catch (Exception ex) {
+                    LOGGER.warning("Cannort free TEMP space for BLOB, danger of running out of space");
+                }
+            } 
+            if (freeTemporary!=null)
+                freeTemporary.invoke(blob);
             cs.close();
             return bytes;
         } catch (Exception e) {

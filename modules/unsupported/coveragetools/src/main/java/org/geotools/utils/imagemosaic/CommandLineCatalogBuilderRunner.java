@@ -16,14 +16,10 @@
  */
 package org.geotools.utils.imagemosaic;
 
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

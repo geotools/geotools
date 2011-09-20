@@ -86,30 +86,6 @@ public class CommandLineCatalogBuilderRunner extends CommandLine {
      */
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(CommandLineCatalogBuilderRunner.class.toString());
     
-    private final static String INDEXER_PROPERTIES = "indexer.properties";    
-    static class Prop {
-        final static String LOCATION_ATTRIBUTE = "LocationAttribute";
-        final static String ENVELOPE2D = "Envelope2D";
-        final static String LEVELS_NUM = "LevelsNum";
-        final static String LEVELS = "Levels";
-        final static String SUGGESTED_SPI = "SuggestedSPI";
-        final static String EXP_RGB = "ExpandToRGB";
-        final static String ABSOLUTE_PATH = "AbsolutePath";
-        final static String NAME = "Name";
-        final static String FOOTPRINT_MANAGEMENT = "FootprintManagement";
-        final static String HETEROGENEOUS = "Heterogeneous";
-        static final String TIME_ATTRIBUTE = "TimeAttribute";
-        static final String ELEVATION_ATTRIBUTE = "ElevationAttribute";
-        final static String CACHING= "Caching";
-        
-        //Indexer Properties
-        static final String ABSOLUTE = "Absolute";
-        static final String RECURSIVE = "Recursive";
-        static final String WILDCARD = "Wildcard";
-        static final String SCHEMA = "Schema";
-        static final String RESOLUTION_LEVELS = "ResolutionLevels";
-        static final String PROPERTY_COLLECTORS = "PropertyCollectors";
-    }
     
     @Option(description = "This index must use absolute or relative path", mandatory = false, name = "absolute")
     private Boolean absolute;

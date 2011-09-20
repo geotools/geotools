@@ -16,13 +16,23 @@
  */
 package org.geotools.utils.imagemosaic;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.geotools.console.CommandLine;
 import org.geotools.console.Option;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilder;
+import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilder.ExceptionEvent;
+import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilder.ProcessingEvent;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.utils.progress.ProcessingEventListener;
 
@@ -71,7 +81,36 @@ import org.geotools.utils.progress.ProcessingEventListener;
  * 
  */
 public class CommandLineCatalogBuilderRunner extends CommandLine {
-
+    /**
+     * Logger.
+     */
+    private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(CommandLineCatalogBuilderRunner.class.toString());
+    
+    private final static String INDEXER_PROPERTIES = "indexer.properties";    
+    static class Prop {
+        final static String LOCATION_ATTRIBUTE = "LocationAttribute";
+        final static String ENVELOPE2D = "Envelope2D";
+        final static String LEVELS_NUM = "LevelsNum";
+        final static String LEVELS = "Levels";
+        final static String SUGGESTED_SPI = "SuggestedSPI";
+        final static String EXP_RGB = "ExpandToRGB";
+        final static String ABSOLUTE_PATH = "AbsolutePath";
+        final static String NAME = "Name";
+        final static String FOOTPRINT_MANAGEMENT = "FootprintManagement";
+        final static String HETEROGENEOUS = "Heterogeneous";
+        static final String TIME_ATTRIBUTE = "TimeAttribute";
+        static final String ELEVATION_ATTRIBUTE = "ElevationAttribute";
+        final static String CACHING= "Caching";
+        
+        //Indexer Properties
+        static final String ABSOLUTE = "Absolute";
+        static final String RECURSIVE = "Recursive";
+        static final String WILDCARD = "Wildcard";
+        static final String SCHEMA = "Schema";
+        static final String RESOLUTION_LEVELS = "ResolutionLevels";
+        static final String PROPERTY_COLLECTORS = "PropertyCollectors";
+    }
+    
     @Option(description = "This index must use absolute or relative path", mandatory = false, name = "absolute")
     private Boolean absolute;
 
@@ -115,6 +154,22 @@ public class CommandLineCatalogBuilderRunner extends CommandLine {
     }
 
     public static void main(String args[]) {
+        
+//            // rebuild formats at each parse, date formats are not thread safe
+//            SimpleDateFormat format = new SimpleDateFormat("yyyy");
+//            format.setTimeZone(TimeZone.getTimeZone("GMT"));
+//            
+//            /* We do not use the standard method DateFormat.parse(String), because if the parsing
+//             * stops before the end of the string, the remaining characters are just ignored and
+//             * no exception is thrown. So we have to ensure that the whole string is correct for
+//             * the format.
+//             */
+//            ParsePosition pos = new ParsePosition(0);
+//            Date time = format.parse("1963Z", pos);
+//
+//            System.out.println(time.toString());
+//            System.out.println(time.toGMTString());
+        
         final CommandLineCatalogBuilderRunner runner = new CommandLineCatalogBuilderRunner(args);
         // prepare the configuration
         final CatalogBuilderConfiguration configuration = new CatalogBuilderConfiguration();
@@ -132,10 +187,39 @@ public class CommandLineCatalogBuilderRunner extends CommandLine {
         for (String dir : dirs_)
             dirs.add(dir);
         configuration.setIndexingDirectories(dirs);
-
+        
         // prepare and run the index builder
         final CatalogBuilder builder = new CatalogBuilder(configuration);
-        builder.run();
+     // this is going to help us with catching exceptions and logging them
+        final Queue<Throwable> exceptions = new LinkedList<Throwable>();
+        try {
+
+                final CatalogBuilder.ProcessingEventListener listener = new CatalogBuilder.ProcessingEventListener() {
+
+                        @Override
+                        public void exceptionOccurred(ExceptionEvent event) {
+                                final Throwable t = event.getException();
+                                exceptions.add(t);
+                                if (LOGGER.isLoggable(Level.SEVERE))
+                                        LOGGER.log(Level.SEVERE, t.getLocalizedMessage(), t);
+
+                        }
+
+                        @Override
+                        public void getNotification(ProcessingEvent event) {
+                                if (LOGGER.isLoggable(Level.FINE))
+                                        LOGGER.fine(event.getMessage());
+
+                        }
+
+                };
+                builder.addProcessingEventListener(listener);
+                builder.run();
+        } catch (Throwable e) {
+                LOGGER.log(Level.SEVERE, "Unable to build mosaic", e);
+        } finally {
+            builder.dispose();
+        }        
 
     }
 

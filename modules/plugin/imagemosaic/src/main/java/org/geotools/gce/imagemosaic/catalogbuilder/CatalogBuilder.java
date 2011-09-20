@@ -77,6 +77,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gce.image.WorldImageFormat;
 import org.geotools.gce.imagemosaic.MosaicConfigurationBean;
 import org.geotools.gce.imagemosaic.Utils;
+import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogFactory;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
@@ -1013,6 +1014,64 @@ public class CatalogBuilder implements Runnable {
 	 */
 	public CatalogBuilder(final CatalogBuilderConfiguration configuration)  {
 		Utilities.ensureNonNull("runConfiguration", configuration);
+		Utilities.ensureNonNull("root location", configuration.getRootMosaicDirectory());
+
+                // look for and indexed.properties file
+                final File parent = new File( configuration.getRootMosaicDirectory());
+                final File indexerProperties = new File(parent, Utils.INDEXER_PROPERTIES);
+                if (Utils.checkFileReadable(indexerProperties)) {
+                        // load it and parse it
+                        final Properties props = Utils.loadPropertiesFromURL(DataUtilities
+                                        .fileToURL(indexerProperties));
+
+                        // name
+                        if (props.containsKey(Prop.NAME))
+                                configuration.setIndexName(props.getProperty(Prop.NAME));
+
+                        // absolute
+                        if (props.containsKey(Prop.ABSOLUTE_PATH))
+                                configuration.setAbsolute(Boolean.valueOf(props
+                                                .getProperty(Prop.ABSOLUTE_PATH)));
+
+                        // recursive
+                        if (props.containsKey(Prop.RECURSIVE))
+                                configuration.setRecursive(Boolean.valueOf(props
+                                                .getProperty(Prop.RECURSIVE)));
+
+                        // wildcard
+                        if (props.containsKey(Prop.WILDCARD))
+                                configuration.setWildcard(props.getProperty(Prop.WILDCARD));
+
+                        // schema
+                        if (props.containsKey(Prop.SCHEMA))
+                                configuration.setSchema(props.getProperty(Prop.SCHEMA));
+
+                        // time attr
+                        if (props.containsKey(Prop.TIME_ATTRIBUTE))
+                                configuration.setTimeAttribute(props.getProperty(Prop.TIME_ATTRIBUTE));
+                        
+                        // elevation attr
+                        if (props.containsKey(Prop.ELEVATION_ATTRIBUTE))
+                                configuration.setElevationAttribute(props.getProperty(Prop.ELEVATION_ATTRIBUTE));                       
+        
+                        
+                        // imposed BBOX
+                        if (props.containsKey(Prop.ENVELOPE2D))
+                                configuration.setEnvelope2D(props.getProperty(Prop.ENVELOPE2D));        
+                        
+                        // imposed Pyramid Layout
+                        if (props.containsKey(Prop.RESOLUTION_LEVELS))
+                                configuration.setResolutionLevels(props.getProperty(Prop.RESOLUTION_LEVELS));                   
+
+                        // collectors
+                        if (props.containsKey(Prop.PROPERTY_COLLECTORS))
+                                configuration.setPropertyCollectors(props.getProperty(Prop.PROPERTY_COLLECTORS));
+                        
+                        if (props.containsKey(Prop.CACHING))
+                                configuration.setCaching(Boolean.valueOf(props.getProperty(Prop.CACHING)));
+                }
+
+		
 		//check config
 		configuration.check();
 		

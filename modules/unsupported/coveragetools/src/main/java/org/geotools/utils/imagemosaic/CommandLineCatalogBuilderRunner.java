@@ -126,22 +126,7 @@ public class CommandLineCatalogBuilderRunner extends CommandLine {
     }
 
     public static void main(String args[]) {
-        
-//            // rebuild formats at each parse, date formats are not thread safe
-//            SimpleDateFormat format = new SimpleDateFormat("yyyy");
-//            format.setTimeZone(TimeZone.getTimeZone("GMT"));
-//            
-//            /* We do not use the standard method DateFormat.parse(String), because if the parsing
-//             * stops before the end of the string, the remaining characters are just ignored and
-//             * no exception is thrown. So we have to ensure that the whole string is correct for
-//             * the format.
-//             */
-//            ParsePosition pos = new ParsePosition(0);
-//            Date time = format.parse("1963Z", pos);
-//
-//            System.out.println(time.toString());
-//            System.out.println(time.toGMTString());
-        
+       
         final CommandLineCatalogBuilderRunner runner = new CommandLineCatalogBuilderRunner(args);
         // prepare the configuration
         final CatalogBuilderConfiguration configuration = new CatalogBuilderConfiguration();

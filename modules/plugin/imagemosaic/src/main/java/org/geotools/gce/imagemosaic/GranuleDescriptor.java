@@ -16,6 +16,7 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.imageio.utilities.Utilities;
 import jaitools.imageutils.ROIGeometry;
 import jaitools.media.jai.vectorbinarize.VectorBinarizeDescriptor;
@@ -44,21 +45,20 @@ import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.BorderExtender;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
+import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
 import javax.media.jai.ROI;
+import javax.media.jai.ROIShape;
 import javax.media.jai.TileCache;
 import javax.media.jai.TileScheduler;
-import javax.media.jai.operator.AffineDescriptor;
 
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
-import org.geotools.gce.imagemosaic.RasterLayerResponse.GranuleLoadingResult;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
-import org.geotools.image.io.ImageIOExt;
 import org.geotools.image.jai.Registry;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
@@ -75,8 +75,6 @@ import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
 
-import com.sun.media.jai.opimage.RIFUtil;
-import com.sun.media.jai.opimage.TranslateIntOpImage;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
@@ -202,7 +200,54 @@ public class GranuleDescriptor {
 		
 	}
 	
-	ReferencedEnvelope granuleBBOX;
+	/**
+     * Simple placeholder class to store the result of a Granule Loading
+     * which comprises of a raster as well as a {@link ROIShape} for its footprint.
+     * 
+     * @author Daniele Romagnoli, GeoSolutions S.A.S.
+     * 
+     */
+    static class GranuleLoadingResult {
+    
+        RenderedImage loadedImage;
+    
+        ROI footprint;
+        
+        URL granuleUrl;
+        
+        boolean doFiltering;
+    
+        public ROI getFootprint() {
+            return footprint;
+        }
+    
+        public RenderedImage getRaster() {
+            return loadedImage;
+        }
+    
+        public URL getGranuleUrl() {
+            return granuleUrl;
+        }
+        public boolean isDoFiltering() {
+            return doFiltering;
+        }
+        GranuleLoadingResult(RenderedImage loadedImage, ROI footprint) {
+            this(loadedImage, footprint, null);
+        }
+    
+        GranuleLoadingResult(RenderedImage loadedImage, ROI footprint, URL granuleUrl) {
+            this(loadedImage, footprint, granuleUrl, false);
+        }
+    
+        GranuleLoadingResult(RenderedImage loadedImage, ROI footprint, URL granuleUrl, final boolean doFiltering) {
+            this.loadedImage = loadedImage;
+            this.footprint = footprint;
+            this.granuleUrl = granuleUrl;
+            this.doFiltering = doFiltering;
+        }
+    }
+
+    ReferencedEnvelope granuleBBOX;
 	
 	ROIGeometry granuleROIShape;
         
@@ -726,8 +771,8 @@ public class GranuleDescriptor {
                             granuleLoadingShape = (ROI) granuleROIShape.transform(tx2);
                         }
 			// apply the affine transform  conserving indexed color model
-			final RenderingHints localHints = new RenderingHints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE);
-			if(XAffineTransform.isIdentity(finalRaster2Model,10E-6)) {
+			final RenderingHints localHints = new RenderingHints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, interpolation instanceof InterpolationNearest? Boolean.FALSE:Boolean.TRUE);
+			if(XAffineTransform.isIdentity(finalRaster2Model,Utils.AFFINE_IDENTITY_EPS)) {
 			    return new GranuleLoadingResult(raster, granuleLoadingShape, granuleUrl, doFiltering);
 			} else {
 				//
@@ -897,7 +942,7 @@ public class GranuleDescriptor {
 		}
 	}
 
-	public GranuleOverviewLevelDescriptor getLevel(final int index) {
+	GranuleOverviewLevelDescriptor getLevel(final int index) {
 		
 			//load level
 			// create the base grid to world transformation

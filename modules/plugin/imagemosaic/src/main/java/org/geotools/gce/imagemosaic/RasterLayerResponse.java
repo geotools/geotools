@@ -55,7 +55,6 @@ import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
-import javax.media.jai.ROIShape;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.TileCache;
 import javax.media.jai.TileScheduler;
@@ -77,6 +76,7 @@ import org.geotools.data.Query;
 import org.geotools.factory.Hints;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.filter.IllegalFilterException;
+import org.geotools.gce.imagemosaic.GranuleDescriptor.GranuleLoadingResult;
 import org.geotools.gce.imagemosaic.OverviewsController.OverviewLevel;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
 import org.geotools.gce.imagemosaic.processing.ArtifactsFilterDescriptor;
@@ -125,53 +125,6 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for jar:file:foo.jar/bar.properties URLs
  */
 class RasterLayerResponse{
-    
-    /**
-     * Simple placeholder class to store the result of a Granule Loading
-     * which comprises of a raster as well as a {@link ROIShape} for its footprint.
-     * 
-     * @author Daniele Romagnoli, GeoSolutions S.A.S.
-     * 
-     */
-    static class GranuleLoadingResult {
-
-        RenderedImage loadedImage;
-
-        ROI footprint;
-        
-        URL granuleUrl;
-        
-        boolean doFiltering;
-
-        public ROI getFootprint() {
-            return footprint;
-        }
-
-        public RenderedImage getRaster() {
-            return loadedImage;
-        }
-
-        public URL getGranuleUrl() {
-            return granuleUrl;
-        }
-        public boolean isDoFiltering() {
-            return doFiltering;
-        }
-        GranuleLoadingResult(RenderedImage loadedImage, ROI footprint) {
-            this(loadedImage, footprint, null);
-        }
-
-        GranuleLoadingResult(RenderedImage loadedImage, ROI footprint, URL granuleUrl) {
-            this(loadedImage, footprint, granuleUrl, false);
-        }
-
-        GranuleLoadingResult(RenderedImage loadedImage, ROI footprint, URL granuleUrl, final boolean doFiltering) {
-            this.loadedImage = loadedImage;
-            this.footprint = footprint;
-            this.granuleUrl = granuleUrl;
-            this.doFiltering = doFiltering;
-        }
-    }
     
     private static final class SimplifiedGridSampleDimension extends GridSampleDimension implements SampleDimension{
 
@@ -291,7 +244,6 @@ class RasterLayerResponse{
 	 */
 	public static class MaxVisitor2 extends MaxVisitor{
 
-		@SuppressWarnings("unchecked")
 		private Comparable oldValue;
 		private int oldNanCount;
 		private int oldNullCount;
@@ -615,8 +567,6 @@ class RasterLayerResponse{
 	/** The base envelope related to the input coverage */
 	private GeneralEnvelope coverageEnvelope;
 
-	private boolean frozen = false;
-
 	private RasterManager rasterManager;
 
 	private Color finalTransparentColor;
@@ -739,8 +689,6 @@ class RasterLayerResponse{
 			return;
 		}
 
-		if (frozen)
-			return;
 		
 		// assemble granules
 		final RenderedImage mosaic = prepareResponse();
@@ -751,9 +699,6 @@ class RasterLayerResponse{
 		
 		//create the coverage
 		gridCoverage = prepareCoverage(finalRaster);
-		
-		//freeze
-		frozen = true;
 		
 	}
 
@@ -867,15 +812,14 @@ class RasterLayerResponse{
 			// ok we got something to return, let's load records from the index
 			final BoundingBox cropBBOX = request.getCropBBox();
 			if (cropBBOX != null)
-				mosaicBBox = ReferencedEnvelope.reference(cropBBOX);
+			    mosaicBBox = ReferencedEnvelope.reference(cropBBOX);
 			else
-				mosaicBBox = new ReferencedEnvelope(coverageEnvelope);
+			    mosaicBBox = new ReferencedEnvelope(coverageEnvelope);
 						
 			//compute final world to grid
 			// base grid to world for the center of pixels
 			final AffineTransform g2w;
-			final OverviewLevel baseLevel = rasterManager.overviewsController.resolutionsLevels
-					.get(0);
+			final OverviewLevel baseLevel = rasterManager.overviewsController.resolutionsLevels.get(0);
 			final OverviewLevel selectedLevel = rasterManager.overviewsController.resolutionsLevels.get(imageChoice);
 			final double resX = baseLevel.resolutionX;
 			final double resY = baseLevel.resolutionY;

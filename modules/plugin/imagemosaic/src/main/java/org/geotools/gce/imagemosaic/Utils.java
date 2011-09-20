@@ -110,7 +110,7 @@ public class Utils {
     /** EHCache instance to cache histograms */ 
     private static Cache ehcache;    
     
-    private final static String INDEXER_PROPERTIES = "indexer.properties";
+    public  final static String INDEXER_PROPERTIES = "indexer.properties";
     
     /** RGB to GRAY coefficients (for Luminance computation) */
     public final static double RGB_TO_GRAY_MATRIX [][]= {{ 0.114, 0.587, 0.299, 0 }};
@@ -130,30 +130,30 @@ public class Utils {
         }
     }
     
-    static class Prop {
-        final static String LOCATION_ATTRIBUTE = "LocationAttribute";
-        final static String ENVELOPE2D = "Envelope2D";
-        final static String LEVELS_NUM = "LevelsNum";
-        final static String LEVELS = "Levels";
-        final static String SUGGESTED_SPI = "SuggestedSPI";
-        final static String EXP_RGB = "ExpandToRGB";
-        final static String ABSOLUTE_PATH = "AbsolutePath";
-        final static String NAME = "Name";
-        final static String FOOTPRINT_MANAGEMENT = "FootprintManagement";
-        final static String HETEROGENEOUS = "Heterogeneous";
-        static final String TIME_ATTRIBUTE = "TimeAttribute";
-        static final String ELEVATION_ATTRIBUTE = "ElevationAttribute";
-        static final String RUNTIME_ATTRIBUTE = "RuntimeAttribute";
-        final static String CACHING= "Caching";
+    public static class Prop {
+        public final static String LOCATION_ATTRIBUTE = "LocationAttribute";
+        public final static String ENVELOPE2D = "Envelope2D";
+        public final static String LEVELS_NUM = "LevelsNum";
+        public final static String LEVELS = "Levels";
+        public final static String SUGGESTED_SPI = "SuggestedSPI";
+        public final static String EXP_RGB = "ExpandToRGB";
+        public final static String ABSOLUTE_PATH = "AbsolutePath";
+        public final static String NAME = "Name";
+        public final static String FOOTPRINT_MANAGEMENT = "FootprintManagement";
+        public final static String HETEROGENEOUS = "Heterogeneous";
+        public static final String TIME_ATTRIBUTE = "TimeAttribute";
+        public static final String ELEVATION_ATTRIBUTE = "ElevationAttribute";
+        public final static String CACHING= "Caching";
         
         //Indexer Properties
-        static final String ABSOLUTE = "Absolute";
-        static final String RECURSIVE = "Recursive";
-        static final String WILDCARD = "Wildcard";
-        static final String SCHEMA = "Schema";
-        static final String RESOLUTION_LEVELS = "ResolutionLevels";
-        static final String PROPERTY_COLLECTORS = "PropertyCollectors";
+        public static final String ABSOLUTE = "Absolute";
+        public  static final String RECURSIVE = "Recursive";
+        public static final String WILDCARD = "Wildcard";
+        public static final String SCHEMA = "Schema";
+        public static final String RESOLUTION_LEVELS = "ResolutionLevels";
+        public static final String PROPERTY_COLLECTORS = "PropertyCollectors";
     }
+    
     // FORMULAE FOR FORWARD MAP are derived as follows
     //     Nearest
     //        Minimum:
@@ -424,9 +424,6 @@ public class Utils {
 			if (props.containsKey(Prop.ELEVATION_ATTRIBUTE))
 				configuration.setElevationAttribute(props.getProperty(Prop.ELEVATION_ATTRIBUTE));			
 			
-			// runtime attr
-			if (props.containsKey(Prop.RUNTIME_ATTRIBUTE))
-				configuration.setRuntimeAttribute(props.getProperty(Prop.RUNTIME_ATTRIBUTE));
 			
 			// imposed BBOX
 			if (props.containsKey(Prop.ENVELOPE2D))
@@ -611,14 +608,7 @@ public class Utils {
 			retValue.setElevationAttribute(elevationAttribute);
 		}
 
-		//
-		// runtime attribute is optional
-		//
-		if (properties.containsKey(Prop.RUNTIME_ATTRIBUTE)) {
-		        final String runtimeAttribute = properties.getProperty(Prop.RUNTIME_ATTRIBUTE).trim();
-			retValue.setRuntimeAttribute(runtimeAttribute);
-		}
-
+	
 		//
 		// caching
 		//

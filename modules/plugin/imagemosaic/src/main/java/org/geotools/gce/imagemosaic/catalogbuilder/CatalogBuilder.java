@@ -34,7 +34,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.EventListener;
 import java.util.EventObject;
@@ -66,8 +65,6 @@ import org.apache.commons.io.filefilter.HiddenFileFilter;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
-import org.geotools.console.CommandLine;
-import org.geotools.console.Option;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
@@ -80,6 +77,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gce.image.WorldImageFormat;
 import org.geotools.gce.imagemosaic.MosaicConfigurationBean;
 import org.geotools.gce.imagemosaic.Utils;
+import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogFactory;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
@@ -108,7 +106,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  * @author Simone Giannecchini, GeoSolutions
  * 
  *
- * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/imagemosaic/src/main/java/org/geotools/gce/imagemosaic/catalogbuilder/CatalogBuilder.java $
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/imagemosaic/src/main/java/org/geotools/gce/imagemosaic/catalogbuilder/CatalogBuilder.java $
  */
 public class CatalogBuilder implements Runnable {
 
@@ -117,77 +115,7 @@ public class CatalogBuilder implements Runnable {
 	/** Default Logger * */
 	final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(CatalogBuilder.class);
 	
-	static class CommandLineCatalogBuilderRunner extends CommandLine {
-
-		@Option(description="This index must use absolute or relative path",mandatory=false,name="absolute")
-		private Boolean absolute;
-		
-		@Option(description="This index can use caching or not",mandatory=false,name="caching")
-		private Boolean caching = Utils.DEFAULT_CONFIGURATION_CACHING;
-		
-		@Option(description="Directories where to look for file to index",mandatory=true,name="indexingDirectories")
-		private String indexingDirectoriesString;
-		
-		@Option(description="This index must handle footprint",mandatory=false,name="footprintManagement")
-                private Boolean footprintManagement;
-		
-		/**
-		 * Index file name. Default is index.
-		 */
-		@Option(description="Name to use for the index of this mosaic",mandatory=false,name="index")
-		private String indexName;
-		
-		@Option(description="Root directory where to place the index file",mandatory=true,name="rootDirectory")
-		private String rootMosaicDirectory;
-		
-		@Option(description="Wildcard to use for building the index of this mosaic",mandatory=false,name="wildcard")
-		private String wildcardString = Utils.DEFAULT_WILCARD;
-
-		@Option(description="Default location attribute for this index",mandatory=false,name="locationAttribute")
-		private String locationAttribute = Utils.DEFAULT_LOCATION_ATTRIBUTE;
-
-		public CommandLineCatalogBuilderRunner(String[] args) {
-			super(args);
-			if (this.absolute == null){
-				this.absolute = Utils.DEFAULT_PATH_BEHAVIOR;
-			}
-			if (this.caching == null){
-				this.caching = Utils.DEFAULT_CONFIGURATION_CACHING;
-			}
-			if (this.footprintManagement == null){
-                                this.footprintManagement = Utils.DEFAULT_FOOTPRINT_MANAGEMENT;
-			}
-			if(this.indexName==null)
-				this.indexName=Utils.DEFAULT_INDEX_NAME;
-		}
-
-
-		public static void main(String args[]){
-			final CommandLineCatalogBuilderRunner runner = new CommandLineCatalogBuilderRunner(args);
-			// prepare the configuration
-			final CatalogBuilderConfiguration configuration= new CatalogBuilderConfiguration();
-			configuration.setAbsolute(runner.absolute);
-			configuration.setIndexName(runner.indexName);
-			configuration.setFootprintManagement(runner.footprintManagement);
-			configuration.setCaching(runner.caching);
-			configuration.setRootMosaicDirectory(runner.rootMosaicDirectory);
-			configuration.setWildcard(runner.wildcardString);
-			configuration.setLocationAttribute(runner.locationAttribute);
-			
-			final String directories= runner.indexingDirectoriesString;
-			final String []dirs_=directories.split(",");
-			final List<String> dirs= new ArrayList<String>();
-			for(String dir:dirs_)
-				dirs.add(dir);
-			configuration.setIndexingDirectories(dirs);
-			
-			//prepare and run the index builder
-			final CatalogBuilder builder= new CatalogBuilder(configuration);		
-			builder.run();
-	  		
-		}
-
-	}
+	
 	
 	static abstract public class ProcessingEventListener implements EventListener {
 
@@ -338,32 +266,30 @@ public class CatalogBuilder implements Runnable {
 	 */
 	final class CatalogBuilderDirectoryWalker  extends DirectoryWalker{
 
-		private AbstractGridFormat cachedFormat;
-		private SimpleFeatureType indexSchema;
 		private DefaultTransaction transaction;
+                private volatile boolean canceled;
+		
 		@Override
 		protected void handleCancelled(File startDirectory, Collection results,
 				CancelException cancel) throws IOException {			
 			super.handleCancelled(startDirectory, results, cancel);
                         //clean up objects and rollback transaction
-                        try{
-                                transaction.rollback();
-                        }
-                        finally{
-                                transaction.close();
-                        }      
-                        
-			// close things related to shapefiles
-			closeIndexObjects();
-			
-		
-			
+                       if(LOGGER.isLoggable(Level.INFO))
+                           LOGGER.info("Stop requested when walking directory "+startDirectory);			
 			super.handleEnd(results);
 		}		
 
 		@Override
-		protected boolean handleIsCancelled(final File file, final int depth, Collection results) throws IOException {			
-			return CatalogBuilder.this.stop && super.handleIsCancelled(file, depth, results);
+		protected boolean handleIsCancelled(final File file, final int depth, Collection results) throws IOException {	
+
+                    //
+                    // Anyone has asked us to stop?
+                    //
+                    if(!checkStop()){
+                        canceled=true;
+                        return true ; 
+                    }
+                    return false;
 		}
 
 		@Override
@@ -379,11 +305,6 @@ public class CatalogBuilder implements Runnable {
 			if(!checkFile(fileBeingProcessed))
 				return;
 
-			//
-			// Anyone has asked us to stop?
-			//
-			if(!checkStop())
-				return; 
 		
 			// replacing chars on input path
 			String validFileName;
@@ -548,7 +469,7 @@ public class CatalogBuilder implements Runnable {
 					if(schemaDef!=null){
 						// get the schema
 						try{
-							indexSchema=DataUtilities.createType(mosaicConfiguration.getName()/*.toLowerCase()*/, runConfiguration.getSchema());
+							indexSchema=DataUtilities.createType(mosaicConfiguration.getName(), runConfiguration.getSchema());
 							//override the crs in case the provided one was wrong or absent
 							indexSchema=DataUtilities.createSubType(indexSchema, DataUtilities.attributeNames(indexSchema), actualCRS);
 						}
@@ -714,8 +635,8 @@ public class CatalogBuilder implements Runnable {
 		private boolean checkStop() {
 
 			if (getStop()) {
-				StringBuilder message = new StringBuilder("Stopping requested at file  ").append(fileIndex).append(" of ").append(numFiles).append(" files");
-				fireEvent(Level.INFO,message.toString(), ((fileIndex * 100.0) / numFiles));
+				
+				fireEvent(Level.INFO,"Stopping requested at file  "+fileIndex+" of "+numFiles+" files", ((fileIndex * 100.0) / numFiles));
 				return false;
 			}
 			return true;
@@ -725,17 +646,46 @@ public class CatalogBuilder implements Runnable {
 			if(!fileBeingProcessed.exists()||!fileBeingProcessed.canRead()||!fileBeingProcessed.isFile())
 			{
 				// send a message
-				final StringBuilder message = new StringBuilder("Skipped file ").append(fileBeingProcessed).append(" snce it seems invalid.");
-				fireEvent(Level.INFO,message.toString(), ((fileIndex * 99.0) / numFiles));
+				fireEvent(Level.INFO,"Skipped file "+fileBeingProcessed+" snce it seems invalid", ((fileIndex * 99.0) / numFiles));
 				return false;
 			}
 			return true;
 		}
 
-		public CatalogBuilderDirectoryWalker(final File root,final FileFilter filter) throws IOException {
+		public CatalogBuilderDirectoryWalker(final List<String> indexingDirectories,final FileFilter filter) throws IOException {
 			super(filter,Integer.MAX_VALUE);//runConfiguration.isRecursive()?Integer.MAX_VALUE:0);
+			
 			this.transaction= new DefaultTransaction("MosaicCreationTransaction"+System.nanoTime());
-			walk(root, null);
+                        indexingPreamble();
+
+                        try {
+                            // start walking directories
+                            for(String indexingDirectory:indexingDirectories){
+                                walk(new File(indexingDirectory), null);
+                                
+                                // did we cancel?
+                                if(canceled)
+                                    break;
+                            }
+                         // did we cancel?
+                            if(canceled)
+                                transaction.rollback();
+                            else
+                                transaction.commit();
+                        } catch (Exception e) {
+                            LOGGER.log(Level.WARNING, "Failure occurred while collecting the granules", e);
+                            transaction.rollback();
+                        } finally {
+                            transaction.close();
+                            
+                            try{
+                                indexingPostamble(!canceled);
+                            } catch (Exception e) {
+                                // eat me
+                            }
+                        }
+                        
+			
 		}
 
 		public int getNumberOfProcessedFiles() {
@@ -851,26 +801,26 @@ public class CatalogBuilder implements Runnable {
 			return true;
 		}
 
-		@Override
-		protected void handleEnd(Collection results) throws IOException {
-			try{
-				transaction.commit();
-			}
-			finally{
-				transaction.close();
-			}		
-			indexingPostamble();
-			super.handleEnd(results);
-		}
+//		@Override
+//		protected void handleEnd(Collection results) throws IOException {
+//			try{
+//				transaction.commit();
+//			}
+//			finally{
+//				transaction.close();
+//			}		
+//			indexingPostamble();
+//			super.handleEnd(results);
+//		}
 
-		@Override
-		protected void handleStart(File startDirectory, Collection results)
-				throws IOException {
-			indexingPreamble();
-			super.handleStart(startDirectory, results);
-			
-			
-		}
+//		@Override
+//		protected void handleStart(File startDirectory, Collection results)
+//				throws IOException {
+//			indexingPreamble();
+//			super.handleStart(startDirectory, results);
+//			
+//			
+//		}
 		
 		
 	}
@@ -882,7 +832,7 @@ public class CatalogBuilder implements Runnable {
 	 * List containing all the objects that want to be notified during
 	 * processing.
 	 */
-	private List<ProcessingEventListener> notificationListeners = Collections.synchronizedList(new ArrayList<ProcessingEventListener>());
+	private List<ProcessingEventListener> notificationListeners = new CopyOnWriteArrayList<ProcessingEventListener>();
 
 	/**
 	 * Set this to false for command line UIs where the delayed event sending
@@ -932,6 +882,10 @@ public class CatalogBuilder implements Runnable {
 	private SampleModel defaultSM;
 
 	private ReferencedEnvelope imposedBBox;
+
+    private SimpleFeatureType indexSchema;
+
+    private AbstractGridFormat cachedFormat;
 	
 	/* (non-Javadoc)
 	 * @see org.geotools.gce.imagemosaic.JMXIndexBuilderMBean#run()
@@ -962,10 +916,9 @@ public class CatalogBuilder implements Runnable {
 			if(numFiles>0)
 			{
 				final List<String> indexingDirectories = runConfiguration.getIndexingDirectories();
-				for(String indexingDirectory:indexingDirectories){
-					@SuppressWarnings("unused")
-					final CatalogBuilderDirectoryWalker walker = new CatalogBuilderDirectoryWalker(new File(indexingDirectory),finalFilter);
-				}
+	                        @SuppressWarnings("unused")
+				final CatalogBuilderDirectoryWalker walker = new CatalogBuilderDirectoryWalker(indexingDirectories,finalFilter);
+				
 			}
 				
 			
@@ -991,6 +944,8 @@ public class CatalogBuilder implements Runnable {
 									FileFilterUtils.suffixFileFilter("shp"),
 									FileFilterUtils.suffixFileFilter("dbf"),
 									FileFilterUtils.suffixFileFilter("shx"), 
+									FileFilterUtils.suffixFileFilter("qix"),
+									FileFilterUtils.suffixFileFilter("lyr"),
 									FileFilterUtils.suffixFileFilter("prj"), 
 									FileFilterUtils.nameFileFilter("error.txt"),
 									FileFilterUtils.nameFileFilter("error.txt.lck"),
@@ -1059,6 +1014,64 @@ public class CatalogBuilder implements Runnable {
 	 */
 	public CatalogBuilder(final CatalogBuilderConfiguration configuration)  {
 		Utilities.ensureNonNull("runConfiguration", configuration);
+		Utilities.ensureNonNull("root location", configuration.getRootMosaicDirectory());
+
+                // look for and indexed.properties file
+                final File parent = new File( configuration.getRootMosaicDirectory());
+                final File indexerProperties = new File(parent, Utils.INDEXER_PROPERTIES);
+                if (Utils.checkFileReadable(indexerProperties)) {
+                        // load it and parse it
+                        final Properties props = Utils.loadPropertiesFromURL(DataUtilities
+                                        .fileToURL(indexerProperties));
+
+                        // name
+                        if (props.containsKey(Prop.NAME))
+                                configuration.setIndexName(props.getProperty(Prop.NAME));
+
+                        // absolute
+                        if (props.containsKey(Prop.ABSOLUTE))
+                                configuration.setAbsolute(Boolean.valueOf(props
+                                                .getProperty(Prop.ABSOLUTE)));
+
+                        // recursive
+                        if (props.containsKey(Prop.RECURSIVE))
+                                configuration.setRecursive(Boolean.valueOf(props
+                                                .getProperty(Prop.RECURSIVE)));
+
+                        // wildcard
+                        if (props.containsKey(Prop.WILDCARD))
+                                configuration.setWildcard(props.getProperty(Prop.WILDCARD));
+
+                        // schema
+                        if (props.containsKey(Prop.SCHEMA))
+                                configuration.setSchema(props.getProperty(Prop.SCHEMA));
+
+                        // time attr
+                        if (props.containsKey(Prop.TIME_ATTRIBUTE))
+                                configuration.setTimeAttribute(props.getProperty(Prop.TIME_ATTRIBUTE));
+                        
+                        // elevation attr
+                        if (props.containsKey(Prop.ELEVATION_ATTRIBUTE))
+                                configuration.setElevationAttribute(props.getProperty(Prop.ELEVATION_ATTRIBUTE));                       
+        
+                        
+                        // imposed BBOX
+                        if (props.containsKey(Prop.ENVELOPE2D))
+                                configuration.setEnvelope2D(props.getProperty(Prop.ENVELOPE2D));        
+                        
+                        // imposed Pyramid Layout
+                        if (props.containsKey(Prop.RESOLUTION_LEVELS))
+                                configuration.setResolutionLevels(props.getProperty(Prop.RESOLUTION_LEVELS));                   
+
+                        // collectors
+                        if (props.containsKey(Prop.PROPERTY_COLLECTORS))
+                                configuration.setPropertyCollectors(props.getProperty(Prop.PROPERTY_COLLECTORS));
+                        
+                        if (props.containsKey(Prop.CACHING))
+                                configuration.setCaching(Boolean.valueOf(props.getProperty(Prop.CACHING)));
+                }
+
+		
 		//check config
 		configuration.check();
 		
@@ -1074,9 +1087,7 @@ public class CatalogBuilder implements Runnable {
 	 *            to add to the list of listeners.
 	 */
 	public final void addProcessingEventListener(final ProcessingEventListener listener) {
-		synchronized (notificationListeners) {
-			notificationListeners.add(listener);
-		}
+	    notificationListeners.add(listener);
 	}
 
 	/**
@@ -1208,9 +1219,8 @@ public class CatalogBuilder implements Runnable {
 	 *            listeners.
 	 */
 	public void removeProcessingEventListener(final ProcessingEventListener listener) {
-		synchronized (notificationListeners) {
-			notificationListeners.remove(listener);
-		}
+	    notificationListeners.remove(listener);
+
 	}
 
 	private void sendEvent(ProgressEventDispatchThreadEventLauncher eventLauncher) {
@@ -1376,39 +1386,46 @@ public class CatalogBuilder implements Runnable {
 		}
 	}
 
-	private void indexingPostamble() throws IOException {
+	private void indexingPostamble(final boolean success) throws IOException {
 		//close shapefile elements
 		closeIndexObjects();
 		
-		// create sample image if the needed elements are available
-		createSampleImage();
+		if(success){
+        		// create sample image if the needed elements are available
+        		createSampleImage();
 		
-		// complete initialization of mosaic configuration
-		if(numberOfProcessedFiles>0){
-			mosaicConfiguration.setName(runConfiguration.getIndexName());
-			mosaicConfiguration.setExpandToRGB(mustConvertToRGB);
-			mosaicConfiguration.setAbsolutePath(runConfiguration.isAbsolute());
-			mosaicConfiguration.setLocationAttribute(runConfiguration.getLocationAttribute());
-			mosaicConfiguration.setCaching(runConfiguration.isCaching());
-			final String timeAttribute= runConfiguration.getTimeAttribute();
-			if (timeAttribute != null) {
-				mosaicConfiguration.setTimeAttribute(runConfiguration.getTimeAttribute());
-			}
-			final String elevationAttribute= runConfiguration.getElevationAttribute();
-			if (elevationAttribute != null) {
-				mosaicConfiguration.setElevationAttribute(runConfiguration.getElevationAttribute());
-			}
-			final String runtimeAttribute= runConfiguration.getRuntimeAttribute();
-			if (runtimeAttribute != null) {
-				mosaicConfiguration.setRuntimeAttribute(runConfiguration.getRuntimeAttribute());
-			}
-			createPropertiesFiles();
-			
-			// processing information
-			fireEvent(Level.FINE, "Done!!!", 100);				
+        		// complete initialization of mosaic configuration
+        		if(numberOfProcessedFiles>0){
+        			mosaicConfiguration.setName(runConfiguration.getIndexName());
+        			mosaicConfiguration.setExpandToRGB(mustConvertToRGB);
+        			mosaicConfiguration.setAbsolutePath(runConfiguration.isAbsolute());
+        			mosaicConfiguration.setLocationAttribute(runConfiguration.getLocationAttribute());
+        			mosaicConfiguration.setCaching(runConfiguration.isCaching());
+        			final String timeAttribute= runConfiguration.getTimeAttribute();
+        			if (timeAttribute != null) {
+        				mosaicConfiguration.setTimeAttribute(runConfiguration.getTimeAttribute());
+        			}
+        			final String elevationAttribute= runConfiguration.getElevationAttribute();
+        			if (elevationAttribute != null) {
+        				mosaicConfiguration.setElevationAttribute(runConfiguration.getElevationAttribute());
+        			}
+        			final String runtimeAttribute= runConfiguration.getRuntimeAttribute();
+        			if (runtimeAttribute != null) {
+        				mosaicConfiguration.setRuntimeAttribute(runConfiguration.getRuntimeAttribute());
+        			}
+        			createPropertiesFiles();
+        			
+        			// processing information
+        			fireEvent(Level.FINE, "Done!!!", 100);				
+        		} else {
+        			//	processing information
+        			fireEvent(Level.FINE, "Nothing to process!!!", 100);
+        		}
 		} else {
-			//	processing information
-			fireEvent(Level.FINE, "Nothing to process!!!", 100);
+		    // processing information
+                    fireEvent(Level.FINE, "Canceled!!!", 100);
+                    
+                    //TODO remove all files created so far
 		}
 	}
 	
@@ -1558,5 +1575,9 @@ public class CatalogBuilder implements Runnable {
             }
             return true;
         }
+
+    public MosaicConfigurationBean getMosaicConfiguration() {
+        return new MosaicConfigurationBean(mosaicConfiguration);
+    }
 
 }

@@ -86,12 +86,16 @@ public class AreaGridProcessTest {
     }
 
 
-    private double computeTotalArea(int cx, int cy, ReferencedEnvelope envelope) {
+    private double computeTotalArea(int width, int height, ReferencedEnvelope envelope) {
         AreaGridProcess process = new AreaGridProcess();
-        GridCoverage2D grid = process.execute(envelope, cx, cy);
+        GridCoverage2D grid = process.execute(envelope, width, height);
+        assertEquals(envelope, new ReferencedEnvelope(grid.getEnvelope()));
+        assertEquals(width, grid.getGridGeometry().getGridRange().getSpan(0));
+        assertEquals(height, grid.getGridGeometry().getGridRange().getSpan(1));
+        
         double sum = 0.0;
-        for (int i = 0; i < cy; i++) {
-            for (int j = 0; j < cx; j++) {
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
                 GridCoordinates2D gridCoordinate = new GridCoordinates2D(i, j);
                 float[] band = new float[1];
                 float[] result = grid.evaluate(gridCoordinate, band);

@@ -52,7 +52,7 @@ import org.opengis.referencing.operation.MathTransform;
  * 
  * @author Luca Paolino - GeoSolutions
  */
-@DescribeProcess(title = "areaGrid", description = "Builds a regular cell grid where each pixel represents its effective area in the envelope using the EPSG:54012")
+@DescribeProcess(title = "areaGrid", description = "Builds a regular cell grid where each pixel represents its effective area in the envelope using the EckertIV projection")
 public class AreaGridProcess implements GSProcess {
     private static final String targetCRSWKT = "PROJCS[\"World_Eckert_IV\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Eckert_IV\"],PARAMETER[\"Central_Meridian\",0.0],UNIT[\"Meter\",1.0]]";
 
@@ -62,6 +62,7 @@ public class AreaGridProcess implements GSProcess {
             @DescribeParameter(name = "width", description = "image width ") int width,
             @DescribeParameter(name = "height", description = "image height ") int height)
             throws ProcessException {
+
         // basic checks
         if (height <= 0 || width <= 0) {
             throw new ProcessException("height and width parameters must be greater than 0");
@@ -69,49 +70,58 @@ public class AreaGridProcess implements GSProcess {
         if (bounds.getCoordinateReferenceSystem() == null) {
             throw new ProcessException("Envelope CRS must not be null");
         }
-
         // build the grid
         GeometryFactory geomFactory = new GeometryFactory();
         try {
+            Polygon polygon = null;
+            
             CoordinateReferenceSystem sourceCRS = org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
             CoordinateReferenceSystem targetCRS = CRS.parseWKT(targetCRSWKT);
             MathTransform transform = CRS.findMathTransform(sourceCRS, targetCRS);
             double pX = bounds.getMinX();
-            double pY = bounds.getMinY();
+            double pY = bounds.getMaxY();
             double stepX = (bounds.getMaxX() - bounds.getMinX()) / width;
             double stepY = (bounds.getMaxY() - bounds.getMinY()) / height;
-            float[][] matrix = new float[width][height];
+            float[][] matrix = new float[height][width];
             Coordinate[] tempCoordinates = new Coordinate[5];
-            
-            // scroll thrhough every cell
+
+            // scroll through every cell (by row and then by col)
             for (int i = 0; i < height; i++) {
+                // start of the row
+                pX = bounds.getMinX();
                 for (int j = 0; j < width; j++) {
                     double nX = pX + stepX;
-                    double nY = pY + stepY;
-                    
-                    // build the cell in the original srs
-                    tempCoordinates[0] = new Coordinate(pX, pY);
-                    tempCoordinates[1] = new Coordinate(nX, pY);
-                    tempCoordinates[2] = new Coordinate(nX, nY);
-                    tempCoordinates[3] = new Coordinate(pX, nY);
-                    tempCoordinates[4] = tempCoordinates[0];
-                    LinearRing linearRing = geomFactory.createLinearRing(tempCoordinates);
-                    Polygon polygon = geomFactory.createPolygon(linearRing, null);
-                    
+                    double nY = pY - stepY;
+
+                    if(polygon == null) {
+                        tempCoordinates[0] = new Coordinate(pX, pY);
+                        tempCoordinates[1] = new Coordinate(nX, pY);
+                        tempCoordinates[2] = new Coordinate(nX, nY);
+                        tempCoordinates[3] = new Coordinate(pX, nY);
+                        tempCoordinates[4] = tempCoordinates[0];
+                        LinearRing linearRing = geomFactory.createLinearRing(tempCoordinates);
+                        polygon = geomFactory.createPolygon(linearRing, null);
+                    } else {
+                        tempCoordinates[0].x = pX; tempCoordinates[0].y = pY;  
+                        tempCoordinates[1].x = nX; tempCoordinates[1].y = pY;
+                        tempCoordinates[2].x = nX; tempCoordinates[2].y = nY;
+                        tempCoordinates[3].x = pX; tempCoordinates[3].y = nY;
+                        polygon.geometryChanged();
+                    }
+
                     // transform to EckertIV and compute area
                     Geometry targetGeometry = JTS.transform(polygon, transform);
-                    matrix[j][i] = (float) targetGeometry.getArea();
-                    
+                    matrix[i][j] = (float) targetGeometry.getArea();
                     // move on
                     pX = pX + stepX;
                 }
-                pY = pY + stepY;
+                // move to next row
+                pY = pY - stepY;
             }
-            
+
             // build the grid coverage
             GridCoverageFactory coverageFactory = new GridCoverageFactory();
-            GridCoverage2D grid = coverageFactory
-                    .create("AreaGridCoverage", matrix, bounds);
+            GridCoverage2D grid = coverageFactory.create("AreaGridCoverage", matrix, bounds);
             return grid;
 
         } catch (org.opengis.referencing.FactoryException ef) {

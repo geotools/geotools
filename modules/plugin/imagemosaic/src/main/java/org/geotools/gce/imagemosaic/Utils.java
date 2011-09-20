@@ -146,7 +146,6 @@ public class Utils {
         public final static String CACHING= "Caching";
         
         //Indexer Properties
-        public static final String ABSOLUTE = "Absolute";
         public  static final String RECURSIVE = "Recursive";
         public static final String WILDCARD = "Wildcard";
         public static final String SCHEMA = "Schema";
@@ -385,61 +384,6 @@ public class Utils {
 		configuration.setRootMosaicDirectory(location);
 		configuration.setIndexingDirectories(Arrays.asList(location));
 		configuration.setIndexName(indexName);
-
-		// look for and indexed.properties file
-		final File parent = new File(location);
-		final File indexerProperties = new File(parent, INDEXER_PROPERTIES);
-		if (Utils.checkFileReadable(indexerProperties)) {
-			// load it and parse it
-			final Properties props = Utils.loadPropertiesFromURL(DataUtilities
-					.fileToURL(indexerProperties));
-
-			// name
-			if (props.containsKey(Prop.NAME))
-				configuration.setIndexName(props.getProperty(Prop.NAME));
-
-			// absolute
-			if (props.containsKey(Prop.ABSOLUTE))
-				configuration.setAbsolute(Boolean.valueOf(props
-						.getProperty(Prop.ABSOLUTE)));
-
-			// recursive
-			if (props.containsKey(Prop.RECURSIVE))
-				configuration.setRecursive(Boolean.valueOf(props
-						.getProperty(Prop.RECURSIVE)));
-
-			// wildcard
-			if (props.containsKey(Prop.WILDCARD))
-				configuration.setWildcard(props.getProperty(Prop.WILDCARD));
-
-			// schema
-			if (props.containsKey(Prop.SCHEMA))
-				configuration.setSchema(props.getProperty(Prop.SCHEMA));
-
-			// time attr
-			if (props.containsKey(Prop.TIME_ATTRIBUTE))
-				configuration.setTimeAttribute(props.getProperty(Prop.TIME_ATTRIBUTE));
-			
-			// elevation attr
-			if (props.containsKey(Prop.ELEVATION_ATTRIBUTE))
-				configuration.setElevationAttribute(props.getProperty(Prop.ELEVATION_ATTRIBUTE));			
-			
-			
-			// imposed BBOX
-			if (props.containsKey(Prop.ENVELOPE2D))
-				configuration.setEnvelope2D(props.getProperty(Prop.ENVELOPE2D));	
-			
-			// imposed Pyramid Layout
-			if (props.containsKey(Prop.RESOLUTION_LEVELS))
-				configuration.setResolutionLevels(props.getProperty(Prop.RESOLUTION_LEVELS));			
-
-			// collectors
-			if (props.containsKey(Prop.PROPERTY_COLLECTORS))
-				configuration.setPropertyCollectors(props.getProperty(Prop.PROPERTY_COLLECTORS));
-			
-			if (props.containsKey(Prop.CACHING))
-				configuration.setCaching(Boolean.valueOf(props.getProperty(Prop.CACHING)));
-		}
 
 		// create the builder
 		final CatalogBuilder catalogBuilder = new CatalogBuilder(configuration);

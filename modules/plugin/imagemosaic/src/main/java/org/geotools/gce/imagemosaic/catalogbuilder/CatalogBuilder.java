@@ -1029,9 +1029,9 @@ public class CatalogBuilder implements Runnable {
                                 configuration.setIndexName(props.getProperty(Prop.NAME));
 
                         // absolute
-                        if (props.containsKey(Prop.ABSOLUTE))
+                        if (props.containsKey(Prop.ABSOLUTE_PATH))
                                 configuration.setAbsolute(Boolean.valueOf(props
-                                                .getProperty(Prop.ABSOLUTE)));
+                                                .getProperty(Prop.ABSOLUTE_PATH)));
 
                         // recursive
                         if (props.containsKey(Prop.RECURSIVE))

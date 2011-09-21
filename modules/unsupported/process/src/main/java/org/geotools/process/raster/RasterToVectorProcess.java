@@ -60,8 +60,8 @@ import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
 import org.opengis.util.ProgressListener;
 
-import com.vividsolutions.jts.algorithm.InteriorPointArea;
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.CoordinateArrays;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineSegment;
 import com.vividsolutions.jts.geom.LineString;
@@ -423,29 +423,22 @@ public class RasterToVectorProcess extends AbstractProcess {
                 monitor.progress(progressScale * index);
 
                 Polygon poly = (Polygon) i.next();
-                InteriorPointArea ipa = new InteriorPointArea(poly);
-                Coordinate c = ipa.getInteriorPoint();
-                Point insidePt = geomFactory.createPoint(c);
+                // Get interior point by going to the minimum boundary
+                // coordinate and then addign half cell width to X and Y
+                // ordinates. Since we are vectorizing around the edges of
+                // raster cells this should always work.
+                Coordinate[] coords = poly.getExteriorRing().getCoordinates();
+                Coordinate minCoord = CoordinateArrays.minCoordinate(coords);
+                Coordinate insideCoord = new Coordinate(
+                        minCoord.x + cellWidthX / 2,
+                        minCoord.y + cellWidthY / 2);
 
+                Point insidePt = geomFactory.createPoint(insideCoord);
                 if (!poly.contains(insidePt)) {
-                    // try another method to generate an interior point
-                    boolean found = false;
-                    for (Coordinate ringC : poly.getExteriorRing().getCoordinates()) {
-                        c.x = ringC.x + cellWidthX / 2;
-                        c.y = ringC.y;
-                        insidePt = geomFactory.createPoint(c);
-                        if (poly.contains(insidePt)) {
-                            found = true;
-                            break;
-                        }
-                    }
-
-                    if (!found) {
-                        throw new IllegalStateException("Can't locate interior point for polygon");
-                    }
+                    throw new IllegalStateException("Can't locate interior point for polygon");
                 }
 
-                p.setLocation(c.x, c.y);
+                p.setLocation(insideCoord.x, insideCoord.y);
                 bandData = grid.evaluate(p, bandData);
 
                 if (!isOutside(bandData[band])) {

@@ -38,7 +38,6 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.process.Process;
-import org.geotools.process.ProcessFactory;
 import org.geotools.process.Processors;
 
 import org.opengis.feature.simple.SimpleFeature;
@@ -300,5 +299,36 @@ public class RasterToVectorProcessTest {
             double ratio = areas.get(i) / imgAreas.get(i);
             assertTrue(Math.abs(1.0D - ratio) < ROUND_OFF_TOLERANCE);
         }
+    }
+
+    /**
+     * Added after a bug was reported in assigning value to polygons
+     * by getting an interior point and querying its value in the input raster.
+     */
+    @Test
+    public void testLShape() throws Exception {
+        final float[][] DATA = {
+            {0, 0, 0, 0, 0},
+            {0, 1, 0, 0, 0},
+            {0, 1, 1, 1, 0},
+            {0, 0, 0, 0, 0}
+        };
+
+        GridCoverage2D cov = covFactory.create(
+                "coverage",
+                DATA,
+                new ReferencedEnvelope(0, DATA[0].length, 0, DATA.length, null));
+
+        int band = 0;
+        Set<Double> outsideValues = Collections.singleton(0D);
+
+        ProgressListener progress = null;
+        SimpleFeatureCollection fc =
+                RasterToVectorProcess.process(cov, band, null, outsideValues, true, progress);
+
+        assertEquals(1, fc.size());
+        SimpleFeature feature = fc.features().next();
+        Polygon poly = (Polygon) feature.getDefaultGeometry();
+
     }
 }

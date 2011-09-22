@@ -34,6 +34,8 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Polygon;
 
+import org.jaitools.numeric.Range;
+
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -58,6 +60,8 @@ import static org.junit.Assert.*;
  * @version $Id$
  */
 public class PolygonExtractionProcessTest {
+
+    private static final double TOL = 1.0e-6;
 
     private static final GridCoverageFactory covFactory = CoverageFactoryFinder.getGridCoverageFactory(null);
     private PolygonExtractionProcess process;
@@ -260,8 +264,6 @@ public class PolygonExtractionProcessTest {
             iter.close();
         }
         
-        final double TOL = 1.0e-6;
-
         // compare summed areas to image data
         Map<Integer, Double> imgAreas = new HashMap<Integer, Double>();
         Raster tile = img.getTile(0, 0);
@@ -283,6 +285,59 @@ public class PolygonExtractionProcessTest {
         for (Integer i : imgAreas.keySet()) {
             double ratio = areas.get(i) / imgAreas.get(i);
             assertTrue(Math.abs(1.0D - ratio) < ROUND_OFF_TOLERANCE);
+        }
+    }
+    
+    @Test
+    public void classificationRanges() {
+        
+        // Test data contains values 1 - 9 but we will only define
+        // classification ranges for 1 - 4 and 5 - 8. As a reasult,
+        // we expect the region with value == 9 to be absent from
+        // the returned polygons.
+        final float[][] DATA = {
+            {1, 1, 3, 3, 5, 5, 7, 7},
+            {1, 1, 3, 3, 5, 5, 7, 7},
+            {2, 2, 4, 4, 6, 6, 8, 8},
+            {2, 2, 4, 4, 6, 6, 8, 8},
+            {9, 9, 9, 9, 9, 9, 9, 9}
+        };
+
+        final int width = DATA[0].length;
+        final int height = DATA.length;
+
+        GridCoverage2D cov = covFactory.create(
+                "coverage",
+                DATA,
+                new ReferencedEnvelope(0, width, 0, height, null));
+
+        List<Range> classificationRanges = new ArrayList<Range>();
+        Range<Integer> r1 = Range.create(1, true, 4, true);
+        Range<Integer> r2 = Range.create(5, true, 8, true);
+        classificationRanges.add(r1);
+        classificationRanges.add(r2);
+        
+        SimpleFeatureCollection fc = process.execute(
+                cov, 0, Boolean.TRUE, null, null, classificationRanges, null);
+        
+        assertEquals(2, fc.size());
+        
+        // Expected result is 2 polygons, each with area == 16.0
+        SimpleFeatureIterator iter = fc.features();
+        List<Integer> expectedValues = new ArrayList<Integer>();
+        expectedValues.add(1);
+        expectedValues.add(2);
+        try {
+            while (iter.hasNext()) {
+                SimpleFeature feature = iter.next();
+                int value = ((Number) feature.getAttribute("value")).intValue();
+                assertTrue(expectedValues.remove(Integer.valueOf(value)));
+                
+                Polygon poly = (Polygon) feature.getDefaultGeometry();
+                assertEquals(16.0, poly.getArea(), TOL);
+            }
+        } finally {
+            iter.close();
         }
     }
 }

@@ -42,11 +42,14 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.FeatureIterator;
+import org.geotools.geometry.jts.Geometries;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 import org.opengis.feature.simple.SimpleFeature;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -330,11 +333,77 @@ public class PolygonExtractionProcessTest {
         try {
             while (iter.hasNext()) {
                 SimpleFeature feature = iter.next();
-                int value = ((Number) feature.getAttribute("value")).intValue();
-                assertTrue(expectedValues.remove(Integer.valueOf(value)));
+                Integer value = ((Number) feature.getAttribute("value")).intValue();
+                assertTrue(expectedValues.remove(value));
                 
                 Polygon poly = (Polygon) feature.getDefaultGeometry();
                 assertEquals(16.0, poly.getArea(), TOL);
+            }
+        } finally {
+            iter.close();
+        }
+    }
+    
+    @Ignore("Need to check with aaime about ROIGeometry behaviour")
+    @Test
+    public void applyROIToProcess() {
+        final float[][] DATA = {
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {1, 1, 2, 2, 2, 2, 3, 3},
+            {1, 1, 2, 2, 2, 2, 3, 3},
+            {1, 1, 2, 2, 2, 2, 3, 3},
+            {1, 1, 2, 2, 2, 2, 3, 3},
+            {1, 1, 2, 2, 2, 2, 3, 3},
+            {0, 0, 0, 0, 0, 0, 0, 0}
+        };
+
+        final int width = DATA[0].length;
+        final int height = DATA.length;
+        final double cellSize = 1000;
+        
+        final double minX = 10000;
+        final double minY = 5000;
+        final double maxX = minX + width * cellSize;
+        final double maxY = minY + height * cellSize;
+        
+        final ReferencedEnvelope dataEnv = new ReferencedEnvelope(minX, maxX, minY, maxY, null);
+        
+        GridCoverage2D cov = covFactory.create("coverage", DATA, dataEnv);
+
+        // Create an ROI that cuts off the left and right-most pixels
+        ReferencedEnvelope processEnv = new ReferencedEnvelope(
+                minX + cellSize, maxX - cellSize, minY, maxY, null);
+        
+        Geometry roiGeometry = JTS.toGeometry(processEnv);
+        
+        // sanity check
+        assertTrue(Geometries.get(roiGeometry) == Geometries.POLYGON);
+
+        SimpleFeatureCollection fc = process.execute(
+                cov, 0, Boolean.TRUE, roiGeometry, null, null, null);
+        
+        // Expected result is 3 polygons:
+        //   value == 1, area = 5 cells
+        //   value == 2, area = 20 cells
+        //   value == 3, area = 5 cells
+        assertEquals(3, fc.size());
+        
+        final double cellArea = cellSize * cellSize;
+        final double[] areas = { 5 * cellArea, 20 * cellArea, 5 * cellArea };
+        List<Integer> expectedValues = new ArrayList<Integer>();
+        expectedValues.addAll(Arrays.asList(1, 2, 3));
+        
+        SimpleFeatureIterator iter = fc.features();
+        try {
+            while (iter.hasNext()) {
+                SimpleFeature feature = iter.next();
+                Integer value = ((Number) feature.getAttribute("value")).intValue();
+                System.out.println(value);
+                assertTrue(expectedValues.remove(value));
+                
+                Polygon poly = (Polygon) feature.getDefaultGeometry();
+                System.out.println(poly.toText());
+                assertEquals(areas[value - 1], poly.getArea(), TOL);
             }
         } finally {
             iter.close();

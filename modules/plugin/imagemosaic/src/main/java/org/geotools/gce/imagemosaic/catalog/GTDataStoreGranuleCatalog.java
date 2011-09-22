@@ -457,6 +457,7 @@ class GTDataStoreGranuleCatalog extends AbstractGranuleCatalog {
 			// Load tiles informations, especially the bounds, which will be
 			// reused
 			//
+			
 
 			final SimpleFeatureSource featureSource = tileIndexStore.getFeatureSource(this.typeName);
 			if (featureSource == null) 

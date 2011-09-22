@@ -342,8 +342,13 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
 				return features;
 			
 			final List<GranuleDescriptor> retVal= new ArrayList<GranuleDescriptor>();
+			final int maxGranules= q.getMaxFeatures();
+			int numGranules=0;
 			for (Iterator<GranuleDescriptor> it = features.iterator();it.hasNext();)
-			{
+			{       
+			        // check how many tiles we are returning
+			        if(maxGranules>0&&numGranules>=maxGranules)
+			            break;
 				GranuleDescriptor g= it.next();
 				final SimpleFeature originator = g.getOriginator();
 				if(originator!=null&&filter.evaluate(originator))

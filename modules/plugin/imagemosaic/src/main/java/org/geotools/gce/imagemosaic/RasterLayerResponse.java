@@ -354,6 +354,8 @@ class RasterLayerResponse{
 
         public void visit(GranuleDescriptor granuleDescriptor, Object o) {
             // don't collect more than the specified amount of granules
+            // SG20092011 this might not happen since we set the max features in the query, but 
+            // hwo knows
             if(granulesNumber >= request.getMaximumNumberOfGranules()) {
                 return;
             }
@@ -968,7 +970,11 @@ class RasterLayerResponse{
                                 rasterManager.getGranules(query, visitor);
 
                         } else {
-                            rasterManager.getGranules(mosaicBBox, visitor);    
+                                                        
+                            if(request.getMaximumNumberOfGranules()>0){
+                                query.setMaxFeatures(request.getMaximumNumberOfGranules());
+                            }
+                            rasterManager.getGranules(query, visitor);    
                         }
 			// get those granules
 			visitor.produce();

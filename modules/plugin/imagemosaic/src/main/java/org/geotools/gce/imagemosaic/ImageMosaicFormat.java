@@ -125,7 +125,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
     
     /** Control the thresholding on the input coverage */
     public static final ParameterDescriptor<Integer> MAX_ALLOWED_TILES = new DefaultParameterDescriptor<Integer>(
-            "MaxAllowedTiles", Integer.class, null, Integer.MAX_VALUE);
+            "MaxAllowedTiles", Integer.class, null, Integer.valueOf(-1));
     
     /** Control the default artifact filter luminance thresholding on the input coverages */
     public static final ParameterDescriptor<Integer> DEFAULT_ARTIFACTS_FILTER_THRESHOLD = new DefaultParameterDescriptor<Integer>(

@@ -63,10 +63,10 @@ public class CoverageToolsConstants {
 	public static final int DEFAULT_RESOLUTION_STEPS = 5;
 	
 	       /** Tile width. */
-	public static final int TILE_WIDTH = (int) JAI.getDefaultTileSize().getWidth();
+	public static final int DEFAULT_TILE_WIDTH = (int) JAI.getDefaultTileSize().getWidth();
 
         /** Tile height. */
-	public static final  int TILE_HEIGHT = (int) JAI.getDefaultTileSize().getHeight();
+	public static final  int DEFAULT_TILE_HEIGHT = (int) JAI.getDefaultTileSize().getHeight();
         /**
          * Default tile cache size.
          */

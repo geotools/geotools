@@ -323,10 +323,14 @@ class RasterLayerResponse{
 	 */
 	class MosaicBuilder implements GranuleCatalogVisitor{
 
+		private final int maxNumberOfGranules;
+
 		/**
-		 * Default {@link Constructor}
-		 */
-		public MosaicBuilder() {
+		* Default {@link Constructor}
+		*/
+		public MosaicBuilder(final RasterLayerRequest request) {
+		    this.request=request;
+		    maxNumberOfGranules=request.getMaximumNumberOfGranules();
 		}
 		
 
@@ -356,7 +360,7 @@ class RasterLayerResponse{
             // don't collect more than the specified amount of granules
             // SG20092011 this might not happen since we set the max features in the query, but 
             // hwo knows
-            if(granulesNumber >= request.getMaximumNumberOfGranules()) {
+            if(maxNumberOfGranules>0 &&granulesNumber >=maxNumberOfGranules) {
                 return;
             }
             
@@ -862,8 +866,7 @@ class RasterLayerResponse{
                         XRectangle2D.intersect(levelRasterArea, rasterBounds, rasterBounds);
 			
 			// create the index visitor and visit the feature
-			final MosaicBuilder visitor = new MosaicBuilder();
-			visitor.request = request;
+			final MosaicBuilder visitor = new MosaicBuilder(request);
 			final List times = request.getRequestedTimes();
 			final List elevations=request.getElevation();
 			final Filter filter = request.getFilter();

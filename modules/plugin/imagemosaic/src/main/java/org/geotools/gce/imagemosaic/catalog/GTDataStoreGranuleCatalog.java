@@ -120,8 +120,8 @@ class GTDataStoreGranuleCatalog extends AbstractGranuleCatalog {
 		public Object visit(BBOX filter, Object data) {
 			final ReferencedEnvelope bbox= new ReferencedEnvelope(
 					filter.getMinX(),
-					filter.getMinY(),
 					filter.getMaxX(),
+					filter.getMinY(),
 					filter.getMaxY(),
 					null);
 			if(this.bbox!=null)

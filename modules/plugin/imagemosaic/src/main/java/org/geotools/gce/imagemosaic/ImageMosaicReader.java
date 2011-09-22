@@ -583,7 +583,7 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 		//
 		// add max allowed tiles if missing
 		//
-		if(this.maxAllowedTiles!=Integer.MAX_VALUE){
+		if(this.maxAllowedTiles!=ImageMosaicFormat.MAX_ALLOWED_TILES.getDefaultValue()){
 			if(params!=null){
 				// first thing let's see if we have it already, in which case we do nothing since a read parameter override a Hint
 				boolean found=false;

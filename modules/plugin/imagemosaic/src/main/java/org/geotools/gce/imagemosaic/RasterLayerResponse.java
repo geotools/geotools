@@ -324,13 +324,7 @@ class RasterLayerResponse{
 	 *
 	 */
 	class MosaicBuilder implements GranuleCatalogVisitor{
-
-		/**
-		 * Default {@link Constructor}
-		 */
-		public MosaicBuilder() {
-		}
-		
+                private final int maxNumberOfGranules;     		
 
 		private final List<Future<GranuleLoadingResult>> tasks= new ArrayList<Future<GranuleLoadingResult>>();
 		private int   granulesNumber;
@@ -347,6 +341,15 @@ class RasterLayerResponse{
 		
 		private List<RenderedImage> sources = new ArrayList<RenderedImage>();
 
+		    
+                /**
+                 * Default {@link Constructor}
+                 */
+                public MosaicBuilder(final RasterLayerRequest request) {
+                    this.request=request;
+                    maxNumberOfGranules=request.getMaximumNumberOfGranules();
+                }
+                
 		public RenderedImage[] getSourcesAsArray() {
 		    RenderedImage []imageSources = new RenderedImage[sources.size()];
     	            sources.toArray(imageSources);
@@ -357,8 +360,8 @@ class RasterLayerResponse{
         public void visit(GranuleDescriptor granuleDescriptor, Object o) {
             // don't collect more than the specified amount of granules
             // SG20092011 this might not happen since we set the max features in the query, but 
-            // who knows
-            if(granulesNumber >= request.getMaximumNumberOfGranules()) {
+            // hwo knows
+            if(maxNumberOfGranules>0 &&granulesNumber >=maxNumberOfGranules) {
                 return;
             }
             
@@ -865,8 +868,7 @@ class RasterLayerResponse{
                         XRectangle2D.intersect(levelRasterArea, rasterBounds, rasterBounds);
 			
 			// create the index visitor and visit the feature
-			final MosaicBuilder visitor = new MosaicBuilder();
-			visitor.request = request;
+			final MosaicBuilder visitor = new MosaicBuilder(request);
 			final List times = request.getRequestedTimes();
 			final List elevations=request.getElevation();
 			final Filter filter = request.getFilter();

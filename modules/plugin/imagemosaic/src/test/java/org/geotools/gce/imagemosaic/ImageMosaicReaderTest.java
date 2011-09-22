@@ -61,6 +61,7 @@ import org.geotools.util.NumberRange;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.parameter.GeneralParameterValue;
@@ -128,6 +129,7 @@ public class ImageMosaicReaderTest extends Assert{
 	 * @throws FactoryException
 	 */
 	@Test
+//        @Ignore	
 	public void crop() throws MismatchedDimensionException, IOException,
 			FactoryException {
 		imageMosaicCropTest(rgbURL, "crop-rgbURL");
@@ -160,6 +162,7 @@ public class ImageMosaicReaderTest extends Assert{
 	 * @throws FactoryException 
 	 */
 	@Test
+//        @Ignore	
 	public void alpha() throws IOException,
 			MismatchedDimensionException, FactoryException {
 		
@@ -232,6 +235,7 @@ public class ImageMosaicReaderTest extends Assert{
 	 * @throws FactoryException 
 	 */
 	@Test
+//	@Ignore
 	public void overviews() throws IOException,	
 			MismatchedDimensionException, FactoryException {
 		final AbstractGridFormat format = getFormat(overviewURL);
@@ -268,6 +272,7 @@ public class ImageMosaicReaderTest extends Assert{
 	 * @throws NoSuchAuthorityCodeException
 	 */
 	@Test
+//        @Ignore	
 	public void timeElevation() throws IOException, ParseException, NoSuchAuthorityCodeException, FactoryException {
 	        TestData.unzipFile(this, "ensmean.zip");
 	        final URL timeElevURL = TestData.url(this, "ensmean");
@@ -335,6 +340,7 @@ public class ImageMosaicReaderTest extends Assert{
 	
 	
 	@Test
+//        @Ignore	
 	public void imposedBBox() throws IOException, NoSuchAuthorityCodeException, FactoryException {
 		final AbstractGridFormat format = getFormat(imposedEnvelopeURL);
 		final ImageMosaicReader reader = getReader(imposedEnvelopeURL, format);
@@ -377,6 +383,7 @@ public class ImageMosaicReaderTest extends Assert{
 	 * @throws ParseException 
 	 */
 	@Test
+//        @Ignore	
 	public void time() throws IOException, NoSuchAuthorityCodeException, FactoryException, ParseException {
 	        System.setProperty("org.geotools.shapefile.datetime", "true");
 		final AbstractGridFormat format = getFormat(timeURL);
@@ -497,6 +504,7 @@ public class ImageMosaicReaderTest extends Assert{
 	 * @throws FactoryException 
 	 */
 	@Test
+//        @Ignore	
 	public void defaultParameterValue() throws IOException,	
 			MismatchedDimensionException, FactoryException {
 
@@ -517,6 +525,7 @@ public class ImageMosaicReaderTest extends Assert{
 	
 	
 	@Test
+//        @Ignore	
 	public void errors() throws NoSuchAuthorityCodeException, FactoryException {
 		final Hints hints= new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
 		

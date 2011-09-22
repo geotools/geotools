@@ -14,13 +14,8 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+
 /**
  * Raster processing support for the GeoTools library.
- * <p>
- * These raster operations are made available as:
- * <ul>
- * <li>static methods for direct use in your code</li>
- * <li>ProcessFactory for use in dynamic systems</li>
- * </ul>
  */
 package org.geotools.process.raster;

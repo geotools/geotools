@@ -10,7 +10,7 @@ While processes can be used directly (you can see how to do that below) the real
 is the have a thread pool ready to execute processes in the background.
 
 1. Here is a code example showing creation of a process, and scheduling it to run in a
-   thread pool.
+   thread pool::
 
     // 3 is one more then the current number of cpu cores
     ProcessExecutor backgroundExecutor = Processors.newProcessExecutor( 3, null );

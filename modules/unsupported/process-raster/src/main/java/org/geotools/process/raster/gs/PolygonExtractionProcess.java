@@ -19,6 +19,7 @@ package org.geotools.process.raster.gs;
 
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -34,7 +35,6 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.util.AffineTransformation;
 
-import java.util.ArrayList;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
@@ -46,15 +46,28 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.image.jai.Registry;
 import org.geotools.process.ProcessException;
+
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.metadata.spatial.PixelOrientation;
 import org.opengis.util.ProgressListener;
 
 /**
- * A process that wraps a {@link GridCoverage2D} as a collection of point feature.
+ * A process for raster to vector conversion. Regions of uniform value in an 
+ * input {@linkplain GridCoverage2D} are converted into {@linkplain Polygon}s
+ * by tracing the cell boundaries. Results are returned as a {@linkplain 
+ * SimpleFeatureCollection} in which each feature corresponds to a raster
+ * region with the boundary {@code Polygon} as its default geometry ("the_geom")
+ * and the value of the raster region cells as an attribute ("value").
+ * <p>
+ * Optionally, a list of classification ranges ({@linkplain org.jaitools.numeric.Range} 
+ * objects) can be provided to pre-classify the input coverage values into intervals. 
+ * Vectorizing can also be restricted to a sub-area of the coverage and/or a subset
+ * of raster values (by defining values to treat as no-data).
  * 
  * @author Simone Giannecchini, GeoSolutions
- * 
+ * @since 8.0
+ * @source $URL$
+ * @version $Id$
  */
 @DescribeProcess(title = "PolygonExtraction", description = "Perform the polygon extraction on a provided raster")
 public class PolygonExtractionProcess implements GSProcess {
@@ -63,6 +76,38 @@ public class PolygonExtractionProcess implements GSProcess {
         Registry.registerRIF(JAI.getDefaultInstance(), new VectorizeDescriptor(), new VectorizeRIF(), Registry.JAI_TOOLS_PRODUCT);
     }
 
+    /**
+     * Executes the raster to vector process.
+     * 
+     * @param coverage the input grid coverage
+     * 
+     * @param band the coverage band to process; defaults to 0 if {@code null}
+     * 
+     * @param insideEdges whether boundaries between raster regions with data values
+     *     (ie. not NODATA) should be returned; defaults to {@code true} if {@code null}
+     * 
+     * @param roi optional polygonal {@code Geometry} to define a sub-area within which
+     *     vectorizing will be done
+     * 
+     * @param noDataValues optional list of values to treat as NODATA; regions with these
+     *     values will not be represented in the returned features; 
+     *     if {@code null}, 0 is used as the single NODATA value; ignored if {@code 
+     *     classificationRanges} is provided
+     * 
+     * @param classificationRanges optional list of {@code Range} objects to pre-classify
+     *     the input coverage prior to vectorizing; values not included in the list will be
+     *     treated as NODATA; values in the first {@code Range} are classified to 1, those
+     *     in the second {@code Range} to 2 etc.
+     * 
+     * @param progressListener an optional listener
+     * 
+     * @return a feature collection where each feature has a {@code Polygon} ("the_geom")
+     *     and an attribute "value" with value of the corresponding region in either 
+     *     {@code coverage} or the classified coverage (when {@code classificationRanges}
+     *     is used)
+     * 
+     * @throws ProcessException
+     */
     @DescribeResult(name = "result", description = "The polygon feature collection")
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "data", description = "The raster to be used as the source") GridCoverage2D coverage,

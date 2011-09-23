@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2010, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2010-2011, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -52,7 +52,7 @@ import org.opengis.geometry.BoundingBox;
  * @author Oliver Gottwald
  * @author Jody
  *
- * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/main/src/main/java/org/geotools/data/collection/ListFeatureCollection.java $
+ * @source $URL$
  */
 @SuppressWarnings("unchecked")
 public class ListFeatureCollection extends AbstractFeatureCollection {
@@ -153,7 +153,7 @@ public class ListFeatureCollection extends AbstractFeatureCollection {
             if( bbox == null || bbox.isEmpty() || bbox.isNull() ) continue;
             extent.expandToInclude( bbox );
         }
-        return extent;
+        return new ReferencedEnvelope(extent, schema.getCoordinateReferenceSystem());
     }
 
     @Override

@@ -344,9 +344,62 @@ public class PolygonExtractionProcessTest {
         }
     }
     
-    @Ignore("Need to check with aaime about ROIGeometry behaviour")
+    /**
+     * Creates an ROI having the same bounds as the input grid coverage
+     * to check that the whole coverage is included in vectorizing.
+     * 
+     * This test fails at the moment because the top and right edges 
+     * (in world space) of the coverage are treated as not included by
+     * the ROI.
+     */
+    @Ignore("See GEOT-3861")
     @Test
-    public void applyROIToProcess() {
+    public void useCoverageBoundsAsROI() {
+        final float[][] DATA = {
+            {1, 1, 1, 1},
+            {1, 1, 1, 1},
+            {1, 1, 1, 1},
+            {1, 1, 1, 1}
+        };
+        
+        final int width = DATA[0].length;
+        final int height = DATA.length;
+        final double cellSize = 1000;
+        
+        final double minX = 10000;
+        final double minY = 5000;
+        final double maxX = minX + width * cellSize;
+        final double maxY = minY + height * cellSize;
+        
+        final ReferencedEnvelope dataEnv = new ReferencedEnvelope(minX, maxX, minY, maxY, null);
+        GridCoverage2D cov = covFactory.create("coverage", DATA, dataEnv);
+        
+        /*
+         * Create rectangular polygon with the same envelope as the
+         * grid coverage to use as an ROI
+         */
+        Polygon roiGeom = JTS.toGeometry(dataEnv);
+        
+        /*
+         * Vectorize the coverage and check that we get a single polygon
+         * having the same bounds as the input coverage
+         */
+        SimpleFeatureCollection fc = 
+                process.execute(cov, 0, Boolean.TRUE, roiGeom, null, null, null);
+        
+        assertEquals(1, fc.size());
+        
+        SimpleFeature feature = fc.features().next();
+        assertEquals(1, ((Number) feature.getAttribute("value")).intValue());
+        
+        ReferencedEnvelope polyEnv = JTS.toEnvelope((Geometry) feature.getDefaultGeometry());
+        assertTrue("Expected " + dataEnv + " but got " + polyEnv,
+                dataEnv.boundsEquals2D(polyEnv, TOL));
+    }
+    
+    @Ignore("See GEOT-3861")
+    @Test
+    public void useROIToExcludeLeftAndRightImageCols() {
         final float[][] DATA = {
             {0, 0, 0, 0, 0, 0, 0, 0},
             {1, 1, 2, 2, 2, 2, 3, 3},
@@ -374,10 +427,7 @@ public class PolygonExtractionProcessTest {
         ReferencedEnvelope processEnv = new ReferencedEnvelope(
                 minX + cellSize, maxX - cellSize, minY, maxY, null);
         
-        Geometry roiGeometry = JTS.toGeometry(processEnv);
-        
-        // sanity check
-        assertTrue(Geometries.get(roiGeometry) == Geometries.POLYGON);
+        Polygon roiGeometry = JTS.toGeometry(processEnv);
 
         SimpleFeatureCollection fc = process.execute(
                 cov, 0, Boolean.TRUE, roiGeometry, null, null, null);

@@ -17,10 +17,6 @@
  */
 package org.geotools.process.raster.gs;
 
-import org.jaitools.media.jai.contour.ContourDescriptor;
-import org.jaitools.media.jai.contour.ContourRIF;
-import org.jaitools.numeric.Range;
-
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.util.ArrayList;
@@ -31,11 +27,14 @@ import javax.media.jai.JAI;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.RenderedOp;
 
-import org.geotools.process.factory.DescribeParameter;
-import org.geotools.process.factory.DescribeProcess;
-import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
-import org.geotools.process.raster.CoverageUtilities;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.util.AffineTransformation;
+
+import org.jaitools.media.jai.contour.ContourDescriptor;
+import org.jaitools.media.jai.contour.ContourRIF;
+import org.jaitools.numeric.Range;
+
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -45,23 +44,38 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.image.jai.Registry;
 import org.geotools.process.ProcessException;
+import org.geotools.process.factory.DescribeParameter;
+import org.geotools.process.factory.DescribeProcess;
+import org.geotools.process.factory.DescribeResult;
+import org.geotools.process.gs.GSProcess;
+import org.geotools.process.raster.CoverageUtilities;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.util.NumberRange;
+
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.metadata.spatial.PixelOrientation;
 import org.opengis.util.InternationalString;
 import org.opengis.util.ProgressListener;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.util.AffineTransformation;
 
 /**
- * A process that wraps a {@link GridCoverage2D} as a collection of point feature.
+ * A process to extract contours based on values in a specified band of the 
+ * input {@linkplain GridCoverage2D}. This is a geo-spatial wrapper around the JAITools
+ * "Contour" operation (see {@linkplain ContourDescriptor} for details of the underlying
+ * algorithm).
+ * <p>
+ * You can specify the specific values for which contours will be generated, or alternatively
+ * the interval between contour values.
+ * <p>
+ * Contours are returned as a feature collection, where each feature has, as its default
+ * geometry, a {@linkplain LineString} for the contour ("the_geom"), and the contour
+ * value as the {@code Double} attribute "value".
  * 
  * @author Simone Giannecchini, GeoSolutions
- * 
+ * @since 8.0
+ * @source $URL$
+ * @version $Id$
  */
 @DescribeProcess(title = "Contour", description = "Perform the contouring on a provided raster")
 public class ContourProcess implements GSProcess {
@@ -75,16 +89,33 @@ public class ContourProcess implements GSProcess {
     }
 
     /**
-     * Perform the contouring on a provided raster
+     * Perform the contouring on the input {@linkplain GridCoverage2D} and returns
+     * the results as a feature collection. You can control which contours are generated
+     * either by providing a list of values via the {@code levels} argument, or by specifying
+     * the interval between contour values via the {@code interval} argument. In the interval 
+     * case, the resulting contour values will be integer multiples of the specified interval. 
+     * If both {@code levels} and {@code interval} are supplied the {@code interval} argument
+     * is ignored.
      * 
-     * @param data The raster to be used as the source
-     * @param band The source image band to process
-     * @param levels Values for which to generate contours
-     * @param interval Interval between contour values (ignored if levels arg is supplied)
-     * @param simplify Values for which to generate contours
-     * @param smooth Values for which to generate contours
-     * @param roi The geometry used to delineate the area of interest in model space
-     * @return the contours feature collection
+     * @param data the input grid coverage
+     * 
+     * @param band the coverage band to process; defaults to 0 if {@code null}
+     * 
+     * @param levels the values for which contours should be generated
+     * 
+     * @param interval the interval between contour values (if {@code levels} is not provided)
+     * 
+     * @param simplify whether to simplify contour lines by removing co-linear vertices;
+     *     default is to simplify
+     * 
+     * @param smooth whether to apply Bezier smooth to the contours; default is no smoothing
+     * 
+     * @param roi an optional polygonal {@code Geometry} to define the region of interest
+     *     within which contours will be generated
+     * 
+     * @return the contours a feature collection where each feature contains a contour
+     *     as a {@linkplain  LineString} and the contour value as a {@code Double}
+     * 
      * @throws ProcessException
      */
     public static SimpleFeatureCollection process(GridCoverage2D gc2d, Integer band,

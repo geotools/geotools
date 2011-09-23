@@ -93,7 +93,7 @@ class AggregateTypeParser {
                 }
                 String store = getAttributeValue(sourceNode, "store");
                 String type = getAttributeValue(sourceNode, "type");
-                config.addStore(buildName(store), type);
+                config.addSourceType(buildName(store), type);
             }
             
             result.add(config);

@@ -17,8 +17,8 @@
 package org.geotools.data.aggregate;
 
 import java.io.Serializable;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.geotools.feature.NameImpl;
 import org.opengis.feature.type.Name;
@@ -38,12 +38,12 @@ public class AggregateTypeConfiguration implements Serializable {
     /**
      * The store to native type name map
      */
-    LinkedHashMap<Name, String> storeMap = new LinkedHashMap<Name, String>();
+    List<SourceType> sourceTypes = new ArrayList<SourceType>();
 
     /**
      * The store that drives the feature type
      */
-    Name primaryStore;
+    SourceType primarySource;
 
     /**
      * Builds a new aggreate type configuration
@@ -69,7 +69,7 @@ public class AggregateTypeConfiguration implements Serializable {
         this(name);
         if (storeNames != null && storeNames.length > 0) {
             for (Name storeName : storeNames) {
-                addStore(storeName, name);
+                addSourceType(storeName, name);
             }
         }
     }
@@ -85,40 +85,40 @@ public class AggregateTypeConfiguration implements Serializable {
         this(name);
         if (storeNames != null && storeNames.length > 0) {
             for (String storeName : storeNames) {
-                addStore(new NameImpl(storeName), name);
+                addSourceType(new NameImpl(storeName), name);
             }
         }
     }
 
     public AggregateTypeConfiguration(AggregateTypeConfiguration other) {
         this.name = other.name;
-        this.storeMap.putAll(other.getStoreMap());
-        this.primaryStore = other.primaryStore;
+        this.sourceTypes.addAll(other.getSourceTypes());
+        this.primarySource = other.primarySource;
     }
 
     /**
      * Adds a source store/type for this aggregated feature type
+     * 
      * @param storeName
      * @param typeName
      */
-    public void addStore(Name storeName, String typeName) {
-        if (storeMap.isEmpty()) {
-            primaryStore = storeName;
+    public void addSourceType(Name storeName, String typeName) {
+        SourceType sourceType = new SourceType(storeName, typeName);
+        if (sourceTypes.isEmpty()) {
+            primarySource = sourceType;
         }
-        storeMap.put(storeName, typeName);
+        sourceTypes.add(sourceType);
     }
 
     /**
      * Adds a source store/type for this aggregated feature type
+     * 
      * @param storeName
      * @param typeName
      */
-    public void addStore(String localName, String typeName) {
+    public void addSourceType(String localName, String typeName) {
         Name storeName = buildName(localName);
-        if (storeMap.isEmpty()) {
-            primaryStore = storeName;
-        }
-        storeMap.put(storeName, typeName);
+        this.addSourceType(storeName, typeName);
     }
 
     public String getName() {
@@ -129,31 +129,48 @@ public class AggregateTypeConfiguration implements Serializable {
         this.name = name;
     }
 
-    public Map<Name, String> getStoreMap() {
-        return storeMap;
+    public List<SourceType> getSourceTypes() {
+        return sourceTypes;
     }
 
-    public Name getPrimaryStore() {
-        return primaryStore;
+    public List<SourceType> getSourceTypes(Name store) {
+        List<SourceType> result = new ArrayList<SourceType>();
+        for (SourceType st : sourceTypes) {
+            if (st.getStoreName().equals(store)) {
+                result.add(st);
+            }
+        }
+        return result;
+    }
+
+    public SourceType getPrimarySourceType() {
+        return primarySource;
+    }
+
+    public void setPrimarySourceType(SourceType primary) {
+        if (!sourceTypes.contains(primary)) {
+            sourceTypes.add(0, primary);
+        }
+        this.primarySource = primary;
     }
 
     @Override
     public String toString() {
-        return "AggregateTypeConfiguration [name=" + name + ", storeMap=" + storeMap
-                + ", primaryStore=" + primaryStore + "]";
+        return "AggregateTypeConfiguration [name=" + name + ", storeMap=" + sourceTypes
+                + ", primarySource=" + primarySource + "]";
     }
 
-    public int getStoreIndex(Name storeName) {
+    int getStoreIndex(Name storeName) {
         int i = 0;
-        for (Name name : storeMap.keySet()) {
-            if (name.equals(storeName)) {
+        for (SourceType st : sourceTypes) {
+            if (st.getStoreName().equals(storeName)) {
                 return i;
             }
             i++;
         }
         return -1;
     }
-    
+
     /**
      * Builds a qualified name from a name containing the ":" separator, otherwise the given name
      * will be used as the local part
@@ -177,8 +194,8 @@ public class AggregateTypeConfiguration implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((primaryStore == null) ? 0 : primaryStore.hashCode());
-        result = prime * result + ((storeMap == null) ? 0 : storeMap.hashCode());
+        result = prime * result + ((primarySource == null) ? 0 : primarySource.hashCode());
+        result = prime * result + ((sourceTypes == null) ? 0 : sourceTypes.hashCode());
         return result;
     }
 
@@ -196,15 +213,15 @@ public class AggregateTypeConfiguration implements Serializable {
                 return false;
         } else if (!name.equals(other.name))
             return false;
-        if (primaryStore == null) {
-            if (other.primaryStore != null)
+        if (primarySource == null) {
+            if (other.primarySource != null)
                 return false;
-        } else if (!primaryStore.equals(other.primaryStore))
+        } else if (!primarySource.equals(other.primarySource))
             return false;
-        if (storeMap == null) {
-            if (other.storeMap != null)
+        if (sourceTypes == null) {
+            if (other.sourceTypes != null)
                 return false;
-        } else if (!storeMap.equals(other.storeMap))
+        } else if (!sourceTypes.equals(other.sourceTypes))
             return false;
         return true;
     }

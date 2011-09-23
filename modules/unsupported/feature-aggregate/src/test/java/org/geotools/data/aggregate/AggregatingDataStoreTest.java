@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -24,6 +25,7 @@ import org.geotools.referencing.CRS;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.sort.SortBy;
@@ -55,22 +57,22 @@ public class AggregatingDataStoreTest extends AbstractAggregatingStoreTest {
         // grab the BasicPolygon type map and check it looks fine
         AggregateTypeConfiguration config = store.getConfigurations().get(BASIC_POLYGONS);
         assertEquals(BASIC_POLYGONS, config.getName());
-        assertEquals(2, config.getStoreMap().size());
-        assertEquals(BASIC_POLYGONS, config.getStoreMap().get(new NameImpl("store1")));
-        assertEquals(BASIC_POLYGONS, config.getStoreMap().get(new NameImpl("store2")));
+        assertEquals(2, config.getSourceTypes().size());
+        assertSingleSourceType(BASIC_POLYGONS, new NameImpl("store1"), config);
+        assertSingleSourceType(BASIC_POLYGONS, new NameImpl("store2"), config);
 
         // grab the Streams type map and check it looks fine
         config = store.getConfigurations().get("Streams");
         assertEquals("Streams", config.getName());
-        assertEquals(1, config.getStoreMap().size());
-        assertEquals("Streams", config.getStoreMap().get(new NameImpl("store2")));
+        assertEquals(1, config.getSourceTypes().size());
+        assertSingleSourceType("Streams", new NameImpl("store2"), config);
 
         // grab the RoadSegments type map and check it looks fine
         config = store.getConfigurations().get(ROAD_SEGMENTS);
         assertEquals(ROAD_SEGMENTS, config.getName());
-        assertEquals(2, config.getStoreMap().size());
-        assertEquals(ROAD_SEGMENTS, config.getStoreMap().get(new NameImpl("store1")));
-        assertEquals(ROAD_SEGMENTS, config.getStoreMap().get(new NameImpl("gt", "store3")));
+        assertEquals(2, config.getSourceTypes().size());
+        assertSingleSourceType(ROAD_SEGMENTS, new NameImpl("store1"), config);
+        assertSingleSourceType(ROAD_SEGMENTS, new NameImpl("gt", "store3"), config);
     }
 
     @Test
@@ -161,8 +163,8 @@ public class AggregatingDataStoreTest extends AbstractAggregatingStoreTest {
     public void testReadInvalidStore() throws Exception {
         store.resetConfiguration();
         AggregateTypeConfiguration config = new AggregateTypeConfiguration(BASIC_POLYGONS);
-        config.addStore("store1", BASIC_POLYGONS);
-        config.addStore("store3", "ABCDE");
+        config.addSourceType("store1", BASIC_POLYGONS);
+        config.addSourceType("store3", "ABCDE");
         store.addType(config);
 
         try {
@@ -218,13 +220,13 @@ public class AggregatingDataStoreTest extends AbstractAggregatingStoreTest {
 
         store.resetConfiguration();
         AggregateTypeConfiguration config = new AggregateTypeConfiguration(BASIC_POLYGONS);
-        config.addStore("store1", BASIC_POLYGONS);
+        config.addSourceType("store1", BASIC_POLYGONS);
         store.addType(config);
         Map<String, SimpleFeature> features = collectFeatures(q);
         assertSchema(features.values(), store1.getSchema(BASIC_POLYGONS));
         assertEquals(1, features.size());
 
-        config.addStore("store4", "BasicPolygons2");
+        config.addSourceType("store4", "BasicPolygons2");
         features = collectFeatures(q);
         assertSchema(features.values(), store1.getSchema(BASIC_POLYGONS));
         assertEquals(2, features.size());
@@ -237,7 +239,7 @@ public class AggregatingDataStoreTest extends AbstractAggregatingStoreTest {
 
         store.resetConfiguration();
         AggregateTypeConfiguration config = new AggregateTypeConfiguration(BASIC_POLYGONS);
-        config.addStore("store4", "BasicPolygons2");
+        config.addSourceType("store4", "BasicPolygons2");
         store.addType(config);
         Map<String, SimpleFeature> features = collectFeatures(q);
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
@@ -247,7 +249,7 @@ public class AggregatingDataStoreTest extends AbstractAggregatingStoreTest {
         assertSchema(features.values(), expectedType);
         assertEquals(1, features.size());
 
-        config.addStore("store1", BASIC_POLYGONS);
+        config.addSourceType("store1", BASIC_POLYGONS);
         features = collectFeatures(q);
         assertSchema(features.values(), expectedType);
         assertEquals(2, features.size());

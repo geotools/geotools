@@ -19,7 +19,6 @@ package org.geotools.data.aggregate;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Future;
 
 import org.geotools.data.DataStore;
@@ -58,9 +57,9 @@ class AggregatingFeatureSource extends ContentFeatureSource {
         // schedule all the bound queries
         AggregatingDataStore store = getStore();
         List<Future<ReferencedEnvelope>> allBounds = new ArrayList<Future<ReferencedEnvelope>>();
-        for (Map.Entry<Name, String> entry : config.getStoreMap().entrySet()) {
-            Future<ReferencedEnvelope> f = store.submit(new BoundsCallable(store, query, entry
-                    .getKey(), entry.getValue()));
+        for (SourceType st : config.getSourceTypes()) {
+            Future<ReferencedEnvelope> f = store.submit(new BoundsCallable(store, query, st
+                    .getStoreName(), st.getTypeName()));
             allBounds.add(f);
         }
 
@@ -89,9 +88,8 @@ class AggregatingFeatureSource extends ContentFeatureSource {
         // schedule all the counts
         AggregatingDataStore store = getStore();
         List<Future<Long>> counts = new ArrayList<Future<Long>>();
-        for (Map.Entry<Name, String> entry : config.getStoreMap().entrySet()) {
-            Future<Long> f = store.submit(new CountCallable(store, query, entry.getKey(), entry
-                    .getValue()));
+        for (SourceType st : config.getSourceTypes()) {
+            Future<Long> f = store.submit(new CountCallable(store, query, st.getStoreName(), st.getTypeName()));
             counts.add(f);
         }
 
@@ -119,18 +117,18 @@ class AggregatingFeatureSource extends ContentFeatureSource {
         try {
             // get the target schema from the primary store
             Query psQuery = new Query(query);
-            Name psName = config.getPrimaryStore();
-            psQuery.setTypeName(config.getStoreMap().get(psName));
+            Name psName = config.getPrimarySourceType().getStoreName();
+            psQuery.setTypeName(config.getPrimarySourceType().getTypeName());
             DataStore ps = getStore().getStore(psName, false);
             SimpleFeatureType target = DataUtilities.createView(ps, psQuery).getSchema();
             target = retypeNameSchema(target);
 
             // schedule all the data retrieval operations
-            FeatureQueue queue = new FeatureQueue(config.getStoreMap().size());
+            FeatureQueue queue = new FeatureQueue(config.getSourceTypes().size());
             AggregatingDataStore store = getStore();
-            for (Map.Entry<Name, String> entry : config.getStoreMap().entrySet()) {
-                FeatureCallable fc = new FeatureCallable(store, query, entry.getKey(),
-                        entry.getValue(), queue, target);
+            for (SourceType st : config.getSourceTypes()) {
+                FeatureCallable fc = new FeatureCallable(store, query, st.getStoreName(),
+                        st.getTypeName(), queue, target);
                 queue.addSource(fc);
                 store.submit(fc);
             }
@@ -145,9 +143,9 @@ class AggregatingFeatureSource extends ContentFeatureSource {
 
     @Override
     protected SimpleFeatureType buildFeatureType() throws IOException {
-        Name ps = config.getPrimaryStore();
+        Name ps = config.getPrimarySourceType().getStoreName();
         DataStore store = getStore().getStore(ps, false);
-        SimpleFeatureType schema = store.getSchema(config.getStoreMap().get(ps));
+        SimpleFeatureType schema = store.getSchema(config.getPrimarySourceType().getTypeName());
         if (schema == null) {
             throw new IOException("Could not find feature type " + schema + " in the primary store");
         }

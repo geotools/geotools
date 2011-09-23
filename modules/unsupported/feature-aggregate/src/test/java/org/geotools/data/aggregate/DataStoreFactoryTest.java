@@ -71,16 +71,16 @@ public class DataStoreFactoryTest extends AbstractAggregatingStoreTest {
         AggregateTypeConfiguration bp = store.getConfiguration("BasicPolygons");
         assertNotNull(bp);
         assertEquals("BasicPolygons", bp.getName());
-        assertEquals(2, bp.getStoreMap().size());
-        assertEquals("BasicPolygons", bp.getStoreMap().get(new NameImpl("store1")));
-        assertEquals("BasicPolygons2", bp.getStoreMap().get(new NameImpl("store2")));
+        assertEquals(2, bp.getSourceTypes().size());
+        assertSingleSourceType("BasicPolygons", new NameImpl("store1"), bp);
+        assertSingleSourceType("BasicPolygons2", new NameImpl("store2"), bp);
 
         AggregateTypeConfiguration rs = store.getConfiguration("RoadSegments");
         assertNotNull(rs);
         assertEquals("RoadSegments", rs.getName());
-        assertEquals(2, rs.getStoreMap().size());
-        assertEquals("RoadSegments", rs.getStoreMap().get(new NameImpl("store1")));
-        assertEquals("RoadSegments2", rs.getStoreMap().get(new NameImpl("store3")));
+        assertEquals(2, rs.getSourceTypes().size());
+        assertSingleSourceType("RoadSegments", new NameImpl("store1"), rs);
+        assertSingleSourceType("RoadSegments2", new NameImpl("store3"), rs);
     }
 
     @Test

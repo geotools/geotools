@@ -28,11 +28,11 @@ class AggregateTypeEncoder extends TransformerBase {
             start("AggregateTypes", attributes("version", "1.0"));
             for (AggregateTypeConfiguration config : configs) {
                 start("AggregateType", attributes("name", config.getName()));
-                for (Name name : config.getStoreMap().keySet()) {
+                for (SourceType st : config.getSourceTypes()) {
                     element("Source",
                             null,
-                            attributes("store", name.getURI(), "type",
-                                    config.getStoreMap().get(name)));
+                            attributes("store", st.getStoreName().getURI(), "type",
+                                    st.getTypeName()));
                 }
                 end("AggregateType");
             }

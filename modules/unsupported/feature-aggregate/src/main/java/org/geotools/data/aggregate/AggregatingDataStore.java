@@ -115,11 +115,11 @@ public class AggregatingDataStore extends ContentDataStore {
             Set<String> baseNames = allNames.get(storeName);
             for (String baseName : baseNames) {
                 AggregateTypeConfiguration config = new AggregateTypeConfiguration(baseName);
-                config.addStore(storeName, baseName);
+                config.addSourceType(storeName, baseName);
                 for (int j = i + 1; j < storeNames.size(); j++) {
                     String otherStore = storeNames.get(j);
                     if (allNames.get(otherStore).remove(baseName)) {
-                        config.addStore(otherStore, baseName);
+                        config.addSourceType(otherStore, baseName);
                     }
                 }
 

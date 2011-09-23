@@ -136,7 +136,11 @@ public class AggregatingDataStore extends ContentDataStore {
         try {
             typeMap.put(config.getName(), config);
             // force the feature type configuration to check the config is ok
-            getSchema(config.getName());
+            // but don't do that in tolerant setup as the repository might not be
+            // fully available on startup (this happens in GeoServer)
+            if(!tolerant) {
+                getSchema(config.getName());
+            }
             // the new vtable might be overriding a previous definition
             entries.remove(new NameImpl(namespaceURI, config.getName()));
         } catch (IOException e) {

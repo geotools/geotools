@@ -91,7 +91,12 @@ public class AggregateTypeConfiguration implements Serializable {
     }
 
     public AggregateTypeConfiguration(AggregateTypeConfiguration other) {
+        copyFrom(other);
+    }
+
+    public void copyFrom(AggregateTypeConfiguration other) {
         this.name = other.name;
+        this.sourceTypes.clear();
         this.sourceTypes.addAll(other.getSourceTypes());
         this.primarySource = other.primarySource;
     }

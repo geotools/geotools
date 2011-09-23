@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2010, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2010-2011, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -28,8 +28,6 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.collection.AbstractFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.opengis.feature.Feature;
-import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -55,7 +53,7 @@ import org.opengis.geometry.BoundingBox;
  * @author Oliver Gottwald
  * @author Jody
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/data/collection/ListFeatureCollection.java $
+ * @source $URL$
  */
 @SuppressWarnings("unchecked")
 public class ListFeatureCollection extends AbstractFeatureCollection {
@@ -175,7 +173,7 @@ public class ListFeatureCollection extends AbstractFeatureCollection {
             if( bbox == null || bbox.isEmpty() || bbox.isNull() ) continue;
             extent.expandToInclude( bbox );
         }
-        return extent;
+        return new ReferencedEnvelope(extent, schema.getCoordinateReferenceSystem());
     }
 
     @Override
@@ -193,14 +191,17 @@ public class ListFeatureCollection extends AbstractFeatureCollection {
             iter = features.iterator();
         }
        
+        @Override
         public void close() {
             if( iter instanceof FeatureIterator){
                 ((FeatureIterator)iter).close();
             }
         }
+        @Override
         public boolean hasNext() {
             return iter.hasNext();
         }
+        @Override
         public SimpleFeature next() throws NoSuchElementException {
             return iter.next();
         }

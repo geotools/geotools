@@ -203,14 +203,16 @@ public class ContourProcess implements GSProcess {
         if (band != null) {
             pb.setParameter("band", band);
         }
-        if (interval != null) {
-            pb.setParameter("interval", interval);
-        } else {
+        
+        if (levels != null && levels.length > 0) {
             final ArrayList<Double> elements = new ArrayList<Double>(levels.length);
             for (double level : levels)
                 elements.add(level);
             pb.setParameter("levels", elements);
+        } else {
+            pb.setParameter("interval", interval);
         }
+        
         if (simplify != null) {
             pb.setParameter("simplify", simplify);
         }

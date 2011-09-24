@@ -177,13 +177,15 @@ public class ContourProcess implements GSProcess {
                 for (Category cat : sd.getCategories()) {
                     if (cat.getName().equals(NO_DATA)) {
                         final NumberRange<? extends Number> catRange = cat.getRange();
-                        if (catRange.getMinimum() == catRange.getMaximum()) {
-                            noDataList.add(catRange.getMinimum());
-                        } else {
-                            Range<Double> noData = new Range<Double>(catRange.getMinimum(),
-                                    catRange.isMinIncluded(), catRange.getMaximum(),
-                                    catRange.isMaxIncluded());
-                            noDataList.add(noData);
+                        if (!Double.isNaN(catRange.getMinimum())) {
+                            if (catRange.getMinimum() == catRange.getMaximum()) {
+                                noDataList.add(catRange.getMinimum());
+                            } else {
+                                Range<Double> noData = new Range<Double>(catRange.getMinimum(),
+                                        catRange.isMinIncluded(), catRange.getMaximum(),
+                                        catRange.isMaxIncluded());
+                                noDataList.add(noData);
+                            }
                         }
                     }
                 }
@@ -200,6 +202,7 @@ public class ContourProcess implements GSProcess {
         if (roi != null) {
             pb.setParameter("roi", CoverageUtilities.prepareROI(roi, mt2D));
         }
+        
         if (band != null) {
             pb.setParameter("band", band);
         }
@@ -216,10 +219,12 @@ public class ContourProcess implements GSProcess {
         if (simplify != null) {
             pb.setParameter("simplify", simplify);
         }
+        
         if (smooth != null) {
             pb.setParameter("smooth", smooth);
         }
-        if (noDataList != null) {
+        
+        if (!noDataList.isEmpty()) {
             pb.setParameter("nodata", noDataList);
         }
 

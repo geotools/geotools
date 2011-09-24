@@ -64,7 +64,7 @@ public abstract class DBDialect {
 
 		if (type == SpatialExtension.DB2) {
 			return new DB2Dialect(config);
-		} else if (type == SpatialExtension.POSTGIS) {
+		} else if (type == SpatialExtension.POSTGIS || type==SpatialExtension.PGRASTER) {
 			return new PostgisDialect(config);
 		} else if (type == SpatialExtension.MYSQL) {
 			return new MySqlDialect(config);
@@ -182,8 +182,8 @@ public abstract class DBDialect {
 		String doubleType = getDoubleSQLType();
 		String statement = "CREATE TABLE " + config.getMasterTable();
 		statement += ("(" + config.getCoverageNameAttribute() + " CHARACTER (64)  NOT NULL");
-		statement += ("," + config.getSpatialTableNameAtribute() + " VARCHAR (256)  NOT NULL");
-		statement += ("," + config.getTileTableNameAtribute() + " VARCHAR (256)  NOT NULL");
+		statement += ("," + config.getSpatialTableNameAtribute() + " VARCHAR (128)  NOT NULL");
+		statement += ("," + config.getTileTableNameAtribute() + " VARCHAR (128)  NOT NULL");
 		statement += ("," + config.getResXAttribute() + " " + doubleType + ","
 				+ config.getResYAttribute() + " " + doubleType);
 		statement += ("," + config.getMinXAttribute() + " " + doubleType + ","

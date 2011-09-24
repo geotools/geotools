@@ -200,22 +200,29 @@ public class Config {
                 "spatialTableNameAtribute");
 
         Element tileTableElem = (Element) dom.getElementsByTagName("tileTable").item(0);
-        result.blobAttributeNameInTileTable = readNameString(tileTableElem, "blobAttributeName");
-        result.keyAttributeNameInTileTable = readNameString(tileTableElem, "keyAttributeName");
+        if (tileTableElem!=null) {
+            result.blobAttributeNameInTileTable = readNameString(tileTableElem, "blobAttributeName");
+            result.keyAttributeNameInTileTable = readNameString(tileTableElem, "keyAttributeName");
+        }
 
         Element spatialTableElem = (Element) dom.getElementsByTagName("spatialTable").item(0);
-        result.keyAttributeNameInSpatialTable = readNameString(spatialTableElem, "keyAttributeName");
-        result.geomAttributeNameInSpatialTable = readNameString(spatialTableElem,
-                "geomAttributeName");
-        result.tileMaxXAttribute = readNameString(spatialTableElem, "tileMaxXAttribute");
-        result.tileMaxYAttribute = readNameString(spatialTableElem, "tileMaxYAttribute");
-        result.tileMinXAttribute = readNameString(spatialTableElem, "tileMinXAttribute");
-        result.tileMinYAttribute = readNameString(spatialTableElem, "tileMinYAttribute");
+        if (spatialTableElem!=null) {
+            result.keyAttributeNameInSpatialTable = readNameString(spatialTableElem, "keyAttributeName");
+            result.geomAttributeNameInSpatialTable = readNameString(spatialTableElem,
+                    "geomAttributeName");
+            result.tileMaxXAttribute = readNameString(spatialTableElem, "tileMaxXAttribute");
+            result.tileMaxYAttribute = readNameString(spatialTableElem, "tileMaxYAttribute");
+            result.tileMinXAttribute = readNameString(spatialTableElem, "tileMinXAttribute");
+            result.tileMinYAttribute = readNameString(spatialTableElem, "tileMinYAttribute");
+        }
 
+        result.verifyCardinality=Boolean.FALSE;
         Node tmp = dom.getElementsByTagName("verify").item(0);
-        NamedNodeMap map = tmp.getAttributes();
-        String s = map.getNamedItem("cardinality").getNodeValue();
-        result.verifyCardinality = new Boolean(s);
+        if (tmp!=null)  {
+            NamedNodeMap map = tmp.getAttributes();
+            String s = map.getNamedItem("cardinality").getNodeValue();
+            result.verifyCardinality = new Boolean(s);
+        }
 
         
     }
@@ -242,8 +249,10 @@ public class Config {
         buff.append(minXAttribute).append(" = ?,");
         buff.append(minYAttribute).append(" = ?");
         buff.append(" where ").append(coverageNameAttribute).append(" = ? ");
-        buff.append(" and ").append(tileTableNameAtribute).append(" = ? ");
-        buff.append(" and ").append(spatialTableNameAtribute).append(" = ? ");
+        if (tileTableNameAtribute!=null)
+            buff.append(" and ").append(tileTableNameAtribute).append(" = ? ");
+        if (spatialTableNameAtribute!=null)
+            buff.append(" and ").append(spatialTableNameAtribute).append(" = ? ");
         sqlUpdateMosaicStatement = buff.toString();
 
         buff = new StringBuffer("select * from ").append(masterTable).append(" where ").append(
@@ -254,8 +263,10 @@ public class Config {
         buff.append(resXAttribute).append(" = ?,");
         buff.append(resYAttribute).append(" = ? ");
         buff.append(" where ").append(coverageNameAttribute).append(" = ? ");
-        buff.append(" and ").append(tileTableNameAtribute).append(" = ? ");
-        buff.append(" and ").append(spatialTableNameAtribute).append(" = ? ");
+        if (tileTableNameAtribute!=null)
+            buff.append(" and ").append(tileTableNameAtribute).append(" = ? ");
+        if (spatialTableNameAtribute!=null)
+            buff.append(" and ").append(spatialTableNameAtribute).append(" = ? ");
         sqlUpdateResStatement = buff.toString();
     }
 

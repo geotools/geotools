@@ -275,11 +275,11 @@ public class ImageLevelInfo implements Comparable<ImageLevelInfo> {
 		this.crs = crs;
 	}
 
-	boolean calculateResolutionNeeded() {
+	public boolean calculateResolutionNeeded() {
 		return (getResX() == null) || (getResY() == null);
 	}
 
-	boolean calculateExtentsNeeded() {
+	public boolean calculateExtentsNeeded() {
 		return (getExtentMaxX() == null) || (getExtentMaxY() == null)
 				|| (getExtentMinX() == null) || (getExtentMinY() == null);
 	}
@@ -317,7 +317,7 @@ public class ImageLevelInfo implements Comparable<ImageLevelInfo> {
 			w.println(getCountTiles());
 		}
 
-		w.print("Spatialtable: ");
+		w.print(" Spatialtable: ");
 		w.print(getSpatialTableName());
 
 		if (getCountFeature() != null) {

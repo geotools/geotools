@@ -52,7 +52,7 @@ import com.sun.media.jai.codec.SeekableStream;
  * @author christian
  * 
  */
-class ImageDecoderThread extends AbstractThread {
+public class ImageDecoderThread extends AbstractThread {
 	/** Logger. */
 	protected final static Logger LOGGER = Logging
 			.getLogger(ImageDecoderThread.class.getPackage().getName());
@@ -82,7 +82,7 @@ class ImageDecoderThread extends AbstractThread {
 	 *            the reader config
 	 */
 
-	ImageDecoderThread(byte[] bytes, String location,
+	public ImageDecoderThread(byte[] bytes, String location,
 			GeneralEnvelope tileEnvelope, Rectangle pixelDimension,
 			GeneralEnvelope requestEnvelope, ImageLevelInfo levelInfo,
 			LinkedBlockingQueue<TileQueueElement> tileQueue, Config config) {

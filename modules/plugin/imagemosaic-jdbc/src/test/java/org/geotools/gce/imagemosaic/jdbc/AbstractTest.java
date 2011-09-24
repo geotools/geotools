@@ -308,7 +308,7 @@ public abstract class AbstractTest extends TestCase {
 
 	public void testCreate() {
 		try {
-			createXMLConnectFragment();
+			//createXMLConnectFragment();
 
 			Connection.prepareStatement(
 					getDBDialect().getCreateMasterStatement()).execute();
@@ -745,6 +745,7 @@ public abstract class AbstractTest extends TestCase {
 
 		if (fixture == null) {
 			initFixture();
+                        createXMLConnectFragment();
 		}
 
 		if (fixture == null) {

@@ -121,7 +121,8 @@ class DDLGenerator extends AbstractCmd {
 					System.exit(1);
 				}
 		                if (config !=null && (config.getSpatialExtension()==SpatialExtension.GEORASTER ||
-		                        config.getSpatialExtension()==SpatialExtension.CUSTOM)) {
+		                        config.getSpatialExtension()==SpatialExtension.CUSTOM ||
+		                        config.getSpatialExtension()==SpatialExtension.PGRASTER)) {
 		                    System.out.println(NotSuppord+config.getSpatialExtension());
 		                    System.exit(1);
 		                }

@@ -147,7 +147,7 @@ abstract class JDBCAccessBase implements JDBCAccess {
 			}
 
 			LOGGER.severe(e.getMessage());
-			throw new IOException(e.getMessage());
+			throw new IOException(e);
 		}
 
 		if (levelInfos.isEmpty()) {
@@ -616,7 +616,7 @@ abstract class JDBCAccessBase implements JDBCAccess {
 			}
 
 			LOGGER.log(Level.SEVERE, e.getMessage(), e);
-			throw new IOException(e.getMessage());
+			throw new IOException(e);
 		}
 
 		if (LOGGER.isLoggable(Level.INFO))

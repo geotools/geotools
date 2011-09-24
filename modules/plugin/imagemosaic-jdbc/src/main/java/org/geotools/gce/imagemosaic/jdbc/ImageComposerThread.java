@@ -42,7 +42,7 @@ import org.geotools.util.logging.Logging;
  * @author mcr
  * 
  */
-class ImageComposerThread extends AbstractThread {
+public class ImageComposerThread extends AbstractThread {
 	/** Logger. */
 	protected final static Logger LOGGER = Logging
 			.getLogger(ImageComposerThread.class.getPackage().getName());
@@ -55,7 +55,7 @@ class ImageComposerThread extends AbstractThread {
 
 	private boolean xAxisSwitch;
 
-	ImageComposerThread(Color backgroundColor,Color outputTransparentColor, Rectangle pixelDimension,
+	public ImageComposerThread(Color backgroundColor,Color outputTransparentColor, Rectangle pixelDimension,
 			GeneralEnvelope requestEnvelope, ImageLevelInfo levelInfo,
 			LinkedBlockingQueue<TileQueueElement> tileQueue, Config config,
 			boolean xAxisSwitch, GridCoverageFactory coverageFactory) {

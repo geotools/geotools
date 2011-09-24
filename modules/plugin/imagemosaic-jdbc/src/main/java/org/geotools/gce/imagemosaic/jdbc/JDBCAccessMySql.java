@@ -170,7 +170,7 @@ class JDBCAccessMySql extends JDBCAccessBase {
 				g = reader.read(bytes);
 			} catch (ParseException e) {
 				LOGGER.log(Level.SEVERE, e.getMessage(), e);
-				throw new IOException(e.getMessage());
+				throw new IOException(e);
 			}
 
 			if (extent == null) {

@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.geotools.gce.imagemosaic.jdbc.custom.JDBCAccessOracleGeoRaster;
+import org.geotools.gce.imagemosaic.jdbc.custom.JDBCAccessPGRaster;
 
 /**
  * Factory for JDBCAccess Objects.
@@ -69,6 +70,8 @@ class JDBCAccessFactory {
 			jdbcAccess = new JDBCAccessOracle(config);
                 } else if (type == SpatialExtension.GEORASTER) {
                     jdbcAccess = new JDBCAccessOracleGeoRaster(config);
+                } else if (type == SpatialExtension.PGRASTER) {
+                    jdbcAccess = new JDBCAccessPGRaster(config);                    
                 } else if (type == SpatialExtension.CUSTOM) {
                     String jdbcAccessClassName = config.getJdbcAccessClassName();
                     Class jdbcAccessClass = Class.forName(jdbcAccessClassName);

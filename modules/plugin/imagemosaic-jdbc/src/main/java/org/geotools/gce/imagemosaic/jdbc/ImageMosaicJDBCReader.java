@@ -133,7 +133,7 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
             config = Config.readFrom(url);
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());
-            throw new IOException(e.getMessage());
+            throw new IOException(e);
         }
 
         // /////////////////////////////////////////////////////////////////////
@@ -160,7 +160,7 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
             jdbcAccess = JDBCAccessFactory.getJDBCAcess(config);
         } catch (Exception e1) {
             LOGGER.severe(e1.getLocalizedMessage());
-            throw new IOException(e1.getLocalizedMessage());
+            throw new IOException(e1);
         }
 
         // get the crs if able to

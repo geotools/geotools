@@ -174,7 +174,7 @@ class JDBCAccessDB2 extends JDBCAccessBase {
 			s.close();
 		} catch (SQLException e) {
 			LOGGER.log(Level.SEVERE, e.getMessage(), e);
-			throw new IOException(e.getMessage());
+			throw new IOException(e);
 		}
 
 		if (result == null) {
@@ -217,7 +217,7 @@ class JDBCAccessDB2 extends JDBCAccessBase {
 			s.close();
 		} catch (Exception e) {
 			LOGGER.log(Level.SEVERE, e.getMessage(), e);
-			throw new IOException(e.getMessage());
+			throw new IOException(e);
 		}
 
 		return result;

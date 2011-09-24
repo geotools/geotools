@@ -191,7 +191,7 @@ class JDBCAccessOracle extends JDBCAccessBase {
 			s.close();
 		} catch (SQLException e) {
 			LOGGER.log(Level.SEVERE, e.getMessage(), e);
-			throw new IOException(e.getMessage());
+			throw new IOException(e);
 		}
 
 		if (result == null) {

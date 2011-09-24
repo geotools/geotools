@@ -30,6 +30,7 @@ Format plugins:
    imageio
    jdbc/index
    oracle
+   pgraster
    mosaic
    pyramid
 

@@ -17,7 +17,7 @@ Prerequisites
 Setup Oracle GeoRaster
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Since this modules requires a coverage name, a table containing a column for the coverage name is needed. This table also needs a RASTER column for the image. The values for the coverage name must be unique. Of course, this table can have other additional columns.
+Since this module requires a coverage name, a table containing a column for the coverage name is needed. This table also needs a RASTER column for the image. The values for the coverage name must be unique. Of course, this table can have other additional columns.
 
 **One row in this table corresponds to one coverage**
 
@@ -105,9 +105,9 @@ The Config file::
     </connect>
   </config>
 
-Most elements are self explanatory, the detailed documentation is in Image Mosaicing Pyramidal JDBC Plugin.
+Most elements are self explanatory, the detailed documentation is in :ref:`Image Mosaicing Pyramidal JDBC Plugin <im-jdbc>`.
 
 Use
 ^^^
 
-For a Java example of how to use your new coverage see Image Mosaicing Pyramidal JDBC Plugin.
+For a Java example of how to use your new coverage see :ref:`Image Mosaicing Pyramidal JDBC Plugin <im-jdbc>`.

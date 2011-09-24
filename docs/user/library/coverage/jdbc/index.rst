@@ -1,3 +1,5 @@
+.. _im-jdbc:
+
 Image Moasic JDBC
 -----------------
 

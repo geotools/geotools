@@ -27,8 +27,6 @@ import org.geotools.data.FeatureReader;
 import org.geotools.data.FilteringFeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
-import org.geotools.data.ows.FeatureSetDescription;
-import org.geotools.data.ows.WFSCapabilities;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.Filters;
 import org.geotools.filter.visitor.FixBBOXFilterVisitor;

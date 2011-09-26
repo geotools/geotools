@@ -24,8 +24,6 @@ import org.geotools.data.FilteringFeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.crs.ForceCoordinateSystemFeatureReader;
-import org.geotools.data.ows.FeatureSetDescription;
-import org.geotools.data.ows.WFSCapabilities;
 import org.geotools.feature.SchemaException;
 import org.geotools.filter.visitor.FixBBOXFilterVisitor;
 import org.geotools.referencing.CRS;

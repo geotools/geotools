@@ -21,8 +21,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import org.geotools.data.wfs.feature.LenientBuilder;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.LenientBuilder;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;

@@ -14,8 +14,10 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.feature;
+package org.geotools.data.wfs.feature;
 
+import org.geotools.feature.AttributeImpl;
+import org.geotools.feature.PropertyImpl;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.filter.identity.GmlObjectIdImpl;
 import org.geotools.util.Converters;
@@ -115,7 +117,7 @@ public class LenientAttribute extends PropertyImpl implements Attribute {
 		
 		AttributeImpl att = (AttributeImpl) obj;
 		
-		return Utilities.equals( id, att.id );
+		return Utilities.equals( id, att.getIdentifier() );
 	}
 
 	public boolean isValid() {

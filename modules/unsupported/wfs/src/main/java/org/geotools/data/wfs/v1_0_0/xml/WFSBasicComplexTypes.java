@@ -15,7 +15,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.xml.wfs;
+package org.geotools.data.wfs.v1_0_0.xml;
 
 import java.io.IOException;
 import java.net.URI;
@@ -24,6 +24,9 @@ import java.util.Map;
 import javax.naming.OperationNotSupportedException;
 
 import org.geotools.data.Query;
+import org.geotools.data.wfs.v1_0_0.xml.WFSSchema.WFSAttribute;
+import org.geotools.data.wfs.v1_0_0.xml.WFSSchema.WFSComplexType;
+import org.geotools.data.wfs.v1_0_0.xml.WFSSchema.WFSElement;
 import org.geotools.filter.Filter;
 import org.geotools.xml.PrintHandler;
 import org.geotools.xml.filter.FilterSchema;
@@ -37,9 +40,6 @@ import org.geotools.xml.schema.Sequence;
 import org.geotools.xml.schema.Type;
 import org.geotools.xml.schema.impl.AttributeGT;
 import org.geotools.xml.schema.impl.SequenceGT;
-import org.geotools.xml.wfs.WFSSchema.WFSAttribute;
-import org.geotools.xml.wfs.WFSSchema.WFSComplexType;
-import org.geotools.xml.wfs.WFSSchema.WFSElement;
 import org.geotools.xml.xsi.XSISimpleTypes;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

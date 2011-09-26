@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.xml.wfs;
+package org.geotools.data.wfs.v1_0_0.xml;
 
 import java.io.IOException;
 import java.net.URI;
@@ -31,13 +31,18 @@ import javax.naming.OperationNotSupportedException;
 
 import org.geotools.data.Query;
 import org.geotools.data.wfs.v1_0_0.Action;
+import org.geotools.data.wfs.v1_0_0.Action.DeleteAction;
+import org.geotools.data.wfs.v1_0_0.Action.InsertAction;
+import org.geotools.data.wfs.v1_0_0.Action.UpdateAction;
 import org.geotools.data.wfs.v1_0_0.LockRequest;
 import org.geotools.data.wfs.v1_0_0.LockResult;
 import org.geotools.data.wfs.v1_0_0.TransactionResult;
 import org.geotools.data.wfs.v1_0_0.WFSTransactionState;
-import org.geotools.data.wfs.v1_0_0.Action.DeleteAction;
-import org.geotools.data.wfs.v1_0_0.Action.InsertAction;
-import org.geotools.data.wfs.v1_0_0.Action.UpdateAction;
+import org.geotools.data.wfs.v1_0_0.xml.WFSBasicComplexTypes.FeatureCollectionType;
+import org.geotools.data.wfs.v1_0_0.xml.WFSBasicComplexTypes.QueryType;
+import org.geotools.data.wfs.v1_0_0.xml.WFSSchema.WFSAttribute;
+import org.geotools.data.wfs.v1_0_0.xml.WFSSchema.WFSComplexType;
+import org.geotools.data.wfs.v1_0_0.xml.WFSSchema.WFSElement;
 import org.geotools.filter.FidFilter;
 import org.geotools.filter.FilterFactoryFinder;
 import org.geotools.xml.PrintHandler;
@@ -58,11 +63,6 @@ import org.geotools.xml.schema.SimpleType;
 import org.geotools.xml.schema.impl.ChoiceGT;
 import org.geotools.xml.schema.impl.FacetGT;
 import org.geotools.xml.schema.impl.SequenceGT;
-import org.geotools.xml.wfs.WFSBasicComplexTypes.FeatureCollectionType;
-import org.geotools.xml.wfs.WFSBasicComplexTypes.QueryType;
-import org.geotools.xml.wfs.WFSSchema.WFSAttribute;
-import org.geotools.xml.wfs.WFSSchema.WFSComplexType;
-import org.geotools.xml.wfs.WFSSchema.WFSElement;
 import org.geotools.xml.xsi.XSISimpleTypes;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;

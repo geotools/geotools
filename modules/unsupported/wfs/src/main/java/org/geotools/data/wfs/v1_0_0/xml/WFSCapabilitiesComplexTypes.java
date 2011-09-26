@@ -15,7 +15,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.xml.wfs;
+package org.geotools.data.wfs.v1_0_0.xml;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -27,15 +27,18 @@ import java.util.Map;
 
 import javax.naming.OperationNotSupportedException;
 
-import org.geotools.data.ows.FeatureSetDescription;
 import org.geotools.data.ows.OperationType;
 import org.geotools.data.ows.Service;
-import org.geotools.data.ows.WFSCapabilities;
+import org.geotools.data.wfs.v1_0_0.FeatureSetDescription;
+import org.geotools.data.wfs.v1_0_0.WFSCapabilities;
+import org.geotools.data.wfs.v1_0_0.xml.WFSSchema.WFSAttribute;
+import org.geotools.data.wfs.v1_0_0.xml.WFSSchema.WFSComplexType;
+import org.geotools.data.wfs.v1_0_0.xml.WFSSchema.WFSElement;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.xml.DocumentFactory;
 import org.geotools.xml.PrintHandler;
-import org.geotools.xml.filter.FilterSchema;
 import org.geotools.xml.filter.FilterComplexTypes.Filter_CapabilitiesType;
+import org.geotools.xml.filter.FilterSchema;
 import org.geotools.xml.schema.Attribute;
 import org.geotools.xml.schema.ComplexType;
 import org.geotools.xml.schema.Element;
@@ -47,9 +50,6 @@ import org.geotools.xml.schema.impl.ChoiceGT;
 import org.geotools.xml.schema.impl.FacetGT;
 import org.geotools.xml.schema.impl.SequenceGT;
 import org.geotools.xml.schema.impl.SimpleTypeGT;
-import org.geotools.xml.wfs.WFSSchema.WFSAttribute;
-import org.geotools.xml.wfs.WFSSchema.WFSComplexType;
-import org.geotools.xml.wfs.WFSSchema.WFSElement;
 import org.geotools.xml.xsi.XSISimpleTypes;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

@@ -15,11 +15,13 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.ows;
+package org.geotools.data.wfs.v1_0_0;
 
 import java.util.Iterator;
 import java.util.List;
 
+import org.geotools.data.ows.Capabilities;
+import org.geotools.data.ows.OperationType;
 import org.geotools.filter.FilterCapabilities;
 
 

@@ -24,7 +24,6 @@ import java.util.logging.Level;
 import junit.framework.TestCase;
 
 import org.geotools.TestData;
-import org.geotools.data.ows.WFSCapabilities;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.function.FilterFunction_distance;
 import org.geotools.filter.function.FilterFunction_geometryType;

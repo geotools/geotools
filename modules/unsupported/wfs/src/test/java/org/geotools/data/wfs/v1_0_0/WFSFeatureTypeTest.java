@@ -18,7 +18,7 @@ package org.geotools.data.wfs.v1_0_0;
 
 import junit.framework.TestCase;
 
-import org.geotools.feature.LenientBuilder;
+import org.geotools.data.wfs.feature.LenientBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;

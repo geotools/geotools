@@ -42,7 +42,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * 
  * @author Jesse
  */
-class ChoiceGeometryTypeImpl extends ChoiceAttributeTypeImpl implements
+public class ChoiceGeometryTypeImpl extends ChoiceAttributeTypeImpl implements
         ChoiceGeometryType, GeometryType {
 
     private CoordinateReferenceSystem crs;

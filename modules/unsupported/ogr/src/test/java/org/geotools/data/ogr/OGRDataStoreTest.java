@@ -266,54 +266,54 @@ public class OGRDataStoreTest extends TestCaseSupport {
         }
     }
 
-    public void testCreateWriteRead() throws Exception {
-        String typeName = "testw";
-        String[] files = shapeFileNames(typeName);
-        cleanFiles(files);
-
-        File file = new File(files[0]);
-        OGRDataStore ds = new OGRDataStore(file.getAbsolutePath(), "ESRI shapefile", null);
-        SimpleFeatureType schema = DataUtilities.createType(typeName, "geom:Point,cat:int,name:string");
-        ds.createSchema(schema);
-
-        GeometryFactory gf = new GeometryFactory();
-        // creating 20 geometries because with only a couple a finalization
-        // related error that did blew up the VM would not appear
-        SimpleFeature[] features = new SimpleFeature[20];
-        for (int i = 0; i < features.length; i++) {
-            features[i] = SimpleFeatureBuilder.build(schema, new Object[] { gf.createPoint(new Coordinate(i, i)),
-                    new Integer(i), "" + i }, null);
-        }
-
-        FeatureWriter writer = ds.getFeatureWriterAppend("testw", Transaction.AUTO_COMMIT);
-        for (int i = 0; i < features.length; i++) {
-            assertFalse(writer.hasNext());
-            SimpleFeature f = (SimpleFeature) writer.next();
-            f.setAttributes(features[i].getAttributes());
-            writer.write();
-            assertEquals(typeName + "." + i, f.getID());
-        }
-        writer.close();
-
-        FeatureReader reader = ds.getFeatureReader("testw");
-        for (int i = 0; i < features.length; i++) {
-            assertTrue(reader.hasNext());
-            SimpleFeature f = (SimpleFeature) reader.next();
-            for (int j = 0; j < schema.getAttributeCount(); j++) {
-                if (f.getAttribute(j) instanceof Geometry) {
-                    // this is necessary because geometry equality is
-                    // implemented as Geometry.equals(Geometry)
-                    Geometry a = (Geometry) f.getAttribute(j);
-                    Geometry b = (Geometry) features[i].getAttribute(j);
-                    assertTrue(a.equals(b));
-                } else {
-                    assertEquals(f.getAttribute(j), features[i].getAttribute(j));
-                }
-            }
-        }
-        assertFalse(reader.hasNext());
-        reader.close();
-    }
+//    public void testCreateWriteRead() throws Exception {
+//        String typeName = "testw";
+//        String[] files = shapeFileNames(typeName);
+//        cleanFiles(files);
+//
+//        File file = new File(files[0]);
+//        OGRDataStore ds = new OGRDataStore(file.getAbsolutePath(), "ESRI shapefile", null);
+//        SimpleFeatureType schema = DataUtilities.createType(typeName, "geom:Point,cat:int,name:string");
+//        ds.createSchema(schema);
+//
+//        GeometryFactory gf = new GeometryFactory();
+//        // creating 20 geometries because with only a couple a finalization
+//        // related error that did blew up the VM would not appear
+//        SimpleFeature[] features = new SimpleFeature[20];
+//        for (int i = 0; i < features.length; i++) {
+//            features[i] = SimpleFeatureBuilder.build(schema, new Object[] { gf.createPoint(new Coordinate(i, i)),
+//                    new Integer(i), "" + i }, null);
+//        }
+//
+//        FeatureWriter writer = ds.getFeatureWriterAppend("testw", Transaction.AUTO_COMMIT);
+//        for (int i = 0; i < features.length; i++) {
+//            assertFalse(writer.hasNext());
+//            SimpleFeature f = (SimpleFeature) writer.next();
+//            f.setAttributes(features[i].getAttributes());
+//            writer.write();
+//            assertEquals(typeName + "." + i, f.getID());
+//        }
+//        writer.close();
+//
+//        FeatureReader reader = ds.getFeatureReader("testw");
+//        for (int i = 0; i < features.length; i++) {
+//            assertTrue(reader.hasNext());
+//            SimpleFeature f = (SimpleFeature) reader.next();
+//            for (int j = 0; j < schema.getAttributeCount(); j++) {
+//                if (f.getAttribute(j) instanceof Geometry) {
+//                    // this is necessary because geometry equality is
+//                    // implemented as Geometry.equals(Geometry)
+//                    Geometry a = (Geometry) f.getAttribute(j);
+//                    Geometry b = (Geometry) features[i].getAttribute(j);
+//                    assertTrue(a.equals(b));
+//                } else {
+//                    assertEquals(f.getAttribute(j), features[i].getAttribute(j));
+//                }
+//            }
+//        }
+//        assertFalse(reader.hasNext());
+//        reader.close();
+//    }
 
     public void testAttributesWriting() throws Exception {
         FeatureCollection features = createFeatureCollection();

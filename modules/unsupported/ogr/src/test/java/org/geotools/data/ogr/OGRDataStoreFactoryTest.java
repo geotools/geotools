@@ -17,12 +17,14 @@
 package org.geotools.data.ogr;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
+import org.opengis.feature.simple.SimpleFeatureType;
 
 public class OGRDataStoreFactoryTest extends TestCaseSupport {
 
@@ -31,23 +33,40 @@ public class OGRDataStoreFactoryTest extends TestCaseSupport {
     }
 
     public void testLookup() throws Exception {
-        Map map = new HashMap();
+        Map<String, Serializable> map = new HashMap<String, Serializable>();
         map.put(OGRDataStoreFactory.OGR_NAME.key, getAbsolutePath(STATE_POP));
-        DataStore ds = DataStoreFinder.getDataStore(map);
-        assertNotNull(ds);
-        assertTrue(ds instanceof OGRDataStore);
+        DataStore ds = null;
+        try {
+            ds = DataStoreFinder.getDataStore(map);
+            assertNotNull(ds);
+            assertTrue(ds instanceof OGRDataStore);
+        } finally {
+            disposeQuietly(ds);
+        }
+    }
+
+    private void disposeQuietly(DataStore ds) {
+        if (ds != null) {
+            ds.dispose();
+        }
     }
 
     public void testNamespace() throws Exception {
         OGRDataStoreFactory factory = new OGRDataStoreFactory();
-        Map map = new HashMap();
+        Map<String, Serializable> map = new HashMap<String, Serializable>();
         URI namespace = new URI("http://jesse.com");
         map.put(OGRDataStoreFactory.NAMESPACEP.key, namespace);
         map.put(OGRDataStoreFactory.OGR_NAME.key, getAbsolutePath(STATE_POP));
-        DataStore store = factory.createDataStore(map);
-        assertEquals(namespace.toString(), store.getSchema(
-                STATE_POP.substring(STATE_POP.lastIndexOf('/') + 1, STATE_POP.lastIndexOf('.')))
-                .getName().getNamespaceURI());
+        DataStore store = null;
+        try {
+            store = factory.createDataStore(map);
+            SimpleFeatureType schema = store.getSchema(
+                    STATE_POP.substring(STATE_POP.lastIndexOf('/') + 1,
+                            STATE_POP.lastIndexOf('.')));
+            assertEquals(namespace.toString(), schema.getName().getNamespaceURI());
+        } finally {
+            disposeQuietly(store);
+        }
     }
 
 }

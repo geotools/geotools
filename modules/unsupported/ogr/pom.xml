@@ -72,8 +72,20 @@
   <dependencies>
     <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-main</artifactId>
+      <artifactId>gt-data</artifactId>
       <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.nativelibs4java</groupId>
+      <artifactId>bridj</artifactId>
+      <classifier>c-only</classifier>
+      <version>0.6-SNAPSHOT</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.nativelibs4java.thirdparty.com.google.android</groupId>
+          <artifactId>dx</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!-- Test dependencies -->

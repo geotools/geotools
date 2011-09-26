@@ -58,8 +58,8 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.geotools.jdbc</groupId>
-      <artifactId>gt-jdbc-h2</artifactId>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-data</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

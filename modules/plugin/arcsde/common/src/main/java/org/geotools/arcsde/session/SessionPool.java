@@ -261,10 +261,20 @@ class SessionPool implements ISessionPool {
         return getSession(true);
     }
 
-    public void returnObject(Session session) throws Exception {
-        synchronized (openSessionsNonTransactional) {
-            openSessionsNonTransactional.remove(session);
-        }
+
+
+    /**
+     * Return the session Object to the ConnectionPool.
+     * Method must be synchronized, in order to prevent SessionPool
+     * from opening more connections than in max.Connection defined under
+     * heavy load
+     *
+     * @param session
+     * @throws Exception
+     */
+    public synchronized void returnObject(Session session) throws Exception {
+
+        openSessionsNonTransactional.remove(session);
         pool.returnObject(session);
     }
 

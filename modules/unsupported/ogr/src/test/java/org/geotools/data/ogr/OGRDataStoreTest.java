@@ -42,6 +42,7 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.BasicFeatureTypes;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -103,16 +104,34 @@ public class OGRDataStoreTest extends TestCaseSupport {
     }
 
     /**
-     * Test envelope versus old DataSource
+     * Test optimized count against actual count
+     * 
+     * @throws Exception
      */
     public void testOptimizedEnvelope() throws Exception {
-        FeatureCollection features = loadFeatures(STATE_POP, Query.ALL);
+        URL url = TestData.url(STATE_POP);
+        ShapefileDataStore sds = new ShapefileDataStore(url);
         OGRDataStore s = new OGRDataStore(getAbsolutePath(STATE_POP), null, null);
         String typeName = s.getTypeNames()[0];
 
-        assertEquals(features.getBounds(), s.getFeatureSource(typeName).getBounds());
-        assertNotNull(s.getFeatureSource(typeName).getBounds());
+        ReferencedEnvelope expectedBounds = sds.getFeatureSource().getBounds();
+        ReferencedEnvelope actualBounds = s.getFeatureSource(typeName).getBounds();
+        assertEquals(expectedBounds, actualBounds);
+        assertNotNull(actualBounds);
     }
+    
+    /**
+     * Test count versus old DataSource
+     */
+    public void testOptimizedCount() throws Exception {
+        URL url = TestData.url(STATE_POP);
+        ShapefileDataStore sds = new ShapefileDataStore(url);
+        OGRDataStore s = new OGRDataStore(getAbsolutePath(STATE_POP), null, null);
+        String typeName = s.getTypeNames()[0];
+
+        assertEquals(sds.getCount(Query.ALL), s.getFeatureSource(typeName).getCount(Query.ALL));
+    }
+
 
     public void testLoadAndVerify() throws Exception {
         FeatureCollection features = loadFeatures(STATE_POP, Query.ALL);
@@ -369,11 +388,16 @@ public class OGRDataStoreTest extends TestCaseSupport {
     }
 
     protected FeatureCollection loadFeatures(String resource, Query query) throws Exception {
+        FeatureSource fs = loadSource(resource, query);
+        return fs.getFeatures(query);
+    }
+
+    private FeatureSource loadSource(String resource, Query query) throws IOException {
         assertNotNull(query);
 
         OGRDataStore s = new OGRDataStore(getAbsolutePath(resource), null, null);
         FeatureSource fs = s.getFeatureSource(s.getTypeNames()[0]);
-        return fs.getFeatures(query);
+        return fs;
     }
 
     protected FeatureCollection loadFeatures(DataStore store, String typeName) throws Exception {

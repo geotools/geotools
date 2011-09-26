@@ -1,7 +1,8 @@
 package org.geotools.data.ogr;
 
 import static org.geotools.data.ogr.bridj.OgrLibrary.*;
-import static org.geotools.data.ogr.bridj.OsrLibrary.*;
+
+import java.io.IOException;
 
 import org.bridj.Pointer;
 
@@ -40,7 +41,39 @@ class OGRUtils {
             // OSRDestroySpatialReference(spatialReference);
             spatialReference.release();
         }
+    }
 
+    /**
+     * Checks the OGRErr status code and throws java exceptions accordingly
+     * 
+     * @param ogrError
+     * @throws IOException
+     */
+    public static void checkError(int ogrError) throws IOException {
+        if (ogrError == OGRERR_NONE) {
+            return;
+        }
+
+        switch (ogrError) {
+        case OGRERR_CORRUPT_DATA:
+            throw new IOException("OGR reported a currupt data error");
+        case OGRERR_FAILURE:
+            throw new IOException("OGR reported a generic failure");
+        case OGRERR_INVALID_HANDLE:
+            throw new IOException("OGR reported an invalid handle error");
+        case OGRERR_NOT_ENOUGH_DATA:
+            throw new IOException("OGR reported not enough data was provided in the last call");
+        case OGRERR_NOT_ENOUGH_MEMORY:
+            throw new IOException("OGR reported not enough memory is available");
+        case OGRERR_UNSUPPORTED_GEOMETRY_TYPE:
+            throw new IOException("OGR reported a unsupported geometry type error");
+        case OGRERR_UNSUPPORTED_OPERATION:
+            throw new IOException("OGR reported a unsupported operation error");
+        case OGRERR_UNSUPPORTED_SRS:
+            throw new IOException("OGR reported a unsupported SRS error");
+        default:
+            throw new IOException("OGR reported an unrecognized error code: " + ogrError);
+        }
     }
 
 }

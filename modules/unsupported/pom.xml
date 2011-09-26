@@ -157,6 +157,12 @@
          <module>feature-aggreate</module>
        </modules>
      </profile>
+     <profile>
+       <id>ogr</id>
+       <modules>
+         <module>ogr</module>
+       </modules>
+     </profile>
 
      <profile>
        <id>unsupported</id>

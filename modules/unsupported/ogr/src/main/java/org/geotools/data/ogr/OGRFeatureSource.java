@@ -8,8 +8,10 @@ import java.io.IOException;
 
 import org.bridj.Pointer;
 import org.bridj.ValuedEnum;
+import org.geotools.data.EmptyFeatureReader;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
+import org.geotools.data.ogr.bridj.OGREnvelope;
 import org.geotools.data.ogr.bridj.OgrLibrary.OGRFieldType;
 import org.geotools.data.ogr.bridj.OgrLibrary.OGRwkbGeometryType;
 import org.geotools.data.store.ContentEntry;
@@ -19,10 +21,12 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.MultiLineString;
@@ -30,6 +34,7 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
+@SuppressWarnings("rawtypes")
 public class OGRFeatureSource extends ContentFeatureSource {
 
     public OGRFeatureSource(ContentEntry entry, Query query) {
@@ -43,21 +48,107 @@ public class OGRFeatureSource extends ContentFeatureSource {
 
     @Override
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
-        // TODO Auto-generated method stub
-        return null;
+        CoordinateReferenceSystem crs = getSchema().getCoordinateReferenceSystem();
+        
+        // we need to know how much we can translate of the filter (the translator will also 
+        // simplify the filter)
+        OGRFilterTranslator filterTx = new OGRFilterTranslator(getSchema(), query.getFilter());
+        if (Filter.EXCLUDE.equals(filterTx.getFilter())) {
+            // empty results
+            return new ReferencedEnvelope(crs);
+        } else if (!filterTx.isFilterFullySupported()) {
+            return null;
+        } else {
+            // encodable, we then encode and get the bounds
+            Pointer dataSource = null;
+            Pointer layer = null;
+
+            try {
+                // grab the layer
+                String typeName = getEntry().getTypeName();
+                dataSource = getDataStore().openOGRDataSource(false);
+                layer = openOGRLayer(dataSource, typeName);
+
+                // filter it
+                setLayerFilters(layer, filterTx);
+
+                Pointer<OGREnvelope> boundsPtr = allocate(OGREnvelope.class);
+                int code = OGR_L_GetExtent(layer, boundsPtr, 0);
+                if (code == OGRERR_FAILURE) {
+                    return null;
+                } else {
+                    OGREnvelope bounds = boundsPtr.get();
+                    return new ReferencedEnvelope(bounds.MinX(), bounds.MaxX(), bounds.MinY(),
+                            bounds.MaxY(), crs);
+                }
+            } finally {
+                OGRUtils.releaseLayer(layer);
+                OGRUtils.releaseDataSource(dataSource);
+            }
+        }
+    }
+
+    /**
+     * Sets the spatial filter and attribute filter on the specified layer
+     * 
+     * @param layer
+     * @param filterTx
+     * @throws IOException
+     */
+    private void setLayerFilters(Pointer layer, OGRFilterTranslator filterTx) throws IOException {
+        Geometry spatialFilter = filterTx.getSpatialFilter();
+        if (spatialFilter != null) {
+            Pointer ogrGeometry = new GeometryMapper.WKB(new GeometryFactory())
+                    .parseGTGeometry(spatialFilter);
+            OGR_L_SetSpatialFilter(layer, ogrGeometry);
+        }
+
+        String attFilter = filterTx.getAttributeFilter();
+        if (attFilter != null) {
+            OGR_L_SetAttributeFilter(layer, pointerToCString(attFilter));
+        }
     }
 
     @Override
     protected int getCountInternal(Query query) throws IOException {
-        // TODO Auto-generated method stub
-        return 0;
+        // check how much we can encode
+        OGRFilterTranslator filterTx = new OGRFilterTranslator(getSchema(), query.getFilter());
+        if (Filter.EXCLUDE.equals(filterTx.getFilter())) {
+            return 0;
+        } else if (!filterTx.isFilterFullySupported()) {
+            // too expensive then
+            return -1;
+        } else {
+            // encode and count
+            Pointer dataSource = null;
+            Pointer layer = null;
+
+            try {
+                // grab the layer
+                String typeName = getEntry().getTypeName();
+                dataSource = getDataStore().openOGRDataSource(false);
+                layer = openOGRLayer(dataSource, typeName);
+
+                // filter it
+                setLayerFilters(layer, filterTx);
+
+                return OGR_L_GetFeatureCount(layer, 0);
+            } finally {
+                OGRUtils.releaseLayer(layer);
+                OGRUtils.releaseDataSource(dataSource);
+            }
+        }
     }
 
     @Override
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
-        // TODO Auto-generated method stub
-        return null;
+        OGRFilterTranslator filterTx = new OGRFilterTranslator(getSchema(), query.getFilter());
+        if (Filter.EXCLUDE.equals(filterTx.getFilter())) {
+            return new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(getSchema());
+        } 
+        
+        
     }
 
     @Override
@@ -92,7 +183,7 @@ public class OGRFeatureSource extends ContentFeatureSource {
                 String name = OGR_Fld_GetNameRef(field).getCString();
                 Class binding = getBinding(field);
                 int width = OGR_Fld_GetWidth(field);
-                if(width > 0) {
+                if (width > 0) {
                     tb.length(width);
                 }
                 tb.add(name, binding);

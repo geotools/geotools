@@ -141,7 +141,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
          * @param type
          * @param description
          */
-        public WFSFactoryParam(String key, Class type, String description) {
+        public WFSFactoryParam(String key, Class<T> type, String description) {
             super(key, type, description, true);
         }
 
@@ -153,13 +153,14 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
          * @param description
          * @param required
          */
-        public WFSFactoryParam(String key, Class type, String description, T defaultValue) {
-            super(key, type, description, false);
+        public WFSFactoryParam(String key, Class<T> type, String description, T defaultValue) {
+            super(key, type, description, false, defaultValue);
             this.defaultValue = defaultValue;
         }
 
-        public WFSFactoryParam(String key, Class type, String description, T defaultValue, Object... metadata) {
-            super(key, type, description, false, metadata);
+        public WFSFactoryParam(String key, Class<T> type, String description, T defaultValue,
+                Object... metadata) {
+            super(key, type, description, false, defaultValue, metadata);
             this.defaultValue = defaultValue;
         }
         
@@ -214,7 +215,8 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
         String name = "WFSDataStoreFactory:USERNAME";
         String description = "This allows the user to specify a username. This param should not "
                 + "be used without the PASSWORD param.";
-        parametersInfo[2] = USERNAME = new WFSFactoryParam(name, String.class, description, null);
+        parametersInfo[2] = USERNAME = new WFSFactoryParam<String>(name, String.class, description,
+                null);
     }
 
     /**
@@ -231,8 +233,8 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
         String name = "WFSDataStoreFactory:PASSWORD";
         String description = "This allows the user to specify a username. This param should not"
                 + " be used without the USERNAME param.";
-        parametersInfo[3] = PASSWORD = new WFSFactoryParam(name, String.class, description, null,
-                Param.IS_PASSWORD, true);
+        parametersInfo[3] = PASSWORD = new WFSFactoryParam<String>(name, String.class, description,
+                null, Param.IS_PASSWORD, true);
     }
 
     /**

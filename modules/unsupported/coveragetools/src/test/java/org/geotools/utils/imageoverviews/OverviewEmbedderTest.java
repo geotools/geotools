@@ -37,8 +37,6 @@ import org.junit.Test;
  * 
  * @author Simone Giannecchini, GeoSolutions SAS
  *
- *
- * @source $URL$
  */
 public class OverviewEmbedderTest extends Assert{
     
@@ -74,13 +72,55 @@ public class OverviewEmbedderTest extends Assert{
     public void tearDown() throws Exception {
         FileUtils.deleteQuietly(TestData.temp(this, "DEM_.tiff"));
     }
+   
+    @Test
+    public void nearestExternal() throws Exception{
+        
+        final OverviewsEmbedder oe= new OverviewsEmbedder();
+        oe.setDownsampleStep(2);
+        oe.setNumSteps(5);
+        oe.setScaleAlgorithm(OverviewsEmbedder.SubsampleAlgorithm.Nearest.toString());
+        // use default 
+        oe.setTileCache(JAI.getDefaultInstance().getTileCache());
+        oe.setTileWidth(256);
+        oe.setTileHeight(256);
+        oe.setExternalOverviews(true);
+        oe.setSourcePath(TestData.file(this, "DEM_.tiff").getAbsolutePath());
+        oe.addProcessingEventListener(new ProcessingEventListener() {
+            
+            @Override
+            public void getNotification(ProcessingEvent event) {
+                LOGGER.info(event.toString());
+                
+            }
+            
+            @Override
+            public void exceptionOccurred(ExceptionEvent event) {
+                LOGGER.warning(event.toString());                
+            }
+            
+        });
+        oe.run();
+        
+        // now red it back and check that things are coherent
+        final ImageReader reader= new TIFFImageReaderSpi().createReaderInstance();
+        reader.setInput(ImageIO.createImageInputStream(org.geotools.test.TestData.file(this, "DEM_.tiff")));
+        assertTrue(reader.getNumImages(true)==1);
+        reader.reset();
+        
+
+        assertTrue(org.geotools.test.TestData.file(this, "DEM_.tif.ovr").exists());
+        reader.setInput(ImageIO.createImageInputStream(org.geotools.test.TestData.file(this, "DEM_.tif.ovr")));
+        assertTrue(reader.getNumImages(true)==5);
+        assertTrue(reader.isImageTiled(0));
+        assertEquals(256,reader.getTileHeight(0));
+        assertEquals(256,reader.getTileWidth(0));
+        reader.dispose();
+        
+    }
     
     @Test
-   
-    public void nearest() throws FileNotFoundException, IOException{
-//        JAI.getDefaultInstance().getTileCache().setMemoryCapacity(512*1024*1024);
-//        JAI.getDefaultInstance().getTileScheduler().setParallelism(10);
-//        JAI.getDefaultInstance().getTileScheduler().setPrefetchParallelism(10);
+    public void nearest() throws Exception{
         
         final OverviewsEmbedder oe= new OverviewsEmbedder();
         oe.setDownsampleStep(2);
@@ -111,12 +151,12 @@ public class OverviewEmbedderTest extends Assert{
         final ImageReader reader= new TIFFImageReaderSpi().createReaderInstance();
         reader.setInput(ImageIO.createImageInputStream(org.geotools.test.TestData.file(this, "DEM_.tiff")));
         assertTrue(reader.getNumImages(true)==6);
-        
+        reader.dispose();
     }
 
     @Test
    
-        public void average() throws FileNotFoundException, IOException{
+        public void average() throws Exception{
     //        JAI.getDefaultInstance().getTileCache().setMemoryCapacity(512*1024*1024);
     //        JAI.getDefaultInstance().getTileScheduler().setParallelism(10);
     //        JAI.getDefaultInstance().getTileScheduler().setPrefetchParallelism(10);
@@ -150,12 +190,12 @@ public class OverviewEmbedderTest extends Assert{
             final ImageReader reader= new TIFFImageReaderSpi().createReaderInstance();
             reader.setInput(ImageIO.createImageInputStream(org.geotools.test.TestData.file(this, "DEM_.tiff")));
             assertTrue(reader.getNumImages(true)==6);
-            
+            reader.dispose();
         }
 
     @Test
    
-        public void bicubic() throws FileNotFoundException, IOException{
+        public void bicubic() throws Exception{
     //        JAI.getDefaultInstance().getTileCache().setMemoryCapacity(512*1024*1024);
     //        JAI.getDefaultInstance().getTileScheduler().setParallelism(10);
     //        JAI.getDefaultInstance().getTileScheduler().setPrefetchParallelism(10);
@@ -189,12 +229,12 @@ public class OverviewEmbedderTest extends Assert{
             final ImageReader reader= new TIFFImageReaderSpi().createReaderInstance();
             reader.setInput(ImageIO.createImageInputStream(org.geotools.test.TestData.file(this, "DEM_.tiff")));
             assertTrue(reader.getNumImages(true)==6);
-            
+            reader.dispose();
         }
 
     @Test
    
-        public void bilinear() throws FileNotFoundException, IOException{
+        public void bilinear() throws Exception{
     //        JAI.getDefaultInstance().getTileCache().setMemoryCapacity(512*1024*1024);
     //        JAI.getDefaultInstance().getTileScheduler().setParallelism(10);
     //        JAI.getDefaultInstance().getTileScheduler().setPrefetchParallelism(10);
@@ -228,12 +268,12 @@ public class OverviewEmbedderTest extends Assert{
             final ImageReader reader= new TIFFImageReaderSpi().createReaderInstance();
             reader.setInput(ImageIO.createImageInputStream(org.geotools.test.TestData.file(this, "DEM_.tiff")));
             assertTrue(reader.getNumImages(true)==6);
-            
+            reader.dispose();
         }
 
     @Test
     @Ignore
-        public void filtered() throws FileNotFoundException, IOException{
+        public void filtered() throws Exception{
     //        JAI.getDefaultInstance().getTileCache().setMemoryCapacity(512*1024*1024);
     //        JAI.getDefaultInstance().getTileScheduler().setParallelism(10);
     //        JAI.getDefaultInstance().getTileScheduler().setPrefetchParallelism(10);
@@ -268,14 +308,15 @@ public class OverviewEmbedderTest extends Assert{
             
             // fail if any exception was reported
             if(exceptions.size() > 0) {
-                fail("Failed with " + exceptions.size() + " exceptions during overview embedding");
+                exceptions.get(0).printStackTrace();
+                fail("Failed with " + exceptions.size() + " exceptions during overview embedding: ");
             }
             
             // now red it back and check that things are coherent
             final ImageReader reader= new TIFFImageReaderSpi().createReaderInstance();
             reader.setInput(ImageIO.createImageInputStream(org.geotools.test.TestData.file(this, "DEM_.tiff")));
             assertEquals(6, reader.getNumImages(true));
-            
+            reader.dispose();
         }
 
 //    @Test

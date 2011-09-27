@@ -239,7 +239,7 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 
 	private String compressionScheme = null;
 	
-	private boolean external=false;
+	private boolean externalOverviews=false;
 	
 	private Option externalOpt;
 
@@ -303,7 +303,7 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
                     "external_overviews").withArgument(
                     argumentBuilder.withName("extt").withMinimum(0).withMaximum(1)
                                     .create()).withDescription(
-                    "create external overviews")
+                    "create externalOverviews overviews")
                 .withRequired(false).create();		
 
 		scaleFactorOpt = optionBuilder
@@ -667,7 +667,7 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 				//
 				// output image stream
 				//
-                                if(external){
+                                if(externalOverviews){
                                     // create a sibling file
                                     localFile= new File(localFile.getParent(),FilenameUtils.getBaseName(localFile.getAbsolutePath())+".tif.ovr");
                                 }				
@@ -787,7 +787,7 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
                                                 ((TIFFImageMetadata)imageMetadata).addShortOrLongField(BaselineTIFFTagSet.TAG_NEW_SUBFILE_TYPE, BaselineTIFFTagSet.NEW_SUBFILE_TYPE_REDUCED_RESOLUTION);
                                         }
                                         // write out
-                                        if(!external || i>0)
+                                        if(!externalOverviews || i>0)
                                             writer.writeInsert(-1, new IIOImage(newImage, null, imageMetadata), param);
                                         else
                                             writer.write(null,new IIOImage(newImage, null, imageMetadata), param);
@@ -939,11 +939,11 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 
 	        // //
                 //
-                // external overviews
+                // externalOverviews overviews
                 //
                 // //
                 if (hasOption(externalOpt))
-                        external = Boolean.parseBoolean((String)getOptionValue(externalOpt));
+                        externalOverviews = Boolean.parseBoolean((String)getOptionValue(externalOpt));
                 
                 
 		// //
@@ -1072,4 +1072,11 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 	public String getWildcardString() {
 		return wildcardString;
 	}
+        public boolean isExternalOverviews() {
+            return externalOverviews;
+        }
+
+        public void setExternalOverviews(boolean externalOverviews) {
+            this.externalOverviews = externalOverviews;
+        }	
 }

@@ -25,6 +25,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @version $Id$
  *
  *
+ *
  * @source $URL$
  */
 public interface XmlFeatureSource extends SimpleFeatureSource {

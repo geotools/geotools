@@ -24,6 +24,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
  * @version $Id$
  *
  *
+ *
  * @source $URL$
  */
 public interface XmlFeatureCollection extends SimpleFeatureCollection {

@@ -32,6 +32,7 @@ import org.picocontainer.defaults.BasicComponentParameter;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class OptionalComponentParameter extends BasicComponentParameter {

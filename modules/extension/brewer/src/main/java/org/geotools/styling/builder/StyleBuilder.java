@@ -7,6 +7,11 @@ import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Style;
 import org.geotools.util.SimpleInternationalString;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class StyleBuilder extends AbstractStyleBuilder<Style> {
     List<FeatureTypeStyleBuilder> fts = new ArrayList<FeatureTypeStyleBuilder>();
 

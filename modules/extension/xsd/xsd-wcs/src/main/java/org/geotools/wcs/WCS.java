@@ -13,7 +13,8 @@ import org.geotools.xml.XSD;
  * 
  * @generated
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wcs/src/main/java/org/geotools/wcs/WCS.java $
+ *
+ * @source $URL$
  */
 public final class WCS extends XSD {
 

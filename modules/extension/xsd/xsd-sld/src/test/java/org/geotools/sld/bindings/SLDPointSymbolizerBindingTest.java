@@ -20,6 +20,11 @@ import org.geotools.styling.PointSymbolizer;
 import org.opengis.filter.expression.Function;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SLDPointSymbolizerBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(PointSymbolizer.class, new SLDPointSymbolizerBinding(null).getType());

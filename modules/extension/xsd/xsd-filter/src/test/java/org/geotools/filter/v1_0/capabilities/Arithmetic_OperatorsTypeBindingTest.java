@@ -22,6 +22,11 @@ import org.opengis.filter.capability.ArithmeticOperators;
 import org.geotools.xml.Binding;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class Arithmetic_OperatorsTypeBindingTest extends FilterCapabilitiesTestSupport {
     public void testType() {
         assertEquals(ArithmeticOperators.class, binding(OGC.Arithmetic_OperatorsType).getType());

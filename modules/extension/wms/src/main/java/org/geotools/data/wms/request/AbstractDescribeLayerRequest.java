@@ -25,6 +25,7 @@ import java.util.Properties;
  * 
  * @author Richard Gould
  *
+ *
  * @source $URL$
  */
 public abstract class AbstractDescribeLayerRequest extends AbstractWMSRequest implements DescribeLayerRequest {

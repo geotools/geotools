@@ -45,7 +45,8 @@ import org.opengis.filter.FilterFactory;
  * @author Justin Deoliveira, OpenGeo
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-sld/src/main/java/org/geotools/se/v1_1/bindings/VendorOptionBinding.java $
+ *
+ * @source $URL$
  */
 public class VendorOptionBinding extends SLDVendorOptionBinding {
 

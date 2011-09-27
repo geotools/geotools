@@ -18,6 +18,11 @@ package org.geotools.util.logging;
 
 import java.util.logging.Logger;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class Logging {
 
     public static Logger getLogger(final String name) {

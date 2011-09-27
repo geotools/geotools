@@ -29,6 +29,7 @@ import org.opengis.feature.Attribute;
  * @version $Id$
  *
  *
+ *
  * @source $URL$
  */
 public class PathAttributeList {

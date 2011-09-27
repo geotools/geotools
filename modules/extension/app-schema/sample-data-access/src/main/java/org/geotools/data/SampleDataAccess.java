@@ -33,6 +33,7 @@ import org.opengis.feature.type.Name;
  * @version $Id$
  *
  *
+ *
  * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/sample-data-access
  *         /src/main/java/org/geotools/data/SampleDataAccess.java $

@@ -18,6 +18,11 @@ package org.geotools.xml.impl;
 
 import org.xml.sax.SAXException;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public interface DocumentHandler extends Handler {
     /**
      * Returns the element handler for the root element of

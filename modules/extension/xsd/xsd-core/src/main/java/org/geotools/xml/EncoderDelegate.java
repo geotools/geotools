@@ -13,6 +13,7 @@ import org.xml.sax.ContentHandler;
  *
  *
  *
+ *
  * @source $URL$
  */
 public interface EncoderDelegate {

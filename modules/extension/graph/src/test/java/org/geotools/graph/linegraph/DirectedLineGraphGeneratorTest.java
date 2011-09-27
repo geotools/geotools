@@ -29,6 +29,11 @@ import org.geotools.graph.structure.Graphable;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.LineSegment;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DirectedLineGraphGeneratorTest extends TestCase {
   
   private BasicDirectedLineGraphGenerator m_gen;

@@ -28,6 +28,11 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Polygon;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PolygonGraphGeneratorTest extends TestCase {
 
 	static GeometryFactory gf = new GeometryFactory();

@@ -30,6 +30,11 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLGeometryCollectionTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance gcol;
     ElementInstance point1;

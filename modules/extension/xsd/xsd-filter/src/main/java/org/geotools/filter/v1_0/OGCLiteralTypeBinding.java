@@ -51,6 +51,7 @@ import org.geotools.xml.Text;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class OGCLiteralTypeBinding extends AbstractComplexBinding {

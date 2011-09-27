@@ -32,7 +32,8 @@ import org.picocontainer.MutablePicoContainer;
  *
  * @generated
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wcs/src/main/java/org/geotools/wcs/WCSConfiguration.java $
+ *
+ * @source $URL$
  */
 public class WCSConfiguration extends Configuration {
 

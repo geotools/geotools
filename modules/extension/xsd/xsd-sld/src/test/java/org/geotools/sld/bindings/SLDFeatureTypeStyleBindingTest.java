@@ -19,6 +19,11 @@ package org.geotools.sld.bindings;
 import org.geotools.styling.FeatureTypeStyle;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SLDFeatureTypeStyleBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(FeatureTypeStyle.class, new SLDFeatureTypeStyleBinding(null).getType());

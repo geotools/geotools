@@ -28,6 +28,11 @@ import javax.swing.ListModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SwingUtil {
   
   public static ListModel toListModel(final List elements) {

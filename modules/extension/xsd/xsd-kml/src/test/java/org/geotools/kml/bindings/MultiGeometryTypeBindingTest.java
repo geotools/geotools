@@ -36,6 +36,11 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MultiGeometryTypeBindingTest extends KMLTestSupport {
 
     public void testType() {

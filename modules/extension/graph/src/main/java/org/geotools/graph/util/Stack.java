@@ -19,6 +19,11 @@ package org.geotools.graph.util;
 import java.util.Collection;
 import java.util.Iterator;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class Stack implements Collection, Queue {
   private static final int DEFAULT_SIZE = 10;
   

@@ -27,6 +27,11 @@ import org.junit.Test;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OasisCatalogTest extends AppSchemaTestSupport {
     org.apache.xml.resolver.Catalog catalog;
     

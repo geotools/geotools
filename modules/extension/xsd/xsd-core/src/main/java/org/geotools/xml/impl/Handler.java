@@ -44,6 +44,7 @@ import org.geotools.xml.Node;
  *
  *
  *
+ *
  * @source $URL$
  */
 public interface Handler {

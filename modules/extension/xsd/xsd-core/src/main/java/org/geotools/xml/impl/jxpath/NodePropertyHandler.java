@@ -22,6 +22,11 @@ import org.geotools.xml.Node;
 import org.geotools.xml.impl.NodeImpl;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class NodePropertyHandler implements DynamicPropertyHandler {
     public Object getProperty(Object object, String property) {
         Node node = (Node) object;

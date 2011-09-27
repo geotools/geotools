@@ -23,7 +23,8 @@ import org.geotools.gml3.GML3TestSupport;
  *
  * @author Erik van de Pol
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/test/java/org/geotools/gml3/bindings/ArcTypeBindingTest.java $
+ *
+ * @source $URL$
  */
 public class ArcTypeBindingTest extends GML3TestSupport {
     

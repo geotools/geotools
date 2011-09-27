@@ -31,6 +31,7 @@ import javax.xml.namespace.QName;
  *
  *
  *
+ *
  * @source $URL$
  */
 public abstract class AbstractComplexBinding implements ComplexBinding {

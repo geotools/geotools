@@ -30,6 +30,11 @@ import org.geotools.graph.structure.GraphVisitor;
 import org.geotools.graph.structure.Graphable;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OptDirectedGraphSerializerTest extends TestCase {
   private OptDirectedGraphBuilder m_builder;
   private OptDirectedGraphBuilder m_rebuilder;

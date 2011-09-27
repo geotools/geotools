@@ -94,6 +94,7 @@ import org.geotools.gml3.bindings.SurfacePatchArrayPropertyTypeBinding;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class GMLConfiguration extends Configuration {

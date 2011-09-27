@@ -20,6 +20,11 @@ import org.w3c.dom.Document;
 import org.opengis.filter.expression.PropertyName;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PropertyNameTypeBindingTest extends FilterTestSupport {
     public void testParse() throws Exception {
         FilterMockData.propertyName(document, document);

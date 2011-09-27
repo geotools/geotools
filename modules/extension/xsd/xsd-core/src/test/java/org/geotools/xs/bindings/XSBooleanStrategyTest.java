@@ -21,6 +21,11 @@ import org.geotools.xs.TestSchema;
 import org.geotools.xs.XS;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class XSBooleanStrategyTest extends TestSchema {
     /**
      * An instance of a datatype that is defined as ??boolean?? can have the

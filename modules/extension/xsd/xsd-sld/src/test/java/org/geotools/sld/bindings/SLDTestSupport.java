@@ -23,6 +23,11 @@ import org.geotools.xml.Configuration;
 import org.geotools.xml.test.XMLTestSupport;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SLDTestSupport extends XMLTestSupport {
     StyleFactory styleFactory = StyleFactoryFinder.createStyleFactory();
 

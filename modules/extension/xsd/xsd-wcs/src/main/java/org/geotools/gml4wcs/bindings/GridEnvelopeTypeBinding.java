@@ -36,7 +36,8 @@ import org.w3c.dom.Element;
  * 
  * @generated
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wcs/src/main/java/org/geotools/gml4wcs/bindings/GridEnvelopeTypeBinding.java $
+ *
+ * @source $URL$
  */
 public class GridEnvelopeTypeBinding extends AbstractComplexBinding {
 

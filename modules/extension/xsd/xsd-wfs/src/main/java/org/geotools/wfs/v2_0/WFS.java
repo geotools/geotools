@@ -14,7 +14,8 @@ import org.geotools.xml.XSD;
  *
  * @generated
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wfs/src/main/java/org/geotools/wfs/v2_0/WFS.java $
+ *
+ * @source $URL$
  */
 public final class WFS extends XSD {
 

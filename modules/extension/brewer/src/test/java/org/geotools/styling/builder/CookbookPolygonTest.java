@@ -15,6 +15,11 @@ import org.geotools.styling.Style;
 import org.geotools.styling.TextSymbolizer2;
 import org.junit.Test;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class CookbookPolygonTest extends AbstractStyleTest {
 
     @Test

@@ -29,7 +29,8 @@ import org.picocontainer.MutablePicoContainer;
  *
  * @generated
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-sld/src/main/java/org/geotools/se/v1_1/SEConfiguration.java $
+ *
+ * @source $URL$
  */
 public class SEConfiguration extends Configuration {
 

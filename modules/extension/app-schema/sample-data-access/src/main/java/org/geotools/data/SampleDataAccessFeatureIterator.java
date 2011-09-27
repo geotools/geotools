@@ -32,6 +32,7 @@ import org.opengis.feature.Feature;
  * @version $Id$
  *
  *
+ *
  * @source $URL$
  * @since 2.6
  */

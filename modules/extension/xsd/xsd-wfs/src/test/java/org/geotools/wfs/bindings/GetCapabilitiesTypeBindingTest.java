@@ -31,6 +31,7 @@ import org.w3c.dom.Document;
  *          groldan $
  * @since 2.5.x
  *
+ *
  * @source $URL$
  */
 public class GetCapabilitiesTypeBindingTest extends WFSTestSupport {

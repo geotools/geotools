@@ -23,6 +23,11 @@ import org.w3c.dom.Document;
 import com.vividsolutions.jts.geom.Envelope;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLBoxTypeBinding2Test extends GMLTestSupport {
     public void testType() {
         assertEquals(Envelope.class, binding(GML.BoxType).getType());

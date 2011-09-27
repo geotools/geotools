@@ -33,6 +33,7 @@ import org.opengis.geometry.BoundingBox;
  * 
  * @author Richard Gould
  *
+ *
  * @source $URL$
  */
 public abstract class AbstractGetMapRequest extends AbstractWMSRequest implements GetMapRequest {

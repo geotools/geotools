@@ -23,6 +23,11 @@ import org.w3c.dom.Document;
 import com.vividsolutions.jts.geom.Polygon;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLPolygonPropertyTypeBinding2Test extends GMLTestSupport {
     public void testType() {
         assertEquals(Polygon.class, binding(GML.PolygonPropertyType).getType());

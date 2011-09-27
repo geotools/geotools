@@ -79,6 +79,7 @@ import org.geotools.xml.Parser;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class SLDConfiguration extends Configuration {

@@ -22,6 +22,11 @@ import org.opengis.filter.PropertyIsLike;
 import org.geotools.xml.Binding;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OGCPropertyIsLikeTypeBindingTest extends FilterTestSupport {
     public void testType() {
         assertEquals(PropertyIsLike.class, binding(OGC.PropertyIsLikeType).getType());

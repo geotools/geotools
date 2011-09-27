@@ -58,6 +58,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
  * @version $Id$
  *
  *
+ *
  * @source $URL$
  *         http://svn.geotools.org/geotools/branches/2.4.x/modules/unsupported/community-schemas
  *         /community

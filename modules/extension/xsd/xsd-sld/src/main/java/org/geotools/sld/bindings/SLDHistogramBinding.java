@@ -40,6 +40,7 @@ import org.geotools.xml.*;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class SLDHistogramBinding extends AbstractComplexBinding {

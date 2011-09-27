@@ -20,6 +20,11 @@ import org.w3c.dom.Document;
 import org.opengis.filter.expression.Literal;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class LiteralTypeBindingTest extends FilterTestSupport {
     public void testParse() throws Exception {
         FilterMockData.literal(document, document);

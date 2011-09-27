@@ -23,6 +23,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PriorityQueue implements Collection, Queue {
   public static double RESIZE_FACTOR = 1.5;
   

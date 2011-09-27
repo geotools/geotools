@@ -19,6 +19,11 @@ package org.geotools.brewer.color;
 import junit.framework.TestCase;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PaletteTest extends TestCase {
     ColorBrewer brewer;
 

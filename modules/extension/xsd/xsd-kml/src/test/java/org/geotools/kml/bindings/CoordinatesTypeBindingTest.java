@@ -26,6 +26,11 @@ import org.geotools.xml.Binding;
 import org.w3c.dom.Document;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class CoordinatesTypeBindingTest extends KMLTestSupport {
     public void testType() {
         assertEquals(CoordinateSequence.class, binding(KML.CoordinatesType).getType());

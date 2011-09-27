@@ -21,6 +21,11 @@ import org.eclipse.xsd.XSDSchemaContent;
 import org.eclipse.xsd.XSDTypeDefinition;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public interface InstanceComponent {
     /**
      * @return The object containing the type definiton of the instance.

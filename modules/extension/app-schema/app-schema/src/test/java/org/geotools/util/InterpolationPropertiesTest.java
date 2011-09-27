@@ -40,6 +40,7 @@ import static org.junit.Assert.assertNotNull;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class InterpolationPropertiesTest extends AppSchemaTestSupport {

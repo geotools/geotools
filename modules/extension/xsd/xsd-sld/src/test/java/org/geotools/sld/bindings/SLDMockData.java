@@ -23,6 +23,11 @@ import javax.xml.namespace.QName;
 import org.geotools.filter.v1_0.OGC;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SLDMockData {
     static Element anchorPoint(Document document, Node parent) {
         Element anchorPoint = element(SLD.ANCHORPOINT, document, parent);

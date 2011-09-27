@@ -16,7 +16,8 @@ import java.util.List;
  * CDATA #REQUIRED default CDATA #IMPLIED nearestValue (0 | 1) "0">
  * 
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/wms/src/main/java/org/geotools/data/wms/xml/Extent.java $
+ *
+ * @source $URL$
  * @version SVN $Id$
  * @author Per Engstrom, Curalia AB, pereng@gmail.com
  * 

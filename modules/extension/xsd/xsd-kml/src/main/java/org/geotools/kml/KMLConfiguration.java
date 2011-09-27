@@ -60,6 +60,7 @@ import org.geotools.xml.Configuration;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class KMLConfiguration extends Configuration {

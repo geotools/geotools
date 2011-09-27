@@ -47,7 +47,8 @@ import static org.junit.Assert.*;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/test/java/org/geotools/data/complex/PolymorphicChainingTest.java $
+ *
+ * @source $URL$
  */
 public class PolymorphicChainingTest extends AppSchemaTestSupport {
     static final String EX_NS = "urn:example:xmlns:ArtifactML:1.0";

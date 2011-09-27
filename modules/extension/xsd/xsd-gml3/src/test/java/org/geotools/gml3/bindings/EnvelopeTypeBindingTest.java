@@ -24,6 +24,11 @@ import org.w3c.dom.Element;
 import com.vividsolutions.jts.geom.Envelope;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class EnvelopeTypeBindingTest extends GML3TestSupport {
     public void testEncode() throws Exception {
         Document dom = encode(GML3MockData.bounds(), GML.Envelope);

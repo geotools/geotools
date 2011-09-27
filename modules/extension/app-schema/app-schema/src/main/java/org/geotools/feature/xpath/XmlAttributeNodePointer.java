@@ -32,7 +32,8 @@ import org.xml.sax.Attributes;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main/java/org/geotools/feature/xpath/XmlAttributeNodePointer.java $
+ *
+ * @source $URL$
  */
 public class XmlAttributeNodePointer extends NodePointer {
 

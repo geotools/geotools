@@ -26,6 +26,11 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.w3c.dom.Element;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class AbstractFeatureCollectionTypeBindingTest extends GML3TestSupport {
     protected Configuration createConfiguration() {
         return new TestConfiguration();

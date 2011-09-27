@@ -4,6 +4,11 @@ import org.geotools.styling.ContrastEnhancement;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.ContrastMethod;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ContrastEnhancementBuilder extends AbstractStyleBuilder<ContrastEnhancement> {
     private Expression gamma = null;
 

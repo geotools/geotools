@@ -30,6 +30,11 @@ import org.geotools.xml.schema.Group;
 import org.geotools.xml.schema.Schema;
 import org.geotools.xml.schema.SimpleType;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OGCSchema implements Schema {
     
     private static OGCSchema instance = new OGCSchema();

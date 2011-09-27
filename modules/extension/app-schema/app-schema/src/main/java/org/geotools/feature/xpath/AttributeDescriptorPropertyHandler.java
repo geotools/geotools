@@ -33,6 +33,7 @@ import org.opengis.feature.type.ComplexType;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class AttributeDescriptorPropertyHandler implements DynamicPropertyHandler {

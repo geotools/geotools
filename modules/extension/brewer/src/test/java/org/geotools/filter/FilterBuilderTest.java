@@ -14,6 +14,7 @@ import org.opengis.filter.spatial.Equals;
  * this as a starting point; and break out other test cases on an as needed basis.
  *
  *
+ *
  * @source $URL$
  */
 public class FilterBuilderTest {

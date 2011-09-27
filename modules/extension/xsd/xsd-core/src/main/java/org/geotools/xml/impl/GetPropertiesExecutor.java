@@ -32,6 +32,7 @@ import org.geotools.xml.ComplexBinding;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class GetPropertiesExecutor implements BindingWalker.Visitor {

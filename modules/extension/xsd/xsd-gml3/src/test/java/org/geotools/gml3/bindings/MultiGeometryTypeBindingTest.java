@@ -22,6 +22,11 @@ import org.w3c.dom.Document;
 
 import com.vividsolutions.jts.geom.GeometryCollection;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MultiGeometryTypeBindingTest extends GML3TestSupport {
     
 

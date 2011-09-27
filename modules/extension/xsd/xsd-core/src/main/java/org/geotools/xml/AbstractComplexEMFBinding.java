@@ -40,6 +40,7 @@ import org.geotools.util.Converters;
  *
  *
  *
+ *
  * @source $URL$
  */
 public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {

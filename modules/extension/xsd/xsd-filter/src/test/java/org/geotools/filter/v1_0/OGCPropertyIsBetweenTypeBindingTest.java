@@ -24,6 +24,11 @@ import org.opengis.filter.expression.PropertyName;
 import org.geotools.xml.Binding;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OGCPropertyIsBetweenTypeBindingTest extends FilterTestSupport {
     public void testLowerBoundaryType() {
         assertEquals(Expression.class, binding(OGC.LowerBoundaryType).getType());

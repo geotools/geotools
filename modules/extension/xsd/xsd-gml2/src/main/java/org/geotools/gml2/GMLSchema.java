@@ -49,6 +49,11 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLSchema extends SchemaImpl {
     /**
      * <p>

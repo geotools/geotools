@@ -39,6 +39,7 @@ import org.opengis.util.InternationalString;
  * @see GEOT-3354
  *
  *
+ *
  * @source $URL$
  */
 public class UniqueNameFeatureTypeFactoryImpl extends FeatureTypeFactoryImpl {

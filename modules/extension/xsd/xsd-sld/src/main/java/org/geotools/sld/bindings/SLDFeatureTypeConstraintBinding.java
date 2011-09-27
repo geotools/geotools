@@ -57,6 +57,7 @@ import org.picocontainer.MutablePicoContainer;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class SLDFeatureTypeConstraintBinding extends AbstractComplexBinding {

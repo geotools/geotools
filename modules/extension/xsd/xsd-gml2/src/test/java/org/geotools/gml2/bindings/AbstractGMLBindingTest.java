@@ -51,6 +51,11 @@ import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequenceFactory;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class AbstractGMLBindingTest extends TestCase {
     XSDSchema schema;
     MutablePicoContainer container;

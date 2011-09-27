@@ -59,6 +59,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class DirectPositionTypeBinding extends AbstractComplexBinding {

@@ -17,7 +17,8 @@ package org.geotools.data.wms.xml;
  * name="current" type="boolean"/> </extension> </simpleContent> </complexType> </element>
  * 
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/wms/src/main/java/org/geotools/data/wms/xml/Dimension.java $
+ *
+ * @source $URL$
  * @version SVN $Id$
  * @author Per Engstrom, Curalia AB, pereng@gmail.com
  * 

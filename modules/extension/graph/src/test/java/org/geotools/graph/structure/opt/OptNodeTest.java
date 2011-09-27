@@ -22,6 +22,11 @@ import junit.framework.TestCase;
 
 import org.geotools.graph.structure.Edge;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OptNodeTest extends TestCase {
   private OptNode m_node;
   private OptNode m_otherNode;

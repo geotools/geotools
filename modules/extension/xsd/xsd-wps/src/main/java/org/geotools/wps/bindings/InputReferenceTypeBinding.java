@@ -33,6 +33,7 @@ import org.geotools.xml.ComplexEMFBinding;
  * @author Lucas Reed, Refractions Research Inc
  *
  *
+ *
  * @source $URL$
  */
 public class InputReferenceTypeBinding extends ComplexEMFBinding {

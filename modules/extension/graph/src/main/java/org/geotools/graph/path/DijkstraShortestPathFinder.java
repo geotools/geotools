@@ -35,6 +35,7 @@ import org.geotools.graph.traverse.standard.DijkstraIterator.NodeWeighter;
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  *
  *
+ *
  * @source $URL$
  */
 public class DijkstraShortestPathFinder implements GraphWalker {

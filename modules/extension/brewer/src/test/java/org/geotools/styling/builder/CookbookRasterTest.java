@@ -10,6 +10,11 @@ import org.geotools.styling.Style;
 import org.junit.Test;
 import org.opengis.style.ContrastMethod;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class CookbookRasterTest extends AbstractStyleTest {
 
     @Test

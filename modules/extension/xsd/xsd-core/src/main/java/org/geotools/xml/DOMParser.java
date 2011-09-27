@@ -40,6 +40,7 @@ import org.geotools.xml.impl.ParserHandler;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class DOMParser {

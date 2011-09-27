@@ -41,6 +41,11 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GML3EncodingTest extends TestCase {
     boolean isOffline() throws Exception {
         //this test will only run if network is available

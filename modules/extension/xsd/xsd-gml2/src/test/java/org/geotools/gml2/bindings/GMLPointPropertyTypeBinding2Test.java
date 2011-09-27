@@ -23,6 +23,11 @@ import org.w3c.dom.Document;
 import com.vividsolutions.jts.geom.Point;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLPointPropertyTypeBinding2Test extends GMLTestSupport {
     public void testType() {
         assertEquals(Point.class, binding(GML.PointPropertyType).getType());

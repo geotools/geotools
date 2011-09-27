@@ -23,6 +23,11 @@ import org.w3c.dom.Document;
 import com.vividsolutions.jts.geom.LineString;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLLineStringTypeBinding2Test extends GMLTestSupport {
     public void testType() {
         assertEquals(LineString.class, binding(GML.LineStringType).getType());

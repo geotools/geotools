@@ -84,6 +84,7 @@ import com.vividsolutions.jts.geom.GeometryCollection;
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
  *
  *
+ *
  * @source $URL$
  */
 public class GML2EncodingUtils {

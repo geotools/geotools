@@ -37,6 +37,7 @@ import org.geotools.xml.impl.jxpath.FeatureNodeFactory;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class XPathPropertyAccessorFactory implements PropertyAccessorFactory {

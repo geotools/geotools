@@ -87,6 +87,7 @@ package org.geotools.xml;
  *
  *
  *
+ *
  * @source $URL$
  */
 public interface SimpleBinding extends Binding {

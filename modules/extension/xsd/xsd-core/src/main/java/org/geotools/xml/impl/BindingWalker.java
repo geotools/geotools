@@ -37,6 +37,11 @@ import org.geotools.xml.Schemas;
 import org.geotools.xs.XS;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class BindingWalker implements TypeWalker.Visitor {
     BindingLoader loader;
     

@@ -34,6 +34,7 @@ import org.geotools.data.ows.Request;
  *
  * @author Richard Gould, Refractions Research
  *
+ *
  * @source $URL$
  */
 public interface GetFeatureInfoRequest extends Request{

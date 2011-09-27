@@ -21,6 +21,11 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.opengis.feature.simple.SimpleFeature;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FeaturePropertyIterator implements NodeIterator {
     /**
      * The feature node pointer

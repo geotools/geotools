@@ -18,7 +18,8 @@ import org.geotools.wps.WPSTestSupport;
  * @author Andrea Aime
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wps/src/test/java/org/geotools/wps/bindings/ExecuteBindingTest.java $
+ *
+ * @source $URL$
  */
 public class ExecuteBindingTest extends WPSTestSupport {
 

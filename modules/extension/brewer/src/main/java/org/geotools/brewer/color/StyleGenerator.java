@@ -70,6 +70,7 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  * @author Cory Horner, Refractions Research Inc.
  *
+ *
  * @source $URL$
  */
 public class StyleGenerator {

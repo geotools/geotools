@@ -30,6 +30,11 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.LineSegment;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OptDirectedLineGraphGeneratorTest extends TestCase {
    
   private OptDirectedLineGraphGenerator m_gen;

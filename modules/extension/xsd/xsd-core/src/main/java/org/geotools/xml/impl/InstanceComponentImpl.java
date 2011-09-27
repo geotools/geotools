@@ -22,6 +22,11 @@ import org.geotools.xml.AttributeInstance;
 import org.geotools.xml.InstanceComponent;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class InstanceComponentImpl implements InstanceComponent {
     /** namespace **/
     String namespace;

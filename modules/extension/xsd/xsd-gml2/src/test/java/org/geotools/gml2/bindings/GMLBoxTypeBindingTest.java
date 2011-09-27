@@ -24,6 +24,11 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLBoxTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance box;
     ElementInstance coord1;

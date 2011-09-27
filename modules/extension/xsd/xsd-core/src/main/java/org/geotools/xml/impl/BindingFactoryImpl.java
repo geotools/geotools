@@ -22,6 +22,11 @@ import org.geotools.xml.Binding;
 import org.geotools.xml.BindingFactory;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class BindingFactoryImpl implements BindingFactory {
     MutablePicoContainer context;
     BindingLoader loader;

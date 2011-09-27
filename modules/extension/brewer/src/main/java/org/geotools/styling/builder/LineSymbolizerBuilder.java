@@ -7,6 +7,11 @@ import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Stroke;
 import org.opengis.filter.expression.Expression;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class LineSymbolizerBuilder extends AbstractStyleBuilder<LineSymbolizer> {
     StrokeBuilder strokeBuilder = new StrokeBuilder(this);
 

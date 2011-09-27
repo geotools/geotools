@@ -61,6 +61,7 @@ import com.vividsolutions.jts.geom.MultiLineString;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class CurveTypeBinding extends org.geotools.gml3.bindings.CurveTypeBinding

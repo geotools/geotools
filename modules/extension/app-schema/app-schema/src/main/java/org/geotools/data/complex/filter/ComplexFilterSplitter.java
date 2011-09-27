@@ -38,6 +38,8 @@ import org.opengis.filter.expression.Subtract;
 
 /**
  * @author Niels Charlier (Curtin University of Technology)
+ *
+ * @source $URL$
  */
 public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor {
     

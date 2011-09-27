@@ -11,7 +11,8 @@ import org.picocontainer.MutablePicoContainer;
  *
  * @generated
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-fes/src/main/java/org/geotools/filter/v2_0/FESConfiguration.java $
+ *
+ * @source $URL$
  */
 public class FESConfiguration extends Configuration {
 

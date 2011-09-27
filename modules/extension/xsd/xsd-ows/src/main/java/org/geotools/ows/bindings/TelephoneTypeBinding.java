@@ -55,6 +55,7 @@ import org.geotools.xml.*;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class TelephoneTypeBinding extends AbstractComplexEMFBinding {

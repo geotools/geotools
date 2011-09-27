@@ -31,6 +31,7 @@ import org.opengis.feature.type.Schema;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public final class GSS extends GML.DelegatingXSD {

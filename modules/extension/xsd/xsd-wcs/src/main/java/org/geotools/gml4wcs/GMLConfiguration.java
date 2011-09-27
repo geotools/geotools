@@ -39,7 +39,8 @@ import com.vividsolutions.jts.geom.impl.CoordinateArraySequenceFactory;
  *
  * @generated
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wcs/src/main/java/org/geotools/gml4wcs/GMLConfiguration.java $
+ *
+ * @source $URL$
  */
 public class GMLConfiguration extends Configuration {
 

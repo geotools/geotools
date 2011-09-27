@@ -54,6 +54,7 @@ import com.vividsolutions.jts.geom.Point;
  * @version $Id$
  *
  *
+ *
  * @source $URL$
  * @since 2.4
  */

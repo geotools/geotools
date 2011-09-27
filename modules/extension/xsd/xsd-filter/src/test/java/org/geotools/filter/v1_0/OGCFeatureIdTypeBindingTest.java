@@ -21,6 +21,11 @@ import org.opengis.filter.identity.FeatureId;
 import org.geotools.xml.Binding;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OGCFeatureIdTypeBindingTest extends FilterTestSupport {
     public void testType() {
         assertEquals(FeatureId.class, binding(OGC.FeatureIdType).getType());

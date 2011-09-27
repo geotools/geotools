@@ -5,6 +5,11 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Literal;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class LiteralBuilder implements Builder<Literal> {
     protected FilterFactory ff = CommonFactoryFinder.getFilterFactory2(null);    
     Object literal = null; // will result in Expression.NIL

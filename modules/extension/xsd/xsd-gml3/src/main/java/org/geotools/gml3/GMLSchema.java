@@ -21,6 +21,11 @@ import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.Filter;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLSchema extends SchemaImpl {
 
     /**

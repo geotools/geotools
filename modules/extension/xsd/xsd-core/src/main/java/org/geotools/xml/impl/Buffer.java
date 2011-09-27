@@ -24,6 +24,7 @@ package org.geotools.xml.impl;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class Buffer {

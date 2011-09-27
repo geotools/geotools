@@ -72,6 +72,7 @@ import org.picocontainer.MutablePicoContainer;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class GMLConfiguration extends Configuration {

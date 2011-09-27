@@ -24,6 +24,11 @@ import org.geotools.graph.structure.Node;
 import org.geotools.graph.structure.basic.BasicNode;
 import org.geotools.graph.traverse.GraphTraversal;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SimpleGraphWalkerTest extends TestCase {
   private boolean m_visited;
   

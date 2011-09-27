@@ -26,6 +26,11 @@ import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
 import org.geotools.graph.util.IndexedStack;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ExhaustivePathFinder {
   public final static int CONTINUE_PATH = 0;
   public final static int END_PATH_AND_CONTINUE = 1;

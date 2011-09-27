@@ -27,6 +27,11 @@ import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.PrecisionModel;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GeometryUtil {
   
   private static GeometryFactory geomFactory;

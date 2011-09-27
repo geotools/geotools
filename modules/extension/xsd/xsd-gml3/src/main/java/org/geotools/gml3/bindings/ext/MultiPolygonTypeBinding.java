@@ -31,6 +31,11 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MultiPolygonTypeBinding extends org.geotools.gml3.bindings.MultiPolygonTypeBinding {
 
     public MultiPolygonTypeBinding(GeometryFactory gFactory) {

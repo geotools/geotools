@@ -21,6 +21,11 @@ import org.opengis.filter.sort.SortBy;
 import org.geotools.xml.Binding;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SortByTypeBindingTest extends FilterTestSupport {
     public void testType() {
         assertEquals(SortBy[].class, binding(OGC.SortByType).getType());

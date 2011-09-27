@@ -34,7 +34,8 @@ import javax.xml.namespace.QName;
  * 
  * @generated
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wfs/src/main/java/org/geotools/wfs/v2_0/FeatureCollectionTypeBinding.java $
+ *
+ * @source $URL$
  */
 public class FeatureCollectionTypeBinding extends
         org.geotools.wfs.bindings.FeatureCollectionTypeBinding {

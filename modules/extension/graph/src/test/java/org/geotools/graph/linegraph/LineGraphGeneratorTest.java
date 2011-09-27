@@ -28,6 +28,11 @@ import org.geotools.graph.structure.Node;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.LineSegment;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class LineGraphGeneratorTest extends TestCase {
   
   private BasicLineGraphGenerator m_gen;

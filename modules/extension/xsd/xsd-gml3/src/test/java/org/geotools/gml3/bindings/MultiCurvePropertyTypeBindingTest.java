@@ -21,6 +21,11 @@ import org.geotools.gml3.GML3TestSupport;
 import org.w3c.dom.Document;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MultiCurvePropertyTypeBindingTest extends GML3TestSupport {
     public void testEncode() throws Exception {
         Document dom = encode(GML3MockData.multiLineString(), GML.multiCurveProperty);

@@ -23,6 +23,11 @@ import org.w3c.dom.Document;
 import com.vividsolutions.jts.geom.Envelope;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLBoundingShapeTypeBindingTest extends GMLTestSupport {
     public void testType() {
         assertEquals(Envelope.class, binding(GML.BoundingShapeType).getType());

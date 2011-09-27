@@ -35,6 +35,7 @@ import org.w3c.dom.Element;
  * @see ComplexEMFBinding
  *
  *
+ *
  * @source $URL$
  */
 public class SimpleContentComplexEMFBinding extends ComplexEMFBinding {

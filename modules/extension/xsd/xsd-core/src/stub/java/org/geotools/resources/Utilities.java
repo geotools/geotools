@@ -16,6 +16,11 @@
  */
 package org.geotools.resources;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class Utilities {
 
     public static boolean equals(final Object object1, final Object object2) {

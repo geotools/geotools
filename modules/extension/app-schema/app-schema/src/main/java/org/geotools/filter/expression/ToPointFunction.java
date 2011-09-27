@@ -55,6 +55,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class ToPointFunction implements Function {

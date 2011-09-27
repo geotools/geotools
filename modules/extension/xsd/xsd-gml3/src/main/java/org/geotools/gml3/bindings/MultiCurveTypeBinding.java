@@ -62,6 +62,7 @@ import com.vividsolutions.jts.geom.MultiLineString;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class MultiCurveTypeBinding extends AbstractComplexBinding {

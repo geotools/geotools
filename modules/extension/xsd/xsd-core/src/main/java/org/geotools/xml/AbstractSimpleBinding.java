@@ -24,6 +24,7 @@ package org.geotools.xml;
  *
  *
  *
+ *
  * @source $URL$
  */
 public abstract class AbstractSimpleBinding implements SimpleBinding {

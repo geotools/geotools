@@ -87,6 +87,7 @@ import com.vividsolutions.jts.geom.LineString;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class LineStringTypeBinding extends AbstractComplexBinding {

@@ -32,6 +32,11 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SurfaceArrayPropertyTypeBinding 
     extends org.geotools.gml3.bindings.SurfaceArrayPropertyTypeBinding 
     implements Comparable {

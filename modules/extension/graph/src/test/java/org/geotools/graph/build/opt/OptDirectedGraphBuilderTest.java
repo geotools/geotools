@@ -26,6 +26,11 @@ import org.geotools.graph.structure.Node;
 import org.geotools.graph.structure.opt.OptDirectedEdge;
 import org.geotools.graph.structure.opt.OptDirectedNode;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OptDirectedGraphBuilderTest extends TestCase {
 
   private OptDirectedGraphBuilder m_builder;

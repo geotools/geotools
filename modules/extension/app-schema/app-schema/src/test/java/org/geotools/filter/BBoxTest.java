@@ -45,6 +45,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  *
  *
+ *
  * @source $URL$
  */
 public class BBoxTest extends AppSchemaTestSupport {

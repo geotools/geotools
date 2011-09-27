@@ -22,6 +22,11 @@ import org.w3c.dom.NodeList;
 import org.geotools.styling.AnchorPoint;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SLDAnchorPointBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(AnchorPoint.class, new SLDAnchorPointBinding(styleFactory).getType());

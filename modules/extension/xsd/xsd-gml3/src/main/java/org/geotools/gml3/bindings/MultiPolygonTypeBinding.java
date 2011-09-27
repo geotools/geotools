@@ -56,6 +56,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class MultiPolygonTypeBinding extends AbstractComplexBinding implements Comparable {

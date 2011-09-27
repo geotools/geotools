@@ -50,6 +50,11 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class KMLParsingTest extends TestCase {
     
    public void testParse() throws Exception {

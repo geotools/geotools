@@ -14,6 +14,11 @@ import org.eclipse.xsd.XSDSchema;
 import org.geotools.xml.Schemas;
 import org.junit.Test;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SchemasTest {
 
     @Test

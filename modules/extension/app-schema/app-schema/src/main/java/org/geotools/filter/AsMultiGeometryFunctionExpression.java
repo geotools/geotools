@@ -51,6 +51,7 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class AsMultiGeometryFunctionExpression extends FunctionExpressionImpl {

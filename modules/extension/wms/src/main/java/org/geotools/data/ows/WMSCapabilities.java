@@ -25,6 +25,7 @@ import java.util.List;
  *
  * @author Richard Gould, Refractions Research
  *
+ *
  * @source $URL$
  */
 public class WMSCapabilities extends Capabilities {

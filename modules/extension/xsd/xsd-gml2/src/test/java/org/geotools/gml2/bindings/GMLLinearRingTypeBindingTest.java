@@ -28,6 +28,11 @@ import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequenceFactory;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLLinearRingTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance ring;
     ElementInstance coord1;

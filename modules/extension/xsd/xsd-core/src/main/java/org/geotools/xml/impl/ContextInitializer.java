@@ -24,6 +24,11 @@ import org.geotools.xml.Node;
 import org.geotools.xml.impl.BindingWalker.Visitor;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ContextInitializer implements Visitor {
     ElementInstance childInstance;
     Node node;

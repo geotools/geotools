@@ -28,6 +28,11 @@ import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLConfigurationTest extends TestCase {
     GMLConfiguration configuration;
 

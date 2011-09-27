@@ -23,6 +23,11 @@ import org.w3c.dom.Document;
 import com.vividsolutions.jts.geom.MultiPolygon;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLMultiPolygonTypeBinding2Test extends GMLTestSupport {
     public void testType() {
         assertEquals(MultiPolygon.class, binding(GML.MultiPolygonType).getType());

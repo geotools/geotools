@@ -24,6 +24,7 @@ package org.geotools.xml.impl;
  *TODO: kill this class
  *
  *
+ *
  * @source $URL$
  */
 public class ParseHierarchy {

@@ -20,6 +20,11 @@ import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MultiCurve extends GeometryCollection {
     public MultiCurve(Curve[] members, GeometryFactory factory) {
         super(members, factory);

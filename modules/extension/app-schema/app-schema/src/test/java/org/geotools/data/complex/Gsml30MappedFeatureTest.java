@@ -46,6 +46,8 @@ import org.opengis.feature.type.Name;
  * Test app-schema with GeoSciML 3.0rc1, a GML 3.2 application schema.
  * 
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
+ *
+ * @source $URL$
  */
 public class Gsml30MappedFeatureTest extends AppSchemaTestSupport {
 

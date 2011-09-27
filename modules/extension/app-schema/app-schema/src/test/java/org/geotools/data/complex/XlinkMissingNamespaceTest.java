@@ -34,6 +34,7 @@ import org.junit.Test;
  * @author Jacqui Githaiga (Curtin University of Technology)
  *
  *
+ *
  * @source $URL$
  */
 public class XlinkMissingNamespaceTest extends AppSchemaTestSupport {

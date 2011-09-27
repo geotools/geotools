@@ -39,6 +39,11 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.v1_1.OGC;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FilterMockData {
     static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 

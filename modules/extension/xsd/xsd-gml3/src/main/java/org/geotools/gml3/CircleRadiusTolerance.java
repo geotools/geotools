@@ -20,7 +20,8 @@ package org.geotools.gml3;
  *
  * @author Erik van de Pol
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org/geotools/gml3/CircleRadiusTolerance.java $
+ *
+ * @source $URL$
  */
 public class CircleRadiusTolerance implements LinearizationTolerance {
     private double circleRadiusMultiplier;

@@ -26,6 +26,7 @@ import org.geotools.validation.DefaultIntegrityValidationBeanInfo;
  * @author bowens
  *
  *
+ *
  * @source $URL$
  */
 public abstract class RelationIntegrityBeanInfo

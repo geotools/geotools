@@ -27,6 +27,11 @@ import org.opengis.filter.PropertyIsNotEqualTo;
 import org.geotools.xml.Binding;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class BinaryComparisonOpTypeBindingTest extends org.geotools.filter.v1_0.BinaryComparisonOpTypeBindingTest {
     public void testBinaryComparisonOpType() {
         assertEquals(BinaryComparisonOperator.class, binding(OGC.BinaryComparisonOpType).getType());

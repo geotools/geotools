@@ -30,6 +30,11 @@ import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
 import org.geotools.graph.util.graph.GraphPartitioner;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GraphPartitionerTest extends TestCase {
  
   private GraphBuilder m_builder;

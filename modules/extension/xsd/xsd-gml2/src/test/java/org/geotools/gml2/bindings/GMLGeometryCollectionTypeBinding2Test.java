@@ -3,6 +3,11 @@ package org.geotools.gml2.bindings;
 import org.geotools.gml2.GML;
 import org.w3c.dom.Document;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLGeometryCollectionTypeBinding2Test extends GMLTestSupport {
 
     public void testEncode() throws Exception {

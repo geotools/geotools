@@ -39,6 +39,7 @@ import org.geotools.xml.InstanceComponent;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class MLBodyTypeBinding extends AbstractSimpleBinding {

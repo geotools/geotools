@@ -26,6 +26,11 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLAbstractGeometryTypeBindingTest extends GMLTestSupport {
     public void testType() {
         assertEquals(Geometry.class, binding(GML.AbstractGeometryType).getType());

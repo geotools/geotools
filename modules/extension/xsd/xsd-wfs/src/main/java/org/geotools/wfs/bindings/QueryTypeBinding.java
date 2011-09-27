@@ -161,6 +161,7 @@ import org.geotools.xml.AbstractComplexEMFBinding;
  * 
  * @generated
  *
+ *
  * @source $URL$
  */
 @SuppressWarnings( { "nls", "unchecked" })

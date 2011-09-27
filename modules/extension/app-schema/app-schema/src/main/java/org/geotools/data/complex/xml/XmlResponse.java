@@ -28,6 +28,7 @@ import org.jdom.Document;
  * @version $Id$
  *
  *
+ *
  * @source $URL$
  */
 public class XmlResponse {

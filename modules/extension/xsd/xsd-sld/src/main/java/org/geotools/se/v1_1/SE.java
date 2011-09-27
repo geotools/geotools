@@ -28,7 +28,8 @@ import org.geotools.xml.XSD;
  *
  * @generated
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-sld/src/main/java/org/geotools/se/v1_1/SE.java $
+ *
+ * @source $URL$
  */
 public final class SE extends XSD {
 

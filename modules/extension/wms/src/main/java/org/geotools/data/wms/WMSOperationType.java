@@ -25,6 +25,7 @@ import org.geotools.data.ows.OperationType;
  *
  * @author Richard Gould
  *
+ *
  * @source $URL$
  * @deprecated Use of OperationType should be sufficient
  */

@@ -22,6 +22,11 @@ import org.opengis.filter.PropertyIsNull;
 import org.geotools.xml.Binding;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OGCPropertyIsNullTypeBindingTest extends FilterTestSupport {
     public void testType() {
         assertEquals(PropertyIsNull.class, binding(OGC.PropertyIsNullType).getType());

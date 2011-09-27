@@ -47,7 +47,8 @@ import javax.xml.namespace.QName;
  * 
  * @generated
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-sld/src/main/java/org/geotools/se/v1_1/bindings/LabelPlacementBinding.java $
+ *
+ * @source $URL$
  */
 public class LabelPlacementBinding extends SLDLabelPlacementBinding {
 

@@ -40,6 +40,7 @@ import org.opengis.feature.type.PropertyDescriptor;
  * 
  * @author Rob Atkinson, CSIRO Land and Water
  *
+ *
  * @source $URL$
  */
 

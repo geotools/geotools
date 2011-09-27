@@ -22,6 +22,11 @@ import org.geotools.xs.TestSchema;
 import org.geotools.xs.XS;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class XSNonNegativeIntegerStrategyTest extends TestSchema {
     public void validateValues(String text, Number expected)
         throws Exception {

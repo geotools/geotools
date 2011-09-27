@@ -3,6 +3,11 @@ package org.geotools.styling.builder;
 import org.geotools.styling.Halo;
 import org.opengis.filter.expression.Expression;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class HaloBuilder extends AbstractStyleBuilder<org.opengis.style.Halo> {
     Expression radius;
 

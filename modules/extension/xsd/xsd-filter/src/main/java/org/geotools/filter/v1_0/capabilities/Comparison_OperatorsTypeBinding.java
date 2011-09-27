@@ -47,6 +47,7 @@ import org.geotools.xml.*;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class Comparison_OperatorsTypeBinding extends AbstractComplexBinding {

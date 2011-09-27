@@ -42,6 +42,11 @@ import org.geotools.xml.impl.ElementImpl;
 import org.geotools.xml.impl.PicoMap;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class TestSchema extends TestCase {
     public static URL url;
     public static XSDSchema schema;

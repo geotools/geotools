@@ -65,6 +65,7 @@ import org.geotools.graph.util.PriorityQueue;
 * @author Germán E. Trouillet, Francisco G. Malbrán. Universidad Nacional de Córdoba (UNC)
  *
  *
+ *
  * @source $URL$
 */
 public class AStarIterator extends SourceGraphIterator{

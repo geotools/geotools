@@ -41,7 +41,8 @@ import org.geotools.xml.Node;
  * 
  * @generated
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wcs/src/main/java/org/geotools/wcs/bindings/RangeSubsetType_axisSubsetBinding.java $
+ *
+ * @source $URL$
  */
 public class RangeSubsetType_axisSubsetBinding extends AbstractComplexBinding {
 

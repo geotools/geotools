@@ -39,6 +39,7 @@ import org.opengis.util.InternationalString;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class ComplexFeatureTypeImpl extends UniqueNameFeatureTypeImpl {

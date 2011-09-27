@@ -57,6 +57,7 @@ import org.opengis.feature.type.Name;
  * @version $Id$
  *
  *
+ *
  * @source $URL$
  *         http://svn.geotools.org/geotools/branches/2.4.x/modules/unsupported/community-schemas
  *         /community-schema-ds/src/test/java/org/geotools/data/complex/BoreholeTest.java $

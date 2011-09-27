@@ -26,6 +26,11 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SurfacePropertyTypeBindingTest extends GML3TestSupport {
     
     protected boolean enableExtendedArcSurfaceSupport() {

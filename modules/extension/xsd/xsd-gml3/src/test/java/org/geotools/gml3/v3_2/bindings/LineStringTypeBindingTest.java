@@ -25,6 +25,11 @@ import org.w3c.dom.Document;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.LineString;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class LineStringTypeBindingTest extends GML32TestSupport {
 //    public void testPos() throws Exception {
 //        document.appendChild(GML3MockData.lineStringWithPos(document, null));

@@ -30,6 +30,11 @@ import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Node;
 import org.geotools.graph.traverse.standard.DijkstraIterator;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DijkstraShortestPathFinderTest extends TestCase {  
 
   private GraphBuilder m_builder;

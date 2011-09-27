@@ -52,7 +52,8 @@ import static org.junit.Assert.assertNull;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/test/java/org/geotools/data/complex/PropSelectionTest.java $
+ *
+ * @source $URL$
  */
 public class PropSelectionTest extends AppSchemaTestSupport {
     

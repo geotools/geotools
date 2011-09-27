@@ -39,6 +39,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * intersects part of itself.
  * </p>
  *
+ *
  * @source $URL$
  */
 public class IntersectsIntegrity extends RelationIntegrity {

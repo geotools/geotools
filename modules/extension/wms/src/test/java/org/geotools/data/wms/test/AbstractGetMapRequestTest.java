@@ -28,6 +28,11 @@ import org.geotools.data.wms.request.AbstractGetMapRequest;
 import org.geotools.data.wms.request.GetMapRequest;
 import org.geotools.ows.ServiceException;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class AbstractGetMapRequestTest extends TestCase {
 
 	public void testGetFinalURL() throws Exception {

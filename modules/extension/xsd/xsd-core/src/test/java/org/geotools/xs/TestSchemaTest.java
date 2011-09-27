@@ -22,6 +22,11 @@ import javax.xml.namespace.QName;
 import org.geotools.xml.ElementInstance;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TestSchemaTest extends TestSchema {
     public void testInitialize() {
         assertNotNull(url);

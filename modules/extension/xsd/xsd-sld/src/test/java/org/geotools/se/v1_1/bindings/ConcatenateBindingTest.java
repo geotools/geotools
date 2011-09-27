@@ -19,6 +19,11 @@ package org.geotools.se.v1_1.bindings;
 import org.geotools.se.v1_1.SETestSupport;
 import org.opengis.filter.expression.Expression;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ConcatenateBindingTest extends SETestSupport {
 
     public void testParse() throws Exception {

@@ -22,6 +22,11 @@ import org.opengis.filter.capability.FunctionName;
 import org.geotools.xml.Binding;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class Function_NameTypeBindingTest extends FilterCapabilitiesTestSupport {
     public void testType() {
         assertEquals(FunctionName.class, binding(OGC.Function_NameType).getType());

@@ -17,6 +17,11 @@ import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.opengis.filter.expression.Expression;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TextSymbolizerBuilder extends AbstractStyleBuilder<TextSymbolizer> {
     FillBuilder fill = new FillBuilder(this).unset();
 

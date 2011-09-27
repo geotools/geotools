@@ -34,6 +34,7 @@ import org.geotools.xml.XSD;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class ApplicationSchemaXSD extends XSD {

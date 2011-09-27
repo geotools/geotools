@@ -15,6 +15,11 @@ import org.geotools.styling.Symbol;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.GraphicalSymbol;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GraphicBuilder extends AbstractStyleBuilder<org.opengis.style.Graphic> {
     List<Builder<? extends Symbol>> symbols = new ArrayList<Builder<? extends Symbol>>();
 

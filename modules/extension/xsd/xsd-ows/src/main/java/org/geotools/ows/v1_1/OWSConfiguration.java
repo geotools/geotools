@@ -37,6 +37,7 @@ import org.picocontainer.MutablePicoContainer;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class OWSConfiguration extends Configuration {

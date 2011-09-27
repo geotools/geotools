@@ -14,6 +14,11 @@ import org.opengis.filter.expression.PropertyName;
 import net.opengis.wfs.QueryType;
 import net.opengis.wfs.WfsFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class QueryTypeBinding extends org.geotools.wfs.bindings.QueryTypeBinding {
 
     FilterFactory filterFactory;

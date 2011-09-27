@@ -23,6 +23,7 @@ import org.geotools.data.ows.Request;
  * 
  * @author Richard Gould
  *
+ *
  * @source $URL$
  */
 public interface GetLegendGraphicRequest extends Request {

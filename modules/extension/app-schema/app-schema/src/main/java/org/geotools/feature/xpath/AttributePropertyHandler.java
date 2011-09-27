@@ -40,6 +40,7 @@ import org.xml.sax.Attributes;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class AttributePropertyHandler implements DynamicPropertyHandler {

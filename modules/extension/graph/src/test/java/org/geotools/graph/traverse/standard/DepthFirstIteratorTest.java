@@ -32,6 +32,11 @@ import org.geotools.graph.traverse.basic.BasicGraphTraversal;
 import org.geotools.graph.traverse.basic.CountingWalker;
 import org.geotools.graph.util.FIFOQueue;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DepthFirstIteratorTest extends TestCase {
   
   private GraphBuilder m_builder;

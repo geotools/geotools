@@ -13,7 +13,8 @@ import org.geotools.xml.XSD;
  *
  * @generated
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-fes/src/main/java/org/geotools/filter/v2_0/FES.java $
+ *
+ * @source $URL$
  */
 public final class FES extends XSD {
 

@@ -27,6 +27,7 @@ import java.util.List;
  *
  *
  *
+ *
  * @source $URL$
  */
 public interface PropertyExtractor {

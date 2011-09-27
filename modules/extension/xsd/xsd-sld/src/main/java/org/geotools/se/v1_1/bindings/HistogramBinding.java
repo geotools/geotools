@@ -42,7 +42,8 @@ import javax.xml.namespace.QName;
  *
  * @generated
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-sld/src/main/java/org/geotools/se/v1_1/bindings/HistogramBinding.java $
+ *
+ * @source $URL$
  */
 public class HistogramBinding extends AbstractComplexBinding {
 

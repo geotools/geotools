@@ -28,6 +28,11 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLGeometryStreamingTest extends TestCase {
     public void testStreamByXpath() throws Exception {
         Configuration configuration = new GMLConfiguration();

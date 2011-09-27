@@ -16,6 +16,11 @@
  */
 package org.geotools.ml;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MimeType {
     String type;
     String subtype;

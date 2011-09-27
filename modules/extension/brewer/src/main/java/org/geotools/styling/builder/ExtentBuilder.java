@@ -5,6 +5,11 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.Extent;
 import org.geotools.styling.StyleFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ExtentBuilder<P> implements Builder<Extent> {
     private StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
 

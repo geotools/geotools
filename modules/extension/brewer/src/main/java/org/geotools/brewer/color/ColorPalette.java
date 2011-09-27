@@ -23,6 +23,7 @@ import java.awt.Color;
  * A generic palette containing colours.
  * @author Cory Horner, Refractions Research Inc.
  *
+ *
  * @source $URL$
  */
 public class ColorPalette {

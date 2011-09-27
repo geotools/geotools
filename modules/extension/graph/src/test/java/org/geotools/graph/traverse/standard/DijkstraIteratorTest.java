@@ -32,6 +32,11 @@ import org.geotools.graph.traverse.GraphTraversal;
 import org.geotools.graph.traverse.basic.BasicGraphTraversal;
 import org.geotools.graph.traverse.basic.CountingWalker;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DijkstraIteratorTest extends TestCase {
   
   public GraphBuilder m_builder;

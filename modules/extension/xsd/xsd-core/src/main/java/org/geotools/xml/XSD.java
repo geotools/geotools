@@ -56,6 +56,7 @@ import org.opengis.feature.type.Schema;
  * @since 2.5
  *
  *
+ *
  * @source $URL$
  */
 public abstract class XSD {

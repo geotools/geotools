@@ -22,6 +22,11 @@ import org.geotools.styling.Graphic;
 import org.geotools.styling.Mark;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SLDGraphicBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(Graphic.class, new SLDGraphicBinding(null).getType());

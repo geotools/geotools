@@ -40,7 +40,8 @@ import javax.xml.namespace.QName;
  *
  * @generated
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wcs/src/main/java/org/geotools/wcs/bindings/AbstractDescriptionTypeBinding.java $
+ *
+ * @source $URL$
  */
 public class AbstractDescriptionTypeBinding extends AbstractComplexBinding {
 

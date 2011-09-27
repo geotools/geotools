@@ -65,7 +65,8 @@ import com.vividsolutions.jts.geom.MultiLineString;
  * @generated
  * 
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org/geotools/gml3/bindings/ext/CurvePropertyTypeBinding.java $
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org
  *         /geotools/gml3/bindings/CurvePropertyTypeBinding.java $
  */

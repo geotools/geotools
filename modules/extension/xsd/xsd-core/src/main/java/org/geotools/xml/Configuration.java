@@ -212,6 +212,7 @@ import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
  * @see org.geotools.xml.BindingConfiguration
  *
  *
+ *
  * @source $URL$
  */
 public abstract class Configuration {

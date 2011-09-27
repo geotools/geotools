@@ -106,6 +106,7 @@ import org.geotools.xml.Node;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class InsertElementTypeBinding extends AbstractComplexEMFBinding {

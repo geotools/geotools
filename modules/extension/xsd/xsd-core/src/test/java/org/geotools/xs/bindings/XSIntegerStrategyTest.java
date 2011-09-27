@@ -22,6 +22,11 @@ import org.geotools.xs.TestSchema;
 import org.geotools.xs.XS;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class XSIntegerStrategyTest extends TestSchema {
     /**
      * integer has a lexical representation consisting of a finite-length

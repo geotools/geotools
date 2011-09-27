@@ -6,6 +6,11 @@ import javax.measure.unit.Unit;
 import org.geotools.styling.PolygonSymbolizer;
 import org.opengis.filter.expression.Expression;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PolygonSymbolizerBuilder extends AbstractStyleBuilder<PolygonSymbolizer> {
     StrokeBuilder stroke = new StrokeBuilder(this).unset();
 

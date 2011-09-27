@@ -60,6 +60,7 @@ import org.geotools.xml.*;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class SLDPointSymbolizerBinding extends AbstractComplexBinding {

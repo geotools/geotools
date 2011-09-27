@@ -25,6 +25,11 @@ import org.geotools.xml.Binding;
 import org.w3c.dom.Document;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class LinearRingTypeBindingTest extends KMLTestSupport {
     public void testType() {
         assertEquals(LinearRing.class, binding(KML.LinearRingType).getType());

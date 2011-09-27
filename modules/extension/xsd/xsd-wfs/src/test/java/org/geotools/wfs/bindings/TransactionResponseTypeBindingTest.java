@@ -44,6 +44,7 @@ import org.w3c.dom.NodeList;
  * @version $Id$
  * @since 2.5.x
  *
+ *
  * @source $URL$
  */
 public class TransactionResponseTypeBindingTest extends WFSTestSupport {

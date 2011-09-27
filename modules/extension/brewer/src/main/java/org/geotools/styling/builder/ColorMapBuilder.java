@@ -7,6 +7,11 @@ import java.util.List;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.ColorMapEntry;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ColorMapBuilder extends AbstractStyleBuilder<ColorMap> {
 
     int type = ColorMap.TYPE_RAMP;

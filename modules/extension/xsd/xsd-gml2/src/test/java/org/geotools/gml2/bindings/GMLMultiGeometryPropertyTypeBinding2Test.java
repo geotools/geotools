@@ -22,6 +22,11 @@ import org.geotools.xml.Binding;
 import com.vividsolutions.jts.geom.GeometryCollection;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLMultiGeometryPropertyTypeBinding2Test extends GMLTestSupport {
     public void testType() {
         assertEquals(GeometryCollection.class, binding(GML.MultiGeometryPropertyType).getType());

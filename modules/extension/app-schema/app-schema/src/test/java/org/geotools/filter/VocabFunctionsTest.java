@@ -60,6 +60,7 @@ import static org.junit.Assert.fail;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class VocabFunctionsTest extends AppSchemaTestSupport {

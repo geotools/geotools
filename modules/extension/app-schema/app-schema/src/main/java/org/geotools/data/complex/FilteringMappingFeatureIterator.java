@@ -37,6 +37,7 @@ import org.opengis.filter.Filter;
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  *
  *
+ *
  * @source $URL$
  */
 public class FilteringMappingFeatureIterator extends DataAccessMappingFeatureIterator {

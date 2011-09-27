@@ -19,6 +19,11 @@ package org.geotools.data.wms.xml;
 import org.geotools.xml.schema.Facet;
 import org.geotools.xml.schema.SimpleType;
 import org.geotools.xml.schema.impl.SimpleTypeGT;
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ogcSimpleType extends SimpleTypeGT {
     public ogcSimpleType( String name, int type, SimpleType[] parents, Facet[] facets ) {
         super(null, name, OGCSchema.NAMESPACE, type, parents, facets, 0);

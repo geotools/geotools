@@ -6,6 +6,11 @@ import java.util.List;
 import org.geotools.styling.ColorReplacement;
 import org.opengis.filter.expression.Expression;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ColorReplacementBuilder extends AbstractStyleBuilder<ColorReplacement> {
     private Expression propertyName;
 

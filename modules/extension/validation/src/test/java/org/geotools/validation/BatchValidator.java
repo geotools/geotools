@@ -55,6 +55,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author $Author: dmzwiers $ (last modification)
  * @author bowens
  *
+ *
  * @source $URL$
  *         http://svn.geotools.org/trunk/modules/extension/validation/src/test/java/org/geotools
  *         /validation/BatchValidator.java $

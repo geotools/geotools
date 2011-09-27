@@ -48,6 +48,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  * </p>
  *
+ *
  * @source $URL$
  */
 public class TouchesIntegrity extends RelationIntegrity {

@@ -16,6 +16,11 @@
  */
 package org.geotools.ml;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class Header {
     String value;
     private String name;

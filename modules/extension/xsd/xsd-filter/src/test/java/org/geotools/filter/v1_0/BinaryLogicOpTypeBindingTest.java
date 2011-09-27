@@ -28,6 +28,11 @@ import org.opengis.filter.PropertyIsNull;
 import org.geotools.xml.Binding;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class BinaryLogicOpTypeBindingTest extends FilterTestSupport {
     public void testBinaryLogicOpType() {
         assertEquals(BinaryLogicOperator.class, binding(OGC.BinaryLogicOpType).getType());

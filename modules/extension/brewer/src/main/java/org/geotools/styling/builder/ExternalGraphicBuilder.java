@@ -10,6 +10,11 @@ import org.geotools.styling.ExternalGraphic;
 import org.opengis.metadata.citation.OnLineResource;
 import org.opengis.style.ColorReplacement;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ExternalGraphicBuilder extends AbstractStyleBuilder<ExternalGraphic> {
     private Icon inline;
 

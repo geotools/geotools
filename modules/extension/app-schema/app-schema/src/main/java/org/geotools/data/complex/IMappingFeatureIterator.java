@@ -27,6 +27,7 @@ import org.opengis.feature.Feature;
  * @version $Id$
  *
  *
+ *
  * @source $URL$
  */
 public interface IMappingFeatureIterator extends Iterator<Feature>, FeatureIterator<Feature> {

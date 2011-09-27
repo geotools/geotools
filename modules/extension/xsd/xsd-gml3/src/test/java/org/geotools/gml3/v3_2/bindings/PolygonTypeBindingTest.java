@@ -23,6 +23,11 @@ import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.v3_2.GML32TestSupport;
 import org.w3c.dom.Document;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PolygonTypeBindingTest extends GML32TestSupport {
 //    public void testNoInterior() throws Exception {
 //        GML3MockData.polygon(document, document);

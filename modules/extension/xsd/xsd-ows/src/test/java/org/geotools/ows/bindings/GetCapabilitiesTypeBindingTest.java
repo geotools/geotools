@@ -22,6 +22,11 @@ import org.geotools.ows.OWSTestSupport;
 import org.geotools.xml.Binding;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GetCapabilitiesTypeBindingTest extends OWSTestSupport {
     public void testType() throws Exception {
         assertEquals(GetCapabilitiesType.class, binding(OWS.GetCapabilitiesType).getType());

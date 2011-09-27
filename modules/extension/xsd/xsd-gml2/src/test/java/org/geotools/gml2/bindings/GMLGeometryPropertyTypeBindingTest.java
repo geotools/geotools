@@ -25,6 +25,11 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLGeometryPropertyTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance association;
     ElementInstance geometry;

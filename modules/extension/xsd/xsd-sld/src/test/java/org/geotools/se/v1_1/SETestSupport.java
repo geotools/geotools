@@ -19,6 +19,11 @@ package org.geotools.se.v1_1;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.test.XMLTestSupport;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SETestSupport extends XMLTestSupport {
 
     @Override

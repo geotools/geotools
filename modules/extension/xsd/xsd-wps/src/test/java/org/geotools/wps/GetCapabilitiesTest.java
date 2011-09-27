@@ -38,6 +38,11 @@ import net.opengis.wps10.WPSCapabilitiesType;
 
 import org.geotools.xml.Parser;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GetCapabilitiesTest extends TestCase {
 
     public void testParse() throws Exception {

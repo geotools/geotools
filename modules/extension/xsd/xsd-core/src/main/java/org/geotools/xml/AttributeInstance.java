@@ -26,6 +26,7 @@ import org.eclipse.xsd.XSDAttributeDeclaration;
  *
  *
  *
+ *
  * @source $URL$
  */
 public interface AttributeInstance extends InstanceComponent {

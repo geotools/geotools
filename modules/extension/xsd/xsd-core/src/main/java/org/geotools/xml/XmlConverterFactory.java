@@ -41,6 +41,7 @@ import org.geotools.xml.impl.DatatypeConverterImpl;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class XmlConverterFactory implements ConverterFactory {

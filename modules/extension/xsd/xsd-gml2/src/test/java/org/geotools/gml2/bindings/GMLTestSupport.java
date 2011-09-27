@@ -28,6 +28,7 @@ import org.geotools.xml.test.XMLTestSupport;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class GMLTestSupport extends XMLTestSupport {

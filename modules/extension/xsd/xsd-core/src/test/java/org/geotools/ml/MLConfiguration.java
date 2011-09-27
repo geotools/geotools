@@ -27,6 +27,11 @@ import org.geotools.ml.bindings.MLMimeTopLevelTypeBinding;
 import org.geotools.xml.Configuration;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MLConfiguration extends Configuration {
     public MLConfiguration() {
         super(ML.getInstance());

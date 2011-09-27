@@ -6,6 +6,11 @@ import org.geotools.styling.Stroke;
 import org.geotools.util.Converters;
 import org.opengis.filter.expression.Expression;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
     Expression color;
 

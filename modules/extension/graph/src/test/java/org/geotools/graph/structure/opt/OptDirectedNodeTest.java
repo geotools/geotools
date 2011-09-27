@@ -20,6 +20,11 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OptDirectedNodeTest extends TestCase {
   private OptDirectedNode m_node;
   private OptDirectedNode m_inNode1;

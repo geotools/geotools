@@ -28,6 +28,8 @@ import org.opengis.filter.sort.SortBy;
  * 
  * @author Niels Charlier (Curtin University of Technology)
  *
+ *
+ * @source $URL$
  */
 public class JoiningQuery extends Query {
     

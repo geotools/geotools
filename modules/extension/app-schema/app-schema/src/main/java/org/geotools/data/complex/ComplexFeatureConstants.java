@@ -35,6 +35,7 @@ import org.opengis.feature.type.PropertyDescriptor;
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  *
  *
+ *
  * @source $URL$
  */
 public class ComplexFeatureConstants {

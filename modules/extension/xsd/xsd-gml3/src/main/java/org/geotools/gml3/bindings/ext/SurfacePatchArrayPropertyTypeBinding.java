@@ -27,6 +27,11 @@ import org.geotools.xml.Node;
 
 import com.vividsolutions.jts.geom.Polygon;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SurfacePatchArrayPropertyTypeBinding 
     extends org.geotools.gml3.bindings.SurfacePatchArrayPropertyTypeBinding {
 

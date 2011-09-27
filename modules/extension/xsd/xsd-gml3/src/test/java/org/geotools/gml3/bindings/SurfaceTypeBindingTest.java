@@ -21,6 +21,11 @@ import org.geotools.gml3.GML3TestSupport;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SurfaceTypeBindingTest extends GML3TestSupport {
 
     public void testParse() throws Exception {

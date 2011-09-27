@@ -34,6 +34,7 @@ import org.apache.xml.resolver.CatalogManager;
  * @see
  *
  *
+ *
  * @source $URL$
  */
 public class AppSchemaCatalog {

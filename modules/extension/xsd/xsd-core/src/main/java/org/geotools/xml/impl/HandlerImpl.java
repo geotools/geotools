@@ -19,6 +19,11 @@ package org.geotools.xml.impl;
 import org.picocontainer.MutablePicoContainer;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class HandlerImpl implements Handler {
     MutablePicoContainer context;
 

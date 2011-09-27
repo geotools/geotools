@@ -36,6 +36,11 @@ import org.opengis.filter.capability.SpatialOperators;
 import org.geotools.factory.CommonFactoryFinder;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FilterMockData {
     static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 

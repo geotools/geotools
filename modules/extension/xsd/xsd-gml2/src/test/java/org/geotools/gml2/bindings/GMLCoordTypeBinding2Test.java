@@ -23,6 +23,11 @@ import org.w3c.dom.Document;
 import com.vividsolutions.jts.geom.Coordinate;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLCoordTypeBinding2Test extends GMLTestSupport {
     public void testType() {
         assertEquals(Coordinate.class, binding(GML.CoordType).getType());

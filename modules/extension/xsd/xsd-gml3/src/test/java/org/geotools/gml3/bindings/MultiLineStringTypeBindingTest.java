@@ -23,6 +23,11 @@ import org.w3c.dom.Document;
 import com.vividsolutions.jts.geom.MultiLineString;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MultiLineStringTypeBindingTest extends GML3TestSupport {
     public void test() throws Exception {
         GML3MockData.multiLineString(document, document);

@@ -24,6 +24,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.geotools.xs.XSConfiguration;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FacetTest extends TestCase {
     public void testList() throws Exception {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();

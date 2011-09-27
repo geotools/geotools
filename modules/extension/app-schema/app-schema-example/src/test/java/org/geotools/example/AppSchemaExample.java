@@ -37,6 +37,7 @@ import org.opengis.feature.type.FeatureType;
  * 
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
  * 
+ *
  * @source $URL$
  */
 public class AppSchemaExample {

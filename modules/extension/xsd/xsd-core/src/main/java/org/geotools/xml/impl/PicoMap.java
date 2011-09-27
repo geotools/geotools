@@ -45,6 +45,7 @@ import org.picocontainer.defaults.InstanceComponentAdapter;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class PicoMap implements Map, MutablePicoContainer {

@@ -55,6 +55,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class AbstractFeatureCollectionTypeBinding extends AbstractComplexBinding {

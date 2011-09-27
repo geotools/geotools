@@ -24,6 +24,11 @@ import org.opengis.filter.expression.Multiply;
 import org.opengis.filter.expression.Subtract;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class BinaryOperatorTypeBindingTest extends FilterTestSupport {
     public void testBinaryOperatorType() {
         assertEquals(BinaryExpression.class, binding(OGC.BinaryOperatorType).getType());

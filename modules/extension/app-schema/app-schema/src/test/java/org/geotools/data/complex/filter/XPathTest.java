@@ -45,6 +45,7 @@ import static org.junit.Assert.fail;
  * @version $Id$
  *
  *
+ *
  * @source $URL$
  * @since 2.4
  */

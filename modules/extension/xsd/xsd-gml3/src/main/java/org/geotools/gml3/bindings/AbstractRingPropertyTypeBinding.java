@@ -48,6 +48,7 @@ import com.vividsolutions.jts.geom.LinearRing;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class AbstractRingPropertyTypeBinding extends AbstractComplexBinding {

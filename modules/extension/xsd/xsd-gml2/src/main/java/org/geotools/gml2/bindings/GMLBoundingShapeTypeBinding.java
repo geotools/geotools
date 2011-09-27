@@ -52,6 +52,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class GMLBoundingShapeTypeBinding extends AbstractComplexBinding {

@@ -26,6 +26,11 @@ import org.geotools.xml.impl.NodeImpl;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GML2ParsingUtilsTest extends TestCase {
     public void testCRS() throws Exception {
         NodeImpl node = new NodeImpl(null);

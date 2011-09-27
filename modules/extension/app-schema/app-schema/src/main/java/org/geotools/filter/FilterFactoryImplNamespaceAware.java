@@ -20,6 +20,11 @@ package org.geotools.filter;
 import org.opengis.filter.expression.PropertyName;
 import org.xml.sax.helpers.NamespaceSupport;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FilterFactoryImplNamespaceAware extends FilterFactoryImpl {
 
     private NamespaceSupport namespaceContext;

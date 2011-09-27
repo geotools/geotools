@@ -19,6 +19,11 @@ package org.geotools.ml;
 import java.math.BigInteger;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class Mail {
     BigInteger id;
     Envelope envelope;

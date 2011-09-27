@@ -28,6 +28,11 @@ import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.xml.Parser;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SLDTest extends TestCase {
     public void test() throws Exception {
         Parser parser = new Parser(new SLDConfiguration());

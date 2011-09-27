@@ -21,6 +21,11 @@ import org.geotools.gml3.GML3TestSupport;
 import com.vividsolutions.jts.geom.Polygon;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PolygonTypeBindingTest extends GML3TestSupport {
     public void testNoInterior() throws Exception {
         GML3MockData.polygon(document, document);

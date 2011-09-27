@@ -27,6 +27,11 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ZipUtil {
  
   public static void zip(String zipFilename, String[] filenames) 

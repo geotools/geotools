@@ -2,6 +2,11 @@ package org.geotools.styling.builder;
 
 import org.geotools.styling.SelectedChannelType;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SelectedChannelTypeBuilder extends AbstractStyleBuilder<SelectedChannelType> {
 
     private String channelName;

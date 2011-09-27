@@ -61,6 +61,11 @@ import org.w3c.dom.Element;
  *        assertEquals("something", dom.getElementsByTagNameNS(GML.NAMESPACE, "lowerCorner").getLength());
  *
  */
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class GML3TestSupport extends XMLTestSupport {
     protected void registerNamespaces(Element root) {
         super.registerNamespaces(root);

@@ -19,6 +19,11 @@ package org.geotools.xml;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.geotools.xml.impl.InstanceComponentImpl;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TextInstance extends InstanceComponentImpl {
 
     public static TextInstance INSTANCE = new TextInstance();

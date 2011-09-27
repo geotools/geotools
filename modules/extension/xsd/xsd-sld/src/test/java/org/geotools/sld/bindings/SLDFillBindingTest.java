@@ -20,6 +20,11 @@ import java.awt.Color;
 import org.geotools.styling.Fill;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SLDFillBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(Fill.class, new SLDFillBinding(null,null).getType());

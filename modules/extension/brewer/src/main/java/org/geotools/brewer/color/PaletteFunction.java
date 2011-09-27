@@ -39,6 +39,7 @@ import org.opengis.filter.expression.Literal;
  *
  * @author James Macgill
  *
+ *
  * @source $URL$
  */
 public class PaletteFunction extends FunctionExpressionImpl implements FunctionExpression {

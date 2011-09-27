@@ -60,6 +60,7 @@ import com.vividsolutions.jts.geom.Point;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class GeometryFunctionsTest extends AppSchemaTestSupport {

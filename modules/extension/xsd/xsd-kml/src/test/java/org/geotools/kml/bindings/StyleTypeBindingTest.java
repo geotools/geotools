@@ -26,6 +26,11 @@ import org.geotools.styling.TextSymbolizer;
 import org.geotools.xml.Binding;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class StyleTypeBindingTest extends KMLTestSupport {
     public void testType() {
         assertEquals(FeatureTypeStyle.class, binding(KML.StyleType).getType());

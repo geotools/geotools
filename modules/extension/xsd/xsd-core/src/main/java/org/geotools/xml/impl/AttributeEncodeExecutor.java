@@ -25,6 +25,11 @@ import org.geotools.xml.Binding;
 import org.geotools.xml.SimpleBinding;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class AttributeEncodeExecutor implements BindingWalker.Visitor {
     /** the object being encoded **/
     Object object;

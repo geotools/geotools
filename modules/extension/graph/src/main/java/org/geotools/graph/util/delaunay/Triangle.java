@@ -34,6 +34,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author jfc173
  *
  *
+ *
  * @source $URL$
  */
 public class Triangle {

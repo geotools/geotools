@@ -27,6 +27,11 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public interface SchemaIndex {
     /**
      * @return The schema itself.

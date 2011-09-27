@@ -44,7 +44,8 @@ import com.vividsolutions.jts.geom.Point;
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wcs/src/main/java/org/geotools/gml4wcs/bindings/GML3ParsingUtils.java $
+ *
+ * @source $URL$
  */
 public class GML3ParsingUtils {
     /**

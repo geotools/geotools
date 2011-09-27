@@ -42,6 +42,7 @@ import org.geotools.xml.InstanceComponent;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class Base_TypeNameListTypeBinding extends AbstractSimpleBinding {

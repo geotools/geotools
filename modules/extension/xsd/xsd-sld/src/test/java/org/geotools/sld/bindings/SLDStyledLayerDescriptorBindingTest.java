@@ -19,6 +19,11 @@ package org.geotools.sld.bindings;
 import org.geotools.styling.StyledLayerDescriptor;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SLDStyledLayerDescriptorBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(StyledLayerDescriptor.class,

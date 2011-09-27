@@ -48,7 +48,8 @@ import org.opengis.referencing.operation.MathTransform;
  * 
  * @author Andrea Aime - OpenGeo
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/wms/src/main/java/org/geotools/map/WMSLayer.java $
+ *
+ * @source $URL$
  */
 public class WMSLayer extends GridReaderLayer {
 

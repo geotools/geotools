@@ -47,6 +47,11 @@ import org.opengis.style.Rule;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SEExampleTest extends TestCase {
 
     SimpleFeature f1;

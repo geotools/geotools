@@ -11,6 +11,11 @@ import org.geotools.styling.UserLayer;
 import org.junit.Test;
 import org.opengis.filter.PropertyIsGreaterThan;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SLDTest extends AbstractStyleTest {
 
     @Test

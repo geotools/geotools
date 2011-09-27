@@ -26,6 +26,7 @@ import org.eclipse.xsd.XSDSchema;
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  *
  *
+ *
  * @source $URL$
  */
 public class AppSchemaLocationResolver extends SchemaLocationResolver {

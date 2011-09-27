@@ -24,6 +24,11 @@ import org.w3c.dom.Document;
 import com.vividsolutions.jts.geom.MultiPoint;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MultiPointTypeBindingTest extends GML32TestSupport {
 //    public void test() throws Exception {
 //        GML3MockData.multiPoint(document, document);

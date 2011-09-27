@@ -23,6 +23,11 @@ import org.w3c.dom.Document;
 
 import com.vividsolutions.jts.geom.LineString;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class LineStringPropertyTypeBindingTest extends GML3TestSupport {
 
     public void testType() {

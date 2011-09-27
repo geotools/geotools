@@ -45,6 +45,7 @@ import org.xml.sax.SAXException;
  * @author James Macgill
  * @author Cory Horner, Refractions Research Inc.
  *
+ *
  * @source $URL$
  */
 public class ColorBrewer {

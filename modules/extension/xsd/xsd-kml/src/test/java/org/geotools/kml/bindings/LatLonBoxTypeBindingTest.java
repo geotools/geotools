@@ -22,6 +22,11 @@ import org.geotools.kml.KMLTestSupport;
 import org.geotools.xml.Binding;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class LatLonBoxTypeBindingTest extends KMLTestSupport {
     public void testType() {
         assertEquals(Envelope.class, binding(KML.LatLonBoxType).getType());

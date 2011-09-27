@@ -26,6 +26,11 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LinearRing;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLLinearRingMemberTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance association;
     ElementInstance geometry;

@@ -52,6 +52,7 @@ import org.xml.sax.Attributes;
  * @version $Id$
  *
  *
+ *
  * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
  *         /java/org/geotools/data/complex/AppSchemaDataAccess.java $

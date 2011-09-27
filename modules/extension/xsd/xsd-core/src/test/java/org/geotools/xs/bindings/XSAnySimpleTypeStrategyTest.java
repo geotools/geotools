@@ -23,6 +23,11 @@ import org.geotools.xs.TestSchema;
 import org.geotools.xs.XS;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class XSAnySimpleTypeStrategyTest extends TestSchema {
     private XSDSimpleTypeDefinition typeDef;
     private SimpleBinding stratagy;

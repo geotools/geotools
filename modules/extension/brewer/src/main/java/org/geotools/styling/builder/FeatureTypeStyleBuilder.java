@@ -15,6 +15,11 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.Id;
 import org.opengis.style.SemanticType;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeStyle> {
     String name;
 

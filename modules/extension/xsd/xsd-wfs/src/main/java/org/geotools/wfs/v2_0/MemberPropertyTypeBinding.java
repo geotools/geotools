@@ -35,7 +35,8 @@ import javax.xml.namespace.QName;
  * 
  * @generated
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wfs/src/main/java/org/geotools/wfs/v2_0/MemberPropertyTypeBinding.java $
+ *
+ * @source $URL$
  */
 public class MemberPropertyTypeBinding extends
         org.geotools.gml3.bindings.FeaturePropertyTypeBinding {

@@ -22,6 +22,11 @@ import org.geotools.xs.TestSchema;
 import org.geotools.xs.XS;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class XSDoubleStrategyTest extends TestSchema {
     /**
      * For example, -1E4, 1267.43233E12, 12.78e-2, 12 , -0, 0 and INF are all legal literals for double.

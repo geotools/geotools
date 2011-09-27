@@ -21,6 +21,11 @@ import org.opengis.filter.capability.FilterCapabilities;
 import org.geotools.xml.Binding;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class _Filter_CapabilitiesTypeBindingTest extends FilterCapabilitiesTestSupport {
     public void testType() {
         assertEquals(FilterCapabilities.class, binding(OGC._Filter_Capabilities).getType());

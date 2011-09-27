@@ -30,6 +30,11 @@ import org.geotools.ows.v1_1.OWS;
 import org.geotools.xml.AbstractSimpleBinding;
 import org.geotools.xml.InstanceComponent;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class UnitBinding extends AbstractSimpleBinding {
 
 	public QName getTarget() {

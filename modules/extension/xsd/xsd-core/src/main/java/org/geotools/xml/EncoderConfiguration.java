@@ -49,6 +49,7 @@ import org.picocontainer.MutablePicoContainer;
  *
  *
  *
+ *
  * @source $URL$
  */
 public interface EncoderConfiguration {

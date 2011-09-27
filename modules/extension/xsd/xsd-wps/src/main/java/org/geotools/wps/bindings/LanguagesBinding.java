@@ -69,6 +69,7 @@ import org.w3c.dom.Element;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class LanguagesBinding extends AbstractComplexBinding {

@@ -24,6 +24,11 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.Halo;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class StyleBuilderTest {
 
     public void example() {

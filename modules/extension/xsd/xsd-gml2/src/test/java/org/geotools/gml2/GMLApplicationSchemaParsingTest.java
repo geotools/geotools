@@ -37,6 +37,11 @@ import org.w3c.dom.Document;
 import com.vividsolutions.jts.geom.Point;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLApplicationSchemaParsingTest extends TestCase {
     public void testStreamFeatureWithIncorrectSchemaLocation()
         throws Exception {

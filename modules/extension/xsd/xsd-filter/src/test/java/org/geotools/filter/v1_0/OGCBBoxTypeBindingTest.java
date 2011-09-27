@@ -22,6 +22,11 @@ import org.geotools.gml2.GML;
 import org.geotools.xml.Binding;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OGCBBoxTypeBindingTest extends FilterTestSupport {
     public void testType() {
         assertEquals(BBOX.class, binding(OGC.BBOXType).getType());

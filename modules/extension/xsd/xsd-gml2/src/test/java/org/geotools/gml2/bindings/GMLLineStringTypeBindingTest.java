@@ -28,6 +28,11 @@ import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequenceFactory;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLLineStringTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance line;
     ElementInstance coord1;

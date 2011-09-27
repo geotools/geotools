@@ -27,6 +27,7 @@ import org.picocontainer.MutablePicoContainer;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class SMIL20Configuration extends Configuration {

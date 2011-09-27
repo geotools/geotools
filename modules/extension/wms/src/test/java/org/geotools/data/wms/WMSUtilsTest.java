@@ -27,6 +27,11 @@ import org.geotools.data.ows.Layer;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class WMSUtilsTest extends TestCase {
 
 	public void testFindCommonEPSGs() {

@@ -23,6 +23,11 @@ import org.geotools.kml.KMLTestSupport;
 import org.geotools.xml.Binding;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PlacemarkTypeBindingTest extends KMLTestSupport {
     public void testType() throws Exception {
         assertEquals(SimpleFeature.class, binding(KML.PlacemarkType).getType());

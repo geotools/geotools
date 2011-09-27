@@ -29,6 +29,11 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.LineSegment;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OptLineGraphGeneratorTest extends TestCase {
    
   private OptLineGraphGenerator m_gen;

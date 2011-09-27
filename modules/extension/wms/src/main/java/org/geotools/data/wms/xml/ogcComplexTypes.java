@@ -32,6 +32,11 @@ import org.geotools.xml.schema.impl.SequenceGT;
 import org.geotools.xml.styling.sldSchema;
 import org.xml.sax.helpers.AttributesImpl;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ogcComplexTypes {
 
     protected static class VendorType extends ogcComplexType {

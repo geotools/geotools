@@ -48,6 +48,8 @@ import org.xml.sax.helpers.NamespaceSupport;
  * 
  * @author Niels Charlier (Curtin University of Technology)
  * 
+ *
+ * @source $URL$
  */
 public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
 

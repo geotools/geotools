@@ -9,6 +9,11 @@ import org.geotools.styling.Style;
 import org.geotools.styling.UserLayer;
 import org.opengis.feature.simple.SimpleFeatureType;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class UserLayerBuilder extends AbstractSLDBuilder<UserLayer> {
 
     DataStore inlineFeatureDataStore;

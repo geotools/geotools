@@ -118,6 +118,7 @@ import org.geotools.xs.bindings.XSWildcardBinding;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class XSConfiguration extends Configuration {

@@ -5,6 +5,11 @@ import javax.swing.Icon;
 import org.geotools.styling.ExternalMark;
 import org.opengis.metadata.citation.OnLineResource;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ExternalMarkBuilder extends AbstractStyleBuilder<ExternalMark> {
     private Icon inline;
 

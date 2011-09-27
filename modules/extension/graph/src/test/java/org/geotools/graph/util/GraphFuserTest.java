@@ -31,6 +31,11 @@ import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
 import org.geotools.graph.util.graph.GraphFuser;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GraphFuserTest extends TestCase {
   
   private GraphGenerator m_gen;

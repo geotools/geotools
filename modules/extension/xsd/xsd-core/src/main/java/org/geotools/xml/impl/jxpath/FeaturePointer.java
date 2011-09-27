@@ -33,6 +33,7 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class FeaturePointer extends NodePointer {

@@ -23,6 +23,11 @@ import org.w3c.dom.Document;
 import com.vividsolutions.jts.geom.MultiPolygon;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MultiPolygonTypeBindingTest extends GML3TestSupport {
     public void test() throws Exception {
         GML3MockData.multiPolygon(document, document);

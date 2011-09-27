@@ -47,6 +47,7 @@ import org.w3c.dom.NodeList;
  *          groldan $
  * @since 2.5.x
  *
+ *
  * @source $URL$
  */
 public class FeatureTypeListTypeBindingTest extends WFSTestSupport {

@@ -28,6 +28,11 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class CurveArrayPropertyTypeBinding 
     extends org.geotools.gml3.bindings.CurveArrayPropertyTypeBinding 
     implements Comparable {

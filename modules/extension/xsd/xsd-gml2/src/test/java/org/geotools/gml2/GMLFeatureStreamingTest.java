@@ -28,6 +28,11 @@ import org.opengis.feature.simple.SimpleFeature;
 import com.vividsolutions.jts.geom.Point;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLFeatureStreamingTest extends TestCase {
     public void testStreamByXpath() throws Exception {
         InputStream in = getClass().getResourceAsStream("feature.xml");

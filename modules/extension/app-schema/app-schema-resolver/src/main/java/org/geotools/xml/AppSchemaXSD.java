@@ -34,6 +34,7 @@ import org.geotools.xml.XSD;
  * @author Niels Charlier (Curtin University of Technology)
  *
  *
+ *
  * @source $URL$
  */
 public class AppSchemaXSD extends XSD {

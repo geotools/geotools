@@ -27,6 +27,11 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.Point;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLMultiPointTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance mp;
     ElementInstance point1;

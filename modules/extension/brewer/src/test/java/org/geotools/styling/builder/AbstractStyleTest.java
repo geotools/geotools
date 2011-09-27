@@ -6,6 +6,11 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.SLDTransformer;
 import org.opengis.filter.FilterFactory2;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class AbstractStyleTest {
 
     protected FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);

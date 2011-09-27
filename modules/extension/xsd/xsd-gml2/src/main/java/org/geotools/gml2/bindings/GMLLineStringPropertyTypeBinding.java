@@ -57,6 +57,7 @@ import com.vividsolutions.jts.geom.LineString;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class GMLLineStringPropertyTypeBinding extends AbstractComplexBinding {

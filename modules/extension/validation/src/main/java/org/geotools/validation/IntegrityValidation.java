@@ -75,6 +75,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
  *
  * @author Jody Garnett, Refractions Research
  *
+ *
  * @source $URL$
  */
 public interface IntegrityValidation extends Validation {

@@ -17,6 +17,11 @@ import org.geotools.xml.StreamingParser;
 import org.opengis.feature.simple.SimpleFeature;
 import org.w3c.dom.Document;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GML3ParsingTest extends TestCase {
 
     public void testWithoutSchema() throws Exception {

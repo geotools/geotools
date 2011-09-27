@@ -26,6 +26,7 @@ package org.geotools.xml.impl;
  *
  *
  *
+ *
  * @source $URL$
  */
 public interface InstanceBinding {

@@ -6,6 +6,11 @@ import org.geotools.styling.Fill;
 import org.geotools.util.Converters;
 import org.opengis.filter.expression.Expression;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FillBuilder extends AbstractStyleBuilder<org.opengis.style.Fill> {
     Expression color;
 

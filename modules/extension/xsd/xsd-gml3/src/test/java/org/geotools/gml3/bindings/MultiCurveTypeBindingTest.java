@@ -24,6 +24,11 @@ import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MultiCurveTypeBindingTest extends GML3TestSupport {
     public void testEncode() throws Exception {
         Document dom = encode(GML3MockData.multiLineString(), GML.MultiCurve);

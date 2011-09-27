@@ -22,6 +22,7 @@ package org.geotools.data.ows;
  *
  * @author rgould
  *
+ *
  * @source $URL$
  */
 public class WMSRequest {

@@ -21,6 +21,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class BufferTest extends TestCase {
     Buffer buffer;
 

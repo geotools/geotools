@@ -57,6 +57,7 @@ import com.vividsolutions.jts.geom.MultiPolygon;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class GMLMultiPolygonTypeBinding extends AbstractComplexBinding {

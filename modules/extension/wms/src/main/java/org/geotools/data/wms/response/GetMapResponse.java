@@ -35,6 +35,7 @@ import org.geotools.ows.ServiceException;
  *
  * @author Richard Gould, Refractions Research
  *
+ *
  * @source $URL$
  */
 public class GetMapResponse extends Response {

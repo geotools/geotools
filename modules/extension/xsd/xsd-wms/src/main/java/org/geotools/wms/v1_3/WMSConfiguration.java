@@ -23,7 +23,8 @@ import org.picocontainer.MutablePicoContainer;
  *
  * @generated
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wms/src/main/java/org/geotools/wms/v1_3/WMSConfiguration.java $
+ *
+ * @source $URL$
  */
 public class WMSConfiguration extends Configuration {
 

@@ -27,6 +27,7 @@ import org.geotools.xml.Configuration;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class XLINKConfiguration extends Configuration {

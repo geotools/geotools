@@ -27,6 +27,11 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Polygon;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLPolygonTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance poly;
     ElementInstance oring;

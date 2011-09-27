@@ -48,6 +48,7 @@ import org.opengis.feature.type.FeatureType;
  * @version $Id$
  *
  *
+ *
  * @source $URL$
  * @since 2.4
  */

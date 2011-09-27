@@ -40,6 +40,7 @@ import org.xml.sax.ContentHandler;
  *
  *
  *
+ *
  * @source $URL$
  */
 public interface ParserDelegate extends ContentHandler {

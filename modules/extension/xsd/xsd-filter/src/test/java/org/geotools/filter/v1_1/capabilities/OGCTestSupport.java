@@ -27,6 +27,7 @@ import org.geotools.xml.test.XMLTestSupport;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class OGCTestSupport extends XMLTestSupport {

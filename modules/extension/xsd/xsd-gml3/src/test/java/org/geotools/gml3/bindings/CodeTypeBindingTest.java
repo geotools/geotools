@@ -22,6 +22,11 @@ import org.geotools.gml3.GML;
 import org.opengis.feature.ComplexAttribute;
 import org.w3c.dom.Document;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class CodeTypeBindingTest extends ComplexAttributeTestSupport {
 
     private static String TEST_NAME_VALUE = "Test name";

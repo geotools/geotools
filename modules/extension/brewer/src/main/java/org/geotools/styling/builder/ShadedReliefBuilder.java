@@ -3,6 +3,11 @@ package org.geotools.styling.builder;
 import org.geotools.styling.ShadedRelief;
 import org.opengis.filter.expression.Expression;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ShadedReliefBuilder extends AbstractStyleBuilder<ShadedRelief> {
     private Expression factor;
 

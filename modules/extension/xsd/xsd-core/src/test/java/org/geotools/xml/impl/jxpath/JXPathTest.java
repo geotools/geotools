@@ -26,6 +26,11 @@ import org.geotools.xml.impl.ElementImpl;
 import org.geotools.xml.impl.NodeImpl;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class JXPathTest extends TestCase {
     NodeImpl root;
     NodeImpl child1;

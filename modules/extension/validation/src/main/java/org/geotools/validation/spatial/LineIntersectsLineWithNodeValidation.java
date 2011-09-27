@@ -42,6 +42,7 @@ import com.vividsolutions.jts.geom.LineString;
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: jive $ (last modification)
  *
+ *
  * @source $URL$
  * @version $Id$
  */

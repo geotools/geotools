@@ -59,6 +59,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @version $Id$
  *
  *
+ *
  * @source $URL$
  */
 public abstract class AbstractMappingFeatureIterator implements IMappingFeatureIterator {

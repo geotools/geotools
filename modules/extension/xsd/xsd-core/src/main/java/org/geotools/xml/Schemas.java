@@ -91,6 +91,7 @@ import org.eclipse.xsd.XSDWildcard;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class Schemas {

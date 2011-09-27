@@ -24,6 +24,11 @@ import org.geotools.styling.SLD;
 import org.geotools.xml.Binding;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PolyStyleTypeBindingTest extends KMLTestSupport {
     public void testType() {
         assertEquals(PolygonSymbolizer.class, binding(KML.PolyStyleType).getType());

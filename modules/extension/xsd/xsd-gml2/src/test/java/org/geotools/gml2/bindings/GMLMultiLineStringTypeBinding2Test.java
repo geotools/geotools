@@ -23,6 +23,11 @@ import org.w3c.dom.Document;
 import com.vividsolutions.jts.geom.MultiLineString;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLMultiLineStringTypeBinding2Test extends GMLTestSupport {
     public void testType() {
         assertEquals(MultiLineString.class, binding(GML.MultiLineStringType).getType());

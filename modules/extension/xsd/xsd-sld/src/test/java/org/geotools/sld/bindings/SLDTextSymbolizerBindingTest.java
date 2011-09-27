@@ -19,6 +19,11 @@ package org.geotools.sld.bindings;
 import org.geotools.styling.TextSymbolizer;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SLDTextSymbolizerBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(TextSymbolizer.class, new SLDTextSymbolizerBinding(null).getType());

@@ -27,6 +27,11 @@ import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLMultiLineStringPropertyTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance association;
     ElementInstance geometry;

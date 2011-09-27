@@ -28,6 +28,11 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.expression.PropertyAccessor;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class XPathPropertyAcessorTest extends TestCase {
     SimpleFeatureType type;
     SimpleFeature target;

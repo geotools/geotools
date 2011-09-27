@@ -38,6 +38,7 @@ import javax.xml.namespace.QName;
  *
  *
  *
+ *
  * @source $URL$
  */
 public interface ComplexBinding extends Binding {

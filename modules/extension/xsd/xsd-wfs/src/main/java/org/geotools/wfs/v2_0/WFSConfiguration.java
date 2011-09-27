@@ -14,7 +14,8 @@ import org.picocontainer.MutablePicoContainer;
  *
  * @generated
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wfs/src/main/java/org/geotools/wfs/v2_0/WFSConfiguration.java $
+ *
+ * @source $URL$
  */
 public class WFSConfiguration extends Configuration {
 

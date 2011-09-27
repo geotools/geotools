@@ -35,6 +35,11 @@ import org.geotools.xml.Encoder;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ExecuteTest extends TestCase {
 
     public void testExecuteEncode() throws Exception {

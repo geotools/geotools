@@ -40,6 +40,11 @@ import org.geotools.xml.Parser;
 import org.geotools.xml.Parser.Properties;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OGCFilterTest extends TestCase {
     public void testEncode() throws Exception {
         FilterFactory f = CommonFactoryFinder.getFilterFactory(null);

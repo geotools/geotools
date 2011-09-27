@@ -54,6 +54,7 @@ import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class GML2MockData {

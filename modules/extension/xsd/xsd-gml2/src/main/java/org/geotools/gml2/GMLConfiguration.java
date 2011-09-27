@@ -68,6 +68,7 @@ import com.vividsolutions.jts.geom.impl.CoordinateArraySequenceFactory;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class GMLConfiguration extends Configuration {

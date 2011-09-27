@@ -26,6 +26,7 @@ import org.eclipse.xsd.XSDElementDeclaration;
  *
  *
  *
+ *
  * @source $URL$
  */
 public interface ElementInstance extends InstanceComponent {

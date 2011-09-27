@@ -40,6 +40,11 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FeatureCollectionTypeBindingTest extends WFSTestSupport {
 
     public FeatureCollectionTypeBindingTest() {

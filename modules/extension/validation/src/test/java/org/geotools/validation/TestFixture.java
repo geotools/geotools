@@ -48,6 +48,7 @@ import org.geotools.validation.xml.XMLReader;
  * </p>
  * @author Jody Garnett
  *
+ *
  * @source $URL$
  */
 public class TestFixture {

@@ -22,6 +22,11 @@ import org.opengis.filter.capability.ComparisonOperators;
 import org.geotools.xml.Binding;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class Comparison_OperatorsTypeBindingTest extends FilterCapabilitiesTestSupport {
     public void testType() {
         assertEquals(ComparisonOperators.class, binding(OGC.Comparison_OperatorsType).getType());

@@ -49,6 +49,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  *
  *
  *
+ *
  * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
  *         /java/org/geotools/filter/NestedAttributeExpression.java $

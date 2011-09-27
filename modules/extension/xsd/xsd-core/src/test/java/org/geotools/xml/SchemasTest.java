@@ -29,6 +29,11 @@ import org.geotools.xs.XS;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SchemasTest extends TestCase {
 
     File tmp,sub;

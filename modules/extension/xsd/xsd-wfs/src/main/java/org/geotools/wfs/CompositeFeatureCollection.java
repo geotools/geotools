@@ -41,6 +41,7 @@ import org.opengis.filter.identity.FeatureId;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class CompositeFeatureCollection extends DataFeatureCollection {

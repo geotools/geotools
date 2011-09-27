@@ -34,6 +34,7 @@ import org.geotools.filter.expression.PropertyAccessorFactory;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class MapPropertyAccessorFactory implements PropertyAccessorFactory {

@@ -40,6 +40,8 @@ import org.opengis.feature.type.Name;
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  * @author Niels Charlier (Curtin University Of Technology)
  *
+ *
+ * @source $URL$
  */
 public class DataAccessRegistry implements Repository {
 

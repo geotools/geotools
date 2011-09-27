@@ -21,6 +21,11 @@ import org.geotools.gml3.GML3TestSupport;
 import org.geotools.gml3.bindings.GML3MockData;
 import org.w3c.dom.Document;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SurfaceTypeBindingTest extends GML3TestSupport {
 
     @Override

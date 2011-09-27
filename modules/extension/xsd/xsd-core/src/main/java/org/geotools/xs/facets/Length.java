@@ -57,6 +57,7 @@ import java.util.Collection;
  * @author Jody Garnett
  *
  *
+ *
  * @source $URL$
  */
 public abstract class Length {

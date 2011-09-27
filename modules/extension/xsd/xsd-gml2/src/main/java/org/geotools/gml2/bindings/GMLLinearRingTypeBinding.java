@@ -63,6 +63,7 @@ import com.vividsolutions.jts.geom.LinearRing;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class GMLLinearRingTypeBinding extends AbstractComplexBinding {

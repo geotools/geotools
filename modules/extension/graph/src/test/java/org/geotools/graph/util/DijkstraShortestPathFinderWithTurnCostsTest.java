@@ -33,6 +33,11 @@ import org.geotools.graph.traverse.standard.DijkstraIterator;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.LineSegment;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DijkstraShortestPathFinderWithTurnCostsTest extends TestCase {
 
     private Graph graph;

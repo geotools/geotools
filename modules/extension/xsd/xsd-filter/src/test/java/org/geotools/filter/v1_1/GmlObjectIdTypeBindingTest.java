@@ -22,6 +22,11 @@ import org.geotools.gml3.GML;
 import org.geotools.xml.Binding;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GmlObjectIdTypeBindingTest extends FilterTestSupport {
     public void testType() {
         assertEquals(GmlObjectId.class, binding(OGC.GmlObjectIdType).getType());

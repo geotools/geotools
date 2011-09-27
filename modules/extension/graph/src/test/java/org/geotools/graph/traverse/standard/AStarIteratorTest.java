@@ -34,6 +34,11 @@ import org.geotools.graph.traverse.basic.BasicGraphTraversal;
 import org.geotools.graph.traverse.basic.CountingWalker;
 import org.geotools.graph.traverse.standard.AStarIterator.AStarNode;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class AStarIteratorTest extends TestCase{
 	 public GraphBuilder m_builder;
 	   

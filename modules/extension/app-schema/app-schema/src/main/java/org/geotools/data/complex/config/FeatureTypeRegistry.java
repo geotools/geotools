@@ -99,6 +99,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  *
  *
+ *
  * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
  *         /java/org/geotools/data/complex/config/FeatureTypeRegistry.java $

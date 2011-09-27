@@ -37,6 +37,11 @@ import org.geotools.xml.Node;
 import org.geotools.xml.impl.ElementImpl;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class XSDecimalStrategyTest extends TestCase {
     /*
      * Test method for 'org.geotools.xml.strategies.xs.XSDecimalStrategy.parse(Element, Node[], Object)'

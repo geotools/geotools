@@ -39,6 +39,11 @@ import org.w3c.dom.Document;
 
 import com.vividsolutions.jts.geom.Point;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLParsingTest extends TestCase {
 
     public void testGML() throws Exception {

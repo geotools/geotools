@@ -20,6 +20,11 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FIFOQueue implements Collection, Queue {
    private static final int DEFAULT_SIZE = 10;
    

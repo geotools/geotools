@@ -26,6 +26,11 @@ import org.geotools.graph.build.opt.OptGraphBuilder;
 import org.geotools.graph.structure.Graph;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OptGraphSerializerTest extends TestCase {
   private OptGraphBuilder m_builder;
   private OptGraphBuilder m_rebuilder;

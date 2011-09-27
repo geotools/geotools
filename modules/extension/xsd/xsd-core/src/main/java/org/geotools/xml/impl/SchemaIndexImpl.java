@@ -49,6 +49,11 @@ import org.geotools.xml.SchemaIndex;
 import org.geotools.xml.Schemas;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SchemaIndexImpl implements SchemaIndex {
     /**
      * The schemas

@@ -25,6 +25,11 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Polygon;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SurfacePropertyTypeBindingTest extends GML3TestSupport {
     public void testEncode() throws Exception {
         GeometryFactory gf = new GeometryFactory();

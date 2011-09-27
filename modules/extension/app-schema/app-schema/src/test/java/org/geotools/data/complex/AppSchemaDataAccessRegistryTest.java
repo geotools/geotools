@@ -56,6 +56,7 @@ import org.opengis.feature.type.Name;
  * 
  *
  *
+ *
  * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/test
  *         /java/org/geotools/data/complex/AppSchemaDataAccessRegistryTest.java $

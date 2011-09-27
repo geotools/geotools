@@ -21,6 +21,11 @@ import org.geotools.xml.schema.Facet;
 import org.geotools.xml.schema.SimpleType;
 import org.geotools.xml.schema.impl.FacetGT;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ogcSimpleTypes {
 
     protected static class CapabilitiesSectionType extends ogcSimpleType {

@@ -26,7 +26,8 @@ import org.geotools.xml.XSD;
  *
  * @generated
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wms/src/main/java/org/geotools/wms/v1_3/WMS.java $
+ *
+ * @source $URL$
  */
 public final class WMS extends XSD {
 

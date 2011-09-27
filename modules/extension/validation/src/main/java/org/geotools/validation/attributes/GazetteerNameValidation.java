@@ -64,6 +64,7 @@ import org.xml.sax.InputSource;
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
  *
+ *
  * @source $URL$
  * @version $Id$
  */

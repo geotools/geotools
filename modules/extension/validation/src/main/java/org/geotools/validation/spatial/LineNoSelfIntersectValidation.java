@@ -50,6 +50,7 @@ import com.vividsolutions.jts.geom.LineString;
  * @author bowens, Refractions Research, Inc.
  * @author $Author: jive $ (last modification)
  *
+ *
  * @source $URL$
  * @version $Id$
  * - bowens: changed intersects to crosses

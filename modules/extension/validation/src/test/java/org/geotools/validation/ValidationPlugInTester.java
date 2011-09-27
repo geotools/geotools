@@ -48,6 +48,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @author bowens, Refractions Research, Inc.
  * @author $Author: sploreg $ (last modification)
  *
+ *
  * @source $URL$
  * @version $Id$
  */

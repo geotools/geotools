@@ -30,6 +30,8 @@ import org.opengis.feature.type.Name;
  * mappings from different data accesses to be accessed globally.
  * 
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
+ *
+ * @source $URL$
  */
 public class AppSchemaDataAccessRegistry extends DataAccessRegistry {
     

@@ -48,6 +48,7 @@ import java.util.regex.Pattern;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class InterpolationProperties {

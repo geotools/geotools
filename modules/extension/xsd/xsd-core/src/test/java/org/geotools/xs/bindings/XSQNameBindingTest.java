@@ -22,6 +22,11 @@ import javax.xml.namespace.QName;
 import org.geotools.xml.impl.NamespaceSupportWrapper;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class XSQNameBindingTest extends TestCase {
     XSQNameBinding binding;
 

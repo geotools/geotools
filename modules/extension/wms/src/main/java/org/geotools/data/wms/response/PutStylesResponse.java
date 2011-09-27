@@ -30,6 +30,7 @@ import org.xml.sax.SAXException;
  * 
  * @author Richard Gould
  *
+ *
  * @source $URL$
  */
 public class PutStylesResponse extends Response {

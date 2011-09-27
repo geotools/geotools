@@ -6,6 +6,11 @@ import org.geotools.styling.GraphicLegend;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.GraphicalSymbol;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GraphicLegendBuilder extends AbstractStyleBuilder<GraphicLegend> {
     private List<GraphicalSymbol> symbols;
 

@@ -8,6 +8,11 @@ import org.geotools.styling.StyledLayer;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.UserLayer;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class StyledLayerDescriptorBuilder extends AbstractSLDBuilder<StyledLayerDescriptor> {
 
     List<AbstractSLDBuilder<? extends StyledLayer>> layers = new ArrayList<AbstractSLDBuilder<? extends StyledLayer>>();

@@ -53,6 +53,7 @@ import com.vividsolutions.jts.geom.MultiLineString;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class CurveArrayPropertyTypeBinding extends AbstractComplexBinding {

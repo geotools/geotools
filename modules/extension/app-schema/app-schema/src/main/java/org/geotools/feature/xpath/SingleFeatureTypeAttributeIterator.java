@@ -28,7 +28,8 @@ import org.opengis.feature.type.Name;
  * 
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main/java/org/geotools/feature/xpath/SingleFeatureTypeAttributeIterator.java $
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
  *         /java/org/geotools/feature/xpath/SingleFeatureTypeAttributeIterator.java $
  * 

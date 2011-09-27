@@ -31,6 +31,11 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MultiCurveTypeBinding extends org.geotools.gml3.bindings.MultiCurveTypeBinding
     implements Comparable {
     

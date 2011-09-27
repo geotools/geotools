@@ -47,6 +47,7 @@ import org.geotools.xml.Node;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class ComplexDataTypeBinding extends AbstractComplexBinding

@@ -39,6 +39,7 @@ import org.opengis.feature.type.Name;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class AttributeNodeIterator implements NodeIterator {

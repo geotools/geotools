@@ -88,6 +88,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * 
  * @author Richard Gould, Refractions Research
  *
+ *
  * @source $URL$
  */
 public class WebMapServer extends AbstractOpenWebService<WMSCapabilities,Layer> {

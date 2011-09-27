@@ -23,6 +23,11 @@ import org.w3c.dom.Document;
 import com.vividsolutions.jts.geom.MultiPoint;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLMultiPointTypeBinding2Test extends GMLTestSupport {
     public void testType() {
         assertEquals(MultiPoint.class, binding(GML.MultiPointType).getType());

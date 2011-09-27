@@ -29,6 +29,11 @@ import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequenceFactory;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLCoordinatesTypeBindingTest extends AbstractGMLBindingTest {
     AttributeInstance decimal;
     AttributeInstance ts;

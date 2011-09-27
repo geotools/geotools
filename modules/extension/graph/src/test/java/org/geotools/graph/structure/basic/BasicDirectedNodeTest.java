@@ -20,6 +20,11 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class BasicDirectedNodeTest extends TestCase {
 
   private BasicDirectedNode m_node;

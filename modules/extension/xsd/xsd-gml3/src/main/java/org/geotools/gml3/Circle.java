@@ -39,7 +39,8 @@ import java.util.List;
  *
  * @author Tom Acree
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org/geotools/gml3/Circle.java $
+ *
+ * @source $URL$
  */
 public class Circle {
 

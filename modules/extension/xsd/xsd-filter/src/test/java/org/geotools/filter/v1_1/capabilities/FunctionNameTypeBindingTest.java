@@ -44,6 +44,7 @@ import org.geotools.xml.Binding;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class FunctionNameTypeBindingTest extends OGCTestSupport {

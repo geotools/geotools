@@ -24,6 +24,7 @@ import java.io.IOException;
  *
  * @author Cory Horner, Refractions Research Inc.
  *
+ *
  * @source $URL$
  */
 public class PaletteSuitability {

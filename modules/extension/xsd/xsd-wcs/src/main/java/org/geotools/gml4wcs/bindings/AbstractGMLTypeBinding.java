@@ -35,7 +35,8 @@ import javax.xml.namespace.QName;
  *
  * @generated
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wcs/src/main/java/org/geotools/gml4wcs/bindings/AbstractGMLTypeBinding.java $
+ *
+ * @source $URL$
  */
 public class AbstractGMLTypeBinding extends AbstractComplexBinding {
 

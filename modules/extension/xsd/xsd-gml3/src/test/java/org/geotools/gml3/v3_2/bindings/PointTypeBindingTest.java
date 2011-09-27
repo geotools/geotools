@@ -26,6 +26,11 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Point;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PointTypeBindingTest extends GML32TestSupport {
 //    public void testPos() throws Exception {
 //        GML3MockData.point(document, document);

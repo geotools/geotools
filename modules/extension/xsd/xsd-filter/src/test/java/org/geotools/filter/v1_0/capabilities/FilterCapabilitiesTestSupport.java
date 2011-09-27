@@ -20,6 +20,11 @@ import org.geotools.xml.Configuration;
 import org.geotools.xml.test.XMLTestSupport;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FilterCapabilitiesTestSupport extends XMLTestSupport {
     protected Configuration createConfiguration() {
         return new OGCConfiguration();

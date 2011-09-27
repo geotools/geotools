@@ -22,6 +22,11 @@ import java.util.HashMap;
 import java.util.List;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TypeWalker {
     /**
      * Cached type hieracty

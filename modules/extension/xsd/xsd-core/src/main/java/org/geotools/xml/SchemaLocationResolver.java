@@ -48,6 +48,7 @@ import java.util.List;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class SchemaLocationResolver implements XSDSchemaLocationResolver {

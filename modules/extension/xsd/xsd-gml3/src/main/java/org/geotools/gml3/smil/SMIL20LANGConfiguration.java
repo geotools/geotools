@@ -20,6 +20,11 @@ import org.geotools.xml.Configuration;
 import org.picocontainer.MutablePicoContainer;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SMIL20LANGConfiguration extends Configuration {
     public SMIL20LANGConfiguration() {
         super(SMIL20LANG.getInstance());

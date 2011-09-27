@@ -25,6 +25,11 @@ import org.opengis.filter.spatial.Intersects;
 import org.geotools.xml.Binding;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FilterTypeBindingTest extends FilterTestSupport {
     public void testType() {
         assertEquals(Filter.class, binding(OGC.FilterType).getType());

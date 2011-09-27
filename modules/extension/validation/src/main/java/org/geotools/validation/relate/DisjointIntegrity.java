@@ -38,6 +38,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * is disjoint with itself.
  * </p>
  *
+ *
  * @source $URL$
  */
 public class DisjointIntegrity extends RelationIntegrity {

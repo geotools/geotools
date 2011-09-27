@@ -40,7 +40,8 @@ import org.w3c.dom.Element;
  * 
  * @generated
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wcs/src/main/java/org/geotools/gml4wcs/bindings/DirectPositionTypeBinding.java $
+ *
+ * @source $URL$
  */
 public class DirectPositionTypeBinding extends AbstractComplexBinding {
 

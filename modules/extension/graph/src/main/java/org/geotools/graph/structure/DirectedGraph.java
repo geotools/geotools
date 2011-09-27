@@ -72,6 +72,7 @@ package org.geotools.graph.structure;
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  *
  *
+ *
  * @source $URL$
  */
 public interface DirectedGraph extends Graph {

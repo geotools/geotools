@@ -71,6 +71,7 @@ import org.geotools.xml.*;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class WGS84BoundingBoxTypeBinding extends AbstractComplexEMFBinding {

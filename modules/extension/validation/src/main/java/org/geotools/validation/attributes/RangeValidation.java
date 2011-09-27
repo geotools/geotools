@@ -63,6 +63,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @author rgould, Refractions Research, Inc.
  * @author $Author: cholmesny $ (last modification)
  *
+ *
  * @source $URL$
  * @version $Id$
  */

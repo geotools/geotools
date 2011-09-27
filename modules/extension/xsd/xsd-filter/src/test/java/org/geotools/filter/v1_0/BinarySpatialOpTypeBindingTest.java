@@ -34,6 +34,11 @@ import org.opengis.filter.spatial.Within;
 import org.geotools.gml3.GML;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class BinarySpatialOpTypeBindingTest extends FilterTestSupport {
     public void testDistanceBufferType() {
         assertEquals(DistanceBufferOperator.class, binding(OGC.DistanceBufferType).getType());

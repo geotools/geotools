@@ -64,6 +64,8 @@ import org.opengis.filter.sort.SortOrder;
  * 
  * @author Niels Charlier (Curtin University of Technology)
  *
+ *
+ * @source $URL$
  */
 public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
  

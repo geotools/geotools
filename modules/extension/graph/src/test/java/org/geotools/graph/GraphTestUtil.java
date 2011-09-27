@@ -30,6 +30,11 @@ import org.geotools.graph.structure.opt.OptDirectedNode;
 import org.geotools.graph.structure.opt.OptNode;
 import org.geotools.graph.util.FIFOQueue;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GraphTestUtil {
  
   /**

@@ -151,6 +151,7 @@ import org.geotools.xml.impl.SchemaIndexImpl;
  *
  *
  *
+ *
  * @source $URL$
  */
 public abstract class XMLTestSupport extends TestCase {

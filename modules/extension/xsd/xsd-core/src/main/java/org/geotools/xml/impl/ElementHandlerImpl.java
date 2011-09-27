@@ -45,6 +45,11 @@ import org.geotools.xml.Text;
 import org.geotools.xml.TextInstance;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
     /** parent handler **/
     Handler parent;

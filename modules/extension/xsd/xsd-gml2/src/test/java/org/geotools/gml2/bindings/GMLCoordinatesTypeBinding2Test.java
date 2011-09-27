@@ -24,6 +24,11 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateSequence;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLCoordinatesTypeBinding2Test extends GMLTestSupport {
     public void testType() {
         assertEquals(CoordinateSequence.class, binding(GML.CoordinatesType).getType());

@@ -22,6 +22,11 @@ import org.geotools.kml.KMLTestSupport;
 import org.geotools.xml.Binding;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class LookAtTypeBindingTest extends KMLTestSupport {
     public void testType() {
         assertEquals(Coordinate.class, binding(KML.LookAtType).getType());

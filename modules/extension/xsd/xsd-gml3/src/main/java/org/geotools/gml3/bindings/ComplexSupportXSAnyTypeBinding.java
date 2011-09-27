@@ -75,6 +75,7 @@ import org.xml.sax.Attributes;
  * 
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
  *
+ *
  * @source $URL$
  */
 public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {

@@ -57,6 +57,7 @@ import org.geotools.xs.XS;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class XSBase64BinaryBinding implements SimpleBinding {

@@ -4,6 +4,11 @@ import org.geotools.Builder;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.NilExpression;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class NilBuilder implements Builder<NilExpression> {
     
     public NilExpression build() {

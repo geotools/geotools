@@ -25,6 +25,11 @@ import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Node;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class BasicGraphBuilderTest extends TestCase {
 
   private BasicGraphBuilder m_builder;

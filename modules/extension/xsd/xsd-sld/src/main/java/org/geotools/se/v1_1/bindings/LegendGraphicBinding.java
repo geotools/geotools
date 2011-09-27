@@ -35,7 +35,8 @@ import org.geotools.sld.bindings.SLDLegendGraphicBinding;
  *
  * @generated
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-sld/src/main/java/org/geotools/se/v1_1/bindings/LegendGraphicBinding.java $
+ *
+ * @source $URL$
  */
 public class LegendGraphicBinding extends SLDLegendGraphicBinding {
 

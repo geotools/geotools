@@ -21,6 +21,11 @@ import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GMLFeatureAssociationTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance featureAssociation;
     ElementInstance feature;

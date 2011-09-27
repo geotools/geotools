@@ -24,6 +24,7 @@ import java.util.Properties;
  * 
  * @author Richard Gould
  *
+ *
  * @source $URL$
  */
 public abstract class AbstractPutStylesRequest extends AbstractWMSRequest implements PutStylesRequest {

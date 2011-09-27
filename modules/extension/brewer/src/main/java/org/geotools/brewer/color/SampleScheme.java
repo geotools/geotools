@@ -22,6 +22,7 @@ package org.geotools.brewer.color;
  *
  * @author James Macgill
  *
+ *
  * @source $URL$
  */
 public class SampleScheme {

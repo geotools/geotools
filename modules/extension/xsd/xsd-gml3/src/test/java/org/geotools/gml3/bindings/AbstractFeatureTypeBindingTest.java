@@ -26,6 +26,11 @@ import org.w3c.dom.Element;
 import com.vividsolutions.jts.geom.Point;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class AbstractFeatureTypeBindingTest extends GML3TestSupport {
     protected Configuration createConfiguration() {
         return new TestConfiguration();

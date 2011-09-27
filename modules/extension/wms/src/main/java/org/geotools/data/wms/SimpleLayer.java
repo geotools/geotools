@@ -25,6 +25,7 @@ import java.util.Set;
  *
  * @author Richard Gould, Refractions Research Inc.
  *
+ *
  * @source $URL$
  */
 public class SimpleLayer {

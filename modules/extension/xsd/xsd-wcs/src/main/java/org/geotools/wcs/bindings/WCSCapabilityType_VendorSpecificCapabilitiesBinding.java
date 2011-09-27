@@ -25,7 +25,8 @@ import javax.xml.namespace.QName;
  *
  * @generated
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wcs/src/main/java/org/geotools/wcs/bindings/WCSCapabilityType_VendorSpecificCapabilitiesBinding.java $
+ *
+ * @source $URL$
  */
 public class WCSCapabilityType_VendorSpecificCapabilitiesBinding extends AbstractComplexBinding {
 

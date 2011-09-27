@@ -3,6 +3,11 @@ package org.geotools.styling.builder;
 import org.geotools.styling.LinePlacement;
 import org.opengis.filter.expression.Expression;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class LinePlacementBuilder extends AbstractStyleBuilder<LinePlacement> {
     private Expression offset;
 

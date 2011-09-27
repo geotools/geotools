@@ -226,6 +226,7 @@ import javax.xml.namespace.QName;
  *
  *
  *
+ *
  * @source $URL$
  */
 public interface Binding {

@@ -21,6 +21,11 @@ import org.opengis.filter.Not;
 import org.geotools.xml.Binding;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class NotBindingTest extends FilterTestSupport {
     public void testType() {
         assertEquals(Not.class, binding(OGC.Not).getType());

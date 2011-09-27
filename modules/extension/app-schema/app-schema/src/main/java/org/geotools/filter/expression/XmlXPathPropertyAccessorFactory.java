@@ -32,6 +32,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  * 
  * @author Russell Petty (GeoScience Victoria)
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering) 
+ *
  * @source $URL$
  */
 public class XmlXPathPropertyAccessorFactory implements PropertyAccessorFactory {

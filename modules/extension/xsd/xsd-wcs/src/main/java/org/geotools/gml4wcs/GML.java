@@ -13,7 +13,8 @@ import org.geotools.xml.XSD;
  * 
  * @generated
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wcs/src/main/java/org/geotools/gml4wcs/GML.java $
+ *
+ * @source $URL$
  */
 public final class GML extends XSD {
 

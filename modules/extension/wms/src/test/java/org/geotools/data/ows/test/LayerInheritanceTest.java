@@ -35,6 +35,11 @@ import org.geotools.xml.SchemaFactory;
 import org.geotools.xml.handlers.DocumentHandler;
 import org.geotools.xml.schema.Schema;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class LayerInheritanceTest extends TestCase {
 
     public void testInheritCapabilities() throws Exception {

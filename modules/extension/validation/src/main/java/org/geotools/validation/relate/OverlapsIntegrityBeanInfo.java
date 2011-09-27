@@ -23,6 +23,7 @@ import java.beans.PropertyDescriptor;
  * @author bowens
  *
  *
+ *
  * @source $URL$
  */
 public class OverlapsIntegrityBeanInfo extends RelationIntegrityBeanInfo 

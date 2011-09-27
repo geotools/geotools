@@ -21,6 +21,11 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MultiSurface extends MultiPolygon {
     public MultiSurface(Polygon[] polygons, GeometryFactory factory) {
         super(polygons, factory);

@@ -19,6 +19,11 @@ package org.geotools.filter;
 
 import org.opengis.feature.Attribute;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IDFunctionExpression extends FunctionExpressionImpl {
     public IDFunctionExpression() {
         super("getID");

@@ -25,6 +25,11 @@ import org.geotools.measure.Measure;
 import org.opengis.feature.ComplexAttribute;
 import org.w3c.dom.Document;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MeasureTypeBindingTest extends ComplexAttributeTestSupport {
     
     public void testParser() throws Exception {

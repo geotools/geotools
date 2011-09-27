@@ -30,6 +30,11 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ParserTest extends TestCase {
     public void testParse() throws Exception {
         Parser parser = new Parser(new MLConfiguration());

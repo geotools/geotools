@@ -31,6 +31,7 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  * @author Jody Garnett, Refractions Research, Inc
  *
+ *
  * @source $URL$
  */
 public interface ValidationResults {

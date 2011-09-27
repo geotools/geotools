@@ -21,6 +21,11 @@ import org.geotools.styling.ExternalGraphic;
 import org.geotools.xlink.XLINK;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SLDExternalGraphicBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(ExternalGraphic.class, new SLDExternalGraphicBinding(null).getType());

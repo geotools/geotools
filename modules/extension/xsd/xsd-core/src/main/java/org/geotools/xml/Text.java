@@ -24,7 +24,8 @@ import java.util.regex.Pattern;
  * @author Justin Deoliveira, OpenGeo
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-core/src/main/java/org/geotools/xml/Text.java $
+ *
+ * @source $URL$
  */
 public class Text {
 

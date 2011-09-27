@@ -23,6 +23,11 @@ import org.opengis.filter.capability.SpatialOperators;
 import org.geotools.xml.Binding;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class Spatial_OperatorsTypeBindingTest extends FilterCapabilitiesTestSupport {
     public void testType() {
         assertEquals(SpatialOperators.class, binding(OGC.Spatial_OperatorsType).getType());

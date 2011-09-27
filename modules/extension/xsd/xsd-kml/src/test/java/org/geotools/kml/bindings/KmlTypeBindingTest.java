@@ -23,6 +23,11 @@ import org.geotools.kml.KMLTestSupport;
 import org.geotools.xml.Binding;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class KmlTypeBindingTest extends KMLTestSupport {
     public void testType() throws Exception {
         assertEquals(FeatureCollection.class, binding(KML.KmlType).getType());

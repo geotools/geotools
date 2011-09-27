@@ -25,6 +25,11 @@ import org.geotools.wps.WPSTestSupport;
 
 import com.vividsolutions.jts.geom.Polygon;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ComplexDataTypeBindingTest extends WPSTestSupport {
 
     public void testParsePolygon() throws Exception {

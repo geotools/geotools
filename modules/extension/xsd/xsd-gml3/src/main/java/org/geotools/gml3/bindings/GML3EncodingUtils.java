@@ -64,6 +64,7 @@ import com.vividsolutions.jts.geom.LineString;
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
  * 
  *
+ *
  * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org
  *         /geotools/gml3/bindings/GML3EncodingUtils.java $

@@ -23,6 +23,11 @@ import org.geotools.gml3.GML3TestSupport;
 import org.opengis.geometry.DirectPosition;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DirectPositionListTypeBindingTest extends GML3TestSupport {
     public void test1D() throws Exception {
         GML3MockData.element(GML.posList, document, document);

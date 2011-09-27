@@ -25,6 +25,11 @@ import org.w3c.dom.Element;
 
 import com.vividsolutions.jts.geom.Envelope;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class BoundingShapeTypeBindingTest extends GML3TestSupport {
 
     public void testEncode() throws Exception {

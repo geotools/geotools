@@ -29,6 +29,11 @@ import javax.xml.namespace.QName;
 import org.geotools.xml.Binding;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class BindingLoader {
     
     Map bindings;

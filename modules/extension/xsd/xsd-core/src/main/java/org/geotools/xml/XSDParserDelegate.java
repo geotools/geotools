@@ -33,6 +33,7 @@ import org.xml.sax.SAXException;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  */
 public class XSDParserDelegate implements ParserDelegate {

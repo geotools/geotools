@@ -44,6 +44,7 @@ import org.geotools.xml.Schemas;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class BindingPropertyExtractor implements PropertyExtractor {

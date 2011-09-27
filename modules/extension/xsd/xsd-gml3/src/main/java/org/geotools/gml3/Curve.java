@@ -21,6 +21,11 @@ import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class Curve extends MultiLineString {
     public Curve(LineString[] segments, GeometryFactory factory) {
         super(segments, factory);

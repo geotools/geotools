@@ -23,6 +23,11 @@ import org.opengis.filter.capability.ScalarCapabilities;
 import org.geotools.xml.Binding;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class Scalar_CapabilitiesTypeBindingTest extends FilterCapabilitiesTestSupport {
     public void testType() {
         assertEquals(ScalarCapabilities.class, binding(OGC.Scalar_CapabilitiesType).getType());

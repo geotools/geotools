@@ -21,6 +21,11 @@ import org.geotools.styling.ColorMap;
 import org.geotools.styling.ColorMapEntry;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SLDColorMapBindingTest extends SLDTestSupport {
     public void testType() {
         assertEquals(ColorMap.class, new SLDColorMapBinding(null).getType());

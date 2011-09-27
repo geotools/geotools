@@ -28,6 +28,11 @@ import org.geotools.xml.Binding;
 import org.w3c.dom.Document;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PolygonTypeBindingTest extends KMLTestSupport {
     public void testType() {
         assertEquals(Polygon.class, binding(KML.PolygonType).getType());

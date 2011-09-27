@@ -25,6 +25,11 @@ import org.geotools.xml.InstanceComponent;
 import org.geotools.xml.Node;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DocumentHandlerImpl extends HandlerImpl implements DocumentHandler {
     /** factory used to create a handler for the root element **/
     HandlerFactory factory;

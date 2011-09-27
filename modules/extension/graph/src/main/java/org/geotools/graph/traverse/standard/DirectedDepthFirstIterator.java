@@ -25,6 +25,7 @@ import org.geotools.graph.traverse.GraphTraversal;
 
 /**
  *
+ *
  * @source $URL$
  */
 public class DirectedDepthFirstIterator extends DepthFirstIterator {

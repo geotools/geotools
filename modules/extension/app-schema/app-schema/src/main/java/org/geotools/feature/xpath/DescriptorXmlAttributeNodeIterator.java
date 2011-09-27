@@ -32,7 +32,8 @@ import org.opengis.feature.type.PropertyDescriptor;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main/java/org/geotools/feature/xpath/DescriptorXmlAttributeNodeIterator.java $
+ *
+ * @source $URL$
  */
 public class DescriptorXmlAttributeNodeIterator implements NodeIterator {
 

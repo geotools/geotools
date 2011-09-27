@@ -12,6 +12,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class GeometryPropertyTypeBindingBase extends AbstractComplexBinding {
 
     private XSDIdRegistry idSet;

@@ -22,6 +22,11 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.LinearRing;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class LinearRingTypeBindingTest extends GML3TestSupport {
     public void testPos() throws Exception {
         document.appendChild(GML3MockData.linearRingWithPos(document, null));

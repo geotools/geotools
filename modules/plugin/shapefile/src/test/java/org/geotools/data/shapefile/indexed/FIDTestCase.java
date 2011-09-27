@@ -22,6 +22,11 @@ import java.io.IOException;
 import org.geotools.data.shapefile.ShpFiles;
 import org.geotools.data.shapefile.TestCaseSupport;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class FIDTestCase extends TestCaseSupport {
     protected FIDTestCase( String name ) throws IOException {
         super(name);

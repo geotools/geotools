@@ -28,7 +28,8 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/shapefile/src/test/java/org/geotools/data/directory/DirectoryDataStoreTest.java $
+ *
+ * @source $URL$
  */
 public class DirectoryDataStoreTest extends DirectoryTestSupport {
     

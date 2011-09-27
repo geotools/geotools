@@ -16,6 +16,11 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.identity.FeatureId;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ShapefileAttributeReaderTest extends TestCaseSupport {
 
 	public final String STATEPOP = "shapes/statepop.shp";

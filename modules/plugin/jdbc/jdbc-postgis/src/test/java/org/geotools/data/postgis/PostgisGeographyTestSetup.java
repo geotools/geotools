@@ -24,6 +24,11 @@ import org.geotools.jdbc.JDBCGeographyTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.util.Version;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostgisGeographyTestSetup extends JDBCGeographyTestSetup {
 
     public PostgisGeographyTestSetup(JDBCTestSetup delegate) {

@@ -25,6 +25,7 @@ import java.io.Reader;
  * comments start with "--" and are on their own line 
  *
  *
+ *
  * @source $URL$
  */
 public class SqlScriptReader {

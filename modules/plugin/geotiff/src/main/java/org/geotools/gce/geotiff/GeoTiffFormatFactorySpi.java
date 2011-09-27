@@ -59,6 +59,7 @@ import org.geotools.coverage.grid.io.GridFormatFactorySpi;
  * @author Bryce Nordgren / USDA Forest Service
  * @author Simone Giannecchini
  *
+ *
  * @source $URL$
  */
 public class GeoTiffFormatFactorySpi implements GridFormatFactorySpi {

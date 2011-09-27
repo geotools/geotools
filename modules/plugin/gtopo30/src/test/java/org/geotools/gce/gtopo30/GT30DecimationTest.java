@@ -41,6 +41,7 @@ import org.opengis.parameter.ParameterValueGroup;
  * 
  * @author Simone Giannecchini
  *
+ *
  * @source $URL$
  */
 public class GT30DecimationTest extends GT30TestBase {

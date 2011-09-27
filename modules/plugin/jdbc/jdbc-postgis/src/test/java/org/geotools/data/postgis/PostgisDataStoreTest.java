@@ -19,6 +19,11 @@ package org.geotools.data.postgis;
 import org.geotools.jdbc.JDBCDataStoreTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostgisDataStoreTest extends JDBCDataStoreTest {
 
     @Override

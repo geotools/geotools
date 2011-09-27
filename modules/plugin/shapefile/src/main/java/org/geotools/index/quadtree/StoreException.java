@@ -23,6 +23,7 @@ import java.io.IOException;
  * 
  * @author Tommaso Nolli
  *
+ *
  * @source $URL$
  */
 public class StoreException extends IOException {

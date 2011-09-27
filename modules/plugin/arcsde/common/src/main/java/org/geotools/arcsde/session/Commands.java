@@ -33,6 +33,11 @@ import com.esri.sde.sdk.client.SeTable;
 import com.esri.sde.sdk.client.SeUpdate;
 import com.esri.sde.sdk.client.SeVersion;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class Commands {
 
     private static final Logger LOGGER = Loggers.getLogger("org.geotools.arcsde.session");

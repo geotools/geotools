@@ -50,6 +50,7 @@ import com.esri.sde.sdk.client.SeRasterAttr;
  * @author Saul Farber
  * @author Gabriel Roldan
  *
+ *
  * @source $URL$
  */
 public final class RasterInfo {

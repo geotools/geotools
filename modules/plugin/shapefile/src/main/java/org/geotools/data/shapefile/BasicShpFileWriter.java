@@ -17,6 +17,11 @@
 package org.geotools.data.shapefile;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public final class BasicShpFileWriter implements FileWriter {
     private String id;
 

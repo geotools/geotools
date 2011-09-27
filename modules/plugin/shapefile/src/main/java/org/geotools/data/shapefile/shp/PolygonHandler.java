@@ -42,6 +42,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author aaime
  * @author Ian Schneider
  *
+ *
  * @source $URL$
  * @version $Id$
  */

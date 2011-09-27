@@ -19,6 +19,11 @@ package org.geotools.data.sqlserver;
 import org.geotools.jdbc.JDBCAggregateFunctionTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SQLServerAggregateFunctionTest extends JDBCAggregateFunctionTest {
 
     @Override

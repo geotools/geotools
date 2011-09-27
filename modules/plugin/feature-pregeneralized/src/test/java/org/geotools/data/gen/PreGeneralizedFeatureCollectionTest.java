@@ -29,6 +29,11 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.junit.Assert;
 import org.opengis.feature.simple.SimpleFeature;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PreGeneralizedFeatureCollectionTest extends TestCase {
 
     @Override

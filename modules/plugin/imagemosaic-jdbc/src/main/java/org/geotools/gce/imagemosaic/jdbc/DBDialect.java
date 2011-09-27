@@ -31,6 +31,7 @@ import org.geotools.data.jdbc.datasource.DataSourceFinder;
  * 
  *
  *
+ *
  * @source $URL$
  */
 public abstract class DBDialect {

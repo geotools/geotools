@@ -27,6 +27,7 @@ import org.geotools.jdbc.JDBCEmptyTestSetup;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class DB2EmptyTest extends JDBCEmptyTest {

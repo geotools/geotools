@@ -57,6 +57,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  * @author Chris Holmes, TOPP
  *
+ *
  * @source $URL$
  * @version $Id: ShapefileDataStoreFactory.java 27856 2007-11-12 17:23:35Z
  *          desruisseaux $

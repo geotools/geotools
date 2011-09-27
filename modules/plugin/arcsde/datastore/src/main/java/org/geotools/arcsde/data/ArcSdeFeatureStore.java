@@ -45,6 +45,11 @@ import com.esri.sde.sdk.client.SeConnection;
 import com.esri.sde.sdk.client.SeException;
 import com.esri.sde.sdk.client.SeTable;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ArcSdeFeatureStore extends ArcSdeFeatureSource implements SimpleFeatureStore {
 
     private static final Logger LOGGER = Logging.getLogger(ArcSdeFeatureStore.class.getName());

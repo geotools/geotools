@@ -34,6 +34,11 @@ import org.opengis.referencing.operation.MathTransform;
 import javax.sql.DataSource;
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DialectEpsgMediatorTest extends TestCase {
 
     private static HsqlDialectEpsgMediator factory;

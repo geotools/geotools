@@ -22,6 +22,11 @@ import java.sql.SQLException;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OracleOnlineTest extends AbstractTest {
 	static DBDialect dialect = null;
 

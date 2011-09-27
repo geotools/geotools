@@ -20,6 +20,11 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCGeometrylessTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class H2GeometrylessTestSetup extends JDBCGeometrylessTestSetup {
 
     protected H2GeometrylessTestSetup(JDBCTestSetup delegate) {

@@ -20,6 +20,11 @@ package org.geotools.data.postgis;
 import org.geotools.jdbc.JDBCJNDIDataSourceTest;
 import org.geotools.jdbc.JDBCJNDITestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public  class PostgisJNDIDataSourceTest extends JDBCJNDIDataSourceTest {
 
     protected JDBCJNDITestSetup createTestSetup() {

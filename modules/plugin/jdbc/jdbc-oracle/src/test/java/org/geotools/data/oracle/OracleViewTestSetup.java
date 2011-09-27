@@ -2,6 +2,11 @@ package org.geotools.data.oracle;
 
 import org.geotools.jdbc.JDBCViewTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OracleViewTestSetup extends JDBCViewTestSetup {
     
     protected OracleViewTestSetup() {

@@ -59,6 +59,7 @@ import com.esri.sde.sdk.client.SeUpdate;
  * @author Gabriel Roldan
  * @author Jody Garnett
  *
+ *
  * @source $URL$
  * @version $Id$
  * @since 2.5.x

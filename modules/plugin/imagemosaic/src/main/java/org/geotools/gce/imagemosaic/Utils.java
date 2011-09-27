@@ -89,7 +89,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Simone Giannecchini, GeoSolutions S.A.S.
  * 
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/imagemosaic/src/main/java/org/geotools/gce/imagemosaic/Utils.java $
+ *
+ * @source $URL$
  */
 public class Utils {
 

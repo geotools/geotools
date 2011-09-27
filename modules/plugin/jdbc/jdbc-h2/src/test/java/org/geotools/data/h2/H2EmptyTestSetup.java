@@ -19,6 +19,11 @@ package org.geotools.data.h2;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCEmptyTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class H2EmptyTestSetup extends JDBCEmptyTestSetup {
 
     protected H2EmptyTestSetup() {

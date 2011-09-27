@@ -3,6 +3,11 @@ package org.geotools.data.h2;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCViewTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class H2ViewTestSetup extends JDBCViewTestSetup {
     
     protected H2ViewTestSetup() {

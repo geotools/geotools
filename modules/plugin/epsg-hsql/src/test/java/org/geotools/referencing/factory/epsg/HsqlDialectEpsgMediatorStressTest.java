@@ -37,6 +37,11 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class HsqlDialectEpsgMediatorStressTest extends TestCase {
 
     final static int RUNNER_COUNT = 10;

@@ -21,6 +21,11 @@ import java.util.List;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public final class FloatFileNameExtractorSPI extends NumericFileNameExtractorSPI implements PropertiesCollectorSPI{
 
     public FloatFileNameExtractorSPI() {

@@ -78,6 +78,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * 
  * @author Gabriel Roldan, Axios Engineering
  *
+ *
  * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
  *         /org/geotools/arcsde/data/ArcSDEGeometryBuilder.java $

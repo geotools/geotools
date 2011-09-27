@@ -37,6 +37,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * Useful for non prepared statement based dialects and for debugging purposes 
  *
  *
+ *
  * @source $URL$
  */
 public class SDOSqlDumper {

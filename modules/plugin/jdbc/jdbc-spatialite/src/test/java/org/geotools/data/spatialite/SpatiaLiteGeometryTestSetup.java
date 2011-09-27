@@ -18,6 +18,11 @@ package org.geotools.data.spatialite;
 
 import org.geotools.jdbc.JDBCGeometryTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SpatiaLiteGeometryTestSetup extends JDBCGeometryTestSetup {
 
     protected SpatiaLiteGeometryTestSetup() {

@@ -19,6 +19,11 @@ package org.geotools.data.sqlserver;
 import org.geotools.jdbc.JDBCBooleanTest;
 import org.geotools.jdbc.JDBCBooleanTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SQLServerBooleanTest extends JDBCBooleanTest {
 
     @Override

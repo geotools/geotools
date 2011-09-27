@@ -28,6 +28,7 @@ import static org.geotools.data.postgis.PostgisNGDataStoreFactory.*;
  * 
  *
  *
+ *
  * @source $URL$
  */
 public class PostgisNGJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {

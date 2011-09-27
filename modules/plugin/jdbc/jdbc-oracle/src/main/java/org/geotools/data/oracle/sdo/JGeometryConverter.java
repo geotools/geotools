@@ -31,6 +31,7 @@ package org.geotools.data.oracle.sdo;
  * 
  *
  *
+ *
  * @source $URL$
  */
 public class JGeometryConverter {

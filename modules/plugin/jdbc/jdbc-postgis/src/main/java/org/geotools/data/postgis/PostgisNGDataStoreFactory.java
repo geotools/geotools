@@ -25,6 +25,11 @@ import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;
 import org.geotools.util.KVP;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
     
     /** parameter for database type */

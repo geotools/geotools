@@ -19,6 +19,11 @@ package org.geotools.data.postgis;
 import org.geotools.jdbc.JDBCGeometrylessTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostgisGeometrylessTestSetup extends JDBCGeometrylessTestSetup {
 
     public PostgisGeometrylessTestSetup(JDBCTestSetup delegate) {

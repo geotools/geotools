@@ -20,6 +20,11 @@ import org.geotools.jdbc.JDBCFeatureSourceExposePkTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TeradataFeatureSourceExposePkTest extends JDBCFeatureSourceExposePkTest {
 
 

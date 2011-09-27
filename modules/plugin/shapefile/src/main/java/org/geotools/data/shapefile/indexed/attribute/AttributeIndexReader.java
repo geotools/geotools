@@ -32,6 +32,7 @@ import org.geotools.resources.NIOUtilities;
  * @author Manuele Ventoruzzo
  *
  *
+ *
  * @source $URL$
  */
 public class AttributeIndexReader {

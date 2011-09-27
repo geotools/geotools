@@ -62,6 +62,7 @@ import org.geotools.resources.NIOUtilities;
  * @author Ian Schneider
  * @author Tommaso Nolli
  *
+ *
  * @source $URL$
  */
 public class IndexedDbaseFileReader extends DbaseFileReader {

@@ -37,6 +37,11 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DB2SQLDialectPrepared extends PreparedStatementSQLDialect {
 
 	private DB2SQLDialect delegate = null;

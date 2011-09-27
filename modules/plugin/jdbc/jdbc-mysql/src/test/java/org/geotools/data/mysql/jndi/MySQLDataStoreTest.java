@@ -5,6 +5,11 @@ import org.geotools.jdbc.JDBCDataStoreTest;
 import org.geotools.jdbc.JDBCJNDITestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MySQLDataStoreTest extends JDBCDataStoreTest {
 
     @Override

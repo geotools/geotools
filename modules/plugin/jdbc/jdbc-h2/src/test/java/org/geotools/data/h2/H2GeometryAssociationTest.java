@@ -20,6 +20,11 @@ import org.geotools.jdbc.JDBCGeometryAssociationTestSupport;
 import org.geotools.jdbc.JDBCTestSetup;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class H2GeometryAssociationTest extends JDBCGeometryAssociationTestSupport {
     protected JDBCTestSetup createTestSetup() {
         return new H2TestSetup() {

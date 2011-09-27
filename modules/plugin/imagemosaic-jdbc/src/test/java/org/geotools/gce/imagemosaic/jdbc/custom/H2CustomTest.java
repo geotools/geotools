@@ -41,6 +41,7 @@ import org.geotools.gce.imagemosaic.jdbc.UniversalDialect;
  * @author mcr
  * 
  *
+ *
  * @source $URL$
  */
 public class H2CustomTest extends AbstractTest {

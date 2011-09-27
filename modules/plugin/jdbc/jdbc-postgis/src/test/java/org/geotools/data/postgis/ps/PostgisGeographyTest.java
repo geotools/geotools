@@ -22,6 +22,11 @@ import org.geotools.jdbc.JDBCGeographyTest;
 import org.geotools.jdbc.JDBCGeographyTestSetup;
 import org.opengis.feature.simple.SimpleFeatureType;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostgisGeographyTest extends JDBCGeographyTest {
 
     @Override

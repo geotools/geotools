@@ -38,6 +38,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author Jesse
  *
  *
+ *
  * @source $URL$
  */
 public class LazySearchIterator implements CloseableIterator<Data> {

@@ -20,6 +20,11 @@ import org.geotools.data.postgis.PostGISBooleanTestSetup;
 import org.geotools.jdbc.JDBCBooleanTest;
 import org.geotools.jdbc.JDBCBooleanTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostGISBooleanTest extends JDBCBooleanTest {
 
     @Override

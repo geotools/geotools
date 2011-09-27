@@ -2,6 +2,11 @@ package org.geotools.data.h2;
 
 import org.geotools.jdbc.JDBCDateTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class H2DateTestSetup extends JDBCDateTestSetup {
 
     public H2DateTestSetup() {

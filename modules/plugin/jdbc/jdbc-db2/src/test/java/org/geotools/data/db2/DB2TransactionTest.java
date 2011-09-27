@@ -22,6 +22,11 @@ import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTransactionTest;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DB2TransactionTest extends JDBCTransactionTest {
     protected JDBCTestSetup createTestSetup() {
         return new DB2TestSetup();

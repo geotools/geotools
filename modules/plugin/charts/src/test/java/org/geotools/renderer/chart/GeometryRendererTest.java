@@ -33,6 +33,11 @@ import org.jfree.chart.plot.XYPlot;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.WKTReader;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GeometryRendererTest extends TestCase {
 
     WKTReader wkt = new WKTReader();

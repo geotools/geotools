@@ -19,6 +19,11 @@ package org.geotools.data.teradata;
 import org.geotools.jdbc.JDBCSkipColumnTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TeradataSkipColumnTestSetup extends JDBCSkipColumnTestSetup {
 
     public TeradataSkipColumnTestSetup(JDBCTestSetup delegate) {

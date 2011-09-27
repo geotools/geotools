@@ -1,6 +1,11 @@
 package com.esri.sde.sdk.client;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SeRegistration {
 	
     public static  int SE_REGISTRATION_ROW_ID_ALLOCATION_SINGLE = 0;

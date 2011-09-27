@@ -78,6 +78,7 @@ import org.opengis.referencing.cs.AxisDirection;
  * @author Daniele Romagnoli
  * @author Simone Giannecchini (simboss)
  *
+ *
  * @source $URL$
  */
 public final class ArcGridWriter extends AbstractGridCoverageWriter implements GridCoverageWriter {

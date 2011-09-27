@@ -42,6 +42,7 @@ import com.vividsolutions.jts.io.WKBWriter;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class MySQLDialectPrepared extends PreparedStatementSQLDialect {

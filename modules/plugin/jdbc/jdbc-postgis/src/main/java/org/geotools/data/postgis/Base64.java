@@ -74,6 +74,7 @@ package org.geotools.data.postgis;
  * @author rob@iharder.net
  *
  *
+ *
  * @source $URL$
  * @version 2.1
  */

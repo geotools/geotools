@@ -75,6 +75,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author Andrea Aime, OpenGEO
  *
  *
+ *
  * @source $URL$
  */
 public class OracleDialect extends PreparedStatementSQLDialect {

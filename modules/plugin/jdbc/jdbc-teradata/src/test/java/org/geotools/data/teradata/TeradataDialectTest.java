@@ -30,6 +30,8 @@ import org.opengis.filter.spatial.BBOX;
 /**
  * Test the LOB workaround and triggers directly. 
  * @author Ian Schneider
+ *
+ * @source $URL$
  */
 public class TeradataDialectTest extends JDBCTestSupport {
     static int cnt = 99;

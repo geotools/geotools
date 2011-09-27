@@ -61,7 +61,8 @@ import com.vividsolutions.jts.io.WKBReader;
  * 
  * 
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/imagemosaic-jdbc/src/main/java/org/geotools/gce/imagemosaic/jdbc/custom/JDBCAccessOracleGeoRaster.java $
+ *
+ * @source $URL$
  **/
 
 public class JDBCAccessOracleGeoRaster extends JDBCAccessCustom {

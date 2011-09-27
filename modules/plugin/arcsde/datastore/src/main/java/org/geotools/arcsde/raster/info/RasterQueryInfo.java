@@ -28,6 +28,7 @@ import org.opengis.coverage.grid.GridEnvelope;
  * 
  * @author Gabriel Roldan
  *
+ *
  * @source $URL$
  * @version $Id$
  * @since 2.5.6

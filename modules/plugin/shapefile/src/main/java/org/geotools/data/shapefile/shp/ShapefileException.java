@@ -22,6 +22,7 @@ import org.geotools.data.DataSourceException;
  * Thrown when an error relating to the shapefile occures
  * 
  *
+ *
  * @source $URL$
  */
 public class ShapefileException extends DataSourceException {

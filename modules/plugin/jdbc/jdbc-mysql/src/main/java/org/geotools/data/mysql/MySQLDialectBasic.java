@@ -44,6 +44,7 @@ import com.vividsolutions.jts.io.WKTWriter;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class MySQLDialectBasic extends BasicSQLDialect {

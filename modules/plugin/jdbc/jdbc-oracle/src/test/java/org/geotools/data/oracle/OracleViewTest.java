@@ -3,6 +3,11 @@ package org.geotools.data.oracle;
 import org.geotools.jdbc.JDBCViewTest;
 import org.geotools.jdbc.JDBCViewTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OracleViewTest extends JDBCViewTest {
 
     @Override

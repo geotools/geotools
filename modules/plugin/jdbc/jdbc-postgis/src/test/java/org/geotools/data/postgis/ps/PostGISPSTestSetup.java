@@ -21,6 +21,11 @@ import org.geotools.data.postgis.PostGISPSDialect;
 import org.geotools.data.postgis.PostGISTestSetup;
 import org.geotools.jdbc.JDBCDataStore;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostGISPSTestSetup extends PostGISTestSetup {
 
     @Override

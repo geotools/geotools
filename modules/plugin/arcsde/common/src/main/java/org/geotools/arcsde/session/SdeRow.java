@@ -39,6 +39,7 @@ import com.esri.sde.sdk.geom.GeometryFactory;
  * @author Gabriel Roldan, Axios Engineering
  * @version $Id$
  *
+ *
  * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
  *         /org/geotools/arcsde/data/SdeRow.java $

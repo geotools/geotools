@@ -64,7 +64,8 @@ import com.vividsolutions.jts.io.WKBWriter;
  * 
  * 
  * 
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/plugin/imagemosaic-jdbc/src/main/java/org
  *         /geotools/gce/imagemosaic/jdbc/custom/JDBCAccessPGRaster.java $
  **/

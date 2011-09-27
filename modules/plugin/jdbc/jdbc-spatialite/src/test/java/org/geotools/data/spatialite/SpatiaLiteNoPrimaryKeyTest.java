@@ -19,6 +19,11 @@ package org.geotools.data.spatialite;
 import org.geotools.jdbc.JDBCNoPrimaryKeyTest;
 import org.geotools.jdbc.JDBCNoPrimaryKeyTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SpatiaLiteNoPrimaryKeyTest extends JDBCNoPrimaryKeyTest {
 
     @Override

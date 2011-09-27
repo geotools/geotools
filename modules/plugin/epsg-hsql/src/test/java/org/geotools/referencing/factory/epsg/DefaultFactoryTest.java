@@ -58,6 +58,7 @@ import static org.junit.Assert.*;
  * database, since this test live in the {@code epsg-hsql} module.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

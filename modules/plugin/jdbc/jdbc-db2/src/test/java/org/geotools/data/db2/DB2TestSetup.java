@@ -34,6 +34,7 @@ import org.geotools.util.logging.Logging;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class DB2TestSetup extends JDBCTestSetup {

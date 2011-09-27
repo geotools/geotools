@@ -38,6 +38,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * DbaseFileReader
  *
  *
+ *
  * @source $URL$
  */
 public class ShapefileAttributeReader extends AbstractAttributeIO implements

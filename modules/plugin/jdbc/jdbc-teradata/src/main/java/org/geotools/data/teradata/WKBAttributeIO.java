@@ -38,7 +38,8 @@ import com.vividsolutions.jts.io.WKBWriter;
  * 
  * @author Andrea Aime
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/jdbc/jdbc-teradata/src/main/java/org/geotools/data/teradata/WKBAttributeIO.java $
+ *
+ * @source $URL$
  * @since 2.4.1
  */
 public class WKBAttributeIO {

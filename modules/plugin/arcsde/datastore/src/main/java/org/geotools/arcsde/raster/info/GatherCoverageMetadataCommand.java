@@ -65,6 +65,7 @@ import com.esri.sde.sdk.client.SeTable;
  * @author Gabriel Roldan (OpenGeo)
  * @since 2.5.8
  *
+ *
  * @source $URL$
  */
 public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {

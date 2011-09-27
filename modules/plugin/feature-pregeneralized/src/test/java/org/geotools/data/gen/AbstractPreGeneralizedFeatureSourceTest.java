@@ -59,6 +59,11 @@ import org.xml.sax.helpers.NamespaceSupport;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
 
     static Map<String, PreGeneralizedDataStore> DSMap = new HashMap<String, PreGeneralizedDataStore>();

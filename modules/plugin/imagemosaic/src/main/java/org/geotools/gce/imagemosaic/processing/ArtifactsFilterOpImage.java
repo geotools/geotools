@@ -54,7 +54,8 @@ import com.sun.media.jai.util.ImageUtil;
  * @author Simone Giannecchini, GeoSolutions SAS
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/imagemosaic/src/main/java/org/geotools/gce/imagemosaic/processing/ArtifactsFilterOpImage.java $
+ *
+ * @source $URL$
  */
 @SuppressWarnings("unchecked")
 public final class ArtifactsFilterOpImage extends PointOpImage {

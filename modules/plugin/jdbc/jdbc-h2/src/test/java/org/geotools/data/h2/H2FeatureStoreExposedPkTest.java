@@ -30,7 +30,8 @@ import org.geotools.jdbc.JDBCTestSetup;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/jdbc/jdbc-h2/src/test/java/org/geotools/data/h2/H2FeatureStoreExposedPkTest.java $
+ *
+ * @source $URL$
  */
 public class H2FeatureStoreExposedPkTest extends JDBCFeatureStoreExposePkTest {
     protected JDBCTestSetup createTestSetup() {

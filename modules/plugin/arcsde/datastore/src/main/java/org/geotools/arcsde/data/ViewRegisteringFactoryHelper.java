@@ -74,6 +74,7 @@ import org.geotools.util.logging.Logging;
  * @author Gabriel Roldan, Axios Engineering
  * @version $Id$
  *
+ *
  * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
  *         /org/geotools/arcsde/data/ViewRegisteringFactoryHelper.java $

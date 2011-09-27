@@ -33,7 +33,8 @@ import org.opengis.util.ProgressListener;
 /**
  * @author Andrea Antonello - www.hydrologis.com
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/grassraster/src/main/java/org/geotools/gce/grassraster/GrassBinaryImageWriter.java $
+ *
+ * @source $URL$
  */
 public class GrassBinaryImageWriter extends ImageWriter {
     /** <code>true</code> if there are some listeners attached to this writer */

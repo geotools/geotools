@@ -26,6 +26,7 @@ package org.geotools.data.shapefile;
  *                Provides state values such as NONE, FAILURE, etc..
  *
  *
+ *
  * @source $URL$
  */
 public class Result<V, S> {

@@ -66,6 +66,7 @@ import org.geotools.resources.image.ImageUtilities;
  * operation name is "org.geotools.gce.NoDataReplacer".
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini

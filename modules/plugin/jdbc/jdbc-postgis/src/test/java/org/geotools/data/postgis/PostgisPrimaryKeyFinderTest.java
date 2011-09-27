@@ -3,6 +3,11 @@ package org.geotools.data.postgis;
 import org.geotools.jdbc.JDBCPrimaryKeyFinderTest;
 import org.geotools.jdbc.JDBCPrimaryKeyFinderTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostgisPrimaryKeyFinderTest extends JDBCPrimaryKeyFinderTest {
 
     @Override

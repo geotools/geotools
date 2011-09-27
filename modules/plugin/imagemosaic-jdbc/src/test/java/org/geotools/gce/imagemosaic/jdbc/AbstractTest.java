@@ -58,6 +58,11 @@ import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class AbstractTest extends TestCase {
 
 	protected final static Logger LOGGER = Logging.getLogger(AbstractTest.class

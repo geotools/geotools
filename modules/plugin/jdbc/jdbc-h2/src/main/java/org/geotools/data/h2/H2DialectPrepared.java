@@ -47,6 +47,7 @@ import com.vividsolutions.jts.io.WKBWriter;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class H2DialectPrepared extends PreparedStatementSQLDialect {

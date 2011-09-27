@@ -22,6 +22,11 @@ import java.net.URL;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ShpFileTypesTest extends TestCase {
 
     public void testToFileBase() {

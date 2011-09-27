@@ -44,6 +44,7 @@ import org.opengis.parameter.GeneralParameterValue;
  * @author Simone Giannecchini, GeoSolutions
  * 
  *
+ *
  * @source $URL$
  */
 public abstract class BaseGDALGridFormat extends AbstractGridFormat implements

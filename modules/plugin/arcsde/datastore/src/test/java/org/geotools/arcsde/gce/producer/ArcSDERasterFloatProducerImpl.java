@@ -8,6 +8,11 @@ import com.esri.sde.sdk.client.SeRasterConsumer;
 import com.esri.sde.sdk.client.SeRasterRenderedImage;
 import com.esri.sde.sdk.client.SeRasterScanLineGenerator;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ArcSDERasterFloatProducerImpl extends ArcSDERasterProducer {
 
     public ArcSDERasterFloatProducerImpl() {

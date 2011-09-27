@@ -17,6 +17,11 @@ import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DrawTest {
     private static final long TIME = 20000;
     SimpleFeatureSource squareFS;

@@ -51,6 +51,7 @@ import com.vividsolutions.jts.io.WKTReader;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class SQLServerDialect extends BasicSQLDialect {

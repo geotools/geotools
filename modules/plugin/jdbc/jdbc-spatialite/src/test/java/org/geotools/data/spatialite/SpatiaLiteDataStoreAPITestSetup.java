@@ -18,6 +18,11 @@ package org.geotools.data.spatialite;
 
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SpatiaLiteDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
 
     protected SpatiaLiteDataStoreAPITestSetup() {

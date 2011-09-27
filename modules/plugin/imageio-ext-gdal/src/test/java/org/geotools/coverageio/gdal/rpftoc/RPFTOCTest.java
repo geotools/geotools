@@ -49,7 +49,8 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * 
  * Testing {@link RPFTOCReader}
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/imageio-ext-gdal/src/test/java/org/geotools/coverageio/gdal/rpftoc/RPFTOCTest.java $
+ *
+ * @source $URL$
  */
 public final class RPFTOCTest extends GDALTestCase {
 	/**

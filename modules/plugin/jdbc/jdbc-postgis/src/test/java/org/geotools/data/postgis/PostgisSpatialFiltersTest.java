@@ -19,6 +19,11 @@ package org.geotools.data.postgis;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCSpatialFiltersTest;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostgisSpatialFiltersTest extends JDBCSpatialFiltersTest {
 
     @Override

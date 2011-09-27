@@ -19,6 +19,11 @@ package org.geotools.data.sqlserver;
 import org.geotools.jdbc.JDBCFeatureLockingTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SQLServerFeatureLockingTest extends JDBCFeatureLockingTest {
 
     @Override

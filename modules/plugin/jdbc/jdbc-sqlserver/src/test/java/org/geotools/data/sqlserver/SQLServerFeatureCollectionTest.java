@@ -19,6 +19,11 @@ package org.geotools.data.sqlserver;
 import org.geotools.jdbc.JDBCFeatureCollectionTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SQLServerFeatureCollectionTest extends JDBCFeatureCollectionTest {
 
     @Override

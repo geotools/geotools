@@ -33,6 +33,7 @@ import org.geotools.feature.FeatureTypes;
  * @author Jody Garnett (Refractions Reserach)
  *
  *
+ *
  * @source $URL$
  */
 public class ShapefileURLServiceInfo implements ServiceInfo {

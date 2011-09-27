@@ -14,6 +14,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.geotools.test.TestData;
 import org.junit.Test;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GeoTiffDeadlockTest {
     
     /**

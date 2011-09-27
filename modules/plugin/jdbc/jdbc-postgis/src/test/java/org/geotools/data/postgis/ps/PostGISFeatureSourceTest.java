@@ -19,6 +19,11 @@ import org.geotools.jdbc.JDBCFeatureSourceTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostGISFeatureSourceTest extends JDBCFeatureSourceTest {
 
     @Override

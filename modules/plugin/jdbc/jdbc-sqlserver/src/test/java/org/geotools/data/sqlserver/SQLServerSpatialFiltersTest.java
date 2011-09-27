@@ -19,6 +19,11 @@ package org.geotools.data.sqlserver;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCSpatialFiltersTest;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SQLServerSpatialFiltersTest extends JDBCSpatialFiltersTest {
 
     @Override

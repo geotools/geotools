@@ -25,6 +25,11 @@ import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SpatiaLiteDataStoreAPITest extends JDBCDataStoreAPITest {
 
     @Override

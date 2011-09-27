@@ -26,6 +26,7 @@ import org.geotools.data.shapefile.ShapefileDataStoreFactory;
  *             IndexedDataStore if appropriate
  * @author Chris Holmes, TOPP
  *
+ *
  * @source $URL$
  * @version $Id: IndexedShapefileDataStoreFactory.java 27223 2007-09-29
  *          19:42:29Z jgarnett $

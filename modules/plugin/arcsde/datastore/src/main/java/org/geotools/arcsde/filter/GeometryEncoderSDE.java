@@ -96,6 +96,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * 
  * @author Gabriel Rold?n
  * 
+ *
  * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
  *         /org/geotools/arcsde/filter/GeometryEncoderSDE.java $

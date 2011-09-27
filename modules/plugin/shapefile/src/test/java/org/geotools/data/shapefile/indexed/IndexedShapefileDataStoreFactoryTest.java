@@ -33,6 +33,7 @@ import org.geotools.data.shapefile.TestCaseSupport;
 
 /**
  *
+ *
  * @source $URL$
  */
 public class IndexedShapefileDataStoreFactoryTest extends TestCaseSupport {

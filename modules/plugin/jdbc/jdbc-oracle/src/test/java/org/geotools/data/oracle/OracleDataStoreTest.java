@@ -19,6 +19,11 @@ package org.geotools.data.oracle;
 import org.geotools.jdbc.JDBCDataStoreTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OracleDataStoreTest extends JDBCDataStoreTest {
 
     @Override

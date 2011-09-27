@@ -49,6 +49,11 @@ import org.opengis.filter.spatial.Within;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TeradataFilterToSQL extends PreparedFilterToSQL {
 
     static final Logger LOGGER = Logging.getLogger(TeradataFilterToSQL.class);

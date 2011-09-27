@@ -23,6 +23,11 @@ import junit.framework.TestCase;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DB2DataStoreFactoryTest extends TestCase {
     DB2NGDataStoreFactory factory;
 

@@ -35,6 +35,7 @@ import org.sqlite.SQLiteConfig;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class SpatiaLiteDataStoreFactory extends JDBCDataStoreFactory {

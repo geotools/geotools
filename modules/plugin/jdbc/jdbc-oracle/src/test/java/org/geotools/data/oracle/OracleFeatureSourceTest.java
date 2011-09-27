@@ -25,6 +25,11 @@ import org.geotools.referencing.CRS;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OracleFeatureSourceTest extends JDBCFeatureSourceTest {
 
     @Override

@@ -99,6 +99,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for jar:file:foo.jar/bar.properties URLs
  * @since 2.3
  *
+ *
  * @source $URL$
  */
 public final class ImageMosaicFormat extends AbstractGridFormat implements Format {

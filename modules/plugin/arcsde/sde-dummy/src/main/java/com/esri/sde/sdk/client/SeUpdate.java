@@ -1,5 +1,10 @@
 package com.esri.sde.sdk.client;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SeUpdate extends SeStreamOp{
 	
 	public SeUpdate(SeConnection c) throws SeException {}

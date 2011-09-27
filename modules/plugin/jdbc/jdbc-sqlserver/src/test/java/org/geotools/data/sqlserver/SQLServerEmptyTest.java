@@ -19,6 +19,11 @@ package org.geotools.data.sqlserver;
 import org.geotools.jdbc.JDBCEmptyTest;
 import org.geotools.jdbc.JDBCEmptyTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SQLServerEmptyTest extends JDBCEmptyTest {
 
     @Override

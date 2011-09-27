@@ -42,7 +42,8 @@ import com.vividsolutions.jts.geom.Point;
  * @author Justin Deoliveira, OpenGeo
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/charts/src/main/java/org/geotools/renderer/chart/GeometryDataset.java $
+ *
+ * @source $URL$
  */
 public class GeometryDataset extends AbstractXYDataset {
     

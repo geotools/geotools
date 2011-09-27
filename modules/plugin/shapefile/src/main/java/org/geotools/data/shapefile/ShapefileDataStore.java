@@ -106,6 +106,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * 
  * @todo fix file creation bug
  *
+ *
  * @source $URL$
  */
 public class ShapefileDataStore extends AbstractFileDataStore {

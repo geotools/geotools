@@ -2,6 +2,11 @@ package com.esri.sde.sdk.client;
 
 import java.awt.Image;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SeRasterScanLineProducer implements SeRasterProducer {
 	
 	public SeRasterScanLineProducer(SeRasterAttr a, Image i, int scanlines) {}

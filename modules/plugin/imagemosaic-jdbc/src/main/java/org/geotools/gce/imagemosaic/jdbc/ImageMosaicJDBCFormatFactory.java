@@ -30,6 +30,7 @@ import org.geotools.coverage.grid.io.GridFormatFactorySpi;
  * @since 2.5
  *
  *
+ *
  * @source $URL$
  */
 public class ImageMosaicJDBCFormatFactory implements GridFormatFactorySpi {

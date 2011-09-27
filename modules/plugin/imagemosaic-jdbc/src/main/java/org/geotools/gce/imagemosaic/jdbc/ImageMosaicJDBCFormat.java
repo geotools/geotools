@@ -61,6 +61,7 @@ import org.opengis.parameter.ParameterDescriptor;
  * @since 2.5
  *
  *
+ *
  * @source $URL$
  */
 public class ImageMosaicJDBCFormat extends AbstractGridFormat implements Format {

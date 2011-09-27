@@ -4,6 +4,11 @@ import org.geotools.arcsde.raster.info.RasterDatasetInfo;
 import org.geotools.arcsde.session.ISessionPool;
 import org.opengis.coverage.grid.GridEnvelope;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TileReaderFactory {
 
     /**

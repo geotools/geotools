@@ -65,6 +65,7 @@ import com.esri.sde.sdk.pe.PeFactory;
  * 
  * @author Gabriel Roldan, Axios Engineering
  *
+ *
  * @source $URL$
  *         datastore/src/main/java /org/geotools/arcsde/ArcSDEDataStoreFactory.java $
  * @version $Id$

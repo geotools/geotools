@@ -30,6 +30,7 @@ import org.geotools.jdbc.JDBCTestSetup;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class H2FeatureStoreTest extends JDBCFeatureStoreTest {

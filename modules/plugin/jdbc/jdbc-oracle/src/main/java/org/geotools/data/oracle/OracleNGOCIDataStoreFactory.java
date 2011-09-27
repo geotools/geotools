@@ -38,7 +38,8 @@ import java.util.Map;
  * @author Bernard de Terwangne, star.be
  * @author Andrea Aime - OpenGeo
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/jdbc/jdbc-oracle/src/main/java/org/geotools/data/oracle/OracleNGOCIDataStoreFactory.java $
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/branches/2.6.x/modules/unsupported/oracle-spatial/src/
  *         main/java/org/geotools/data/oracle/OracleOCIDataStoreFactory.java $
  */

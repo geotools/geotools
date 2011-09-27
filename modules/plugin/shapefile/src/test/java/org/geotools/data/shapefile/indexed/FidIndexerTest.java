@@ -22,6 +22,11 @@ import org.geotools.data.Query;
 import org.geotools.data.shapefile.ShpFiles;
 import org.geotools.data.simple.SimpleFeatureSource;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FidIndexerTest extends FIDTestCase {
     public  FidIndexerTest( ) throws IOException {
         super("FidIndexerTest");

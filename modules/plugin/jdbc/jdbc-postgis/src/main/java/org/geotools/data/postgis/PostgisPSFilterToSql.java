@@ -23,6 +23,11 @@ import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BinarySpatialOperator;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostgisPSFilterToSql extends PreparedFilterToSQL {
     
     FilterToSqlHelper helper;

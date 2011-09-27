@@ -98,6 +98,11 @@ import com.esri.sde.sdk.pe.PePCSDefs;
 import com.esri.sde.sdk.pe.PeProjectedCS;
 
 @SuppressWarnings({ "nls", "deprecation" })
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class RasterTestData {
 
     private TestData testData;

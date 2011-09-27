@@ -32,6 +32,11 @@ import java.util.Map.Entry;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ShpFilesTest extends TestCase{
 
     public void testCaseURL() throws Exception {

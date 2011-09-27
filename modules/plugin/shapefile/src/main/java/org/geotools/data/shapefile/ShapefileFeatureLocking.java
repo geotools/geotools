@@ -27,6 +27,11 @@ import org.geotools.data.ResourceInfo;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeatureType;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ShapefileFeatureLocking extends AbstractFeatureLocking {
     /**
      * 

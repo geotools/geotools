@@ -28,6 +28,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 
 /**
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Ian Schneider

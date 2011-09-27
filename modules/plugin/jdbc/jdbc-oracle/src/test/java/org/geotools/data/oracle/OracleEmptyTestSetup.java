@@ -2,6 +2,11 @@ package org.geotools.data.oracle;
 
 import org.geotools.jdbc.JDBCEmptyTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OracleEmptyTestSetup extends JDBCEmptyTestSetup {
 
     protected OracleEmptyTestSetup() {

@@ -38,6 +38,11 @@ import junit.framework.TestCase;
 
 import org.geotools.TestData;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ShpFilesTestStream extends TestCase implements
         org.geotools.data.shapefile.FileWriter {
 

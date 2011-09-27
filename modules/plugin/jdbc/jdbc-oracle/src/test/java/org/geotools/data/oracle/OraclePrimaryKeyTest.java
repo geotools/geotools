@@ -19,6 +19,11 @@ package org.geotools.data.oracle;
 import org.geotools.jdbc.JDBCPrimaryKeyTest;
 import org.geotools.jdbc.JDBCPrimaryKeyTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OraclePrimaryKeyTest extends JDBCPrimaryKeyTest {
 
     @Override

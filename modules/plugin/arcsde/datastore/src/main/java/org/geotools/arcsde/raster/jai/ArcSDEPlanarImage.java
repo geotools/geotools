@@ -30,6 +30,11 @@ import org.geotools.util.logging.Logging;
 import com.sun.media.jai.util.ImageUtil;
 
 @SuppressWarnings("unchecked")
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ArcSDEPlanarImage extends PlanarImage {
 
     private static final Logger LOGGER = Logging.getLogger(ArcSDEPlanarImage.class);

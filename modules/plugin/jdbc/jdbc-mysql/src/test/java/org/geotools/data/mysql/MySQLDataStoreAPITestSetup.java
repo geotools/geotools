@@ -19,6 +19,11 @@ package org.geotools.data.mysql;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MySQLDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
     public MySQLDataStoreAPITestSetup() {
         super(new MySQLTestSetup());

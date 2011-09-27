@@ -51,6 +51,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * @author Ian Schneider
  * 
  *
+ *
  * @source $URL$
  */
 public class ShapefileWriter {

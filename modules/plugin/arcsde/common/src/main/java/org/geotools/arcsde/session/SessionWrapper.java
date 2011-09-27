@@ -47,6 +47,7 @@ import com.esri.sde.sdk.client.SeUpdate;
  * @version $Id$
  * @since 2.5.x
  *
+ *
  * @source $URL$
  *         http://svn.geotools.org/trunk/modules/plugin/arcsde/datastore/src/main/java/org/geotools
  *         /arcsde/pool/SessionWrapper.java $

@@ -24,6 +24,11 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class WorldImageBaseTestCase extends TestCase {
 	public WorldImageBaseTestCase(String name) {
 		super(name);

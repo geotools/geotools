@@ -29,6 +29,7 @@ import com.esri.sde.sdk.client.SeException;
  * @version $Id$
  * @since 2.5
  *
+ *
  * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
  *         /org/geotools/arcsde/ArcSdeException.java $

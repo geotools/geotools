@@ -21,6 +21,11 @@ import java.net.URL;
 
 import org.geotools.gce.imagemosaic.jdbc.Import.ImportTyp;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ImportParam {
 
 	private String spatialTableName;

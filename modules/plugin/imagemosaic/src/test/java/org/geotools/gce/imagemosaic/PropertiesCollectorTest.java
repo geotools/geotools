@@ -38,7 +38,8 @@ import org.junit.Test;
  * @author Simone Giannecchini, GeoSolutions SAS
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/imagemosaic/src/test/java/org/geotools/gce/imagemosaic/PropertiesCollectorTest.java $
+ *
+ * @source $URL$
  */
 public class PropertiesCollectorTest extends Assert {
 

@@ -25,6 +25,11 @@ import com.esri.sde.sdk.client.SeRasterRenderedImage;
 import com.esri.sde.sdk.client.SeRasterScanLineGenerator;
 import com.esri.sde.sdk.client.SeRasterScanLineProducer;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ArcSDERasterOneBitPerBandProducerImpl extends ArcSDERasterProducer {
 
     /**

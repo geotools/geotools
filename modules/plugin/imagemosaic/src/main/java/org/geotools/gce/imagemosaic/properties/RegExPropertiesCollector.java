@@ -23,6 +23,11 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.io.FilenameUtils;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class RegExPropertiesCollector extends PropertiesCollector {
 	
 	public RegExPropertiesCollector(

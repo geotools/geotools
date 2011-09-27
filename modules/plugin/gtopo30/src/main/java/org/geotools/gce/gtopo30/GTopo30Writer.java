@@ -83,6 +83,7 @@ import com.sun.media.jai.operator.ImageWriteDescriptor;
  * @author jeichar
  * @author mkraemer
  *
+ *
  * @source $URL$
  */
 final public class GTopo30Writer extends AbstractGridCoverageWriter implements

@@ -27,6 +27,11 @@ import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.h2.tools.Server;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class H2DataStoreFactoryTest extends TestCase {
     H2DataStoreFactory factory;
     HashMap params;

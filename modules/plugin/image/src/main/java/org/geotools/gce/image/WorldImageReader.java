@@ -86,6 +86,7 @@ import org.opengis.referencing.operation.TransformException;
  * @author rgould
  *
  *
+ *
  * @source $URL$
  */
 public final class WorldImageReader extends AbstractGridCoverage2DReader

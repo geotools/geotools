@@ -29,6 +29,11 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class StorageFileTest extends TestCase implements FileReader {
 
     private ShpFiles shpFiles1;

@@ -19,6 +19,11 @@ package org.geotools.data.db2;
 import org.geotools.jdbc.JDBCFeatureLockingTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DB2FeatureLockingTest extends JDBCFeatureLockingTest {
 
     @Override

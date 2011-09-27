@@ -29,6 +29,7 @@ import com.esri.sde.sdk.client.SeRaster;
  * @since 2.5.4
  * @version $Id$
  *
+ *
  * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
  *         /geotools/arcsde/raster/info/InterleaveType.java $

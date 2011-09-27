@@ -19,6 +19,7 @@ package org.geotools.index;
 /**
  * @author Tommaso Nolli
  *
+ *
  * @source $URL$
  */
 public interface Lock {

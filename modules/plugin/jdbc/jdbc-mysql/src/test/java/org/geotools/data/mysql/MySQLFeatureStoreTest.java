@@ -27,6 +27,7 @@ import org.geotools.jdbc.JDBCTestSetup;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class MySQLFeatureStoreTest extends JDBCFeatureStoreTest {

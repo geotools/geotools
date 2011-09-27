@@ -33,6 +33,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @version $Id$
  * @since 2.5
  *
+ *
  * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
  *         /org/geotools/arcsde/data/ArcSDEFeatureReader.java $

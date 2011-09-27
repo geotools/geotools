@@ -7,6 +7,11 @@ import org.geotools.jdbc.JDBCDateTest;
 import org.geotools.jdbc.JDBCDateTestSetup;
 import org.opengis.feature.simple.SimpleFeatureType;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OracleDateTest extends JDBCDateTest {
 
     @Override

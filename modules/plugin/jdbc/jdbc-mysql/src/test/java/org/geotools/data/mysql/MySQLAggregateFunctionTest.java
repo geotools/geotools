@@ -19,6 +19,11 @@ package org.geotools.data.mysql;
 import org.geotools.jdbc.JDBCAggregateFunctionTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MySQLAggregateFunctionTest extends JDBCAggregateFunctionTest {
 
     @Override

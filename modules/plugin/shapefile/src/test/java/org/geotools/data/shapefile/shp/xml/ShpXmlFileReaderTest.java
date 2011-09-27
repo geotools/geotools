@@ -26,6 +26,11 @@ import org.geotools.data.shapefile.TestCaseSupport;
 
 import com.vividsolutions.jts.geom.Envelope;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ShpXmlFileReaderTest extends TestCase {
     ShpXmlFileReader reader;
 

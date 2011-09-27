@@ -51,6 +51,8 @@ import com.sun.media.jai.codec.SeekableStream;
 /**
  * @author christian
  * 
+ *
+ * @source $URL$
  */
 public class ImageDecoderThread extends AbstractThread {
 	/** Logger. */

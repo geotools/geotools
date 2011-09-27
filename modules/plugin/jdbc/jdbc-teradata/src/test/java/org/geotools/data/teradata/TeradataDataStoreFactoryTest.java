@@ -28,6 +28,11 @@ import java.util.Properties;
 import static org.geotools.data.teradata.TeradataDataStoreFactory.PORT;
 import static org.geotools.jdbc.JDBCDataStoreFactory.*;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TeradataDataStoreFactoryTest extends JDBCTestSupport {
 
 

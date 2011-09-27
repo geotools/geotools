@@ -30,6 +30,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Ian Schneider

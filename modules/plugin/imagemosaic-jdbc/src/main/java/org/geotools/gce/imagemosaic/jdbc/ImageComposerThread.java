@@ -41,6 +41,8 @@ import org.geotools.util.logging.Logging;
  * 
  * @author mcr
  * 
+ *
+ * @source $URL$
  */
 public class ImageComposerThread extends AbstractThread {
 	/** Logger. */

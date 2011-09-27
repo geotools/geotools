@@ -19,6 +19,11 @@ package org.geotools.data.spatialite;
 import org.geotools.jdbc.JDBCFeatureSourceTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SpatiaLiteFeatureSourceTest extends JDBCFeatureSourceTest {
 
     @Override

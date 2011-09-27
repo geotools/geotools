@@ -66,6 +66,11 @@ import com.vividsolutions.jts.io.WKTReader;
 import com.vividsolutions.jts.io.WKTWriter;
 import java.text.MessageFormat;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TeradataDialect extends PreparedStatementSQLDialect {
 
     /**

@@ -33,6 +33,7 @@ import org.opengis.coverage.grid.Format;
  * @author Daniele Romagnoli
  * @author Simone Giannecchini (simboss)
  *
+ *
  * @source $URL$
  */
 public final class ArcGridFormatFactory implements GridFormatFactorySpi {

@@ -13,6 +13,11 @@ import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.styling.Style;
 import org.geotools.test.TestData;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ChartRenderingTest extends TestCase {
     
     private static final long TIME = 10000;

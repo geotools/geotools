@@ -29,6 +29,7 @@ import org.geotools.coverage.grid.io.GridFormatFinder;
  * 
  *
  *
+ *
  * @source $URL$
  */
 public class ImageMosaicJDBCServiceTest extends TestCase {

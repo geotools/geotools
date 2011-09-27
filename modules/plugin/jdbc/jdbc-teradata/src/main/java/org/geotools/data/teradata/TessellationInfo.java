@@ -24,6 +24,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author Justin Deoliveira, OpenGeo
  *
  *
+ *
  * @source $URL$
  */
 public class TessellationInfo {

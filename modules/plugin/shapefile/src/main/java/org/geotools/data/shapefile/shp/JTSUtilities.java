@@ -40,6 +40,7 @@ import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
  * @author aaime
  * @author Ian Schneider
  *
+ *
  * @source $URL$
  */
 public class JTSUtilities {

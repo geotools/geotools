@@ -36,6 +36,11 @@ import com.esri.sde.sdk.pe.PeGeographicCS;
 import com.esri.sde.sdk.pe.PeProjectedCS;
 import com.esri.sde.sdk.pe.PeProjectionException;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ArcSDEUtilsTest {
     @Test
     public void testFindCompatibleCRS_Projected() throws Exception {

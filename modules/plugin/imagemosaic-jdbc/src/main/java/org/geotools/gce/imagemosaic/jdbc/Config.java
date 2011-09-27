@@ -40,6 +40,7 @@ import org.xml.sax.InputSource;
  * @author mcr
  * 
  *
+ *
  * @source $URL$
  */
 public class Config {

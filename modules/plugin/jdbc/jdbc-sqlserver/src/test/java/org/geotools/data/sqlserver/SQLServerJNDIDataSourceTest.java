@@ -20,6 +20,11 @@ package org.geotools.data.sqlserver;
 import org.geotools.jdbc.JDBCJNDIDataSourceTest;
 import org.geotools.jdbc.JDBCJNDITestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public  class SQLServerJNDIDataSourceTest extends JDBCJNDIDataSourceTest {
 
     protected JDBCJNDITestSetup createTestSetup() {

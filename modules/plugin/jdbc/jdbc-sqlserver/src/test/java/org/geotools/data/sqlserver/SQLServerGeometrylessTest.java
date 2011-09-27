@@ -19,6 +19,11 @@ package org.geotools.data.sqlserver;
 import org.geotools.jdbc.JDBCGeometrylessTest;
 import org.geotools.jdbc.JDBCGeometrylessTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SQLServerGeometrylessTest extends JDBCGeometrylessTest {
 
     @Override

@@ -21,6 +21,7 @@ package org.geotools.index;
  * 
  * @author Tommaso Nolli
  *
+ *
  * @source $URL$
  */
 public class LockManager {

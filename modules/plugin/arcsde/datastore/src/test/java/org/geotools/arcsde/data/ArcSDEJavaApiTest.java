@@ -73,6 +73,7 @@ import com.esri.sde.sdk.client.SeVersion;
  * 
  * @author Gabriel Roldan, Axios Engineering
  *
+ *
  * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
  *         /org/geotools/arcsde/data/ArcSDEJavaApiTest.java $

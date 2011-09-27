@@ -18,6 +18,11 @@
 
 package org.geotools.data.db2;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DB2DialectInfo {
     private int MajorVersion,MinorVersion;
     private String ProductName,ProductVersion;

@@ -1,5 +1,10 @@
 package com.esri.sde.sdk.client;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SeColumnDefinition {
 	
     public SeColumnDefinition(String s,int i,int j,int k, boolean b) throws SeException {}

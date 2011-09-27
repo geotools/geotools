@@ -19,6 +19,11 @@ package org.geotools.data.teradata;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TeradataDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
 
     public TeradataDataStoreAPITestSetup(JDBCTestSetup delegate) {

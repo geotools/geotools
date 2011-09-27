@@ -20,6 +20,11 @@ import org.geotools.jdbc.JDBCForeignKeyTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class H2ForeignKeyTest extends JDBCForeignKeyTest {
     protected JDBCTestSetup createTestSetup() {
         return new H2TestSetup() {

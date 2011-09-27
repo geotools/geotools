@@ -1,5 +1,10 @@
 package com.esri.sde.sdk.client;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public interface SeRasterConsumer {
 	
 	public static int COMPLETETILES = 0;

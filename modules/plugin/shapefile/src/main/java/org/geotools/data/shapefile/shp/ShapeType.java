@@ -25,6 +25,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * 
  * @author Ian Schneider
  *
+ *
  * @source $URL$
  */
 public final class ShapeType {

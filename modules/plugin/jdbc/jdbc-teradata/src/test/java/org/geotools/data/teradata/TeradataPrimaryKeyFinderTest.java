@@ -25,6 +25,11 @@ import org.geotools.jdbc.*;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TeradataPrimaryKeyFinderTest extends JDBCPrimaryKeyFinderTest {
 
     protected JDBCPrimaryKeyFinderTestSetup createTestSetup() {

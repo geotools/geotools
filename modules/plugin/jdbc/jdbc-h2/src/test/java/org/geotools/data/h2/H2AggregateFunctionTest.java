@@ -19,6 +19,11 @@ package org.geotools.data.h2;
 import org.geotools.jdbc.JDBCAggregateFunctionTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class H2AggregateFunctionTest extends JDBCAggregateFunctionTest {
 
     @Override

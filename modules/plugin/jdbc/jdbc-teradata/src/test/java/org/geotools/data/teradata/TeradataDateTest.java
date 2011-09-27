@@ -19,6 +19,11 @@ package org.geotools.data.teradata;
 import org.geotools.jdbc.JDBCDateTest;
 import org.geotools.jdbc.JDBCDateTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TeradataDateTest extends JDBCDateTest {
 
 

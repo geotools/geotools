@@ -23,6 +23,11 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCLobTestSetup;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class H2LobTestSetup extends JDBCLobTestSetup {
 
     public H2LobTestSetup() {

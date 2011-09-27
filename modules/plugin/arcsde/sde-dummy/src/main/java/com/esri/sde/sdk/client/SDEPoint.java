@@ -1,5 +1,10 @@
 package com.esri.sde.sdk.client;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SDEPoint {
 	
 	public SDEPoint(double d, double e) {}

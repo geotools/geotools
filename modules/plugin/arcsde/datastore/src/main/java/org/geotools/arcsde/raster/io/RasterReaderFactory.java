@@ -26,6 +26,7 @@ import org.geotools.arcsde.session.ISessionPool;
  * @author Gabriel Roldan
  * 
  *
+ *
  * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
  *         /geotools/arcsde/gce/RasterReaderFactory.java $

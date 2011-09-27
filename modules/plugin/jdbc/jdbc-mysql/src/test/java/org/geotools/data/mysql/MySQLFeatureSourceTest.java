@@ -20,6 +20,11 @@ import org.geotools.jdbc.JDBCFeatureSourceTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MySQLFeatureSourceTest extends JDBCFeatureSourceTest {
     protected JDBCTestSetup createTestSetup() {
         return new MySQLTestSetup();

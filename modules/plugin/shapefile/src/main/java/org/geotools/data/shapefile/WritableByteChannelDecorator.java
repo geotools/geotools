@@ -29,6 +29,7 @@ import java.nio.channels.WritableByteChannel;
  * @author jesse
  *
  *
+ *
  * @source $URL$
  */
 public class WritableByteChannelDecorator implements WritableByteChannel {

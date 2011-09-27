@@ -35,7 +35,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/grassraster/src/test/java/org/geotools/gce/grassraster/JGrassUtilsTest.java $
+ *
+ * @source $URL$
  */
 @SuppressWarnings("nls")
 public class JGrassUtilsTest extends TestCase {

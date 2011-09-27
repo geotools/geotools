@@ -73,6 +73,7 @@ import com.esri.sde.sdk.client.SeException;
  * @author Gabriel Roldan
  * @see org.geotools.data.sde.GeometryEncoderSDE
  * 
+ *
  * @source $URL$
  *         http://gtsvn.refractions.net/geotools/branches/2.4.x/modules/unsupported/arcsde/datastore
  *         /src/main/java/org/geotools/arcsde/filter/FilterToSQLSDE.java $

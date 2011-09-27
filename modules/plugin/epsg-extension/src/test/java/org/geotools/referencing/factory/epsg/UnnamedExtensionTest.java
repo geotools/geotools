@@ -48,6 +48,7 @@ import com.vividsolutions.jts.geom.Coordinate;
  * Tests {@link UnnamedExtension}.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

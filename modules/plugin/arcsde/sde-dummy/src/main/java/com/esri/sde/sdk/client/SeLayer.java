@@ -1,5 +1,10 @@
 package com.esri.sde.sdk.client;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SeLayer {
 	
 	public static /* GEOT-947 final*/ int SE_NIL_TYPE_MASK = 0;

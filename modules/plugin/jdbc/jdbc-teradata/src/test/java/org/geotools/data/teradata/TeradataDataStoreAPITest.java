@@ -33,6 +33,11 @@ import org.opengis.feature.type.AttributeDescriptor;
 
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TeradataDataStoreAPITest extends JDBCDataStoreAPITest {
 
     @Override

@@ -19,6 +19,11 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.identity.FeatureId;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DuplicateColumnNameReaderTest extends TestCaseSupport {
 
     public final String SHPFILE = "dup-column/dup_column.shp";

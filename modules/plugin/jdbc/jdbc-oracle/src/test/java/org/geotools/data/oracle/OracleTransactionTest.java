@@ -5,6 +5,11 @@ import java.io.IOException;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTransactionTest;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OracleTransactionTest extends JDBCTransactionTest {
 
     @Override

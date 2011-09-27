@@ -18,6 +18,11 @@ package org.geotools.data.sqlserver;
 
 import org.geotools.jdbc.JDBCBooleanTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SQLServerBooleanTestSetup extends JDBCBooleanTestSetup {
 
     protected SQLServerBooleanTestSetup() {

@@ -21,6 +21,11 @@ import java.sql.SQLException;
 
 import org.geotools.jdbc.JDBCGeometryTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DB2GeometryTestSetup extends JDBCGeometryTestSetup {
 
     protected DB2GeometryTestSetup() {

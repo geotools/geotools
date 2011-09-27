@@ -28,6 +28,11 @@ import org.geotools.gce.imagemosaic.properties.DefaultPropertiesCollectorSPI;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TimestampFileNameExtractorSPI extends
 		DefaultPropertiesCollectorSPI implements PropertiesCollectorSPI {
 

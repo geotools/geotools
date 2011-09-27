@@ -29,6 +29,11 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.opengis.feature.simple.SimpleFeature;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IndexedFidReaderTest extends FIDTestCase {
     public IndexedFidReaderTest(  ) throws IOException {
         super("IndexedFidReaderTest");

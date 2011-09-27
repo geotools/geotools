@@ -27,6 +27,7 @@ import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
  * 
  *
  *
+ *
  * @source $URL$
  */
 public class OracleNGJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {

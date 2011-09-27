@@ -18,6 +18,11 @@ package org.geotools.data.mysql;
 
 import org.geotools.jdbc.JDBCPrimaryKeyFinderTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MySQLPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSetup {
 
     public MySQLPrimaryKeyFinderTestSetup() {

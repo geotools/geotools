@@ -30,6 +30,7 @@ import java.io.IOException;
  * 
  *
  *
+ *
  * @source $URL$
  */
 public class Generalization implements Comparable<Generalization> {

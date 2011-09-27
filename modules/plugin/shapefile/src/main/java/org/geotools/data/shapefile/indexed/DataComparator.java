@@ -26,6 +26,7 @@ import org.geotools.index.Data;
  * 
  * @author Tommaso Nolli
  *
+ *
  * @source $URL$
  */
 public class DataComparator implements Comparator {

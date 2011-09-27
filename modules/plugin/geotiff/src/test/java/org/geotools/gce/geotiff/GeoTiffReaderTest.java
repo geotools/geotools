@@ -51,6 +51,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * 
  * @author Simone Giannecchini
  *
+ *
  * @source $URL$
  */
 public class GeoTiffReaderTest extends Assert {

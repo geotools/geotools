@@ -20,6 +20,11 @@ package org.geotools.data.mysql;
 import org.geotools.jdbc.JDBCJNDIDataSourceTest;
 import org.geotools.jdbc.JDBCJNDITestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public  class MySQLJNDIDataSourceTest extends JDBCJNDIDataSourceTest {
 
     protected JDBCJNDITestSetup createTestSetup() {

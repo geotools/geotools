@@ -18,6 +18,11 @@ package org.geotools.data.spatialite;
 
 import org.geotools.jdbc.JDBCBooleanTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SpatiaLiteBooleanTestSetup extends JDBCBooleanTestSetup {
 
     protected SpatiaLiteBooleanTestSetup() {

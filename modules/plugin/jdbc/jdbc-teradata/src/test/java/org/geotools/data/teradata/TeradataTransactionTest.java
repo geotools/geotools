@@ -21,6 +21,11 @@ import org.geotools.jdbc.JDBCTransactionTest;
 
 import java.io.IOException;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TeradataTransactionTest extends JDBCTransactionTest {
 
     protected JDBCTestSetup createTestSetup() {

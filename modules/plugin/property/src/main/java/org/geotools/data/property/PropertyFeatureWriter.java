@@ -36,6 +36,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 /**
  * Uses PropertyAttributeWriter to generate a property file on disk.
  *
+ *
  * @source $URL$
  */
 public class PropertyFeatureWriter implements

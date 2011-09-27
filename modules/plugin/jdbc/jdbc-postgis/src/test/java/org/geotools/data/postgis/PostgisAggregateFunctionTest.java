@@ -19,6 +19,11 @@ package org.geotools.data.postgis;
 import org.geotools.jdbc.JDBCAggregateFunctionTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostgisAggregateFunctionTest extends JDBCAggregateFunctionTest {
 
     @Override

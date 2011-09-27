@@ -19,6 +19,11 @@ package org.geotools.data.postgis;
 import org.geotools.jdbc.JDBCBooleanTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostGISBooleanTestSetup extends JDBCBooleanTestSetup {
 
     public PostGISBooleanTestSetup(JDBCTestSetup delegate) {

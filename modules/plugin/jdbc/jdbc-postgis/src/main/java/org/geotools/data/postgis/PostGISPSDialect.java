@@ -38,6 +38,11 @@ import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.io.WKBWriter;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostGISPSDialect extends PreparedStatementSQLDialect {
     
     private PostGISDialect delegate;

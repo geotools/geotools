@@ -29,6 +29,11 @@ import org.jdom.input.SAXBuilder;
 
 import com.vividsolutions.jts.geom.Envelope;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ShpXmlFileReader implements FileReader {
 
     Document dom;

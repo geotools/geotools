@@ -54,6 +54,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * 
  * @author Tommaso Nolli
  *
+ *
  * @source $URL$
  */
 public class ShapeFileIndexer implements FileWriter {

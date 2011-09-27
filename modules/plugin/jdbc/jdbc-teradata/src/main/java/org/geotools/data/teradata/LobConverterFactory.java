@@ -25,6 +25,11 @@ import org.geotools.factory.Hints;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class LobConverterFactory implements ConverterFactory {
 
     public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {

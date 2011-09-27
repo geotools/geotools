@@ -64,6 +64,7 @@ import org.geotools.metadata.iso.citation.Citations;
  *
  * @since 2.3
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Pierre Cardinal

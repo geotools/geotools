@@ -19,6 +19,11 @@ package org.geotools.data.oracle;
 import org.geotools.jdbc.JDBCFeatureSourceExposePkTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OracleFeatureSourceExposePkTest extends JDBCFeatureSourceExposePkTest {
 
     @Override

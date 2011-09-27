@@ -57,6 +57,11 @@ import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostGISDialect extends BasicSQLDialect {
 
     final static Map<String, Class> TYPE_TO_CLASS_MAP = new HashMap<String, Class>() {

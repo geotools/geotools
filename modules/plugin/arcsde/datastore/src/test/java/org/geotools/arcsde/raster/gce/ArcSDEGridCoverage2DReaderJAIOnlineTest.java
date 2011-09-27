@@ -68,7 +68,8 @@ import com.esri.sde.sdk.client.SeRaster;
  * @author groldan
  * 
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/test/java/org/geotools/arcsde/raster/gce/ArcSDEGridCoverage2DReaderJAIOnlineTest.java $
+ *
+ * @source $URL$
  */
 @SuppressWarnings({ "deprecation", "nls" })
 public class ArcSDEGridCoverage2DReaderJAIOnlineTest {

@@ -1,5 +1,10 @@
 package com.esri.sde.sdk.client;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SeFilter extends SeServerObj {
 	
 	public static /* GEOT-947 final*/ int METHOD_ENVP = 0;

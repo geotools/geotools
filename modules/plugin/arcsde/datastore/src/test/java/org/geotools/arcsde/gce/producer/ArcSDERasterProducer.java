@@ -23,6 +23,11 @@ import com.esri.sde.sdk.client.SeRasterAttr;
 import com.esri.sde.sdk.client.SeRasterConsumer;
 import com.esri.sde.sdk.client.SeRasterProducer;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class ArcSDERasterProducer implements SeRasterProducer {
 
     ArrayList<SeRasterConsumer> consumers = new ArrayList<SeRasterConsumer>();

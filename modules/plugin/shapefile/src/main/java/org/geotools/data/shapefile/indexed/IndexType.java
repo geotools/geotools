@@ -23,6 +23,7 @@ import org.geotools.data.shapefile.ShpFileType;
  * 
  * @author jesse
  *
+ *
  * @source $URL$
  */
 public enum IndexType {

@@ -45,6 +45,11 @@ import org.opengis.filter.identity.FeatureId;
 
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PropertyExamples {
 
     static File directory;

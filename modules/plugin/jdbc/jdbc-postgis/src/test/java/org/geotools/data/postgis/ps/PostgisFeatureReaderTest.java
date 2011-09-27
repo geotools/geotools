@@ -19,6 +19,11 @@ package org.geotools.data.postgis.ps;
 import org.geotools.jdbc.JDBCFeatureReaderTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostgisFeatureReaderTest extends JDBCFeatureReaderTest {
 
     @Override

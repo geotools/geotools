@@ -20,6 +20,11 @@ import java.awt.RenderingHints.Key;
 import java.util.Collections;
 import java.util.Map;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class DefaultPropertiesCollectorSPI implements PropertiesCollectorSPI {
 
 	private final String name;

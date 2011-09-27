@@ -39,6 +39,7 @@ import org.opengis.parameter.GeneralParameterDescriptor;
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
  *
+ *
  * @source $URL$
  */
 public final class JP2ECWFormat extends BaseGDALGridFormat implements Format {

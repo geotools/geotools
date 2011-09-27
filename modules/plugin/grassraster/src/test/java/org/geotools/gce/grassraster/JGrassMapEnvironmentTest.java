@@ -28,7 +28,8 @@ import junit.framework.TestCase;
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/grassraster/src/test/java/org/geotools/gce/grassraster/JGrassMapEnvironmentTest.java $
+ *
+ * @source $URL$
  */
 @SuppressWarnings("nls")
 public class JGrassMapEnvironmentTest extends TestCase {

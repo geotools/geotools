@@ -27,6 +27,7 @@ import junit.framework.TestSuite;
  * 
  *
  *
+ *
  * @source $URL$
  */
 public class PostGisOnlineTest extends AbstractTest {

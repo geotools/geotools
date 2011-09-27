@@ -79,6 +79,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * 
  * @author Gabriel Roldan
  * 
+ *
  * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
  *         /org/geotools/arcsde/data/ArcSDEDataStoreTest.java $

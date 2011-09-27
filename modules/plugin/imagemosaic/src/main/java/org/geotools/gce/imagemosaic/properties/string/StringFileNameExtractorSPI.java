@@ -34,6 +34,8 @@ import org.geotools.resources.i18n.Errors;
  * 
  * @author Simone Giannecchini, GeoSolutions SAS
  *
+ *
+ * @source $URL$
  */
 public class StringFileNameExtractorSPI extends
 		DefaultPropertiesCollectorSPI implements PropertiesCollectorSPI {

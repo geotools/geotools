@@ -32,6 +32,7 @@ import org.geotools.jdbc.JDBCTestSetup;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class MySQLTestSetup extends JDBCTestSetup {

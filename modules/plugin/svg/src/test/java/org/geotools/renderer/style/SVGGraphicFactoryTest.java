@@ -25,6 +25,11 @@ import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.FilterFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SVGGraphicFactoryTest extends TestCase {
 
     private SVGGraphicFactory svg;

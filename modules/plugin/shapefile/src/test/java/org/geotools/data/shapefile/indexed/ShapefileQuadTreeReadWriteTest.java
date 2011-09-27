@@ -52,6 +52,7 @@ import com.vividsolutions.jts.geom.Geometry;
 
 /**
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Ian Schneider

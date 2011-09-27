@@ -19,6 +19,11 @@ package org.geotools.data.h2;
 import org.geotools.jdbc.JDBCFeatureReaderTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class H2FeatureReaderTest extends JDBCFeatureReaderTest {
 
     @Override

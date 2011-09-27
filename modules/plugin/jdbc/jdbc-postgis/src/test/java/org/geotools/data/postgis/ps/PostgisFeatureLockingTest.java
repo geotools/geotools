@@ -19,6 +19,11 @@ package org.geotools.data.postgis.ps;
 import org.geotools.jdbc.JDBCFeatureLockingTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostgisFeatureLockingTest extends JDBCFeatureLockingTest {
 
     @Override

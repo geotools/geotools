@@ -95,6 +95,7 @@ import com.vividsolutions.jts.io.InStream;
  * @author Simone Giannecchini, GeoSolutions
  * @since 2.3.x
  *
+ *
  * @source $URL$
  */
 public final class ArcGridReader extends AbstractGridCoverage2DReader implements

@@ -26,6 +26,7 @@ import java.util.Map;
  * 
  * @author Gabriel Roldan
  *
+ *
  * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/common/src/main/java/org/geotools
  *         /arcsde/session/ArcSDEConnectionConfig.java $

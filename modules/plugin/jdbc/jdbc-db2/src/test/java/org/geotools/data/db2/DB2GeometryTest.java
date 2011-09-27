@@ -22,6 +22,11 @@ import org.geotools.jdbc.JDBCGeometryTestSetup;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.LinearRing;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DB2GeometryTest extends JDBCGeometryTest {
 
     @Override

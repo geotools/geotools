@@ -27,6 +27,11 @@ import junit.framework.TestCase;
 
 import org.geotools.data.shapefile.ShpFiles.State;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ShpFilesLockingTest extends TestCase implements FileWriter {
 
     @Override

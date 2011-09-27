@@ -19,6 +19,11 @@ package org.geotools.data.teradata;
 import org.geotools.jdbc.JDBCGeometryTest;
 import org.geotools.jdbc.JDBCGeometryTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TeradataGeometryTest extends JDBCGeometryTest {
 
 

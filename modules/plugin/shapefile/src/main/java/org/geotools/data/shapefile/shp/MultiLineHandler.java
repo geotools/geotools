@@ -35,6 +35,7 @@ import com.vividsolutions.jts.geom.MultiLineString;
  * GeometryFactory, since it doesn't seem to matter.
  * 
  *
+ *
  * @source $URL$
  */
 public class MultiLineHandler implements ShapeHandler {

@@ -3,6 +3,11 @@ package org.geotools.data.h2;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCVirtualTableTest;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class H2VirtualTableTest extends JDBCVirtualTableTest {
 
     @Override

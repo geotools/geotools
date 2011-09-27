@@ -32,6 +32,11 @@ import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PGRasterOnlineTest extends AbstractTest {
     static protected DBDialect dialect = null;
     public PGRasterOnlineTest(String test) {

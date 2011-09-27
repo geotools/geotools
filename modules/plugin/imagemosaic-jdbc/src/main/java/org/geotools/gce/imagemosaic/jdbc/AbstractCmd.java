@@ -21,6 +21,11 @@ import java.io.File;
 import java.net.URL;
 import java.net.URLDecoder;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class AbstractCmd {
 
 	protected static String CONFIGPARAM = "-config";

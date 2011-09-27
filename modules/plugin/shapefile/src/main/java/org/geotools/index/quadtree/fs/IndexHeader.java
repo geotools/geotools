@@ -29,6 +29,7 @@ import org.geotools.index.quadtree.StoreException;
  * 
  * @author Tommaso Nolli
  *
+ *
  * @source $URL$
  */
 public class IndexHeader {

@@ -41,7 +41,8 @@ import org.opengis.parameter.GeneralParameterDescriptor;
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/grassraster/src/main/java/org/geotools/gce/grassraster/format/GrassCoverageFormat.java $
+ *
+ * @source $URL$
  */
 public final class GrassCoverageFormat extends AbstractGridFormat implements Format {
 

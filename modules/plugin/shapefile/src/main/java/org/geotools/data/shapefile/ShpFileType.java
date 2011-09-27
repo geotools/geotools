@@ -24,6 +24,7 @@ import java.net.URL;
  * 
  * @author jesse
  *
+ *
  * @source $URL$
  */
 public enum ShpFileType {

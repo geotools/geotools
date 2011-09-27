@@ -25,6 +25,7 @@ import java.util.Map;
  * @author Justin Deoliveira, OpenGeo
  *
  *
+ *
  * @source $URL$
  */
 public class QueryBand {

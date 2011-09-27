@@ -3,6 +3,11 @@ package com.esri.sde.sdk.client;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SeRasterBand {
     
     public SeObjectId getId() { return null; }

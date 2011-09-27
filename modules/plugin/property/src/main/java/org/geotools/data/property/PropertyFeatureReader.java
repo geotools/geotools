@@ -33,6 +33,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author jgarnett
  *
+ *
  * @source $URL$
  * @version $Id
  */

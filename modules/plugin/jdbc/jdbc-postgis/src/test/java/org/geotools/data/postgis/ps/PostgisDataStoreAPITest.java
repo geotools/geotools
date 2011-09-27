@@ -20,6 +20,11 @@ import org.geotools.data.postgis.PostgisDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCDataStoreAPITest;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostgisDataStoreAPITest extends JDBCDataStoreAPITest {
 
     @Override

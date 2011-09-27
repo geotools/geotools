@@ -55,6 +55,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  * @author Jody Garnett
  *
+ *
  * @source $URL$
  */
 public class PropertyAttributeReader implements AttributeReader {

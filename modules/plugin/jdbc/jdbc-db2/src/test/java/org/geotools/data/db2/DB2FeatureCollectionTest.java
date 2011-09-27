@@ -27,6 +27,7 @@ import org.geotools.jdbc.JDBCTestSetup;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class DB2FeatureCollectionTest extends JDBCFeatureCollectionTest {

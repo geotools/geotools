@@ -33,7 +33,8 @@ import org.geotools.util.Utilities;
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for jar:file:foo.jar/bar.properties URLs
  * 
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/imagemosaic/src/main/java/org/geotools/gce/imagemosaic/PathType.java $
+ *
+ * @source $URL$
  */
 public enum PathType {
 	RELATIVE{

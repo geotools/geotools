@@ -69,7 +69,8 @@ import org.w3c.dom.Node;
  * @see {@link JGrassRegion}
  * @see {@link JGrassMapEnvironment}
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/grassraster/src/main/java/org/geotools/gce/grassraster/metadata/GrassBinaryImageMetadata.java $
+ *
+ * @source $URL$
  */
 public final class GrassBinaryImageMetadata extends IIOMetadata {
 

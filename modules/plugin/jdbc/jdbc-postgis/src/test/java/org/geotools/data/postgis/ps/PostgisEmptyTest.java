@@ -20,6 +20,11 @@ import org.geotools.data.postgis.PostgisEmptyTestSetup;
 import org.geotools.jdbc.JDBCEmptyTest;
 import org.geotools.jdbc.JDBCEmptyTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostgisEmptyTest extends JDBCEmptyTest {
 
     @Override

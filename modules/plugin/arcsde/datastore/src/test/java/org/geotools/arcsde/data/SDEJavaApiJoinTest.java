@@ -140,6 +140,7 @@ import com.vividsolutions.jts.geom.Point;
  * 
  * 
  *
+ *
  * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/test/java/org
  *         /geotools/arcsde/data/SDEJavaApiJoinTest.java $

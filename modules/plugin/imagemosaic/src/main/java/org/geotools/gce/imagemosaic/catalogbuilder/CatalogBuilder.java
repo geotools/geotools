@@ -108,7 +108,8 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  * @author Simone Giannecchini, GeoSolutions
  * 
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/imagemosaic/src/main/java/org/geotools/gce/imagemosaic/catalogbuilder/CatalogBuilder.java $
+ *
+ * @source $URL$
  */
 public class CatalogBuilder implements Runnable {
 

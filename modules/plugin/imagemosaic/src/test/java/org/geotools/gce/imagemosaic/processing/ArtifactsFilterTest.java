@@ -25,6 +25,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ArtifactsFilterTest extends Assert {
 
 	@Before

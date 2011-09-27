@@ -26,6 +26,11 @@ import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.io.WKTReader;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OracleGeometryTest extends JDBCGeometryTest {
 
     @Override

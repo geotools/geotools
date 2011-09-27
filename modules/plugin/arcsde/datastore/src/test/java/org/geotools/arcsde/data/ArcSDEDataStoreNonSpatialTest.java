@@ -69,6 +69,7 @@ import com.esri.sde.sdk.client.SeRegistration;
  * @author Gabriel Roldan, OpenGeo
  * 
  *
+ *
  * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/test/java/org
  *         /geotools/arcsde/data/ArcSDEDataStoreNonSpatialTest.java $

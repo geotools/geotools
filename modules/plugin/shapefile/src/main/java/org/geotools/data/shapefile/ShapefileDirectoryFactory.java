@@ -28,7 +28,8 @@ import org.geotools.data.DataUtilities;
  * @author Andrea Aime
  * 
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/shapefile/src/main/java/org/geotools/data/shapefile/ShapefileDirectoryFactory.java $
+ *
+ * @source $URL$
  *         main/java/org/geotools/data/dir/DirectoryDataStoreFactory.java $
  */
 public class ShapefileDirectoryFactory extends ShapefileDataStoreFactory {

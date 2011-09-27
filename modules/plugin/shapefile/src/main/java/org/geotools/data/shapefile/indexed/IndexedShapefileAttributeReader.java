@@ -34,6 +34,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * file may not be necessary, if not, just pass null as the DbaseFileReader
  *
  *
+ *
  * @source $URL$
  */
 public class IndexedShapefileAttributeReader extends ShapefileAttributeReader {

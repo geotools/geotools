@@ -49,6 +49,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * </p>
  * @author jgarnett
  *
+ *
  * @source $URL$
  */
 public class GeometryConverter {

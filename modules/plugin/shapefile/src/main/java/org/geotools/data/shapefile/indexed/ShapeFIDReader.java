@@ -27,6 +27,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * 
  * @author Tommaso Nolli
  *
+ *
  * @source $URL$
  */
 public class ShapeFIDReader implements FIDReader {

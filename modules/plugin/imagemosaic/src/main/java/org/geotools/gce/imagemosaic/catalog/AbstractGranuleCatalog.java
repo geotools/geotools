@@ -29,6 +29,11 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.geometry.BoundingBox;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class AbstractGranuleCatalog implements GranuleCatalog {
 
     public void addGranule(SimpleFeature granule, Transaction transaction) throws IOException {

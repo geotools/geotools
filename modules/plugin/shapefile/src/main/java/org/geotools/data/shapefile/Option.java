@@ -21,6 +21,7 @@ package org.geotools.data.shapefile;
  * 
  *
  *
+ *
  * @source $URL$
  */
 public class Option {

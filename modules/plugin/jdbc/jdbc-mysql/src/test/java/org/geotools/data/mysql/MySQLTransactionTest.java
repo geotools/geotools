@@ -27,6 +27,7 @@ import org.geotools.jdbc.JDBCTransactionTest;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class MySQLTransactionTest extends JDBCTransactionTest {

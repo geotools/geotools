@@ -19,6 +19,11 @@ package org.geotools.data.teradata;
 import org.geotools.jdbc.JDBCViewTest;
 import org.geotools.jdbc.JDBCViewTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TeradataViewTest extends JDBCViewTest {
 
     @Override

@@ -1,6 +1,11 @@
 package com.esri.sde.sdk.client;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SeInsert extends SeStreamOp {
 
     public SeInsert(SeConnection c) throws SeException {

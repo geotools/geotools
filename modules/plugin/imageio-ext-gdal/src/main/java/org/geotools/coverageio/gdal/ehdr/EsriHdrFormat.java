@@ -40,7 +40,8 @@ import org.opengis.parameter.GeneralParameterDescriptor;
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/imageio-ext-gdal/src/main/java/org/geotools/coverageio/gdal/ehdr/EsriHdrFormat.java $
+ *
+ * @source $URL$
  */
 public final class EsriHdrFormat extends BaseGDALGridFormat implements Format {
     /**

@@ -88,6 +88,7 @@ import com.vividsolutions.jts.geom.impl.CoordinateArraySequenceFactory;
  * 
  * @author Gabriel Roldan (TOPP)
  *
+ *
  * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/unsupported/arcsde/datastore/src/main
  *         /java/org/geotools/arcsde/data/ArcSDEDataStore.java $

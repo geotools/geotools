@@ -33,6 +33,11 @@ import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class HsqlDialectEpsgMediatorTest extends TestCase {
     private HsqlDialectEpsgMediator factory;
     private IdentifiedObjectFinder finder;

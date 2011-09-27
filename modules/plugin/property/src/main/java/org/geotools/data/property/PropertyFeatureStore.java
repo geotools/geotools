@@ -40,7 +40,8 @@ import org.opengis.filter.Filter;
  * Implementation used for writeable property files.
  * Supports limited caching of number of features and bounds.
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/property/src/main/java/org/geotools/data/property/PropertyFeatureStore.java $
+ *
+ * @source $URL$
  */
 public class PropertyFeatureStore extends AbstractFeatureLocking {
 

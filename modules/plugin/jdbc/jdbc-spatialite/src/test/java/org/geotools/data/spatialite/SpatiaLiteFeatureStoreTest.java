@@ -22,6 +22,11 @@ import java.sql.SQLException;
 import org.geotools.jdbc.JDBCFeatureStoreTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SpatiaLiteFeatureStoreTest extends JDBCFeatureStoreTest {
 
     @Override

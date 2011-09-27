@@ -36,6 +36,11 @@ import org.geotools.jdbc.SQLDialect;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.type.FeatureType;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
 
     public static final Logger LOGGER = Logging.getLogger(TeradataDataStoreFactory.class);

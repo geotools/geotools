@@ -33,6 +33,11 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ClobTestData {
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(TestData.class
             .getPackage().getName());

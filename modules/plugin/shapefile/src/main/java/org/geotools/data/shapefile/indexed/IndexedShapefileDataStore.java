@@ -99,6 +99,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * @author jesse eichar
  * 
  *
+ *
  * @source $URL$
  */
 public class IndexedShapefileDataStore extends ShapefileDataStore implements

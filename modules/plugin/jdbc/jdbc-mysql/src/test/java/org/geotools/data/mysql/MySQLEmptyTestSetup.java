@@ -18,6 +18,11 @@ package org.geotools.data.mysql;
 
 import org.geotools.jdbc.JDBCEmptyTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MySQLEmptyTestSetup extends JDBCEmptyTestSetup {
 
     protected MySQLEmptyTestSetup() {

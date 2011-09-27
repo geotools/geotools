@@ -20,6 +20,11 @@ package org.geotools.data.h2;
 import org.geotools.jdbc.JDBCJNDIDataSourceTest;
 import org.geotools.jdbc.JDBCJNDITestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class H2JNDIDataSourceTest extends JDBCJNDIDataSourceTest {
 
     protected JDBCJNDITestSetup createTestSetup() {

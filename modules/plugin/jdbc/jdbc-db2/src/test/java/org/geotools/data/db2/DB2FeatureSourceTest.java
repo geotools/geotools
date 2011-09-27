@@ -21,6 +21,11 @@ import org.geotools.jdbc.JDBCTestSetup;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DB2FeatureSourceTest extends JDBCFeatureSourceTest {
     protected JDBCTestSetup createTestSetup() {
         return new DB2TestSetup();

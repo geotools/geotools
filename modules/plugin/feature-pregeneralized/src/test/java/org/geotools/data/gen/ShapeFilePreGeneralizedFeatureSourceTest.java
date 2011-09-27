@@ -19,6 +19,11 @@ package org.geotools.data.gen;
 
 import org.geotools.data.Repository;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ShapeFilePreGeneralizedFeatureSourceTest extends
         AbstractPreGeneralizedFeatureSourceTest {
 

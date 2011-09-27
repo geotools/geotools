@@ -23,6 +23,11 @@ import org.geotools.jdbc.JDBCSpatialFiltersTest;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.spatial.BBOX;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OracleSpatialFiltersTest extends JDBCSpatialFiltersTest {
 
     @Override

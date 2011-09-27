@@ -28,7 +28,8 @@ import junit.framework.TestCase;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/svg/src/test/java/org/geotools/renderer/style/SVGFactoryFinderTest.java $
+ *
+ * @source $URL$
  */
 public class SVGFactoryFinderTest extends TestCase {
 

@@ -41,6 +41,7 @@ import org.geotools.resources.NIOUtilities;
  * 5:15:30 PM)
  * 
  *
+ *
  * @source $URL$
  */
 public class DbaseFileHeader {

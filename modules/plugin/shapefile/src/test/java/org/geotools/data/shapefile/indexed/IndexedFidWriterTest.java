@@ -21,6 +21,11 @@ import java.net.MalformedURLException;
 
 import org.geotools.data.shapefile.shp.IndexFile;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IndexedFidWriterTest extends FIDTestCase {
     private IndexFile indexFile;
     private IndexedFidWriter writer;

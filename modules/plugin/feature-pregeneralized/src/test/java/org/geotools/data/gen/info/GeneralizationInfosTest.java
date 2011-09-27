@@ -24,6 +24,11 @@ import junit.framework.TestCase;
 
 import org.junit.Assert;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GeneralizationInfosTest extends TestCase {
 
     public void testGeneralizationInfos() {

@@ -52,7 +52,8 @@ import org.opengis.parameter.ParameterValue;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/imagemosaic/src/test/java/org/geotools/gce/imagemosaic/CatalogBuilderTest.java $
+ *
+ * @source $URL$
  */
 public class CatalogBuilderTest extends Assert {
     

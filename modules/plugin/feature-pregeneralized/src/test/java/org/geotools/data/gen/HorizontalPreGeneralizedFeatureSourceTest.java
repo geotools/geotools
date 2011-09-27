@@ -17,6 +17,11 @@
 
 package org.geotools.data.gen;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class HorizontalPreGeneralizedFeatureSourceTest extends
         AbstractPreGeneralizedFeatureSourceTest {
 

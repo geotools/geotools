@@ -31,6 +31,7 @@ import org.geotools.data.DataStoreFactorySpi;
  *
  * @author Jody garnett
  *
+ *
  * @source $URL$
  * @version $Id$
  */

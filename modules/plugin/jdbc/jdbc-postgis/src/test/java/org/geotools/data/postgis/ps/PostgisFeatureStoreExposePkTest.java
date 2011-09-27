@@ -19,6 +19,11 @@ package org.geotools.data.postgis.ps;
 import org.geotools.jdbc.JDBCFeatureStoreExposePkTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostgisFeatureStoreExposePkTest extends JDBCFeatureStoreExposePkTest {
 
     @Override

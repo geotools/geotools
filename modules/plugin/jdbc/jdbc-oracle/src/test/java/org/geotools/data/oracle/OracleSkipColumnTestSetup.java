@@ -2,6 +2,11 @@ package org.geotools.data.oracle;
 
 import org.geotools.jdbc.JDBCSkipColumnTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OracleSkipColumnTestSetup extends JDBCSkipColumnTestSetup {
 
     protected OracleSkipColumnTestSetup() {

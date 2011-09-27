@@ -51,6 +51,11 @@ import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.io.ParseException;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DB2SQLDialect extends SQLDialect  {
 
 	private static Integer GEOMETRY 		= 9001;

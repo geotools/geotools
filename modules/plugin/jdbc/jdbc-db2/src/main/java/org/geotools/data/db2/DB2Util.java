@@ -36,6 +36,11 @@ import java.util.Map;
 import com.vividsolutions.jts.geom.*;
 import com.vividsolutions.jts.io.WKTWriter;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DB2Util {
 
 	private static Map<Class, String> PARAMETER_LITERALS = null;

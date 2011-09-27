@@ -22,7 +22,8 @@ import java.util.Vector;
 /**
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/grassraster/src/main/java/org/geotools/gce/grassraster/core/color/AttributeTable.java $
+ *
+ * @source $URL$
  */
 public class AttributeTable {
     private Vector<CellAttribute> atts = null;

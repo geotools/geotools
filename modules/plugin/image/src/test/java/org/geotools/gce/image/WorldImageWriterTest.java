@@ -41,6 +41,7 @@ import org.opengis.referencing.operation.TransformException;
  * @author Simone Giannecchini
  * @author rgould
  *
+ *
  * @source $URL$
  */
 public class WorldImageWriterTest extends WorldImageBaseTestCase {

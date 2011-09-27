@@ -1,5 +1,10 @@
 package com.esri.sde.sdk.client;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SeDefs {
 
     public static int SE_SELECT_PRIVILEGE = 0;

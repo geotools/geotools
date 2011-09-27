@@ -36,7 +36,8 @@ import org.opengis.coverage.grid.GridCoverageReader;
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/imageio-ext-gdal/src/main/java/org/geotools/coverageio/gdal/ehdr/EsriHdrReader.java $
+ *
+ * @source $URL$
  */
 public final class EsriHdrReader extends BaseGDALGridCoverage2DReader implements
         GridCoverageReader {

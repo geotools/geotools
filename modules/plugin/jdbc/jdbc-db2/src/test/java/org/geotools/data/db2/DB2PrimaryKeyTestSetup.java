@@ -22,6 +22,11 @@ import java.sql.SQLException;
 import org.geotools.jdbc.JDBCPrimaryKeyTestSetup;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DB2PrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
 
     protected DB2PrimaryKeyTestSetup() {

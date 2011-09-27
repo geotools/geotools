@@ -18,6 +18,11 @@ package org.geotools.data.mysql;
 
 import org.geotools.jdbc.JDBCGeometrylessTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MySQLGeometrylessTestSetup extends JDBCGeometrylessTestSetup {
 
     protected MySQLGeometrylessTestSetup() {

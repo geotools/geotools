@@ -19,6 +19,11 @@ package org.geotools.data.h2;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCSpatialFiltersTest;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class H2SpatialFiltersTest extends JDBCSpatialFiltersTest {
 
     @Override

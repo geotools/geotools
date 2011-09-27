@@ -23,6 +23,7 @@ package org.geotools.arcsde.filter;
  * 
  * @author Gabriel Roldan
  *
+ *
  * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
  *         /org/geotools/arcsde/filter/GeometryEncoderException.java $

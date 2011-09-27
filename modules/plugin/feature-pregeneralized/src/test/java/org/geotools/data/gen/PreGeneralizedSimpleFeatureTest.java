@@ -33,6 +33,11 @@ import org.junit.Assert;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PreGeneralizedSimpleFeatureTest extends TestCase {
 
     @Override

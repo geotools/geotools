@@ -53,6 +53,7 @@ import org.geotools.resources.NIOUtilities;
  * 
  * @author Ian Schneider
  *
+ *
  * @source $URL$
  */
 public class DbaseFileWriter {

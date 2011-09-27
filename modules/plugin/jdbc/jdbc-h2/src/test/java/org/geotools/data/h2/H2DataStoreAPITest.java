@@ -20,6 +20,11 @@ import org.geotools.jdbc.JDBCDataStoreAPITest;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class H2DataStoreAPITest extends JDBCDataStoreAPITest {
     protected JDBCDataStoreAPITestSetup createTestSetup() {
         return new H2DataStoreAPITestSetup();

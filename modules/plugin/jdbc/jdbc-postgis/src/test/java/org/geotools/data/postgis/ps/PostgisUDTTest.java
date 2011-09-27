@@ -20,6 +20,11 @@ import org.geotools.data.postgis.PostgisUDTTestSetup;
 import org.geotools.jdbc.JDBCUDTTest;
 import org.geotools.jdbc.JDBCUDTTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostgisUDTTest extends JDBCUDTTest {
 
     @Override

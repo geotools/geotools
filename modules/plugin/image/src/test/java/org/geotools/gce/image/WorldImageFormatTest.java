@@ -24,6 +24,7 @@ import junit.framework.TestCase;
  *
  * @author rgoulds
  *
+ *
  * @source $URL$
  */
 public class WorldImageFormatTest extends TestCase {

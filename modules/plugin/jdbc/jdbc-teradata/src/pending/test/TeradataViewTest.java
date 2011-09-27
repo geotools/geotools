@@ -4,6 +4,11 @@ import org.geotools.jdbc.JDBCViewTest;
 import org.geotools.jdbc.JDBCViewTestSetup;
 import org.opengis.feature.simple.SimpleFeatureType;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TeradataViewTest extends JDBCViewTest {
 
 

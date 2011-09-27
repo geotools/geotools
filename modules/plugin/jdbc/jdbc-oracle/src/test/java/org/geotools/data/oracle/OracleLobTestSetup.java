@@ -5,6 +5,11 @@ import java.sql.PreparedStatement;
 
 import org.geotools.jdbc.JDBCLobTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OracleLobTestSetup extends JDBCLobTestSetup {
 
     protected OracleLobTestSetup() {

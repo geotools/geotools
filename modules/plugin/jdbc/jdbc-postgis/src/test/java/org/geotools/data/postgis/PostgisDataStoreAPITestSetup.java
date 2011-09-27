@@ -19,6 +19,11 @@ package org.geotools.data.postgis;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostgisDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
 
     public PostgisDataStoreAPITestSetup(JDBCTestSetup delegate) {

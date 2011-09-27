@@ -40,6 +40,7 @@ import org.geotools.arcsde.session.ArcSDEConnectionConfig;
  * 
  * @author Gabriel Roldan
  *
+ *
  * @source $URL$
  *         datastore/src/main/java /org/geotools/arcsde/pool/ArcSDEConnectionConfig.java $
  * @version $Id$

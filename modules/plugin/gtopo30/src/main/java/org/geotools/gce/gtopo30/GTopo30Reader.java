@@ -97,6 +97,7 @@ import com.sun.media.imageioimpl.plugins.raw.RawImageReaderSpi;
  * @author jeichar
  * @author mkraemer
  *
+ *
  * @source $URL$
  */
 public final class GTopo30Reader extends AbstractGridCoverage2DReader implements

@@ -57,6 +57,7 @@ import com.vividsolutions.jts.io.WKBReader;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class MySQLDialect extends SQLDialect {

@@ -28,6 +28,7 @@ import java.util.Set;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class DB2WKBConstants {

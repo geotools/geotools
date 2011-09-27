@@ -10,6 +10,11 @@ import org.jfree.chart.plot.PiePlot;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Literal;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ChartFactoryTest extends TestCase {
 
     ChartGraphicFactory factory = new ChartGraphicFactory();

@@ -34,6 +34,7 @@ import org.opengis.coverage.grid.Format;
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
  *
+ *
  * @source $URL$
  */
 public final class ECWFormatFactory extends BaseGridFormatFactorySPI implements GridFormatFactorySpi {

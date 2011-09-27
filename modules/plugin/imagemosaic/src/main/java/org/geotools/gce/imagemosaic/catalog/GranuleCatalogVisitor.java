@@ -23,7 +23,8 @@ import org.geotools.gce.imagemosaic.GranuleDescriptor;
  * @author Simone Giannecchini, GeoSolutions SAS
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/imagemosaic/src/main/java/org/geotools/gce/imagemosaic/catalog/GranuleCatalogVisitor.java $
+ *
+ * @source $URL$
  */
 public interface GranuleCatalogVisitor{
         public void visit(final GranuleDescriptor granule, Object o);

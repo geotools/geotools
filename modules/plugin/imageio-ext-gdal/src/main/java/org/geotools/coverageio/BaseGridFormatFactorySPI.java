@@ -31,7 +31,8 @@ import org.geotools.coverage.grid.io.UnknownFormat;
  * @author Simone Giannecchini, GeoSolutions
  * @since 2.5.x
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/imageio-ext-gdal/src/main/java/org/geotools/coverageio/BaseGridFormatFactorySPI.java $
+ *
+ * @source $URL$
  */
 public class BaseGridFormatFactorySPI implements GridFormatFactorySpi {
 

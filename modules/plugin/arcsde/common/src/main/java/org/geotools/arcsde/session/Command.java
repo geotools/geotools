@@ -34,6 +34,7 @@ import com.esri.sde.sdk.client.SeException;
  * @author Jody Garnett
  * 
  *
+ *
  * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/common/src/main/java/org/geotools
  *         /arcsde/session/Command.java $

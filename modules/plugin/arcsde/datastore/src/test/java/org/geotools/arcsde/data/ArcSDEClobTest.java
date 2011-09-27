@@ -15,6 +15,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ArcSDEClobTest {
     private static ClobTestData testData;
     

@@ -39,7 +39,8 @@ import org.junit.Test;
  * Testing {@link Granule}
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/jp2k/src/test/java/org/geotools/coverageio/jp2k/GranuleTest.java $
+ *
+ * @source $URL$
  */
 public final class GranuleTest extends BaseJP2K {
 

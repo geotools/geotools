@@ -3,6 +3,11 @@ package org.geotools.data.db2;
 import org.geotools.jdbc.JDBCPrimaryKeyFinderTest;
 import org.geotools.jdbc.JDBCPrimaryKeyFinderTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DB2PrimaryKeyFinderTest extends JDBCPrimaryKeyFinderTest {
 
     @Override

@@ -49,6 +49,7 @@ import org.geotools.data.gen.info.GeneralizationInfosProviderImpl;
  * {@link GeneralizationInfosProvider#getGeneralizationInfos(Object)}
  *
  *
+ *
  * @source $URL$
  */
 

@@ -54,6 +54,7 @@ import org.opengis.coverage.grid.GridCoverageReader;
  * 
  * @author <a href="mailto:simboss1@gmil.com">Simone Giannecchini (simboss)</a>
  *
+ *
  * @source $URL$
  * @version 1.0
  */

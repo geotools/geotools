@@ -41,6 +41,7 @@ import org.opengis.parameter.GeneralParameterDescriptor;
  * @author Daniele Romagnoli
  * @author Simone Giannecchini (simboss)
  *
+ *
  * @source $URL$
  */
 public final class ArcGridFormat extends AbstractGridFormat implements Format {

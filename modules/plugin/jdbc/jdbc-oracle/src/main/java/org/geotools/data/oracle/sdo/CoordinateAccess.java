@@ -37,6 +37,7 @@ import com.vividsolutions.jts.geom.CoordinateSequence;
  *
  * @author jgarnett
  *
+ *
  * @source $URL$
  */
  public interface CoordinateAccess extends CoordinateSequence {

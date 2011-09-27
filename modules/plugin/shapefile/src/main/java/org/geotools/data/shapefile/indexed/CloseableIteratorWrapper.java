@@ -5,6 +5,11 @@ import java.util.Iterator;
 
 import org.geotools.index.CloseableIterator;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class CloseableIteratorWrapper<E> implements CloseableIterator<E> {
     Iterator<E> delegate;
 

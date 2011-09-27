@@ -24,6 +24,7 @@ package org.geotools.arcsde.session;
  * 
  * @author Gabriel Roldan
  *
+ *
  * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
  *         /org/geotools/arcsde/pool/UnavailableArcSDEConnectionException.java $

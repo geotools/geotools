@@ -21,6 +21,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * to a JTS geometry. This is work in progress and _experimental_, though.
  * 
  *
+ *
  * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
  *         /geotools/arcsde/data/SeToJTSGeometryFactory.java $

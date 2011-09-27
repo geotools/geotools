@@ -24,6 +24,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TeradataGeographyTestSetup extends JDBCGeographyTestSetup {
 
     public TeradataGeographyTestSetup(JDBCTestSetup delegate) {

@@ -35,7 +35,8 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/jp2k/src/test/java/org/geotools/coverageio/jp2k/ServiceTest.java $
+ *
+ * @source $URL$
  */
 public class ServiceTest extends BaseJP2K {
     public ServiceTest() {

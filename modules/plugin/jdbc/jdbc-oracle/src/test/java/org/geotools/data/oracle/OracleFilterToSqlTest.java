@@ -30,6 +30,11 @@ import org.opengis.filter.spatial.Overlaps;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OracleFilterToSqlTest extends TestCase {
 
     OracleFilterToSQL encoder;

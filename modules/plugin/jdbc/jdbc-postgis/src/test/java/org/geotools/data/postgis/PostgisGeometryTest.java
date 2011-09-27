@@ -19,6 +19,11 @@ package org.geotools.data.postgis;
 import org.geotools.jdbc.JDBCGeometryTest;
 import org.geotools.jdbc.JDBCGeometryTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostgisGeometryTest extends JDBCGeometryTest {
 
     @Override

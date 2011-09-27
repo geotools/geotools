@@ -105,6 +105,7 @@ import org.opengis.referencing.operation.MathTransform;
  * @since 2.3
  * 
  *
+ *
  * @source $URL$
  */
 public final class ImageMosaicReader extends AbstractGridCoverage2DReader implements GridCoverageReader, GridCoverageWriter {

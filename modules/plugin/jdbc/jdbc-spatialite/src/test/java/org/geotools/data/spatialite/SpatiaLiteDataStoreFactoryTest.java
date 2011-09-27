@@ -24,6 +24,11 @@ import junit.framework.TestCase;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SpatiaLiteDataStoreFactoryTest extends TestCase {
 
     SpatiaLiteDataStoreFactory factory;

@@ -31,6 +31,11 @@ import org.opengis.filter.spatial.BinarySpatialOperator;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LinearRing;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostgisFilterToSQL extends FilterToSQL {
 
     FilterToSqlHelper helper;

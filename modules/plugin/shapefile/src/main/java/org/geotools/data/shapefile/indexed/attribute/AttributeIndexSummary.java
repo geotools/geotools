@@ -43,6 +43,7 @@ import org.geotools.data.DataUtilities;
  * @author Manuele Ventoruzzo
  *
  *
+ *
  * @source $URL$
  */
 public class AttributeIndexSummary {

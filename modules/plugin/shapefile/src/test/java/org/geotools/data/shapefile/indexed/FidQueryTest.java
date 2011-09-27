@@ -44,6 +44,11 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FidQueryTest extends FIDTestCase {
     public  FidQueryTest(  ) throws IOException {
         super("FidQueryTest");

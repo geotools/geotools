@@ -27,6 +27,11 @@ import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.opengis.feature.simple.SimpleFeature;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class PropertiesCollector  {
 	
 	private List<String> propertyNames;

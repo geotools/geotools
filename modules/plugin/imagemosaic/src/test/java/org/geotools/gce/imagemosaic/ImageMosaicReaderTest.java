@@ -77,6 +77,7 @@ import org.opengis.referencing.datum.PixelInCell;
  * @since 2.3
  * 
  *
+ *
  * @source $URL$
  */
 @SuppressWarnings("deprecation")

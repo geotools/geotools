@@ -54,6 +54,11 @@ import org.opengis.filter.Filter;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TestSetup {
 
     static public DefaultRepository REPOSITORY;

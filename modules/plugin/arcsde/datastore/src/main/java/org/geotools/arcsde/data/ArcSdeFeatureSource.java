@@ -49,6 +49,11 @@ import org.opengis.filter.sort.SortBy;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ArcSdeFeatureSource implements SimpleFeatureSource {
 
     private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.data");

@@ -34,6 +34,7 @@ import org.geotools.jdbc.SQLDialect;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class H2TestSetup extends JDBCTestSetup {

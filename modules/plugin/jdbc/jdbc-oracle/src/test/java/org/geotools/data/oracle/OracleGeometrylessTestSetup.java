@@ -21,6 +21,11 @@ import java.sql.SQLException;
 import org.geotools.jdbc.JDBCGeometrylessTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OracleGeometrylessTestSetup extends JDBCGeometrylessTestSetup {
 
     protected OracleGeometrylessTestSetup(JDBCTestSetup delegate) {

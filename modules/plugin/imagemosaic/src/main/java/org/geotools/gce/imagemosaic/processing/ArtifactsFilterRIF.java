@@ -34,7 +34,8 @@ import com.sun.media.jai.util.ImageUtil;
 /**
  * The image factory for the {@link ArtifactsFilterOpImage} operation.
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/imagemosaic/src/main/java/org/geotools/gce/imagemosaic/processing/ArtifactsFilterRIF.java $
+ *
+ * @source $URL$
  */
 public class ArtifactsFilterRIF implements RenderedImageFactory {
 

@@ -84,6 +84,7 @@ import org.opengis.referencing.operation.TransformException;
  * 
  * @author Simone Giannecchini, GeoSolutions SAS
  *
+ *
  * @source $URL$
  */
 public class GeoTiffWriter extends AbstractGridCoverageWriter implements

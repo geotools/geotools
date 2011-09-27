@@ -56,6 +56,7 @@ import com.vividsolutions.jts.io.WKTWriter;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class SpatiaLiteDialect extends BasicSQLDialect {

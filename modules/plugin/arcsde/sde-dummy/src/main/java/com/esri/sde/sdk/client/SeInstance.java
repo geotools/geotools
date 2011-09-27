@@ -1,5 +1,10 @@
 package com.esri.sde.sdk.client;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SeInstance {
 	
 	public SeInstance(String s, int i) throws SeException {}

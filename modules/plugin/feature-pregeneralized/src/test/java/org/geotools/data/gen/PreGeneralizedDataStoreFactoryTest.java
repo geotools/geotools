@@ -27,6 +27,11 @@ import org.geotools.data.DataStoreFinder;
 import org.geotools.data.DefaultRepository;
 import org.junit.Assert;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PreGeneralizedDataStoreFactoryTest extends TestCase {
     public void testDataStoreFactory() {
 

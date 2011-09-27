@@ -30,6 +30,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * Implementation of {@link FeatureReader} for {@link PreGeneralizedSimpleFeature}
  *
  *
+ *
  * @source $URL$
  */
 

@@ -19,6 +19,11 @@ package org.geotools.data.teradata;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCVirtualTableTest;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TeradataVirtualTableTest extends JDBCVirtualTableTest {
 
 

@@ -34,7 +34,8 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author Andrea Aime - OpenGeo
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/shapefile/src/main/java/org/geotools/index/CachedQuadTree.java $
+ *
+ * @source $URL$
  */
 public class CachedQuadTree {
     static final DataDefinition DATA_DEFINITION = new DataDefinition("US-ASCII");

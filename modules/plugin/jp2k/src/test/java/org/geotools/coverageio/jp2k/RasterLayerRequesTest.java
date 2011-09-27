@@ -42,7 +42,8 @@ import org.opengis.parameter.ParameterValue;
  * Testing {@link RasterLayerRequest}
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/jp2k/src/test/java/org/geotools/coverageio/jp2k/RasterLayerRequesTest.java $
+ *
+ * @source $URL$
  */
 public final class RasterLayerRequesTest extends BaseJP2K {
 	

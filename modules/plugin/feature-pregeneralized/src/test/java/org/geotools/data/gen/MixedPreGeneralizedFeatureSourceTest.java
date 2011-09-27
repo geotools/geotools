@@ -17,6 +17,11 @@
 
 package org.geotools.data.gen;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MixedPreGeneralizedFeatureSourceTest extends AbstractPreGeneralizedFeatureSourceTest {
 
     static final String ConfigName = "src/test/resources/geninfo_mixed.xml";

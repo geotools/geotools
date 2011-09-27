@@ -19,6 +19,11 @@ package org.geotools.data.postgis.ps;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTransactionTest;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostgisTransactionTest extends JDBCTransactionTest {
 
     @Override

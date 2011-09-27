@@ -21,6 +21,11 @@ import java.sql.SQLException;
 
 import org.geotools.jdbc.JDBCNoPrimaryKeyTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DB2NoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
 
     protected DB2NoPrimaryKeyTestSetup() {

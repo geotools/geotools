@@ -22,6 +22,11 @@ import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class H2FeatureSourceExposePkTest extends JDBCFeatureSourceExposePkTest {
     protected JDBCTestSetup createTestSetup() {
         return new H2TestSetup();

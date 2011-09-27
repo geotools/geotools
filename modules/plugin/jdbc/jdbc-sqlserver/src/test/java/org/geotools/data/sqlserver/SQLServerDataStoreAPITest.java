@@ -19,6 +19,11 @@ package org.geotools.data.sqlserver;
 import org.geotools.jdbc.JDBCDataStoreAPITest;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SQLServerDataStoreAPITest extends JDBCDataStoreAPITest {
 
     @Override

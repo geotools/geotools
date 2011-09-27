@@ -44,7 +44,8 @@ import org.opengis.geometry.Envelope;
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/grassraster/src/test/java/org/geotools/gce/grassraster/GrassRasterReaderWriterTest.java $
+ *
+ * @source $URL$
  */
 public class GrassRasterReaderWriterTest extends TestCase {
     private double n = 5140020.0;

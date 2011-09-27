@@ -24,6 +24,11 @@ import junit.framework.TestCase;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ServiceTest extends TestCase {
 
 	public ServiceTest() {

@@ -47,7 +47,8 @@ package org.geotools.gce.grassraster;
  * @see {@link JGrassRegion}
  * @see {@link JGrassMapEnvironment}
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/grassraster/src/main/java/org/geotools/gce/grassraster/GrassCoverageReadParam.java $
+ *
+ * @source $URL$
  */
 public class GrassCoverageReadParam {
 

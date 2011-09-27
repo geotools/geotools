@@ -49,6 +49,7 @@ import org.opengis.parameter.ParameterValue;
  * @author Alessio Fabiani
  * @author rgould
  *
+ *
  * @source $URL$
  */
 public class WorldImageReaderTest extends WorldImageBaseTestCase {

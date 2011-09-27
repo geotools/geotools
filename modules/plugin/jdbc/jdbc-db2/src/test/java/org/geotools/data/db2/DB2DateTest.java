@@ -3,6 +3,11 @@ package org.geotools.data.db2;
 import org.geotools.jdbc.JDBCDateTest;
 import org.geotools.jdbc.JDBCDateTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DB2DateTest extends JDBCDateTest {
 
     @Override

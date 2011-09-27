@@ -19,6 +19,11 @@ package org.geotools.data.postgis;
 import org.geotools.jdbc.JDBCPrimaryKeyTest;
 import org.geotools.jdbc.JDBCPrimaryKeyTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostgisPrimaryKeyTest extends JDBCPrimaryKeyTest {
 
     @Override

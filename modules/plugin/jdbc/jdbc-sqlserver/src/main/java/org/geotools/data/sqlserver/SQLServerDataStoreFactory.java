@@ -30,6 +30,7 @@ import org.geotools.jdbc.SQLDialect;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {

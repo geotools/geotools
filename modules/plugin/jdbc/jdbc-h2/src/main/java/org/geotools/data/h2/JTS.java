@@ -37,6 +37,7 @@ import com.vividsolutions.jts.io.WKTReader;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class JTS {

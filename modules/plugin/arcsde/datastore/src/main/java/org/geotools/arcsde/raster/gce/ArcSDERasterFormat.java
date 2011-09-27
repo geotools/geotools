@@ -60,6 +60,7 @@ import org.opengis.parameter.GeneralParameterDescriptor;
  * @author Simone Giannecchini (simboss)
  * @author Gabriel Roldan (OpenGeo)
  *
+ *
  * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
  *         /org/geotools/arcsde/gce/ArcSDERasterFormat.java $

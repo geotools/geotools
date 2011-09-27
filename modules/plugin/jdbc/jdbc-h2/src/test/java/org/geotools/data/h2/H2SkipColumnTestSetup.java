@@ -3,6 +3,11 @@ package org.geotools.data.h2;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCSkipColumnTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class H2SkipColumnTestSetup extends JDBCSkipColumnTestSetup {
 
     protected H2SkipColumnTestSetup() {

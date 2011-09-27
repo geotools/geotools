@@ -24,6 +24,11 @@ import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DB2DataStoreAPITest extends JDBCDataStoreAPITest {
     protected JDBCDataStoreAPITestSetup createTestSetup() {
         return new DB2DataStoreAPITestSetup();

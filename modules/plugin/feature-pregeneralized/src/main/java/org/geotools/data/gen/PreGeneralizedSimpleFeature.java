@@ -51,6 +51,7 @@ import org.opengis.geometry.BoundingBox;
  * 
  *
  *
+ *
  * @source $URL$
  */
 public class PreGeneralizedSimpleFeature implements SimpleFeature {

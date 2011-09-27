@@ -33,6 +33,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
 
     String id;

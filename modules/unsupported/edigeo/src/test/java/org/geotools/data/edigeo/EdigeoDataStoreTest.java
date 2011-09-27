@@ -26,6 +26,11 @@ import org.opengis.feature.type.AttributeDescriptor;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class EdigeoDataStoreTest extends TestCase {
 	private EdigeoDataStore eds ;
 	

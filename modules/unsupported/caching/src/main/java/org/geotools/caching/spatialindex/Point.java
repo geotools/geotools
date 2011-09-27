@@ -28,6 +28,11 @@
 //    marioh@cs.ucr.edu
 package org.geotools.caching.spatialindex;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class Point implements Shape, Cloneable {
     public double[] m_pCoords = null;
 

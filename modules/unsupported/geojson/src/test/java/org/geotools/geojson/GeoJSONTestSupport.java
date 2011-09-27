@@ -25,6 +25,11 @@ import com.vividsolutions.jts.geom.Geometry;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GeoJSONTestSupport extends TestCase {
 
     protected StringReader reader(String json) throws IOException {

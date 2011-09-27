@@ -41,7 +41,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Andrea Antonello - www.hydrologis.com
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/utils/CrsStatusBarButton.java $
+ *
+ * @source $URL$
  */
 public class CrsStatusBarButton extends ControlContribution implements MapBoundsListener {
 

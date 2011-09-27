@@ -29,6 +29,7 @@ import org.geotools.geometry.iso.topograph2D.Coordinate;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class UniqueCoordinateArrayFilter implements CoordinateFilter {

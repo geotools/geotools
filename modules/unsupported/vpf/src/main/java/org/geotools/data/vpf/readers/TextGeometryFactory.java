@@ -35,6 +35,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author John Meagher
  *
  *
+ *
  * @source $URL$
  */
 public class TextGeometryFactory extends VPFGeometryFactory implements FileConstants {

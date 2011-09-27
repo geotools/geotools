@@ -30,6 +30,7 @@ import org.geotools.geometry.iso.util.algorithm2D.CGAlgorithms;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class EdgeEnd implements Comparable {

@@ -32,6 +32,8 @@ import org.opengis.util.InternationalString;
  * process description.
  * 
  * @author Jody Garnett (LISAsoft)
+ *
+ * @source $URL$
  */
 public class FeatureGSProcessFactory extends AnnotatedBeanProcessFactory {
 

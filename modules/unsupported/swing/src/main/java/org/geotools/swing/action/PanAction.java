@@ -30,6 +30,7 @@ import org.geotools.swing.tool.PanTool;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  */

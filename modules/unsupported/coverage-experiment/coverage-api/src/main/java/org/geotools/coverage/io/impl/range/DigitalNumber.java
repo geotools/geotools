@@ -29,7 +29,8 @@ import javax.measure.quantity.Quantity;
  * 
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/impl/range/DigitalNumber.java $
+ *
+ * @source $URL$
  */
 public class DigitalNumber implements Quantity, Dimensionless {
 

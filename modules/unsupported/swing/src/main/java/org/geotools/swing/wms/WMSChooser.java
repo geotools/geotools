@@ -8,6 +8,11 @@ import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class WMSChooser {
     public static URL showChooseWMS() {
         return showChooseWMS(deafultServers());

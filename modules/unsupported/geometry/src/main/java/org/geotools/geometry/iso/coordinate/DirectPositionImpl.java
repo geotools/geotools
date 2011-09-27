@@ -34,6 +34,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class DirectPositionImpl implements DirectPosition, Cloneable, Serializable {

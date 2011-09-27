@@ -40,6 +40,7 @@ import com.vividsolutions.jts.io.WKTWriter;
  * @author jgarnett
  *
  *
+ *
  * @source $URL$
  */
 public class EWKTAttributeIO implements AttributeIO {

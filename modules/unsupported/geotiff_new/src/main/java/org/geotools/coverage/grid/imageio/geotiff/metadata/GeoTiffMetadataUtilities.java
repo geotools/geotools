@@ -14,6 +14,11 @@ import org.geotools.coverage.grid.io.imageio.geotiff.TiePoint;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GeoTiffMetadataUtilities {
 
     /** {@link Logger}. */

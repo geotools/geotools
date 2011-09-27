@@ -53,7 +53,8 @@ import org.opengis.util.ProgressListener;
  * @author Simone Giannecchini
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/geotiff/src/test/java/org/geotools/gce/geotiff/GeoTiffReaderTest.java $
+ *
+ * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/plugin/geotiff/test/org
  *         /geotools/gce/geotiff/GeoTiffReaderTest.java $
  */

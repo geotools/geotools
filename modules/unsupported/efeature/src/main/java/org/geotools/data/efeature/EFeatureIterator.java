@@ -16,6 +16,8 @@ import org.geotools.data.efeature.query.EFeatureFilter;
  * 
  * @author kengu
  * 
+ *
+ * @source $URL$
  */
 public class EFeatureIterator implements TreeIterator<EObject> {
 

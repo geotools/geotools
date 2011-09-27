@@ -29,6 +29,8 @@ import org.eclipse.emf.ecore.resource.Resource;
  *  
  * @author kengu - 26. mai 2011 
  *
+ *
+ * @source $URL$
  */
 public interface EFeatureIDFactory {
 

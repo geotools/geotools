@@ -15,6 +15,11 @@ import org.geotools.data.dxf.header.DXFBlockRecord;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DXFTables implements DXFConstants {
 
     private static final Log log = LogFactory.getLog(DXFTables.class);

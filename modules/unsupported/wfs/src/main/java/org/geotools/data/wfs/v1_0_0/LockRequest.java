@@ -29,6 +29,7 @@ import org.opengis.filter.Filter;
  * @author dzwiers
  *
  *
+ *
  * @source $URL$
  */
 public class LockRequest extends FeatureLock {

@@ -33,6 +33,7 @@ import org.geotools.swing.tool.InfoTool;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  */

@@ -31,7 +31,8 @@ import org.geotools.data.Parameter;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/JDoubleField.java $
+ *
+ * @source $URL$
  */
 public class JDoubleField extends ParamField {
 

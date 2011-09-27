@@ -79,11 +79,12 @@ import org.opengis.referencing.operation.TransformException;
  * </p>
  * 
  * @author Gabriel Roldan
- * @version $Id: WFS_1_1_0_DataStore.java 35372 2010-05-05 11:50:22Z mbedward $
+ * @version $Id$
  * @since 2.5.x
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/v1_1_0/WFSNGDataStore.java $
+ *
+ * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/wfs/src/main/java/org/geotools
  *         /wfs/v_1_1_0/data/WFSDataStore.java $
  */

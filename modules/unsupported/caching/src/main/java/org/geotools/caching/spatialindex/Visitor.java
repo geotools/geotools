@@ -25,6 +25,11 @@
 //    marioh@cs.ucr.edu
 package org.geotools.caching.spatialindex;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public interface Visitor {
     public void visitNode(final Node n);
 

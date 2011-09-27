@@ -37,6 +37,11 @@ import org.opengis.geometry.primitive.SurfaceBoundary;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Polygon;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SurfaceImplTest extends TestCase {
     private PositionFactoryImpl postitionFactory;
     private PrimitiveFactoryImpl primitiveFactory;

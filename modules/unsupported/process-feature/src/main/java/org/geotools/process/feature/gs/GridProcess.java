@@ -44,6 +44,8 @@ import com.vividsolutions.jts.geom.Polygon;
  * A process that builds a regular grid as a feature collection
  * 
  * @author Andrea Aime - GeoSolutions
+ *
+ * @source $URL$
  */
 @DescribeProcess(title = "grid", description = "Builds a regular cell grid")
 public class GridProcess implements GSProcess {

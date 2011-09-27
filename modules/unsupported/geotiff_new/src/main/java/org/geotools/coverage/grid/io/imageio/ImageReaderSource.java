@@ -5,6 +5,11 @@ import java.io.File;
 import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.spi.ImageReaderSpi;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ImageReaderSource<T> {
     
     public int getImageIndex() {

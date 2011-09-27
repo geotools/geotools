@@ -37,6 +37,8 @@ import org.junit.Test;
  * 
  * @author Simone Giannecchini, GeoSolutions SAS
  *
+ *
+ * @source $URL$
  */
 public class OverviewEmbedderTest extends Assert{
     

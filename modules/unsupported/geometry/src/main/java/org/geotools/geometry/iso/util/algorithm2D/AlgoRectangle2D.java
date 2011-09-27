@@ -28,6 +28,7 @@ import java.awt.geom.Rectangle2D;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class AlgoRectangle2D {

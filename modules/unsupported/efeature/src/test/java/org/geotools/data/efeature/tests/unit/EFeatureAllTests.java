@@ -20,6 +20,8 @@ import junit.textui.TestRunner;
  * 
  * @author kengu
  *
+ *
+ * @source $URL$
  */
 public class EFeatureAllTests extends TestSuite {
 

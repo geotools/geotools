@@ -34,6 +34,8 @@ import com.vividsolutions.jts.io.WKTReader;
 /**
  * @author kengu - 14. juni 2011
  *
+ *
+ * @source $URL$
  */
 public abstract class AbstractEGeometryValueTest extends AbstractEAttributeFilterTest<EFeatureData<Object, Geometry>> {
     

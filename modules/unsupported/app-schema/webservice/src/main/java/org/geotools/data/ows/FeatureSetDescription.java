@@ -32,6 +32,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author rpetty
  *
  *
+ *
  * @source $URL$
  */
 public class FeatureSetDescription {

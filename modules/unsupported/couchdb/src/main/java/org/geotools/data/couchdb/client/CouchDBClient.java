@@ -66,6 +66,8 @@ import org.json.simple.JSONArray;
  * 
  * @todo thread safety requirements?
  * @author Ian Schneider (OpenGeo)
+ *
+ * @source $URL$
  */
 public class CouchDBClient implements Closeable {
     private static final String DEFAULT_CHARSET = "UTF-8";

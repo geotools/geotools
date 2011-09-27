@@ -38,6 +38,11 @@ import org.geotools.filter.FilterType;
 import org.geotools.filter.GeometryFilter;
 import org.geotools.xml.XMLHandlerHints;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MapServerWFSStrategyOnlineTest extends TestCase {
 
     protected void setUp() throws Exception {

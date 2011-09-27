@@ -12,6 +12,8 @@ import org.geotools.data.efeature.EFeatureProperty;
  * 
  * @author kengu, 22. apr. 2011
  * 
+ *
+ * @source $URL$
  */
 public class EFeatureAttributeList<V> extends AbstractList<EFeatureAttribute<V>> {
     private static final long serialVersionUID = 1L;

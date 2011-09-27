@@ -24,11 +24,12 @@ import org.geotools.data.wfs.v1_1_0.WFSNGDataStore;
  * A simple interface to parse the response of a WFS request.
  * 
  * @author Gabriel Roldan (OpenGeo)
- * @version $Id: WFSResponseParser.java 31823 2008-11-11 16:11:49Z groldan $
+ * @version $Id$
  * @since 2.6
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/protocol/wfs/WFSResponseParser.java $
+ *
+ * @source $URL$
  * @see WFSResponseParserFactory
  * @see WFSResponse
  */

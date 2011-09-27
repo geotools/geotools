@@ -30,6 +30,7 @@ import org.geotools.data.wfs.v1_1_0.WFS_1_1_0_DataStore;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  */
 public interface WFSResponseParserFactory {

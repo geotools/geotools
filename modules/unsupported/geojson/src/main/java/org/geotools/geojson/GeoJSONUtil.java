@@ -43,6 +43,11 @@ import org.json.simple.parser.ParseException;
 
 import com.vividsolutions.jts.geom.Coordinate;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GeoJSONUtil {
 
     /**

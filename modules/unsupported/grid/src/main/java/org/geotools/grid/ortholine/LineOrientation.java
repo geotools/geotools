@@ -24,8 +24,9 @@ package org.geotools.grid.ortholine;
  * @since 8.0
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/grid/src/main/java/org/geotools/grid/ortholine/LineOrientation.java $
- * @version $Id: Grids.java 37149 2011-05-10 11:47:02Z mbedward $
+ *
+ * @source $URL$
+ * @version $Id$
  */
 public enum LineOrientation {
     /**

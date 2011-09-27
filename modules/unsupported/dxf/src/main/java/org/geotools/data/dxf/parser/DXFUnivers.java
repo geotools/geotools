@@ -28,6 +28,11 @@ import org.geotools.data.dxf.header.DXFTables;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DXFUnivers implements DXFConstants {
 
     private static final Log log = LogFactory.getLog(DXFUnivers.class);

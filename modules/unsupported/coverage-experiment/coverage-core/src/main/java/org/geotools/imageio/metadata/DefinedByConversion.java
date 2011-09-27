@@ -65,7 +65,8 @@ package org.geotools.imageio.metadata;
  * @author Alessio Fabiani, GeoSolutions
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-core/src/main/java/org/geotools/imageio/metadata/DefinedByConversion.java $
+ *
+ * @source $URL$
  */
 public class DefinedByConversion extends IdentifiableMetadataAccessor {
 

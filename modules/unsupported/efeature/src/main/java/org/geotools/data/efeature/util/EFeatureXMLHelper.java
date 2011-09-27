@@ -33,6 +33,8 @@ import com.vividsolutions.jts.io.ParseException;
 /**
  * @author kengu
  *
+ *
+ * @source $URL$
  */
 public class EFeatureXMLHelper extends XMLHelperImpl {
     

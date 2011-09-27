@@ -19,6 +19,11 @@ package org.geotools.data.ingres;
 import org.geotools.jdbc.JDBCBooleanTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IngresBooleanTestSetup extends JDBCBooleanTestSetup {
 
     public IngresBooleanTestSetup(JDBCTestSetup delegate) {

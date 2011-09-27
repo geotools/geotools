@@ -41,6 +41,11 @@ import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.io.WKTReader;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FeatureJSONTest extends GeoJSONTestSupport {
 
     FeatureJSON fjson = new FeatureJSON();

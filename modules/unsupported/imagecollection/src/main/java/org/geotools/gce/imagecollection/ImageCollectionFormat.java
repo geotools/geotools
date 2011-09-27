@@ -43,7 +43,8 @@ import org.opengis.parameter.ParameterDescriptor;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/imagecollection/src/main/java/org/geotools/gce/imagecollection/ImageCollectionFormat.java $
+ *
+ * @source $URL$
  */
 public final class ImageCollectionFormat extends AbstractGridFormat implements Format {
 

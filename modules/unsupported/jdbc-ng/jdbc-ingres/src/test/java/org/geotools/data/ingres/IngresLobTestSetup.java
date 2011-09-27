@@ -6,6 +6,11 @@ import java.sql.PreparedStatement;
 import org.geotools.jdbc.JDBCLobTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IngresLobTestSetup extends JDBCLobTestSetup {
 
     public IngresLobTestSetup(JDBCTestSetup delegate) {

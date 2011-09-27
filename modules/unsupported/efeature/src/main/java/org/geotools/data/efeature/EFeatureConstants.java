@@ -3,6 +3,11 @@ package org.geotools.data.efeature;
 import org.geotools.data.efeature.impl.EFeatureImpl;
 import org.opengis.feature.Feature;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class EFeatureConstants {
     
     public static final String DEFAULT_SRID = EFeatureImpl.DEFAULT_SRID;

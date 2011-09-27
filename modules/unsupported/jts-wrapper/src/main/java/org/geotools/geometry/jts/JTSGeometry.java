@@ -26,6 +26,7 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  *
  *
+ *
  * @source $URL$
  */
 public interface JTSGeometry {

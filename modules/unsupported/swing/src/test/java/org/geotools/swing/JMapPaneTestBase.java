@@ -43,6 +43,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * 
  * @author Michael Bedward
  * @since 8.0
+ *
  * @source $URL$
  * @version $Id$
  */

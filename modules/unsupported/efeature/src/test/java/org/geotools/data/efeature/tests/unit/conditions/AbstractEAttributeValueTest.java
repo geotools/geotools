@@ -32,6 +32,8 @@ import com.vividsolutions.jts.geom.Geometry;
 /**
  * @author kengu - 14. juni 2011
  *
+ *
+ * @source $URL$
  */
 public abstract class AbstractEAttributeValueTest extends AbstractEAttributeFilterTest<EFeatureData<Object, Geometry>> {
     

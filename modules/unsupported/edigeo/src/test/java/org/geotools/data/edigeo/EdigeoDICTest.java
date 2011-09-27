@@ -24,6 +24,11 @@ import org.junit.Test;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class EdigeoDICTest extends TestCase {
 	private EdigeoDIC eDic ;
 	

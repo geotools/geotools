@@ -27,6 +27,7 @@ import java.io.IOException;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  */
 public class WSException extends IOException {

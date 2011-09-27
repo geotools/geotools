@@ -29,8 +29,9 @@ import org.geotools.grid.Neighbor;
  * @since 2.7
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/grid/src/main/java/org/geotools/grid/hexagon/HexagonBuilder.java $
- * @version $Id: Hexagon.java 35637 2010-06-01 09:24:43Z mbedward $
+ *
+ * @source $URL$
+ * @version $Id$
  */
 public class HexagonBuilder extends PolygonBuilder {
     private final double sideLen;

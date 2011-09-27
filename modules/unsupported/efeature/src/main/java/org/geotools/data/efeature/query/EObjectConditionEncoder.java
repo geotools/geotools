@@ -88,6 +88,8 @@ import org.opengis.filter.temporal.TOverlaps;
  * 
  * @author kengu
  * 
+ *
+ * @source $URL$
  */
 public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor {
     

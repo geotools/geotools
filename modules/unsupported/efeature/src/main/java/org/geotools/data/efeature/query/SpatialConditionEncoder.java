@@ -17,6 +17,11 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.operation.distance.DistanceOp;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SpatialConditionEncoder {
 
     // ----------------------------------------------------- 

@@ -31,6 +31,7 @@ import org.geotools.geometry.iso.util.algorithm2D.AlgoLine2D;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class BdryEdge2D extends BRepEdge2D {

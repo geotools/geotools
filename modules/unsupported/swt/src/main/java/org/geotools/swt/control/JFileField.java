@@ -41,7 +41,8 @@ import org.geotools.data.Parameter;
  * @author Jody Garnett
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/JFileField.java $
+ *
+ * @source $URL$
  */
 public class JFileField extends ParamField {
 

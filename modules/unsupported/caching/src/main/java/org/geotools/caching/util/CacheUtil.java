@@ -5,6 +5,11 @@ import org.geotools.filter.spatial.BBOXImpl;
 
 import com.vividsolutions.jts.geom.Envelope;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class CacheUtil {
 	/**
 	 * Extracts an envelope from a bbox filter.

@@ -33,7 +33,7 @@ import org.geotools.util.logging.Logging;
  * Adapts a WFS capabilities document to {@link ServiceInfo}
  * 
  * @author Gabriel Roldan
- * @version $Id: CapabilitiesServiceInfo.java 31888 2008-11-20 13:34:53Z groldan $
+ * @version $Id$
  * @since 2.5.x
  * @source $URL:
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/wfs/src/main/java/org/geotools

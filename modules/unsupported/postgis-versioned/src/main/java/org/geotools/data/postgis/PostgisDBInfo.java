@@ -26,6 +26,11 @@ import java.util.logging.Logger;
 import org.geotools.data.Transaction;
 import org.geotools.data.jdbc.JDBCUtils;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostgisDBInfo {
     
     /** The logger for the postgis module. */

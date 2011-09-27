@@ -75,6 +75,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * @since 2.1.x
  *
  *
+ *
  * @source $URL$
  */
 public class Timing {

@@ -38,6 +38,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @since 2.1.x
  *
  *
+ *
  * @source $URL$
  */
 public class PolygonHandler extends org.geotools.renderer.shape.shapehandler.simple.PolygonHandler{

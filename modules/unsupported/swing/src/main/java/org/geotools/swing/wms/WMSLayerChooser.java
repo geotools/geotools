@@ -38,6 +38,7 @@ import org.geotools.data.wms.WebMapServer;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class WMSLayerChooser extends JDialog implements ActionListener {

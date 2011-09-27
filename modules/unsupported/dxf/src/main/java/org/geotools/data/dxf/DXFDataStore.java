@@ -1,5 +1,5 @@
 /*
- * $Id: DXFDataStore.java Matthijs $
+ * $Id$
  */
 package org.geotools.data.dxf;
 
@@ -29,7 +29,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @author Chris van Lith B3Partners
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/dxf/src/main/java/org/geotools/data/dxf/DXFDataStore.java $
+ *
+ * @source $URL$
  */
 public class DXFDataStore extends AbstractFileDataStore {
 

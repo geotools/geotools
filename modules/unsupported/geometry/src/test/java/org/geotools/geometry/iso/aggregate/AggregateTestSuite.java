@@ -19,6 +19,11 @@ package org.geotools.geometry.iso.aggregate;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class AggregateTestSuite {
 	
     public static Test suite() {

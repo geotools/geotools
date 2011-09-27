@@ -28,6 +28,11 @@ import org.geotools.geometry.jts.JTSGeometry;
 import org.geotools.geometry.jts.JTSUtils;
 import org.opengis.geometry.coordinate.PolyhedralSurface;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PolygonImpl extends SurfacePatchImpl implements Polygon {
     
     //*************************************************************************

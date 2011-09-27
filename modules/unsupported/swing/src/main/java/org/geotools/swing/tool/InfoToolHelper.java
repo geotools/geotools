@@ -38,6 +38,7 @@ import org.opengis.referencing.operation.MathTransform;
  *
  * @author Michael Bedward
  * @since 2.6
+ *
  * @source $URL$
  * @version $URL$
  */

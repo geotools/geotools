@@ -23,6 +23,11 @@ import org.geotools.geometry.iso.util.elem2D.Node2D;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class Circle2DTest extends TestCase {
 
     public void testInstance() {

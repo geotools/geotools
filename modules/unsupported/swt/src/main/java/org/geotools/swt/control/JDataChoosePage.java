@@ -41,7 +41,8 @@ import org.geotools.data.DataStoreFinder;
  * @author Andrea Antonello (www.hydrologis.com)
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/JDataChoosePage.java $
+ *
+ * @source $URL$
  */
 public class JDataChoosePage extends WizardPage implements ISelectionChangedListener {
     public static final String ID = "org.geotools.swt.data.DataChoosePage";

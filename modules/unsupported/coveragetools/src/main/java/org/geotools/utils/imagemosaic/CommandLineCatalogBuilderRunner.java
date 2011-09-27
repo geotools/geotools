@@ -72,7 +72,8 @@ import org.geotools.utils.progress.ProcessingEventListener;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coveragetools/src/main/java/org/geotools/utils/imagemosaic/CommandLineCatalogBuilderRunner.java $
+ *
+ * @source $URL$
  * @version 0.3
  * 
  */

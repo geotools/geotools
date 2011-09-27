@@ -39,6 +39,7 @@ import org.geotools.data.ogr.bridj.GdalInit;
  * @author Andrea Aime, GeoSolution
  * 
  * 
+ *
  * @source $URL$
  * @version $Id$
  */

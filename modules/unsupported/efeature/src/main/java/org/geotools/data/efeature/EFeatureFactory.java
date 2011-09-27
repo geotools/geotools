@@ -16,6 +16,8 @@ import org.eclipse.emf.edit.domain.EditingDomain;
  * <!-- end-user-doc -->
  * @see org.geotools.data.efeature.EFeaturePackage
  * @generated
+ *
+ * @source $URL$
  */
 public interface EFeatureFactory extends EFactory {
 

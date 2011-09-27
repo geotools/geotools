@@ -54,7 +54,8 @@ import org.geotools.resources.i18n.Errors;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/domain/RasterLayout.java $
+ *
+ * @source $URL$
  */
 public class RasterLayout extends Object implements Cloneable, Serializable {
     /**

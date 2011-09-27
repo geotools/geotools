@@ -34,6 +34,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  * @author kengu - 4. mai 2011  
  *
+ *
+ * @source $URL$
  */
 public class EFeatureWriterTest extends AbstractResourceTest {
     

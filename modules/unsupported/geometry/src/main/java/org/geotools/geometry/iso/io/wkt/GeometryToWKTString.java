@@ -40,6 +40,11 @@ import org.opengis.geometry.primitive.Ring;
 import org.opengis.geometry.primitive.Surface;
 import org.opengis.geometry.primitive.SurfaceBoundary;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GeometryToWKTString {
 	
 	private boolean lineBreak = false;

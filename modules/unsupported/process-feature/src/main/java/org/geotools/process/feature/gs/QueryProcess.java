@@ -33,6 +33,11 @@ import org.opengis.filter.Filter;
 
 @DescribeProcess(title = "Query", description = "Applies a filter and an attribute selection to the incoming feature collection. "
         + "The process can be also used as a pure format converter when no filtering or attribute selection is performed")
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class QueryProcess implements GSProcess {
     @DescribeResult(name = "result", description = "The filtered collection")
     public SimpleFeatureCollection execute(

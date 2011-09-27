@@ -27,6 +27,7 @@ import javax.swing.JPanel;
  *
  *
  *
+ *
  * @source $URL$
  */
 public abstract class JPage {

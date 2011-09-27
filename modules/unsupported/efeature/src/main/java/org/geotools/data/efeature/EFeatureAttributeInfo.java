@@ -21,6 +21,8 @@ import org.opengis.filter.Filter;
  * 
  * @author kengu
  *
+ *
+ * @source $URL$
  */
 @SuppressWarnings("deprecation")
 public class EFeatureAttributeInfo extends EStructureInfo<EFeatureInfo> {

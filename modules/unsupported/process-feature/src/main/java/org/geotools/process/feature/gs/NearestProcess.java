@@ -54,6 +54,11 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.operation.distance.DistanceOp;
 
 @DescribeProcess(title = "Nearest", description = "Get nearest feature")
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class NearestProcess implements GSProcess {
     private static final Logger LOGGER = Logging.getLogger(NearestProcess.class);
 

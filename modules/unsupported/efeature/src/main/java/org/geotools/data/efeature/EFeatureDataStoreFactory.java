@@ -39,6 +39,8 @@ import org.opengis.feature.simple.SimpleFeature;
  * 
  * @see {@link EFeatureDataStore#getDataStoreFactory()}
  * 
+ *
+ * @source $URL$
  */
 public class EFeatureDataStoreFactory implements DataStoreFactorySpi {
     

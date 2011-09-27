@@ -12,6 +12,11 @@ import org.geotools.feature.NameImpl;
 import org.geotools.util.SimpleInternationalString;
 import org.junit.Test;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DimensionlessAxisTest extends Assert {
 
 	/**

@@ -6,6 +6,11 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.query.conditions.eobjects.structuralfeatures.EObjectAttributeValueCondition;
 import org.opengis.filter.expression.Literal;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class EAttributeValueIsNotEqual extends EObjectAttributeValueCondition {
 
     public EAttributeValueIsNotEqual(EAttribute eAttribute, Literal value)

@@ -43,6 +43,7 @@ import org.opengis.feature.type.AttributeDescriptor;
  * @author Chris Holmes, Fulbright.
  *
  *
+ *
  * @source $URL$
  */
 public class VPFFeatureReader

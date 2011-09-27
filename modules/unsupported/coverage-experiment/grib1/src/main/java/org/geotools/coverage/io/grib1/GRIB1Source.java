@@ -68,6 +68,11 @@ import org.opengis.referencing.operation.TransformException;
 import org.opengis.temporal.TemporalGeometricPrimitive;
 import org.opengis.util.ProgressListener;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GRIB1Source implements CoverageSource {
 
 	/** Logger. */

@@ -21,6 +21,8 @@ import org.opengis.feature.type.AttributeDescriptor;
  * 
  * @author kengu
  *
+ *
+ * @source $URL$
  */
 public class EFeatureAttributeReader implements AttributeReader {
 

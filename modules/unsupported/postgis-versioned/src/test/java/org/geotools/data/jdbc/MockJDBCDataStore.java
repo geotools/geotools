@@ -33,6 +33,7 @@ import org.opengis.feature.type.AttributeDescriptor;
  * 
  *  @author Sean Geoghegan, Defence Science and Technology Organisation.
  *
+ *
  * @source $URL$
  */
 public class MockJDBCDataStore extends JDBCDataStore {

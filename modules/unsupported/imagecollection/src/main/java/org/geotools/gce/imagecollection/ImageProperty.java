@@ -28,7 +28,8 @@ import org.geotools.geometry.GeneralEnvelope;
  * 
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/imagecollection/src/main/java/org/geotools/gce/imagecollection/ImageProperty.java $
+ *
+ * @source $URL$
  */
 public class ImageProperty {
     private int width;

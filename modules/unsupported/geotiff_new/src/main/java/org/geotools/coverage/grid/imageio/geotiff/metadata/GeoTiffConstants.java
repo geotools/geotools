@@ -25,7 +25,8 @@ import java.util.regex.Pattern;
  * @author simone
  * 
  *
- * @sourceFile $URL: https://svn.osgeo.org/geotools/trunk/modules/library/coverage/src/main/java/org/geotools/coverage/grid/io/imageio/geotiff/GeoTiffConstants.java $
+ *
+ * @source $URL$
  */
 public final class GeoTiffConstants {
     

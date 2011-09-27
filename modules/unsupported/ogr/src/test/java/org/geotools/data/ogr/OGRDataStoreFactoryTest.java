@@ -26,6 +26,11 @@ import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.opengis.feature.simple.SimpleFeatureType;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OGRDataStoreFactoryTest extends TestCaseSupport {
 
     public OGRDataStoreFactoryTest(String name) throws IOException {

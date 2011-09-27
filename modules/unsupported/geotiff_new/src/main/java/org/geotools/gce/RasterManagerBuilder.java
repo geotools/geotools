@@ -11,6 +11,11 @@ import org.geotools.factory.Hints;
 import org.geotools.util.Utilities;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class RasterManagerBuilder<T extends ImageReader> {
 
     protected final Hints hints;

@@ -72,7 +72,8 @@ import org.geotools.xml.xsi.XSISimpleTypes;
  * @author Norman Barker www.comsine.com
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/xml/wfs/WFSSchema.java $
+ *
+ * @source $URL$
  */
 public class WFSSchema implements Schema {
     static Logger logger = org.geotools.util.logging.Logging.getLogger("net.refractions.xml.wfs");

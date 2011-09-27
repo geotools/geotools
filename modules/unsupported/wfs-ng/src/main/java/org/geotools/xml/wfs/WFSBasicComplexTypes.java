@@ -54,7 +54,8 @@ import org.xml.sax.helpers.AttributesImpl;
  * @author dzwiers
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/xml/wfs/WFSBasicComplexTypes.java $
+ *
+ * @source $URL$
  */
 public class WFSBasicComplexTypes {
     public final static String LOCK_KEY = "WFSBasicComplexTypes.LOCKID.KEY";

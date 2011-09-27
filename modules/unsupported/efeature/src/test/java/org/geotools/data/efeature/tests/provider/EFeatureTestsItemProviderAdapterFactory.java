@@ -35,6 +35,8 @@ import org.geotools.data.efeature.tests.util.EFeatureTestsAdapterFactory;
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
+ *
+ * @source $URL$
  */
 public class EFeatureTestsItemProviderAdapterFactory extends EFeatureTestsAdapterFactory implements ComposeableAdapterFactory, IChangeNotifier, IDisposable {
     /**

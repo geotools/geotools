@@ -51,7 +51,8 @@ import org.opengis.util.ProgressListener;
  * @todo fix javadocs
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/driver/CoverageIO.java $
+ *
+ * @source $URL$
  */
 public class CoverageIO{
     /** The {@link Logger}. */

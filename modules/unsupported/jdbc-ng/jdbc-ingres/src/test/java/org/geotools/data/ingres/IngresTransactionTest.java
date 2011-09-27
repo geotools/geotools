@@ -32,6 +32,11 @@ import org.geotools.jdbc.JDBCTransactionTest;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IngresTransactionTest extends JDBCTransactionTest {
 
     @Override

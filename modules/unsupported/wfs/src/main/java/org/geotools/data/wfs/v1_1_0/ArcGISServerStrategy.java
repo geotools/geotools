@@ -28,7 +28,8 @@ import org.geotools.data.wfs.protocol.wfs.WFSProtocol;
  * Created on 25-mei-2010, 12:12:31
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs/src/main/java/org/geotools/data/wfs/v1_1_0/ArcGISServerStrategy.java $
+ *
+ * @source $URL$
  */
 public class ArcGISServerStrategy extends DefaultWFSStrategy{
     /**

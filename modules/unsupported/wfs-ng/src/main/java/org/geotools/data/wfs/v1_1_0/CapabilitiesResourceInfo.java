@@ -30,7 +30,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * in {@link WFSDataStore}.
  * 
  * @author Gabriel Roldan (TOPP)
- * @version $Id: CapabilitiesResourceInfo.java 31823 2008-11-11 16:11:49Z groldan $
+ * @version $Id$
  * @since 2.5.x
  * @source $URL:
  *         http://svn.geotools.org/trunk/modules/plugin/wfs/src/main/java/org/geotools/wfs/v_1_1_0

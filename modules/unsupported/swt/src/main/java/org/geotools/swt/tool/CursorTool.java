@@ -31,7 +31,8 @@ import org.geotools.swt.utils.Messages;
  * @author Andrea Antonello (www.hydrologis.com)
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/tool/CursorTool.java $
+ *
+ * @source $URL$
  */
 public abstract class CursorTool extends MapMouseAdapter {
 

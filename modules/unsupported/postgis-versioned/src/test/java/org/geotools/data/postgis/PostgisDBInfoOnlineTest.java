@@ -17,6 +17,11 @@
 package org.geotools.data.postgis;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostgisDBInfoOnlineTest extends PostgisOnlineTestCase {
     
     public void testVersions() {

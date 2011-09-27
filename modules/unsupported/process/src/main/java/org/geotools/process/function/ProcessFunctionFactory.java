@@ -43,7 +43,8 @@ import org.opengis.filter.expression.Literal;
  * 
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/process/src/main/java/org/geotools/process/function/ProcessFunctionFactory.java $
+ *
+ * @source $URL$
  */
 public class ProcessFunctionFactory implements FunctionFactory {
     

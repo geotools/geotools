@@ -33,6 +33,8 @@ import org.opengis.feature.simple.SimpleFeature;
  * 
  * @author kengu - 4. juni 2011
  *
+ *
+ * @source $URL$
  */
 public class EFeatureHints extends Hints {
     

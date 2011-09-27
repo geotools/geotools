@@ -28,7 +28,8 @@ import org.opengis.feature.simple.SimpleFeature;
  * 
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/postgis-versioned/src/main/java/org/geotools/data/FeatureDiff.java $
+ *
+ * @source $URL$
  */
 public interface FeatureDiff {
 

@@ -23,6 +23,8 @@ import org.eclipse.emf.ecore.EObject;
  * @see org.geotools.data.efeature.tests.EFeatureTestsPackage#getNonGeoEObject()
  * @model
  * @generated
+ *
+ * @source $URL$
  */
 public interface NonGeoEObject extends EObject {
     /**

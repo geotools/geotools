@@ -56,7 +56,8 @@ import org.geotools.util.Utilities;
  * 
  *
  *
- * @sourceFile $URL: https://svn.osgeo.org/geotools/trunk/modules/library/coverage/src/main/java/org/geotools/coverage/grid/io/imageio/geotiff/PixelScale.java $
+ *
+ * @source $URL$
  */
 public final class PixelScale {
 

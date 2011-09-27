@@ -32,6 +32,7 @@ import org.opengis.geometry.DirectPosition;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class CGAlgorithms {

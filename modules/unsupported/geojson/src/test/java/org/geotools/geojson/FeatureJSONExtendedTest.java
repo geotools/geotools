@@ -18,6 +18,11 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FeatureJSONExtendedTest extends GeoJSONTestSupport {
 
     FeatureJSON fjson = new FeatureJSON();

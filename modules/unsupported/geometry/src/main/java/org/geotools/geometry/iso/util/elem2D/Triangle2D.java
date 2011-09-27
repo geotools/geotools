@@ -33,6 +33,7 @@ import org.geotools.geometry.iso.util.algorithm2D.LineLineIntersection2D;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class Triangle2D extends Simplex2D {

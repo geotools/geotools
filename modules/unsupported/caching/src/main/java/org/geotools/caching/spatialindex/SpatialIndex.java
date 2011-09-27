@@ -43,6 +43,7 @@ import java.util.Properties;
  *
  *
  *
+ *
  * @source $URL$
  */
 public interface SpatialIndex {

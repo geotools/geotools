@@ -32,7 +32,8 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author dzwiers
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/data/ows/FeatureSetDescription.java $
+ *
+ * @source $URL$
  */
 public class FeatureSetDescription {
 	/**

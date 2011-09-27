@@ -41,7 +41,8 @@ import org.geotools.data.Parameter;
  * @author Andrea Antonello (www.hydrologis.com)
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/JURLField.java $
+ *
+ * @source $URL$
  */
 public class JURLField extends ParamField {
 

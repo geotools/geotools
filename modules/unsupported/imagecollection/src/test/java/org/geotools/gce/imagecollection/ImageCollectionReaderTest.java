@@ -48,7 +48,8 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * @author Simone Giannecchini, GeoSolutions
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/imagecollection/src/test/java/org/geotools/gce/imagecollection/ImageCollectionReaderTest.java $
+ *
+ * @source $URL$
  */
 public class ImageCollectionReaderTest extends Assert {
 

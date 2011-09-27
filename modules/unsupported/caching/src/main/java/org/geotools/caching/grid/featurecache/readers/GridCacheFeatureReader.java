@@ -27,6 +27,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class GridCacheFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {

@@ -70,6 +70,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @since 2.5.x
  *
  *
+ *
  * @source $URL$
  *         java/org/geotools/wfs/v_1_1_0/data/StreamingParserFeatureReaderTest .java $
  * @see XmlSimpleFeatureParserTest

@@ -22,6 +22,11 @@ import java.util.Map;
 
 import org.geotools.data.DataStoreFinder;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class VersionedDataStoreStressTest extends
         AbstractVersionedPostgisDataTestCase {
 

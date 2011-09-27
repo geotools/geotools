@@ -101,7 +101,8 @@ import org.opengis.temporal.TemporalGeometricPrimitive;
  * @author Daniele Romagnoli, GeoSolutions
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-core/src/main/java/org/geotools/imageio/DefaultSliceDescriptor.java $
+ *
+ * @source $URL$
  */
 public class DefaultSliceDescriptor extends AbstractSliceDescriptor {
     public DefaultSliceDescriptor(SpatioTemporalMetadata metadata) {

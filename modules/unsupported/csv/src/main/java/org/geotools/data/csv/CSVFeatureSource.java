@@ -19,6 +19,11 @@ import com.csvreader.CsvReader;
 import com.vividsolutions.jts.geom.Point;
 
 @SuppressWarnings("unchecked")
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class CSVFeatureSource extends ContentFeatureStore {
     
     public CSVFeatureSource(ContentEntry entry, Query query) {

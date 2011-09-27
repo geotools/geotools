@@ -33,6 +33,7 @@ import java.util.Stack;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class AlgoLine2D {

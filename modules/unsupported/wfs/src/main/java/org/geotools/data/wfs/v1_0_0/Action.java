@@ -37,6 +37,7 @@ import org.opengis.filter.identity.FeatureId;
  * @author dzwiers
  *
  *
+ *
  * @source $URL$
  */
 public interface Action {

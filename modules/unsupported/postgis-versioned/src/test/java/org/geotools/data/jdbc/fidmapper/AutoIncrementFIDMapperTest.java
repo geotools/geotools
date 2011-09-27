@@ -22,6 +22,11 @@ import java.sql.Types;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class AutoIncrementFIDMapperTest extends TestCase {
 
     /**

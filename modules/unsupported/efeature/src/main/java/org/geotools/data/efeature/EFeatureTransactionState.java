@@ -27,6 +27,8 @@ import org.geotools.data.Transaction.State;
 /**
  * @author kengu - 7. juli 2011
  *
+ *
+ * @source $URL$
  */
 public class EFeatureTransactionState implements State {
 

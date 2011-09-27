@@ -17,6 +17,8 @@ import org.geotools.factory.FactoryRegistryException;
  * 
  * @author kengu
  *
+ *
+ * @source $URL$
  */
 public class EFeatureFactoryFinder extends FactoryFinder {
     

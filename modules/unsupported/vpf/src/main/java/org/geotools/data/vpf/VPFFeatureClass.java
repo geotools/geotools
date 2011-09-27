@@ -68,6 +68,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author <a href="mailto:jeff@ionicenterprise.com">Jeff Yutzler</a>
  *
  *
+ *
  * @source $URL$
  */
 public class VPFFeatureClass implements DataTypesDefinition, FileConstants,

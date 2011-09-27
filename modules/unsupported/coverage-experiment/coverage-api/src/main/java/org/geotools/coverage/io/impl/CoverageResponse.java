@@ -31,7 +31,8 @@ import org.opengis.util.ProgressListener;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/impl/CoverageResponse.java $
+ *
+ * @source $URL$
  */
 @SuppressWarnings("unchecked")
 public class CoverageResponse {

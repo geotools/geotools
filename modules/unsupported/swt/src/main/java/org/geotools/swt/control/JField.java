@@ -33,7 +33,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/JField.java $
+ *
+ * @source $URL$
  */
 public class JField extends ParamField {
     private Text text;

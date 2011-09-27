@@ -28,6 +28,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * Returns all the features stored in a {@link FeatureQueue}
  * 
  * @author Andrea Aime - GeoSolutions
+ *
+ * @source $URL$
  */
 public class QueueReader implements SimpleFeatureReader {
 

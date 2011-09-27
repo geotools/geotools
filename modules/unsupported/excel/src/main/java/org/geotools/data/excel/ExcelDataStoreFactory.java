@@ -34,6 +34,11 @@ import org.geotools.data.DataUtilities;
 import org.geotools.util.KVP;
 import org.geotools.util.logging.Logging;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ExcelDataStoreFactory extends AbstractDataStoreFactory implements DataStoreFactorySpi {
     private static final Logger logger = Logging
             .getLogger("org.geotools.excel.datastore.ExcelDataStoreFactory");

@@ -21,6 +21,7 @@ package org.geotools.swing;
  *
  * @author Michael Bedward
  * @since 2.7
+ *
  * @source $URL$
  * @version $Id$
  */

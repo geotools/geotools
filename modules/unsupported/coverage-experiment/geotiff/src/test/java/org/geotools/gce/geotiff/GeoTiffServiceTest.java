@@ -44,7 +44,8 @@ import org.opengis.geometry.Envelope;
  * 
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/geotiff/src/test/java/org/geotools/gce/geotiff/GeoTiffServiceTest.java $
+ *
+ * @source $URL$
  */
 public class GeoTiffServiceTest extends TestCase {
 

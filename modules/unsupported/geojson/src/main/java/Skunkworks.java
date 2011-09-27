@@ -4,6 +4,11 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.geojson.feature.FeatureJSON;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class Skunkworks {
 
     public static void main(String[] args) throws Exception {

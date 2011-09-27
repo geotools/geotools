@@ -35,6 +35,11 @@ import org.opengis.geometry.Precision;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PicoPointTest extends TestCase {
 	
 	/**

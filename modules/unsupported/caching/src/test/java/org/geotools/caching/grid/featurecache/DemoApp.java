@@ -36,6 +36,11 @@ import org.geotools.feature.FeatureCollection;
 import com.vividsolutions.jts.geom.Envelope;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DemoApp extends JFrame {
     MemoryDataStore ds;
     GridFeatureCache cache;

@@ -30,6 +30,7 @@ import org.geotools.geometry.iso.util.algorithm2D.RobustLineIntersector;
  *
  *
  *
+ *
  * @source $URL$
  */
 public abstract class GeometryGraphOperation {

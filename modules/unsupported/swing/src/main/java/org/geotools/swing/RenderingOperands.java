@@ -11,6 +11,8 @@ import org.geotools.renderer.GTRenderer;
 /**
  *
  * @author michael
+ *
+ * @source $URL$
  */
 public class RenderingOperands {
 

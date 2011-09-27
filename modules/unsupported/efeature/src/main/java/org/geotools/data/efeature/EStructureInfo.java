@@ -13,6 +13,8 @@ import org.geotools.util.logging.Logging;
  * 
  * @author kengu
  *
+ *
+ * @source $URL$
  */
 public abstract class EStructureInfo<T extends EStructureInfo<?>> {
     

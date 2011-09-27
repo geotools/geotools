@@ -40,6 +40,7 @@ import junit.framework.TestCase;
  *
  *
  *
+ *
  * @source $URL$
  */
 public abstract class AbstractSpatialIndexTest extends TestCase {

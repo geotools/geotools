@@ -20,6 +20,11 @@ import javax.imageio.ImageWriter;
 import javax.imageio.event.IIOWriteProgressListener;
 import javax.imageio.event.IIOWriteWarningListener;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DefaultWriteProgressListener implements IIOWriteProgressListener,
 		IIOWriteWarningListener {
 

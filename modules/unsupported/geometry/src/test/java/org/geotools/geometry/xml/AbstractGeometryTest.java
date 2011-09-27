@@ -38,6 +38,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class AbstractGeometryTest extends TestCase {
 
     private org.opengis.geometry.coordinate.GeometryFactory gFact;

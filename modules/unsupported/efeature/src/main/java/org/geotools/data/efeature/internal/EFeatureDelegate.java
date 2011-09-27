@@ -73,6 +73,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * that feature IDs belong to {@link EFeature} only.
  * </p>
  * @author kengu - 3. juli 2011 
+ *
+ * @source $URL$
  */
 public class EFeatureDelegate implements EFeature, InternalEObject {
 

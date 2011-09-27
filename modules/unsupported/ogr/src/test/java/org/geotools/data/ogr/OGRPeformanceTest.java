@@ -27,6 +27,11 @@ import org.geotools.data.Transaction;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.referencing.CRS;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OGRPeformanceTest extends TestCaseSupport {
     final static String STATE_POP = "shapes/statepop.shp";
 

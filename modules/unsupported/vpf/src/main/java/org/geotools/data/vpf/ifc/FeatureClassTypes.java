@@ -24,6 +24,11 @@ package org.geotools.data.vpf.ifc;
  * @author  <a href="mailto:knuterik@onemap.org">Knut-Erik Johnsen</a>, Project OneMap
  * @source $URL$
  */
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public interface FeatureClassTypes {
 
     public static final char FEATURE_POINT = 'P';

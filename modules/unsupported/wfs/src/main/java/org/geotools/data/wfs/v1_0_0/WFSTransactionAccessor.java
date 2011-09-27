@@ -25,6 +25,11 @@ import org.geotools.filter.visitor.ClientTransactionAccessor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class WFSTransactionAccessor implements ClientTransactionAccessor {
 
     private List<Action> actions;

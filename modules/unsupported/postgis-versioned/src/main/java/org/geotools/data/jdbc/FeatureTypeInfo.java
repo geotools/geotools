@@ -30,6 +30,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author Sean Geoghegan, Defence Science and Technology Organisation.
  *
+ *
  * @source $URL$
  * 
  * @deprecated scheduled for removal in 2.7, use classes in org.geotools.jdbc

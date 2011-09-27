@@ -34,6 +34,7 @@ import org.geotools.data.wfs.protocol.http.HttpMethod;
  * @since 2.5.x
  *
  *
+ *
  * @source $URL$
  * @deprecated in favour of {@link HTTPProtocol}
  */

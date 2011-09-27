@@ -44,11 +44,12 @@ import org.opengis.filter.capability.FilterCapabilities;
  * </p>
  * 
  * @author Gabriel Roldan (OpenGeo)
- * @version $Id: WFSProtocol.java 33654 2009-07-30 11:58:11Z groldan $
+ * @version $Id$
  * @since 2.6
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/protocol/wfs/WFSProtocol.java $
+ *
+ * @source $URL$
  *         http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/main/java/org/geotools/data
  *         /wfs/protocol/wfs/WFSProtocol.java $
  */

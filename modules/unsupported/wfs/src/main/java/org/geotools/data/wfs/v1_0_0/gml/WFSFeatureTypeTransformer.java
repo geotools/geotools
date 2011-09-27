@@ -35,6 +35,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * 
  *
  *
+ *
  * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs/src/main/java/org/geotools
  *         /xml/gml/WFSFeatureTypeTransformer.java $

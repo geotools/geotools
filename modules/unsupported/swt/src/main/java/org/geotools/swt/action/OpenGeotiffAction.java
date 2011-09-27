@@ -42,7 +42,8 @@ import org.geotools.swt.utils.ImageCache;
  * @author Andrea Antonello (www.hydrologis.com)
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/action/OpenGeotiffAction.java $
+ *
+ * @source $URL$
  */
 public class OpenGeotiffAction extends MapAction implements ISelectionChangedListener {
 

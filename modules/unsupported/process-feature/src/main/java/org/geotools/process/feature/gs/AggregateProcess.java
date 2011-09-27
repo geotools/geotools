@@ -49,6 +49,8 @@ import org.opengis.util.ProgressListener;
  * Computes various attribute statistics over vector data sets.
  * 
  * @author Andrea Aime
+ *
+ * @source $URL$
  */
 @DescribeProcess(title = "aggregateProcess", description = "Computes various attribute statistics over vector data sets")
 public class AggregateProcess implements GSProcess {

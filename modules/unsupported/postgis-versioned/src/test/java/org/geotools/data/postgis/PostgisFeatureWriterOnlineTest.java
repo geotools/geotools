@@ -23,6 +23,11 @@ import org.geotools.data.postgis.fidmapper.PostgisFIDMapperFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostgisFeatureWriterOnlineTest extends AbstractPostgisOnlineTestCase {
 
     public void testWrite() throws Exception {

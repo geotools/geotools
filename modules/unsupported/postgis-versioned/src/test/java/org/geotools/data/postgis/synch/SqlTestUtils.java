@@ -32,7 +32,8 @@ import org.geotools.data.jdbc.JDBCUtils;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/postgis-versioned/src/test/java/org/geotools/data/postgis/synch/SqlTestUtils.java $
+ *
+ * @source $URL$
  */
 public class SqlTestUtils {
 

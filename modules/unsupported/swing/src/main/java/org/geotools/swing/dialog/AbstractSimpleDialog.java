@@ -36,6 +36,7 @@ import net.miginfocom.swing.MigLayout;
  *
  * @author Michael Bedward
  * @since 8.0
+ *
  * @source $URL$
  * @version $Id$
  */

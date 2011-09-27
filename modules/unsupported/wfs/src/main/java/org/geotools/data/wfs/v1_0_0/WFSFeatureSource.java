@@ -56,6 +56,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author dzwiers
  *
  *
+ *
  * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/wfs/src/main/java/org/geotools
  *         /wfs/v_1_0_0/data/WFSFeatureSource.java $

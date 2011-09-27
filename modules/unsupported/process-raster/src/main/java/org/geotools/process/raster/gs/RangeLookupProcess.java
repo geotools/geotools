@@ -59,6 +59,8 @@ import org.opengis.util.ProgressListener;
  * @author Simone Giannecchini (GeoSolutions)
  * @author Andrea Aime - GeoSolutions
  * @author Daniele Romagnoli - GeoSolutions
+ *
+ * @source $URL$
  */
 @DescribeProcess(title = "reclassify", description = "Reclassifies a continous coverage into a set of ranges identified by a number")
 public class RangeLookupProcess implements GSProcess {

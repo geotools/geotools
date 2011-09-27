@@ -26,6 +26,11 @@ import org.geotools.caching.spatialindex.Region;
 import org.geotools.caching.spatialindex.RegionNodeIdentifier;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GridNodeTest extends TestCase {
     GridNode node;
     Region mbr;

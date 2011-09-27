@@ -22,6 +22,11 @@ import org.opengis.geometry.primitive.Curve;
 import org.opengis.geometry.primitive.Surface;
 import org.opengis.referencing.FactoryException;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IntersectionTest extends AbstractGeometryTest {
 
     /**

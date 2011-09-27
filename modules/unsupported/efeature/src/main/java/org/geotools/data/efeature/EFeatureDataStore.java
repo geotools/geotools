@@ -39,6 +39,8 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * 
  * @author kengu
  * 
+ *
+ * @source $URL$
  */
 public class EFeatureDataStore extends ContentDataStore {
     

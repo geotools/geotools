@@ -36,7 +36,8 @@ import org.opengis.util.InternationalString;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/impl/range/SimpleScalarAxis.java $
+ *
+ * @source $URL$
  */
 public class SimpleScalarAxis implements Axis<String, Dimensionless> {
 	public static final String DEFAUL_BAND_NAME="0";

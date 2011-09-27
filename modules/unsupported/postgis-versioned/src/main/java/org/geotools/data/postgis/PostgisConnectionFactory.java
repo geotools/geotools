@@ -42,6 +42,7 @@ import org.geotools.data.jdbc.datasource.DataSourceUtil;
  * @author Chris Holmes, TOPP
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @deprecated Use {@link DataSource}, {@link DataSourceUtil} and {@link DataSourceFinder} instead

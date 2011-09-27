@@ -25,6 +25,7 @@ package org.geotools.data.wfs.protocol.http;
  * @since 2.5.x
  *
  *
+ *
  * @source $URL$
  */
 public enum HttpMethod {

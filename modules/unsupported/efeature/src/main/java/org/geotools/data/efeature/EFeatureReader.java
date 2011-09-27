@@ -25,6 +25,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * 
  * @author kengu
  * 
+ *
+ * @source $URL$
  */
 public class EFeatureReader implements SimpleFeatureReader {
     

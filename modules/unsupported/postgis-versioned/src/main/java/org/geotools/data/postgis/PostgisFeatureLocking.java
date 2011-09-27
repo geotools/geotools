@@ -55,6 +55,7 @@ import org.opengis.filter.Filter;
  * @author Jody Garnett, Refractions Research, Inc
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  */

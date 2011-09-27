@@ -63,6 +63,7 @@ import org.xml.sax.SAXException;
  * @author dzwiers
  *
  *
+ *
  * @source $URL$
  */
 public class WFSTransactionState implements State {

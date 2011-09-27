@@ -37,6 +37,11 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PicoLineSegmentTest extends TestCase {
 
 	protected PicoContainer container( CoordinateReferenceSystem crs ){

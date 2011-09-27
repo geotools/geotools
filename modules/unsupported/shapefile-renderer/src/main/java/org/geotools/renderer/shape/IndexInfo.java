@@ -50,6 +50,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author jones
  *
  *
+ *
  * @source $URL$
  */
 public class IndexInfo implements FileReader {

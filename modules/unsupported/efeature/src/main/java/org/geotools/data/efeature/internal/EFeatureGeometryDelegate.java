@@ -27,6 +27,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * An abstract implementation of the model data type {@link EFeatureGeometry}.
  * 
  * @author kengu, 22. apr. 2011
+ *
+ * @source $URL$
  */
 public class EFeatureGeometryDelegate<V extends Geometry> extends
         EFeaturePropertyDelegate<V, GeometryAttribute, EAttribute> implements EFeatureGeometry<V> {

@@ -31,6 +31,8 @@ import org.geotools.data.efeature.tests.EFeatureTestsPackage;
  * </p>
  *
  * @generated
+ *
+ * @source $URL$
  */
 public class EFeatureCompatibleDataImpl<A, G extends Geometry> extends EObjectImpl implements EFeatureCompatibleData<A, G> {
     /**

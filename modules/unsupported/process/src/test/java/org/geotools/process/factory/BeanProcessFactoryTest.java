@@ -28,6 +28,8 @@ import org.opengis.util.InternationalString;
  * 
  * @author Andrea Aime - OpenGeo
  * 
+ *
+ * @source $URL$
  */
 public class BeanProcessFactoryTest extends TestCase {
 

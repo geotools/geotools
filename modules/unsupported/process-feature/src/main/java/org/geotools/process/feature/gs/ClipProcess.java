@@ -59,6 +59,8 @@ import com.vividsolutions.jts.geom.Polygon;
  * A process clipping the geometries in the input feature collection to a specified area
  * 
  * @author Andrea Aime - GeoSolutions
+ *
+ * @source $URL$
  */
 @DescribeProcess(title = "rectangularClip", description = "Clips the features to the specified geometry")
 public class ClipProcess implements GSProcess {

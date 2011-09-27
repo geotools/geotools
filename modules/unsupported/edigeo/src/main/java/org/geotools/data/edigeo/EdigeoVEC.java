@@ -41,6 +41,7 @@ import org.opengis.feature.IllegalAttributeException;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class EdigeoVEC {

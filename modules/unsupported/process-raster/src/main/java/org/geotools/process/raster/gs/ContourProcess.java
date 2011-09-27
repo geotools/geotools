@@ -74,6 +74,7 @@ import org.opengis.util.ProgressListener;
  * 
  * @author Simone Giannecchini, GeoSolutions
  * @since 8.0
+ *
  * @source $URL$
  * @version $Id$
  */

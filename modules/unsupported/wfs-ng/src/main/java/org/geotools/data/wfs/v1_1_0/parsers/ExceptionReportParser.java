@@ -44,11 +44,12 @@ import org.geotools.xml.Parser;
  * A WFS response parser that parses server exception reports into {@link WFSException} objects.
  * 
  * @author Gabriel Roldan (OpenGeo)
- * @version $Id: ExceptionReportParser.java 35310 2010-04-30 10:32:15Z jive $
+ * @version $Id$
  * @since 2.6
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/v1_1_0/parsers/ExceptionReportParser.java $
+ *
+ * @source $URL$
  *         http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/main/java/org/geotools/data
  *         /wfs/v1_1_0/parsers/ExceptionReportParser.java $
  */

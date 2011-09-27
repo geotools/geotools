@@ -5,6 +5,8 @@ package org.geotools.data.efeature;
  * 
  * @author kengu, 22. apr. 2011
  * 
+ *
+ * @source $URL$
  */
 public interface EFeatureStatus {
     public static final int SUCCESS = 0;

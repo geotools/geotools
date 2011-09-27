@@ -13,6 +13,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  * @author kengu
  * 
+ *
+ * @source $URL$
  */
 public class EFeatureGeometryList<V extends Geometry> extends AbstractList<EFeatureGeometry<V>> {
     private static final long serialVersionUID = 1L;

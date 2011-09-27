@@ -22,6 +22,11 @@ import org.geotools.factory.Hints;
 import org.geotools.referencing.factory.epsg.oracle.OracleOnlineTestCase;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OracleDialectEpsgFactoryOnlineTest extends OracleOnlineTestCase {
 
     private OracleDialectEpsgFactory factory;

@@ -45,6 +45,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @since 2.5.x
  *
  *
+ *
  * @source $URL$
  */
 public class EmfAppSchemaParserTest {

@@ -31,6 +31,11 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GeometryHandlerBase<G extends Geometry> extends HandlerBase implements IContentHandler<G> {
     
     protected GeometryFactory factory;

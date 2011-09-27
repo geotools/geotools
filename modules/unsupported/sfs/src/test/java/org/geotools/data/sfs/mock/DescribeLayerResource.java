@@ -33,7 +33,8 @@ import org.restlet.resource.Variant;
  * @author narad
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/sfs/src/test/java/org/geotools/data/sfs/mock/DescribeLayerResource.java $
+ *
+ * @source $URL$
  */
 public class DescribeLayerResource extends Resource {
 

@@ -35,6 +35,7 @@ import org.opengis.geometry.coordinate.PolyhedralSurface;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class PolygonImpl extends SurfacePatchImpl implements Polygon {

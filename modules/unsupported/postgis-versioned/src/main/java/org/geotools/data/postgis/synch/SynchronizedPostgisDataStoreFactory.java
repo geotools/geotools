@@ -38,7 +38,8 @@ import org.geotools.data.postgis.VersionedPostgisDataStore;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/postgis-versioned/src/main/java/org/geotools/data/postgis/synch/SynchronizedPostgisDataStoreFactory.java $
+ *
+ * @source $URL$
  */
 public class SynchronizedPostgisDataStoreFactory extends AbstractDataStoreFactory {
     

@@ -37,6 +37,7 @@ import org.opengis.geometry.primitive.CurveSegment;
  *
  *
  *
+ *
  * @source $URL$
  */
 public abstract class CurveSegmentImpl implements CurveSegment, Serializable {

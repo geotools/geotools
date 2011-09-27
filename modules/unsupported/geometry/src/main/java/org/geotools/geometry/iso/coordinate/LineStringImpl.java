@@ -41,6 +41,7 @@ import org.opengis.geometry.primitive.CurveInterpolation;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class LineStringImpl extends CurveSegmentImpl implements LineString {

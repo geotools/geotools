@@ -26,6 +26,8 @@ import org.geotools.data.efeature.EFeature;
  * @see org.geotools.data.efeature.tests.EFeatureTestsPackage#getEFeatureData()
  * @model GBounds="org.geotools.data.efeature.Geometry"
  * @generated
+ *
+ * @source $URL$
  */
 public interface EFeatureData<A, G extends Geometry> extends EFeature {
     

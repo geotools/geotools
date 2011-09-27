@@ -31,6 +31,11 @@ package org.geotools.caching.spatialindex;
 import java.io.Serializable;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class Region implements Shape, Serializable {
     /**
      *

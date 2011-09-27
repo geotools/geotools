@@ -28,6 +28,11 @@
 //    marioh@cs.ucr.edu
 package org.geotools.caching.spatialindex;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public interface NodeCommand {
     public void execute(Node n);
 } // INodeCommand

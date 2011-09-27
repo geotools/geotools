@@ -19,6 +19,11 @@ import org.geotools.jdbc.JDBCGeometryTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IngresGeometryTestSetup extends JDBCGeometryTestSetup {
 
     public IngresGeometryTestSetup(JDBCTestSetup delegate) {

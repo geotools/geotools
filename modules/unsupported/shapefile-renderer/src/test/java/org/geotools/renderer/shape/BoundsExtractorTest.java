@@ -21,6 +21,11 @@ import junit.framework.TestCase;
 import org.geotools.data.DataUtilities;
 import org.opengis.feature.simple.SimpleFeatureType;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class BoundsExtractorTest extends TestCase {
 	private SimpleFeatureType schema;
 	protected void setUp() throws Exception {

@@ -48,6 +48,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @since 2.1.x
  *
  *
+ *
  * @source $URL$
  */
 public class JTSPolygonHandlerTest extends TestCase {

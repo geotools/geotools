@@ -3,6 +3,11 @@ package org.geotools.data.ingres;
 import org.geotools.jdbc.JDBCDataStoreAPITest;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IngresDataStoreAPITest extends JDBCDataStoreAPITest {
 
 	@Override

@@ -46,7 +46,8 @@ import com.vividsolutions.jts.geom.Point;
  * Test the CSVDataStore
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/csv/src/test/java/org/geotools/data/csv/CSVDataStoreTest.java $
+ *
+ * @source $URL$
  */
 public class CSVDataStoreTest {
 

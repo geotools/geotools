@@ -21,6 +21,11 @@ import org.geotools.data.wfs.protocol.wfs.GetFeature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.sort.SortBy;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GetFeatureQueryAdapter implements GetFeature {
 
     private Query query;

@@ -10,6 +10,11 @@ import org.geotools.data.dxf.header.DXFLineType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DXFTrace extends DXFSolid {
 
     private static final Log log = LogFactory.getLog(DXFTrace.class);

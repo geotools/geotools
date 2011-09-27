@@ -2,6 +2,11 @@ package org.geotools.data.ingres;
 
 import org.geotools.jdbc.JDBCViewTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IngresViewTestSetup extends JDBCViewTestSetup {
 
     protected IngresViewTestSetup() {

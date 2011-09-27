@@ -68,6 +68,7 @@ import org.opengis.referencing.operation.TransformException;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class RingImpl extends RingImplUnsafe implements Ring {

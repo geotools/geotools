@@ -34,11 +34,12 @@ import org.geotools.util.logging.Logging;
  * and a good implementation for the URL factory helper method {@link #createUrl(URL, Map)}
  * 
  * @author Gabriel Roldan (OpenGeo)
- * @version $Id: AbstractHttpProtocol.java 35133 2010-03-29 13:50:29Z groldan $
+ * @version $Id$
  * @since 2.6
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/protocol/http/AbstractHttpProtocol.java $
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs/src/main/java/org/geotools
  *         /data/wfs/protocol/http/AbstractHttpProtocol.java $
  * 

@@ -100,7 +100,8 @@ import org.xml.sax.SAXException;
  * @author Gabriel Roldan (TOPP)
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/WFSDataStoreFactory.java $
+ *
+ * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/wfs/src/main/java/org/geotools
  *         /data/wfs/WFSDataStoreFactory.java $
  * @see WFSDataStore
@@ -115,7 +116,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
      * A {@link Param} subclass that allows to provide a default value to the lookUp method.
      * 
      * @author Gabriel Roldan
-     * @version $Id: WFSDataStoreFactory.java 35842 2010-07-05 21:00:38Z rbraam $
+     * @version $Id$
      * @since 2.5.x
      * @source $URL:
      *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/wfs/src/main/java/org/geotools

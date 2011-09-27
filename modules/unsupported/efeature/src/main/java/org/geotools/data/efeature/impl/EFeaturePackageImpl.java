@@ -37,6 +37,8 @@ import org.opengis.feature.Property;
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!-- end-user-doc -->
  * @generated
+ *
+ * @source $URL$
  */
 public class EFeaturePackageImpl extends EPackageImpl implements EFeaturePackage {
     /**

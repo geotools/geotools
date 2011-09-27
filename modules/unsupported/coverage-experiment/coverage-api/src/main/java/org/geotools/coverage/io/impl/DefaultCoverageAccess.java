@@ -25,7 +25,8 @@ import org.opengis.util.ProgressListener;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/impl/DefaultCoverageAccess.java $
+ *
+ * @source $URL$
  */
 public class DefaultCoverageAccess implements CoverageAccess {
 

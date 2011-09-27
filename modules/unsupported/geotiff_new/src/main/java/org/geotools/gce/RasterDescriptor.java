@@ -65,6 +65,8 @@ import org.opengis.referencing.operation.TransformException;
  * 
  * @author Simone Giannecchini, GeoSolutions S.A.S.
  * @since 2.5.5
+ *
+ * @source $URL$
  */
 public class RasterDescriptor {
 

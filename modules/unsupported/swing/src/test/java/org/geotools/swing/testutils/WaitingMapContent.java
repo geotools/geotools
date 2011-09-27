@@ -10,6 +10,8 @@ import org.geotools.map.MapViewport;
 /**
  *
  * @author michael
+ *
+ * @source $URL$
  */
 public class WaitingMapContent extends MapContent {
     

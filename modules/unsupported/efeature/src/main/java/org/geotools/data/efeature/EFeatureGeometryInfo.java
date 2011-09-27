@@ -21,6 +21,8 @@ import com.vividsolutions.jts.geom.Geometry;
  *   
  * @author kengu
  *
+ *
+ * @source $URL$
  */
 public class EFeatureGeometryInfo extends EFeatureAttributeInfo {
     

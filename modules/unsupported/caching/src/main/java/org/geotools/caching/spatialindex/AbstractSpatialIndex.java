@@ -27,6 +27,7 @@ import java.util.Stack;
  *
  *
  *
+ *
  * @source $URL$
  */
 public abstract class AbstractSpatialIndex implements SpatialIndex {

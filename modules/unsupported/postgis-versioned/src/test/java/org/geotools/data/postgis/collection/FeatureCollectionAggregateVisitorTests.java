@@ -31,6 +31,11 @@ import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FeatureCollectionAggregateVisitorTests extends AbstractPostgisDataTestCase {
     
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);

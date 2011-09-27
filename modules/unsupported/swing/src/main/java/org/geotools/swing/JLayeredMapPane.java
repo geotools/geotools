@@ -35,6 +35,8 @@ import org.geotools.renderer.lite.SynchronizedLabelCache;
 
 /**
  *
+ *
+ * @source $URL$
  */
 public class JLayeredMapPane extends AbstractMapPane {
 

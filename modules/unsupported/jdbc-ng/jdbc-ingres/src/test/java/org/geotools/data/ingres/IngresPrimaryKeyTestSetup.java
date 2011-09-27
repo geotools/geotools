@@ -3,6 +3,11 @@ package org.geotools.data.ingres;
 import org.geotools.jdbc.JDBCPrimaryKeyTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IngresPrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
 
 	protected IngresPrimaryKeyTestSetup(JDBCTestSetup delegate) {

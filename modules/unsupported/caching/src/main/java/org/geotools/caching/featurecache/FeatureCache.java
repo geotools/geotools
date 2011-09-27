@@ -31,6 +31,7 @@ import com.vividsolutions.jts.geom.Envelope;
  *
  *
  *
+ *
  * @source $URL$
  */
 public interface FeatureCache extends SimpleFeatureSource {

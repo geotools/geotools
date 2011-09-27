@@ -6,6 +6,11 @@ import org.opengis.filter.expression.Literal;
 
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class EGeometryValueBeyond extends EObjectAttributeValueCondition {
 
     public EGeometryValueBeyond(EAttribute eAttribute, Literal geometry, double distance)

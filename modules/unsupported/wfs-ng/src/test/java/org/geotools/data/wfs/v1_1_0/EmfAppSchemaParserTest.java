@@ -41,11 +41,12 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Unit test suite for {@link EmfAppSchemaParser}
  * 
  * @author Gabriel Roldan
- * @version $Id: EmfAppSchemaParserTest.java 34893 2010-02-16 07:42:49Z bencaradocdavies $
+ * @version $Id$
  * @since 2.5.x
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/test/java/org/geotools/data/wfs/v1_1_0/EmfAppSchemaParserTest.java $
+ *
+ * @source $URL$
  */
 public class EmfAppSchemaParserTest {
 

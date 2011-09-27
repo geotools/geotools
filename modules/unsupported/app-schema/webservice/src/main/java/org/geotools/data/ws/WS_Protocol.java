@@ -67,6 +67,7 @@ import freemarker.template.TemplateException;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  *         http://gtsvn.refractions.net/trunk/modules/unsupported/app-schema/webservice/src/main/java/org/geotools/data
  *         /wfs/v1_1_0/WFS_1_1_0_Protocol.java $

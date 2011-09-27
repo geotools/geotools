@@ -33,11 +33,12 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * Test suite for the {@link StreamingParserFeatureReader} strategy.
  * 
  * @author Gabriel Roldan
- * @version $Id: StreamingParserFeatureReaderTest.java 32043 2008-12-19 03:23:35Z jdeolive $
+ * @version $Id$
  * @since 2.5.x
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/test/java/org/geotools/data/wfs/v1_1_0/StreamingParserFeatureReaderTest.java $
+ *
+ * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/wfs/src/test/java/org/geotools
  *         /wfs/v_1_1_0/data/StreamingParserFeatureReaderTest.java $
  */

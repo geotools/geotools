@@ -17,6 +17,8 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
  * <!-- end-user-doc -->
  * @see org.geotools.data.efeature.tests.util.EFeatureTestsResourceFactoryImpl
  * @generated
+ *
+ * @source $URL$
  */
 public class EFeatureTestsResourceImpl extends XMIResourceImpl {
     /**

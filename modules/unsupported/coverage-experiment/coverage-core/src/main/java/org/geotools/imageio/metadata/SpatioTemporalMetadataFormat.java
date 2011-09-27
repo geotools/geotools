@@ -24,6 +24,11 @@ import javax.imageio.metadata.IIOMetadataFormatImpl;
 import org.geotools.resources.UnmodifiableArrayList;
 import org.opengis.referencing.cs.CoordinateSystem;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SpatioTemporalMetadataFormat extends IIOMetadataFormatImpl {
 
     public static final String FORMAT_NAME = "org_geotools_gce_nplugin_spatiotemporalMetadata_1.0";

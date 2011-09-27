@@ -10,6 +10,11 @@ import org.geotools.data.efeature.EFeatureUtils;
 import org.opengis.feature.Feature;
 import org.opengis.filter.identity.Identifier;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class EAttributeValueIsID extends EObjectAttributeValueCondition {
 
     public EAttributeValueIsID(EAttribute eAttribute, Object eIDs) throws EFeatureEncoderException {        

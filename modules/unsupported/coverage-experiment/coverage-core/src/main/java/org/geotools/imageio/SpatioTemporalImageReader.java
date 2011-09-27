@@ -37,7 +37,8 @@ import org.geotools.imageio.metadata.SpatioTemporalMetadata;
  * @author Daniele Romagnoli, GeoSolutions
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-core/src/main/java/org/geotools/imageio/SpatioTemporalImageReader.java $
+ *
+ * @source $URL$
  */
 public abstract class SpatioTemporalImageReader extends ImageReader {
 

@@ -40,7 +40,8 @@ import org.opengis.parameter.GeneralParameterDescriptor;
  * @since 2.7.x
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/matfile5/src/main/java/org/geotools/coverageio/matfile5/MatFile5Format.java $
+ *
+ * @source $URL$
  */
 public class MatFile5Format extends BaseMatFileGridFormat implements Format {
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(MatFile5Format.class.toString());

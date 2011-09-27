@@ -15,6 +15,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * 
  * @author kengu
  * 
+ *
+ * @source $URL$
  */
 public class EFeaturePackageInfo extends EStructureInfo<EFeatureContextInfo> {
 

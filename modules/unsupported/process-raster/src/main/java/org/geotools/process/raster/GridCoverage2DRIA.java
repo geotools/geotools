@@ -47,6 +47,8 @@ import com.sun.media.jai.util.ImageUtil;
  * 
  * 
  * @author ETj <etj at geo-solutions.it>
+ *
+ * @source $URL$
  */
 public class GridCoverage2DRIA extends GeometricOpImage {
 

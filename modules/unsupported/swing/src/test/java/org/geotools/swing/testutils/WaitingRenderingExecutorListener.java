@@ -27,6 +27,7 @@ import org.geotools.swing.RenderingExecutorListener;
  * 
  * @author Michael Bedward
  * @since 8.0
+ *
  * @source $URL$
  * @version $Id$
  */

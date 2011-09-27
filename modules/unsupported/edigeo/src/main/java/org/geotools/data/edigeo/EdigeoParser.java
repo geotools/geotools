@@ -22,6 +22,11 @@ import java.io.FileReader;
 import java.io.IOException;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class EdigeoParser {
 	
     public BufferedReader reader = null; 

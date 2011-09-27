@@ -11,6 +11,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IngresFeatureReaderTest extends JDBCFeatureReaderTest {
 
 	@Override

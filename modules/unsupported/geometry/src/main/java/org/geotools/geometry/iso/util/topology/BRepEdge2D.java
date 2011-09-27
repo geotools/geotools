@@ -26,6 +26,7 @@ import java.awt.geom.Line2D;
  *
  *
  *
+ *
  * @source $URL$
  */
 public abstract class BRepEdge2D extends Line2D {

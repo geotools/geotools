@@ -15,6 +15,11 @@ import org.opengis.coverage.SampleDimension;
 import org.opengis.feature.type.Name;
 import org.opengis.util.InternationalString;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DefaultFieldType implements FieldType {
 	private List<Axis<?, ?>> axes;
 	private Name name;

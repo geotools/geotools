@@ -12,6 +12,7 @@ import org.geotools.caching.spatialindex.SpatialIndexStatistics;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class GridSpatialIndexStatistics extends SpatialIndexStatistics {

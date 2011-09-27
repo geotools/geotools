@@ -45,6 +45,8 @@ import org.opengis.util.ProgressListener;
  * 
  * @author jody
  * @author aaime
+ *
+ * @source $URL$
  */
 public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
     

@@ -40,7 +40,8 @@ import org.geotools.swt.utils.Utils;
  * @author Andrea Antonello (www.hydrologis.com)
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/action/OpenShapefileAction.java $
+ *
+ * @source $URL$
  */
 public class OpenShapefileAction extends MapAction implements ISelectionChangedListener {
 

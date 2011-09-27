@@ -40,6 +40,7 @@ import org.opengis.geometry.primitive.CurveBoundary;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class CurveImpl extends GeometryImpl implements Curve {

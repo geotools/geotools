@@ -33,6 +33,7 @@ import org.geotools.filter.FilterCapabilities;
  * @author dzwiers
  *
  *
+ *
  * @source $URL$
  */
 public class WFSCapabilities extends Capabilities {

@@ -20,6 +20,11 @@ import org.geotools.jdbc.JDBCFeatureCollectionTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IngresFeatureCollectionTest extends JDBCFeatureCollectionTest {
 
     @Override

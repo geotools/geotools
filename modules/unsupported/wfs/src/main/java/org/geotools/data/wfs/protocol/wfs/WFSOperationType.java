@@ -24,6 +24,7 @@ package org.geotools.data.wfs.protocol.wfs;
  * @since 2.5.x
  *
  *
+ *
  * @source $URL$
  */
 public enum WFSOperationType {

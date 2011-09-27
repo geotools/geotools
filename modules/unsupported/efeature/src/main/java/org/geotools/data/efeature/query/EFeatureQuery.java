@@ -16,6 +16,8 @@ import org.geotools.data.efeature.EFeatureIterator;
  * 
  * @author kengu
  * 
+ *
+ * @source $URL$
  */
 public class EFeatureQuery {
 

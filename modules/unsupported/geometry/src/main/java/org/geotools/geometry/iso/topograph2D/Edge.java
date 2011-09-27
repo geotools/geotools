@@ -29,6 +29,7 @@ import org.geotools.geometry.iso.util.algorithm2D.LineIntersector;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class Edge extends GraphComponent {

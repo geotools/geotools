@@ -17,6 +17,11 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.PrecisionModel;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class BufferFeatureCollectionTest extends TestCase {
 
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);

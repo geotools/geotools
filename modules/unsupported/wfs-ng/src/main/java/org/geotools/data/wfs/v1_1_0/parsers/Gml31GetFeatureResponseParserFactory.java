@@ -38,11 +38,12 @@ import org.geotools.util.logging.Logging;
  * output format.
  * 
  * @author Gabriel Roldan (OpenGeo)
- * @version $Id: Gml31GetFeatureResponseParserFactory.java 31888 2008-11-20 13:34:53Z groldan $
+ * @version $Id$
  * @since 2.6
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/v1_1_0/parsers/Gml31GetFeatureResponseParserFactory.java $
+ *
+ * @source $URL$
  *         http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/main/java/org/geotools/data
  *         /wfs/v1_1_0/parsers/Gml31GetFeatureResponseParserFactory.java $
  */

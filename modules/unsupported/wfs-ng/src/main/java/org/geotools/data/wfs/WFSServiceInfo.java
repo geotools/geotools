@@ -22,11 +22,12 @@ import org.geotools.data.ServiceInfo;
  * Extends the standard {@link ServiceInfo} interface to provide WFS specific metadata.
  * 
  * @author Gabriel Roldan
- * @version $Id: WFSServiceInfo.java 31823 2008-11-11 16:11:49Z groldan $
+ * @version $Id$
  * @since 2.5.x
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/WFSServiceInfo.java $
+ *
+ * @source $URL$
  *         http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/main/java/org/geotools/data
  *         /wfs/WFSServiceInfo.java $
  * @see WFSDataStore#getInfo()

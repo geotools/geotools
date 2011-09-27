@@ -31,6 +31,7 @@ import org.geotools.data.jdbc.fidmapper.FIDMapper;
  *
  *
  *
+ *
  * @source $URL$
  */
 public interface VersionedFIDMapper extends FIDMapper {

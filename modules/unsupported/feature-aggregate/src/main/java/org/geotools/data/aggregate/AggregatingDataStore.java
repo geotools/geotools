@@ -40,6 +40,11 @@ import org.opengis.feature.type.Name;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class AggregatingDataStore extends ContentDataStore {
 
     static final Logger LOGGER = Logging.getLogger(AggregatingDataStore.class);

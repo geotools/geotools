@@ -47,7 +47,8 @@ import org.opengis.feature.type.Name;
  * @author Pieter De Graef, Geosparc
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/georest/src/main/java/org/geotools/data/georest/GeoRestDataStore.java $
+ *
+ * @source $URL$
  */
 public class GeoRestDataStore extends ContentDataStore {
 

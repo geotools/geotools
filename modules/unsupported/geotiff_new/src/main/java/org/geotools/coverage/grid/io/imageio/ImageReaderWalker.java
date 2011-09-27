@@ -18,6 +18,11 @@ import org.geotools.factory.Hints;
 import org.geotools.gce.RasterManager;
 import org.geotools.gce.RasterManagerBuilder;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class ImageReaderWalker extends AbstractList<RasterManager> implements List<RasterManager>  {
    
     protected final Map<String, java.io.Serializable> sourceParams;

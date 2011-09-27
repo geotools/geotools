@@ -22,6 +22,7 @@ import org.opengis.geometry.primitive.SurfaceBoundary;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class SurfaceBoundaryImpl extends PrimitiveBoundaryImpl implements SurfaceBoundary {

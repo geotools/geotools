@@ -21,7 +21,8 @@ package org.geotools.coverage.grid.imageio.geotiff.metadata.codes;
  * @since 2.3
  *
  *
- * @sourceFile $URL: https://svn.osgeo.org/geotools/trunk/modules/library/coverage/src/main/java/org/geotools/coverage/grid/io/imageio/geotiff/codes/GeoTiffUoMCodes.java $
+ *
+ * @source $URL$
  */
 public final class GeoTiffUoMCodes {
 

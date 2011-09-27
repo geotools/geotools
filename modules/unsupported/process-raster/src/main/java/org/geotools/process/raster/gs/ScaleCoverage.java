@@ -35,6 +35,8 @@ import org.opengis.parameter.ParameterValueGroup;
  * 
  * @author Andrea Aime - GeoSolutions
  * @author ETj <etj at geo-solutions.it>
+ *
+ * @source $URL$
  */
 @DescribeProcess(title = "scaleCoverage", description = "Applies a generic scale and translate operation to a coverage")
 public class ScaleCoverage implements GSProcess {

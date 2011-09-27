@@ -29,6 +29,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  *
  *
+ *
  * @source $URL$
  */
 public interface VersioningFeatureLocking extends VersioningFeatureStore,

@@ -24,7 +24,8 @@ import javax.measure.unit.Unit;
  * @param <V> Enumeration provided a fixed set of machine readable strings
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/impl/range/EnumMeasure.java $
+ *
+ * @source $URL$
  */
 public class EnumMeasure<V extends Enum<V>> extends Measure<V, Dimensionless> {
 	private static final long serialVersionUID = 2403097126807167994L;

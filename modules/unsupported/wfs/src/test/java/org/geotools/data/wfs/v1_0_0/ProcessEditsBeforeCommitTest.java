@@ -50,6 +50,7 @@ import com.vividsolutions.jts.geom.Point;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class ProcessEditsBeforeCommitTest extends TestCase {

@@ -21,6 +21,11 @@ import java.io.IOException;
 import org.geotools.data.DataStore;
 import org.geotools.feature.IllegalAttributeException;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TransparentVersionedOnlineTest extends
         PostgisDataStoreAPIOnlineTest {
 

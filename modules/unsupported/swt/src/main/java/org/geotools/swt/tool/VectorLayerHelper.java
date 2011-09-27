@@ -53,6 +53,8 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * @author Michael Bedward
  * @since 2.6
  *
+ *
+ * @source $URL$
  */
 public class VectorLayerHelper extends InfoToolHelper<SimpleFeatureCollection> {
 

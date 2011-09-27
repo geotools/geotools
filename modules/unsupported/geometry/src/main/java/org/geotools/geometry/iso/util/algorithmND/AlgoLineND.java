@@ -22,6 +22,7 @@ package org.geotools.geometry.iso.util.algorithmND;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class AlgoLineND {

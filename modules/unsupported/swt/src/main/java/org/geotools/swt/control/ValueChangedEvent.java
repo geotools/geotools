@@ -31,7 +31,8 @@ import org.eclipse.swt.widgets.Control;
  * @since 2.7
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/ValueChangedEvent.java $
+ *
+ * @source $URL$
  */
 public class ValueChangedEvent<T> {
 

@@ -37,6 +37,7 @@ import org.xml.sax.SAXException;
  * @author dzwiers
  *
  *
+ *
  * @source $URL$
  */
 public class WFSSchemaFactory extends SchemaFactory {

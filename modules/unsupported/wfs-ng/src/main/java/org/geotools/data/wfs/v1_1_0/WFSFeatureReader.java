@@ -31,7 +31,7 @@ import org.opengis.feature.type.FeatureType;
  * for all the data content related implementations in the WFS module.
  * 
  * @author Gabriel Roldan (TOPP)
- * @version $Id: WFSFeatureReader.java 31823 2008-11-11 16:11:49Z groldan $
+ * @version $Id$
  * @since 2.5.x
  * @source $URL:
  *         http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/main/java/org/geotools/data

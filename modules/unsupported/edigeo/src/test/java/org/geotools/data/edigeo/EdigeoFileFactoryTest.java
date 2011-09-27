@@ -25,6 +25,11 @@ import org.junit.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class EdigeoFileFactoryTest extends TestCase {
 
 	private File f = null;

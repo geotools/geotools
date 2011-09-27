@@ -32,6 +32,7 @@ import org.geotools.geometry.iso.index.quadtree.Quadtree;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class EdgeList {

@@ -92,8 +92,8 @@ import org.w3c.dom.NodeList;
  * @author Mike Nidel
  * @author Simone Giannecchini, GeoSolutions
  * 
- * @sourceFile $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/plugin/geotiff/src/org/geotools/gce/geotiff/IIOMetadataAdpaters/GeoTiffIIOMetadataDecoder.java $
+ *
+ * @source $URL$
  */
 public final class GeoTiffIIOMetadataDecoder {
     

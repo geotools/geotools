@@ -31,7 +31,8 @@ import org.eclipse.swt.widgets.Display;
  * A "button" of a certain color determined by the color picker.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/styling/simple/StolenColorEditor.java $
+ *
+ * @source $URL$
  */
 public class StolenColorEditor {
 

@@ -35,6 +35,8 @@ import org.geotools.styling.Style;
  * 
  * @author Andrea Aime - GeoSolutions
  * @author ETj <etj at geo-solutions.it>
+ *
+ * @source $URL$
  */
 @DescribeProcess(title = "styleCoverage", description = "Applies a raster symbolizer to the coverage")
 public class StyleCoverage implements GSProcess {

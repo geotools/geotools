@@ -34,6 +34,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @see org.geotools.data.efeature.EFeaturePackage#getEFeature()
  * @model abstract="true"
  * @generated
+ *
+ * @source $URL$
  */
 public interface EFeature extends EObject {
     /**

@@ -29,6 +29,7 @@ import org.opengis.geometry.primitive.Surface;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class IntersectionTest extends AbstractGeometryTest {

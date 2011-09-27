@@ -20,6 +20,11 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.WKTReader;
 import com.vividsolutions.jts.operation.buffer.BufferParameters;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GeometryProcessFactoryTest extends TestCase {
 
 	GeometryProcessFactory factory;

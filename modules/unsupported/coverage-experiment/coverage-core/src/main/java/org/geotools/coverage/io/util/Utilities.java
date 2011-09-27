@@ -109,7 +109,8 @@ import org.w3c.dom.Node;
  * 
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-core/src/main/java/org/geotools/coverage/io/util/Utilities.java $
+ *
+ * @source $URL$
  */
 public class Utilities {
 

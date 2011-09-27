@@ -29,6 +29,11 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @author  <a href="mailto:knuterik@onemap.org">Knut-Erik Johnsen</a>, Project OneMap
  * @source $URL$
  */
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PrimitiveDataFactory {
     protected EdgeData readEdge(TableRow edge) {
         EdgeData ed = null;

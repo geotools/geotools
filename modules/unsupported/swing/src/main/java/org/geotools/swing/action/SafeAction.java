@@ -17,6 +17,7 @@ import org.geotools.swing.ExceptionMonitor;
  *
  *
  *
+ *
  * @source $URL$
  */
 public abstract class SafeAction extends AbstractAction {

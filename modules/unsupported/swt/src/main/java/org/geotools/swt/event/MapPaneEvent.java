@@ -30,7 +30,8 @@ import org.geotools.swt.SwtMapPane;
  * @author Andrea Antonello (www.hydrologis.com)
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/event/MapPaneEvent.java $
+ *
+ * @source $URL$
  */
 public class MapPaneEvent extends EventObject {
     private static final long serialVersionUID = 1L;

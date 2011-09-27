@@ -37,6 +37,7 @@ import org.opengis.geometry.complex.Complex;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class CompositeSolidImpl extends CompositeImpl<SolidImpl> {

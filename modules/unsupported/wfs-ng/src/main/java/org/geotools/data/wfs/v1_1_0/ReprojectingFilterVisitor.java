@@ -50,7 +50,8 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/v1_1_0/ReprojectingFilterVisitor.java $
+ *
+ * @source $URL$
  */
 public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
     SimpleFeatureType featureType;

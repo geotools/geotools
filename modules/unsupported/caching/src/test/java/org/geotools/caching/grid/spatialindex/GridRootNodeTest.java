@@ -27,6 +27,11 @@ import org.geotools.caching.spatialindex.Region;
 import org.geotools.caching.spatialindex.RegionNodeIdentifier;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GridRootNodeTest extends GridNodeTest {
     GridRootNode node;
     GridRootNode node3D;

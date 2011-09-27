@@ -69,6 +69,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author  <a href="mailto:knuterik@onemap.org">Knut-Erik Johnsen</a>, Project OneMap
  * @source $URL$
  */
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class VPFLibrary extends AbstractDataStore implements FileConstants, VPFLibraryIfc {
 
     /**

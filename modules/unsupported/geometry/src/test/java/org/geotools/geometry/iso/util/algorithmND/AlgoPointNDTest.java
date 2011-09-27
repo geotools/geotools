@@ -20,6 +20,11 @@ import junit.framework.TestCase;
 
 import org.geotools.geometry.iso.util.algorithmND.AlgoPointND;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class AlgoPointNDTest extends TestCase {
 
 	public void testWorkingAlgos() {

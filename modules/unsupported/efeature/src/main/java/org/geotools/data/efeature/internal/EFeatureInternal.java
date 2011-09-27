@@ -55,6 +55,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * @see {@link EFeatureImpl} - default implementation of {@link EFeature}. All models 
  * which extend the {@link EFeature} EMF model implements this class. 
  * @see {@link EFeatureDelegate} - a class which is able to delegate {@link EFeature} delegate 
+ *
+ * @source $URL$
  */
 public class EFeatureInternal {
 

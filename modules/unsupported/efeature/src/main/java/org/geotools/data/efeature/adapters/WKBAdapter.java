@@ -16,6 +16,8 @@ import com.vividsolutions.jts.io.WKBWriter;
  * Clients can subclass it and provide their own implementation
  * 
  * @see {@link Condition}
+ *
+ * @source $URL$
  */
 public abstract class WKBAdapter implements IDataTypeAdapter<byte[]> {
     

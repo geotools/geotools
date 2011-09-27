@@ -80,7 +80,8 @@ import org.geotools.util.Utilities;
  * @since 2.3
  *
  *
- * @sourceFile $URL: https://svn.osgeo.org/geotools/trunk/modules/library/coverage/src/main/java/org/geotools/coverage/grid/io/imageio/geotiff/TiePoint.java $
+ *
+ * @source $URL$
  */
 public final class TiePoint {
 	private double[] values = new double[6];

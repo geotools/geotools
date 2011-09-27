@@ -11,6 +11,11 @@ import org.geotools.factory.Hints;
 import org.opengis.util.ProgressListener;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public interface FileDriver extends Driver {
 
 	/**

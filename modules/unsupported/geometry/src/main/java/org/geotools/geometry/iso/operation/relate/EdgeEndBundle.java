@@ -37,6 +37,7 @@ import org.geotools.geometry.iso.topograph2D.Position;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class EdgeEndBundle extends EdgeEnd {

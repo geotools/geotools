@@ -35,6 +35,11 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
 @SuppressWarnings("rawtypes")
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OGRFeatureSource extends ContentFeatureSource {
 
     public OGRFeatureSource(ContentEntry entry, Query query) {

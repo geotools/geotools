@@ -40,6 +40,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class LineSegmentImpl extends LineStringImpl implements LineSegment {

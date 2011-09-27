@@ -27,6 +27,8 @@ import org.geotools.data.efeature.tests.NonGeoEObject;
  * An implementation of the model <b>Package</b>.
  * <!-- end-user-doc -->
  * @generated
+ *
+ * @source $URL$
  */
 public class EFeatureTestsPackageImpl extends EPackageImpl implements EFeatureTestsPackage {
     /**

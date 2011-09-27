@@ -43,7 +43,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @since 0.6.0
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/styling/simple/AbstractSimpleConfigurator.java $
+ *
+ * @source $URL$
  */
 public class AbstractSimpleConfigurator extends Dialog {
     /** <code>build</code> field */

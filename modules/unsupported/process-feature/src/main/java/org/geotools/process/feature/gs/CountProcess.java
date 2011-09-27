@@ -27,6 +27,8 @@ import org.geotools.data.simple.SimpleFeatureCollection;
  * Counts the elements in the collection (useful as a WFS sidekick)
  * 
  * @author Andrea Aime
+ *
+ * @source $URL$
  */
 @DescribeProcess(title = "countFeatures", description = "Counts the number of features in the specified collection")
 public class CountProcess implements GSProcess {

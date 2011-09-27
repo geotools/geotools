@@ -42,6 +42,7 @@ import org.geotools.filter.NullFilter;
  * @author Jesse
  *
  *
+ *
  * @source $URL$
  */
 public class ReplaceGeometryFilter implements FilterVisitor {

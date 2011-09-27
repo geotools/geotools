@@ -34,6 +34,7 @@ import org.geotools.geometry.iso.util.algorithm2D.SimplePointInAreaLocator;
  *
  *
  *
+ *
  * @source $URL$
  */
 abstract public class EdgeEndStar {

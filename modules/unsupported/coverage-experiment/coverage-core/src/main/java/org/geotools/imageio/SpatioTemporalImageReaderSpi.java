@@ -31,7 +31,8 @@ import javax.imageio.stream.ImageInputStream;
  * @author Daniele Romagnoli, GeoSolutions
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-core/src/main/java/org/geotools/imageio/SpatioTemporalImageReaderSpi.java $
+ *
+ * @source $URL$
  */
 public abstract class SpatioTemporalImageReaderSpi extends ImageReaderSpi {
 

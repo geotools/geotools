@@ -19,6 +19,11 @@ package org.geotools.data.ingres;
 import org.geotools.jdbc.JDBCAggregateFunctionTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IngresAggregateFunctionTest extends JDBCAggregateFunctionTest {
 
     @Override

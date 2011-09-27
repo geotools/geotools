@@ -38,6 +38,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class JTSAggregateFactory implements Factory,  AggregateFactory {

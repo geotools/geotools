@@ -1,5 +1,10 @@
 package org.geotools.geojson.feature;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DefaultAttributeIO implements AttributeIO {
 
     public Object parse(String att, String value) {

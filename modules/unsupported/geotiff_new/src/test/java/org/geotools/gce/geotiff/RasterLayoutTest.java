@@ -38,6 +38,8 @@ import org.junit.Test;
  * 
  * @author Daniele Romagnoli, GeoSolutions SAS
  *
+ *
+ * @source $URL$
  */
 public class RasterLayoutTest extends Assert{
 

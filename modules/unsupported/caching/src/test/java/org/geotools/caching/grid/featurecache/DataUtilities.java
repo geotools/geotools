@@ -39,7 +39,8 @@ import com.vividsolutions.jts.geom.Envelope;
  * Data Utilities for Caching.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/caching/src/test/java/org/geotools/caching/grid/featurecache/DataUtilities.java $
+ *
+ * @source $URL$
  */
 public class DataUtilities {
     static FilterFactoryImpl ff = new FilterFactoryImpl();

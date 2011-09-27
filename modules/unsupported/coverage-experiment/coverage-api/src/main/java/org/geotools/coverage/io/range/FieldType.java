@@ -51,7 +51,8 @@ import org.opengis.util.InternationalString;
  * 
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/range/FieldType.java $
+ *
+ * @source $URL$
  */
 public interface FieldType {
 

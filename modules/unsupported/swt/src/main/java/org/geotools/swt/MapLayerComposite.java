@@ -49,7 +49,8 @@ import org.geotools.swt.utils.Messages;
  * @author Michael Bedward
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/MapLayerComposite.java $
+ *
+ * @source $URL$
  */
 public class MapLayerComposite extends Composite {
     private SwtMapPane pane;

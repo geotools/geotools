@@ -31,7 +31,8 @@ import org.opengis.util.CodeList;
  * @param <V> CodeList provided an open set of machine readable strings
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/impl/range/CodeMeasure.java $
+ *
+ * @source $URL$
  */
 public class CodeMeasure<V extends CodeList<V>> extends Measure<V, Dimensionless> {
 	private static final long serialVersionUID = 2403097126807167994L;

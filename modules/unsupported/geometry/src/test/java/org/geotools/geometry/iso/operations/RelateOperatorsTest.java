@@ -35,6 +35,11 @@ import org.opengis.geometry.primitive.OrientableSurface;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class RelateOperatorsTest extends TestCase {
 	
 	private static final boolean F = false;

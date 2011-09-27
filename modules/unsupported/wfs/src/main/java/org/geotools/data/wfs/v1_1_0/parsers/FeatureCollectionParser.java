@@ -43,6 +43,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  * @see Gml31GetFeatureResponseParserFactory
  */

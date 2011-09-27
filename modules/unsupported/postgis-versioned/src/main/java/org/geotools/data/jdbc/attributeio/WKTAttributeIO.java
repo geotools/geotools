@@ -37,6 +37,7 @@ import com.vividsolutions.jts.io.WKTWriter;
  *
  * @author wolf
  *
+ *
  * @source $URL$
  * 
  * @deprecated scheduled for removal in 2.7, use classes in org.geotools.jdbc

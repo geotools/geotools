@@ -29,6 +29,7 @@ import org.fest.swing.fixture.FrameFixture;
  * 
  * @author Michael Bedward
  * @since 8.0
+ *
  * @source $URL$
  * @version $Id$
  */

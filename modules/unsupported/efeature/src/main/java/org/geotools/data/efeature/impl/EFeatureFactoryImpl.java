@@ -30,6 +30,8 @@ import com.vividsolutions.jts.io.ParseException;
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
  * @generated
+ *
+ * @source $URL$
  */
 public class EFeatureFactoryImpl extends EFactoryImpl implements EFeatureFactory {
     

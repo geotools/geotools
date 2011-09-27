@@ -30,6 +30,11 @@ import org.opengis.geometry.complex.CompositeSurface;
 import org.opengis.geometry.primitive.Point;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class JTSComplexFactory implements Factory, ComplexFactory {
 
     private CoordinateReferenceSystem crs;

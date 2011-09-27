@@ -31,7 +31,8 @@ import org.geotools.filter.FilterCapabilities;
  * @author dzwiers
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/data/ows/WFSCapabilities.java $
+ *
+ * @source $URL$
  */
 public class WFSCapabilities extends Capabilities {
     private List<FeatureSetDescription> featureTypes; // FeatureSetDescriptions

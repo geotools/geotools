@@ -40,7 +40,8 @@ import org.opengis.filter.sort.SortOrder;
  * @author Pieter De Graef, Geosparc
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/georest/src/main/java/org/geotools/data/georest/GeoRestFeatureReader.java $
+ *
+ * @source $URL$
  */
 public class GeoRestFeatureReader implements SimpleFeatureReader {
 

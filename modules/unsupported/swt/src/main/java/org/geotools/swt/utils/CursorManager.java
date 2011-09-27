@@ -30,7 +30,8 @@ import org.eclipse.swt.widgets.Display;
  * @author Andrea Antonello (www.hydrologis.com).
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/utils/CursorManager.java $
+ *
+ * @source $URL$
  */
 public class CursorManager {
     /** Info Cursor hotspot coordinates */

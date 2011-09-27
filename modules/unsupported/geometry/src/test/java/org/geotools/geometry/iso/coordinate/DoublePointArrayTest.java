@@ -21,6 +21,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DoublePointArrayTest extends TestCase {
 	
 	public void testDoublePointArray() {

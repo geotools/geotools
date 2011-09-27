@@ -53,6 +53,11 @@ import org.opengis.referencing.operation.MathTransformFactory;
 import org.opengis.referencing.operation.NoninvertibleTransformException;
 import org.opengis.referencing.operation.TransformException;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class CRSUtilities {
 	
 	private final static Logger LOGGER = Logger.getLogger(CRSUtilities.class.toString());

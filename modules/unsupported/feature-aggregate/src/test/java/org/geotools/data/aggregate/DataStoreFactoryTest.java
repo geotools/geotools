@@ -18,6 +18,11 @@ import org.geotools.data.DataStoreFinder;
 import org.geotools.feature.NameImpl;
 import org.junit.Test;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DataStoreFactoryTest extends AbstractAggregatingStoreTest {
 
     @Test

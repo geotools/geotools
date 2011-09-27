@@ -27,6 +27,11 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Polygon;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PolygonHandler extends GeometryHandlerBase<Polygon> {
 
     List<Coordinate> coordinates;

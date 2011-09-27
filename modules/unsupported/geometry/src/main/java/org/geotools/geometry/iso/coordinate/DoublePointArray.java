@@ -42,6 +42,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class DoublePointArray extends AbstractList<Position> implements PointArray, Serializable {

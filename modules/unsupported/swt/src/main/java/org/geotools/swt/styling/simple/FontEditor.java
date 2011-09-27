@@ -34,7 +34,8 @@ import org.geotools.swt.utils.Messages;
  * @since 0.6.0
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/styling/simple/FontEditor.java $
+ *
+ * @source $URL$
  */
 public class FontEditor {
 

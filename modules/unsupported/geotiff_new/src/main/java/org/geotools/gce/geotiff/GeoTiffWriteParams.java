@@ -84,7 +84,8 @@ import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
  * 
  *
  *
- * @sourceFile $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/geotiff_new/src/main/java/org/geotools/gce/geotiff/GeoTiffWriteParams.java $
+ *
+ * @source $URL$
  */
 public class GeoTiffWriteParams extends GeoToolsWriteParams {
 

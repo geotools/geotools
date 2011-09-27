@@ -34,6 +34,7 @@ import org.geotools.geometry.iso.primitive.CurveImpl;
  *
  *
  *
+ *
  * @source $URL$
  */
 public interface CollectionFactory {

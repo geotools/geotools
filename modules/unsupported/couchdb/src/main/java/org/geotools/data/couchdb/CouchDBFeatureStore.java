@@ -42,6 +42,8 @@ import org.opengis.geometry.BoundingBox;
 /**
  *
  * @author Ian Schneider (OpenGeo)
+ *
+ * @source $URL$
  */
 public class CouchDBFeatureStore extends ContentFeatureStore {
     private final String viewName;

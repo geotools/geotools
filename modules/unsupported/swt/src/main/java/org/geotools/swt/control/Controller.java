@@ -20,7 +20,8 @@ package org.geotools.swt.control;
  * @since 1.1.0
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/Controller.java $
+ *
+ * @source $URL$
  */
 public interface Controller {
 

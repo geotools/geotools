@@ -19,6 +19,11 @@ package org.geotools.data.ingres;
 import org.geotools.jdbc.JDBCNoPrimaryKeyTest;
 import org.geotools.jdbc.JDBCNoPrimaryKeyTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IngresNoPrimaryKeyTest extends JDBCNoPrimaryKeyTest {
 
     @Override

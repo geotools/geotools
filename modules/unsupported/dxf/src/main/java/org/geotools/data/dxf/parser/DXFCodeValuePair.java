@@ -9,7 +9,8 @@ import org.apache.commons.logging.LogFactory;
  * @author Chris
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/dxf/src/main/java/org/geotools/data/dxf/parser/DXFCodeValuePair.java $
+ *
+ * @source $URL$
  */
 public class DXFCodeValuePair {
     private static final Log log = LogFactory.getLog(DXFCodeValuePair.class);

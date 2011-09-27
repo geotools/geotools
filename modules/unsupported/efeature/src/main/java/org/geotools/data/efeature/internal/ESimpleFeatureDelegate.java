@@ -49,6 +49,8 @@ import org.opengis.geometry.BoundingBox;
  * 
  * @author kengu - 28. mai 2011 
  *
+ *
+ * @source $URL$
  */
 public class ESimpleFeatureDelegate implements ESimpleFeature {
     

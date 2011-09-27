@@ -41,7 +41,8 @@ import org.eclipse.swt.widgets.Composite;
  * @author Andrea Antonello (www.hydrologis.com)
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/JIntegerField.java $
+ *
+ * @source $URL$
  */
 public class JIntegerField extends JValueField implements ModifyListener {
 

@@ -13,6 +13,7 @@ import org.geotools.caching.spatialindex.Shape;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class NodeCursor {

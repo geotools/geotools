@@ -10,6 +10,8 @@ import org.opengis.filter.expression.PropertyName;
  * 
  * @author Andrea Aime
  * 
+ *
+ * @source $URL$
  */
 public class MissingPropertiesEraser extends DuplicatingFilterVisitor {
 

@@ -38,6 +38,7 @@ import org.geotools.filter.SQLEncoderPostgis;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class PostgisFIDMapperFactory extends DefaultFIDMapperFactory {

@@ -20,7 +20,8 @@ package org.geotools.grid.hexagon;
  * @author michael
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/grid/src/main/java/org/geotools/grid/hexagon/HexagonOrientation.java $
+ *
+ * @source $URL$
  */
 public enum HexagonOrientation {
     /**

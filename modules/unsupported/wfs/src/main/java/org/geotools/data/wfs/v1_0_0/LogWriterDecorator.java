@@ -29,6 +29,7 @@ import java.util.logging.Logger;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class LogWriterDecorator extends Writer {

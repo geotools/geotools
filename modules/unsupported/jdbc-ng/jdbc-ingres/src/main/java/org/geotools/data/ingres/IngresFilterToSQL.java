@@ -26,6 +26,11 @@ import org.opengis.filter.spatial.Within;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LinearRing;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IngresFilterToSQL extends PreparedFilterToSQL {
 
 	boolean looseBBOXEnabled;

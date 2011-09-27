@@ -58,6 +58,11 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.operation.distance.DistanceOp;
 
 @DescribeProcess(title = "Snap", description = "Snap to the nearest feature")
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SnapProcess implements GSProcess {
     private static final Logger LOGGER = Logging.getLogger(SnapProcess.class);
 

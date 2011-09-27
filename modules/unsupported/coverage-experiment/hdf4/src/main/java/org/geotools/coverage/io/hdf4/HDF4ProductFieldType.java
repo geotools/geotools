@@ -47,7 +47,8 @@ import org.opengis.util.InternationalString;
  *         (leveraging on class) 
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/hdf4/src/main/java/org/geotools/coverage/io/hdf4/HDF4ProductFieldType.java $
+ *
+ * @source $URL$
  */
 public class HDF4ProductFieldType implements FieldType {
 	

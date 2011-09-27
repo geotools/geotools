@@ -41,6 +41,7 @@ import org.opengis.filter.Filter;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  *         http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/main/java/org/geotools/data
  *         /wfs/v1_1_0/WFSStrategy.java $

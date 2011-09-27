@@ -26,6 +26,11 @@ import org.opengis.geometry.Envelope;
 import org.opengis.geometry.coordinate.LineSegment;
 import org.opengis.geometry.coordinate.Position;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GeometryFactoryTest extends TestCase {
 	
 	public void testMain() {

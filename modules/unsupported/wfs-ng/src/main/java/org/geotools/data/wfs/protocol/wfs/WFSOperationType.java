@@ -20,11 +20,12 @@ package org.geotools.data.wfs.protocol.wfs;
  * Enumeration for the possible operations a WFS may implement.
  * 
  * @author Gabriel Roldan
- * @version $Id: WFSOperationType.java 31731 2008-10-29 13:51:20Z groldan $
+ * @version $Id$
  * @since 2.5.x
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/protocol/wfs/WFSOperationType.java $
+ *
+ * @source $URL$
  */
 public enum WFSOperationType {
     GET_CAPABILITIES("GetCapabilities"), 

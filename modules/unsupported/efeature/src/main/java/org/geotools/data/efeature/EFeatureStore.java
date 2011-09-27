@@ -27,6 +27,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
 /**
  * @author kengu - 10. juli 2011
  *
+ *
+ * @source $URL$
  */
 @SuppressWarnings("unchecked")
 public class EFeatureStore extends ContentFeatureStore {

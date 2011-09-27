@@ -31,6 +31,11 @@ import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.PrecisionModel;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IntersectionFeatureCollectionTest {
     private static final Logger logger = Logger.getLogger("org.geotools.process.feature.gs.VectoralZonalStatisticalProcessTest");
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);

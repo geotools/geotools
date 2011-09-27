@@ -32,7 +32,8 @@ import org.opengis.util.InternationalString;
  * 
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/range/RangeType.java $
+ *
+ * @source $URL$
  */
 public interface RangeType {
 	/**

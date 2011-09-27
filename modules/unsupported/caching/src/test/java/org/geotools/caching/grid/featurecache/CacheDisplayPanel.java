@@ -42,6 +42,11 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.LineString;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class CacheDisplayPanel extends JPanel {
     GridFeatureCache cache;
     HashMap<String, Envelope> queries = new HashMap<String, Envelope>();

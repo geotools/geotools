@@ -16,6 +16,11 @@ import org.geotools.data.dxf.parser.DXFParseException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DXFSpLine extends DXFPolyline {
 
     private static final Log log = LogFactory.getLog(DXFSpLine.class);

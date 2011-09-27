@@ -31,6 +31,11 @@ import org.opengis.temporal.Period;
 import org.opengis.temporal.TemporalObject;
 import org.w3c.dom.Node;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class SpatioTemporalMetadata extends IIOMetadata {
 
     private final static Logger LOGGER = Logger.getLogger(SpatioTemporalMetadata.class.toString());

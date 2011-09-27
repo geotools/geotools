@@ -42,6 +42,7 @@ import org.geotools.util.logging.Logging;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  *         http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/main/java/org/geotools/data
  *         /wfs/v1_1_0/parsers/Gml31GetFeatureResponseParserFactory.java $

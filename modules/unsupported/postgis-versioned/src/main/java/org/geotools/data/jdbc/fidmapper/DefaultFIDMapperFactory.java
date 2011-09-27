@@ -52,6 +52,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author Andrea Aime
  *
+ *
  * @source $URL$
  * @deprecated scheduled for removal in 2.7, use classes in org.geotools.jdbc
  */

@@ -26,6 +26,7 @@ import java.awt.geom.PathIterator;
  * @author jeichar
  *
  *
+ *
  * @source $URL$
  */
 public class PolygonShape extends AbstractShape {

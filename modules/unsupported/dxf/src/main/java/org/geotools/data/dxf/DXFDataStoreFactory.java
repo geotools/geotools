@@ -1,5 +1,5 @@
 /*
- * $Id: DXFDataStoreFactory.java Matthijs $
+ * $Id$
  */
 
 package org.geotools.data.dxf;
@@ -25,7 +25,8 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * @author Matthijs Laan, B3Partners
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/dxf/src/main/java/org/geotools/data/dxf/DXFDataStoreFactory.java $
+ *
+ * @source $URL$
  */
 public class DXFDataStoreFactory implements FileDataStoreFactorySpi {
     private static final Log log = LogFactory.getLog(DXFDataStoreFactory.class);

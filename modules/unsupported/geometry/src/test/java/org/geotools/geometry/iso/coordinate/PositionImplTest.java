@@ -24,6 +24,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PositionImplTest extends TestCase {
 	
 	public void testPositionImpl() {

@@ -26,6 +26,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * </p>
  *
  * @generated
+ *
+ * @source $URL$
  */
 public class EFeatureDataImpl<A, G extends Geometry> extends EFeatureImpl implements EFeatureData<A, G> {
         

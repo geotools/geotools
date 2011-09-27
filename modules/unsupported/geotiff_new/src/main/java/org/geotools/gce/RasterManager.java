@@ -45,6 +45,11 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class RasterManager {
 
     /**

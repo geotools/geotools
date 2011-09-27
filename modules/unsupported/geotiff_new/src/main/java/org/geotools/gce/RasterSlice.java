@@ -9,6 +9,11 @@ import org.geotools.coverage.grid.io.imageio.ImageReaderSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public  class RasterSlice{
     public RasterLayout rasterDimensions;
     

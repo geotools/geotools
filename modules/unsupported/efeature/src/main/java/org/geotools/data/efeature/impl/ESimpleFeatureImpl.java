@@ -34,6 +34,8 @@ import org.geotools.filter.identity.FeatureIdImpl;
 /**
  * @author kengu - 24. juni 2011
  *
+ *
+ * @source $URL$
  */
 public class ESimpleFeatureImpl extends SimpleFeatureImpl implements ESimpleFeature {
 

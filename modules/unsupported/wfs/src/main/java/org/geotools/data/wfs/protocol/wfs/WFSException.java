@@ -29,6 +29,7 @@ import org.geotools.data.wfs.v1_1_0.parsers.ExceptionReportParser;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  */
 public class WFSException extends IOException {

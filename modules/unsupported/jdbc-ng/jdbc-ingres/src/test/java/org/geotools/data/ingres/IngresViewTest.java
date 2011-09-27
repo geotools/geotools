@@ -4,6 +4,11 @@ import org.geotools.jdbc.JDBCViewTest;
 import org.geotools.jdbc.JDBCViewTestSetup;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IngresViewTest extends JDBCViewTest {
 
     @Override

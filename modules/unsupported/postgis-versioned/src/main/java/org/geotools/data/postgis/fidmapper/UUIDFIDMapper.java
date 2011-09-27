@@ -9,6 +9,11 @@ import java.util.UUID;
 import org.geotools.data.jdbc.fidmapper.AbstractFIDMapper;
 import org.opengis.feature.simple.SimpleFeature;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class UUIDFIDMapper extends AbstractFIDMapper {
     
     public UUIDFIDMapper(String colName, int type) {

@@ -38,7 +38,8 @@ package org.geotools.coverage.grid.imageio.geotiff.metadata.codes;
  * 
  *
  *
- * @sourceFile $URL: https://svn.osgeo.org/geotools/trunk/modules/library/coverage/src/main/java/org/geotools/coverage/grid/io/imageio/geotiff/codes/GeoTiffCoordinateTransformationsCodes.java $
+ *
+ * @source $URL$
  */
 public final class GeoTiffCoordinateTransformationsCodes {
 

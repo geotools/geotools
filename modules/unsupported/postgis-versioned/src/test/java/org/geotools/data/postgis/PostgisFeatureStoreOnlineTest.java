@@ -28,6 +28,11 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.identity.FeatureId;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostgisFeatureStoreOnlineTest extends AbstractPostgisOnlineTestCase {
 
     public void testWrite() throws Exception {

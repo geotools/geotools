@@ -32,6 +32,11 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * @author  <a href="mailto:knuterik@onemap.org">Knut-Erik Johnsen</a>, Project OneMap
  * @source $URL$
  */
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class EdgeData extends HashMap {
     public Object put(Object key, Object value) {
         if (key instanceof String) {

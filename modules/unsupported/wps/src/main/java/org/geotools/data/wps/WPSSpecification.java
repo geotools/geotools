@@ -23,6 +23,11 @@ import org.geotools.data.wps.request.DescribeProcessRequest;
 import org.geotools.data.wps.request.ExecuteProcessRequest;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class WPSSpecification extends Specification {
 
     /**

@@ -26,6 +26,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class UnionPolygonTest extends TestCase {
 
 	private SurfaceImpl createPolygonFromWKT(CoordinateReferenceSystem crs, String aWKTpolygon) {

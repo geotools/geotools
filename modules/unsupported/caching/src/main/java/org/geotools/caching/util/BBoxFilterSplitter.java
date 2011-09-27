@@ -86,6 +86,7 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class BBoxFilterSplitter implements FilterVisitor {

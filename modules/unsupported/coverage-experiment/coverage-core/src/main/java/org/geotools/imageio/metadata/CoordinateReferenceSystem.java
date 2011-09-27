@@ -26,7 +26,8 @@ import org.opengis.referencing.crs.DerivedCRS;
  * @author Alessio Fabiani, GeoSolutions
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-core/src/main/java/org/geotools/imageio/metadata/CoordinateReferenceSystem.java $
+ *
+ * @source $URL$
  */
 public class CoordinateReferenceSystem extends BaseCRS {
 

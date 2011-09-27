@@ -35,6 +35,11 @@ import org.opengis.referencing.operation.TransformException;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class RingImplUnsafeTest extends TestCase {
 	
 		public void testRingImpls() {

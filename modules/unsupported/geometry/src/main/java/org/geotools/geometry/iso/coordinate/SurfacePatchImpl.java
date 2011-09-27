@@ -34,6 +34,7 @@ import org.opengis.geometry.primitive.SurfacePatch;
  *
  *
  *
+ *
  * @source $URL$
  */
 public abstract class SurfacePatchImpl implements SurfacePatch, Serializable {

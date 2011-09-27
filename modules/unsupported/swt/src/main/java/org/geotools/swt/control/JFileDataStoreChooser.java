@@ -50,7 +50,8 @@ import org.geotools.data.FileDataStoreFinder;
  * @author Andrea Antonello (www.hydrologis.com)
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/JFileDataStoreChooser.java $
+ *
+ * @source $URL$
  */
 public class JFileDataStoreChooser {
     private static final long serialVersionUID = -7482109609487216939L;

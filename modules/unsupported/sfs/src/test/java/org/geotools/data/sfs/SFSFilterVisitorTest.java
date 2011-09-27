@@ -47,6 +47,11 @@ import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.Point;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SFSFilterVisitorTest extends TestCase {
     private static final String URL = "http://localhost:8082/simplefeatureservice/";
     private static final String URL_LAYER_ASIA = URL+"/layerAsia";

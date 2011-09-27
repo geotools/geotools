@@ -41,6 +41,7 @@ import org.opengis.geometry.coordinate.LineSegment;
  *
  *
  *
+ *
  * @source $URL$
  * @version 2.0
  *

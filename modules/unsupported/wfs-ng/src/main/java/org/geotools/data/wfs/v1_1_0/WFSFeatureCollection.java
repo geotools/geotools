@@ -38,7 +38,7 @@ import org.opengis.geometry.BoundingBox;
  * {@link WFSDataStore}.
  * 
  * @author Gabriel Roldan (TOPP)
- * @version $Id: WFSFeatureCollection.java 35310 2010-04-30 10:32:15Z jive $
+ * @version $Id$
  * @since 2.5.x
  * @source $URL:
  *         http://svn.geotools.org/trunk/modules/plugin/wfs/src/main/java/org/geotools/wfs/v_1_1_0

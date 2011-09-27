@@ -35,8 +35,9 @@ import org.geotools.grid.GridFeatureBuilder;
  * @since 8.0
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/grid/src/main/java/org/geotools/grid/ortholine/OrthoLineBuilder.java $
- * @version $Id: Grids.java 37149 2011-05-10 11:47:02Z mbedward $
+ *
+ * @source $URL$
+ * @version $Id$
  */
 public class OrthoLineBuilder {
     private static final double TOL = 1.0e-8;

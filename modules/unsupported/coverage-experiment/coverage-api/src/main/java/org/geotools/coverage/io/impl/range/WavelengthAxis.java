@@ -27,6 +27,11 @@ import org.opengis.referencing.datum.EngineeringDatum;
 import org.opengis.util.InternationalString;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class WavelengthAxis<V> implements Axis<V,Length>{
 	/**
 	 * A single band.

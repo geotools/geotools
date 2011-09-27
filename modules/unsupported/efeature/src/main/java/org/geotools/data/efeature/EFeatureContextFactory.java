@@ -41,6 +41,8 @@ import org.geotools.util.logging.Logging;
  * 
  * @author kengu
  *
+ *
+ * @source $URL$
  */
 public class EFeatureContextFactory implements BufferedFactory {
 

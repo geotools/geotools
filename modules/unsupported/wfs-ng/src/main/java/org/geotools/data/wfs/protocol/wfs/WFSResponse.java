@@ -29,11 +29,12 @@ import org.geotools.util.logging.Logging;
  * known response information derived from the HTTP response headers.
  * 
  * @author Gabriel Roldan (OpenGeo)
- * @version $Id: WFSResponse.java 31888 2008-11-20 13:34:53Z groldan $
+ * @version $Id$
  * @since 2.6
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/protocol/wfs/WFSResponse.java $
+ *
+ * @source $URL$
  */
 @SuppressWarnings("nls")
 public class WFSResponse {

@@ -28,6 +28,8 @@ import org.geotools.process.gs.GSProcess;
  * Simple process with a {@link ReferencedEnvelope} as the output
  * 
  * @author Andrea Aime
+ *
+ * @source $URL$
  */
 @DescribeProcess(title = "bounds", description = "Computes the overlall bounds of the input features")
 public class BoundsProcess implements GSProcess {

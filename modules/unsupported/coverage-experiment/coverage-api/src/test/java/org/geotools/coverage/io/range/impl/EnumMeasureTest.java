@@ -33,7 +33,8 @@ import org.junit.Test;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/test/java/org/geotools/coverage/io/range/impl/EnumMeasureTest.java $
+ *
+ * @source $URL$
  */
 public class EnumMeasureTest extends Assert {
 	

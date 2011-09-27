@@ -26,6 +26,7 @@ import com.vividsolutions.jts.geom.Envelope;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class CombiningCachingFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature>{

@@ -10,6 +10,11 @@ import org.geotools.data.postgis.PostgisTests;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class WrapperTest extends AbstractSynchronizedPostgisDataTestCase {
 	
 	Map remote;

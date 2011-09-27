@@ -28,7 +28,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * 
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/postgis-versioned/src/main/java/org/geotools/data/FeatureDiffReader.java $
+ *
+ * @source $URL$
  */
 public interface FeatureDiffReader {
 

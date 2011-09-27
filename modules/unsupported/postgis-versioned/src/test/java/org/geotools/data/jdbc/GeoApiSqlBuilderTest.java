@@ -31,6 +31,11 @@ import org.opengis.filter.expression.Add;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.identity.Identifier;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GeoApiSqlBuilderTest extends SQLFilterTestSupport {
 
     GeoAPISQLBuilder builder;

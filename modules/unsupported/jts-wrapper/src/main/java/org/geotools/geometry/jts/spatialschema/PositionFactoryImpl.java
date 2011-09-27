@@ -29,6 +29,11 @@ import org.opengis.geometry.coordinate.PointArray;
 import org.opengis.geometry.coordinate.Position;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PositionFactoryImpl implements PositionFactory {
 	private CoordinateReferenceSystem crs;
 	

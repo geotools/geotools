@@ -34,6 +34,11 @@ import org.geotools.data.DataStore;
 import org.geotools.data.Repository;
 import org.geotools.util.KVP;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class AggregatingDataStoreFactory extends AbstractDataStoreFactory {
 
     public static final Param REPOSITORY_PARAM = new Param("repository", Repository.class,

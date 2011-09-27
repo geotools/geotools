@@ -38,6 +38,7 @@ import org.geotools.xml.DocumentFactory;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class ParseCapabilitesTest extends TestCase {

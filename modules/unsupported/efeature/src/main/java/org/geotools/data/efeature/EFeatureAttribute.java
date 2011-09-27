@@ -27,6 +27,8 @@ import org.opengis.feature.Property;
  * @see EFeaturePackage#getEFeatureAttribute()
  * 
  * @author kengu
+ *
+ * @source $URL$
  */
 public interface EFeatureAttribute<V> extends EFeatureProperty<V, Attribute> {
 

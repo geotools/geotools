@@ -33,6 +33,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * The tests for the AreaGridProcess
  * 
  * @author Luca Paolino - GeoSolutions
+ *
+ * @source $URL$
  */
 public class AreaGridProcessTest {
 

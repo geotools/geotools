@@ -25,11 +25,12 @@ import org.geotools.data.wfs.v1_1_0.parsers.ExceptionReportParser;
  * {@link ExceptionReportParser}.
  * 
  * @author Gabriel Roldan (OpenGeo)
- * @version $Id: WFSException.java 31823 2008-11-11 16:11:49Z groldan $
+ * @version $Id$
  * @since 2.6
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/protocol/wfs/WFSException.java $
+ *
+ * @source $URL$
  */
 public class WFSException extends IOException {
 

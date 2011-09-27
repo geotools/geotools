@@ -26,6 +26,11 @@ import org.geotools.geometry.iso.root.GeometryImpl;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SetOperationsTest extends TestCase {
 	
 	public void testMain() {

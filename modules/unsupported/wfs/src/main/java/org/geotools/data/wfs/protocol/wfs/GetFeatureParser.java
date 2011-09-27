@@ -29,6 +29,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * @since 2.5.x
  *
  *
+ *
  * @source $URL$
  *         http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/main/java/org/geotools/data
  *         /wfs/protocol/wfs/GetFeatureParser.java $

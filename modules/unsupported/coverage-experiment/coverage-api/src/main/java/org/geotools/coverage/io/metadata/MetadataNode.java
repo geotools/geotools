@@ -3,6 +3,11 @@ package org.geotools.coverage.io.metadata;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MetadataNode {
 	
 	public List<MetadataNode> getNodes() {

@@ -28,6 +28,7 @@ import java.io.IOException;
  *
  *
  *
+ *
  * @source $URL$
  */
 public interface VersioningDataStore extends DataStore {

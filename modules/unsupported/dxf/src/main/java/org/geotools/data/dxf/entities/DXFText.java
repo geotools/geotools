@@ -18,6 +18,11 @@ import org.geotools.data.dxf.parser.DXFParseException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DXFText extends DXFEntity {
 
     private static final Log log = LogFactory.getLog(DXFText.class);

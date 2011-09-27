@@ -56,7 +56,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Simone Giannecchini
  *
  *
- * @sourceFile $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/geotiff_new/src/test/java/org/geotools/gce/geotiff/GeoTiffReaderTest.java $
+ *
+ * @source $URL$
  */
 public class GeoTiffReaderTest extends Assert {
     private final static Logger LOGGER = org.geotools.util.logging.Logging

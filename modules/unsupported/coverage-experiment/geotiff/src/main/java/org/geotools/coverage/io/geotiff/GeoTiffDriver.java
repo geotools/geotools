@@ -70,7 +70,8 @@ import org.opengis.util.ProgressListener;
  * @author Jody Garnett
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/geotiff/src/main/java/org/geotools/coverage/io/geotiff/GeoTiffDriver.java $
+ *
+ * @source $URL$
  */
 public class GeoTiffDriver extends DefaultFileDriver implements FileDriver {
 

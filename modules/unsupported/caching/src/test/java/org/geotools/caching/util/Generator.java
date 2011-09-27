@@ -38,6 +38,11 @@ import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class Generator {
     public static final SimpleFeatureType type;
     private static final GeometryFactory gfact;

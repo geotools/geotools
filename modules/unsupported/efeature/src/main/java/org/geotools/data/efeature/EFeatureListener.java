@@ -5,6 +5,8 @@ package org.geotools.data.efeature;
  * 
  * @author kengu, 24. apr. 2011
  * 
+ *
+ * @source $URL$
  */
 public interface EFeatureListener<T> {
     public boolean onChange(T source, int property, Object oldValue, Object newValue);

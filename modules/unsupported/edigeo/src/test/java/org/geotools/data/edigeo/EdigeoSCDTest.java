@@ -24,6 +24,11 @@ import org.junit.Test;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class EdigeoSCDTest extends TestCase {
 	private EdigeoSCD eScd ;
 	

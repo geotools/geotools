@@ -93,11 +93,12 @@ import org.xml.sax.SAXException;
  * xml-xsd} subsystem for schema assisted parsing and encoding of WFS requests and responses.
  * 
  * @author Gabriel Roldan (OpenGeo)
- * @version $Id: WFS_1_1_0_Protocol.java 35853 2010-07-06 09:44:55Z rbraam $
+ * @version $Id$
  * @since 2.6
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/v1_1_0/WFS_1_1_0_Protocol.java $
+ *
+ * @source $URL$
  *         http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/main/java/org/geotools/data
  *         /wfs/v1_1_0/WFS_1_1_0_Protocol.java $
  */

@@ -33,7 +33,8 @@ import org.geotools.imageio.SpatioTemporalImageReaderSpi;
  * @author Simone Giannecchini, GeoSolutions
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/netcdf/src/main/java/org/geotools/imageio/netcdf/NetCDFSpatioTemporalImageReaderSpi.java $
+ *
+ * @source $URL$
  */
 public class NetCDFSpatioTemporalImageReaderSpi extends
         SpatioTemporalImageReaderSpi {

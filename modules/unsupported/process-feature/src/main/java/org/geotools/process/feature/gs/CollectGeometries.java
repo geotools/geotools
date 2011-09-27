@@ -36,6 +36,8 @@ import com.vividsolutions.jts.geom.GeometryCollection;
  * specialized subclass of it in case the geometries are uniform)
  * 
  * @author Andrea Aime - GeoSolutions
+ *
+ * @source $URL$
  */
 @DescribeProcess(title = "collectGeometries", description = "Collects all the default geometries in the feature collection and returns them as a single geometry collection")
 public class CollectGeometries implements GSProcess {

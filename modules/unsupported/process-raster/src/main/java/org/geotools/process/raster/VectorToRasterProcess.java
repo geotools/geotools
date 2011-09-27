@@ -89,6 +89,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * @author Steve Ansari, NOAA
  * @author Michael Bedward
  * @since 2.6
+ *
  * @source $URL$
  * @version $Id$
  */

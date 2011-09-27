@@ -33,6 +33,7 @@ import org.geotools.geometry.iso.topograph2D.Node;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class RelateNode extends Node {

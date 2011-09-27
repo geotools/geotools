@@ -24,6 +24,11 @@ import org.geotools.geometry.iso.primitive.PrimitiveTestSuite;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ISO19107TestSuite {
 	
     public static Test suite() {

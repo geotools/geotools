@@ -27,6 +27,8 @@ import org.opengis.feature.type.Name;
  * Maps a set of source datastores and type names into an aggregated feature type
  * 
  * @author Andrea Aime - GeoSolutions
+ *
+ * @source $URL$
  */
 public class AggregateTypeConfiguration implements Serializable {
 

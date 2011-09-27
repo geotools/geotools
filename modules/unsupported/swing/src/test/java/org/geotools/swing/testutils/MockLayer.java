@@ -25,6 +25,7 @@ import org.geotools.map.Layer;
  *
  * @author Michael Bedward
  * @since 8.0
+ *
  * @source $URL$
  * @version $URL$
  */

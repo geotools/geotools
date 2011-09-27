@@ -33,6 +33,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class EnvelopeImpl implements Envelope, Serializable {

@@ -34,7 +34,8 @@ import org.h2.jdbcx.JdbcDataSource;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/epsg-h2/src/main/java/org/geotools/referencing/factory/epsg/DatabaseCreationScript.java $
+ *
+ * @source $URL$
  */
 public class DatabaseCreationScript {
 

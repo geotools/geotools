@@ -21,6 +21,11 @@ import junit.framework.TestCase;
 import org.geotools.geometry.iso.util.algorithmND.AlgoPointND;
 import org.geotools.geometry.iso.util.algorithmND.AlgoRectangleND;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class AlgoRectangleNDTest extends TestCase {
 
 	public void testWorkingAlgos() {

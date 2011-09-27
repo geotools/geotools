@@ -3,6 +3,11 @@ package org.geotools.data.ingres;
 import org.geotools.jdbc.JDBCDateTest;
 import org.geotools.jdbc.JDBCDateTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IngresDateTest extends JDBCDateTest {
 
     @Override

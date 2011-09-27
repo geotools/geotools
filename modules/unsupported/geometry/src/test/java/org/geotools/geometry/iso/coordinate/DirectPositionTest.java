@@ -30,6 +30,7 @@ import org.opengis.geometry.coordinate.GeometryFactory;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class DirectPositionTest extends TestCase {

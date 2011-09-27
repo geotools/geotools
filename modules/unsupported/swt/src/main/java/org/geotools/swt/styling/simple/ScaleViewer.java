@@ -54,7 +54,8 @@ import org.geotools.swt.utils.Messages;
  * @since 1.1
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/styling/simple/ScaleViewer.java $
+ *
+ * @source $URL$
  */
 public class ScaleViewer {
     public static final int MIN = 0;

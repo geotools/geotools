@@ -35,7 +35,8 @@ import org.opengis.util.CodeList;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/test/java/org/geotools/coverage/io/range/impl/CodeMeasureTest.java $
+ *
+ * @source $URL$
  */
 public class CodeMeasureTest extends Assert {
 	

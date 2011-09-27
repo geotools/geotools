@@ -23,6 +23,8 @@ import org.geotools.data.efeature.query.EGeometryValueTouches;
 /**
  * @author kengu - 14. juni 2011
  *
+ *
+ * @source $URL$
  */
 public class EGeometryValueTouchesTest extends AbstractEGeometryValueTest {
     

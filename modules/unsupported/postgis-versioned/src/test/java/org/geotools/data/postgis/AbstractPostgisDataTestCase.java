@@ -33,6 +33,11 @@ import org.opengis.feature.simple.SimpleFeature;
 
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class AbstractPostgisDataTestCase extends DataTestCase {
 
 	static boolean WKB_ENABLED = true;

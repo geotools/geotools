@@ -29,6 +29,7 @@ import java.util.concurrent.Future;
  *
  *
  *
+ *
  * @source $URL$
  */
 public interface Progress extends Future<Map<String,Object>> {

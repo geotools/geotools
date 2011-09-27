@@ -6,6 +6,11 @@ import java.util.List;
 import org.opengis.util.InternationalString;
 import org.opengis.util.ProgressListener;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TestProgress implements ProgressListener {
 	public float progress = Float.NaN;
 	public InternationalString task;

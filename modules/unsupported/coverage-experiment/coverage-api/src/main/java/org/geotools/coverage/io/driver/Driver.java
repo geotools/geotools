@@ -57,7 +57,8 @@ import org.opengis.util.ProgressListener;
  * 
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/driver/Driver.java $
+ *
+ * @source $URL$
  */
 public interface Driver extends OptionalFactory, Factory {
 	

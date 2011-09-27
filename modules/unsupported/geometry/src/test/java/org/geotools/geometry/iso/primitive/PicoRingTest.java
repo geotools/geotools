@@ -40,6 +40,11 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PicoRingTest extends TestCase {
 
 	/**

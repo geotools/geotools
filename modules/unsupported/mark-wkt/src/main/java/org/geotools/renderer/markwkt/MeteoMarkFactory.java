@@ -36,6 +36,11 @@ import org.opengis.filter.expression.Expression;
  * @author Luca Morandini lmorandini@ieee.org
  * @version $Id$
  */
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MeteoMarkFactory implements MarkFactory {
 
     public static final String SHAPE_PREFIX = "extshape://";

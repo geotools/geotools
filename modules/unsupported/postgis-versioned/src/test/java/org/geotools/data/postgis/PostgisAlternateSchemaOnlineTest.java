@@ -18,6 +18,11 @@ package org.geotools.data.postgis;
 
 import java.util.Map;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostgisAlternateSchemaOnlineTest extends PostgisFeatureWriterOnlineTest {
 
     /**

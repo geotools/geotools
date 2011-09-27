@@ -26,6 +26,8 @@ import org.geotools.data.efeature.EFeaturePackage;
  * @see org.geotools.data.efeature.tests.EFeatureTestsFactory
  * @model kind="package"
  * @generated
+ *
+ * @source $URL$
  */
 public interface EFeatureTestsPackage extends EPackage {
     /**

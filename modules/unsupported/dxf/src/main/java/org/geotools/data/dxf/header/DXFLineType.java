@@ -12,6 +12,11 @@ import org.geotools.data.dxf.parser.DXFLineNumberReader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DXFLineType {
 
     private static final Log log = LogFactory.getLog(DXFLineType.class);

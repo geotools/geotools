@@ -43,7 +43,8 @@ import org.opengis.util.InternationalString;
  * @param QA Quantity being represented by this Axis
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/range/Axis.java $
+ *
+ * @source $URL$
  */
 public interface Axis<V,QA extends Quantity> {
     /**

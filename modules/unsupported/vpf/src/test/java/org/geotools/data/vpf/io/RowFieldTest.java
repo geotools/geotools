@@ -62,6 +62,7 @@ import org.geotools.data.vpf.ifc.DataTypesDefinition;
  * </ul>
  *
  *
+ *
  * @source $URL$
  */
 public class RowFieldTest extends TestCase

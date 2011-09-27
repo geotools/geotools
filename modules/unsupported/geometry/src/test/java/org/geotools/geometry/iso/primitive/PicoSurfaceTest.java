@@ -56,6 +56,11 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PicoSurfaceTest extends TestCase {
 
 	public void testMain() {

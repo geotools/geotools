@@ -109,6 +109,7 @@ import org.opengis.filter.Filter;
  * @author Chris Holmes, TOPP
  * @author Andrea Aime
  *
+ *
  * @source $URL$
  * @version $Id$
  * 

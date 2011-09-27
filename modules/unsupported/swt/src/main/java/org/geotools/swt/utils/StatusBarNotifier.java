@@ -30,7 +30,8 @@ import org.geotools.swt.event.MapPaneEvent;
  * @author Andrea Antonello (www.hydrologis.com)
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/utils/StatusBarNotifier.java $
+ *
+ * @source $URL$
  */
 public class StatusBarNotifier {
     private final ApplicationWindow applicationWindow;

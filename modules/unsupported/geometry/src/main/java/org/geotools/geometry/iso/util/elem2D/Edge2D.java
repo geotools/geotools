@@ -31,6 +31,7 @@ import java.util.LinkedList;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class Edge2D extends Line2D {

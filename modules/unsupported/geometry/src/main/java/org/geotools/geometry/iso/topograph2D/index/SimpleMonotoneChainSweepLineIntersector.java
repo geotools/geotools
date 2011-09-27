@@ -34,6 +34,7 @@ import org.geotools.geometry.iso.topograph2D.Edge;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class SimpleMonotoneChainSweepLineIntersector extends EdgeSetIntersector {

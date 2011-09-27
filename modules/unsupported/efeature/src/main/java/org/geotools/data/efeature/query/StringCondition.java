@@ -15,6 +15,8 @@ import org.eclipse.emf.query.conditions.strings.StringAdapter;
  * 
  * @author kengu
  * 
+ *
+ * @source $URL$
  */
 public class StringCondition extends org.eclipse.emf.query.conditions.strings.StringCondition {
 

@@ -4,6 +4,11 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.query.conditions.eobjects.EObjectCondition;
 import org.eclipse.emf.query.statements.WHERE;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class EFeatureFilter {
 
     private WHERE where;

@@ -32,6 +32,11 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.LineString;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class QueryDisplayPanel extends JPanel {
     FeatureCollection fc = null;
 

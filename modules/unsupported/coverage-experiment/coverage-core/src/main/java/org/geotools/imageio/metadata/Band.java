@@ -30,7 +30,8 @@ import org.geotools.util.NumberRange;
  * 
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-core/src/main/java/org/geotools/imageio/metadata/Band.java $
+ *
+ * @source $URL$
  */
 public class Band extends MetadataAccessor {
 

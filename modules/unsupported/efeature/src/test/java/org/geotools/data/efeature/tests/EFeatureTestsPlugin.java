@@ -15,6 +15,8 @@ import org.eclipse.emf.common.util.ResourceLocator;
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
+ *
+ * @source $URL$
  */
 public final class EFeatureTestsPlugin extends EMFPlugin {
     /**

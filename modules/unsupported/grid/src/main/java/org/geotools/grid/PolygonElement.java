@@ -25,6 +25,7 @@ import com.vividsolutions.jts.geom.Coordinate;
  * @author michael
  *
  *
+ *
  * @source $URL$
  */
 public interface PolygonElement extends GridElement {

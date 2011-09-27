@@ -14,6 +14,11 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IngresPrimaryKeyTest extends JDBCPrimaryKeyTest {
 
 	@Override

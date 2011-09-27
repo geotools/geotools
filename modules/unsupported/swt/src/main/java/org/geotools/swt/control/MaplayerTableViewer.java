@@ -50,7 +50,8 @@ import org.geotools.swt.utils.Utils;
  * @author Andrea Antonello (www.hydrologis.com)
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/MaplayerTableViewer.java $
+ *
+ * @source $URL$
  */
 public class MaplayerTableViewer extends TableViewer implements ISelectionChangedListener {
     private List<Layer> layersList = new ArrayList<Layer>();

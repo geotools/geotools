@@ -18,6 +18,11 @@ import org.opengis.feature.type.Name;
 
 import com.csvreader.CsvReader;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class CSVDataStore extends ContentDataStore {
 // header end
     

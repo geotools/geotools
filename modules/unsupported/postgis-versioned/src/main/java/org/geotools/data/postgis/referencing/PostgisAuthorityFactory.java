@@ -41,6 +41,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Jesse Eichar
  *
  *
+ *
  * @source $URL$
  */
 public class PostgisAuthorityFactory extends JDBCAuthorityFactory {

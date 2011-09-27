@@ -32,6 +32,11 @@ import org.opengis.geometry.DirectPosition;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SerializationTestCases extends TestCase {
 
 	// Serialize the given object and return the deserialized copy

@@ -31,6 +31,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 /**
  * @author kengu - 7. juli 2011
  *
+ *
+ * @source $URL$
  */
 @SuppressWarnings("unchecked")
 public class EFeatureSource extends ContentFeatureSource {

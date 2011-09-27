@@ -26,6 +26,7 @@ import org.geotools.data.ServiceInfo;
  * @since 2.5.x
  *
  *
+ *
  * @source $URL$
  *         http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/main/java/org/geotools/data
  *         /wfs/WFSServiceInfo.java $

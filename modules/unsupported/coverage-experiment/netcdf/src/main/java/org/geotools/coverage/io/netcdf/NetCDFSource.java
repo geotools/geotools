@@ -72,7 +72,8 @@ import org.opengis.util.ProgressListener;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/netcdf/src/main/java/org/geotools/coverage/io/netcdf/NetCDFSource.java $
+ *
+ * @source $URL$
  */
 public class NetCDFSource implements CoverageSource {
 	private class NetCDFRasterDatasetDomainManager {

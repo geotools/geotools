@@ -36,6 +36,8 @@ import org.junit.BeforeClass;
  * 
  * @author Christian W. Damus (cdamus)
  * @author Kenneth Gulbrandsøy (kengu)
+ *
+ * @source $URL$
  */
 public abstract class AbstractResourceTest extends AbstractEFeatureTest {
 

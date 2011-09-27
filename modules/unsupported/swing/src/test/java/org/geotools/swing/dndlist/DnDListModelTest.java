@@ -32,6 +32,11 @@ import javax.swing.event.ListDataListener;
 import org.geotools.swing.control.DnDListModel;
 import org.junit.Test;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DnDListModelTest {
     class Watcher implements ListDataListener {
         int changed = 0;

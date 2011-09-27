@@ -27,6 +27,7 @@ import java.util.Iterator;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class Node extends GraphComponent {

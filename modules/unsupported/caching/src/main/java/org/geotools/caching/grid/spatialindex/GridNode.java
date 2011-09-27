@@ -38,6 +38,7 @@ import org.geotools.caching.spatialindex.Shape;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class GridNode implements Node, Serializable {

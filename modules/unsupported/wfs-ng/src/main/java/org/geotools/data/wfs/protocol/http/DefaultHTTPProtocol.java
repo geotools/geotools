@@ -39,11 +39,12 @@ import org.geotools.factory.GeoTools;
  * Default implementation of {@link HTTPProtocol} based on apache's common-http-client
  * 
  * @author Gabriel Roldan (OpenGeo)
- * @version $Id: DefaultHTTPProtocol.java 31929 2008-11-28 19:10:03Z groldan $
+ * @version $Id$
  * @since 2.6
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/protocol/http/DefaultHTTPProtocol.java $
+ *
+ * @source $URL$
  *         http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/main/java/org/geotools/data
  *         /wfs/protocol/http/DefaultHTTPProtocol.java $
  */

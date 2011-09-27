@@ -55,6 +55,7 @@ import org.opengis.filter.sort.SortOrder;
  *
  * @author Sean Geoghegan, Defence Science and Technology Organisation.
  *
+ *
  * @source $URL$
  * @deprecated Use GeoAPISQLBuilder instead
  * 

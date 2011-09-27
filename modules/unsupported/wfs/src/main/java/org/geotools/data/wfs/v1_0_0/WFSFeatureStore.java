@@ -65,6 +65,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author dzwiers 
  *
  *
+ *
  * @source $URL$
  */
 public class WFSFeatureStore extends WFSFeatureSource implements SimpleFeatureStore {

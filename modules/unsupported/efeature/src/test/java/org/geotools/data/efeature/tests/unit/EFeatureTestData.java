@@ -51,6 +51,8 @@ import com.vividsolutions.jts.io.ParseException;
  *  
  * @author kengu - 20. mai 2011 
  *
+ *
+ * @source $URL$
  */
 public class EFeatureTestData {
     

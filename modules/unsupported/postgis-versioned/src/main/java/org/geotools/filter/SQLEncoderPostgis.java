@@ -58,6 +58,7 @@ import com.vividsolutions.jts.io.WKTWriter;
  *       one extend more intelligently.
  *
  *
+ *
  * @source $URL$
  */
 public class SQLEncoderPostgis extends SQLEncoder implements

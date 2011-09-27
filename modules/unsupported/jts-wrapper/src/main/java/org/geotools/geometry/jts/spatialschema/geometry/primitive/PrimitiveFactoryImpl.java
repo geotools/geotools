@@ -42,6 +42,7 @@ import org.opengis.geometry.primitive.SurfacePatch;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class PrimitiveFactoryImpl implements PrimitiveFactory {

@@ -25,6 +25,11 @@ import org.opengis.geometry.primitive.OrientableSurface;
 import org.opengis.geometry.primitive.Point;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MultiSurfaceImpl extends MultiPrimitiveImpl implements MultiSurface {
     private static final long serialVersionUID = -8409899769039201012L;
 

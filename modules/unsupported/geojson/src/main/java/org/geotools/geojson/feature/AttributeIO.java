@@ -6,7 +6,8 @@ package org.geotools.geojson.feature;
  * @author Justin Deoliveira, OpenGeo
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/geojson/src/main/java/org/geotools/geojson/feature/AttributeIO.java $
+ *
+ * @source $URL$
  */
 public interface AttributeIO {
 

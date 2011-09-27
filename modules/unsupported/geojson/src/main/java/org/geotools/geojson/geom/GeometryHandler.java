@@ -24,6 +24,11 @@ import org.json.simple.parser.ParseException;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GeometryHandler extends DelegatingHandler<Geometry> {
 
     GeometryFactory factory;

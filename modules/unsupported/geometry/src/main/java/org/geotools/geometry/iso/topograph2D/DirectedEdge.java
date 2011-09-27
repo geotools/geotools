@@ -30,6 +30,7 @@ import java.io.PrintStream;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class DirectedEdge extends EdgeEnd {

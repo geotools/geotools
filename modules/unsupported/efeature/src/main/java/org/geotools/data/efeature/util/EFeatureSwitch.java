@@ -21,6 +21,8 @@ import org.geotools.data.efeature.EFeaturePackage;
  * <!-- end-user-doc -->
  * @see org.geotools.data.efeature.EFeaturePackage
  * @generated
+ *
+ * @source $URL$
  */
 public class EFeatureSwitch<T> {
     /**

@@ -23,6 +23,11 @@ import org.geotools.factory.Hints;
 import org.geotools.referencing.factory.epsg.oracle.OracleOnlineTestCase;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OracleDialectEpsgMediatorOnlineTest extends OracleOnlineTestCase {
 
     private OracleDialectEpsgMediator mediator;

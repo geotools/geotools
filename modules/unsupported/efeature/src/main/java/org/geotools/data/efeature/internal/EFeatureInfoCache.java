@@ -42,6 +42,8 @@ import org.geotools.util.WeakHashSet;
  * </p>
  * @author kengu, 24. apr. 2011
  * 
+ *
+ * @source $URL$
  */
 public final class EFeatureInfoCache {
     

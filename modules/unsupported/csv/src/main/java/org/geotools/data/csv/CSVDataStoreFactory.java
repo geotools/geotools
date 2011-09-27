@@ -10,6 +10,11 @@ import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.util.KVP;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class CSVDataStoreFactory implements DataStoreFactorySpi {
 
     private static final String FILE_TYPE = "csv";

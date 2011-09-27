@@ -8,6 +8,11 @@ import org.geotools.geojson.GeoJSONUtil;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FeatureTypeAttributeIO implements AttributeIO {
 
     HashMap<String, AttributeIO> ios = new HashMap();

@@ -30,7 +30,8 @@ import org.eclipse.swt.widgets.Text;
  * @author Andrea Antonello (www.hydrologis.com)
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/JValueField.java $
+ *
+ * @source $URL$
  */
 public abstract class JValueField extends Text {
 

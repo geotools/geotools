@@ -25,6 +25,8 @@ import org.json.simple.JSONObject;
 /**
  * Represents a connection to an individual database.
  * @author Ian Schneider (OpenGeo)
+ *
+ * @source $URL$
  */
 public class CouchDBConnection extends CouchDBClient.Component {
     private static final String PATH_DESIGN_MAIN = "_design/main";

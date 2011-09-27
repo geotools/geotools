@@ -64,7 +64,8 @@ import org.opengis.style.GraphicalSymbol;
  * @since 1.0.0
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/styling/simple/GraphicViewer.java $
+ *
+ * @source $URL$
  */
 public class GraphicViewer {
     boolean enabled;

@@ -44,6 +44,7 @@ import com.vividsolutions.jts.geom.LineString;
  * @author Chris Holmes, TOPP
  *
  *
+ *
  * @source $URL$
  */
 public class SQLEncoderPostgisTest extends TestCase {

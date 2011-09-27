@@ -28,6 +28,8 @@ import org.geotools.data.efeature.tests.util.EFeatureTestsResourceFactoryImpl;
  * A sample utility for the '<em><b>efeature</b></em>' package.
  * <!-- end-user-doc -->
  * @generated
+ *
+ * @source $URL$
  */
 public class EFeatureTestsExample {
     /**

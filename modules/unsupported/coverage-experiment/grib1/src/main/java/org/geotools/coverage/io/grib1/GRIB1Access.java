@@ -88,7 +88,8 @@ import org.opengis.util.ProgressListener;
  * 
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/grib1/src/main/java/org/geotools/coverage/io/grib1/GRIB1Access.java $
+ *
+ * @source $URL$
  */
 public class GRIB1Access extends DefaultCoverageAccess {
     

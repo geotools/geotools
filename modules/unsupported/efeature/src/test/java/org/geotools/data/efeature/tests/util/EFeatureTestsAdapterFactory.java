@@ -26,6 +26,8 @@ import org.geotools.data.efeature.tests.*;
  * <!-- end-user-doc -->
  * @see org.geotools.data.efeature.tests.EFeatureTestsPackage
  * @generated
+ *
+ * @source $URL$
  */
 public class EFeatureTestsAdapterFactory extends AdapterFactoryImpl {
     /**

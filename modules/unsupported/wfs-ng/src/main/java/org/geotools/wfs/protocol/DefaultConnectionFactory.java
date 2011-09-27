@@ -44,7 +44,8 @@ import org.geotools.util.logging.Logging;
  * @since 2.5.x
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/wfs/protocol/DefaultConnectionFactory.java $
+ *
+ * @source $URL$
  * @deprecated use {@link DefaultHTTPProtocol}
  */
 public class DefaultConnectionFactory implements ConnectionFactory {

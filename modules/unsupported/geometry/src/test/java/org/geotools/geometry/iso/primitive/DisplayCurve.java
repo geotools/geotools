@@ -33,6 +33,11 @@ import org.geotools.geometry.visualization.PaintGMObject;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DisplayCurve {
 
 	/**

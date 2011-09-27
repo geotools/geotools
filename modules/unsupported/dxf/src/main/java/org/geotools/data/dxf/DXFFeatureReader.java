@@ -1,5 +1,5 @@
 /*
- * $Id: DXFFeatureReader.java Matthijs $
+ * $Id$
  */
 package org.geotools.data.dxf;
 
@@ -41,7 +41,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @author Matthijs Laan, B3Partners
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/dxf/src/main/java/org/geotools/data/dxf/DXFFeatureReader.java $
+ *
+ * @source $URL$
  */
 public class DXFFeatureReader implements FeatureReader {
 

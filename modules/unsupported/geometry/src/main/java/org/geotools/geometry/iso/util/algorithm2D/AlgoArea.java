@@ -35,6 +35,7 @@ import org.geotools.geometry.iso.util.elem2D.Edge2D;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class AlgoArea {

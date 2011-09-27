@@ -55,6 +55,7 @@ import org.picocontainer.defaults.DefaultPicoContainer;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class CurveTest extends TestCase {

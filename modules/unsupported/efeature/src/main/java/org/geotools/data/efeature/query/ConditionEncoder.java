@@ -13,6 +13,11 @@ import org.geotools.data.efeature.DataBuilder;
 import org.geotools.data.efeature.DataTypes;
 import org.opengis.filter.expression.Literal;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ConditionEncoder {
 
     public static final Condition IS_NULL = EObjectInstanceCondition.IS_NULL;

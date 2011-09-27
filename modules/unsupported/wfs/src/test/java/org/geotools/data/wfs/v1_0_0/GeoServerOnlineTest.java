@@ -79,6 +79,11 @@ import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GeoServerOnlineTest {
 
     public static final String SERVER_URL = "http://localhost:8080/geoserver/wfs?service=WFS&request=GetCapabilities&version=1.0.0";

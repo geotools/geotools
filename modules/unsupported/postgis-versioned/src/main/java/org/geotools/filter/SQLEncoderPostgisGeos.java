@@ -24,6 +24,7 @@ package org.geotools.filter;
  * @author Chris Holmes, TOPP
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  */

@@ -16,6 +16,11 @@ import org.geotools.gce.geotiff.GeoTiffUtils;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GeotiffImageReaderWalker extends FileBasedImageReaderWalker {
 
     /** Logger. */

@@ -46,6 +46,7 @@ import junit.framework.TestCase;
  *
  *
  *
+ *
  * @source $URL$
  */
 public abstract class AbstractGeometryTest extends TestCase {

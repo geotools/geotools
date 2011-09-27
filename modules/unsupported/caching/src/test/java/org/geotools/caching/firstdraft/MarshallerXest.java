@@ -35,6 +35,11 @@ import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MarshallerXest extends TestCase {
     public static Test suite() {
         return new TestSuite(MarshallerXest.class);

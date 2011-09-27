@@ -34,6 +34,8 @@ import org.opengis.filter.Filter;
 /**
  * @author kengu - 14. juni 2011
  *
+ *
+ * @source $URL$
  */
 public abstract class AbstractEAttributeFilterTest<E extends EObject> extends AbstractEFeatureTest {
 

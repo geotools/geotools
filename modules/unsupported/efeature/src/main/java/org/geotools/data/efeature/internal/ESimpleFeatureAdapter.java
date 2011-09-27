@@ -54,6 +54,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  * @author kengu - 30. juni 2011
  *
+ *
+ * @source $URL$
  */
 public final class ESimpleFeatureAdapter {
     

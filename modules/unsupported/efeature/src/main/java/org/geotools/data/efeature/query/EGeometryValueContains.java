@@ -6,6 +6,11 @@ import org.opengis.filter.expression.Literal;
 
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class EGeometryValueContains extends EObjectAttributeValueCondition {
 
     public EGeometryValueContains(EAttribute eAttribute, Literal geometry, boolean swapped)

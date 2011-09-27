@@ -37,7 +37,8 @@ import org.restlet.resource.Variant;
  * @author narad
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/sfs/src/test/java/org/geotools/data/sfs/mock/FeatureBoundsResource.java $
+ *
+ * @source $URL$
  */
 public class FeatureBoundsResource extends Resource {
 

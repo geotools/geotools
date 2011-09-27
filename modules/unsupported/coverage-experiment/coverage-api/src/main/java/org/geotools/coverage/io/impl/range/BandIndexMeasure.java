@@ -17,7 +17,8 @@ import javax.measure.unit.Unit;
  * @author Simone Giannecchini, GeoSolutions
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/impl/range/BandIndexMeasure.java $
+ *
+ * @source $URL$
  */
 public class BandIndexMeasure extends Measure<String, Dimensionless>
 		implements Measurable<Dimensionless> {

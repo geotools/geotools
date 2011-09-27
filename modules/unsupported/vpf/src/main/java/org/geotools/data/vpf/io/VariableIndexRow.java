@@ -25,6 +25,7 @@ import org.geotools.data.vpf.ifc.VPFRow;
  * @author <a href="mailto:kobit@users.sourceforge.net">Artur Hefczyc</a>
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  */

@@ -27,6 +27,7 @@ import java.io.InputStream;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  */
 public interface HTTPResponse {

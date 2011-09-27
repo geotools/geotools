@@ -39,6 +39,7 @@ import org.opengis.feature.type.AttributeDescriptor;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class LenientFeature extends SimpleFeatureImpl {

@@ -31,6 +31,7 @@ import org.geotools.coverage.processing.operation.SubsampleAverage;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class CoverageToolsConstants {

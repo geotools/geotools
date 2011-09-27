@@ -34,6 +34,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
 /**
  * @author kengu - 23. juni 2011
  * 
+ *
+ * @source $URL$
  */
 public class EFeatureWriter implements SimpleFeatureWriter {
 

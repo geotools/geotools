@@ -24,6 +24,11 @@ import org.junit.Test;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class EdigeoTHFTest extends TestCase {
 	private EdigeoTHF eThf ;
 	

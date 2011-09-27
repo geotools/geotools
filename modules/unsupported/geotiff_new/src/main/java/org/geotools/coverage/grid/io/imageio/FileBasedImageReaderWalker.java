@@ -18,6 +18,11 @@ import org.geotools.image.io.ImageIOExt;
 import org.geotools.util.Utilities;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class FileBasedImageReaderWalker extends ImageReaderWalker {
 
     /** Logger for the {@link FileBasedImageReaderWalker} class. */

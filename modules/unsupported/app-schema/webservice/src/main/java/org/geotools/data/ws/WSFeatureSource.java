@@ -45,6 +45,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @version $Id$
  *
  *
+ *
  * @source $URL$
  *         http://svn.geotools.org/trunk/modules/unsupported/app-schema/webservice/src/main/java/org/geotools/wfs/v_1_1_0
  *         /data/XmlSimpleFeatureParser.java $

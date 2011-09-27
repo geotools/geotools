@@ -1,5 +1,5 @@
 /* 
- * $Id: SwingWorker.java 35310 2010-04-30 10:32:15Z jive $
+ * $Id$
  * 
  * Copyright (c) 2005 Sun Microsystems, Inc. All rights
  * reserved. Use is subject to license terms.
@@ -207,7 +207,8 @@ import org.eclipse.swt.widgets.Display;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/jdesktop/swtworker/SwtWorker.java $
+ *
+ * @source $URL$
  * @version $Revision: 1.6 $ $Date: 2008/07/25 19:32:29 $
  * 
  * @param <T> the result type returned by this {@code SwingWorker's}

@@ -27,6 +27,7 @@ import java.util.Collection;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class NotifyingArrayList<T> extends ArrayList<T> {

@@ -59,7 +59,8 @@ import ucar.nc2.constants.CF;
  * @author Daniele Romagnoli, GeoSolutions
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/grib1/src/main/java/org/geotools/imageio/grib1/GRIB1SpatioTemporalMetadata.java $
+ *
+ * @source $URL$
  */
 public class GRIB1SpatioTemporalMetadata extends SpatioTemporalMetadata {
 

@@ -32,6 +32,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @since 2.5.x
  *
  *
+ *
  * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/unsupported/app-schema/webservice/
  *         src/main/java/org/geotools /data/wfs/WFSDataStore.java $

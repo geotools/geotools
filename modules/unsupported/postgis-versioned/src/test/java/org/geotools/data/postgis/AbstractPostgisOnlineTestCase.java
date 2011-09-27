@@ -27,6 +27,7 @@ import java.sql.Statement;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class AbstractPostgisOnlineTestCase extends PostgisOnlineTestCase {

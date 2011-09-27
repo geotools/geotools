@@ -31,6 +31,7 @@ import org.opengis.geometry.Envelope;
  *
  * @author Michael Bedward
  * @since 8.0
+ *
  * @source $URL$
  * @version $Id$
  */

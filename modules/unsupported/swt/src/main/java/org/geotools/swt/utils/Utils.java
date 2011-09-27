@@ -50,7 +50,8 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author Andrea Antonello (www.hydrologis.com)
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/utils/Utils.java $
+ *
+ * @source $URL$
  */
 public class Utils {
     /**

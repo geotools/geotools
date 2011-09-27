@@ -50,6 +50,7 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class FilterTransformer extends DuplicatingFilterVisitor {

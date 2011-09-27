@@ -3,6 +3,11 @@ package org.geotools.data.ingres;
 import org.geotools.jdbc.JDBCEmptyTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IngresEmptyTestSetup extends JDBCEmptyTestSetup {
 
 	public IngresEmptyTestSetup(JDBCTestSetup delegate) {

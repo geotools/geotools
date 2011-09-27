@@ -44,6 +44,7 @@ import com.vividsolutions.jts.io.WKBWriter;
  * @author Andrea Aime
  *
  *
+ *
  * @source $URL$
  */
 public class PgWKBAttributeIO implements AttributeIO {

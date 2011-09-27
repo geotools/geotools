@@ -137,6 +137,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @since 2.1.x
  *
  *
+ *
  * @source $URL$
  */
 public class ShapefileRenderer implements GTRenderer {

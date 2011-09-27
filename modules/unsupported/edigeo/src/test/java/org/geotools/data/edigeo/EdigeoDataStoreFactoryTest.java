@@ -31,6 +31,11 @@ import org.opengis.feature.type.AttributeDescriptor;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class EdigeoDataStoreFactoryTest extends TestCase {
 	private EdigeoDataStoreFactory dsFactory ;
 	private Map<String, Serializable> params;

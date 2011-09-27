@@ -27,7 +27,8 @@ import org.w3c.dom.Node;
  * @author Alessio Fabiani, GeoSolutions
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-core/src/main/java/org/geotools/imageio/metadata/IdentifiableMetadataAccessor.java $
+ *
+ * @source $URL$
  */
 public class IdentifiableMetadataAccessor extends MetadataAccessor {
 

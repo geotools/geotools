@@ -35,6 +35,11 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SFSFeatureSourceTest extends OnlineTest {
 
     /* layerName for mock service*/

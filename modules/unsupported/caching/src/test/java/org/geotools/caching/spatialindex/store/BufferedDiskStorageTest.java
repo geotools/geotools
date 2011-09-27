@@ -23,6 +23,11 @@ import org.geotools.caching.grid.spatialindex.store.BufferedDiskStorage;
 import org.geotools.caching.spatialindex.Storage;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class BufferedDiskStorageTest extends AbstractStorageTest {
     public static Test suite() {
         return new TestSuite(BufferedDiskStorageTest.class);

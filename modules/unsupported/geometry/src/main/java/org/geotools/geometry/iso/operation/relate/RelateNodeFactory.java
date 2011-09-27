@@ -28,6 +28,7 @@ import org.geotools.geometry.iso.topograph2D.NodeMap;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class RelateNodeFactory extends NodeFactory {

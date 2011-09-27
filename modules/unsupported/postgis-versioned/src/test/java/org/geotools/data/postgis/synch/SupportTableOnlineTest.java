@@ -26,6 +26,11 @@ import java.sql.Statement;
 import org.geotools.data.jdbc.JDBCUtils;
 import org.geotools.data.postgis.VersionedPostgisDataStore;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SupportTableOnlineTest extends AbstractSynchronizedPostgisDataTestCase {
 
     public SupportTableOnlineTest(String name) {

@@ -22,6 +22,11 @@ import org.geotools.geometry.jts.JTSGeometry;
 import org.geotools.geometry.jts.JTSUtils;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class AggregateImpl extends GeometryImpl implements Aggregate {
     private Set/*<Primitive>*/ elements;
 

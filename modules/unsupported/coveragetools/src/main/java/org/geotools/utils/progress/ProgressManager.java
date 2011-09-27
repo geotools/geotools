@@ -27,6 +27,7 @@ import javax.swing.SwingUtilities;
  *
  *
  *
+ *
  * @source $URL$
  */
 public abstract class ProgressManager {

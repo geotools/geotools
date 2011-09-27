@@ -18,6 +18,11 @@ package org.geotools.data.postgis;
 
 import org.geotools.data.FeatureSource;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostgisQueryCapabilitiesOnlineTest extends
         AbstractPostgisOnlineTestCase {
 

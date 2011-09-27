@@ -26,6 +26,7 @@ package org.geotools.swing.tool;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  */

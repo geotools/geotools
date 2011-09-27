@@ -45,6 +45,7 @@ import org.geotools.factory.BasicFactories;
  *
  *
  *
+ *
  * @source $URL$
  */
 public abstract class GeometryImpl 

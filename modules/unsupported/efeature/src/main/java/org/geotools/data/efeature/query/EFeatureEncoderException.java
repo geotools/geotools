@@ -1,5 +1,10 @@
 package org.geotools.data.efeature.query;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class EFeatureEncoderException extends Exception {
 
     private static final long serialVersionUID = 1L;

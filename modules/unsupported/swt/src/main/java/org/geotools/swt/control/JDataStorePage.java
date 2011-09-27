@@ -38,7 +38,8 @@ import org.geotools.data.Parameter;
  * @author Andrea Antonello (www.hydrologis.com)
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/JDataStorePage.java $
+ *
+ * @source $URL$
  */
 public class JDataStorePage extends WizardPage {
     public static final String ID = "org.geotools.swt.data.DataStorePage";

@@ -14,6 +14,8 @@ import com.vividsolutions.jts.io.WKTWriter;
  * Clients can subclass it and provide their own implementation
  * 
  * @see {@link Condition}
+ *
+ * @source $URL$
  */
 public abstract class WKTAdapter implements IDataTypeAdapter<String> {
 

@@ -14,6 +14,11 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class EObjectFilter {
 
     /**

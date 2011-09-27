@@ -31,7 +31,8 @@ import org.opengis.util.ProgressListener;
  * @author Andrea Antonello (www.hydrologis.com)
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/ProgressWindow.java $
+ *
+ * @source $URL$
  */
 public class ProgressWindow extends ProgressMonitorDialog implements ProgressListener {
 

@@ -33,8 +33,9 @@ import org.opengis.filter.identity.Identifier;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/feature/LenientAttribute.java $
- * @version $Id: LenientAttribute.java 34640 2009-12-10 00:29:32Z simonegiannecchini $
+ *
+ * @source $URL$
+ * @version $Id$
  */
 public class LenientAttribute extends PropertyImpl implements Attribute {
 

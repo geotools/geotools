@@ -38,6 +38,11 @@ import org.opengis.geometry.primitive.CurveSegment;
 import org.opengis.geometry.primitive.Ring;
 import org.opengis.geometry.primitive.Surface;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class Dimension2o5DTest extends TestCase {
 	
 	public void testMain() {

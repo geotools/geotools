@@ -35,6 +35,8 @@ import org.geotools.data.efeature.tests.NonGeoEObject;
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
+ *
+ * @source $URL$
  */
 public class NonGeoEObjectItemProvider
     extends ItemProviderAdapter

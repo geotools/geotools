@@ -25,6 +25,8 @@ import org.geotools.data.efeature.tests.NonGeoEObject;
  * </p>
  *
  * @generated
+ *
+ * @source $URL$
  */
 public class NonGeoEObjectImpl extends EObjectImpl implements NonGeoEObject {
     /**

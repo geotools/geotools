@@ -37,6 +37,7 @@ import org.geotools.data.jdbc.datasource.DataSourceUtil;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class VersionedPostgisDataStoreFactory extends AbstractDataStoreFactory {

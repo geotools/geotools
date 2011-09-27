@@ -66,6 +66,11 @@ import org.opengis.referencing.operation.TransformException;
 import org.opengis.temporal.TemporalGeometricPrimitive;
 import org.opengis.util.ProgressListener;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class HDF4Source implements CoverageSource {
 
 	/** Logger. */

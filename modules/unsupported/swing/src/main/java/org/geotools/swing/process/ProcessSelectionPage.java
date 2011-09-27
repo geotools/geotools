@@ -53,6 +53,7 @@ import org.opengis.util.InternationalString;
  * 
  * @author gdavis (Refractions)
  * @since 8.0
+ *
  * @source $URL$
  * @version $Id$
  */

@@ -25,11 +25,12 @@ import org.opengis.feature.simple.SimpleFeature;
  * underlying xml parsing technology in use.
  * 
  * @author Gabriel Roldan (TOPP)
- * @version $Id: GetFeatureParser.java 31824 2008-11-11 19:22:41Z groldan $
+ * @version $Id$
  * @since 2.5.x
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/protocol/wfs/GetFeatureParser.java $
+ *
+ * @source $URL$
  *         http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/main/java/org/geotools/data
  *         /wfs/protocol/wfs/GetFeatureParser.java $
  */

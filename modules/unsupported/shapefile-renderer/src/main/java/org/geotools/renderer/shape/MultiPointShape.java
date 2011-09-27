@@ -29,6 +29,7 @@ import java.awt.geom.PathIterator;
  * @since 2.1.x
  *
  *
+ *
  * @source $URL$
  */
 public class MultiPointShape extends AbstractShape implements Shape {

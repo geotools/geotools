@@ -134,7 +134,8 @@ import org.opengis.feature.type.PropertyDescriptor;
  * @since 1.0.0
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/styling/SimpleStyleConfigurator.java $
+ *
+ * @source $URL$
  */
 public class SimpleStyleConfigurator extends AbstractSimpleConfigurator {
     private static final String DEFAULT_GEOMETRY = "(default)"; //$NON-NLS-1$

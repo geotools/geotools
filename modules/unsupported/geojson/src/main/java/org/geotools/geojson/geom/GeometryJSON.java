@@ -64,7 +64,8 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/geojson/src/main/java/org/geotools/geojson/geom/GeometryJSON.java $
+ *
+ * @source $URL$
  */
 public class GeometryJSON {
 

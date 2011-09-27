@@ -27,6 +27,8 @@ import org.opengis.feature.simple.SimpleFeature;
  * 
  * @author kengu - 4. mai 2011  
  *
+ *
+ * @source $URL$
  */
 public class EFeatureReaderTest extends AbstractResourceTest {
     

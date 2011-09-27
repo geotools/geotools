@@ -21,11 +21,12 @@ package org.geotools.data.wfs.protocol.http;
  * accessing WFS operations.
  * 
  * @author Gabriel Roldan
- * @version $Id: HttpMethod.java 31731 2008-10-29 13:51:20Z groldan $
+ * @version $Id$
  * @since 2.5.x
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/protocol/http/HttpMethod.java $
+ *
+ * @source $URL$
  */
 public enum HttpMethod {
     GET, POST;

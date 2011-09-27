@@ -16,6 +16,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import com.vividsolutions.jts.geom.Geometry;
 
 @DescribeProcess(title = "feature", description = "Turns a single geometry into a feature collection")
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FeatureProcess implements GSProcess {
 
     @DescribeResult(name = "result", description = "The feature collection wrapping the geometry")

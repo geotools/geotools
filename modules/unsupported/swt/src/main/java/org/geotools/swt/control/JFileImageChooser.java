@@ -60,7 +60,8 @@ import org.eclipse.swt.widgets.Shell;
  * @author Michael Bedward
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/JFileImageChooser.java $
+ *
+ * @source $URL$
  */
 public class JFileImageChooser {
 

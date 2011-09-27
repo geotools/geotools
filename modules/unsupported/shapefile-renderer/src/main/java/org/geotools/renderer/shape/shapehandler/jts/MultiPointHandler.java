@@ -37,6 +37,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * @since 2.1.x
  *
  *
+ *
  * @source $URL$
  */
 public class MultiPointHandler extends org.geotools.renderer.shape.shapehandler.simple.MultiPointHandler{

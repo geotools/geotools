@@ -23,6 +23,11 @@ import java.util.Map;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.postgis.PostgisTests;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SynchronizedDataStoreStressTest extends
         AbstractSynchronizedPostgisDataTestCase {
 

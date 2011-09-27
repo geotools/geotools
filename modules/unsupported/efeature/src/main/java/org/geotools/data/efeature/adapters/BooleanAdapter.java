@@ -21,6 +21,8 @@ import org.geotools.data.efeature.DataTypes;
 /**
  * @author kengu - 12. juni 2011
  *
+ *
+ * @source $URL$
  */
 public class BooleanAdapter extends org.eclipse.emf.query.conditions.booleans.BooleanAdapter {
     

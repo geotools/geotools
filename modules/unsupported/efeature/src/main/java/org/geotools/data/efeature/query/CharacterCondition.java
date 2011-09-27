@@ -17,6 +17,8 @@ import org.geotools.data.efeature.adapters.CharacterAdapter;
  * 
  * @author kengu
  * 
+ *
+ * @source $URL$
  */
 public class CharacterCondition extends Condition {
 

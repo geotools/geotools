@@ -34,6 +34,11 @@ import org.geotools.geojson.geom.PolygonHandler;
 import org.json.simple.parser.ContentHandler;
 import org.json.simple.parser.ParseException;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class DelegatingHandler<T> implements IContentHandler<T> {
 
     protected static HashMap<String,Class<? extends IContentHandler>> handlers = new HashMap();

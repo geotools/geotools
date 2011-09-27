@@ -38,7 +38,8 @@ import org.geotools.util.NumberRange;
  * @author Alessio Fabiani, GeoSolutions
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-core/src/main/java/org/geotools/imageio/VerticalExtent.java $
+ *
+ * @source $URL$
  */
 public class VerticalExtent {
 

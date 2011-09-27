@@ -35,7 +35,8 @@ import org.eclipse.swt.widgets.Display;
  * @author Andrea Antonello (www.hydrologis.com)
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/utils/ImageCache.java $
+ *
+ * @source $URL$
  */
 @SuppressWarnings("nls")
 public class ImageCache {

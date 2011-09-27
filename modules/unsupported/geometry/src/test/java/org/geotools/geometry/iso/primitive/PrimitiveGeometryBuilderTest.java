@@ -26,6 +26,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PrimitiveGeometryBuilderTest extends TestCase {
 
 	CoordinateReferenceSystem crs_WGS84;

@@ -42,6 +42,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * </p>
  *
  * @generated
+ *
+ * @source $URL$
  */
 public abstract class EFeatureImpl extends EObjectImpl implements EFeature {
     /**

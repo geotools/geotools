@@ -44,7 +44,8 @@ import org.opengis.referencing.operation.MathTransform;
  * @since 2.6
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/tool/InfoToolHelper.java $
+ *
+ * @source $URL$
  */
 public abstract class InfoToolHelper<T> {
     private static final Logger LOGGER = Logger.getLogger(VectorLayerHelper.class.getName());

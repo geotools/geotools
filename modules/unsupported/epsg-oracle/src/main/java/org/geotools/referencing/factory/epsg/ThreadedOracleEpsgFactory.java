@@ -102,6 +102,7 @@ import org.geotools.referencing.factory.AbstractAuthorityFactory;
  * @since 2.4
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Didier Richard

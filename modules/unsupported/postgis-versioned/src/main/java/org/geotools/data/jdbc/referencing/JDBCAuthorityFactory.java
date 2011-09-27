@@ -42,6 +42,7 @@ import org.opengis.util.InternationalString;
 /**
  * @author jeichar
  *
+ *
  * @source $URL$
  */
 public class JDBCAuthorityFactory implements CRSAuthorityFactory {

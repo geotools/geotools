@@ -73,7 +73,8 @@ import org.opengis.referencing.operation.TransformException;
  * 
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/matfile5/src/main/java/org/geotools/coverageio/BaseGridCoverage2DReader.java $
+ *
+ * @source $URL$
  */
 public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DReader implements GridCoverageReader {
 

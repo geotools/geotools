@@ -45,6 +45,11 @@ import org.geotools.xml.EMFUtils;
 import org.geotools.xml.Parser;
 import org.junit.Test;
 import org.xml.sax.SAXException;
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ParsingTest {
 
     private static final boolean ONLINE = false; // to do check -o maven option?

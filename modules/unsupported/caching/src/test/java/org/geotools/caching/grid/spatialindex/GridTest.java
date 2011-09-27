@@ -25,6 +25,11 @@ import org.geotools.caching.spatialindex.AbstractSpatialIndexTest;
 import org.geotools.caching.spatialindex.Region;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GridTest extends AbstractSpatialIndexTest {
     GridSpatialIndex index;
 

@@ -6,6 +6,11 @@ import org.opengis.filter.expression.Literal;
 
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class EGeometryValueCrosses extends EObjectAttributeValueCondition {
 
     public EGeometryValueCrosses(EAttribute eAttribute, Literal geometry, boolean swapped)

@@ -19,6 +19,8 @@ import org.opengis.referencing.operation.MathTransform;
  *
  * @author Daniele Romagnoli, GeoSolutions
  *
+ *
+ * @source $URL$
  */
 public class BaseCoverageAlgebraProcess {
     

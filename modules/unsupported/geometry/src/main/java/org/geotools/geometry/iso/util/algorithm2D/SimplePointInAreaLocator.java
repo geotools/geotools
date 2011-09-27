@@ -38,6 +38,7 @@ import org.opengis.geometry.primitive.Ring;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class SimplePointInAreaLocator {

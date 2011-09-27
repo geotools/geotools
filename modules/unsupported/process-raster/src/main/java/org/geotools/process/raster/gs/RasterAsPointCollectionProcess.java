@@ -63,6 +63,8 @@ import com.vividsolutions.jts.geom.Point;
  * 
  * @author Simone Giannecchini, GeoSolutions
  * 
+ *
+ * @source $URL$
  */
 @DescribeProcess(title = "RasterAsPointCollection", description = "Convert a Raster into a collections of points")
 public class RasterAsPointCollectionProcess implements GSProcess {

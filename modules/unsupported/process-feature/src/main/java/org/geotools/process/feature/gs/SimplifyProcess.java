@@ -43,6 +43,8 @@ import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
  * 
  * @author Andrea Aime - OpenGeo
  * 
+ *
+ * @source $URL$
  */
 @DescribeProcess(title = "simplify", description = "Simplifies the geometry")
 public class SimplifyProcess implements GSProcess {

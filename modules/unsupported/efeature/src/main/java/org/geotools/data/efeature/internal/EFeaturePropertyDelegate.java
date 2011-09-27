@@ -21,6 +21,8 @@ import org.opengis.feature.Property;
  * An abstract implementation of the model data type {@link EFeatureProperty}.
  * 
  * @author kengu, 22. apr. 2011
+ *
+ * @source $URL$
  */
 public abstract class EFeaturePropertyDelegate<V, T extends Property, S extends EStructuralFeature>
         implements EFeatureProperty<V, T> {

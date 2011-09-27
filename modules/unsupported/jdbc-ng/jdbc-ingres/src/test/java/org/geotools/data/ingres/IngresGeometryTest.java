@@ -19,6 +19,11 @@ package org.geotools.data.ingres;
 import org.geotools.jdbc.JDBCGeometryTest;
 import org.geotools.jdbc.JDBCGeometryTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IngresGeometryTest extends JDBCGeometryTest {
 
     @Override

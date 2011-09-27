@@ -16,6 +16,8 @@ import com.vividsolutions.jts.io.ParseException;
  * Clients can subclass it and provide their own implementation
  * 
  * @see {@link Condition}
+ *
+ * @source $URL$
  */
 public abstract class GeometryAdapter implements IDataTypeAdapter<Geometry> {
 

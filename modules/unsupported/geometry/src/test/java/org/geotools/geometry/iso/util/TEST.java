@@ -32,6 +32,7 @@ import org.geotools.geometry.iso.util.algorithm2D.AlgoRectangle2D;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class TEST {

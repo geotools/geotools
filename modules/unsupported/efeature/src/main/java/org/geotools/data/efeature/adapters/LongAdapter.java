@@ -19,6 +19,8 @@ package org.geotools.data.efeature.adapters;
 /**
  * @author kengu - 15. juni 2011
  *
+ *
+ * @source $URL$
  */
 public class LongAdapter extends org.eclipse.emf.query.conditions.numbers.NumberAdapter.LongAdapter {
 

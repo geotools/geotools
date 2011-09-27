@@ -40,7 +40,8 @@ import org.xml.sax.helpers.NamespaceSupport;
  * 
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  * 
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/webservice/src/main
  *         /java/org/geotools/filter/AsXpathFunctionExpression.java $
  */

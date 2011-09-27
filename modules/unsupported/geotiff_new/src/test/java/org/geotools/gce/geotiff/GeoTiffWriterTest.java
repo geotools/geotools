@@ -65,7 +65,8 @@ import org.opengis.referencing.operation.TransformException;
  * @author Daniele Romagnoli, GeoSolutions SAS
  *
  *
- * @sourceFile $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/geotiff_new/src/test/java/org/geotools/gce/geotiff/GeoTiffWriterTest.java $
+ *
+ * @source $URL$
  */
 public class GeoTiffWriterTest extends Assert {
     private static final Logger logger = org.geotools.util.logging.Logging

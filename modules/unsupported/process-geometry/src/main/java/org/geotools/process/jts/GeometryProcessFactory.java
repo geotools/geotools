@@ -25,6 +25,8 @@ import org.geotools.util.SimpleInternationalString;
  * 
  * @author Andrea Aime - OpenGeo
  * 
+ *
+ * @source $URL$
  */
 public class GeometryProcessFactory extends StaticMethodsProcessFactory<GeometryFunctions> {
 

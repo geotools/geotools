@@ -12,6 +12,11 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.opengis.feature.simple.SimpleFeature;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class EFeatureDialect {
 
     // ----------------------------------------------------- 

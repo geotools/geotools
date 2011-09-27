@@ -24,6 +24,11 @@ import org.junit.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class EdigeoParserTest extends TestCase {
 	
 	private EdigeoParser ep = null;

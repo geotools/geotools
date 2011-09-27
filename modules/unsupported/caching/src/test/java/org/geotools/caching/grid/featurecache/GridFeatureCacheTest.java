@@ -58,6 +58,11 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GridFeatureCacheTest extends AbstractFeatureCacheTest {
     static boolean testEviction_holistic = false;
     GridFeatureCache cache;

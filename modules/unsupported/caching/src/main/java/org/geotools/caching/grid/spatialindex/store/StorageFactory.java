@@ -21,6 +21,11 @@ import java.util.Properties;
 import org.geotools.caching.spatialindex.Storage;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class StorageFactory {
     private static StorageFactory instance = null;
 

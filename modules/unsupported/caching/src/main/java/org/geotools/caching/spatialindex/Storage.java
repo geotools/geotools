@@ -28,6 +28,7 @@ import org.opengis.feature.type.FeatureType;
  *
  *
  *
+ *
  * @source $URL$
  */
 public interface Storage {

@@ -87,7 +87,8 @@ import org.opengis.util.ProgressListener;
  * 
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/netcdf/src/main/java/org/geotools/coverage/io/netcdf/NetCDFAccess.java $
+ *
+ * @source $URL$
  */
 public class NetCDFAccess extends DefaultCoverageAccess {
 

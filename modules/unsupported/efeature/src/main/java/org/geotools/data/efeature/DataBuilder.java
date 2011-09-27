@@ -19,6 +19,11 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.io.ParseException;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DataBuilder implements ConverterFactory, Converter {
         
     public static Object parse(Class<?> cls, Object value) throws IllegalArgumentException {

@@ -13,6 +13,8 @@ import org.geotools.map.MapViewport;
 /**
  *
  * @author michael
+ *
+ * @source $URL$
  */
 public class WaitingViewport extends MapViewport {
     

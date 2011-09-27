@@ -33,7 +33,8 @@ import org.restlet.resource.Variant;
  * @author 
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/sfs/src/test/java/org/geotools/data/sfs/mock/CapabilitiesResource.java $
+ *
+ * @source $URL$
  */
 public class CapabilitiesResource extends Resource {
 

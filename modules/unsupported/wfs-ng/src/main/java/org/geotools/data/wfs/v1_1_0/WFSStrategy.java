@@ -36,11 +36,12 @@ import org.opengis.filter.Filter;
  * care of specific WFS implementations limitations or deviations from the spec.
  * 
  * @author Gabriel Roldan (OpenGeo)
- * @version $Id: WFSStrategy.java 35310 2010-04-30 10:32:15Z jive $
+ * @version $Id$
  * @since 2.6
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/v1_1_0/WFSStrategy.java $
+ *
+ * @source $URL$
  *         http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/main/java/org/geotools/data
  *         /wfs/v1_1_0/WFSStrategy.java $
  * @see WFSDataStoreFactory

@@ -2,6 +2,11 @@ package org.geotools.data.ogr.bridj;
 
 import org.bridj.BridJ;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GdalInit {
 
     private static volatile String NATIVE_NAME;

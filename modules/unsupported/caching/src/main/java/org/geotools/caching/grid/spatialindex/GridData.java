@@ -36,6 +36,7 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class GridData implements Data<Object>, Externalizable {

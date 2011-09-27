@@ -31,6 +31,7 @@ import org.geotools.xml.gml.GMLSchema;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class SchemaFinderTest extends TestCase {

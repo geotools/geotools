@@ -46,6 +46,7 @@ import org.opengis.geometry.coordinate.TriangulatedSurface;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class TriangleImpl extends PolygonImpl implements Triangle {

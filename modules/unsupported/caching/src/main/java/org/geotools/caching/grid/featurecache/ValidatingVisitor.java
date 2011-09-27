@@ -27,6 +27,7 @@ import org.geotools.caching.spatialindex.Visitor;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class ValidatingVisitor implements Visitor {

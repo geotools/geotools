@@ -27,6 +27,11 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MultiLineHandler extends GeometryHandlerBase<MultiLineString> {
 
     List<Coordinate> coordinates;

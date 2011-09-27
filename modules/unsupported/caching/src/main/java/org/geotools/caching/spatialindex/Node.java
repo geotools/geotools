@@ -28,6 +28,11 @@
 //    marioh@cs.ucr.edu
 package org.geotools.caching.spatialindex;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public interface Node extends Entry {
 
 	/**

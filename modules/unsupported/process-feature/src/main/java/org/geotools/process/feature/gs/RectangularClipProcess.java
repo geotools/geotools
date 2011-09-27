@@ -31,6 +31,8 @@ import org.geotools.process.gs.GSProcess;
  * 
  * @author Andrea Aime - OpenGeo
  * 
+ *
+ * @source $URL$
  */
 @DescribeProcess(title = "rectangularClip", description = "Clips the features to the specified bounding box")
 public class RectangularClipProcess implements GSProcess {

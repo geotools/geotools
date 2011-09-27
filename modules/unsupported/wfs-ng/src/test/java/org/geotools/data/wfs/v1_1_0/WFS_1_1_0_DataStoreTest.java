@@ -45,11 +45,12 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * Unit test suite for {@link WFS_1_1_0_DataStore}
  * 
  * @author Gabriel Roldan
- * @version $Id: WFS_1_1_0_DataStoreTest.java 31902 2008-11-22 00:37:35Z groldan $
+ * @version $Id$
  * @since 2.5.x
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/test/java/org/geotools/data/wfs/v1_1_0/WFS_1_1_0_DataStoreTest.java $
+ *
+ * @source $URL$
  *         http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/test/java/org/geotools/data
  *         /wfs/v1_1_0/WFSDataStoreTest.java $
  */

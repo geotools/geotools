@@ -42,6 +42,7 @@ import org.geotools.utils.CoverageToolsConstants;
  *
  *
  *
+ *
  * @source $URL$
  */
 public abstract class BaseArgumentsManager extends ProgressManager {

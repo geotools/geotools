@@ -43,6 +43,7 @@ import org.geotools.xml.Parser;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  */
 public class DescribeFeatureTypeParser implements WFSResponseParser {

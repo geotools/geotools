@@ -58,6 +58,11 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class AbstractWfsDataStoreOnlineTest  {
 
     private static final Logger LOGGER = Logging.getLogger("org.geotools.wfs.v_1_1_0.data.test");

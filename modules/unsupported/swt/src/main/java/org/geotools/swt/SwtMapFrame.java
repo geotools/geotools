@@ -51,6 +51,8 @@ import org.geotools.swt.utils.StatusBarNotifier;
  *
  * @author Michael Bedward
  * @author Andrea Antonello (www.hydrologis.com)
+ *
+ * @source $URL$
  */
 public class SwtMapFrame extends ApplicationWindow {
 

@@ -34,7 +34,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/feature/LenientBuilder.java $
+ *
+ * @source $URL$
  */
 public class LenientBuilder {
     private SimpleFeatureType schema;

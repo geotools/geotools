@@ -18,6 +18,8 @@ import org.geotools.data.efeature.adapters.DateAdapter;
  * 
  * @author kengu
  * 
+ *
+ * @source $URL$
  */
 public class DateCondition extends DataTypeCondition<Date> {
 

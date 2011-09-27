@@ -30,6 +30,7 @@ import org.opengis.filter.Filter;
  *
  *
  *
+ *
  * @source $URL$
  */
 public interface VersioningFeatureStore extends VersioningFeatureSource, SimpleFeatureStore {

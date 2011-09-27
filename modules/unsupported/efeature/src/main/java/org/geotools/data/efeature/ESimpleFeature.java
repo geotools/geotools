@@ -28,6 +28,8 @@ import org.opengis.feature.simple.SimpleFeature;
  *  
  * @author kengu - 28. mai 2011 
  *
+ *
+ * @source $URL$
  */
 public interface ESimpleFeature extends SimpleFeature {
 

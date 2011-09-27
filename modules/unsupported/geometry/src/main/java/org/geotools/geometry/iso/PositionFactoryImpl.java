@@ -54,6 +54,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class PositionFactoryImpl implements Serializable, Factory, PositionFactory {

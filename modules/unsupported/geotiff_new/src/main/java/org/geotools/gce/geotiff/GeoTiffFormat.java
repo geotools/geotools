@@ -74,7 +74,8 @@ import org.opengis.referencing.operation.MathTransform;
  * @author Simone Giannecchini
  *
  *
- * @sourceFile $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/geotiff_new/src/main/java/org/geotools/gce/geotiff/GeoTiffFormat.java $
+ *
+ * @source $URL$
  */
 public final class GeoTiffFormat extends AbstractGridFormat implements Format {
     /** SPI for the writer. */

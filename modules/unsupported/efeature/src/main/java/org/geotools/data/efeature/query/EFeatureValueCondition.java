@@ -25,6 +25,8 @@ import org.geotools.data.efeature.EFeatureInfo;
 /**
  * @author kengu - 11. juni 2011
  *
+ *
+ * @source $URL$
  */
 public class EFeatureValueCondition extends EObjectAttributeValueCondition {
     

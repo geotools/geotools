@@ -24,6 +24,8 @@ import org.eclipse.emf.ecore.EPackage;
  * @see org.geotools.data.efeature.EFeatureFactory
  * @model kind="package"
  * @generated
+ *
+ * @source $URL$
  */
 public interface EFeaturePackage extends EPackage {
     /**

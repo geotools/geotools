@@ -42,6 +42,7 @@ import org.opengis.filter.Filter;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class WrappingPostgisFeatureSource implements SimpleFeatureSource {

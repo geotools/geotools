@@ -27,6 +27,11 @@ import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.coordinate.PointArray;
 import org.opengis.geometry.coordinate.Position;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PointArrayTest extends TestCase {
 
 	public void testMain() {

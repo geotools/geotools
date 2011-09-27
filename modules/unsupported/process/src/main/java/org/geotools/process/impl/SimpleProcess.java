@@ -28,6 +28,7 @@ import org.opengis.util.ProgressListener;
  * is not going to need to report progress as it goes).
  * 
  * @author gdavis
+ *
  * @source $URL$
  */
 public abstract class SimpleProcess extends AbstractProcess {

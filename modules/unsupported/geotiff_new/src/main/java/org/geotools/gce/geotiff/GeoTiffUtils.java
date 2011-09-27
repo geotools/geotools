@@ -49,6 +49,8 @@ import org.opengis.referencing.operation.MathTransform;
  * 
  * @author Simone Giannecchini, GeoSolutions S.A.S.
  * 
+ *
+ * @source $URL$
  */
 public class GeoTiffUtils {
 

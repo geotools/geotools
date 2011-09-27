@@ -15,6 +15,11 @@ import com.csvreader.CsvWriter;
 import com.vividsolutions.jts.geom.Point;
 
 // Obviously, WIP...
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class CSVFeatureWriter extends CSVFeatureReader implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
 
     private CsvWriter csvWriter;

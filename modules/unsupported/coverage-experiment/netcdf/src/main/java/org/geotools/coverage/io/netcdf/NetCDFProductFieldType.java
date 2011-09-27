@@ -56,7 +56,8 @@ import org.opengis.util.InternationalString;
  *         table: http://cf-pcmdi.llnl.gov/documents/cf-standard-names/
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/netcdf/src/main/java/org/geotools/coverage/io/netcdf/NetCDFProductFieldType.java $
+ *
+ * @source $URL$
  */
 public class NetCDFProductFieldType implements FieldType {
 	

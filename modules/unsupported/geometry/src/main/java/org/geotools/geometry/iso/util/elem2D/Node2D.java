@@ -29,6 +29,7 @@ import java.util.Vector;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class Node2D extends Point2D.Double {

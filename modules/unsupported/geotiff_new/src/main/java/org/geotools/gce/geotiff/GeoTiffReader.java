@@ -107,7 +107,8 @@ import org.opengis.referencing.operation.TransformException;
  * @since 2.1
  *
  *
- * @sourceFile $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/geotiff_new/src/main/java/org/geotools/gce/geotiff/GeoTiffReader.java $
+ *
+ * @source $URL$
  */
 public class GeoTiffReader extends AbstractGridCoverage2DReader implements
 		GridCoverageReader {

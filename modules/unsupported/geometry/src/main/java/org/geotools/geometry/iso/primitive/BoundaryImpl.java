@@ -32,6 +32,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  *
  *
+ *
  * @source $URL$
  */
 public abstract class BoundaryImpl extends ComplexImpl implements Boundary {

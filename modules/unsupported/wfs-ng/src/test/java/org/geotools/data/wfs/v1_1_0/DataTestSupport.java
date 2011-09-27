@@ -34,6 +34,11 @@ import org.geotools.data.wfs.protocol.http.HTTPResponse;
 import org.geotools.test.TestData;
 
 @SuppressWarnings("nls")
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public final class DataTestSupport {
 
     /**

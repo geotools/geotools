@@ -44,6 +44,11 @@ import org.geotools.factory.Hints;
 import org.geotools.imageio.netcdf.NetCDFSpatioTemporalImageReaderSpi;
 import org.opengis.util.ProgressListener;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class NetCDFDriver extends DefaultFileDriver implements FileDriver,Driver {
 
     /** Logger. */

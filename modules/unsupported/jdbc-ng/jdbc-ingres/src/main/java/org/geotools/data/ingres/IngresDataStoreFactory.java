@@ -11,6 +11,11 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IngresDataStoreFactory extends JDBCDataStoreFactory {
 
     /** parameter for database type */

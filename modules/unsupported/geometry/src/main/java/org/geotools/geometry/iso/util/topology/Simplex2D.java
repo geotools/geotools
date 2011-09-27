@@ -30,6 +30,7 @@ import org.geotools.geometry.iso.util.algorithm2D.AlgoPoint2D;
  *
  *
  *
+ *
  * @source $URL$
  */
 public abstract class Simplex2D extends BRepFace2D {

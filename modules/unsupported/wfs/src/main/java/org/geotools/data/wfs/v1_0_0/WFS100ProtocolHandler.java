@@ -36,6 +36,11 @@ import org.geotools.wfs.protocol.WFSProtocolHandler;
 import org.geotools.xml.DocumentFactory;
 import org.xml.sax.SAXException;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class WFS100ProtocolHandler extends WFSProtocolHandler {
     private static final Logger LOGGER = Logging.getLogger("org.geotools.data.wfs");
 

@@ -41,6 +41,11 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class AbstractFeatureCacheTest extends TestCase {
     protected static SimpleFeatureCollection dataset;
     protected static int numdata = 100;

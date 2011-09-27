@@ -63,6 +63,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  * @author kengu - 3. juli 2011
  *
+ *
+ * @source $URL$
  */
 public class ESimpleFeatureInternal implements ESimpleFeature {
 

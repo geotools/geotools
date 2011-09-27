@@ -30,7 +30,8 @@ import org.opengis.coverage.Coverage;
  * for a {@link CoverageStore}
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/impl/CoverageUpdateRequest.java $
+ *
+ * @source $URL$
  */
 public class CoverageUpdateRequest extends CoverageRequest  {
 

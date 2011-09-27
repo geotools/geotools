@@ -35,7 +35,8 @@ import org.opengis.coverage.grid.Format;
  * @since 2.7.x
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/matfile5/src/main/java/org/geotools/coverageio/matfile5/MatFile5FormatFactory.java $
+ *
+ * @source $URL$
  */
 public final class MatFile5FormatFactory implements GridFormatFactorySpi {
     /** Logger. */

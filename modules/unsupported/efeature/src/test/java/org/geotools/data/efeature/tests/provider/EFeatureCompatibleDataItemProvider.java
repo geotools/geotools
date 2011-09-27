@@ -35,6 +35,8 @@ import org.geotools.data.efeature.tests.EFeatureTestsPlugin;
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
+ *
+ * @source $URL$
  */
 public class EFeatureCompatibleDataItemProvider
     extends ItemProviderAdapter

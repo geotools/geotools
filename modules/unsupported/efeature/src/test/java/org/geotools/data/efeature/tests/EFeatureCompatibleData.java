@@ -29,6 +29,8 @@ import org.eclipse.emf.ecore.EObject;
  * @see org.geotools.data.efeature.tests.EFeatureTestsPackage#getEFeatureCompatibleData()
  * @model GBounds="org.geotools.data.efeature.Geometry"
  * @generated
+ *
+ * @source $URL$
  */
 public interface EFeatureCompatibleData<A, G extends Geometry> extends EObject {
     /**

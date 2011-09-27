@@ -17,6 +17,8 @@ import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
  * <!-- end-user-doc -->
  * @see org.geotools.data.efeature.tests.util.EFeatureTestsResourceImpl
  * @generated
+ *
+ * @source $URL$
  */
 public class EFeatureTestsResourceFactoryImpl extends ResourceFactoryImpl {
     

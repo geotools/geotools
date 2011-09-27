@@ -31,6 +31,7 @@ import org.geotools.swing.tool.ZoomInTool;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  */

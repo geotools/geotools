@@ -31,6 +31,8 @@ import org.opengis.feature.Property;
  * @see EFeaturePackage#getEFeatureGeometry()
  * 
  * @author kengu
+ *
+ * @source $URL$
  */
 public interface EFeatureGeometry<V extends Geometry> extends
         EFeatureProperty<V, GeometryAttribute> {

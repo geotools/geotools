@@ -37,6 +37,8 @@ import static org.junit.Assert.*;
 /**
  *
  * @author Ian Schneider (OpenGeo)
+ *
+ * @source $URL$
  */
 public class CouchDBTestSupport extends OnlineTestSupport {
     protected CouchDBClient client;

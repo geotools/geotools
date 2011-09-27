@@ -50,6 +50,11 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.impl.PackedCoordinateSequence;
 
 @SuppressWarnings("nls")
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IonicStrategy extends DefaultWFSStrategy {
 
     private static final Logger LOGGER = Logging.getLogger("org.geotools.data.wfs");

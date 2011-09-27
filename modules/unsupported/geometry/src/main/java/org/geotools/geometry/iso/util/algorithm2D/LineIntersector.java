@@ -32,6 +32,7 @@ import org.geotools.geometry.iso.util.Assert;
  *
  *
  *
+ *
  * @source $URL$
  */
 public abstract class LineIntersector {

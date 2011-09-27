@@ -32,6 +32,11 @@ import org.opengis.feature.type.Name;
 
 import com.vividsolutions.jts.geom.Envelope;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SFSDataStoreTest extends OnlineTest {
 
     protected void setUp() throws Exception {

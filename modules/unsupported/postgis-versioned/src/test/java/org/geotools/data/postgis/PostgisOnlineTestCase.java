@@ -30,6 +30,7 @@ import org.geotools.test.OnlineTestCase;
  *
  *
  *
+ *
  * @source $URL$
  */
 public abstract class PostgisOnlineTestCase extends OnlineTestCase {

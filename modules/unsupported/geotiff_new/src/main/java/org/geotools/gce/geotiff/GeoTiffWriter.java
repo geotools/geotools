@@ -76,7 +76,8 @@ import org.opengis.referencing.operation.TransformException;
  * @author Daniele Romagnoli, GeoSolutions SAS
  *
  *
- * @sourceFile $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/geotiff_new/src/main/java/org/geotools/gce/geotiff/GeoTiffWriter.java $
+ *
+ * @source $URL$
  * @todo add method to look for no data. 
  */
 public class GeoTiffWriter extends AbstractGridCoverageWriter implements

@@ -42,6 +42,8 @@ import org.geotools.data.efeature.impl.EFeatureIDFactoryImpl;
  * 
  * @author kengu - 4. juni 2011
  * 
+ *
+ * @source $URL$
  */
 public class EFeatureVoidIDFactory extends EFeatureIDFactoryImpl {
     

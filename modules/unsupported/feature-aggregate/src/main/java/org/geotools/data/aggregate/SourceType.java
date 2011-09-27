@@ -22,6 +22,8 @@ import org.opengis.feature.type.Name;
 
 /**
  * One of the source types making up a aggregated type
+ *
+ * @source $URL$
  */
 public class SourceType implements Serializable {
     private static final long serialVersionUID = -3739314811871903310L;

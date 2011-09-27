@@ -21,6 +21,8 @@ import java.io.IOException;
 /**
  *
  * @author Ian Schneider (OpenGeo)
+ *
+ * @source $URL$
  */
 public class CouchDBException extends Exception {
 

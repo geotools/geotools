@@ -59,6 +59,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * @since 2.6.x
  *
  *
+ *
  * @source $URL$
  */
 public class CubeWerxStrategyTest {

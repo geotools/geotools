@@ -25,6 +25,7 @@ package org.geotools.utils.progress;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class ExceptionEvent extends ProcessingEvent {

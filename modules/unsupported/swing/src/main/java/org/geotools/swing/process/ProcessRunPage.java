@@ -45,6 +45,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  * @author gdavis
  * @since 8.0
+ *
  * @source $URL$
  * @version $Id$
  */

@@ -39,11 +39,12 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * by the server.
  * 
  * @author Gabriel Roldan (OpenGeo)
- * @version $Id: FeatureCollectionParser.java 31823 2008-11-11 16:11:49Z groldan $
+ * @version $Id$
  * @since 2.6
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/v1_1_0/parsers/FeatureCollectionParser.java $
+ *
+ * @source $URL$
  * @see Gml31GetFeatureResponseParserFactory
  */
 public class FeatureCollectionParser implements WFSResponseParser {

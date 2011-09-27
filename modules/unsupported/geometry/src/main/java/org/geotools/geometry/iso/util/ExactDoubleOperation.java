@@ -29,6 +29,7 @@ import java.math.BigDecimal;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class ExactDoubleOperation {

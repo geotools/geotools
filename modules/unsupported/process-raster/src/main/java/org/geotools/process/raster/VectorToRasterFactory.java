@@ -44,6 +44,7 @@ import org.opengis.util.InternationalString;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class VectorToRasterFactory extends AbstractFeatureCollectionProcessFactory {

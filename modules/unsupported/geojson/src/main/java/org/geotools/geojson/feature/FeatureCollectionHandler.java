@@ -28,6 +28,11 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FeatureCollectionHandler extends DelegatingHandler<SimpleFeature> 
     implements IFeatureCollectionHandler {
 

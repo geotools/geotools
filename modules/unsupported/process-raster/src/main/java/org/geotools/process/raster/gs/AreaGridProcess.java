@@ -51,6 +51,8 @@ import org.opengis.referencing.operation.MathTransform;
  * </ul>
  * 
  * @author Luca Paolino - GeoSolutions
+ *
+ * @source $URL$
  */
 @DescribeProcess(title = "areaGrid", description = "Builds a regular cell grid where each pixel represents its effective area in the envelope using the EckertIV projection")
 public class AreaGridProcess implements GSProcess {

@@ -31,6 +31,7 @@ import org.geotools.swing.MapPane;
  * 
  * @author Michael Bedward (adapted from code by Cameron Shorter)
  * @since 2.6
+ *
  * @source $URL$
  * @version $Id$
  */

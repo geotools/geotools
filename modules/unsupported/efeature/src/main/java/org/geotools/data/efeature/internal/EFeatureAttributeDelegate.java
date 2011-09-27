@@ -23,6 +23,8 @@ import org.opengis.filter.identity.Identifier;
  * An abstract implementation of the model data type {@link EFeatureAttribute}.
  * 
  * @author kengu, 22. apr. 2011
+ *
+ * @source $URL$
  */
 public class EFeatureAttributeDelegate<V> extends
         EFeaturePropertyDelegate<V, Attribute, EAttribute> implements EFeatureAttribute<V> {

@@ -36,6 +36,7 @@ import org.opengis.filter.Filter;
  *
  *
  *
+ *
  * @source $URL$
  */
 public interface VersioningFeatureSource extends SimpleFeatureSource {

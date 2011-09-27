@@ -67,6 +67,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @since 2.5.x
  *
  *
+ *
  * @source $URL$
  *         http://svn.geotools.org/trunk/modules/plugin/wfs/src/main/java/org/geotools/wfs/v_1_1_0
  *         /data/XmlSimpleFeatureParser.java $ //@deprecated should be removed as long as

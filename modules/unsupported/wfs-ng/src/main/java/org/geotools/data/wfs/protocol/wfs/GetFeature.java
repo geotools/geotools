@@ -19,6 +19,11 @@ package org.geotools.data.wfs.protocol.wfs;
 import org.opengis.filter.Filter;
 import org.opengis.filter.sort.SortBy;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public interface GetFeature {
 
     public enum ResultType {

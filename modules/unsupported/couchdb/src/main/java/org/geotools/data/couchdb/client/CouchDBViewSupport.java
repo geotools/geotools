@@ -24,6 +24,8 @@ import org.json.simple.JSONObject;
 /**
  *
  * @author Ian Schneider (OpenGeo)
+ *
+ * @source $URL$
  */
 public abstract class CouchDBViewSupport extends CouchDBClient.Component {
     protected final CouchDBConnection connection;

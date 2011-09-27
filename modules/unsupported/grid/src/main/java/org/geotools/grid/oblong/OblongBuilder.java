@@ -29,8 +29,9 @@ import org.geotools.grid.Neighbor;
  * @since 2.7
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/grid/src/main/java/org/geotools/grid/oblong/OblongBuilder.java $
- * @version $Id: Hexagon.java 35637 2010-06-01 09:24:43Z mbedward $
+ *
+ * @source $URL$
+ * @version $Id$
  */
 public class OblongBuilder extends PolygonBuilder {
     private final double elementWidth;

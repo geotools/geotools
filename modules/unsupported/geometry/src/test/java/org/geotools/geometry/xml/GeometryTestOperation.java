@@ -33,6 +33,7 @@ import org.opengis.geometry.TransfiniteSet;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class GeometryTestOperation extends Assert {

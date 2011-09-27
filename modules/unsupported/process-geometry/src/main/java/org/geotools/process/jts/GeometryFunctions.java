@@ -33,6 +33,8 @@ import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
 /**
  * A set of static functions powering the {@link GeometryProcessFactory}.
  * @author Andrea Aime 
+ *
+ * @source $URL$
  */
 public class GeometryFunctions {
 

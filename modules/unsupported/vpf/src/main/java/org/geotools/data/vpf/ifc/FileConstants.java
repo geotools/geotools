@@ -22,6 +22,7 @@ package org.geotools.data.vpf.ifc;
  * @author <a href="mailto:kobit@users.sf.net">Artur Hefczyc</a>
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  */

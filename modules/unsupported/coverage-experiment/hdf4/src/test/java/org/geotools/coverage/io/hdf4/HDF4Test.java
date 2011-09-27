@@ -59,6 +59,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.temporal.TemporalGeometricPrimitive;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public final class HDF4Test extends TestCase {
 
     private final static Logger LOGGER = Logger.getLogger(HDF4Test.class.toString());

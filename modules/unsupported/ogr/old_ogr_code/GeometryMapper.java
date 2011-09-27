@@ -34,7 +34,8 @@ import com.vividsolutions.jts.io.WKTWriter;
  * @author Andrea Aime - OpenGeo
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/ogr/src/main/java/org/geotools/data/ogr/GeometryMapper.java $
+ *
+ * @source $URL$
  */
 public class GeometryMapper {
     /**

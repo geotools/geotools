@@ -27,6 +27,7 @@ import org.geotools.geometry.iso.topograph2D.Coordinate;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class HCoordinate {

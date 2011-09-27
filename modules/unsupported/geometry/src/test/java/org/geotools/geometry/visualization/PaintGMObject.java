@@ -42,6 +42,7 @@ import org.opengis.geometry.primitive.SurfaceBoundary;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class PaintGMObject {

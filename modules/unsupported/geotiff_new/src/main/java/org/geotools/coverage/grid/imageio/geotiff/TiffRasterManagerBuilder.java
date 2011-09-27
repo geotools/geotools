@@ -39,6 +39,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TiffRasterManagerBuilder extends RasterManagerBuilder<TIFFImageReader> {
 
     /** Logger. */

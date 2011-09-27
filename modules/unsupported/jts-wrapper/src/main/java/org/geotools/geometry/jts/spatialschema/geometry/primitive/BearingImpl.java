@@ -25,6 +25,7 @@ import org.opengis.geometry.primitive.Bearing;
  *
  *
  *
+ *
  * @source $URL$
  * @version 2.0
  *

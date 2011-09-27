@@ -24,7 +24,8 @@ package org.geotools.swt.event;
  * @since 2.6
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/event/MapPaneListener.java $
+ *
+ * @source $URL$
  */
 public interface MapPaneListener {
 

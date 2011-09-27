@@ -43,6 +43,7 @@ import org.geotools.factory.GeoTools;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  *         http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/main/java/org/geotools/data
  *         /wfs/protocol/http/DefaultHTTPProtocol.java $

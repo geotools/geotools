@@ -28,6 +28,11 @@ import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MultiPolygonHandler extends GeometryHandlerBase<MultiPolygon> {
 
     List<Coordinate> coordinates;

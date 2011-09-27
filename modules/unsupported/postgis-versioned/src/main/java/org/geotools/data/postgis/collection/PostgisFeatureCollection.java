@@ -32,6 +32,7 @@ import org.geotools.data.jdbc.JDBCFeatureSource;
  * 
  *
  *
+ *
  * @source $URL$
  */
 public class PostgisFeatureCollection extends JDBCFeatureCollection  {

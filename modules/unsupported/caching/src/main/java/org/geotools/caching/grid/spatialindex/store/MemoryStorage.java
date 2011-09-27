@@ -38,6 +38,7 @@ import org.opengis.feature.type.FeatureType;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class MemoryStorage implements Storage {

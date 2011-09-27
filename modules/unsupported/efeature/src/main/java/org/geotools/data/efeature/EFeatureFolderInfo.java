@@ -17,6 +17,8 @@ import org.geotools.data.efeature.internal.EFeatureInfoCache;
  * 
  * @author kengu
  * 
+ *
+ * @source $URL$
  */
 public class EFeatureFolderInfo extends EStructureInfo<EFeaturePackageInfo> {
 

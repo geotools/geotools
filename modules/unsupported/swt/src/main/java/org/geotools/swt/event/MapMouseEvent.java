@@ -32,7 +32,8 @@ import org.geotools.swt.SwtMapPane;
  * @since 2.6
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/event/MapMouseEvent.java $
+ *
+ * @source $URL$
  */
 public final class MapMouseEvent {
     private static final long serialVersionUID = 3894658044662688321L;

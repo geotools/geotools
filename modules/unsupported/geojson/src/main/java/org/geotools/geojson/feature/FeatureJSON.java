@@ -75,7 +75,8 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/geojson/src/main/java/org/geotools/geojson/feature/FeatureJSON.java $
+ *
+ * @source $URL$
  */
 public class FeatureJSON {
 

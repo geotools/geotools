@@ -47,6 +47,11 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class StreamingGridFeatureCacheTest extends TestCase {
 
 	FilterFactory filterFactory = new FilterFactoryImpl();

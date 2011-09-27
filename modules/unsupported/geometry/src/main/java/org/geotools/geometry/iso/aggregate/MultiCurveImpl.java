@@ -24,6 +24,11 @@ import org.opengis.geometry.aggregate.MultiCurve;
 import org.opengis.geometry.primitive.OrientableCurve;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MultiCurveImpl extends MultiPrimitiveImpl implements MultiCurve {
     private static final long serialVersionUID = 4330751150560384300L;
 

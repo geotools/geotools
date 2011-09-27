@@ -47,6 +47,8 @@ import com.vividsolutions.jts.geom.MultiPolygon;
  * @author Andrea Di Nora - Sinergis
  * @author Pietro Arena - Sinergis
  * @author Andrea Aime - GeoSolutions
+ *
+ * @source $URL$
  */
 @DescribeProcess(title = "buffer", description = "Buffers each feature in a collection by a fixed amount or by a value coming from a feature attribute. Works in pure cartesian mode.")
 public class BufferFeatureCollection implements GSProcess {

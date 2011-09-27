@@ -26,6 +26,11 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.MultiPoint;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MultiPointHandler extends GeometryHandlerBase<MultiPoint> {
 
     List<Coordinate> coordinates;

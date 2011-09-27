@@ -16,6 +16,8 @@ import org.eclipse.emf.query.conditions.IDataTypeAdapter;
  * Clients can subclass it and provide their own implementation
  * 
  * @see {@link Condition}
+ *
+ * @source $URL$
  */
 public abstract class DateAdapter implements IDataTypeAdapter<Date> {
 

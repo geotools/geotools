@@ -25,6 +25,7 @@ package org.geotools.geometry.iso.util;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class Assert {

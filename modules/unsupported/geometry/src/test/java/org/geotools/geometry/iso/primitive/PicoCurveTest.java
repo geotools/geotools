@@ -54,6 +54,11 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PicoCurveTest extends TestCase {
 	
 	public void testMain() {

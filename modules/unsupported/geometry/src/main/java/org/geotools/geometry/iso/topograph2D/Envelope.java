@@ -36,6 +36,7 @@ import org.opengis.geometry.Geometry;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class Envelope implements Serializable {

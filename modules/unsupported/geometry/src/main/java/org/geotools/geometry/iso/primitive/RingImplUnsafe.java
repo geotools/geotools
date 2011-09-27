@@ -58,6 +58,7 @@ import org.opengis.referencing.operation.TransformException;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class RingImplUnsafe extends CompositeCurveImpl implements Ring {

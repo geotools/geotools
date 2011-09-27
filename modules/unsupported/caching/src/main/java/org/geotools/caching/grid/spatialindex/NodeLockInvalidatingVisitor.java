@@ -5,6 +5,11 @@ import org.geotools.caching.spatialindex.Node;
 import org.geotools.caching.spatialindex.Region;
 import org.geotools.caching.spatialindex.Visitor;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class NodeLockInvalidatingVisitor implements Visitor {
 	
     private Region region;

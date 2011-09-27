@@ -33,6 +33,7 @@ import org.opengis.geometry.primitive.SolidBoundary;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class SolidImpl extends PrimitiveImpl implements Solid {

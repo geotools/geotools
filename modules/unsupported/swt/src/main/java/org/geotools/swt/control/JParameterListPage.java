@@ -36,7 +36,8 @@ import org.geotools.util.Converters;
  * @author Andrea Antonello (www.hydrologis.com)
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/JParameterListPage.java $
+ *
+ * @source $URL$
  */
 public class JParameterListPage extends WizardPage {
     public static final String ID = "org.geotools.swt.data.ParameterListPage";

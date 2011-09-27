@@ -36,6 +36,8 @@ import static org.junit.Assert.*;
 /**
  *
  * @author Ian Schneider
+ *
+ * @source $URL$
  */
 public class CouchDBTestSupport {
     protected CouchDBClient client;

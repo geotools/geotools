@@ -33,6 +33,11 @@ package org.geotools.caching.spatialindex;
 import java.util.LinkedList;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class RWLock {
     private int active_readers;
     private int waiting_readers;

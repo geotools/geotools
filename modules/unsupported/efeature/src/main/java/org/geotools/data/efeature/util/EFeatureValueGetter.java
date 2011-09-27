@@ -16,6 +16,8 @@ import org.geotools.data.efeature.EFeaturePackage;
 /**
  * @author kengu - 11. juni 2011
  *
+ *
+ * @source $URL$
  */
 public final class EFeatureValueGetter implements IEStructuralFeatureValueGetter {
 

@@ -33,6 +33,11 @@ import org.opengis.feature.simple.SimpleFeature;
 import com.vividsolutions.jts.geom.Geometry;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SFSDataStoreFeatureReaderTest extends TestCase {
 
     public SFSDataStoreFeatureReaderTest(String testName) {

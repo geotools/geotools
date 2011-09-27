@@ -50,7 +50,8 @@ import org.jdom.Element;
  * 
  *
  *
- * @sourceFile $URL: https://svn.osgeo.org/geotools/trunk/modules/library/coverage/src/main/java/org/geotools/coverage/grid/io/imageio/geotiff/GeoTiffIIOMetadataEncoder.java $
+ *
+ * @source $URL$
  */
 public class GeoTiffIIOMetadataEncoder {
 

@@ -26,7 +26,8 @@ package org.geotools.swt.control;
  * @author Michael Bedward
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/ValueChangedListener.java $
+ *
+ * @source $URL$
  */
 public interface ValueChangedListener {
 

@@ -19,6 +19,11 @@ package org.geotools.geometry.iso.coordinate;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GeometryTestSuite {
 	
     public static Test suite() {

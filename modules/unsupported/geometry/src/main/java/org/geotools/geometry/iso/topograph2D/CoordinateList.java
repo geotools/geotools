@@ -28,6 +28,7 @@ import java.util.Iterator;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class CoordinateList extends ArrayList {

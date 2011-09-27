@@ -17,6 +17,8 @@ import org.eclipse.emf.ecore.EFactory;
  * <!-- end-user-doc -->
  * @see org.geotools.data.efeature.tests.EFeatureTestsPackage
  * @generated
+ *
+ * @source $URL$
  */
 public interface EFeatureTestsFactory extends EFactory {
     /**

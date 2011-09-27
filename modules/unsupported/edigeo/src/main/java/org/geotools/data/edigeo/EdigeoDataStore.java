@@ -33,6 +33,11 @@ import org.opengis.feature.IllegalAttributeException;
 import org.geotools.feature.SchemaException;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class EdigeoDataStore extends AbstractDataStore {
 
     // File System constant

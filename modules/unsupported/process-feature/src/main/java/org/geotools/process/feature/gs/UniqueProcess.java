@@ -37,6 +37,8 @@ import org.opengis.util.ProgressListener;
  * Returns the unique values of a certain attribute
  * 
  * @author Andrea Aime
+ *
+ * @source $URL$
  */
 @DescribeProcess(title = "Unique values", description = "Returns the unique values of a certain attribute")
 public class UniqueProcess implements GSProcess {

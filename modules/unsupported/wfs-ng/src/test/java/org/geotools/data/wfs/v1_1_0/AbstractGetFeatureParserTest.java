@@ -66,11 +66,12 @@ import com.vividsolutions.jts.geom.Polygon;
  * </p>
  * 
  * @author Gabriel Roldan
- * @version $Id: AbstractGetFeatureParserTest.java 35310 2010-04-30 10:32:15Z jive $
+ * @version $Id$
  * @since 2.5.x
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/test/java/org/geotools/data/wfs/v1_1_0/AbstractGetFeatureParserTest.java $
+ *
+ * @source $URL$
  *         java/org/geotools/wfs/v_1_1_0/data/StreamingParserFeatureReaderTest .java $
  * @see XmlSimpleFeatureParserTest
  * @see StreamingParserFeatureReaderTest
@@ -89,7 +90,7 @@ public abstract class AbstractGetFeatureParserTest {
      * A feature visitor used to assert the parsed features
      * 
      * @author Gabriel Roldan (TOPP)
-     * @version $Id: AbstractGetFeatureParserTest.java 35310 2010-04-30 10:32:15Z jive $
+     * @version $Id$
      * @since 2.5.x
      * @source $URL: http://svn.geotools.org/geotools/trunk/gt/modules/plugin/wfs /src/test
      *         /java/org/geotools/wfs/v_1_1_0/data/AbstractGetFeatureParserTest .java $

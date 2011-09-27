@@ -81,7 +81,8 @@ import com.vividsolutions.jts.geom.Polygon;
  * @since 0.7.0
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/styling/simple/SLDs.java $
+ *
+ * @source $URL$
  */
 public class SLDs extends SLD {
     private static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);

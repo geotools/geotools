@@ -41,6 +41,11 @@ import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FilterSplitterTest extends TestCase {
     protected FilterFactory ff;
     protected Filter bb;

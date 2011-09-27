@@ -40,6 +40,7 @@ import org.geotools.util.logging.Logging;
  * @since 2.5.x
  *
  *
+ *
  * @source $URL$
  * @deprecated use {@link WFSProtocol}
  */

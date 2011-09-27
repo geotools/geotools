@@ -18,6 +18,11 @@ package org.geotools.data.ingres;
 
 import org.geotools.jdbc.JDBCNoPrimaryKeyTestSetup;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IngresNoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
 
     protected IngresNoPrimaryKeyTestSetup() {

@@ -71,11 +71,12 @@ import org.xml.sax.helpers.NamespaceSupport;
  * </p>
  * 
  * @author Gabriel Roldan
- * @version $Id: EmfAppSchemaParser.java 35680 2010-06-07 11:15:17Z jive $
+ * @version $Id$
  * @since 2.5.x
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/v1_1_0/parsers/EmfAppSchemaParser.java $
+ *
+ * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/wfs/src/main/java/org/geotools
  *         /wfs/v_1_1_0/data/EmfAppSchemaParser.java $
  */

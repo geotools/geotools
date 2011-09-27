@@ -19,6 +19,11 @@ import org.geotools.feature.NameImpl;
 import org.opengis.feature.type.Name;
 
 @SuppressWarnings("rawtypes")
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OGRDataStore extends ContentDataStore {
     
     static {

@@ -22,6 +22,8 @@ import java.util.logging.ConsoleHandler;
 /**
  * @author kengu - 6. juni 2011
  *
+ *
+ * @source $URL$
  */
 public class EFeatureLogHandler extends ConsoleHandler {
     @Override

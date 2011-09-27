@@ -31,7 +31,8 @@ import org.opengis.coverage.grid.Format;
  * @author Daniele Romagnoli, GeoSolutions SAS
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/imagecollection/src/main/java/org/geotools/gce/imagecollection/ImageCollectionFormatFactory.java $
+ *
+ * @source $URL$
  */
 public final class ImageCollectionFormatFactory implements GridFormatFactorySpi {
     public ImageCollectionFormat createFormat() {

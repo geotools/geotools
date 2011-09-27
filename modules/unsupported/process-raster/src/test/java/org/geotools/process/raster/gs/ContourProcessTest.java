@@ -38,6 +38,7 @@ import static org.junit.Assert.*;
  * 
  * @author Michael Bedward
  * @since 8.0
+ *
  * @source $URL$
  * @version $Id$
  */
@@ -116,6 +117,21 @@ public class ContourProcessTest {
         assertEquals(expectedY, coords[1].y, TOL);
     }
     
+    /**
+     * Tests that the process doesn't blow up when there are no
+     * contours to return
+     */
+    @Test
+    public void noContours() {
+        // Coverage with values in range [0, 10]
+        GridCoverage2D cov = createVerticalGradient(10, 10, null, 0, 10);
+
+        // Run process asking for contours at level = 20
+        SimpleFeatureCollection fc = process.execute(cov, 0, new double[20], null, null, null, null, null);
+        assertNotNull(fc);
+        assertTrue(fc.isEmpty());
+    }
+    
     
     private GridCoverage2D createVerticalGradient(
             final int dataRows, final int dataCols, 
@@ -127,6 +143,10 @@ public class ContourProcessTest {
         }
         if (dataCols < 1) {
             throw new IllegalArgumentException("dataCols must be positive");
+        }
+        
+        if (worldEnv == null) {
+            worldEnv = new ReferencedEnvelope(0, dataCols, 0, dataRows, null);
         }
         
         float[][] DATA = new float[dataRows][dataCols];

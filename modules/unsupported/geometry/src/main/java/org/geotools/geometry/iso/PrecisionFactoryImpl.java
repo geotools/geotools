@@ -25,6 +25,7 @@ import org.opengis.geometry.PrecisionType;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class PrecisionFactoryImpl implements PrecisionFactory {

@@ -38,11 +38,12 @@ import org.geotools.factory.FactoryNotFoundException;
  * </p>
  * 
  * @author Gabriel Roldan (OpenGeo)
- * @version $Id: WFSExtensions.java 35131 2010-03-29 13:43:06Z groldan $
+ * @version $Id$
  * @since 2.6
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/protocol/wfs/WFSExtensions.java $
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs/src/main/java/org/geotools
  *         /data/wfs/protocol/wfs/WFSExtensions.java $
  */

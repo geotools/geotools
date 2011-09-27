@@ -49,7 +49,8 @@ import com.vividsolutions.jts.geom.Point;
  * 
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/excel/src/main/java/org/geotools/data/excel/ExcelFeatureSource.java $
+ *
+ * @source $URL$
  */
 public class ExcelFeatureSource extends ContentFeatureSource implements SimpleFeatureSource {
 

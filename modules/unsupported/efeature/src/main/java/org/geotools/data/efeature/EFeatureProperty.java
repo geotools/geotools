@@ -30,6 +30,8 @@ import org.opengis.feature.Property;
  * @see EFeaturePackage#getEFeatureProperty()
  * 
  * @author kengu
+ *
+ * @source $URL$
  */
 public interface EFeatureProperty<V, T extends Property> {
 

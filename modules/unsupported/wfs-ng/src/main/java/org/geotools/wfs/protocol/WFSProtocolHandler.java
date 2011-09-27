@@ -36,11 +36,12 @@ import org.geotools.util.logging.Logging;
  * taking care of GZIP and authentication.
  * 
  * @author Gabriel Roldan
- * @version $Id: WFSProtocolHandler.java 31823 2008-11-11 16:11:49Z groldan $
+ * @version $Id$
  * @since 2.5.x
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/wfs/protocol/WFSProtocolHandler.java $
+ *
+ * @source $URL$
  * @deprecated use {@link WFSProtocol}
  */
 public abstract class WFSProtocolHandler {

@@ -42,6 +42,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * @since 0.9.0
  *
  *
+ *
  * @source $URL$
  */
 public class LabelingTest extends TestCase {

@@ -36,6 +36,7 @@ import org.opengis.geometry.primitive.OrientableCurve;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class CurveProxy extends OrientableCurveProxy implements Curve {

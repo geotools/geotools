@@ -14,6 +14,11 @@ import com.csvreader.CsvReader;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 
     protected ContentState state;

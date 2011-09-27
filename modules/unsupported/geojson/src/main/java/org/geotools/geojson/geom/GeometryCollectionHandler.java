@@ -27,6 +27,11 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GeometryCollectionHandler extends DelegatingHandler<GeometryCollection> {
 
     GeometryFactory factory;

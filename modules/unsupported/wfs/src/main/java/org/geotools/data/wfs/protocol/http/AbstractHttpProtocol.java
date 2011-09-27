@@ -38,6 +38,7 @@ import org.geotools.util.logging.Logging;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs/src/main/java/org/geotools
  *         /data/wfs/protocol/http/AbstractHttpProtocol.java $

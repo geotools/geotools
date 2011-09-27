@@ -36,7 +36,8 @@ import org.opengis.temporal.Instant;
  * @author Alessio Fabiani, GeoSolutions
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-core/src/main/java/org/geotools/imageio/metadata/BoundedBy.java $
+ *
+ * @source $URL$
  */
 public class BoundedBy extends MetadataAccessor {
 

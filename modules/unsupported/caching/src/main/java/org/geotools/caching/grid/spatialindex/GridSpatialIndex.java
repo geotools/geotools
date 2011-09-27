@@ -55,6 +55,7 @@ import org.opengis.feature.type.FeatureType;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class GridSpatialIndex extends AbstractSpatialIndex implements EvictableTree  {

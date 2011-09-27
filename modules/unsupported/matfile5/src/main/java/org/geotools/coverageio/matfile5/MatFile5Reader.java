@@ -55,7 +55,8 @@ import org.opengis.referencing.operation.TransformException;
  * @since 2.7.x
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/matfile5/src/main/java/org/geotools/coverageio/matfile5/MatFile5Reader.java $
+ *
+ * @source $URL$
  */
 public class MatFile5Reader extends BaseGridCoverage2DReader implements GridCoverageReader {
 

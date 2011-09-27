@@ -63,6 +63,7 @@ import org.xml.sax.InputSource;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class GeometryConformanceTestSuite extends TestSuite {

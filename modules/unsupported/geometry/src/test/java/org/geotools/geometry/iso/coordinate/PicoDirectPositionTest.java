@@ -34,6 +34,11 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PicoDirectPositionTest extends TestCase {
 
 	PicoContainer c;

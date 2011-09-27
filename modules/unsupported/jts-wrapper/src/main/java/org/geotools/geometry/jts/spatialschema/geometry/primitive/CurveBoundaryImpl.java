@@ -26,6 +26,7 @@ import org.opengis.geometry.primitive.Point;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class CurveBoundaryImpl extends PrimitiveBoundaryImpl implements CurveBoundary {

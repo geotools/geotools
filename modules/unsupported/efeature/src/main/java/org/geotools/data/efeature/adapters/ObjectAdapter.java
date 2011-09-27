@@ -25,6 +25,8 @@ import com.vividsolutions.jts.io.ParseException;
 /**
  * @author kengu - 15. juni 2011
  *
+ *
+ * @source $URL$
  */
 public class ObjectAdapter implements IDataTypeAdapter<Object> {
     

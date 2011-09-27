@@ -31,6 +31,11 @@ import com.vividsolutions.jts.geom.Polygon;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class EdigeoVECTest extends TestCase {
 	private EdigeoVEC eVecS1 ;
 	private EdigeoVEC eVecT1 ;

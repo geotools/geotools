@@ -24,7 +24,8 @@ import java.net.URI;
  * @author Daniele Romagnoli, GeoSolutions
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-core/src/main/java/org/geotools/imageio/metadata/RectifiedGrid.java $
+ *
+ * @source $URL$
  */
 public class RectifiedGrid extends MetadataAccessor {
 

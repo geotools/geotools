@@ -39,6 +39,7 @@ import org.geotools.geometry.iso.util.Assert;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class Coordinate implements Comparable, Cloneable, Serializable {

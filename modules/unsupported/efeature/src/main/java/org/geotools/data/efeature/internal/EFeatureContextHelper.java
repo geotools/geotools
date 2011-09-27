@@ -72,6 +72,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  * @author kengu - 29. mai 2011 
  *
+ *
+ * @source $URL$
  */
 public final class EFeatureContextHelper {
     

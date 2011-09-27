@@ -24,6 +24,11 @@ import org.geotools.filter.v1_0.OGCConfiguration;
 import org.geotools.xml.Configuration;
 
 @SuppressWarnings( { "nls" })
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GeoServerStrategy extends DefaultWFSStrategy {
 
     private static Configuration filter_1_0_0_Configuration = new OGCConfiguration();

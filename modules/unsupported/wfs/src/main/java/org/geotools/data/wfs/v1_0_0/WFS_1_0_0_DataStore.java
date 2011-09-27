@@ -107,6 +107,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author dzwiers
  *
  *
+ *
  * @source $URL$
  */
 public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataStore {

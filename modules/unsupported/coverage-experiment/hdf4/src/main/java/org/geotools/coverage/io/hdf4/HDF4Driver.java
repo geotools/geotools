@@ -39,6 +39,11 @@ import org.geotools.coverage.io.driver.FileDriver;
 import org.geotools.factory.Hints;
 import org.opengis.util.ProgressListener;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class HDF4Driver extends DefaultFileDriver implements FileDriver {
 
     /** Logger. */

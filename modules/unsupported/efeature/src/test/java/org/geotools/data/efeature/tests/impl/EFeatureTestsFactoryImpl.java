@@ -23,6 +23,8 @@ import org.geotools.data.efeature.tests.*;
  * An implementation of the model <b>Factory</b>.
  * <!-- end-user-doc -->
  * @generated
+ *
+ * @source $URL$
  */
 public class EFeatureTestsFactoryImpl extends EFactoryImpl implements EFeatureTestsFactory {
     /**

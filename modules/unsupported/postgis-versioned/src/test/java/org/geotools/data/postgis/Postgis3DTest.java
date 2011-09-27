@@ -40,6 +40,11 @@ import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class Postgis3DTest extends AbstractPostgisDataTestCase {
     
     protected static final String LINE3D = "line3d";

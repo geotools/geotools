@@ -19,6 +19,7 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  *
  *
+ *
  * @source $URL$
  */
 public abstract class AbstractFeatureCollectionProcess extends AbstractProcess {

@@ -12,6 +12,11 @@ import org.geotools.feature.NameImpl;
 import org.junit.Before;
 import org.opengis.feature.type.Name;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class AbstractAggregatingStoreTest {
     DefaultRepository repository = new DefaultRepository();
     protected PropertyDataStore store1;

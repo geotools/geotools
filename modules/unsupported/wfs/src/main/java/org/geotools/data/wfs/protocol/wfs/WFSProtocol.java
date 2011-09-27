@@ -48,6 +48,7 @@ import org.opengis.filter.capability.FilterCapabilities;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  *         http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/main/java/org/geotools/data
  *         /wfs/protocol/wfs/WFSProtocol.java $

@@ -41,6 +41,7 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class VPFCoverage implements FCode, FileConstants, VPFCoverageIfc {

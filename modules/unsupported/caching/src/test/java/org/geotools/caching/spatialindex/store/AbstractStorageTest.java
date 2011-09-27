@@ -26,6 +26,11 @@ import org.geotools.caching.spatialindex.RegionNodeIdentifier;
 import org.geotools.caching.spatialindex.Storage;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class AbstractStorageTest extends TestCase {
     Storage store;
     TestNode n;

@@ -18,6 +18,8 @@ import org.geotools.data.efeature.EFeaturePackage;
  * <code>createXXX</code> method for each class of the model. <!-- end-user-doc -->
  * @see org.geotools.data.efeature.EFeaturePackage
  * @generated
+ *
+ * @source $URL$
  */
 public class EFeatureAdapterFactory extends AdapterFactoryImpl {
     /**

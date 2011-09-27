@@ -51,7 +51,8 @@ import org.opengis.util.InternationalString;
  *       {@link SampleModel}
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/impl/range/DimensionlessAxis.java $
+ *
+ * @source $URL$
  */
 @SuppressWarnings("deprecation")
 public class DimensionlessAxis implements Axis<String,Dimensionless> {

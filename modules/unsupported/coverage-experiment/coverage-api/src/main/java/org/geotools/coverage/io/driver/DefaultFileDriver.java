@@ -43,7 +43,8 @@ import org.opengis.util.ProgressListener;
  * Base class extending {@link DefaultDriver} leveraging on URLs.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/driver/DefaultFileDriver.java $
+ *
+ * @source $URL$
  */
 public class DefaultFileDriver extends DefaultDriver implements FileDriver {
 	

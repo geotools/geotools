@@ -36,7 +36,8 @@ import org.opengis.util.InternationalString;
  * when defining your own field type.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/impl/range/DefaultAxis.java $
+ *
+ * @source $URL$
  */
 public class DefaultAxis<V,Q extends Quantity> implements Axis<V,Q> {
 	private SingleCRS crs;

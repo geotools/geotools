@@ -24,6 +24,11 @@ import org.geotools.jdbc.JDBCBooleanTestSetup;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IngresBooleanTest extends JDBCBooleanTest {
 
     @Override

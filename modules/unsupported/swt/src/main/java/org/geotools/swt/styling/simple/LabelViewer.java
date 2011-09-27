@@ -76,7 +76,8 @@ import org.opengis.filter.expression.Expression;
  * @since 1.0.0
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/styling/simple/LabelViewer.java $
+ *
+ * @source $URL$
  */
 public class LabelViewer {
     boolean enabled;

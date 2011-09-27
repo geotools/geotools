@@ -35,6 +35,7 @@ import org.geotools.geometry.iso.primitive.CurveImpl;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class CollectionFactoryMemoryImpl implements CollectionFactory {

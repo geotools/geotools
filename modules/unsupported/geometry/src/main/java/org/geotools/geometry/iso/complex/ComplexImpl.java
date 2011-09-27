@@ -53,6 +53,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  *
  *
+ *
  * @source $URL$
  */
 public abstract class ComplexImpl extends GeometryImpl implements Complex {

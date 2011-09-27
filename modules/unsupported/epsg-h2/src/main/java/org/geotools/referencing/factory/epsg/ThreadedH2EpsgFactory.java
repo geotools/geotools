@@ -67,6 +67,7 @@ import org.h2.jdbcx.JdbcDataSource;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

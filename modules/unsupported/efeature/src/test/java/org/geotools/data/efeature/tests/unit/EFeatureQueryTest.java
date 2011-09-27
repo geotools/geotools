@@ -42,6 +42,8 @@ import com.vividsolutions.jts.io.WKTReader;
  * 
  * @author kengu - 4. mai 2011  
  *
+ *
+ * @source $URL$
  */
 public class EFeatureQueryTest extends AbstractResourceTest {
     

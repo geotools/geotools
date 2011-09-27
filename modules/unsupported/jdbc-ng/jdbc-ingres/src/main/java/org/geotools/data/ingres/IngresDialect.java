@@ -51,6 +51,11 @@ import com.vividsolutions.jts.io.WKBWriter;
 import com.vividsolutions.jts.io.WKTReader;
 import com.vividsolutions.jts.io.WKBReader;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IngresDialect extends PreparedStatementSQLDialect {
 
     final static Map<String, Class> TYPE_TO_CLASS_MAP = new HashMap<String, Class>() {

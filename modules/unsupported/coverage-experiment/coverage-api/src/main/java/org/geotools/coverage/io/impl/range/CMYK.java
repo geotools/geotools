@@ -14,7 +14,8 @@ import javax.measure.unit.Unit;
  * - a commercial alternative is the Pantone (tm)) colors.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/impl/range/CMYK.java $
+ *
+ * @source $URL$
  */
 public enum CMYK {
 	CYAN, MAGENTA, YELLOW, KEY;

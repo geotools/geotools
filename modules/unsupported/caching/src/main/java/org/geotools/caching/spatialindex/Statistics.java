@@ -31,6 +31,7 @@ package org.geotools.caching.spatialindex;
  *
  *
  *
+ *
  * @source $URL$
  */
 public interface Statistics {

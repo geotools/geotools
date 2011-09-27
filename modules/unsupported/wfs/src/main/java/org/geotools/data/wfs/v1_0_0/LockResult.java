@@ -25,6 +25,7 @@ import org.opengis.filter.Id;
  * @author dzwiers
  *
  *
+ *
  * @source $URL$
  */
 public class LockResult {

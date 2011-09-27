@@ -68,7 +68,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @since 0.6.0
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/CRSChooser.java $
+ *
+ * @source $URL$
  */
 public class CRSChooser {
 

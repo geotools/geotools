@@ -42,6 +42,11 @@ import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
 
     public static final String SERVER_URL = "http://sigma.openplans.org:8080/geoserver/wfs?service=WFS&request=GetCapabilities&version=1.1.0"; //$NON-NLS-1$

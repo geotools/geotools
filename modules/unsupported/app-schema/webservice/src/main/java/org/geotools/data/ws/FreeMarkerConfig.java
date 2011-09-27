@@ -23,6 +23,11 @@ import java.io.IOException;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FreeMarkerConfig {
 
     private static Configuration cfg;

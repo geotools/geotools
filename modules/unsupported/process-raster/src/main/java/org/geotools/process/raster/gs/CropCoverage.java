@@ -40,6 +40,8 @@ import com.vividsolutions.jts.geom.GeometryCollection;
  * 
  * @author Andrea Aime - GeoSolutions
  * @author ETj <etj at geo-solutions.it>
+ *
+ * @source $URL$
  */
 @DescribeProcess(title = "cropCoverage", description = "Collects all the default geometries in the feature collection and returns them as a single geometry collection")
 public class CropCoverage implements GSProcess {

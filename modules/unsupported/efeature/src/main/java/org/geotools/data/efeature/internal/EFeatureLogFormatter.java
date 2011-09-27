@@ -23,6 +23,8 @@ import java.util.logging.SimpleFormatter;
 /**
  * @author kengu - 6. juni 2011
  *
+ *
+ * @source $URL$
  */
 public class EFeatureLogFormatter extends Formatter {
     

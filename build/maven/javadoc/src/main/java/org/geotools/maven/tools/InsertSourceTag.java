@@ -133,12 +133,6 @@ public class InsertSourceTag {
     }
 
     public void run(String[] args) {
-
-        args = new String[]{
-            "/Users/michael/coding/geotools/trunk/build/maven/javadoc/Foo.java",
-            "--add-header", "--svn"
-        };
-
         if (args.length == 0) {
             System.out.println("usage: InsertSourceTag {options} fileOrDirName");
             System.out.println("options:");

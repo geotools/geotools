@@ -137,20 +137,20 @@ public class InsertSourceTag {
             System.out.println("usage: InsertSourceTag {options} fileOrDirName");
             System.out.println("options:");
 
-            System.out.print("   " + ANY_CLASS_OPTION
+            System.out.println("   " + ANY_CLASS_OPTION
                     + ": Process any class. Default is only public classes.");
 
-            System.out.print("   " + ADD_HEADER_OPTION
+            System.out.println("   " + ADD_HEADER_OPTION
                     + ": Add class header javadocs if absent. Default is skip classes with no header.");
 
-            System.out.print("   " + FIX_BROKEN_TAG_OPTION
+            System.out.println("   " + FIX_BROKEN_TAG_OPTION
                     + ": Attempt to fix source tags that have been broken across lines. "
                     + "Default is do not fix.");
 
-            System.out.print("   " + REPLACE_OPTION
+            System.out.println("   " + REPLACE_OPTION
                     + ": Replace existing source tags. Default is do not replace.");
 
-            System.out.print("   " + SVN_OPTION
+            System.out.println("   " + SVN_OPTION
                     + ": Add the svn URL keyword. Default is do not add keyword.");
 
             return;

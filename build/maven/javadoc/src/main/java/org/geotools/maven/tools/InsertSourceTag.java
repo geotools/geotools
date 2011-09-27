@@ -54,16 +54,19 @@ import org.geotools.maven.taglet.Source;
  * 
  * {@code options} is zero or more of the following:<br>
  * 
- * {@code --replace} to force replacement of existing source tags (default is no replacement)<br>
+ * {@code --add-header} to add an empty class javadoc block if none exists (default is to skip
+ * files with no class javadoc block)<br>
  * 
- * {@code --anyclass} process all classes, interfaces and enums (default is only those 
+ * {@code --any-class} process all classes, interfaces and enums (default is only those 
  * that are public)<br>
  * 
- * {@code --svn} add Subversion delimiters ($URL, $) to the source path to enable auto-updating
- * when the file is committed using svn (default is no delimiters)<br>
- * 
  * {@code --fix} attempt to fix existing source tags that have been incorrectly broken across lines
- * (default is just report broken tags)
+ * (default is just report broken tags)<br>
+ * 
+ * {@code --replace-tag} to force replacement of existing source tags (default is no replacement)<br>
+ * 
+ * {@code --svn} add Subversion delimiters ($URL, $) to the source path to enable auto-updating
+ * when the file is committed using svn (default is to add delimiters)<br>
  * 
  * <p>
  * Adapted from the CommentUpdater class previously in this package that was written
@@ -76,43 +79,45 @@ import org.geotools.maven.taglet.Source;
 public class InsertSourceTag {
 
     private final Pattern findSVNLine = Pattern.compile(".+\\/(trunk|tags|branches)\\/.*\\.java");
-    
     private final Pattern findJavadocStart = Pattern.compile("^\\s*\\Q/**\\E");
-    
     private final Pattern findCommentStart = Pattern.compile("^\\s*\\Q/*\\E([^\\*]|$)");
-    
     private final Pattern findCommentEnd = Pattern.compile("\\Q*/\\E");
-    
     private final Pattern findSourceTag = Pattern.compile("^.*?\\Q@source\\E");
-
     private final Pattern findCompleteSourceTag = Pattern.compile(
             "^.*?\\Q@source\\E(.*?)\\Q.java\\E\\s*\\$?");
-
     private final Pattern findCompletePath = Pattern.compile(
             "^.*?http.*?\\Q.java\\E\\s*\\$?");
-    
     private final Pattern findVersionTag = Pattern.compile("^.*?\\Q@version\\E");
-    
     private final Pattern findPublicClass = Pattern.compile(
             "\\s*public[a-zA-Z\\s]+(class|interface|enum)");
-    
     private final Pattern findClass = Pattern.compile(".*?(class|interface|enum)");
-    
     private final Pattern findAnnotation = Pattern.compile("^@[a-zA-Z]+");
-    
     private final String lineSeparator = System.getProperty("line.separator", "\n");
-    
-    private static final String REPLACE_OPTION = "--replace";
+    /**
+     * Option to add a class javadoc block if none is found.
+     */
+    private static final String ADD_HEADER_OPTION = "--add-header";
+    private boolean optionAddHeader;
+    /**
+     * Option to process any class as opposed to only public classes.
+     */
+    private static final String ANY_CLASS_OPTION = "--any-class";
+    private boolean optionAnyClass;
+    /**
+     * Option to attempt to fix existing, broken source tags.
+     */
+    private static final String FIX_BROKEN_TAG_OPTION = "--fix";
+    private boolean optionFixBreaks;
+    /** 
+     * Option to replace existing source taglet if one is found.
+     */
+    private static final String REPLACE_OPTION = "--replace-tag";
     private boolean optionReplace;
-    
+    /**
+     * Option to add svn URL keyword if not found.
+     */
     private static final String SVN_OPTION = "--svn";
     private boolean optionSVNDelims;
-    
-    private static final String ANY_CLASS_OPTION = "--anyclass";
-    private boolean optionAnyClass;
-
-    private static final String FIX_BROKEN_TAGS = "--fix";
-    private boolean optionFixBreaks;
 
     /**
      * Main method. Takes the name of the file or directory to process from the
@@ -122,15 +127,38 @@ public class InsertSourceTag {
      * Note: local backup files are <b>not</b> saved by this program.
      */
     public static void main(String[] args) {
+
+        InsertSourceTag app = new InsertSourceTag();
+        app.run(args);
+    }
+
+    public void run(String[] args) {
+
+        args = new String[]{
+            "/Users/michael/coding/geotools/trunk/build/maven/javadoc/Foo.java",
+            "--add-header", "--svn"
+        };
+
         if (args.length == 0) {
             System.out.println("usage: InsertSourceTag {options} fileOrDirName");
             System.out.println("options:");
-            System.out.println("   " + REPLACE_OPTION
-                    + ": Replaces existing source tags (default no replacement)");
-            System.out.println("   " + SVN_OPTION
-                    + ": Add the svn URL keyword (omitted by default)");
-            System.out.println("   " + ANY_CLASS_OPTION
-                    + ": Process any class (default is only public classes)");
+
+            System.out.print("   " + ANY_CLASS_OPTION
+                    + ": Process any class. Default is only public classes.");
+
+            System.out.print("   " + ADD_HEADER_OPTION
+                    + ": Add class header javadocs if absent. Default is skip classes with no header.");
+
+            System.out.print("   " + FIX_BROKEN_TAG_OPTION
+                    + ": Attempt to fix source tags that have been broken across lines. "
+                    + "Default is do not fix.");
+
+            System.out.print("   " + REPLACE_OPTION
+                    + ": Replace existing source tags. Default is do not replace.");
+
+            System.out.print("   " + SVN_OPTION
+                    + ": Add the svn URL keyword. Default is do not add keyword.");
+
             return;
         }
 
@@ -140,14 +168,16 @@ public class InsertSourceTag {
         for (String s : args) {
             s = s.trim();
             if (s.startsWith("--")) {
-                if (REPLACE_OPTION.equals(s)) {
+                if (ADD_HEADER_OPTION.equals(s)) {
+                    me.optionAddHeader = true;
+                } else if (ANY_CLASS_OPTION.equals(s)) {
+                    me.optionAnyClass = true;
+                } else if (FIX_BROKEN_TAG_OPTION.equals(s)) {
+                    me.optionFixBreaks = true;
+                } else if (REPLACE_OPTION.equals(s)) {
                     me.optionReplace = true;
                 } else if (SVN_OPTION.equals(s)) {
                     me.optionSVNDelims = true;
-                } else if (ANY_CLASS_OPTION.equals(s)) {
-                    me.optionAnyClass = true;
-                } else if (FIX_BROKEN_TAGS.equals(s)) {
-                    me.optionFixBreaks = true;
                 } else {
                     System.out.println("Unrecognized option: " + s);
                     return;
@@ -166,7 +196,7 @@ public class InsertSourceTag {
                     return;
                 }
             }
-        } 
+        }
 
         me.process(inputPath);
     }
@@ -286,8 +316,8 @@ public class InsertSourceTag {
             } else if (findCommentStart.matcher(text).find()) {
                 inCommentBlock = true;
 
-            // Guard against nested or following classes and mention of classes in
-            // comment blocks
+                // Guard against nested or following classes and mention of classes in
+                // comment blocks
             } else if (!inJavadocBlock && !inCommentBlock && !classFound) {
                 if (optionAnyClass) {
                     matcher = findClass.matcher(text);
@@ -297,13 +327,27 @@ public class InsertSourceTag {
                 if (matcher.find()) {
                     classFound = true;
                     /*
-                     * If no javadoc comment block preceded the class header
-                     * there is nothing to do
+                     * If no javadoc comment block preceded the class header,
+                     * either add one (if optionAddHeader is true) or skip the class.
                      */
                     if (javadocStartLine < 0) {
-                        System.out.println("   *** No class javadocs - skipping file ***");
-                        System.out.println();
-                        return false;
+                        if (optionAddHeader) {
+                            // It is easieset to insert the elements in reverse order.
+                            buffer.add(lineNo, " */");
+                            buffer.add(lineNo, " * ");
+                            buffer.add(lineNo, "/**");
+
+                            javadocStartLine = lineNo;
+                            javadocEndLine = lineNo + 2;
+
+                            // clear the preceding content flag since it will no longer apply
+                            unknownPrecedingContent = false;
+
+                        } else {
+                            System.out.println("   *** No class javadocs - skipping file ***");
+                            System.out.println();
+                            return false;
+                        }
                     }
 
                     /* If there were any non-blank lines between the comment and
@@ -320,7 +364,7 @@ public class InsertSourceTag {
                      * Check if the source tag already exists. If it does, and
                      * the replace tag option is false, skip this file.
                      */
-                    for (int blockLineNo = javadocStartLine; 
+                    for (int blockLineNo = javadocStartLine;
                             blockLineNo <= javadocEndLine; blockLineNo++) {
                         String commentText = buffer.get(blockLineNo);
                         matcher = findSourceTag.matcher(commentText);
@@ -343,7 +387,9 @@ public class InsertSourceTag {
                                             // 
                                             String http = matcher.group();
                                             int start = http.indexOf("$URL");
-                                            if (start < 0) start = http.indexOf("http"); 
+                                            if (start < 0) {
+                                                start = http.indexOf("http");
+                                            }
                                             http = http.substring(start, http.length());
                                             sourceTagText = commentText + http;
                                         }

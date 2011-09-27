@@ -41,7 +41,8 @@ import org.opengis.annotation.Extension;
  * @see org.opengis.referencing.crs.ProjectedCRS
  * @see <A HREF="http://mathworld.wolfram.com/MapProjection.html">Map projections on MathWorld</A>
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/referencing/operation/Projection.java $
+ *
+ * @source $URL$
  */
 @Extension
 public interface Projection extends Conversion {

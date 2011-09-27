@@ -31,6 +31,7 @@ package org.geotools.resources.i18n;
  * @see org.geotools.resources.IndexedResourceBundle
  * @see org.geotools.resources.IndexedResourceCompiler
  *
+ *
  * @source $URL$
  */
 public final class ErrorKeys {

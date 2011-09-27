@@ -31,7 +31,8 @@ import org.opengis.parameter.ParameterValue;
  * 
  * @author Andrea Aime - OpenGeo
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/renderer/crs/PolarStereographicHandlerFactory.java $
+ *
+ * @source $URL$
  */
 public class PolarStereographicHandlerFactory implements ProjectionHandlerFactory {
 

@@ -18,6 +18,11 @@ import org.geotools.renderer.style.FontCache;
 import org.geotools.styling.Style;
 import org.geotools.test.TestData;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ExternalGraphicTest extends TestCase {
     private static final long TIME = 3000;
     SimpleFeatureSource pointFS;

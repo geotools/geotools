@@ -42,6 +42,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * 
  * @author Jody Garnett, Refractions Research
  *
+ *
  * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/
  *         data/memory/MemoryFeatureCollection.java $

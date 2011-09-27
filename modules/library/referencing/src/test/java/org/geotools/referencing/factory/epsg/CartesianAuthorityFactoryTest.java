@@ -15,6 +15,11 @@ import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class CartesianAuthorityFactoryTest {
     
     static final String CODE = CartesianAuthorityFactory.GENERIC_2D_CODE;

@@ -23,6 +23,11 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GeometryConverterFactoryTest extends TestCase {
 
 	GeometryConverterFactory factory;

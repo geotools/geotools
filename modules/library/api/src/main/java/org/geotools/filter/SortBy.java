@@ -24,6 +24,7 @@ package org.geotools.filter;
  * @since GeoTools 2.2, Filter 1.1
  * @author Jody Garnett, Refractions Research, Inc.
  *
+ *
  * @source $URL$
  */
 public interface SortBy extends org.opengis.filter.sort.SortBy {

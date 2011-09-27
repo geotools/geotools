@@ -47,6 +47,7 @@ import org.opengis.filter.identity.Identifier;
  * TODO: this class shoul be renamed to IdFilterImpl
  * 
  *
+ *
  * @source $URL$
  * @version $Id$
  */

@@ -11,6 +11,11 @@ import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class StyleAttributeExtractorTest {
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
     StyleBuilder sb = new StyleBuilder(ff);

@@ -42,6 +42,7 @@ import java.awt.image.WritableRaster;
  * @see EfficientInverseColorMapComputation
  * 
  *
+ *
  * @source $URL$
  */
 public final class InverseColorMapOp implements BufferedImageOp {

@@ -56,6 +56,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Andrea Aime
  *
  *
+ *
  * @source $URL$
  */
 public class SimpleFeatureImpl implements SimpleFeature {

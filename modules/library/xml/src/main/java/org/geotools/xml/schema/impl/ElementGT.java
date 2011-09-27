@@ -42,6 +42,7 @@ import org.geotools.xml.schema.Type;
  * @author dzwiers
  * @since 0.3
  *
+ *
  * @source $URL$
  */
 public class ElementGT implements Element {

@@ -38,6 +38,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * </p>
  * @author Jody Garnett, Refractions Research Inc.
  *
+ *
  * @source $URL$
  */
 public interface RandomFeatureAccess extends SimpleFeatureCollection {

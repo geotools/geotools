@@ -23,6 +23,7 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  * @author Ian Schneider
  *
+ *
  * @source $URL$
  */
 public final class FeatureComparators {

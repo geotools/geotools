@@ -23,7 +23,7 @@ import static java.lang.annotation.RetentionPolicy.*;
  * @author  Johann Sorel (Geomatys)
  * @since   GeoAPI 2.2
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/annotation/XmlParameter.java $
+ * @source $URL$
  */
 @Documented
 @Target(METHOD)

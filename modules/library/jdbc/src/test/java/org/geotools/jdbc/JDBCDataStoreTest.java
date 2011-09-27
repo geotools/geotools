@@ -43,6 +43,11 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class JDBCDataStoreTest extends JDBCTestSupport {
     public void testGetNames() throws IOException {
         String[] typeNames = dataStore.getTypeNames();

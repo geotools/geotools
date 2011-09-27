@@ -28,6 +28,7 @@ package org.geotools.jdbc;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class NonIncrementingPrimaryKeyColumn extends PrimaryKeyColumn {

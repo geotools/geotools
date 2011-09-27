@@ -65,8 +65,8 @@ import java.io.StringWriter;
  * 
  * @author Bryce Nordgren / USDA Forest Service
  * @author Simone Giannecchini
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/plugin/geotiff/src/org/geotools/gce/geotiff/GeoTiffException.java $
+ *
+ * @source $URL$
  */
 public final class GeoTiffException extends IOException {
 

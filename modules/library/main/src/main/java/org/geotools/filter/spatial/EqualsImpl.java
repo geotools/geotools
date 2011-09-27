@@ -24,6 +24,11 @@ import org.opengis.filter.spatial.Equals;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class EqualsImpl extends GeometryFilterImpl implements Equals {
 
 	public EqualsImpl(org.opengis.filter.FilterFactory factory, Expression e1, Expression e2) {

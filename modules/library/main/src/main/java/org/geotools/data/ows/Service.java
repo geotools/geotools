@@ -28,6 +28,7 @@ import org.opengis.metadata.citation.ResponsibleParty;
  * required. Everything else is optional.
  * 
  *
+ *
  * @source $URL$
  */
 public class Service {

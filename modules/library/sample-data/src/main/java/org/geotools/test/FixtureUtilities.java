@@ -31,6 +31,7 @@ import junit.framework.TestCase;
  * 
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
  *
+ *
  * @source $URL$
  */
 public class FixtureUtilities {

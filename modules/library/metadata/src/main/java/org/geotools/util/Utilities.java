@@ -63,6 +63,7 @@ import org.geotools.resources.i18n.Errors;
  *
  * @since 2.5
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

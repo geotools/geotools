@@ -36,6 +36,7 @@ import org.opengis.filter.capability.SpatialOperators;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class SpatialCapabiltiesImpl implements SpatialCapabilities {

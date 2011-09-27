@@ -35,6 +35,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  *
  * @author James Macgill
  *
+ *
  * @source $URL$
  */
 public class LiteralTest extends TestCase {

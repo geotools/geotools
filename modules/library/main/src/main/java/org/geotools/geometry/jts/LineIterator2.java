@@ -31,6 +31,7 @@ import com.vividsolutions.jts.geom.LineString;
  * @author Andrea Aime
  * @author simone giannecchini
  *
+ *
  * @source $URL$
  * @version $Id$
  */

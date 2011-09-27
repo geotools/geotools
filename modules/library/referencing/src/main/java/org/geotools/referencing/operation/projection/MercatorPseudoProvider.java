@@ -35,6 +35,7 @@ import org.opengis.referencing.operation.MathTransform;
  * @author Andrea Aime - OpenGeo
  *
  *
+ *
  * @source $URL$
  */
 public class MercatorPseudoProvider extends AbstractProvider {

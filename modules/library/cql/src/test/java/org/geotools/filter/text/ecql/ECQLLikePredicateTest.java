@@ -45,6 +45,7 @@ import org.opengis.filter.expression.Function;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  */
 public class ECQLLikePredicateTest extends CQLLikePredicateTest {

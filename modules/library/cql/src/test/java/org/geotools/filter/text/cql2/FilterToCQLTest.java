@@ -48,6 +48,7 @@ import org.opengis.filter.temporal.TOverlaps;
  * @author Johann Sorel
  *
  *
+ *
  * @source $URL$
  */
 public class FilterToCQLTest{

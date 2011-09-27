@@ -87,7 +87,8 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author Daniele Romagnoli, GeoSolutions
  * 
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/coverage/src/test/java/org/geotools/coverage/processing/operation/ZonalStasTest.java $
+ *
+ * @source $URL$
  */
 public class ZonalStasTest extends TestCase {
 

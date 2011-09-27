@@ -27,6 +27,11 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.sort.SortBy;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SortedFeatureReader implements SimpleFeatureReader {
 
     SimpleFeatureReader delegate;

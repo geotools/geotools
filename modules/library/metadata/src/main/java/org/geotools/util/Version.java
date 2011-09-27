@@ -31,6 +31,7 @@ import java.util.regex.Pattern;
  *
  * @since 2.4
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

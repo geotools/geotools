@@ -36,6 +36,11 @@ import org.w3c.dom.NodeList;
 
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SLDInlineFeatureParser
 {
 	

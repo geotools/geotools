@@ -44,6 +44,7 @@ import org.opengis.util.ProgressListener;
  * @author Jody Garnett (Refractions Research Inc)
  *
  *
+ *
  * @source $URL$
  */
 public abstract class AdaptorFeatureCollection implements SimpleFeatureCollection {

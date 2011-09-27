@@ -28,6 +28,7 @@ package org.geotools.data;
  *
  * @author Jody Garnett, Refractions Research, Inc.
  *
+ *
  * @source $URL$
  * @version $Id$
  *

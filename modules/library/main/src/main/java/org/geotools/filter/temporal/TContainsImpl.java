@@ -14,6 +14,11 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.temporal.TContains;
 import org.opengis.temporal.RelativePosition;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TContainsImpl extends BinaryTemporalOperatorImpl implements TContains {
     
     public TContainsImpl(Expression e1, Expression e2) {

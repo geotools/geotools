@@ -11,7 +11,8 @@ import org.opengis.filter.Filter;
 /**
  * 
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/api/src/main/java/org/geotools/data/simple/SimpleFeatureStore.java $
+ *
+ * @source $URL$
  */
 public interface SimpleFeatureStore extends FeatureStore<SimpleFeatureType,SimpleFeature>, SimpleFeatureSource {
     

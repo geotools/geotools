@@ -48,6 +48,7 @@ import static org.junit.Assert.*;
  * right in this case (the bug would be in the pure Java code).
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

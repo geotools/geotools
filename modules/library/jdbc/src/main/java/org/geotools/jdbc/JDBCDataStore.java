@@ -133,6 +133,7 @@ import com.vividsolutions.jts.geom.Point;
  *
  *
  *
+ *
  * @source $URL$
  */
 public final class JDBCDataStore extends ContentDataStore

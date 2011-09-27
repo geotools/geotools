@@ -22,6 +22,7 @@ package org.geotools.data;
  * ID and expiry period.
  * </p> 
  *
+ *
  * @source $URL$
  * 
  * @deprecated Please use {@link FeatureLock}

@@ -46,6 +46,7 @@ import org.opengis.filter.expression.VolatileFunction;
  * 
  * @author Andrea Aime - GeoSolutions
  *
+ *
  * @source $URL$
  */
 public class FilterAttributeExtractor extends DefaultFilterVisitor {

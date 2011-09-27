@@ -43,6 +43,7 @@ import org.xml.sax.helpers.AttributesImpl;
  * @see SimpleType
  * @see XMLElementHandler
  *
+ *
  * @source $URL$
  */
 public class SimpleElementHandler extends XMLElementHandler {

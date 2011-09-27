@@ -23,6 +23,11 @@ import org.opengis.filter.spatial.Intersects;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IntersectsImpl extends AbstractPreparedGeometryFilter implements
         Intersects {
 

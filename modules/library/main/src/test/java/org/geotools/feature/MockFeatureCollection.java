@@ -32,6 +32,7 @@ import org.opengis.filter.sort.SortBy;
 /**
  * @author jamesm
  *
+ *
  * @source $URL$
  */
 public class MockFeatureCollection implements SimpleFeatureCollection {

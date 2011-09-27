@@ -28,6 +28,7 @@ import com.vividsolutions.jts.geom.Point;
  *
  * @author Andrea Aime
  *
+ *
  * @source $URL$
  */
 public final class PointIterator extends AbstractLiteIterator {

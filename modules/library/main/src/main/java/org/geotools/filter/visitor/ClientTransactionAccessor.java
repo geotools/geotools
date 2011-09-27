@@ -26,6 +26,7 @@ import org.opengis.filter.Filter;
  * @author Jesse
  *
  *
+ *
  * @source $URL$
  */
 public interface ClientTransactionAccessor {

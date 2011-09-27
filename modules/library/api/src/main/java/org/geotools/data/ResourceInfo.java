@@ -42,6 +42,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @since 2.5
  *
  *
+ *
  * @source $URL$
  */
 public interface ResourceInfo {

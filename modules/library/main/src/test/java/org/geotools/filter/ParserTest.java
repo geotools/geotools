@@ -42,6 +42,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  *
  * @author James MacGill, CCG
  *
+ *
  * @source $URL$
  */
 public class ParserTest extends FilterTestSupport {

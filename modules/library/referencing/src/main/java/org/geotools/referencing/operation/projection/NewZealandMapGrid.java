@@ -45,6 +45,7 @@ import static java.lang.Math.*;
  *
  * @since 2.2
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Justin Deoliveira

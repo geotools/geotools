@@ -22,6 +22,11 @@ import org.opengis.feature.type.AssociationDescriptor;
 import org.opengis.feature.type.AssociationType;
 import org.opengis.feature.type.AttributeType;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class AssociationImpl extends PropertyImpl implements Association {
 
     protected AssociationImpl(Attribute value, AssociationDescriptor descriptor) {

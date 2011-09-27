@@ -30,6 +30,7 @@ import org.opengis.util.GenericName;
  * Information identifying the feature catalogue.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

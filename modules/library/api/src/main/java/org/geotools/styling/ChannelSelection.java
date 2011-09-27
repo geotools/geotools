@@ -50,6 +50,7 @@ package org.geotools.styling;
  *
  * @author iant
  *
+ *
  * @source $URL$
  */
 public interface ChannelSelection extends org.opengis.style.ChannelSelection {

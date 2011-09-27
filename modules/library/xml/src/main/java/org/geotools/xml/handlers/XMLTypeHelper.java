@@ -28,6 +28,7 @@ import org.geotools.xml.schema.Type;
  * @author Jesse
  *
  *
+ *
  * @source $URL$
  */
 public class XMLTypeHelper {

@@ -27,6 +27,7 @@ import org.opengis.metadata.quality.RelativeInternalPositionalAccuracy;
  * relative positions accepted as or being true.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

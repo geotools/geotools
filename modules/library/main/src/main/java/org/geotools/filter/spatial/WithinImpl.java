@@ -23,6 +23,11 @@ import org.opengis.filter.spatial.Within;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class WithinImpl extends AbstractPreparedGeometryFilter implements Within {
 
 	public WithinImpl(org.opengis.filter.FilterFactory factory,Expression e1,Expression e2) {

@@ -46,6 +46,7 @@ import org.opengis.filter.Filter;
  * @since 2.5
  *
  *
+ *
  * @source $URL$
  */
 public class CQLLikePredicateTest {

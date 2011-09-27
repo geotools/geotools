@@ -40,7 +40,8 @@ import org.opengis.filter.capability.FunctionName;
  * @author Justin Deoliveira, OpenGeo
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/filter/function/FilterFunction_strPosition.java $
+ *
+ * @source $URL$
  */
 public class FilterFunction_strPosition extends FunctionExpressionImpl {
 

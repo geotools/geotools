@@ -52,6 +52,11 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class JDBCFeatureStoreTest extends JDBCTestSupport {
     JDBCFeatureStore featureStore;
 

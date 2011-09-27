@@ -10,6 +10,11 @@ import org.opengis.geometry.MismatchedReferenceSystemException;
 import com.vividsolutions.jts.geom.Coordinate;
 import java.awt.geom.Rectangle2D;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ReferencedEnvelopeTest {
 
     @Test

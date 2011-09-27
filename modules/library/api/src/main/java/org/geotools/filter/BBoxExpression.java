@@ -24,6 +24,7 @@ import com.vividsolutions.jts.geom.Envelope;
  *
  * @author Ian Turton, CCG
  *
+ *
  * @source $URL$
  * @version $Id$
  * @deprecated Please just use a simple literal

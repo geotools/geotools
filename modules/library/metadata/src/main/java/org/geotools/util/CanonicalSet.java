@@ -42,6 +42,7 @@ package org.geotools.util;
  *
  * @since 2.4
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

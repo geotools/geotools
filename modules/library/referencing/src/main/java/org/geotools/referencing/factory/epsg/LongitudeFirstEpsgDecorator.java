@@ -52,6 +52,7 @@ import org.geotools.metadata.iso.citation.Citations;
  *
  * @since 2.5
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Jody Garnett

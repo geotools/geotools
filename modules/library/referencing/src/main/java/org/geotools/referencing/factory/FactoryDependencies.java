@@ -54,6 +54,7 @@ import org.geotools.resources.X364;
  *
  * @since 2.4
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

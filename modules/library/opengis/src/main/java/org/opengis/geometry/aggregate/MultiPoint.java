@@ -23,7 +23,8 @@ import static org.opengis.annotation.Specification.*;
  * {@linkplain Point points} contained in this {@code MultiPoint}.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/geometry/aggregate/MultiPoint.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @since GeoAPI 1.0
  */

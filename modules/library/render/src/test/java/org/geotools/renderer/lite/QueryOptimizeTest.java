@@ -21,6 +21,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * but a certain point in time only the first one was passed down to the datastore) 
  *
  *
+ *
  * @source $URL$
  */
 public class QueryOptimizeTest extends TestCase {

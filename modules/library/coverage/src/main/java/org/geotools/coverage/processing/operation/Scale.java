@@ -36,6 +36,7 @@ import org.geotools.image.jai.Registry;
  * me to arbitrarly scale and translate a rendered image.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini

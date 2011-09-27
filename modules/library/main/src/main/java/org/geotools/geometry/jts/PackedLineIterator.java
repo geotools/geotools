@@ -32,6 +32,7 @@ import com.vividsolutions.jts.geom.impl.PackedCoordinateSequence.Double;
  *
  * @author Andrea Aime
  *
+ *
  * @source $URL$
  *
  * @source $URL$

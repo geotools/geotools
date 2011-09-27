@@ -46,6 +46,8 @@ import com.vividsolutions.jts.io.WKTWriter;
  * 
  * @author Mauricio Pazos
  *
+ *
+ * @source $URL$
  */
 public class ExpressionToText implements ExpressionVisitor {
 	

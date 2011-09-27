@@ -33,6 +33,7 @@ import org.opengis.filter.expression.Expression;
  * the Interpolate element.s
  *
  *
+ *
  * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification 1.1.0</A>
  * @author Johann Sorel (Geomatys)

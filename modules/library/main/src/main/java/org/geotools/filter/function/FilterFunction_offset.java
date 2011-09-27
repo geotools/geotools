@@ -28,6 +28,11 @@ import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.CoordinateSequenceFilter;
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FilterFunction_offset extends FunctionExpressionImpl implements 
         GeometryTransformation {
 

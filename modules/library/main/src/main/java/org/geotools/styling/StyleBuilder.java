@@ -39,6 +39,7 @@ import org.opengis.filter.expression.PropertyName;
  *
  * @author aaime
  *
+ *
  * @source $URL$
  */
 public class StyleBuilder {

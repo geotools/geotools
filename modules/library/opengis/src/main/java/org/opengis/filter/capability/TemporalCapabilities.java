@@ -35,6 +35,8 @@ package org.opengis.filter.capability;
  *   </pre>
  * </p>
  * @author Justin Deoliveira, OpenGeo
+ *
+ * @source $URL$
  */
 public interface TemporalCapabilities {
 

@@ -27,6 +27,7 @@ import org.geotools.resources.IndexedResourceCompiler;
  * 
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini

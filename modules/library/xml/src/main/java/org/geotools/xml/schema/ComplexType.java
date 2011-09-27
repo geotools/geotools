@@ -30,6 +30,7 @@ import org.xml.sax.Attributes;
  *
  * @author dzwiers www.refractions.net
  *
+ *
  * @source $URL$
  */
 public interface ComplexType extends Type {

@@ -38,6 +38,7 @@ import org.geotools.resources.LazySet;
  * {@linkplain PrecisionModel precision model} factories.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

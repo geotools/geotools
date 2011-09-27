@@ -34,6 +34,7 @@ import org.geotools.metadata.iso.MetadataEntity;
  * Description of the event, including related parameters or tolerances.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

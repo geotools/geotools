@@ -30,6 +30,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * only a single set of content.
  *
  *
+ *
  * @source $URL$
  */
 public interface FileDataStore extends DataStore {

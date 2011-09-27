@@ -46,6 +46,7 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  * @author Ian Turton, CCG
  *
+ *
  * @source $URL$
  * @version $Id$
  *

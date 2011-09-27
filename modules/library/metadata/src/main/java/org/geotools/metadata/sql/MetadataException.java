@@ -23,6 +23,7 @@ package org.geotools.metadata.sql;
  *
  * @since 2.1
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Touraïvane

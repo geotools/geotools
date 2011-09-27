@@ -41,6 +41,8 @@ import com.vividsolutions.jts.geom.Polygon;
  * or in common use.
  * 
  * @author Jesse
+ *
+ * @source $URL$
  */
 public class ChoiceGeometryTypeImpl extends ChoiceAttributeTypeImpl implements
         ChoiceGeometryType, GeometryType {

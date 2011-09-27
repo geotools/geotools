@@ -29,6 +29,7 @@ import org.opengis.util.Cloneable;
 
 /**
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author James Macgill, CCG

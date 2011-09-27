@@ -27,7 +27,8 @@ import org.opengis.filter.capability.FunctionName;
  * by that specification.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/filter/expression/Function.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification 1.1.0</A>
  * @author Chris Dillard (SYS Technologies)

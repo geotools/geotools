@@ -61,6 +61,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class JDBCFeatureSource extends ContentFeatureSource {
     
     private static final Logger LOGGER = Logging.getLogger(JDBCFeatureSource.class);

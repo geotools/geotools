@@ -23,6 +23,11 @@ import org.geotools.data.DataTestCase;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MemoryFeatureCollectionTest extends DataTestCase {
     private MemoryFeatureCollection roads;
     

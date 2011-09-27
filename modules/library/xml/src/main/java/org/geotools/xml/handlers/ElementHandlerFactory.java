@@ -44,6 +44,7 @@ import org.xml.sax.SAXException;
  * @see org.geotools.xml.XMLSAXHandler
  * @see Schema
  *
+ *
  * @source $URL$
  */
 public class ElementHandlerFactory {

@@ -27,6 +27,7 @@ import org.opengis.filter.expression.Literal;
  * a literal that actualy contains the current map scale before use.
  * @author James
  *
+ *
  * @source $URL$
  * 
  */

@@ -12,6 +12,7 @@ import org.opengis.metadata.citation.OnLineResource;
  * with an appropriate WellKnownName.
  *
  *
+ *
  * @source $URL$
  */
 public interface ExternalMark extends org.opengis.style.ExternalMark {

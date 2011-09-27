@@ -24,6 +24,7 @@ import static org.junit.Assert.*;
  * Tests the {@link RangeSet} implementation.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Andrea Aime

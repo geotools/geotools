@@ -27,6 +27,7 @@ import org.opengis.metadata.quality.LogicalConsistency;
  * structure can be conceptual, logical or physical).
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

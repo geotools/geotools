@@ -30,6 +30,11 @@ import org.apache.commons.dbcp.BasicDataSource;
 import org.geotools.data.jdbc.datasource.DataSourceFinder;
 import org.geotools.data.jdbc.datasource.UnWrapper;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class UnWrapperTest extends TestCase {
 
    public void testDBCPUnwrapper() throws SQLException, IOException {

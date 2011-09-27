@@ -31,6 +31,7 @@ import org.geotools.filter.text.cql2.CQLExistenceTest;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  */
 public class ECQLExistenceTest extends CQLExistenceTest {

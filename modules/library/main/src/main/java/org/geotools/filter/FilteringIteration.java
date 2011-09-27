@@ -33,6 +33,7 @@ import org.opengis.feature.type.PropertyDescriptor;
  *
  * @author Ian Schneider
  *
+ *
  * @source $URL$
  */
 public class FilteringIteration extends FeatureCollectionIteration {

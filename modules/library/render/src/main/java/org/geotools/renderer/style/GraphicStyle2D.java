@@ -24,6 +24,7 @@ import java.awt.image.BufferedImage;
  * 
  * @author Andrea Aime
  *
+ *
  * @source $URL$
  * @version $Id$
  */

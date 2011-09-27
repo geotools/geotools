@@ -36,6 +36,7 @@ import static org.geotools.filter.capability.FunctionNameImpl.*;
  * 
  * @author  James
  *
+ *
  * @source $URL$
  */
 public class AreaFunction extends FunctionExpressionImpl { 

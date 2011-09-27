@@ -38,6 +38,7 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  * @author Andrea Aime
  *
+ *
  * @source $URL$
  * @version $Id$
  */

@@ -32,6 +32,11 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.Point;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class JDBCGeometryAssociationTestSupport extends JDBCTestSupport {
     protected void connect() throws Exception {
         super.connect();

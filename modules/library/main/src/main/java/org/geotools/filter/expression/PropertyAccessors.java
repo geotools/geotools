@@ -31,6 +31,7 @@ import org.geotools.factory.Hints;
  * 
  *
  *
+ *
  * @source $URL$
  */
 public class PropertyAccessors {

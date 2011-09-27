@@ -28,6 +28,7 @@ import org.opengis.util.InternationalString;
  * @author   Simone Giannecchini, GeoSolutions.
  *
  *
+ *
  * @source $URL$
  */
 public class DefaultDomainElement1D implements DomainElement1D {

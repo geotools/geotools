@@ -21,6 +21,11 @@ import org.opengis.filter.PropertyIsGreaterThan;
 import org.opengis.filter.PropertyIsLike;
 
 @SuppressWarnings("deprecation")
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FiltersTest {
 
     private static final double DELTA = 0.0000001;

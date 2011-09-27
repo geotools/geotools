@@ -40,6 +40,7 @@ import org.opengis.filter.FilterFactory2;
  *
  * @author Jody Garnett (Refractions Research Inc)
  *
+ *
  * @source $URL$
  */
 public class RescaleStyleVisitorTest extends TestCase {

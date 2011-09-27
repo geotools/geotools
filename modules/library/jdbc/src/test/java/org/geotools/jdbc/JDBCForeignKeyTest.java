@@ -27,6 +27,11 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class JDBCForeignKeyTest extends JDBCTestSupport {
     protected void connect() throws Exception {
         super.connect();

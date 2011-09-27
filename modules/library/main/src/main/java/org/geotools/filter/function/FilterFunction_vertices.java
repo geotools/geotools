@@ -15,6 +15,11 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.MultiPoint;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FilterFunction_vertices extends FunctionExpressionImpl {
 
     //public static FunctionName NAME = new FunctionNameImpl("vertices","geometry");

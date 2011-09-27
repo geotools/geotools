@@ -29,6 +29,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * @author Rob Hranac, TOPP
  * @author Chris Holmes, TOPP
  *
+ *
  * @source $URL$
  * @version $Id$
  *

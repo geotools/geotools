@@ -23,7 +23,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * Tests data reading when we expose primary keys as attributes
  * @author Andrea Aime
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/jdbc/src/test/java/org/geotools/jdbc/JDBCFeatureSourceExposePkTest.java $
+ *
+ * @source $URL$
  */
 public abstract class JDBCFeatureSourceExposePkTest extends JDBCFeatureSourceTest {
     

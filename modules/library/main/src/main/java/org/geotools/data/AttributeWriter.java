@@ -28,6 +28,7 @@ import org.opengis.feature.type.AttributeDescriptor;
  *  
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author  Ian Schneider

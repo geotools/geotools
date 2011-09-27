@@ -22,7 +22,8 @@ import org.opengis.feature.Feature;
  * defined based on XPath queries currently.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/filter/expression/Expression.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)
  * @author Justin Deoliveira (The Open Planning Project)

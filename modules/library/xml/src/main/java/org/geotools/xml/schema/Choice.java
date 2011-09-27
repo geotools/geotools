@@ -27,6 +27,7 @@ package org.geotools.xml.schema;
  *
  * @author dzwiers www.refractions.net
  *
+ *
  * @source $URL$
  */
 public interface Choice extends ElementGrouping {

@@ -48,6 +48,7 @@ import org.opengis.feature.type.FeatureTypeFactory;
  *
  * @author John Meagher
  *
+ *
  * @source $URL$
  */
 public class AnnotationFeatureType

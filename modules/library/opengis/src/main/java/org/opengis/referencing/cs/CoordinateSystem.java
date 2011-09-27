@@ -24,7 +24,8 @@ import static org.opengis.annotation.Specification.*;
  * coordinates use a coordinate reference system that uses this coordinate system.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/referencing/cs/CoordinateSystem.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract specification 2.0</A>
  * @author  Martin Desruisseaux (IRD)
  * @since   GeoAPI 1.0

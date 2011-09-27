@@ -26,6 +26,7 @@ import org.geotools.resources.i18n.Errors;
  * {@link org.opengis.coverage.grid.GridRange}.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

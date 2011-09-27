@@ -36,7 +36,8 @@ import static org.opengis.annotation.Specification.*;
  * factory lets an application create such a hybrid coordinate system.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/referencing/crs/CRSFactory.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/01-009.pdf">Implementation specification 1.0</A>
  * @author  Martin Desruisseaux (IRD)
  * @since   GeoAPI 1.0

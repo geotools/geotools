@@ -63,6 +63,7 @@ import com.vividsolutions.jts.geom.Point;
  * @author PHustad
  *
  *
+ *
  * @source $URL$
  */
 public class StreamingRendererTest extends TestCase {

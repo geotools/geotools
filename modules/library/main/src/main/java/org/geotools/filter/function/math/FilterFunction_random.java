@@ -23,6 +23,11 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.opengis.filter.expression.VolatileFunction;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FilterFunction_random extends FunctionExpressionImpl implements VolatileFunction {
 
     public FilterFunction_random() {

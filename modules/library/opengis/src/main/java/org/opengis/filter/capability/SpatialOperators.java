@@ -43,7 +43,8 @@ import java.util.Collection;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/filter/capability/SpatialOperators.java $
+ *
+ * @source $URL$
  */
 public interface SpatialOperators {
 

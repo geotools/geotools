@@ -90,6 +90,7 @@ import com.sun.media.jai.util.Rational;
  *
  * @since 2.0
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

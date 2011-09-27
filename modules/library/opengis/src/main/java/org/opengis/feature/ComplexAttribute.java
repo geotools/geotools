@@ -93,7 +93,8 @@ import org.opengis.filter.expression.Expression;
  * @author Gabriel Roldan, Axios Engineering
  * @author Justin Deoliveira, The Open Planning Project
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/feature/ComplexAttribute.java $
+ *
+ * @source $URL$
  */
 public interface ComplexAttribute extends Attribute {
 

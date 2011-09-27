@@ -12,6 +12,11 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.io.WKTReader;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class GeometryCollectorTest {
 
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);

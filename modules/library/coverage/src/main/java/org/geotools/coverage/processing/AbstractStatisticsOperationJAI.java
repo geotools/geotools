@@ -66,6 +66,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * 
  *
  *
+ *
  * @source $URL$
  */
 public abstract class AbstractStatisticsOperationJAI extends

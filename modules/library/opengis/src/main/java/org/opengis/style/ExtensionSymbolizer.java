@@ -20,7 +20,8 @@ import org.opengis.filter.expression.Expression;
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.3
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/style/ExtensionSymbolizer.java $
+ *
+ * @source $URL$
  */
 public interface ExtensionSymbolizer extends Symbolizer {
     

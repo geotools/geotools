@@ -43,7 +43,8 @@ import org.opengis.filter.sort.SortBy;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/feature/collection/MaxSimpleFeatureCollection.java $
+ *
+ * @source $URL$
  */
 public class MaxSimpleFeatureCollection extends
         DecoratingSimpleFeatureCollection {

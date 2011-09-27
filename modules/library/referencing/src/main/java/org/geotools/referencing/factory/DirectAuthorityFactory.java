@@ -37,6 +37,7 @@ import org.geotools.factory.Hints;
  *
  * @since 2.3
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

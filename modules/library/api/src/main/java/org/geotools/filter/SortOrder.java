@@ -26,6 +26,7 @@ package org.geotools.filter;
  * @author Jody Garnett, Refractions Research.
  * @since GeoTools 2.2, Filter 1.1
  *
+ *
  * @source $URL$
  */
 public final class SortOrder extends Object {

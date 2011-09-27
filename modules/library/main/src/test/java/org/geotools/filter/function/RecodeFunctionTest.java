@@ -34,7 +34,8 @@ import static org.junit.Assert.*;
  * @author mbedward
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/test/java/org/geotools/filter/function/RecodeFunctionTest.java $
+ *
+ * @source $URL$
  */
 public class RecodeFunctionTest extends SEFunctionTestBase {
 

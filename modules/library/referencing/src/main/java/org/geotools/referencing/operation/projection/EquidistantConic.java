@@ -58,8 +58,9 @@ import static java.lang.Math.*;
  *
  * @since 2.6.1
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/referencing/src/main/java/org/geotools/referencing/operation/projection/EquidistantConic.java $
- * @version $Id: $
+ *
+ * @source $URL$
+ * @version $Id$
  * @author Ivan Boldyrev
  */
 public class EquidistantConic extends MapProjection {
@@ -250,7 +251,7 @@ public class EquidistantConic extends MapProjection {
      * provider} for a {@linkplain EquidistantConic EquidistantConic} projection.
      *
      * @since 2.6.1
-     * @version $Id: $
+     * @version $Id$
      * @author Ivan Boldyrev
      *
      * @see org.geotools.referencing.operation.DefaultMathTransformFactory

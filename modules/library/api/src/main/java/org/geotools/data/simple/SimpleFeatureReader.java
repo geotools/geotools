@@ -7,7 +7,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
 /**
  * FeatureReader for SimpleFeature content.
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/api/src/main/java/org/geotools/data/simple/SimpleFeatureReader.java $
+ *
+ * @source $URL$
  */
 public interface SimpleFeatureReader extends FeatureReader<SimpleFeatureType, SimpleFeature> {
 

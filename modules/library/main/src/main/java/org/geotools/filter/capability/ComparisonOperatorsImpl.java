@@ -32,6 +32,7 @@ import org.opengis.filter.capability.Operator;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class ComparisonOperatorsImpl implements ComparisonOperators {

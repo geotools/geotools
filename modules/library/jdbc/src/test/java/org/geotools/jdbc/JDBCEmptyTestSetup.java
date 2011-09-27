@@ -25,6 +25,7 @@ import java.sql.SQLException;
  *
  *
  *
+ *
  * @source $URL$
  */
 public abstract class JDBCEmptyTestSetup extends JDBCDelegatingTestSetup {

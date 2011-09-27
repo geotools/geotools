@@ -29,7 +29,8 @@ import org.geotools.referencing.operation.projection.MapProjection.AbstractProvi
  * 
  * @author Andrea Aime - OpenGeo
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/renderer/crs/TransverseMercatorHandlerFactory.java $
+ *
+ * @source $URL$
  */
 public class TransverseMercatorHandlerFactory implements ProjectionHandlerFactory {
 

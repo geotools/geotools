@@ -36,6 +36,7 @@ import org.opengis.geometry.primitive.PrimitiveFactory;
  *
  * @since 2.5
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Jody Garnett (Refractions Research)

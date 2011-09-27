@@ -20,7 +20,8 @@ import static org.opengis.annotation.Specification.*;
  * surface, and not necessarily planar.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/geometry/coordinate/BilinearGrid.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

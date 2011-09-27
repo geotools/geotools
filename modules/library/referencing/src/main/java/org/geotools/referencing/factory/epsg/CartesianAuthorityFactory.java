@@ -47,7 +47,8 @@ import org.opengis.util.InternationalString;
  * @author Andrea Aime - GeoSolutions
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/referencing/src/main/java/org/geotools/referencing/factory/epsg/CartesianAuthorityFactory.java $
+ *
+ * @source $URL$
  */
 public class CartesianAuthorityFactory extends DirectAuthorityFactory implements
         CRSAuthorityFactory {

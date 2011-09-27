@@ -31,6 +31,7 @@ import org.geotools.util.SimpleInternationalString;
  * Accuracy of the position of features.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

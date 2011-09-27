@@ -30,6 +30,7 @@ import org.opengis.feature.type.FeatureType;
  *
  * @author Chris Holmes
  *
+ *
  * @source $URL$
  * @version $Id$
  */

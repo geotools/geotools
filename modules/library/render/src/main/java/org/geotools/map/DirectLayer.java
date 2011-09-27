@@ -36,7 +36,8 @@ import java.awt.Graphics2D;
  * @author Jody
  * @since 2.7
  * @version 8.0
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/map/DirectLayer.java $
+ *
+ * @source $URL$
  */
 public abstract class DirectLayer extends Layer {
 

@@ -44,7 +44,8 @@ import com.vividsolutions.jts.geom.Point;
 /**
  * Check GML abilities
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/xml/src/test/java/org/geotools/GMLTest.java $
+ *
+ * @source $URL$
  */
 public class GMLTest {
     /**

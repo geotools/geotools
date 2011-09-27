@@ -28,6 +28,7 @@ import org.geotools.util.Utilities;
  * to 0 spaces. Users must invoke {@link #setIndentation} in order to set a different value.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

@@ -5,7 +5,8 @@ import org.opengis.util.InternationalString;
 /**
  * 
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/api/src/main/java/org/geotools/styling/Description.java $
+ *
+ * @source $URL$
  */
 public interface Description extends org.opengis.style.Description {
 

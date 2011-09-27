@@ -29,6 +29,7 @@ import org.geotools.xml.schema.SimpleType;
  *
  * @author dzwiers
  *
+ *
  * @source $URL$
  */
 public class AttributeGT implements Attribute {

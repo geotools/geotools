@@ -28,6 +28,7 @@ import org.opengis.metadata.quality.FormatConsistency;
  *
  * @since 2.4
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

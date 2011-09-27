@@ -56,6 +56,7 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  * @author jamesm
  *
+ *
  * @source $URL$
  */
 public class SLDStyleTest extends TestCase {

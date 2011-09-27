@@ -14,6 +14,11 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.temporal.During;
 import org.opengis.temporal.RelativePosition;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DuringImpl extends BinaryTemporalOperatorImpl implements During {
     
     public DuringImpl(Expression e1, Expression e2) {

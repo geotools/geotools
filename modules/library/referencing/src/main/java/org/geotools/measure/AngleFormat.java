@@ -86,6 +86,7 @@ import org.geotools.math.XMath;
  *
  * @since 2.0
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (PMO, IRD)

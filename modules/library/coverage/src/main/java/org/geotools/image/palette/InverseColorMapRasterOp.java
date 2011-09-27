@@ -26,6 +26,11 @@ import java.awt.image.Raster;
 import java.awt.image.RasterOp;
 import java.awt.image.WritableRaster;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public final class InverseColorMapRasterOp implements RasterOp {
 
 	/**

@@ -23,6 +23,11 @@ import junit.framework.TestCase;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SimpleFeaturePropertyAccessorFactoryTest extends TestCase {
 
 	SimpleFeaturePropertyAccessorFactory factory;

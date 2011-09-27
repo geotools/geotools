@@ -35,6 +35,7 @@ import org.opengis.filter.expression.Expression;
  * @author        Simone Giannecchini, GeoSolutions
  *
  *
+ *
  * @source $URL$
  */
 public class SLDColorMapBuilder {

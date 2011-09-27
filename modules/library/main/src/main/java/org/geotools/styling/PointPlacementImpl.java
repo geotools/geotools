@@ -32,6 +32,7 @@ import org.opengis.util.Cloneable;
  *
  * @author Ian Turton, CCG
  *
+ *
  * @source $URL$
  * @version $Id$
  */

@@ -33,6 +33,7 @@ import com.vividsolutions.jts.geom.Point;
  *
  * @author jamesm
  *
+ *
  * @source $URL$
  */
 public class SampleFeatureFixtures {

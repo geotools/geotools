@@ -22,6 +22,7 @@ package org.geotools.filter;
  * @author Rob Hranac, Vision for New York
  * @author Chris Holmes, TOPP
  *
+ *
  * @source $URL$
  * @version $Id$
  */

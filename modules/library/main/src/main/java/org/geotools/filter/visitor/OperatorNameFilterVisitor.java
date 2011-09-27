@@ -71,6 +71,7 @@ import org.opengis.filter.temporal.TOverlaps;
  * @author Jody Garnett
  *
  *
+ *
  * @source $URL$
  */
 public class OperatorNameFilterVisitor implements FilterVisitor {

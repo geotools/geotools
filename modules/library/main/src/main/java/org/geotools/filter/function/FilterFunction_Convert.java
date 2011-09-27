@@ -28,6 +28,8 @@ import org.opengis.filter.capability.FunctionName;
 /**
  * Applies the available {@link Converter} to turn the value into the desired target class 
  * @author Andrea Aime - GeoSolutions
+ *
+ * @source $URL$
  */
 public class FilterFunction_Convert extends FunctionExpressionImpl {
 

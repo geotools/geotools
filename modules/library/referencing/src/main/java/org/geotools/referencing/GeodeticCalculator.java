@@ -90,6 +90,7 @@ import org.geotools.util.logging.Logging;
  *
  * @since 2.1
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Daniele Franzoni

@@ -30,6 +30,11 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class JDBCTransactionTest extends JDBCTestSupport {
     public void testCommit() throws IOException {
         JDBCFeatureStore fs = (JDBCFeatureStore) dataStore.getFeatureSource(tname("ft1"));

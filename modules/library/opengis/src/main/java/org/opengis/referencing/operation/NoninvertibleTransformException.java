@@ -19,7 +19,8 @@ package org.opengis.referencing.operation;
  *
  * @see org.opengis.referencing.operation.CoordinateOperationFactory
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/referencing/operation/NoninvertibleTransformException.java $
+ *
+ * @source $URL$
  */
 public class NoninvertibleTransformException extends TransformException {
     /**

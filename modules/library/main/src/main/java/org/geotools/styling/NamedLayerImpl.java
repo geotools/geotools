@@ -29,6 +29,7 @@ import org.geotools.util.Utilities;
  *
  * @author jamesm
  *
+ *
  * @source $URL$
  */
 public class NamedLayerImpl extends StyledLayerImpl implements NamedLayer {

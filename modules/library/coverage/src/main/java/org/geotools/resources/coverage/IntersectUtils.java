@@ -32,7 +32,8 @@ import org.geotools.util.Utilities;
  *
  * @author Emanuele Tajariol (GeoSolutions)
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/coverage/src/main/java/org/geotools/resources/coverage/IntersectUtils.java $
+ *
+ * @source $URL$
  */
 public class IntersectUtils {
 

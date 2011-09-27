@@ -22,7 +22,8 @@ import static org.opengis.annotation.Specification.*;
  * {@link GenericCurve#getParamForPoint}.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/geometry/coordinate/ParamForPoint.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

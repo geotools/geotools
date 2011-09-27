@@ -25,7 +25,8 @@ import static org.opengis.annotation.Specification.OGC_02059;
  * @author Jody Garnett (Refractions Research)
  * @since GeoAPI 2.1
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/filter/sort/SortOrder.java $
+ *
+ * @source $URL$
  */
 public final class SortOrder extends CodeList<SortOrder> {
     /**

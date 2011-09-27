@@ -20,6 +20,11 @@ import java.util.logging.Logger;
 
 import org.opengis.filter.expression.Expression;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ClassificationFunctionTest extends FunctionTestSupport {
     
     protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.filter");

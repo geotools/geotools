@@ -24,7 +24,8 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
  * 
  * @author Andrea Aime - OpenGeo
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/renderer/crs/ProjectionHandlerFactory.java $
+ *
+ * @source $URL$
  */
 public interface ProjectionHandlerFactory {
 

@@ -33,6 +33,7 @@ import org.opengis.filter.identity.GmlObjectId;
  * @since 2.5
  *
  *
+ *
  * @source $URL$
  */
 public interface GmlObjectStore {

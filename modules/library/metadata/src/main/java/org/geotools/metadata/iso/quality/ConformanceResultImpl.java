@@ -29,6 +29,7 @@ import org.opengis.util.InternationalString;
  * a specified acceptable conformance quality level.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

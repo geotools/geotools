@@ -28,6 +28,7 @@ import com.vividsolutions.jts.geom.DefaultCoordinateSequenceFactory;
  * coordinate sequences backed by a Coordinate[] array.
  * @author wolf
  *
+ *
  * @source $URL$
  */
 public class DefaultCSBuilder implements CSBuilder {

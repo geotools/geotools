@@ -27,6 +27,7 @@ import org.opengis.temporal.IntervalLength;
  * @author Mehdi Sidhoum (Geomatys)
  *
  *
+ *
  * @source $URL$
  */
 public class DefaultIntervalLength extends DefaultDuration implements IntervalLength {

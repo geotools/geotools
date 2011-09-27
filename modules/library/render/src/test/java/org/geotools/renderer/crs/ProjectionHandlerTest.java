@@ -21,6 +21,11 @@ import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.io.WKTReader;
 import org.opengis.referencing.operation.MathTransform;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ProjectionHandlerTest {
 
     static final double EPS = 1e-6;

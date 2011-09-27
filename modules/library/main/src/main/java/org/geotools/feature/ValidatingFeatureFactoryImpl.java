@@ -24,6 +24,7 @@ package org.geotools.feature;
  * 
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  */

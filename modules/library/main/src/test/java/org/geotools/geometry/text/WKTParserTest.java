@@ -22,6 +22,11 @@ import org.geotools.geometry.MockGeometryFactory;
 import org.opengis.geometry.primitive.Curve;
 import org.opengis.geometry.primitive.Point;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class WKTParserTest extends TestCase {
     // TODO: POLYGON ((280 380, 280 200, 60 200, 60 380, 180 220, 280 380),(40 160, 260 160, 240 60, 20 80, 40 160))
     WKTParser parser;

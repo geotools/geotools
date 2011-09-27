@@ -70,7 +70,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Michael Bedward
  * @since 2.7
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/map/MapViewport.java $
+ *
+ * @source $URL$
  */
 public class MapViewport {
     /** The logger for the map module. */

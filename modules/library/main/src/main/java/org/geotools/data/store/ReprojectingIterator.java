@@ -36,6 +36,11 @@ import org.opengis.referencing.operation.TransformException;
 
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ReprojectingIterator implements Iterator {
 
     /**

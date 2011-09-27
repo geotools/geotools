@@ -18,6 +18,11 @@ package org.geotools.jdbc;
 
 import java.sql.SQLException;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class JDBCPrimaryKeyFinderTestSetup extends JDBCDelegatingTestSetup {
 
     protected JDBCPrimaryKeyFinderTestSetup(JDBCTestSetup delegate) {

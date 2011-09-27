@@ -41,6 +41,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  */
 public class ECQLRelGeoOpTest extends CQLRelGeoOpTest {

@@ -59,8 +59,9 @@ import org.opengis.referencing.operation.MathTransform;
  *
  * @since 2.6.1
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/referencing/src/main/java/org/geotools/referencing/operation/projection/Polyconic.java $
- * @version $Id: Mercator.java 30641 2008-06-12 17:42:27Z acuster $
+ *
+ * @source $URL$
+ * @version $Id$
  * @author Andrea Aime
  */
 public class Polyconic extends MapProjection {
@@ -235,7 +236,7 @@ public class Polyconic extends MapProjection {
      * provider} for a {@linkplain Mercator1SP Mercator 1SP} projection (EPSG code 9804).
      *
      * @since 2.6.2
-     * @version $Id: Mercator1SP.java 34715 2009-12-21 17:11:00Z aaime $
+     * @version $Id$
      * @author Andrea Aime
      *
      * @see org.geotools.referencing.operation.DefaultMathTransformFactory

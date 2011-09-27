@@ -31,6 +31,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @since 2.2.M2
  *
+ *
  * @source $URL$
  */
 public class MaxVisitor implements FeatureCalc {

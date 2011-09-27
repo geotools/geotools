@@ -26,6 +26,8 @@ import org.opengis.temporal.TemporalObject;
  * 
  * @author Justin Deoliveira, OpenGeo
  *
+ *
+ * @source $URL$
  */
 public class TemporalConverterFactory implements ConverterFactory {
 

@@ -31,6 +31,11 @@ import org.opengis.filter.Id;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class JDBCPrimaryKeyTest extends JDBCTestSupport {
 
     @Override

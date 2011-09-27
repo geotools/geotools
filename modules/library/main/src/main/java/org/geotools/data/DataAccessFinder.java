@@ -55,6 +55,7 @@ import org.opengis.feature.type.FeatureType;
  * </p>
  * 
  *
+ *
  * @source $URL$
  */
 public final class DataAccessFinder {

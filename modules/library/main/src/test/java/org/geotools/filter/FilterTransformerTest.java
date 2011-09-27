@@ -27,6 +27,11 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.identity.FeatureId;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FilterTransformerTest extends TestCase {
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
     FilterTransformer transform = new FilterTransformer();

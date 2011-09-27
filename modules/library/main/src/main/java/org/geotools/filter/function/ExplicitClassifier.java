@@ -23,6 +23,7 @@ import java.util.Set;
  * 
  * @author jody
  *
+ *
  * @source $URL$
  */
 public final class ExplicitClassifier extends Classifier {

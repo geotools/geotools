@@ -139,6 +139,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  * {@link Polygon}.
  * 
  *
+ *
  * @source $URL$
  * @todo make this operation more t,z friendly
  * @version $Id$

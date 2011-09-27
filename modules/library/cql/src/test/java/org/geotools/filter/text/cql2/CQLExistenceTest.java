@@ -44,6 +44,7 @@ import org.opengis.filter.PropertyIsEqualTo;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  */
 public class CQLExistenceTest {

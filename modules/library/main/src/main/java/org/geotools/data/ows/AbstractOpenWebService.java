@@ -52,6 +52,7 @@ import org.geotools.ows.ServiceException;
  * @author Richard Gould
  *
  *
+ *
  * @source $URL$
  */
 public abstract class AbstractOpenWebService<C extends Capabilities, R extends Object> {

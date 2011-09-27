@@ -34,6 +34,8 @@ import java.util.Collection;
  *
  * @author Justin Deoliveira, OpenGeo
  *
+ *
+ * @source $URL$
  */
 public interface TemporalOperators {
 

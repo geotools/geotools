@@ -22,6 +22,7 @@ import junit.framework.TestCase;
 
 /**
  *
+ *
  * @source $URL$
  */
 public class ScreenMapTest extends TestCase {

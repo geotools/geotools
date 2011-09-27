@@ -32,6 +32,7 @@ import org.opengis.filter.FilterFactory;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  */
 public abstract class AbstractCompilerFactory {

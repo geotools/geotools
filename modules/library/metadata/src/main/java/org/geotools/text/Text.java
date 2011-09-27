@@ -31,7 +31,8 @@ import org.opengis.util.InternationalString;
  * 
  * @author Jody Garnett
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/metadata/src/main/java/org/geotools/text/Text.java $
+ *
+ * @source $URL$
  */
 public class Text {
     // additional methods needed to register additional

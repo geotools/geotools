@@ -45,6 +45,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * @author Jody Garnett
  *
  *
+ *
  * @source $URL$
  */
 public class FilterVisitorTest extends TestCase {

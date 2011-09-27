@@ -37,6 +37,7 @@ import org.geotools.referencing.piecewise.PiecewiseTransform1DElement;
  * 
  *
  *
+ *
  * @source $URL$
  */
 public interface ColorMapTransformElement extends PiecewiseTransform1DElement {

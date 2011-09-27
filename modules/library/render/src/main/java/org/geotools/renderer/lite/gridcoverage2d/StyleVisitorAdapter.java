@@ -63,6 +63,7 @@ import org.geotools.styling.UserLayer;
  * 
  *
  *
+ *
  * @source $URL$
  */
 public class StyleVisitorAdapter implements StyleVisitor {

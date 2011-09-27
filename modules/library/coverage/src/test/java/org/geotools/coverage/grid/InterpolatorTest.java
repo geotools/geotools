@@ -39,6 +39,7 @@ import static org.junit.Assert.*;
  * Tests the {@link Interpolator2D} implementation.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

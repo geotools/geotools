@@ -41,6 +41,7 @@ import org.opengis.filter.Filter;
  *
  * @author Chris Holmes
  *
+ *
  * @source $URL$
  * @version $Id$
  */

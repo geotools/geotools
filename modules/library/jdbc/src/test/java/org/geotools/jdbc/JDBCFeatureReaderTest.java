@@ -25,6 +25,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class JDBCFeatureReaderTest extends JDBCTestSupport {
 
     public void testNext() throws Exception {

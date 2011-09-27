@@ -40,6 +40,7 @@ import org.geotools.metadata.iso.MetadataEntity;
  *  At least one of the four shall be used.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

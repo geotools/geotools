@@ -31,6 +31,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Envelope;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class RenderUtilitiesTest extends TestCase {
 
 	public void testScaleOutsideCrsDefinition() throws Exception {

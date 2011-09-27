@@ -25,6 +25,11 @@ import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.feature.type.PropertyType;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PropertyDescriptorImpl implements PropertyDescriptor {
 
     final protected PropertyType type;

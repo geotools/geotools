@@ -25,7 +25,8 @@ package org.opengis.feature;
  * </p>
  * @author Cory Horner (Refractions Research, Inc)
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/feature/FeatureVisitor.java $
+ *
+ * @source $URL$
  */
 public interface FeatureVisitor {
     /**

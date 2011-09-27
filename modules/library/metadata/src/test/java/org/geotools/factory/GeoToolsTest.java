@@ -30,6 +30,7 @@ import static org.junit.Assert.*;
  *
  * @since 2.4
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Jody Garnett

@@ -43,7 +43,8 @@ import static org.opengis.annotation.Specification.*;
  * </table>
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/coverage/InterpolationMethod.java $
+ *
+ * @source $URL$
  * @version ISO 19123:2004
  * @author  Martin Desruisseaux (IRD)
  * @since   GeoAPI 2.1

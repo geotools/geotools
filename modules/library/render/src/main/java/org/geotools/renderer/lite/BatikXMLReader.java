@@ -45,6 +45,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
  * @since 2.2.1
  *
  *
+ *
  * @source $URL$
  */
 public class BatikXMLReader implements XMLReader {

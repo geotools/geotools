@@ -46,6 +46,7 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class GeometryEncoderTest extends TestCase {

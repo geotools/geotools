@@ -16,7 +16,8 @@ package org.opengis.annotation;
  * @author  Martin Desruisseaux (IRD)
  * @since   GeoAPI 2.0
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/annotation/Specification.java $
+ *
+ * @source $URL$
  */
 public enum Specification {
     /**

@@ -64,6 +64,7 @@ import org.opengis.filter.expression.PropertyName;
  *
  * @author James Macgill, CCG
  *
+ *
  * @source $URL$
  * @version $Id$
  */

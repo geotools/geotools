@@ -26,6 +26,11 @@ import org.opengis.feature.simple.SimpleFeatureType;
 
 import com.vividsolutions.jts.geom.Envelope;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class EmptyFeatureCollection extends DataFeatureCollection {
 
 	/**

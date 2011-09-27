@@ -31,7 +31,8 @@ import org.geotools.styling.Style;
  * layer of content
  * @since 8.0
  * @version 8.0
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/map/StyleLayer.java $
+ *
+ * @source $URL$
  */
 public abstract class StyleLayer extends Layer {
     /** Style used for rendering */

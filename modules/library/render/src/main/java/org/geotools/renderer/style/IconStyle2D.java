@@ -26,7 +26,8 @@ import javax.swing.Icon;
  * 
  * @author milton
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/renderer/style/IconStyle2D.java $
+ *
+ * @source $URL$
  */
 public class IconStyle2D extends Style2D {
     private static final AffineTransform IDENTITY_TRANSFORM = new AffineTransform();

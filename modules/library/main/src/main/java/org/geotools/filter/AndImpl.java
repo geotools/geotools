@@ -29,6 +29,7 @@ import org.opengis.filter.FilterVisitor;
  * @author jdeolive
  *
  *
+ *
  * @source $URL$
  */
 public class AndImpl extends LogicFilterImpl implements And {

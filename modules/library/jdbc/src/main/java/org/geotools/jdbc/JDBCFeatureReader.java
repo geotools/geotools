@@ -80,6 +80,7 @@ import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, SimpleFeature> {

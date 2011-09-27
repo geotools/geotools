@@ -27,6 +27,7 @@ import org.opengis.feature.Feature;
  * 
  * 
  *
+ *
  * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/
  *         data/store/MaxFeaturesIterator.java $

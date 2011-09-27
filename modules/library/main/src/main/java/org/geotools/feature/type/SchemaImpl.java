@@ -35,6 +35,7 @@ import org.opengis.feature.type.Schema;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class SchemaImpl implements Schema {

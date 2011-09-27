@@ -27,6 +27,7 @@ import java.net.URI;
  *
  * @author dzwiers www.refractions.net
  *
+ *
  * @source $URL$
  */
 public interface Attribute {

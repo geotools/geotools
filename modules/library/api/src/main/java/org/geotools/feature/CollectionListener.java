@@ -22,6 +22,7 @@ package org.geotools.feature;
  *
  * @author Ray Gallagher
  *
+ *
  * @source $URL$
  * @version $Id$
  */

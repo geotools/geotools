@@ -20,6 +20,7 @@ import com.vividsolutions.jts.io.WKTReader;
  * @author Mauro Bartolomeoli
  *
  *
+ *
  * @source $URL$
  */
 public class GeometryTypeConverterTest extends TestCase {

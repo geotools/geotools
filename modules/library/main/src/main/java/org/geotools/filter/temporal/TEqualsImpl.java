@@ -14,6 +14,11 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.temporal.TEquals;
 import org.opengis.temporal.RelativePosition;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TEqualsImpl extends BinaryTemporalOperatorImpl implements TEquals {
     
     public TEqualsImpl(Expression e1, Expression e2) {

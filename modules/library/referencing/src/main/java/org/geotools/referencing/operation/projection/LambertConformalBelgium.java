@@ -35,6 +35,7 @@ import org.geotools.resources.i18n.Vocabulary;
  *
  * @since 2.2
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Rueben Schulz

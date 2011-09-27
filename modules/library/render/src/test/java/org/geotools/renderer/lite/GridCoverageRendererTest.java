@@ -61,6 +61,7 @@ import org.opengis.referencing.operation.MathTransform;
 /**
  * @author Simone Giannecchini
  *
+ *
  * @source $URL$
  */
 public class GridCoverageRendererTest  {

@@ -32,6 +32,11 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class JDBCAggregateFunctionTest extends JDBCTestSupport {
 
     boolean visited = false;

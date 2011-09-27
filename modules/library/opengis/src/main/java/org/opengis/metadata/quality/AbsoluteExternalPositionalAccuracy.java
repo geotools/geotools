@@ -17,7 +17,8 @@ import static org.opengis.annotation.Specification.*;
  * Closeness of reported coordinate values to values accepted as or being true.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/metadata/quality/AbsoluteExternalPositionalAccuracy.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author  Martin Desruisseaux (IRD)
  * @since   GeoAPI 2.0

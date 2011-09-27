@@ -28,6 +28,7 @@ import com.vividsolutions.jts.geom.Envelope;
  *
  * @since 2.2.M2
  *
+ *
  * @source $URL$
  */
 public class BoundsVisitor implements FeatureCalc {

@@ -22,6 +22,11 @@ import org.opengis.filter.sort.SortOrder;
 
 import com.vividsolutions.jts.geom.LineString;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class JDBCVirtualTableTest extends JDBCTestSupport {
     protected String dbSchemaName = null;
 

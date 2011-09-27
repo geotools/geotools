@@ -54,6 +54,8 @@ import org.opengis.temporal.Period;
  * 
  * @author Mauricio Pazos
  *
+ *
+ * @source $URL$
  */
 public final class FilterToTextUtil {
 

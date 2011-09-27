@@ -52,6 +52,7 @@ import org.junit.Test;
  * 
  * @author mbedward
  *
+ *
  * @source $URL$
  * @since 2.7
  * @version $Id$

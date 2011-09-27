@@ -36,6 +36,7 @@ import javax.media.jai.iterator.WritableRectIter;
  *
  * @since 2.3
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

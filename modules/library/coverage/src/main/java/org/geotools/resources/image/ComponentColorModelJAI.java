@@ -53,6 +53,7 @@ import javax.media.jai.iterator.RectIter;
  *
  * @since 2.0
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

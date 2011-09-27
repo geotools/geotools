@@ -33,6 +33,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * idea of what is needed.
  * </p>
  *
+ *
  * @source $URL$
  * @version $Id$
  *

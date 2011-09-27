@@ -29,6 +29,7 @@ import org.opengis.util.InternationalString;
  *
  * @since 2.2
  *
+ *
  * @source $URL$
  * @version $Id$
  */

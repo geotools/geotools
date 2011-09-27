@@ -28,6 +28,11 @@ import junit.framework.TestCase;
 
 import org.geotools.factory.Hints;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TemporalConverterFactoryTest extends TestCase {
 
 	TemporalConverterFactory factory;

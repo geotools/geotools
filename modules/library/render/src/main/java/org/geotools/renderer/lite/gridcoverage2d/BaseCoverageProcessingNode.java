@@ -40,6 +40,7 @@ import org.opengis.util.InternationalString;
  * @author      Simone Giannecchini, GeoSolutions.
  *
  *
+ *
  * @source $URL$
  */
 public abstract class BaseCoverageProcessingNode implements

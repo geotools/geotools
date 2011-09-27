@@ -58,7 +58,8 @@ import static org.opengis.annotation.Specification.*;
  *
  * @see NameFactory#createScopedName
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/util/ScopedName.java $
+ *
+ * @source $URL$
  */
 @UML(identifier="ScopedName", specification=ISO_19103)
 public interface ScopedName extends GenericName {

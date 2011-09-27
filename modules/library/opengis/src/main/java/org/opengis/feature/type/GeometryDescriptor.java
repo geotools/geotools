@@ -20,7 +20,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/feature/type/GeometryDescriptor.java $
+ *
+ * @source $URL$
  */
 public interface GeometryDescriptor extends AttributeDescriptor {
     /**

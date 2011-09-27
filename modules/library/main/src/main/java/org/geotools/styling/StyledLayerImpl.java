@@ -23,6 +23,7 @@ package org.geotools.styling;
  *
  * @author jamesm
  *
+ *
  * @source $URL$
  */
 public class StyledLayerImpl implements StyledLayer {

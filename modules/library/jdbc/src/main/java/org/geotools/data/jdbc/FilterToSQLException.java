@@ -22,6 +22,7 @@ package org.geotools.data.jdbc;
  *
  * @author Chris Holmes, TOPP
  *
+ *
  * @source $URL$
  */
 public class FilterToSQLException extends Exception {

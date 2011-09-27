@@ -30,6 +30,11 @@ import org.geotools.renderer.style.shape.ExplicitBoundsShape;
 import org.opengis.feature.Feature;
 import org.opengis.filter.expression.Expression;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ShapeMarkFactory implements MarkFactory {
 
     private static final String SHAPE_PREFIX = "shape://";

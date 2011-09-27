@@ -33,6 +33,7 @@ package org.geotools.coverage.grid.io.imageio.geotiff.codes;
  * 
  *
  *
+ *
  * @source $URL$
  */
 public final class GeoTiffGCSCodes {

@@ -49,7 +49,8 @@ import org.opengis.feature.type.Name;
  * @author Justin Deoliveira (The Open Planning Project)
  * @author Martin Desruisseaux (Geomatys)
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/filter/capability/GeometryOperand.java $
+ *
+ * @source $URL$
  */
 public final class GeometryOperand implements Name, Serializable {
     /**

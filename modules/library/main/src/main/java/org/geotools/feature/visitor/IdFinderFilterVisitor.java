@@ -25,6 +25,7 @@ import org.opengis.filter.Id;
  * Example:<code>found = (Boolean) filter.accept( new IdFinderFilter(), null )</code>
  *
  *
+ *
  * @source $URL$
  */
 public class IdFinderFilterVisitor extends AbstractFinderFilterVisitor {

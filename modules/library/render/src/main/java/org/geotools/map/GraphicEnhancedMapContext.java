@@ -40,6 +40,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @deprecated Use a custom subclass of {@link MapContent} instead
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  */

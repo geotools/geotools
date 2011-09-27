@@ -81,7 +81,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * own measures.
  * <p>
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/xml/src/main/java/org/geotools/GML.java $
+ *
+ * @source $URL$
  */
 public class GML {
     /** Version of encoder to use */

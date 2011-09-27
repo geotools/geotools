@@ -23,7 +23,8 @@ import static org.opengis.annotation.Specification.*;
  * {@linkplain #getAxis axis associations}.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/referencing/cs/UserDefinedCS.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract specification 2.0</A>
  * @author  Martin Desruisseaux (IRD)
  * @since   GeoAPI 1.0

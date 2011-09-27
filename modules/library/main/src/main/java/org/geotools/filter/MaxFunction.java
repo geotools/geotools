@@ -30,6 +30,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @author James
  *
+ *
  * @source $URL$
  * @version $Id$
  * @deprecated - use org.geotools.filter.function.math.MaxFunction instead

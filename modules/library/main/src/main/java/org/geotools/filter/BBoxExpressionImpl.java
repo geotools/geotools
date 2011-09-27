@@ -37,6 +37,7 @@ import com.vividsolutions.jts.geom.TopologyException;
  * 
  * @author Ian Turton, CCG
  *
+ *
  * @source $URL$
  * @version $Id$
  */

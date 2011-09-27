@@ -36,7 +36,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * </p>
  * @author Jody Garnett, Refractions Research, Inc.
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/feature/collection/DelegateSimpleFeatureIterator.java $
+ *
+ * @source $URL$
  */
 public class DelegateSimpleFeatureIterator extends DelegateFeatureIterator<SimpleFeature> implements SimpleFeatureIterator {
 	/**

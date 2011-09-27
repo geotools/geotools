@@ -51,6 +51,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @author Ian Turton, CCG
  *
+ *
  * @source $URL$
  */
 public interface LinePlacement extends org.opengis.style.LinePlacement, LabelPlacement {

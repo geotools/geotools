@@ -34,6 +34,7 @@ import org.opengis.filter.expression.Function;
  * ColorMap, the LookupValue is set to the fixed value “Rasterdata”.
  *
  *
+ *
  * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification 1.1.0</A>
  * @author Johann Sorel (Geomatys)

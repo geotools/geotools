@@ -32,6 +32,7 @@ import org.geotools.filter.text.cql2.CQLBooleanValueExpressionTest;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  */
 public class ECQLBooleanValueExpressionTest extends CQLBooleanValueExpressionTest {

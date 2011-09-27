@@ -40,6 +40,8 @@ import org.geotools.util.logging.Logging;
  * 
  * @author Andrea Aime
  * @since 2.7.2
+ *
+ * @source $URL$
  */
 public class GTCropDescriptor extends OperationDescriptorImpl {
     

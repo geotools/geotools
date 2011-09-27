@@ -27,7 +27,8 @@ import static org.opengis.annotation.Specification.*;
  *
  * @todo Retrofit in {@link org.opengis.referencing.cs.TimeCS}.
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/temporal/TemporalCoordinateSystem.java $
+ *
+ * @source $URL$
  */
 @UML(identifier="TM_CoordinateSystem", specification=ISO_19108)
 public interface TemporalCoordinateSystem extends TemporalReferenceSystem {

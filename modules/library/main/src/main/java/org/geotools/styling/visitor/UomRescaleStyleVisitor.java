@@ -51,7 +51,8 @@ import org.opengis.filter.expression.Expression;
  * 
  * @author milton
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/styling/visitor/UomRescaleStyleVisitor.java $
+ *
+ * @source $URL$
  */
 public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
 

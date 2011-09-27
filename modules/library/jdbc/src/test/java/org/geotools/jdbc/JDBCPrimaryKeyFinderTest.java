@@ -26,6 +26,11 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class JDBCPrimaryKeyFinderTest extends JDBCTestSupport {
 
     @Override

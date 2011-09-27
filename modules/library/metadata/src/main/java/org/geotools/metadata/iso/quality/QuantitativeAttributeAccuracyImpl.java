@@ -26,6 +26,7 @@ import org.opengis.metadata.quality.QuantitativeAttributeAccuracy;
  * Accuracy of quantitative attributes.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

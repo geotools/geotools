@@ -32,7 +32,8 @@ import static org.junit.Assert.*;
  *
  * @author Michael Bedward
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/test/java/org/geotools/filter/function/InterpolateFunctionTest.java $
+ *
+ * @source $URL$
  */
 public class InterpolateFunctionTest extends SEFunctionTestBase {
 

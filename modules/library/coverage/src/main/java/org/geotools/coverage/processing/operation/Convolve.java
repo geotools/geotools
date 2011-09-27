@@ -56,6 +56,7 @@ import org.geotools.coverage.processing.OperationJAI;
  *
  * @since 2.3
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

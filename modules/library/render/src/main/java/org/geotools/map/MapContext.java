@@ -56,6 +56,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * 
  * @author Cameron Shorter
  *
+ *
  * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools
  *         /map/MapContext.java $

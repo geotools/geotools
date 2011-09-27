@@ -94,6 +94,7 @@ import org.opengis.filter.temporal.TOverlaps;
  * @author Jody
  *
  *
+ *
  * @source $URL$
  */
 public abstract class DefaultFilterVisitor implements FilterVisitor, ExpressionVisitor {

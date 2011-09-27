@@ -27,6 +27,7 @@ import java.util.Set;
  * @author Jesse
  *
  *
+ *
  * @source $URL$
  */
 public class XMLHandlerHints implements Map {

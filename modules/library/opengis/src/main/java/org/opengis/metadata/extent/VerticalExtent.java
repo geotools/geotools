@@ -21,7 +21,8 @@ import static org.opengis.annotation.Specification.*;
  * Vertical domain of dataset.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/metadata/extent/VerticalExtent.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author  Martin Desruisseaux (IRD)
  * @author  Cory Horner (Refractions Research)

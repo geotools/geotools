@@ -39,6 +39,7 @@ import org.opengis.geometry.Envelope;
  *
  * @since 2.5
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

@@ -52,6 +52,7 @@ import org.xml.sax.helpers.AttributesImpl;
  *
  * @see ComplexType
  *
+ *
  * @source $URL$
  */
 public class ComplexElementHandler extends XMLElementHandler {

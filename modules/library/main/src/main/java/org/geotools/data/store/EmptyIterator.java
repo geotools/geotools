@@ -25,6 +25,7 @@ import java.util.Iterator;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class EmptyIterator implements Iterator {

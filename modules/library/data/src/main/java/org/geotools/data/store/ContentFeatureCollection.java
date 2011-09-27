@@ -57,6 +57,7 @@ import com.vividsolutions.jts.geom.Point;
  * @author Jody Garnett (Refractions Research, Inc.)
  *
  *
+ *
  * @source $URL$
  */
 public class ContentFeatureCollection implements SimpleFeatureCollection {

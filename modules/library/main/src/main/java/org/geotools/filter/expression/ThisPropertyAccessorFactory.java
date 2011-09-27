@@ -3,6 +3,11 @@ package org.geotools.filter.expression;
 import org.geotools.factory.Hints;
 import org.opengis.feature.Attribute;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ThisPropertyAccessorFactory implements PropertyAccessorFactory {
     
     static final ThisPropertyAccessor THIS_ACCESSOR = new ThisPropertyAccessor();

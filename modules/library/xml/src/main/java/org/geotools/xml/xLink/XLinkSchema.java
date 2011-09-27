@@ -58,6 +58,7 @@ import org.xml.sax.SAXException;
  *
  * @see Schema
  *
+ *
  * @source $URL$
  */
 public class XLinkSchema implements Schema {

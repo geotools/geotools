@@ -26,6 +26,7 @@ import org.geotools.styling.Graphic;
  *
  * @author  jamesm
  *
+ *
  * @source $URL$
  */
 public interface GlyphRenderer {

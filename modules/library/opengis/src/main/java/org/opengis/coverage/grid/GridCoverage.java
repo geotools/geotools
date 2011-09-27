@@ -27,7 +27,8 @@ import org.opengis.coverage.Coverage;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/coverage/grid/GridCoverage.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/01-004.pdf">Grid Coverage specification 1.0</A>
  * @author  Martin Desruisseaux (IRD)
  * @since   GeoAPI 1.0

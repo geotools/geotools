@@ -46,6 +46,7 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class FunctionImpl extends ExpressionAbstract implements Function {

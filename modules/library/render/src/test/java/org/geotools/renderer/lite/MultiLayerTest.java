@@ -21,6 +21,11 @@ import org.geotools.styling.StyleBuilder;
 import org.geotools.test.TestData;
 import org.junit.Test;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MultiLayerTest {
 
 	@Test

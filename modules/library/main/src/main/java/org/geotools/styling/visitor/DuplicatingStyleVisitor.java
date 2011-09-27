@@ -90,6 +90,7 @@ import org.opengis.style.Description;
  * @author Jesse Eichar
  *
  *
+ *
  * @source $URL$
  */
 public class DuplicatingStyleVisitor implements StyleVisitor {

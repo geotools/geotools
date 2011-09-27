@@ -27,7 +27,8 @@ import org.geotools.styling.Style;
  * @since 8.0
  * @version 8.0
  * @author Jody Garnett
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/map/RasterLayer.java $
+ *
+ * @source $URL$
  */
 public abstract class RasterLayer extends StyleLayer {
 

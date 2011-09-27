@@ -45,6 +45,7 @@ import org.opengis.feature.type.Name;
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  *
  *
+ *
  * @source $URL$
  */
 public class NameImpl implements org.opengis.feature.type.Name, Serializable, Comparable<NameImpl> {

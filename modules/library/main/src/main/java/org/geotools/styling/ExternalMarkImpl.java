@@ -27,8 +27,9 @@ import org.opengis.style.StyleVisitor;
  * Default implementation of ExternalMark.
  * 
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/styling/ExternalMarkImpl.java $
- * @version $Id: MarkImpl.java 31133 2008-08-05 15:20:33Z johann.sorel $
+ *
+ * @source $URL$
+ * @version $Id$
  */
 public class ExternalMarkImpl implements org.geotools.styling.ExternalMark {
 

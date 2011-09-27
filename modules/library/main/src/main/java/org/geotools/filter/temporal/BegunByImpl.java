@@ -14,6 +14,11 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.temporal.BegunBy;
 import org.opengis.temporal.RelativePosition;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class BegunByImpl extends BinaryTemporalOperatorImpl implements BegunBy {
     
     public BegunByImpl(Expression e1, Expression e2) {

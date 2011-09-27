@@ -59,6 +59,7 @@ import org.opengis.feature.type.FeatureType;
  * @author Ian Schneider
  * @author Jody Garnett, Refractions Research
  *
+ *
  * @source $URL$
  * @version $Id$
  */

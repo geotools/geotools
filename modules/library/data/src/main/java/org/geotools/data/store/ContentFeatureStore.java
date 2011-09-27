@@ -82,6 +82,7 @@ import org.opengis.filter.identity.FeatureId;
  *
  *
  *
+ *
  * @source $URL$
  */
 public abstract class ContentFeatureStore extends ContentFeatureSource implements

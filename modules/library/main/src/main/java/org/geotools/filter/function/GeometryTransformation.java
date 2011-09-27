@@ -27,7 +27,8 @@ import org.opengis.filter.expression.Function;
  * @author Andrea Aime - GeoSolutions
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/filter/function/GeometryTransformation.java $
+ *
+ * @source $URL$
  */
 public interface GeometryTransformation extends Function {
     /**

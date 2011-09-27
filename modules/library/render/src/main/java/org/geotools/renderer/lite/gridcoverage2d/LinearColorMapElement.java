@@ -38,6 +38,7 @@ import org.opengis.referencing.operation.MathTransform1D;
  * @author      Simone Giannecchini, GeoSolutions
  *
  *
+ *
  * @source $URL$
  */
 public class LinearColorMapElement extends DefaultLinearPiecewiseTransform1DElement

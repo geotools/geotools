@@ -50,6 +50,7 @@ import org.opengis.util.InternationalString;
  * @author Jody Garnett
  *
  *
+ *
  * @source $URL$
  */
 public class FeatureTypeFactoryImpl implements FeatureTypeFactory {

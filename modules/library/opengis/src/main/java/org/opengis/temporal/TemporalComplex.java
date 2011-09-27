@@ -17,7 +17,8 @@ package org.opengis.temporal;
  *
  * @todo Missing UML tag.
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/temporal/TemporalComplex.java $
+ *
+ * @source $URL$
  */
 public interface TemporalComplex extends TemporalObject {
 }

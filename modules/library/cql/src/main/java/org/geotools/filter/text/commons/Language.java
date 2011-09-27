@@ -28,6 +28,7 @@ package org.geotools.filter.text.commons;
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6
  *
+ *
  * @source $URL$
  */
 public enum Language {

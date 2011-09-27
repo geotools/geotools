@@ -50,6 +50,7 @@ import org.opengis.filter.Filter;
  *
  * @author James Macgill
  *
+ *
  * @source $URL$
  */
 public interface FeatureTypeConstraint {

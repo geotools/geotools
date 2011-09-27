@@ -30,6 +30,7 @@ import org.opengis.util.InternationalString;
  * 
  *
  *
+ *
  * @source $URL$
  */
 public interface Domain1D<T extends DomainElement1D> extends List<T>{

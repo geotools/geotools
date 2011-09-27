@@ -58,6 +58,7 @@ import org.opengis.filter.Filter;
  *
  * @author Jody Garnett, Refractions Research
  *
+ *
  * @source $URL$
  */
 public abstract class AbstractFeatureLocking extends AbstractFeatureStore

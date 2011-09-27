@@ -26,6 +26,7 @@ package org.geotools.geometry.coordinatesequence;
  * @deprecated Moved to {@link org.geotools.geometry.jts.coordinatesequence.InPlaceCoordinateSequenceTransformer}.
  * 
  *
+ *
  * @source $URL$
  */
 public class InPlaceCoordinateSequenceTransformer extends org.geotools.geometry.jts.coordinatesequence.InPlaceCoordinateSequenceTransformer {

@@ -33,7 +33,8 @@ import org.opengis.filter.expression.Expression;
  * Fields and helper method for unit test classes
  * @author Michael Bedward
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/test/java/org/geotools/filter/function/SEFunctionTestBase.java $
+ *
+ * @source $URL$
  */
 public class SEFunctionTestBase {
 

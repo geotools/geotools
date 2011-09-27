@@ -128,7 +128,8 @@ import org.opengis.filter.temporal.TOverlaps;
  * 
  * @author Jody
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/xml/src/main/java/org/geotools/xml/filter/FilterCompliancePreProcessor.java $
+ *
+ * @source $URL$
  */
 public class FilterCompliancePreProcessor implements FilterVisitor {
 

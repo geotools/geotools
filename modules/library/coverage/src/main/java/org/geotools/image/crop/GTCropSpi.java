@@ -31,6 +31,8 @@ import javax.media.jai.registry.RenderedRegistryMode;
  * 
  * @author Andrea Aime
  * @since 2.7.2
+ *
+ * @source $URL$
  */
 public class GTCropSpi implements OperationRegistrySpi {
 

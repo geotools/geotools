@@ -29,6 +29,7 @@ import org.geotools.xml.schema.AttributeGroup;
  *
  * @author dzwiers
  *
+ *
  * @source $URL$
  */
 public class AttributeGroupGT implements AttributeGroup {

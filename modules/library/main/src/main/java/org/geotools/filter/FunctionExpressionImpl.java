@@ -39,6 +39,7 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  * @author James Macgill, PSU
  *
+ *
  * @source $URL$
  */
 public abstract class FunctionExpressionImpl

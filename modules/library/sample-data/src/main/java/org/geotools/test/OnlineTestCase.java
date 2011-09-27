@@ -68,6 +68,7 @@ import junit.framework.TestResult;
  *
  * @since 2.4
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Justin Deoliveira, The Open Planning Project

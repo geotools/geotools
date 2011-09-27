@@ -19,6 +19,11 @@ import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class LabelShieldTest {
     
     private static final long TIME = 1000;

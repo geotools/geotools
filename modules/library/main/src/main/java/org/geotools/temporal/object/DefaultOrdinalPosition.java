@@ -29,6 +29,7 @@ import org.opengis.temporal.TemporalReferenceSystem;
  * @author Mehdi Sidhoum (Geomatys)
  *
  *
+ *
  * @source $URL$
  */
 public class DefaultOrdinalPosition extends DefaultTemporalPosition implements OrdinalPosition {

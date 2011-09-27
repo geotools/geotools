@@ -31,6 +31,7 @@ import java.util.StringTokenizer;
  *
  * @author Richard Gould
  *
+ *
  * @source $URL$
  */
 public abstract class AbstractRequest implements Request{

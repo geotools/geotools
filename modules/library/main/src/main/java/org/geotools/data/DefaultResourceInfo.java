@@ -29,6 +29,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Jody Garnett
  *
  *
+ *
  * @source $URL$
  */
 public class DefaultResourceInfo implements ResourceInfo {

@@ -23,6 +23,7 @@ import java.util.List;
  * @author jdeolive
  *
  *
+ *
  * @source $URL$
  */
 public abstract class BinaryLogicAbstract extends AbstractFilter {

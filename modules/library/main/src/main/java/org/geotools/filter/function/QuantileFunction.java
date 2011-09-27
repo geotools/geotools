@@ -34,6 +34,7 @@ import org.geotools.util.NullProgressListener;
  * 
  * @author Cory Horner, Refractions Research Inc.
  *
+ *
  * @source $URL$
  */
 public class QuantileFunction extends ClassificationFunction {

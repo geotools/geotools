@@ -49,6 +49,7 @@ import org.opengis.util.NameFactory;
  *
  * @since 2.3
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

@@ -51,6 +51,7 @@ import com.vividsolutions.jts.geom.Point;
  * @author Rob Hranac, TOPP
  * @author Chris Holmes, TOPP
  *
+ *
  * @source $URL$
  */
 public class DOMParserTest extends FilterTestSupport {

@@ -27,6 +27,7 @@ import org.opengis.feature.type.FeatureType;
  *
  *
  *
+ *
  * @source $URL$
  */
 public interface DelegatingFeatureWriter<T extends FeatureType,F extends Feature> extends FeatureWriter<T, F> {

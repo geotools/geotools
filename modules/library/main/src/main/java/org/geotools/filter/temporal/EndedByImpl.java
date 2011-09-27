@@ -14,6 +14,11 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.temporal.EndedBy;
 import org.opengis.temporal.RelativePosition;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class EndedByImpl extends BinaryTemporalOperatorImpl implements EndedBy {
     
     public EndedByImpl(Expression e1, Expression e2) {

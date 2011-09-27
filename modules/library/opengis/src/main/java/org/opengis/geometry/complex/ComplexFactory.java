@@ -23,7 +23,8 @@ import org.opengis.geometry.primitive.OrientableSurface;
  * {@code ComplexFactory}.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/geometry/complex/ComplexFactory.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Sanjay Jena
  * @author Prof. Dr. Jackson Roehrig

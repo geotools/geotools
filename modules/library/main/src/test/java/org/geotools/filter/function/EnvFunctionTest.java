@@ -48,7 +48,8 @@ import org.opengis.filter.expression.Expression;
  * @author Michael Bedward
  * @since 2.6
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/test/java/org/geotools/filter/function/EnvFunctionTest.java $
+ *
+ * @source $URL$
  * @version $Id $
  */
 

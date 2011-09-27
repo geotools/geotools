@@ -43,7 +43,8 @@ import org.opengis.referencing.operation.TransformException;
  * 
  * @author Andrea Aime - GeoSolutions
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/referencing/src/main/java/org/geotools/referencing/operation/transform/WarpBuilder.java $
+ *
+ * @source $URL$
  */
 public class WarpBuilder {
     static final Logger LOGGER = Logging.getLogger(WarpBuilder.class);

@@ -44,6 +44,7 @@ import org.geotools.resources.image.ImageUtilities;
  *
  * @since 2.4
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

@@ -27,7 +27,7 @@ import static org.junit.Assert.*;
  *
  * @author Martin Desruisseaux (IRD)
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/test/java/org/opengis/util/ClassScanner.java $
+ * @source $URL$
  */
 final class ClassScanner implements Iterator<Class<?>> {
     /**

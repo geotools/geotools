@@ -36,7 +36,8 @@ import static org.opengis.annotation.Specification.*;
  *   without changing the {@code ReferenceSystem} definition in ISO 19115.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/referencing/IdentifiedObject.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract specification 2.0</A>
  * @author  Martin Desruisseaux (IRD)
  * @since   GeoAPI 2.0

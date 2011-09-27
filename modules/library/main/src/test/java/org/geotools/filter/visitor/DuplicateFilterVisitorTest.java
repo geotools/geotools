@@ -40,6 +40,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  *
  * @author Cory Horner, Refractions Research Inc.
  *
+ *
  * @source $URL$
  */
 public class DuplicateFilterVisitorTest extends TestCase {

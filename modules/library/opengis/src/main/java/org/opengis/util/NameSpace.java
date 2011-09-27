@@ -23,7 +23,8 @@ import static org.opengis.annotation.Specification.*;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.1
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/util/NameSpace.java $
+ *
+ * @source $URL$
  */
 @UML(identifier="NameSpace", specification=ISO_19103)
 public interface NameSpace {

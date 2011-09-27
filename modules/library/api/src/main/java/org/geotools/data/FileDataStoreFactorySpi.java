@@ -29,6 +29,7 @@ import java.net.URL;
  *
  * @author dzwiers
  *
+ *
  * @source $URL$
  */
 public interface FileDataStoreFactorySpi extends DataStoreFactorySpi {

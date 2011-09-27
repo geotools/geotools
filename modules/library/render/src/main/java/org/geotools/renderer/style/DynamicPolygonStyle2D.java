@@ -32,6 +32,7 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  * @author jamesm
  *
+ *
  * @source $URL$
  */
 public class DynamicPolygonStyle2D extends org.geotools.renderer.style.PolygonStyle2D {

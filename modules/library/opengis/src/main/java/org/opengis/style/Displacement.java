@@ -21,7 +21,8 @@ import org.opengis.filter.expression.Expression;
  * of pixels above and to the right of the point. The default displacement is X=0, Y=0.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/style/Displacement.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium
  * @author Johann Sorel (Geomatys)

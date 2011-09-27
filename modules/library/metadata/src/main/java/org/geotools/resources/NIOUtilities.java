@@ -36,6 +36,7 @@ import org.geotools.util.logging.Logging;
  *
  * @since 2.0
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Andrea Aimes

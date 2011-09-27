@@ -47,6 +47,7 @@ import org.opengis.feature.type.PropertyDescriptor;
  * @author Ian Schneider, USDA-ARS
  * @author Chris Holmes, TOPP
  *
+ *
  * @source $URL$
  */
 public class FeatureCollectionIteration {

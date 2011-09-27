@@ -48,6 +48,7 @@ import org.opengis.filter.Filter;
  * @author Rob Hranac, TOPP
  * @author Chris Holmes, TOPP
  *
+ *
  * @source $URL$
  * @version $Id$
  */

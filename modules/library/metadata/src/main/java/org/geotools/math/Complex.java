@@ -33,6 +33,7 @@ import org.opengis.util.Cloneable;
  *
  * @since 2.2
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Justin Deoliveira

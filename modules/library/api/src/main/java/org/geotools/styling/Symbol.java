@@ -29,6 +29,7 @@ package org.geotools.styling;
  *
  * @author iant
  *
+ *
  * @source $URL$
  */
 public interface Symbol extends org.opengis.style.GraphicalSymbol{

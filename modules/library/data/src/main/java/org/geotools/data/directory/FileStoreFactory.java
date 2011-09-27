@@ -10,7 +10,8 @@ import org.geotools.data.DataStore;
  * @author Andrea Aime - OpenGeo
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/data/src/main/java/org/geotools/data/directory/FileStoreFactory.java $
+ *
+ * @source $URL$
  */
 public interface FileStoreFactory {
     

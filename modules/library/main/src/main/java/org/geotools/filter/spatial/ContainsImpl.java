@@ -23,6 +23,11 @@ import org.opengis.filter.spatial.Contains;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ContainsImpl extends AbstractPreparedGeometryFilter implements Contains {
 
 	public ContainsImpl(org.opengis.filter.FilterFactory factory,Expression e1,Expression e2) {

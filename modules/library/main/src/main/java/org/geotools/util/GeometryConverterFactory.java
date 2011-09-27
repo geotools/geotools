@@ -40,6 +40,7 @@ import com.vividsolutions.jts.io.WKTReader;
  * @since 2.4
  *
  *
+ *
  * @source $URL$
  */
 public class GeometryConverterFactory implements ConverterFactory {

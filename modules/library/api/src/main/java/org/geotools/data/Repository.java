@@ -32,6 +32,7 @@ import org.opengis.feature.type.Name;
  *
  * </ul>
  *
+ *
  * @source $URL$
  */
 public interface Repository {

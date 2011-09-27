@@ -26,6 +26,7 @@ import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
  * @author jeichar
  * @since 2.1.x
  *
+ *
  * @source $URL$
  */
 public class LiteCoordinateSequenceFactory implements CoordinateSequenceFactory {

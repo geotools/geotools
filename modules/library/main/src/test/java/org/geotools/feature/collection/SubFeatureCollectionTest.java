@@ -27,6 +27,11 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterVisitor;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SubFeatureCollectionTest extends DataTestCase {
     SimpleFeatureCollection features = FeatureCollections
             .newCollection();

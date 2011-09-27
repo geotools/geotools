@@ -55,6 +55,7 @@ import java.net.URL;
  * @author Jody Garnett, Refractions Reasearch
  * @author rgould
  *
+ *
  * @source $URL$
  */
 public abstract class Specification {

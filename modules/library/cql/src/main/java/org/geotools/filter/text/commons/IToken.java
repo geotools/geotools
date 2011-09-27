@@ -31,6 +31,7 @@ import org.geotools.filter.text.generated.parsers.Token;
  * @since 2.5
  *
  *
+ *
  * @source $URL$
  */
 public interface IToken {

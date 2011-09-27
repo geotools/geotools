@@ -24,7 +24,8 @@ import static org.opengis.annotation.Specification.*;
  *
  * @todo Retrofit in the referencing framework.
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/temporal/Clock.java $
+ *
+ * @source $URL$
  */
 @UML(identifier="TM_Clock", specification=ISO_19108)
 public interface Clock extends TemporalReferenceSystem {

@@ -68,6 +68,7 @@ import static org.geotools.referencing.operation.ProjectionAnalyzer.createLinear
  *
  * @since 2.1
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

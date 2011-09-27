@@ -36,7 +36,8 @@ import org.xml.sax.helpers.NamespaceSupport;
  *
  * @author jamesm
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/test/java/org/geotools/data/QueryTest.java $
+ *
+ * @source $URL$
  */
 public class QueryTest extends TestCase {
     

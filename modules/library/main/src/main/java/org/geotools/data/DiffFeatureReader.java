@@ -50,6 +50,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  * @author Jody Garnett, Refractions Research
  *
+ *
  * @source $URL$
  */
 public class DiffFeatureReader<T extends FeatureType, F extends Feature> implements  FeatureReader<T, F> {

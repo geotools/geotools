@@ -71,6 +71,7 @@ import org.geotools.util.Utilities;
  *
  * @since 2.1
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

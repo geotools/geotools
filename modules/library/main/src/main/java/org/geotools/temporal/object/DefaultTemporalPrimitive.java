@@ -29,6 +29,7 @@ import org.opengis.temporal.TemporalPrimitive;
  * @author Simone Giannecchini, GeoSolutions SAS
  *
  *
+ *
  * @source $URL$
  */
 public abstract class DefaultTemporalPrimitive extends DefaultTemporalObject implements TemporalPrimitive, TemporalOrder, Comparable<TemporalPrimitive> {

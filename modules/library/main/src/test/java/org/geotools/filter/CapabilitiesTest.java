@@ -29,6 +29,7 @@ import org.opengis.filter.spatial.Beyond;
  *
  * @author Chris Holmes, TOPP
  *
+ *
  * @source $URL$
  */
 public class CapabilitiesTest extends TestCase {

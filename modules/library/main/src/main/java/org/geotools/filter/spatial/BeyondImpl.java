@@ -24,6 +24,11 @@ import org.opengis.filter.spatial.Beyond;
 
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class BeyondImpl extends CartesianDistanceFilter implements Beyond {
 
 	public BeyondImpl(org.opengis.filter.FilterFactory factory,Expression e1,Expression e2) {

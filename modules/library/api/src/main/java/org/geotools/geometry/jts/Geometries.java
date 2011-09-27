@@ -78,6 +78,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author Michael Bedward
  * @since 2.6
  *
+ *
  * @source $URL$
  * @version $Id$
  */

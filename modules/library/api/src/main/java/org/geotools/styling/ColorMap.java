@@ -40,6 +40,7 @@ package org.geotools.styling;
  * support opacity in colormaps.  The default opacity is 1.0 (fully opaque).
  * Defaults for quantity and label are system-dependent.
  *
+ *
  * @source $URL$
  */
 public interface ColorMap extends org.opengis.style.ColorMap{

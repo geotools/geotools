@@ -28,6 +28,7 @@ import junit.framework.TestSuite;
  *
  * @author Chris Holmes, TOPP
  *
+ *
  * @source $URL$
  */
 public class FilterCapabilitiesTest extends TestCase {

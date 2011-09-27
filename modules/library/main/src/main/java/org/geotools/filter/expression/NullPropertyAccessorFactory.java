@@ -25,7 +25,8 @@ import org.geotools.factory.Hints;
  * @author Niels Charlier, Curtin University Of Technology
  * 
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/filter/expression/NullPropertyAccessorFactory.java $
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/
  *         filter/expression/NullPropertyAccessorFactory.java $
  */

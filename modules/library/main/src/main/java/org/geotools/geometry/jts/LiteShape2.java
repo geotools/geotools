@@ -52,6 +52,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * </p>
  * @author Jesse Eichar
  *
+ *
  * @source $URL$
  * @version $Id$
  */

@@ -13,6 +13,11 @@ import java.awt.geom.Rectangle2D;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TestExplicitBoundsShape extends TestCase
 {
 	

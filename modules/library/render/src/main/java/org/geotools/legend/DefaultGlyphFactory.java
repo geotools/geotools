@@ -29,6 +29,11 @@ import org.opengis.feature.type.FeatureType;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DefaultGlyphFactory implements GlyphFactory {
 
     /**

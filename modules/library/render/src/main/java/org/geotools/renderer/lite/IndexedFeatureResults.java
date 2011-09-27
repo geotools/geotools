@@ -40,6 +40,7 @@ import com.vividsolutions.jts.index.strtree.STRtree;
  * 
  * @author wolf
  *
+ *
  * @source $URL$
  */
 public final class IndexedFeatureResults extends DataFeatureCollection {

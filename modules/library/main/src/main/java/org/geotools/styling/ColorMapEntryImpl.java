@@ -23,6 +23,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @author aaime
  *
+ *
  * @source $URL$
  */
 public class ColorMapEntryImpl implements ColorMapEntry {

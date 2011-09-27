@@ -25,6 +25,11 @@ import org.opengis.filter.FilterFactory;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class StringInFunctionTest extends TestCase {
 
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);

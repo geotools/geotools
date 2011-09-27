@@ -28,6 +28,7 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  * @since 2.2.M2
  *
+ *
  * @source $URL$
  */
 public class CountVisitor implements FeatureCalc {

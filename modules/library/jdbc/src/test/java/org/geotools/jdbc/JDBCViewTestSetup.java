@@ -2,6 +2,11 @@ package org.geotools.jdbc;
 
 import java.sql.SQLException;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class JDBCViewTestSetup extends JDBCDelegatingTestSetup {
 
     protected JDBCViewTestSetup(JDBCTestSetup delegate) {

@@ -31,6 +31,7 @@ import javax.sql.DataSource;
  * 
  *
  *
+ *
  * @source $URL$
  */
 public abstract class AbstractManageableDataSource implements ManageableDataSource {

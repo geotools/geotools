@@ -44,6 +44,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  *
  *
+ *
  * @source $URL$
  */
 public class SimpleFeaturePropertyAccessorFactory implements

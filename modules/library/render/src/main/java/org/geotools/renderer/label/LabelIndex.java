@@ -31,6 +31,7 @@ import com.vividsolutions.jts.index.quadtree.Quadtree;
  * 
  *
  *
+ *
  * @source $URL$
  */
 public class LabelIndex {

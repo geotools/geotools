@@ -18,6 +18,11 @@ package org.geotools.util;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class CommonsConverterFactoryTest extends TestCase {
     
     CommonsConverterFactory factory;

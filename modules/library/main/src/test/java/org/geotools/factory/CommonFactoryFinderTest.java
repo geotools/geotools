@@ -22,6 +22,11 @@ import org.geotools.feature.AbstractFeatureFactoryImpl;
 import org.geotools.feature.ValidatingFeatureFactoryImpl;
 import org.opengis.feature.FeatureFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class CommonFactoryFinderTest extends TestCase {
 
     public void testGetStyleFactory() {

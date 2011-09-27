@@ -40,6 +40,8 @@ import com.vividsolutions.jts.index.quadtree.Quadtree;
  * independence.
  * 
  * @author Jody Garnett
+ *
+ * @source $URL$
  */
 public class Diff{
     /** Map of modified features; by feature id */

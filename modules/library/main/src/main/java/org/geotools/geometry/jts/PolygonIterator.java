@@ -35,6 +35,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author Andrea Aime
  * @author simone giannecchini
  *
+ *
  * @source $URL$
  * @version $Id$
  */

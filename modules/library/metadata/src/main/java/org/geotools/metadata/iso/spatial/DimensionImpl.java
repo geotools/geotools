@@ -28,6 +28,7 @@ import org.geotools.metadata.iso.MetadataEntity;
  * Axis properties.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

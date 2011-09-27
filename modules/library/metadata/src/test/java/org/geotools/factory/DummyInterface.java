@@ -16,6 +16,11 @@
  */
 package org.geotools.factory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public interface DummyInterface {
 
 }

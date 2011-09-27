@@ -18,6 +18,11 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.Style;
 import org.geotools.test.TestData;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class LineTest extends TestCase {
     
     private static final long TIME = 4000;

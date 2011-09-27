@@ -29,6 +29,7 @@ import org.xml.sax.Attributes;
  *
  * @author dzwiers
  *
+ *
  * @source $URL$
  */
 public interface PrintHandler {

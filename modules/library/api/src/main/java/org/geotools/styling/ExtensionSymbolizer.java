@@ -10,6 +10,7 @@ import org.opengis.filter.expression.Expression;
  * This facility is used to allow you to work on your "vendor specific" symbolizer.
  *
  *
+ *
  * @source $URL$
  */
 public interface ExtensionSymbolizer extends org.opengis.style.ExtensionSymbolizer, Symbolizer {

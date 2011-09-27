@@ -19,6 +19,11 @@ package org.geotools.filter;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.expression.Expression;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IsNullImpl extends CompareFilterImpl implements NullFilter {
 
     public IsNullImpl(org.opengis.filter.FilterFactory factory,

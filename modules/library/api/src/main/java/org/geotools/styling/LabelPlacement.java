@@ -49,6 +49,7 @@ package org.geotools.styling;
  *
  * @author Ian Turton, CCG
  *
+ *
  * @source $URL$
  */
 public interface LabelPlacement extends org.opengis.style.LabelPlacement{

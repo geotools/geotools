@@ -31,6 +31,7 @@ import org.opengis.metadata.extent.SpatialTemporalExtent;
  * point replicates first point.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

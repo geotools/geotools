@@ -27,7 +27,8 @@ import static org.opengis.annotation.Specification.*;
  *   of metadata and the {@link #getScope()} method still defined here for this historical reason.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/referencing/ReferenceSystem.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract specification 2.0</A>
  * @author  Martin Desruisseaux (IRD)
  * @since   GeoAPI 1.0

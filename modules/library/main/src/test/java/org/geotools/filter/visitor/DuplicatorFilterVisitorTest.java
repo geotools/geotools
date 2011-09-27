@@ -34,6 +34,7 @@ import org.opengis.filter.FilterFactory2;
  *
  * @author Cory Horner, Refractions Research Inc.
  *
+ *
  * @source $URL$
  */
 public class DuplicatorFilterVisitorTest extends TestCase {

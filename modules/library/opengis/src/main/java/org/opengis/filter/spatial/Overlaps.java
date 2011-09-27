@@ -19,7 +19,8 @@ import org.opengis.annotation.XmlElement;
  * interior of the second geometry.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/filter/spatial/Overlaps.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0

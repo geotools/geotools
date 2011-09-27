@@ -36,6 +36,7 @@ import org.geotools.util.Utilities;
  * or the corner of the image.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

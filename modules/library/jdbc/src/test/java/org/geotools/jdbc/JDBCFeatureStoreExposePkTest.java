@@ -21,7 +21,8 @@ package org.geotools.jdbc;
  * 
  * @author Andrea Aime - OpenGeo
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/jdbc/src/test/java/org/geotools/jdbc/JDBCFeatureStoreExposePkTest.java $
+ *
+ * @source $URL$
  */
 public abstract class JDBCFeatureStoreExposePkTest extends JDBCFeatureStoreTest {
 

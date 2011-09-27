@@ -20,7 +20,7 @@ import org.opengis.filter.expression.PropertyName;
  * @author Jody Garnett (Refractions Research)
  * @author Martin Desruisseaux (Geomatys)
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/filter/sort/NullSortBy.java $
+ * @source $URL$
  */
 final class NullSortBy implements SortBy, Serializable {
     /**

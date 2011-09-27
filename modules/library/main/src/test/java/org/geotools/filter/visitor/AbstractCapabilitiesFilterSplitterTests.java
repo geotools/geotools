@@ -53,7 +53,8 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author Jesse
  * @author ported from PostPreProcessFilterSplittingVisitor at 2.5.2 by Gabriel Roldan
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/test/java/org/geotools/filter/visitor/AbstractCapabilitiesFilterSplitterTests.java $
+ *
+ * @source $URL$
  */
 @SuppressWarnings("nls")
 public class AbstractCapabilitiesFilterSplitterTests {

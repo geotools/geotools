@@ -41,6 +41,7 @@ import static org.junit.Assert.*;
  * only subclasses will be.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

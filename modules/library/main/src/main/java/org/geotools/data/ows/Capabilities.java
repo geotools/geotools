@@ -24,6 +24,7 @@ import java.util.List;
  * @author rgould
  *
  *
+ *
  * @source $URL$
  */
 public class Capabilities {

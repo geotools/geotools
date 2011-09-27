@@ -22,6 +22,11 @@ import org.opengis.filter.capability.TemporalCapabilities;
 import org.opengis.filter.capability.TemporalOperator;
 import org.opengis.filter.capability.TemporalOperators;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TemporalCapabilitiesImpl implements TemporalCapabilities {
 
     TemporalOperators temporalOperators;

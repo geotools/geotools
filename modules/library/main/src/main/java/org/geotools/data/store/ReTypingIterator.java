@@ -32,6 +32,7 @@ import org.opengis.feature.type.AttributeDescriptor;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class ReTypingIterator implements Iterator {

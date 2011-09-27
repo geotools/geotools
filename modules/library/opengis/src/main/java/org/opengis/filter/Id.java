@@ -35,7 +35,8 @@ import org.opengis.filter.identity.Identifier;
  * @author Chris Dillard (SYS Technologies)
  * @author Justin Deoliveira (The Open Planning Project)
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/filter/Id.java $
+ *
+ * @source $URL$
  */
 public interface Id extends Filter {
     /**

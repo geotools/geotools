@@ -27,7 +27,8 @@ import static org.opengis.annotation.Specification.*;
  * then a circular cone can be constructed using &lt;&lt;P1, P1, P1&gt;, &lt;P2, P3, P4&gt;&gt;.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/geometry/coordinate/Cone.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

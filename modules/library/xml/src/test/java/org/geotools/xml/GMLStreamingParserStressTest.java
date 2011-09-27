@@ -38,6 +38,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author dzwiers www.refractions.net
  *
+ *
  * @source $URL$
  */
 public class GMLStreamingParserStressTest extends TestCase {

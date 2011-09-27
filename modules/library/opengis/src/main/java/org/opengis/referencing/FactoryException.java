@@ -28,7 +28,8 @@ package org.opengis.referencing;
  *
  * @see org.opengis.referencing.operation.CoordinateOperationFactory
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/referencing/FactoryException.java $
+ *
+ * @source $URL$
  */
 public class FactoryException extends Exception {
     /**

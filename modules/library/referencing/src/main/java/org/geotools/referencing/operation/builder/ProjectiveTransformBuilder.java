@@ -55,6 +55,7 @@ import javax.vecmath.MismatchedSizeException;
  *
  * @author Jan Jezek
  *
+ *
  * @source $URL$
  * @version $Id$
  * @since 2.4

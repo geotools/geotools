@@ -28,6 +28,7 @@ import org.opengis.filter.expression.PropertyName;
  * report the attribute found at the attributePath of a feature.
  * </p>
  *
+ *
  * @source $URL$
  * @version $Id$
  *

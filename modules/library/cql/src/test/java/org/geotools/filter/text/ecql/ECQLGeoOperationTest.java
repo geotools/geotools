@@ -78,6 +78,7 @@ import org.opengis.filter.spatial.Touches;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  */
 public final class ECQLGeoOperationTest extends CQLGeoOperationTest{

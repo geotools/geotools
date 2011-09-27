@@ -88,6 +88,7 @@ import org.opengis.feature.type.Name;
  * @param <F> Feature Content, may be SimpleFetaure
  *
  *
+ *
  * @source $URL$
  */
 public interface DataAccess<T extends FeatureType, F extends Feature> {

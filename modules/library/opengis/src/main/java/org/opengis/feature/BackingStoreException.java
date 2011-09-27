@@ -26,7 +26,8 @@ import java.sql.SQLException;  // For javadoc
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/feature/BackingStoreException.java $
+ *
+ * @source $URL$
  */
 public class BackingStoreException extends RuntimeException {
     /**

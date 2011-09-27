@@ -50,7 +50,8 @@ import com.sun.media.imageioimpl.common.PackageUtil;
  * @author Andrea Aime - GeoSolutions
  * @since 2.7.2
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/coverage/src/main/java/org/geotools/image/io/ImageIOExt.java $
+ *
+ * @source $URL$
  */
 public class ImageIOExt {
 

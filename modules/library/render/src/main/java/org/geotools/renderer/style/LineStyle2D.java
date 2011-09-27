@@ -31,6 +31,7 @@ import org.geotools.resources.Classes;
  *
  * @author aaime
  *
+ *
  * @source $URL$
  */
 public class LineStyle2D extends Style2D {

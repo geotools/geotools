@@ -42,6 +42,7 @@ import com.vividsolutions.jts.geom.TopologyException;
  * 
  * @author jamesm,iant
  *
+ *
  * @source $URL$
  */
 public class LiteShapeTest extends TestCase {

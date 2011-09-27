@@ -34,6 +34,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @author jamesm
  *
+ *
  * @source $URL$
  */
 public class DynamicLineStyle2D extends org.geotools.renderer.style.LineStyle2D {

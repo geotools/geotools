@@ -45,6 +45,7 @@ package org.geotools.styling;
  *
  * @author James Macgill
  *
+ *
  * @source $URL$
  */
 public interface RemoteOWS {

@@ -36,6 +36,7 @@ import org.opengis.filter.Filter;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  */
 public class ECQLBetweenPredicateTest extends CQLBetweenPredicateTest{

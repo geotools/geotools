@@ -24,6 +24,7 @@ package org.geotools.filter;
  *
  * @author Ian Turton, CCG
  *
+ *
  * @source $URL$
  * @version $Id$
  */

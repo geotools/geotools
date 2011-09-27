@@ -81,6 +81,7 @@ import com.vividsolutions.jts.io.WKTReader;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  */
 public abstract class AbstractFilterBuilder {

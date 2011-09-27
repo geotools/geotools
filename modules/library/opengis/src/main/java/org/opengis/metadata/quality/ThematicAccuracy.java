@@ -18,7 +18,8 @@ import static org.opengis.annotation.Specification.*;
  * and of the classifications of features and their relationships.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/metadata/quality/ThematicAccuracy.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author  Martin Desruisseaux (IRD)
  * @since   GeoAPI 2.0

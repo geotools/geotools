@@ -22,6 +22,11 @@ import java.util.Map;
 
 import org.geotools.data.DataAccessFactory.Param;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class AbstractDataSourceFactorySpi implements DataSourceFactorySpi {
 
     /**

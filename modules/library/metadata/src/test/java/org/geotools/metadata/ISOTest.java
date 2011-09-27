@@ -43,6 +43,7 @@ import static org.junit.Assert.*;
  * Tests every implementation in the {@link org.geotools.metadata.iso} package.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (Geomatys)

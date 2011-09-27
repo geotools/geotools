@@ -18,7 +18,8 @@ import org.opengis.feature.Attribute;
  *
  * @author Jody Garnett, Refractions Research
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/feature/type/Operation.java $
+ *
+ * @source $URL$
  */
 public interface Operation extends PropertyDescriptor {
 

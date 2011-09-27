@@ -18,6 +18,11 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.identity.Identifier;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class JDBCLobTest extends JDBCTestSupport {
 
     protected static final String TESTLOB = "testlob";

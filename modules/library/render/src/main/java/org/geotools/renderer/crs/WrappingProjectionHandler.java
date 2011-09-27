@@ -40,7 +40,8 @@ import org.opengis.referencing.operation.MathTransform2D;
  * 
  * @author Andrea Aime - OpenGeo
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/renderer/crs/WrappingProjectionHandler.java $
+ *
+ * @source $URL$
  */
 public class WrappingProjectionHandler extends ProjectionHandler {
 

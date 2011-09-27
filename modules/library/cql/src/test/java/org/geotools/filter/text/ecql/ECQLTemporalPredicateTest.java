@@ -44,6 +44,7 @@ import org.opengis.temporal.Period;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  */
 public class ECQLTemporalPredicateTest extends CQLTemporalPredicateTest {

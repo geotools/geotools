@@ -26,6 +26,7 @@ package org.geotools.data.ows;
  * @author Richard Gould
  *
  *
+ *
  * @source $URL$
  */
 public interface GetCapabilitiesRequest extends Request {

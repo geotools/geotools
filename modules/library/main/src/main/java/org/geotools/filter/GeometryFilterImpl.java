@@ -55,6 +55,7 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  * @author Rob Hranac, TOPP
  *
+ *
  * @source $URL$
  * @version $Id$
  *

@@ -26,7 +26,8 @@ import org.opengis.style.StyleVisitor;
  *
  * @author Jody Garnett
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/styling/ColorReplacementImpl.java $
+ *
+ * @source $URL$
  */
 public class ColorReplacementImpl implements org.geotools.styling.ColorReplacement {
 

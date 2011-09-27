@@ -51,6 +51,7 @@ import com.vividsolutions.jts.geom.MultiLineString;
  *
  * @author Jesse Eichar, Refractions Research
  *
+ *
  * @source $URL$
  */
 public abstract class AbstractDataStoreTest extends DataTestCase {

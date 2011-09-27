@@ -55,6 +55,7 @@ import org.opengis.util.InternationalString;
  * 
  * @author Simone Giannecchini, GeoSolutions.
  *
+ *
  * @source $URL$
  * @since 2.5
  */

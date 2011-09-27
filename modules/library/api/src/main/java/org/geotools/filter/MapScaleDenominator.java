@@ -22,6 +22,7 @@ package org.geotools.filter;
  *
  * @author James
  *
+ *
  * @source $URL$
  * @deprecated pelase use the environmental variable function
  */

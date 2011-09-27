@@ -20,7 +20,8 @@ package org.opengis.referencing;
  * @see org.opengis.referencing.datum.DatumAuthorityFactory
  * @see org.opengis.referencing.crs.CRSAuthorityFactory
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/referencing/NoSuchAuthorityCodeException.java $
+ *
+ * @source $URL$
  */
 public class NoSuchAuthorityCodeException extends FactoryException {
     /**

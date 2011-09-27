@@ -30,7 +30,8 @@ import java.awt.geom.Rectangle2D;
  * 
  * @author fmoura
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/renderer/style/shape/ExplicitBoundsShape.java $
+ *
+ * @source $URL$
  */
 public class ExplicitBoundsShape implements Shape {
 

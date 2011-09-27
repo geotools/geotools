@@ -47,6 +47,7 @@ import java.util.List;
  * </code></pre>
  * </p>
  *
+ *
  * @source $URL$
  */
 public interface NamedLayer extends StyledLayer {

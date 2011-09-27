@@ -26,6 +26,7 @@ import org.xml.sax.helpers.XMLFilterImpl;
  *
  * @author Darren Edmonds
  *
+ *
  * @source $URL$
  */
 public class GMLReceiver extends XMLFilterImpl implements GMLHandlerFeature {

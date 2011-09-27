@@ -42,7 +42,8 @@ import org.opengis.annotation.Extension;
  * @author Martin Desruisseaux
  * @author Jody Garnet
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/util/ProgressListener.java $
+ *
+ * @source $URL$
  */
 @Extension
 public interface ProgressListener {

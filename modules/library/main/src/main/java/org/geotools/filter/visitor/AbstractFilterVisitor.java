@@ -99,6 +99,7 @@ import org.opengis.filter.temporal.TOverlaps;
  * @author James Macgill, Penn State
  * @author Justin Deoliveira, The Open Planning Project
  *
+ *
  * @source $URL$
  */
 public class AbstractFilterVisitor implements org.geotools.filter.FilterVisitor, FilterVisitor {

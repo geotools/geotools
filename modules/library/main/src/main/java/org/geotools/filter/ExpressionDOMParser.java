@@ -48,6 +48,7 @@ import com.vividsolutions.jts.geom.TopologyException;
  *
  * @author iant
  *
+ *
  * @source $URL$
  */
 public final class ExpressionDOMParser {

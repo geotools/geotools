@@ -16,6 +16,11 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ForceCoordinateFeatureResultsTest extends TestCase {
     
     private static final String FEATURE_TYPE_NAME = "testType";

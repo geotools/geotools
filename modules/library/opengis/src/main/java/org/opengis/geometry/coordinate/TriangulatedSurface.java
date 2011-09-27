@@ -21,7 +21,8 @@ import static org.opengis.annotation.Specification.*;
  * There is no restriction on how the triangulation is derived.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/geometry/coordinate/TriangulatedSurface.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

@@ -73,6 +73,7 @@ import org.opengis.util.Cloneable;
  *
  * @author Cory Horner, Refractions Research Inc.
  *
+ *
  * @source $URL$
  */
 public class DuplicatorStyleVisitorTest extends TestCase {

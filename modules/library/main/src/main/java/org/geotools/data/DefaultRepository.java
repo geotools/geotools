@@ -49,6 +49,7 @@ import org.opengis.feature.type.Name;
  * 
  * @author Jody Garnett
  *
+ *
  * @source $URL$
  *         DefaultRepository.java $
  */

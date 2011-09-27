@@ -30,6 +30,7 @@ import org.opengis.geometry.Geometry;
  * point replicates first point.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

@@ -63,6 +63,7 @@ import org.xml.sax.helpers.AttributesImpl;
  *
  * @author Ian Schneider
  *
+ *
  * @source $URL$
  */
 public class SLDTransformer extends TransformerBase {

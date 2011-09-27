@@ -36,6 +36,11 @@ import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SubFeatureList extends SubFeatureCollection implements RandomFeatureAccess {
     /** Order by which content should be sorted */
     List<SortBy> sort; 

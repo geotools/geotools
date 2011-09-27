@@ -49,6 +49,11 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class JDBCFeatureSourceTest extends JDBCTestSupport {
     ContentFeatureSource featureSource;
 

@@ -22,7 +22,8 @@ import static org.opengis.annotation.Specification.*;
  * Each {@code SurfacePatch} shall be in at most one {@linkplain Surface surface}.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/geometry/primitive/SurfacePatch.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

@@ -27,6 +27,7 @@ import org.opengis.metadata.quality.TopologicalConsistency;
  * described by the scope.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

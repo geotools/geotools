@@ -33,6 +33,7 @@ import org.opengis.temporal.TemporalReferenceSystem;
  * @author Mehdi Sidhoum (Geomatys)
  *
  *
+ *
  * @source $URL$
  */
 public class DefaultTemporalPositionTest {

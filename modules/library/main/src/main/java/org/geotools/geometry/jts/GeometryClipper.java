@@ -40,7 +40,8 @@ import com.vividsolutions.jts.geom.Polygon;
  * 
  * @author Andrea Aime - OpenGeo
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/geometry/jts/GeometryClipper.java $
+ *
+ * @source $URL$
  */
 public class GeometryClipper {
 

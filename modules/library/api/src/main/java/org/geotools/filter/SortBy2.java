@@ -35,6 +35,7 @@ package org.geotools.filter;
  * <p>
  * @author Jody Garnett, Refractions Research.
  *
+ *
  * @source $URL$
  */
 @SuppressWarnings("deprecation")

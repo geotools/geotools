@@ -28,7 +28,8 @@ import org.opengis.filter.expression.Expression;
  * @author Niels Charlier, Curtin University of Technology
  * 
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/filter/MultiCompareFilterImpl.java $
+ *
+ * @source $URL$
  */
 public abstract class MultiCompareFilterImpl extends CompareFilterImpl {
     

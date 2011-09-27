@@ -58,7 +58,8 @@ import static org.opengis.annotation.Specification.*;
  *
  * @since GeoAPI 2.1
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/feature/type/Namespace.java $
+ *
+ * @source $URL$
  */
 @UML(identifier="NameSpace", specification=ISO_19103)
 public interface Namespace extends Set<Name> {

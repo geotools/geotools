@@ -22,7 +22,8 @@ import static org.opengis.annotation.Specification.*;
  * {@linkplain GridPoint grid point} within the {@linkplain Grid grid}.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/coverage/grid/GridCoordinates.java $
+ *
+ * @source $URL$
  * @version ISO 19123:2004
  * @author  Martin Schouwenburg
  * @author  Wim Koolhoven

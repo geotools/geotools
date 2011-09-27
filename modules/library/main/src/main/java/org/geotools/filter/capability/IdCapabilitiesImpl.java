@@ -25,6 +25,7 @@ import org.opengis.filter.capability.IdCapabilities;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class IdCapabilitiesImpl implements IdCapabilities {

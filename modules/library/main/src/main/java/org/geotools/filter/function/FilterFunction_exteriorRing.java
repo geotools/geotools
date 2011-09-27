@@ -27,6 +27,11 @@ import org.opengis.filter.capability.FunctionName;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LinearRing;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FilterFunction_exteriorRing extends FunctionExpressionImpl {
 
     public static FunctionName NAME = new FunctionNameImpl("exteriorRing", LinearRing.class,

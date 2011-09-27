@@ -118,6 +118,7 @@ import org.opengis.filter.spatial.Within;
  * @author Jody Garnett (LISAsoft)
  * @since GeoTools 2.2
  * @version 8.0
+ *
  * @source $URL$
  */
 public class Filters {

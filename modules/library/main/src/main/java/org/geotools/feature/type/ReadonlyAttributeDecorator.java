@@ -31,6 +31,7 @@ import org.opengis.filter.identity.Identifier;
  * during evaluation.
  *
  *
+ *
  * @source $URL$
  */
 public final class ReadonlyAttributeDecorator implements Attribute {

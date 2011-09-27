@@ -9,6 +9,7 @@ import org.opengis.filter.expression.Function;
  * around as needed.
  *
  *
+ *
  * @source $URL$
  */
 public interface ColorReplacement extends org.opengis.style.ColorReplacement {

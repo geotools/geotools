@@ -63,6 +63,7 @@ import org.opengis.style.ContrastMethod;
  * 
  * @author iant
  *
+ *
  * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/
  *         styling/ContrastEnhancementImpl.java $

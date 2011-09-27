@@ -41,7 +41,8 @@ import org.opengis.referencing.operation.MathTransform;
  *
  * @since 2.6.3
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/referencing/src/main/java/org/geotools/referencing/operation/projection/Robinson.java $
+ *
+ * @source $URL$
  * @author Andrea Aime
  */
 public class Robinson extends MapProjection {

@@ -86,6 +86,7 @@ import com.vividsolutions.jts.operation.linemerge.LineMerger;
  * @author dblasby
  * @author Andrea Aime - OpenGeo
  *
+ *
  * @source $URL$
  */
 public final class LabelCacheImpl implements LabelCache {

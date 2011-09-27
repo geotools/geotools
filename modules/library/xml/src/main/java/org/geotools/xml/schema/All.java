@@ -26,6 +26,7 @@ package org.geotools.xml.schema;
  *
  * @see Element
  *
+ *
  * @source $URL$
  */
 public interface All extends ElementGrouping {

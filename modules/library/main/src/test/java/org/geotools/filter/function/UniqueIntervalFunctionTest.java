@@ -26,6 +26,7 @@ import org.opengis.filter.expression.PropertyName;
  *
  * @author Cory Horner
  *
+ *
  * @source $URL$
  */
 public class UniqueIntervalFunctionTest extends FunctionTestSupport {

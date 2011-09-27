@@ -40,6 +40,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @author iant
  *
+ *
  * @source $URL$
  */
 public class StyleFactoryImplTest extends TestCase {

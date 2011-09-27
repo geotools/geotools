@@ -24,6 +24,7 @@ import org.opengis.filter.capability.Operator;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
+ *
  * @source $URL$
  */
 public class OperatorImpl implements Operator {

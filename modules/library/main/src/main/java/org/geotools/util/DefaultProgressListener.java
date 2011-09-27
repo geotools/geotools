@@ -17,7 +17,8 @@ import org.opengis.util.InternationalString;
  * @author Simone Giannecchini, GeoSolutions SAS
  * @since 2.8
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/util/DefaultProgressListener.java $
+ *
+ * @source $URL$
  */
 @SuppressWarnings("deprecation")
 public class DefaultProgressListener extends NullProgressListener implements ProgressListener,

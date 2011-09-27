@@ -35,6 +35,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * 
  * @author Jody Garnett
  * @since 8.0
+ *
+ * @source $URL$
  * @version 8.0
  */
 public final class ArrayDataStore extends AbstractDataStore {

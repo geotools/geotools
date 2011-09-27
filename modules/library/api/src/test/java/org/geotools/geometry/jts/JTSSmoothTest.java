@@ -39,6 +39,7 @@ import static org.junit.Assert.*;
  * 
  * @author Michael Bedward
  *
+ *
  * @source $URL$
  * @version $Id$
  * @since 2.8

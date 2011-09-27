@@ -30,7 +30,8 @@ import static org.opengis.annotation.Specification.*;
  * {@code DatumFactory} can be used to make "special" datums.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/referencing/datum/DatumFactory.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/01-009.pdf">Implementation specification 1.0</A>
  * @author  Martin Desruisseaux (IRD)
  * @since   GeoAPI 1.0

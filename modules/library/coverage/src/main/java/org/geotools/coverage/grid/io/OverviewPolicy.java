@@ -22,6 +22,7 @@ package org.geotools.coverage.grid.io;
  *
  * @since 2.5
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Andrea Aime

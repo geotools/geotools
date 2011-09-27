@@ -27,6 +27,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author Ian Schneider
  *
+ *
  * @source $URL$
  */
 public class DefaultFeatureCollections extends FeatureCollections {

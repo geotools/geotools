@@ -23,6 +23,7 @@ package org.geotools.filter;
  *
  * @author wolf
  *
+ *
  * @source $URL$
  */
 public interface ExpressionType {

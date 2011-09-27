@@ -51,6 +51,7 @@ import org.opengis.feature.type.FeatureType;
  * Example:<br/><code>org.geotools.data.mytype.MyTypeDataStoreFacotry</code>
  * </p>
  *
+ *
  * @source $URL$
  */
 public final class DataStoreFinder {

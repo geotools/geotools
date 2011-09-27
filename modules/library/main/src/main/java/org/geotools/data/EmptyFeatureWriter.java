@@ -27,6 +27,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author Jody Garnett, Refractions Research
  *
+ *
  * @source $URL$
  */
 public class EmptyFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {

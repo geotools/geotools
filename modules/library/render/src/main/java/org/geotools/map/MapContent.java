@@ -46,10 +46,11 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @author Jody Garnett
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/map/MapContent.java $
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools
  *         /map/MapContext.java $
- * @version $Id: Map.java 35310 2010-04-30 10:32:15Z jive $
+ * @version $Id$
  */
 public class MapContent {
     /** The logger for the map module. */

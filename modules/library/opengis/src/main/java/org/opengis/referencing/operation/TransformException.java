@@ -25,7 +25,8 @@ import org.opengis.geometry.DirectPosition;  // For javadoc
  * @author  Martin Desruisseaux (IRD)
  * @since   GeoAPI 1.0
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/referencing/operation/TransformException.java $
+ *
+ * @source $URL$
  */
 public class TransformException extends Exception {
     /**

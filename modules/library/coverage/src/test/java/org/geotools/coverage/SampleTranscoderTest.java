@@ -44,6 +44,7 @@ import static org.junit.Assert.*;
  * heavily on {@link CategoryList}, so this one should be tested first.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

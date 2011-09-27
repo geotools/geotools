@@ -48,6 +48,7 @@ import org.geotools.factory.FactoryRegistry;
  * </p>
  * 
  *
+ *
  * @source $URL$
  */
 public final class DataSourceFinder {

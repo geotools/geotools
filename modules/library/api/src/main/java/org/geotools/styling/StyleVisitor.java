@@ -30,6 +30,7 @@ package org.geotools.styling;
  * @author James Macgill
  * @author Ian Turton
  *
+ *
  * @source $URL$
  * @version $Id$
  */

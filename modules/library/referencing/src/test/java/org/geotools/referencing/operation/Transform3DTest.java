@@ -42,6 +42,7 @@ import static org.junit.Assert.*;
  * objects using GeoAPI only (except for a few helper classes).
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Justin Couch

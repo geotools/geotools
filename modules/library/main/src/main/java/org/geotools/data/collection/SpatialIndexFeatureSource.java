@@ -59,7 +59,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * events.
  * </p>
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/data/collection/SpatialIndexFeatureSource.java $
+ *
+ * @source $URL$
  */
 public class SpatialIndexFeatureSource implements SimpleFeatureSource {
     SpatialIndexFeatureCollection contents;

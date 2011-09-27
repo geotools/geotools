@@ -10,6 +10,11 @@ import org.opengis.feature.FeatureVisitor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FilteringSimpleFeatureCollectionTest extends FeatureCollectionWrapperTestSupport {
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 

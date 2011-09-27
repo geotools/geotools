@@ -77,6 +77,7 @@ import org.opengis.filter.FilterFactory2;
  *
  * @author dzwiers
  *
+ *
  * @source $URL$
  */
 public class FilterSchema implements Schema {

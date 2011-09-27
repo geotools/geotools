@@ -53,6 +53,7 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class GeometryTypeConverterFactory implements ConverterFactory {

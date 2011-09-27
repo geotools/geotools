@@ -32,6 +32,7 @@ import org.opengis.util.Cloneable;
  *
  * @author Sean Geoghegan
  *
+ *
  * @source $URL$
  */
 public class StyleObjectTest extends TestCase {

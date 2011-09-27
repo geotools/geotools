@@ -53,6 +53,7 @@ import org.geotools.resources.i18n.Vocabulary;
  *
  * @since 2.0
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

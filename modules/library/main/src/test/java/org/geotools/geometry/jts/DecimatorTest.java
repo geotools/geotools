@@ -16,6 +16,11 @@ import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Point;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DecimatorTest {
 
     GeometryFactory gf = new GeometryFactory();

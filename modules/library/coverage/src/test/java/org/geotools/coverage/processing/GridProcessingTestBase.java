@@ -42,6 +42,7 @@ import org.opengis.referencing.operation.MathTransform;
  * methods performing some operations on {@link GridCoverage2D}.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

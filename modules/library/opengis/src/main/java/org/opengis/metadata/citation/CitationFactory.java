@@ -22,7 +22,8 @@ import org.opengis.referencing.Factory;
  * The value must be non-null for {@linkplain Obligation#MANDATORY mandatory} arguments.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/metadata/citation/CitationFactory.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author  Jesse Crossley (SYS Technologies)
  * @since   GeoAPI 2.0

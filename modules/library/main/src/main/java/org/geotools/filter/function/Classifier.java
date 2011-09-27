@@ -24,6 +24,7 @@ package org.geotools.filter.function;
  * @author Cory Horner, Refractions Research
  *
  *
+ *
  * @source $URL$
  */
 public abstract class Classifier {

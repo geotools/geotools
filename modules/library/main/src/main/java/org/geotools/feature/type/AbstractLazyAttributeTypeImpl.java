@@ -40,6 +40,8 @@ import org.opengis.util.InternationalString;
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @see AttributeTypeImpl
  * @see PropertyTypeImpl
+ *
+ * @source $URL$
  */
 public abstract class AbstractLazyAttributeTypeImpl implements AttributeType {
 

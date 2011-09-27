@@ -38,6 +38,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  *
  * @author James
  *
+ *
  * @source $URL$
  */
 public class MathTest extends TestCase {

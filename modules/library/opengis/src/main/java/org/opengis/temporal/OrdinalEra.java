@@ -23,7 +23,8 @@ import static org.opengis.annotation.Specification.*;
  *
  * @author Alexander Petkov
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/temporal/OrdinalEra.java $
+ *
+ * @source $URL$
  */
 @UML(identifier="TM_OrdinalEra", specification=ISO_19108)
 public interface OrdinalEra {

@@ -79,7 +79,8 @@ import org.opengis.feature.type.AttributeType;
  * @author Jody Garnett, Refractions Research
  * @author Justin Deoliveira, The Open Planning Project
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/feature/Association.java $
+ *
+ * @source $URL$
  */
 public interface Association extends Property {
 

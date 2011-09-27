@@ -32,6 +32,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  *
  *
+ *
  * @source $URL$
  */
 public abstract class JDBCGeometrylessTest extends JDBCTestSupport {

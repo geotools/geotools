@@ -26,7 +26,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * A FilterFunction that expects a Geometry and returns it's minimum rectangle.
  * @author Jared Erickson
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/filter/function/FilterFunction_minimumRectangle.java $
+ *
+ * @source $URL$
  */
 public class FilterFunction_minimumRectangle extends FunctionExpressionImpl {
 

@@ -25,6 +25,7 @@ package org.geotools.filter.expression;
  *
  *
  *
+ *
  * @source $URL$
  */
 public interface PropertyAccessor {

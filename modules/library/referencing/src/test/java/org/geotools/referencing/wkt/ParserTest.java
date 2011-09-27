@@ -45,6 +45,7 @@ import static org.junit.Assert.*;
  * Tests the WKT {@link Parser} implementation.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Yann Cézard

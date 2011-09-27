@@ -12,7 +12,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * locking for a set time period; so even if your application or machine crashes the lock
  * will eventually be released allowing others to play.
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/api/src/main/java/org/geotools/data/simple/SimpleFeatureLocking.java $
+ *
+ * @source $URL$
  */
 public interface SimpleFeatureLocking extends SimpleFeatureStore, FeatureLocking<SimpleFeatureType, SimpleFeature> {
     

@@ -43,6 +43,8 @@ import org.opengis.util.InternationalString;
  * 
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @see ComplexTypeImpl
+ *
+ * @source $URL$
  */
 public abstract class AbstractLazyComplexTypeImpl extends AbstractLazyAttributeTypeImpl implements
         ComplexType {

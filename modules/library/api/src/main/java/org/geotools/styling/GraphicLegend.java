@@ -11,6 +11,7 @@ import org.opengis.style.GraphicalSymbol;
  * @author Jody
  *
  *
+ *
  * @source $URL$
  */
 public interface GraphicLegend extends org.opengis.style.GraphicLegend {

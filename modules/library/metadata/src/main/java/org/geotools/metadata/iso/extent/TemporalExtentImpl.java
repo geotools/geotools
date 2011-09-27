@@ -31,6 +31,7 @@ import org.geotools.metadata.iso.MetadataEntity;
  * point replicates first point.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

@@ -32,6 +32,7 @@ import org.opengis.filter.expression.Expression;
  *  &lt;/xs:element&gt;
  *  </pre>
  *
+ *
  * @source $URL$
  */
 public interface ColorMapEntry {

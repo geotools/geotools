@@ -38,6 +38,7 @@ import org.opengis.geometry.BoundingBox;
  * @author jgarnett
  *
  *
+ *
  * @source $URL$
  */
 public class FeatureImpl extends ComplexAttributeImpl implements Feature {

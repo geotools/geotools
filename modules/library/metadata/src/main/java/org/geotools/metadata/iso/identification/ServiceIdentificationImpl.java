@@ -27,6 +27,7 @@ import org.opengis.metadata.identification.ServiceIdentification;
  * through a set of interfaces that define a behaviour.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

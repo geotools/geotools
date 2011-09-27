@@ -41,6 +41,7 @@ import org.opengis.filter.FilterFactory2;
  *  
  * @author David Zwiers, Refractions Research
  *
+ *
  * @source $URL$
  */
 public class ExpresionEncodeTest extends TestCase {

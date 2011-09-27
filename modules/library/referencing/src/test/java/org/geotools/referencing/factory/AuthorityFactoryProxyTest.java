@@ -37,6 +37,7 @@ import static org.junit.Assert.*;
  *
  * @author Martin Desruisseaux
  *
+ *
  * @source $URL$
  * @version $Id$
  */

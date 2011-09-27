@@ -31,6 +31,7 @@ import org.geotools.metadata.iso.MetadataEntity;
  * of data objects in a record, file, message, storage device or transmission channel.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

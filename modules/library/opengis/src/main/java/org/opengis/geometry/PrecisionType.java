@@ -21,7 +21,8 @@ import org.opengis.util.CodeList;
  * @author Jody Garnett
  * @since GeoAPI 2.1
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/geometry/PrecisionType.java $
+ *
+ * @source $URL$
  */
 public final class PrecisionType extends CodeList<PrecisionType> {
     /**

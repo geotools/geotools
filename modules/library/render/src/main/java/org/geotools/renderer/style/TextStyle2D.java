@@ -76,6 +76,7 @@ import org.geotools.resources.Classes;
      *   This replaces the old behavior which converted a LinePlacement -> pointplacement and set the absoluteLineDisplacement flag!
 	 * 
  *
+ *
  * @source $URL$
 	 * */
 	 

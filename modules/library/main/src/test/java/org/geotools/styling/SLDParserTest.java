@@ -27,6 +27,11 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Test;
 import org.opengis.style.GraphicalSymbol;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SLDParserTest {
 
     public static String SLD = 

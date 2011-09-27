@@ -27,7 +27,8 @@ import javax.media.jai.CRIFImpl;
  * @author Simone Giannecchini, GeoSolutions SAS
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/coverage/src/main/java/org/geotools/image/palette/ColorInversionCRIF.java $
+ *
+ * @source $URL$
  */
 public class ColorInversionCRIF extends CRIFImpl {
 

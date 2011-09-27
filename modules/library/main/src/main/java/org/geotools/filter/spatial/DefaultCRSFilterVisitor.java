@@ -22,6 +22,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  * @author Andrea Aime - The Open Planning Project
  * 
+ *
+ * @source $URL$
  */
 public class DefaultCRSFilterVisitor extends DuplicatingFilterVisitor {
     private CoordinateReferenceSystem defaultCrs;

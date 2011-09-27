@@ -21,6 +21,11 @@ import org.geotools.renderer.style.FontCache;
 import org.geotools.styling.Style;
 import org.geotools.test.TestData;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PointPlacementTest extends TestCase {
     private static final long TIME = 5000;
 

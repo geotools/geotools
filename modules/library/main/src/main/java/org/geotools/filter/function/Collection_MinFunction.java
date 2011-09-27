@@ -42,6 +42,7 @@ import org.opengis.filter.capability.FunctionName;
  *
  * @author James
  *
+ *
  * @source $URL$
  */
 public class Collection_MinFunction extends FunctionExpressionImpl {

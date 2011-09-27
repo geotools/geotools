@@ -37,7 +37,8 @@ import javax.imageio.ImageIO;
  * 
  * @author Andrea Aime - OpenGeo
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/renderer/lite/DashedShape.java $
+ *
+ * @source $URL$
  */
 public class DashedShape implements Shape {
     Shape shape;

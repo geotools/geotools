@@ -79,6 +79,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @author James Macgill
  *
+ *
  * @source $URL$
  * @version $Id$
  */

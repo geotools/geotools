@@ -28,6 +28,7 @@ import javax.swing.Icon;
  * @author Jody Garnett
  *
  *
+ *
  * @source $URL$
  */
 public class ReIcon {

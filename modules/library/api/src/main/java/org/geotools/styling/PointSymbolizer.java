@@ -77,6 +77,7 @@ package org.geotools.styling;
  *
  * @author James Macgill
  *
+ *
  * @source $URL$
  * @version $Id$
  */

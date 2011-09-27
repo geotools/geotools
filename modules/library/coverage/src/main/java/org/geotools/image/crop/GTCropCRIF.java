@@ -32,6 +32,8 @@ import org.geotools.factory.Hints;
  * 
  * @author Andrea Aime
  * @since 2.7.2
+ *
+ * @source $URL$
  */
 public class GTCropCRIF implements RenderedImageFactory {
 

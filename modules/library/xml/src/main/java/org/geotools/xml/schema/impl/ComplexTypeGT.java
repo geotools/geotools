@@ -52,6 +52,7 @@ import org.xml.sax.SAXException;
  * @author dzwiers
  * @since 0.3
  *
+ *
  * @source $URL$
  */
 public class ComplexTypeGT implements ComplexType {

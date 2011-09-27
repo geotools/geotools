@@ -35,6 +35,7 @@ import org.opengis.filter.Filter;
  *
  * @see AbstractDataStore
  *
+ *
  * @source $URL$
  */
 public abstract class AbstractFileDataStore extends AbstractDataStore implements FileDataStore {

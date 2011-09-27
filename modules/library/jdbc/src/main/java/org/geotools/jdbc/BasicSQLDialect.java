@@ -28,6 +28,11 @@ import org.opengis.filter.expression.Literal;
 
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class BasicSQLDialect extends SQLDialect {
 
     protected BasicSQLDialect(JDBCDataStore dataStore) {

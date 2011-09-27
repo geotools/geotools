@@ -27,7 +27,8 @@ import java.io.Serializable;
  * 
  * @author Andrea Aime - OpenGeo
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/jdbc/src/main/java/org/geotools/jdbc/VirtualTableParameter.java $
+ *
+ * @source $URL$
  */
 public class VirtualTableParameter implements Serializable {
     String name;

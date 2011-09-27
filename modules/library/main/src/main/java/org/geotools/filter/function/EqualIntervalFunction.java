@@ -38,6 +38,7 @@ import org.geotools.util.NullProgressListener;
  * @author James Macgill
  * @author Cory Horner, Refractions Research Inc.
  *
+ *
  * @source $URL$
  */
 public class EqualIntervalFunction extends ClassificationFunction {

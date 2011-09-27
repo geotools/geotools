@@ -26,6 +26,7 @@ import com.vividsolutions.jts.geom.Coordinate;
  * 
  * @author Michael Bedward
  *
+ *
  * @source $URL$
  * @version $Id$
  * @since 2.8

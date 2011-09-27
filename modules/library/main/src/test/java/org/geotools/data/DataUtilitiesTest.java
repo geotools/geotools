@@ -73,6 +73,7 @@ import org.geotools.data.memory.MemoryDataStore;
  * 
  * @author Jody Garnett, Refractions Research
  *
+ *
  * @source $URL$
  *         http://svn.osgeo.org/geotools/branches/2.6.x/modules/library/main/src/test/java/org/
  *         geotools/data/DataUtilitiesTest.java $

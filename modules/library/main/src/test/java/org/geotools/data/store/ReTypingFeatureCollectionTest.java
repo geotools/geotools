@@ -19,6 +19,11 @@ package org.geotools.data.store;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.opengis.feature.simple.SimpleFeatureType;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ReTypingFeatureCollectionTest extends FeatureCollectionWrapperTestSupport {
 
     public void testSchema() throws Exception {

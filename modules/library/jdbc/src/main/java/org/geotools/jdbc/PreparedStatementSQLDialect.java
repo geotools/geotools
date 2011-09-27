@@ -40,6 +40,7 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  *
  *
+ *
  * @source $URL$
  */
 public abstract class PreparedStatementSQLDialect extends SQLDialect {

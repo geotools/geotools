@@ -29,6 +29,7 @@ import org.geotools.xml.schema.Sequence;
  *
  * @author dzwiers
  *
+ *
  * @source $URL$
  */
 public class SequenceGT implements Sequence {

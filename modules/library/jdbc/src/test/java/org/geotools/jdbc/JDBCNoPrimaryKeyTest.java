@@ -27,6 +27,11 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class JDBCNoPrimaryKeyTest extends JDBCTestSupport {
 
     protected static final String LAKE = "lake";

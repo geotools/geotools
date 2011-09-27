@@ -34,6 +34,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @deprecated Now replaced by {@link CRSAuthorityFactory}.
  *
+ *
  * @source $URL$
  */
 public interface CRSAuthoritySpi extends Factory {

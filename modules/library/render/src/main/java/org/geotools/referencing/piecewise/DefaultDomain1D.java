@@ -33,6 +33,7 @@ import org.opengis.util.InternationalString;
  * @author    Simone Giannecchini
  *
  *
+ *
  * @source $URL$
  */
 public class DefaultDomain1D<E extends DefaultDomainElement1D>  extends AbstractList<E> implements Domain1D<E>{

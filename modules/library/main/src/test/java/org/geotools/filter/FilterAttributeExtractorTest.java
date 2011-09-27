@@ -49,6 +49,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  *
  * @author Andrea Aime, SATA
  *
+ *
  * @source $URL$
  */
 public class FilterAttributeExtractorTest extends TestCase {

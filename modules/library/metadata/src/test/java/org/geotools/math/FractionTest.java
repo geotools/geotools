@@ -24,6 +24,7 @@ import static org.junit.Assert.*;
  * Tests the {@link Fraction} class.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (Geomatys)

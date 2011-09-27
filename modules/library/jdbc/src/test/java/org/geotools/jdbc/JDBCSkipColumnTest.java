@@ -28,6 +28,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @author Andrea Aime - OpenGeo
  *
  *
+ *
  * @source $URL$
  */
 public abstract class JDBCSkipColumnTest extends JDBCTestSupport {

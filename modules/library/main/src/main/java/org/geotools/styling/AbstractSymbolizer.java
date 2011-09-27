@@ -10,6 +10,11 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class AbstractSymbolizer implements Symbolizer {
     protected String name;
 

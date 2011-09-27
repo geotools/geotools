@@ -34,6 +34,7 @@ import org.opengis.feature.simple.SimpleFeature;
 /**
  *
  *
+ *
  * @source $URL$
  */
 public class GMLInheritanceTest extends TestCase {

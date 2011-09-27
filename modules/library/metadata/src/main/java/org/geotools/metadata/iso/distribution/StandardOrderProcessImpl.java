@@ -30,6 +30,7 @@ import org.geotools.metadata.iso.MetadataEntity;
  * and fee information.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

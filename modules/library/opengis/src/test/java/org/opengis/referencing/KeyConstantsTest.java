@@ -22,7 +22,8 @@ import static org.junit.Assert.*;
  *
  * @author Martin Desruisseaux (Geomatys)
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/test/java/org/opengis/referencing/KeyConstantsTest.java $
+ *
+ * @source $URL$
  */
 public final class KeyConstantsTest {
     /**

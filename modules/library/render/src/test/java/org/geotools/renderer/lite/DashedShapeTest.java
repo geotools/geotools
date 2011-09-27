@@ -16,6 +16,11 @@ import com.vividsolutions.jts.awt.ShapeReader;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DashedShapeTest {
     static final float EPS = 1e-3f;
 

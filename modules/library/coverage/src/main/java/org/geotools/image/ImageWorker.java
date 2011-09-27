@@ -123,6 +123,7 @@ import com.sun.media.jai.util.ImageUtil;
  *
  * @since 2.3
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini

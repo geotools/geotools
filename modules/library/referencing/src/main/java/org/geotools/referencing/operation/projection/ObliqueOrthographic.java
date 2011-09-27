@@ -34,6 +34,7 @@ import static java.lang.Math.*;
  *
  * @since 2.4
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Rueben Schulz

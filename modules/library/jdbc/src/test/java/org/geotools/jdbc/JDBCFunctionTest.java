@@ -37,6 +37,8 @@ import org.opengis.filter.expression.Function;
  * Base class for native function encoding tests
  * 
  * @author Andrea Aime - GeoSolutions
+ *
+ * @source $URL$
  */
 public abstract class JDBCFunctionTest extends JDBCTestSupport {
     static final Logger LOGGER = Logging.getLogger(JDBCFunctionTest.class);

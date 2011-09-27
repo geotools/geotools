@@ -19,6 +19,11 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.PrecisionModel;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class BBOXImplTest extends TestCase {
 
     public static Test suite() {

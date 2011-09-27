@@ -26,6 +26,11 @@ import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FilterFunction_abs_4 extends FunctionExpressionImpl {
 
     public static FunctionName NAME = new FunctionNameImpl("abs_4",

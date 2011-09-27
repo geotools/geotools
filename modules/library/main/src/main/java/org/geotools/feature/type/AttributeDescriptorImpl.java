@@ -24,6 +24,11 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.Name;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class AttributeDescriptorImpl extends PropertyDescriptorImpl 
 	implements AttributeDescriptor {
 	

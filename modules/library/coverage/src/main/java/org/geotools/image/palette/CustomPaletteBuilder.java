@@ -32,6 +32,7 @@ import javax.imageio.ImageTypeSpecifier;
  * 
  * @author Simone Giannecchini - GeoSolutions
  *
+ *
  * @source $URL$
  */
 public final class CustomPaletteBuilder {

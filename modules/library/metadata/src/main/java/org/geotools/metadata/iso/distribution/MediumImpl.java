@@ -32,6 +32,7 @@ import org.geotools.metadata.iso.MetadataEntity;
  * Information about the media on which the resource can be distributed.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

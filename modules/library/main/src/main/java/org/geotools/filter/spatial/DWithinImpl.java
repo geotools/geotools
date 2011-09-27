@@ -23,6 +23,11 @@ import org.opengis.filter.spatial.DWithin;
 
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DWithinImpl extends CartesianDistanceFilter implements DWithin {
 
 	public DWithinImpl(org.opengis.filter.FilterFactory factory,Expression e1,Expression e2) {

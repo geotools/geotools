@@ -36,6 +36,11 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Function;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class RenderingBufferExtractorTest {
     StyleBuilder sb = new StyleBuilder();
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);

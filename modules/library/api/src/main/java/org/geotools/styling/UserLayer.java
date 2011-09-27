@@ -49,6 +49,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * </code></pre>
  * </p>
  *
+ *
  * @source $URL$
  */
 public interface UserLayer extends StyledLayer {

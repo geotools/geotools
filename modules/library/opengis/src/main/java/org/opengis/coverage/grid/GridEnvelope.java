@@ -28,7 +28,8 @@ import static org.opengis.annotation.Specification.*;
  * exclusive.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/coverage/grid/GridEnvelope.java $
+ *
+ * @source $URL$
  * @version ISO 19123:2004
  * @author  Wim Koolhoven
  * @author  Martin Schouwenburg

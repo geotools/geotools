@@ -26,6 +26,11 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class LabelWrapTest extends TestCase {
 
     private static final long TIME = 10000;

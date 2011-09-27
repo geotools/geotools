@@ -133,6 +133,7 @@ import org.opengis.filter.temporal.TOverlaps;
  * @author dzwiers
  * @author commented and ported from gt to ogc filters by saul.farber
  *
+ *
  * @source $URL$
  * @deprecated use {@link CapabilitiesFilterSplitter} instead for geoapi FilterCapabilities
  */

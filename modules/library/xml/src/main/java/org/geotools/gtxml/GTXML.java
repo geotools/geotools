@@ -14,7 +14,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * This is a simple utility class; if you need more control please look at the implementation of
  * the provided methods.
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/xml/src/main/java/org/geotools/gtxml/GTXML.java $
+ *
+ * @source $URL$
  */
 public class GTXML {
     /**

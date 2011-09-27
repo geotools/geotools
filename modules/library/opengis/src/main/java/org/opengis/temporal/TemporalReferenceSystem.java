@@ -30,7 +30,8 @@ import static org.opengis.annotation.Specification.*;
  * @author Stephane Fellah (Image Matters)
  * @author Alexander Petkov
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/temporal/TemporalReferenceSystem.java $
+ *
+ * @source $URL$
  */
 @UML(identifier="TM_ReferenceSystem", specification=ISO_19108)
 public interface TemporalReferenceSystem extends ReferenceSystem {

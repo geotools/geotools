@@ -29,6 +29,7 @@ package org.geotools.filter;
  *
  * @author James Macgill
  *
+ *
  * @source $URL$
  * @version $Id$
  *

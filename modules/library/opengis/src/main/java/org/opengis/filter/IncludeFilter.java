@@ -28,7 +28,8 @@ import java.io.Serializable;
  * @author Jody Garnett (Refractions Research, Inc.)
  * @author Martin Desruisseaux (Geomatys)
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/filter/IncludeFilter.java $
+ *
+ * @source $URL$
  */
 public final class IncludeFilter implements Filter, Serializable {
     /**

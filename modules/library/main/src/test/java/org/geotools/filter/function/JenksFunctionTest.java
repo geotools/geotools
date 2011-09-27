@@ -33,7 +33,8 @@ import org.opengis.filter.expression.PropertyName;
  * @author Cory Horner, Refractions Research Inc.
  * 
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/test/java/org/geotools/filter/function/JenksFunctionTest.java $
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/library/main/src/test/java/org/geotools/
  *         filter/function/QuantileFunctionTest.java $
  */

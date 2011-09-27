@@ -44,6 +44,7 @@ import org.geotools.util.logging.LoggedFormat;
  *
  * @since 2.0
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Remi Eve

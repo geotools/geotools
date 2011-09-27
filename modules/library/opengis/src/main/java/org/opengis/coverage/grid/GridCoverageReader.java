@@ -31,7 +31,8 @@ import org.opengis.parameter.InvalidParameterValueException;
  * @see javax.imageio.ImageReader
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/coverage/grid/GridCoverageReader.java $
+ *
+ * @source $URL$
  */
 public interface GridCoverageReader {
     /**

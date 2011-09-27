@@ -66,6 +66,7 @@ import org.geotools.util.SimpleInternationalString;
  *
  * @since 2.1
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Touraïvane

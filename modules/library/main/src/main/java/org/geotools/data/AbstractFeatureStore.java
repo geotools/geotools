@@ -42,6 +42,7 @@ import org.opengis.filter.identity.FeatureId;
  *
  * @author Jody Garnett, Refractions Research
  *
+ *
  * @source $URL$
  */
 public abstract class AbstractFeatureStore extends AbstractFeatureSource

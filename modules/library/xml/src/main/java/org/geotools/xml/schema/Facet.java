@@ -23,6 +23,7 @@ package org.geotools.xml.schema;
  *
  * @author dzwiers
  *
+ *
  * @source $URL$
  */
 public interface Facet {

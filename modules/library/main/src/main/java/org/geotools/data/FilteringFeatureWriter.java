@@ -38,6 +38,7 @@ import org.opengis.filter.Filter;
  *
  * @author Jody Garnett, Refractions Research
  *
+ *
  * @source $URL$
  */
 public class FilteringFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {

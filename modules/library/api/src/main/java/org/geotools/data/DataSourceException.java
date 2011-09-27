@@ -26,6 +26,7 @@ package org.geotools.data;
  * important.
  * </p>
  *
+ *
  * @source $URL$
  */
 public class DataSourceException extends java.io.IOException {

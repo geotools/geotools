@@ -24,6 +24,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  * class.
  * @author  Ian Schneider
  *
+ *
  * @source $URL$
  */
 public interface Translator {

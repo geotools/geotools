@@ -26,6 +26,7 @@ import org.geotools.factory.Hints.Key;
  *
  *
  *
+ *
  * @source $URL$
  */
 public interface PropertyAccessorFactory {

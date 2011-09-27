@@ -29,6 +29,7 @@ import org.opengis.filter.capability.TemporalCapabilities;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class FilterCapabilitiesImpl implements FilterCapabilities {

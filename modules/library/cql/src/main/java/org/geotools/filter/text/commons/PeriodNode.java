@@ -35,6 +35,7 @@ import org.opengis.filter.expression.Literal;
  * @author Mauricio Pazos - Axios Engineering
  * @author Gabriel Roldan - Axios Engineering
  * @version $Id$
+ *
  * @source $URL$
  *
  */

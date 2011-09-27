@@ -67,7 +67,8 @@ import org.opengis.filter.temporal.TOverlaps;
  * 
  * @author Jody Garnett
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/filter/visitor/AbstractSearchFilterVisitor.java $
+ *
+ * @source $URL$
  */
 public abstract class AbstractSearchFilterVisitor implements FilterVisitor, ExpressionVisitor {
     /**

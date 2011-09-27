@@ -13,6 +13,11 @@ import org.junit.*;
 import static org.junit.Assert.*;
 import org.opengis.feature.type.Name;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class NameImplTest {
 
     @Test

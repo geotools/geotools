@@ -30,7 +30,8 @@ import org.opengis.filter.expression.Literal;
  *
  * @since 2.7
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/api/src/main/java/org/geotools/filter/FunctionFactory.java $
+ *
+ * @source $URL$
  */
 public interface FunctionFactory {
 

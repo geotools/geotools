@@ -17,7 +17,8 @@ import static org.opengis.annotation.Specification.*;
  * Thrown when an invalid value was given to a {@linkplain ParameterValue parameter}.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/parameter/InvalidParameterValueException.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/01-004.pdf">Grid Coverage specification 1.0</A>
  * @author  Martin Desruisseaux (IRD)
  * @since   GeoAPI 1.0

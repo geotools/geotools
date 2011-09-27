@@ -34,7 +34,8 @@ import org.opengis.filter.capability.FunctionName;
  * @author Justin Deoliveira, OpenGeo
  * 
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/filter/function/FilterFunction_numberFormat2.java $
+ *
+ * @source $URL$
  */
 public class FilterFunction_numberFormat2 extends FunctionExpressionImpl {
     public static FunctionName NAME = new FunctionNameImpl("numberFormat2","format","number","minus","decimal","seperator");

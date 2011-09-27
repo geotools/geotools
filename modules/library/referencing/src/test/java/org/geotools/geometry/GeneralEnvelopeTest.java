@@ -28,6 +28,7 @@ import static org.junit.Assert.*;
  * Tests the {@link GeneralEnvelope} class.
  * 
  *
+ *
  * @source $URL$
  *         http://svn.osgeo.org/geotools/branches/2.6.x/modules/library/referencing/src/test/java
  *         /org/geotools/geometry/GeneralEnvelopeTest.java $

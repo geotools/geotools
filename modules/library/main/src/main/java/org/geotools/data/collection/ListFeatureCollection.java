@@ -53,6 +53,7 @@ import org.opengis.geometry.BoundingBox;
  * @author Oliver Gottwald
  * @author Jody
  *
+ *
  * @source $URL$
  */
 @SuppressWarnings("unchecked")

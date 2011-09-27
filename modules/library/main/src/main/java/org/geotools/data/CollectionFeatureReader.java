@@ -35,6 +35,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author jones
  *
+ *
  * @source $URL$
  */
 public class CollectionFeatureReader implements  FeatureReader<SimpleFeatureType, SimpleFeature> {

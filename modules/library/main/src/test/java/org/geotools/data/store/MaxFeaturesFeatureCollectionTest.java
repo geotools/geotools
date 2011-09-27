@@ -20,6 +20,11 @@ import java.util.Iterator;
 
 import org.geotools.feature.collection.MaxSimpleFeatureCollection;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class MaxFeaturesFeatureCollectionTest extends
 		FeatureCollectionWrapperTestSupport {
 

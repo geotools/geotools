@@ -33,6 +33,7 @@ import static org.junit.Assert.*;
  * tests are actually {@code CategoryList} tests.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

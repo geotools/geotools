@@ -25,7 +25,8 @@ import static org.opengis.annotation.Obligation.CONDITIONAL;
  * Name of the character coding standard used for the resource.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/metadata/identification/CharacterSet.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author  Ely Conn (Leica Geosystems Geospatial Imaging, LLC)
  * @since   GeoAPI 2.1

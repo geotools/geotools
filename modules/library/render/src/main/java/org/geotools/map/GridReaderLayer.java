@@ -39,7 +39,8 @@ import org.opengis.referencing.operation.TransformException;
  * @author Jody Garnett
  * @version 8.0
  * @since 2.7
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/map/GridReaderLayer.java $
+ *
+ * @source $URL$
  */
 public class GridReaderLayer extends RasterLayer {
     /**

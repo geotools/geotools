@@ -14,7 +14,8 @@ package org.opengis.style;
  * {@link Graphic} object, namely {@link Mark} and {@link ExternalGraphic}.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/style/GraphicalSymbol.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=1188">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0

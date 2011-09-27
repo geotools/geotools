@@ -21,6 +21,11 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class CharsetConverterFactoryTest extends TestCase {
 
     CharsetConverterFactory factory;

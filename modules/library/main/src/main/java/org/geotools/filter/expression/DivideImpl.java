@@ -30,6 +30,7 @@ import org.opengis.filter.expression.ExpressionVisitor;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class DivideImpl extends MathExpressionImpl implements Divide {

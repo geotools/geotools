@@ -58,8 +58,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * 
  * @author jeichar
  * @author Simone Giannecchini, GeoSolutions
- * @source $URL:
- *         http://svn.geotools.org/geotools/branches/2.3.x/module/main/src/org/geotools/data/coverage/grid/AbstractGridFormat.java $
+ *
+ * @source $URL$
  */
 public abstract class AbstractGridFormat implements Format {
 

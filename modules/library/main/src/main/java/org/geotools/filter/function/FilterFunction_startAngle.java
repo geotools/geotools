@@ -27,6 +27,11 @@ import org.opengis.filter.capability.FunctionName;
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.LineString;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FilterFunction_startAngle extends FunctionExpressionImpl {
     //public static FunctionName NAME = new FunctionNameImpl("startAngle", "geometry");
     public static FunctionName NAME = new FunctionNameImpl("startAngle",

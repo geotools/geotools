@@ -28,7 +28,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * 
  * @author Ian Schneider
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/feature/collection/SimpleFeatureIteratorImpl.java $
+ *
+ * @source $URL$
  */
 public class SimpleFeatureIteratorImpl extends FeatureIteratorImpl<SimpleFeature> implements SimpleFeatureIterator {
      

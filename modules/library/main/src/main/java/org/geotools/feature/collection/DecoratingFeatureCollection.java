@@ -40,6 +40,7 @@ import org.opengis.filter.sort.SortBy;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class DecoratingFeatureCollection<T extends FeatureType, F extends Feature> implements

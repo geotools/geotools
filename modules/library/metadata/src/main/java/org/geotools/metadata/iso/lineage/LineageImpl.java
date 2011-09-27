@@ -35,6 +35,7 @@ import org.geotools.metadata.iso.MetadataEntity;
  * and {@link #getSources sources} should be provided.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

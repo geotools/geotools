@@ -24,6 +24,11 @@ import org.opengis.temporal.Period;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TemporalFilterTestSupport extends TestCase {
 
     protected static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);

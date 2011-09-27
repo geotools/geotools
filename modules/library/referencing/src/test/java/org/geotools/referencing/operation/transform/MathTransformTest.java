@@ -52,6 +52,7 @@ import static org.junit.Assert.*;
  * This test tries to test a wide range of subclasses.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

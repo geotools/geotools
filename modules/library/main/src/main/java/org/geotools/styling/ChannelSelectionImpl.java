@@ -25,6 +25,7 @@ import org.opengis.style.StyleVisitor;
  *
  * @author iant
  *
+ *
  * @source $URL$
  */
 public class ChannelSelectionImpl 

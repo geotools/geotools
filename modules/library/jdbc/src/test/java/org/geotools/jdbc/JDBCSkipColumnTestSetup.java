@@ -23,6 +23,7 @@ import java.sql.SQLException;
  * @author Andrea Aime
  *
  *
+ *
  * @source $URL$
  */
 public abstract class JDBCSkipColumnTestSetup extends JDBCDelegatingTestSetup {

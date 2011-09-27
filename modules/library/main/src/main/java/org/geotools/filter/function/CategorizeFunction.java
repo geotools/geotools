@@ -55,6 +55,7 @@ import org.opengis.filter.expression.Literal;
  * @author Johann Sorel (Geomatys)
  *
  *
+ *
  * @source $URL$
  */
 public class CategorizeFunction implements Function {

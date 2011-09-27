@@ -46,6 +46,7 @@ import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
  * 
  * @author Andrea Aime
  *
+ *
  * @source $URL$
  * @version $Id$
  */

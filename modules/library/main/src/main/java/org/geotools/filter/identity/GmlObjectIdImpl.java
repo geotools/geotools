@@ -25,6 +25,7 @@ import org.opengis.filter.identity.GmlObjectId;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class GmlObjectIdImpl implements GmlObjectId {

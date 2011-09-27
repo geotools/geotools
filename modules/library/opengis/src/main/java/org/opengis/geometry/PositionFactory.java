@@ -25,7 +25,8 @@ import org.opengis.geometry.coordinate.Position;
  * @author Jody Garnett
  * @since GeoAPI 2.1
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/geometry/PositionFactory.java $
+ *
+ * @source $URL$
  */
 public interface PositionFactory {
     /**

@@ -27,6 +27,7 @@ import org.opengis.metadata.quality.ThematicAccuracy;
  * and of the classifications of features and their relationships.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

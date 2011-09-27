@@ -29,6 +29,7 @@ import org.geotools.ows.ServiceException;
  * 
  * @author rgould
  *
+ *
  * @source $URL$
  */
 public interface Request {

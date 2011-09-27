@@ -45,6 +45,11 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.PrecisionModel;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class UserLayerTest extends TestCase {
 
     private static final String CRS_WKT = "GEOGCS[\"WGS 84\", "

@@ -14,6 +14,11 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.temporal.After;
 import org.opengis.temporal.RelativePosition;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class AfterImpl extends BinaryTemporalOperatorImpl implements After {
 
     public AfterImpl(Expression e1, Expression e2) {

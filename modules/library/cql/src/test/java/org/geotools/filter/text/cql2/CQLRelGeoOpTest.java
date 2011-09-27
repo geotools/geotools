@@ -50,6 +50,7 @@ import com.vividsolutions.jts.geom.Point;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  */
 public class CQLRelGeoOpTest {

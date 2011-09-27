@@ -22,7 +22,8 @@ import org.opengis.filter.Filter;
  *
  * @author Jody Garnett, Refractions Research, Inc.
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/feature/type/OperationType.java $
+ *
+ * @source $URL$
  */
  public interface OperationType extends PropertyType {
 

@@ -17,7 +17,8 @@ import org.geotools.util.Converters;
  * 
  * @author Jody
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/map/direct/MessageDirectLayer.java $
+ *
+ * @source $URL$
  */
 public class MessageDirectLayer extends DirectLayer {
 

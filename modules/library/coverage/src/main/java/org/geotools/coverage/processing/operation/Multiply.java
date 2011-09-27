@@ -64,7 +64,8 @@ import org.geotools.util.NumberRange;
  *
  * @since 8.x
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/coverage/src/main/java/org/geotools/coverage/processing/operation/Multiply.java $
+ *
+ * @source $URL$
  *
  * @see org.geotools.coverage.processing.Operations#multiply(org.opengis.coverage.Coverage, org.opengis.coverage.Coverage)
  * @see Multiply

@@ -20,6 +20,11 @@ import org.opengis.feature.type.AssociationDescriptor;
 import org.opengis.feature.type.AssociationType;
 import org.opengis.feature.type.Name;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class AssociationDescriptorImpl extends PropertyDescriptorImpl 
 		implements AssociationDescriptor {
 

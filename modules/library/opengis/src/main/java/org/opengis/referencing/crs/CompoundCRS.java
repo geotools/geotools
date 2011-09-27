@@ -49,7 +49,8 @@ import static org.opengis.annotation.Specification.*;
  * (years), e.g. as a reservoir is gradually exhausted of its recoverable oil or gas).
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/referencing/crs/CompoundCRS.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract specification 2.0</A>
  * @author  Martin Desruisseaux (IRD)
  * @since   GeoAPI 1.0

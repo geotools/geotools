@@ -32,6 +32,7 @@ import org.opengis.referencing.operation.ConicProjection;
  * Base class for conical map projections.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

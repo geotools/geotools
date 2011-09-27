@@ -39,6 +39,7 @@ import org.geotools.referencing.AbstractIdentifiedObject;
  *
  * @since 2.1
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

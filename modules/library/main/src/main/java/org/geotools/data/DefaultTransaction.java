@@ -33,6 +33,7 @@ import java.util.logging.Logger;
  * 
  * @author Jody Garnett, Refractions Research
  *
+ *
  * @source $URL$
  */
 public class DefaultTransaction implements Transaction {

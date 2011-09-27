@@ -42,7 +42,8 @@ import org.opengis.referencing.operation.MathTransform;
  * 
  * @since 2.7.0
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/referencing/src/main/java/org/geotools/referencing/operation/projection/Mollweide.java $
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/branches/2.6.x/modules/library/referencing/src/main/java
  *         /org/geotools/referencing/operation/projection/Mercator.java $
  * @author Andrea Aime

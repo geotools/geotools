@@ -22,6 +22,7 @@ package org.geotools.factory;
  *
  * @since 2.1
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

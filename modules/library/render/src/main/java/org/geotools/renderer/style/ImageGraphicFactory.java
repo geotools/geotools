@@ -45,6 +45,7 @@ import org.opengis.filter.expression.Expression;
  * 
  *
  *
+ *
  * @source $URL$
  */
 public class ImageGraphicFactory implements ExternalGraphicFactory {

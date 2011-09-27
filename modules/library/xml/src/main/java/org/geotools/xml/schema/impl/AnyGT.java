@@ -30,6 +30,7 @@ import org.geotools.xml.schema.ElementGrouping;
  *
  * @author dzwiers
  *
+ *
  * @source $URL$
  */
 public class AnyGT implements Any {

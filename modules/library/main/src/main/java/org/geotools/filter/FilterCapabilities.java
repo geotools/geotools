@@ -61,6 +61,7 @@ import org.opengis.filter.spatial.Within;
  * 
  * @author Chris Holmes, TOPP
  *
+ *
  * @source $URL$
  * 
  * @deprecated use {@link org.opengis.filter.capability.FilterCapabilities}.

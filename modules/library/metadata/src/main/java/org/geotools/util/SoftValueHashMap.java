@@ -55,6 +55,7 @@ import org.geotools.util.logging.Logging;
  *
  * @since 2.3
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini

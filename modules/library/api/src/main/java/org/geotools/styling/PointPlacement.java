@@ -53,6 +53,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @author Ian Turton
  *
+ *
  * @source $URL$
  */
 public interface PointPlacement extends org.opengis.style.PointPlacement,LabelPlacement {

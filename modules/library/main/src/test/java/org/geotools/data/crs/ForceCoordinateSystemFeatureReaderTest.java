@@ -33,6 +33,11 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ForceCoordinateSystemFeatureReaderTest extends TestCase {
 
     private static final String FEATURE_TYPE_NAME = "testType";

@@ -17,6 +17,11 @@ import org.opengis.filter.expression.Function;
 
 import com.vividsolutions.jts.geom.Point;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FeatureTypesTest {
 
     @Test

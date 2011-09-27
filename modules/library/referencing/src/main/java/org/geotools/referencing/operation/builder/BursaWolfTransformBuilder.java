@@ -48,6 +48,7 @@ import javax.vecmath.GMatrix;
  *
  * @since 2.4
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Jan Jezek

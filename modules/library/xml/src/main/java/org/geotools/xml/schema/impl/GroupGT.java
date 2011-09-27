@@ -30,6 +30,7 @@ import org.geotools.xml.schema.Group;
  *
  * @author dzwiers
  *
+ *
  * @source $URL$
  */
 public class GroupGT implements Group {

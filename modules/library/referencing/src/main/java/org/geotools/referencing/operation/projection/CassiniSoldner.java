@@ -43,7 +43,8 @@ import org.opengis.referencing.operation.MathTransform;
  * meridians and parallels are curved, and the scale distortion increases
  * rapidly with increasing distance from the central meridian. 
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/referencing/src/main/java/org/geotools/referencing/operation/projection/CassiniSoldner.java $
+ *
+ * @source $URL$
  */
 public class CassiniSoldner extends MapProjection {
 

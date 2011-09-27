@@ -69,6 +69,7 @@ import static org.junit.Assert.*;
  * factories (not authority factories).
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  */

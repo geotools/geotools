@@ -51,6 +51,7 @@ import org.xml.sax.helpers.XMLFilterImpl;
  *
  * @author Ian Schneider
  *
+ *
  * @source $URL$
  */
 public abstract class TransformerBase {

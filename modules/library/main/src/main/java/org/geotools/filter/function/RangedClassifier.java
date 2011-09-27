@@ -38,6 +38,7 @@ package org.geotools.filter.function;
  *
  *
  *
+ *
  * @source $URL$
  */
 public final class RangedClassifier extends Classifier {

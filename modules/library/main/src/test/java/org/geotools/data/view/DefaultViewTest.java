@@ -39,6 +39,11 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import junit.framework.TestCase;
 import org.geotools.data.Query;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DefaultViewTest extends TestCase {
 
     String typeName = "type1";

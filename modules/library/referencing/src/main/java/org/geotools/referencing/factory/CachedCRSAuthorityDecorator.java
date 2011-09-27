@@ -66,6 +66,7 @@ import org.opengis.util.InternationalString;
  * 
  * @since 2.4
  *
+ *
  * @source $URL$
  * @version $Id: BufferedAuthorityDecorator.java 26038 2007-06-27 01:58:12Z
  *          jgarnett $

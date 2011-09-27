@@ -37,6 +37,7 @@ import com.vividsolutions.jts.geom.LineString;
  *
  * @author Chris Holmes
  *
+ *
  * @source $URL$
  */
 public abstract class SQLFilterTestSupport extends TestCase {

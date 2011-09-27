@@ -73,6 +73,11 @@
 // *
 // * @see org.geotools.coverage.processing.Operations#nodataFilter(GridCoverage,int,int)
 // */
+/**
+ * 
+ *
+ * @source $URL$
+ */
 //public class NodataFilter extends FilterOperation {
 //    /**
 //     * Serial number for interoperability with different versions.

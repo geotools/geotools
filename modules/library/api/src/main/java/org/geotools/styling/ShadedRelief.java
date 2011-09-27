@@ -47,6 +47,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @author iant
  *
+ *
  * @source $URL$
  */
 public interface ShadedRelief extends org.opengis.style.ShadedRelief{

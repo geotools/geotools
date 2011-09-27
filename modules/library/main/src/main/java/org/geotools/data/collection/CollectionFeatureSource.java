@@ -60,7 +60,8 @@ import org.opengis.filter.sort.SortBy;
  * 
  * @author Jody
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/data/collection/CollectionFeatureSource.java $
+ *
+ * @source $URL$
  */
 public class CollectionFeatureSource implements SimpleFeatureSource {
     protected SimpleFeatureCollection collection;

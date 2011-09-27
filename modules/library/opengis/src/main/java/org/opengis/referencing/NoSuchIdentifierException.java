@@ -20,7 +20,8 @@ package org.opengis.referencing;
  *
  * @see org.opengis.referencing.operation.MathTransformFactory#createParameterizedTransform
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/referencing/NoSuchIdentifierException.java $
+ *
+ * @source $URL$
  */
 public class NoSuchIdentifierException extends FactoryException {
     /**

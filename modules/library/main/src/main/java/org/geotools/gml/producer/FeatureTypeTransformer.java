@@ -166,6 +166,7 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  * @author Simon Raess
  *
+ *
  * @source $URL$
  * @version $Id$
  *

@@ -81,6 +81,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @author Jody Garnett (Refractions Research)
  *
  *
+ *
  * @source $URL$
  */
 public abstract class AbstractFinderFilterVisitor implements FilterVisitor, ExpressionVisitor {

@@ -32,7 +32,8 @@ import org.opengis.feature.type.FeatureType;
  * <p>
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/map/FeatureSourceMapLayer.java $
+ *
+ * @source $URL$
  * @deprecated Please use MapLayer directly; or you are just interested in rendering a subclass of Layer
  */
 public class FeatureSourceMapLayer extends MapLayer {

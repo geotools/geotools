@@ -33,6 +33,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @author iant
  *
+ *
  * @source $URL$
  */
 public interface SelectedChannelType extends org.opengis.style.SelectedChannelType {

@@ -26,6 +26,11 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.opengis.filter.FilterFactory;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ImageGraphicFactoryTest extends TestCase {
 
     private ImageGraphicFactory image;

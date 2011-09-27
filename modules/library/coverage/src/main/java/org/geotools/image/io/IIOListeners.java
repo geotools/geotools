@@ -37,6 +37,7 @@ import org.geotools.resources.XArray;
  *
  * @since 2.1
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

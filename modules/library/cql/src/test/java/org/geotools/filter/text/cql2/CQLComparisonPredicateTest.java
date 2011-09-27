@@ -45,6 +45,7 @@ import org.opengis.filter.expression.PropertyName;
  * @since 2.5
  *
  *
+ *
  * @source $URL$
  */
 public class CQLComparisonPredicateTest {

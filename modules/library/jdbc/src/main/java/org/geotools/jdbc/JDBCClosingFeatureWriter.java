@@ -24,6 +24,11 @@ import org.geotools.data.FeatureWriter;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class JDBCClosingFeatureWriter implements FeatureWriter<SimpleFeatureType,SimpleFeature> {
 
     FeatureWriter writer;

@@ -47,7 +47,8 @@ import static org.opengis.annotation.Specification.*;
  * @author <a href="mailto:tfr@users.sourceforge.net">Torsten Friebe </A>
  * @author Justin Deoliveira, The Open Planning Project
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/filter/capability/FunctionName.java $
+ *
+ * @source $URL$
  */
 public interface FunctionName extends Operator {
     /**

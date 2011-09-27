@@ -64,7 +64,8 @@ import org.geotools.util.NumberRange;
  *
  * @since 8.x
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/coverage/src/main/java/org/geotools/coverage/processing/operation/Add.java $
+ *
+ * @source $URL$
  *
  * @see org.geotools.coverage.processing.Operations#add(org.opengis.coverage.Coverage, org.opengis.coverage.Coverage)
  * @see Add

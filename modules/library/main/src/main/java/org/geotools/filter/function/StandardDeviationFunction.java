@@ -31,6 +31,7 @@ import org.geotools.util.NullProgressListener;
  * 
  * @author Cory Horner, Refractions Research Inc.
  *
+ *
  * @source $URL$
  */
 public class StandardDeviationFunction extends ClassificationFunction {

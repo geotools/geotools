@@ -25,6 +25,7 @@ import org.opengis.filter.expression.Expression;
  * arbitrary type. The comparisons are performed checking for identical values.
  *
  *
+ *
  * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification 1.1.0</A>
  * @author Johann Sorel (Geomatys)

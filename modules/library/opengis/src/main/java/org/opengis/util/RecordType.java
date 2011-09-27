@@ -39,7 +39,8 @@ import static org.opengis.annotation.Specification.*;
  * @see Record
  * @see RecordSchema
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/util/RecordType.java $
+ *
+ * @source $URL$
  */
 @UML(identifier="RecordType", specification=ISO_19103)
 public interface RecordType {

@@ -29,6 +29,7 @@ import org.opengis.filter.Filter;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class FilteringIterator<F extends Feature> implements Iterator<F> {

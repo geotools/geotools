@@ -9,6 +9,11 @@ import org.geotools.data.FeatureReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FeatureReaderIteratorTest extends TestCase {
 
     public void testCloseOnException() {

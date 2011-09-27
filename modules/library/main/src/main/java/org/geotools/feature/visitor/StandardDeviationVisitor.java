@@ -39,6 +39,7 @@ import org.opengis.filter.expression.Expression;
  * @author Andrea Aime, GeoSolutions
  *
  *
+ *
  * @source $URL$
  */
 public class StandardDeviationVisitor implements FeatureCalc {

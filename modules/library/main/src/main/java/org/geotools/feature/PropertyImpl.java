@@ -32,6 +32,7 @@ import org.opengis.feature.type.PropertyType;
  *
  *
  *
+ *
  * @source $URL$
  */
 public abstract class PropertyImpl implements Property {

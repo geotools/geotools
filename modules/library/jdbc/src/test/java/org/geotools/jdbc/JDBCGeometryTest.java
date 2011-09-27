@@ -37,6 +37,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * for specific geometry class types.
  *
  *
+ *
  * @source $URL$
  */
 public abstract class JDBCGeometryTest extends JDBCTestSupport {

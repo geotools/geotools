@@ -34,8 +34,8 @@ import org.opengis.parameter.ParameterValueGroup;
  * 
  * @author Jesse Eichar
  * @author Simone Giannecchini (simboss)
- * @source $URL:
- *         http://svn.geotools.org/geotools/branches/2.3.x/module/main/src/org/geotools/data/coverage/grid/UnknownFormat.java $
+ *
+ * @source $URL$
  * @version $Revision: 1.9 $
  */
 public class UnknownFormat extends AbstractGridFormat implements Format {

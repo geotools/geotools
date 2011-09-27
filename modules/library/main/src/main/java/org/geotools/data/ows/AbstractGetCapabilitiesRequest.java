@@ -30,6 +30,7 @@ import java.net.URL;
  *
  * @author rgould
  *
+ *
  * @source $URL$
  */
 public abstract class AbstractGetCapabilitiesRequest extends AbstractRequest implements GetCapabilitiesRequest{

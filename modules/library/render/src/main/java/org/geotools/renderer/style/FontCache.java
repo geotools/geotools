@@ -38,6 +38,7 @@ import java.util.logging.Logger;
  * 
  * @author Andrea Aime - TOPP
  *
+ *
  * @source $URL$
  */
 public class FontCache {

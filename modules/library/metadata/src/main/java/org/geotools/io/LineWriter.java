@@ -30,6 +30,7 @@ import org.geotools.resources.XArray;
  * end of lines, but this behavior can be changed by overriding {@link #isWhitespace}.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

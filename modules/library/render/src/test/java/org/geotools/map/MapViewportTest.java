@@ -41,6 +41,7 @@ import static org.junit.Assert.*;
  * Unit tests for the viewport class.
  * 
  * @author Michael Bedward
+ *
  * @source $URL$
  */
 public class MapViewportTest {

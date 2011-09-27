@@ -77,6 +77,7 @@ import org.opengis.util.InternationalString;
  * 
  *
  *
+ *
  * @source $URL$
  */
 public class Extrema extends AbstractStatisticsOperationJAI {

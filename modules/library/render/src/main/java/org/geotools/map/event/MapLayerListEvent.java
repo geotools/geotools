@@ -29,6 +29,7 @@ import org.geotools.map.MapLayer;
  * 
  * @author wolf
  *
+ *
  * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools
  *         /map/event/MapLayerListEvent.java $

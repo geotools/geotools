@@ -67,6 +67,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  *
  * @since 2.4
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini

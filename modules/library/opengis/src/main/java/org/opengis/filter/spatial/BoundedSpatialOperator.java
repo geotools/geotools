@@ -20,7 +20,8 @@ package org.opengis.filter.spatial;
  * @author Jody Garnett, Refractions Research
  * @since GeoAPI 2.1
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/filter/spatial/BoundedSpatialOperator.java $
+ *
+ * @source $URL$
  */
 public interface BoundedSpatialOperator extends SpatialOperator {
 

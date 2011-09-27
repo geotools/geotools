@@ -14,6 +14,11 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ExtractBoundsFilterVisitorTest {
 
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);

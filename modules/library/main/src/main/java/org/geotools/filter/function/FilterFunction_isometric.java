@@ -37,6 +37,11 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Polygon;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FilterFunction_isometric extends FunctionExpressionImpl implements 
         GeometryTransformation {
 

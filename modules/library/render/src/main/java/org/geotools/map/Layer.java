@@ -43,7 +43,8 @@ import org.opengis.style.FeatureTypeStyle;
  * <p>
  * Layers usually represent a single dataset; and arranged into a z-order by a Map for display.
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/map/Layer.java $
+ *
+ * @source $URL$
  * @since 2.7
  * @version 8.0
  */

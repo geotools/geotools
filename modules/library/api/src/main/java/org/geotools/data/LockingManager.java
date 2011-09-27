@@ -33,6 +33,7 @@ import java.io.IOException;
  *
  * @author Jody Garnett, Refractions Research
  *
+ *
  * @source $URL$
  */
 public interface LockingManager {

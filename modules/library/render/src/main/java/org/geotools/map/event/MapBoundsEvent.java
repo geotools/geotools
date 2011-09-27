@@ -29,6 +29,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * 
  * @author wolf
  *
+ *
  * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools
  *         /map/event/MapBoundsEvent.java $

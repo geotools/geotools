@@ -42,6 +42,7 @@ import org.opengis.filter.Filter;
  * @since 2.6
  *
  *
+ *
  * @source $URL$
  */
 public class ECQLComparisonPredicateTest extends CQLComparisonPredicateTest {

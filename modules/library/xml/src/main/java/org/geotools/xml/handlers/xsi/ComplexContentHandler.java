@@ -29,6 +29,7 @@ import org.xml.sax.SAXNotRecognizedException;
  *
  * @author dzwiers www.refractions.net
  *
+ *
  * @source $URL$
  */
 public class ComplexContentHandler extends XSIElementHandler {

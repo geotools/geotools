@@ -1,5 +1,10 @@
 package org.geotools.jdbc;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class JDBCDateTestSetup extends JDBCDelegatingTestSetup {
 
     protected JDBCDateTestSetup(JDBCTestSetup delegate) {

@@ -30,6 +30,7 @@ import org.geotools.factory.GeoTools;
  * Provides a mechanism for obtaining a SimpleFeatureCollection instance.
  * @author  Ian Schneider
  *
+ *
  * @source $URL$
  */
 public abstract class FeatureCollections implements Factory {

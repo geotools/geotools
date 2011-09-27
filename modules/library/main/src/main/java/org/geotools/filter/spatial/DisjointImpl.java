@@ -23,6 +23,11 @@ import org.opengis.filter.spatial.Disjoint;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DisjointImpl extends AbstractPreparedGeometryFilter implements Disjoint {
 
 	public DisjointImpl(org.opengis.filter.FilterFactory factory,Expression e1,Expression e2) {

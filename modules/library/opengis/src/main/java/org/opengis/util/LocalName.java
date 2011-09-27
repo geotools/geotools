@@ -30,7 +30,8 @@ import static org.opengis.annotation.Specification.*;
  *
  * @see NameFactory#createLocalName
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/util/LocalName.java $
+ *
+ * @source $URL$
  */
 @UML(identifier="LocalName", specification=ISO_19103)
 public interface LocalName extends GenericName {

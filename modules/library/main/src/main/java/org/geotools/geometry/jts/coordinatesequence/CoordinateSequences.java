@@ -26,7 +26,8 @@ import com.vividsolutions.jts.geom.CoordinateSequence;
  * Utility functions for coordinate sequences (extends the same named JTS class)
  * @author Andrea Aime - OpenGeo
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/geometry/jts/coordinatesequence/CoordinateSequences.java $
+ *
+ * @source $URL$
  */
 public class CoordinateSequences extends com.vividsolutions.jts.geom.CoordinateSequences {
     

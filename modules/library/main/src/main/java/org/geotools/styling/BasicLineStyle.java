@@ -22,6 +22,7 @@ package org.geotools.styling;
  *
  * @author James Macgill, CCG
  *
+ *
  * @source $URL$
  * @version $Id$
  */

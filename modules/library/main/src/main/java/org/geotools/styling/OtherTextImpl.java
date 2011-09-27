@@ -18,6 +18,11 @@ package org.geotools.styling;
 
 import org.opengis.filter.expression.Expression;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OtherTextImpl implements OtherText {
 
     String location;

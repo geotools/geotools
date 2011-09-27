@@ -51,6 +51,7 @@ import org.geotools.resources.i18n.Vocabulary;
  * identify the exact type.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

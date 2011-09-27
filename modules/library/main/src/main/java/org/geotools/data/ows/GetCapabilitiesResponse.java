@@ -28,6 +28,7 @@ import org.geotools.ows.ServiceException;
  * @author Richard Gould
  *
  *
+ *
  * @source $URL$
  */
 public abstract class GetCapabilitiesResponse extends Response {

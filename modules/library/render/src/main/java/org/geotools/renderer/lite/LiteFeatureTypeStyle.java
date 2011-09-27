@@ -50,6 +50,7 @@ import org.opengis.filter.expression.Expression;
  * 
  * @author dblasby
  *
+ *
  * @source $URL$
  */
 public final class LiteFeatureTypeStyle {

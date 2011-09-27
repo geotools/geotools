@@ -23,6 +23,11 @@ import junit.framework.TestCase;
 
 import org.geotools.feature.type.DateUtil;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DateUtilTest extends TestCase {
     
     public void testJavaUtilDate() {

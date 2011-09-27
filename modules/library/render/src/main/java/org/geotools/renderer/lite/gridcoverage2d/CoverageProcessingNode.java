@@ -40,6 +40,7 @@ import org.opengis.util.InternationalString;
  * 
  *
  *
+ *
  * @source $URL$
  */
 public interface CoverageProcessingNode {

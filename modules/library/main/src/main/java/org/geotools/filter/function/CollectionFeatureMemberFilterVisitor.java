@@ -26,6 +26,8 @@ import org.opengis.filter.expression.PropertyName;
  * the various aggregate functions such as Collection_AverageFunction.
  * 
  * @since 8.0
+ *
+ * @source $URL$
  */
 public final class CollectionFeatureMemberFilterVisitor extends DuplicatingFilterVisitor {
     public Object visit(PropertyName expression, Object data) {

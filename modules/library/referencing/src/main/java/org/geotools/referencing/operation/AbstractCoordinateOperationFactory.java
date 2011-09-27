@@ -63,6 +63,7 @@ import static org.geotools.referencing.CRS.equalsIgnoreMetadata;
  *
  * @since 2.1
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

@@ -24,6 +24,11 @@ import org.opengis.filter.spatial.Crosses;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class CrossesImpl extends GeometryFilterImpl implements Crosses {
 
 	public CrossesImpl(org.opengis.filter.FilterFactory factory,Expression e1,Expression e2) {

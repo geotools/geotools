@@ -49,7 +49,8 @@ import org.opengis.annotation.UML;
  *
  * @author Jody Garnett (Refractions Research, Inc.)
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/feature/type/Name.java $
+ *
+ * @source $URL$
  */
 public interface Name {
 

@@ -24,6 +24,7 @@ package org.geotools.jdbc;
  *
  *
  *
+ *
  * @source $URL$
  */
 public abstract class PrimaryKeyColumn {

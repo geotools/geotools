@@ -65,6 +65,11 @@ import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
 
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class JDBCDataStoreAPITest extends JDBCTestSupport {
     private static final int LOCK_DURATION = 3600 * 1000; // one hour
     TestData td;

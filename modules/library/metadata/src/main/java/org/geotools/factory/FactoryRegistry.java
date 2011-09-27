@@ -66,6 +66,7 @@ import org.geotools.resources.i18n.LoggingKeys;
  *
  * @since 2.1
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

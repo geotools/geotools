@@ -28,7 +28,8 @@ import org.opengis.annotation.Extension;
  * @author  Martin Desruisseaux (IRD)
  * @since   GeoAPI 1.0
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/referencing/Factory.java $
+ *
+ * @source $URL$
  */
 @Extension
 public interface Factory {

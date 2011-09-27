@@ -33,6 +33,7 @@ import org.opengis.feature.Feature;
  * @author Jesse
  *
  *
+ *
  * @source $URL$
  */
 public class SynchronizedLabelCache implements LabelCache {

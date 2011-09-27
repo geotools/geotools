@@ -22,6 +22,11 @@ import org.geotools.filter.ConstantExpression;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ColorConverterFactoryTest extends TestCase {
 
     ColorConverterFactory factory;

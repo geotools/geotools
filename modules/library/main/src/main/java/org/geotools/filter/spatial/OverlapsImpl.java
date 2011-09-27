@@ -24,6 +24,11 @@ import org.opengis.filter.spatial.Overlaps;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class OverlapsImpl extends GeometryFilterImpl implements Overlaps {
 
 	public OverlapsImpl(org.opengis.filter.FilterFactory factory,Expression e1,Expression e2) {

@@ -36,6 +36,7 @@ import org.opengis.util.InternationalString;
  * and orientation indication of whether or not geographic.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

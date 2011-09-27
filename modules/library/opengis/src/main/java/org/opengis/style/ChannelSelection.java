@@ -19,7 +19,8 @@ import org.opengis.annotation.XmlElement;
  * source).
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/style/ChannelSelection.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium
  * @author Ian Turton, CCG

@@ -26,6 +26,7 @@ package org.geotools.styling;
  *
  * @author iant
  *
+ *
  * @source $URL$
  */
 public class StyleFactoryCreationException extends java.lang.Exception {

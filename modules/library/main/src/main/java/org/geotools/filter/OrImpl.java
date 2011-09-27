@@ -26,6 +26,7 @@ import org.opengis.filter.Or;
  * @author jdeolive
  *
  *
+ *
  * @source $URL$
  */
 public class OrImpl extends LogicFilterImpl implements Or {

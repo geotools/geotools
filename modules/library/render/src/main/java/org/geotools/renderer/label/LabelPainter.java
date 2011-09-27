@@ -70,6 +70,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * 
  *
  *
+ *
  * @source $URL$
  */
 public class LabelPainter {

@@ -32,6 +32,11 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.prep.PreparedGeometry;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
 
     double minx, miny, maxx, maxy;

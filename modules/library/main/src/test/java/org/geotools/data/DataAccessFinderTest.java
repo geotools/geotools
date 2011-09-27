@@ -43,6 +43,7 @@ import org.opengis.filter.Filter;
  * @version $Id$
  * @since 2.5.x
  *
+ *
  * @source $URL$
  */
 public class DataAccessFinderTest extends TestCase {

@@ -30,6 +30,11 @@ import org.xml.sax.helpers.NamespaceSupport;
 
 import junit.framework.TestCase;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SLDParserNamespaceTest extends TestCase {
 
     public static String SLD = 

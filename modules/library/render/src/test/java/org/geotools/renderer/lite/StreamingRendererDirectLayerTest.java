@@ -26,6 +26,8 @@ import static org.junit.Assert.*;
 
 /**
  * @author michael
+ *
+ * @source $URL$
  */
 public class StreamingRendererDirectLayerTest {
     

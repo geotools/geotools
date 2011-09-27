@@ -29,6 +29,11 @@ import javax.sql.DataSource;
 
 import org.geotools.factory.GeoTools;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class JDBCJNDITestSetup extends JDBCDelegatingTestSetup {
 
     public JDBCJNDITestSetup(JDBCTestSetup delegate) {

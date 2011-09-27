@@ -27,6 +27,7 @@ import org.opengis.annotation.XmlElement;
  * "preceding" and "succeeding" the latter being the default.
  *
  *
+ *
  * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification 1.1.0</A>
  * @author Johann Sorel (Geomatys)

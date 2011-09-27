@@ -36,6 +36,7 @@ import org.geotools.util.NullProgressListener;
  *
  * @author Cory Horner
  *
+ *
  * @source $URL$
  */
 public class UniqueIntervalFunction extends ClassificationFunction {

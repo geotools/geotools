@@ -25,6 +25,7 @@ import java.io.IOException;
  *
  * @author Jody Garnett, Refractions Research
  *
+ *
  * @source $URL$
  */
 public class FeatureLockException extends IOException {

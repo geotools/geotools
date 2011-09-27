@@ -23,7 +23,8 @@ import static org.opengis.annotation.Specification.*;
  * It is a {@linkplain Complex complex} containing one and only one {@linkplain Point point}.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/geometry/complex/CompositePoint.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Sanjay Jena
  * @author Jackson Roehrig

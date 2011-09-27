@@ -62,6 +62,7 @@ import org.opengis.util.Cloneable;
  * 
  * @since 2.0
  *
+ *
  * @source $URL$
  *         http://svn.osgeo.org/geotools/branches/2.6.x/modules/library/referencing/src/main/java
  *         /org/geotools/geometry/GeneralEnvelope.java $

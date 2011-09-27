@@ -22,6 +22,11 @@ import java.util.Properties;
 
 import org.apache.commons.dbcp.BasicDataSource;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class JDBCDelegatingTestSetup extends JDBCTestSetup {
 
     protected JDBCTestSetup delegate;

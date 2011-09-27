@@ -38,6 +38,7 @@ import org.opengis.util.TypeName;
  *
  * @since 2.4
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Jody Garnett

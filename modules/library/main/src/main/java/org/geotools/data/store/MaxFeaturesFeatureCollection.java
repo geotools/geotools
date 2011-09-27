@@ -42,6 +42,7 @@ import org.opengis.filter.sort.SortBy;
  *
  *
  *
+ *
  * @source $URL$
  */
 public class MaxFeaturesFeatureCollection<T extends FeatureType, F extends Feature> extends

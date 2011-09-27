@@ -16,6 +16,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Polygon;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class JDBCViewTest extends JDBCTestSupport {
     
     protected static final String LAKESVIEW = "lakesview";

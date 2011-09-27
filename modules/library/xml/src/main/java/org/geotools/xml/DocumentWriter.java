@@ -62,6 +62,7 @@ import org.xml.sax.helpers.AttributesImpl;
  *
  * @author dzwiers
  *
+ *
  * @source $URL$
  */
 public class DocumentWriter {

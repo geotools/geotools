@@ -54,8 +54,8 @@ import org.opengis.coverage.grid.GridCoverage;
  * Example:<br/><code>org.geotools.data.mytype.MyTypeDataStoreFacotry</code>
  * </p>
  * @author Simone Giannecchini, GeoSolutions
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/module/main/src/org/geotools/data/coverage/grid/GridFormatFinder.java $
+ *
+ * @source $URL$
  */
 public final class GridFormatFinder {
 	/**

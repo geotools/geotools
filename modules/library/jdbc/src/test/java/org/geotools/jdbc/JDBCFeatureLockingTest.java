@@ -33,6 +33,11 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public abstract class JDBCFeatureLockingTest extends JDBCTestSupport {
 
     JDBCFeatureStore store;

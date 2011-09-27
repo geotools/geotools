@@ -41,6 +41,7 @@ import org.opengis.feature.type.FeatureType;
  * @author Jody Garnett
  * @author Gabriel Roldan
  *
+ *
  * @source $URL$
  */
 public class FeatureReaderIterator<F extends Feature> implements Iterator<F> {

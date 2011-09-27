@@ -7,6 +7,11 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class DefaultMapContextTest {
     @Test
     public void testDispose() {

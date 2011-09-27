@@ -33,6 +33,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @author Jody Garnett
  *
  *
+ *
  * @source $URL$
  */
 public interface GlyphFactory {

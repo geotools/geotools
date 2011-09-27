@@ -26,6 +26,7 @@ import org.opengis.feature.type.Name;
  * @author Jody Garnett
  *
  *
+ *
  * @source $URL$
  */
 public class DirectPropertyAccessorFactory implements PropertyAccessorFactory {

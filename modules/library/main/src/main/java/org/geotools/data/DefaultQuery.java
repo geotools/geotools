@@ -30,6 +30,7 @@ import org.opengis.filter.expression.PropertyName;
  * @see Query
  * @author Chris Holmes
  *
+ *
  * @source $URL$
  */
 public class DefaultQuery extends Query {

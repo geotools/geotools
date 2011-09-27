@@ -33,6 +33,7 @@ import org.opengis.filter.sort.SortBy;
  * @version $Id$
  * @since 2.5.x
  *
+ *
  * @source $URL$
  */
 public class QueryCapabilities {

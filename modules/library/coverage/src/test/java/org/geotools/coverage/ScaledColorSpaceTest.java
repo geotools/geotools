@@ -36,6 +36,7 @@ import static org.junit.Assert.*;
  * This is a visual test when run from the command line.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

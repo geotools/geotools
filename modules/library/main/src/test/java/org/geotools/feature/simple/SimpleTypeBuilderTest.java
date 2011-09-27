@@ -32,6 +32,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Point;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class SimpleTypeBuilderTest extends TestCase {
 
 	static final String URI = "gopher://localhost/test";

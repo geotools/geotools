@@ -165,6 +165,7 @@ import org.opengis.util.InternationalString;
  *
  * @since 2.4
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Yann Cézard

@@ -78,6 +78,7 @@ import org.opengis.style.GraphicLegend;
  * </code></pre>
  * </p>
  *
+ *
  * @source $URL$
  */
 public interface Rule extends org.opengis.style.Rule {

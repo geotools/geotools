@@ -29,6 +29,11 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FilterFunction_startPoint extends FunctionExpressionImpl {
     //public static FunctionName NAME = new FunctionNameImpl("startPoint","geometry");
     public static FunctionName NAME = new FunctionNameImpl("startPoint",

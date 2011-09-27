@@ -86,6 +86,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
+ *
  * @source $URL$
  */
 public abstract class ContentFeatureSource implements SimpleFeatureSource {

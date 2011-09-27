@@ -33,6 +33,11 @@ import org.opengis.referencing.operation.MathTransform2D;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class ReprojectingFeatureCollectionTest extends FeatureCollectionWrapperTestSupport {
 
     CoordinateReferenceSystem target;

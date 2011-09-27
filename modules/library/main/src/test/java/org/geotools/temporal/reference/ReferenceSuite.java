@@ -23,6 +23,7 @@ import org.junit.runners.Suite;
  *
  * @author Mehdi Sidhoum (Geomatys)
  *
+ *
  * @source $URL$
  */
 @RunWith(Suite.class)

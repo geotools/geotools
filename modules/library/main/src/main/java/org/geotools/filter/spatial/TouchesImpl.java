@@ -23,6 +23,11 @@ import org.opengis.filter.spatial.Touches;
 
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class TouchesImpl extends GeometryFilterImpl implements Touches {
 
 	public TouchesImpl(org.opengis.filter.FilterFactory factory,Expression e1,Expression e2) {

@@ -23,6 +23,11 @@ import junit.framework.TestCase;
 
 import org.geotools.factory.Hints;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class NumericConverterFactoryTest extends TestCase {
 
 	NumericConverterFactory factory;

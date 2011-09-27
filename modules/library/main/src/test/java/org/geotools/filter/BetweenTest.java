@@ -40,6 +40,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  *
  * @author James Macgill
  *
+ *
  * @source $URL$
  */
 public class BetweenTest extends TestCase {

@@ -40,6 +40,7 @@ import java.io.Serializable;
  *
  * @since 2.2
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini

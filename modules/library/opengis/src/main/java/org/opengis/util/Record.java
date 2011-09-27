@@ -30,7 +30,8 @@ import static org.opengis.annotation.Specification.*;
  *
  * @see RecordType
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/util/Record.java $
+ *
+ * @source $URL$
  */
 @UML(identifier="Record", specification=ISO_19103)
 public interface Record {

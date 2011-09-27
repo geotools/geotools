@@ -24,7 +24,8 @@ import static org.opengis.annotation.Specification.*;
  * it is combined to create a {@linkplain org.opengis.referencing.crs.VerticalCRS Vertical CRS}.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/referencing/datum/VerticalDatum.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract specification 2.0</A>
  * @author  Martin Desruisseaux (IRD)
  * @since   GeoAPI 1.0

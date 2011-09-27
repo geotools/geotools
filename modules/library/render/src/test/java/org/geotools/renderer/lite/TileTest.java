@@ -42,7 +42,8 @@ import org.junit.Test;
  * 
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/tags/2.7.2/modules/library/render/src/test/java/org/geotools/renderer/lite/TileTest.java $
+ *
+ * @source $URL$
  */
 public class TileTest {
     private static final long TIME = 4000;

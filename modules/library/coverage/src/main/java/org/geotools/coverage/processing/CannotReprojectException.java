@@ -22,6 +22,7 @@ package org.geotools.coverage.processing;
  * but the specified grid coverage can't be reprojected.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author  Martin Desruisseaux

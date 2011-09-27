@@ -33,6 +33,7 @@ import org.geotools.util.SimpleInternationalString;
  *
  * @since 2.1
  *
+ *
  * @source $URL$
  */
 public class SeriesImpl extends MetadataEntity implements Series {

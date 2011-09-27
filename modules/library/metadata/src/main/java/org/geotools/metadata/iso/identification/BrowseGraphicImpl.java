@@ -29,6 +29,7 @@ import org.geotools.metadata.iso.MetadataEntity;
  * Graphic that provides an illustration of the dataset (should include a legend for the graphic).
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

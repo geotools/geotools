@@ -29,6 +29,7 @@ package org.geotools.xml.schema;
  *
  * @see ElementGrouping
  *
+ *
  * @source $URL$
  */
 public interface Sequence extends ElementGrouping {

@@ -39,7 +39,8 @@ import com.vividsolutions.jts.index.strtree.STRtree;
  * 
  * @author Jody
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/data/collection/SpatialIndexFeatureCollection.java $
+ *
+ * @source $URL$
  */
 public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
 

@@ -35,6 +35,7 @@ import com.vividsolutions.jts.geom.Point;
  * @see FeatureCalc
  * @since 2.2.M2
  *
+ *
  * @source $URL$
  */
 public interface CalcResult {

@@ -26,6 +26,11 @@ import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class FilterFunction_max_3 extends FunctionExpressionImpl {
 
     //public static FunctionName NAME = new FunctionNameImpl("max_3","float","float");

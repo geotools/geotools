@@ -29,6 +29,7 @@ import org.opengis.referencing.cs.AxisDirection;
  * used in the EPSG database for polar stereographic projections.
  *
  * @version $Id$
+ *
  * @source $URL$
  * @author Martin Desruisseaux
  * @since 2.7.2

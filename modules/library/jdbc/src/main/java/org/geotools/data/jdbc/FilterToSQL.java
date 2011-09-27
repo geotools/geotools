@@ -125,6 +125,7 @@ import com.vividsolutions.jts.geom.Geometry;
  *       errors, which is bad. Probably need a generic visitor exception.
  * 
  *
+ *
  * @source $URL$
  */
 /*

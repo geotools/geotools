@@ -21,7 +21,8 @@ import static org.opengis.annotation.ComplianceLevel.*;
  * Level of detail expressed as a scale factor or a ground distance.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/metadata/identification/Resolution.java $
+ *
+ * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author  Martin Desruisseaux (IRD)
  * @author  Cory Horner (Refractions Research)

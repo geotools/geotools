@@ -37,6 +37,7 @@ import org.junit.Test;
  * @author    Simone Giannecchini, GeoSlutions.
  *
  *
+ *
  * @source $URL$
  */
 public class BaseCoverageProcessingNodeTest  {

@@ -14,6 +14,11 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.temporal.Begins;
 import org.opengis.temporal.RelativePosition;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class BeginsImpl extends BinaryTemporalOperatorImpl implements Begins {
     
     public BeginsImpl(Expression e1, Expression e2) {

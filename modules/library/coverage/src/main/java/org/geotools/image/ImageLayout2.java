@@ -29,7 +29,8 @@ import javax.media.jai.ImageLayout;
  * @author Simone Giannecchini, GeoSolutions S.A.S.
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/coverage/src/main/java/org/geotools/image/ImageLayout2.java $
+ *
+ * @source $URL$
  * @deprecated use {@link org.jaitools.imageutils.ImageLayout2} instead.
  */
 public class ImageLayout2 extends ImageLayout{

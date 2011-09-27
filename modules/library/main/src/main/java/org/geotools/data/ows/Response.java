@@ -29,6 +29,7 @@ import org.jdom.JDOMException;
  *
  * @author rgould
  *
+ *
  * @source $URL$
  */
 public abstract class Response {

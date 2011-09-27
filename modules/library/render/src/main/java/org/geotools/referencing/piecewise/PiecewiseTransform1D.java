@@ -26,6 +26,7 @@ import org.opengis.referencing.operation.MathTransform1D;
  * 
  *
  *
+ *
  * @source $URL$
  */
 public interface PiecewiseTransform1D<T extends PiecewiseTransform1DElement> extends Domain1D<T>, MathTransform1D {

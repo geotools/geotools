@@ -30,6 +30,8 @@ import org.opengis.annotation.XmlElement;
  * @see http://portal.opengeospatial.org/files/?artifact_id=39968
  * 
  * @since 8.0
+ *
+ * @source $URL$
  */
 @XmlElement("After")
 public interface After extends BinaryTemporalOperator {

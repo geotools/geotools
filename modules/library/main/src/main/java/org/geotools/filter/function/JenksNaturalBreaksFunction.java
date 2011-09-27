@@ -33,7 +33,8 @@ import org.opengis.feature.simple.SimpleFeature;
  * 
  * @author Ian Turton
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/filter/function/JenksNaturalBreaksFunction.java $
+ *
+ * @source $URL$
  */
 public class JenksNaturalBreaksFunction extends ClassificationFunction {
     org.opengis.util.ProgressListener progress;

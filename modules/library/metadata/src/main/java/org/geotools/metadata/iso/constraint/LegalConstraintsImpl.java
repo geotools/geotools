@@ -29,6 +29,7 @@ import org.opengis.util.InternationalString;
  * Restrictions and legal prerequisites for accessing and using the resource.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

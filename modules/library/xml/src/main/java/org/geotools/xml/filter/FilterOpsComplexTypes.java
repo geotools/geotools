@@ -80,6 +80,7 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  * @author dzwiers
  *
+ *
  * @source $URL$
  */
 public class FilterOpsComplexTypes {    

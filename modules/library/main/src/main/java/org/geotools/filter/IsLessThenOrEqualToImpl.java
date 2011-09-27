@@ -20,6 +20,11 @@ import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.expression.Expression;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class IsLessThenOrEqualToImpl extends MultiCompareFilterImpl implements
 		PropertyIsLessThanOrEqualTo {
 	

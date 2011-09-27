@@ -71,6 +71,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author aaime
  * @author $Author: jive $ (last modification)
  *
+ *
  * @source $URL$
  * @version $Id$
  */

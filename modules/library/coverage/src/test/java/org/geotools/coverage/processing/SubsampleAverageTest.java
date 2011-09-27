@@ -36,6 +36,7 @@ import org.opengis.parameter.ParameterValueGroup;
  * Tests the Subsample Average operation.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini (GeoSolutions)

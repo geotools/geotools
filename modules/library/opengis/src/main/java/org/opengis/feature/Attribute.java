@@ -53,7 +53,8 @@ import org.opengis.filter.identity.Identifier;
  * @author Jody Garnett (Refractions Research)
  * @author Justin Deoliveira (The Open Planning Project)
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/feature/Attribute.java $
+ *
+ * @source $URL$
  */
 public interface Attribute extends Property {
 

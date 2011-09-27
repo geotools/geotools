@@ -39,6 +39,7 @@ import org.opengis.util.InternationalString;
  * Information required to identify a dataset.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

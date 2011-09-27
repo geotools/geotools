@@ -28,46 +28,48 @@ import org.geotools.graph.traverse.basic.SourceGraphIterator;
 import org.geotools.graph.util.PriorityQueue;
 
 /**
-*  <B> A Star </B>:  It uses a function (usually denoted f(x)) to determine the order in 
-*  which the algorithm visits nodes, f(x) is a sum of two functions: 
-*     - The path-cost function (usually denoted g(x), which may or may not be a heuristic) and
-*     - An admissible "heuristic estimate" (usually denoted h(x)).
-*
-*   the itaration oparates as follows:
-*
-*     // COST(n,n') : the real cost to go from n to n'
-*     OPEN = [Source]
-*     CLOSE = []
-*
-* 
-*     while ( |OPEN| > 0 ) 
-*         n = a node in OPEN with less f 
-*         remove n from OPEN 
-*         add n to CLOSE
-*         if ( n == target ) {
-*            return  // path find
-*
-*         // if n != target
-*         for each node n' that relates to n do 
-*             if n' in OPEN 
-*                 if (g(n) + COST(n,n')) < g(n') 
-*                     g(n') = g(n) + COST(n,n')
-*                     parent(n') = n
-*             else 
-*                 g(n') = g(n) + COST(n,n')
-*                 parent(n') = n
-*                 add n' to OPEN
-*     // end while
-*
-*
-* (for details see http://en.wikipedia.org/wiki/A_star)
-*
-* @author Germán E. Trouillet, Francisco G. Malbrán. Universidad Nacional de Córdoba (UNC)
+ * A path iterator that uses a function (usually denoted f(x)) to determine the order in 
+ * which the algorithm visits nodes, f(x) is a sum of two functions: 
+ * <ul>
+ * <li>
+ * The path-cost function (usually denoted g(x), which may or may not be a heuristic)
+ * </li>
+ * <li>
+ * An admissible "heuristic estimate" (usually denoted h(x)).
+ * </li>
+ * </ul>
+ * 
+ * The iterator proceeds as follows (pseudo-code):
+ * <pre><code>
+ *     // COST(n,n') : the real cost to go from n to n'
+ *     OPEN = [Source]
+ *     CLOSE = []
+ * 
+ *     while ( |OPEN| > 0 ) 
+ *         n = a node in OPEN with less f 
+ *         remove n from OPEN 
+ *         add n to CLOSE
+ *         if ( n == target ) {
+ *            return  // path find
  *
+ *         // if n != target
+ *         for each node n' that relates to n do 
+ *             if n' in OPEN 
+ *                 if (g(n) + COST(n,n')) < g(n') 
+ *                     g(n') = g(n) + COST(n,n')
+ *                     parent(n') = n
+ *             else 
+ *                 g(n') = g(n) + COST(n,n')
+ *                 parent(n') = n
+ *                 add n' to OPEN
+ *     // end while
+ * </code></pre>
  *
+ * For more details see http://en.wikipedia.org/wiki/A_star
  *
+ * @author Germán E. Trouillet, Francisco G. Malbrán. Universidad Nacional de Córdoba (UNC)
  * @source $URL$
-*/
+ */
 public class AStarIterator extends SourceGraphIterator{
         /** function necesaries for A Star algorithm*/
         private AStarFunctions m_afuncs;

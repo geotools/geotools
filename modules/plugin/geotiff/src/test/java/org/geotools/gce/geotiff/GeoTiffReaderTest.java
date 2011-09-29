@@ -17,6 +17,7 @@
  */
 package org.geotools.gce.geotiff;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
@@ -182,6 +183,8 @@ public class GeoTiffReaderTest extends Assert {
     			GeoTiffReader reader = new GeoTiffReader(o, new Hints(
     					Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
     
+    			if(files[i].getAbsolutePath().endsWith("wind.tiff"))
+    			    System.out.println(files[i].getAbsolutePath());
     			if (reader != null) {
     
     				// reading the coverage
@@ -232,6 +235,90 @@ public class GeoTiffReaderTest extends Assert {
         assertEquals("Band2", band2Name);
     }
     
+    /**
+     * Test what we can do and what not with 
+     */
+    @Test
+    public void testTransparencySettings() throws Exception {
+
+        
+        final AbstractGridFormat format = new GeoTiffFormat();
+        File file = TestData.file(GeoTiffReaderTest.class,"002025_0100_010722_l7_01_utm2.tiff");        
+        if (format.accepts(file)) {
+            // getting a reader
+            GeoTiffReader reader = new GeoTiffReader(file, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
+            if (reader != null) {
+                // reading the coverage
+                GridCoverage2D coverage = (GridCoverage2D) reader.read(null);
+                assertNotNull(coverage);
+                assertTrue(coverage.getRenderedImage().getSampleModel().getNumBands() == 1);
+                final ParameterValue<Color> colorPV = AbstractGridFormat.INPUT_TRANSPARENT_COLOR.createValue();
+                colorPV.setValue(Color.BLACK);
+                coverage = (GridCoverage2D) reader.read(new GeneralParameterValue[] { colorPV });
+                assertNotNull(coverage);
+                assertTrue(coverage.getRenderedImage().getSampleModel().getNumBands() == 2);
+
+                // showing it
+                if (TestData.isInteractiveTest())
+                    coverage.show();
+                else
+                    PlanarImage.wrapRenderedImage(coverage.getRenderedImage()).getTiles();
+
+            }
+
+        } else
+            assertFalse(true); // we should not get here
+
+        
+        file = TestData.file(GeoTiffReaderTest.class,"gaarc_subset.tiff");        
+        if (format.accepts(file)) {
+            // getting a reader
+            GeoTiffReader reader = new GeoTiffReader(file, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
+            if (reader != null) {
+                // reading the coverage
+                GridCoverage2D coverage = (GridCoverage2D) reader.read(null);
+                assertNotNull(coverage);
+                assertTrue(coverage.getRenderedImage().getSampleModel().getNumBands() == 3);
+                final ParameterValue<Color> colorPV = AbstractGridFormat.INPUT_TRANSPARENT_COLOR.createValue();
+                colorPV.setValue(new Color(34,53,87));
+                coverage = (GridCoverage2D) reader.read(new GeneralParameterValue[] { colorPV });
+                assertNotNull(coverage);
+                assertTrue(coverage.getRenderedImage().getSampleModel().getNumBands() == 4);
+
+                // showing it
+                if (TestData.isInteractiveTest())
+                    coverage.show();
+                else
+                    PlanarImage.wrapRenderedImage(coverage.getRenderedImage()).getTiles();
+
+            }
+
+        } else
+            assertFalse(true); // we should not get here
+        
+        // now we test that we cannot do colormasking on a non-rendered output
+        file = TestData.file(GeoTiffReaderTest.class,"wind.tiff");        
+        if (format.accepts(file)) {
+            // getting a reader
+            GeoTiffReader reader = new GeoTiffReader(file, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
+            if (reader != null) {
+                // reading the coverage
+                GridCoverage2D coverage = (GridCoverage2D) reader.read(null);
+                assertNotNull(coverage);
+                assertTrue(coverage.getRenderedImage().getSampleModel().getNumBands() == 2);
+                final ParameterValue<Color> colorPV = AbstractGridFormat.INPUT_TRANSPARENT_COLOR.createValue();
+                colorPV.setValue(new Color(34,53,87));
+                try{
+                    coverage = (GridCoverage2D) reader.read(new GeneralParameterValue[] { colorPV });
+                    assertFalse(true); // we should not get here
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+            }
+
+        } 
+            
+    }
     
     @Test
     public void testExternalOverviews() throws Exception {

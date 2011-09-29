@@ -108,7 +108,7 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
 		readParameters = new ParameterGroup(
 				new DefaultParameterDescriptorGroup(
 						mInfo,
-						new GeneralParameterDescriptor[] { READ_GRIDGEOMETRY2D }));
+						new GeneralParameterDescriptor[] { READ_GRIDGEOMETRY2D,INPUT_TRANSPARENT_COLOR,SUGGESTED_TILE_SIZE }));
 
 		// writing parameters
 		writeParameters = new ParameterGroup(

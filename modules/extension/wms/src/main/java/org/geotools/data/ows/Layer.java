@@ -97,6 +97,13 @@ public class Layer implements Comparable<Layer> {
 
     /** Indicates if this layer responds to a GetFeatureInfo query */
     private Boolean queryable = null;
+    
+    /**
+     * If a WMS cascades the content of another WMS, then it shall increment by 1 the value of the
+     * cascaded attribute for the affected layers. If that attribute is missing from the originating
+     * server’s service metadata, then the Cascading WMS shall insert the attribute and set it to 1.
+     */
+    private int cascaded;
 
     private double scaleHintMin = Double.NaN;
 
@@ -905,6 +912,23 @@ public class Layer implements Comparable<Layer> {
         return null;
     }
 
+    /**
+     * @return {@code 0} if the layer is not cascaded, the number of times it has been cascaded
+     *         otherwise.
+     */
+    public int getCascaded() {
+        return cascaded;
+    }
+
+    /**
+     * @param cascadedValue
+     *            {@code 0} if the layer is not cascaded, the number of times it has been cascaded
+     *            otherwise.
+     */
+    public void setCascaded(int cascadedValue) {
+        this.cascaded = cascadedValue;
+    }
+    
     @Override
     public String toString() {
         if (this.title != null) {
@@ -912,4 +936,5 @@ public class Layer implements Comparable<Layer> {
         }
         return name;
     }
+
 }

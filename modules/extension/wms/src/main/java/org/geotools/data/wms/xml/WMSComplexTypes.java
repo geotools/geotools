@@ -2711,7 +2711,16 @@ public class WMSComplexTypes {
 					layer.setQueryable(new Boolean(queryable).booleanValue());
 				}
 			}
-
+			String cascaded = attrs.getValue("cascaded");
+			int cascadedValue = 0;
+			if(cascaded != null){
+			    try{
+			        cascadedValue = Integer.parseInt(cascaded);
+			    }catch(NumberFormatException e){
+			        //ignore
+			    }
+			}
+			layer.setCascaded(cascadedValue);
 			return layer;
 		}
 

@@ -39,7 +39,9 @@ import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
@@ -1314,109 +1316,115 @@ class RasterLayerResponse{
 	    return new Rectangle2D.Double(minx, miny, maxx - minx, maxy - miny).getBounds();
 	}
 	
-	/**
-	 * This method is responsible for creating a coverage from the supplied {@link RenderedImage}.
-	 * 
-	 * @param image
-	 * @return
-	 * @throws IOException
-	 */
-	private GridCoverage2D prepareCoverage(RenderedImage image) throws IOException {
-		
-		// creating bands
+        /**
+         * This method is responsible for creating a coverage from the supplied {@link RenderedImage}.
+         * 
+         * @param image
+         * @return
+         * @throws IOException
+         */
+        private GridCoverage2D prepareCoverage(RenderedImage image) throws IOException {
+                
+                // creating bands
         final SampleModel sm=image.getSampleModel();
         final ColorModel cm=image.getColorModel();
-		final int numBands = sm.getNumBands();
-		final GridSampleDimension[] bands = new GridSampleDimension[numBands];
-		// setting bands names.
-		for (int i = 0; i < numBands; i++) {
-			// color interpretation
-	        final ColorInterpretation colorInterpretation=TypeMap.getColorInterpretation(cm, i);
-	        if(colorInterpretation==null)
-	               throw new IOException("Unrecognized sample dimension type");
-	        
-	        // sample dimension type
-	        final SampleDimensionType st=TypeMap.getSampleDimensionType(sm, i);
-		    
-	        // set some no data values, as well as Min and Max values
-	        final double noData;
-	        double min=-Double.MAX_VALUE,max=Double.MAX_VALUE;
-	        if(backgroundValues!=null)
-	        {
-	        	// sometimes background values are not specified as 1 per each band, therefore we need to be careful
-	        	noData= backgroundValues[backgroundValues.length > i ? i:0];
-	        }
-	        else
-	        {
-	        	if(st.compareTo(SampleDimensionType.REAL_32BITS)==0)
-	        		noData= Float.NaN;
-	        	else
-	        		if(st.compareTo(SampleDimensionType.REAL_64BITS)==0)
-		        		noData= Double.NaN;
-	        		else
-		        		if(st.compareTo(SampleDimensionType.SIGNED_16BITS)==0)
-		        		{
-		        			noData=Short.MIN_VALUE;
-		        			min=Short.MIN_VALUE;
-		        			max=Short.MAX_VALUE;
-		        		}
-		        		else
-		        			if(st.compareTo(SampleDimensionType.SIGNED_32BITS)==0)
-		        			{
-		        				noData= Integer.MIN_VALUE;
+                final int numBands = sm.getNumBands();
+                final GridSampleDimension[] bands = new GridSampleDimension[numBands];
+                Set<String> bandNames = new HashSet<String>();          
+                // setting bands names.
+                for (int i = 0; i < numBands; i++) {
+                        // color interpretation
+                final ColorInterpretation colorInterpretation=TypeMap.getColorInterpretation(cm, i);
+                if(colorInterpretation==null)
+                       throw new IOException("Unrecognized sample dimension type");
+                // make sure we create no duplicate band names
+                String bandName = colorInterpretation.name();           
+                if(colorInterpretation == ColorInterpretation.UNDEFINED || bandNames.contains(bandName)) {
+                    bandName = "Band" + (i + 1);
+                }               
+                
+                // sample dimension type
+                final SampleDimensionType st=TypeMap.getSampleDimensionType(sm, i);
+                    
+                // set some no data values, as well as Min and Max values
+                final double noData;
+                double min=-Double.MAX_VALUE,max=Double.MAX_VALUE;
+                if(backgroundValues!=null)
+                {
+                        // sometimes background values are not specified as 1 per each band, therefore we need to be careful
+                        noData= backgroundValues[backgroundValues.length > i ? i:0];
+                }
+                else
+                {
+                        if(st.compareTo(SampleDimensionType.REAL_32BITS)==0)
+                                noData= Float.NaN;
+                        else
+                                if(st.compareTo(SampleDimensionType.REAL_64BITS)==0)
+                                        noData= Double.NaN;
+                                else
+                                        if(st.compareTo(SampleDimensionType.SIGNED_16BITS)==0)
+                                        {
+                                                noData=Short.MIN_VALUE;
+                                                min=Short.MIN_VALUE;
+                                                max=Short.MAX_VALUE;
+                                        }
+                                        else
+                                                if(st.compareTo(SampleDimensionType.SIGNED_32BITS)==0)
+                                                {
+                                                        noData= Integer.MIN_VALUE;
 
-			        			min=Integer.MIN_VALUE;
-			        			max=Integer.MAX_VALUE;		        				
-		        			}
-		        			else
-			        			if(st.compareTo(SampleDimensionType.SIGNED_8BITS)==0)
-			        			{
-			        				noData= -128;
-			        				min=-128;
-			        				max=127;
-			        			}
-			        			else
-			        			{
-			        				//unsigned
-				        			noData= 0;
-				        			min=0;
-				        			
-				        			
-				        			// compute max
-				        			if(st.compareTo(SampleDimensionType.UNSIGNED_1BIT)==0)
-				        				max=1;
-				        			else
-				        				if(st.compareTo(SampleDimensionType.UNSIGNED_2BITS)==0)
-				        					max=3;
-					        			else
-					        				if(st.compareTo(SampleDimensionType.UNSIGNED_4BITS)==0)
-					        					max=7;
-					        				else
-						        				if(st.compareTo(SampleDimensionType.UNSIGNED_8BITS)==0)
-						        					max=255;
-						        				else
-							        				if(st.compareTo(SampleDimensionType.UNSIGNED_16BITS)==0)
-							        					max=65535;
-							        				else
-								        				if(st.compareTo(SampleDimensionType.UNSIGNED_32BITS)==0)
-								        					max=Math.pow(2, 32)-1;
-				        							        			
-			        			}
-	        	
-		        		     
-	        }
-	        bands[i] = new SimplifiedGridSampleDimension(
-	        		colorInterpretation.name(),
-	        		st,
-	        		colorInterpretation,
-	        		noData,
-	        		min,
-	        		max,
-	        		1,							//no scale 
-	        		0,							//no offset
-	        		null
-	        		).geophysics(true);
-		}
+                                                        min=Integer.MIN_VALUE;
+                                                        max=Integer.MAX_VALUE;                                                  
+                                                }
+                                                else
+                                                        if(st.compareTo(SampleDimensionType.SIGNED_8BITS)==0)
+                                                        {
+                                                                noData= -128;
+                                                                min=-128;
+                                                                max=127;
+                                                        }
+                                                        else
+                                                        {
+                                                                //unsigned
+                                                                noData= 0;
+                                                                min=0;
+                                                                
+                                                                
+                                                                // compute max
+                                                                if(st.compareTo(SampleDimensionType.UNSIGNED_1BIT)==0)
+                                                                        max=1;
+                                                                else
+                                                                        if(st.compareTo(SampleDimensionType.UNSIGNED_2BITS)==0)
+                                                                                max=3;
+                                                                        else
+                                                                                if(st.compareTo(SampleDimensionType.UNSIGNED_4BITS)==0)
+                                                                                        max=7;
+                                                                                else
+                                                                                        if(st.compareTo(SampleDimensionType.UNSIGNED_8BITS)==0)
+                                                                                                max=255;
+                                                                                        else
+                                                                                                if(st.compareTo(SampleDimensionType.UNSIGNED_16BITS)==0)
+                                                                                                        max=65535;
+                                                                                                else
+                                                                                                        if(st.compareTo(SampleDimensionType.UNSIGNED_32BITS)==0)
+                                                                                                                max=Math.pow(2, 32)-1;
+                                                                                                                                
+                                                        }
+                        
+                                             
+                }
+                bands[i] = new SimplifiedGridSampleDimension(
+                                bandName,
+                                st,
+                                colorInterpretation,
+                                noData,
+                                min,
+                                max,
+                                1,                                                      //no scale 
+                                0,                                                      //no offset
+                                null
+                                ).geophysics(true);
+                }
 
         return coverageFactory.create(
                 rasterManager.getCoverageIdentifier(),
@@ -1429,8 +1437,8 @@ class RasterLayerResponse{
                         hints),
                 bands,
                 null, 
-                null);		
+                null);          
 
-	}
+        }
 
 }

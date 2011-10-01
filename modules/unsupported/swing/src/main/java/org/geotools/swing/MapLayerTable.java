@@ -141,6 +141,7 @@ public class MapLayerTable extends JPanel {
      */
     private Listener listener;
     private void doSetMapPane(MapPane newMapPane) {
+        listener.disconnectFromMapPane();
         mapPane = newMapPane;
         listener.connectToMapPane(newMapPane);
     }
@@ -479,7 +480,6 @@ public class MapLayerTable extends JPanel {
         }
         
         void connectToMapPane(MapPane newMapPane) {
-            disconnectFromMapPane();
             if (newMapPane != null) {
                 paneRef = new WeakReference<MapPane>(newMapPane);
                 newMapPane.addMapPaneListener(this);
@@ -501,7 +501,6 @@ public class MapLayerTable extends JPanel {
         }
         
         void connectToMapContent(MapContent newMapContent) {
-            disconnectFromMapContent();
             if (newMapContent != null) {
                 contentRef = new WeakReference<MapContent>(newMapContent);
                 newMapContent.addMapLayerListListener(this);
@@ -527,7 +526,11 @@ public class MapLayerTable extends JPanel {
         @Override
         public void onNewMapContent(MapPaneEvent ev) {
             table.clear();
+            
+            disconnectFromMapContent();
             MapContent newMapContent = (MapContent) ev.getData();
+            connectToMapContent(newMapContent);
+            
             if (newMapContent != null) {
                 for (Layer layer : newMapContent.layers()) {
                     table.onAddLayer(layer);

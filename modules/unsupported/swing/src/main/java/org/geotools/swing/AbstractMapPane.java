@@ -20,6 +20,7 @@ package org.geotools.swing;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ComponentListener;
 import java.awt.event.HierarchyBoundsAdapter;
 import java.awt.event.HierarchyEvent;
@@ -535,7 +536,13 @@ public abstract class AbstractMapPane extends JPanel
             mapContent = newMapContent;
 
             if (mapContent != null) {
-                mapContent.getViewport().setMatchingAspectRatio(true);
+                MapViewport viewport = mapContent.getViewport();
+                viewport.setMatchingAspectRatio(true);
+                Rectangle rect = getVisibleRect();
+                if (!rect.isEmpty()) {
+                    viewport.setScreenArea(rect);
+                }
+                
                 mapContent.addMapLayerListListener(this);
                 mapContent.addMapBoundsListener(this);
 

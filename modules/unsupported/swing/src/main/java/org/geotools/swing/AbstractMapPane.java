@@ -35,8 +35,10 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
 
@@ -44,6 +46,7 @@ import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
 import org.geotools.map.Layer;
+import org.geotools.map.MapViewport;
 import org.geotools.map.event.MapBoundsEvent;
 import org.geotools.map.event.MapBoundsListener;
 import org.geotools.map.event.MapLayerEvent;
@@ -100,6 +103,7 @@ public abstract class AbstractMapPane extends JPanel
     protected final Point imageOrigin;
     
     protected final Lock drawingLock;
+    protected final ReadWriteLock paramsLock;
 
     protected final Set<MapPaneListener> listeners = new HashSet<MapPaneListener>();
     protected final MouseDragBox dragBox;
@@ -134,6 +138,8 @@ public abstract class AbstractMapPane extends JPanel
         setFocusable(true);
 
         drawingLock = new ReentrantLock();
+        paramsLock = new ReentrantReadWriteLock();
+        
         paneTaskExecutor = Executors.newSingleThreadScheduledExecutor();
         paintDelay = DEFAULT_PAINT_DELAY;
         acceptRepaintRequests = new AtomicBoolean(true);
@@ -295,7 +301,13 @@ public abstract class AbstractMapPane extends JPanel
      * @return delay in milliseconds
      */
     public long getPaintDelay() {
-        return paintDelay;
+        paramsLock.readLock().lock();
+        try {
+            return paintDelay;
+            
+        } finally {
+            paramsLock.readLock().unlock();
+        }
     }
 
     /**
@@ -307,10 +319,16 @@ public abstract class AbstractMapPane extends JPanel
      *        period will be set
      */
     public void setPaintDelay(int delay) {
-        if (delay < 0) {
-            paintDelay = DEFAULT_PAINT_DELAY;
-        } else {
-            paintDelay = delay;
+        paramsLock.writeLock().lock();
+        try {
+            if (delay < 0) {
+                paintDelay = DEFAULT_PAINT_DELAY;
+            } else {
+                paintDelay = delay;
+            }
+
+        } finally {
+            paramsLock.writeLock().unlock();
         }
     }
 
@@ -336,8 +354,14 @@ public abstract class AbstractMapPane extends JPanel
      */
     @Override
     public void setIgnoreRepaint(boolean ignoreRepaint) {
-        super.setIgnoreRepaint(ignoreRepaint);
-        acceptRepaintRequests.set( !ignoreRepaint );
+        drawingLock.lock();
+        try {
+            super.setIgnoreRepaint(ignoreRepaint);
+            acceptRepaintRequests.set( !ignoreRepaint );
+            
+        } finally {
+            drawingLock.unlock();
+        }
     }
     
     /**
@@ -414,11 +438,17 @@ public abstract class AbstractMapPane extends JPanel
      */
     @Override
     public void moveImage(int dx, int dy) {
-        if (isShowing() && !getVisibleRect().isEmpty()) {
-            imageOrigin.translate(dx, dy);
-            baseImageMoved.set(true);
-            repaint();
-            onImageMoved();
+        drawingLock.lock();
+        try {
+            if (isShowing() && !getVisibleRect().isEmpty()) {
+                imageOrigin.translate(dx, dy);
+                baseImageMoved.set(true);
+                repaint();
+                onImageMoved();
+            }
+
+        } finally {
+            drawingLock.unlock();
         }
     }
 
@@ -443,17 +473,23 @@ public abstract class AbstractMapPane extends JPanel
      * transforms
      */
     protected void afterImageMoved() {
-        int dx = imageOrigin.x;
-        int dy = imageOrigin.y;
-        DirectPosition2D newPos = new DirectPosition2D(dx, dy);
-        mapContent.getViewport().getScreenToWorld().transform(newPos, newPos);
+        paramsLock.writeLock().lock();
+        try {
+            int dx = imageOrigin.x;
+            int dy = imageOrigin.y;
+            DirectPosition2D newPos = new DirectPosition2D(dx, dy);
+            mapContent.getViewport().getScreenToWorld().transform(newPos, newPos);
 
-        ReferencedEnvelope env = new ReferencedEnvelope(mapContent.getViewport().getBounds());
-        env.translate(env.getMinimum(0) - newPos.x, env.getMaximum(1) - newPos.y);
-        doSetDisplayArea(env);
+            ReferencedEnvelope env = new ReferencedEnvelope(mapContent.getViewport().getBounds());
+            env.translate(env.getMinimum(0) - newPos.x, env.getMaximum(1) - newPos.y);
+            doSetDisplayArea(env);
 
-        imageOrigin.setLocation(0, 0);
-        baseImageMoved.set(false);
+            imageOrigin.setLocation(0, 0);
+            baseImageMoved.set(false);
+
+        } finally {
+            paramsLock.writeLock().unlock();
+        }
     }
 
     /**
@@ -461,7 +497,13 @@ public abstract class AbstractMapPane extends JPanel
      */
     @Override
     public MapContent getMapContent() {
-        return mapContent;
+        paramsLock.readLock().lock();
+        try {
+            return mapContent;
+            
+        } finally {
+            paramsLock.readLock().unlock();
+        }
     }
 
     /**
@@ -469,7 +511,13 @@ public abstract class AbstractMapPane extends JPanel
      */
     @Override
     public void setMapContent(MapContent content) {
-        doSetMapContent(content);
+        paramsLock.writeLock().lock();
+        try {
+            doSetMapContent(content);
+            
+        } finally {
+            paramsLock.writeLock().unlock();
+        }
     }
     
     private void doSetMapContent(MapContent newMapContent) {
@@ -519,12 +567,18 @@ public abstract class AbstractMapPane extends JPanel
      */
     @Override
     public ReferencedEnvelope getDisplayArea() {
-        if (mapContent != null) {
-            return mapContent.getViewport().getBounds();
-        } else if (pendingDisplayArea != null) {
-            return new ReferencedEnvelope(pendingDisplayArea);
-        } else {
-            return new ReferencedEnvelope();
+        paramsLock.readLock().lock();
+        try {
+            if (mapContent != null) {
+                return mapContent.getViewport().getBounds();
+            } else if (pendingDisplayArea != null) {
+                return new ReferencedEnvelope(pendingDisplayArea);
+            } else {
+                return new ReferencedEnvelope();
+            }
+
+        } finally {
+            paramsLock.readLock().unlock();
         }
     }
 
@@ -533,14 +587,20 @@ public abstract class AbstractMapPane extends JPanel
      */
     @Override
     public void setDisplayArea(Envelope envelope) {
-        if (envelope == null) {
-            throw new IllegalArgumentException("envelope must not be null");
-        }
+        paramsLock.writeLock().lock();
+        try {
+            if (envelope == null) {
+                throw new IllegalArgumentException("envelope must not be null");
+            }
 
-        doSetDisplayArea(envelope);
-        if (mapContent != null) {
-            clearLabelCache.set(true);
-            drawLayers(false);
+            doSetDisplayArea(envelope);
+            if (mapContent != null) {
+                clearLabelCache.set(true);
+                drawLayers(false);
+            }
+
+        } finally {
+            paramsLock.writeLock().unlock();
         }
     }
 
@@ -581,8 +641,14 @@ public abstract class AbstractMapPane extends JPanel
      */
     @Override
     public void reset() {
-        if (fullExtent != null) {
-            setDisplayArea(fullExtent);
+        paramsLock.writeLock().lock();
+        try {
+            if (fullExtent != null) {
+                setDisplayArea(fullExtent);
+            }
+            
+        } finally {
+            paramsLock.writeLock().unlock();
         }
     }
 
@@ -591,10 +657,16 @@ public abstract class AbstractMapPane extends JPanel
      */
     @Override
     public AffineTransform getScreenToWorldTransform() {
-        if (mapContent != null) {
-            return mapContent.getViewport().getScreenToWorld();
-        } else {
-            return null;
+        paramsLock.readLock().lock();
+        try {
+            if (mapContent != null) {
+                return mapContent.getViewport().getScreenToWorld();
+            } else {
+                return null;
+            }
+
+        } finally {
+            paramsLock.readLock().unlock();
         }
     }
 
@@ -603,10 +675,16 @@ public abstract class AbstractMapPane extends JPanel
      */
     @Override
     public AffineTransform getWorldToScreenTransform() {
-        if (mapContent != null) {
-            return mapContent.getViewport().getWorldToScreen();
-        } else {
-            return null;
+        paramsLock.readLock().lock();
+        try {
+            if (mapContent != null) {
+                return mapContent.getViewport().getWorldToScreen();
+            } else {
+                return null;
+            }
+
+        } finally {
+            paramsLock.readLock().unlock();
         }
     }
 
@@ -667,21 +745,27 @@ public abstract class AbstractMapPane extends JPanel
      */
     @Override
     public void setCursorTool(CursorTool tool) {
-        if (currentCursorTool != null) {
-            mouseEventDispatcher.removeMouseListener(currentCursorTool);
-        }
-        
-        currentCursorTool = tool;
-        
-        if (currentCursorTool == null) {
-            setCursor(Cursor.getDefaultCursor());
-            dragBox.setEnabled(false);
+        paramsLock.writeLock().lock();
+        try {
+            if (currentCursorTool != null) {
+                mouseEventDispatcher.removeMouseListener(currentCursorTool);
+            }
 
-        } else {
-            setCursor(currentCursorTool.getCursor());
-            dragBox.setEnabled(currentCursorTool.drawDragBox());
-            currentCursorTool.setMapPane(this);
-            mouseEventDispatcher.addMouseListener(currentCursorTool);
+            currentCursorTool = tool;
+
+            if (currentCursorTool == null) {
+                setCursor(Cursor.getDefaultCursor());
+                dragBox.setEnabled(false);
+
+            } else {
+                setCursor(currentCursorTool.getCursor());
+                dragBox.setEnabled(currentCursorTool.drawDragBox());
+                currentCursorTool.setMapPane(this);
+                mouseEventDispatcher.addMouseListener(currentCursorTool);
+            }
+
+        } finally {
+            paramsLock.writeLock().unlock();
         }
     }
 
@@ -692,13 +776,24 @@ public abstract class AbstractMapPane extends JPanel
      */
     @Override
     public void layerAdded(MapLayerListEvent event) {
-        Layer layer = event.getElement();
-        
-        if( layer instanceof ComponentListener ){
-            addComponentListener( (ComponentListener) layer );
-        }
+        paramsLock.writeLock().lock();
+        try {
+            Layer layer = event.getElement();
 
-        setFullExtent();
+            if (layer instanceof ComponentListener) {
+                addComponentListener((ComponentListener) layer);
+            }
+
+            setFullExtent();
+            MapViewport viewport = mapContent.getViewport();
+            if (viewport.getBounds().isEmpty()) {
+                viewport.setBounds(fullExtent);
+            }
+            
+        } finally {
+            paramsLock.writeLock().unlock();
+        }
+        
         drawLayers(false);
         repaint();
     }
@@ -708,16 +803,22 @@ public abstract class AbstractMapPane extends JPanel
      */
     @Override
     public void layerRemoved(MapLayerListEvent event) {
-        Layer layer = event.getElement();
+        paramsLock.writeLock().lock();
+        try {
+            Layer layer = event.getElement();
 
-        if( layer instanceof ComponentListener ){
-            addComponentListener( (ComponentListener) layer );
-        }
+            if (layer instanceof ComponentListener) {
+                addComponentListener((ComponentListener) layer);
+            }
 
-        if (mapContent.layers().isEmpty()) {
-            fullExtent = null;
-        } else {
-            setFullExtent();
+            if (mapContent.layers().isEmpty()) {
+                fullExtent = null;
+            } else {
+                setFullExtent();
+            }
+            
+        } finally {
+            paramsLock.writeLock().unlock();
         }
 
         drawLayers(false);
@@ -730,15 +831,21 @@ public abstract class AbstractMapPane extends JPanel
      */
     @Override
     public void layerChanged(MapLayerListEvent event) {
-        int reason = event.getMapLayerEvent().getReason();
+        paramsLock.writeLock().lock();
+        try {
+            int reason = event.getMapLayerEvent().getReason();
 
-        if (reason == MapLayerEvent.DATA_CHANGED) {
-            setFullExtent();
-        }
+            if (reason == MapLayerEvent.DATA_CHANGED) {
+                setFullExtent();
+            }
 
-        if (reason != MapLayerEvent.SELECTION_CHANGED) {
-            clearLabelCache.set(true);
-            drawLayers(false);
+            if (reason != MapLayerEvent.SELECTION_CHANGED) {
+                clearLabelCache.set(true);
+                drawLayers(false);
+            }
+            
+        } finally {
+            paramsLock.writeLock().unlock();
         }
 
         repaint();
@@ -768,15 +875,21 @@ public abstract class AbstractMapPane extends JPanel
      */
     @Override
     public void mapBoundsChanged(MapBoundsEvent event) {
-        int type = event.getType();
-        if ((type & MapBoundsEvent.COORDINATE_SYSTEM_MASK) != 0) {
-            /*
-             * The coordinate reference system has changed. Set the map
-             * to display the full extent of layer bounds to avoid the
-             * effect of a shrinking map
-             */
-            setFullExtent();
-            reset();
+        paramsLock.writeLock().lock();
+        try {
+            int type = event.getType();
+            if ((type & MapBoundsEvent.COORDINATE_SYSTEM_MASK) != 0) {
+                /*
+                 * The coordinate reference system has changed. Set the map
+                 * to display the full extent of layer bounds to avoid the
+                 * effect of a shrinking map
+                 */
+                setFullExtent();
+                reset();
+            }
+            
+        } finally {
+            paramsLock.writeLock().unlock();
         }
     }
 

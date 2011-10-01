@@ -34,7 +34,7 @@ import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.renderer.lite.SynchronizedLabelCache;
 
 /**
- *
+ * This class is not usable yet !
  *
  * @source $URL$
  */

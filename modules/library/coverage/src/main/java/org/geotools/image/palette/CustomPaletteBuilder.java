@@ -376,8 +376,8 @@ public final class CustomPaletteBuilder {
 		final int numBands = rgba.length;
 		aNode.colorCount++;
 		aNode.red += rgba[0];
-		aNode.green += rgba[numBands == 1 ? 0 : 1];
-		aNode.blue += rgba[numBands == 1 ? 0 : 2];
+		aNode.green += rgba[numBands <3 ? 0 : 1];
+		aNode.blue += rgba[numBands <3? 0 : 2];
 
 		if (!aNode.isLeaf) {
 			int branchIndex = getBranchIndex(rgba, aLevel);
@@ -463,8 +463,8 @@ public final class CustomPaletteBuilder {
 		final int numBands = rgba.length;
 		int shift = maxLevel - aLevel;
 		int red_index = 0x1 & ((0xff & rgba[0]) >> shift);
-		int green_index = 0x1 & ((0xff & rgba[numBands == 1 ? 0 : 1]) >> shift);
-		int blue_index = 0x1 & ((0xff & rgba[numBands == 1 ? 0 : 2]) >> shift);
+		int green_index = 0x1 & ((0xff & rgba[numBands <3 ? 0 : 1]) >> shift);
+		int blue_index = 0x1 & ((0xff & rgba[numBands <3 ? 0 : 2]) >> shift);
 		int index = (red_index << 2) | (green_index << 1) | blue_index;
 
 		return index;

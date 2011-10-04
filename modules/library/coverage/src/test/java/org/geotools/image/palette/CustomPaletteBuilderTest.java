@@ -44,6 +44,24 @@ import org.junit.Test;
  */
 public class CustomPaletteBuilderTest extends TestCase {
 
+    @Test
+    public void test2BandsBug() {
+        // build a transparent image
+        BufferedImage image = new BufferedImage(256,256,BufferedImage.TYPE_BYTE_GRAY);
+        image=new ImageWorker(image).addBand(image, true).getBufferedImage();
+        
+        
+        // create a palette out of it
+        CustomPaletteBuilder builder = new CustomPaletteBuilder(image, 256, 1,1, 1);
+        builder.buildPalette();
+        RenderedImage indexed = builder.getIndexedImage();
+        assertTrue(indexed.getColorModel() instanceof IndexColorModel);
+        IndexColorModel icm = (IndexColorModel) indexed.getColorModel();
+        
+        // png encoder go mad if they get a one element palette, we need at least two
+        assertEquals(2, icm.getMapSize());
+    }
+    
 	@Test
     public void testOneColorBug() {
         // build a transparent image

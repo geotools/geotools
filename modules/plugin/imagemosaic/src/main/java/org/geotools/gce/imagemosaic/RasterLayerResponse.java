@@ -36,7 +36,9 @@ import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
@@ -1327,12 +1329,18 @@ class RasterLayerResponse{
         final ColorModel cm=image.getColorModel();
 		final int numBands = sm.getNumBands();
 		final GridSampleDimension[] bands = new GridSampleDimension[numBands];
+	        Set<String> bandNames = new HashSet<String>();		
 		// setting bands names.
 		for (int i = 0; i < numBands; i++) {
 			// color interpretation
 	        final ColorInterpretation colorInterpretation=TypeMap.getColorInterpretation(cm, i);
 	        if(colorInterpretation==null)
 	               throw new IOException("Unrecognized sample dimension type");
+                // make sure we create no duplicate band names
+	        String bandName = colorInterpretation.name();	        
+                if(colorInterpretation == ColorInterpretation.UNDEFINED || bandNames.contains(bandName)) {
+                    bandName = "Band" + (i + 1);
+                } 	        
 	        
 	        // sample dimension type
 	        final SampleDimensionType st=TypeMap.getSampleDimensionType(sm, i);
@@ -1405,7 +1413,7 @@ class RasterLayerResponse{
 		        		     
 	        }
 	        bands[i] = new SimplifiedGridSampleDimension(
-	        		colorInterpretation.name(),
+	        		bandName,
 	        		st,
 	        		colorInterpretation,
 	        		noData,

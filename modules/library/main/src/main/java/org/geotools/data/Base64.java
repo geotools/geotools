@@ -25,7 +25,7 @@
  *    Please visit <a href="http://iharder.net/base64">http://iharder.net/base64</a>
  *    periodically to check for updates or to contribute improvements.
  */
-package org.geotools.data.postgis;
+package org.geotools.data;
 
 /**
  * Encodes and decodes to and from Base64 notation.

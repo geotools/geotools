@@ -17,17 +17,22 @@
 package org.geotools.data.wms.test;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 
 import junit.framework.TestCase;
 
+import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
 import org.geotools.data.wms.request.AbstractGetMapRequest;
 import org.geotools.data.wms.request.GetMapRequest;
 import org.geotools.ows.ServiceException;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class AbstractGetMapRequestTest extends TestCase {
 
 	public void testGetFinalURL() throws Exception {
@@ -69,7 +74,7 @@ public class AbstractGetMapRequestTest extends TestCase {
 			
 		}
 
-		public Response createResponse(String contentType, InputStream inputStream) throws ServiceException, IOException {
+		public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
 			// TODO Auto-generated method stub
 			return null;
 		}

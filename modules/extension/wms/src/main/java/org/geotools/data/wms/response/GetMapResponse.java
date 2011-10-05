@@ -17,8 +17,8 @@
 package org.geotools.data.wms.response;
 
 import java.io.IOException;
-import java.io.InputStream;
 
+import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
 import org.geotools.ows.ServiceException;
 
@@ -35,14 +35,11 @@ import org.geotools.ows.ServiceException;
  *
  * @author Richard Gould, Refractions Research
  *
+ *
  * @source $URL$
  */
 public class GetMapResponse extends Response {
-    public GetMapResponse(String contentType, InputStream response) throws ServiceException, IOException {
-        super(contentType, response);
-        
-        if (contentType.toLowerCase().indexOf("application/vnd.ogc.se_xml") != -1) {
-        	throw parseException(response);
-        }
+    public GetMapResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
+        super(httpResponse);
     }
 }

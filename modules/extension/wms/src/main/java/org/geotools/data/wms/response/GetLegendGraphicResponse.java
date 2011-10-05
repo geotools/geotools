@@ -17,31 +17,31 @@
 package org.geotools.data.wms.response;
 
 import java.io.IOException;
-import java.io.InputStream;
 
+import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
 import org.geotools.ows.ServiceException;
-import org.xml.sax.SAXException;
 
 /**
  * 
  * @author Richard Gould
  *
+ *
  * @source $URL$
  */
 public class GetLegendGraphicResponse extends Response {
 
-    /**
-     * @param contentType
-     * @param inputStream
-     * @throws SAXException 
-     * @throws ServiceException 
-     */
-    public GetLegendGraphicResponse( String contentType, InputStream inputStream ) throws ServiceException, IOException {
-        super(contentType, inputStream);
+
+    public GetLegendGraphicResponse( HTTPResponse httpResponse ) throws ServiceException, IOException {
+        super(httpResponse);
         
-        if (contentType.toLowerCase().indexOf("text/xml") != -1) {
-        	throw parseException(inputStream);
+        String contentType = getContentType();
+        if (contentType != null && contentType.toLowerCase().indexOf("text/xml") != -1) {
+            try{
+        	throw parseException(getInputStream());
+            }finally{
+                dispose();
+            }
         }
     }
 

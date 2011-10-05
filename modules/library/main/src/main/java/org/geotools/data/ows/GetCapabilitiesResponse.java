@@ -28,14 +28,15 @@ import org.geotools.ows.ServiceException;
  * @author Richard Gould
  *
  *
+ *
  * @source $URL$
  */
 public abstract class GetCapabilitiesResponse extends Response {
 
 	protected Capabilities capabilities;
 
-	public GetCapabilitiesResponse(String contentType, InputStream inputStream) throws ServiceException, IOException {
-		super(contentType, inputStream);
+	public GetCapabilitiesResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
+		super(httpResponse);
 	}
  
 	/**

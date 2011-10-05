@@ -17,12 +17,12 @@
 package org.geotools.data.wps;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 
 import org.geotools.data.ows.AbstractGetCapabilitiesRequest;
 import org.geotools.data.ows.GetCapabilitiesRequest;
+import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
 import org.geotools.data.wps.request.AbstractDescribeProcessRequest;
 import org.geotools.data.wps.request.AbstractExecuteProcessRequest;
@@ -41,6 +41,8 @@ import org.geotools.ows.ServiceException;
  * </p>
  * 
  * @author gdavis
+ *
+ *
  *
  *
  * @source $URL$
@@ -107,8 +109,8 @@ public class WPS1_0_0 extends WPSSpecification {
             return WPS1_0_0.processKey(key);
         }
         
-        public Response createResponse(String contentType, InputStream inputStream) throws ServiceException, IOException {
-			return new WPSGetCapabilitiesResponse(contentType, inputStream);
+        public Response createResponse(HTTPResponse response) throws ServiceException, IOException {
+			return new WPSGetCapabilitiesResponse(response);
 		}
     }
 
@@ -132,8 +134,8 @@ public class WPS1_0_0 extends WPSSpecification {
             setProperty(VERSION, "1.0.0");
         }
         
-        public Response createResponse(String contentType, InputStream inputStream) throws ServiceException, IOException {
-			return new DescribeProcessResponse(contentType, inputStream);
+        public Response createResponse(HTTPResponse response) throws ServiceException, IOException {
+			return new DescribeProcessResponse(response);
 		}
 	}
 
@@ -157,8 +159,8 @@ public class WPS1_0_0 extends WPSSpecification {
             setProperty(VERSION, "1.0.0");
         }
         
-        public Response createResponse(String contentType, InputStream inputStream) throws ServiceException, IOException {
-			return new ExecuteProcessResponse(contentType, inputStream);
+        public Response createResponse(HTTPResponse response) throws ServiceException, IOException {
+			return new ExecuteProcessResponse(response);
 		}
          
 	}	

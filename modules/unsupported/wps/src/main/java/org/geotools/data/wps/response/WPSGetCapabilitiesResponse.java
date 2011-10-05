@@ -17,7 +17,6 @@
 package org.geotools.data.wps.response;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -25,6 +24,7 @@ import net.opengis.ows11.ExceptionReportType;
 import net.opengis.wps10.WPSCapabilitiesType;
 
 import org.geotools.data.ows.AbstractWPSGetCapabilitiesResponse;
+import org.geotools.data.ows.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.wps.WPSConfiguration;
 import org.geotools.xml.Configuration;
@@ -38,14 +38,15 @@ import org.xml.sax.SAXException;
  *
  *
  *
+ *
+ *
  * @source $URL$
  */
 public class WPSGetCapabilitiesResponse extends AbstractWPSGetCapabilitiesResponse {
 
-	public WPSGetCapabilitiesResponse(String contentType, InputStream inputStream) throws ServiceException, IOException {
-		super(contentType, inputStream);
+	public WPSGetCapabilitiesResponse(HTTPResponse response) throws ServiceException, IOException {
+		super(response);
 		
-		try {
 	        //Map hints = new HashMap();
 	        //hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WPSSchema.getInstance());
 	        //hints.put(DocumentFactory.VALIDATION_HINT, Boolean.FALSE);
@@ -57,11 +58,13 @@ public class WPSGetCapabilitiesResponse extends AbstractWPSGetCapabilitiesRespon
 	        capabilities = null;		        
 			try {
 				//object = DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
-				object = parser.parse(inputStream);
+				object = parser.parse(response.getResponseStream());
 			} catch (SAXException e) {
 				throw (ServiceException) new ServiceException("Error while parsing XML.").initCause(e);
 			} catch (ParserConfigurationException e) {
 				throw (ServiceException) new ServiceException("Error while parsing XML.").initCause(e);
+			}finally{
+			    response.dispose();
 			}
 	        
 	        //if (object instanceof ServiceException) {
@@ -76,10 +79,6 @@ public class WPSGetCapabilitiesResponse extends AbstractWPSGetCapabilitiesRespon
 			else if (object instanceof ExceptionReportType) {
 				excepResponse = (ExceptionReportType) object;
 			}				
-
-		} finally {
-			inputStream.close();
-		}
 	}
 
 }

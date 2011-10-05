@@ -39,6 +39,7 @@ import net.opengis.wps10.WPSCapabilitiesType;
 
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
+import org.geotools.data.ows.SimpleHttpClient.SimpleHTTPResponse;
 import org.geotools.ows.ServiceException;
 
 /**
@@ -50,6 +51,8 @@ import org.geotools.ows.ServiceException;
  * provide their own Specifications 
  * 
  * @author gdavis
+ *
+ *
  *
  *
  *
@@ -408,16 +411,8 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
         	connection.setRequestMethod("GET");
         }
         
-
-        InputStream inputStream = connection.getInputStream();
-        
-        if (connection.getContentEncoding() != null && connection.getContentEncoding().indexOf("gzip") != -1) { //$NON-NLS-1$
-            inputStream = new GZIPInputStream(inputStream);
-        }
-
-        String contentType = connection.getContentType();
-        
-        return request.createResponse(contentType, inputStream);
+        HTTPResponse httpResponse = new SimpleHttpClient.SimpleHTTPResponse(connection);
+        return request.createResponse(httpResponse);
     }
     
     public AbstractWPSGetCapabilitiesResponse issueRequest(GetCapabilitiesRequest request) throws IOException, ServiceException {

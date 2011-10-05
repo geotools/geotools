@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 
+import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.LayerDescription;
 import org.geotools.data.ows.Response;
 import org.geotools.data.wms.xml.WMSSchema;
@@ -36,20 +37,16 @@ import org.xml.sax.SAXException;
  * 
  * @author Richard Gould
  *
+ *
  * @source $URL$
  */
 public class DescribeLayerResponse extends Response {
 
     private LayerDescription[] layerDescs;
 
-    /**
-     * @param contentType
-     * @param inputStream
-     * @throws ServiceException 
-     * @throws SAXException
-     */
-    public DescribeLayerResponse( String contentType, InputStream inputStream ) throws IOException, ServiceException {
-        super(contentType, inputStream);
+
+    public DescribeLayerResponse( HTTPResponse httpResponse ) throws IOException, ServiceException {
+        super(httpResponse);
         
         try {
 	        Map hints = new HashMap();
@@ -57,14 +54,15 @@ public class DescribeLayerResponse extends Response {
 	
 	        Object object;
 			try {
-				object = DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
+				InputStream inputStream = getInputStream();
+                                object = DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
 			} catch (SAXException e) {
 				throw (IOException) new IOException().initCause(e);
 			}
 	        
 	        layerDescs = (LayerDescription[]) object;
         } finally {
-        	inputStream.close();
+        	dispose();
         }
     }
 

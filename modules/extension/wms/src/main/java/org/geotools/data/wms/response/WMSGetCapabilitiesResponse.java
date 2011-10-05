@@ -24,6 +24,7 @@ import java.util.logging.Level;
 
 import org.geotools.data.ows.Capabilities;
 import org.geotools.data.ows.GetCapabilitiesResponse;
+import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.wms.xml.WMSSchema;
 import org.geotools.ows.ServiceException;
 import org.geotools.xml.DocumentFactory;
@@ -37,13 +38,12 @@ import org.xml.sax.SAXException;
  *
  *
  *
- *
  * @source $URL$
  */
 public class WMSGetCapabilitiesResponse extends GetCapabilitiesResponse {
 
-	public WMSGetCapabilitiesResponse(String contentType, InputStream inputStream) throws ServiceException, IOException {
-		super(contentType, inputStream);
+	public WMSGetCapabilitiesResponse(HTTPResponse response) throws ServiceException, IOException {
+		super(response);
 		
 		try {
 	        Map hints = new HashMap();
@@ -52,6 +52,7 @@ public class WMSGetCapabilitiesResponse extends GetCapabilitiesResponse {
 	
 	        Object object;
 			try {
+			    InputStream inputStream = response.getResponseStream();
 				object = DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
 			} catch (SAXException e) {
 				throw (ServiceException) new ServiceException("Error while parsing XML.").initCause(e);
@@ -63,7 +64,7 @@ public class WMSGetCapabilitiesResponse extends GetCapabilitiesResponse {
 	        
 	        this.capabilities = (Capabilities)object;
 		} finally {
-			inputStream.close();
+			response.dispose();
 		}
 	}
 

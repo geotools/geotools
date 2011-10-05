@@ -33,29 +33,35 @@ import org.jdom.JDOMException;
  * @source $URL$
  */
 public abstract class Response {
-    protected InputStream inputStream;
-    protected String contentType;
+    protected HTTPResponse httpResponse;
 
-    public Response(String contentType, InputStream inputStream) throws ServiceException, IOException {
-    	if( inputStream == null ){
+    public Response(HTTPResponse httpResponse) throws ServiceException, IOException {
+    	if( httpResponse.getResponseStream() == null ){
     		throw new NullPointerException("An inputStream is required for "+getClass().getName());
         }
-    	this.inputStream = inputStream;
-    	if( contentType == null ){
+    	if( httpResponse.getContentType() == null ){
     		// should missing content type be fatal? Or could we make an assumption?
         	throw new NullPointerException("Content type is required for "+getClass().getName());
         }    	
-        this.contentType = contentType;
+        this.httpResponse = httpResponse;
         /*
          * Intercept XML ServiceExceptions and throw them
          */
-        if (contentType != null && contentType.toLowerCase().equals("application/vnd.ogc.se_xml")) {
-        	throw parseException(inputStream);
+        if (httpResponse.getContentType().toLowerCase().equals("application/vnd.ogc.se_xml")) {
+            try {
+                throw parseException(httpResponse.getResponseStream());
+            } finally {
+                dispose();
+            }
         }
     }
 
+    public void dispose(){
+        httpResponse.dispose();
+    }
+    
     public String getContentType() {
-        return contentType;
+        return httpResponse.getContentType();
     }
 
     /**
@@ -70,7 +76,11 @@ public abstract class Response {
      * @return the input stream containing the response from the server
      */
     public InputStream getInputStream() {
-        return inputStream;
+        try {
+            return httpResponse.getResponseStream();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
     
     protected ServiceException parseException(InputStream inputStream) throws IOException {

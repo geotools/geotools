@@ -17,7 +17,6 @@
 package org.geotools.data.ows;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import net.opengis.ows11.ExceptionReportType;
 import net.opengis.wps10.WPSCapabilitiesType;
@@ -40,8 +39,8 @@ public abstract class AbstractWPSGetCapabilitiesResponse extends Response {
 	protected WPSCapabilitiesType capabilities;
     protected ExceptionReportType excepResponse;  
 
-	public AbstractWPSGetCapabilitiesResponse(String contentType, InputStream inputStream) throws ServiceException, IOException {
-		super(contentType, inputStream);
+	public AbstractWPSGetCapabilitiesResponse(HTTPResponse response) throws ServiceException, IOException {
+		super(response);
 	}
  
 	/**

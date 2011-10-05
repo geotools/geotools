@@ -17,11 +17,11 @@
 package org.geotools.data.wms;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 
 import org.geotools.data.ows.GetCapabilitiesRequest;
+import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Layer;
 import org.geotools.data.ows.Response;
 import org.geotools.data.wms.request.AbstractDescribeLayerRequest;
@@ -190,10 +190,12 @@ public class WMS1_1_0 extends WMS1_0_0 {
         protected void initVersion() {
             setProperty(VERSION, "1.1.0");
         }
-        public Response createResponse(String contentType, InputStream inputStream) throws ServiceException, IOException {
-			return new DescribeLayerResponse(contentType, inputStream);
-		}
-	}
+
+        public Response createResponse(HTTPResponse httpResponse) throws ServiceException,
+                IOException {
+            return new DescribeLayerResponse(httpResponse);
+        }
+    }
 	
 	public static class InternalGetLegendGraphicRequest extends AbstractGetLegendGraphicRequest {
 
@@ -211,8 +213,8 @@ public class WMS1_1_0 extends WMS1_0_0 {
             setProperty(VERSION, "1.1.0");
         }
         
-        public Response createResponse(String contentType, InputStream inputStream) throws ServiceException, IOException {
-			return new GetLegendGraphicResponse(contentType, inputStream);
+        public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
+			return new GetLegendGraphicResponse(httpResponse);
 		}	    
 	}
 	
@@ -233,8 +235,8 @@ public class WMS1_1_0 extends WMS1_0_0 {
             setProperty(VERSION, "1.1.0");
         }
 	    
-        public Response createResponse(String contentType, InputStream inputStream) throws ServiceException, IOException {
-			return new GetStylesResponse(contentType, inputStream);
+        public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
+			return new GetStylesResponse(httpResponse);
 		}
 	}
 	
@@ -248,8 +250,8 @@ public class WMS1_1_0 extends WMS1_0_0 {
             setProperty(VERSION, "1.1.0");            
         }
 	    
-        public Response createResponse(String contentType, InputStream inputStream) throws ServiceException, IOException {
-			return new PutStylesResponse(contentType, inputStream);
+        public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
+			return new PutStylesResponse(httpResponse);
 		}
 	}
 

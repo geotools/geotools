@@ -35,6 +35,7 @@ import org.geotools.data.ows.AbstractOpenWebService;
 import org.geotools.data.ows.CRSEnvelope;
 import org.geotools.data.ows.GetCapabilitiesRequest;
 import org.geotools.data.ows.GetCapabilitiesResponse;
+import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.Layer;
 import org.geotools.data.ows.OperationType;
 import org.geotools.data.ows.Specification;
@@ -123,8 +124,8 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities,Layer> 
             if (capabilities != null && capabilities.getService() != null) {
                 description = capabilities.getService().get_abstract();
             }
-            if( description == null && serverURL != null) {
-                description = "Web Map Server "+serverURL;
+            if( description == null ) {
+                description = "Web Map Server "+ serverURL;
             }
             return description;
         }
@@ -369,6 +370,18 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities,Layer> 
         super(serverURL);
     }
     
+    /**
+     * Creates a new WebMapServer instance and attempts to retrieve the 
+     * Capabilities document specified by serverURL. 
+     * 
+     * @param serverURL a URL that points to the capabilities document of a server
+     * @throws IOException if there is an error communicating with the server
+     * @throws ServiceException if the server responds with an error
+     */
+    public WebMapServer( final URL serverURL, final HTTPClient httpClient ) throws IOException, ServiceException {
+        super(serverURL, httpClient, null);
+    }
+
     /**
      * Creates a new WebMapServer instance and attempts to retrieve the 
      * Capabilities document specified by serverURL. 

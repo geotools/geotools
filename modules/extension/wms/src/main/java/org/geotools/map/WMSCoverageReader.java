@@ -302,12 +302,17 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
                 LOGGER.fine("Issuing request: " + mapRequest.getFinalURL());
             }
             GetMapResponse response = wms.issueRequest(mapRequest);
-            is = response.getInputStream();
-            BufferedImage image = ImageIO.read(is);
-            if(image == null) {
-                throw (IOException) new IOException("GetMap failed: " + mapRequest.getFinalURL());
+            try {
+                is = response.getInputStream();
+                BufferedImage image = ImageIO.read(is);
+                if (image == null) {
+                    throw (IOException) new IOException("GetMap failed: "
+                            + mapRequest.getFinalURL());
+                }
+                return gcf.create(layers.get(0).getTitle(), image, gridEnvelope);
+            } finally {
+                response.dispose();
             }
-            return gcf.create(layers.get(0).getTitle(), image, gridEnvelope);
         } catch (ServiceException e) {
             throw (IOException) new IOException("GetMap failed").initCause(e);
         }

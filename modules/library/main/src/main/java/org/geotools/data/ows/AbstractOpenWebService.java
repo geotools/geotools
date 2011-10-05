@@ -52,12 +52,11 @@ import org.geotools.ows.ServiceException;
  * @author Richard Gould
  *
  *
- *
  * @source $URL$
  */
 public abstract class AbstractOpenWebService<C extends Capabilities, R extends Object> {
-    /** Define a interval to wait a server response  */
-    protected int requestTimeout = 30000; // 30 seconds
+    
+    private HTTPClient httpClient;
     protected final URL serverURL;
     protected C capabilities;
     protected ServiceInfo info;
@@ -68,8 +67,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
     protected Specification specification;
     
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.data.ows");
-    private static final int DEFAULT_TIMEOUT = 0;
-
+    
     /**
      * Set up the specifications used and retrieve the Capabilities document
      * given by serverURL.
@@ -79,53 +77,70 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
      * @throws ServiceException if the server responds with an error
      */
     public AbstractOpenWebService(final URL serverURL) throws IOException, ServiceException {
-        this( serverURL, DEFAULT_TIMEOUT );
+        this(serverURL, new SimpleHttpClient(), null);
     }
 
+    /**
+     * @deprecated use {@link #AbstractOpenWebService(OWSConfig)}
+     */
     public AbstractOpenWebService(final URL serverURL, int requestTimeout) throws IOException,
             ServiceException {
+        this(serverURL, new SimpleHttpClient(), null);
+        this.httpClient.setConnectTimeout(requestTimeout);
+        this.httpClient.setReadTimeout(requestTimeout);
+    }
+    
+    /**
+     * @deprecated use {@link #AbstractOpenWebService(OWSConfig, Capabilities)}
+     */
+    public AbstractOpenWebService(C capabilties, URL serverURL) throws ServiceException, IOException {
+        this(serverURL, new SimpleHttpClient(), capabilties);
+    }
+
+    public AbstractOpenWebService(final URL serverURL, final HTTPClient httpClient,
+            final C capabilities) throws ServiceException, IOException {
         if (serverURL == null) {
-            throw new NullPointerException("ServerURL cannot be null");
+            throw new NullPointerException("serverURL");
+        }
+        if (httpClient == null) {
+            throw new NullPointerException("httpClient");
         }
 
         this.serverURL = serverURL;
-        this.requestTimeout = requestTimeout;
+        this.httpClient = httpClient;
 
         setupSpecifications();
 
-        capabilities = negotiateVersion();
         if (capabilities == null) {
-            throw new ServiceException("Unable to retrieve or parse Capabilities document.");
+            this.capabilities = negotiateVersion();
+            if (this.capabilities == null) {
+                throw new ServiceException("Unable to retrieve or parse Capabilities document.");
+            }
+        } else {
+            this.capabilities = capabilities;
+        }
+
+        for (int i = 0; i < specs.length; i++) {
+            if (specs[i].getVersion().equals(this.capabilities.getVersion())) {
+                specification = specs[i];
+                break;
+            }
+        }
+
+        if (specification == null) {
+            specification = specs[specs.length - 1];
+            LOGGER.warning("Unable to choose a specification based on cached capabilities. "
+                    + "Arbitrarily choosing spec '" + specification.getVersion() + "'.");
         }
     }
-    
-    public AbstractOpenWebService(C capabilties, URL serverURL) {
-                if (capabilties == null) {
-                        throw new NullPointerException("Capabilities cannot be null.");
-                }
-                
-                if (serverURL == null) {
-                        throw new NullPointerException("ServerURL cannot be null");
-                }
-                
-                setupSpecifications();
-                
-                for (int i = 0; i < specs.length; i++) {
-                        if (specs[i].getVersion().equals(capabilties.getVersion())) {
-                                specification = specs[i];
-                                break;
-                        }
-                }
-                
-                if (specification == null) {
-                        specification = specs[specs.length-1];
-                        LOGGER.warning("Unable to choose a specification based on cached capabilities. "
-                                        +"Arbitrarily choosing spec '"+specification.getVersion()+"'.");
-                }
-                
-                this.serverURL = serverURL;
-                this.capabilities = capabilties;
-        }
+
+    public void setHttpClient(HTTPClient httpClient) {
+        this.httpClient = httpClient;
+    }
+
+    public HTTPClient getHTTPClient() {
+        return this.httpClient;
+    }
 
     /**
      * Description of this service.
@@ -384,61 +399,30 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
      * @throws ServiceException if the server responds with an exception or returns bad content
      */
     protected Response internalIssueRequest( Request request ) throws IOException, ServiceException {
-        URL finalURL = request.getFinalURL();
+        final URL finalURL = request.getFinalURL();
 
-        HttpURLConnection connection = (HttpURLConnection) finalURL.openConnection();
-        
-        connection.addRequestProperty("Accept-Encoding", "gzip");
-        connection.setConnectTimeout(this.requestTimeout);
-        
+        final HTTPResponse httpResponse;
+
         if (request.requiresPost()) {
-                connection.setRequestMethod("POST");
-                connection.setDoOutput(true);
-                connection.setRequestProperty("Content-type", request.getPostContentType());
 
-                OutputStream outputStream = connection.getOutputStream();
+            final String postContentType = request.getPostContentType();
 
-                if (LOGGER.isLoggable(Level.FINE)) {
-                        ByteArrayOutputStream out = new ByteArrayOutputStream();
-                        request.performPostOutput(out);
-                        
-                        InputStream in = new ByteArrayInputStream(out.toByteArray());
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            request.performPostOutput(out);
+            InputStream in = new ByteArrayInputStream(out.toByteArray());
 
-                        PrintStream stream = new PrintStream(outputStream);
-                        
-                        String postText = "";
-                        
-                        while (reader.ready()) {
-                                String input = reader.readLine();
-                                postText = postText + input;
-                                stream.println(input);
-                        }
-                        LOGGER.fine(postText);
-                        System.out.println(postText);
-                        
-                        out.close();
-                        in.close();
-                } else {
-                        request.performPostOutput(outputStream);
-                }
-                
-                outputStream.flush();
-                outputStream.close();
+            try {
+                httpResponse = httpClient.post(finalURL, in, postContentType);
+            } finally {
+                in.close();
+            }
         } else {
-                connection.setRequestMethod("GET");
-        }
-        
-
-        InputStream inputStream = connection.getInputStream();
-        
-        if (connection.getContentEncoding() != null && connection.getContentEncoding().indexOf("gzip") != -1) { //$NON-NLS-1$
-            inputStream = new GZIPInputStream(inputStream);
+            httpResponse = httpClient.get(finalURL);
         }
 
-        String contentType = connection.getContentType();
-        
-        return request.createResponse(contentType, inputStream);
+        final Response response = request.createResponse(httpResponse);
+
+        return response;
     }
     
     public GetCapabilitiesResponse issueRequest(GetCapabilitiesRequest request) throws IOException, ServiceException {

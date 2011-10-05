@@ -17,11 +17,10 @@
 package org.geotools.data.wms.response;
 
 import java.io.IOException;
-import java.io.InputStream;
 
+import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
 import org.geotools.ows.ServiceException;
-import org.xml.sax.SAXException;
 
 
 /**
@@ -52,16 +51,8 @@ import org.xml.sax.SAXException;
  * @source $URL$
  */
 public class GetFeatureInfoResponse extends Response {
-    /**
-     * DOCUMENT ME!
-     *
-     * @param contentType
-     * @param inputStream
-     * @throws SAXException 
-     * @throws ServiceException 
-     * @throws IOException 
-     */
-    public GetFeatureInfoResponse(String contentType, InputStream inputStream) throws ServiceException, IOException {
-        super(contentType, inputStream);
+
+    public GetFeatureInfoResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
+        super(httpResponse);
     }
 }

@@ -29,7 +29,6 @@ import org.geotools.ows.ServiceException;
  * 
  * @author rgould
  *
- *
  * @source $URL$
  */
 public interface Request {
@@ -84,7 +83,7 @@ public interface Request {
      * @throws ServiceException
      * @throws IOException
      */
-    Response createResponse(String contentType, InputStream inputStream) throws ServiceException, IOException;
+    Response createResponse(HTTPResponse response) throws ServiceException, IOException;
     
     /**
      * This method indicates whether this request needs to transmit some data

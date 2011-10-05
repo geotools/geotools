@@ -28,6 +28,7 @@ import java.util.Map;
 import org.geotools.data.ows.AbstractGetCapabilitiesRequest;
 import org.geotools.data.ows.AbstractRequest;
 import org.geotools.data.ows.GetCapabilitiesRequest;
+import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
 import org.geotools.data.wms.request.AbstractGetFeatureInfoRequest;
 import org.geotools.data.wms.request.AbstractGetMapRequest;
@@ -228,9 +229,10 @@ public class WMS1_0_0 extends WMSSpecification {
             return WMS1_0_0.processKey(key);
         }
         
-        public Response createResponse(String contentType, InputStream inputStream) throws ServiceException, IOException {
-			return new WMSGetCapabilitiesResponse(contentType, inputStream);
-		}
+        public Response createResponse(HTTPResponse httpResponse) throws ServiceException,
+                IOException {
+            return new WMSGetCapabilitiesResponse(httpResponse);
+        }
     }
 
     /**
@@ -294,9 +296,10 @@ public class WMS1_0_0 extends WMSSpecification {
             return WMS1_0_0.processKey(key);
         }
 
-		public Response createResponse(String contentType, InputStream inputStream) throws ServiceException, IOException {
-			return new GetMapResponse(contentType, inputStream);
-		}
+        public Response createResponse(HTTPResponse httpResponse)
+                throws ServiceException, IOException {
+            return new GetMapResponse(httpResponse);
+        }
     }
 
     /**
@@ -320,9 +323,10 @@ public class WMS1_0_0 extends WMSSpecification {
             return WMS1_0_0.processKey(key);
         }
         
-        public Response createResponse(String contentType, InputStream inputStream) throws ServiceException, IOException {
-			return new GetFeatureInfoResponse(contentType, inputStream);
-		}
+        public Response createResponse(HTTPResponse httpResponse) throws ServiceException,
+                IOException {
+            return new GetFeatureInfoResponse(httpResponse);
+        }
     }
 
     /** 

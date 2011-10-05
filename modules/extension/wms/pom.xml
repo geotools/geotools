@@ -98,6 +98,11 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <groupId>commons-httpclient</groupId>
+      <artifactId>commons-httpclient</artifactId>
+      <!-- The version number is specified in the parent POM. -->
+    </dependency>
+    <dependency>
         <groupId>org.geotools</groupId>
         <artifactId>gt-xml</artifactId>
         <version>${project.version}</version>

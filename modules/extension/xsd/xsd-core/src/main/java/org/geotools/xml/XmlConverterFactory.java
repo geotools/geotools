@@ -20,6 +20,8 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
+
 import org.geotools.factory.Hints;
 import org.geotools.util.CommonsConverterFactory;
 import org.geotools.util.Converter;
@@ -47,7 +49,12 @@ import org.geotools.xml.impl.DatatypeConverterImpl;
 public class XmlConverterFactory implements ConverterFactory {
     
     public Converter createConverter(Class source, Class target, Hints hints) {
-        if (String.class.equals(source)) {
+        boolean canHandleTarget = String.class.equals(target)
+                || java.util.Date.class.isAssignableFrom(target) || Calendar.class.equals(target);
+        boolean canHandleSource = String.class.equals(source)
+                || java.util.Date.class.isAssignableFrom(source) || Calendar.class.equals(source);
+
+        if (canHandleSource && canHandleTarget) {
             return new XmlConverter();
         }
 
@@ -57,7 +64,13 @@ public class XmlConverterFactory implements ConverterFactory {
     static class XmlConverter implements Converter {
         public Object convert(Object source, Class target)
             throws Exception {
-            String value = (String) source;
+            if (String.class.equals(source)) {
+                return convertFromString((String) source, target);
+            }
+            return convertToString(source);
+        }
+        
+        private Object convertFromString(final String source, final Class<?> target) {
 
             // don't bother performing conversions if the target types are not dates/times
             if(!Calendar.class.equals(target) && !Date.class.isAssignableFrom(target))
@@ -66,7 +79,7 @@ public class XmlConverterFactory implements ConverterFactory {
             //JD: this is a bit of a hack but delegate to the 
             // commons converter in case we are executing first.
             try {
-                Converter converter = new CommonsConverterFactory().createConverter(value.getClass(),
+                Converter converter = new CommonsConverterFactory().createConverter(String.class,
                         target, null);
     
                 if (converter != null) {
@@ -92,16 +105,16 @@ public class XmlConverterFactory implements ConverterFactory {
             //try parsing as dateTime
             try {
                 try {
-                    date = DatatypeConverterImpl.getInstance().parseDateTime(value);
+                    date = DatatypeConverterImpl.getInstance().parseDateTime(source);
                 }
                 catch(Exception e) {
                     //try as just date
-                    date = DatatypeConverterImpl.getInstance().parseDate(value);    
+                    date = DatatypeConverterImpl.getInstance().parseDate(source);    
                 }
                 
             } catch (Exception e) {
                 //try as just time
-                date = DatatypeConverterImpl.getInstance().parseTime(value);
+                date = DatatypeConverterImpl.getInstance().parseTime(source);
             }
 
             if (Calendar.class.equals(target)) {
@@ -129,5 +142,33 @@ public class XmlConverterFactory implements ConverterFactory {
 
             return null;
         }
+
+        private String convertToString(Object unconvertedValue) {
+            String textValue = null;
+
+            if (unconvertedValue instanceof Calendar) {
+
+                Calendar cal = (Calendar) unconvertedValue;
+                textValue = DatatypeConverterImpl.getInstance().printDateTime(cal);
+
+            } else if (unconvertedValue instanceof java.util.Date) {
+
+                Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+                cal.setTimeInMillis(((java.util.Date) unconvertedValue).getTime());
+                DatatypeConverterImpl converter = DatatypeConverterImpl.getInstance();
+
+                if (unconvertedValue instanceof java.sql.Date) {
+                    textValue = converter.printDate(cal);
+                } else if (unconvertedValue instanceof java.sql.Time) {
+                    textValue = converter.printTime(cal);
+                } else {
+                    // java.util.Date and java.sql.TimeStamp
+                    textValue = converter.printDateTime(cal);
+                }
+            }
+
+            return textValue;
+        }
     }
+
 }

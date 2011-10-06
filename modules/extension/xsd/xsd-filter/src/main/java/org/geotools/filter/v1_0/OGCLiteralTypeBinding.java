@@ -16,16 +16,22 @@
  */
 package org.geotools.filter.v1_0;
 
-import org.picocontainer.MutablePicoContainer;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import java.util.Calendar;
+import java.util.TimeZone;
+
 import javax.xml.namespace.QName;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Literal;
+
+import org.geotools.util.Converters;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 import org.geotools.xml.Text;
+import org.geotools.xml.impl.DatatypeConverterImpl;
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.Literal;
+import org.picocontainer.MutablePicoContainer;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 
 /**
@@ -123,11 +129,13 @@ public class OGCLiteralTypeBinding extends AbstractComplexBinding {
 
     public Element encode(Object object, Document document, Element value)
         throws Exception {
-        //TODO: use converter api to sreialize?
         Literal literal = (Literal) object;
 
-        if (literal.getValue() != null) {
-            value.appendChild(document.createTextNode(literal.getValue().toString()));
+        Object unconvertedValue = literal.getValue();
+        if (unconvertedValue != null) {
+            // use converter api to sreialize
+            String textValue = Converters.convert(unconvertedValue, String.class);
+            value.appendChild(document.createTextNode(textValue));
         }
 
         return value;

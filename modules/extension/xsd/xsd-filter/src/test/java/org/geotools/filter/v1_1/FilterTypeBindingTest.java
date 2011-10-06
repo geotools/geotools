@@ -16,13 +16,13 @@
  */
 package org.geotools.filter.v1_1;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import org.geotools.xml.Binding;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.spatial.Intersects;
-import org.geotools.xml.Binding;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 
 /**
@@ -82,5 +82,35 @@ public class FilterTypeBindingTest extends FilterTestSupport {
 
         assertEquals("ogc:Filter", doc.getDocumentElement().getNodeName());
         assertEquals(1, doc.getElementsByTagNameNS(OGC.NAMESPACE, "And").getLength());
+    }
+    
+    public void testEncodeDateTimeLiterals() throws Exception {
+        Object literal;
+        String expected;
+
+        literal = new java.util.Date(1000000);
+        expected = "1970-01-01T00:16:40Z";
+        testEncodeLiteral(literal, expected);
+        
+        literal = new java.sql.Timestamp(1000000);
+        expected = "1970-01-01T00:16:40Z";
+        testEncodeLiteral(literal, expected);
+
+        literal = new java.sql.Date(1000000);
+        expected = "1970-01-01Z";
+        testEncodeLiteral(literal, expected);
+
+        literal = new java.sql.Time(1000000);
+        expected = "00:16:40Z";
+        testEncodeLiteral(literal, expected);
+    }
+
+    private void testEncodeLiteral(final Object literal, final String expected) throws Exception{
+        Document doc = encode(FilterMockData.literal(literal), OGC.Literal);
+
+        assertEquals("ogc:Literal", doc.getDocumentElement().getNodeName());
+        
+        String actual = doc.getDocumentElement().getTextContent();
+        assertEquals(expected, actual);
     }
 }

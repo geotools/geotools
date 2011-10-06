@@ -64,10 +64,10 @@ public class XmlConverterFactory implements ConverterFactory {
     static class XmlConverter implements Converter {
         public Object convert(Object source, Class target)
             throws Exception {
-            if (String.class.equals(source.getClass())) {
-                return convertFromString((String) source, target);
+            if (String.class.equals(target)) {
+                return convertToString(source);
             }
-            return convertToString(source);
+            return convertFromString((String) source, target);
         }
         
         private Object convertFromString(final String source, final Class<?> target) {

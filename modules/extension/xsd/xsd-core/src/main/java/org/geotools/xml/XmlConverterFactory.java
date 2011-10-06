@@ -64,7 +64,7 @@ public class XmlConverterFactory implements ConverterFactory {
     static class XmlConverter implements Converter {
         public Object convert(Object source, Class target)
             throws Exception {
-            if (String.class.equals(source)) {
+            if (String.class.equals(source.getClass())) {
                 return convertFromString((String) source, target);
             }
             return convertToString(source);

@@ -18,6 +18,7 @@ package org.geotools.wfs.bindings;
 
 import javax.xml.namespace.QName;
 
+import net.opengis.wfs.TransactionType;
 import net.opengis.wfs.WfsFactory;
 
 import org.geotools.wfs.WFS;
@@ -111,6 +112,7 @@ import org.geotools.xml.Node;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class TransactionTypeBinding extends AbstractComplexEMFBinding {
@@ -131,8 +133,8 @@ public class TransactionTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
-    public Class getType() {
-        return null;
+    public Class<?> getType() {
+        return TransactionType.class;
     }
 
     /**

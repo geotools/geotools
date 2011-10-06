@@ -16,15 +16,22 @@
  */
 package org.geotools.filter.v1_0;
 
-import org.picocontainer.MutablePicoContainer;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import java.util.Calendar;
+import java.util.TimeZone;
+
 import javax.xml.namespace.QName;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Literal;
+
+import org.geotools.util.Converters;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.geotools.xml.Text;
+import org.geotools.xml.impl.DatatypeConverterImpl;
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.Literal;
+import org.picocontainer.MutablePicoContainer;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 
 /**
@@ -48,6 +55,7 @@ import org.geotools.xml.Node;
  * </p>
  *
  * @generated
+ *
  *
  *
  * @source $URL$
@@ -108,7 +116,11 @@ public class OGCLiteralTypeBinding extends AbstractComplexBinding {
 
         //1. has child elements
         if (!node.getChildren().isEmpty()) {
-            return factory.literal(node.getChildValue(0));
+            Object childValue = node.getChildValue(0);
+            if(childValue instanceof Text){
+                childValue = ((Text)childValue).getValue();
+            }
+            return factory.literal(childValue);
         }
 
         //2. no child elements, just return the text if any
@@ -117,11 +129,13 @@ public class OGCLiteralTypeBinding extends AbstractComplexBinding {
 
     public Element encode(Object object, Document document, Element value)
         throws Exception {
-        //TODO: use converter api to sreialize?
         Literal literal = (Literal) object;
 
-        if (literal.getValue() != null) {
-            value.appendChild(document.createTextNode(literal.getValue().toString()));
+        Object unconvertedValue = literal.getValue();
+        if (unconvertedValue != null) {
+            // use converter api to sreialize
+            String textValue = Converters.convert(unconvertedValue, String.class);
+            value.appendChild(document.createTextNode(textValue));
         }
 
         return value;

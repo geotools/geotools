@@ -82,7 +82,7 @@ public abstract class XSD {
     /**
      * dependencies
      */
-    private Set /*<XSD>*/ dependencies;
+    private volatile Set<XSD> dependencies;
 
     protected XSD() {
     }
@@ -157,13 +157,14 @@ public abstract class XSD {
         if (dependencies == null) {
             synchronized (this) {
                 if (dependencies == null) {
-                    dependencies = new LinkedHashSet();
+                    Set<XSD> newDeps = new LinkedHashSet();
 
                     //bootstrap, every xsd depends on XS
-                    dependencies.add(XS.getInstance());
+                    newDeps.add(XS.getInstance());
 
                     //call subclass hook
-                    addDependencies(dependencies);
+                    addDependencies(newDeps);
+                    dependencies = newDeps;
                 }
             }
         }

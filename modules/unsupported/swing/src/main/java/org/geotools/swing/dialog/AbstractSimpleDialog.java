@@ -171,11 +171,11 @@ public abstract class AbstractSimpleDialog extends JDialog {
     }
 
     /**
-     * Creates teh OK and Cancel buttons on a panel.
+     * Creates the OK and Cancel buttons on a panel.
      *
      * @return the button panel
      */
-    private JPanel createButtonPanel() {
+    protected JPanel createButtonPanel() {
         JPanel panel = new JPanel(new MigLayout());
 
         JButton okBtn = new JButton("OK");

@@ -23,6 +23,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import org.geotools.data.Base64;
 import org.geotools.data.DataSourceException;
 
 import com.vividsolutions.jts.geom.Geometry;

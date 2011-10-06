@@ -65,7 +65,7 @@ public class MultithreadedHttpClient implements HTTPClient {
         client = new HttpClient(connectionManager);
     }
 
-    @Override
+    // @Override
     public HTTPResponse post(final URL url, final InputStream postContent,
             final String postContentType) throws IOException {
 
@@ -87,7 +87,7 @@ public class MultithreadedHttpClient implements HTTPClient {
         return new HttpMethodResponse(postMethod);
     }
 
-    @Override
+    // @Override
     public HTTPResponse get(final URL url) throws IOException {
 
         GetMethod getMethod = new GetMethod(url.toExternalForm());
@@ -102,23 +102,23 @@ public class MultithreadedHttpClient implements HTTPClient {
         return new HttpMethodResponse(getMethod);
     }
 
-    @Override
+    // @Override
     public String getUser() {
         return user;
     }
 
-    @Override
+    // @Override
     public void setUser(String user) {
         this.user = user;
         resetCredentials();
     }
 
-    @Override
+    // @Override
     public String getPassword() {
         return password;
     }
 
-    @Override
+    // @Override
     public void setPassword(String password) {
         this.password = password;
         resetCredentials();
@@ -137,22 +137,22 @@ public class MultithreadedHttpClient implements HTTPClient {
         }
     }
 
-    @Override
+    // @Override
     public int getConnectTimeout() {
         return connectionManager.getParams().getConnectionTimeout() / 1000;
     }
 
-    @Override
+    // @Override
     public void setConnectTimeout(int connectTimeout) {
         connectionManager.getParams().setConnectionTimeout(connectTimeout * 1000);
     }
 
-    @Override
+    // @Override
     public int getReadTimeout() {
         return connectionManager.getParams().getSoTimeout() / 1000;
     }
 
-    @Override
+    // @Override
     public void setReadTimeout(int readTimeout) {
         connectionManager.getParams().setSoTimeout(readTimeout * 1000);
     }
@@ -176,7 +176,7 @@ public class MultithreadedHttpClient implements HTTPClient {
             this.methodResponse = methodResponse;
         }
 
-        @Override
+        // @Override
         public void dispose() {
             if (responseBodyAsStream != null) {
                 try {
@@ -191,18 +191,18 @@ public class MultithreadedHttpClient implements HTTPClient {
             }
         }
 
-        @Override
+        // @Override
         public String getContentType() {
             return getResponseHeader("Content-Type");
         }
 
-        @Override
+        // @Override
         public String getResponseHeader(final String headerName) {
             Header responseHeader = methodResponse.getResponseHeader(headerName);
             return responseHeader == null ? null : responseHeader.getValue();
         }
 
-        @Override
+        // @Override
         public InputStream getResponseStream() throws IOException {
             if (responseBodyAsStream == null) {
                 responseBodyAsStream = methodResponse.getResponseBodyAsStream();

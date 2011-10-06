@@ -44,42 +44,42 @@ public class SimpleHttpClient implements HTTPClient {
 
     private int readTimeout = DEFAULT_TIMEOUT;
 
-    @Override
+    // @Override
     public String getUser() {
         return user;
     }
 
-    @Override
+    // @Override
     public void setUser(String user) {
         this.user = user;
     }
 
-    @Override
+    // @Override
     public String getPassword() {
         return password;
     }
 
-    @Override
+    // @Override
     public void setPassword(String password) {
         this.password = password;
     }
 
-    @Override
+    // @Override
     public int getConnectTimeout() {
         return connectTimeout;
     }
 
-    @Override
+    // @Override
     public void setConnectTimeout(int connectTimeout) {
         this.connectTimeout = connectTimeout;
     }
 
-    @Override
+    // @Override
     public int getReadTimeout() {
         return readTimeout;
     }
 
-    @Override
+    // @Override
     public void setReadTimeout(int readTimeout) {
         this.readTimeout = readTimeout;
     }
@@ -176,13 +176,13 @@ public class SimpleHttpClient implements HTTPClient {
         /**
          * @see org.geotools.data.ows.HTTPResponse#getContentType()
          */
-        @Override
+        // @Override
         public String getContentType() {
             return connection.getContentType();
         }
 
 
-        @Override
+        // @Override
         public String getResponseHeader(String headerName) {
             return connection.getHeaderField(headerName);
         }

@@ -40,18 +40,23 @@ import org.geotools.factory.GeoTools;
 
 /**
  * An 'About' dialog which displays information about the host environment,
- * software licenses pertaining to GeoTools (not implemented yet) and, optionally, 
- * the application.
+ * software licenses pertaining to GeoTools (not implemented yet) and, if provided, 
+ * summary details about your application.
  * <p>
- * Environment information consists of:
+ * Environment information is obtained from {@linkplain GeoTools#getEnvironmentInfo()}
+ * and consists of:
  * <ul>
  * <li>GeoTools version</li>
  * <li>Java version</li>
  * <li>Host operating system and version</li>
- * <li>Listing of GeoTools jars on the classpath</li>
  * </ul>
  * 
- * To have the dialog display application details use the full constructor:
+ * The GeoTools jar listing is obtained from {@linkplain GeoTools#getGeoToolsJarInfo()}
+ * and consists of GeoTools jars (of the active version) on the application's class path.
+ * <p>
+ * 
+ * To have the dialog display details of your own application, you pass them as a String
+ * to the dialog constructor as in this example:
  * <pre><code>
  * final String appInfo = String.format(
  *           "GeoFoo: Map your foos in real time %nVersion 0.0.1");
@@ -60,9 +65,13 @@ import org.geotools.factory.GeoTools;
  *     &#64Override
  *     public void run() {
  *         AboutDialog dialog = new AboutDialog("About", appInfo);
+ *         DialogUtils.showCentred(dialog);
  *     }
  * });
  * </code></pre>
+ * 
+ * When no application details are provided the 'Application' category will not be
+ * shown in the dialog's category list.
  * 
  * @author Michael Bedward
  * @since 8.0

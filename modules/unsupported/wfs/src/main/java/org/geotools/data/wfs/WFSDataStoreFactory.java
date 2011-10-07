@@ -309,8 +309,6 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
      */
     public static final WFSFactoryParam<Integer> MAXFEATURES = parametersInfo[9];
 
-    protected Map<Map, WFSDataStore> perParameterSetDataStoreCache = new HashMap();
-
     /**
      * Requests the WFS Capabilities document from the {@link WFSDataStoreFactory#URL url} parameter
      * in {@code params} and returns a {@link WFSDataStore} according to the version of the
@@ -325,9 +323,6 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
      * @see org.geotools.data.DataStoreFactorySpi#createDataStore(java.util.Map)
      */
     public WFSDataStore createDataStore(final Map params) throws IOException {
-        if (perParameterSetDataStoreCache.containsKey(params)) {
-            return perParameterSetDataStoreCache.get(params);
-        }
         final URL getCapabilitiesRequest = (URL) URL.lookUp(params);
         final Boolean protocol = (Boolean) PROTOCOL.lookUp(params);
         final String user = (String) USERNAME.lookUp(params);
@@ -386,7 +381,6 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
             dataStore.setPreferPostOverGet(protocol);
         }
 
-        perParameterSetDataStoreCache.put(new HashMap(params), dataStore);
         return dataStore;
     }
 

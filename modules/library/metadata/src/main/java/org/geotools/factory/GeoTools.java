@@ -17,10 +17,15 @@
 package org.geotools.factory;
 
 import java.awt.RenderingHints;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -29,8 +34,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
 
-import org.geotools.resources.Classes;
 import org.geotools.resources.Arguments;
+import org.geotools.resources.Classes;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.util.logging.LoggerFactory;
@@ -215,6 +220,90 @@ public final class GeoTools {
                 "property", property));
     }
 
+    /**
+     * Returns summary information about GeoTools and the current environment. 
+     * Calls {@linkplain #getEnvironmentInfo()} followed by {@linkplain #getGeoToolsJarInfo()}
+     * and concatenates their results.
+     * 
+     * @return requested information as a string
+     */
+    public static String getAboutInfo() {
+        final StringBuilder sb = new StringBuilder();
+        
+        sb.append(getEnvironmentInfo());
+        sb.append(String.format("%n"));
+        sb.append(getGeoToolsJarInfo());
+        
+        return sb.toString();
+    }
+    
+    /**
+     * Returns summary information about the GeoTools version and the host environment.
+     * 
+     * @return information as a String
+     */
+    public static String getEnvironmentInfo() {
+        final String newline = String.format("%n");
+        final String indent = "    ";
+        
+        final StringBuilder sb = new StringBuilder();
+        sb.append("GeoTools version ").append(getVersion().toString());
+        if (sb.toString().endsWith("SNAPSHOT")) {
+            sb.append(" (built from r").append(getBuildRevision().toString()).append(")");
+        }
+
+        sb.append(newline).append("Java version: ");
+        sb.append(System.getProperty("java.version"));
+
+        sb.append(newline).append("Operating system: ");
+        sb.append(System.getProperty("os.name")).append(' ').append(System.getProperty("os.version"));
+        
+        return sb.toString();
+    }
+
+    /**
+     * Returns the names of the GeoTools jars on the classpath.
+     * 
+     * @return list of jars as a formatted string
+     */
+    public static String getGeoToolsJarInfo() {
+        final StringBuilder sb = new StringBuilder();
+        final String newline = String.format("%n");
+        final String indent = "    ";
+        
+        sb.append("GeoTools jars on classpath:");
+        for (String jarName : getGeoToolsJars()) {
+            sb.append(newline).append(indent).append(jarName);
+        }
+
+        return sb.toString();
+    }
+
+    /**
+     * A helper method for {@linkplain #getGeoToolsJarInfo} which scans the 
+     * classpath looking for GeoTools jars matching the current version.
+     * 
+     * @return a list of jar names 
+     */
+    private static List<String> getGeoToolsJars() {
+        final Pattern pattern = Pattern.compile(".*\\/" + getVersion() + "\\/(gt-.*jar$)");
+        final List<String> jarNames = new ArrayList<String>();
+        
+        String pathSep = System.getProperty("path.separator");
+        String classpath = System.getProperty("java.class.path");
+        StringTokenizer st = new StringTokenizer(classpath, pathSep);
+        while (st.hasMoreTokens()) {
+            String path = st.nextToken();
+            Matcher matcher = pattern.matcher(path);
+            if (matcher.find()) {
+                jarNames.add(matcher.group(1));
+            }
+        }
+        
+        Collections.sort(jarNames);
+        return jarNames;
+    }
+    
     /**
      * Reports back the version of GeoTools being used.
      *

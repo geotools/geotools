@@ -19,6 +19,7 @@ package org.geotools.data.wfs.protocol.http;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -79,6 +80,13 @@ public abstract class AbstractHttpProtocol implements HTTPProtocol {
         this.authUsername = username;
         this.authPassword = password;
     }
+    
+    /**
+     * @see org.geotools.data.wfs.protocol.http.HTTPProtocol#isAuthenticating()
+     */
+    public boolean isAuthenticating(){
+        return authUsername != null && authPassword != null;
+    }
 
     /**
      * @see HTTPProtocol#
@@ -119,6 +127,11 @@ public abstract class AbstractHttpProtocol implements HTTPProtocol {
                 } else {
                     key = rawUrlKvp;
                     value = null;
+                }
+                try {
+                    value = URLDecoder.decode(value, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    throw new RuntimeException(e);
                 }
                 if (userParams.containsKey(key)) {
                     LOGGER.fine("user supplied value for query string argument " + key

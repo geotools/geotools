@@ -25,8 +25,10 @@ import javax.xml.namespace.QName;
 
 import org.geotools.data.wfs.protocol.http.HttpMethod;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.capability.FilterCapabilities;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Facade interface to interact with a WFS instance.
@@ -301,4 +303,7 @@ public interface WFSProtocol {
     public String getDefaultOutputFormat(WFSOperationType get_feature);
 
     public Filter[] splitFilters(Filter filter);
+
+    public SimpleFeatureType issueDescribeFeatureTypeGET(String prefixedTypeName,
+            CoordinateReferenceSystem crs) throws IOException;
 }

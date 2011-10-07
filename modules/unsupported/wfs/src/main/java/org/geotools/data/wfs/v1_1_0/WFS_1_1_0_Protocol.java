@@ -20,6 +20,8 @@ import static org.geotools.data.wfs.protocol.http.HttpMethod.GET;
 import static org.geotools.data.wfs.protocol.http.HttpMethod.POST;
 import static org.geotools.data.wfs.protocol.wfs.WFSOperationType.DESCRIBE_FEATURETYPE;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -32,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -64,6 +67,7 @@ import net.opengis.wfs.OutputFormatListType;
 import net.opengis.wfs.TransactionType;
 import net.opengis.wfs.WFSCapabilitiesType;
 
+import org.apache.commons.io.IOUtils;
 import org.eclipse.emf.ecore.EObject;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.wfs.protocol.http.HTTPProtocol;
@@ -76,16 +80,28 @@ import org.geotools.data.wfs.protocol.wfs.WFSOperationType;
 import org.geotools.data.wfs.protocol.wfs.WFSProtocol;
 import org.geotools.data.wfs.protocol.wfs.WFSResponse;
 import org.geotools.data.wfs.v1_1_0.WFSStrategy.RequestComponents;
+import org.geotools.data.wfs.v1_1_0.parsers.EmfAppSchemaParser;
 import org.geotools.filter.Capabilities;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.gml3.smil.SMIL20;
+import org.geotools.gml3.smil.SMIL20LANG;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.logging.Logging;
 import org.geotools.wfs.WFS;
+import org.geotools.wfs.v1_1.WFSConfiguration;
+import org.geotools.xlink.XLINK;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.Encoder;
 import org.geotools.xml.Parser;
+import org.geotools.xml.SchemaLocationResolver;
+import org.geotools.xml.SchemaLocator;
+import org.geotools.xml.Schemas;
+import org.geotools.xml.XSD;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.capability.FilterCapabilities;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.picocontainer.MutablePicoContainer;
 import org.xml.sax.SAXException;
 
 /**
@@ -722,4 +738,47 @@ public class WFS_1_1_0_Protocol implements WFSProtocol {
         return strategy.splitFilters(filterCaps, filter);
     }
 
+    /**
+     * @see org.geotools.data.wfs.protocol.wfs.WFSProtocol#issueDescribeFeatureTypeGET(java.lang.String, org.opengis.referencing.crs.CoordinateReferenceSystem)
+     */
+    //@Override
+    public SimpleFeatureType issueDescribeFeatureTypeGET(final String prefixedTypeName,
+            CoordinateReferenceSystem crs) throws IOException {
+
+        File tmpFile = null;
+        final URL describeUrl;
+        {
+            if(http.isAuthenticating()){
+                WFSResponse wfsResponse = describeFeatureTypeGET(prefixedTypeName, null);
+                tmpFile = File.createTempFile("describeft", ".xsd");
+                OutputStream output = new FileOutputStream(tmpFile);
+                InputStream response = wfsResponse.getInputStream();
+                try{
+                    IOUtils.copy(response, output);
+                }finally{
+                    output.flush();
+                    output.close();
+                    response.close();
+                }
+                describeUrl = tmpFile.toURI().toURL();
+            }else{
+                describeUrl = getDescribeFeatureTypeURLGet(prefixedTypeName);
+            }
+        }
+        
+        final Configuration wfsConfiguration = strategy.getWfsConfiguration();
+        final QName featureDescriptorName = getFeatureTypeName(prefixedTypeName);
+
+        
+        SimpleFeatureType featureType;
+        try {
+            featureType = EmfAppSchemaParser.parseSimpleFeatureType(wfsConfiguration,
+                    featureDescriptorName, describeUrl, crs);
+        } finally {
+            if (tmpFile != null) {
+                tmpFile.delete();
+            }
+        }
+        return featureType;
+    }
 }

@@ -172,7 +172,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
     }
 
     /** Access with {@link WFSDataStoreFactory#getParametersInfo() */
-    private static final WFSFactoryParam<?>[] parametersInfo = new WFSFactoryParam[12];
+    private static final WFSFactoryParam<?>[] parametersInfo = new WFSFactoryParam[13];
 
     /**
      * Mandatory DataStore parameter indicating the URL for the WFS GetCapabilities document.
@@ -351,6 +351,17 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
     }
 
     /**
+     * Optional {@code String} namespace URI to override the originial namespaces
+     */
+    public static final WFSFactoryParam<String> NAMESPACE;
+    static {
+        String name = "namespace";
+        String description = "Override the original WFS type name namespaces";
+        parametersInfo[12] = NAMESPACE = new WFSFactoryParam<String>(name, String.class,
+                description, null);
+    }
+
+    /**
      * Requests the WFS Capabilities document from the {@link WFSDataStoreFactory#URL url} parameter
      * in {@code params} and returns a {@link WFSDataStore} according to the version of the
      * GetCapabilities document returned.
@@ -378,7 +389,8 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
         final Charset defaultEncoding = Charset.forName(encoding);
         final String wfsStrategy = (String) WFS_STRATEGY.lookUp(params);
         final Integer filterCompliance = (Integer) FILTER_COMPLIANCE.lookUp(params);
-
+        final String namespaceOverride = (String) NAMESPACE.lookUp(params);
+        
         if (((user == null) && (pass != null)) || ((pass == null) && (user != null))) {
             throw new IOException(
                     "Cannot define only one of USERNAME or PASSWORD, must define both or neither");
@@ -424,6 +436,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
             dataStore.setMaxFeatures(maxFeatures);
             dataStore.setPreferPostOverGet(protocol);
         }
+        dataStore.setNamespaceOverride(namespaceOverride);
 
         return dataStore;
     }

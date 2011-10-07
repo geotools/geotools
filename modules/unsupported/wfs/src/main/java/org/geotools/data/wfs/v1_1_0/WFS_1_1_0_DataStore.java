@@ -119,6 +119,8 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
 
     private boolean preferPostOverGet = false;
 
+    private String namespaceOverride;
+
     /**
      * The WFS capabilities document.
      * 
@@ -133,6 +135,13 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
         maxFeaturesHardLimit = Integer.valueOf(0); // not set
     }
 
+    /**
+     * @see org.geotools.data.wfs.WFSDataStore#setNamespaceOverride(java.lang.String)
+     */
+    public void setNamespaceOverride(String namespaceOverride){
+        this.namespaceOverride = namespaceOverride;
+    }
+    
     /**
      * @see WFSDataStore#setMaxFeatures(Integer)
      */
@@ -214,7 +223,7 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
             SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
             builder.init(featureType);
             builder.setName(prefixedTypeName);
-            builder.setNamespaceURI(featureDescriptorName.getNamespaceURI());
+            builder.setNamespaceURI(namespaceOverride);
             GeometryDescriptor defaultGeometry = featureType.getGeometryDescriptor();
             if (defaultGeometry != null) {
                 builder.setDefaultGeometry(defaultGeometry.getLocalName());

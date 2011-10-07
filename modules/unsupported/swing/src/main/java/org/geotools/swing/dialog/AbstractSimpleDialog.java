@@ -103,12 +103,7 @@ public abstract class AbstractSimpleDialog extends JDialog {
     }
 
     private void commonInit(boolean modal, boolean resizable) {
-        if (modal) {
-            setModalityType(ModalityType.APPLICATION_MODAL);
-        } else {
-            setModalityType(ModalityType.MODELESS);
-        }
-
+        setModal(modal);
         setResizable(resizable);
     }
 

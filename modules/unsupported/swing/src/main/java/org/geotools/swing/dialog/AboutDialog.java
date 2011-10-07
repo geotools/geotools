@@ -62,7 +62,6 @@ import org.geotools.factory.GeoTools;
  *           "GeoFoo: Map your foos in real time %nVersion 0.0.1");
  *
  * SwingUtilities.invokeLater(new Runnable() {
- *     &#64Override
  *     public void run() {
  *         AboutDialog dialog = new AboutDialog("About", appInfo);
  *         DialogUtils.showCentred(dialog);
@@ -119,12 +118,10 @@ public class AboutDialog extends AbstractSimpleDialog {
      * Model for the dialog list control which displays categories.
      */
     private class CategoryListModel extends AbstractListModel {
-        @Override
         public int getSize() {
             return Category.values().length - (hasApplicationInfo ? 0 : 1);
         }
 
-        @Override
         public Object getElementAt(int index) {
             return Category.getByIndex(index, hasApplicationInfo).toString();
         }

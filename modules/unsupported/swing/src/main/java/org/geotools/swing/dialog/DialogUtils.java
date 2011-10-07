@@ -63,7 +63,6 @@ public class DialogUtils {
             
         } else {
             EventQueue.invokeLater(new Runnable() {
-                @Override
                 public void run() {
                     doShowCentred(parent, dialog);
                 }

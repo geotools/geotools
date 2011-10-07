@@ -165,7 +165,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
         }
     }
 
-    private static final WFSFactoryParam[] parametersInfo = new WFSFactoryParam[10];
+    private static final WFSFactoryParam[] parametersInfo = new WFSFactoryParam[11];
     static {
         String name;
         Class clazz;
@@ -231,6 +231,11 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
         description = "Positive integer used as a hard limit for the amount of Features to retrieve"
                 + " for each FeatureType. A value of zero or not providing this parameter means no limit.";
         parametersInfo[9] = new WFSFactoryParam(name, clazz, description, Integer.valueOf(0));
+        
+        name = "namespace";
+        description = "Override the original WFS type name namespaces";
+        parametersInfo[10] = new WFSFactoryParam<String>(name, String.class, description, null);
+        
     }
 
     /**
@@ -310,6 +315,11 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
     public static final WFSFactoryParam<Integer> MAXFEATURES = parametersInfo[9];
 
     /**
+     * Optional {@code String} namespace URI to override the originial namespaces
+     */
+    public static final WFSFactoryParam<String> NAMESPACE = parametersInfo[10];
+
+    /**
      * Requests the WFS Capabilities document from the {@link WFSDataStoreFactory#URL url} parameter
      * in {@code params} and returns a {@link WFSDataStore} according to the version of the
      * GetCapabilities document returned.
@@ -334,6 +344,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
         final String encoding = (String) ENCODING.lookUp(params);
         final Integer maxFeatures = (Integer) MAXFEATURES.lookUp(params);
         final Charset defaultEncoding = Charset.forName(encoding);
+        final String namespaceOverride = (String) NAMESPACE.lookUp(params);
 
         if (((user == null) && (pass != null)) || ((pass == null) && (user != null))) {
             throw new IOException(
@@ -380,6 +391,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
             dataStore.setMaxFeatures(maxFeatures);
             dataStore.setPreferPostOverGet(protocol);
         }
+        dataStore.setNamespaceOverride(namespaceOverride);
 
         return dataStore;
     }

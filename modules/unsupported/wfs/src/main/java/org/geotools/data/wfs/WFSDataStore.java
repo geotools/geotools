@@ -88,4 +88,6 @@ public interface WFSDataStore extends DataStore {
     public void setPreferPostOverGet(Boolean booleanValue);
 
     public boolean isPreferPostOverGet();
+    
+    public void setNamespaceOverride(String namespaceOverride);
 }

@@ -136,6 +136,8 @@ public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataSto
 
     private Map xmlSchemaCache = new HashMap();
 
+    private String namespaceOverride;
+
     /**
      * Construct <code>WFSDataStore</code>.
      * 
@@ -335,6 +337,7 @@ public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataSto
             SimpleFeatureTypeBuilder build = new SimpleFeatureTypeBuilder();
             build.init(featureType);
             build.setName(ftName);
+            build.setNamespaceURI(namespaceOverride);
 
             featureType = build.buildFeatureType();
             // t = FeatureTypeBuilder.newFeatureType(
@@ -1040,5 +1043,12 @@ public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataSto
     public void setPreferPostOverGet(Boolean booleanValue) {
         throw new UnsupportedOperationException(
                 "Not used, this class needs to be adapted to the new architecture in the wfs.v_1_1_0 package");
+    }
+
+    /**
+     * @see org.geotools.data.wfs.WFSDataStore#setNamespaceOverride(java.lang.String)
+     */
+    public void setNamespaceOverride(String namespaceOverride) {
+        this.namespaceOverride = namespaceOverride;
     }
 }

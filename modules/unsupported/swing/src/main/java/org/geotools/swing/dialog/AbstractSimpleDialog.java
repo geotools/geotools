@@ -35,7 +35,7 @@ import net.miginfocom.swing.MigLayout;
  * and {@linkplain #onOK()} methods.
  *
  * @author Michael Bedward
- * @since 8.0
+ * @since 2.7
  *
  * @source $URL$
  * @version $Id$

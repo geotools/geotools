@@ -74,7 +74,7 @@ import org.geotools.factory.GeoTools;
  * shown in the dialog's category list.
  * 
  * @author Michael Bedward
- * @since 8.0
+ * @since 2.7
  * @source $URL$
  * @version $Id$
  */

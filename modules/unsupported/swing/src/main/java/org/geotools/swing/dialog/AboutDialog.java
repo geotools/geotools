@@ -25,6 +25,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.AbstractListModel;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -32,7 +33,6 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -334,16 +334,4 @@ public class AboutDialog extends AbstractSimpleDialog {
         clip.setContents(sel, sel);
     }
 
-    private void foo() {
-        final String appInfo = String.format(
-                  "GeoFoo: foo mapping in real time %n"
-                + "Version 0.0.1");
-
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                AboutDialog dialog = new AboutDialog("About", appInfo);
-            }
-        });
-    }
 }

@@ -175,7 +175,6 @@ public abstract class AbstractSimpleDialog extends JDialog {
 
         JButton okBtn = new JButton("OK");
         okBtn.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 onOK();
             }
@@ -184,7 +183,6 @@ public abstract class AbstractSimpleDialog extends JDialog {
 
         JButton cancelBtn = new JButton("Cancel");
         cancelBtn.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 onCancel();
             }

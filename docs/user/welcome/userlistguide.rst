@@ -72,8 +72,8 @@ When posting about a problem with your application or a possible bug in GeoTools
 .. Tip::
    If you using a SNAPSHOT version of GeoTools you can call the static
    **GeoTools.getAboutInfo()** method to get summary information about your system and GeoTools
-   installation which you can include in your posting to the list. With GeoTools version 8-SNAPSHOT
-   you can also use the **AboutDialog** class in the gt-swing module to get this information.
+   installation which you can include in your posting to the list. You can also use the
+   **AboutDialog** class in the gt-swing module to get this information.
 
 Take a little, give a little
 ----------------------------

@@ -82,3 +82,9 @@ The user list is there to help you but it works best if you help it too. Give ba
 project and community by answering questions or pointing people towards other useful sources of
 information when you can. We will like you a lot.
 
+Further information
+-------------------
+
+We recommend `How to ask questions the smart way <http://catb.org/~esr/faqs/smart-questions.html>`_
+for more tips on how to get the most out of your user list membership.
+

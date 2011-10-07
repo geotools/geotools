@@ -10,6 +10,7 @@ Welcome to the Geotools Users Guide. This space serves as a reference to the Geo
    geotools
    license
    support
+   userlistguide
    architecture
    use
    standards

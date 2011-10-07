@@ -45,6 +45,8 @@ Here are some forums we are aware of at this time:
 * http://gis.stackexchange.com/questions/tagged/geotools
 * http://stackoverflow.com/questions/tagged/geotools
 
+.. _commercial-support:
+
 Commercial Support
 ------------------
 

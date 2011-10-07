@@ -136,7 +136,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
          * @param type
          * @param description
          */
-        public WFSFactoryParam(String key, Class type, String description) {
+        public WFSFactoryParam(String key, Class<T> type, String description) {
             super(key, type, description, true);
         }
 
@@ -148,13 +148,14 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
          * @param description
          * @param required
          */
-        public WFSFactoryParam(String key, Class type, String description, T defaultValue) {
-            super(key, type, description, false);
+        public WFSFactoryParam(String key, Class<T> type, String description, T defaultValue) {
+            super(key, type, description, false, defaultValue);
             this.defaultValue = defaultValue;
         }
 
-        public WFSFactoryParam(String key, Class type, String description, T defaultValue, Object... metadata) {
-            super(key, type, description, false, metadata);
+        public WFSFactoryParam(String key, Class<T> type, String description, T defaultValue,
+                Object... metadata) {
+            super(key, type, description, false, defaultValue, metadata);
             this.defaultValue = defaultValue;
         }
         

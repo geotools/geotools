@@ -33,7 +33,6 @@ import org.fest.swing.fixture.FrameFixture;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
@@ -47,7 +46,6 @@ import static org.junit.Assert.*;
  * @source $URL$
  * @version $Id$
  */
-@Ignore
 @RunWith(GraphicsTestRunner.class)
 public class JMapPaneGraphicsTest extends JMapPaneGraphicsTestBase {
     
@@ -99,7 +97,7 @@ public class JMapPaneGraphicsTest extends JMapPaneGraphicsTestBase {
     
     @Test
     public void moveImageDown() {
-        // remeber: moving image up means positive dy
+        // remeber: moving image down means positive dy
         assertMoveImage(0, 10);
     }
     
@@ -116,12 +114,15 @@ public class JMapPaneGraphicsTest extends JMapPaneGraphicsTestBase {
     private void assertMoveImage(int dx, int dy) {
         MapContent mapContent = createMapContent(createMatchedBounds());
         mapPane.addMapPaneListener(listener);
-        
-        // Setting the map content spawns two display area events
-        // (need to work out why)
-        listener.setExpected(MapPaneEvent.Type.DISPLAY_AREA_CHANGED, 2);
+
+        // Wait for the display area and new map content events to be 
+        // processed
+        listener.setExpected(MapPaneEvent.Type.DISPLAY_AREA_CHANGED);
+        listener.setExpected(MapPaneEvent.Type.NEW_MAPCONTENT);
         mapPane.setMapContent(mapContent);
+        
         assertTrue(listener.await(MapPaneEvent.Type.DISPLAY_AREA_CHANGED, WAIT_TIMEOUT));
+        assertTrue(listener.await(MapPaneEvent.Type.NEW_MAPCONTENT, WAIT_TIMEOUT));
         ReferencedEnvelope startEnv = mapContent.getViewport().getBounds();
         
         listener.setExpected(MapPaneEvent.Type.DISPLAY_AREA_CHANGED);

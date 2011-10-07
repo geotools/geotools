@@ -74,6 +74,8 @@ public interface HTTPProtocol {
      * @param password
      */
     public void setAuth(String username, String password);
+    
+    public boolean isAuthenticating();
 
     /**
      * Sets the request timeout in milliseconds.

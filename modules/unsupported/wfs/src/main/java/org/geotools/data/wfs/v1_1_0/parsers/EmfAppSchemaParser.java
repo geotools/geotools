@@ -85,10 +85,10 @@ public class EmfAppSchemaParser {
 
     private static final Logger LOGGER = Logging.getLogger("org.geotools.data.wfs");
 
-    private static final WFSConfiguration wfsConfiguration = new WFSConfiguration();
 
-    public static SimpleFeatureType parseSimpleFeatureType( final QName featureName,
-            final URL schemaLocation, final CoordinateReferenceSystem crs ) throws IOException {
+    public static SimpleFeatureType parseSimpleFeatureType(final QName featureName,
+            final URL schemaLocation, final CoordinateReferenceSystem crs,
+            final Configuration wfsConfiguration) throws IOException {
         return parseSimpleFeatureType(wfsConfiguration, featureName, schemaLocation, crs);
     }
 
@@ -274,7 +274,7 @@ public class EmfAppSchemaParser {
      * @param schemaLocation
      * @return
      */
-    private static XSDElementDeclaration parseFeatureType( final QName featureTypeName,
+    private static XSDElementDeclaration parseFeatureType(final QName featureTypeName,
             final URL schemaLocation ) throws DataSourceException {
         ApplicationSchemaConfiguration configuration;
         {
@@ -292,6 +292,9 @@ public class EmfAppSchemaParser {
         XSDElementDeclaration elementDeclaration;
         elementDeclaration = schemaIndex.getElementDeclaration(featureTypeName);
         schemaIndex.destroy();
+        if (elementDeclaration == null) {
+            throw new DataSourceException("No XSDElementDeclaration found for " + featureTypeName);
+        }
         return elementDeclaration;
     }
 }

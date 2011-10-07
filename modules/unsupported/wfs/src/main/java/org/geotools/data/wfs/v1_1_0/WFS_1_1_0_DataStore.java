@@ -70,6 +70,7 @@ import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.util.logging.Logging;
+import org.geotools.xml.Configuration;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
@@ -205,14 +206,9 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
                 throw new SchemaNotFoundException(prefixedTypeName);
             }
 
-            final URL describeUrl = wfs.getDescribeFeatureTypeURLGet(prefixedTypeName);
-            // @TODO remove this
-            System.err.println("DecribeFT URL for " + prefixedTypeName + ": " + describeUrl);
-
             final SimpleFeatureType featureType;
             CoordinateReferenceSystem crs = getFeatureTypeCRS(prefixedTypeName);
-            featureType = EmfAppSchemaParser.parseSimpleFeatureType(featureDescriptorName,
-                    describeUrl, crs);
+            featureType = wfs.issueDescribeFeatureTypeGET(prefixedTypeName, crs);
 
             // adapt the feature type name
             SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();

@@ -65,6 +65,9 @@ import org.geotools.util.logging.Logging;
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
+ * 
+ * @deprecated This class will be removed in GeoTools version 8.0 and replaced with
+ *     a simpler ExceptionDialog class.
  */
 public final class ExceptionMonitor {
     /**

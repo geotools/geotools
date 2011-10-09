@@ -38,7 +38,11 @@ import javax.swing.SwingUtilities;
  * @version $Id$
  */
 public class ExceptionReporter {
+    
+    // Hidden constructor.
+    private ExceptionReporter() {}
 
+    
     /**
      * Displays an exception in a dialog where the title is the 
      * exception class name and the body of the dialog shows the 
@@ -67,12 +71,13 @@ public class ExceptionReporter {
         if (exception == null) {
             throw new IllegalArgumentException("exception must not be null");
         }
-        
+
         if (SwingUtilities.isEventDispatchThread()) {
             doShow(exception, message);
-            
+
         } else {
             SwingUtilities.invokeLater(new Runnable() {
+
                 @Override
                 public void run() {
                     doShow(exception, message);
@@ -80,7 +85,7 @@ public class ExceptionReporter {
             });
         }
     }
-
+    
     private static void doShow(Throwable exception, String message) {
         String title = exception.getClass().getSimpleName();
         
@@ -91,6 +96,7 @@ public class ExceptionReporter {
         ReportingDialog dialog = new ReportingDialog(title, message);
         DialogUtils.showCentred(dialog);
     }
+
 
     private static class ReportingDialog extends AbstractSimpleDialog {
         

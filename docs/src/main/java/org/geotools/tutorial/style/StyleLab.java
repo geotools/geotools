@@ -32,9 +32,9 @@ import org.geotools.styling.SLDParser;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
-import org.geotools.swing.ExceptionMonitor;
 import org.geotools.swing.JMapFrame;
 import org.geotools.swing.data.JFileDataStoreChooser;
+import org.geotools.swing.dialog.ExceptionReporter;
 import org.geotools.swing.styling.JSimpleStyleDialog;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory;
@@ -138,7 +138,7 @@ public class StyleLab {
             return style[0];
             
         } catch (Exception e) {
-            ExceptionMonitor.show(null, e, "Problem creating style");
+            ExceptionReporter.show(e, "Problem creating style");
         }
         return null;
     }

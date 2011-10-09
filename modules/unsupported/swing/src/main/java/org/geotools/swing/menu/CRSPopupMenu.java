@@ -26,11 +26,11 @@ import javax.swing.JPopupMenu;
 
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
-import org.geotools.swing.ExceptionMonitor;
 import org.geotools.swing.locale.LocaleUtils;
 import org.geotools.swing.dialog.JCRSChooser;
 import org.geotools.swing.dialog.JTextReporter;
 import org.geotools.swing.MapPane;
+import org.geotools.swing.dialog.ExceptionReporter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
@@ -141,7 +141,7 @@ public class CRSPopupMenu extends JPopupMenu {
                     mapPane.getMapContent().getViewport().setCoordinateReferenceSystem(newCRS);
 
                 } catch (Exception ex) {
-                    ExceptionMonitor.show(this, ex, "Failed to set the display CRS");
+                    ExceptionReporter.show(ex, "Failed to set the requested CRS");
                 }
             }
         }

@@ -1,11 +1,10 @@
 package org.geotools.swing.action;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
+import org.geotools.swing.dialog.ExceptionReporter;
 
-import org.geotools.swing.ExceptionMonitor;
 
 /**
  * A safe version of AbstractAction that will log any problems encountered.
@@ -45,12 +44,12 @@ public abstract class SafeAction extends AbstractAction {
      *
      * @param e the action event
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         try {
             action( e );
         } catch (Throwable t) {
-            ExceptionMonitor.show(e.getSource() instanceof Component ? (Component) e.getSource()
-                    : null, t);
+            ExceptionReporter.show(t);
         }
     }
 

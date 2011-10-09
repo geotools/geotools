@@ -47,6 +47,7 @@ import javax.swing.JTextArea;
 import org.geotools.resources.SwingUtilities;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.swing.dialog.ExceptionReporter;
 import org.geotools.util.SimpleInternationalString;
 import org.opengis.util.InternationalString;
 import org.opengis.util.ProgressListener;
@@ -370,7 +371,7 @@ public class ProgressWindow implements ProgressListener {
      * @param exception the exception to display
      */
     public void exceptionOccurred(final Throwable exception) {
-        ExceptionMonitor.show(window, exception);
+        ExceptionReporter.show(exception);
     }
 
     /**

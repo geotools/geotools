@@ -27,13 +27,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
+import javax.swing.text.View;
 
 /**
  * Static utility methods for common dialog and GUI related tasks.
  * 
  * @author Michael Bedward
  * @since 2.7
- *
  * @source $URL$
  * @version $Id$
  */
@@ -100,7 +102,7 @@ public class DialogUtils {
 
         return children;
     }
-
+    
     private static void doShowCentred(Window parent, Window dialog) {
         if (parent == null) {
             doCentre(dialog, Toolkit.getDefaultToolkit().getScreenSize());
@@ -116,4 +118,76 @@ public class DialogUtils {
         int y = Math.max(0, parentDim.height / 2 - dialogDim.height / 2);
         dialog.setLocation(x, y);
     }
+
+    /**
+     * Calculates the dimensions that a given text string requires when rendered
+     * as HTML text in a label component.
+     * <p>
+     * The method used is adapted from that described in a blog post by Morten Nobel:
+     * <blockquote>
+     * http://blog.nobel-joergensen.com/2009/01/18/changing-preferred-size-of-a-html-jlabel/
+     * </blockquote>
+     * 
+     * @param labelText the text to render, optionally enclosed in {@code <html>...</html>} tags
+     * @param fixedDimSize the size of the fixed dimension (either width or height
+     * @param width {@code true} if the fixed dimension is width; {@code false} for height
+     * 
+     * @return the rendered label text extent
+     */
+    public static Dimension getHtmlLabelTextExtent(final String labelText, 
+            final int fixedDimSize, 
+            final boolean width) {
+        
+        final Dimension[] result = new Dimension[1];
+        
+        if (SwingUtilities.isEventDispatchThread()) {
+            result[0] = doGetHtmlTextExtent(labelText, fixedDimSize, width);
+        } else {
+            try {
+                SwingUtilities.invokeAndWait(new Runnable() {
+                    @Override
+                    public void run() {
+                        result[0] = doGetHtmlTextExtent(labelText, fixedDimSize, width);
+                    }
+                });
+                
+            } catch (Exception ex) {
+                // Either an InterruptedException or an InvocationTargetException
+                // both of which are fatal
+                throw new RuntimeException(ex);
+            }
+        }
+        
+        return result[0];
+    }
+    
+    /**
+     * Helper method for {@linkplain #getHtmlLabelTextExtent(java.lang.String, int, boolean)}.
+     * This is required because we are creating and invisibly rendering a {@code JLabel} 
+     * object in this method, and being virtuous in our Swing usage we should only do that
+     * on the event dispatch thread.
+     * 
+     * @param labelText the text to render, optionally enclosed in {@code <html>...</html>} tags
+     * @param fixedDimSize the size of the fixed dimension (either width or height
+     * @param width {@code true} if the fixed dimension is width; {@code false} for height
+     * 
+     * @return the rendered label text extent
+     */
+    private static Dimension doGetHtmlTextExtent(String labelText, int fixedDimSize, boolean width) {
+        final JLabel label = new JLabel();
+        if (labelText.startsWith("<html>")) {
+            label.setText(labelText);
+        } else {
+            label.setText("<html>" + labelText + "</html>");
+        }
+        
+        View view = (View) label.getClientProperty(javax.swing.plaf.basic.BasicHTML.propertyKey);
+        view.setSize(width ? fixedDimSize : 0, width? 0 : fixedDimSize);
+
+        float w = view.getPreferredSpan(View.X_AXIS);
+        float h = view.getPreferredSpan(View.Y_AXIS);
+        
+        return new java.awt.Dimension((int) Math.ceil(w), (int) Math.ceil(h));
+    }
+
 }

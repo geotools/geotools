@@ -67,6 +67,7 @@ public class GdalInit {
         System.out.println("Registered library as " + name);
         BridJ.addNativeLibraryAlias("ogr", name);
         BridJ.addNativeLibraryAlias("osr", name);
+        BridJ.addNativeLibraryAlias("cplError", name);
         BridJ.addNativeLibraryAlias("gdal", name);
     }
 

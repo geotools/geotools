@@ -35,6 +35,10 @@ class OGRFilterTranslator {
 
     static final FilterCapabilities GEOMETRY_FILTER_CAPABILITIES;
 
+    static final FilterCapabilities STRICT_GEOMETRY_FILTER_CAPABILITIES;
+
+    static final FilterCapabilities EXTENDED_FILTER_CAPABILITIES;
+
     static {
         // attribute filters, these we can encode fully
         ATTRIBUTE_FILTER_CAPABILITIES = new FilterCapabilities();
@@ -44,6 +48,7 @@ class OGRFilterTranslator {
         ATTRIBUTE_FILTER_CAPABILITIES.addType(PropertyIsGreaterThan.class);
         ATTRIBUTE_FILTER_CAPABILITIES.addType(PropertyIsLessThan.class);
         ATTRIBUTE_FILTER_CAPABILITIES.addType(PropertyIsGreaterThanOrEqualTo.class);
+        ATTRIBUTE_FILTER_CAPABILITIES.addType(PropertyIsLessThanOrEqualTo.class);
         ATTRIBUTE_FILTER_CAPABILITIES.addType(PropertyIsLessThanOrEqualTo.class);
         ATTRIBUTE_FILTER_CAPABILITIES.addType(Or.class);
         ATTRIBUTE_FILTER_CAPABILITIES.addType(And.class);
@@ -60,6 +65,16 @@ class OGRFilterTranslator {
         GEOMETRY_FILTER_CAPABILITIES.addType(Overlaps.class);
         GEOMETRY_FILTER_CAPABILITIES.addType(Touches.class);
         GEOMETRY_FILTER_CAPABILITIES.addType(Within.class);
+        
+        // the geometry filters we can encode 1-1
+        STRICT_GEOMETRY_FILTER_CAPABILITIES = new FilterCapabilities();
+        STRICT_GEOMETRY_FILTER_CAPABILITIES.addType(BBOX.class);
+        
+        // the extended caps, which work only assuming there is at most a single bbox filter
+        // in the filter to be encoded
+        EXTENDED_FILTER_CAPABILITIES = new FilterCapabilities();
+        EXTENDED_FILTER_CAPABILITIES.addAll(ATTRIBUTE_FILTER_CAPABILITIES);
+        EXTENDED_FILTER_CAPABILITIES.addAll(STRICT_GEOMETRY_FILTER_CAPABILITIES);
     }
 
     private SimpleFeatureType schema;
@@ -88,6 +103,32 @@ class OGRFilterTranslator {
         filter.accept(visitor, null);
         Filter postFilter = visitor.getFilterPost();
         return postFilter == Filter.INCLUDE || postFilter instanceof BBOX;
+    }
+    
+    /**
+     * Returns the post filter that could not be encoded
+     * @return
+     */
+    public Filter getPostFilter() {
+        // see if the query has a single bbox filter (that's how much we're sure to be able to encode)
+        PostPreProcessFilterSplittingVisitor visitor = new PostPreProcessFilterSplittingVisitor(
+                STRICT_GEOMETRY_FILTER_CAPABILITIES, schema, null);
+        filter.accept(visitor, null);
+        Filter preFilter = visitor.getFilterPre();
+
+        if(preFilter == null || preFilter instanceof BBOX) {
+            // ok, then we can extract using the extended caps
+            visitor = new PostPreProcessFilterSplittingVisitor(
+                    EXTENDED_FILTER_CAPABILITIES, schema, null);
+            filter.accept(visitor, null);
+            return visitor.getFilterPost();
+        } else {
+            // though luck, there is more than a single bbox filter
+            visitor = new PostPreProcessFilterSplittingVisitor(
+                    ATTRIBUTE_FILTER_CAPABILITIES, schema, null);
+            filter.accept(visitor, null);
+            return visitor.getFilterPost();
+        }
     }
 
     /**

@@ -42,6 +42,14 @@ class OGRUtils {
             spatialReference.release();
         }
     }
+    
+    public static String getCString(Pointer<Byte> ptr) {
+        if(ptr == null) {
+            return null;
+        } else {
+            return ptr.getCString();
+        }
+    }
 
     /**
      * Checks the OGRErr status code and throws java exceptions accordingly

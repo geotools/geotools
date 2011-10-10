@@ -37,7 +37,7 @@ import org.geotools.util.logging.Logging;
 /** 
  * Provides localized text strings to GUI elements. This class hides most of the fiddly bits
  * associated with {@linkplain Locale} and {@linkplain ResourceBundle} from other gt-swing classes.
- * You do not create instances of this class. It is basically just a wrapper around static data.
+ * You do not create instances of this class, it is basically just a wrapper around static data.
  * Text strings are stored in properties files as per standard Java internationalization. All files
  * are located in the {@code org/geotools/swing/locale} directory of the swing module.
  * <p>
@@ -55,9 +55,9 @@ import org.geotools.util.logging.Logging;
  * String localizedText = LocaleUtils.getValue("CursorTool", "ZoomInTool");
  * </code></pre>
  * 
- * Adding support for a new language simply involves adding the new locale to all or some of these
- * files.  If the locale is only provided for some files, it will be recorded by as partially
- * supported by this class and used where available. 
+ * Adding support for a new language simply involves adding the new locale to all or some of the
+ * properties files.  If the locale is only provided for some files, it will be recorded by as 
+ * partially supported and used where available. 
  * <p>
  * 
  * You can set a single working locale with {@linkplain #setLocale(Locale)}.  If the specified

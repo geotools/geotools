@@ -27,6 +27,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import org.geotools.swing.locale.LocaleUtils;
 
 /**
  * A dialog to display an {@code Exception} to the user. The dialog is application-modal
@@ -89,12 +90,20 @@ public class ExceptionReporter {
     private static void doShow(Throwable exception, String message) {
         String title = exception.getClass().getSimpleName();
         
-        if (message == null || message.trim().length() == 0) {
+        if (empty(message)) {
             message = exception.getLocalizedMessage();
+            
+            if (empty(message)) {
+                message = LocaleUtils.getValue("Common", "UnspecifiedError");
+            }
         }
         
         ReportingDialog dialog = new ReportingDialog(title, message);
         DialogUtils.showCentred(dialog);
+    }
+    
+    private static boolean empty(String s) {
+        return s == null || s.trim().length() == 0;
     }
 
 

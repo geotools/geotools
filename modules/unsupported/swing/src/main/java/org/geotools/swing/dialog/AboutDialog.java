@@ -90,7 +90,7 @@ public class AboutDialog extends AbstractSimpleDialog {
     /*
      * Categories of information displayed by the dialog.
      */
-    private enum Category {
+    public static enum Category {
         APPLICATION("Application"),
         ENVIRONMENT("Environment"),
         LICENCES("Licences"),

@@ -65,7 +65,7 @@ public class DialogUtilsTest {
     public static void setUpOnce() {
         FailOnThreadViolationRepaintManager.install();
     }
-
+    
     @Test
     public void labelTextExtentCanBeCalledSafelyOutsideEDT() {
         // Just testing there is no exception

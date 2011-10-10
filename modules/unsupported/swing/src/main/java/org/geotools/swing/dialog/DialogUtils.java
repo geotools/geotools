@@ -103,6 +103,25 @@ public class DialogUtils {
         return children;
     }
     
+    /**
+     * Returns {@code input} if not {@code null} or empty, otherwise returns
+     * {@code fallback}. This is handy for setting dialog titles etc. Note that
+     * the input string is considered empty if {@code input.trim().length() == 0}.
+     * 
+     * @param input input string
+     * @param fallback fallback string (may be {@code null})
+     * 
+     * @return {@code input} unless it is {@code null} or empty, in which case
+     *     {@code fallback} is returned
+     */
+    public static String getString(String input, String fallback) {
+        if (input == null || input.trim().length() == 0) {
+            return fallback;
+        }
+        
+        return input;
+    }
+    
     private static void doShowCentred(Window parent, Window dialog) {
         if (parent == null) {
             doCentre(dialog, Toolkit.getDefaultToolkit().getScreenSize());

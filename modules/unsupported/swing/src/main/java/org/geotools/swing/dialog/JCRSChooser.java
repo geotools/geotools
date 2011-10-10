@@ -17,23 +17,15 @@
 
 package org.geotools.swing.dialog;
 
-import java.awt.Dialog.ModalityType;
-import java.awt.EventQueue;
+import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.Window;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.concurrent.SynchronousQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -45,9 +37,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import net.miginfocom.layout.LC;
-import net.miginfocom.swing.MigLayout;
 
+import net.miginfocom.swing.MigLayout;
 import org.geotools.referencing.CRS;
 import org.geotools.util.logging.Logging;
 
@@ -80,41 +71,69 @@ public class JCRSChooser {
     /** Default authority name (EPSG). */
     public static final String DEFAULT_AUTHORITY = "EPSG";
     
-    private JDialog dialog;
-    private CRSListModel model;
+    private CRSDialog dialog;
     private CoordinateReferenceSystem crs;
     
     /**
+     * Constructor is hidden.
+     */
+    private JCRSChooser() {}
+    
+    /**
      * Displays a dialog with a list of coordinate reference systems in the EPSG
-     * database. This method can be called safely from any thread.
+     * database. 
+     * <p>
+     * This method can be called safely from any thread.
      *
-     * @param parent the parent {@code Component}; may be {@code null}
-     *
-     * @param title dialog title; if {@code null} title will be "Choose Projection"
+     * @param title optional non-default title
      *
      * @return a {@code CoordinateReferenceSystem} object or {@code null} if the user
      *         cancelled the dialog
      */
-    public static CoordinateReferenceSystem showDialog(
-            final Window parent, final String title) {
-        
-        return showDialog(parent, title, null);
+    public static CoordinateReferenceSystem showDialog(final String title) {
+        return showDialog(title, null);
     }
     
-    public static CoordinateReferenceSystem showDialog(
-            final Window parent, final String title, final String initialCode) {
+    /**
+     * Displays a dialog with a list of coordinate reference systems in the EPSG
+     * database and with the specified initial code highlighted.
+     * <p>
+     * This method can be called safely from any thread.
+     *
+     * @param title optional non-default title
+     * @param initialCode optional initial EPSG code
+     *
+     * @return a {@code CoordinateReferenceSystem} object or {@code null} if the user
+     *         cancelled the dialog
+     */
+    public static CoordinateReferenceSystem showDialog(final String title, 
+            final String initialCode) {
         
-        return showDialog(parent, title, initialCode, null);
+        return showDialog(title, initialCode, null);
     }
 
-    public static CoordinateReferenceSystem showDialog(
-            final Window parent, final String title, 
-            final String initialCode, final String authority) {
+    /**
+     * Displays a dialog with a list of coordinate reference systems provided by
+     * the given authority (e.g. "EPSG"), and with the specified initial code
+     * highlighted.
+     * <p>
+     * This method can be called safely from any thread.
+     *
+     * @param title optional non-default title
+     * @param initialCode an optional initial code in appropriate form for the authority
+     * @param authority optional non-default authority (defaults to "EPSG")
+     *
+     * @return a {@code CoordinateReferenceSystem} object or {@code null} if the user
+     *         cancelled the dialog
+     */
+    public static CoordinateReferenceSystem showDialog(final String title, 
+            final String initialCode, 
+            final String authority) {
 
         CoordinateReferenceSystem selected = null;
         
         if (SwingUtilities.isEventDispatchThread()) {
-            selected = runDialog(parent, title, initialCode, authority);
+            selected = doShow(title, initialCode, authority);
             
         } else {
             final SynchronousQueue<CoordinateReferenceSystem> sq =
@@ -127,7 +146,7 @@ public class JCRSChooser {
                 public void run() {
                     try {
                         CoordinateReferenceSystem crs = 
-                                runDialog(parent, title, initialCode, authority);
+                                doShow(title, initialCode, authority);
                         if (crs == null) {
                             currentThread.interrupt();
                         } else {
@@ -150,146 +169,176 @@ public class JCRSChooser {
     }
     
     /**
-     * Creates and displays the dialog. Both arguments may be {@code null}.
+     * Creates and displays the modal dialog.
      * 
-     * @param parent the parent window
-     * @param title custom title
+     * @param title optional non-default title
+     * @param initialCode an optional initial code in appropriate form for the authority
+     * @param authority optional non-default authority (defaults to "EPSG")
      * 
-     * @return the selected reference system or {@code null} if the dialog
+     * @return the selected coordinate reference system or {@code null} if the dialog
      *     is cancelled by the user
      */
-    private static CoordinateReferenceSystem runDialog(
-             Window parent, String title, String initialCode, String authority) {
+    private static CoordinateReferenceSystem doShow(String title, 
+            String initialCode, String authority) {
         
-        JCRSChooser chooser = new JCRSChooser(parent, title, initialCode, authority);
-        DialogUtils.showCentred(chooser.dialog);
-        return chooser.crs;
+        CRSDialog dialog = new CRSDialog(title, initialCode, authority);
+        DialogUtils.showCentred(dialog);
+        
+        CoordinateReferenceSystem crs = dialog.getCoordinateReferenceSystem();
+        dialog.dispose();
+        
+        return crs;
     }
 
     /**
-     * Private constructor.
-     * 
-     * @param parent parent window (may be {@code null})
-     * @param title custom title (may be {@code null})
+     * A modal dialog which displays a list of projections for the user to choose from.
+     * <p>
+     * This class is package-private, rather than private, for unit testing
+     * purposes.
      */
-    private JCRSChooser(Window parent, String title, String initialCode, String authority) {
-        if (!EventQueue.isDispatchThread()) {
-            throw new IllegalStateException(
-                    "Constructor should only be called on the event dispatch thread");
+    static class CRSDialog extends AbstractSimpleDialog {
+        private static final int CONTROL_WIDTH = 400;
+
+        private final String authority;
+        private final String initialCode;
+        
+        private CRSListModel model;
+        private JList listBox;
+        private CoordinateReferenceSystem crs;
+
+        /**
+         * Creates the dialog.
+         * 
+         * @param title optional non-default title
+         * @param initialCode an optional initial code in appropriate form for the authority
+         * @param authority optional non-default authority (defaults to "EPSG")
+         */
+        public CRSDialog(String title, String initialCode, String authority) {
+            super(DialogUtils.getString(title, "Choose projection"));
+            this.authority = DialogUtils.getString(authority, DEFAULT_AUTHORITY);
+            this.initialCode = initialCode;
+            
+            initComponents();
         }
 
-        dialog = new JDialog();
-        dialog.setModalityType(ModalityType.APPLICATION_MODAL);
-        dialog.setResizable(false);
+        @Override
+        public JPanel createControlPanel() {
+            JPanel panel = new JPanel(new MigLayout("", "[left]"));
+            
+            model = new CRSListModel(authority);
+            
+            panel.add(new JLabel("Enter sub-string to filter list"), "growx, wrap");
         
-        dialog.setTitle( title == null ? "Choose Projection" : title );
-        
-        final int WIDTH = 400;
-        final String MARGIN = "10";
-        
-        JPanel panel = new JPanel(new MigLayout( new LC().insetsAll(MARGIN)));
-        
-        if (authority == null) {
-            authority = DEFAULT_AUTHORITY;
-        }
-        model = new CRSListModel(authority);
-        
-        panel.add(new JLabel("Enter sub-string to filter list"), "wrap");
-        
-        final JTextField filterFld = new JTextField();
-        filterFld.getDocument().addDocumentListener(new DocumentListener() {
+            final JTextField filterFld = new JTextField();
+            filterFld.setPreferredSize(new Dimension(CONTROL_WIDTH, 20));
+            filterFld.getDocument().addDocumentListener(new DocumentListener() {
 
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                model.setFilter(filterFld.getText());
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                model.setFilter(filterFld.getText());
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                model.setFilter(filterFld.getText());
-            }
-        });
-        panel.add(filterFld, String.format("w %d!, wrap", WIDTH));
-        
-        final JList listBox = new JList(model);
-        listBox.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    selectCRS(listBox.getSelectedIndex());
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    model.setFilter(filterFld.getText());
                 }
+
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    model.setFilter(filterFld.getText());
+                }
+
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    model.setFilter(filterFld.getText());
+                }
+            });
+            
+            panel.add(filterFld, "wrap");
+
+            listBox = new JList(model);
+            listBox.addMouseListener(new MouseAdapter() {
+
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getClickCount() == 2) {
+                        selectCRS(listBox.getSelectedIndex());
+                    }
+                }
+            });
+
+            JScrollPane listPane = new JScrollPane(listBox);
+            listPane.setPreferredSize(new Dimension(CONTROL_WIDTH, 300));
+
+            listBox.setBorder(BorderFactory.createEtchedBorder());
+            listBox.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+            int initialIndex = model.findCode(initialCode);
+            if (initialIndex >= 0) {
+                listBox.setSelectedIndex(initialIndex);
+                Point p = listBox.indexToLocation(initialIndex);
+                JViewport port = listPane.getViewport();
+                port.setViewPosition(p);
             }
-        });
-        
-        JScrollPane listPane = new JScrollPane(listBox);
-        
-        listBox.setBorder(BorderFactory.createEtchedBorder());
-        listBox.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        
-        int initialIndex = model.findCode(initialCode);
-        if (initialIndex >= 0) {
-            listBox.setSelectedIndex(initialIndex);
-            Point p = listBox.indexToLocation(initialIndex);
-            JViewport port = listPane.getViewport();
-            port.setViewPosition(p);
+
+            panel.add(listPane, "gaptop 10, wrap");
+            
+            return panel;
         }
-        
-        panel.add(listPane, String.format("w %d!, h %d!, wrap", WIDTH, WIDTH / 2));
-        Action okAction =  new AbstractAction("OK") {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                if (model.getSize() > 0) {
-                    if (model.getSize() == 1) {
-                        selectCRS(0);
-                    } else {
-                        int index = listBox.getSelectedIndex();
-                        if (index >= 0) {
-                            selectCRS(index);
-                        }
+
+        /**
+         * Records the selected coordinate reference system, if one exists,
+         * and hides the dialog.
+         */
+        @Override
+        public void onOK() {
+            if (model.getSize() > 0) {
+                if (model.getSize() == 1) {
+                    selectCRS(0);
+                } else {
+                    int index = listBox.getSelectedIndex();
+                    if (index >= 0) {
+                        selectCRS(index);
                     }
                 }
             }
-        };
-        JButton okBtn = new JButton(okAction);
-        filterFld.setAction(okAction);
-        panel.add(okBtn, "align center, split 2");
-        
-        JButton cancelBtn = new JButton("Cancel");
-        cancelBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                crs = null;
+            setVisible(false);
+        }
+
+        /**
+         * Sets the selection coordinate reference system to {@code null}
+         * and hides the dialog.
+         */
+        @Override
+        public void onCancel() {
+            crs = null;
+            setVisible(false);
+        }
+
+        /**
+         * Helper method for the list box and {@linkplain #onOK()} method
+         * which records the selected coordinate reference system.
+         * 
+         * @param index selected item index in the list box
+         */
+        private void selectCRS(int index) {
+            String code = model.getCodeAt(index);
+            try {
+                crs = CRS.decode(DEFAULT_AUTHORITY + ":" + code, true);
+
+            } catch (Exception ex) {
+                LOGGER.log(Level.SEVERE,
+                        "Failed to get coordinate reference system for code {0}",
+                        code);
+
+            } finally {
                 closeDialog();
             }
-        });
-        panel.add(cancelBtn);
-        
-        dialog.add(panel);
-        dialog.pack();
-    }
-
-    private void selectCRS(int index) {
-        String code = model.getCodeAt(index);
-        try {
-            crs = CRS.decode(DEFAULT_AUTHORITY + ":" + code, true);
-            
-        } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE,
-                    "Failed to get coordinate reference system for code {0}",
-                    code);
-
-        } finally {
-            closeDialog();
         }
-    }
 
-    private void closeDialog() {
-        dialog.dispose();
+        /**
+         * Gets the selected coordinate reference system.
+         * 
+         * @return selected coordinate reference system (may be {@code null}).
+         */
+        CoordinateReferenceSystem getCoordinateReferenceSystem() {
+            return crs;
+        }
     }
 
 }

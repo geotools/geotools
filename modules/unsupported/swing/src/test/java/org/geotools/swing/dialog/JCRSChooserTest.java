@@ -222,15 +222,16 @@ public class JCRSChooserTest {
         showDialog();
         JListFixture list = window.list();
         
-        final String code = getRandomCode();
+        final String code = getRandomCode().toLowerCase();
         window.textBox().enterText(code);
         window.robot.waitForIdle();
         
         // Note: there may be more than one list item if the code
-        // we just typed is also the start of longer codes
+        // we just typed is also the start of longer codes or if the 
+        // code string happens to appear in descriptive text
         String[] items = list.contents();
         for (String item : items) {
-            assertTrue(item.startsWith(code));
+            assertTrue(item.toLowerCase().contains(code));
         }
     }
     

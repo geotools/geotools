@@ -50,10 +50,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * <p>
  * Example of use:
  * <pre><code>
- * CoordinateReferenceSystem crs = JCRSChooser.showDialog(
- *         null,  // parent component
- *         "Choose a projection");  // title
- *
+ * CoordinateReferenceSystem crs = JCRSChooser.showDialog();
  * if (crs != null) {
  *     // use the CRS...
  * }
@@ -78,6 +75,19 @@ public class JCRSChooser {
      * Constructor is hidden.
      */
     private JCRSChooser() {}
+    
+    /**
+     * Displays a dialog with a list of coordinate reference systems in the EPSG
+     * database. 
+     * <p>
+     * This method can be called safely from any thread.
+     *
+     * @return a {@code CoordinateReferenceSystem} object or {@code null} if the user
+     *         cancelled the dialog
+     */
+    public static CoordinateReferenceSystem showDialog() {
+        return showDialog(null);
+    }
     
     /**
      * Displays a dialog with a list of coordinate reference systems in the EPSG

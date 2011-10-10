@@ -23,12 +23,16 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 
 import org.bridj.Pointer;
+import org.geotools.data.DataSourceException;
+import org.geotools.data.ogr.bridj.OgrLibrary.OGRFieldType;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.util.Converters;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -115,54 +119,78 @@ class FeatureMapper {
         return builder.buildFeature(fid);
     }
 
-//    /**
-//     * Turns a GeoTools feature into an OGR one
-//     * 
-//     * @param feature
-//     * @return
-//     * @throws DataSourceException
-//     */
-//    org.gdal.ogr.Feature convertGTFeature(FeatureDefn ogrSchema, SimpleFeature feature)
-//            throws IOException {
-//        // create a new empty OGR feature
-//        org.gdal.ogr.Feature result = new org.gdal.ogr.Feature(ogrSchema);
-//
-//        // go thru GeoTools feature attributes, and convert
-//        SimpleFeatureType schema = feature.getFeatureType();
-//        for (int i = 0, j = 0; i < schema.getAttributeCount(); i++) {
-//            AttributeDescriptor at = schema.getDescriptor(i);
-//            Object attribute = feature.getAttribute(i);
-//            if (at instanceof GeometryDescriptor) {
-//                // using setGeoemtryDirectly the feature becomes the owner of the generated
-//                // OGR geometry and we don't have to .delete() it (it's faster, too)
-//                result.SetGeometryDirectly(geomMapper.parseGTGeometry((Geometry) attribute));
-//                continue;
-//            }
-//
-//            if (attribute == null) {
-//                result.UnsetField(j);
-//            } else {
-//                final FieldDefn ogrField = ogrSchema.GetFieldDefn(j);
-//                final int ogrType = ogrField.GetFieldType();
-//                ogrField.delete();
-//                if (ogrType == ogr.OFTInteger)
-//                    result.SetField(j, ((Number) attribute).intValue());
-//                else if (ogrType == ogr.OFTReal)
-//                    result.SetField(j, ((Number) attribute).doubleValue());
-//                else if (ogrType == ogr.OFTDateTime)
-//                    result.SetField(j, dateTimeFormat.format((java.util.Date) attribute));
-//                else if (ogrType == ogr.OFTDate)
-//                    result.SetField(j, dateFormat.format((java.util.Date) attribute));
-//                else if (ogrType == ogr.OFTTime)
-//                    result.SetField(j, timeFormat.format((java.util.Date) attribute));
-//                else
-//                    result.SetField(j, attribute.toString());
-//            }
-//            j++;
-//        }
-//
-//        return result;
-//    }
+    /**
+     * Turns a GeoTools feature into an OGR one
+     * 
+     * @param feature
+     * @return
+     * @throws DataSourceException
+     */
+    Pointer convertGTFeature(Pointer featureDefinition, SimpleFeature feature)
+            throws IOException {
+        // create a new empty OGR feature
+        Pointer result = OGR_F_Create(featureDefinition);
+
+        // go thru GeoTools feature attributes, and convert
+        SimpleFeatureType schema = feature.getFeatureType();
+        for (int i = 0, j = 0; i < schema.getAttributeCount(); i++) {
+            AttributeDescriptor at = schema.getDescriptor(i);
+            Object attribute = feature.getAttribute(i);
+            if (at instanceof GeometryDescriptor) {
+                // using setGeoemtryDirectly the feature becomes the owner of the generated
+                // OGR geometry and we don't have to .delete() it (it's faster, too)
+                Pointer geometry = geomMapper.parseGTGeometry((Geometry) attribute);
+                OGR_F_SetGeometryDirectly(result, geometry);
+                continue;
+            }
+
+            if (attribute == null) {
+                OGR_F_UnsetField(result, j);
+            } else {
+                Pointer fieldDefinition = OGR_FD_GetFieldDefn(featureDefinition, j);
+                long ogrType = OGR_Fld_GetType(fieldDefinition).value();
+                if (ogrType == OGRFieldType.OFTInteger.value()) {
+                    OGR_F_SetFieldInteger(result, j, ((Number) attribute).intValue());
+                } else if (ogrType == OGRFieldType.OFTReal.value()) {
+                    OGR_F_SetFieldDouble(result, j, ((Number) attribute).doubleValue());
+                } else if (ogrType == OGRFieldType.OFTBinary.value()) {
+                    byte[] attValue = (byte[]) attribute;
+                    OGR_F_SetFieldBinary(result, j, attValue.length, pointerToBytes(attValue));
+                } else if (ogrType == OGRFieldType.OFTDate.value()) {
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime((Date) attribute);
+                    int year = cal.get(Calendar.YEAR);
+                    int month = cal.get(Calendar.MONTH);
+                    int day = cal.get(Calendar.DAY_OF_MONTH);
+                    OGR_F_SetFieldDateTime(result, j, year, month, day, 0, 0, 0, 0);
+                } else if (ogrType == OGRFieldType.OFTTime.value()) {
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime((Date) attribute);
+                    int hour = cal.get(Calendar.HOUR_OF_DAY);
+                    int minute = cal.get(Calendar.MINUTE);
+                    int second = cal.get(Calendar.SECOND);
+                    OGR_F_SetFieldDateTime(result, j, 0, 0, 0, hour, minute, second, 0);
+                } else if (ogrType == OGRFieldType.OFTDateTime.value()) {
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime((Date) attribute);
+                    int year = cal.get(Calendar.YEAR);
+                    int month = cal.get(Calendar.MONTH);
+                    int day = cal.get(Calendar.DAY_OF_MONTH);
+                    int hour = cal.get(Calendar.HOUR_OF_DAY);
+                    int minute = cal.get(Calendar.MINUTE);
+                    int second = cal.get(Calendar.SECOND);
+                    OGR_F_SetFieldDateTime(result, j, year, month, day, hour, minute, second, 0);
+                } else {
+                    // anything else we treat as a string
+                    String str = Converters.convert(attribute, String.class);
+                    OGR_F_SetFieldString(result, j, pointerToCString(str));
+                }
+            }
+            j++;
+        }
+
+        return result;
+    }
 
     /**
      * Turns line and polygon into multiline and multipolygon. This is a stop-gap measure to make

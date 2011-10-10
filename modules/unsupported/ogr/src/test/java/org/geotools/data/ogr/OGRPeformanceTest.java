@@ -44,6 +44,22 @@ public class OGRPeformanceTest extends TestCaseSupport {
         CRS.decode("EPSG:4326");
     }
 
+    public void testOGRShapePerformance() throws Exception {
+        OGRDataStore ods = new OGRDataStore(getAbsolutePath(STATE_POP), null, null);
+        long start = System.currentTimeMillis();
+        ods.getSchema(ods.getTypeNames()[0]);
+        long end = System.currentTimeMillis();
+        System.out.println("OGR schema: " + (end - start) / 1000.0);
+        DefaultQuery query = new DefaultQuery(ods.getTypeNames()[0]);
+        start = System.currentTimeMillis();
+        FeatureReader ofr = ods.getFeatureReader(query, Transaction.AUTO_COMMIT);
+        while (ofr.hasNext())
+            ofr.next();
+        ofr.close();
+        end = System.currentTimeMillis();
+        System.out.println("OGR: " + (end - start) / 1000.0);
+    }
+    
     public void testShapefilePerformance() throws Exception {
         URL url = TestData.url(STATE_POP);
         ShapefileDataStore sds = new ShapefileDataStore(url, false);
@@ -64,22 +80,6 @@ public class OGRPeformanceTest extends TestCaseSupport {
         System.out.println("Attribute count: " + sds.getSchema().getAttributeCount());
         System.out.println("Feature count: "
                 + sds.getFeatureSource(sds.getSchema().getTypeName()).getCount(Query.ALL));
-    }
-
-    public void testOGRShapePerformance() throws Exception {
-        OGRDataStore ods = new OGRDataStore(getAbsolutePath(STATE_POP), null, null);
-        long start = System.currentTimeMillis();
-        ods.getSchema(ods.getTypeNames()[0]);
-        long end = System.currentTimeMillis();
-        System.out.println("OGR schema: " + (end - start) / 1000.0);
-        DefaultQuery query = new DefaultQuery(ods.getTypeNames()[0]);
-        start = System.currentTimeMillis();
-        FeatureReader ofr = ods.getFeatureReader(query, Transaction.AUTO_COMMIT);
-        while (ofr.hasNext())
-            ofr.next();
-        ofr.close();
-        end = System.currentTimeMillis();
-        System.out.println("OGR: " + (end - start) / 1000.0);
     }
 
 }

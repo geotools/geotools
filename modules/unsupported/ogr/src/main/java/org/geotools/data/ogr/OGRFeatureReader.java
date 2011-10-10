@@ -32,13 +32,13 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * An OGR feature reader, reads data from the provided layer.<br>
  * It assumes eventual filters have already been set on it, and will extract only the
  * 
- * @author Andrea Aime - OpenGeo
+ * @author Andrea Aime - GeoSolutions
  * 
  * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/ogr/src/main/java/org/geotools
  *         /data/ogr/OGRFeatureReader.java $
  */
-public class OGRFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
+class OGRFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 
     Pointer<?> dataSource;
 

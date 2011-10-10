@@ -53,6 +53,9 @@ import static org.junit.Assert.*;
 @RunWith(GraphicsTestRunner.class)
 public class ExceptionReporterTest {
 
+    // Max waiting time for dialog display (milliseconds)
+    private static final long DISPLAY_TIMEOUT = 1000;
+    
     private DialogFixture fixture;
     
     @BeforeClass 
@@ -78,12 +81,8 @@ public class ExceptionReporterTest {
         final String MSG = "Foo is not Bar";
         
         ExceptionReporter.showDialog(new IllegalArgumentException(MSG));
+        assertDialogDisplayed();
 
-        Pause.pause(new ComponentFoundCondition("Waiting for dialog to be shown", 
-                BasicComponentFinder.finderWithCurrentAwtHierarchy(), 
-                new TypeMatcher(ExceptionReporter.ReportingDialog.class, true)),
-                1000);
-        
         fixture.requireModal();
         assertEquals("IllegalArgumentException", fixture.component().getTitle());
         
@@ -97,11 +96,7 @@ public class ExceptionReporterTest {
         final String USER_MSG = "You should see this message";
         
         ExceptionReporter.showDialog(new IllegalArgumentException(EXCEPTION_MSG), USER_MSG);
-
-        Pause.pause(new ComponentFoundCondition("Waiting for dialog to be shown", 
-                BasicComponentFinder.finderWithCurrentAwtHierarchy(), 
-                new TypeMatcher(ExceptionReporter.ReportingDialog.class, true)),
-                1000);
+        assertDialogDisplayed();
         
         fixture.requireModal();
         assertEquals("IllegalArgumentException", fixture.component().getTitle());
@@ -116,11 +111,7 @@ public class ExceptionReporterTest {
         final String USER_MSG = "";
         
         ExceptionReporter.showDialog(new IllegalArgumentException(EXCEPTION_MSG), USER_MSG);
-
-        Pause.pause(new ComponentFoundCondition("Waiting for dialog to be shown", 
-                BasicComponentFinder.finderWithCurrentAwtHierarchy(), 
-                new TypeMatcher(ExceptionReporter.ReportingDialog.class, true)),
-                1000);
+        assertDialogDisplayed();
         
         fixture.requireModal();
         assertEquals("IllegalArgumentException", fixture.component().getTitle());
@@ -139,6 +130,13 @@ public class ExceptionReporterTest {
         ExceptionReporter.showDialog(null, "User message");
     }
     
+    private void assertDialogDisplayed() {
+        Pause.pause(new ComponentFoundCondition("Waiting for dialog to be shown", 
+                BasicComponentFinder.finderWithCurrentAwtHierarchy(), 
+                new TypeMatcher(ExceptionReporter.ReportingDialog.class, true)),
+                DISPLAY_TIMEOUT);
+        
+    }
 
     /*
      * This AWTEventListener is used to grab the dialog as a FEST fixture.

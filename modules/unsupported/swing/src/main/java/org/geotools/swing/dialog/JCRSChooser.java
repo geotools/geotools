@@ -26,6 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -36,9 +37,13 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import net.miginfocom.swing.MigLayout;
+
 import org.geotools.referencing.CRS;
 import org.geotools.util.logging.Logging;
 
@@ -67,6 +72,9 @@ public class JCRSChooser {
     
     /** Default authority name (EPSG). */
     public static final String DEFAULT_AUTHORITY = "EPSG";
+    
+    /** Default dialog title */
+    public static final String DEFAULT_TITLE = "Choose a projection";
     
     private CRSDialog dialog;
     private CoordinateReferenceSystem crs;
@@ -214,6 +222,8 @@ public class JCRSChooser {
         
         private CRSListModel model;
         private JList listBox;
+        private JButton okButton;
+        
         private CoordinateReferenceSystem crs;
 
         /**
@@ -224,7 +234,7 @@ public class JCRSChooser {
          * @param authority optional non-default authority (defaults to "EPSG")
          */
         public CRSDialog(String title, String initialCode, String authority) {
-            super(DialogUtils.getString(title, "Choose projection"));
+            super(DialogUtils.getString(title, DEFAULT_TITLE));
             this.authority = DialogUtils.getString(authority, DEFAULT_AUTHORITY);
             this.initialCode = initialCode;
             
@@ -271,6 +281,20 @@ public class JCRSChooser {
                     }
                 }
             });
+            
+            listBox.addListSelectionListener(new ListSelectionListener() {
+                @Override
+                public void valueChanged(ListSelectionEvent e) {
+                    setOKButtonState();
+                }
+            });
+            
+            model.addListDataListener(new CRSListModelListener() {
+                @Override
+                public void process() {
+                    setOKButtonState();
+                }
+            });
 
             JScrollPane listPane = new JScrollPane(listBox);
             listPane.setPreferredSize(new Dimension(CONTROL_WIDTH, 300));
@@ -292,12 +316,37 @@ public class JCRSChooser {
         }
 
         /**
+         * Overridden to get a reference to the OK button created by the 
+         * super-class method.
+         * 
+         * @return the button panel
+         */
+        @Override
+        protected JPanel createButtonPanel() {
+            JPanel panel = super.createButtonPanel();
+            for (JButton btn : DialogUtils.getChildComponents(JButton.class, panel, false)) {
+                if ("OK".equals(btn.getText())) {
+                    okButton = btn;
+                    break;
+                }
+            }
+            
+            if (okButton == null) {
+                throw new IllegalStateException("Failed to initialize the OK button correctly");
+            }
+            
+            okButton.setEnabled(false);
+            
+            return panel;
+        }
+
+        /**
          * Records the selected coordinate reference system, if one exists,
          * and hides the dialog.
          */
         @Override
         public void onOK() {
-            if (model.getSize() > 0) {
+            if (model.getSize() > 0 && listBox.getSelectedIndex() >= 0) {
                 if (model.getSize() == 1) {
                     selectCRS(0);
                 } else {
@@ -306,8 +355,9 @@ public class JCRSChooser {
                         selectCRS(index);
                     }
                 }
+                
+                setVisible(false);
             }
-            setVisible(false);
         }
 
         /**
@@ -340,6 +390,15 @@ public class JCRSChooser {
                 closeDialog();
             }
         }
+        
+        /**
+         * Enables or disables the OK button based on the state
+         * of the CRS list.
+         */
+        private void setOKButtonState() {
+            boolean b = model.getSize() == 1 || listBox.getSelectedIndex() >= 0;
+            okButton.setEnabled(b);
+        }
 
         /**
          * Gets the selected coordinate reference system.
@@ -349,6 +408,32 @@ public class JCRSChooser {
         CoordinateReferenceSystem getCoordinateReferenceSystem() {
             return crs;
         }
+    }
+    
+    
+    /**
+     * Simple listener used by the dialog to detect when the list model has
+     * changed.
+     */
+    private static abstract class CRSListModelListener implements ListDataListener {
+        
+        public abstract void process();
+
+        @Override
+        public void intervalAdded(ListDataEvent e) {
+            process();
+        }
+
+        @Override
+        public void intervalRemoved(ListDataEvent e) {
+            process();
+        }
+
+        @Override
+        public void contentsChanged(ListDataEvent e) {
+            process();
+        }
+        
     }
 
 }

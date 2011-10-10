@@ -371,7 +371,7 @@ public class ProgressWindow implements ProgressListener {
      * @param exception the exception to display
      */
     public void exceptionOccurred(final Throwable exception) {
-        ExceptionReporter.show(exception);
+        ExceptionReporter.showDialog(exception);
     }
 
     /**

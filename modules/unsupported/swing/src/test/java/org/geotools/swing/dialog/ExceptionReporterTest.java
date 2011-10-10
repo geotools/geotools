@@ -77,7 +77,7 @@ public class ExceptionReporterTest {
     public void showException() throws Exception {
         final String MSG = "Foo is not Bar";
         
-        ExceptionReporter.show(new IllegalArgumentException(MSG));
+        ExceptionReporter.showDialog(new IllegalArgumentException(MSG));
 
         Pause.pause(new ComponentFoundCondition("Waiting for dialog to be shown", 
                 BasicComponentFinder.finderWithCurrentAwtHierarchy(), 
@@ -96,7 +96,7 @@ public class ExceptionReporterTest {
         final String EXCEPTION_MSG = "Foo is not Bar";
         final String USER_MSG = "You should see this message";
         
-        ExceptionReporter.show(new IllegalArgumentException(EXCEPTION_MSG), USER_MSG);
+        ExceptionReporter.showDialog(new IllegalArgumentException(EXCEPTION_MSG), USER_MSG);
 
         Pause.pause(new ComponentFoundCondition("Waiting for dialog to be shown", 
                 BasicComponentFinder.finderWithCurrentAwtHierarchy(), 
@@ -115,7 +115,7 @@ public class ExceptionReporterTest {
         final String EXCEPTION_MSG = "You should see this message";
         final String USER_MSG = "";
         
-        ExceptionReporter.show(new IllegalArgumentException(EXCEPTION_MSG), USER_MSG);
+        ExceptionReporter.showDialog(new IllegalArgumentException(EXCEPTION_MSG), USER_MSG);
 
         Pause.pause(new ComponentFoundCondition("Waiting for dialog to be shown", 
                 BasicComponentFinder.finderWithCurrentAwtHierarchy(), 
@@ -131,12 +131,12 @@ public class ExceptionReporterTest {
     
     @Test(expected=IllegalArgumentException.class)
     public void nullExceptionArg() throws Exception {
-        ExceptionReporter.show(null);
+        ExceptionReporter.showDialog(null);
     }
     
     @Test(expected=IllegalArgumentException.class)
     public void nullExceptionArg2() throws Exception {
-        ExceptionReporter.show(null, "User message");
+        ExceptionReporter.showDialog(null, "User message");
     }
     
 

@@ -49,7 +49,7 @@ public abstract class SafeAction extends AbstractAction {
         try {
             action( e );
         } catch (Throwable t) {
-            ExceptionReporter.show(t);
+            ExceptionReporter.showDialog(t);
         }
     }
 

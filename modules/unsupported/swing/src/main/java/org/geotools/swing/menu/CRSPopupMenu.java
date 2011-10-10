@@ -141,7 +141,7 @@ public class CRSPopupMenu extends JPopupMenu {
                     mapPane.getMapContent().getViewport().setCoordinateReferenceSystem(newCRS);
 
                 } catch (Exception ex) {
-                    ExceptionReporter.show(ex, "Failed to set the requested CRS");
+                    ExceptionReporter.showDialog(ex, "Failed to set the requested CRS");
                 }
             }
         }

@@ -138,7 +138,7 @@ public class StyleLab {
             return style[0];
             
         } catch (Exception e) {
-            ExceptionReporter.show(e, "Problem creating style");
+            ExceptionReporter.showDialog(e, "Problem creating style");
         }
         return null;
     }

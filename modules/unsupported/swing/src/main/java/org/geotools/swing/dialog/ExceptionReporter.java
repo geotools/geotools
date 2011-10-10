@@ -53,8 +53,8 @@ public class ExceptionReporter {
      * 
      * @param exception exception to display
      */
-    public static void show(Throwable exception) {
-        show(exception, null);
+    public static void showDialog(Throwable exception) {
+        showDialog(exception, null);
     }
     
     /**
@@ -68,26 +68,26 @@ public class ExceptionReporter {
      * @param message message to display; if {@code null} or empty the 
      *     message will be taken from the exception
      */
-    public static void show(final Throwable exception, final String message) {
+    public static void showDialog(final Throwable exception, final String message) {
         if (exception == null) {
             throw new IllegalArgumentException("exception must not be null");
         }
 
         if (SwingUtilities.isEventDispatchThread()) {
-            doShow(exception, message);
+            doShowDialog(exception, message);
 
         } else {
             SwingUtilities.invokeLater(new Runnable() {
 
                 @Override
                 public void run() {
-                    doShow(exception, message);
+                    doShowDialog(exception, message);
                 }
             });
         }
     }
     
-    private static void doShow(Throwable exception, String message) {
+    private static void doShowDialog(Throwable exception, String message) {
         String title = exception.getClass().getSimpleName();
         
         if (empty(message)) {

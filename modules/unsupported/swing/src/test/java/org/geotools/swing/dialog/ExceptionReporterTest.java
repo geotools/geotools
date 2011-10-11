@@ -17,6 +17,7 @@
 
 package org.geotools.swing.dialog;
 
+import java.awt.Dialog;
 import java.awt.AWTEvent;
 import java.awt.Toolkit;
 import java.awt.event.AWTEventListener;
@@ -25,22 +26,18 @@ import java.util.regex.Pattern;
 
 import javax.swing.JDialog;
 
-import org.fest.swing.core.BasicComponentFinder;
-import org.fest.swing.core.ComponentFoundCondition;
-import org.fest.swing.core.TypeMatcher;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.fixture.DialogFixture;
 import org.fest.swing.fixture.JLabelFixture;
-import org.fest.swing.timing.Pause;
 
+import org.geotools.swing.testutils.GraphicsTestBase;
 import org.geotools.swing.testutils.GraphicsTestRunner;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
+
 
 /**
  * Tests for the ExceptionReporter class.
@@ -51,18 +48,8 @@ import static org.junit.Assert.*;
  * @version $Id$
  */
 @RunWith(GraphicsTestRunner.class)
-public class ExceptionReporterTest {
+public class ExceptionReporterTest extends GraphicsTestBase<Dialog> {
 
-    // Max waiting time for dialog display (milliseconds)
-    private static final long DISPLAY_TIMEOUT = 1000;
-    
-    private DialogFixture fixture;
-    
-    @BeforeClass 
-    public static void setUpOnce() {
-        FailOnThreadViolationRepaintManager.install();
-    }
-    
     @Before
     public void setup() {
         Toolkit.getDefaultToolkit().addAWTEventListener(listener, AWTEvent.WINDOW_EVENT_MASK);
@@ -71,9 +58,6 @@ public class ExceptionReporterTest {
     @After
     public void cleanup() {
         Toolkit.getDefaultToolkit().removeAWTEventListener(listener);
-        if (fixture != null) {
-            fixture.cleanUp();
-        }
     }
 
     @Test
@@ -81,12 +65,12 @@ public class ExceptionReporterTest {
         final String MSG = "Foo is not Bar";
         
         ExceptionReporter.showDialog(new IllegalArgumentException(MSG));
-        assertDialogDisplayed();
+        assertDialogDisplayed(ExceptionReporter.ReportingDialog.class);
 
-        fixture.requireModal();
-        assertEquals("IllegalArgumentException", fixture.component().getTitle());
+        ((DialogFixture) windowFixture).requireModal();
+        assertEquals("IllegalArgumentException", windowFixture.component().getTitle());
         
-        JLabelFixture label = fixture.label();
+        JLabelFixture label = windowFixture.label();
         label.requireText(Pattern.compile(".*" + MSG + ".*"));
     }
     
@@ -96,12 +80,11 @@ public class ExceptionReporterTest {
         final String USER_MSG = "You should see this message";
         
         ExceptionReporter.showDialog(new IllegalArgumentException(EXCEPTION_MSG), USER_MSG);
-        assertDialogDisplayed();
+        assertDialogDisplayed(ExceptionReporter.ReportingDialog.class);
         
-        fixture.requireModal();
-        assertEquals("IllegalArgumentException", fixture.component().getTitle());
+        assertEquals("IllegalArgumentException", windowFixture.component().getTitle());
         
-        JLabelFixture label = fixture.label();
+        JLabelFixture label = windowFixture.label();
         label.requireText(Pattern.compile(".*" + USER_MSG + ".*"));
     }
     
@@ -111,12 +94,11 @@ public class ExceptionReporterTest {
         final String USER_MSG = "";
         
         ExceptionReporter.showDialog(new IllegalArgumentException(EXCEPTION_MSG), USER_MSG);
-        assertDialogDisplayed();
+        assertDialogDisplayed(ExceptionReporter.ReportingDialog.class);
         
-        fixture.requireModal();
-        assertEquals("IllegalArgumentException", fixture.component().getTitle());
+        assertEquals("IllegalArgumentException", windowFixture.component().getTitle());
         
-        JLabelFixture label = fixture.label();
+        JLabelFixture label = windowFixture.label();
         label.requireText(Pattern.compile(".*" + EXCEPTION_MSG + ".*"));
     }
     
@@ -130,16 +112,8 @@ public class ExceptionReporterTest {
         ExceptionReporter.showDialog(null, "User message");
     }
     
-    private void assertDialogDisplayed() {
-        Pause.pause(new ComponentFoundCondition("Waiting for dialog to be shown", 
-                BasicComponentFinder.finderWithCurrentAwtHierarchy(), 
-                new TypeMatcher(ExceptionReporter.ReportingDialog.class, true)),
-                DISPLAY_TIMEOUT);
-        
-    }
-
     /*
-     * This AWTEventListener is used to grab the dialog as a FEST fixture.
+     * This AWTEventListener is used to grab the dialog as a FEST windowFixture.
      */
     AWTEventListener listener = new AWTEventListener() {
         @Override
@@ -147,7 +121,8 @@ public class ExceptionReporterTest {
             if (event.getSource() instanceof ExceptionReporter.ReportingDialog
                     && event.getID() == WindowEvent.WINDOW_ACTIVATED) {
 
-                fixture = new DialogFixture((JDialog) event.getSource());
+                windowFixture = new DialogFixture((JDialog) event.getSource());
+                ((DialogFixture) windowFixture).requireModal();
             }
         }
     };

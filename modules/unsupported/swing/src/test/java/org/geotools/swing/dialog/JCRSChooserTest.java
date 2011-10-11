@@ -17,6 +17,7 @@
 
 package org.geotools.swing.dialog;
 
+import java.awt.Dialog;
 import java.awt.AWTEvent;
 import java.awt.Toolkit;
 import java.awt.event.AWTEventListener;
@@ -37,21 +38,17 @@ import javax.swing.JDialog;
 import org.geotools.factory.Hints;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.swing.testutils.GraphicsTestBase;
 import org.geotools.swing.testutils.GraphicsTestRunner;
 
 import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import org.fest.swing.core.BasicComponentFinder;
-import org.fest.swing.core.ComponentFoundCondition;
 import org.fest.swing.core.GenericTypeMatcher;
-import org.fest.swing.core.TypeMatcher;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.fixture.DialogFixture;
 import org.fest.swing.fixture.JButtonFixture;
 import org.fest.swing.fixture.JListFixture;
 import org.fest.swing.fixture.JTextComponentFixture;
-import org.fest.swing.timing.Pause;
 
 import org.junit.After;
 import org.junit.Before;
@@ -76,11 +73,8 @@ import static org.junit.Assert.*;
  * @version $Id$
  */
 @RunWith(GraphicsTestRunner.class)
-public class JCRSChooserTest {
+public class JCRSChooserTest extends GraphicsTestBase<Dialog> {
 
-    // Max waiting time for dialog display (milliseconds)
-    private static final long DISPLAY_TIMEOUT = 1000;
-    
     // Max waiting time for return value
     private static final long RETURN_TIMEOUT = 1000;
     
@@ -93,13 +87,9 @@ public class JCRSChooserTest {
     private static CRSAuthorityFactory FACTORY;
     private static List<String> CODES;
     
-    private DialogFixture window;
-    
     
     @BeforeClass 
     public static void setUpOnce() throws Exception {
-        FailOnThreadViolationRepaintManager.install();
-        
         // Specify longitude-first order for the authority factory
         Hints hints = new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
         FACTORY = ReferencingFactoryFinder.getCRSAuthorityFactory(
@@ -116,25 +106,22 @@ public class JCRSChooserTest {
     @After
     public void cleanup() {
         Toolkit.getDefaultToolkit().removeAWTEventListener(listener);
-        if (window != null) {
-            window.cleanUp();
-        }
     }
     
     @Test
     public void checkDefaultDialogIsSetupCorrectly() throws Exception {
         showDialog();
-        window.requireModal();
-        assertEquals(JCRSChooser.DEFAULT_TITLE, window.component().getTitle());
+        ((DialogFixture) windowFixture).requireModal();
+        assertEquals(JCRSChooser.DEFAULT_TITLE, windowFixture.component().getTitle());
         
         // The text box should be editable and initially empty
-        JTextComponentFixture textBox = window.textBox();
+        JTextComponentFixture textBox = windowFixture.textBox();
         assertNotNull(textBox);
         textBox.requireEditable();
         textBox.requireText("");
         
         // The list should have as many items as there are authority codes
-        JListFixture list = window.list();
+        JListFixture list = windowFixture.list();
         assertNotNull(list);
         list.requireItemCount(CODES.size());
     }
@@ -143,7 +130,7 @@ public class JCRSChooserTest {
     public void customTitle() throws Exception {
         final String TITLE = "Custom title";
         showDialog(TITLE);
-        assertEquals(TITLE, window.component().getTitle());
+        assertEquals(TITLE, windowFixture.component().getTitle());
     }
     
     @Test
@@ -160,15 +147,15 @@ public class JCRSChooserTest {
     @Test
     public void okButtonDisabledInitially() throws Exception {
         showDialog();
-        window.list().requireNoSelection();
+        windowFixture.list().requireNoSelection();
         getButton("OK").requireDisabled();
     }
     
     @Test
     public void okButtonEnabledWhenListHasSelection() throws Exception {
         showDialog();
-        window.list().clickItem(0);
-        window.robot.waitForIdle();
+        windowFixture.list().clickItem(0);
+        windowFixture.robot.waitForIdle();
         getButton("OK").requireEnabled();
     }
     
@@ -178,15 +165,15 @@ public class JCRSChooserTest {
         JButtonFixture button = getButton("OK");
 
         // Filter to a single item - button should be enabled
-        JTextComponentFixture textBox = window.textBox();
+        JTextComponentFixture textBox = windowFixture.textBox();
         textBox.enterText(UNIQUE_FILTER_STRING);
-        window.robot.waitForIdle();
+        windowFixture.robot.waitForIdle();
         button.requireEnabled();
         
         // Remove filter (no list selection) - button should be disabled
         textBox.deleteText();
-        window.robot.waitForIdle();
-        window.list().requireNoSelection();
+        windowFixture.robot.waitForIdle();
+        windowFixture.list().requireNoSelection();
         button.requireDisabled();
     }
     
@@ -195,12 +182,12 @@ public class JCRSChooserTest {
         showDialog();
         
         // Make a list selection, then clear it
-        JListFixture list = window.list();
+        JListFixture list = windowFixture.list();
         list.clickItem(0);
-        window.robot.waitForIdle();
+        windowFixture.robot.waitForIdle();
 
         list.clearSelection();
-        window.robot.waitForIdle();
+        windowFixture.robot.waitForIdle();
         
         getButton("OK").requireDisabled();
     }
@@ -210,21 +197,21 @@ public class JCRSChooserTest {
         showDialog();
         
         // Some filter text that will not match any CRS
-        window.textBox().enterText("FooBar");
-        window.robot.waitForIdle();
+        windowFixture.textBox().enterText("FooBar");
+        windowFixture.robot.waitForIdle();
         
-        window.list().requireItemCount(0);
+        windowFixture.list().requireItemCount(0);
         getButton("OK").requireDisabled();
     }
     
     @Test
     public void filterByCode() throws Exception {
         showDialog();
-        JListFixture list = window.list();
+        JListFixture list = windowFixture.list();
         
         final String code = getRandomCode().toLowerCase();
-        window.textBox().enterText(code);
-        window.robot.waitForIdle();
+        windowFixture.textBox().enterText(code);
+        windowFixture.robot.waitForIdle();
         
         // Note: there may be more than one list item if the code
         // we just typed is also the start of longer codes or if the 
@@ -238,7 +225,7 @@ public class JCRSChooserTest {
     @Test
     public void filterByNameFragment() throws Exception {
         showDialog();
-        JListFixture list = window.list();
+        JListFixture list = windowFixture.list();
         
         final String code = getRandomCode();
         final String desc = FACTORY.getDescriptionText(
@@ -246,8 +233,8 @@ public class JCRSChooserTest {
         
         // Filter on the first few characters
         final String filterStr = desc.substring(0, 5).toLowerCase();
-        window.textBox().enterText(filterStr);
-        window.robot.waitForIdle();
+        windowFixture.textBox().enterText(filterStr);
+        windowFixture.robot.waitForIdle();
         
         // Check list contents
         for (String item : list.contents()) {
@@ -260,11 +247,11 @@ public class JCRSChooserTest {
         Future<CoordinateReferenceSystem> future = showDialog();
         
         final int index = rand.nextInt(CODES.size());
-        window.list().clickItem(index);
-        window.robot.waitForIdle();
+        windowFixture.list().clickItem(index);
+        windowFixture.robot.waitForIdle();
         
         getButton("OK").click();
-        window.robot.waitForIdle();
+        windowFixture.robot.waitForIdle();
         
         CoordinateReferenceSystem crs = retrieveCRS(future);
         assertNotNull(crs);
@@ -295,20 +282,9 @@ public class JCRSChooserTest {
     private Future<CoordinateReferenceSystem> showDialog(String title) {
         ChooserInvocation task = new ChooserInvocation(title);
         Future<CoordinateReferenceSystem> future = executor.submit(task);
-        assertDialogDisplayed();
+        assertDialogDisplayed(JCRSChooser.CRSDialog.class);
         
         return future;
-    }
-    
-    /**
-     * Waits for up to DISPLAY_TIMEOUT for the dialog to be displayed and
-     * throws an assertion error if it is not.
-     */
-    private void assertDialogDisplayed() {
-        Pause.pause(new ComponentFoundCondition("Waiting for dialog to be shown", 
-                BasicComponentFinder.finderWithCurrentAwtHierarchy(), 
-                new TypeMatcher(JCRSChooser.CRSDialog.class, true)),
-                DISPLAY_TIMEOUT);
     }
     
     /**
@@ -319,7 +295,7 @@ public class JCRSChooserTest {
      * @return the button fixture
      */
     private JButtonFixture getButton(final String buttonText) {
-        JButtonFixture button = window.button(new GenericTypeMatcher<JButton>(JButton.class) {
+        JButtonFixture button = windowFixture.button(new GenericTypeMatcher<JButton>(JButton.class) {
             @Override
             protected boolean isMatching(JButton component) {
                 return buttonText.equals(component.getText());
@@ -391,7 +367,7 @@ public class JCRSChooserTest {
             if (event.getSource() instanceof JCRSChooser.CRSDialog
                     && event.getID() == WindowEvent.WINDOW_ACTIVATED) {
 
-                window = new DialogFixture((JDialog) event.getSource());
+                windowFixture = new DialogFixture((JDialog) event.getSource());
             }
         }
     };

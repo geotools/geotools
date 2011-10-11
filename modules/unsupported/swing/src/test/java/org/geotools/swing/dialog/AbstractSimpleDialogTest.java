@@ -17,6 +17,7 @@
 
 package org.geotools.swing.dialog;
 
+import java.awt.Dialog;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.concurrent.CountDownLatch;
@@ -27,16 +28,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import org.fest.swing.core.GenericTypeMatcher;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
 import org.fest.swing.fixture.DialogFixture;
 import org.fest.swing.fixture.JButtonFixture;
 
+import org.geotools.swing.testutils.GraphicsTestBase;
 import org.geotools.swing.testutils.GraphicsTestRunner;
-import org.junit.After;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
@@ -50,7 +49,7 @@ import static org.junit.Assert.*;
  * @version $Id$
  */
 @RunWith(GraphicsTestRunner.class)
-public class AbstractSimpleDialogTest {
+public class AbstractSimpleDialogTest extends GraphicsTestBase<Dialog> {
     
     private static final String TITLE = "Foo Dialog";
     
@@ -61,20 +60,7 @@ public class AbstractSimpleDialogTest {
     private static final long DEFAULT_TIMEOUT = 1000;
     
     private MockDialog dialog;
-    private DialogFixture window;
     
-    
-    @BeforeClass 
-    public static void setUpOnce() {
-        FailOnThreadViolationRepaintManager.install();
-    }
-
-    @After
-    public void cleanup() {
-        if (window != null) {
-            window.cleanUp();
-        }
-    }
     
     @Test(expected=IllegalStateException.class)
     public void forgettingToCallInitComponentsCausesException() {
@@ -90,7 +76,7 @@ public class AbstractSimpleDialogTest {
     @Test
     public void dialogIsModalByDefault() {
         createWindowFixture();
-        window.requireModal();
+        ((DialogFixture) windowFixture).requireModal();
     }
     
     @Test
@@ -137,8 +123,8 @@ public class AbstractSimpleDialogTest {
         
         // FEST requires that the window be shown before we search for
         // the JPanel
-        window.show();
-        assertNotNull(window.panel(CONTROL_PANEL_NAME));
+        ((DialogFixture) windowFixture).show();
+        assertNotNull(windowFixture.panel(CONTROL_PANEL_NAME));
     }
     
     private void createWindowFixture() {
@@ -151,7 +137,7 @@ public class AbstractSimpleDialogTest {
             }
         });
         
-        window = new DialogFixture(dialog);
+        windowFixture = new DialogFixture(dialog);
     }
 
     private void createWindowFixture(final boolean modal, final boolean resizable) {
@@ -164,12 +150,12 @@ public class AbstractSimpleDialogTest {
             }
         });
         
-        window = new DialogFixture(dialog);
+        windowFixture = new DialogFixture(dialog);
     }
 
     private void assertButtonHandlerIsCalled(MockDialog.EventType et, String btnText) {
         createWindowFixture();
-        window.show();
+        ((DialogFixture) windowFixture).show();
         
         dialog.setExpected(et);
         JButtonFixture button = getButtonByText(btnText);
@@ -179,7 +165,7 @@ public class AbstractSimpleDialogTest {
     }
 
     private JButtonFixture getButtonByText(final String btnText) {
-        return window.button(new GenericTypeMatcher<JButton>(JButton.class) {
+        return windowFixture.button(new GenericTypeMatcher<JButton>(JButton.class) {
             @Override
             protected boolean isMatching(JButton btn) {
                 return btnText.equals(btn.getText());

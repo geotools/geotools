@@ -16,21 +16,21 @@
  */
 package org.geotools.swing.event;
 
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.junit.BeforeClass;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
-import org.fest.swing.edt.GuiActionRunner;
-import org.fest.swing.edt.GuiTask;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.swing.testutils.GraphicsTestBase;
 import org.geotools.swing.testutils.MockMapPane;
+
+import org.fest.swing.edt.GuiActionRunner;
+import org.fest.swing.edt.GuiTask;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +45,7 @@ import static org.junit.Assert.*;
  * @source $URL$
  * @version $Id$
  */
-public class MapMouseEventTest {
+public class MapMouseEventTest extends GraphicsTestBase {
     
     private static final double TOL = 1.0e-6;
     
@@ -62,11 +62,6 @@ public class MapMouseEventTest {
     private MockMapPane pane;
     private MouseEvent ev;
     private MapMouseEvent mapEv;
-    
-    @BeforeClass
-    public static void setupOnce() {
-        FailOnThreadViolationRepaintManager.install();
-    }
     
     @Before
     public void setup() throws Exception {

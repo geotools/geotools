@@ -17,6 +17,7 @@
 
 package org.geotools.swing.dialog;
 
+import org.geotools.swing.testutils.GraphicsTestBase;
 import java.awt.image.Raster;
 import java.awt.image.ColorModel;
 import java.awt.Dimension;
@@ -33,13 +34,11 @@ import javax.swing.JLabel;
 import org.geotools.swing.testutils.TestUtils;
 import org.geotools.swing.testutils.GraphicsTestRunner;
 
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.fixture.JLabelFixture;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
@@ -53,7 +52,7 @@ import static org.junit.Assert.*;
  * @version $Id$
  */
 @RunWith(GraphicsTestRunner.class)
-public class DialogUtilsTest {
+public class DialogUtilsTest extends GraphicsTestBase {
     
     /** 
      * Set this to true to display the screen shot image of the label
@@ -61,10 +60,6 @@ public class DialogUtilsTest {
      */
     private static final boolean displayLabelImage = false;
     
-    @BeforeClass 
-    public static void setUpOnce() {
-        FailOnThreadViolationRepaintManager.install();
-    }
     
     @Test
     public void labelTextExtentCanBeCalledSafelyOutsideEDT() {

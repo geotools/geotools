@@ -17,6 +17,8 @@
 
 package org.geotools.swing.event;
 
+import org.geotools.swing.testutils.GraphicsTestBase;
+import java.awt.Frame;
 import java.awt.Dimension;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -24,7 +26,6 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.JFrame;
 
 import org.fest.swing.core.KeyPressInfo;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.fixture.FrameFixture;
@@ -35,9 +36,7 @@ import org.geotools.swing.testutils.GraphicsTestRunner;
 import org.geotools.swing.testutils.MockMapPane;
 import org.opengis.geometry.Envelope;
 
-import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.Ignore;
@@ -53,20 +52,14 @@ import static org.junit.Assert.*;
  * @version $Id$
  */
 @RunWith(GraphicsTestRunner.class)
-public class MapPaneKeyHandlerTest {
+public class MapPaneKeyHandlerTest extends GraphicsTestBase<Frame> {
     private static final long WAIT_TIMEOUT = 1000;
     private static final int WIDTH = 200;
     private static final int HEIGHT = 150;
 
     private MapPaneKeyHandler handler;
-    private FrameFixture window;
     private MockMapPane2 mapPane;
     
-    @BeforeClass
-    public static void setUpOnce() {
-        FailOnThreadViolationRepaintManager.install();
-    }
-
     @Before
     public void setup() {
         TestFrame frame = GuiActionRunner.execute(new GuiQuery<TestFrame>(){
@@ -82,13 +75,8 @@ public class MapPaneKeyHandlerTest {
             }
         });
         
-        window = new FrameFixture(frame);
-        window.show(new Dimension(WIDTH, HEIGHT));
-    }
-    
-    @After
-    public void cleanup() {
-        window.cleanUp();
+        windowFixture = new FrameFixture(frame);
+        ((FrameFixture) windowFixture).show(new Dimension(WIDTH, HEIGHT));
     }
     
     
@@ -118,7 +106,7 @@ public class MapPaneKeyHandlerTest {
         ReferencedEnvelope startEnv = mapPane.getDisplayArea();
         
         KeyPressInfo info = getKeyPressInfo(MapPaneKeyHandler.Action.ZOOM_IN);
-        window.panel("pane").pressAndReleaseKey(info);
+        windowFixture.panel("pane").pressAndReleaseKey(info);
         
         assertTrue(mapPane.latch.await(WAIT_TIMEOUT, TimeUnit.MILLISECONDS));
         
@@ -130,7 +118,7 @@ public class MapPaneKeyHandlerTest {
             throws Exception {
         
         KeyPressInfo info = getKeyPressInfo(action);
-        window.panel("pane").pressAndReleaseKey(info);
+        windowFixture.panel("pane").pressAndReleaseKey(info);
         
         assertTrue(mapPane.latch.await(WAIT_TIMEOUT, TimeUnit.MILLISECONDS));
         assertEquals(sign(expectedDx), sign(mapPane.dx));

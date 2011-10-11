@@ -17,11 +17,11 @@
 
 package org.geotools.swing.control;
 
+import java.awt.Frame;
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.fixture.FrameFixture;
@@ -29,12 +29,11 @@ import org.fest.swing.fixture.JButtonFixture;
 
 import org.geotools.map.MapContent;
 import org.geotools.swing.MapPane;
+import org.geotools.swing.testutils.GraphicsTestBase;
 import org.geotools.swing.testutils.GraphicsTestRunner;
 import org.geotools.swing.testutils.MockMapPane;
 
-import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
@@ -49,18 +48,12 @@ import static org.junit.Assert.*;
  * @version $Id$
  */
 @RunWith(GraphicsTestRunner.class)
-public class CRSStatusBarItemGraphicsTest {
+public class CRSStatusBarItemGraphicsTest extends GraphicsTestBase<Frame> {
 
-    private FrameFixture frameFixture;
     private MapContent mapContent;
     private MapPane mapPane;
     private CRSStatusBarItem item;
 
-    @BeforeClass
-    public static void setupOnce() {
-        FailOnThreadViolationRepaintManager.install();
-    }
-    
     @Before
     public void setup() {
         JFrame frame = GuiActionRunner.execute(new GuiQuery<JFrame>() {
@@ -79,20 +72,15 @@ public class CRSStatusBarItemGraphicsTest {
             }
         });
         
-        frameFixture = new FrameFixture(frame);
-        frameFixture.show();
-    }
-    
-    @After
-    public void cleanup() {
-        frameFixture.cleanUp();
+        windowFixture = new FrameFixture(frame);
+        ((FrameFixture) windowFixture).show();
     }
     
     @Test
     public void displaysCorrectCRSName() {
         String name = mapContent.getCoordinateReferenceSystem().getName().getCode();
         
-        JButtonFixture button = frameFixture.button();
+        JButtonFixture button = windowFixture.button();
         assertNotNull(button);
         
         button.requireText(name);

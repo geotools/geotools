@@ -17,21 +17,22 @@
 
 package org.geotools.swing.control;
 
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.edt.GuiActionRunner;
-import org.fest.swing.edt.GuiTask;
-import org.junit.BeforeClass;
 import org.geotools.map.MapContent;
 import org.geotools.swing.MapPane;
+import org.geotools.swing.testutils.GraphicsTestRunner;
+import org.geotools.swing.testutils.GraphicsTestBase;
 import org.geotools.swing.testutils.MockMapPane;
+
+import org.fest.swing.edt.GuiActionRunner;
+import org.fest.swing.edt.GuiTask;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
 
 /**
- * Unit tests for CRSStatusBarItem. These tests use FEST to check for EDT correctness
- * but they can be run in a headless environment.
+ * Unit tests for CRSStatusBarItem.
  *
  * @author Michael Bedward
  * @since 8.0
@@ -39,16 +40,12 @@ import static org.junit.Assert.*;
  * @source $URL$
  * @version $Id$
  */
-public class CRSStatusBarItemTest {
+@RunWith(GraphicsTestRunner.class)
+public class CRSStatusBarItemTest extends GraphicsTestBase {
 
     private MapPane mapPane;
     private CRSStatusBarItem item;
 
-    @BeforeClass
-    public static void setupOnce() {
-        FailOnThreadViolationRepaintManager.install();
-    }
-    
     @Before
     public void setup() {
         GuiActionRunner.execute(new GuiTask() {

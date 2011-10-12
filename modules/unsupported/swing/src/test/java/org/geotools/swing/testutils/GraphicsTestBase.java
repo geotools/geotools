@@ -17,7 +17,7 @@
 
 package org.geotools.swing.testutils;
 
-import java.awt.Dialog;
+import java.awt.Component;
 import java.awt.Window;
 
 import javax.swing.JButton;
@@ -76,12 +76,11 @@ public abstract class GraphicsTestBase<T extends Window> {
      * 
      * @param dialogClass dialog class
      */
-    protected void assertDialogDisplayed(Class<? extends Dialog> dialogClass) {
-        Pause.pause(new ComponentFoundCondition("Waiting for dialog to be shown", 
+    protected void assertComponentDisplayed(Class<? extends Component> componentClass) {
+        Pause.pause(new ComponentFoundCondition("Waiting for component to be displayed", 
                 BasicComponentFinder.finderWithCurrentAwtHierarchy(), 
-                new TypeMatcher(dialogClass, true)),
+                new TypeMatcher(componentClass, true)),
                 DISPLAY_TIMEOUT);
-        
     }
 
     /**

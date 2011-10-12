@@ -65,7 +65,7 @@ public class ExceptionReporterTest extends GraphicsTestBase<Dialog> {
         final String MSG = "Foo is not Bar";
         
         ExceptionReporter.showDialog(new IllegalArgumentException(MSG));
-        assertDialogDisplayed(ExceptionReporter.ReportingDialog.class);
+        assertComponentDisplayed(ExceptionReporter.ReportingDialog.class);
 
         ((DialogFixture) windowFixture).requireModal();
         assertEquals("IllegalArgumentException", windowFixture.component().getTitle());
@@ -80,7 +80,7 @@ public class ExceptionReporterTest extends GraphicsTestBase<Dialog> {
         final String USER_MSG = "You should see this message";
         
         ExceptionReporter.showDialog(new IllegalArgumentException(EXCEPTION_MSG), USER_MSG);
-        assertDialogDisplayed(ExceptionReporter.ReportingDialog.class);
+        assertComponentDisplayed(ExceptionReporter.ReportingDialog.class);
         
         assertEquals("IllegalArgumentException", windowFixture.component().getTitle());
         
@@ -94,7 +94,7 @@ public class ExceptionReporterTest extends GraphicsTestBase<Dialog> {
         final String USER_MSG = "";
         
         ExceptionReporter.showDialog(new IllegalArgumentException(EXCEPTION_MSG), USER_MSG);
-        assertDialogDisplayed(ExceptionReporter.ReportingDialog.class);
+        assertComponentDisplayed(ExceptionReporter.ReportingDialog.class);
         
         assertEquals("IllegalArgumentException", windowFixture.component().getTitle());
         

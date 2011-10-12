@@ -20,7 +20,6 @@ package org.geotools.swing.tool;
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Toolkit;
-import java.awt.event.WindowEvent;
 import java.util.WeakHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,7 +33,6 @@ import org.geotools.swing.locale.LocaleUtils;
 import org.geotools.swing.dialog.JTextReporter;
 import org.geotools.swing.dialog.TextReporterListener;
 import org.geotools.swing.event.MapMouseEvent;
-import org.geotools.swing.dialog.DialogUtils;
 import org.geotools.util.logging.Logging;
 
 
@@ -68,7 +66,7 @@ public class InfoTool extends CursorTool implements TextReporterListener {
     public static final String ICON_IMAGE = "/org/geotools/swing/icons/mActionIdentify.png";
 
     private Cursor cursor;
-    private JTextReporter reporter;
+    private JTextReporter.Connection textReporterConnection;
     private WeakHashMap<Layer, InfoToolHelper> helperTable;
 
     /**
@@ -134,11 +132,11 @@ public class InfoTool extends CursorTool implements TextReporterListener {
 
                 try {
                     InfoToolResult result = helper.getInfo(pos);
-                    reporter.append(layerName + "\n");
-                    reporter.append(result.toString(), 4);
+                    textReporterConnection.append(layerName + "\n");
+                    textReporterConnection.append(result.toString(), 4);
                     
                     if (++n < nlayers) {
-                        reporter.append("\n");
+                        textReporterConnection.append("\n");
                     }
                     
                 } catch (Exception ex) {
@@ -147,8 +145,8 @@ public class InfoTool extends CursorTool implements TextReporterListener {
             }
         }
         
-        reporter.separator('-');
-        reporter.append("\n");
+        textReporterConnection.appendSeparatorLine(10, '-');
+        textReporterConnection.appendNewline();
     }
 
     /**
@@ -157,7 +155,7 @@ public class InfoTool extends CursorTool implements TextReporterListener {
      * @param pos mouse click position in world coordinates
      */
     private void report(DirectPosition2D pos) {
-        reporter.append(String.format("Pos x=%.4f y=%.4f\n", pos.x, pos.y));
+        textReporterConnection.append(String.format("Pos x=%.4f y=%.4f\n", pos.x, pos.y));
     }
 
     /**
@@ -165,11 +163,14 @@ public class InfoTool extends CursorTool implements TextReporterListener {
      * reporter is already active.
      */
     private void createReporter() {
-        if (reporter == null) {
-            reporter = JTextReporter.create("Feature info", 20, 30);
-            reporter.addListener(this);
-
-            DialogUtils.showCentred(reporter);
+        if (textReporterConnection == null) {
+            textReporterConnection = JTextReporter.showDialog(
+                    "Feature info", 
+                    null, 
+                    JTextReporter.DEFAULT_FLAGS,
+                    20, 40);
+            
+            textReporterConnection.addListener(this);
         }
     }
 
@@ -191,21 +192,17 @@ public class InfoTool extends CursorTool implements TextReporterListener {
     /**
      * Called when a {@code JTextReporter} frame that was being used by this tool
      * is closed by the user
-     *
-     * @param ev event published by the {@code JTextReporter}
      */
     @Override
-    public void onReporterClosed(WindowEvent ev) {
-        reporter = null;
+    public void onReporterClosed() {
+        textReporterConnection = null;
     }
 
     /**
      * Empty method. Defined to satisfy the {@code TextReporterListener} interface.
-     * @param newTextStartLine
      */
     @Override
-    public void onReporterUpdated(int newTextStartLine) {
-        // no action
+    public void onReporterUpdated() {
     }
 
 }

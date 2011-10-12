@@ -58,12 +58,9 @@ import static org.junit.Assert.*;
 /**
  * Tests for {@linkplain JCRSChooser}.
  * <p>
- * Implementation note: These tests are similar to those for {@linkplain ExceptionReporter}
- * which also displays a nested dialog class. The difference here is that after displaying
- * the dialog, the enclosing class blocks (using a synchronous queue) while waiting for 
- * the user to make a selection. Therefore, we can't rely on FEST fixture clean-up to 
- * dismiss the dialog after each test, and we need to display the dialog on a separate
- * thread to avoid blocking the test.
+ * This test class uses an {@linkplain ExecutorService} to launch the dialog which 
+ * avoids a deadlock between the dialog waiting for a user response and this class
+ * waiting for the dialog to show up on the event thread.
  * 
  * @author Michael Bedward
  * @since 8.0
@@ -278,9 +275,9 @@ public class JCRSChooserTest extends GraphicsTestBase<Dialog> {
      * @return the Future for the dialog task
      */
     private Future<CoordinateReferenceSystem> showDialog(String title) {
-        ChooserInvocation task = new ChooserInvocation(title);
+        DialogInvocation task = new DialogInvocation(title);
         Future<CoordinateReferenceSystem> future = executor.submit(task);
-        assertDialogDisplayed(JCRSChooser.CRSDialog.class);
+        assertComponentDisplayed(JCRSChooser.CRSDialog.class);
         
         return future;
     }
@@ -320,10 +317,10 @@ public class JCRSChooserTest extends GraphicsTestBase<Dialog> {
      * Task class to launch the dialog in a thread provided by the single
      * thread pool executor.
      */
-    static class ChooserInvocation implements Callable<CoordinateReferenceSystem> {
+    static class DialogInvocation implements Callable<CoordinateReferenceSystem> {
         private final String title;
 
-        ChooserInvocation(String title) {
+        DialogInvocation(String title) {
             this.title = title;
         }
         

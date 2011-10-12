@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,17 +17,12 @@
 
 package org.geotools.swing.dialog;
 
-import java.awt.event.WindowEvent;
-
 /**
  * Implemented by objects that wish to receive events published
  * by a {@code JTextReporter}.
  *
  * @author Michael Bedward
  * @since 2.6
- *
- *
- *
  * @source $URL$
  * @version $URL$
  */
@@ -35,16 +30,11 @@ public interface TextReporterListener {
 
     /**
      * Called by the reporter when it is being closed
-     *
-     * @param ev the window event issued by the system
      */
-    public void onReporterClosed(WindowEvent ev);
+    public void onReporterClosed();
 
     /**
      * Called by the text reporter when text has been appended
-     *
-     * @param newTextStartLine the line number at which the newly
-     *        appended text begins
      */
-    public void onReporterUpdated(int newTextStartLine);
+    public void onReporterUpdated();
 }

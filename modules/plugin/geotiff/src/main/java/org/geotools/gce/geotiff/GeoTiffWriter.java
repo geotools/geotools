@@ -56,6 +56,7 @@ import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffException;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataEncoder;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
+import org.geotools.image.io.GridCoverageWriterProgressAdapter;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
@@ -77,6 +78,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.crs.ProjectedCRS;
 import org.opengis.referencing.operation.TransformException;
+import org.opengis.util.ProgressListener;
 
 /**
  * {@link AbstractGridCoverageWriter} implementation for the geotiff format.
@@ -89,6 +91,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements
 		GridCoverageWriter {
 
 	private final Map<String, String> metadataKeyValue = new HashMap<String, String>(); 
+	
 	/** factory for getting tiff writers. */
 	private final static TIFFImageWriterSpi tiffWriterFactory = new TIFFImageWriterSpi();
 
@@ -182,7 +185,6 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements
 	 * @see org.opengis.coverage.grid.GridCoverageWriter#write(org.opengis.coverage.grid.GridCoverage,
 	 *      org.opengis.parameter.GeneralParameterValue[])
 	 */
-	@SuppressWarnings("unchecked")
 	public void write(final GridCoverage gc,
 			final GeneralParameterValue[] params)
 			throws IllegalArgumentException, IOException,
@@ -190,6 +192,8 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements
 
 		GeoToolsWriteParams gtParams = null;
 		boolean writeTfw=GeoTiffFormat.WRITE_TFW.getDefaultValue();
+//		gridcove
+		ProgressListener listener=null;
 		if (params != null) {
 			// /////////////////////////////////////////////////////////////////////
 			//
@@ -204,10 +208,16 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements
 					final ReferenceIdentifier name=param.getDescriptor().getName();
 					if (name.equals(AbstractGridFormat.GEOTOOLS_WRITE_PARAMS.getName())) {
 					    gtParams = (GeoToolsWriteParams) param.getValue();
+					    continue;
 					}
 					if (name.equals(GeoTiffFormat.WRITE_TFW.getName())){
 					    writeTfw = (Boolean) param.getValue();
+					    continue;
 					}
+                                        if (name.equals(GeoTiffFormat.PROGRESS_LISTENER.getName())) {
+                                            listener = (ProgressListener) param.getValue();
+                                            continue;
+                                        }
 				}
 			}
 		}
@@ -248,7 +258,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements
 			setGeoReference(crs, metadata, tr, range);
 
 			// writing ALWAYS the geophysics vew of the data
-			writeImage(((GridCoverage2D) gc).geophysics(true).getRenderedImage(), this.outStream, metadata, gtParams);
+			writeImage(((GridCoverage2D) gc).geophysics(true).getRenderedImage(), this.outStream, metadata, gtParams,listener);
 			
 			// write tfw
 			if(writeTfw&& (destination instanceof File)){
@@ -406,11 +416,13 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements
 	 * using the supplied geotiff metadata.
 	 * 
 	 * @param gtParams
+	 * @param listener 
 	 */
 	private boolean writeImage(final RenderedImage image,
 			final ImageOutputStream outputStream,
 			final GeoTiffIIOMetadataEncoder geoTIFFMetadata,
-			GeoToolsWriteParams gtParams) throws IOException {
+			GeoToolsWriteParams gtParams, 
+			ProgressListener listener) throws IOException {
 		if (image == null || outputStream == null) {
 			throw new NullPointerException("Some input parameters are null");
 		}
@@ -429,6 +441,12 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements
 			// IMAGEWRITE
 			//			
 			writer.setOutput(outputStream);
+			// listeners
+			if(listener!=null){
+	                    final GridCoverageWriterProgressAdapter progressAdapter =  new GridCoverageWriterProgressAdapter(listener);
+			    writer.addIIOWriteProgressListener(progressAdapter);
+			    writer.addIIOWriteWarningListener(progressAdapter);
+			}
 			writer.write(writer.getDefaultStreamMetadata(params), new IIOImage(image, null, metadata), params);
 
 

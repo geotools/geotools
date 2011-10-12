@@ -108,60 +108,64 @@ public final class GeoTiffIIOMetadataDecoder {
   private final double noData;
   private final AffineTransform modelTransformation;
 
-	/**
-	 * The constructor builds a metadata adapter for the image metadata root
-	 * IIOMetadataNode.
-	 * 
-	 * @param imageMetadata
-	 *            The image metadata
-	 */
-	public GeoTiffIIOMetadataDecoder(final IIOMetadata imageMetadata) {
-	    if (imageMetadata == null){
-	        throw new NullPointerException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1,"imageMetadata"));
-	    }
-	  iioMetadata = imageMetadata;
-		// getting the image metadata root node.
-    Node rootNode = getRootNode();
-		if (rootNode == null) {
-			throw new NullPointerException("Unable to retrieve metadata");
-		}
+    /**
+     * The constructor builds a metadata adapter for the image metadata root IIOMetadataNode.
+     * 
+     * @param imageMetadata
+     *            The image metadata
+     */
+    public GeoTiffIIOMetadataDecoder(final IIOMetadata imageMetadata) {
+        if (imageMetadata == null) {
+            throw new IllegalArgumentException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1,
+                    "imageMetadata"));
+        }
+        iioMetadata = imageMetadata;
+        // getting the image metadata root node.
+        Node rootNode = getRootNode();
+        if (rootNode == null) {
+            throw new NullPointerException("Unable to retrieve metadata");
+        }
 
-    pixelScale = calculateModelPixelScales(rootNode);
-    tiePoints = calculateTiePoints(rootNode);
-    noData = calculateNoData(rootNode);
-    modelTransformation = calculateModelTransformation(rootNode);
+        // getting the geokey ddirectory
+        IIOMetadataNode geoKeyDir = getTiffField(rootNode, GeoTIFFTagSet.TAG_GEO_KEY_DIRECTORY);
+        geoKeys = new HashMap<Integer, GeoKeyEntry>();
+        if (geoKeyDir != null) {
+            NodeList geoKeyDirEntries = geoKeyDir.getFirstChild().getChildNodes();
+            for (int i = 4; i < geoKeyDirEntries.getLength(); i += 4) {
+                int keyID = getIntValueAttribute(geoKeyDirEntries.item(i));
+                GeoKeyEntry key = new GeoKeyEntry(keyID,// key
+                        getIntValueAttribute(geoKeyDirEntries.item(i + 1)),// location
+                        getIntValueAttribute(geoKeyDirEntries.item(i + 2)),// count
+                        getIntValueAttribute(geoKeyDirEntries.item(i + 3)));// offset
 
-		// getting the geokey ddirectory
-    IIOMetadataNode geoKeyDir = getTiffField(rootNode, GeoTIFFTagSet.TAG_GEO_KEY_DIRECTORY);
-    geoKeys = new HashMap<Integer, GeoKeyEntry>();
-		if (geoKeyDir != null) {
-        		NodeList geoKeyDirEntries = geoKeyDir.getFirstChild().getChildNodes();
-        		for (int i = 4; i < geoKeyDirEntries.getLength(); i += 4) {
-              int keyID = getIntValueAttribute(geoKeyDirEntries.item(i));
-              GeoKeyEntry key = new GeoKeyEntry(keyID,// key
-			  			    getIntValueAttribute(geoKeyDirEntries.item(i + 1)),// location
-	  		  		  	getIntValueAttribute(geoKeyDirEntries.item(i + 2)),// count
-  	  		    		getIntValueAttribute(geoKeyDirEntries.item(i + 3)));// offset
-
-              if (!geoKeys.containsKey(keyID)) { 
-                  geoKeys.put( keyID, key);
-              }
+                if (!geoKeys.containsKey(keyID)) {
+                    geoKeys.put(keyID, key);
+                }
             }
-        		// GeoKeyDirVersion and the other parameters
-        		geoKeyDirVersion = getTiffShort(geoKeyDir,GeoTiffGCSCodes.GEO_KEY_DIRECTORY_VERSION_INDEX);
-        		geoKeyRevision = getTiffShort(geoKeyDir,GeoTiffGCSCodes.GEO_KEY_REVISION_INDEX);
-        		if (geoKeyRevision != 1) {
-        			geoKeyRevision = 1;
-        			// I had to remove this because I did not want to have wrong
-        			// revision numbers blocking us.
-        			// throw new UnsupportedOperationException("Unsupported revision");
-        		}
-        		geoKeyMinorRevision = getTiffShort(geoKeyDir,	GeoTiffGCSCodes.GEO_KEY_MINOR_REVISION_INDEX);
-        		// loading the number of geokeys inside the geokeydirectory
-        		geoKeyDirTagsNum = getTiffShort(geoKeyDir, GeoTiffGCSCodes.GEO_KEY_NUM_KEYS_INDEX);
-		}
+            // GeoKeyDirVersion and the other parameters
+            geoKeyDirVersion = getTiffShort(geoKeyDir,
+                    GeoTiffGCSCodes.GEO_KEY_DIRECTORY_VERSION_INDEX);
+            geoKeyRevision = getTiffShort(geoKeyDir, GeoTiffGCSCodes.GEO_KEY_REVISION_INDEX);
+            if (geoKeyRevision != 1) {
+                geoKeyRevision = 1;
+                // I had to remove this because I did not want to have wrong
+                // revision numbers blocking us.
+                // throw new UnsupportedOperationException("Unsupported revision");
+            }
+            geoKeyMinorRevision = getTiffShort(geoKeyDir,
+                    GeoTiffGCSCodes.GEO_KEY_MINOR_REVISION_INDEX);
+            // loading the number of geokeys inside the geokeydirectory
+            geoKeyDirTagsNum = getTiffShort(geoKeyDir, GeoTiffGCSCodes.GEO_KEY_NUM_KEYS_INDEX);
+        }
+        
+        pixelScale = calculateModelPixelScales(rootNode);
+        tiePoints = calculateTiePoints(rootNode);
+        noData = calculateNoData(rootNode);
+        modelTransformation = calculateModelTransformation(rootNode);
 
-	}
+       
+
+    }
 
 	/**
 	 * Gets the version of the GeoKey directory. This is typically a value of 1
@@ -415,21 +419,6 @@ public final class GeoTiffIIOMetadataDecoder {
           return !Double.isNaN(noData);
         }
         
-        /**
-         * Returns the value of an ASCII TIFFTag referred by tagID.
-         * 
-         * @return the tag value as a String, null if not available.
-         * 
-         */
-        public String getAsciiTIFFTag(final String tagID) {
-            if (GeoTiffConstants.isNumeric(tagID)){
-                final IIOMetadataNode metadataNode = getTiffField(getRootNode(), Integer.valueOf(tagID));
-                if (metadataNode != null){
-                    return getTiffAscii(metadataNode);
-                }
-            }
-            return null;
-        }
 
 	/**
 	 * Gets the model tie points from the appropriate TIFFField
@@ -640,4 +629,21 @@ public final class GeoTiffIIOMetadataDecoder {
 	public boolean hasGeoKey(){
 	    return !geoKeys.isEmpty();
 	}
+
+        /**
+         * Returns the value of an ASCII TIFFTag referred by tagID.
+         * 
+         * @return the tag value as a String, null if not available.
+         * 
+         */
+        public String getAsciiTIFFTag(final String tagID) {
+            if (GeoTiffConstants.isNumeric(tagID)) {
+                final IIOMetadataNode metadataNode = getTiffField(getRootNode(), Integer.valueOf(tagID));
+                if (metadataNode != null) {
+                    return getTiffAscii(metadataNode);
+                }
+            }
+            return null;
+        }
+         	
 } // end of class GeoTiffIIOMetadataDecoder

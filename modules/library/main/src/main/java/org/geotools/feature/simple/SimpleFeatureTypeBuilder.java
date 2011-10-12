@@ -42,6 +42,7 @@ import org.opengis.feature.type.GeometryType;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.Schema;
 import org.opengis.filter.Filter;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.util.InternationalString;
 
@@ -1014,22 +1015,25 @@ public class SimpleFeatureTypeBuilder {
 	 * @return SimpleFeatureType containing just the types indicated by name
 	 */
 	public static SimpleFeatureType retype( SimpleFeatureType original, String[] types ) {
-	    SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
-	    
-	    //initialize the builder
-	    b.init( original );
-	    
-	    //clear the attributes
-	    b.attributes().clear();
-	    
-	    //add attributes in order
-	    for ( int i = 0; i < types.length; i++ ) {
-	        b.add( original.getDescriptor( types[i] ) );
-	    }
-	    
-	    return b.buildFeatureType();
+	    return retype(original, Arrays.asList(types));
 	}
 	
+	public static SimpleFeatureType retype( SimpleFeatureType original, List<String> types ) {
+	    SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
+
+            //initialize the builder
+            b.init( original );
+            
+            //clear the attributes
+            b.attributes().clear();
+            
+            //add attributes in order
+            for ( int i = 0; i < types.size(); i++ ) {
+                b.add( original.getDescriptor( types.get(i) ) );
+            }
+            
+            return b.buildFeatureType();
+	}
 	/**
          * Create a SimpleFeatureType with the same content; just updating the geometry
          * attribute to match the provided coordinate reference system.
@@ -1057,6 +1061,30 @@ public class SimpleFeatureTypeBuilder {
                     continue;
                 }
                 b.add( descriptor);
+            }            
+            return b.buildFeatureType();
+        }
+
+        /**
+         * Copys a feature type.
+         * <p>
+         * This method does a deep copy in that all individual attributes are copied as well.
+         * </p>
+         */
+        public static SimpleFeatureType copy( SimpleFeatureType original ) {
+            SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
+            
+            //initialize the builder
+            b.init( original );
+            
+            //clear attributes
+            b.attributes().clear();
+            
+            //add attributes in order
+            for( AttributeDescriptor descriptor : original.getAttributeDescriptors() ){
+                AttributeTypeBuilder ab = new AttributeTypeBuilder( b.factory );
+                ab.init( descriptor );
+                b.add( ab.buildDescriptor( descriptor.getLocalName() ));
             }            
             return b.buildFeatureType();
         }

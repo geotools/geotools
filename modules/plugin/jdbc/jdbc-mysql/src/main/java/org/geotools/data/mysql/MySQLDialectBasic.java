@@ -83,13 +83,14 @@ public class MySQLDialectBasic extends BasicSQLDialect {
     }
 
     @Override
-    public void encodeColumnName(String raw, StringBuffer sql) {
-        delegate.encodeColumnName(raw, sql);
+    public void encodeColumnName(String prefix, String raw, StringBuffer sql) {
+        delegate.encodeColumnName(prefix, raw, sql);
     }
     
     @Override
-    public void encodeGeometryColumn(GeometryDescriptor gatt, int srid, StringBuffer sql) {
-        delegate.encodeGeometryColumn(gatt, srid, sql);
+    public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix, int srid,
+            StringBuffer sql) {
+        delegate.encodeGeometryColumn(gatt, prefix, srid, sql);
     }
     
     @Override

@@ -31,6 +31,7 @@ import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureEvent;
 import org.geotools.data.FeatureListener;
 import org.geotools.data.FeatureReader;
+import org.geotools.data.Join;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -113,13 +114,23 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
         this.featureSource = featureSource;
         this.query = query;
         
+        this.featureType = featureSource.getSchema();
+
         //retype feature type if necessary
         if ( query.getPropertyNames() != Query.ALL_NAMES ) {
             this.featureType = 
-                SimpleFeatureTypeBuilder.retype(featureSource.getSchema(), query.getPropertyNames() );
+                SimpleFeatureTypeBuilder.retype(this.featureType, query.getPropertyNames() );
         }
-        else {
-            this.featureType = featureSource.getSchema();
+
+        //check for join and expand attributes as necessary
+        if (!query.getJoins().isEmpty()) {
+            SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+            tb.init(this.featureType);
+
+            for (Join join : query.getJoins()) {
+                tb.add(join.attributeName(), SimpleFeature.class);
+            }
+            this.featureType = tb.buildFeatureType();
         }
     }
     

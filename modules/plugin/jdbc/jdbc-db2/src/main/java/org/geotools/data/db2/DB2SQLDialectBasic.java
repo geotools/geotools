@@ -88,15 +88,15 @@ public class DB2SQLDialectBasic extends BasicSQLDialect {
     }
     
 
-    
     public void encodeGeometryColumn(GeometryDescriptor gatt,StringBuffer sql) {
-    	delegate.encodeGeometryColumn(gatt, sql);
-    }
-    
-    public void encodeGeometryColumn(GeometryDescriptor gatt, int srid, StringBuffer sql) {
-    	delegate.encodeGeometryColumn(gatt, srid, sql);    	
+    	delegate.encodeGeometryColumn(gatt, null, sql);
     }
 
+    @Override
+    public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix, int srid,
+        StringBuffer sql) {
+        delegate.encodeGeometryColumn(gatt, prefix, srid, sql);
+    }
 
     @Override    
     public void encodeGeometryEnvelope(String tableName,String geometryColumn, StringBuffer sql) {
@@ -184,9 +184,12 @@ public class DB2SQLDialectBasic extends BasicSQLDialect {
         delegate.applyLimitOffset(sql, limit, offset);
     }
 
-    public void encodeGeometryColumnGeneralized(GeometryDescriptor gatt, int srid, StringBuffer sql,Double distance) {
-    	delegate.encodeGeometryColumnGeneralized(gatt, srid, sql, distance);
+    @Override
+    public void encodeGeometryColumnGeneralized(GeometryDescriptor gatt, String prefix, int srid,
+        StringBuffer sql, Double distance) {
+        delegate.encodeGeometryColumnGeneralized(gatt, prefix, srid, sql, distance);
     }
+
     @Override
     protected void addSupportedHints(Set<Key> hints) {
     	delegate.addSupportedHints(hints);

@@ -72,6 +72,21 @@ import org.geotools.factory.Hints;
  * provided by a feature source implementation.
  * </li>
  * </ul>
+ * 
+ * Joins:
+ * <p>
+ * The Query class supports the concepts of joins in that a query can result in a join of the 
+ * feature type to other feature types in the same datastore. For example, the following would be 
+ * a spatial join that selected the country that contain a particular city.
+ * <pre><code>
+ * Query query = new Query("countries");
+ * Join join = new Join("cities", CQL.toFilter("CONTAINS(geometry, b.geometry)"));
+ * join.setAlias("b");
+ * join.setFilter(CQL.toFilter("CITY_NAME = 'Canmore'"))
+ * query.getJoins().add(join);
+ * </code></pre>
+ * </p>
+ * 
  * Example:<pre><code>
  * Filter filter = CQL.toFilter("NAME like '%land'");
  * Query query = new Query( "countries", filter );
@@ -173,6 +188,9 @@ public class Query {
 
     /** The typeName to get */
     protected String typeName;
+    
+    /** The optional alias for type name */
+    protected String alias;
 
     /** The namespace to get */
     protected URI namespace =Query.NO_NAMESPACE;
@@ -194,7 +212,10 @@ public class Query {
     
     /** The hints to be used during query execution */
     protected Hints hints;
-    
+
+    /** join clauses for this query */
+    protected List<Join> joins = new ArrayList();
+
     /**
      * Default constructor. Use setter methods to configure the Query
      * before use (the default Query will retrieve all features).
@@ -326,6 +347,11 @@ public class Query {
       this.version = query.getVersion();
       this.hints = query.getHints();
       this.startIndex = query.getStartIndex();
+      this.alias = query.getAlias();
+      this.joins = new ArrayList();
+      for (Join j : query.getJoins()) {
+          this.joins.add(new Join(j));
+      }
     }
 
     /**
@@ -585,7 +611,29 @@ public class Query {
     public void setTypeName(String typeName) {
         this.typeName = typeName;
     }
-    
+
+    /**
+     * An alias substitutable for {@link #getTypeName()}.
+     * <p>
+     * This value is typically used in a join query in which the join filter requires disambiguation
+     * due to property name overlaps between joined types.
+     * </p>
+     * @since 8.0
+     */
+    public String getAlias() {
+        return alias;
+    }
+
+    /**
+     * Sets the type name alias.
+     * 
+     * @since 8.0
+     * @see #getAlias()
+     */
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
     /**
      * Get the namespace of the feature type to be queried.
      *
@@ -903,5 +951,17 @@ public class Query {
         }
         
         return returnString.toString();
+    }
+
+    /**
+     * The list of joins for this query.
+     * <p>
+     * Each {@link Join} object specifies a feature type to join to. The join may only reference
+     * a feature type from within the same datastore.
+     * </p>
+     * @see Join
+     */
+    public List<Join> getJoins() {
+        return joins;
     }
 }

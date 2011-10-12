@@ -33,9 +33,8 @@ import org.geotools.factory.Hints;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.LikeFilterImpl;
-import org.geotools.filter.function.FilterFunction_strConcat;
-import org.geotools.filter.function.FilterFunction_strEndsWith;
 import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.jdbc.JoinPropertyName;
 import org.geotools.jdbc.PrimaryKey;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
@@ -47,6 +46,7 @@ import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.ExcludeFilter;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.Id;
 import org.opengis.filter.IncludeFilter;
@@ -90,6 +90,7 @@ import org.opengis.filter.temporal.AnyInteracts;
 import org.opengis.filter.temporal.Before;
 import org.opengis.filter.temporal.Begins;
 import org.opengis.filter.temporal.BegunBy;
+import org.opengis.filter.temporal.BinaryTemporalOperator;
 import org.opengis.filter.temporal.During;
 import org.opengis.filter.temporal.EndedBy;
 import org.opengis.filter.temporal.Ends;
@@ -99,6 +100,7 @@ import org.opengis.filter.temporal.OverlappedBy;
 import org.opengis.filter.temporal.TContains;
 import org.opengis.filter.temporal.TEquals;
 import org.opengis.filter.temporal.TOverlaps;
+import org.opengis.temporal.Period;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -150,6 +152,9 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     /** error message for exceptions */
     protected static final String IO_ERROR = "io problem writing filter";
 
+    /** filter factory */
+    protected static FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
+    
     /** The filter types that this class can encode */
     protected FilterCapabilities capabilities = null;
 
@@ -188,7 +193,10 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     
     /** the srid corresponding to the current binary spatial filter being encoded */
     protected Integer currentSRID;
-     
+
+    /** inline flag, controlling whether "WHERE" will prefix the SQL encoded filter */
+    protected boolean inline = false;
+
     /**
      * Default constructor
      */
@@ -206,7 +214,11 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     public void setWriter(Writer out) {
         this.out = out;
     }
-    
+
+    public void setInline(boolean inline) {
+        this.inline = inline;
+    }
+
     /**
      * Performs the encoding, sends the encoded sql to the writer passed in.
      *
@@ -220,7 +232,10 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         if (getCapabilities().fullySupports(filter)) {
 
             try {
-                out.write("WHERE ");
+                if (!inline) {
+                    out.write("WHERE ");
+                }
+
                 filter.accept(this, null);
 
                 //out.write(";");
@@ -349,6 +364,17 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         capabilities.addType(Id.class);
         capabilities.addType(IncludeFilter.class);
         capabilities.addType(ExcludeFilter.class);
+        
+        //temporal filters
+        capabilities.addType(After.class);
+        capabilities.addType(Before.class);
+        capabilities.addType(Begins.class);
+        capabilities.addType(BegunBy.class);
+        capabilities.addType(During.class);
+        capabilities.addType(Ends.class);
+        capabilities.addType(EndedBy.class);
+        capabilities.addType(TContains.class);
+        capabilities.addType(TEquals.class);
 
         return capabilities;
     }
@@ -854,51 +880,244 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                             + "can't do SDO relate against it: "
                             + filter.getClass());
 
+        
         // extract the property name and the geometry literal
-        PropertyName property;
-        Literal geometry;
         BinaryComparisonOperator op = (BinaryComparisonOperator) filter;
-        if (op.getExpression1() instanceof PropertyName
-                && op.getExpression2() instanceof Literal) {
-            property = (PropertyName) op.getExpression1();
-            geometry = (Literal) op.getExpression2();
-        } else if (op.getExpression2() instanceof PropertyName
-                && op.getExpression1() instanceof Literal) {
-            property = (PropertyName) op.getExpression2();
-            geometry = (Literal) op.getExpression1();
-        } else {
-            throw new IllegalArgumentException(
-                    "Can only encode spatial filters that do "
-                            + "compare a property name and a geometry");
+        Expression e1 = op.getExpression1();
+        Expression e2 = op.getExpression2();
+
+        if (e1 instanceof Literal && e2 instanceof PropertyName) {
+            e1 = (PropertyName) op.getExpression2();
+            e2 = (Literal) op.getExpression1();
         }
 
-        // handle native srid
-        currentGeometry = null;
-        currentSRID = null;
-        if (featureType != null) {
-            // going thru evaluate ensures we get the proper result even if the
-            // name has
-            // not been specified (convention -> the default geometry)
-            AttributeDescriptor descriptor = (AttributeDescriptor) property
-                    .evaluate(featureType);
-            if (descriptor instanceof GeometryDescriptor) {
-                currentGeometry = (GeometryDescriptor) descriptor;
-                currentSRID = (Integer) descriptor.getUserData().get(
-                        JDBCDataStore.JDBC_NATIVE_SRID);
+        if (e1 instanceof PropertyName) {
+            // handle native srid
+            currentGeometry = null;
+            currentSRID = null;
+            if (featureType != null) {
+                // going thru evaluate ensures we get the proper result even if the
+                // name has
+                // not been specified (convention -> the default geometry)
+                AttributeDescriptor descriptor = (AttributeDescriptor) e1.evaluate(featureType);
+                if (descriptor instanceof GeometryDescriptor) {
+                    currentGeometry = (GeometryDescriptor) descriptor;
+                    currentSRID = (Integer) descriptor.getUserData().get(
+                            JDBCDataStore.JDBC_NATIVE_SRID);
+                }
             }
         }
 
-        return visitBinarySpatialOperator(filter, property, geometry, filter
-                .getExpression1() instanceof Literal, extraData);
+        if (e1 instanceof PropertyName && e2 instanceof Literal) {
+            //call the "regular" method
+            return visitBinarySpatialOperator(filter, (PropertyName)e1, (Literal)e2, filter
+                    .getExpression1() instanceof Literal, extraData);
+        }
+        else {
+            //call the join version
+            return visitBinarySpatialOperator(filter, e1, e2, extraData);
+        }
+        
     }
 
+    /**
+     * Handles the common case of a PropertyName,Literal geometry binary spatial operator.
+     */
     protected Object visitBinarySpatialOperator(BinarySpatialOperator filter,
             PropertyName property, Literal geometry, boolean swapped,
             Object extraData) {
         throw new RuntimeException(
             "Subclasses must implement this method in order to handle geometries");
     }
-    
+
+    /**
+     * Handles the more general case of two generic expressions.
+     * <p>
+     * The most common case is two PropertyName expressions, which happens during a spatial join.
+     * </p>
+     */
+    protected Object visitBinarySpatialOperator(BinarySpatialOperator filter, Expression e1, 
+        Expression e2, Object extraData) {
+        throw new RuntimeException(
+            "Subclasses must implement this method in order to handle geometries");
+    }
+
+    protected Object visitBinaryTemporalOperator(BinaryTemporalOperator filter,
+            Object extraData) {
+        if (filter == null) {
+            throw new NullPointerException("Null filter");
+        }
+        
+        Expression e1 = filter.getExpression1();
+        Expression e2 = filter.getExpression2();
+
+        if (e1 instanceof Literal && e2 instanceof PropertyName) {
+            e1 = (PropertyName) filter.getExpression2();
+            e2 = (Literal) filter.getExpression1();
+        }
+
+        if (e1 instanceof PropertyName && e2 instanceof Literal) {
+            //call the "regular" method
+            return visitBinaryTemporalOperator(filter, (PropertyName)e1, (Literal)e2, 
+                filter.getExpression1() instanceof Literal, extraData);
+        }
+        else {
+            //call the join version
+            return visitBinaryTemporalOperator(filter, e1, e2, extraData);
+        }
+    }
+
+    /**
+     * Handles the common case of a PropertyName,Literal geometry binary temporal operator.
+     * <p>
+     * Subclasses should override if they support more temporal operators than what is handled in 
+     * this base class. 
+     * </p>
+     */
+    protected Object visitBinaryTemporalOperator(BinaryTemporalOperator filter, 
+        PropertyName property, Literal temporal, boolean swapped, Object extraData) { 
+
+        Class typeContext = null;
+        AttributeDescriptor attType = (AttributeDescriptor)property.evaluate(featureType);
+        if (attType != null) {
+            typeContext = attType.getType().getBinding();
+        }
+        
+        //check for time period
+        Period period = null;
+        if (temporal.evaluate(null) instanceof Period) {
+            period = (Period) temporal.evaluate(null);
+        }
+
+        //verify that those filters that require a time period have one
+        if ((filter instanceof Begins || filter instanceof BegunBy || filter instanceof Ends ||
+            filter instanceof EndedBy || filter instanceof During || filter instanceof TContains) &&
+            period == null) {
+            if (period == null) {
+                throw new IllegalArgumentException("Filter requires a time period");
+            }
+        }
+        if (filter instanceof TEquals && period != null) {
+            throw new IllegalArgumentException("TEquals filter does not accept time period");
+        }
+
+        //ensure the time period is the correct argument
+        if ((filter instanceof Begins || filter instanceof Ends || filter instanceof During) && 
+            swapped) {
+            throw new IllegalArgumentException("Time period must be second argument of Filter");
+        }
+        if ((filter instanceof BegunBy || filter instanceof EndedBy || filter instanceof TContains) && 
+            !swapped) {
+            throw new IllegalArgumentException("Time period must be first argument of Filter");
+        }
+        
+        try {
+            if (filter instanceof After || filter instanceof Before) {
+                String op = filter instanceof After ? " > " : " < ";
+                String inv = filter instanceof After ? " < " : " > ";
+                
+                if (period != null) {
+                    out.write("(");
+
+                    property.accept(this, extraData);
+                    out.write(swapped ? inv : op);
+                    visitBegin(period, extraData);
+
+                    out.write(" AND ");
+                    
+                    property.accept(this, extraData);
+                    out.write(swapped ? inv : op);
+                    visitEnd(period, extraData);
+
+                    out.write(")");
+                }
+                else {
+                    if (swapped) {
+                        temporal.accept(this, typeContext);
+                    }
+                    else {
+                        property.accept(this, extraData);
+                    }
+        
+                    out.write(op);
+                    
+                    if (swapped) {
+                        property.accept(this, extraData);
+                    }
+                    else {
+                        temporal.accept(this, typeContext);
+                    }
+                }
+            }
+            else if (filter instanceof Begins || filter instanceof Ends || 
+                     filter instanceof BegunBy || filter instanceof EndedBy ) {
+                property.accept(this, extraData);
+                out.write( " = ");
+
+                if (filter instanceof Begins || filter instanceof BegunBy) {
+                    visitBegin(period, extraData);
+                }
+                else {
+                    visitEnd(period, extraData);
+                }
+            }
+            else if (filter instanceof During || filter instanceof TContains){
+                property.accept(this, extraData);
+                out.write( " BETWEEN ");
+
+                visitBegin(period, extraData);
+                out.write( " AND ");
+                visitEnd(period, extraData);
+            }
+            else if (filter instanceof TEquals) {
+                property.accept(this, extraData);
+                out.write(" = ");
+                temporal.accept(this, typeContext);
+            }
+        }
+        catch(IOException e) {
+            throw new RuntimeException("Error encoding temporal filter", e);
+        }
+        
+        return extraData;
+    }
+
+    void visitBegin(Period p, Object extraData) {
+        filterFactory.literal(p.getBeginning().getPosition().getDate()).accept(this, extraData);
+    }
+
+    void visitEnd(Period p, Object extraData) {
+        filterFactory.literal(p.getEnding().getPosition().getDate()).accept(this, extraData);
+    }
+
+    /**
+     * Handles the general case of two expressions in a binary temporal filter.
+     * <p>
+     * Subclasses should override if they support more temporal operators than what is handled in 
+     * this base class. 
+     * </p>
+     */
+    protected Object visitBinaryTemporalOperator(BinaryTemporalOperator filter, Expression e1, 
+        Expression e2, Object extraData) {
+
+        if (!(filter instanceof After || filter instanceof Before || filter instanceof TEquals)) {
+            throw new IllegalArgumentException("Unsupported filter: " + filter + 
+                ". Only After,Before,TEquals supported");
+        }
+
+        String op = filter instanceof After ? ">" : filter instanceof Before ? "<" : "=";
+
+        try {
+            e1.accept(this, extraData);
+            out.write(" " + op + " ");
+            e2.accept(this, extraData);
+        }
+        catch(IOException e) {
+            return new RuntimeException("Error encoding temporal filter", e);
+        }
+        return extraData;
+    }
+
     /**
      * Encodes a null filter value.  The current implementation
      * does exactly nothing.
@@ -928,7 +1147,17 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         if(extraData instanceof Class) {
             target = (Class) extraData;
         }
+
         try {
+            SimpleFeatureType featureType = this.featureType;
+
+            //check for join
+            if (expression instanceof JoinPropertyName) {
+                //encode the prefix
+                out.write(escapeName(((JoinPropertyName)expression).getAlias()));
+                out.write(".");
+            }
+
             //first evaluate expression against feautre type get the attribute, 
             //  this handles xpath
             AttributeDescriptor attribute = null;
@@ -1003,8 +1232,9 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             // handle geometry case
             if (literal instanceof Geometry) {
                 // call this method for backwards compatibility with subclasses
-                visitLiteralGeometry(CommonFactoryFinder.getFilterFactory(null).literal(literal));
-            } else {
+                visitLiteralGeometry(filterFactory.literal(literal));
+            }
+            else {
                 // write out the literal allowing subclasses to override this
                 // behaviour (for writing out dates and the like using the BDMS custom functions)
                 writeLiteral(literal);
@@ -1088,7 +1318,12 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         throw new RuntimeException(
             "Subclasses must implement this method in order to handle geometries");
     }
-    
+
+    protected void visitLiteralTimePeriod(Period expression) {
+        throw new RuntimeException("Time periods not supported, subclasses must implement this " +
+            "method to support encoding timeperiods");
+    }
+
     public Object visit(Add expression, Object extraData) {
         return visit((BinaryExpression)expression, "+", extraData);
     }
@@ -1211,46 +1446,46 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
 
     //temporal filters, not supported
     public Object visit(After after, Object extraData) {
-        throw new UnsupportedOperationException("Temporal filter After not implemented");
+        return visitBinaryTemporalOperator(after, extraData);
     }
     public Object visit(AnyInteracts anyInteracts, Object extraData) {
-        throw new UnsupportedOperationException("Temporal filter AnyInteracts not implemented");
+        return visitBinaryTemporalOperator(anyInteracts, extraData);
     }
     public Object visit(Before before, Object extraData) {
-        throw new UnsupportedOperationException("Temporal filter Before not implemented");
+        return visitBinaryTemporalOperator(before, extraData);
     }
     public Object visit(Begins begins, Object extraData) {
-        throw new UnsupportedOperationException("Temporal filter Begins not implemented");
+        return visitBinaryTemporalOperator(begins, extraData);
     }
     public Object visit(BegunBy begunBy, Object extraData) {
-        throw new UnsupportedOperationException("Temporal filter BegunBy not implemented");
+        return visitBinaryTemporalOperator(begunBy, extraData);
     }
     public Object visit(During during, Object extraData) {
-        throw new UnsupportedOperationException("Temporal filter During not implemented");
+        return visitBinaryTemporalOperator(during, extraData);
     }
     public Object visit(EndedBy endedBy, Object extraData) {
-        throw new UnsupportedOperationException("Temporal filter EndedBy not implemented");
+        return visitBinaryTemporalOperator(endedBy, extraData);
     }
     public Object visit(Ends ends, Object extraData) {
-        throw new UnsupportedOperationException("Temporal filter Ends not implemented");
+        return visitBinaryTemporalOperator(ends, extraData);
     }
     public Object visit(Meets meets, Object extraData) {
-        throw new UnsupportedOperationException("Temporal filter Meets not implemented");
+        return visitBinaryTemporalOperator(meets, extraData);
     }
     public Object visit(MetBy metBy, Object extraData) {
-        throw new UnsupportedOperationException("Temporal filter MetBy not implemented");
+        return visitBinaryTemporalOperator(metBy, extraData);
     }
     public Object visit(OverlappedBy overlappedBy, Object extraData) {
-        throw new UnsupportedOperationException("Temporal filter OverlappedBy not implemented");
+        return visitBinaryTemporalOperator(overlappedBy, extraData);
     }
     public Object visit(TContains contains, Object extraData) {
-        throw new UnsupportedOperationException("Temporal filter TContains not implemented");
+        return visitBinaryTemporalOperator(contains, extraData);
     }
     public Object visit(TEquals equals, Object extraData) {
-        throw new UnsupportedOperationException("Temporal filter TEquals not implemented");
+        return visitBinaryTemporalOperator(equals, extraData);
     }
     public Object visit(TOverlaps contains, Object extraData) {
-        throw new UnsupportedOperationException("Temporal filter TOverlaps not implemented");
+        return visitBinaryTemporalOperator(contains, extraData);
     }
 
     /**
@@ -1321,7 +1556,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             return s;
         }
     }
-        
+
     /**
      * Current field encoder
      */

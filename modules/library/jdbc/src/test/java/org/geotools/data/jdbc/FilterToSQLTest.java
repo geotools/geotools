@@ -159,4 +159,14 @@ public class FilterToSQLTest extends TestCase {
         encoder.encode(equal);
         assertEquals("WHERE testAttr = testAttr + 5", output.toString());
     }
+
+    public void testInline() throws Exception {
+        PropertyIsEqualTo equal = filterFac.equal(filterFac.property("testAttr"), filterFac.literal(5), false);
+        StringWriter output = new StringWriter();
+        FilterToSQL encoder = new FilterToSQL(output);
+        encoder.setInline(true);
+        
+        encoder.encode(equal);
+        assertEquals("testAttr = 5", output.toString());
+    }
 }

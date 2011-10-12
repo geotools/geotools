@@ -23,6 +23,7 @@ import org.geotools.filter.FilterCapabilities;
 import org.geotools.jdbc.JDBCDataStore;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.expression.Add;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
@@ -95,6 +96,12 @@ public class PostgisFilterToSQL extends FilterToSQL {
                 swapped, extraData);
     }
     
+    protected Object visitBinarySpatialOperator(BinarySpatialOperator filter, Expression e1, 
+            Expression e2, Object extraData) {
+        helper.out = out;
+        return helper.visitBinarySpatialOperator(filter, e1, e2, extraData);
+    }
+
     GeometryDescriptor getCurrentGeometry() {
         return currentGeometry;
     }

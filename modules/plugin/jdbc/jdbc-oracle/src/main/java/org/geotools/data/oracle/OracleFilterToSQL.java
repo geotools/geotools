@@ -30,6 +30,7 @@ import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
 import org.geotools.jdbc.SQLDialect;
 import org.opengis.filter.Filter;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
@@ -45,6 +46,15 @@ import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
+import org.opengis.filter.temporal.After;
+import org.opengis.filter.temporal.Before;
+import org.opengis.filter.temporal.Begins;
+import org.opengis.filter.temporal.BegunBy;
+import org.opengis.filter.temporal.During;
+import org.opengis.filter.temporal.EndedBy;
+import org.opengis.filter.temporal.Ends;
+import org.opengis.filter.temporal.TEquals;
+import org.opengis.filter.temporal.TOverlaps;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -147,14 +157,55 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         caps.addType(DWithin.class);
         caps.addType(Beyond.class);
         
+        //temporal filters
+        caps.addType(After.class);
+        caps.addType(Before.class);
+        caps.addType(Begins.class);
+        caps.addType(BegunBy.class);
+        caps.addType(During.class);
+        caps.addType(TOverlaps.class);
+        caps.addType(Ends.class);
+        caps.addType(EndedBy.class);
+        caps.addType(TEquals.class);
+        
         return caps;
     }
     
     @Override
     protected Object visitBinarySpatialOperator(BinarySpatialOperator filter, PropertyName property,
             Literal geometry, boolean swapped, Object extraData) {
+        return visitBinarySpatialOperator(filter, (Expression)property, (Expression) geometry, 
+            swapped, extraData);
+    }
+
+    @Override
+    protected Object visitBinarySpatialOperator(BinarySpatialOperator filter, Expression e1,
+            Expression e2, Object extraData) {
+        return visitBinarySpatialOperator(filter, e1, e2, false, extraData);
+    }
+
+    protected Object visitBinarySpatialOperator(BinarySpatialOperator filter, Expression e1,
+            Expression e2, boolean swapped, Object extraData) {
+        
         try {
-            Geometry eval = geometry.evaluate(filter, Geometry.class);
+            e1 = clipToWorld(filter, e1);
+            e2 = clipToWorld(filter, e2);
+
+            if(filter instanceof Beyond || filter instanceof DWithin)
+                doSDODistance(filter, e1, e2, extraData);
+            else if(filter instanceof BBOX && looseBBOXEnabled) {
+                doSDOFilter(filter, e1, e2, extraData);
+            } else
+                doSDORelate(filter, e1, e2, swapped, extraData);
+        } catch (IOException ioe) {
+            throw new RuntimeException(IO_ERROR, ioe);
+        }
+        return extraData;
+    }
+
+    Expression clipToWorld(BinarySpatialOperator filter, Expression e) {
+        if (e instanceof Literal) {
+            Geometry eval = e.evaluate(filter, Geometry.class);
             // Oracle cannot deal with filters using geometries that span beyond the whole world
             // in case the 
             if (dialect != null && isCurrentGeometryGeodetic() &&
@@ -165,22 +216,13 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
                     if(result instanceof GeometryCollection) {
                         result = distillSameTypeGeometries((GeometryCollection) result, eval);
                     } 
-                    geometry = new FilterFactoryImpl().createLiteralExpression(result);
+                    e = new FilterFactoryImpl().createLiteralExpression(result);
                 }
             }
-            
-            if(filter instanceof Beyond || filter instanceof DWithin)
-                doSDODistance(filter, property, geometry, extraData);
-            else if(filter instanceof BBOX && looseBBOXEnabled) {
-                doSDOFilter(filter, property, geometry, extraData);
-            } else
-                doSDORelate(filter, property, geometry, swapped, extraData);
-        } catch (IOException ioe) {
-            throw new RuntimeException(IO_ERROR, ioe);
         }
-        return extraData;
+        return e;
     }
-    
+
     /**
      * Returns true if the current geometry has the geodetic marker raised
      * @return
@@ -222,11 +264,11 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         }
     }
     
-    protected void doSDOFilter(Filter filter, PropertyName property, Literal geometry, Object extraData) throws IOException {
+    protected void doSDOFilter(Filter filter, Expression e1, Expression e2, Object extraData) throws IOException {
         out.write("SDO_FILTER(");
-        property.accept(this, extraData);
+        e1.accept(this, extraData);
         out.write(", ");
-        geometry.accept(this, extraData);
+        e2.accept(this, extraData);
         // for backwards compatibility with Oracle 9 we add the mask and querytypes params
         out.write(", 'mask=anyinteract querytype=WINDOW') = 'TRUE' ");
     }
@@ -238,7 +280,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
      * @param geometry
      * @param extraData
      */
-    protected void doSDORelate(Filter filter, PropertyName property, Literal geometry, boolean swapped, Object extraData) throws IOException {
+    protected void doSDORelate(Filter filter, Expression e1, Expression e2, boolean swapped, Object extraData) throws IOException {
         // grab the operating mask
         String mask = null;
         for (Class filterClass : SDO_RELATE_MASK_MAP.keySet()) {
@@ -252,9 +294,9 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         
         // ok, ready to write out the SDO_RELATE
         out.write("SDO_RELATE(");
-        property.accept(this, extraData);
+        e1.accept(this, extraData);
         out.write(", ");
-        geometry.accept(this, extraData);
+        e2.accept(this, extraData);
         // for disjoint we ask for no interaction, anyinteract == false
         if(filter instanceof Disjoint) {
             out.write(", 'mask=ANYINTERACT querytype=WINDOW') <> 'TRUE' ");
@@ -264,15 +306,15 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
     }
     
     protected void doSDODistance(BinarySpatialOperator filter,
-            PropertyName property, Literal geometry, Object extraData) throws IOException {
+            Expression e1, Expression e2, Object extraData) throws IOException {
         double distance = ((DistanceBufferOperator) filter).getDistance();
         String unit = ((DistanceBufferOperator) filter).getDistanceUnits();
         String within = filter instanceof DWithin ? "TRUE" : "FALSE"; 
         
         out.write("SDO_WITHIN_DISTANCE(");
-        property.accept(this, extraData);
+        e1.accept(this, extraData);
         out.write(",");
-        geometry.accept(this, extraData);
+        e2.accept(this, extraData);
         
         // encode the unit verbatim when available
         if(unit != null && !"".equals(unit.trim()))

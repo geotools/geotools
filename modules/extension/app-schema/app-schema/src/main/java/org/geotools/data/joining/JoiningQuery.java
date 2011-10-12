@@ -33,7 +33,7 @@ import org.opengis.filter.sort.SortBy;
  */
 public class JoiningQuery extends Query {
     
-    public static class Join {
+    public static class QueryJoin {
         protected String joiningTypeName;    
         protected Expression foreignKeyName;    
         protected Expression joiningKeyName;
@@ -72,12 +72,12 @@ public class JoiningQuery extends Query {
         }
     }
     
-    protected List<Join> joins;
+    protected List<QueryJoin> queryJoins;
     
     
     public JoiningQuery(JoiningQuery query) {
         super(query);
-        setJoins(query.getJoins());
+        setQueryJoins(query.getQueryJoins());
     }
     
     public JoiningQuery(Query query){
@@ -87,12 +87,12 @@ public class JoiningQuery extends Query {
     public JoiningQuery() {
     }   
     
-    public void setJoins(List<Join> joins){
-        this.joins = joins;
+    public void setQueryJoins(List<QueryJoin> queryJoins){
+        this.queryJoins = queryJoins;
     }
     
-    public List<Join> getJoins(){
-        return joins;
+    public List<QueryJoin> getQueryJoins(){
+        return queryJoins;
     }
 
 }

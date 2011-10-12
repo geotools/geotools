@@ -99,6 +99,10 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
         return delegate.getDataStore();
     }
 
+    public JDBCFeatureSource getFeatureSource() {
+        return delegate;
+    }
+
     @Override
     public ContentEntry getEntry() {
         return delegate.getEntry();

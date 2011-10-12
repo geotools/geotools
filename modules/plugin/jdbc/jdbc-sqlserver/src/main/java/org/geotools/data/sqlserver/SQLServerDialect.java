@@ -132,7 +132,7 @@ public class SQLServerDialect extends BasicSQLDialect {
                     sql.append( " ON ");
                     encodeTableName(featureType.getTypeName(), sql);
                     sql.append("(");
-                    encodeColumnName(gd.getLocalName(), sql);
+                    encodeColumnName(null, gd.getLocalName(), sql);
                     sql.append(")");
                     sql.append( " WITH ( BOUNDING_BOX = ").append(bbox).append(")");
                     
@@ -151,14 +151,14 @@ public class SQLServerDialect extends BasicSQLDialect {
             String columnName, Connection cx) throws SQLException {
         
         StringBuffer sql = new StringBuffer("SELECT ");
-        encodeColumnName(columnName, sql);
+        encodeColumnName(null, columnName, sql);
         sql.append( ".STSrid");
         
         sql.append( " FROM ");
         encodeTableName(schemaName, tableName, sql, true);
         
         sql.append( " WHERE ");
-        encodeColumnName(columnName, sql );
+        encodeColumnName(null, columnName, sql );
         sql.append( " IS NOT NULL");
         
         dataStore.getLogger().fine( sql.toString() );
@@ -183,14 +183,14 @@ public class SQLServerDialect extends BasicSQLDialect {
     }
     
     @Override
-    public void encodeGeometryColumn(GeometryDescriptor gatt, int srid, StringBuffer sql) {
+    public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix, int srid, StringBuffer sql) {
         sql.append( "CAST(");
-        encodeColumnName( gatt.getLocalName(), sql );
+        encodeColumnName( prefix, gatt.getLocalName(), sql );
         sql.append( ".STSrid as VARCHAR)");
         
         sql.append( " + ':' + " );
         
-        encodeColumnName( gatt.getLocalName(), sql );
+        encodeColumnName( prefix, gatt.getLocalName(), sql );
         sql.append( ".STAsText()");
         
         //encodeColumnName(gatt.getLocalName(), sql);
@@ -253,12 +253,12 @@ public class SQLServerDialect extends BasicSQLDialect {
     public void encodeGeometryEnvelope(String tableName, String geometryColumn,
             StringBuffer sql) {
         sql.append( "CAST(");
-        encodeColumnName( geometryColumn, sql );
+        encodeColumnName( null, geometryColumn, sql );
         sql.append( ".STSrid as VARCHAR)");
         
         sql.append( " + ':' + " );
         
-        encodeColumnName( geometryColumn, sql );
+        encodeColumnName( null, geometryColumn, sql );
         sql.append( ".STEnvelope().ToString()");
     }
     

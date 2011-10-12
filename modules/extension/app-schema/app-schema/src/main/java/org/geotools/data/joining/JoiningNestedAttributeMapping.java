@@ -138,20 +138,20 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         }
         Expression nestedSourceExpression = mappings.get(0).getSourceExpression();
 
-        List<JoiningQuery.Join> joins = new ArrayList<JoiningQuery.Join>();
+        List<JoiningQuery.QueryJoin> joins = new ArrayList<JoiningQuery.QueryJoin>();
         if (instance.baseTableQuery instanceof JoiningQuery) {
-            if (((JoiningQuery) instance.baseTableQuery).getJoins() != null) {
-                joins.addAll(((JoiningQuery) instance.baseTableQuery).getJoins());
+            if (((JoiningQuery) instance.baseTableQuery).getQueryJoins() != null) {
+                joins.addAll(((JoiningQuery) instance.baseTableQuery).getQueryJoins());
             }
         }
 
-        JoiningQuery.Join join = new JoiningQuery.Join();
+        JoiningQuery.QueryJoin join = new JoiningQuery.QueryJoin();
         join.setForeignKeyName(sourceExpression);
         join.setJoiningKeyName(nestedSourceExpression);
         join.setJoiningTypeName(instance.baseTableQuery.getTypeName());
         join.setSortBy(instance.baseTableQuery.getSortBy()); // incorporate order
         joins.add(0, join);
-        query.setJoins(joins);
+        query.setQueryJoins(joins);
 
         if (selectedProperties != null) {
             selectedProperties = new ArrayList<PropertyName>(selectedProperties);
@@ -192,8 +192,8 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         DataAccessMappingFeatureIterator daFeatureIterator = (DataAccessMappingFeatureIterator) featureIterator;
 
         List<Expression> foreignIds = new ArrayList<Expression>();
-        for (int i = 0; i < query.getJoins().size(); i++) {
-            for (int j = 0; j < query.getJoins().get(i).getSortBy().length; j++) {
+        for (int i = 0; i < query.getQueryJoins().size(); i++) {
+            for (int j = 0; j < query.getQueryJoins().get(i).getSortBy().length; j++) {
                 foreignIds.add(filterFac.property(JoiningJDBCFeatureSource.FOREIGN_ID + "_" + i
                         + "_" + j));
             }

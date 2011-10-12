@@ -17,10 +17,13 @@
 package org.geotools.data.sqlserver;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.jdbc.SQLDialect;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
@@ -78,13 +81,25 @@ public class SQLServerFilterToSQL extends FilterToSQL {
     @Override
     protected Object visitBinarySpatialOperator(BinarySpatialOperator filter,
             PropertyName property, Literal geometry, boolean swapped, Object extraData) {
+        return visitBinarySpatialOperator(filter, (Expression)property, (Expression)geometry, 
+            swapped, extraData);
+    }
+
+    @Override
+    protected Object visitBinarySpatialOperator(BinarySpatialOperator filter, Expression e1,
+            Expression e2, Object extraData) {
+        return visitBinarySpatialOperator(filter, e1, e2, false, extraData);
+    }
+
+    protected Object visitBinarySpatialOperator(BinarySpatialOperator filter, Expression e1,
+        Expression e2, boolean swapped, Object extraData) {
         
         try {
             //if the filter is not disjoint, and it with a BBOX filter
             if (!(filter instanceof Disjoint)) {
-                property.accept(this, extraData);
+                e1.accept(this, extraData);
                 out.write( ".Filter(");
-                geometry.accept(this, extraData);
+                e2.accept(this, extraData);
                 out.write(") = 1");
                 
                 if (!(filter instanceof BBOX)) {
@@ -98,9 +113,9 @@ public class SQLServerFilterToSQL extends FilterToSQL {
             }
             
             if (filter instanceof DistanceBufferOperator) {
-                property.accept(this, extraData);
+                e1.accept(this, extraData);
                 out.write(".STDistance(");
-                geometry.accept(this, extraData);
+                e2.accept(this, extraData);
                 out.write(")");
                 
                 if (filter instanceof DWithin) {
@@ -118,10 +133,10 @@ public class SQLServerFilterToSQL extends FilterToSQL {
             else {
                 
                     if (swapped) {
-                        geometry.accept(this, extraData);
+                        e2.accept(this, extraData);
                     }
                     else {
-                        property.accept(this, extraData);
+                        e1.accept(this, extraData);
                     }
                     
                     if (filter instanceof Contains) {
@@ -153,10 +168,10 @@ public class SQLServerFilterToSQL extends FilterToSQL {
                     }
                     
                     if (swapped) {
-                        property.accept(this, extraData);
+                        e1.accept(this, extraData);
                     }
                     else {
-                        geometry.accept(this, extraData);
+                        e2.accept(this, extraData);
                     }
                     
                     out.write(") = 1");
@@ -167,5 +182,14 @@ public class SQLServerFilterToSQL extends FilterToSQL {
         }
         
         return extraData;
+    }
+
+    static SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    
+    @Override
+    protected void writeLiteral(Object literal) throws IOException {
+        if (literal instanceof Date) {
+            out.write("'" + DATETIME_FORMAT.format(literal) + "'");
+        }
     }
 }

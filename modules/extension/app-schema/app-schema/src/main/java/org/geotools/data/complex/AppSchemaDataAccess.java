@@ -337,7 +337,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
                 newQuery.setSortBy( sort.toArray(new SortBy[sort.size()])  );
             
                JoiningQuery jQuery = new JoiningQuery(newQuery);
-               jQuery.setJoins(((JoiningQuery)query).getJoins());                
+               jQuery.setQueryJoins(((JoiningQuery)query).getQueryJoins());                
                unrolledQuery = jQuery;
             }
             else {

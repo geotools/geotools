@@ -218,7 +218,20 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
         else {
             assertTrue(texpected.getBinding().isAssignableFrom(tactual.getBinding()));    
         }
-        
+    }
+    
+    protected void assertAttributeValuesEqual(Object expected, Object actual) {
+        if (expected == null) {
+            assertNull(actual);
+            return;
+        }
+
+        if (expected instanceof Geometry) {
+            assertTrue(((Geometry)expected).equals((Geometry)actual));
+            return;
+        }
+
+        assertEquals(expected, actual);
     }
     
     protected boolean areCRSEqual(CoordinateReferenceSystem crs1, CoordinateReferenceSystem crs2) {

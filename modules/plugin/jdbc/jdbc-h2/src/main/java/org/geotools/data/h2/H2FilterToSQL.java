@@ -17,9 +17,12 @@
 package org.geotools.data.h2;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.filter.FilterCapabilities;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
@@ -75,16 +78,29 @@ public class H2FilterToSQL extends FilterToSQL {
         out.write( "ST_GeomFromText('"+g.toText()+"', "+currentSRID+")");
     }
     
+    
     @Override
     protected Object visitBinarySpatialOperator(BinarySpatialOperator filter,
         PropertyName property, Literal geometry, boolean swapped, Object extraData) {
-        
+        return visitBinarySpatialOperator(filter, (Expression) property, (Expression) geometry, 
+            swapped, extraData);
+    }
+    
+    @Override
+    protected Object visitBinarySpatialOperator(BinarySpatialOperator filter, Expression e1,
+            Expression e2, Object extraData) {
+        return visitBinarySpatialOperator(filter, e1, e2, false, extraData);
+    }
+    
+    protected Object visitBinarySpatialOperator(BinarySpatialOperator filter, Expression e1,
+                Expression e2, boolean swapped, Object extraData) {
+
         try {
             if (filter instanceof DistanceBufferOperator) {
                 out.write("ST_Distance(");
-                property.accept(this, extraData);
+                e1.accept(this, extraData);
                 out.write(", ");
-                geometry.accept(this, extraData);
+                e2.accept(this, extraData);
                 out.write(")");
                 
                 if (filter instanceof DWithin) {
@@ -101,9 +117,9 @@ public class H2FilterToSQL extends FilterToSQL {
             else if (filter instanceof BBOX) {
                 //TODO: make a loose bounding box parameter
                 out.write("ST_Intersects(");
-                property.accept(this, extraData);
+                e1.accept(this, extraData);
                 out.write(",");
-                geometry.accept(this, extraData);
+                e2.accept(this, extraData);
                 out.write(")");
             }
             else {
@@ -137,20 +153,21 @@ public class H2FilterToSQL extends FilterToSQL {
                 }
                 
                 if (swapped) {
-                    geometry.accept(this, extraData);
+                    e2.accept(this, extraData);
                     out.write(", ");
-                    property.accept(this, extraData);
+                    e1.accept(this, extraData);
                 }
                 else {
-                    property.accept(this, extraData);
+                    e1.accept(this, extraData);
                     out.write(", ");
-                    geometry.accept(this, extraData);
+                    e2.accept(this, extraData);
                 }
                 
                 out.write(")");
             }
             
-            if (!(filter instanceof Disjoint)) {
+            Expression geometry = e1 instanceof Literal ? e1 : e2 instanceof Literal ? e2 : null;
+            if (geometry != null && !(filter instanceof Disjoint)) {
                 String spatialIndex = (String) 
                     currentGeometry.getUserData().get(H2Dialect.H2_SPATIAL_INDEX);
                 if (spatialIndex != null) {
@@ -184,5 +201,25 @@ public class H2FilterToSQL extends FilterToSQL {
         }
         
         return extraData;
+    }
+
+    static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    static SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ");
+    
+    @Override
+    protected void writeLiteral(Object literal) throws IOException {
+        if (literal instanceof Date) {
+            out.write("PARSEDATETIME(");
+            if (literal instanceof java.sql.Date) {
+                out.write("'" + DATE_FORMAT.format(literal) + "', 'yyyy-MM-dd'");
+            }
+            else {
+                out.write("'" + DATETIME_FORMAT.format(literal) + "', 'yyyy-MM-dd HH:mm:ss.SSSZ'");
+            }
+            out.write(")");
+        }
+        else {
+            super.writeLiteral(literal);
+        }
     }
 }

@@ -231,15 +231,15 @@ public class DB2SQLDialect extends SQLDialect  {
     	return srid;
     }
 
-
-    public void encodeGeometryColumn(GeometryDescriptor gatt, int srid, StringBuffer sql) {
-        encodeGeometryColumn(gatt, sql);
+    @Override
+    public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix, int srid,
+        StringBuffer sql) {
+        encodeGeometryColumn(gatt, prefix, sql);
     }
-
-        
-    public void encodeGeometryColumn(GeometryDescriptor gatt, StringBuffer sql) {
+    
+    public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix, StringBuffer sql) {
         sql.append("db2gse.ST_AsBinary(");
-        encodeColumnName(gatt.getLocalName(), sql);
+        encodeColumnName(prefix, gatt.getLocalName(), sql);
         sql.append(")");
     }
 
@@ -247,7 +247,7 @@ public class DB2SQLDialect extends SQLDialect  {
     public void encodeGeometryEnvelope(String tableName,String geometryColumn, StringBuffer sql) {
 
         sql.append("db2gse.ST_AsBinary(db2gse.ST_GetAggrResult(MAX(db2gse.ST_BuildMBRAggr(");
-        encodeColumnName(geometryColumn, sql);
+        encodeColumnName(null, geometryColumn, sql);
         sql.append("))))");
         
 //        sql.append("db2gse.ST_AsBinary(");
@@ -536,11 +536,11 @@ public class DB2SQLDialect extends SQLDialect  {
     	}
     }
     
-    public void encodeGeometryColumnGeneralized(GeometryDescriptor gatt, int srid,  StringBuffer sql,Double distance) {
+    public void encodeGeometryColumnGeneralized(GeometryDescriptor gatt, String prefix, int srid,  StringBuffer sql,Double distance) {
     		     	
           	
         sql.append("db2gse.ST_AsBinary(db2gse.st_Generalize(");
-        encodeColumnName(gatt.getLocalName(), sql);
+        encodeColumnName(null, gatt.getLocalName(), sql);
         sql.append(",").append(distance);
         sql.append("))");    	
     }

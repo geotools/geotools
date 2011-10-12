@@ -17,9 +17,12 @@
 package org.geotools.data.mysql;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.filter.FilterCapabilities;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
@@ -60,6 +63,8 @@ public class MySQLFilterToSQL extends FilterToSQL {
         caps.addType(Touches.class);
         caps.addType(Within.class);
         caps.addType(Beyond.class);
+
+        
         return caps;
     }
     
@@ -72,18 +77,30 @@ public class MySQLFilterToSQL extends FilterToSQL {
         }
         out.write( "GeomFromText('"+g.toText()+"', "+currentSRID+")");
     }
-    
+
     @Override
     protected Object visitBinarySpatialOperator(BinarySpatialOperator filter,
             PropertyName property, Literal geometry, boolean swapped, Object extraData) {
-        
+        return visitBinarySpatialOperator(filter, (Expression)property, (Expression)geometry, 
+            swapped, extraData);
+    }
+    
+    @Override
+    protected Object visitBinarySpatialOperator(BinarySpatialOperator filter, Expression e1,
+        Expression e2, Object extraData) {
+        return visitBinarySpatialOperator(filter, e1, e2, false, extraData);
+    }
+
+    protected Object visitBinarySpatialOperator(BinarySpatialOperator filter, Expression e1,
+        Expression e2, boolean swapped, Object extraData) {
+    
         try {
             
             if (!(filter instanceof Disjoint)) { 
                 out.write("MbrIntersects(");
-                property.accept(this, extraData);
+                e1.accept(this, extraData);
                 out.write(",");
-                geometry.accept(this, extraData);
+                e2.accept(this, extraData);
                 out.write(")");
                 
                 if (!(filter instanceof BBOX)) {
@@ -98,9 +115,9 @@ public class MySQLFilterToSQL extends FilterToSQL {
             
             if (filter instanceof DistanceBufferOperator) {
                 out.write("Distance(");
-                property.accept(this, extraData);
+                e1.accept(this, extraData);
                 out.write(", ");
-                geometry.accept(this, extraData);
+                e2.accept(this, extraData);
                 out.write(")");
                 
                 if (filter instanceof DWithin) {
@@ -148,14 +165,14 @@ public class MySQLFilterToSQL extends FilterToSQL {
                 }
                 
                 if (swapped) {
-                    geometry.accept(this, extraData);
+                    e2.accept(this, extraData);
                     out.write(", ");
-                    property.accept(this, extraData);
+                    e1.accept(this, extraData);
                 }
                 else {
-                    property.accept(this, extraData);
+                    e1.accept(this, extraData);
                     out.write(", ");
-                    geometry.accept(this, extraData);
+                    e2.accept(this, extraData);
                 }
                 
                 out.write(")");
@@ -167,4 +184,26 @@ public class MySQLFilterToSQL extends FilterToSQL {
         
         return extraData;
     }
+
+    @Override
+    protected void writeLiteral(Object literal) throws IOException {
+        if (literal instanceof Date) {
+            Calendar c = Calendar.getInstance();
+            c.setTime((Date)literal);
+
+            //JD: no timezone handling... str_to_date does not allow us to specify time zone..
+            // instead we just get whatever the database/server default timezone is... so this
+            // obviously fails if the client and server are in different times zones
+            out.write(String.format("STR_TO_DATE('%d,%d,%d,%d,%d,%d,%d'", 
+                c.get(Calendar.YEAR),c.get(Calendar.MONTH)+1,c.get(Calendar.DAY_OF_MONTH),
+                c.get(Calendar.HOUR_OF_DAY),c.get(Calendar.MINUTE),c.get(Calendar.SECOND),
+                c.get(Calendar.MILLISECOND) * 1000) + ",'%Y,%m,%d,%H,%i,%s,%f')");
+           
+        }
+        else {
+            super.writeLiteral(literal);
+        }
+
+    }
+
 }

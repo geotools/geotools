@@ -34,6 +34,7 @@ import java.util.logging.Logger;
 
 import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureReader;
+import org.geotools.data.FeatureSource;
 import org.geotools.data.FilteringFeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
@@ -354,11 +355,23 @@ public class JDBCFeatureSource extends ContentFeatureSource {
      * Helper method for splitting a filter.
      */
     Filter[] splitFilter(Filter original) {
+        return splitFilter(original, this);
+    }
+
+    Filter[] splitFilter(Filter original, FeatureSource source) {
+        JDBCFeatureSource featureSource = null;
+        if (source instanceof JDBCFeatureSource) {
+            featureSource = (JDBCFeatureSource) source;
+        }
+        else {
+            featureSource = ((JDBCFeatureStore)source).getFeatureSource();
+        }
+
         Filter[] split = new Filter[2];
         if ( original != null ) {
             //create a filter splitter
             PostPreProcessFilterSplittingVisitor splitter = new PostPreProcessFilterSplittingVisitor(getDataStore()
-                    .getFilterCapabilities(), getSchema(), null);
+                    .getFilterCapabilities(), featureSource.getSchema(), null);
             original.accept(splitter, null);
         
             split[0] = splitter.getFilterPre();
@@ -366,7 +379,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         }
         
         SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
-        visitor.setFIDValidator( new PrimaryKeyFIDValidator( this ) );
+        visitor.setFIDValidator( new PrimaryKeyFIDValidator( featureSource ) );
         split[0] = (Filter) split[0].accept(visitor, null);
         split[1] = (Filter) split[1].accept(visitor, null);
         
@@ -381,8 +394,13 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         Filter preFilter = split[0];
         Filter postFilter = split[1];
         
-        
-            if ((postFilter != null) && (postFilter != Filter.INCLUDE)) {
+        boolean manual = (postFilter != null) && (postFilter != Filter.INCLUDE);
+        if (!manual && !query.getJoins().isEmpty()) {
+            //check any join post filters as well
+            JoinInfo join = JoinInfo.create(query, this);
+            manual = join.hasPostFilters();
+        }
+            if (manual) {
                 try {
                     //calculate manually, dont use datastore optimization
                     getDataStore().getLogger().fine("Calculating size manually");
@@ -518,35 +536,18 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         Filter[] split = splitFilter(query.getFilter());
         Filter preFilter = split[0];
         Filter postFilter = split[1];
-        
+
         // rebuild a new query with the same params, but just the pre-filter
         DefaultQuery preQuery = new DefaultQuery(query);
         preQuery.setFilter(preFilter);
-        
+
         // Build the feature type returned by this query. Also build an eventual extra feature type
         // containing the attributes we might need in order to evaluate the post filter
-        SimpleFeatureType querySchema;
-        SimpleFeatureType returnedSchema;
-        if(query.getPropertyNames() == Query.ALL_NAMES) {
-            returnedSchema = querySchema = getSchema();
-        } else {
-            returnedSchema = SimpleFeatureTypeBuilder.retype(getSchema(), query.getPropertyNames());
-            FilterAttributeExtractor extractor = new FilterAttributeExtractor(getSchema());
-            postFilter.accept(extractor, null);
-            String[] extraAttributes = extractor.getAttributeNames();
-            if(extraAttributes == null || extraAttributes.length == 0) {
-                querySchema = returnedSchema;
-            } else {
-                List<String> allAttributes = new ArrayList<String>(Arrays.asList(query.getPropertyNames())); 
-                for (String extraAttribute : extraAttributes) {
-                    if(!allAttributes.contains(extraAttribute))
-                        allAttributes.add(extraAttribute);
-                }
-                String[] allAttributeArray =  (String[]) allAttributes.toArray(new String[allAttributes.size()]);
-                querySchema = SimpleFeatureTypeBuilder.retype(getSchema(), allAttributeArray);
-            }
-        }
-        
+        SimpleFeatureType[] types = 
+            buildQueryAndReturnFeatureTypes(getSchema(), query.getPropertyNames(), postFilter);
+        SimpleFeatureType querySchema = types[0];
+        SimpleFeatureType returnedSchema = types[1];
+
         //grab connection
         Connection cx = getDataStore().getConnection(getState());
         
@@ -560,16 +561,39 @@ public class JDBCFeatureSource extends ContentFeatureSource {
             if(getState().getTransaction() == Transaction.AUTO_COMMIT) {
                 cx.setAutoCommit(dialect.isAutoCommitQuery());
             }
-            
-            if ( dialect instanceof PreparedStatementSQLDialect ) {
-                PreparedStatement ps = getDataStore().selectSQLPS(querySchema, preQuery, cx);
-                reader = new JDBCFeatureReader( ps, cx, this, querySchema, query.getHints() );
-            } else {
-                //build up a statement for the content
-                String sql = getDataStore().selectSQL(querySchema, preQuery);
-                getDataStore().getLogger().fine(sql);
-    
-                reader = new JDBCFeatureReader( sql, cx, this, querySchema, query.getHints() );
+
+            if (query.getJoins().isEmpty()) {
+                //regular query
+                if ( dialect instanceof PreparedStatementSQLDialect ) {
+                    PreparedStatement ps = getDataStore().selectSQLPS(querySchema, preQuery, cx);
+                    reader = new JDBCFeatureReader( ps, cx, this, querySchema, query.getHints() );
+                } else {
+                    //build up a statement for the content
+                    String sql = getDataStore().selectSQL(querySchema, preQuery);
+                    getDataStore().getLogger().fine(sql);
+        
+                    reader = new JDBCFeatureReader( sql, cx, this, querySchema, query.getHints() );
+                }
+            }
+            else {
+                JoinInfo join = JoinInfo.create(preQuery, this);
+
+                if ( dialect instanceof PreparedStatementSQLDialect ) {
+                    PreparedStatement ps =getDataStore().selectJoinSQLPS(querySchema, join, preQuery, cx);
+                    reader = new JDBCJoiningFeatureReader(ps, cx, this, querySchema, join, query.getHints());
+                } else {
+                    //build up a statement for the content
+                    String sql = getDataStore().selectJoinSQL(querySchema, join, preQuery);
+                    getDataStore().getLogger().fine(sql);
+        
+                    reader = new JDBCJoiningFeatureReader(sql, cx, this, querySchema, join, query.getHints());
+                }
+                
+                //check for post filters
+                if (join.hasPostFilters()) {
+                    reader = new JDBCJoiningFilteringFeatureReader(reader, join);
+                    //TODO: retyping 
+                }
             }
         } catch (Throwable e) { // NOSONAR
             // close the connection
@@ -591,6 +615,37 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         }
 
         return reader;
+    }
+
+    SimpleFeatureType[] buildQueryAndReturnFeatureTypes(SimpleFeatureType featureType, 
+        String[] propertyNames, Filter filter) {
+
+        SimpleFeatureType[] types = null; 
+        if(propertyNames == Query.ALL_NAMES) {
+            return new SimpleFeatureType[]{featureType, featureType};
+        } else {
+            SimpleFeatureType returnedSchema = SimpleFeatureTypeBuilder.retype(featureType, propertyNames);
+            SimpleFeatureType querySchema = returnedSchema;
+            
+            if (filter != null && !filter.equals(Filter.INCLUDE)) {
+                FilterAttributeExtractor extractor = new FilterAttributeExtractor(featureType);
+                filter.accept(extractor, null);
+                
+                String[] extraAttributes = extractor.getAttributeNames();
+                if(extraAttributes != null && extraAttributes.length > 0) {
+                    List<String> allAttributes = new ArrayList<String>(Arrays.asList(propertyNames)); 
+                    for (String extraAttribute : extraAttributes) {
+                        if(!allAttributes.contains(extraAttribute))
+                            allAttributes.add(extraAttribute);
+                    }
+                    String[] allAttributeArray = 
+                        (String[]) allAttributes.toArray(new String[allAttributes.size()]);
+                    querySchema = SimpleFeatureTypeBuilder.retype(getSchema(), allAttributeArray);
+                }
+            }
+            types = new SimpleFeatureType[]{querySchema, returnedSchema};
+        }
+        return types;
     }
 
     @Override

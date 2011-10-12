@@ -141,12 +141,12 @@ public class MySQLDialect extends SQLDialect {
         //first check the geometry_columns table
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT ");
-        encodeColumnName("srid", sql);
+        encodeColumnName(null, "srid", sql);
         sql.append(" FROM ");
         encodeTableName("geometry_columns", sql);
         sql.append(" WHERE ");
         
-        encodeColumnName("f_table_schema", sql);
+        encodeColumnName(null, "f_table_schema", sql);
         
         if (schemaName != null) {
             sql.append( " = '").append(schemaName).append("'");
@@ -156,10 +156,10 @@ public class MySQLDialect extends SQLDialect {
         }
         sql.append(" AND ");
         
-        encodeColumnName("f_table_name", sql);
+        encodeColumnName(null, "f_table_name", sql);
         sql.append(" = '").append(tableName).append("' AND ");
         
-        encodeColumnName("f_geometry_column", sql);
+        encodeColumnName(null, "f_geometry_column", sql);
         sql.append(" = '").append(columnName).append("'");
         
         dataStore.getLogger().fine(sql.toString());
@@ -186,7 +186,7 @@ public class MySQLDialect extends SQLDialect {
         //execute SELECT srid(<columnName>) FROM <tableName> LIMIT 1;
         sql = new StringBuffer();
         sql.append("SELECT srid(");
-        encodeColumnName(columnName, sql);
+        encodeColumnName(null, columnName, sql);
         sql.append(") ");
         sql.append("FROM ");
 
@@ -197,7 +197,7 @@ public class MySQLDialect extends SQLDialect {
 
         encodeSchemaName(tableName, sql);
         sql.append(" WHERE ");
-        encodeColumnName(columnName, sql);
+        encodeColumnName(null, columnName, sql);
         sql.append(" is not null LIMIT 1");
 
         dataStore.getLogger().fine(sql.toString());
@@ -221,16 +221,18 @@ public class MySQLDialect extends SQLDialect {
         }
     }
 
-    public void encodeGeometryColumn(GeometryDescriptor gatt, int srid, StringBuffer sql) {
+    @Override
+    public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix, int srid,
+            StringBuffer sql) {
         sql.append("asWKB(");
-        encodeColumnName(gatt.getLocalName(), sql);
+        encodeColumnName(prefix, gatt.getLocalName(), sql);
         sql.append(")");
     }
-
+    
     public void encodeGeometryEnvelope(String tableName, String geometryColumn, StringBuffer sql) {
         sql.append("asWKB(");
         sql.append("envelope(");
-        encodeColumnName(geometryColumn, sql);
+        encodeColumnName(null, geometryColumn, sql);
         sql.append("))");
     }
 
@@ -335,12 +337,12 @@ public class MySQLDialect extends SQLDialect {
                     StringBuffer sql = new StringBuffer("CREATE TABLE ");
                     encodeTableName("geometry_columns", sql);
                     sql.append("(");
-                    encodeColumnName("f_table_schema", sql); sql.append(" varchar(255), ");
-                    encodeColumnName("f_table_name", sql); sql.append(" varchar(255), ");
-                    encodeColumnName("f_geometry_column", sql); sql.append(" varchar(255), ");
-                    encodeColumnName("coord_dimension", sql); sql.append(" int, ");
-                    encodeColumnName("srid", sql); sql.append(" int, ");
-                    encodeColumnName("type", sql); sql.append(" varchar(32)");
+                    encodeColumnName(null, "f_table_schema", sql); sql.append(" varchar(255), ");
+                    encodeColumnName(null, "f_table_name", sql); sql.append(" varchar(255), ");
+                    encodeColumnName(null, "f_geometry_column", sql); sql.append(" varchar(255), ");
+                    encodeColumnName(null, "coord_dimension", sql); sql.append(" int, ");
+                    encodeColumnName(null, "srid", sql); sql.append(" int, ");
+                    encodeColumnName(null, "type", sql); sql.append(" varchar(32)");
                     sql.append(")");
                     
                     if (LOGGER.isLoggable(Level.FINE)) { LOGGER.fine(sql.toString()); }
@@ -367,7 +369,7 @@ public class MySQLDialect extends SQLDialect {
                 StringBuffer sql = new StringBuffer("ALTER TABLE ");
                 encodeTableName(featureType.getTypeName(), sql);
                 sql.append(" ADD SPATIAL INDEX (");
-                encodeColumnName(gd.getLocalName(), sql);
+                encodeColumnName(null, gd.getLocalName(), sql);
                 sql.append(")");
                 
                 LOGGER.fine( sql.toString() );
@@ -418,7 +420,7 @@ public class MySQLDialect extends SQLDialect {
     }
 
     public void encodePrimaryKey(String column, StringBuffer sql) {
-        encodeColumnName(column, sql);
+        encodeColumnName(null, column, sql);
         sql.append(" int AUTO_INCREMENT PRIMARY KEY");
     }
 

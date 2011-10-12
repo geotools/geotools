@@ -407,7 +407,7 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
         }
 
         public Object visit(TContains contains, Object extraData) {
-            return getFactory(extraData).contains(visit(contains.getExpression1(), extraData), 
+            return getFactory(extraData).tcontains(visit(contains.getExpression1(), extraData), 
                 visit(contains.getExpression2(), extraData));
         }
 

@@ -477,7 +477,12 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
             dq.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
             query = dq;
         }
-        
+
+        //check for a join
+        if (!query.getJoins().isEmpty() && getQueryCapabilities().isJoiningSupported()) {
+            throw new IOException("Feature source does not support joins");
+        }
+
         FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReaderInternal( query );
         
         //
@@ -868,7 +873,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         // join the queries
         return DataUtilities.mixQueries(this.query, query, null);
     }
-    
+
     /**
      * This method changes the query object so that all propertyName references are resolved
      * to simple attribute names against the schema of the feature source.

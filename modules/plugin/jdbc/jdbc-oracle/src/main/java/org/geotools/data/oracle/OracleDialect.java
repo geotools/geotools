@@ -345,7 +345,15 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     }
     
     @Override
-    public void encodeColumnName(String raw, StringBuffer sql) {
+    public void encodeColumnName(String prefix, String raw, StringBuffer sql) {
+        if (prefix != null) {
+            prefix = prefix.toUpperCase();
+            if (prefix.length() > 30) {
+                prefix = prefix.substring(0,30);
+            }
+            sql.append(prefix).append(".");
+        }
+
         raw = raw.toUpperCase();
         if(raw.length() > 30)
             raw = raw.substring(0, 30);
@@ -596,7 +604,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     @Override
     public void encodeGeometryEnvelope(String tableName, String geometryColumn, StringBuffer sql) {
         sql.append( "SDO_AGGR_MBR(");
-        encodeColumnName(geometryColumn, sql);
+        encodeColumnName(null, geometryColumn, sql);
         sql.append( ")");
     }
     

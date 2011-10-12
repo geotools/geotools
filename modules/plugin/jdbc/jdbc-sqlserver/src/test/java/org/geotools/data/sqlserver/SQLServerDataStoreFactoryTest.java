@@ -50,10 +50,11 @@ public class SQLServerDataStoreFactoryTest extends JDBCTestSupport {
     public void testCreateDataStoreWithDatabase() throws Exception {
         checkConnection(true);
     }
-    
+
     void checkConnection(boolean includedb) throws Exception {
-        Properties db = new Properties();
-        db.load(getClass().getResourceAsStream("factory.properties"));
+        Properties db = fixture;
+        
+        //db.load(getClass().getResourceAsStream("factory.properties"));
         
         Map<String, Object> params = new HashMap<String, Object>();
         params.put(HOST.key, db.getProperty(HOST.key));
@@ -66,7 +67,8 @@ public class SQLServerDataStoreFactoryTest extends JDBCTestSupport {
 
         SQLServerDataStoreFactory factory = new SQLServerDataStoreFactory();
         params.put(DBTYPE.key, factory.getDatabaseID());
-        
+        params.put(SQLServerDataStoreFactory.INTSEC.key, false);
+
         assertTrue(factory.canProcess(params));
         
         JDBCDataStore store = factory.createDataStore(params);

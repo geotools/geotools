@@ -80,9 +80,9 @@ public class MySQLDialectPrepared extends PreparedStatementSQLDialect {
         return delegate.getGeometrySRID(schemaName, tableName, columnName, cx); 
     }
     
-    @Override
-    public void encodeColumnName(String raw, StringBuffer sql) {
-        delegate.encodeColumnName(raw, sql);
+   @Override
+    public void encodeColumnName(String prefix, String raw, StringBuffer sql) {
+        delegate.encodeColumnName(prefix, raw, sql);
     }
 
     @Override
@@ -91,9 +91,9 @@ public class MySQLDialectPrepared extends PreparedStatementSQLDialect {
     }
 
     @Override
-    public void encodeGeometryColumn(GeometryDescriptor gatt, int srid,
+    public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix, int srid,
             StringBuffer sql) {
-        delegate.encodeGeometryColumn(gatt, srid, sql);
+        delegate.encodeGeometryColumn(gatt, prefix, srid, sql);
     }
 
     @Override

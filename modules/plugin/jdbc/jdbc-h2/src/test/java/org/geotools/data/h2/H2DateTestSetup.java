@@ -15,6 +15,9 @@ public class H2DateTestSetup extends JDBCDateTestSetup {
 
     @Override
     protected void createDateTable() throws Exception {
+        String sql = "CREATE SCHEMA \"geotools\";";
+        runSafe(sql);
+        
         run( "CREATE TABLE \"geotools\".\"dates\" (\"d\" DATE, \"dt\" TIMESTAMP, \"t\" TIME)");
         
         run( "INSERT INTO \"geotools\".\"dates\" VALUES (" +

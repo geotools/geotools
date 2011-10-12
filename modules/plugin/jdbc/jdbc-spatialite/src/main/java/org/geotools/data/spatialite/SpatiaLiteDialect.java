@@ -199,9 +199,9 @@ public class SpatiaLiteDialect extends BasicSQLDialect {
     }
     
     @Override
-    public void encodeGeometryColumn(GeometryDescriptor gatt, int srid, StringBuffer sql) {
+    public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix, int srid, StringBuffer sql) {
         sql.append( "AsText(");
-        encodeColumnName( gatt.getLocalName(), sql);
+        encodeColumnName( prefix, gatt.getLocalName(), sql);
         sql.append( ")||';").append(srid).append("'");
     }
     
@@ -239,7 +239,7 @@ public class SpatiaLiteDialect extends BasicSQLDialect {
     @Override
     public void encodeGeometryEnvelope(String tableName, String geometryColumn, StringBuffer sql) {
         sql.append("asText(envelope(");
-        encodeColumnName(geometryColumn, sql);
+        encodeColumnName(null, geometryColumn, sql);
         sql.append( "))");
     }
     

@@ -30,8 +30,22 @@ import javax.swing.SwingUtilities;
 import org.geotools.swing.locale.LocaleUtils;
 
 /**
- * A dialog to display an {@code Exception} to the user. The dialog is application-modal
- * and centred on the screen.
+ * Displays an {@code Exception} to the user in a modal dialog. This class is not a Swing
+ * component itself, rather it provides static {@code showDialog} methods to create and
+ * display dialogs safely from any thread.
+ * <p>
+ * 
+ * Example of use:
+ * 
+ * <pre><code>
+ * try {
+ * 
+ *     // ...something awful happens in here...
+ * 
+ * } catch (SomeException ex) {
+ *     JExceptionReporter.showDialog(ex, "Bummer, it failed again");
+ * }
+ * </code></pre>
  * 
  * @author Michael Bedward
  * @since 8.0

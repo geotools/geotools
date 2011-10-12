@@ -170,6 +170,8 @@ public abstract class ProgressManager {
 	 */
 	public synchronized void fireEvent(final String string,
 			final double percentage) {
+	        if(percentage<-1||percentage>100)
+	          throw new IllegalArgumentException("Percentage for progress is out of bound:"+percentage);
 		final String newLine = System.getProperty("line.separator");
 		final StringBuffer message = new StringBuffer("Thread Name ");
 		message.append(Thread.currentThread().getName()).append(newLine);

@@ -92,21 +92,24 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 
 	private static final TIFFImageWriterSpi TIFF_IMAGE_WRITER_SPI = new TIFFImageWriterSpi();
 
-    public static enum SubsampleAlgorithm{
+        public static enum SubsampleAlgorithm{
 
 		Nearest, Bilinear, Bicubic, Average, Filtered; 
 
 //		public abstract RenderedImage scale(); 
 	}
-	/**
-	 * 
-	 * @author Simone Giannecchini
-	 * @since 2.3.x
-	 * 
-	 */
-	private class OverviewsEmbedderWriteProgressListener extends
-			WriteProgressListenerAdapter {
-	    private int lastProgress=0;
+
+        private int lastProgress=0;
+        
+        private double lastOverviewProgress=0.0;
+        
+        /**
+         * 
+         * @author Simone Giannecchini
+         * @since 2.3.x
+         * 
+         */
+        private class OverviewsEmbedderWriteProgressListener extends WriteProgressListenerAdapter {
 
 		/*
 		 * (non-Javadoc)
@@ -114,11 +117,10 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 		 * @see it.geosolutions.pyramids.DefaultWriteProgressListener#imageComplete(javax.imageio.ImageWriter)
 		 */
 		public void imageComplete(ImageWriter source) {
-
-			OverviewsEmbedder.this.fireEvent(new StringBuilder(
-					"Started with writing out overview number ").append(
-					overviewInProcess + 1.0).toString(),
-					(overviewInProcess + 1 / numSteps) * 100.0);
+		        lastOverviewProgress=(overviewInProcess + 1.0)*100 *(1.0 / numSteps);
+                        overallProgress=fileBeingProcessed*overallProgressStep+lastOverviewProgress*overallProgressStep/100;
+		        lastProgress=(int) overallProgress;
+			OverviewsEmbedder.this.fireEvent("Completed writing out overview number "+(overviewInProcess + 1),lastProgress);
 		}
 
 		/*
@@ -129,14 +131,16 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 		 */
 		public void imageProgress(ImageWriter source, float percentageDone) {
 		    //trying to reduce the amount of information we spit out since it slows us down
-		    final int tempValue=(int)(percentageDone/5.0);
-                    if (tempValue > lastProgress) {
-                        lastProgress = tempValue;
-                        OverviewsEmbedder.this.fireEvent(
-                                new StringBuilder("Writing out overview ").append(overviewInProcess + 1)
-                                        .toString(), (overviewInProcess / numSteps + percentageDone
-                                        / (100 * numSteps)) * 100.0);
+		    double percentageAbsoluteOvr=lastOverviewProgress+(percentageDone*(1.0 / numSteps));
+		    overallProgress=fileBeingProcessed*overallProgressStep+percentageAbsoluteOvr*overallProgressStep/100.0;
+                    if (overallProgress > (lastProgress+1)*5.0) {
+                        lastProgress++;
+                        OverviewsEmbedder.this.fireEvent("Writing out overview "+(overviewInProcess + 1),(int)overallProgress );
                     }
+                    
+                    // should we stop?
+                    if(OverviewsEmbedder.this.getStopThread())
+                        source.abort();
 
 		}
 
@@ -147,10 +151,9 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 		 *      int)
 		 */
 		public void imageStarted(ImageWriter source, int imageIndex) {
-			OverviewsEmbedder.this.fireEvent(new StringBuilder(
-					"Starting writing out overview number ").append(
-					overviewInProcess + 1).toString(), (overviewInProcess)
-					/ (numSteps * 100.0));
+		        lastOverviewProgress=(overviewInProcess * 100)* (1.0 / numSteps);
+		        overallProgress=fileBeingProcessed*overallProgressStep+lastOverviewProgress*overallProgressStep/100.0;
+			OverviewsEmbedder.this.fireEvent("Started writing out overview number "+(overviewInProcess + 1),overallProgress);
 		}
 
 		/*
@@ -161,9 +164,8 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 		 */
 		public void warningOccurred(ImageWriter source, int imageIndex,
 				String warning) {
-			OverviewsEmbedder.this.fireEvent(new StringBuilder(
-					"Warning at overview ").append((overviewInProcess + 1))
-					.toString(), 0);
+			OverviewsEmbedder.this.fireEvent(
+					"Warning at overview "+(overviewInProcess + 1), lastProgress);
 		}
 
 		/*
@@ -172,8 +174,8 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 		 * @see it.geosolutions.pyramids.DefaultWriteProgressListener#writeAborted(javax.imageio.ImageWriter)
 		 */
 		public void writeAborted(ImageWriter source) {
-			OverviewsEmbedder.this.fireEvent(new StringBuilder(
-					"Aborted writing process.").toString(), 100.0);
+			OverviewsEmbedder.this.fireEvent(
+					"Aborted writing process.", -1);
 		}
 	}
 
@@ -253,7 +255,9 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 
 	private int overviewInProcess;
 
+        private double overallProgress=0;
 
+        private double overallProgressStep;
 
 	/**
 	 * Simple constructor for a pyramid generator. Use the input string in order
@@ -532,7 +536,7 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 		//
 		if(sourcePath==null)
 		{
-			fireEvent("Provided sourcePath is null", 0);
+			fireEvent("Provided sourcePath is null", overallProgress);
 			return;
 		}
 		// getting an image input stream to the file
@@ -542,12 +546,12 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 		StringBuilder message;
 		if(!file.canRead()||!file.exists())
 		{
-			fireEvent("Provided file "+file.getAbsolutePath()+" cannot be read or does not exist", 0);
+			fireEvent("Provided file "+file.getAbsolutePath()+" cannot be read or does not exist", 100);
 			return;
 		}
 		if (file.isDirectory()) {
 			if(wildcardString==null){
-				fireEvent("Provided wildcardString is null", 0);
+				fireEvent("Provided wildcardString is null", 100);
 				return;
 			}
 			final FileFilter fileFilter = new WildcardFileFilter(wildcardString);
@@ -567,27 +571,32 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 		
 		if(files==null||files.length==0)
 		{
-			fireEvent("Unable to find input files for the provided wildcard "+wildcardString+ " and input path "+sourcePath,0);
+			fireEvent("Unable to find input files for the provided wildcard "+wildcardString+ " and input path "+sourcePath,100);
 			return;
 		}
+		// setting step
+                overallProgressStep=100*1.0/numFiles;
 
 		//
 		// ADDING OVERVIEWS TO ALL FOUND FILES
 		//
 		for (fileBeingProcessed = 0; fileBeingProcessed < numFiles; fileBeingProcessed++) {
 
+                    
 			message = new StringBuilder("Managing file  ").append(fileBeingProcessed).append(" of ").append(files[fileBeingProcessed]).append(" files");
 			if (LOGGER.isLoggable(Level.FINE)) {
 				LOGGER.fine(message.toString());
 			}
-			fireEvent(message.toString(),((fileBeingProcessed * 100.0) / numFiles));
+
+                        overallProgress=overallProgressStep*fileBeingProcessed;
+			fireEvent(message.toString(),overallProgress);
 
 			if (getStopThread()) {
 				message = new StringBuilder("Stopping requested at file  ").append(fileBeingProcessed).append(" of ").append(numFiles).append(" files");
 				if (LOGGER.isLoggable(Level.FINE)) {
 					LOGGER.fine(message.toString());
 				}
-				fireEvent(message.toString(),((fileBeingProcessed * 100.0) / numFiles));
+				fireEvent(message.toString(),overallProgress);
 				return;
 			}
 
@@ -611,7 +620,7 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 					if (LOGGER.isLoggable(Level.SEVERE)) {
 						LOGGER.severe(message.toString());
 					}
-					fireEvent(message.toString(),((fileBeingProcessed * 100.0) / numFiles));
+					fireEvent(message.toString(),overallProgress);
 					break;
 				}
 				stream.mark();
@@ -626,7 +635,7 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 					if (LOGGER.isLoggable(Level.SEVERE)) {
 						LOGGER.severe(message.toString());
 					}
-					fireEvent(message.toString(),((fileBeingProcessed * 100.0) / numFiles));
+					fireEvent(message.toString(),overallProgress);
 					break;
 				}
 				final ImageReader reader = (ImageReader) it.next();
@@ -657,7 +666,7 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 						LOGGER.fine(message.toString());
 					}
 					fireEvent(message.toString(),
-							((fileBeingProcessed * 100.0) / numFiles));
+					        overallProgress);
 					layout = Utils.createTiledLayout(tileW, tileH, 0, 0);
 				}
 				stream.reset();
@@ -679,8 +688,7 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 					if (LOGGER.isLoggable(Level.SEVERE)) {
 						LOGGER.severe(message.toString());
 					}
-					fireEvent(message.toString(),
-							((fileBeingProcessed * 100.0) / numFiles));
+					fireEvent(message.toString(),100);
 					break;
 				}
 
@@ -736,18 +744,18 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 				if (LOGGER.isLoggable(Level.FINE)) {
 					LOGGER.fine(message.toString());
 				}
-				fireEvent(message.toString(),((fileBeingProcessed * 100.0) / numFiles));
+				fireEvent(message.toString(),overallProgress);
 				int i=0;
 				//
 				// OVERVIEWS CYLE
 				//
 				for (overviewInProcess = 0; overviewInProcess < numSteps; overviewInProcess++) {
 
-					message = new StringBuilder("Subsampling step ").append(overviewInProcess).append(" of image  ").append(fileBeingProcessed);
+					message = new StringBuilder("Subsampling step ").append(overviewInProcess+1).append(" of image  ").append(fileBeingProcessed);
 					if (LOGGER.isLoggable(Level.FINE)) {
 						LOGGER.fine(message.toString());
 					}
-					fireEvent(message.toString(),((fileBeingProcessed * 100.0) / numFiles));
+					fireEvent(message.toString(),overallProgress);
 
 					// paranoiac check
 					if (currentImage.getWidth() / downsampleStep <= 0|| currentImage.getHeight() / downsampleStep <= 0)
@@ -792,13 +800,12 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
                                         else
                                             writer.write(null,new IIOImage(newImage, null, imageMetadata), param);
 					message = new StringBuilder("Step ").append(
-							overviewInProcess).append(" of image  ").append(
+							overviewInProcess+1).append(" of image  ").append(
 							fileBeingProcessed).append(" done!");
 					if (LOGGER.isLoggable(Level.FINE)) {
 						LOGGER.fine(message.toString());
 					}
-					fireEvent(message.toString(),
-							((fileBeingProcessed * 100.0) / numFiles));
+					fireEvent(message.toString(),overallProgress);
 			
 					// switching images
 					currentImage.dispose(); //dispose old image
@@ -808,14 +815,15 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 
 				}
 				
+
+                                overallProgress=100;
 				// close message
 				message = new StringBuilder("Done with  image  ")
 						.append(fileBeingProcessed);
 				if (LOGGER.isLoggable(Level.FINE)) {
 					LOGGER.fine(message.toString());
 				}
-				fireEvent(message.toString(),
-						(((fileBeingProcessed + 1) * 100.0) / numFiles));
+				fireEvent(message.toString(),overallProgress);
 			}catch (Throwable e) {
 				fireException(e);
 			}finally{

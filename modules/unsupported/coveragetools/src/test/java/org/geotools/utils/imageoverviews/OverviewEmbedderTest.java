@@ -74,6 +74,7 @@ public class OverviewEmbedderTest extends Assert{
     }
    
     @Test
+//    @Ignore
     public void nearestExternal() throws Exception{
         
         final OverviewsEmbedder oe= new OverviewsEmbedder();
@@ -133,8 +134,56 @@ public class OverviewEmbedderTest extends Assert{
         oe.setSourcePath(TestData.file(this, "DEM_.tiff").getAbsolutePath());
         oe.addProcessingEventListener(new ProcessingEventListener() {
             
+            private double lastProgress=-1;
+
             @Override
             public void getNotification(ProcessingEvent event) {
+                assertTrue(lastProgress<=event.getPercentage()); 
+                lastProgress=event.getPercentage();
+                assertTrue(lastProgress<=100); 
+                assertTrue(lastProgress>=0); 
+                LOGGER.info(event.toString());
+                
+            }
+            
+            @Override
+            public void exceptionOccurred(ExceptionEvent event) {
+                LOGGER.warning(event.toString());                
+            }
+            
+        });
+        oe.run();
+        
+        // now red it back and check that things are coherent
+        final ImageReader reader= new TIFFImageReaderSpi().createReaderInstance();
+        reader.setInput(ImageIO.createImageInputStream(org.geotools.test.TestData.file(this, "DEM_.tiff")));
+        assertTrue(reader.getNumImages(true)==6);
+        reader.dispose();
+    }
+    
+    @Test
+//    @Ignore
+    public void nearestMultiple() throws Exception{
+        
+        final OverviewsEmbedder oe= new OverviewsEmbedder();
+        oe.setDownsampleStep(2);
+        oe.setNumSteps(5);
+        oe.setScaleAlgorithm(OverviewsEmbedder.SubsampleAlgorithm.Nearest.toString());
+        // use default 
+        oe.setTileCache(JAI.getDefaultInstance().getTileCache());
+        oe.setTileWidth(256);
+        oe.setTileHeight(256);
+        oe.setSourcePath(TestData.file(this, "DEM_.tiff").getAbsolutePath());
+        oe.addProcessingEventListener(new ProcessingEventListener() {
+            
+            private double lastProgress=-1;
+
+            @Override
+            public void getNotification(ProcessingEvent event) {
+                assertTrue(lastProgress<=event.getPercentage()); 
+                lastProgress=event.getPercentage();
+                assertTrue(lastProgress<=100); 
+                assertTrue(lastProgress>=0); 
                 LOGGER.info(event.toString());
                 
             }
@@ -155,7 +204,7 @@ public class OverviewEmbedderTest extends Assert{
     }
 
     @Test
-   
+//    @Ignore
         public void average() throws Exception{
     //        JAI.getDefaultInstance().getTileCache().setMemoryCapacity(512*1024*1024);
     //        JAI.getDefaultInstance().getTileScheduler().setParallelism(10);
@@ -194,7 +243,7 @@ public class OverviewEmbedderTest extends Assert{
         }
 
     @Test
-   
+//    @Ignore
         public void bicubic() throws Exception{
     //        JAI.getDefaultInstance().getTileCache().setMemoryCapacity(512*1024*1024);
     //        JAI.getDefaultInstance().getTileScheduler().setParallelism(10);
@@ -233,7 +282,7 @@ public class OverviewEmbedderTest extends Assert{
         }
 
     @Test
-   
+//    @Ignore
         public void bilinear() throws Exception{
     //        JAI.getDefaultInstance().getTileCache().setMemoryCapacity(512*1024*1024);
     //        JAI.getDefaultInstance().getTileScheduler().setParallelism(10);

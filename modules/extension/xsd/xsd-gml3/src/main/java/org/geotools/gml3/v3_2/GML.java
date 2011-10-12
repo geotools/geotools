@@ -95,6 +95,8 @@ public final class GML extends XSD {
     
     /** @generated */
     public static final String NAMESPACE = "http://www.opengis.net/gml/3.2";
+
+    public static final String CANONICAL_SCHEMA_LOCATION = "http://schemas.opengis.net/gml/3.2.1/gml.xsd";
     
     /* Type Definitions */
     /** @generated */

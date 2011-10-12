@@ -78,11 +78,11 @@ When posting about a problem with your application or a possible bug in GeoTools
 Share your solutions
 --------------------
 
-If you have posted to the list seeking an answer to some GeoTools programming problem, and then
-discover the answer yourself, please take the time to share it with the list. This makes your answer
-available to others searching the list arhives later. For bonus points, share the answers to
-questions you didn't post as well, as in: "I've just worked out a much better way of doing XYZ with
-GeoTools".
+If you have posted to the list seeking an answer to a GeoTools programming problem, and then
+discover the solution yourself, please take the time to share it with the list. Your answer will
+then be there in the list archives for the benefit of future generations. For bonus points, share
+the answers to questions you didn't post, as in: "I've just worked out a much better way of doing
+XYZ with GeoTools".
 
 Take a little, give a little
 ----------------------------

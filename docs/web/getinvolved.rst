@@ -13,9 +13,10 @@ as stay in touch with what is happening with the project.
 
 The 
 `users list <https://lists.sourceforge.net/lists/listinfo/geotools-gt2-users>`_
-is the forum . If you are having a problem with GeoTools,
-something does not work or you think you have encountered a bug, report it to 
-this list.
+is the place to go when you have questions about using GeoTools. Have a look at our
+`user list posting guide <http://docs.geotools.org/latest/userguide/welcome/userlistguide.html>`_
+and join in the discussion.
+
   
 The 
 `developer list <https://lists.sourceforge.net/lists/listinfo/geotools-devel>`_

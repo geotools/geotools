@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.geotools.feature.NameImpl;
 import org.geotools.filter.FunctionFactory;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
@@ -25,7 +27,10 @@ public class ExampleFunctionFactory2 implements FunctionFactory {
         return Collections.unmodifiableList( functionList );
     }    
     public Function function(String name, List<Expression> args, Literal fallback) {
-        if( "first".equals(name)){
+        return function(new NameImpl(name), args, fallback);
+    }
+    public Function function(Name name, List<Expression> args, Literal fallback) {
+        if(new NameImpl("first").equals(name)){
             return new AbstractFunction( FIRST, args, fallback ){
                 public Geometry evaluate(Object object) {
                     Geometry geom = eval(object, 0, Geometry.class );

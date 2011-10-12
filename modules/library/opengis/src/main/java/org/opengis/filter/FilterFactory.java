@@ -12,6 +12,7 @@ package org.opengis.filter;
 import java.util.List;
 import java.util.Set;
 
+import org.opengis.feature.type.Name;
 import org.opengis.filter.MultiValuedFilter.MatchAction;
 import org.opengis.filter.capability.ArithmeticOperators;
 import org.opengis.filter.capability.ComparisonOperators;
@@ -439,6 +440,9 @@ public interface FilterFactory {
     /** Call into some implementation-specific function. */
     Function  function(String name, Expression ... args);
 
+    /** Call into some implementation-specific function. */
+    Function  function(Name name, Expression ... args);
+
     /** A constant, literal value that can be used in expressions. */
     Literal  literal(Object obj);
 
@@ -490,6 +494,9 @@ public interface FilterFactory {
 
     /** function name */
     FunctionName functionName(String name, int nargs);
+
+    /** function name */
+    FunctionName functionName(Name name, int nargs);
 
     /** functions */
     Functions functions(FunctionName[] functionNames);

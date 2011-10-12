@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.geotools.data.Parameter;
+import org.geotools.feature.NameImpl;
 import org.geotools.filter.FunctionFactory;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.process.ProcessFactory;
@@ -78,25 +79,29 @@ public class ProcessFunctionFactory implements FunctionFactory {
     /**
      * Maps from function to process name
      */
-    HashMap<String, Name> functionToProcess;
-    
+    HashMap<Name,FunctionName> processToFunction;
+
     /**
      * The cache list of functions wrapping processes
      */
     private ArrayList<FunctionName> functionNames;
 
     public Function function(String name, List<Expression> args, Literal fallback) {
+        return function(new NameImpl(name), args, fallback);
+    }
+
+    public Function function(Name processName, List<Expression> args, Literal fallback) {
         // if the param function just return it
-        if(name.equals(ParameterFunction.NAME)) {
+        if(processName.equals(new NameImpl(ParameterFunction.NAME))) {
             return new ParameterFunction(fallback, args);
         }
         
         // lookup the process
-        if(functionToProcess == null) {
+        if(functionNames == null) {
             init();
         }
-        Name processName = functionToProcess.get(name);
-        if(processName == null) {
+
+        if (!processToFunction.containsKey(processName)) {
             // no such function
             return null; 
         } else {
@@ -104,9 +109,11 @@ public class ProcessFunctionFactory implements FunctionFactory {
             org.geotools.process.Process process = Processors.createProcess(processName);
             Map<String, Parameter<?>> parameters = Processors.getParameterInfo(processName);
             if (process instanceof RenderingProcess){
-                return new RenderingProcessFunction(name, processName, args, parameters, (RenderingProcess) process, fallback);
+                return new RenderingProcessFunction(processName.getLocalPart(), processName, args, 
+                    parameters, (RenderingProcess) process, fallback);
             } else {
-                return new ProcessFunction(name, processName, args, parameters, process, fallback);
+                return new ProcessFunction(processName.getLocalPart(), processName, args, parameters, 
+                    process, fallback);
             }
         }
     }
@@ -120,26 +127,27 @@ public class ProcessFunctionFactory implements FunctionFactory {
     }
     
     private synchronized void init() {
-        if(functionNames == null || functionToProcess == null) {
+        if(functionNames == null) {
             // collect and sort the factories to have a reproducable list of function names
             List<ProcessFactory> factories = new ArrayList<ProcessFactory>(Processors
                     .getProcessFactories());
             Collections.sort(factories, FACTORY_COMPARATOR);
             
             // collect name and params of all processes resulting in a single output
-            functionToProcess = new HashMap<String, Name>();
+            processToFunction = new HashMap<Name,FunctionName>();
             functionNames = new ArrayList<FunctionName>();
             for (ProcessFactory factory : factories) {
                 for (Name processName : factory.getNames()) {
-                    String functionName = processName.getURI();
                     Map<String, Parameter<?>> resultInfo = factory.getResultInfo(processName, null);
                     
                     // check there is a single output
                     if(getPrimary(resultInfo) != null) {
                         Map<String, Parameter<?>> parameterInfo = factory.getParameterInfo(processName);
                         List<String> argumentNames = new ArrayList<String>(parameterInfo.keySet());
-                        functionNames.add(new FunctionNameImpl(functionName, argumentNames));
-                        functionToProcess.put(functionName, processName);
+
+                        FunctionName functionName = new FunctionNameImpl(processName, argumentNames);
+                        functionNames.add(functionName);
+                        processToFunction.put(processName, functionName);
                     }
                 }
             }
@@ -167,7 +175,7 @@ public class ProcessFunctionFactory implements FunctionFactory {
      */
     public void clear() {
         functionNames = null;
-        functionToProcess = null;
+        processToFunction = null;
     }
 
 }

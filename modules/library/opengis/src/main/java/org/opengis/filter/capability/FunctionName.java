@@ -23,6 +23,7 @@ package org.opengis.filter.capability;
 import java.util.List;
 
 import org.opengis.annotation.UML;
+import org.opengis.feature.type.Name;
 import org.opengis.parameter.Parameter;
 
 import static org.opengis.annotation.Specification.*;
@@ -51,6 +52,15 @@ import static org.opengis.annotation.Specification.*;
  * @source $URL$
  */
 public interface FunctionName extends Operator {
+
+    /**
+     * The qualified name of the function.
+     * <p>
+     * Client code should this method over {@link Operator#getName()} to handle qualified names. 
+     * </p>
+     */
+    Name getFunctionName();
+
     /**
      * Number of arguments the function accepts.
      * <p>

@@ -22,6 +22,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.geotools.feature.NameImpl;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Function;
 import org.opengis.geometry.coordinate.ParametricCurveSurface;
@@ -38,7 +40,10 @@ import org.opengis.parameter.Parameter;
  * @source $URL$
  */
 public class FunctionNameImpl extends OperatorImpl implements FunctionName {
-    
+
+    /** function name */
+    Name functionName;
+
     /** function arguments */
     List<Parameter<?>> args;
     
@@ -46,45 +51,90 @@ public class FunctionNameImpl extends OperatorImpl implements FunctionName {
     Parameter<?> ret;
 
     public FunctionNameImpl( String name, int argumentCount ) {
-        this(name, generateReturn(), generateArguments(argumentCount));
+        this(new NameImpl(name), argumentCount);
     }
     
+    public FunctionNameImpl( Name name, int argumentCount ) {
+        this(name, generateReturn(), generateArguments(argumentCount));
+    }
+
     public FunctionNameImpl( String name, String ... argumentsNames ) {
+        this(new NameImpl(name), argumentsNames);
+    }
+    
+    public FunctionNameImpl( Name name, String ... argumentsNames ) {
         this(name, argumentsNames.length, Arrays.asList(argumentsNames));
     }
     
     public FunctionNameImpl( String name, List<String> argumentsNames ) {
+        this( new NameImpl(name), argumentsNames);
+    }
+    
+    public FunctionNameImpl( Name name, List<String> argumentsNames ) {
         this( name, argumentsNames.size(), argumentsNames );
     }
     
     public FunctionNameImpl( String name, int argumentCount, List<String> argumentsNames ) {
+        this(new NameImpl(name), argumentCount, argumentsNames);
+    }
+    
+    public FunctionNameImpl( Name name, int argumentCount, List<String> argumentsNames ) {
         this(name, generateReturn(), generateArguments(argumentsNames));
     }
     
     public FunctionNameImpl( String name, int argumentCount, String ... argumentsNames ) {
+        this(new NameImpl(name), argumentCount, argumentsNames);
+    }
+    
+    public FunctionNameImpl( Name name, int argumentCount, String ... argumentsNames ) {
         this(name, argumentCount, Arrays.asList(argumentsNames));
     }
     
     public FunctionNameImpl( FunctionName copy ) {
         super( copy );
+        this.functionName = copy.getFunctionName();
         this.ret = copy.getReturn();
         this.args = copy.getArguments();
     }
-    
+
+    public FunctionNameImpl( String name, Class returnType, Parameter<?>... arguments) {
+        this(new NameImpl(name), returnType, arguments);
+    }
+
+    public FunctionNameImpl( Name name, Class returnType, Parameter<?>... arguments) {
+        this(name, parameter(name.getLocalPart(), returnType), Arrays.asList(arguments));
+    }
+
     public FunctionNameImpl( String name, Parameter<?> retern, Parameter<?>... arguments) {
+        this(new NameImpl(name), retern, arguments);
+    }
+
+    public FunctionNameImpl( Name name, Parameter<?> retern, Parameter<?>... arguments) {
         this(name, retern, Arrays.asList(arguments));
     }
-    
-    public FunctionNameImpl( String name, Class returnType, Parameter<?>... arguments) {
-        this(name, parameter(name, returnType), Arrays.asList(arguments));
-    }
-    
+
     public FunctionNameImpl( String name, Parameter<?> retern, List<Parameter<?>> arguments) {
-        super(name);
+        this(new NameImpl(name), retern, arguments);
+    }
+
+    public FunctionNameImpl( Name name, Parameter<?> retern, List<Parameter<?>> arguments) {
+        super(name.getLocalPart());
+        this.functionName = name;
         this.ret = retern;
         this.args = arguments;
     }
-    
+
+    @Override
+    public Name getFunctionName() {
+        return functionName;
+    }
+
+    @Override
+    public String getName() {
+        //override to use local parse of qualfiied functionName
+        return getFunctionName().getLocalPart();
+    }
+
     public int getArgumentCount() {
         return args.size();
     }

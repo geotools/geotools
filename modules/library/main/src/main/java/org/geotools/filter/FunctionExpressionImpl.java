@@ -26,7 +26,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.geotools.feature.NameImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Function;
@@ -79,13 +81,23 @@ public abstract class FunctionExpressionImpl
         this.functionName = functionName;
     }
     protected FunctionExpressionImpl(String name ){
+        this(new NameImpl(name));
+    }
+    protected FunctionExpressionImpl(Name name){
         this( name, null );
     }
     /**
      * Creates a new instance of FunctionExpression
      */
     protected FunctionExpressionImpl(String name, Literal fallback) {
-        this.name = name;
+        this(new NameImpl(name), fallback);
+    }
+    /**
+     * Creates a new instance of FunctionExpression
+     */
+    protected FunctionExpressionImpl(Name name, Literal fallback) {
+        this.functionName = new FunctionNameImpl(name, (Class)null);
+        this.name = name.getLocalPart();
         this.fallback = fallback;
         params = new ArrayList<org.opengis.filter.expression.Expression>();
     }

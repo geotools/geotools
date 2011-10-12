@@ -18,6 +18,7 @@ package org.geotools.filter;
 
 import java.util.List;
 
+import org.opengis.feature.type.Name;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
@@ -41,7 +42,7 @@ public interface FunctionFactory {
      * @return A list of function names, possibly empty, never null.
      */
     List<FunctionName> getFunctionNames();
-    
+
     /**
      * Returns a function with the specified name.
      * 
@@ -51,4 +52,15 @@ public interface FunctionFactory {
      *   can not be created. This argument may be {@code null}.
      */
     Function function(String name, List<Expression> args, Literal fallback);
+
+    /**
+     * Returns a function with the specified name.
+     * 
+     * @param name The name of the function
+     * @param args Variable list of expression arguments for the function.
+     * @param fallback A fallback literal to use in cases where the function does not exist or 
+     *   can not be created. This argument may be {@code null}.
+     */
+    Function function(Name name, List<Expression> args, Literal fallback);
+
 }

@@ -31,12 +31,14 @@ import java.util.concurrent.Future;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.FactoryIteratorProvider;
 import org.geotools.factory.GeoTools;
+import org.geotools.feature.NameImpl;
 import org.geotools.filter.FunctionFactory;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
@@ -69,7 +71,10 @@ public class FunctionFactoryTest {
                         }
                         
                         public Function function(String name, List<Expression> args, Literal fallback) {
-                            if ("foo".equals(name)) {
+                            return function(new NameImpl(name), args, fallback);
+                        }
+                        public Function function(Name name, List<Expression> args, Literal fallback) {
+                            if ("foo".equals(name.getLocalPart())) {
                                 return new FunctionImpl() {
                                     @Override
                                     public Object evaluate(Object object, Class context) {

@@ -694,6 +694,11 @@ public class FilterFactoryImpl implements FilterFactory {
         return function;
     }
 
+    public Function function(Name name, Expression... args) {
+        Function function = functionFinder.findFunction( name, Arrays.asList(args) );
+        return function;
+    }
+
     public Function function(String name, Expression arg1) {
         Function function = functionFinder.findFunction( name, Arrays.asList( new Expression[]{ arg1 } ) );
         return function;
@@ -1369,15 +1374,30 @@ public class FilterFactoryImpl implements FilterFactory {
     public FunctionName functionName(String name, int nargs) {
         return new FunctionNameImpl( name, nargs );
     }
-    
+
+    @Override
+    public FunctionName functionName(Name name, int nargs) {
+        return new FunctionNameImpl( name, nargs );
+    }
+
     public FunctionName functionName(String name, int nargs, List<String> argNames ){
+        return new FunctionNameImpl( name, nargs, argNames );
+    }
+
+    @Override
+    public FunctionName functionName(Name name, int nargs, List<String> argNames) {
         return new FunctionNameImpl( name, nargs, argNames );
     }
     
     public FunctionName functionName(String name, List<Parameter<?>> args, Parameter<?> ret) {
         return new FunctionNameImpl( name, ret, args );
     }
-    
+
+    @Override
+    public FunctionName functionName(Name name, List<Parameter<?>> args, Parameter<?> ret) {
+        return new FunctionNameImpl( name, ret, args );
+    }
+
     public Functions functions(FunctionName[] functionNames) {
         return new FunctionsImpl( functionNames );
     }

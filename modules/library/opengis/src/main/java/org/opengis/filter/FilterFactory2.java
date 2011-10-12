@@ -83,7 +83,20 @@ public interface FilterFactory2 extends FilterFactory {
      *            Optional list of argument names
      */
     FunctionName functionName(String name, int nargs, List<String> argNames);
-    
+
+    /**
+     * FunctionName used to describe an available function.
+     * 
+     * @param name
+     *            qualified name of function
+     * @param nargs
+     *            number of arguments, use a negative number to indicate a minimum if the function
+     *            supports an open ended number of arguments
+     * @param argNames
+     *            Optional list of argument names
+     */
+    FunctionName functionName(Name name, int nargs, List<String> argNames);
+
     /**
      * FunctionName used to describe an available function.
      * 
@@ -92,7 +105,16 @@ public interface FilterFactory2 extends FilterFactory {
      * @param ret Parameter describing function return. 
      */
     FunctionName functionName(String name, List<Parameter<?>> args, Parameter<?> ret);
-    
+
+    /**
+     * FunctionName used to describe an available function.
+     * 
+     * @param name qualified name of function
+     * @param args Parameters describing function arguments.
+     * @param ret Parameter describing function return. 
+     */
+    FunctionName functionName(Name name, List<Parameter<?>> args, Parameter<?> ret);
+
     ////////////////////////////////////////////////////////////////////////////////
     //
     //  FILTERS

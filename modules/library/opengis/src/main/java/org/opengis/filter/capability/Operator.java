@@ -23,6 +23,7 @@ package org.opengis.filter.capability;
 import static org.opengis.annotation.Specification.UNSPECIFIED;
 
 import org.opengis.annotation.UML;
+import org.opengis.feature.type.Name;
 
 /**
  * Indicates a supported Operator.
@@ -54,7 +55,7 @@ public interface Operator {
      */
     @UML(identifier="name", specification=UNSPECIFIED)
     String getName();
-    
+
     /**
      * The supported interface enabled by this Operator.
      * <p>

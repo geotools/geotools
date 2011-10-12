@@ -29,11 +29,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.NameImpl;
 import org.geotools.filter.FunctionExpression;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.FunctionFactory;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.util.logging.Logging;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
@@ -53,7 +55,7 @@ public class DefaultFunctionFactory implements FunctionFactory {
     private static final Logger LOGGER = Logging.getLogger("org.geotools.filter");
     private FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
     
-    private Map<String,FunctionDescriptor> functionCache;
+    private Map<Name,FunctionDescriptor> functionCache;
 
     public List<FunctionName> getFunctionNames() {
         ArrayList<FunctionName> list = new ArrayList<FunctionName>(functionCache().size());
@@ -65,11 +67,15 @@ public class DefaultFunctionFactory implements FunctionFactory {
         }
         return list;
     }
-    
+
     public Function function(String name, List<Expression> parameters, Literal fallback) {
+        return function(new NameImpl(name), parameters, fallback);
+    }
+
+    public Function function(Name name, List<Expression> parameters, Literal fallback) {
         
         // cache lookup
-        String key = functionName(name);
+        Name key = functionName(name);
         FunctionDescriptor fd = functionCache().get(key);
         if (fd == null) {
             fd = functionCache().get(name);
@@ -91,7 +97,7 @@ public class DefaultFunctionFactory implements FunctionFactory {
         return null;
     }
     
-    private Map<String,FunctionDescriptor> functionCache() {
+    private Map<Name,FunctionDescriptor> functionCache() {
         if (functionCache == null) {
             synchronized(this) {
                 if (functionCache == null) {
@@ -126,20 +132,21 @@ public class DefaultFunctionFactory implements FunctionFactory {
         }
         return functionName;
     }
-    private Map<String,FunctionDescriptor> loadFunctions() {
-        Map<String,FunctionDescriptor> functionMap = new HashMap<String,FunctionDescriptor>();
+    private Map<Name,FunctionDescriptor> loadFunctions() {
+        Map<Name,FunctionDescriptor> functionMap = new HashMap<Name,FunctionDescriptor>();
 
         Set<Function> functions = CommonFactoryFinder.getFunctions(null);
         for (Iterator<Function> i = functions.iterator(); i.hasNext();) {
             Function function = (Function) i.next();
             FunctionName functionName = getFunctionName( function );
-            String name = function.getName();
+            Name name = functionName.getFunctionName();
+
             FunctionDescriptor fd = new FunctionDescriptor( functionName, function.getClass() );
 //            if("rint".equals(functionName.getName())){
 //                System.out.println("Loaded rint");
 //            }
             // needed to insert justin's name hack here to ensure consistent lookup
-            String key = functionName(name);
+            Name key = functionName(name);
             if( functionMap.containsKey(key)){
                 // conflicted name - probably a cut and paste error when creating functionName
                 FunctionDescriptor conflict = functionMap.get(key);
@@ -150,7 +157,8 @@ public class DefaultFunctionFactory implements FunctionFactory {
         return functionMap;
     }
     
-    private String functionName(String name) {
+    private Name functionName(Name functionName) {
+        String name = functionName.getLocalPart();
         
         //strip off "Function" prefix
         int index = -1;
@@ -168,7 +176,7 @@ public class DefaultFunctionFactory implements FunctionFactory {
         //char c = name.charAt(0);
         //name = name.replaceFirst("" + c, "" + Character.toUpperCase(c));
 
-        return name;
+        return new NameImpl(functionName.getNamespaceURI(), functionName.getSeparator(), name);
     }
 
     static class FunctionDescriptor {

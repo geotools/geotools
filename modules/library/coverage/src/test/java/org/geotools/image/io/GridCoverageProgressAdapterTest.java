@@ -161,7 +161,7 @@ public class GridCoverageProgressAdapterTest extends Assert {
         image.flush();
         image=null;
         
-        assertTrue(adaptee.isCompleted());
+        assertFalse(adaptee.isCompleted());
         assertTrue(adaptee.isStarted());
         assertTrue(adaptee.isCanceled());
     }

@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/net.opengis.fes/src"
+    modelPluginID="net.opengis.fes" modelName="Fes20" importerID="org.eclipse.emf.importer.java"
+    complianceLevel="6.0" copyrightFields="false" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/XMLType.genmodel#//type ../net.opengis.ows/ows11.genmodel#//ows11 platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore platform:/plugin/org.eclipse.emf.ecore/model/XMLNamespace.genmodel#//namespace">
+  <foreignModel>@model</foreignModel>
+  <genPackages prefix="Fes20" basePackage="net.opengis" disposableProviderFactory="true"
+      ecorePackage="fes20.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="fes20.ecore#//ComparisonOperatorNameTypeMember0">
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//ComparisonOperatorNameTypeMember0/PropertyIsEqualTo"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//ComparisonOperatorNameTypeMember0/PropertyIsNotEqualTo"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//ComparisonOperatorNameTypeMember0/PropertyIsLessThan"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//ComparisonOperatorNameTypeMember0/PropertyIsGreaterThan"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//ComparisonOperatorNameTypeMember0/PropertyIsLessThanOrEqualTo"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//ComparisonOperatorNameTypeMember0/PropertyIsGreaterThanOrEqualTo"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//ComparisonOperatorNameTypeMember0/PropertyIsLike"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//ComparisonOperatorNameTypeMember0/PropertyIsNull"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//ComparisonOperatorNameTypeMember0/PropertyIsNil"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//ComparisonOperatorNameTypeMember0/PropertyIsBetween"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="fes20.ecore#//MatchActionType">
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//MatchActionType/All"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//MatchActionType/Any"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//MatchActionType/One"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="fes20.ecore#//SortOrderType">
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//SortOrderType/DESC"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//SortOrderType/ASC"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="fes20.ecore#//SpatialOperatorNameTypeMember0">
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//SpatialOperatorNameTypeMember0/BBOX"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//SpatialOperatorNameTypeMember0/Equals"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//SpatialOperatorNameTypeMember0/Disjoint"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//SpatialOperatorNameTypeMember0/Intersects"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//SpatialOperatorNameTypeMember0/Touches"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//SpatialOperatorNameTypeMember0/Crosses"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//SpatialOperatorNameTypeMember0/Within"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//SpatialOperatorNameTypeMember0/Contains"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//SpatialOperatorNameTypeMember0/Overlaps"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//SpatialOperatorNameTypeMember0/Beyond"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//SpatialOperatorNameTypeMember0/DWithin"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="fes20.ecore#//TemporalOperatorNameTypeMember0">
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//TemporalOperatorNameTypeMember0/After"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//TemporalOperatorNameTypeMember0/Before"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//TemporalOperatorNameTypeMember0/Begins"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//TemporalOperatorNameTypeMember0/BegunBy"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//TemporalOperatorNameTypeMember0/TContains"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//TemporalOperatorNameTypeMember0/During"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//TemporalOperatorNameTypeMember0/TEquals"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//TemporalOperatorNameTypeMember0/TOverlaps"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//TemporalOperatorNameTypeMember0/Meets"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//TemporalOperatorNameTypeMember0/OverlappedBy"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//TemporalOperatorNameTypeMember0/MetBy"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//TemporalOperatorNameTypeMember0/Ends"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//TemporalOperatorNameTypeMember0/EndedBy"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="fes20.ecore#//VersionActionTokens">
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//VersionActionTokens/FIRST"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//VersionActionTokens/LAST"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//VersionActionTokens/PREVIOUS"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//VersionActionTokens/NEXT"/>
+      <genEnumLiterals ecoreEnumLiteral="fes20.ecore#//VersionActionTokens/ALL"/>
+    </genEnums>
+    <genDataTypes ecoreDataType="fes20.ecore#//AliasesType"/>
+    <genDataTypes ecoreDataType="fes20.ecore#//ComparisonOperatorNameType"/>
+    <genDataTypes ecoreDataType="fes20.ecore#//ComparisonOperatorNameTypeMember0Object"/>
+    <genDataTypes ecoreDataType="fes20.ecore#//ComparisonOperatorNameTypeMember1"/>
+    <genDataTypes ecoreDataType="fes20.ecore#//MatchActionTypeObject"/>
+    <genDataTypes ecoreDataType="fes20.ecore#//SchemaElement"/>
+    <genDataTypes ecoreDataType="fes20.ecore#//SortOrderTypeObject"/>
+    <genDataTypes ecoreDataType="fes20.ecore#//SpatialOperatorNameType"/>
+    <genDataTypes ecoreDataType="fes20.ecore#//SpatialOperatorNameTypeMember0Object"/>
+    <genDataTypes ecoreDataType="fes20.ecore#//SpatialOperatorNameTypeMember1"/>
+    <genDataTypes ecoreDataType="fes20.ecore#//TemporalOperatorNameType"/>
+    <genDataTypes ecoreDataType="fes20.ecore#//TemporalOperatorNameTypeMember0Object"/>
+    <genDataTypes ecoreDataType="fes20.ecore#//TemporalOperatorNameTypeMember1"/>
+    <genDataTypes ecoreDataType="fes20.ecore#//TypeNamesListType"/>
+    <genDataTypes ecoreDataType="fes20.ecore#//TypeNamesType"/>
+    <genDataTypes ecoreDataType="fes20.ecore#//UomIdentifier"/>
+    <genDataTypes ecoreDataType="fes20.ecore#//UomSymbol"/>
+    <genDataTypes ecoreDataType="fes20.ecore#//UomURI"/>
+    <genDataTypes ecoreDataType="fes20.ecore#//VersionActionTokensObject"/>
+    <genDataTypes ecoreDataType="fes20.ecore#//VersionType"/>
+    <genClasses image="false" ecoreClass="fes20.ecore#//AbstractAdhocQueryExpressionType">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//AbstractAdhocQueryExpressionType/abstractProjectionClause"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//AbstractAdhocQueryExpressionType/abstractSelectionClause"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//AbstractAdhocQueryExpressionType/abstractSortingClause"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//AbstractAdhocQueryExpressionType/aliases"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//AbstractAdhocQueryExpressionType/typeNames"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="fes20.ecore#//AbstractIdType"/>
+    <genClasses image="false" ecoreClass="fes20.ecore#//AbstractProjectionClauseType"/>
+    <genClasses image="false" ecoreClass="fes20.ecore#//AbstractQueryExpressionType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//AbstractQueryExpressionType/handle"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="fes20.ecore#//AbstractSelectionClauseType"/>
+    <genClasses image="false" ecoreClass="fes20.ecore#//AbstractSortingClauseType"/>
+    <genClasses ecoreClass="fes20.ecore#//AdditionalOperatorsType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//AdditionalOperatorsType/operator"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//ArgumentsType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//ArgumentsType/argument"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//ArgumentType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//ArgumentType/metadata"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//ArgumentType/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//ArgumentType/name"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//AvailableFunctionsType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//AvailableFunctionsType/function"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//AvailableFunctionType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//AvailableFunctionType/metadata"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//AvailableFunctionType/returns"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//AvailableFunctionType/arguments"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//AvailableFunctionType/name"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//BBOXType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//BBOXType/expressionGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//BBOXType/expression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//BBOXType/any"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//BinaryComparisonOpType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//BinaryComparisonOpType/expressionGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//BinaryComparisonOpType/expression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//BinaryComparisonOpType/matchAction"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//BinaryComparisonOpType/matchCase"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//BinaryLogicOpType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//BinaryLogicOpType/filterPredicates"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//BinaryLogicOpType/comparisonOpsGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//BinaryLogicOpType/comparisonOps"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//BinaryLogicOpType/spatialOpsGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//BinaryLogicOpType/spatialOps"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//BinaryLogicOpType/temporalOpsGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//BinaryLogicOpType/temporalOps"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//BinaryLogicOpType/logicOpsGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//BinaryLogicOpType/logicOps"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//BinaryLogicOpType/extensionOpsGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//BinaryLogicOpType/extensionOps"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//BinaryLogicOpType/function"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//BinaryLogicOpType/idGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//BinaryLogicOpType/id"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//BinarySpatialOpType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//BinarySpatialOpType/valueReference"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//BinarySpatialOpType/expressionGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//BinarySpatialOpType/expression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//BinarySpatialOpType/any"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//BinaryTemporalOpType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//BinaryTemporalOpType/valueReference"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//BinaryTemporalOpType/expressionGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//BinaryTemporalOpType/expression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//BinaryTemporalOpType/any"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//ComparisonOperatorsType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//ComparisonOperatorsType/group"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//ComparisonOperatorsType/comparisonOperator"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//ComparisonOperatorType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//ComparisonOperatorType/name"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="fes20.ecore#//ComparisonOpsType"/>
+    <genClasses ecoreClass="fes20.ecore#//ConformanceType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//ConformanceType/constraint"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//DistanceBufferType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//DistanceBufferType/expressionGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//DistanceBufferType/expression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//DistanceBufferType/any"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DistanceBufferType/distance"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//DocumentRoot">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//DocumentRoot/mixed"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/xMLNSPrefixMap"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/xSISchemaLocation"/>
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/id"/>
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/abstractAdhocQueryExpression"/>
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/abstractQueryExpression"/>
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/abstractProjectionClause"/>
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/abstractSelectionClause"/>
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/abstractSortingClause"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/after"/>
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/temporalOps"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/and"/>
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/logicOps"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/anyInteracts"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/bBOX"/>
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/spatialOps"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/before"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/begins"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/begunBy"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/beyond"/>
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/comparisonOps"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/contains"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/crosses"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/disjoint"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/during"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/dWithin"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/endedBy"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/ends"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/equals"/>
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/expression"/>
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/extensionOps"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/filter"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/filterCapabilities"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/function"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/intersects"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/literal"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/logicalOperators"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/meets"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/metBy"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/not"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/or"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/overlappedBy"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/overlaps"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/propertyIsBetween"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/propertyIsEqualTo"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/propertyIsGreaterThan"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/propertyIsGreaterThanOrEqualTo"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/propertyIsLessThan"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/propertyIsLessThanOrEqualTo"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/propertyIsLike"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/propertyIsNil"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/propertyIsNotEqualTo"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/propertyIsNull"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/resourceId"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/sortBy"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/tContains"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/tEquals"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/touches"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/tOverlaps"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//DocumentRoot/valueReference"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//DocumentRoot/within"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//ExtendedCapabilitiesType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//ExtendedCapabilitiesType/additionalOperators"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//ExtensionOperatorType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//ExtensionOperatorType/name"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="fes20.ecore#//ExtensionOpsType"/>
+    <genClasses ecoreClass="fes20.ecore#//FilterCapabilitiesType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//FilterCapabilitiesType/conformance"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//FilterCapabilitiesType/idCapabilities"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//FilterCapabilitiesType/scalarCapabilities"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//FilterCapabilitiesType/spatialCapabilities"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//FilterCapabilitiesType/temporalCapabilities"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//FilterCapabilitiesType/functions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//FilterCapabilitiesType/extendedCapabilities"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//FilterType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//FilterType/comparisonOpsGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//FilterType/comparisonOps"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//FilterType/spatialOpsGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//FilterType/spatialOps"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//FilterType/temporalOpsGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//FilterType/temporalOps"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//FilterType/logicOpsGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//FilterType/logicOps"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//FilterType/extensionOpsGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//FilterType/extensionOps"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//FilterType/function"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//FilterType/idGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//FilterType/id"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//FunctionType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//FunctionType/expressionGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//FunctionType/expression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//FunctionType/name"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//GeometryOperandsType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//GeometryOperandsType/geometryOperand"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//GeometryOperandType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//GeometryOperandType/name"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//IdCapabilitiesType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//IdCapabilitiesType/resourceIdentifier"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//LiteralType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//LiteralType/mixed"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//LiteralType/any"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//LiteralType/type"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//LogicalOperatorsType"/>
+    <genClasses image="false" ecoreClass="fes20.ecore#//LogicOpsType"/>
+    <genClasses ecoreClass="fes20.ecore#//LowerBoundaryType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//LowerBoundaryType/expressionGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//LowerBoundaryType/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//MeasureType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//MeasureType/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//MeasureType/uom"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//PropertyIsBetweenType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//PropertyIsBetweenType/expressionGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//PropertyIsBetweenType/expression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//PropertyIsBetweenType/lowerBoundary"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//PropertyIsBetweenType/upperBoundary"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//PropertyIsLikeType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//PropertyIsLikeType/expressionGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//PropertyIsLikeType/expression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//PropertyIsLikeType/escapeChar"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//PropertyIsLikeType/singleChar"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//PropertyIsLikeType/wildCard"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//PropertyIsNilType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//PropertyIsNilType/expressionGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//PropertyIsNilType/expression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//PropertyIsNilType/nilReason"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//PropertyIsNullType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//PropertyIsNullType/expressionGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//PropertyIsNullType/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//ResourceIdentifierType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//ResourceIdentifierType/metadata"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//ResourceIdentifierType/name"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//ResourceIdType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//ResourceIdType/endDate"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//ResourceIdType/previousRid"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//ResourceIdType/rid"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//ResourceIdType/startDate"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//ResourceIdType/version"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//ScalarCapabilitiesType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//ScalarCapabilitiesType/logicalOperators"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//ScalarCapabilitiesType/comparisonOperators"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//SortByType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//SortByType/sortProperty"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//SortPropertyType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//SortPropertyType/valueReference"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//SortPropertyType/sortOrder"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//SpatialCapabilitiesType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//SpatialCapabilitiesType/geometryOperands"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//SpatialCapabilitiesType/spatialOperators"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//SpatialOperatorsType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//SpatialOperatorsType/spatialOperator"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//SpatialOperatorType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//SpatialOperatorType/geometryOperands"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//SpatialOperatorType/name"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="fes20.ecore#//SpatialOpsType"/>
+    <genClasses ecoreClass="fes20.ecore#//TemporalCapabilitiesType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//TemporalCapabilitiesType/temporalOperands"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//TemporalCapabilitiesType/temporalOperators"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//TemporalOperandsType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//TemporalOperandsType/temporalOperand"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//TemporalOperandType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//TemporalOperandType/name"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//TemporalOperatorsType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//TemporalOperatorsType/temporalOperator"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//TemporalOperatorType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//TemporalOperatorType/temporalOperands"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute fes20.ecore#//TemporalOperatorType/name"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="fes20.ecore#//TemporalOpsType"/>
+    <genClasses ecoreClass="fes20.ecore#//UnaryLogicOpType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//UnaryLogicOpType/comparisonOpsGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//UnaryLogicOpType/comparisonOps"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//UnaryLogicOpType/spatialOpsGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//UnaryLogicOpType/spatialOps"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//UnaryLogicOpType/temporalOpsGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//UnaryLogicOpType/temporalOps"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//UnaryLogicOpType/logicOpsGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//UnaryLogicOpType/logicOps"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//UnaryLogicOpType/extensionOpsGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//UnaryLogicOpType/extensionOps"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference fes20.ecore#//UnaryLogicOpType/function"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//UnaryLogicOpType/idGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//UnaryLogicOpType/id"/>
+    </genClasses>
+    <genClasses ecoreClass="fes20.ecore#//UpperBoundaryType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute fes20.ecore#//UpperBoundaryType/expressionGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference fes20.ecore#//UpperBoundaryType/expression"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

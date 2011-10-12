@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/net.opengis.wfs/src"
+    modelPluginID="net.opengis.wfs" modelName="Wfs20" importerID="org.eclipse.emf.importer.java"
+    complianceLevel="5.0" copyrightFields="false" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/XMLType.genmodel#//type platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore ../net.opengis.ows/ows10.genmodel#//ows10 platform:/plugin/org.eclipse.emf.ecore/model/XMLNamespace.genmodel#//namespace ../net.opengis.ows/ows11.genmodel#//ows11 ../net.opengis.fes/fes20.genmodel#//fes20 ../org.w3.xlink/xlink.genmodel#//xlink">
+  <foreignModel>@model</foreignModel>
+  <genPackages prefix="Wfs20" basePackage="net.opengis" disposableProviderFactory="true"
+      ecorePackage="wfs20.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="wfs20.ecore#//AllSomeType">
+      <genEnumLiterals ecoreEnumLiteral="wfs20.ecore#//AllSomeType/ALL"/>
+      <genEnumLiterals ecoreEnumLiteral="wfs20.ecore#//AllSomeType/SOME"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="wfs20.ecore#//NonNegativeIntegerOrUnknownMember0">
+      <genEnumLiterals ecoreEnumLiteral="wfs20.ecore#//NonNegativeIntegerOrUnknownMember0/unknown"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="wfs20.ecore#//ResolveValueType">
+      <genEnumLiterals ecoreEnumLiteral="wfs20.ecore#//ResolveValueType/local"/>
+      <genEnumLiterals ecoreEnumLiteral="wfs20.ecore#//ResolveValueType/remote"/>
+      <genEnumLiterals ecoreEnumLiteral="wfs20.ecore#//ResolveValueType/all"/>
+      <genEnumLiterals ecoreEnumLiteral="wfs20.ecore#//ResolveValueType/none"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="wfs20.ecore#//ResultTypeType">
+      <genEnumLiterals ecoreEnumLiteral="wfs20.ecore#//ResultTypeType/results"/>
+      <genEnumLiterals ecoreEnumLiteral="wfs20.ecore#//ResultTypeType/hits"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="wfs20.ecore#//StarStringType">
+      <genEnumLiterals ecoreEnumLiteral="wfs20.ecore#//StarStringType/_"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="wfs20.ecore#//StateValueTypeMember0">
+      <genEnumLiterals ecoreEnumLiteral="wfs20.ecore#//StateValueTypeMember0/valid"/>
+      <genEnumLiterals ecoreEnumLiteral="wfs20.ecore#//StateValueTypeMember0/superseded"/>
+      <genEnumLiterals ecoreEnumLiteral="wfs20.ecore#//StateValueTypeMember0/retired"/>
+      <genEnumLiterals ecoreEnumLiteral="wfs20.ecore#//StateValueTypeMember0/future"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="wfs20.ecore#//UpdateActionType">
+      <genEnumLiterals ecoreEnumLiteral="wfs20.ecore#//UpdateActionType/replace"/>
+      <genEnumLiterals ecoreEnumLiteral="wfs20.ecore#//UpdateActionType/insertBefore"/>
+      <genEnumLiterals ecoreEnumLiteral="wfs20.ecore#//UpdateActionType/insertAfter"/>
+      <genEnumLiterals ecoreEnumLiteral="wfs20.ecore#//UpdateActionType/remove"/>
+    </genEnums>
+    <genDataTypes ecoreDataType="wfs20.ecore#//AllSomeTypeObject"/>
+    <genDataTypes ecoreDataType="wfs20.ecore#//NonNegativeIntegerOrUnknown"/>
+    <genDataTypes ecoreDataType="wfs20.ecore#//NonNegativeIntegerOrUnknownMember0Object"/>
+    <genDataTypes ecoreDataType="wfs20.ecore#//NonNegativeIntegerOrUnknownMember1"/>
+    <genDataTypes ecoreDataType="wfs20.ecore#//PositiveIntegerWithStar"/>
+    <genDataTypes ecoreDataType="wfs20.ecore#//ResolveValueTypeObject"/>
+    <genDataTypes ecoreDataType="wfs20.ecore#//ResultTypeTypeObject"/>
+    <genDataTypes ecoreDataType="wfs20.ecore#//ReturnFeatureTypesListType"/>
+    <genDataTypes ecoreDataType="wfs20.ecore#//StarStringTypeObject"/>
+    <genDataTypes ecoreDataType="wfs20.ecore#//StateValueType"/>
+    <genDataTypes ecoreDataType="wfs20.ecore#//StateValueTypeMember0Object"/>
+    <genDataTypes ecoreDataType="wfs20.ecore#//StateValueTypeMember1"/>
+    <genDataTypes ecoreDataType="wfs20.ecore#//UpdateActionTypeObject"/>
+    <genDataTypes ecoreDataType="wfs20.ecore#//URI"/>
+    <genDataTypes ecoreDataType="wfs20.ecore#//Map"/>
+    <genDataTypes ecoreDataType="wfs20.ecore#//Filter"/>
+    <genDataTypes ecoreDataType="wfs20.ecore#//QName"/>
+    <genDataTypes ecoreDataType="wfs20.ecore#//SortBy"/>
+    <genDataTypes ecoreDataType="wfs20.ecore#//Calendar"/>
+    <genDataTypes ecoreDataType="wfs20.ecore#//FeatureCollection"/>
+    <genDataTypes ecoreDataType="wfs20.ecore#//PropertyName"/>
+    <genDataTypes ecoreDataType="wfs20.ecore#//FeatureId"/>
+    <genClasses image="false" ecoreClass="wfs20.ecore#//AbstractTransactionActionType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//AbstractTransactionActionType/handle"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//AbstractType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//AbstractType/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//AbstractType/lang"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//ActionResultsType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//ActionResultsType/feature"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//AdditionalObjectsType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//AdditionalObjectsType/valueCollection"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wfs20.ecore#//AdditionalObjectsType/simpleFeatureCollectionGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wfs20.ecore#//AdditionalObjectsType/simpleFeatureCollection"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//AdditionalValuesType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//AdditionalValuesType/valueCollection"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wfs20.ecore#//AdditionalValuesType/simpleFeatureCollectionGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wfs20.ecore#//AdditionalValuesType/simpleFeatureCollection"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="wfs20.ecore#//BaseRequestType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//BaseRequestType/handle"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//BaseRequestType/service"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//BaseRequestType/version"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//BaseRequestType/baseUrl"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//BaseRequestType/extendedProperties"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//CreatedOrModifiedFeatureType">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//CreatedOrModifiedFeatureType/resourceId"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//CreatedOrModifiedFeatureType/handle"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//CreateStoredQueryResponseType"/>
+    <genClasses ecoreClass="wfs20.ecore#//CreateStoredQueryType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//CreateStoredQueryType/storedQueryDefinition"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//DeleteType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wfs20.ecore#//DeleteType/filter"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//DeleteType/typeName"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//DescribeFeatureTypeType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//DescribeFeatureTypeType/typeName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//DescribeFeatureTypeType/outputFormat"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//DescribeStoredQueriesResponseType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DescribeStoredQueriesResponseType/storedQueryDescription"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//DescribeStoredQueriesType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//DescribeStoredQueriesType/storedQueryId"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//DocumentRoot">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//DocumentRoot/mixed"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/xMLNSPrefixMap"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/xSISchemaLocation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/abstract"/>
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/abstractTransactionAction"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/additionalObjects"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/additionalValues"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/boundedBy"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/createStoredQuery"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/createStoredQueryResponse"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/delete"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/describeFeatureType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/describeStoredQueries"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/describeStoredQueriesResponse"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/dropStoredQuery"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/dropStoredQueryResponse"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/element"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/featureCollection"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/simpleFeatureCollection"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/featureTypeList"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/getCapabilities"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/getFeature"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/getFeatureWithLock"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/getPropertyValue"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/insert"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/listStoredQueries"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/listStoredQueriesResponse"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/lockFeature"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/lockFeatureResponse"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/member"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/native"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/property"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/propertyName"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/query"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/replace"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/storedQuery"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/title"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/transaction"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/transactionResponse"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/truncatedResponse"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/tuple"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/update"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/value"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/valueCollection"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/valueList"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//DocumentRoot/wFSCapabilities"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//DropStoredQueryType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//DropStoredQueryType/id"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//ElementType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//ElementType/metadata"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//ElementType/valueList"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//ElementType/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//ElementType/type"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//EmptyType"/>
+    <genClasses ecoreClass="wfs20.ecore#//EnvelopePropertyType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wfs20.ecore#//EnvelopePropertyType/any"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//ExecutionStatusType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//ExecutionStatusType/status"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//ExtendedDescriptionType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//ExtendedDescriptionType/element"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//FeatureCollectionType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//FeatureCollectionType/additionalObjects"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//FeatureCollectionType/truncatedResponse"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//FeatureCollectionType/lockId"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//FeatureCollectionType/next"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//FeatureCollectionType/numberMatched"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//FeatureCollectionType/numberReturned"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//FeatureCollectionType/previous"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//FeatureCollectionType/timeStamp"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//FeaturesLockedType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wfs20.ecore#//FeaturesLockedType/group"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//FeaturesLockedType/resourceId"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//FeaturesNotLockedType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wfs20.ecore#//FeaturesNotLockedType/group"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//FeaturesNotLockedType/resourceId"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//FeatureTypeListType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//FeatureTypeListType/featureType"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//FeatureTypeType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//FeatureTypeType/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//FeatureTypeType/title"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//FeatureTypeType/abstract"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//FeatureTypeType/keywords"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//FeatureTypeType/defaultCRS"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//FeatureTypeType/otherCRS"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//FeatureTypeType/noCRS"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//FeatureTypeType/outputFormats"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//FeatureTypeType/wGS84BoundingBox"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//FeatureTypeType/metadataURL"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//FeatureTypeType/extendedDescription"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//GetCapabilitiesType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetCapabilitiesType/service"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//GetFeatureType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetFeatureType/abstractQueryExpressionGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wfs20.ecore#//GetFeatureType/abstractQueryExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetFeatureType/count"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetFeatureType/outputFormat"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetFeatureType/resolve"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetFeatureType/resolveDepth"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetFeatureType/resolveTimeout"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetFeatureType/resultType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetFeatureType/startIndex"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetFeatureType/metadata"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetFeatureType/formatOptions"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//GetFeatureWithLockType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetFeatureWithLockType/expiry"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetFeatureWithLockType/lockAction"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//GetPropertyValueType">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wfs20.ecore#//GetPropertyValueType/abstractQueryExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetPropertyValueType/count"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetPropertyValueType/outputFormat"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetPropertyValueType/resolve"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetPropertyValueType/resolveDepth"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetPropertyValueType/resolvePath"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetPropertyValueType/resolveTimeout"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetPropertyValueType/resultType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetPropertyValueType/startIndex"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetPropertyValueType/valueReference"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//InsertType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wfs20.ecore#//InsertType/any"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//InsertType/inputFormat"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//InsertType/srsName"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//ListStoredQueriesResponseType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//ListStoredQueriesResponseType/storedQuery"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//ListStoredQueriesType"/>
+    <genClasses ecoreClass="wfs20.ecore#//LockFeatureResponseType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//LockFeatureResponseType/featuresLocked"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//LockFeatureResponseType/featuresNotLocked"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//LockFeatureResponseType/lockId"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//LockFeatureType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wfs20.ecore#//LockFeatureType/abstractQueryExpressionGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wfs20.ecore#//LockFeatureType/abstractQueryExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//LockFeatureType/expiry"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//LockFeatureType/lockAction"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//LockFeatureType/lockId"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//MemberPropertyType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wfs20.ecore#//MemberPropertyType/mixed"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//MemberPropertyType/any"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wfs20.ecore#//MemberPropertyType/tuple"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//MemberPropertyType/simpleFeatureCollectionGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wfs20.ecore#//MemberPropertyType/simpleFeatureCollection"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//MemberPropertyType/actuate"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//MemberPropertyType/arcrole"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//MemberPropertyType/href"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//MemberPropertyType/role"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//MemberPropertyType/show"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//MemberPropertyType/state"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//MemberPropertyType/title"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//MemberPropertyType/type"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//MetadataURLType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//MetadataURLType/about"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//MetadataURLType/actuate"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//MetadataURLType/arcrole"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//MetadataURLType/href"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//MetadataURLType/role"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//MetadataURLType/show"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//MetadataURLType/title"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//MetadataURLType/type"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//NativeType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wfs20.ecore#//NativeType/mixed"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//NativeType/any"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//NativeType/safeToIgnore"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//NativeType/vendorId"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//NoCRSType"/>
+    <genClasses ecoreClass="wfs20.ecore#//OutputFormatListType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wfs20.ecore#//OutputFormatListType/group"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//OutputFormatListType/format"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//ParameterExpressionType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//ParameterExpressionType/title"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//ParameterExpressionType/abstract"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//ParameterExpressionType/metadata"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//ParameterExpressionType/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//ParameterExpressionType/type"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//ParameterType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//ParameterType/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//ParameterType/value"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//PropertyNameType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//PropertyNameType/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//PropertyNameType/resolve"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//PropertyNameType/resolveDepth"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//PropertyNameType/resolvePath"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//PropertyNameType/resolveTimeout"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//PropertyType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//PropertyType/valueReference"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wfs20.ecore#//PropertyType/value"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//QueryExpressionTextType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//QueryExpressionTextType/isPrivate"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//QueryExpressionTextType/language"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//QueryExpressionTextType/returnFeatureTypes"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//QueryExpressionTextType/value"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//QueryType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//QueryType/featureVersion"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//QueryType/srsName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//QueryType/filter"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//QueryType/propertyNames"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//QueryType/sortBy"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//ReplaceType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wfs20.ecore#//ReplaceType/any"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wfs20.ecore#//ReplaceType/filter"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//ReplaceType/inputFormat"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//ReplaceType/srsName"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//SimpleFeatureCollectionType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//SimpleFeatureCollectionType/boundedBy"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wfs20.ecore#//SimpleFeatureCollectionType/member"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//StoredQueryDescriptionType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//StoredQueryDescriptionType/title"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//StoredQueryDescriptionType/abstract"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//StoredQueryDescriptionType/metadata"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//StoredQueryDescriptionType/parameter"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//StoredQueryDescriptionType/queryExpressionText"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//StoredQueryDescriptionType/id"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//StoredQueryListItemType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//StoredQueryListItemType/title"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//StoredQueryListItemType/returnFeatureType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//StoredQueryListItemType/id"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//StoredQueryType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//StoredQueryType/parameter"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//StoredQueryType/id"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//TitleType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//TitleType/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//TitleType/lang"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//TransactionResponseType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//TransactionResponseType/transactionSummary"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//TransactionResponseType/insertResults"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//TransactionResponseType/updateResults"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//TransactionResponseType/replaceResults"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//TransactionResponseType/version"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//TransactionSummaryType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//TransactionSummaryType/totalInserted"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//TransactionSummaryType/totalUpdated"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//TransactionSummaryType/totalReplaced"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//TransactionSummaryType/totalDeleted"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//TransactionType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wfs20.ecore#//TransactionType/group"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//TransactionType/abstractTransactionActionGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wfs20.ecore#//TransactionType/abstractTransactionAction"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//TransactionType/lockId"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//TransactionType/releaseAction"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//TransactionType/srsName"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//TruncatedResponseType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//TruncatedResponseType/exceptionReport"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//TupleType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//TupleType/member"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//UpdateType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//UpdateType/property"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wfs20.ecore#//UpdateType/filter"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//UpdateType/inputFormat"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//UpdateType/srsName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//UpdateType/typeName"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//ValueCollectionType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wfs20.ecore#//ValueCollectionType/member"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//ValueCollectionType/additionalValues"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//ValueCollectionType/truncatedResponse"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//ValueCollectionType/next"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//ValueCollectionType/numberMatched"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//ValueCollectionType/numberReturned"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//ValueCollectionType/previous"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//ValueCollectionType/timeStamp"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//ValueListType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wfs20.ecore#//ValueListType/group"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wfs20.ecore#//ValueListType/value"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//ValueReferenceType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//ValueReferenceType/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//ValueReferenceType/action"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//WFSCapabilitiesType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//WFSCapabilitiesType/wSDL"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//WFSCapabilitiesType/featureTypeList"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs20.ecore#//WFSCapabilitiesType/filterCapabilities"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs20.ecore#//WSDLType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//WSDLType/actuate"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//WSDLType/arcrole"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//WSDLType/href"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//WSDLType/role"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//WSDLType/show"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//WSDLType/title"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//WSDLType/type"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

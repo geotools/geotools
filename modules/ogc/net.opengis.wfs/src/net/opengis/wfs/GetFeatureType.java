@@ -39,6 +39,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link net.opengis.wfs.GetFeatureType#getTraverseXlinkExpiry <em>Traverse Xlink Expiry</em>}</li>
  *   <li>{@link net.opengis.wfs.GetFeatureType#getFormatOptions <em>Format Options</em>}</li>
  *   <li>{@link net.opengis.wfs.GetFeatureType#getMetadata <em>Metadata</em>}</li>
+ *   <li>{@link net.opengis.wfs.GetFeatureType#getStartIndex <em>Start Index</em>}</li>
  * </ul>
  * </p>
  *
@@ -93,7 +94,28 @@ public interface GetFeatureType extends BaseRequestType {
      */
 	void setMaxFeatures(BigInteger value);
 
+     /**
+      * The initial index of a feature result set in which to return features.
+      * <p>
+      * This property is coupled with {@link #getMaxFeatures()} to page through
+      * a feature result set.
+      * </p> 
+      * @model
+      */
+     BigInteger getStartIndex();
+
+     
 	/**
+     * Sets the value of the '{@link net.opengis.wfs.GetFeatureType#getStartIndex <em>Start Index</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Start Index</em>' attribute.
+     * @see #getStartIndex()
+     * @generated
+     */
+    void setStartIndex(BigInteger value);
+
+    /**
      * Returns the value of the '<em><b>Output Format</b></em>' attribute.
      * The default value is <code>"text/xml; subtype=gml/3.1.1"</code>.
      * <!-- begin-user-doc -->

@@ -58,6 +58,7 @@
   <modules>
     <module>org.w3.xlink</module>
     <module>net.opengis.ows</module>
+    <module>net.opengis.fes</module>
     <module>net.opengis.wfs</module>
     <module>net.opengis.wps</module>
     <module>net.opengis.wcs</module>

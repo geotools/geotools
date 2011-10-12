@@ -45,6 +45,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link net.opengis.wfs.impl.GetFeatureTypeImpl#getTraverseXlinkExpiry <em>Traverse Xlink Expiry</em>}</li>
  *   <li>{@link net.opengis.wfs.impl.GetFeatureTypeImpl#getFormatOptions <em>Format Options</em>}</li>
  *   <li>{@link net.opengis.wfs.impl.GetFeatureTypeImpl#getMetadata <em>Metadata</em>}</li>
+ *   <li>{@link net.opengis.wfs.impl.GetFeatureTypeImpl#getStartIndex <em>Start Index</em>}</li>
  * </ul>
  * </p>
  *
@@ -218,6 +219,26 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
      * @ordered
      */
     protected Map metadata = METADATA_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getStartIndex() <em>Start Index</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getStartIndex()
+     * @generated
+     * @ordered
+     */
+    protected static final BigInteger START_INDEX_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getStartIndex() <em>Start Index</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getStartIndex()
+     * @generated
+     * @ordered
+     */
+    protected BigInteger startIndex = START_INDEX_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -431,9 +452,12 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public Map getMetadata() {
+        if (metadata == null) {
+            metadata = new HashMap();
+        }
         return metadata;
     }
 
@@ -447,6 +471,27 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
         metadata = newMetadata;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, WfsPackage.GET_FEATURE_TYPE__METADATA, oldMetadata, metadata));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public BigInteger getStartIndex() {
+        return startIndex;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setStartIndex(BigInteger newStartIndex) {
+        BigInteger oldStartIndex = startIndex;
+        startIndex = newStartIndex;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, WfsPackage.GET_FEATURE_TYPE__START_INDEX, oldStartIndex, startIndex));
     }
 
     /**
@@ -485,6 +530,8 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
                 return getFormatOptions();
             case WfsPackage.GET_FEATURE_TYPE__METADATA:
                 return getMetadata();
+            case WfsPackage.GET_FEATURE_TYPE__START_INDEX:
+                return getStartIndex();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -521,6 +568,9 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
             case WfsPackage.GET_FEATURE_TYPE__METADATA:
                 setMetadata((Map)newValue);
                 return;
+            case WfsPackage.GET_FEATURE_TYPE__START_INDEX:
+                setStartIndex((BigInteger)newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -556,6 +606,9 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
             case WfsPackage.GET_FEATURE_TYPE__METADATA:
                 setMetadata(METADATA_EDEFAULT);
                 return;
+            case WfsPackage.GET_FEATURE_TYPE__START_INDEX:
+                setStartIndex(START_INDEX_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -583,6 +636,8 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
                 return FORMAT_OPTIONS_EDEFAULT == null ? formatOptions != null : !FORMAT_OPTIONS_EDEFAULT.equals(formatOptions);
             case WfsPackage.GET_FEATURE_TYPE__METADATA:
                 return METADATA_EDEFAULT == null ? metadata != null : !METADATA_EDEFAULT.equals(metadata);
+            case WfsPackage.GET_FEATURE_TYPE__START_INDEX:
+                return START_INDEX_EDEFAULT == null ? startIndex != null : !START_INDEX_EDEFAULT.equals(startIndex);
         }
         return super.eIsSet(featureID);
     }
@@ -610,6 +665,8 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
         result.append(formatOptions);
         result.append(", metadata: ");
         result.append(metadata);
+        result.append(", startIndex: ");
+        result.append(startIndex);
         result.append(')');
         return result.toString();
     }

@@ -19,7 +19,7 @@ package org.geotools.swing.dialog;
 
 /**
  * Implemented by objects that wish to receive events published
- * by a {@code JTextReporter}.
+ * by {@code JTextReporter}.
  *
  * @author Michael Bedward
  * @since 2.6
@@ -29,7 +29,7 @@ package org.geotools.swing.dialog;
 public interface TextReporterListener {
 
     /**
-     * Called by the reporter when it is being closed
+     * Called by the text reporter when it is being closed
      */
     public void onReporterClosed();
 

@@ -16,7 +16,7 @@
  */
 
 /**
- * General dialog classes
+ * A small selection of dialogs and related utilities.
  */
 package org.geotools.swing.dialog;
 

@@ -26,6 +26,8 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
+import org.geotools.image.io.GridCoverageReaderProgressAdapter;
+import org.geotools.image.io.GridCoverageWriterProgressAdapter;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.opengis.coverage.grid.Format;
@@ -35,6 +37,7 @@ import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.util.ProgressListener;
 
 /**
  * AbstractGridFormat is a convenience class so subclasses only need to populate
@@ -95,15 +98,23 @@ public abstract class AbstractGridFormat implements Format {
 	private static CoordinateReferenceSystem crs=DefaultEngineeringCRS.GENERIC_2D;
 
 	/**
-	 * This {@link GeneralParameterValue} cacn be provided to the
+	 * This {@link GeneralParameterValue} ccn be provided to the
 	 * {@link GridCoverageReader}s through the
-	 * {@link GridCoverageReader#read(GeneralParameterValue[])} methid in order
+	 * {@link GridCoverageReader#read(GeneralParameterValue[])} method in order
 	 * to pick up the best matching resolution level and (soon) the best
 	 * matching area.
 	 */
 	public static final DefaultParameterDescriptor<GridGeometry2D> READ_GRIDGEOMETRY2D = new DefaultParameterDescriptor<GridGeometry2D>(
 			"ReadGridGeometry2D", GridGeometry2D.class, null, null);
 
+	/**
+         * This {@link GeneralParameterValue} can be provided to the
+         * {@link GridCoverageReader}s through the
+         * {@link GridCoverageReader#write(GeneralParameterValue[])} method in order to monitor a writing process
+         */
+        public static final DefaultParameterDescriptor<ProgressListener> PROGRESS_LISTENER = new DefaultParameterDescriptor<ProgressListener>(
+                        "Listener", ProgressListener.class, null, null);
+        
 	/**
 	 * This {@link GeneralParameterValue} cacn be provided to the
 	 * {@link GridCoverageWriter}s through the

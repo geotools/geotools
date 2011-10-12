@@ -99,11 +99,11 @@ public class MaxSimpleFeatureCollection extends
 	}
 
 	public int size() {
-		return (int) Math.min( delegate.size(), max );
+		return (int) Math.min( Math.max(0, delegate.size() - start), max );
 	}
 
 	public boolean isEmpty() {
-		return delegate.isEmpty() || max == 0;
+		return delegate.isEmpty() || max == 0 || delegate.size() - start < 1;
 	}
 
 	public Object[] toArray() {

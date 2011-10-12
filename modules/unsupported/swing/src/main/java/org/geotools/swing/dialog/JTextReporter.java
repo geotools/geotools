@@ -56,19 +56,71 @@ import net.miginfocom.swing.MigLayout;
 import org.geotools.util.logging.Logging;
 
 /**
- * A simple dialog to display text with the option of saving it to file. Remains
- * on top of other application windows but does not block them.
+ * Displays a text report dialog with options to copy text to the system clipboard or
+ * save to file. It is used within the gt-swing module (for example, by the 
+ * {@linkplain org.geotools.swing.tool.InfoTool} class) and is also suitable for general use.
+ * This class is not a Swing component itself, rather it is a dialog manager which allows an 
+ * application to create and update text reporter dialogs from any thread (not just the
+ * AWT Event Dispatch Thread).
  * <p>
- * Example of use:
+ * Dialogs are created using the various static {@code showDialog} methods. For example,
+ * this code creates and shows a dialog displaying the given text:
+ * 
  * <pre><code>
- * // This code can be run safely on or off the event dispatch thread
- * JTextReporter reporter = JTextReporter.create(
- *         "Important message", 
- *         -1, -1,  // for default number of rows and columns
- *         "The gt-swing module is particularly useful");
- *
- * DialogUtils.showCentred( reporter );
+ * String textToDisplay = ...
+ * JTextReporter.showDialog("My very important report", text);
  * </code></pre>
+ * 
+ * Dialog behaviour can be specified with those {@code showDialog} methods which accept
+ * a {@code flags} argument. The dialog in the above example will have the default state
+ * (non-modal; resizable; always on top of other windows) as specified by the 
+ * {@linkplain #DEFAULT_FLAGS} constant. If we wanted to display the text in a modal
+ * dialog we can do this:
+ * 
+ * <pre><code>
+ * String textToDisplay = ...
+ * JTextReporter.showDialog("My very important report", text, 
+ *         JTextReporter.FLAG_MODAL | FLAG_RESIZEABLE);
+ * </code></pre>
+ * 
+ * As well as displaying fixed text, you can also append text to the dialog's display while
+ * it is on-screen. Each of the {@code showDialog} methods returns a 
+ * {@linkplain Connection} object (a nested class within {@code JTextReporter}) which provides
+ * methods to append text safely from any thread:
+ * 
+ * <pre><code>
+ * Connection conn = JTextReporter.showDialog("Progressive report");
+ *
+ * // Append some text to the dialog's display
+ * conn.append("First line of the report").appendNewline();
+ *
+ * // Later add some more text
+ * conn.append("Next line of the report").appendNewline();
+ * </code></pre>
+ * 
+ * A Connection object only keeps a {@linkplain WeakReference} to the associated dialog
+ * to avoid memory leaks. If an attempt is made to append text after the user has closed
+ * the dialog an error message is logged indicating that the connection has expired.
+ * <p>
+ * 
+ * The {@linkplain Connection} also lets you add listeners to track when the text
+ * reporter is updated or closed:
+ * 
+ * <pre><code>
+ * Connection conn = JTextReporter.showDialog("Progressive report");
+ * conn.addListener(new TextReporterListener() {
+ *     &#64;Override
+ *     public void onReporterClosed() {
+ *         // do something 
+ *     }
+ * 
+ *     &#64;Override
+ *     public void onReporterUpdated() {
+ *         // do something
+ *     }
+ * });
+ * </code></pre>
+ * 
  *
  * @author Michael Bedward
  * @since 2.6
@@ -225,11 +277,11 @@ public class JTextReporter {
             }
         }
 
-        public void append(String text) {
-            append(text, 0);
+        public Connection append(String text) {
+            return append(text, 0);
         }
 
-        public void append(final String text, final int indent) {
+        public Connection append(final String text, final int indent) {
             updateLock.writeLock().lock();
             try {
                 final TextDialog dialog = dialogRef.get();
@@ -247,6 +299,8 @@ public class JTextReporter {
                     fireEvent(EventType.TEXT_UPDATED);
                 }
                 
+                return this;
+                
             }  finally {
                 updateLock.writeLock().unlock();
             }
@@ -256,26 +310,28 @@ public class JTextReporter {
          * Appends a line of repeated {@link #DEFAULT_SEPARATOR_CHAR}
          * followed by a newline.
          */
-        public void appendSeparatorLine(int n) {
-            appendSeparatorLine(n, DEFAULT_SEPARATOR_CHAR);
+        public Connection appendSeparatorLine(int n) {
+            return appendSeparatorLine(n, DEFAULT_SEPARATOR_CHAR);
         }
 
         /**
          * Appends a line consisting of {@code n} copies of char {@code c}
          * followed by a newline.
          */
-        public void appendSeparatorLine(int n, char c) {
+        public Connection appendSeparatorLine(int n, char c) {
             char[] carray = new char[n];
             Arrays.fill(carray, c);
             append(String.valueOf(carray));
             appendNewline();
+            return this;
         }
         
         /**
          * Appends a newline.
          */
-        public void appendNewline() {
+        public Connection appendNewline() {
             append(NEWLINE);
+            return this;
         }
 
         private void doAppendOnEDT(final TextDialog dialog,
@@ -307,6 +363,7 @@ public class JTextReporter {
                 fireEvent(EventType.DIALOG_CLOSED);
                 
             } finally {
+                removeAllListeners();
                 updateLock.writeLock().unlock();
             }
         }

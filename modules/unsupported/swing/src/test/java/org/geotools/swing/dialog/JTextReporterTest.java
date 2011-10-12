@@ -17,11 +17,11 @@
 
 package org.geotools.swing.dialog;
 
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
 import java.awt.AWTEvent;
 import java.awt.Dialog;
 import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
 import java.awt.event.AWTEventListener;
 import java.awt.event.WindowEvent;
 import java.io.ByteArrayOutputStream;
@@ -247,6 +247,21 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
     }
     
     @Test
+    public void appendMethodsCanBeChained() throws Exception {
+        Connection conn = showDialog(TITLE).get();
+        
+        final String line1 = "Not interested in pedantry";
+        final String line2 = "I'm interested in apathy";
+        
+        conn.append(line1).appendNewline().append(line2);
+        windowFixture.robot.waitForIdle();
+        
+        String actual = windowFixture.textBox().text();
+        String expected = String.format("%s%n%s", line1, line2);
+        assertEquals(expected, actual);
+    }
+    
+    @Test
     public void appendAfterDialogDismissedCausesLoggerMessage() throws Exception {
         Connection conn = showDialog(TITLE).get();
         windowFixture.close();
@@ -321,14 +336,14 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
     @Ignore("have to work out how to do this one")
     @Test
     public void saveTextToFile() throws Exception {
-        Connection conn = showDialog(TITLE, "I'm interested in apathy").get();
+        showDialog(TITLE, "I'm interested in apathy").get();
         
         getButton("Save...").click();
     }
     
     @Test
     public void clearText() throws Exception {
-        Connection conn = showDialog(TITLE, "I'm intereted in apathy").get();
+        showDialog(TITLE, "I'm intereted in apathy").get();
 
         getButton("Clear").click();
         windowFixture.robot.waitForIdle();
@@ -339,7 +354,7 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
     @Test
     public void copyTextToClipboard() throws Exception {
         final String text = "I'm intereted in apathy";
-        Connection conn = showDialog(TITLE, text).get();
+        showDialog(TITLE, text).get();
 
         getButton("Copy to clipboard").click();
         windowFixture.robot.waitForIdle();
@@ -347,6 +362,44 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
         Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
         String clipText = (String) clip.getData(DataFlavor.stringFlavor);
         assertEquals(text, clipText);
+    }
+    
+    @Test
+    public void closeDialogViaConnection() throws Exception {
+        Connection conn = showDialog(TITLE).get();
+        conn.closeDialog();
+        
+        windowFixture.robot.waitForIdle();
+        windowFixture.requireNotVisible();
+        assertFalse(conn.isOpen());
+    }
+
+    @Test
+    public void callingCloseDialogTwiceRaisesLogMessage() throws Exception {
+        Connection conn = showDialog(TITLE).get();
+        conn.closeDialog();
+        windowFixture.robot.waitForIdle();
+        captureLogger();
+        
+        conn.closeDialog();
+        assertLogMessage("INFO");
+        assertLogMessage("connection has expired");
+        
+        releaseLogger();
+    }
+    
+    @Test
+    public void callingCloseDialogAfterGUICloseRaisesLogMessage() throws Exception {
+        Connection conn = showDialog(TITLE).get();
+        getButton("Close").click();
+        windowFixture.robot.waitForIdle();
+        captureLogger();
+        
+        conn.closeDialog();
+        assertLogMessage("INFO");
+        assertLogMessage("connection has expired");
+        
+        releaseLogger();
     }
     
     /**

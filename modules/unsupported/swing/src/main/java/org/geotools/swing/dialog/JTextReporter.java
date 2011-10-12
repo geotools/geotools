@@ -36,6 +36,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
@@ -185,25 +186,12 @@ public class JTextReporter {
     
     /**
      * A connection to an active text reporter dialog providing methods to 
-     * update the text displayed.
+     * update the text displayed, add or remove listeners, and close the
+     * dialog programatically.
      */
     public static class Connection {
 
-        private void fireEvent(EventType eventType) {
-            for (TextReporterListener listener : listeners) {
-                switch (eventType) {
-                    case DIALOG_CLOSED:
-                        listener.onReporterClosed();
-                        break;
-                        
-                    case TEXT_UPDATED:
-                        listener.onReporterUpdated();
-                        break;
-                }
-            }
-        }
-        
-        private static enum EventType {
+        private static enum StateChange {
             TEXT_UPDATED,
             DIALOG_CLOSED;
         }
@@ -211,6 +199,7 @@ public class JTextReporter {
         private final WeakReference<TextDialog> dialogRef;
         private final List<TextReporterListener> listeners;
         private final ReadWriteLock updateLock;
+        private final AtomicBoolean active;
 
         /**
          * Private constructor.
@@ -219,8 +208,22 @@ public class JTextReporter {
          */
         private Connection(TextDialog dialog) {
             dialogRef = new WeakReference<TextDialog>(dialog);
-            updateLock = new ReentrantReadWriteLock();
             listeners = new ArrayList<TextReporterListener>();
+            updateLock = new ReentrantReadWriteLock();
+            active = new AtomicBoolean(true);
+        }
+        
+        /**
+         * Queries whether this is an open connection, ie. the associated
+         * dialog has not been closed.
+         */
+        public boolean isOpen() {
+            updateLock.readLock().lock();
+            try {
+                return active.get();
+            } finally {
+                updateLock.readLock().unlock();
+            }
         }
         
         /**
@@ -296,7 +299,7 @@ public class JTextReporter {
                         doAppendOnEDT(dialog, text, indent);
                     }
 
-                    fireEvent(EventType.TEXT_UPDATED);
+                    fireEvent(StateChange.TEXT_UPDATED);
                 }
                 
                 return this;
@@ -334,6 +337,48 @@ public class JTextReporter {
             return this;
         }
 
+        /**
+         * Closes the associated dialog.
+         * The close operation is run on the event dispatch thread to try to avoid 
+         * collisions with GUI actions, but you can call this method from
+         * any thread.
+         * <p>
+         * It is safe to call this method speculatively: a {@linkplain Level#INFO} 
+         * message will be logged but no error thrown.
+         */
+        public void closeDialog() {
+            updateLock.writeLock().lock();
+            try {
+                if (active.get()) {
+                    final TextDialog dialog = dialogRef.get();
+                    if (dialog != null) {
+                        SwingUtilities.invokeAndWait(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                dialog.closeDialog();
+                            }
+                        });
+                    }
+                    
+                } else {
+                    LOGGER.info("This connection has expired");
+                }
+                
+            } catch (InterruptedException ex) {
+                LOGGER.severe("Thread interrupted while attmpting to close text reporter");
+                
+            } catch (InvocationTargetException ex) {
+                LOGGER.log(Level.SEVERE, "Error while trying to close text reporter", ex);
+                
+            } finally {
+                if (active.get()) {
+                    setDialogClosed();
+                }
+                updateLock.writeLock().unlock();
+            }
+        }
+        
         private void doAppendOnEDT(final TextDialog dialog,
             final String text,
             final int indent) {
@@ -360,13 +405,34 @@ public class JTextReporter {
             updateLock.writeLock().lock();
             try {
                 dialogRef.clear();
-                fireEvent(EventType.DIALOG_CLOSED);
+                active.set(false);
+                fireEvent(StateChange.DIALOG_CLOSED);
                 
             } finally {
                 removeAllListeners();
                 updateLock.writeLock().unlock();
             }
         }
+        
+        /**
+         * Informs listeners of changed state.
+         * 
+         * @param type type of change
+         */
+        private void fireEvent(StateChange type) {
+            for (TextReporterListener listener : listeners) {
+                switch (type) {
+                    case DIALOG_CLOSED:
+                        listener.onReporterClosed();
+                        break;
+                        
+                    case TEXT_UPDATED:
+                        listener.onReporterUpdated();
+                        break;
+                }
+            }
+        }
+
     }
 
     /**

@@ -34,7 +34,7 @@ import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.swing.JMapFrame;
 import org.geotools.swing.data.JFileDataStoreChooser;
-import org.geotools.swing.dialog.ExceptionReporter;
+import org.geotools.swing.dialog.JExceptionReporter;
 import org.geotools.swing.styling.JSimpleStyleDialog;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory;
@@ -138,7 +138,7 @@ public class StyleLab {
             return style[0];
             
         } catch (Exception e) {
-            ExceptionReporter.showDialog(e, "Problem creating style");
+            JExceptionReporter.showDialog(e, "Problem creating style");
         }
         return null;
     }

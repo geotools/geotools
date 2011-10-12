@@ -159,10 +159,10 @@ public class JMapStatusBar extends JPanel {
     private static JMapStatusBar doCreateDefaultStatusBar(MapPane mapPane) {
         JMapStatusBar statusBar = new JMapStatusBar();
 
-        statusBar.addItem( new RendererStatusBarItem(mapPane), false, true );
-        statusBar.addItem( new CoordsStatusBarItem(mapPane) );
-        statusBar.addItem( new ExtentStatusBarItem(mapPane) );
-        statusBar.addItem( new CRSStatusBarItem(mapPane) );
+        statusBar.addItem( new JRendererStatusBarItem(mapPane), false, true );
+        statusBar.addItem( new JCoordsStatusBarItem(mapPane) );
+        statusBar.addItem( new JExtentStatusBarItem(mapPane) );
+        statusBar.addItem( new JCRSStatusBarItem(mapPane) );
 
         return statusBar;
     }
@@ -190,7 +190,7 @@ public class JMapStatusBar extends JPanel {
             }
         };
 
-        StatusBarItem item = new MenuStatusBarItem("", icon, 
+        StatusBarItem item = new JMenuStatusBarItem("", icon, 
                 CONFIGURE_TOOL_TIP, menuProvider);
         addItem(item, false, true);
     }

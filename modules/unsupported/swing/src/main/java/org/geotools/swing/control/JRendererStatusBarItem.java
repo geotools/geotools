@@ -39,7 +39,7 @@ import org.geotools.swing.event.MapPaneEvent;
  * @source $URL$
  * @version $Id$
  */
-public class RendererStatusBarItem extends StatusBarItem {
+public class JRendererStatusBarItem extends StatusBarItem {
     private static final String TOOL_TIP = LocaleUtils.getValue("StatusBar", "RendererTooltip");
     private static final String BUSY_IMAGE = "icons/busy.gif";
     private static final String IDLE_IMAGE = "icons/idle.gif";
@@ -50,11 +50,11 @@ public class RendererStatusBarItem extends StatusBarItem {
     /*
      * Creates a new item associated with teh given map.
      */
-    public RendererStatusBarItem(MapPane mapPane) {
+    public JRendererStatusBarItem(MapPane mapPane) {
         super("Busy", false);
 
-        busyIcon = new ImageIcon(RendererStatusBarItem.class.getResource(BUSY_IMAGE));
-        idleIcon = new ImageIcon(RendererStatusBarItem.class.getResource(IDLE_IMAGE));
+        busyIcon = new ImageIcon(JRendererStatusBarItem.class.getResource(BUSY_IMAGE));
+        idleIcon = new ImageIcon(JRendererStatusBarItem.class.getResource(IDLE_IMAGE));
 
         final JLabel renderLabel = new JLabel();
         renderLabel.setIcon(idleIcon);

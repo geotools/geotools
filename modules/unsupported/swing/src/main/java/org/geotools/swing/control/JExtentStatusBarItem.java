@@ -36,7 +36,7 @@ import org.geotools.swing.event.MapPaneEvent;
  * @source $URL$
  * @version $Id$
  */
-public class ExtentStatusBarItem extends StatusBarItem {
+public class JExtentStatusBarItem extends StatusBarItem {
     private static final String COMPONENT_NAME =
             LocaleUtils.getValue("StatusBar", "ExtentItemName");
     
@@ -56,7 +56,7 @@ public class ExtentStatusBarItem extends StatusBarItem {
      * @param mapPane the map pane
      * @throws IllegalArgumentException if {@code mapPane} is {@code null}
      */
-    public ExtentStatusBarItem(MapPane mapPane) {
+    public JExtentStatusBarItem(MapPane mapPane) {
         super(COMPONENT_NAME);
 
         if (mapPane == null) {

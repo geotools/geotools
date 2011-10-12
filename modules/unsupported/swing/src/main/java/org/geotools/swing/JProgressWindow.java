@@ -47,7 +47,7 @@ import javax.swing.JTextArea;
 import org.geotools.resources.SwingUtilities;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
-import org.geotools.swing.dialog.ExceptionReporter;
+import org.geotools.swing.dialog.JExceptionReporter;
 import org.geotools.util.SimpleInternationalString;
 import org.opengis.util.InternationalString;
 import org.opengis.util.ProgressListener;
@@ -67,7 +67,7 @@ import org.opengis.util.ProgressListener;
  * @source $URL$
  * @version $Id$
  */
-public class ProgressWindow implements ProgressListener {
+public class JProgressWindow implements ProgressListener {
     /**
      * Initial width for the progress window, in pixels.
      */
@@ -150,7 +150,7 @@ public class ProgressWindow implements ProgressListener {
      *
      * @param parent The parent component, or {@code null} if none.
      */
-    public ProgressWindow(final Component parent) {
+    public JProgressWindow(final Component parent) {
         /*
          * Creates the window containing the components.
          */
@@ -371,7 +371,7 @@ public class ProgressWindow implements ProgressListener {
      * @param exception the exception to display
      */
     public void exceptionOccurred(final Throwable exception) {
-        ExceptionReporter.showDialog(exception);
+        JExceptionReporter.showDialog(exception);
     }
 
     /**
@@ -511,9 +511,9 @@ public class ProgressWindow implements ProgressListener {
              * Some of the tasks above requires an action on the window, which may be a JDialog or
              * a JInternalFrame. We need to determine the window type before to apply the action.
              */
-            synchronized (ProgressWindow.this) {
+            synchronized (JProgressWindow.this) {
                 if (window instanceof JDialog) {
-                    final JDialog window = (JDialog) ProgressWindow.this.window;
+                    final JDialog window = (JDialog) JProgressWindow.this.window;
                     switch (task) {
                         case -TITLE: {
                             value = window.getTitle();
@@ -540,7 +540,7 @@ public class ProgressWindow implements ProgressListener {
                         }
                     }
                 } else {
-                    final JInternalFrame window = (JInternalFrame) ProgressWindow.this.window;
+                    final JInternalFrame window = (JInternalFrame) JProgressWindow.this.window;
                     switch (task) {
                         case -TITLE: {
                             value = window.getTitle();
@@ -575,7 +575,7 @@ public class ProgressWindow implements ProgressListener {
                     final JTextArea     warningArea = new JTextArea();
                     final JScrollPane        scroll = new JScrollPane(warningArea);
                     final JPanel          namedArea = new JPanel(new BorderLayout());
-                    ProgressWindow.this.warningArea = warningArea;
+                    JProgressWindow.this.warningArea = warningArea;
                     warningArea.setFont(Font.getFont("Monospaced"));
                     warningArea.setEditable(false);
                     namedArea.setBorder(BorderFactory.createEmptyBorder(0, HMARGIN, VMARGIN, HMARGIN));
@@ -583,16 +583,16 @@ public class ProgressWindow implements ProgressListener {
                     namedArea.add(scroll,                                        BorderLayout.CENTER);
                     content.add(namedArea,                                       BorderLayout.CENTER);
                     if (window instanceof JDialog) {
-                        final JDialog window = (JDialog) ProgressWindow.this.window;
+                        final JDialog window = (JDialog) JProgressWindow.this.window;
                         window.setResizable(true);
                     } else {
-                        final JInternalFrame window = (JInternalFrame) ProgressWindow.this.window;
+                        final JInternalFrame window = (JInternalFrame) JProgressWindow.this.window;
                         window.setResizable(true);
                     }
                     window.setSize(WIDTH, HEIGHT+WARNING_HEIGHT);
                     window.setVisible(true); // Seems required in order to force relayout.
                 }
-                final JTextArea warningArea = (JTextArea) ProgressWindow.this.warningArea;
+                final JTextArea warningArea = (JTextArea) JProgressWindow.this.warningArea;
                 warningArea.append((String) value);
             }
         }

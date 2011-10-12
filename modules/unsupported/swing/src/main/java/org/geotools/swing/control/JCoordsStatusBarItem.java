@@ -47,7 +47,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @source $URL$
  * @version $Id$
  */
-public class CoordsStatusBarItem extends StatusBarItem {
+public class JCoordsStatusBarItem extends StatusBarItem {
     private static final String COMPONENT_NAME =
             LocaleUtils.getValue("StatusBar", "CoordsItemName");
     
@@ -67,7 +67,7 @@ public class CoordsStatusBarItem extends StatusBarItem {
      *
      * @param mapPane the map pane
      */
-    CoordsStatusBarItem(MapPane mapPane) {
+    JCoordsStatusBarItem(MapPane mapPane) {
         super(COMPONENT_NAME);
 
         if (mapPane == null) {

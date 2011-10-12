@@ -39,7 +39,7 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
 
 /**
- * Unit tests for CRSStatusBarItem which require graphics.
+ * Unit tests for JCRSStatusBarItem which require graphics.
  *
  * @author Michael Bedward
  * @since 8.0
@@ -48,11 +48,11 @@ import static org.junit.Assert.*;
  * @version $Id$
  */
 @RunWith(GraphicsTestRunner.class)
-public class CRSStatusBarItemGraphicsTest extends GraphicsTestBase<Frame> {
+public class JCRSStatusBarItemGraphicsTest extends GraphicsTestBase<Frame> {
 
     private MapContent mapContent;
     private MapPane mapPane;
-    private CRSStatusBarItem item;
+    private JCRSStatusBarItem item;
 
     @Before
     public void setup() {
@@ -65,7 +65,7 @@ public class CRSStatusBarItemGraphicsTest extends GraphicsTestBase<Frame> {
                 mapContent = new MapContent();
                 mapPane = new MockMapPane();
                 mapPane.setMapContent(mapContent);
-                item = new CRSStatusBarItem(mapPane);
+                item = new JCRSStatusBarItem(mapPane);
                 frame.add(item, BorderLayout.CENTER);
                 frame.pack();
                 return frame;

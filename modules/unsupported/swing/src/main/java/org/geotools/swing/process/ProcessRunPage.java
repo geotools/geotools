@@ -27,7 +27,7 @@ import javax.swing.JPanel;
 import org.geotools.data.Parameter;
 import org.geotools.process.Process;
 import org.geotools.process.ProcessFactory;
-import org.geotools.swing.ProgressWindow;
+import org.geotools.swing.JProgressWindow;
 import org.geotools.swing.wizard.JDoubleField;
 import org.geotools.swing.wizard.JField;
 import org.geotools.swing.wizard.JGeometryField;
@@ -87,7 +87,7 @@ public class ProcessRunPage extends JPage {
 
         Process process = this.factory.create(name);
 
-        final ProgressListener progress = new ProgressWindow(this.getJWizard());
+        final ProgressListener progress = new JProgressWindow(this.getJWizard());
         Map<String, Object> resultMap = process.execute(paramMap, progress);
 
         // when we get here, the processing is over so show the result

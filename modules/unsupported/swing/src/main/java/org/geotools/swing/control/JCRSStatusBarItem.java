@@ -30,7 +30,7 @@ import org.geotools.swing.locale.LocaleUtils;
 import org.geotools.swing.MapPane;
 import org.geotools.swing.event.MapPaneAdapter;
 import org.geotools.swing.event.MapPaneEvent;
-import org.geotools.swing.menu.CRSPopupMenu;
+import org.geotools.swing.menu.JCRSPopupMenu;
 
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -46,7 +46,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @source $URL$
  * @version $Id$
  */
-public class CRSStatusBarItem extends StatusBarItem {
+public class JCRSStatusBarItem extends StatusBarItem {
     private static final String COMPONENT_NAME =
             LocaleUtils.getValue("StatusBar", "CRSItemName");
     
@@ -64,7 +64,7 @@ public class CRSStatusBarItem extends StatusBarItem {
      * @param mapPane the map pane
      * @throws IllegalArgumentException if {@code mapPane} is {@code null}
      */
-    public CRSStatusBarItem(MapPane mapPane) {
+    public JCRSStatusBarItem(MapPane mapPane) {
         super(COMPONENT_NAME);
 
         if (mapPane == null) {
@@ -92,7 +92,7 @@ public class CRSStatusBarItem extends StatusBarItem {
             }
         });
         
-        final JPopupMenu menu = new CRSPopupMenu(mapPane);
+        final JPopupMenu menu = new JCRSPopupMenu(mapPane);
         btn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

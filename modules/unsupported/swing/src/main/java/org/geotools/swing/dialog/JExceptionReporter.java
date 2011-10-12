@@ -38,10 +38,10 @@ import org.geotools.swing.locale.LocaleUtils;
  * @source $URL$
  * @version $Id$
  */
-public class ExceptionReporter {
+public class JExceptionReporter {
     
     // Hidden constructor.
-    private ExceptionReporter() {}
+    private JExceptionReporter() {}
 
     
     /**

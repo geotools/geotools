@@ -44,7 +44,7 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
 
 /**
- * Tests for the {@linkplain AboutDialog} class.
+ * Tests for the {@linkplain JAboutDialog} class.
  * 
  * @author Michael Bedward
  * @since 8.0
@@ -52,7 +52,7 @@ import static org.junit.Assert.*;
  * @version $Id$
  */
 @RunWith(GraphicsTestRunner.class)
-public class AboutDialogTest extends GraphicsTestBase<Dialog> {
+public class JAboutDialogTest extends GraphicsTestBase<Dialog> {
     
     private static final String DIALOG_TITLE = "About dialog test";
     private static final String APP_INFO = "GeoFoo: mapping Foos in real time";
@@ -69,7 +69,7 @@ public class AboutDialogTest extends GraphicsTestBase<Dialog> {
         // should be showing 'Environment' category
         String[] selection = windowFixture.list().selection();
         assertEquals(1, selection.length);
-        assertEquals(AboutDialog.Category.ENVIRONMENT.toString(), selection[0]);
+        assertEquals(JAboutDialog.Category.ENVIRONMENT.toString(), selection[0]);
     }
 
     @Test
@@ -82,7 +82,7 @@ public class AboutDialogTest extends GraphicsTestBase<Dialog> {
         // should be showing 'Application' category
         String[] selection = windowFixture.list().selection();
         assertEquals(1, selection.length);
-        assertEquals(AboutDialog.Category.APPLICATION.toString(), selection[0]);
+        assertEquals(JAboutDialog.Category.APPLICATION.toString(), selection[0]);
     }
     
     @Test
@@ -96,13 +96,13 @@ public class AboutDialogTest extends GraphicsTestBase<Dialog> {
     @Test
     public void applicationInfo() {
         createAndShow(true);
-        assertTextDisplayExact(AboutDialog.Category.APPLICATION, APP_INFO);
+        assertTextDisplayExact(JAboutDialog.Category.APPLICATION, APP_INFO);
     }
     
     @Test
     public void environmentInfo() {
         createAndShow(false);
-        assertTextDisplayExact(AboutDialog.Category.ENVIRONMENT, GeoTools.getEnvironmentInfo());
+        assertTextDisplayExact(JAboutDialog.Category.ENVIRONMENT, GeoTools.getEnvironmentInfo());
     }
     
     @Ignore("Licence info not implemented by dialog yet")
@@ -115,13 +115,13 @@ public class AboutDialogTest extends GraphicsTestBase<Dialog> {
     @Test
     public void jarInfo() {
         createAndShow(false);
-        assertTextDisplayExact(AboutDialog.Category.JARS, GeoTools.getGeoToolsJarInfo());
+        assertTextDisplayExact(JAboutDialog.Category.JARS, GeoTools.getGeoToolsJarInfo());
     }
     
     @Test
     public void allInfo() {
         createAndShow(true);
-        assertTextDisplayContains(AboutDialog.Category.ALL, new String[] {
+        assertTextDisplayContains(JAboutDialog.Category.ALL, new String[] {
             APP_INFO,
             GeoTools.getEnvironmentInfo(),
             GeoTools.getGeoToolsJarInfo()
@@ -142,7 +142,7 @@ public class AboutDialogTest extends GraphicsTestBase<Dialog> {
         
         assertNotNull(button);
         
-        windowFixture.list().clickItem(AboutDialog.Category.ALL.toString());
+        windowFixture.list().clickItem(JAboutDialog.Category.ALL.toString());
         windowFixture.robot.waitForIdle();
         button.click();
         windowFixture.robot.waitForIdle();
@@ -156,14 +156,14 @@ public class AboutDialogTest extends GraphicsTestBase<Dialog> {
 
     private void createAndShow(final boolean showAppInfo) {
         this.showAppInfo = showAppInfo;
-        AboutDialog dialog = GuiActionRunner.execute(new GuiQuery<AboutDialog>() {
+        JAboutDialog dialog = GuiActionRunner.execute(new GuiQuery<JAboutDialog>() {
             @Override
-            protected AboutDialog executeInEDT() throws Throwable {
-                AboutDialog dialog;
+            protected JAboutDialog executeInEDT() throws Throwable {
+                JAboutDialog dialog;
                 if (showAppInfo) {
-                    dialog = new AboutDialog(DIALOG_TITLE, APP_INFO);
+                    dialog = new JAboutDialog(DIALOG_TITLE, APP_INFO);
                 } else {
-                    dialog = new AboutDialog(DIALOG_TITLE);
+                    dialog = new JAboutDialog(DIALOG_TITLE);
                 }
                 return dialog;
             }
@@ -185,17 +185,17 @@ public class AboutDialogTest extends GraphicsTestBase<Dialog> {
     private void assertCategories() {
         List<String> listItems = Arrays.asList( windowFixture.list().contents() );
         
-        int expectedN = AboutDialog.Category.values().length - (showAppInfo ? 0 : 1);
+        int expectedN = JAboutDialog.Category.values().length - (showAppInfo ? 0 : 1);
         assertEquals(expectedN, listItems.size());
         
-        for (AboutDialog.Category cat : AboutDialog.Category.values()) {
+        for (JAboutDialog.Category cat : JAboutDialog.Category.values()) {
             boolean b = listItems.contains(cat.toString()) || 
-                    (cat == AboutDialog.Category.APPLICATION && !showAppInfo);
+                    (cat == JAboutDialog.Category.APPLICATION && !showAppInfo);
             assertTrue("List is missing " + cat.toString(), b);
         }
     }
 
-    private void assertTextDisplayExact(AboutDialog.Category cat, String expected) {
+    private void assertTextDisplayExact(JAboutDialog.Category cat, String expected) {
         windowFixture.list().clickItem(cat.toString());
         windowFixture.robot.waitForIdle();
         
@@ -203,7 +203,7 @@ public class AboutDialogTest extends GraphicsTestBase<Dialog> {
         textArea.requireText(expected);
     }
     
-    private void assertTextDisplayContains(AboutDialog.Category cat, String[] expected) {
+    private void assertTextDisplayContains(JAboutDialog.Category cat, String[] expected) {
         windowFixture.list().clickItem(cat.toString());
         windowFixture.robot.waitForIdle();
         

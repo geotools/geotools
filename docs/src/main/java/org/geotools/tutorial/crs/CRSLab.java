@@ -46,7 +46,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.styling.SLD;
 import org.geotools.styling.Style;
 import org.geotools.swing.JMapFrame;
-import org.geotools.swing.ProgressWindow;
+import org.geotools.swing.JProgressWindow;
 import org.geotools.swing.action.SafeAction;
 import org.geotools.swing.data.JFileDataStoreChooser;
 import org.opengis.feature.Feature;
@@ -331,7 +331,7 @@ public class CRSLab {
             SwingWorker worker = new SwingWorker<String, Object>() {
                 protected String doInBackground() throws Exception {
                     // For shapefiles with many features its nice to display a progress bar
-                    final ProgressWindow progress = new ProgressWindow(null);
+                    final JProgressWindow progress = new JProgressWindow(null);
                     progress.setTitle("Validating feature geometry");
 
                     int numInvalid = validateFeatureGeometry(progress);

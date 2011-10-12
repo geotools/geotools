@@ -3,7 +3,7 @@ package org.geotools.swing.action;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
-import org.geotools.swing.dialog.ExceptionReporter;
+import org.geotools.swing.dialog.JExceptionReporter;
 
 
 /**
@@ -49,7 +49,7 @@ public abstract class SafeAction extends AbstractAction {
         try {
             action( e );
         } catch (Throwable t) {
-            ExceptionReporter.showDialog(t);
+            JExceptionReporter.showDialog(t);
         }
     }
 

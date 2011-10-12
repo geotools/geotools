@@ -64,7 +64,7 @@ import org.geotools.factory.GeoTools;
  * SwingUtilities.invokeLater(new Runnable() {
  *     &#64Override
  *     public void run() {
- *         AboutDialog dialog = new AboutDialog("About", appInfo);
+ *         JAboutDialog dialog = new JAboutDialog("About", appInfo);
  *         DialogUtils.showCentred(dialog);
  *     }
  * });
@@ -78,7 +78,7 @@ import org.geotools.factory.GeoTools;
  * @source $URL$
  * @version $Id$
  */
-public class AboutDialog extends AbstractSimpleDialog {
+public class JAboutDialog extends AbstractSimpleDialog {
     
     private static final int DEFAULT_HEIGHT = 400;
     private static final int LIST_WIDTH = 150;
@@ -137,7 +137,7 @@ public class AboutDialog extends AbstractSimpleDialog {
      * Creates a new dialog to display environment information but no application
      * details.
      */
-    public AboutDialog() {
+    public JAboutDialog() {
         this("About");
     }
 
@@ -147,7 +147,7 @@ public class AboutDialog extends AbstractSimpleDialog {
      * 
      * @param title dialog title
      */
-    public AboutDialog(String title) {
+    public JAboutDialog(String title) {
         this(title, null);
     }
     
@@ -158,7 +158,7 @@ public class AboutDialog extends AbstractSimpleDialog {
      * @param title dialog title
      * @param applicationInfo the application information to display
      */
-    public AboutDialog(String title, String applicationInfo) {
+    public JAboutDialog(String title, String applicationInfo) {
         super((JFrame) null, title, true, true);
         
         if (applicationInfo != null && applicationInfo.trim().length() > 0) {

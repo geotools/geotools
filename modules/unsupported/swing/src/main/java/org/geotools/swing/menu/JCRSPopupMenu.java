@@ -30,7 +30,7 @@ import org.geotools.swing.locale.LocaleUtils;
 import org.geotools.swing.dialog.JCRSChooser;
 import org.geotools.swing.dialog.JTextReporter;
 import org.geotools.swing.MapPane;
-import org.geotools.swing.dialog.ExceptionReporter;
+import org.geotools.swing.dialog.JExceptionReporter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
@@ -47,7 +47,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @source $URL$
  * @version $Id$
  */
-public class CRSPopupMenu extends JPopupMenu {
+public class JCRSPopupMenu extends JPopupMenu {
     
     private static final String SET_CRS_STRING = LocaleUtils.getValue("Menu", "CRS_Set");
     private static final String SHOW_CRS_STRING = LocaleUtils.getValue("Menu", "CRS_Show");
@@ -59,7 +59,7 @@ public class CRSPopupMenu extends JPopupMenu {
      * Use {@linkplain #setMapPane(MapPane) later to
      * associate this menu with a map pane.
      */
-    public CRSPopupMenu() {
+    public JCRSPopupMenu() {
         this(null);
     }
 
@@ -68,7 +68,7 @@ public class CRSPopupMenu extends JPopupMenu {
      *
      * @param mapPane an instance of MapPane, or {@code null}
      */
-    public CRSPopupMenu(MapPane mapPane) {
+    public JCRSPopupMenu(MapPane mapPane) {
         super("CRS options");
 
         this.mapPane = mapPane;
@@ -141,7 +141,7 @@ public class CRSPopupMenu extends JPopupMenu {
                     mapPane.getMapContent().getViewport().setCoordinateReferenceSystem(newCRS);
 
                 } catch (Exception ex) {
-                    ExceptionReporter.showDialog(ex, "Failed to set the requested CRS");
+                    JExceptionReporter.showDialog(ex, "Failed to set the requested CRS");
                 }
             }
         }

@@ -32,7 +32,7 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
 
 /**
- * Unit tests for CRSStatusBarItem.
+ * Unit tests for JCRSStatusBarItem.
  *
  * @author Michael Bedward
  * @since 8.0
@@ -41,10 +41,10 @@ import static org.junit.Assert.*;
  * @version $Id$
  */
 @RunWith(GraphicsTestRunner.class)
-public class CRSStatusBarItemTest extends GraphicsTestBase {
+public class JCRSStatusBarItemTest extends GraphicsTestBase {
 
     private MapPane mapPane;
-    private CRSStatusBarItem item;
+    private JCRSStatusBarItem item;
 
     @Before
     public void setup() {
@@ -73,7 +73,7 @@ public class CRSStatusBarItemTest extends GraphicsTestBase {
         GuiActionRunner.execute(new GuiTask() {
             @Override
             protected void executeInEDT() throws Throwable {
-                item = new CRSStatusBarItem(mapPane);
+                item = new JCRSStatusBarItem(mapPane);
             }
         });
     }

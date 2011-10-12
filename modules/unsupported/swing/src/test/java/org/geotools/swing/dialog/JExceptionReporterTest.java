@@ -40,7 +40,7 @@ import static org.junit.Assert.*;
 
 
 /**
- * Tests for the ExceptionReporter class.
+ * Tests for the JExceptionReporter class.
  * 
  * @author Michael Bedward
  * @since 8.0
@@ -48,7 +48,7 @@ import static org.junit.Assert.*;
  * @version $Id$
  */
 @RunWith(GraphicsTestRunner.class)
-public class ExceptionReporterTest extends GraphicsTestBase<Dialog> {
+public class JExceptionReporterTest extends GraphicsTestBase<Dialog> {
 
     @Before
     public void setup() {
@@ -64,8 +64,8 @@ public class ExceptionReporterTest extends GraphicsTestBase<Dialog> {
     public void showException() throws Exception {
         final String MSG = "Foo is not Bar";
         
-        ExceptionReporter.showDialog(new IllegalArgumentException(MSG));
-        assertComponentDisplayed(ExceptionReporter.ReportingDialog.class);
+        JExceptionReporter.showDialog(new IllegalArgumentException(MSG));
+        assertComponentDisplayed(JExceptionReporter.ReportingDialog.class);
 
         ((DialogFixture) windowFixture).requireModal();
         assertEquals("IllegalArgumentException", windowFixture.component().getTitle());
@@ -79,8 +79,8 @@ public class ExceptionReporterTest extends GraphicsTestBase<Dialog> {
         final String EXCEPTION_MSG = "Foo is not Bar";
         final String USER_MSG = "You should see this message";
         
-        ExceptionReporter.showDialog(new IllegalArgumentException(EXCEPTION_MSG), USER_MSG);
-        assertComponentDisplayed(ExceptionReporter.ReportingDialog.class);
+        JExceptionReporter.showDialog(new IllegalArgumentException(EXCEPTION_MSG), USER_MSG);
+        assertComponentDisplayed(JExceptionReporter.ReportingDialog.class);
         
         assertEquals("IllegalArgumentException", windowFixture.component().getTitle());
         
@@ -93,8 +93,8 @@ public class ExceptionReporterTest extends GraphicsTestBase<Dialog> {
         final String EXCEPTION_MSG = "You should see this message";
         final String USER_MSG = "";
         
-        ExceptionReporter.showDialog(new IllegalArgumentException(EXCEPTION_MSG), USER_MSG);
-        assertComponentDisplayed(ExceptionReporter.ReportingDialog.class);
+        JExceptionReporter.showDialog(new IllegalArgumentException(EXCEPTION_MSG), USER_MSG);
+        assertComponentDisplayed(JExceptionReporter.ReportingDialog.class);
         
         assertEquals("IllegalArgumentException", windowFixture.component().getTitle());
         
@@ -104,12 +104,12 @@ public class ExceptionReporterTest extends GraphicsTestBase<Dialog> {
     
     @Test(expected=IllegalArgumentException.class)
     public void nullExceptionArg() throws Exception {
-        ExceptionReporter.showDialog(null);
+        JExceptionReporter.showDialog(null);
     }
     
     @Test(expected=IllegalArgumentException.class)
     public void nullExceptionArg2() throws Exception {
-        ExceptionReporter.showDialog(null, "User message");
+        JExceptionReporter.showDialog(null, "User message");
     }
     
     /*
@@ -118,7 +118,7 @@ public class ExceptionReporterTest extends GraphicsTestBase<Dialog> {
     AWTEventListener listener = new AWTEventListener() {
         @Override
         public void eventDispatched(AWTEvent event) {
-            if (event.getSource() instanceof ExceptionReporter.ReportingDialog
+            if (event.getSource() instanceof JExceptionReporter.ReportingDialog
                     && event.getID() == WindowEvent.WINDOW_ACTIVATED) {
 
                 windowFixture = new DialogFixture((JDialog) event.getSource());

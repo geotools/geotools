@@ -33,7 +33,7 @@ import javax.swing.JPopupMenu;
  * @source $URL$
  * @version $Id$
  */
-class MenuStatusBarItem extends StatusBarItem {
+public class JMenuStatusBarItem extends StatusBarItem {
 
     /**
      * Creates a new item to display the given menu;
@@ -45,7 +45,7 @@ class MenuStatusBarItem extends StatusBarItem {
      *
      * @throws IllegalArgumentException if {@code icon} or {@code menu} are {@code null}
      */
-    public MenuStatusBarItem(String name, final ImageIcon icon, final String toolTip,
+    public JMenuStatusBarItem(String name, final ImageIcon icon, final String toolTip,
             final JPopupMenu menu) {
         this(name, icon, toolTip, new PopupMenuProvider() {
             {
@@ -72,7 +72,7 @@ class MenuStatusBarItem extends StatusBarItem {
      * @throws IllegalArgumentException if {@code icon} or {@code menuPRovider}
      *     are {@code null}
      */
-    public MenuStatusBarItem(String name, final ImageIcon icon, String toolTip,
+    public JMenuStatusBarItem(String name, final ImageIcon icon, String toolTip,
             final PopupMenuProvider menuProvider) {
 
         super(name, false);

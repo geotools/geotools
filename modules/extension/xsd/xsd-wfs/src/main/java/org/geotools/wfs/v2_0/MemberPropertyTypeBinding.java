@@ -4,10 +4,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import net.opengis.wfs20.FeatureCollectionType;
+
 import org.eclipse.xsd.XSDElementDeclaration;
+import org.eclipse.xsd.XSDFactory;
+import org.eclipse.xsd.XSDParticle;
+import org.eclipse.xsd.XSDTypeDefinition;
 import org.geotools.gml3.XSDIdRegistry;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.xml.*;
+import org.opengis.feature.Attribute;
+import org.opengis.feature.Feature;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.AttributeType;
 
 import javax.xml.namespace.QName;
 
@@ -41,8 +51,11 @@ import javax.xml.namespace.QName;
 public class MemberPropertyTypeBinding extends
         org.geotools.gml3.bindings.FeaturePropertyTypeBinding {
 
-    public MemberPropertyTypeBinding(XSDIdRegistry idSet) {
+    SchemaIndex schemaIndex;
+    
+    public MemberPropertyTypeBinding(XSDIdRegistry idSet, SchemaIndex schemaIndex) {
         super(idSet);
+        this.schemaIndex = schemaIndex;
     }
     
     /**
@@ -66,9 +79,75 @@ public class MemberPropertyTypeBinding extends
     @Override
     public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
         ArrayList list = new ArrayList();
-        list.add(
-            new Object[]{GML.AbstractFeature, super.getProperty(object, org.geotools.gml3.GML._Feature)});
+        Object member = super.getProperty(object, org.geotools.gml3.GML._Feature);
+        if (member != null) {
+            //check for joined feature
+            if (isJoinedFeature(member)) {
+                list.add(new Object[]{WFS.Tuple, splitJoinedFeature(member)});
+            }
+            else {
+                list.add(new Object[]{GML.AbstractFeature, object});
+            }
+        }
+        else if (object instanceof FeatureCollectionType) {
+            list.add(new Object[]{WFS.FeatureCollection, object});
+        }
+        else if (object instanceof Attribute) {
+            //encoding a ValueCollection
+            Attribute att = (Attribute) object;
+            list.add(new Object[]{particle(att), att.getValue()});
+        }
+
         return list;
     }
 
+    XSDParticle particle(Attribute att) {
+        XSDFactory factory = XSDFactory.eINSTANCE;
+
+        AttributeType attType = att.getType();
+        XSDTypeDefinition xsdType = schemaIndex.getTypeDefinition(
+            new QName(attType.getName().getNamespaceURI(), attType.getName().getLocalPart()));
+
+        XSDElementDeclaration element = factory.createXSDElementDeclaration();
+        element.setName(att.getName().getLocalPart());
+        element.setTargetNamespace(att.getName().getNamespaceURI());
+        element.setTypeDefinition(xsdType);
+        
+        XSDParticle particle = factory.createXSDParticle();
+        particle.setContent(element);
+        return particle;
+    }
+
+    boolean isJoinedFeature(Object obj) {
+        if (!(obj instanceof SimpleFeature)) {
+            return false;
+        }
+        
+        SimpleFeature feature = (SimpleFeature) obj;
+        for (Object att : feature.getAttributes()) {
+            if (att != null && att instanceof SimpleFeature) {
+                return true;
+            }
+        }
+            
+        return false;
+    }
+
+    Feature[] splitJoinedFeature(Object obj) {
+        SimpleFeature feature = (SimpleFeature) obj;
+        List features = new ArrayList();
+        features.add(feature);
+        for (int i = 0; i < feature.getAttributeCount(); i++) {
+            Object att = feature.getAttribute(i);
+            if (att != null && att instanceof SimpleFeature) {
+                features.add(att);
+                
+                //TODO: come up with a better approcach user, use user data or something to mark 
+                // the attribute as encoded
+                feature.setAttribute(i, null);
+            }
+        }
+        
+        return (Feature[])features.toArray(new Feature[features.size()]);
+    }
 }

@@ -38,9 +38,11 @@ import org.geotools.xml.BindingFactory;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.ParserDelegate;
+import org.geotools.xml.ParserDelegate2;
 import org.geotools.xml.SchemaIndex;
 import org.geotools.xml.Schemas;
 import org.geotools.xs.XS;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.xml.sax.Attributes;
@@ -115,6 +117,12 @@ public class ParserHandler extends DefaultHandler {
     /** whether the parser should maintain order for elements with mixed content */ 
     boolean handleMixedContent = false;
     
+    /** whether parser delegates should always be looked up */
+    boolean forceParserDelegate = false;
+    
+    /** type definition of the root element */
+    QName rootElementType = null;
+    
     public ParserHandler(Configuration config) {
         this.config = config;
         namespaces = new NamespaceSupport();
@@ -156,6 +164,22 @@ public class ParserHandler extends DefaultHandler {
     
     public boolean isHandleMixedContent() {
         return handleMixedContent; 
+    }
+    
+    public void setForceParserDelegate(boolean forceParserDelegate) {
+        this.forceParserDelegate = forceParserDelegate;
+    }
+    
+    public boolean isForceParserDelegate() {
+        return forceParserDelegate;
+    }
+    
+    public void setRootElementType(QName rootElementType) {
+        this.rootElementType = rootElementType;
+    }
+    
+    public QName getRootElementType() {
+        return rootElementType;
     }
     
     public List getValidationErrors() {
@@ -252,7 +276,8 @@ public class ParserHandler extends DefaultHandler {
             logger.finest("startElement(" + uri + "," + localName + "," + qName);
         }
 
-        if (schemas == null) {
+        boolean root = schemas == null;
+        if (root) {
             //root element, parse the schema
             //TODO: this processing is too loose, do some validation will ya!
             String[] locations = null;
@@ -463,9 +488,11 @@ O:          for (int i = 0; i < schemas.length; i++) {
         if ((uri == null) || uri.equals("")) {
             uri = namespaces.getURI("");
         }
-
-        QName qualifiedName = new QName(uri, localName);
-
+        
+        String prefix = namespaces.getPrefix(uri);
+        QName qualifiedName = prefix != null ? new QName(uri, localName, prefix) : 
+            new QName(uri, localName);
+        
         //get the handler at top of the stack and lookup child
 
         //First ask teh parent handler for a child
@@ -491,13 +518,21 @@ O:          for (int i = 0; i < schemas.length; i++) {
             }
         }
 
-        if (handler == null) {
+        if (handler == null || forceParserDelegate) {
             //look for ParserDelegate instances in the context to see if there is a delegate
             // around to handle this
-            List delegates = Schemas.getComponentInstancesOfType(context,ParserDelegate.class);
-            for ( Iterator d = delegates.iterator(); d.hasNext(); ) {
-                ParserDelegate delegate = (ParserDelegate) d.next();
-                if ( delegate.canHandle( qualifiedName ) ) {
+            List adapters = Schemas.getComponentAdaptersOfType(context, ParserDelegate.class);
+            //List delegates = Schemas.getComponentInstancesOfType(context,ParserDelegate.class);
+            for ( Iterator a = adapters.iterator(); a.hasNext(); ) {
+                ComponentAdapter adapter = (ComponentAdapter) a.next();
+                ParserDelegate delegate = (ParserDelegate) adapter.getComponentInstance(context);
+                
+                //ParserDelegate delegate = (ParserDelegate) d.next();
+                boolean canHandle = delegate instanceof ParserDelegate2 ? 
+                    ((ParserDelegate2)delegate).canHandle(qualifiedName, attributes, handler, parent) 
+                    : delegate.canHandle( qualifiedName );
+
+                if (canHandle) {
                     //found one
                     handler = new DelegatingHandler( delegate, qualifiedName, parent );
                     ((DelegatingHandler)handler).startDocument();
@@ -562,14 +597,22 @@ O:          for (int i = 0; i < schemas.length; i++) {
                 decl.setName(qualifiedName.getLocalPart());
                 decl.setTargetNamespace(qualifiedName.getNamespaceURI());
 
+                QName typeDefinition = null;
+                if (root && rootElementType != null) {
+                    typeDefinition = rootElementType;
+                }
+                
                 //check for a type definition in the context, this is only used by
                 // the parser in test mode
-                QName typeDefinition = (QName) context.getComponentInstance(
+                if (typeDefinition == null) {
+                    typeDefinition = (QName) context.getComponentInstance(
                         "http://geotools.org/typeDefinition");
+                    if (typeDefinition != null) {
+                        context.unregisterComponent("http://geotools.org/typeDefinition");
+                    }
+                }
 
                 if (typeDefinition != null) {
-                    context.unregisterComponent("http://geotools.org/typeDefinition");
-
                     XSDTypeDefinition type = index.getTypeDefinition(typeDefinition);
 
                     if (type == null) {
@@ -623,8 +666,10 @@ O:          for (int i = 0; i < schemas.length; i++) {
         ElementHandler handler = (ElementHandler) handlers.pop();
 
         //create a qName object from the string
-        QName qualifiedName = new QName(uri, localName);
-
+        String prefix = namespaces.getPrefix(uri);
+        QName qualifiedName = prefix != null ? new QName(uri, localName, prefix) : 
+            new QName(uri, localName);
+        
         handler.endElement(qualifiedName);
 
         endElementInternal(handler);

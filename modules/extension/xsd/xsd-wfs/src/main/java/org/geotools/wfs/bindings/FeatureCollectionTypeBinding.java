@@ -116,33 +116,10 @@ public class FeatureCollectionTypeBinding extends AbstractComplexEMFBinding {
     public Object getProperty(Object object, QName name) throws Exception {
         FeatureCollectionType fc = (FeatureCollectionType) object;
         if ( !fc.getFeature().isEmpty() ) {
-            FeatureCollection first = (FeatureCollection) fc.getFeature().get( 0 );
-            
-            if( GML.boundedBy.equals( name ) ) {
-                if ( fc.getFeature().size() == 1 ) {
-                    return first.getBounds();    
-                }
-                else {
-                    //aggregate
-                    ReferencedEnvelope bounds = new ReferencedEnvelope(first.getBounds());
-                    for ( int i = 1; i < fc.getFeature().size(); i++ ) {
-                        FeatureCollection features = (FeatureCollection) fc.getFeature().get( i );
-                        bounds.expandToInclude( features.getBounds() );
-                    }
-                    return bounds;
-                }
-                
+            Object val = WFSParsingUtils.FeatureCollectionType_getProperty(fc, name);
+            if (val != null) {
+                return val;
             }
-            
-            if ( GML.featureMember.equals( name ) ) {
-                if (fc.getFeature().size() > 1) {
-                    //wrap in a single
-                    return new CompositeFeatureCollection(fc.getFeature());
-                }
-
-                //just return the single
-                return first;
-            }    
         }
         
         return super.getProperty(object, name);
@@ -151,34 +128,7 @@ public class FeatureCollectionTypeBinding extends AbstractComplexEMFBinding {
     public Object parse(ElementInstance instance, Node node, Object value)
         throws Exception {
         FeatureCollectionType fct = (FeatureCollectionType) super.parse(instance, node, value);
-        SimpleFeatureCollection fc = null;
-        
-        //gml:featureMembers
-        fc = (SimpleFeatureCollection) node.getChildValue(FeatureCollection.class);
-        if (fc == null) {
-            fc = new DefaultFeatureCollection(null, null);
-        }
-        
-        //check for an array
-        SimpleFeature[] featureMembers = (SimpleFeature[]) node.getChildValue(SimpleFeature[].class);
-        if (featureMembers != null) {
-            for (int i = 0; i < featureMembers.length; i++) {
-                fc.add(featureMembers[i]);
-            }
-        }
-        else {
-            //gml:featureMember
-            List<SimpleFeature> featureMember = node.getChildValues( SimpleFeature.class );
-            for (SimpleFeature f : featureMember ) {
-                fc.add( f );
-            }
-        }
-        
-        if ( !fc.isEmpty() ) {
-            fct.getFeature().add(fc);
-        }
-
-        return fct;
+        return WFSParsingUtils.FeatureCollectionType_parse(fct, instance, node);
     }
     
     @Override

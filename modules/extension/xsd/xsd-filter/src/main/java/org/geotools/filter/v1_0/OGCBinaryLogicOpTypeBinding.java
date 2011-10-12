@@ -25,10 +25,15 @@ import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.Id;
+import org.opengis.filter.Not;
 import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNil;
 import org.opengis.filter.PropertyIsNull;
+import org.opengis.filter.expression.Function;
 import org.opengis.filter.spatial.BinarySpatialOperator;
+import org.opengis.filter.temporal.BinaryTemporalOperator;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
@@ -134,20 +139,27 @@ public class OGCBinaryLogicOpTypeBinding extends AbstractComplexBinding {
         //        }
     }
 
-    public Object getProperty(Object object, QName name)
+    public Object getProperty(Object object, QName qName)
         throws Exception {
         BinaryLogicOperator operator = (BinaryLogicOperator) object;
 
-        if (OGC.comparisonOps.equals(name)) {
+        // this method is acutally used by later version of the filter spec, so it handles 
+        // everything
+        
+        //use the local part to handle both OGC and FES namespaces
+        String name = qName.getLocalPart();
+
+        if ("comparisonOps".equals(name)) {
             List comparison = new ArrayList();
 
             for (Iterator f = operator.getChildren().iterator(); f.hasNext();) {
                 Filter filter = (Filter) f.next();
 
-                if (!(filter instanceof BinarySpatialOperator) && 
+                if (!(filter instanceof BinarySpatialOperator || filter instanceof BinaryTemporalOperator) && 
                      (filter instanceof BinaryComparisonOperator ||
                       filter instanceof PropertyIsLike || 
                       filter instanceof PropertyIsNull || 
+                      filter instanceof PropertyIsNil || 
                       filter instanceof PropertyIsBetween) ) {
                     
                     comparison.add(filter);
@@ -159,7 +171,7 @@ public class OGCBinaryLogicOpTypeBinding extends AbstractComplexBinding {
             }
         }
 
-        if (OGC.spatialOps.equals(name)) {
+        if ("spatialOps".equals(name)) {
             List spatial = new ArrayList();
 
             for (Iterator f = operator.getChildren().iterator(); f.hasNext();) {
@@ -174,14 +186,30 @@ public class OGCBinaryLogicOpTypeBinding extends AbstractComplexBinding {
                 return spatial;
             }
         }
+        
+        if ("temporalOps".equals(name)) {
+            List temporal = new ArrayList();
 
-        if (OGC.logicOps.equals(name)) {
+            for (Iterator f = operator.getChildren().iterator(); f.hasNext();) {
+                Filter filter = (Filter) f.next();
+
+                if (filter instanceof BinaryTemporalOperator) {
+                    temporal.add(filter);
+                }
+            }
+
+            if (!temporal.isEmpty()) {
+                return temporal;
+            }
+        }
+
+        if ("logicOps".equals(name)) {
             List logic = new ArrayList();
 
             for (Iterator f = operator.getChildren().iterator(); f.hasNext();) {
                 Filter filter = (Filter) f.next();
 
-                if (filter instanceof BinaryLogicOperator) {
+                if (filter instanceof BinaryLogicOperator || filter instanceof Not) {
                     logic.add(filter);
                 }
             }
@@ -191,6 +219,33 @@ public class OGCBinaryLogicOpTypeBinding extends AbstractComplexBinding {
             }
         }
 
+        if ("_Id".equals(name)) {
+            List ids = new ArrayList();
+            for (Filter filter : operator.getChildren()) {
+                if (filter instanceof Id) {
+                    ids.add(filter);
+                }
+            }
+            if (!ids.isEmpty()) {
+                return ids;
+            }
+        }
+        
+        if ("Function".equals(name)) {
+            List functions = new ArrayList();
+            for (Filter filter : operator.getChildren()) {
+                if (filter instanceof Function) {
+                    functions.add(filter);
+                }
+            }
+            if (!functions.isEmpty()) {
+                return functions;
+            }
+        }
+        
+        //TODO:
+        //<xsd:element ref="fes:extensionOps"/>
+        
         return null;
     }
 }

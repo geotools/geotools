@@ -271,6 +271,15 @@ public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {
                 if (lax && value != null) {
                     List features = EMFUtils.features(eObject, value.getClass());
 
+                    if (features.size() > 1) {
+                        //strip out any features bound to simply Object
+                        for (Iterator it = features.iterator(); it.hasNext(); ) {
+                            EStructuralFeature feature = (EStructuralFeature) it.next();
+                            if (feature.getEType().getInstanceClass() == Object.class) {
+                                it.remove();
+                            }
+                        }
+                    }
                     if (features.size() == 1) {
                         EStructuralFeature feature = (EStructuralFeature) features.get(0);
                         

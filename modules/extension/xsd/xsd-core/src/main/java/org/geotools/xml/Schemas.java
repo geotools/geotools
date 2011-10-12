@@ -1498,6 +1498,28 @@ public class Schemas {
     }
 
     /**
+     * Obtains all component adapters of a particular class from a container by navigating
+     * up the container hierarchy.
+     *
+     * @param container The container.
+     * @param clazz The class.
+     *
+     * @return A list of all adapters for components of class <code>clazz</code>, or the empty list 
+     *  if none found.
+     */
+    public static List<ComponentAdapter> getComponentAdaptersOfType(PicoContainer container, Class clazz) {
+        List instances = new ArrayList();
+
+        while (container != null) {
+            List l = container.getComponentAdaptersOfType(clazz);
+            instances.addAll(l);
+            container = container.getParent();
+        }
+
+        return instances;
+    }
+
+    /**
      * Unregisters a component in the container and all parent containers.
      *
      * @param container The container.

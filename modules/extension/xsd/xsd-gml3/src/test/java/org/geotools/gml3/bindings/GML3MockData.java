@@ -197,6 +197,10 @@ public class GML3MockData {
         return polygon(document,parent,qName("Polygon"),false); 
     }
     
+    public static Element polygonWithPosList(Document document, Node parent) {
+        return polygonWithPosList(document,parent,qName("Polygon"),false); 
+    }
+    
     public static Element polygon(Document document, Node parent, QName name, boolean withInterior) {
         Element polygon = element(name, document, parent);
 
@@ -206,6 +210,20 @@ public class GML3MockData {
         if ( withInterior ) {
             Element interior = element(qName("interior"), document, polygon);
             linearRing(document,interior);
+        }
+
+        return polygon;
+    }
+    
+    public static Element polygonWithPosList(Document document, Node parent, QName name, boolean withInterior) {
+        Element polygon = element(name, document, parent);
+
+        Element exterior = element(qName("exterior"), document, polygon);
+        linearRingWithPosList(document, exterior);
+        
+        if ( withInterior ) {
+            Element interior = element(qName("interior"), document, polygon);
+            linearRingWithPosList(document,interior);
         }
 
         return polygon;

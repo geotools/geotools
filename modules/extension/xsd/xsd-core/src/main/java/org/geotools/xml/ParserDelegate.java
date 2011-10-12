@@ -18,6 +18,7 @@ package org.geotools.xml;
 
 import javax.xml.namespace.QName;
 
+import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 
 /**
@@ -38,9 +39,7 @@ import org.xml.sax.ContentHandler;
  * </p>
  * @author Justin Deoliveira, OpenGEO
  *
- *
- *
- *
+ * @see ParserDelegate2
  * @source $URL$
  */
 public interface ParserDelegate extends ContentHandler {
@@ -54,6 +53,11 @@ public interface ParserDelegate extends ContentHandler {
      * 
      * @return True if this delegate handles elements of the specified name and should
      * take over parsing.
+     * 
+     * @deprecated This method is deprecated and 
+     * {@link ParserDelegate2#canHandle(QName, Attributes, Handler)} should be used. After one major 
+     * release cycle ParserDelegate2 methods will be pulled into this interface and this method will 
+     * be removed. In preparation implementations should implement both interfaces.
      */
     boolean canHandle( QName elementName );
     

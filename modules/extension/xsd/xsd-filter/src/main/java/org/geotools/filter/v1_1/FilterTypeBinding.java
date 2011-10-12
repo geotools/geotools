@@ -16,20 +16,24 @@
  */
 package org.geotools.filter.v1_1;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+
 import javax.xml.namespace.QName;
-import org.opengis.filter.BinaryComparisonOperator;
-import org.opengis.filter.BinaryLogicOperator;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.Id;
-import org.opengis.filter.identity.Identifier;
-import org.opengis.filter.spatial.BinarySpatialOperator;
+
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.NameImpl;
 import org.geotools.filter.FilterParsingUtils;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.opengis.feature.type.Name;
+import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.identity.Identifier;
 
 
 /**
@@ -96,10 +100,19 @@ public class FilterTypeBinding extends AbstractComplexBinding {
             return node.getChildValue(Filter.class);
         }
 
+        //no direct child filter, check for ids
         //&lt;xsd:element maxOccurs="unbounded" ref="ogc:_Id"/&gt;
         List ids = node.getChildValues(Identifier.class);
-
-        return filterFactory.id(new HashSet(ids));
+        if (!ids.isEmpty()) {
+            return filterFactory.id(new HashSet(ids));
+        }
+        
+        //try an extended operator (part of filter/fes 2.0)
+        List<Filter> extOps = FilterParsingUtils.parseExtendedOperators(node, filterFactory);
+        if (!extOps.isEmpty()) {
+            return extOps.get(0); 
+        }
+        return null;
     }
 
     public Object getProperty(Object object, QName name)

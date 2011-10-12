@@ -1,9 +1,9 @@
 package org.geotools.wfs.v2_0;
 
-import net.opengis.wfs.FeatureCollectionType;
-import net.opengis.wfs.WfsFactory;
+import net.opengis.wfs20.Wfs20Factory;
 
-import org.geotools.gml3.GML;
+import org.eclipse.emf.ecore.EObject;
+import org.geotools.wfs.bindings.WFSParsingUtils;
 import org.geotools.xml.*;
 
 import javax.xml.namespace.QName;
@@ -37,10 +37,9 @@ import javax.xml.namespace.QName;
  *
  * @source $URL$
  */
-public class FeatureCollectionTypeBinding extends
-        org.geotools.wfs.bindings.FeatureCollectionTypeBinding {
+public class FeatureCollectionTypeBinding extends AbstractComplexEMFBinding {
 
-    public FeatureCollectionTypeBinding(WfsFactory factory) {
+    public FeatureCollectionTypeBinding(Wfs20Factory factory) {
         super(factory);
     }
 
@@ -57,16 +56,29 @@ public class FeatureCollectionTypeBinding extends
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-
-        // TODO: implement and remove call to super
-        return super.parse(instance, node, value);
+        return WFSParsingUtils.FeatureCollectionType_parse(
+            (EObject) super.parse(instance, node, value), instance, node);
     }
 
     @Override
     public Object getProperty(Object object, QName name) throws Exception {
-        if (WFS.member.equals(name)) {
-            return super.getProperty(object, GML.featureMember);
+        if (!WFSParsingUtils.features((EObject) object).isEmpty()) {
+            Object val = WFSParsingUtils.FeatureCollectionType_getProperty((EObject) object, name);
+            if (val != null) {
+                return val;
+            }
         }
+        
         return super.getProperty(object, name);
+    }
+    
+    @Override
+    protected void setProperty(EObject eObject, String property, Object value, boolean lax) {
+        if ("member".equalsIgnoreCase(property)) {
+            //ignore feature, handled in parse()
+        }
+        else {
+            super.setProperty(eObject, property, value, lax);
+        }
     }
 }

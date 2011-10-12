@@ -17,6 +17,7 @@
 package org.geotools.gml3.v3_2.bindings;
 
 
+import com.vividsolutions.jts.geom.Polygon;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.geotools.gml3.bindings.GML3MockData;
 import org.geotools.gml3.v3_2.GML;
@@ -36,9 +37,14 @@ public class PolygonTypeBindingTest extends GML32TestSupport {
 //        assertNotNull(polygon);
 //    }
     
+    public void testParse() throws Exception {
+        GML3MockData.polygonWithPosList(document, document);
+        Polygon p = (Polygon) parse();
+        assertNotNull(p);
+    }
+
     public void testEncode() throws Exception {
         Document dom = encode(GML3MockData.polygon(), GML.Polygon);
-        print(dom);
         
         assertEquals("gml:Polygon", dom.getDocumentElement().getNodeName());
         XMLAssert.assertXpathExists("/gml:Polygon/gml:exterior", dom);

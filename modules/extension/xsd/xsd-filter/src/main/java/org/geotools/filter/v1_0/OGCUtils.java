@@ -17,6 +17,7 @@
 package org.geotools.filter.v1_0;
 
 import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.namespace.QName;
 import com.vividsolutions.jts.geom.Coordinate;
@@ -108,6 +109,12 @@ public class OGCUtils {
      * @return A two element array of expressions for a BinarySpatialOp type.
      */
     static Expression[] spatial(Node node, FilterFactory2 ff, GeometryFactory gf) {
+        List names = node.getChildValues(PropertyName.class);
+        if (names.size() == 2) {
+            //join
+            return new Expression[]{(Expression) names.get(0), (Expression) names.get(1)};
+        }
+        
         PropertyName name = (PropertyName) node.getChildValue(PropertyName.class);
         Expression spatial = null;
 

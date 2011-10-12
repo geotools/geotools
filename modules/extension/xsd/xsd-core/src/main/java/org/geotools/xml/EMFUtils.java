@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -79,7 +80,49 @@ public class EMFUtils {
 
         return eobject.eGet(feature);
     }
-    
+
+    /**
+     * Returns a value from a map based property of an eobject.
+     * <p>
+     * This method does not sort of checking of the property, use 
+     * {@link #getFromMapSafe(EObject, String, String)} for more leniency. 
+     * </p>
+     * @param eobject The object.
+     * @param property The map property.
+     * @param key The key to obtain from the map.
+     * 
+     * @return The map value, possibly <code>null</code>.
+     */
+    public static Object getFromMap(EObject eobject, String property, Object key) {
+        Map map = (Map) get(eobject, property);
+        return map.get(key);
+    }
+
+    /**
+     * Returns a value from a map based property of an eobject, handling null cases and the case
+     * where the property is not actually a map.
+     * <p>
+     * This method returns null in cases where the the property does not exist, or it is not a map. 
+     * </p>
+     * @param eobject The object.
+     * @param property The map property.
+     * @param key The key to obtain from the map.
+     * 
+     * @return The map value, possibly <code>null</code>.
+     */
+    public static Object getFromMapSafe(EObject eobject, String property, String key) {
+        if (!has(eobject, property)) {
+            return null;
+        }
+
+        Object o = get(eobject, property);
+        if (o == null || !(o instanceof Map)) {
+            return null;
+        }
+
+        return ((Map)o).get(key);
+    }
+
     /**
      * Adds a value to a multi-valued propert of an eobject.
      * <p>

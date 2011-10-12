@@ -180,6 +180,8 @@ public class Encoder {
     /** true if we are encoding a full document */
     private boolean inline = false;
 
+    /** name of type of root element to encode */
+    private QName rootElementType;
     /**
      * Logger logger;
      */
@@ -480,6 +482,21 @@ public class Encoder {
     }
     
     /**
+     * Informs the encoder of the type of the root element to be used in cases where it can not be
+     * inferred.
+     * <p>
+     * This method is used in cases where the element being encoded is not declared as global in 
+     * the schema.
+     * </p>
+     * @param typeName The type name of the root element.
+     * 
+     * @since 8.0
+     */
+    public void setRootElementType(QName rootElementType) {
+        this.rootElementType = rootElementType;
+    }
+    
+    /**
      * Sets the schema location for a particular namespace uri.
      * <p>
      * Registering a schema location will include it on the "schemaLocation" attribute of the
@@ -639,8 +656,12 @@ public class Encoder {
         if (root == null) {
             //check for context hint, this is only used when running the encoder
             // in test mode
-            QName typeDefintion = (QName) context.getComponentInstance(
-                    "http://geotools.org/typeDefinition");
+            QName typeDefintion = rootElementType; 
+            
+            if (typeDefintion == null) {
+                typeDefintion = 
+                    (QName) context.getComponentInstance("http://geotools.org/typeDefinition");
+            }
 
             if (typeDefintion != null) {
                 XSDTypeDefinition type = index.getTypeDefinition(typeDefintion);
@@ -1125,11 +1146,27 @@ O:
     }
 
     protected void start(Element element, XSDElementDeclaration declaration) throws SAXException {
-        String uri = element.getNamespaceURI();
-        String local = element.getLocalName();
-
-        String qName = element.getLocalName();
-
+        String uri, local, qName;
+        
+        if (element.getLocalName() != null) {
+            uri = element.getNamespaceURI();
+            local = element.getLocalName();
+            
+        }
+        else {
+            //namespace unaware dom tree
+            local = element.getNodeName();
+            if (local.contains(":")) {
+                String[] split = local.split(":");
+                local = split[1];
+                uri = namespaces.getURI(split[0]);
+            }
+            else {
+                uri = null;
+            }
+        }
+        qName = local;
+        
         NamespaceSupport namespaces = this.namespaces;
 
         // declaration == null -> gml3 envelope encoding test failing
@@ -1291,7 +1328,7 @@ O:
                 }
             }
 
-            return n.getLocalName();
+            return n.getLocalName() != null ? n.getLocalName() : n.getNodeName();
         }
 
         public String getType(int index) {

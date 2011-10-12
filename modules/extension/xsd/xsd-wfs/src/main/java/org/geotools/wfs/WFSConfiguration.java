@@ -59,6 +59,7 @@ import org.geotools.wfs.bindings.TypeNameListTypeBinding;
 import org.geotools.wfs.bindings.UpdateElementTypeBinding;
 import org.geotools.wfs.bindings.WFS_CapabilitiesTypeBinding;
 import org.geotools.wfs.bindings._XlinkPropertyNameBinding;
+import org.geotools.wfs.v2_0.bindings.QueryExpressionTextDelegate;
 import org.geotools.xml.Configuration;
 import org.picocontainer.MutablePicoContainer;
 

@@ -70,6 +70,11 @@ import org.geotools.gml3.bindings.ReferenceTypeBinding;
 import org.geotools.gml3.bindings.SurfaceArrayPropertyTypeBinding;
 import org.geotools.gml3.bindings.SurfacePropertyTypeBinding;
 import org.geotools.gml3.bindings.SurfaceTypeBinding;
+import org.geotools.gml3.bindings.TimeInstantPropertyTypeBinding;
+import org.geotools.gml3.bindings.TimeInstantTypeBinding;
+import org.geotools.gml3.bindings.TimePeriodTypeBinding;
+import org.geotools.gml3.bindings.TimePositionTypeBinding;
+import org.geotools.gml3.bindings.TimePositionUnionBinding;
 import org.geotools.gml3.smil.SMIL20Configuration;
 import org.geotools.gml3.smil.SMIL20LANGConfiguration;
 import org.geotools.xlink.XLINKConfiguration;
@@ -234,6 +239,13 @@ public class GMLConfiguration extends Configuration {
         container.registerComponentImplementation(GML.SurfacePropertyType,
             SurfacePropertyTypeBinding.class);
         container.registerComponentImplementation(GML.SurfaceType, SurfaceTypeBinding.class);
+        
+        container.registerComponentImplementation(GML.TimeInstantType, TimeInstantTypeBinding.class);
+        container.registerComponentImplementation(GML.TimeInstantPropertyType, TimeInstantPropertyTypeBinding.class);
+        container.registerComponentImplementation(GML.TimePeriodType, TimePeriodTypeBinding.class);
+        container.registerComponentImplementation(GML.TimePositionType, TimePositionTypeBinding.class);
+        container.registerComponentImplementation(GML.TimePositionUnion, TimePositionUnionBinding.class);
+        
         container.registerComponentImplementation(XS.ANYTYPE, ComplexSupportXSAnyTypeBinding.class);
         
         //extended bindings for arc/surface support

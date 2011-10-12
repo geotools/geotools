@@ -111,7 +111,7 @@ public class OGCFunctionTypeBinding extends AbstractComplexBinding {
         Function function = (Function) object;
 
         //&lt;xsd:element maxOccurs="unbounded" minOccurs="0" ref="ogc:expression"/&gt;
-        if (OGC.expression.equals(name)) {
+        if ("expression".equals(name.getLocalPart())) {
             return function.getParameters();
         }
 

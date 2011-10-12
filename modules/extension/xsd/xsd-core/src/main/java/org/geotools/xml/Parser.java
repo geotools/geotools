@@ -325,7 +325,56 @@ public class Parser {
     public boolean isHandleMixedContent() {
         return handler.isHandleMixedContent();
     }
+
+    /**
+     * Sets Flag that forces of the check for {@link ParserDelegate} even in cases where an element 
+     * can be parsed normally.
+     * 
+     * @since 8.0
+     * @see Parser#isForceParserDelegate()
+     */
+    public void setForceParserDelegate(boolean forceParserDelegate) {
+        handler.setForceParserDelegate(forceParserDelegate);
+    }
+
+    /**
+     * Flag that forces of the check for {@link ParserDelegate} even in cases where an element can be
+     * parsed normally. 
+     * <p>
+     * By default the parser will only lookup parser delegates when the element is unrecognized with
+     * regard to the schema and can't be parsed normally.
+     * </p>
+     * 
+     * @since 8.0
+     */
+    public boolean isForceParserDelegate() {
+        return handler.isForceParserDelegate();
+    }
     
+    /**
+     * Informs the parser of the type of the root element to be used in cases where it can not be
+     * inferred.
+     * <p>
+     * This method is used in cases where the element being parsed is not declared as global in 
+     * the schema.
+     * </p>
+     * @param typeName The type name of the root element.
+     * 
+     * @since 8.0
+     */
+    public void setRootElementType(QName typeName) {
+        handler.setRootElementType(typeName);
+    }
+
+    /**
+     * The type name of the root element being parsed.
+     * 
+     * @see Parser#setRootElementType(QName)
+     */
+    public QName getRootElementType() {
+        return handler.getRootElementType();
+    }
+
     /**
      * Returns a list of any validation errors that occured while parsing.
      *

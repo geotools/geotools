@@ -152,7 +152,7 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
         Envelope envelope = (Envelope) object;
 
         if (envelope.isNull()) {
-            value.appendChild(document.createElementNS(GML.NAMESPACE, GML.Null.getLocalPart()));
+            value.appendChild(document.createElementNS(getTarget().getNamespaceURI(), GML.Null.getLocalPart()));
         }
 
         return null;

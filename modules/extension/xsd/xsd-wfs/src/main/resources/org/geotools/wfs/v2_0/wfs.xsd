@@ -27,7 +27,7 @@
    
    <!--(JD) Importing the schems alone is not enough. We need an element that
        references that schema so that it is resolved -->
-   <xsd:element name="__foo">o
+   <xsd:element name="__foo">
      <xsd:complexType>
         <xsd:sequence>
            <xsd:element ref="gml:AbstractFeature"/>

@@ -91,7 +91,7 @@ public class LocationPropertyTypeBinding extends AbstractComplexBinding {
 
     public Object getProperty(Object object, QName name)
         throws Exception {
-        if (GML._Geometry.equals(name)) {
+        if ("_Geometry".equals(name.getLocalPart()) || "AbstractGeometry".equals(name.getLocalPart()) ) {
             return object;
         }
 

@@ -404,6 +404,10 @@ public final class WFS extends XSD {
         new QName("http://www.opengis.net/wfs/2.0","WFS_Capabilities");
 
     /* Attributes */
+    
+    //not actually global in the schema but we support encoding it separately
+    public static final QName StoredQueryDescription = new QName(NAMESPACE, "StoredQueryDescription");
+    
 
 }
     

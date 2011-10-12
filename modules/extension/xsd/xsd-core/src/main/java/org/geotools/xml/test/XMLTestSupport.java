@@ -30,6 +30,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
@@ -261,9 +262,35 @@ public abstract class XMLTestSupport extends TestCase {
             root.setAttribute("xmlns:" + prefix, uri );
         }
         
-        //default
-        root.setAttribute("xsi:schemaLocation",
-            config.getNamespaceURI() + " " + config.getSchemaFileURL());
+        //process the schemaLocation, replace any schema locations that we know about
+        if (root.hasAttribute("xsi:schemaLocation")) {
+            XSD xsd = config.getXSD();
+            List<XSD> deps = xsd.getAllDependencies();
+            deps.add(xsd);
+            
+            String[] locations = root.getAttribute("xsi:schemaLocation").split(" +");
+            for (int i = 0; i < locations.length; i += 2) {
+                String uri = locations[i];
+                for (XSD dep : deps) {
+                    if (dep.getNamespaceURI().equals(uri)) {
+                        locations[i+1] = dep.getSchemaLocation();
+                    }
+                }
+            }
+            
+            StringBuffer joined = new StringBuffer();
+            for (String s : locations) {
+                joined.append(s).append(" ");
+            }
+            joined.setLength(joined.length()-1);
+            root.setAttribute("xsi:schemaLocation", joined.toString());
+        }
+        else {
+            //no schemaLocation attribute, add one for the schema for this config
+            root.setAttribute("xsi:schemaLocation",
+                config.getNamespaceURI() + " " + config.getSchemaFileURL());
+        }
+        
 
         DOMParser parser = new DOMParser(config, document);
 

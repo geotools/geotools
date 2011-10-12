@@ -2,10 +2,17 @@
 <xsd:schema
    targetNamespace="http://www.opengis.net/fes/2.0"
    xmlns:fes="http://www.opengis.net/fes/2.0"
+   xmlns:gml="http://www.opengis.net/gml/3.2"
    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
    elementFormDefault="qualified"
    version="2.0.0">
+
  <xsd:include schemaLocation="query.xsd"/>
  <xsd:include schemaLocation="filter.xsd"/>
  <xsd:include schemaLocation="sort.xsd"/>
+
+ <!-- JD: import GML 3.2 scehma explicitly, otherwise we force clients to
+      specify a schema location for it manually -->
+ <xsd:import namespace="http://www.opengis.net/gml/3.2" schemaLocation="../../gml/3.2.1/gml.xsd"/>
+ <xsd:element name="__foo" type="gml:AbstractFeatureType"/>
 </xsd:schema>

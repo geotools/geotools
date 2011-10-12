@@ -351,7 +351,17 @@
   <xsd:complexContent>
    <xsd:extension base="fes:LogicOpsType">
     <xsd:choice minOccurs="2" maxOccurs="unbounded">
-     <xsd:group ref="fes:FilterPredicates"/>
+      <!--xsd:group ref="fes:FilterPredicates"/-->
+      <!-- JD: we move the group inline as a hack to get around an encoding 
+           issue, basically when referencing as a group we lose the info about
+           multiplicity -->
+      <xsd:element ref="fes:comparisonOps"/>
+      <xsd:element ref="fes:spatialOps"/>
+      <xsd:element ref="fes:temporalOps"/>
+      <xsd:element ref="fes:logicOps"/>
+      <xsd:element ref="fes:extensionOps"/>
+      <xsd:element ref="fes:Function"/>
+      <xsd:element ref="fes:_Id" maxOccurs="unbounded"/>
     </xsd:choice>
    </xsd:extension>
   </xsd:complexContent>

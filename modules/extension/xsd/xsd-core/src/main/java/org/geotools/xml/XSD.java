@@ -138,6 +138,23 @@ public abstract class XSD {
         }
         return typeMappingProfile;
     }
+    
+    /**
+     * Transitively returns the type mapping profile for this schema and all schemas that this
+     * schema depends on. 
+     */
+    public final List<Schema> getAllTypeMappingProfiles() {
+        LinkedList profiles = new LinkedList();
+        for(XSD xsd : getAllDependencies()) {
+            Schema profile = xsd.getTypeMappingProfile();
+            if (!profile.isEmpty()) {
+                profiles.add(profile);
+            }
+        }
+        
+        return profiles;
+    }
+    
 
     /**
      * The namespace uri of the schema.

@@ -89,6 +89,7 @@ import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNil;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.capability.ArithmeticOperators;
@@ -345,6 +346,10 @@ public class FilterFactoryImpl implements FilterFactory {
      */
     public PropertyIsNull /*IsNullImpl*/ isNull(Expression expr) {
         return new IsNullImpl( this, expr );
+    }
+
+    public PropertyIsNil isNil(Expression expr, Object nilReason) {
+        return new IsNilImpl(this, expr, nilReason);
     }
 
     /**

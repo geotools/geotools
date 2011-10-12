@@ -102,6 +102,7 @@ public interface FilterVisitor {
     Object visit(PropertyIsLessThanOrEqualTo filter,    Object extraData);
     Object visit(PropertyIsLike filter,                 Object extraData);
     Object visit(PropertyIsNull filter,                 Object extraData);
+    Object visit(PropertyIsNil filter,                 Object extraData);
 
     Object visit(BBOX filter,       Object extraData);
     Object visit(Beyond filter,     Object extraData);

@@ -30,6 +30,7 @@ import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNil;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.capability.TemporalCapabilities;
@@ -119,6 +120,9 @@ public class OperatorNameFilterVisitor implements FilterVisitor {
     }
     public Object visit( PropertyIsNull filter, Object extraData ) {
         return PropertyIsLike.NAME;
+    }
+    public Object visit(PropertyIsNil filter, Object extraData) {
+        return PropertyIsNil.NAME;
     }
     public Object visit( BBOX filter, Object extraData ) {
         return BBOX.NAME;

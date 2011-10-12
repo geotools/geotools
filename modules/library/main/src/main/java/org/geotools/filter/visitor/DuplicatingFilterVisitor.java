@@ -39,6 +39,7 @@ import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNil;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Add;
@@ -225,6 +226,11 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
 		return getFactory(extraData).isNull(expr);
 	}
 
+    public Object visit(PropertyIsNil filter, Object extraData) {
+        Expression expr = visit(filter.getExpression(), extraData);
+        return getFactory(extraData).isNil(expr, filter.getNilReason());
+    }
+	
 	public Object visit(BBOX filter, Object extraData) {
 	    Expression propertyName = visit(filter.getExpression1(), extraData);
 		double minx=filter.getMinX();

@@ -47,6 +47,7 @@ import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNil;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.identity.FeatureId;
@@ -736,6 +737,12 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
         current.push(new Data(filter));
         return extraData;
     };
+
+    // NilFilter
+    public Object visit(PropertyIsNil filter, Object extraData) {
+        current.push(new Data(filter));
+        return extraData;
+    }
 
     // FidFilter
     public Object visit(Id filter, Object extraData) {

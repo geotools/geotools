@@ -30,6 +30,7 @@ import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNil;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.capability.ArithmeticOperators;
@@ -226,6 +227,16 @@ public class IsSupportedFilterVisitor implements FilterVisitor, ExpressionVisito
         if( operators == null ) return false;
         
         return operators.getOperator( PropertyIsNull.NAME ) != null;
+    }
+
+    public Object visit( PropertyIsNil filter, Object extraData ) {
+        ScalarCapabilities scalar = capabilities.getScalarCapabilities();
+        if( scalar == null ) return false;
+        
+        ComparisonOperators operators = scalar.getComparisonOperators();
+        if( operators == null ) return false;
+        
+        return operators.getOperator( PropertyIsNil.NAME ) != null;
     }
 
     public Object visit( BBOX filter, Object extraData ) {

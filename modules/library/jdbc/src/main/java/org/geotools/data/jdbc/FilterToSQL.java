@@ -59,6 +59,7 @@ import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNil;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Add;
@@ -776,6 +777,10 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             throw new RuntimeException(IO_ERROR, ioe);
         }
         return extraData;
+    }
+
+    public Object visit(PropertyIsNil filter, Object extraData) {
+        throw new UnsupportedOperationException("isNil not supported");
     }
 
     /**

@@ -34,7 +34,6 @@ import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.parameter.Parameter;
-
 import com.vividsolutions.jts.geom.Geometry;
 
 /**

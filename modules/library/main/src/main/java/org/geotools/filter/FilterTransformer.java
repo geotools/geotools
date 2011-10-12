@@ -38,6 +38,7 @@ import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNil;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Add;
@@ -306,6 +307,21 @@ public class FilterTransformer extends TransformerBase {
             return extraData;
         }
 
+        public Object visit(PropertyIsNil filter, Object extraData) {
+            Expression expr = (Expression) filter.getExpression();
+            
+            AttributesImpl atts = new AttributesImpl();
+            if (filter.getNilReason() != null) {
+                atts.addAttribute("", "nilReason", "nilReason", "", filter.getNilReason().toString());
+            }
+            
+            String type = "PropertyIsNil";
+            start(type, atts);
+            expr.accept(this,extraData);
+            end(type);
+            return extraData;
+        }
+        
         public Object visit(BBOX filter, Object extraData) {
             Expression left = filter.getExpression1();
             Expression right = filter.getExpression2();

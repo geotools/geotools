@@ -34,6 +34,7 @@ import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNil;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Add;
@@ -200,6 +201,11 @@ public abstract class DefaultFilterVisitor implements FilterVisitor, ExpressionV
     }
 
     public Object visit( PropertyIsNull filter, Object data ) {
+        data = filter.getExpression().accept(this, data);
+        return data;
+    }
+
+    public Object visit(PropertyIsNil filter, Object data) {
         data = filter.getExpression().accept(this, data);
         return data;
     }

@@ -45,7 +45,6 @@ public class FunctionNameImpl extends OperatorImpl implements FunctionName {
     /** funtion return */
     Parameter<?> ret;
 
-    
     public FunctionNameImpl( String name, int argumentCount ) {
         this(name, generateReturn(), generateArguments(argumentCount));
     }

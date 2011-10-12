@@ -33,6 +33,7 @@ import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNil;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.identity.Identifier;
@@ -178,6 +179,11 @@ final class FilterToECQL implements FilterVisitor {
 	@Override
 	public Object visit(PropertyIsNull filter, Object extraData) {
     	return FilterToTextUtil.buildIsNull(filter, extraData);
+	}
+
+	@Override
+	public Object visit(PropertyIsNil filter, Object extraData) {
+	throw new UnsupportedOperationException("PropertyIsNil not supported");
 	}
 
 	@Override

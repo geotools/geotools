@@ -229,6 +229,9 @@ public interface FilterFactory {
     /** Checks if an expression's value is {@code null}. */
     PropertyIsNull isNull(Expression expr);
 
+    /** Checks if an expression's value is nil. */
+    PropertyIsNil isNil(Expression expr, Object nilReason);
+
 ////////////////////////////////////////////////////////////////////////////////
 //
 //  SPATIAL FILTERS

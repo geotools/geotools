@@ -36,6 +36,7 @@ import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNil;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Literal;
@@ -258,6 +259,11 @@ public class BBoxFilterSplitter implements FilterVisitor {
     public Object visit(PropertyIsNull f, Object arg1) {
         otherRestrictions.push(f);
 
+        return null;
+    }
+
+    public Object visit(PropertyIsNil f, Object extraData) {
+        otherRestrictions.push(f);
         return null;
     }
 

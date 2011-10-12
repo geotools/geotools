@@ -403,7 +403,7 @@ public class GeoTiffWriterTest extends Assert {
       //
       // no crs geotiff
       //
-      final File input = new File("c:\\work\\test.tiff");
+      final File input =TestData.file(this, "geo.tiff");
       final AbstractGridFormat format = new GeoTiffFormat();
       assertTrue(format.accepts(input));
 

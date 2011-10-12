@@ -32,6 +32,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.gml3.v3_2.GML;
 
 import org.geotools.wfs.CompositeFeatureCollection;
 import org.geotools.xml.EMFUtils;
@@ -85,18 +86,24 @@ public class WFSParsingUtils {
         FeatureCollection first = features.get( 0 );
         
         if( "boundedBy".equals( name.getLocalPart() ) ) {
+            ReferencedEnvelope bounds = null;
             if ( features.size() == 1 ) {
-                return first.getBounds();
+                bounds = first.getBounds();
             }
             else {
                 //aggregate
-                ReferencedEnvelope bounds = new ReferencedEnvelope(first.getBounds());
+                bounds = new ReferencedEnvelope(first.getBounds());
                 for ( int i = 1; i < features.size(); i++ ) {
                     bounds.expandToInclude( features.get( i ).getBounds() );
                 }
-                return bounds;
             }
-            
+            if (bounds == null || bounds.isNull()) {
+                //gml 3.2 does not allow for "gml:Null"
+                if (GML.NAMESPACE.equals(name.getNamespaceURI())) {
+                    return null;
+                }
+            }
+            return bounds;
         }
         
         if ( "featureMember".equals( name.getLocalPart() ) || "member".equals(name.getLocalPart())) {

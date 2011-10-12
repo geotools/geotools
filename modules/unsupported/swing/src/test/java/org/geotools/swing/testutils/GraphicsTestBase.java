@@ -19,15 +19,21 @@ package org.geotools.swing.testutils;
 
 import java.awt.Dialog;
 import java.awt.Window;
+
+import javax.swing.JButton;
+
 import org.fest.swing.core.BasicComponentFinder;
 import org.fest.swing.core.ComponentFoundCondition;
+import org.fest.swing.core.GenericTypeMatcher;
 import org.fest.swing.core.TypeMatcher;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
+import org.fest.swing.fixture.JButtonFixture;
 import org.fest.swing.fixture.WindowFixture;
-
 import org.fest.swing.timing.Pause;
+
 import org.junit.After;
 import org.junit.BeforeClass;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Base for test classes which use a FEST {@linkplain WindowFixture} to hold dialogs,
@@ -76,6 +82,25 @@ public abstract class GraphicsTestBase<T extends Window> {
                 new TypeMatcher(dialogClass, true)),
                 DISPLAY_TIMEOUT);
         
+    }
+
+    /**
+     * Gets a dialog button with the specified text.
+     * 
+     * @param buttonText button text
+     * 
+     * @return the button fixture
+     */
+    protected JButtonFixture getButton(final String buttonText) {
+        JButtonFixture button = windowFixture.button(new GenericTypeMatcher<JButton>(JButton.class) {
+            @Override
+            protected boolean isMatching(JButton component) {
+                return buttonText.equals(component.getText());
+            }
+        });
+        
+        assertNotNull(button);
+        return button;
     }
 
 }

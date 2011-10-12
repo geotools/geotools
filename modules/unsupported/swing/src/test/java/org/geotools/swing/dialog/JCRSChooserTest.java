@@ -32,7 +32,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import javax.swing.JButton;
 import javax.swing.JDialog;
 
 import org.geotools.factory.Hints;
@@ -44,7 +43,6 @@ import org.geotools.swing.testutils.GraphicsTestRunner;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import org.fest.swing.core.GenericTypeMatcher;
 import org.fest.swing.fixture.DialogFixture;
 import org.fest.swing.fixture.JButtonFixture;
 import org.fest.swing.fixture.JListFixture;
@@ -287,25 +285,6 @@ public class JCRSChooserTest extends GraphicsTestBase<Dialog> {
         return future;
     }
     
-    /**
-     * Gets a dialog button with the specified text.
-     * 
-     * @param buttonText button text
-     * 
-     * @return the button fixture
-     */
-    private JButtonFixture getButton(final String buttonText) {
-        JButtonFixture button = windowFixture.button(new GenericTypeMatcher<JButton>(JButton.class) {
-            @Override
-            protected boolean isMatching(JButton component) {
-                return buttonText.equals(component.getText());
-            }
-        });
-        
-        assertNotNull(button);
-        return button;
-    }
-
     /**
      * Randomly chooses a code from the CODES list.
      * 

@@ -23,11 +23,9 @@ import java.awt.Dimension;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import org.fest.swing.core.GenericTypeMatcher;
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
 import org.fest.swing.edt.GuiTask;
@@ -36,6 +34,7 @@ import org.fest.swing.fixture.JButtonFixture;
 
 import org.geotools.swing.testutils.GraphicsTestBase;
 import org.geotools.swing.testutils.GraphicsTestRunner;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
@@ -100,10 +99,10 @@ public class AbstractSimpleDialogTest extends GraphicsTestBase<Dialog> {
     @Test
     public void dialogHasOKAndCancelButtons() {
         createWindowFixture();
-        JButtonFixture button = getButtonByText("OK");
+        JButtonFixture button = getButton("OK");
         assertNotNull(button);
         
-        button = getButtonByText("Cancel");
+        button = getButton("Cancel");
         assertNotNull(button);
     }
     
@@ -158,21 +157,12 @@ public class AbstractSimpleDialogTest extends GraphicsTestBase<Dialog> {
         ((DialogFixture) windowFixture).show();
         
         dialog.setExpected(et);
-        JButtonFixture button = getButtonByText(btnText);
+        JButtonFixture button = getButton(btnText);
         button.click();
         
         assertTrue(dialog.await(et, DEFAULT_TIMEOUT));
     }
 
-    private JButtonFixture getButtonByText(final String btnText) {
-        return windowFixture.button(new GenericTypeMatcher<JButton>(JButton.class) {
-            @Override
-            protected boolean isMatching(JButton btn) {
-                return btnText.equals(btn.getText());
-            }
-        });
-    }
-    
 
     public static class MockDialog extends AbstractSimpleDialog {
         public static enum EventType {

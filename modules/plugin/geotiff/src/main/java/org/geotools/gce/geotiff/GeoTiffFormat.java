@@ -114,7 +114,7 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
 		writeParameters = new ParameterGroup(
 				new DefaultParameterDescriptorGroup(
 						mInfo,
-						new GeneralParameterDescriptor[] { AbstractGridFormat.GEOTOOLS_WRITE_PARAMS }));
+						new GeneralParameterDescriptor[] { AbstractGridFormat.GEOTOOLS_WRITE_PARAMS,AbstractGridFormat.PROGRESS_LISTENER }));
 
 	}
 

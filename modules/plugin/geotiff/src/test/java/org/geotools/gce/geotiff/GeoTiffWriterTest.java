@@ -41,9 +41,11 @@ import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.Operations;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.image.io.GridCoverageWriterProgressAdapter;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.test.TestData;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.coverage.grid.GridCoverageWriter;
@@ -56,6 +58,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
+import org.opengis.util.InternationalString;
+import org.opengis.util.ProgressListener;
 
 /**
  * @author Simone Giannecchini
@@ -64,10 +68,8 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @source $URL$
  */
-@SuppressWarnings("deprecation")
 public class GeoTiffWriterTest extends Assert {
-	private static final Logger logger = org.geotools.util.logging.Logging.getLogger(GeoTiffWriterTest.class.toString());
-
+	private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GeoTiffWriterTest.class.toString());
 
 
 	/**
@@ -81,6 +83,7 @@ public class GeoTiffWriterTest extends Assert {
 	 * @throws TransformException
 	 */
 	@Test
+//	    @Ignore
 	public void testWriteCroppedCoverage() throws IllegalArgumentException,
 			IOException, UnsupportedOperationException, ParseException,
 			FactoryException, TransformException {
@@ -97,7 +100,7 @@ public class GeoTiffWriterTest extends Assert {
 		final File tiff = new File(readdir, "latlon.tiff");
 		assert tiff.exists() && tiff.canRead() && tiff.isFile();
 		if (TestData.isInteractiveTest())
-			logger.info(tiff.getAbsolutePath());
+			LOGGER.info(tiff.getAbsolutePath());
 
 		// /////////////////////////////////////////////////////////////////////
 		//
@@ -116,7 +119,7 @@ public class GeoTiffWriterTest extends Assert {
 		// /////////////////////////////////////////////////////////////////////
 		IIOMetadataDumper metadataDumper = new IIOMetadataDumper(((GeoTiffReader) reader).getMetadata().getRootNode());
 		if (TestData.isInteractiveTest()) {
-			logger.info(metadataDumper.getMetadata());
+			LOGGER.info(metadataDumper.getMetadata());
 		} else
 			metadataDumper.getMetadata();
 
@@ -127,7 +130,7 @@ public class GeoTiffWriterTest extends Assert {
 		// /////////////////////////////////////////////////////////////////////
 		GridCoverage2D gc = (GridCoverage2D) reader.read(null);
 		if (TestData.isInteractiveTest()) {
-			logger.info(new StringBuilder("Coverage before: ").append("\n")
+			LOGGER.info(new StringBuilder("Coverage before: ").append("\n")
 					.append(gc.getCoordinateReferenceSystem().toWKT()).append(
 							gc.getEnvelope().toString()).toString());
 		}
@@ -226,7 +229,7 @@ public class GeoTiffWriterTest extends Assert {
 					.getEnvelope(), croppedEnvelope);
 	
 			if (TestData.isInteractiveTest()) {
-				logger.info(new StringBuilder("Coverage after: ").append("\n")
+				LOGGER.info(new StringBuilder("Coverage after: ").append("\n")
 						.append(gc.getCoordinateReferenceSystem().toWKT()).append(
 								gc.getEnvelope().toString()).toString());
 				if (TestData.isInteractiveTest())
@@ -248,6 +251,7 @@ public class GeoTiffWriterTest extends Assert {
 	}
 
     @Test
+//    @Ignore
     public void testWriteGoogleMercator() throws Exception {
         final String google= "PROJCS[\"WGS84 / Google Mercator\", GEOGCS[\"WGS 84\", DATUM[\"World Geodetic System 1984\", SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]], AUTHORITY[\"EPSG\",\"6326\"]], PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], UNIT[\"degree\", 0.017453292519943295], AUTHORITY[\"EPSG\",\"4326\"]], PROJECTION[\"Mercator (1SP)\", AUTHORITY[\"EPSG\",\"9804\"]], PARAMETER[\"semi_major\", 6378137.0], PARAMETER[\"semi_minor\", 6378137.0], PARAMETER[\"latitude_of_origin\", 0.0], PARAMETER[\"central_meridian\", 0.0], PARAMETER[\"scale_factor\", 1.0], PARAMETER[\"false_easting\", 0.0], PARAMETER[\"false_northing\", 0.0], UNIT[\"m\", 1.0],  AUTHORITY[\"EPSG\",\"900913\"]]";
         final CoordinateReferenceSystem googleCRS= CRS.parseWKT(google);
@@ -301,6 +305,7 @@ public class GeoTiffWriterTest extends Assert {
                 
     }
 	@Test
+//	    @Ignore
 	public void testWriteTFW() throws Exception{
 
 	        //
@@ -346,6 +351,7 @@ public class GeoTiffWriterTest extends Assert {
 	}
 	
     @Test
+//    @Ignore
     public void testWriteWithMetadata() throws Exception {
 
         //
@@ -394,6 +400,127 @@ public class GeoTiffWriterTest extends Assert {
     }
     
     @Test
+    public void testProgress() throws Exception {
+
+        //
+        // no crs geotiff
+        //
+        final File input = new File("c:\\work\\test.tiff");
+        final AbstractGridFormat format = new GeoTiffFormat();
+        assertTrue(format.accepts(input));
+
+        // getting a reader
+        GeoTiffReader reader = new GeoTiffReader(input);
+
+        // reading the coverage
+        GridCoverage2D coverage = (GridCoverage2D) reader.read(null);
+
+        // check coverage and crs
+        assertNotNull(coverage);
+        assertNotNull(coverage.getCoordinateReferenceSystem());
+        reader.dispose();
+
+        // get a writer
+        final File output = new File(TestData.file(GeoTiffReaderTest.class, "."), "outMetadata.tif");
+        GeoTiffWriter writer = new GeoTiffWriter(output);
+        
+        // Setting a COPYRIGHT metadata        
+        ParameterValue<ProgressListener> listener = GeoTiffFormat.PROGRESS_LISTENER.createValue();
+        
+        listener.setValue(new ProgressListener(){
+                private boolean canceled;
+
+                @Override
+                public InternationalString getTask() {
+                    // TODO Auto-generated method stub
+                    return null;
+                }
+
+                @Override
+                public String getDescription() {
+                    // TODO Auto-generated method stub
+                    return null;
+                }
+
+                @Override
+                public void setTask(InternationalString task) {
+                    // TODO Auto-generated method stub
+                    
+                }
+
+                @Override
+                public void setDescription(String description) {
+                    // TODO Auto-generated method stub
+                    
+                }
+
+                @Override
+                public void started() {
+                    LOGGER.info("started");
+                    
+                }
+
+                @Override
+                public void progress(float percent) {
+                    LOGGER.info("progress:"+percent);
+                    assertTrue(percent>=0);
+                    assertTrue(percent<=100);
+                    if(percent>50)
+                        setCanceled(true);                    
+                        
+                    
+                }
+
+                @Override
+                public float getProgress() {
+                    // TODO Auto-generated method stub
+                    return 0;
+                }
+
+                @Override
+                public void complete() {
+                    LOGGER.info("complete");
+                    
+                }
+
+                @Override
+                public void dispose() {
+                    // TODO Auto-generated method stub
+                    
+                }
+
+                @Override
+                public boolean isCanceled() {
+                    return canceled;
+                }
+
+                @Override
+                public void setCanceled(boolean cancel) {
+                    canceled=cancel;
+                    
+                }
+
+                @Override
+                public void warningOccurred(String source, String location, String warning) {
+                    // TODO Auto-generated method stub
+                    
+                }
+
+                @Override
+                public void exceptionOccurred(Throwable exception) {
+                    // TODO Auto-generated method stub
+                    
+                }            
+        });
+        writer.write(coverage,new GeneralParameterValue[]{listener});
+        writer.dispose();
+        coverage.dispose(true);
+        
+    }
+    
+    
+    @Test
+//    @Ignore
     public void testWriteBigTiff() throws Exception {
 
         String files[] = new String[]{"geo.tiff", "no_crs_no_envelope.tif"};

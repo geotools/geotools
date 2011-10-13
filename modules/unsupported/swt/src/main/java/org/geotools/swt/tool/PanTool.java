@@ -103,12 +103,11 @@ public class PanTool extends CursorTool {
         return cursor;
     }
 
-    /**
-     * Returns false to indicate that this tool does not draw a box
-     * on the map display when the mouse is being dragged
-     */
-    @Override
-    public boolean drawDragBox() {
+    public boolean canDraw() {
         return false;
+    }
+
+    public boolean canMove() {
+        return true;
     }
 }

@@ -143,14 +143,12 @@ public class ZoomInTool extends AbstractZoomTool {
         return cursor;
     }
 
-    /**
-     * Returns true to indicate that this tool draws a box
-     * on the map display when the mouse is being dragged to
-     * show the zoom-in area
-     */
-    @Override
-    public boolean drawDragBox() {
+    public boolean canDraw() {
         return true;
+    }
+
+    public boolean canMove() {
+        return false;
     }
 
     public static double pythagoras( double d1, double d2 ) {

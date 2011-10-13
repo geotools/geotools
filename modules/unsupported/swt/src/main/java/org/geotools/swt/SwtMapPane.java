@@ -124,10 +124,10 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
     private BufferedImage baseImage;
     private Point imageOrigin;
     private boolean redrawBaseImage;
-    private boolean baseImageMoved;
     private boolean clearLabelCache;
 
-    private boolean dragEnabled;
+    private boolean toolCanDraw;
+    private boolean toolCanMove;
 
     /**
      * swt image used to draw
@@ -180,7 +180,6 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
 
         acceptRepaintRequests = true;
         redrawBaseImage = true;
-        baseImageMoved = false;
         clearLabelCache = false;
 
         setRenderer(renderer);
@@ -228,11 +227,13 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
         if (tool == null) {
             toolManager.setNoCursorTool();
             this.setCursor(CursorManager.getInstance().getArrowCursor());
-            dragEnabled = false;
+            toolCanDraw = false;
+            toolCanMove = false;
         } else {
             this.setCursor(tool.getCursor());
             toolManager.setCursorTool(tool);
-            dragEnabled = tool.drawDragBox();
+            toolCanDraw = tool.canDraw();
+            toolCanMove = tool.canMove();
         }
     }
 
@@ -418,9 +419,9 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
 
     public void setCrs( CoordinateReferenceSystem crs ) {
         try {
-            System.out.println(content.layers().size());
+            // System.out.println(content.layers().size());
             ReferencedEnvelope rEnv = getDisplayArea();
-            System.out.println(rEnv);
+            // System.out.println(rEnv);
 
             CoordinateReferenceSystem sourceCRS = rEnv.getCoordinateReferenceSystem();
             CoordinateReferenceSystem targetCRS = crs;
@@ -434,7 +435,7 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
             doSetDisplayArea(newEnvelope);
 
             ReferencedEnvelope displayArea = getDisplayArea();
-            System.out.println(displayArea);
+            // System.out.println(displayArea);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -699,7 +700,6 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
     public void moveImage( int dx, int dy ) {
         imageOrigin.translate(dx, dy);
         redrawBaseImage = false;
-        baseImageMoved = true;
         if (!isDisposed())
             redraw();
     }
@@ -789,11 +789,12 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
      * used, adds the new layer to the table.
      */
     public void layerAdded( MapLayerListEvent event ) {
-        if (layerTable != null) {
-            layerTable.onAddLayer(event.getElement());
-        }
         Layer layer = event.getElement();
+        if (layerTable != null) {
+            layerTable.onAddLayer(layer);
+        }
         layer.setSelected(true);
+        redrawBaseImage = true;
 
         boolean atFullExtent = equalsFullExtent(getDisplayArea());
         boolean firstLayer = content.layers().size() == 1;
@@ -816,6 +817,7 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
         if (layerTable != null) {
             layerTable.onRemoveLayer(layer);
         }
+        redrawBaseImage = true;
 
         if (content.layers().size() == 0) {
             clearFields();
@@ -834,6 +836,7 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
         if (layerTable != null) {
             layerTable.repaint(event.getElement());
         }
+        redrawBaseImage = true;
 
         int reason = event.getMapLayerEvent().getReason();
 
@@ -851,6 +854,7 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
      * Called when the bounds of a map layer have changed
      */
     public void layerMoved( MapLayerListEvent event ) {
+        redrawBaseImage = true;
         if (!isDisposed())
             redraw();
     }
@@ -1065,25 +1069,37 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
         if (event.type == SWT.MouseDown) {
             startX = event.x;
             startY = event.y;
+            // start mouse activity
             mouseDown = true;
         } else if (event.type == SWT.MouseUp) {
             endX = event.x;
             endY = event.y;
 
-            if (baseImageMoved) {
+            boolean mouseWasMoved = startX != endX || startY != endY;
+            if (toolCanMove && mouseWasMoved) {
+                // if the tool is able to move draw the moved image
                 afterImageMove();
-                baseImageMoved = false;
             }
-
+            // stop mouse activity
             mouseDown = false;
             isDragging = false;
         } else if (event.type == SWT.Paint) {
+            // System.out.println("PAINT CALLED (DOESN'T MEAN I'M DRAWING)");
 
             if (acceptRepaintRequests) {
-                // System.out.println("paint");
                 gc = event.gc;
 
-                if (baseImageMoved) {
+                // System.out.println(toolCanDraw + "/" + toolCanMove + "/" + isDragging + "/" +
+                // redrawBaseImage);
+
+                /*
+                 * if the mouse is dragging and the current tool can
+                 * move the map we just draw what we already have
+                 * on white background. At the end of the moving 
+                 * we will take care of adding the missing pieces.
+                 */
+                if (toolCanMove && isDragging) {
+                    // System.out.println("toolCanMove && isDragging");
                     if (gc != null && !gc.isDisposed() && swtImage != null) {
                         /*
                          * double buffer necessary, since the SWT.NO_BACKGROUND
@@ -1102,35 +1118,46 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
                     return;
                 }
 
-                if (isDragging) {
-                    if (dragEnabled) {
-                        // System.out.println("draw box: " + startX + "/" + startY + "/" + endX +
-                        // "/" + endY);
-                        if (swtImage != null) {
-                            drawFinalImage(swtImage);
-                        }
-                        gc.setXORMode(true);
-
-                        org.eclipse.swt.graphics.Color fC = gc.getForeground();
-                        gc.setLineWidth(2);
-                        gc.setForeground(yellow);
-                        gc.drawRectangle(startX, startY, endX - startX, endY - startY);
-
-                        gc.setForeground(fC);
-                        gc.setXORMode(false);
-                        return;
+                /*
+                 * if the mouse is dragging and the current tool can
+                 * draw a boundingbox while dragging, we draw the box 
+                 * keeping the current drawn image
+                 */
+                if (toolCanDraw && isDragging) {
+                    // System.out.println("draw box: " + startX + "/" + startY + "/" + endX +
+                    // "/" + endY);
+                    if (swtImage != null) {
+                        drawFinalImage(swtImage);
                     }
+                    gc.setXORMode(true);
+
+                    org.eclipse.swt.graphics.Color fC = gc.getForeground();
+                    gc.setLineWidth(2);
+                    gc.setForeground(yellow);
+                    gc.drawRectangle(startX, startY, endX - startX, endY - startY);
+
+                    gc.setForeground(fC);
+                    gc.setXORMode(false);
+                    return;
                 }
-                System.out.println("PAINT");
+
+                if (!toolCanDraw && !toolCanMove && isDragging) {
+                    return;
+                }
+
                 if (curPaintArea == null || content == null || renderer == null) {
                     return;
                 }
+
                 if (content.layers().size() == 0) {
+                    // if no layers available, return only if there are also no overlays
+
                     gc.setForeground(yellow);
                     gc.fillRectangle(0, 0, curPaintArea.width + 1, curPaintArea.height + 1);
                     if (overlayImage == null)
                         return;
                 }
+
                 final ReferencedEnvelope mapAOI = content.getViewport().getBounds();
                 if (mapAOI == null) {
                     return;
@@ -1154,7 +1181,7 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
                         swtImage.dispose();
                         swtImage = null;
                     }
-                    System.out.println("create img");
+                    System.out.println("READRAWBASEIMAGE");
                     swtImage = new Image(getDisplay(), awtToSwt(baseImage, curPaintArea.width + 1, curPaintArea.height + 1));
                 }
 
@@ -1166,29 +1193,41 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
                 publishEvent(ev);
                 clearLabelCache = true;
                 onRenderingCompleted();
-                redrawBaseImage = true;
+                redrawBaseImage = false;
             }
         }
     }
 
     private void drawFinalImage( Image swtImage ) {
         Display display = getDisplay();
-        if (overlayImage != null) {
-            Image tmpImage = new Image(display, curPaintArea.width, curPaintArea.height);
-            GC tmpGc = new GC(tmpImage);
-            tmpGc.setBackground(white);
-            tmpGc.fillRectangle(0, 0, curPaintArea.width, curPaintArea.height);
+        // this is only done if an overlay image exists
+
+        // create a new image
+        Image tmpImage = new Image(display, curPaintArea.width, curPaintArea.height);
+        GC tmpGc = new GC(tmpImage);
+        tmpGc.setBackground(white);
+        tmpGc.fillRectangle(0, 0, curPaintArea.width, curPaintArea.height);
+        if (swtImage != null) {
+            // set the alpha to the new image
             tmpGc.setAlpha(alpha);
+            /*
+             * draw the background image into it
+             * (this means everything but the overlay image) 
+             */
             tmpGc.drawImage(swtImage, imageOrigin.x, imageOrigin.y);
+            /*
+             * set the alpha back to opaque so it doesn't influence the
+             * overlay image 
+             */
             tmpGc.setAlpha(255);
-            doOverlayImage(tmpGc);
-            if (gc != null && !gc.isDisposed() && swtImage != null)
-                gc.drawImage(tmpImage, imageOrigin.x, imageOrigin.y);
-        } else {
-            if (gc != null && !gc.isDisposed() && swtImage != null) {
-                gc.drawImage(swtImage, imageOrigin.x, imageOrigin.y);
-            }
         }
+        if (overlayImage != null) {
+            // finally draw the overlay image on top
+            doOverlayImage(tmpGc);
+        }
+        // draw the created new image on the pane
+        if (gc != null && !gc.isDisposed())
+            gc.drawImage(tmpImage, imageOrigin.x, imageOrigin.y);
     }
 
     @SuppressWarnings("deprecation")

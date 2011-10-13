@@ -71,13 +71,16 @@ public abstract class CursorTool extends MapMouseAdapter {
     }
 
     /**
-     * Query if the tool is one that draws a box on the map display
-     * when the mouse is being dragged (eg. to indicate a zoom area).
-     *
-     * @return true if this tool supports drawing a drag-box on the
-     * map; false otherwise
+     * Checks if the tool can draw when dragging.
+     * 
+     * @return <code>true</code> if the tool can draw.
      */
-    public boolean drawDragBox() {
-        return false;
-    }
+    public abstract boolean canDraw();
+
+    /**
+     * Checks if the tool can move the map when dragging.
+     * 
+     * @return <code>true</code> if the tool can move the map while dragging.
+     */
+    public abstract boolean canMove();
 }

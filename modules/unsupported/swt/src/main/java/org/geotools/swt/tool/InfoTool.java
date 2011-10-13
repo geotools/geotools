@@ -289,13 +289,11 @@ public class InfoTool extends CursorTool {
         return cursor;
     }
 
-    /**
-     * {@inheritDoc}
-     * 
-     * @return Always returns false
-     */
-    @Override
-    public boolean drawDragBox() {
+    public boolean canDraw() {
+        return false;
+    }
+
+    public boolean canMove() {
         return false;
     }
 

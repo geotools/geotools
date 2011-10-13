@@ -130,7 +130,13 @@ public class DB2Util {
 	}
 	
 	static public void prepareGeometryValue(Geometry geom, int srid, Class binding, StringBuffer sql) {
-		String pattern = PARAMETER_MARKES.get(binding);
+		//String pattern = PARAMETER_MARKES.get(binding);
+	        String pattern = null;
+	    
+	        if (geom != null ) 
+	                pattern = PARAMETER_MARKES.get(geom.getClass());
+	        if (pattern==null )
+	                pattern = PARAMETER_MARKES.get(binding);
 		sql.append(MessageFormat.format(pattern, new Object[]{Integer.toString(srid)}));		
 	}
 

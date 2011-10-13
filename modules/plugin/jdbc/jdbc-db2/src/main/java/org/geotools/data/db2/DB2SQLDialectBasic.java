@@ -63,7 +63,9 @@ public class DB2SQLDialectBasic extends BasicSQLDialect {
     
     @Override
     public FilterToSQL createFilterToSQL() {
-    	return new DB2FilterToSQL((Writer) null);
+    	DB2FilterToSQL filter = new DB2FilterToSQL((Writer) null);
+    	filter.setFunctionEncodingEnabled(isFunctionEncodingEnabled());
+        return filter;
     }
 
     
@@ -201,6 +203,14 @@ public class DB2SQLDialectBasic extends BasicSQLDialect {
 
     public DB2DialectInfo getDb2DialectInfo() {
         return delegate.getDb2DialectInfo();
+    }
+
+    public boolean isFunctionEncodingEnabled() {
+        return delegate.isFunctionEncodingEnabled();
+    }
+
+    public void setFunctionEncodingEnabled(boolean functionEncodingEnabled) {
+        delegate.setFunctionEncodingEnabled(functionEncodingEnabled);
     }
 
 }

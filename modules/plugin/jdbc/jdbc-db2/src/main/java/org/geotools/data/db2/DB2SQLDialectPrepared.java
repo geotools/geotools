@@ -17,6 +17,7 @@
 package org.geotools.data.db2;
 
 import java.io.IOException;
+import java.io.Writer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -65,7 +66,9 @@ public class DB2SQLDialectPrepared extends PreparedStatementSQLDialect {
   
 	@Override
 	public PreparedFilterToSQL createPreparedFilterToSQL() {
-		return new DB2FilterToSQL(this);
+           DB2FilterToSQL filter = new DB2FilterToSQL(this);
+           filter.setFunctionEncodingEnabled(isFunctionEncodingEnabled());
+           return filter;
 	}
 
 	@Override
@@ -228,6 +231,14 @@ public class DB2SQLDialectPrepared extends PreparedStatementSQLDialect {
 
     public DB2DialectInfo getDb2DialectInfo() {
         return delegate.getDb2DialectInfo();
+    }
+
+    public boolean isFunctionEncodingEnabled() {
+        return delegate.isFunctionEncodingEnabled();
+    }
+
+    public void setFunctionEncodingEnabled(boolean functionEncodingEnabled) {
+        delegate.setFunctionEncodingEnabled(functionEncodingEnabled);
     }
 
 }

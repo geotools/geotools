@@ -104,16 +104,27 @@ public class DB2SQLDialect extends SQLDialect  {
     //private static String SELECT_ROWNUMBER="select rownumber() over () as rownum,ibmreqd from sysibm.sysdummy1";
     private static String SELECT_ROWNUMBER="select * from sysibm.sysdummy1 where rownum = 1";
     private  Boolean isRowNumberSupported=null;
+    private static String SELECT_LIMITOFFSET="select * from sysibm.sysdummy1 limit 0,1";
+    private  Boolean isLimitOffsetSupported=null;
+
+    
     private  static String ROWNUMBER_MESSAGE=
     	"DB2 handles paged select statements inefficiently\n"+
     	"Since Version 9.5 you can do the following\n"+
     	"dbstop\n"+
     	"db2set DB2_COMPATIBILITY_VECTOR=01\n"+
     	"db2start\n";
+    
+    private  static String LIMITOFFSET_MESSAGE=
+            "DB2 handles paged select statements inefficiently\n"+
+            "Since Version 9.7.2 you can enable LIMIT OFFSET support\n";
+
 
     private DB2DialectInfo db2DialectInfo;
+    private boolean functionEncodingEnabled;
     
-
+    
+    
     public DB2SQLDialect(JDBCDataStore dataStore,DB2DialectInfo info) {
         super(dataStore);
         db2DialectInfo=info;
@@ -491,13 +502,32 @@ public class DB2SQLDialect extends SQLDialect  {
 
     @Override   
     public boolean isLimitOffsetSupported() {
+        
+        if (isLimitOffsetSupported==null)
+            setIsLimitOffsetSupported();
+        if (isLimitOffsetSupported) return true;
+        
     	if (isRowNumberSupported==null)
     		setIsRowNumberSupported();
         return isRowNumberSupported;
     }
     @Override
     public void applyLimitOffset(StringBuffer sql, int limit, int offset) {
-    	// Using the same code as in the OracleDialict. This method is only invoked if
+        // since 9.7.2, Limit and offset is supported
+        
+        if (isLimitOffsetSupported()) {
+            if(limit >= 0 && limit < Integer.MAX_VALUE) {
+                if(offset > 0)
+                    sql.append(" LIMIT " + offset + ", " + limit);
+                else 
+                    sql.append(" LIMIT " + limit);
+            } else if(offset > 0) {
+                sql.append(" LIMIT " + offset + ", " + (Integer.MAX_VALUE-7));
+            }
+            return; // end here, we are finished
+        }
+                
+    	// Since 9.5, Using the same code as in the OracleDialict. This method is only invoked if
     	// DB2 is configured to be compatible to Oracle with 
     	// "db2set DB2_COMPATIBILITY_VECTOR=01"
     	// enabling the rownum pseudo column
@@ -535,6 +565,29 @@ public class DB2SQLDialect extends SQLDialect  {
             try {if (con!=null) con.close();} catch (SQLException ex1) {};
     	}
     }
+    
+    private void setIsLimitOffsetSupported() {
+        Connection con = null;
+        PreparedStatement ps = null; 
+        ResultSet rs = null;
+        
+        try {
+                con = dataStore.getDataSource().getConnection();
+                ps = con.prepareStatement(SELECT_LIMITOFFSET); 
+                rs = ps.executeQuery();
+                if (rs.next()) isLimitOffsetSupported=Boolean.TRUE;               
+        }
+        catch (SQLException ex) {
+                LOGGER.warning(LIMITOFFSET_MESSAGE);
+                isLimitOffsetSupported=Boolean.FALSE;             
+        }
+        finally {
+            try {if (rs!=null) rs.close(); } catch (SQLException ex1) {};
+            try {if (ps!=null) ps.close();} catch (SQLException ex1) {};
+            try {if (con!=null) con.close();} catch (SQLException ex1) {};
+        }
+    }
+
     
     public void encodeGeometryColumnGeneralized(GeometryDescriptor gatt, String prefix, int srid,  StringBuffer sql,Double distance) {
     		     	
@@ -595,4 +648,12 @@ public class DB2SQLDialect extends SQLDialect  {
         return false;
     }
     
+    public boolean isFunctionEncodingEnabled() {
+        return functionEncodingEnabled;
+    }
+
+    public void setFunctionEncodingEnabled(boolean functionEncodingEnabled) {
+        this.functionEncodingEnabled = functionEncodingEnabled;
+    }
+
 }

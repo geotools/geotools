@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -19,54 +19,51 @@ package org.geotools.swing.dialog;
 
 import java.awt.Component;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.util.EnumSet;
 import java.util.Set;
-import java.util.TreeSet;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
-
-import org.geotools.swing.data.JFileDataStoreChooser;
-import org.geotools.swing.data.JParameterListWizard;
+import org.geotools.util.logging.Logging;
 
 /**
- * A file chooser dialog for common raster image format files.
- * It provides static methods to display the dialog for opening or
- * saving an image file with basic validation of user input.
+ * A file chooser dialog for common raster image format files. It provides 
+ * static methods to display the dialog for opening or saving an image file.
+ * The file formats offered by the dialog are a subset of those supported by
+ * {@code ImageIO} on the host system.
  *
  * <pre><code>
  * // Prompting for an input image file
- * File file = JFileImageChooser.showOpenFile(null);
+ * File file = JFileImageChooser.showOpenFile();
  * if (file != null) {
  *     ...
  * }
  *
  * // Prompting for a file name to save an image
- * File file = JFileImageChooser.showSaveFile(null);
+ * File file = JFileImageChooser.showSaveFile();
  * if (file != null) {
  *     ...
  * }
  * </code></pre>
- *
- * The file formats offered by the dialog are a subset of those supported by
- * {@code ImageIO} on the host system.
- * <p>
- *
- * @see JFileDataStoreChooser
- * @see JParameterListWizard
- * @see ImageIO
- *
+ * 
  * @author Michael Bedward
  * @since 2.6.1
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class JFileImageChooser extends JFileChooser {
+    
+    private static final Logger LOGGER = Logging.getLogger("org.geotools.swing");
 
+    /**
+     * Constants for (possibly) supported image file formats.
+     */
     private static enum FormatSpecifier {
         BMP("bmp", "BMP image", ".bmp"),
         GIF("gif", "GIF image", ".gif"),
@@ -82,14 +79,16 @@ public class JFileImageChooser extends JFileChooser {
             this.id = id;
             this.desc = desc;
             this.suffixes = new String[suffixes.length];
-            for (int i = 0; i < suffixes.length; i++) {
-                this.suffixes[i] = suffixes[i];
-            }
+            System.arraycopy(suffixes, 0, this.suffixes, 0, suffixes.length);
         }
     };
 
-    private static final Set<FormatSpecifier> supportedReaders = new TreeSet<FormatSpecifier>();
-    private static final Set<FormatSpecifier> supportedWriters = new TreeSet<FormatSpecifier>();
+    private static final EnumSet<FormatSpecifier> supportedReaders = 
+            EnumSet.noneOf(FormatSpecifier.class);
+    
+    private static final EnumSet<FormatSpecifier> supportedWriters = 
+            EnumSet.noneOf(FormatSpecifier.class);
+    
     static {
         for (FormatSpecifier format : FormatSpecifier.values()) {
             if (ImageIO.getImageReadersBySuffix(format.id).hasNext()) {
@@ -102,10 +101,14 @@ public class JFileImageChooser extends JFileChooser {
         }
     }
 
-    private static class FormatFilter extends FileFilter {
+    /**
+     * A file filter which works with the {@code FormatSpecifier} constants.
+     * It is package-private, rather than private, for unit tests purposes.
+     */
+    static class FormatFilter extends FileFilter {
         private FormatSpecifier format;
 
-        FormatFilter(FormatSpecifier format) {
+        public FormatFilter(FormatSpecifier format) {
             this.format = format;
         }
 
@@ -135,25 +138,176 @@ public class JFileImageChooser extends JFileChooser {
         }
     }
 
-    /*
-     * Create a new image file chooser
+
+    /**
+     * Prompts for file name to save an image.
+     *
+     * @return the selected file or {@code null} if the dialog was cancelled
      */
-    public JFileImageChooser() {
-        this(null);
+    public static File showSaveFile() {
+        return showSaveFile(null);
+    }
+    
+    /**
+     * Prompts for file name to save an image.
+     *
+     * @param parent parent component (may be {@code null})
+     *
+     * @return the selected file or {@code null} if the dialog was cancelled
+     */
+    public static File showSaveFile(Component parent) {
+        return showSaveFile(parent, null);
     }
 
     /**
-     * Create a new image file chooser
+     * Prompts for file name to save an image.
      *
-     * @param workingDir the initial directory to display
+     * @param parent parent component (may be {@code null})
+     * @param workingDir the initial directory
+     *
+     * @return the selected file or {@code null} if the dialog was cancelled
      */
-    public JFileImageChooser(File workingDir) {
+    public static File showSaveFile(final Component parent, final File workingDir) {
+        final File[] file = new File[1];
+        
+        if (SwingUtilities.isEventDispatchThread()) {
+            file[0] = doShow(parent, workingDir, SAVE_DIALOG);
+            
+        } else {
+            try {
+                SwingUtilities.invokeAndWait(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        file[0] = doShow(parent, workingDir, SAVE_DIALOG);
+                    }
+                });
+            } catch (InterruptedException ex) {
+                LOGGER.log(Level.SEVERE, "Thread interrupted while prompting for file", ex);
+                
+            } catch (InvocationTargetException ex) {
+                LOGGER.log(Level.SEVERE, "Unexpected problem while prompting for file", ex);
+            }
+        }
+        
+        return file[0];
+    }
+    
+    /**
+     * Prompts for file name to read an image.
+     *
+     * @return the selected file or {@code null} if the dialog was cancelled
+     */
+    public static File showOpenFile() {
+        return showOpenFile(null, null);
+    }
+
+    /**
+     * Prompts for file name to read an image.
+     *
+     * @param parent parent component (may be {@code null})
+     *
+     * @return the selected file or {@code null} if the dialog was cancelled
+     */
+    public static File showOpenFile(Component parent) {
+        return showOpenFile(parent, null);
+    }
+
+    /**
+     * Prompts for file name to read an image.
+     *
+     * @param parent parent component (may be {@code null})
+     * @param workingDir the initial directory
+     *
+     * @return the selected file or {@code null} if the dialog was cancelled
+     */
+    public static File showOpenFile(final Component parent, final File workingDir) {
+        final File[] file = new File[1];
+        
+        if (SwingUtilities.isEventDispatchThread()) {
+            file[0] = doShow(parent, workingDir, OPEN_DIALOG);
+            
+        } else {
+            try {
+                SwingUtilities.invokeAndWait(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        file[0] = doShow(parent, workingDir, OPEN_DIALOG);
+                    }
+                });
+            } catch (InterruptedException ex) {
+                LOGGER.log(Level.SEVERE, "Thread interrupted while prompting for file", ex);
+                
+            } catch (InvocationTargetException ex) {
+                LOGGER.log(Level.SEVERE, "Unexpected problem while prompting for file", ex);
+            }
+        }
+        
+        return file[0];
+    }
+    
+    /**
+     * Helper method which creates and displays the chooser dialog on the event dispatch thread.
+     * 
+     * @param parent optional parent component
+     * @param workingDir optional initial working directory
+     * @param openOrSave either {@linkplain #OPEN_DIALOG} or {@linkplain #SAVE_DIALOG}
+     * 
+     * @return selected file or {@code null} if the dialog was cancelled
+     */
+    private static File doShow(Component parent, File workingDir, int openOrSave) {
+        JFileImageChooser chooser = new JFileImageChooser(workingDir);
+        File file = null;
+        int dialogRtnValue;
+
+        switch (openOrSave) {
+            case OPEN_DIALOG:
+                chooser.setFilter(supportedReaders);
+                chooser.setDialogTitle("Open image");
+                dialogRtnValue = chooser.showOpenDialog(parent);
+                break;
+                
+            case SAVE_DIALOG:
+                chooser.setFilter(supportedWriters);
+                chooser.setDialogTitle("Save image");
+                dialogRtnValue = chooser.showSaveDialog(parent);
+                break;
+                
+            default:
+                // just in case
+                throw new IllegalArgumentException(
+                        "Invalid value for openOrSave argument" + openOrSave);
+        }
+
+        if (dialogRtnValue == JFileImageChooser.APPROVE_OPTION) {
+            file = chooser.getSelectedFile();
+
+            String name = file.getAbsolutePath();
+            int dot = name.lastIndexOf('.');
+
+            FormatFilter filter = (FormatFilter) chooser.getFileFilter();
+            if (dot < 0) {
+                name = name + filter.getDefaultSuffix();
+                file = new File(name);
+            }
+        }
+
+        return file;
+    }
+
+    /**
+     * Private constructor.
+     *
+     * @param workingDir the initial directory
+     */
+    private JFileImageChooser(File workingDir) {
         super(workingDir);
     }
 
 
     /**
-     * Overridden method to validate the dialog content prior to closing.
+     * Validates the selected file name.
      */
     @Override
     public void approveSelection() {
@@ -185,7 +339,7 @@ public class JFileImageChooser extends JFileChooser {
                 sb.append("\nDo you want to save with this name ?");
 
                 int answer = JOptionPane.showConfirmDialog(
-                        getParent(), sb.toString(), "Incompatible file suffix",
+                        getParent(), sb.toString(), "Confirm file name",
                         JOptionPane.YES_NO_OPTION);
 
                 ok = answer == JOptionPane.YES_OPTION;
@@ -215,9 +369,10 @@ public class JFileImageChooser extends JFileChooser {
     }
 
     /**
-     * Set the file filters. This is a helper for the static showXXXXFile methods.
+     * Helper method called by {@linkplain #doShow(java.awt.Component, java.io.File, int)
+     * to set file filters.
      *
-     * @param supportedFormats the set of file formats that will be offered
+     * @param supportedFormats formats to base filters on
      */
     private void setFilter(Set<FormatSpecifier> supportedFormats) {
         this.setAcceptAllFileFilterUsed(false);
@@ -227,80 +382,4 @@ public class JFileImageChooser extends JFileChooser {
     }
 
 
-    /**
-     * Display a dialog to choose a file name to save an image to
-     *
-     * @param parent parent component (may be {@code null})
-     *
-     * @return the selected file or {@code null} if the dialog was cancelled
-     */
-    public static File showSaveFile(Component parent) {
-        return showSaveFile(parent, null);
-    }
-
-
-    /**
-     * Display a dialog to choose a file name to save an image to
-     *
-     * @param parent parent component (may be {@code null})
-     * @param workingDir the initial directory to display
-     *
-     * @return the selected file or {@code null} if the dialog was cancelled
-     */
-    public static File showSaveFile(Component parent, File workingDir) {
-        JFileImageChooser chooser = new JFileImageChooser(workingDir);
-        chooser.setFilter(supportedWriters);
-        chooser.setDialogTitle("Save image");
-
-        File file = null;
-
-        if (chooser.showSaveDialog(parent) == JFileImageChooser.APPROVE_OPTION) {
-            file = chooser.getSelectedFile();
-
-            String name = file.getAbsolutePath();
-            int dot = name.lastIndexOf('.');
-
-            FormatFilter filter = (FormatFilter) chooser.getFileFilter();
-            if (dot < 0) {
-                name = name + filter.getDefaultSuffix();
-                file = new File(name);
-            }
-        }
-
-        return file;
-    }
-
-    /**
-     * Display a dialog to choose an image file to open
-     *
-     * @param parent parent component (may be {@code null})
-     * @param workingDir the initial directory to display
-     *
-     * @return the selected file or {@code null} if the dialog was cancelled
-     */
-    public static File showOpenFile(Component parent) {
-        return showOpenFile(parent, null);
-    }
-
-    /**
-     * Display a dialog to choose an image file to open
-     *
-     * @param parent parent component (may be {@code null})
-     * @param workingDir the initial directory to display
-     *
-     * @return the selected file or {@code null} if the dialog was cancelled
-     */
-    public static File showOpenFile(Component parent, File workingDir) {
-        JFileImageChooser chooser = new JFileImageChooser(workingDir);
-        chooser.setFilter(supportedReaders);
-        chooser.setDialogTitle("Open image file");
-
-        File file = null;
-
-        if (chooser.showOpenDialog(parent) == JFileImageChooser.APPROVE_OPTION) {
-            file = chooser.getSelectedFile();
-        }
-
-        return file;
-    }
 }

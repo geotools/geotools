@@ -77,7 +77,7 @@ public abstract class GraphicsTestBase<T extends Window> {
      * @param dialogClass dialog class
      */
     protected void assertComponentDisplayed(Class<? extends Component> componentClass) {
-        Pause.pause(new ComponentFoundCondition("Waiting for component to be displayed", 
+        Pause.pause(new ComponentFoundCondition("component to be displayed", 
                 BasicComponentFinder.finderWithCurrentAwtHierarchy(), 
                 new TypeMatcher(componentClass, true)),
                 DISPLAY_TIMEOUT);

@@ -32,9 +32,9 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.gml3.v3_2.GML;
 
 import org.geotools.wfs.CompositeFeatureCollection;
+import org.geotools.wfs.v2_0.WFS;
 import org.geotools.xml.EMFUtils;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
@@ -98,8 +98,8 @@ public class WFSParsingUtils {
                 }
             }
             if (bounds == null || bounds.isNull()) {
-                //gml 3.2 does not allow for "gml:Null"
-                if (GML.NAMESPACE.equals(name.getNamespaceURI())) {
+                //wfs 2.0 does not allow for "gml:Null"
+                if (WFS.NAMESPACE.equals(name.getNamespaceURI())) {
                     return null;
                 }
             }

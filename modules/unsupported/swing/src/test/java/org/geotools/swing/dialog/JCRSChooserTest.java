@@ -222,12 +222,21 @@ public class JCRSChooserTest extends GraphicsTestBase<Dialog> {
         showDialog();
         JListFixture list = windowFixture.list();
         
-        final String code = getRandomCode();
-        final String desc = FACTORY.getDescriptionText(
-                JCRSChooser.DEFAULT_AUTHORITY + ":" + code).toString();
+        final int FILTER_STRING_LEN = 5;
+        String filterStr = null;
+        
+        while (filterStr == null) {
+            String code = getRandomCode();
+            String desc = FACTORY.getDescriptionText(
+                    JCRSChooser.DEFAULT_AUTHORITY + ":" + code).toString();
+            
+            // double check the text is suitable for filtering
+            if (desc != null && desc.length() >= FILTER_STRING_LEN) {
+                filterStr = desc.substring(0, FILTER_STRING_LEN).toLowerCase();
+            }
+        }
         
         // Filter on the first few characters
-        final String filterStr = desc.substring(0, 5).toLowerCase();
         windowFixture.textBox().enterText(filterStr);
         windowFixture.robot.waitForIdle();
         

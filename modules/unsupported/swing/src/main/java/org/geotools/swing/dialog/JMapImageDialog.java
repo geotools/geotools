@@ -48,7 +48,8 @@ import org.opengis.referencing.cs.CoordinateSystem;
  * image to. It allows the image size to be set indirectly,
  * by setting the map pixel scale, or directly.
  *
- * @todo Add ability to work with DPI setting
+ * @deprecated This class has never been used or properly finished and will be removed
+ *     in GeoTools version 8
  *
  * @author Michael Bedward
  * @since 2.6.1

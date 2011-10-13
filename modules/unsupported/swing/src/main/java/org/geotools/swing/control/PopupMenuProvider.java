@@ -20,7 +20,7 @@ package org.geotools.swing.control;
 import javax.swing.JPopupMenu;
 
 /**
- * Used with {@linkplain MenuStatusBarItem} to pass a (possibly dynamic)
+ * Used with {@linkplain JMenuStatusBarItem} to pass a (possibly dynamic)
  * pop-up menu.
  *
  * @author Michael Bedward

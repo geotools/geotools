@@ -18,6 +18,7 @@
 package org.geotools.swing;
 
 /**
+ * Listens for events published by a {@linkplain RenderingExecutor}
  *
  * @author Michael Bedward
  * @since 2.7

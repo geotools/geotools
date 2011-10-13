@@ -18,7 +18,7 @@
 package org.geotools.swing.event;
 
 /**
- * An event class for map pane events.
+ * Listens to events published by the MapPane.
  *
  * @author Michael Bedward
  * @since 2.6

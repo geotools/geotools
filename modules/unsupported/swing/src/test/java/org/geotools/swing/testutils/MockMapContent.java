@@ -17,32 +17,23 @@
 
 package org.geotools.swing.testutils;
 
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.Layer;
+import org.geotools.map.MapContent;
 
 /**
- * Mock Layer class for testing.
+ * Mock MapContent class for testing.
  *
  * @author Michael Bedward
  * @since 8.0
  * @source $URL$
  * @version $URL$
  */
-public class MockLayer extends Layer {
-    
-    private ReferencedEnvelope bounds;
-    
-    public MockLayer() {
-        this(null);
-    }
+public class MockMapContent extends MapContent {
 
-    public MockLayer(ReferencedEnvelope bounds) {
-        this.bounds = bounds == null ? new ReferencedEnvelope() : new ReferencedEnvelope(bounds);
-    }
-    
+    /**
+     *  Overridden to avoid spurious log messages about memory leaks.
+     */
     @Override
-    public ReferencedEnvelope getBounds() {
-        return bounds;
+    protected void finalize() throws Throwable {
+        // does nothing
     }
-
 }

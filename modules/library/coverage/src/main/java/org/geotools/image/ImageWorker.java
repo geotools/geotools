@@ -3077,6 +3077,33 @@ public class ImageWorker {
         }
         return this;
     }
+    
+    /**
+     * Provides a hint that this {@link ImageWorker} will no longer be accessed from a reference in
+     * user space. The results are equivalent to those that occur when the program loses its last
+     * reference to this image, the garbage collector discovers this, and finalize is called. This
+     * can be used as a hint in situations where waiting for garbage collection would be overly
+     * conservative.
+     * <p>
+     * Mind, this also results in disposing the JAI Image chain attached to the image the 
+     * worker is applied to, so don't call this method on image changes (full/partial) that
+     * you want to use.
+     * <p>
+     * {@link ImageWorker} defines this method to remove the image being disposed from the list of
+     * sinks in all of its source images. The results of referencing an {@link ImageWorker} after a
+     * call to dispose() are undefined.
+     */
+    public final void dispose() {
+        this.commonHints.clear();
+        this.commonHints = null;
+        this.roi = null;
+        if (this.image instanceof PlanarImage) {
+            ImageUtilities.disposePlanarImageChain(PlanarImage.wrapRenderedImage(image));
+        } else if (this.image instanceof BufferedImage) {
+            ((BufferedImage) this.image).flush();
+            this.image = null;
+        }
+    }
 
     /**
      * Loads the image from the specified file, and {@linkplain #show display}

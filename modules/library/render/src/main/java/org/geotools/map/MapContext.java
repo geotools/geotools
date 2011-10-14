@@ -330,9 +330,7 @@ public class MapContext extends MapContent {
         if ((array == null) || (array.length == 0)) {
             return 0;
         }
-        List<Layer> layersToAdd = toLayerList(array);
-        int count = layers().addAllAbsent(layersToAdd);
-        return count;
+        return super.addLayers(toLayerList(array));
     }
 
     /**

@@ -3093,7 +3093,9 @@ public class ImageWorker {
      * call to dispose() are undefined.
      */
     public final void dispose() {
-        this.commonHints.clear();
+        if(commonHints != null) {
+            this.commonHints.clear();
+        }
         this.commonHints = null;
         this.roi = null;
         if (this.image instanceof PlanarImage) {

@@ -20,17 +20,14 @@ package org.geotools.swing.dialog;
 import java.awt.Dialog;
 import java.awt.AWTEvent;
 import java.awt.Toolkit;
-import java.awt.event.AWTEventListener;
-import java.awt.event.WindowEvent;
 import java.util.regex.Pattern;
-
-import javax.swing.JDialog;
 
 import org.fest.swing.fixture.DialogFixture;
 import org.fest.swing.fixture.JLabelFixture;
 
 import org.geotools.swing.testutils.GraphicsTestBase;
 import org.geotools.swing.testutils.GraphicsTestRunner;
+import org.geotools.swing.testutils.WindowActivatedListener;
 
 import org.junit.After;
 import org.junit.Before;
@@ -50,8 +47,14 @@ import static org.junit.Assert.*;
 @RunWith(GraphicsTestRunner.class)
 public class JExceptionReporterTest extends GraphicsTestBase<Dialog> {
 
+    private static final Class<? extends Dialog> DIALOG_CLASS = 
+            JExceptionReporter.ReportingDialog.class;
+    
+    private WindowActivatedListener listener;
+
     @Before
     public void setup() {
+        listener = new WindowActivatedListener(DIALOG_CLASS);
         Toolkit.getDefaultToolkit().addAWTEventListener(listener, AWTEvent.WINDOW_EVENT_MASK);
     }
     
@@ -63,9 +66,7 @@ public class JExceptionReporterTest extends GraphicsTestBase<Dialog> {
     @Test
     public void showException() throws Exception {
         final String MSG = "Foo is not Bar";
-        
-        JExceptionReporter.showDialog(new IllegalArgumentException(MSG));
-        assertComponentDisplayed(JExceptionReporter.ReportingDialog.class);
+        showDialog(new IllegalArgumentException(MSG));
 
         ((DialogFixture) windowFixture).requireModal();
         assertEquals("IllegalArgumentException", windowFixture.component().getTitle());
@@ -78,9 +79,7 @@ public class JExceptionReporterTest extends GraphicsTestBase<Dialog> {
     public void showExceptionWithUserMessage() throws Exception {
         final String EXCEPTION_MSG = "Foo is not Bar";
         final String USER_MSG = "You should see this message";
-        
-        JExceptionReporter.showDialog(new IllegalArgumentException(EXCEPTION_MSG), USER_MSG);
-        assertComponentDisplayed(JExceptionReporter.ReportingDialog.class);
+        showDialog(new IllegalArgumentException(EXCEPTION_MSG), USER_MSG);
         
         assertEquals("IllegalArgumentException", windowFixture.component().getTitle());
         
@@ -92,9 +91,7 @@ public class JExceptionReporterTest extends GraphicsTestBase<Dialog> {
     public void emptyUserMessage() throws Exception {
         final String EXCEPTION_MSG = "You should see this message";
         final String USER_MSG = "";
-        
-        JExceptionReporter.showDialog(new IllegalArgumentException(EXCEPTION_MSG), USER_MSG);
-        assertComponentDisplayed(JExceptionReporter.ReportingDialog.class);
+        showDialog(new IllegalArgumentException(EXCEPTION_MSG), USER_MSG);
         
         assertEquals("IllegalArgumentException", windowFixture.component().getTitle());
         
@@ -111,19 +108,19 @@ public class JExceptionReporterTest extends GraphicsTestBase<Dialog> {
     public void nullExceptionArg2() throws Exception {
         JExceptionReporter.showDialog(null, "User message");
     }
-    
-    /*
-     * This AWTEventListener is used to grab the dialog as a FEST windowFixture.
-     */
-    AWTEventListener listener = new AWTEventListener() {
-        @Override
-        public void eventDispatched(AWTEvent event) {
-            if (event.getSource() instanceof JExceptionReporter.ReportingDialog
-                    && event.getID() == WindowEvent.WINDOW_ACTIVATED) {
 
-                windowFixture = new DialogFixture((JDialog) event.getSource());
-                ((DialogFixture) windowFixture).requireModal();
-            }
-        }
-    };
+    private void showDialog(Exception ex) throws Exception {
+        JExceptionReporter.showDialog(ex);
+        assertComponentDisplayed(DIALOG_CLASS);
+        
+        windowFixture = listener.getFixture(DISPLAY_TIMEOUT);
+    }
+    
+    private void showDialog(Exception ex, String msg) throws Exception {
+        JExceptionReporter.showDialog(ex, msg);
+        assertComponentDisplayed(DIALOG_CLASS);
+        
+        windowFixture = listener.getFixture(DISPLAY_TIMEOUT);
+    }
+    
 }

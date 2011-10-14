@@ -21,8 +21,6 @@ import java.awt.AWTEvent;
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Toolkit;
-import java.awt.event.AWTEventListener;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
@@ -38,9 +36,9 @@ import javax.swing.JDialog;
 
 import org.geotools.swing.testutils.GraphicsTestBase;
 import org.geotools.swing.testutils.GraphicsTestRunner;
+import org.geotools.swing.testutils.WindowActivatedListener;
 
 import org.fest.swing.core.GenericTypeMatcher;
-import org.fest.swing.fixture.DialogFixture;
 import org.fest.swing.fixture.JComboBoxFixture;
 
 import org.junit.After;
@@ -77,6 +75,8 @@ public class JFileImageChooserTest extends GraphicsTestBase<Dialog> {
     private static List<String> readerFileSuffixes;
     private static List<String> writerFileSuffixes;
     
+    private WindowActivatedListener listener;
+
     @BeforeClass
     public static void setupOnce() {
         readerFileSuffixes = Arrays.asList( ImageIO.getReaderFileSuffixes() );
@@ -85,12 +85,18 @@ public class JFileImageChooserTest extends GraphicsTestBase<Dialog> {
     
     @Before
     public void setup() {
-        Toolkit.getDefaultToolkit().addAWTEventListener(chooserListener, AWTEvent.WINDOW_EVENT_MASK);
+        /*
+         * Note that we have to listen for a JDialog, rhther than a JFileImageChooser 
+         * or JFileChooser, because this is what the underlying Swing file chooser 
+         * creates and displays.
+         */
+        listener = new WindowActivatedListener(JDialog.class);
+        Toolkit.getDefaultToolkit().addAWTEventListener(listener, AWTEvent.WINDOW_EVENT_MASK);
     }
     
     @After
     public void cleanup() {
-        Toolkit.getDefaultToolkit().removeAWTEventListener(chooserListener);
+        Toolkit.getDefaultToolkit().removeAWTEventListener(listener);
     }
     
     @Test
@@ -168,7 +174,8 @@ public class JFileImageChooserTest extends GraphicsTestBase<Dialog> {
      * 
      * @return a future for the task being run in a separate thread
      */
-    private Future<File> showOpenDialog(final Component parent, final File workingDir) {
+    private Future<File> showOpenDialog(final Component parent, final File workingDir) 
+            throws Exception {
         
         Future<File> future = executor.submit(
                 new Callable<File>() {
@@ -179,6 +186,7 @@ public class JFileImageChooserTest extends GraphicsTestBase<Dialog> {
                 });
         
         assertComponentDisplayed(DIALOG_CLASS);
+        windowFixture = listener.getFixture(DISPLAY_TIMEOUT);
         return future;
     }
 
@@ -191,7 +199,8 @@ public class JFileImageChooserTest extends GraphicsTestBase<Dialog> {
      * 
      * @return a future for the task being run in a separate thread
      */
-    private Future<File> showSaveDialog(final Component parent, final File workingDir) {
+    private Future<File> showSaveDialog(final Component parent, final File workingDir) 
+            throws Exception {
         
         Future<File> future = executor.submit(
                 new Callable<File>() {
@@ -202,6 +211,7 @@ public class JFileImageChooserTest extends GraphicsTestBase<Dialog> {
                 });
         
         assertComponentDisplayed(DIALOG_CLASS);
+        windowFixture = listener.getFixture(DISPLAY_TIMEOUT);
         return future;
     }
 
@@ -219,21 +229,4 @@ public class JFileImageChooserTest extends GraphicsTestBase<Dialog> {
         });
     }
 
-    /*
-     * This AWTEventListener is used to grab the dialog as a FEST windowFixture.
-     * Note that we have to listen for a JDialog, not a JFileImageChooser or JFileChooser,
-     * because this is what the underlying Swing file chooser creates and displays.
-     */
-    AWTEventListener chooserListener = new AWTEventListener() {
-        @Override
-        public void eventDispatched(AWTEvent event) {
-            if (windowFixture == null &&
-                    event.getSource() instanceof JDialog &&
-                    event.getID() == WindowEvent.WINDOW_ACTIVATED) {
-
-                windowFixture = new DialogFixture((JDialog) event.getSource());
-            }
-        }
-    };
-    
 }

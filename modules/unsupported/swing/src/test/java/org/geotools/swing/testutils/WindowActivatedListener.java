@@ -38,7 +38,7 @@ import org.fest.swing.fixture.WindowFixture;
  * @source $URL$
  * @version $Id$
  */
-public class WindowActivatedListener<T extends Window> implements AWTEventListener {
+public class WindowActivatedListener implements AWTEventListener {
 
     private final Class<? extends Window> windowClass;
     private final CountDownLatch latch;

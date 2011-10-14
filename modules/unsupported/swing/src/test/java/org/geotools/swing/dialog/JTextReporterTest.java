@@ -22,8 +22,6 @@ import java.awt.Dialog;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
-import java.awt.event.AWTEventListener;
-import java.awt.event.WindowEvent;
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 import java.util.concurrent.Callable;
@@ -39,7 +37,6 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import java.util.logging.StreamHandler;
 
-import javax.swing.JDialog;
 import javax.swing.JTextArea;
 
 import org.fest.swing.fixture.DialogFixture;
@@ -50,6 +47,7 @@ import org.geotools.swing.dialog.JTextReporter.Connection;
 import org.geotools.swing.testutils.GraphicsTestBase;
 import org.geotools.swing.testutils.GraphicsTestRunner;
 
+import org.geotools.swing.testutils.WindowActivatedListener;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -78,12 +76,14 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
     
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();
     
+    private WindowActivatedListener listener;
     private StreamHandler handler;
     private ByteArrayOutputStream out;
     
     
     @Before
     public void setup() {
+        listener = new WindowActivatedListener(DIALOG_CLASS);
         Toolkit.getDefaultToolkit().addAWTEventListener(listener, AWTEvent.WINDOW_EVENT_MASK);
     }
     
@@ -409,7 +409,7 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
      * 
      * @return the Future for the dialog task
      */
-    private Future<JTextReporter.Connection> showDialog(String title) {
+    private Future<JTextReporter.Connection> showDialog(String title) throws Exception {
         return showDialog(title, null);
     }
     
@@ -422,7 +422,7 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
      * @return the Future for the dialog task
      */
     private Future<JTextReporter.Connection> showDialog(final String title, 
-            final String initialText) {
+            final String initialText) throws Exception {
         
         Future<Connection> future = executor.submit(
                 new Callable<JTextReporter.Connection>() {
@@ -434,6 +434,7 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
                 });
         
         assertComponentDisplayed(DIALOG_CLASS);
+        windowFixture = listener.getFixture(DISPLAY_TIMEOUT);
         return future;
     }
 
@@ -460,18 +461,4 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
         assertTrue(logMsg.toLowerCase().contains(expectedMsg.toLowerCase()));
     }
     
-    
-    /*
-     * This AWTEventListener is used to grab the dialog as a FEST windowFixture.
-     */
-    AWTEventListener listener = new AWTEventListener() {
-        @Override
-        public void eventDispatched(AWTEvent event) {
-            if (event.getSource() instanceof JTextReporter.TextDialog
-                    && event.getID() == WindowEvent.WINDOW_ACTIVATED) {
-
-                windowFixture = new DialogFixture((JDialog) event.getSource());
-            }
-        }
-    };
 }

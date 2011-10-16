@@ -99,6 +99,7 @@ public class DatabaseCreationScript {
         final Statement statement = connection.createStatement();
         try {
             // read and execute the scripts that make up the database
+            statement.execute("CREATE ALIAS CHR for \"org.hsqldb.Library.character\"");
             executeScript(new File(directory, "EPSG_Tables.sql"), statement);
             executeScript(new File(directory, "EPSG_Data.sql"), statement);
             statement.execute("UPDATE EPSG_DATUM SET REALIZATION_EPOCH = NULL WHERE REALIZATION_EPOCH = ''");

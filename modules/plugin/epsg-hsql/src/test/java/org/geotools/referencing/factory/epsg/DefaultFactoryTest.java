@@ -45,6 +45,7 @@ import org.geotools.referencing.operation.transform.AbstractMathTransform;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.factory.IdentifiedObjectFinder;
 import org.geotools.metadata.iso.extent.GeographicBoundingBoxImpl;
+import org.hsqldb.lib.HashSet;
 
 import org.junit.*;
 import static org.junit.Assert.*;
@@ -384,7 +385,10 @@ public class DefaultFactoryTest {
         assertTrue (datum instanceof AuthorityCodes);
         assertFalse(datum.isEmpty());
         assertTrue (datum.size() > 0);
-        assertTrue(Collections.disjoint(datum, crs));
+        // starting with EPSG 7.9 the following is no more true, for example EPSG:5214 is at the same time
+        // the Vertical CRS "Genoa height" and the Vertical Datum "IGN 1988 SM" (data gotten by
+        // http://www.epsg-registry.org/ searching by code)
+        // assertTrue(Collections.disjoint(datum, crs));
 
         final Set<String> geodeticDatum = factory.getAuthorityCodes(GeodeticDatum.class);
         assertTrue (geodeticDatum instanceof AuthorityCodes);
@@ -602,7 +606,7 @@ public class DefaultFactoryTest {
         /*
          * ED50 (4230)  -->  WGS 84 (4326)  using
          * Geocentric translations (9603).
-         * Accuracy = 999
+         * Accuracy = 2.5 (since EPSG 7.9)
          */
         final CoordinateOperation      operation1 = factory.createCoordinateOperation("1087");
         final CoordinateReferenceSystem sourceCRS = operation1.getSourceCRS();
@@ -614,7 +618,7 @@ public class DefaultFactoryTest {
         assertTrue   (operation1 instanceof Transformation);
         assertNotSame(sourceCRS, targetCRS);
         assertFalse  (operation1.getMathTransform().isIdentity());
-        assertEquals (999, AbstractCoordinateOperation.getAccuracy(operation1), 1E-6);
+        assertEquals (2.5, AbstractCoordinateOperation.getAccuracy(operation1), 1E-6);
         /*
          * ED50 (4230)  -->  WGS 84 (4326)  using
          * Position Vector 7-param. transformation (9606).

@@ -27,9 +27,9 @@
 
 <project name="Creates HSQL scripts" default="create">
   <target name="create">
-    <copy file="EPSG_v7_5.mdb_Tables_PostgreSQL.sql" tofile="EPSG_Tables.sql"/>
-    <copy file="EPSG_v7_5.mdb_FKeys_PostgreSQL.sql"  tofile="EPSG_FKeys.sql" />
-    <copy file="EPSG_v7_5.mdb_Data_PostgreSQL.sql"   tofile="EPSG_Data.sql"  />
+    <copy file="EPSG_v7_9.mdb_Tables_PostgreSQL.sql" tofile="EPSG_Tables.sql"/>
+    <copy file="EPSG_v7_9.mdb_FKeys_PostgreSQL.sql"  tofile="EPSG_FKeys.sql" />
+    <copy file="EPSG_v7_9.mdb_Data_PostgreSQL.sql"   tofile="EPSG_Data.sql"  />
 
     <replace file="EPSG_Tables.sql">
       <replacefilter token="CREATE TABLE" value="CREATE CACHED TABLE"/>

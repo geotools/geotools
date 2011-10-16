@@ -82,6 +82,9 @@ public class WorldVanDerGrintenI extends MapProjection {
 		} else if (abs(lambda) <= TOL || abs(p2 - 1.) < TOL) {
 			x = 0.;
 			y = PI * tan(.5 * asin(p2));
+			if(phi < 0) {
+			    y = -y;
+			}
 		} else {
 			al = .5 * abs(PI / lambda - lambda / PI);
 			al2 = al * al;

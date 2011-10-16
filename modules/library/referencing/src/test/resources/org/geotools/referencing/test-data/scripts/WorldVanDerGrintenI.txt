@@ -36,6 +36,9 @@ target crs = _vdg_
 
 test tolerance = (1, 1)
 
+source pt = (0, -90)
+target pt = (0.00, -20037508.34)
+
 source pt = (0, 0)
 target pt = (0, 0)
 

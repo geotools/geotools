@@ -1559,6 +1559,26 @@ public final class GeoTiffMetadata2CRSAdapter {
 
 				return parameters;
 			}
+			
+			/**
+			 * 
+			 * World Van der Grinten I
+			 * 
+			 */
+			if (name.equalsIgnoreCase("World_Van_der_Grinten_I")
+					|| code == GeoTiffCoordinateTransformationsCodes.CT_VanDerGrinten) {
+				parameters = mtFactory
+						.getDefaultParameters("World_Van_der_Grinten_I");
+
+				parameters.parameter("central_meridian").setValue(
+						getOriginLong(metadata));
+				parameters.parameter("false_easting").setValue(
+						getFalseEasting(metadata));
+				parameters.parameter("false_northing").setValue(
+						getFalseNorthing(metadata));
+
+				return parameters;
+			}
 
 		} catch (NoSuchIdentifierException e) {
 			throw new GeoTiffException(metadata, e.getLocalizedMessage(), e);

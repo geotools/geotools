@@ -46,4 +46,4 @@ org.geotools.referencing.operation.projection.WinkelTripel$AitoffProvider
 org.geotools.referencing.operation.projection.EckertIV$Provider
 org.geotools.referencing.operation.projection.Mollweide$MollweideProvider
 org.geotools.referencing.operation.projection.Mollweide$WagnerIVProvider
-
+org.geotools.referencing.operation.projection.WorldVanDerGrintenI$Provider

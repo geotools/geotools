@@ -270,6 +270,16 @@ public final class ScriptTest {
     }
     
     /**
+     * Run "WorldVanDerGrintenI.txt"
+     *
+     * @throws Exception If a test failed.
+     */
+    @Test
+    public void testVanDerGrinten() throws Exception {
+        runScript("scripts/WorldVanDerGrintenI.txt");
+    }
+    
+    /**
      * Run "WagnerIV.txt". Disabled as the projection is not really
      * working as expected, but don't have time to investigate.
      * If you want to try and fix this please enable the service provider as well
@@ -306,4 +316,5 @@ public final class ScriptTest {
     public void testNADCON() throws Exception {
         runScript("scripts/NADCON.txt");
     }
+    
 }

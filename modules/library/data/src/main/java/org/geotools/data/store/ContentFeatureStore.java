@@ -39,6 +39,7 @@ import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.identity.FeatureIdImpl;
+import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -94,11 +95,6 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
      */
     protected final int WRITER_ADD = ContentDataStore.WRITER_ADD;
     protected final int WRITER_UPDATE = ContentDataStore.WRITER_UPDATE;
-    
-    /**
-     * current feature lock
-     */
-    protected FeatureLock lock = FeatureLock.TRANSACTION;
     
     /**
      * Creates the content feature store.
@@ -158,12 +154,16 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
             }    
         }
         
-        //TODO: turn locking on / off
-        LockingManager lockingManager = getDataStore().getLockingManager();
-        return ((InProcessLockingManager)lockingManager).checkedWriter(writer, transaction);
+        // Use InProcessLockingManager to assert write locks?
+        if(!canLock()) {
+            LockingManager lockingManager = getDataStore().getLockingManager();
+            return ((InProcessLockingManager)lockingManager).checkedWriter(writer, transaction);
+        }
         
+        // Finished
+        return writer;
     }
-    
+
     /**
      * 
      * Subclass method for returning a native writer from the datastore.
@@ -175,6 +175,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
      *   <li>filtering</li>
      *   <li>max feature limiting</li>
      *   <li>sorting<li>
+     *   <li>locking<li>
      * </ul>
      * Then it <b>*must*</b> set the corresponding flags to <code>true</code>:
      * <ul>
@@ -182,6 +183,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
      *   <li>{@link #canFilter()}</li>
      *   <li>{@link #canLimit()}</li>
      *   <li>{@link #canSort()}<li>
+     *   <li>{@link #canLock()}<li>
      * </ul>
      * </p>
      * 
@@ -419,111 +421,6 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
         }
         finally {
             writer.close();
-        }
-    }
-    
-    /**
-     * Sets the feature lock of the feature store.
-     */
-    public final void setFeatureLock(FeatureLock lock) {
-        this.lock = lock;
-    }
-
-    /**
-     * Locks all features.
-     * <p>
-     * This method calls through to {@link #lockFeatures(Filter)}.
-     * </p>
-     */
-    public final int lockFeatures() throws IOException {
-        return lockFeatures(Filter.INCLUDE);
-    }
-    
-    /**
-     * Locks features specified by a query.
-     * <p>
-     * This method calls through to {@link #lockFeatures(Filter)}.
-     * </p>
-     */
-    public final int lockFeatures(Query query) throws IOException {
-        return lockFeatures( query.getFilter() );
-    }
-
-    /**
-     * Locks features specified by a filter.
-     */
-    public final int lockFeatures(Filter filter) throws IOException {
-        Logger logger = getDataStore().getLogger();
-        
-        String typeName = getSchema().getTypeName(); 
-        
-         FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(filter);
-        try {
-            int locked = 0;
-            while( reader.hasNext() ) {
-                SimpleFeature feature = reader.next();
-                try {
-                    getDataStore().getLockingManager()
-                        .lockFeatureID(typeName, feature.getID(), transaction, lock);
-                    
-                    logger.fine( "Locked feature: " + feature.getID() );
-                    locked++;
-                }
-                catch( FeatureLockException e ) {
-                    //ignore
-                    String msg = "Unable to lock feature:" + feature.getID() + "." + 
-                        " Change logging to FINEST for stack trace";
-                    logger.fine( msg );
-                    logger.log( Level.FINEST, "Unable to lock feature: " + feature.getID(), e );
-                }
-            }
-            
-            return locked;
-        }
-        finally {
-            reader.close();
-        }
-    }
-
-    /**
-     * Unlocks all features.
-     * <p>
-     * This method calls through to {@link #unLockFeatures(Filter)}.
-     * </p>
-     * 
-     */
-    public final void unLockFeatures() throws IOException {
-        unLockFeatures(Filter.INCLUDE);
-    }
-    
-    /**
-     * Unlocks features specified by a query.
-     * <p>
-     * This method calls through to {@link #unLockFeatures(Filter)}.
-     * </p>
-     * 
-     */
-    public final void unLockFeatures(Query query) throws IOException {
-        unLockFeatures(query.getFilter());
-    }
-    
-    /**
-     * Unlocks features specified by a filter.
-     */
-    public final void unLockFeatures(Filter filter) throws IOException {
-        filter = resolvePropertyNames(filter);
-        String typeName = getSchema().getTypeName(); 
-        
-         FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(filter);
-        try {
-            while( reader.hasNext() ) {
-                SimpleFeature feature = reader.next();
-                getDataStore().getLockingManager()
-                    .unLockFeatureID(typeName, feature.getID(), transaction, lock);    
-            }
-        }
-        finally {
-            reader.close();
         }
     }
     

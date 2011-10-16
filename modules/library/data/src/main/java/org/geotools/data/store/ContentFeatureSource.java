@@ -23,12 +23,18 @@ import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureListener;
+import org.geotools.data.FeatureLock;
+import org.geotools.data.FeatureLockException;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureSource;
+import org.geotools.data.FeatureWriter;
 import org.geotools.data.FilteringFeatureReader;
+import org.geotools.data.InProcessLockingManager;
 import org.geotools.data.MaxFeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
@@ -98,6 +104,10 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * The transaction to work from
      */
     protected Transaction transaction;
+    /**
+     * current feature lock
+     */
+    protected FeatureLock lock = FeatureLock.TRANSACTION;    
     /**
      * hints
      */
@@ -547,6 +557,13 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
             }    
         }
         
+        // TODO: Use InProcessLockingManager to assert read locks?
+        if(!canLock()) {
+//            LockingManager lockingManager = getDataStore().getLockingManager();
+//            return ((InProcessLockingManager)lockingManager).checkedReader(reader, transaction);
+        }
+        
+        
         return reader;
     }
     
@@ -634,6 +651,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      *   <li>filtering</li>
      *   <li>max feature limiting</li>
      *   <li>sorting</li>
+     *   <li>locking</li>
      * </ul>
      * Then it <b>*must*</b> set the corresponding flags to <code>true</code>:
      * <ul>
@@ -644,6 +662,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      *   <li>{@link #canSort()} - handles {@link Query#getSortBy()} natively.</li>
      *   <li>{@link #canRetype()} - handles {@link Query#getProperties()} natively. Example would
      *   be only parsing the properties the user asks for from an XML file</li>
+     *   <li>{@link #canLock()} - handles read-locks natively</li>
      * </ul>
      * </p>
      * 
@@ -973,4 +992,178 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
             }
         };
     }
+    
+    // ----------------------------------------------------- 
+    //  Locking support
+    // -----------------------------------------------------
+    
+    /**
+     * Sets the feature lock of the feature store.
+     */
+    public final void setFeatureLock(FeatureLock lock) {
+        if(canLock()) lock = processLock(lock);
+        this.lock = lock;
+    }
+
+    /**
+     * Locks all features.
+     * <p>
+     * This method calls through to {@link #lockFeatures(Filter)}.
+     * </p>
+     */
+    public final int lockFeatures() throws IOException {
+        return lockFeatures(Filter.INCLUDE);
+    }
+    
+    /**
+     * Locks features specified by a query.
+     * <p>
+     * This method calls through to {@link #lockFeatures(Filter)}.
+     * </p>
+     */
+    public final int lockFeatures(Query query) throws IOException {
+        return lockFeatures( query.getFilter() );
+    }
+
+    /**
+     * Locks features specified by a filter.
+     */
+    public final int lockFeatures(Filter filter) throws IOException {
+        Logger logger = getDataStore().getLogger();
+        
+        String typeName = getSchema().getTypeName(); 
+        
+         FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(filter);
+        try {
+            int locked = 0;
+            while( reader.hasNext() ) {
+                SimpleFeature feature = reader.next();
+                try {
+                    //
+                    // Use native locking?
+                    //
+                    if(canLock()) {
+                        doLockInternal(typeName,feature);
+                    } else {
+                        getDataStore().getLockingManager()
+                            .lockFeatureID(typeName, feature.getID(), transaction, lock);
+                    }
+                    
+                    logger.fine( "Locked feature: " + feature.getID() );
+                    locked++;
+                }
+                catch( FeatureLockException e ) {
+                    //ignore
+                    String msg = "Unable to lock feature:" + feature.getID() + "." + 
+                        " Change logging to FINEST for stack trace";
+                    logger.fine( msg );
+                    logger.log( Level.FINEST, "Unable to lock feature: " + feature.getID(), e );
+                }
+            }
+            
+            return locked;
+        }
+        finally {
+            reader.close();
+        }
+    }
+
+    /**
+     * Unlocks all features.
+     * <p>
+     * This method calls through to {@link #unLockFeatures(Filter)}.
+     * </p>
+     * 
+     */
+    public final void unLockFeatures() throws IOException {
+        unLockFeatures(Filter.INCLUDE);
+    }
+    
+    /**
+     * Unlocks features specified by a query.
+     * <p>
+     * This method calls through to {@link #unLockFeatures(Filter)}.
+     * </p>
+     * 
+     */
+    public final void unLockFeatures(Query query) throws IOException {
+        unLockFeatures(query.getFilter());
+    }
+    
+    /**
+     * Unlocks features specified by a filter.
+     */
+    public final void unLockFeatures(Filter filter) throws IOException {
+        filter = resolvePropertyNames(filter);
+        String typeName = getSchema().getTypeName(); 
+        
+         FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(filter);
+        try {
+            while( reader.hasNext() ) {
+                SimpleFeature feature = reader.next();
+                //
+                // Use native locking?
+                //
+                if(canLock()) {
+                    doLockInternal(typeName,feature);
+                } else {
+                    getDataStore().getLockingManager()
+                        .unLockFeatureID(typeName, feature.getID(), transaction, lock);
+                }
+            }
+        }
+        finally {
+            reader.close();
+        }
+    }    
+
+    /**
+     * Determines if the {@link #getDataStore() datastore} can perform 
+     * feature locking natively.
+     * <p>
+     * If {@link #getWriterInternal(Query, int)} returns a 
+     * {@link FeatureWriter feature writer} that supports feature 
+     * locking natively, it should override this method 
+     * to return <code>true</code>. 
+     * </p>
+     * <p>
+     * Not overriding this method or returning <code>false</code> will cause 
+     * {@link ContentFeatureStore} to use the {@link InProcessLockingManager}
+     * to return a {@link #getWriter FeatureWriter} that honors locks.
+     */
+    protected boolean canLock() {
+        return false;
+    }   
+    
+    /**
+     * If the subclass implements native locking, this 
+     * method is invoked before the feature lock is 
+     * (re)assigned to this store.
+     * @param lock - a {@link FeatureLock} instance
+     * @return a processed {@link FeatureLock} instance
+     */
+    protected FeatureLock processLock(FeatureLock lock) {
+        return lock;
+    }
+    
+    /**
+     * This method must be implemented overridden when
+     * native locking is indicated by {@link #canLock()}.
+     * @param typeName {@link SimpleFeature} type name
+     * @param feature {@link SimpleFeature} instance
+     */
+    protected void doLockInternal(String typeName, SimpleFeature feature) throws IOException {
+        throw new UnsupportedOperationException("native locking not implemented");
+    }
+    
+    /**
+     * This method must be implemented overridden when
+     * native locking is indicated by {@link #canLock()}.
+     * @param typeName {@link Feature} type name
+     * @param feature {@link Feature} instance
+     */
+    protected void doUnlockInternal(String typeName, SimpleFeature feature) throws IOException {
+        throw new UnsupportedOperationException("native locking not implemented");
+    }    
+    
 }

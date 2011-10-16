@@ -127,6 +127,9 @@ public class HotineObliqueMercator extends ObliqueMercator {
         static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(new NamedIdentifier[] {
                 new NamedIdentifier(Citations.OGC,      "Hotine_Oblique_Mercator"),
                 new NamedIdentifier(Citations.EPSG,     "Hotine Oblique Mercator"),
+                new NamedIdentifier(Citations.EPSG,     "Hotine Oblique Mercator (variant A)"),
+                new NamedIdentifier(Citations.EPSG,     "Hotine Oblique Mercator (variant B)"),
+                new NamedIdentifier(Citations.EPSG,     "Hotine Oblique Mercator"),
                 new NamedIdentifier(Citations.EPSG,     "9812"),
                 new NamedIdentifier(Citations.GEOTIFF,  "CT_ObliqueMercator_Hotine"),
                 new NamedIdentifier(Citations.ESRI,     "Hotine_Oblique_Mercator_Azimuth_Natural_Origin"),

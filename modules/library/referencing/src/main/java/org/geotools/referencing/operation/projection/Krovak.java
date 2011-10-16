@@ -426,6 +426,7 @@ public class Krovak extends MapProjection {
                 new NamedIdentifier[] {
                     new NamedIdentifier(Citations.OGC,     "azimuth"),
                     new NamedIdentifier(Citations.EPSG,    "Azimuth of initial line"),
+                    new NamedIdentifier(Citations.EPSG,    "Co-latitude of cone axis"),
                     new NamedIdentifier(Citations.GEOTIFF, "AzimuthAngle"),
                     new NamedIdentifier(Citations.ESRI,    "Azimuth"),                    
                 }, 30.28813972222222, 0, 360, NonSI.DEGREE_ANGLE);

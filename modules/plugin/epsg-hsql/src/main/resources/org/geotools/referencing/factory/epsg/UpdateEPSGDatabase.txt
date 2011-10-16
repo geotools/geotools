@@ -3,6 +3,9 @@ Updating the EPSG database
 
 The database in the zip file is a HSQL version of the official EPSG database.
 
+0) Run the PropertyDumper class in src/test/java/org/geotools/referencing/factory/epsg and
+   store the error messages somewhere for reference (it is the list of projections we don't support
+   in the current version of the Geodetic DB) 
 1) Download from www.epsg.org the "geodetic dataset" creation scripts for the PostgreSQL database
 2) Unzip them in _this_ directory, you should get three files named EPSG_v<version>.mdb_Data_PostgreSQL.sql,
    EPSG_v<version>.mdb_FKeys_PostgreSQL.sql and EPSG_v<version>.mdb_Tables_PostgreSQL.sql, where
@@ -38,8 +41,14 @@ The database in the zip file is a HSQL version of the official EPSG database.
    axis direction definitions, new unit of measure and the like
 10) Remove all the sql files in this directory, keeping only EPSG_Indexes.sql (which was already
     there when you started)
-11) Commit the changes
-12) Congratulations, you're done!
+11) Run the PropertyDumper class in src/test/java/org/geotools/referencing/factory/epsg again
+    and compare the error messages. Sometimes EPSG changes the name of projections and the
+    code thinks we do not support them anymore. If there is any new error check that it's not due
+    just to a name change, if so, fix the projection Provider class accordingly.
+    If errors occur fix them and rebuild.
+12) Once everything is fixed run avagain the PropertyDumper and copy the output in the epsg-wkt
+    module, updating it to the current version of the database
+13) Commit the changes. Congratulations, you're done!
 
 
 PostgreSQL notes

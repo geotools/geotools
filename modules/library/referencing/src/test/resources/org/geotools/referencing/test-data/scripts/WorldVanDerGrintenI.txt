@@ -1,0 +1,85 @@
+// Test points for the Van der Grinten projection
+//
+// (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+//
+// The following test points were calculated with libproj4 utility "cs2cs" 
+// cs2cs -v +datum=WGS84 +proj=lonlat +to +datum=WGS84 +proj=vandg
+//
+// Simon Nyvlt (ars navigandi) - October 05 2011
+//
+// --------------------------------------------------------------------------
+// How to run this script:
+//
+//    chdir org/geotools/referencing/test-data/scripts
+//    java -ea org.geotools.referencing.ScriptRunner WorldVanDerGrintenI.txt
+//
+// A test is performed every time a "target pt" statement occurs. If the target point computed
+// by Geotools is different from the target point declared in this script by an amount greater
+// than the value specified in the last "test tolerance" statement, then a failure is reported.
+// Inverse transforms are tested if java assertions are enabled.
+// If some test fails, "print" statements can be added in this script for debugging purpose:
+//
+//    print crs            (prints the source and target CRS, and the transform between them)
+//    print pts            (prints the source and target points, and their transformed points)
+
+
+// CRS used for the test 
+set _WGS84_  = GEOGCS["WGS84",  DATUM["WGS84",  SPHEROID["WGS84",  6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]]
+
+////////////////////////////////////////////
+// Van der Grinten
+
+set _vdg_ = PROJCS["World_Van_der_Grinten_I",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137,298.257223563]],PRIMEM["Greenwich",0],UNIT["Degree",0.017453292519943295]],PROJECTION["Van_der_Grinten_I"],PARAMETER["False_Easting",0],PARAMETER["False_Northing",0],PARAMETER["Central_Meridian",0],UNIT["Meter",1]]
+
+source crs = _WGS84_
+target crs = _vdg_
+
+test tolerance = (1, 1)
+
+source pt = (0, 0)
+target pt = (0, 0)
+
+source pt = (10, 10)
+target pt = (1109747.17, 1116842.98)
+
+source pt = (30, 30)
+target pt = (3242991.91, 3453422.30)
+
+source pt = (-180, 90)
+target pt = (0.00, 20037508.34)
+
+source pt = (180, 0)
+target pt = (20037508.34, 0.00)
+
+source pt = (-180, 0)
+target pt = (-20037508.34, 0.00)
+
+source pt = (90, 0)
+target pt = (10018754.17, 0.00)
+
+source pt = (-90, 0)
+target pt = (-10018754.17, 0.00)
+
+source pt = (-76, -55)
+target pt = (-7523175.56, -7177916.02)
+
+source pt = (12, -15)
+target pt = (1326460.58, -1682170.82)
+
+source pt = (80, 6)
+target pt = (8897167.32, 673060.20)
+
+source pt = (-45, 71)
+target pt = (-3821315.84, 9988148.26)
+
+source pt = (175, 66.67)
+target pt = (15764185.35, 11627247.97)
+
+source pt = (60, -70)
+target pt = (5173918.94, -9913246.34)
+
+source crs = _vdg_
+target crs = _WGS84_
+test tolerance = (1e-4, 1e-4) 
+source pt = (5173918.94, -9913246.34)
+target pt = (60, -70)

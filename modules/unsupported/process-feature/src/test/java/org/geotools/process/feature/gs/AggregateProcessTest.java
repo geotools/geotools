@@ -38,8 +38,7 @@ public class AggregateProcessTest {
     
     @Test
     public void testSum() throws Exception {
-        String typeName = bugs.getTypeNames()[0];
-        SimpleFeatureSource source = bugs.getFeatureSource( typeName );
+        SimpleFeatureSource source = bugs.getFeatureSource("bugsites");
 
         Set<AggregationFunction> functions = EnumSet.of(AggregationFunction.Sum);
         

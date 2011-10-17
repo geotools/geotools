@@ -8,7 +8,6 @@ Reference:
 * :doc:`../opengis/model` gt-opengis data model
 * :doc:`../opengis/type` gt-opengis feature type interfaces
 * :doc:`../opengis/feature` gt-opengis feature interfaces
-* :doc:`../opengis/simple` gt-opengis simple feature interfaces
 
 Build a Feature Type
 ^^^^^^^^^^^^^^^^^^^^

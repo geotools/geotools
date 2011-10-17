@@ -11,7 +11,6 @@ References:
 
 * :doc:`type`
 * :doc:`feature`
-* :doc:`simple`
 * :doc:`gt-main feature <../main/feature>` code examples
 * :doc:`gt-main filter <../main/filter>` code examples
 

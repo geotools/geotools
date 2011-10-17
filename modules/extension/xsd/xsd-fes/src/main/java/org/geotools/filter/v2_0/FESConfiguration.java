@@ -1,13 +1,22 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2002-2011, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.filter.v2_0;
 
 import org.geotools.filter.FilterFactoryImpl;
-import org.geotools.filter.v1_0.OGCPropertyIsEqualToBinding;
-import org.geotools.filter.v1_0.OGCPropertyIsGreaterThanBinding;
-import org.geotools.filter.v1_0.OGCPropertyIsGreaterThanOrEqualToBinding;
-import org.geotools.filter.v1_0.OGCPropertyIsLessThanBinding;
-import org.geotools.filter.v1_0.OGCPropertyIsLessThanOrEqualToBinding;
-import org.geotools.filter.v1_0.OGCPropertyIsNotEqualToBinding;
-import org.geotools.filter.v1_1.OGC;
 import org.geotools.filter.v1_1.SortByTypeBinding;
 import org.geotools.filter.v1_1.SortOrderTypeBinding;
 import org.geotools.filter.v1_1.SortPropertyTypeBinding;
@@ -27,6 +36,7 @@ import org.geotools.filter.v2_0.bindings.ContainsBinding;
 import org.geotools.filter.v2_0.bindings.CrossesBinding;
 import org.geotools.filter.v2_0.bindings.DWithinBinding;
 import org.geotools.filter.v2_0.bindings.DisjointBinding;
+import org.geotools.filter.v2_0.bindings.DistanceBufferTypeBinding;
 import org.geotools.filter.v2_0.bindings.DuringBinding;
 import org.geotools.filter.v2_0.bindings.EndedByBinding;
 import org.geotools.filter.v2_0.bindings.EndsBinding;
@@ -61,12 +71,6 @@ import org.geotools.gml3.v3_2.GMLConfiguration;
 import org.geotools.ows.v1_1.OWSConfiguration;
 import org.geotools.xml.Configuration;
 import org.opengis.filter.FilterFactory;
-import org.opengis.filter.temporal.BegunBy;
-import org.opengis.filter.temporal.EndedBy;
-import org.opengis.filter.temporal.Ends;
-import org.opengis.filter.temporal.OverlappedBy;
-import org.opengis.filter.temporal.TContains;
-import org.opengis.filter.temporal.TOverlaps;
 import org.picocontainer.MutablePicoContainer;
 
 /**
@@ -118,7 +122,7 @@ public class FESConfiguration extends Configuration {
 //        container.registerComponentImplementation(FES.ComparisonOperatorsType,ComparisonOperatorsTypeBinding.class);
 //        container.registerComponentImplementation(FES.ComparisonOperatorType,ComparisonOperatorTypeBinding.class);
 //        container.registerComponentImplementation(FES.ComparisonOpsType,ComparisonOpsTypeBinding.class);
-//        container.registerComponentImplementation(FES.DistanceBufferType,DistanceBufferTypeBinding.class);
+        container.registerComponentImplementation(FES.DistanceBufferType,DistanceBufferTypeBinding.class);
         container.registerComponentImplementation(FES.FilterType,FilterTypeBinding.class);
         container.registerComponentImplementation(FES.FunctionType,FunctionTypeBinding.class);
 //        container.registerComponentImplementation(FES.GeometryOperandsType,GeometryOperandsTypeBinding.class);

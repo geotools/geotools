@@ -19,13 +19,15 @@
 package org.geotools.image.crop;
 
 import java.awt.RenderingHints;
+import java.awt.RenderingHints.Key;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
 import java.awt.image.renderable.RenderedImageFactory;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.media.jai.JAI;
-
-import org.geotools.factory.Hints;
 
 /**
  * The image factory for the GTCrop operator.
@@ -57,13 +59,16 @@ public class GTCropCRIF implements RenderedImageFactory {
         float width = paramBlock.getFloatParameter(GTCropDescriptor.WIDTH_ARG);
         float height = paramBlock.getFloatParameter(GTCropDescriptor.HEIGHT_ARG);
 
-        // only leave tile cache and tile scheduler
-        Hints local = new Hints();
+        // only leave tile cache and tile scheduler (we can't instantiate directly RenderingHints
+        // as it won't allow for a null tile cache, even if the rest of JAI handles that peachy
+        Map<Key, Object> tmp = new HashMap<RenderingHints.Key, Object>();
         for (Object key : renderingHints.keySet()) {
             if (key == JAI.KEY_TILE_CACHE || key == JAI.KEY_TILE_SCHEDULER) {
-                local.put(key, renderingHints.get(key));
+                tmp.put((Key) key, renderingHints.get(key));
             }
         }
+        RenderingHints local = new RenderingHints(tmp);
+        
 
         return new GTCropOpImage(image, x, y, width, height, local);
     }

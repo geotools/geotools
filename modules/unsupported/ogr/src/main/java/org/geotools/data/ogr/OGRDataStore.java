@@ -83,14 +83,44 @@ public class OGRDataStore extends ContentDataStore {
     Pointer openOGRDataSource(boolean update) throws IOException {
         Pointer ds = OGROpen(pointerToCString(ogrSourceName), update ? 1 : 0, null);
         if (ds == null) {
-            throw new IOException("OGR could not open '" + ogrSourceName + "'");
+            throw new IOException("OGR could not open '" + ogrSourceName + "' in " 
+                    + (update ? "read-write" : "read-only") + " mode");
         }
         return ds;
+    }
+    
+    Pointer openOGRLayer(Pointer dataSource, String layerName) throws IOException {
+        Pointer layer = OGR_DS_GetLayerByName(dataSource, pointerToCString(layerName));
+        if (layer == null) {
+            throw new IOException("OGR could not find layer '" + layerName + "'");
+        }
+        return layer;
     }
 
     @Override
     protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
-        return new OGRFeatureSource(entry, Query.ALL);
+        if(supportsInPlaceWrite(entry.getTypeName())) {
+            return new OGRFeatureStore(entry, Query.ALL);
+        } else {
+            return new OGRFeatureSource(entry, Query.ALL);
+        }
+    }
+    
+    public boolean supportsInPlaceWrite(String typeName) throws IOException {
+        Pointer ds = null;
+        Pointer l = null;
+        try {
+            ds = openOGRDataSource(false);
+            l = openOGRLayer(ds, typeName);
+            // for the moment we support working only with random writers
+            boolean canDelete = OGR_L_TestCapability(l, pointerToCString(OLCDeleteFeature)) != 0;
+            boolean canWriteRandom = OGR_L_TestCapability(l, pointerToCString(OLCRandomWrite)) != 0;
+            boolean canWriteSequential = OGR_L_TestCapability(l, pointerToCString(OLCSequentialWrite)) != 0;
+            return canDelete && canWriteRandom && canWriteSequential;    
+        } finally {
+            OGRUtils.releaseLayer(l);
+            OGRUtils.releaseDataSource(ds);
+        }
     }
 
     public void createSchema(SimpleFeatureType schema) throws IOException {

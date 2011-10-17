@@ -2,7 +2,6 @@ package org.geotools.data.ogr;
 
 import static org.bridj.Pointer.*;
 import static org.geotools.data.ogr.bridj.OgrLibrary.*;
-import static org.geotools.data.ogr.bridj.OsrLibrary.*;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -10,23 +9,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.bridj.Pointer;
-import org.bridj.ValuedEnum;
 import org.geotools.data.EmptyFeatureReader;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FilteringFeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.ReTypeFeatureReader;
 import org.geotools.data.ogr.bridj.OGREnvelope;
-import org.geotools.data.ogr.bridj.OgrLibrary.OGRFieldType;
-import org.geotools.data.ogr.bridj.OgrLibrary.OGRwkbGeometryType;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.feature.type.BasicFeatureTypes;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -34,15 +28,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
 
 @SuppressWarnings("rawtypes")
 /**
@@ -82,7 +68,7 @@ public class OGRFeatureSource extends ContentFeatureSource {
                 // grab the layer
                 String typeName = getEntry().getTypeName();
                 dataSource = getDataStore().openOGRDataSource(false);
-                layer = openOGRLayer(dataSource, typeName);
+                layer = getDataStore().openOGRLayer(dataSource, typeName);
 
                 // filter it
                 setLayerFilters(layer, filterTx);
@@ -142,7 +128,7 @@ public class OGRFeatureSource extends ContentFeatureSource {
                 // grab the layer
                 String typeName = getEntry().getTypeName();
                 dataSource = getDataStore().openOGRDataSource(false);
-                layer = openOGRLayer(dataSource, typeName);
+                layer = getDataStore().openOGRLayer(dataSource, typeName);
 
                 // filter it
                 setLayerFilters(layer, filterTx);
@@ -172,7 +158,7 @@ public class OGRFeatureSource extends ContentFeatureSource {
             // grab the layer
             String typeName = getEntry().getTypeName();
             dataSource = getDataStore().openOGRDataSource(false);
-            layer = openOGRLayer(dataSource, typeName);
+            layer = getDataStore().openOGRLayer(dataSource, typeName);
 
             // filter it
             setLayerFilters(layer, filterTx);
@@ -241,7 +227,7 @@ public class OGRFeatureSource extends ContentFeatureSource {
         }
     }
 
-    private GeometryFactory getGeometryFactory(Query query) {
+    GeometryFactory getGeometryFactory(Query query) {
         Hints hints = query.getHints();
         GeometryFactory gf = null;
         if (hints != null) {
@@ -272,7 +258,7 @@ public class OGRFeatureSource extends ContentFeatureSource {
         try {
             // grab the layer definition
             dataSource = getDataStore().openOGRDataSource(false);
-            layer = openOGRLayer(dataSource, typeName);
+            layer = getDataStore().openOGRLayer(dataSource, typeName);
 
             // map to geotools feature type
             return new FeatureTypeMapper().getFeatureType(layer, typeName, namespaceURI);
@@ -281,14 +267,6 @@ public class OGRFeatureSource extends ContentFeatureSource {
             OGRUtils.releaseDataSource(dataSource);
         }
 
-    }
-
-    Pointer openOGRLayer(Pointer dataSource, String layerName) throws IOException {
-        Pointer layer = OGR_DS_GetLayerByName(dataSource, pointerToCString(layerName));
-        if (layer == null) {
-            throw new IOException("OGR could not find layer '" + layerName + "'");
-        }
-        return layer;
     }
 
     @Override

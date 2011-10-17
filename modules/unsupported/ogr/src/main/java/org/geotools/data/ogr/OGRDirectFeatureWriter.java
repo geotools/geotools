@@ -16,20 +16,19 @@
  */
 package org.geotools.data.ogr;
 
-import static org.geotools.data.ogr.bridj.OgrLibrary.*;
-import static org.geotools.data.ogr.OGRUtils.*;
 import static org.bridj.Pointer.*;
+import static org.geotools.data.ogr.OGRUtils.*;
 import static org.geotools.data.ogr.bridj.CplErrorLibrary.*;
+import static org.geotools.data.ogr.bridj.OgrLibrary.*;
 
 import java.io.IOException;
 
 import org.bridj.Pointer;
+import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.filter.identity.FeatureIdImpl;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.FeatureType;
 
 import com.vividsolutions.jts.geom.GeometryFactory;
 
@@ -39,9 +38,9 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * 
  * @author Andrea Aime - GeoSolutions
  */
-class OGRDirectFeatureWriter implements FeatureWriter {
+class OGRDirectFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
 
-    private OGRFeatureReader reader;
+    private FeatureReader<SimpleFeatureType, SimpleFeature> reader;
 
     private SimpleFeatureType featureType;
 
@@ -50,6 +49,8 @@ class OGRDirectFeatureWriter implements FeatureWriter {
     private SimpleFeature live;
 
     private Pointer layer;
+
+    private Pointer dataSource;
 
     private FeatureMapper mapper;
 
@@ -64,13 +65,15 @@ class OGRDirectFeatureWriter implements FeatureWriter {
      * @param featureType
      * @param layer
      */
-    public OGRDirectFeatureWriter(OGRFeatureReader reader, SimpleFeatureType targetSchema,
+    public OGRDirectFeatureWriter(Pointer<?> dataSource, Pointer<?> layer,
+            FeatureReader<SimpleFeatureType, SimpleFeature> reader,
             SimpleFeatureType originalSchema, GeometryFactory gf) {
         this.reader = reader;
         this.featureType = reader.getFeatureType();
-        this.layer = reader.layer;
+        this.dataSource = dataSource;
+        this.layer = layer;
         this.layerDefinition = OGR_L_GetLayerDefn(layer);
-        this.mapper = new FeatureMapper(targetSchema, originalSchema, gf);
+        this.mapper = new FeatureMapper(featureType, originalSchema, gf);
         this.deletedFeatures = false;
     }
 
@@ -78,18 +81,18 @@ class OGRDirectFeatureWriter implements FeatureWriter {
         if (reader != null) {
             original = null;
             live = null;
-            Pointer<?> driver = OGR_DS_GetDriver(reader.dataSource);
+            Pointer<?> driver = OGR_DS_GetDriver(dataSource);
             Pointer<Byte> driverName = OGR_Dr_GetName(driver);
             if ("ESRI Shapefile".equals(getCString(driverName)) && deletedFeatures) {
-                String layerName =  getCString(OGR_L_GetName(reader.layer));
-                OGR_DS_ExecuteSQL(reader.dataSource, pointerToCString("REPACK " + layerName), null, null);
+                String layerName = getCString(OGR_L_GetName(layer));
+                OGR_DS_ExecuteSQL(dataSource, pointerToCString("REPACK " + layerName), null, null);
             }
-            OGR_L_SyncToDisk(reader.layer);
+            OGR_L_SyncToDisk(layer);
             reader.close();
         }
     }
 
-    public FeatureType getFeatureType() {
+    public SimpleFeatureType getFeatureType() {
         return featureType;
     }
 
@@ -129,7 +132,7 @@ class OGRDirectFeatureWriter implements FeatureWriter {
         boolean changed = live.equals(original);
         if (!changed && original != null) {
             // nothing to do, just skip
-        } else if(original != null) {
+        } else if (original != null) {
             // not equals, we're updating an existing one
             Pointer ogrFeature = mapper.convertGTFeature(layerDefinition, live);
             OGR_L_SetFeature(layer, ogrFeature);

@@ -61,6 +61,19 @@ public void ffExample() {
     // end ff example
 }
 
+public void nilExample() {
+    // start nil example
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    Filter filter;
+
+    // previous example tested if approved equals "null"
+    filter = ff.isNull(ff.property("approved"));
+
+    // this example checks if approved exists at all
+    filter = ff.isNil(ff.property("approved"),"no approval available");
+
+    // end nil example
+}
 public void logical() {
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
     Filter filter;

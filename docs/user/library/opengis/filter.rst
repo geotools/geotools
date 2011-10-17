@@ -222,6 +222,21 @@ match:
    :start-after: // start ff example
    :end-before: // end ff example
 
+Null vs Nil
+'''''''''''
+
+A related topic to comparing a property value is testing to see if a property *has* a value
+at all. In the simple case PropertyIsNull can be used to check that a property exists; and
+that the value is empty.
+
+We also have the situation where a property is allowed to occur zero or many times; in this case
+we want a nice clear way to check that a Property does not exsit at all (that is occure = zero).
+
+.. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+   :language: java
+   :start-after: // start nil example
+   :end-before: // end nil example
+
 MatchCase
 '''''''''
 

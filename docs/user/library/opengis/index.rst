@@ -16,7 +16,6 @@ Interfaces for GeoSpatial concepts, often defined by the OGC or ISO standards bo
    model
    type
    feature
-   simple
    filter
    coverage
    geometry

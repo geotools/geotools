@@ -149,6 +149,16 @@ O:
                                                            .getElementDeclaration(name);
 
                 if (elementDecl == null) {
+                    //look for the element declaration as a particle of the containing type
+                    XSDParticle particle = 
+                        Schemas.getChildElementParticle(element.getType(), name.getLocalPart(), true);
+                    if (particle != null) {
+                        particles.put(name, particle);
+                        continue;
+                    }
+                }
+
+                if (elementDecl == null) {
                     //TODO: resolving like this will return an element no 
                     // matter what, modifying the underlying schema, this might
                     // be dangerous. What we shold do is force the schema to 

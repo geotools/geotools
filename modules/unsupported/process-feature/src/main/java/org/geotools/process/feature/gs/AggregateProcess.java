@@ -90,7 +90,8 @@ public class AggregateProcess implements GSProcess {
         }
 
         if (attIndex == -1) {
-            throw new ProcessException("Could not find attribute " + atts
+            throw new ProcessException("Could not find attribute " +
+            		"[" + aggAttribute + "] "
                     + " the valid values are " + attNames(atts));
         }
         if (functions == null ){

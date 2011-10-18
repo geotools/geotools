@@ -21,6 +21,7 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -42,16 +43,30 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 
 /**
- * Store the contents of a map for display primarily as a list of Layers.
+ * Stores the contents of a map for display, including a list of layers, a 
+ * {@linkplain MapViewport} defining the device and world bounds of display
+ * area, and optional user data.
  * <p>
- * This object is similar to early drafts of the OGC Open Web Service Context specification.
+ * 
+ * Methods are provided to add, remove and reorder layers. Alternatively, the
+ * list of layers can be accessed directly with the {@linkplain #layers()}.
+ * For example:
+ * <pre><code>
+ * mapContent.layers().add( newLayer );
+ * </code></pre>
+ * 
+ * Operations on the list returned by the {@code layers{}} method are guaranteed to 
+ * be thread safe, and modifying the list contents will result in {@code MapLayerListEvents}
+ * being published.
+ * <p>
+ * 
+ * Note: This object is similar to early drafts of the OGC Open Web Service Context 
+ * specification.
  *
  * @author Jody Garnett
- *
- * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/render/src/main/java/org/geotools/map/MapContent.java $
- *         http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools
- *         /map/MapContext.java $
- * @version $Id: Map.java 35310 2010-04-30 10:32:15Z jive $
+ * @since 2.7
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/map/MapContent.java $
+ * @version $Id: MapContent.java 38244 2011-10-18 04:59:15Z mbedward $
  */
 public class MapContent {
 
@@ -381,14 +396,29 @@ public class MapContent {
     }
 
     /**
-     * Direct access to the layer list; contents arranged by zorder.
-     * <p>
-     * Please note this list is live and modifications made to the list will trigger
-     * {@link LayerListEvent}
+     * Gets the list of layers for this map content. The returned list has the following
+     * characteristics:
+     * <ul>
+     * <li> 
+     * It is "live", ie. changes to its contents will be reflected in this map content.
+     * </li>
+     * <li> 
+     * It is thread-safe. Accessing list elements directly or via a 
+     * {@linkplain java.util.ListIterator} returns a snapshot view of the list 
+     * contents (as per Java's {@linkplain CopyOnWriteArrayList} class).
+     * </li>
+     * <li> 
+     * Adding a layer to the list, or removing a layer from it, results in 
+     * a {@linkplain MapLayerListEvent} being published by the map content.
+     * </li>
+     * </ul>
      * 
-     * @return Direct access to layers
+     * For these reasons, you should always work directly with the list returned by
+     * this method and avoid making copies since they will not have the above behaviour.
+     * 
+     * @return a "live" reference to the layer list for this map content
      */
-    public CopyOnWriteArrayList<Layer> layers() {
+    public List<Layer> layers() {
         monitor.readLock().lock();
         try {
             return layerList;

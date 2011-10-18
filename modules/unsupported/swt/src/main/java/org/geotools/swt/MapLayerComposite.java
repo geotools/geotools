@@ -19,7 +19,6 @@ package org.geotools.swt;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -79,7 +78,7 @@ public class MapLayerComposite extends Composite {
         mapLayerTableViewer.setPane(pane);
 
         MapContent mapContent = pane.getMapContent();
-        CopyOnWriteArrayList<Layer> layers = mapContent.layers();
+        List<Layer> layers = mapContent.layers();
         for( Layer mapLayer : layers ) {
             mapLayerTableViewer.addLayer(mapLayer);
         }

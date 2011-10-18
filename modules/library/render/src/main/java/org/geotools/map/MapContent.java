@@ -926,6 +926,7 @@ public class MapContent {
                 if (layerListener != null) {
                     element.addMapLayerListener(layerListener);
                 }
+                checkViewportCRS();
                 fireLayerAdded(element, index, index);
             }
         }
@@ -982,6 +983,7 @@ public class MapContent {
             }
 
             if (added) {
+                checkViewportCRS();
                 fireLayerAdded(null, index, size() - 1);
             }
             
@@ -999,12 +1001,16 @@ public class MapContent {
         public int addAllAbsent(Collection<? extends Layer> layers) {
             int start = size();
             int added = super.addAllAbsent(layers);
-            if (layerListener != null) {
-                for (int i = start; i < size(); i++) {
-                    get(i).addMapLayerListener(layerListener);
+            if (added > 0) {
+                if (layerListener != null) {
+                    for (int i = start; i < size(); i++) {
+                        get(i).addMapLayerListener(layerListener);
+                    }
                 }
+                checkViewportCRS();
+                fireLayerAdded(null, start, size() - 1);
             }
-            fireLayerAdded(null, start, size() - 1);
+
             return added;
         }
 
@@ -1019,10 +1025,10 @@ public class MapContent {
         public boolean addIfAbsent(Layer element) {
             boolean added = super.addIfAbsent(element);
             if (added) {
-                checkViewportCRS();
                 if (layerListener != null) {
                     element.addMapLayerListener(layerListener);
                 }
+                checkViewportCRS();
                 fireLayerAdded(element, size() - 1, size() - 1);
             }
             return added;
@@ -1155,6 +1161,7 @@ public class MapContent {
              */
             Layer removed = remove(index);
             add(index, element);
+            checkViewportCRS();
             return removed;
         }
 

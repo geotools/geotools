@@ -29,12 +29,17 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
  */
 public class MockLayer extends Layer {
 
-    ReferencedEnvelope bounds;
+    private final ReferencedEnvelope bounds;
+    private boolean disposed;
 
     MockLayer(ReferencedEnvelope bounds) {
         if (bounds != null) {
             this.bounds = new ReferencedEnvelope(bounds);
+        } else {
+            this.bounds = new ReferencedEnvelope();
         }
+        
+        disposed = false;
     }
 
     @Override
@@ -45,7 +50,12 @@ public class MockLayer extends Layer {
     @Override
     public void dispose() {
         preDispose();
-        bounds = null;
         super.dispose();
+        disposed = true;
     }
+
+    public boolean isDisposed() {
+        return disposed;
+    }
+    
 }

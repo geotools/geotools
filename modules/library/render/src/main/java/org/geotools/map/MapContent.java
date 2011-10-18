@@ -1154,18 +1154,18 @@ public class MapContent {
          */
         @Override
         public boolean retainAll(Collection<?> layers) {
-            for (Object obj : layers) {
-                Layer element = (Layer) obj;
-                if (contains(element)) {
-                    continue;
+            for (Layer element : this) {
+                if (!layers.contains(element)) {
+                    if (layerListener != null) {
+                        element.removeMapLayerListener(layerListener);
+                    }
+                    element.dispose();
                 }
-                if (layerListener != null) {
-                    element.removeMapLayerListener(layerListener);
-                }
-                element.dispose();
             }
             boolean removed = super.retainAll(layers);
-            fireLayerRemoved(null, 0, size() - 1);
+            if (removed) {
+                fireLayerRemoved(null, 0, size() - 1);
+            }
             return removed;
         }
 

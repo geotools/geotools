@@ -920,67 +920,109 @@ public class MapContent {
 
         private static final long serialVersionUID = 8011733882551971475L;
 
+        /**
+         * Adds a layer at the specified position in the list. Does
+         * nothing if the layer is already present.
+         * 
+         * @param index position for the layer
+         * @param element the layer to add
+         */
         @Override
         public void add(int index, Layer element) {
-            super.add(index, element);
-            if (layerListener != null) {
-                element.addMapLayerListener(layerListener);
-            }
-            fireLayerAdded(element, index, index);
-        }
-
-        @Override
-        public boolean add(Layer element) {
-            boolean added = super.add(element);
-            if (added) {
+            if (!contains(element)) {
+                super.add(index, element);
                 if (layerListener != null) {
                     element.addMapLayerListener(layerListener);
                 }
-                fireLayerAdded(element, size() - 1, size() - 1);
+                fireLayerAdded(element, index, index);
             }
+        }
+
+        /**
+         * Adds a layer if it is not already present. Equivalent to
+         * {@linkplain #addIfAbsent(Layer)}.
+         * 
+         * @param element the layer to add
+         * @return {@code true} if the layer was added; {@code false} if
+         *     it was already present in the list
+         */
+        @Override
+        public boolean add(Layer element) {
+            return addIfAbsent(element);
+        }
+
+        /**
+         * Adds all layers from the input collection that are not already
+         * present in this list. Equivalent to {@code addAllAbsent(layers) > 0}.
+         * 
+         * @param layers candidate layers to add
+         * @return {@code true} is any layers were added; {@code false} otherwise
+         */
+        @Override
+        public boolean addAll(Collection<? extends Layer> layers) {
+            return addAllAbsent(layers) > 0;
+        }
+
+        /**
+         * Adds all layers from the input collection that are not already
+         * present in this list, with the first added layer taking position
+         * {@code index}.
+         * 
+         * @param index position of the first added layer in the list
+         * @param layers candidate layers to add
+         * 
+         * @return {@code true} if any layers were added; {@code false} otherwise
+         */
+        @Override
+        public boolean addAll(int index, Collection<? extends Layer> layers) {
+            boolean added = false;
+            int pos = index;
+            
+            for (Layer layer : layers) {
+                if (!contains(layer)) {
+                    add(pos, layer);
+                    if (layerListener != null) {
+                        layer.addMapLayerListener(layerListener);
+                    }
+                    added = true;
+                    pos++ ;
+                }
+            }
+
+            if (added) {
+                fireLayerAdded(null, index, size() - 1);
+            }
+            
             return added;
         }
 
+        /**
+         * Adds all layers from the input collection that are not already
+         * present in this list.
+         * 
+         * @param layers candidate layers to add
+         * @return the number of layers added
+         */
         @Override
-        public boolean addAll(Collection<? extends Layer> c) {
-            int start = size() - 1;
-            boolean added = super.addAll(c);
+        public int addAllAbsent(Collection<? extends Layer> layers) {
+            int start = size();
+            int added = super.addAllAbsent(layers);
             if (layerListener != null) {
-                for (Layer element : c) {
-                    element.addMapLayerListener(layerListener);
+                for (int i = start; i < size(); i++) {
+                    get(i).addMapLayerListener(layerListener);
                 }
             }
             fireLayerAdded(null, start, size() - 1);
             return added;
         }
 
-        @Override
-        public boolean addAll(int index, Collection<? extends Layer> c) {
-            boolean added = super.addAll(index, c);
-            if (layerListener != null) {
-                for (Layer element : c) {
-                    element.addMapLayerListener(layerListener);
-                }
-            }
-            fireLayerAdded(null, index, size() - 1);
-            return added;
-        }
-
-        @Override
-        public int addAllAbsent(Collection<? extends Layer> c) {
-            int start = size() - 1;
-            int added = super.addAllAbsent(c);
-            if (layerListener != null) {
-                // taking the risk that layer is correctly impelmented and will
-                // not have layerListener not mapped
-                for (Layer element : c) {
-                    element.addMapLayerListener(layerListener);
-                }
-            }
-            fireLayerAdded(null, start, size() - 1);
-            return added;
-        }
-
+        /**
+         * Adds a layer if it is not already present.
+         * 
+         * @param element the layer to add
+         * @return {@code true} if the layer was added; {@code false} if
+         *     it was already present in the list
+         */
         @Override
         public boolean addIfAbsent(Layer element) {
             boolean added = super.addIfAbsent(element);
@@ -994,6 +1036,9 @@ public class MapContent {
             return added;
         }
 
+        /**
+         * Removes all layers from this list.
+         */
         @Override
         public void clear() {
             for (Layer element : this) {
@@ -1006,6 +1051,12 @@ public class MapContent {
             fireLayerRemoved(null, -1, -1);
         }
 
+        /**
+         * Removes the layer at position {@code index} from this list.
+         * 
+         * @param index the position of the layer to be removed
+         * @return the layer
+         */
         @Override
         public Layer remove(int index) {
             Layer removed = super.remove(index);
@@ -1017,25 +1068,38 @@ public class MapContent {
             return removed;
         }
 
+        /**
+         * Removes the specified element, which much be a Layer, from the list
+         * if present.
+         * 
+         * @param element the element to remove
+         * @return {@code true} if removed; {@code false} if not present in the list
+         */
         @Override
-        public boolean remove(Object o) {
-            boolean removed = super.remove(o);
+        public boolean remove(Object element) {
+            boolean removed = super.remove(element);
             if (removed) {
-                fireLayerRemoved((Layer) o, -1, -1);
-                if (o instanceof Layer) {
-                    Layer element = (Layer) o;
+                fireLayerRemoved((Layer) element, -1, -1);
+                if (element instanceof Layer) {
+                    Layer layer = (Layer) element;
                     if (layerListener != null) {
-                        element.removeMapLayerListener(layerListener);
+                        layer.removeMapLayerListener(layerListener);
                     }
-                    element.dispose();
+                    layer.dispose();
                 }
             }
             return removed;
         }
 
+        /**
+         * Removes all layers in the input collection from this list, if present.
+         * 
+         * @param layers the candidate layers to remove
+         * @return {@code true} if any layers were removed; {@code false} otherwise
+         */
         @Override
-        public boolean removeAll(Collection<?> c) {
-            for (Object obj : c) {
+        public boolean removeAll(Collection<?> layers) {
+            for (Object obj : layers) {
                 Layer element = (Layer) obj;
                 if (!contains(element)) {
                     continue;
@@ -1045,14 +1109,21 @@ public class MapContent {
                 }
                 element.dispose();
             }
-            boolean removed = super.removeAll(c);
+            boolean removed = super.removeAll(layers);
             fireLayerRemoved(null, 0, size() - 1);
             return removed;
         }
 
+        /**
+         * Removes any layers from this list that are not contained in the
+         * input collection.
+         * 
+         * @param layers the layers which should not be removed
+         * @return {@code true} if any layers were removed; {@code false} otherwise
+         */
         @Override
-        public boolean retainAll(Collection<?> c) {
-            for (Object obj : c) {
+        public boolean retainAll(Collection<?> layers) {
+            for (Object obj : layers) {
                 Layer element = (Layer) obj;
                 if (contains(element)) {
                     continue;
@@ -1062,11 +1133,20 @@ public class MapContent {
                 }
                 element.dispose();
             }
-            boolean removed = super.retainAll(c);
+            boolean removed = super.retainAll(layers);
             fireLayerRemoved(null, 0, size() - 1);
             return removed;
         }
 
+        
+        /**
+         * TODO: make this method issue removed and add events and 
+         * set layer listener
+         * 
+         * @param index
+         * @param element
+         * @return 
+         */
         @Override
         public Layer set(int index, Layer element) {
             Layer set = super.set(index, element);

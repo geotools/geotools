@@ -531,7 +531,7 @@ public class MapContent {
         try {
             CoordinateReferenceSystem mapCrs = null;
             if (viewport != null) {
-                mapCrs = viewport.getCoordianteReferenceSystem();
+                mapCrs = viewport.getCoordinateReferenceSystem();
             }
             ReferencedEnvelope maxBounds = null;
 
@@ -863,6 +863,7 @@ public class MapContent {
                 if (layerListener != null) {
                     element.addMapLayerListener(layerListener);
                 }
+                fireLayerAdded(element, index, index);
             }
         }
 
@@ -913,7 +914,7 @@ public class MapContent {
                         layer.addMapLayerListener(layerListener);
                     }
                     added = true;
-                    pos++;
+                    pos++ ;
                 }
             }
 
@@ -935,12 +936,15 @@ public class MapContent {
         public int addAllAbsent(Collection<? extends Layer> layers) {
             int start = size();
             int added = super.addAllAbsent(layers);
-            if (layerListener != null) {
-                for (int i = start; i < size(); i++) {
-                    get(i).addMapLayerListener(layerListener);
+            if (added > 0) {
+                if (layerListener != null) {
+                    for (int i = start; i < size(); i++) {
+                        get(i).addMapLayerListener(layerListener);
+                    }
                 }
+                fireLayerAdded(null, start, size() - 1);
             }
-            fireLayerAdded(null, start, size() - 1);
+
             return added;
         }
 
@@ -1054,18 +1058,18 @@ public class MapContent {
          */
         @Override
         public boolean retainAll(Collection<?> layers) {
-            for (Object obj : layers) {
-                Layer element = (Layer) obj;
-                if (contains(element)) {
-                    continue;
+            for (Layer element : this) {
+                if (!layers.contains(element)) {
+                    if (layerListener != null) {
+                        element.removeMapLayerListener(layerListener);
+                    }
+                    element.dispose();
                 }
-                if (layerListener != null) {
-                    element.removeMapLayerListener(layerListener);
-                }
-                element.dispose();
             }
             boolean removed = super.retainAll(layers);
-            fireLayerRemoved(null, 0, size() - 1);
+            if (removed) {
+                fireLayerRemoved(null, 0, size() - 1);
+            }
             return removed;
         }
 

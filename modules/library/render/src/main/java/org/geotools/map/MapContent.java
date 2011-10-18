@@ -350,12 +350,11 @@ public class MapContent {
     }
 
     /**
-     * Remove a layer, if present, and trigger a {@link LayerListEvent}.
+     * Removes the given layer, if present, and publishes a {@linkplain MapLayerListEvent}.
      * 
-     * @param layer
-     *            a MapLayer that will be added.
+     * @param layer the layer to be removed
      * 
-     * @return true if the layer has been removed
+     * @return {@code true} if the layer was removed
      */
     public boolean removeLayer(Layer layer) {
         monitor.writeLock().lock();
@@ -821,7 +820,7 @@ public class MapContent {
         private static final long serialVersionUID = 8011733882551971475L;
         
         /**
-         * Adds a layer at the specified position in the list. Does
+         * Adds a layer at the specified position in this list. Does
          * nothing if the layer is already present.
          * 
          * @param index position for the layer
@@ -843,7 +842,7 @@ public class MapContent {
          * 
          * @param element the layer to add
          * @return {@code true} if the layer was added; {@code false} if
-         *     it was already present in the list
+         *     it was already present in this list
          */
         @Override
         public boolean add(Layer element) {
@@ -867,7 +866,7 @@ public class MapContent {
          * present in this list, with the first added layer taking position
          * {@code index}.
          * 
-         * @param index position of the first added layer in the list
+         * @param index position of the first added layer in this list
          * @param layers candidate layers to add
          * 
          * @return {@code true} if any layers were added; {@code false} otherwise
@@ -920,7 +919,7 @@ public class MapContent {
          * 
          * @param element the layer to add
          * @return {@code true} if the layer was added; {@code false} if
-         *     it was already present in the list
+         *     it was already present in this list
          */
         @Override
         public boolean addIfAbsent(Layer element) {
@@ -935,7 +934,7 @@ public class MapContent {
         }
 
         /**
-         * Removes all layers from this list.
+         * Removes all layers from this list and calls their {@code dispose} methods.
          */
         @Override
         public void clear() {
@@ -951,9 +950,12 @@ public class MapContent {
 
         /**
          * Removes the layer at position {@code index} from this list.
+         * Note: removing a layer causes its {@code dispose} method to be called, so
+         * although a reference to the removed layer is returned by this method it 
+         * should not be used subsequently.
          * 
          * @param index the position of the layer to be removed
-         * @return the layer
+         * @return the layer that was removed (will have been disposed)
          */
         @Override
         public Layer remove(int index) {
@@ -967,11 +969,12 @@ public class MapContent {
         }
 
         /**
-         * Removes the specified element, which much be a Layer, from the list
-         * if present.
+         * Removes the specified element, which much be a Layer, from this list
+         * if present. This method calls the layer's {@code dispose} method, so any
+         * external references to the layer should be discarded.
          * 
          * @param element the element to remove
-         * @return {@code true} if removed; {@code false} if not present in the list
+         * @return {@code true} if removed; {@code false} if not present in this list
          */
         @Override
         public boolean remove(Object element) {
@@ -1042,6 +1045,8 @@ public class MapContent {
          * remove(index);
          * add(index, element);
          * </code></pre>
+         * The same events will be sent to {@link MapLayerListListener} objects as 
+         * if the above code had been called.
          * 
          * @param index position of the layer to be replaced
          * @param element the new layer
@@ -1060,7 +1065,7 @@ public class MapContent {
         }
         
         /**
-         * Moves a layer in the list.
+         * Moves a layer in this list.
          * 
          * @param sourcePosition existing position of the layer
          * @param destPosition new position of the layer

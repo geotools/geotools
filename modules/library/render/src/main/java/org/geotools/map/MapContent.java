@@ -395,20 +395,15 @@ public class MapContent {
     }
 
     /**
-     * Moves a layer from a position to another. Will fire a MapLayerListEvent
+     * Moves a layer in the layer list. Will fire a MapLayerListEvent.
      * 
-     * @param sourcePosition
-     *            the layer current position
-     * @param destPosition
-     *            the layer new position
+     * @param sourcePosition existing position of the layer
+     * @param destPosition new position of the layer
      */
     public void moveLayer(int sourcePosition, int destPosition) {
         monitor.writeLock().lock();
         try {
-            Layer destLayer = layerList.get(destPosition);
-            Layer sourceLayer = layerList.get(sourcePosition);
-            layerList.set(destPosition, sourceLayer);
-            layerList.set(sourcePosition, destLayer);
+            layerList.move(sourcePosition, destPosition);
         } finally {
             monitor.writeLock().unlock();
         }
@@ -1158,6 +1153,18 @@ public class MapContent {
             Layer removed = remove(index);
             add(index, element);
             return removed;
+        }
+
+        /**
+         * Moves a layer in the list.
+         * 
+         * @param sourcePosition existing position of the layer
+         * @param destPosition new position of the layer
+         */
+        private void move(int sourcePosition, int destPosition) {
+            Layer layer = super.remove(sourcePosition);
+            super.add(destPosition, layer);
+            fireLayerMoved(layer, destPosition);
         }
     }
 }

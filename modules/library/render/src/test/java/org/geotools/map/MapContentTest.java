@@ -47,28 +47,6 @@ public class MapContentTest {
     
     private static final double TOL = 1.0e-6;
 
-    static class MockLayer extends Layer {
-        ReferencedEnvelope bounds;
-        
-        MockLayer(ReferencedEnvelope bounds) {
-            if (bounds != null) {
-                this.bounds = new ReferencedEnvelope(bounds);
-            }
-        }
-
-        @Override
-        public ReferencedEnvelope getBounds() {
-            return bounds;
-        }
-        
-        @Override
-        public void dispose() {
-            preDispose();
-            bounds = null;
-            super.dispose();
-        }
-    }
-    
     /**
      * Test DefaultMapContext handles layers that return null bounds.
      */
@@ -147,7 +125,7 @@ public class MapContentTest {
         
         WaitingMapListener listener = new WaitingMapListener();
         map.addMapLayerListListener(listener);
-        listener.setExpected(WaitingMapListener.Type.MOVED, 2);
+        listener.setExpected(WaitingMapListener.Type.MOVED);
         
         map.moveLayer(0, 1);
         assertTrue(listener.await(WaitingMapListener.Type.MOVED, LISTENER_TIMEOUT));

@@ -21,7 +21,6 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -368,20 +367,15 @@ public class MapContent {
     }
 
     /**
-     * Moves a layer from a position to another. Will fire a MapLayerListEvent
+     * Moves a layer in the layer list. Will fire a MapLayerListEvent.
      * 
-     * @param sourcePosition
-     *            the layer current position
-     * @param destPosition
-     *            the layer new position
+     * @param sourcePosition existing position of the layer
+     * @param destPosition new position of the layer
      */
     public void moveLayer(int sourcePosition, int destPosition) {
         monitor.writeLock().lock();
         try {
-            Layer destLayer = layerList.get(destPosition);
-            Layer sourceLayer = layerList.get(sourcePosition);
-            layerList.set(destPosition, sourceLayer);
-            layerList.set(sourcePosition, destLayer);
+            layerList.move(sourcePosition, destPosition);
         } finally {
             monitor.writeLock().unlock();
         }
@@ -825,7 +819,7 @@ public class MapContent {
     private class LayerList extends CopyOnWriteArrayList<Layer> {
 
         private static final long serialVersionUID = 8011733882551971475L;
-
+        
         /**
          * Adds a layer at the specified position in the list. Does
          * nothing if the layer is already present.
@@ -840,7 +834,6 @@ public class MapContent {
                 if (layerListener != null) {
                     element.addMapLayerListener(layerListener);
                 }
-                fireLayerAdded(element, index, index);
             }
         }
 
@@ -1044,18 +1037,38 @@ public class MapContent {
         }
 
         /**
-         * TODO: make this method issue removed and add events and 
-         * set layer listener
+         * Replaces the layer at the given position with another. Equivalent to:
+         * <pre><code>
+         * remove(index);
+         * add(index, element);
+         * </code></pre>
          * 
-         * @param index
-         * @param element
-         * @return 
+         * @param index position of the layer to be replaced
+         * @param element the new layer
+         * @return the layer that was replaced
          */
         @Override
         public Layer set(int index, Layer element) {
-            Layer set = super.set(index, element);
-            fireLayerMoved(element, index);
-            return set;
+            /*
+             * Note: rather than calling the superclass set method here
+             * we call remove followed by add to ensure correct event
+             * and listener handling.
+             */
+            Layer removed = remove(index);
+            add(index, element);
+            return removed;
+        }
+        
+        /**
+         * Moves a layer in the list.
+         * 
+         * @param sourcePosition existing position of the layer
+         * @param destPosition new position of the layer
+         */
+        private void move(int sourcePosition, int destPosition) {
+            Layer layer = super.remove(sourcePosition);
+            super.add(destPosition, layer);
+            fireLayerMoved(layer, destPosition);
         }
     }
 }

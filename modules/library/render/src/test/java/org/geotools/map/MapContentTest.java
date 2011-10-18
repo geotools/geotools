@@ -137,7 +137,7 @@ public class MapContentTest {
         
         WaitingListener listener = new WaitingListener();
         map.addMapLayerListListener(listener);
-        listener.setExpected(WaitingListener.Type.MOVED, 2);
+        listener.setExpected(WaitingListener.Type.MOVED);
         
         map.moveLayer(0, 1);
         assertTrue(listener.await(WaitingListener.Type.MOVED, LISTENER_TIMEOUT));

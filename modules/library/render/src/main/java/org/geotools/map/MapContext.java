@@ -315,7 +315,7 @@ public class MapContext extends MapContent {
             return 0;
         }
         List<Layer> layersToAdd = toLayerList(array);
-        int count = layers().addAllAbsent(layersToAdd);
+        int count = addLayers(layersToAdd);
         return count;
     }
 

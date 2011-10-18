@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2010-2011, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -118,16 +118,14 @@ public class MapContent {
      * the responsibility of your application and are not cleaned up by this method.
      */
     public void dispose() {
-        if (this.layerList != null) {
-            for (Layer layer : layerList) {
-                if (layer != null) {
-                    // Layer.dispose will inform listeners of the impending
-                    // disposal, then remove listeners from this layer
-                    layer.dispose();
-                }
+        for (Layer layer : layerList) {
+            if (layer != null) {
+                // Layer.dispose will inform listeners of the impending
+                // disposal, then remove listeners from this layer
+                layer.dispose();
             }
-            layerList.clear();
         }
+        layerList.clear();
         
         if (this.mapListeners != null) {
             this.mapListeners.clear();
@@ -1140,18 +1138,26 @@ public class MapContent {
 
         
         /**
-         * TODO: make this method issue removed and add events and 
-         * set layer listener
+         * Replaces the layer at the given position with another. Equivalent to:
+         * <pre><code>
+         * remove(index);
+         * add(index, element);
+         * </code></pre>
          * 
-         * @param index
-         * @param element
-         * @return 
+         * @param index position of the layer to be replaced
+         * @param element the new layer
+         * @return the layer that was replaced
          */
         @Override
         public Layer set(int index, Layer element) {
-            Layer set = super.set(index, element);
-            fireLayerMoved(element, index);
-            return set;
+            /*
+             * Note: rather than calling the superclass set method here
+             * we call remove followed by add to ensure correct event
+             * and listener handling.
+             */
+            Layer removed = remove(index);
+            add(index, element);
+            return removed;
         }
-    };
+    }
 }

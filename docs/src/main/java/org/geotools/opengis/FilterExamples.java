@@ -4,7 +4,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -15,6 +17,8 @@ import org.geotools.temporal.object.DefaultPosition;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.MultiValuedFilter.MatchAction;
+import org.opengis.filter.identity.FeatureId;
+import org.opengis.filter.identity.Identifier;
 import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
 
@@ -73,6 +77,19 @@ public void nilExample() {
     filter = ff.isNil(ff.property("approved"),"no approval available");
 
     // end nil example
+}
+
+public void id(){
+    // id start
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    Filter filter;
+    
+    Set<FeatureId> selected = new HashSet<FeatureId>();
+    selected.add(ff.featureId("CITY.98734597823459687235"));
+    selected.add(ff.featureId("CITY.98734592345235823474"));
+    
+    filter = ff.id(selected);
+    // id end
 }
 public void logical() {
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);

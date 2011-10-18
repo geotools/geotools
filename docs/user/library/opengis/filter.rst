@@ -354,6 +354,25 @@ value for Query.getFilter() is Filter.INCLUDES.
          System.out.println( "Selected "+ feature.getId();
      }
 
+Identifer
+^^^^^^^^^
+
+The other interesting way to use a filter to more as a "selection" in the GIS sence. In this
+case rather than evaluating the attributes we will directly match the FeatureId.
+
+.. image:: /images/filter_id.PNG
+
+The most common test is simply against FeatureId; the other Identifiers are used when woring with
+different data types such as records.
+  
+  .. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+    :language: java
+    :start-after: // id start
+    :end-before: // id end
+  
+Formally this style of Id matching is not supposed to be mixed with the traditional attribute
+based evaluation.
+
 Spatial
 ^^^^^^^
 

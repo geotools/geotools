@@ -77,8 +77,24 @@ public class MapViewport {
      * </p>
      * 
      * @return coordinate reference system used for rendering the map.
+     * 
+     * @deprecated Misspelled method name. Please use {@linkplain #getCoordinateReferenceSystem()}
      */
     public CoordinateReferenceSystem getCoordianteReferenceSystem() {
+        return bounds == null ? null : bounds.getCoordinateReferenceSystem();
+    }
+
+    /**
+     * The coordinate reference system used for rendering the map.
+     * <p>
+     * The coordinate reference system used for rendering is often considered to be the "world"
+     * coordinate reference system; this is distinct from the coordinate reference system used for
+     * each layer (which is often data dependent).
+     * </p>
+     * 
+     * @return coordinate reference system used for rendering the map.
+     */
+    public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return bounds == null ? null : bounds.getCoordinateReferenceSystem();
     }
 

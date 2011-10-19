@@ -84,13 +84,10 @@ public class MapViewportTest {
         MapViewport vp = new MapViewport();
         
         assertFalse(vp.isMatchingAspectRatio());
-        
         assertTrue(vp.isEmpty());
         assertTrue(vp.getBounds().isEmpty());
         assertTrue(vp.getScreenArea().isEmpty());
-        
-        assertTrue(CRS.equalsIgnoreMetadata(MapViewport.DEFAULT_CRS, 
-                vp.getCoordinateReferenceSystem()));
+        assertNull(vp.getCoordinateReferenceSystem());
     }
     
     @Test
@@ -152,7 +149,6 @@ public class MapViewportTest {
         assertEquals(vp1.getBounds(), vp2.getBounds());
         assertEquals(vp1.getScreenArea(), vp2.getScreenArea());
         assertEquals(vp1.getScreenToWorld(), vp2.getScreenToWorld());
-        assertEquals(vp1.isExplicitCoordinateReferenceSystem(), vp2.isExplicitCoordinateReferenceSystem());
         assertEquals(vp1.isMatchingAspectRatio(), vp2.isMatchingAspectRatio());
     }
     

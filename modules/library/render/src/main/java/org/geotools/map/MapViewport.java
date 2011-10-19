@@ -14,7 +14,6 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-
 package org.geotools.map;
 
 import java.awt.Rectangle;
@@ -33,7 +32,6 @@ import org.geotools.map.event.MapBoundsEvent;
 import org.geotools.map.event.MapBoundsListener;
 import org.geotools.map.event.MapBoundsEvent.Type;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.util.logging.Logging;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -69,30 +67,17 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Jody Garnett
  * @author Michael Bedward
  * @since 2.7
- *
- *
  * @source $URL$
  */
 public class MapViewport {
+
     /** The logger for the map module. */
     static protected final Logger LOGGER = Logging.getLogger("org.geotools.map");
-    
-    /**
-     * The default coordinate reference system for the viewport
-     * ({@linkplain DefaultEngineeringCRS#GENERIC_2D}).
-     */
-    public static CoordinateReferenceSystem DEFAULT_CRS = DefaultEngineeringCRS.GENERIC_2D;
-    
+
     /*
      * Flags whether this viewport can be changed
      */
     private final AtomicBoolean editable;
-    
-    /* 
-     * Flags whether this viewport's CRS has been set by the client
-     * or if it is the default.
-     */
-    private boolean userCRS;
 
     /* 
      * The current display area expressed in window coordinates 
@@ -100,7 +85,6 @@ public class MapViewport {
      * include slack space beyond the edges of the map layers.
      */
     private Rectangle screenArea;
-    
     /*
      * The current dispay area in world coordinates. The area can
      * include slack space beyond the edges of the map layers.
@@ -118,26 +102,21 @@ public class MapViewport {
      * image) coordinates.
      */
     private AffineTransform worldToScreen;
-
     private CopyOnWriteArrayList<MapBoundsListener> boundsListeners;
-
     private boolean matchingAspectRatio;
     private boolean hasCenteringTransforms;
-    
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
     /**
-     * Creates a new view port. Screen area and world bounds will be empty;
-     * the {@linkplain #DEFAULT_CRS} will be set; and aspect ratio matching will
-     * be disabled.
+     * Creates a new view port. Screen area and world bounds will be empty,
+     *  and aspect ratio matching will be disabled.
      */
-    public MapViewport(){
+    public MapViewport() {
         this(false);
     }
-    
+
     /**
-     * Creates a new view port. Screen area and world bounds will be empty;
-     * the {@linkplain #DEFAULT_CRS} will be set
+     * Creates a new view port. Screen area and world bounds will be empty.
      * 
      * @param matchAspectRatio whether to enable aspect ratio matching
      */
@@ -155,10 +134,10 @@ public class MapViewport {
      * 
      * @param bounds display area in world coordinates (may be {@code null})
      */
-    public MapViewport(ReferencedEnvelope bounds){
+    public MapViewport(ReferencedEnvelope bounds) {
         this(bounds, false);
     }
-    
+
     /**
      * Creates a new viewport with the specified world bounds.
      * The input envelope is copied so subsequent changes to it will not affect the
@@ -177,7 +156,7 @@ public class MapViewport {
         copyBounds(bounds);
         setTransforms(true);
     }
-    
+
     /**
      * Creates a new viewport based on an existing instance. The world bounds,
      * screen area and aspect ratio matching setting of {@code sourceViewport} are
@@ -219,7 +198,7 @@ public class MapViewport {
     public void setEditable(boolean editable) {
         this.editable.set(editable);
     }
-    
+
     /**
      * Sets whether to adjust input world bounds to match the aspect
      * ratio of the screen area.
@@ -229,17 +208,17 @@ public class MapViewport {
     public void setMatchingAspectRatio(boolean enabled) {
         lock.writeLock().lock();
         try {
-        if (checkEditable("setMatchingAspectRatio")) {
-            if (enabled != matchingAspectRatio) {
-                matchingAspectRatio = enabled;
-                setTransforms(true);
+            if (checkEditable("setMatchingAspectRatio")) {
+                if (enabled != matchingAspectRatio) {
+                    matchingAspectRatio = enabled;
+                    setTransforms(true);
+                }
             }
-        }
         } finally {
             lock.writeLock().unlock();
         }
     }
-    
+
     /**
      * Queries whether input worlds bounds will be adjusted to match the
      * aspect ratio of the screen area.
@@ -295,7 +274,7 @@ public class MapViewport {
             lock.readLock().unlock();
         }
     }
-    
+
     /**
      * Gets the display area in world coordinates.
      * <p>
@@ -312,12 +291,12 @@ public class MapViewport {
             lock.readLock().unlock();
         }
     }
-    
+
     /**
      * Sets the display area in world coordinates. 
      * <p>
      * If {@code bounds} is {@code null} or empty, default identity coordinate
-     * transforms and {@linkplain #DEFAULT_CRS} will be set.
+     * transforms will be set.
      * <p>
      * If {@code bounds} is not empty, and aspect ratio matching is enabled,
      * the coordinate transforms will be calculated to centre the requested bounds
@@ -344,24 +323,12 @@ public class MapViewport {
             lock.writeLock().unlock();
         }
     }
-    
+
     private void copyBounds(ReferencedEnvelope newBounds) {
-        if (newBounds == null || newBounds.isEmpty()) { 
-            this.bounds = new ReferencedEnvelope(DEFAULT_CRS);
-            userCRS = false;
-            
-        } else if (newBounds.getCoordinateReferenceSystem() == null) {
-            // If a CRS is already set, preserve it
-            if (userCRS) {
-                bounds = new ReferencedEnvelope(newBounds, 
-                        bounds.getCoordinateReferenceSystem());
+        if (newBounds == null || newBounds.isEmpty()) {
+            this.bounds = new ReferencedEnvelope();
             } else {
-                bounds = new ReferencedEnvelope(newBounds, DEFAULT_CRS);
-            }
-            
-        } else {
             this.bounds = new ReferencedEnvelope(newBounds);
-            userCRS = true;
         }
     }
 
@@ -394,7 +361,7 @@ public class MapViewport {
             lock.writeLock().unlock();
         }
     }
-    
+
     private void doSetScreenArea(Rectangle screenArea) {
         if (screenArea == null || screenArea.isEmpty()) {
             this.screenArea = new Rectangle();
@@ -404,22 +371,22 @@ public class MapViewport {
 
         setTransforms(false);
     }
-    
+
     /**
      * The coordinate reference system used for rendering the map. If not yet
-     * set, {@linkplain #DEFAULT_CRS} is returned.
+     * set, {@code null} is returned.
      * <p>
      * The coordinate reference system used for rendering is often considered to be the "world"
      * coordinate reference system; this is distinct from the coordinate reference system used for
      * each layer (which is often data dependent).
      * </p>
      * 
-     * @return coordinate reference system used for rendering the map.
+     * @return coordinate reference system used for rendering the map (may be {@code null}).
      */
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         lock.readLock().lock();
         try {
-            return bounds == null ? DEFAULT_CRS : bounds.getCoordinateReferenceSystem();
+            return bounds.getCoordinateReferenceSystem();
         } finally {
             lock.readLock().unlock();
         }
@@ -427,32 +394,25 @@ public class MapViewport {
 
     /**
      * Set the {@code CoordinateReferenceSystem} for the viewport. If {@code crs}
-     * is null, {@linkplain #DEFAULT_CRS} will be set.
+     * is null, the existing reference system will be discarded.
      * 
-     * @param crs the new coordinate reference system, or {@code null} for the default
+     * @param crs the new coordinate reference system, or {@code null} for no reference system
      */
     public void setCoordinateReferenceSystem(CoordinateReferenceSystem crs) {
         lock.writeLock().lock();
         try {
             if (checkEditable("setCoordinateReferenceSystem")) {
                 if (crs == null) {
-                    bounds = new ReferencedEnvelope(bounds, DEFAULT_CRS);
-                    userCRS = false;
-
-                } else if (!userCRS) {
-                    bounds = new ReferencedEnvelope(bounds, crs);
-                    userCRS = true;
+                    bounds = new ReferencedEnvelope(bounds, null);
 
                 } else if (!CRS.equalsIgnoreMetadata(crs, bounds.getCoordinateReferenceSystem())) {
                     if (bounds.isEmpty()) {
                         bounds = new ReferencedEnvelope(crs);
-                        userCRS = true;
 
                     } else {
                         try {
                             ReferencedEnvelope old = bounds;
                             bounds = bounds.transform(crs, true);
-                            userCRS = true;
                             setTransforms(true);
 
                             fireMapBoundsListenerMapBoundsChanged(MapBoundsEvent.Type.CRS, old, bounds);
@@ -465,24 +425,6 @@ public class MapViewport {
             }
         } finally {
             lock.writeLock().unlock();
-        }
-    }
-    
-    /**
-     * Checks whether a coordinate reference system has been explicitly set
-     * for this viewport. The CRS can be set directly with 
-     * {@linkplain #setCoordinateReferenceSystem(CoordinateReferenceSystem)},
-     * or indirectly via the constructor or {@linkplain #setBounds(ReferencedEnvelope) }.
-     * 
-     * @return {@code true} if the CRS has been set; {@code false} if the
-     *     viewport is using its default CRS
-     */
-    public boolean isExplicitCoordinateReferenceSystem() {
-        lock.readLock().lock();
-        try {
-            return userCRS;
-        } finally {
-            lock.readLock().unlock();
         }
     }
 
@@ -573,13 +515,13 @@ public class MapViewport {
             screenToWorld = new AffineTransform();
             worldToScreen = new AffineTransform();
             hasCenteringTransforms = false;
-            
+
         } else if (matchingAspectRatio) {
             if (newBounds || !hasCenteringTransforms) {
                 calculateCenteringTransforms();
             }
             bounds = calculateActualBounds();
-            
+
         } else {
             calculateSimpleTransforms(bounds);
             hasCenteringTransforms = false;
@@ -606,10 +548,10 @@ public class MapViewport {
         } catch (NoninvertibleTransformException ex) {
             throw new RuntimeException("Unable to create coordinate transforms.", ex);
         }
-        
+
         hasCenteringTransforms = true;
     }
-    
+
     /**
      * Calculates transforms suitable for no aspect ratio matching.
      * 
@@ -619,7 +561,7 @@ public class MapViewport {
         double xscale = screenArea.getWidth() / requestedBounds.getWidth();
         double yscale = screenArea.getHeight() / requestedBounds.getHeight();
         double scale = Math.min(xscale, yscale);
-        worldToScreen = new AffineTransform(scale, 0, 0, -scale, 
+        worldToScreen = new AffineTransform(scale, 0, 0, -scale,
                 -requestedBounds.getMinX(), requestedBounds.getMaxY());
         try {
             screenToWorld = worldToScreen.createInverse();
@@ -654,12 +596,11 @@ public class MapViewport {
         final boolean state = editable.get();
         if (!state) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.log(Level.FINE, "Ignored call to {0} because viewport is not editable", 
+                LOGGER.log(Level.FINE, "Ignored call to {0} because viewport is not editable",
                         methodName);
             }
         }
-        
+
         return state;
     }
-    
 }

@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -36,7 +37,7 @@ import static org.junit.Assert.*;
  * 
  * @author Jody Garnett
  * @author Michael Bedward
- * @since 8.0
+ * @since 2.7
  *
  * @source $URL$
  * @version $Id$
@@ -169,49 +170,39 @@ public class MapContentTest {
         Layer layerWithCRS = new MockLayer(WORLD);
         mapContent.addLayer(layerWithCRS);
 
-        assertEquals(MapViewport.DEFAULT_CRS, mapContent.getCoordinateReferenceSystem());
-
-        assertFalse(WORLD.getCoordinateReferenceSystem().equals(
-                mapContent.getCoordinateReferenceSystem()));
+        assertNull(mapContent.getCoordinateReferenceSystem());
     }
     
     @Test
     public void crsIsNotAutoSetIfViewportHasExplicitCRS() {
-        MapViewport viewport = new MapViewport();
+        final CoordinateReferenceSystem crs = DefaultEngineeringCRS.GENERIC_2D;
         
-        // Explicitly set the CRS. Even though it is the default viewport CRS
-        // it will be treated as an explicit (user-set) value
-        viewport.setCoordinateReferenceSystem(MapViewport.DEFAULT_CRS);
-
+        MapViewport viewport = new MapViewport();
+        viewport.setCoordinateReferenceSystem(crs);
         mapContent.setViewport(viewport);
         
         Layer layerWithCRS = new MockLayer(WORLD);
         mapContent.addLayer(layerWithCRS);
 
         assertTrue(viewport.isEditable());
-        
-        assertEquals(MapViewport.DEFAULT_CRS, mapContent.getCoordinateReferenceSystem());
-
+        assertEquals(crs, mapContent.getCoordinateReferenceSystem());
         assertFalse(WORLD.getCoordinateReferenceSystem().equals(
                 mapContent.getCoordinateReferenceSystem()));
     }
     
     @Test
     public void crsIsAutoSetWhenGetViewportCalledBeforeAddingLayers() {
-        // Call getViewport to force creation of a default viewport
-        MapViewport vp = mapContent.getViewport();
-        assertEquals(MapViewport.DEFAULT_CRS, vp.getCoordinateReferenceSystem());
-        
-        CoordinateReferenceSystem startCRS = mapContent.getCoordinateReferenceSystem();
+        MapViewport viewport = mapContent.getViewport();
+        assertNull(viewport.getCoordinateReferenceSystem());
         
         ReferencedEnvelope envNoCRS = new ReferencedEnvelope(WORLD, null);
         Layer layerNoCRS = new MockLayer(envNoCRS);
         mapContent.addLayer(layerNoCRS);
-        assertEquals(startCRS, mapContent.getCoordinateReferenceSystem());
+        assertNull(mapContent.getCoordinateReferenceSystem());
         
         Layer layerWithCRS = new MockLayer(WORLD);
         mapContent.addLayer(layerWithCRS);
-        assertEquals(WORLD.getCoordinateReferenceSystem(), vp.getCoordinateReferenceSystem());
+        assertEquals(WORLD.getCoordinateReferenceSystem(), viewport.getCoordinateReferenceSystem());
     }
 
     @Test

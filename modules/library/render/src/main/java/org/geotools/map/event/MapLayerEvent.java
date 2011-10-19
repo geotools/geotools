@@ -32,8 +32,8 @@ import java.util.EventObject;
  * @source $URL$
  * @version $Id$
  *
- * @see Layer
- * @see LayerListener
+ * @see org.geotools.map.Layer
+ * @see MapLayerListener
  */
 public class MapLayerEvent extends EventObject {
     /**

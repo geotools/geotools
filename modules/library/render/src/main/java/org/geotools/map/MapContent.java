@@ -69,6 +69,7 @@ import org.opengis.referencing.operation.TransformException;
  * @version $Id$
  */
 public class MapContent {
+
     /** The logger for the map module. */
     static protected final Logger LOGGER = Logging.getLogger("org.geotools.map");
 
@@ -163,26 +164,26 @@ public class MapContent {
         }
     }
 
-    public MapContent(MapContext context){
+    public MapContent(MapContext context) {
         this();
-        
-        for( MapLayer mapLayer : context.getLayers() ){
-            layerList.add( mapLayer.toLayer() );
+
+        for (MapLayer mapLayer : context.getLayers()) {
+            layerList.add(mapLayer.toLayer());
         }
-        if( context.getTitle()  != null ){
-            setTitle( context.getTitle() );
+        if (context.getTitle() != null) {
+            setTitle(context.getTitle());
         }
-        if( context.getAbstract() != null ){
-            getUserData().put("abstract", context.getAbstract() );            
+        if (context.getAbstract() != null) {
+            getUserData().put("abstract", context.getAbstract());
         }
-        if( context.getContactInformation() != null ){
-            getUserData().put("contact", context.getContactInformation() );            
+        if (context.getContactInformation() != null) {
+            getUserData().put("contact", context.getContactInformation());
         }
-        if( context.getKeywords() != null ){
-            getUserData().put("keywords", context.getKeywords() );            
+        if (context.getKeywords() != null) {
+            getUserData().put("keywords", context.getKeywords());
         }
-        if( context.getAreaOfInterest() != null ){
-            getViewport().setBounds( context.getAreaOfInterest() );
+        if (context.getAreaOfInterest() != null) {
+            getViewport().setBounds(context.getAreaOfInterest());
         }
     }
 
@@ -212,15 +213,15 @@ public class MapContent {
     public MapContent(MapLayer[] array, String title, String contextAbstract, String contactInformation,
             String[] keywords, final CoordinateReferenceSystem crs) {
         this();
-        
-        if( array != null ){
+
+        if (array != null) {
             for (MapLayer mapLayer : array) {
-                
-                if( mapLayer == null ){
+
+                if (mapLayer == null) {
                     continue;
                 }
                 Layer layer = mapLayer.toLayer();
-                layerList.add( layer );            
+                layerList.add(layer);
             }
         }
         if (title != null) {
@@ -586,7 +587,7 @@ public class MapContent {
         monitor.readLock().lock();
         try {
             CoordinateReferenceSystem mapCrs = null;
-            if (viewport != null && viewport.isExplicitCoordinateReferenceSystem()) {
+            if (viewport != null) {
                 mapCrs = viewport.getCoordinateReferenceSystem();
             }
             ReferencedEnvelope maxBounds = null;
@@ -916,12 +917,13 @@ public class MapContent {
     /**
      * Sets the CRS of the viewport, if one exists, based on the first Layer
      * with a non-null CRS. This is called when a new Layer is added to the
-     * Layer list. Does nothing if the viewport already has an explicitly set
-     * CRS or has been set as non-editable.
+     * Layer list. Does nothing if the viewport already has a CRS set or if 
+     * it has been set as non-editable.
      */
     private void checkViewportCRS() {
-        if (viewport != null && viewport.isEditable() && 
-                !viewport.isExplicitCoordinateReferenceSystem()) {
+        if (viewport != null 
+                && getCoordinateReferenceSystem() == null 
+                && viewport.isEditable()) {
             
             for (Layer layer : layerList) {
                 ReferencedEnvelope bounds = layer.getBounds();
@@ -1169,13 +1171,14 @@ public class MapContent {
             return removed;
         }
 
-        
         /**
          * Replaces the layer at the given position with another. Equivalent to:
          * <pre><code>
          * remove(index);
          * add(index, element);
          * </code></pre>
+         * The same events will be sent to {@link MapLayerListListener} objects as 
+         * if the above code had been called.
          * 
          * @param index position of the layer to be replaced
          * @param element the new layer

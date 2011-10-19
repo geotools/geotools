@@ -25,7 +25,7 @@ import java.util.EventListener;
  *
  * @author Andrea Aime
  *
- * @see MapLayer
+ * @see org.geotools.map.MapLayer
  * @see MapLayerEvent
  *
  *

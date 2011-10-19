@@ -28,7 +28,7 @@ import org.geotools.map.event.MapAdapter;
  * for specific events to be received.
  *
  * @author Michael Bedward
- * @since 8.0
+ * @since 2.7
  * @source $URL$
  * @version $Id$
  */

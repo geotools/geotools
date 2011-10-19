@@ -1025,7 +1025,6 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
     /**
      * {@inheritDoc}
      */
-    @Override
     public void layerPreDispose(MapLayerListEvent event) {
         renderingExecutor.cancelTask();
     }

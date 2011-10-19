@@ -32,7 +32,6 @@ import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.Types;
-import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.util.Converters;
 import org.opengis.feature.Feature;
@@ -41,6 +40,7 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -101,6 +101,10 @@ public class NestedAttributeMapping extends AttributeMapping {
      * Id expression for the nested type.
      */
     private Expression nestedIdExpression;
+    /**
+     * true if the type is depending on a function value, i.e. could be a Function
+     */
+    private boolean isConditional;
     
     /**
      * Sole constructor
@@ -128,6 +132,7 @@ public class NestedAttributeMapping extends AttributeMapping {
         this.nestedFeatureType = sourceElement;
         this.filterFac = new FilterFactoryImplNamespaceAware(namespaces);
         this.namespaces = namespaces;
+        this.isConditional = nestedFeatureType instanceof Function;
     }
 
     @Override
@@ -146,15 +151,17 @@ public class NestedAttributeMapping extends AttributeMapping {
      * @throws IOException
      * @throws IOException
      */
-    public List<Feature> getInputFeatures(Object caller, Object foreignKeyValue,  List<Object> idValues, Object feature,  CoordinateReferenceSystem reprojection, List<PropertyName> selectedProperties, boolean includeMandatory)
-            throws IOException {
+    public List<Feature> getInputFeatures(Object caller, Object foreignKeyValue,
+            List<Object> idValues, Object feature, CoordinateReferenceSystem reprojection,
+            List<PropertyName> selectedProperties, boolean includeMandatory) throws IOException {
         if (isSameSource()) {
             // if linkField is null, this method shouldn't be called because the mapping
             // should use the same table, and handles it differently
             throw new UnsupportedOperationException(
                     "Link field is missing from feature chaining mapping!");
-        }                        
-        if (source == null || !(nestedFeatureType instanceof AttributeExpressionImpl)) {
+        }        
+        boolean isMultiple = false;
+        if (source == null || isConditional) {
             // We can't initiate this in the constructor because the feature type mapping
             // might not be built yet.
             Object featureTypeName = getNestedFeatureType(feature);
@@ -186,15 +193,27 @@ public class NestedAttributeMapping extends AttributeMapping {
                 throw new IllegalArgumentException("Mapping is missing for: '"
                         + this.nestedTargetXPath + "'!");
             }
-            nestedSourceExpression = mappings.get(0).getSourceExpression();
+            AttributeMapping mapping = mappings.get(0);
+            nestedSourceExpression = mapping.getSourceExpression();
+            isMultiple = mapping.isMultiValued();
         }    
                 
-        return getFilteredFeatures(foreignKeyValue);        
+        return getFilteredFeatures(foreignKeyValue, isMultiple);        
     }
     
-    private List<Feature> getFilteredFeatures(Object foreignKeyValue) throws IOException {   
+    /**
+     * Run the query to get built features from a table based on a foreign key.
+     * 
+     * @param foreignKeyValue
+     *            foreign key to filter by
+     * @param isMultiple
+     *            true if the table is denormalised and multiple values are possible for the same id
+     * @return list of built features
+     * @throws IOException
+     */
+    private List<Feature> getFilteredFeatures(Object foreignKeyValue, boolean isMultiple) throws IOException {   
     	if (nestedSourceExpression == null) {
-        	return Collections.EMPTY_LIST;
+            return Collections.EMPTY_LIST;
         }
     	
     	ArrayList<Feature> matchingFeatures = new ArrayList<Feature>();
@@ -206,58 +225,56 @@ public class NestedAttributeMapping extends AttributeMapping {
         FeatureIterator<Feature> it = fCollection.features();
         Filter matchingIdFilter = null;
         if (nestedIdExpression.equals(Expression.NIL)) {
-			HashSet<FeatureId> featureIds = new HashSet<FeatureId>();
-			while (it.hasNext()) {
-				Feature f = it.next();
-				matchingFeatures.add(f);
-				if (f.getIdentifier() != null) {
-					featureIds.add(f.getIdentifier());
-				}
-			}
+            HashSet<FeatureId> featureIds = new HashSet<FeatureId>();
+            while (it.hasNext()) {
+                Feature f = it.next();
+                matchingFeatures.add(f);
+                if (isMultiple && f.getIdentifier() != null) {
+                    featureIds.add(f.getIdentifier());
+                }
+            }
 
-			// Find features of the same id from denormalised view
-			if (!featureIds.isEmpty()) {
-				matchingIdFilter = filterFac.id(featureIds);
-			}
-		} else {
-			HashSet<String> featureIds = new HashSet<String>();
-			while (it.hasNext()) {
-				Feature f = it.next();
-				matchingFeatures.add(f);
-				featureIds.add(Converters.convert(nestedIdExpression
-						.evaluate(f), String.class));
+            // Find features of the same id from denormalised view
+            if (!featureIds.isEmpty()) {
+                matchingIdFilter = filterFac.id(featureIds);
+            }
+        } else {
+            HashSet<String> featureIds = new HashSet<String>();
+            while (it.hasNext()) {
+                Feature f = it.next();
+                matchingFeatures.add(f);
+                if (isMultiple) {
+                    featureIds.add(Converters.convert(nestedIdExpression.evaluate(f), String.class));
+                }
+            }
 
-			}
+            // Find features of the same id from denormalised view
+            if (!featureIds.isEmpty()) {
+                List<Filter> idFilters = new ArrayList<Filter>(featureIds.size());
+                for (String id : featureIds) {
+                    idFilters.add(filterFac.equals(nestedIdExpression, filterFac.literal(id)));
+                }
+                matchingIdFilter = filterFac.or(idFilters);
+            }
+        }
 
-			// Find features of the same id from denormalised view
-			if (!featureIds.isEmpty()) {
-				List<Filter> idFilters = new ArrayList<Filter>(featureIds
-						.size());
-				for (String id : featureIds) {
-					idFilters.add(filterFac.equals(nestedIdExpression,
-							filterFac.literal(id)));
-				}
-				matchingIdFilter = filterFac.or(idFilters);
-			}
-		}
+        it.close();
 
-		it.close();
+        if (matchingIdFilter != null) {
+            fCollection = source.getFeatures(matchingIdFilter);
 
-		if (matchingIdFilter != null) {
-			fCollection = source.getFeatures(matchingIdFilter);
+            if (fCollection.size() > matchingFeatures.size()) {
+                // there are rows of same id from denormalised view
+                it = fCollection.features();
+                matchingFeatures.clear();
+                while (it.hasNext()) {
+                    matchingFeatures.add(it.next());
+                }
+                it.close();
+            }
+        }
 
-			if (fCollection.size() > matchingFeatures.size()) {
-				// there are rows of same id from denormalised view
-				it = fCollection.features();
-				matchingFeatures.clear();
-				while (it.hasNext()) {
-					matchingFeatures.add(it.next());
-				}
-				it.close();
-			}			
-		}
-
-		return matchingFeatures;
+        return matchingFeatures;
     	
     }
 
@@ -277,7 +294,8 @@ public class NestedAttributeMapping extends AttributeMapping {
             throw new UnsupportedOperationException(
                     "Link field is missing from feature chaining mapping!");
         }
-        if (source == null || !(nestedFeatureType instanceof AttributeExpressionImpl)) {
+        boolean isMultiple = false;
+        if (source == null || isConditional) {
             if (fMapping != null) {
                 source = fMapping.getSource();
 
@@ -296,7 +314,9 @@ public class NestedAttributeMapping extends AttributeMapping {
                     throw new IllegalArgumentException("Mapping is missing for: '"
                             + this.nestedTargetXPath + "'!");
                 }
-                nestedSourceExpression = mappings.get(0).getSourceExpression();
+                AttributeMapping mapping = mappings.get(0);
+                nestedSourceExpression = mapping.getSourceExpression();
+                isMultiple = mapping.isMultiValued();
             }
         }
 
@@ -304,7 +324,7 @@ public class NestedAttributeMapping extends AttributeMapping {
             return null;
         }
 
-        return getFilteredFeatures(foreignKeyValue);     
+        return getFilteredFeatures(foreignKeyValue, isMultiple);     
     }
     
     /**
@@ -370,7 +390,7 @@ public class NestedAttributeMapping extends AttributeMapping {
         
         // get all the mapped nested features based on the link values
         FeatureCollection<FeatureType, Feature> fCollection = fSource.getFeatures(query);
-        if (fCollection instanceof MappingFeatureCollection) {
+        if (fCollection instanceof MappingFeatureCollection) {            
             FeatureIterator<Feature> iterator = fCollection.features();
             while (iterator.hasNext()) {
                 matchingFeatures.add(iterator.next());
@@ -385,7 +405,7 @@ public class NestedAttributeMapping extends AttributeMapping {
     protected FeatureSource<FeatureType, Feature> getMappingSource(Object feature)
             throws IOException {
 
-        if (mappingSource == null || !(nestedFeatureType instanceof AttributeExpressionImpl)) {
+        if (mappingSource == null || isConditional) {
             // initiate if null, or evaluate a new one if the targetElement is a function
             // which value depends on the feature
             Object featureTypeName = getNestedFeatureType(feature);
@@ -403,21 +423,28 @@ public class NestedAttributeMapping extends AttributeMapping {
      */
     public Object getNestedFeatureType(Object feature) {
         Object fTypeValue;
-        if (nestedFeatureType instanceof AttributeExpressionImpl) {
-            fTypeValue = ((AttributeExpressionImpl) nestedFeatureType).getPropertyName();
-        } else {
+        if (isConditional) {
+            if (feature == null) {
+                throw new IllegalArgumentException("Feature parameter is required!");
+            }
             fTypeValue = nestedFeatureType.evaluate(feature);
-        }
-        if (fTypeValue == null) {
-            // this could be legitimate, i.e. in polymorphism
-            // to evaluate a function with a certain column value
-            // if null, don't encode this element
-            return null;
-        }
-        if (!(fTypeValue instanceof Hints)) {
-            return Types.degloseName(fTypeValue.toString(), namespaces);
-        }
-        return fTypeValue;
+            if (fTypeValue == null) {
+                // this could be legitimate, i.e. in polymorphism
+                // to evaluate a function with a certain column value
+                // if null, don't encode this element
+                return null;
+            }
+            if (fTypeValue instanceof Hints) {
+                return ((Hints) fTypeValue).get(ComplexFeatureConstants.STRING_KEY);
+            }
+        } else {
+            fTypeValue = nestedFeatureType.toString();
+        }        
+        return Types.degloseName(String.valueOf(fTypeValue), namespaces);
+    }
+    
+    public boolean isConditional() {
+        return this.isConditional;
     }
 
     public boolean isSameSource() {
@@ -426,11 +453,6 @@ public class NestedAttributeMapping extends AttributeMapping {
         // feature per feature. But the linkElement would point to the same data source table
         // if the linkField is null.
         return this.nestedTargetXPath == null;
-    }
-
-    public boolean isConditional() {
-        // true if the type is depending on a function value, i.e. could be a Function or filter
-        return !(nestedFeatureType instanceof AttributeExpressionImpl);
     }
 
     public FeatureTypeMapping getFeatureTypeMapping(Feature feature) throws IOException {

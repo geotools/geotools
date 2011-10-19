@@ -33,7 +33,6 @@ import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
 import org.geotools.data.complex.config.XMLConfigDigester;
 import org.geotools.data.memory.MemoryDataStore;
-import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -99,7 +98,7 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
         List mappings = TestData.createMappingsColumnsAndValues(targetFeature);
 
         Name sourceName = TestData.WATERSAMPLE_TYPENAME;
-        SimpleFeatureSource source = ds.getFeatureSource(sourceName);
+        FeatureSource<SimpleFeatureType, SimpleFeature> source = ds.getFeatureSource(sourceName);
 
         // empty nssupport as the sample types have no namespace defined
         NamespaceSupport namespaces = new NamespaceSupport();

@@ -31,7 +31,7 @@ import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
 
 /**
- * This is just a compilation of constants used in app-schema module. 
+ * This is just a compilation of constants and static methods used in app-schema module. 
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  *
  *
@@ -78,4 +78,11 @@ public class ComplexFeatureConstants {
      * multi-valued properties, e.g. gml:name[2]
      */
     public static final String MAPPED_ATTRIBUTE_INDEX = "MAPPED_ATTRIBUTE_INDEX";
+    
+    public static final String XPATH_SEPARATOR = "/";
+
+    /**
+     * Fake attribute name for simple contents of a complex type, eg. gml:name of gml:CodeType type
+     */
+    public static final Name SIMPLE_CONTENT = new NameImpl(null, "simpleContent");
 }

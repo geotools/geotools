@@ -39,7 +39,6 @@ import org.geotools.data.complex.filter.XPath.StepList;
 import org.geotools.data.joining.JoiningNestedAttributeMapping;
 import org.geotools.data.joining.JoiningQuery;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.feature.AttributeBuilder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureImpl;
@@ -63,6 +62,7 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
+import org.opengis.feature.type.PropertyType;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.FeatureId;
@@ -445,9 +445,9 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                     setPolymorphicValues((Name) mappingName, target, id, nestedMapping, source,
                             xpath, clientPropsMappings);
                     return null;
-                } else if (mappingName instanceof Hints) {
+                } else if (mappingName instanceof String) {
                     // referential polymorphism mapping
-                    setPolymorphicReference((Hints) mappingName, clientPropsMappings, target,
+                    setPolymorphicReference((String) mappingName, clientPropsMappings, target,
                             xpath, targetNodeType);
                     return null;
                 }
@@ -463,7 +463,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         if (isNestedFeature) {
             // get built feature based on link value
             if (values instanceof Collection) {
-                ArrayList<Feature> nestedFeatures = new ArrayList<Feature>(((Collection) values)
+                ArrayList<Attribute> nestedFeatures = new ArrayList<Attribute>(((Collection) values)
                         .size());
                 for (Object val : (Collection) values) {
                     if (val instanceof Attribute) {
@@ -513,8 +513,6 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         if (values instanceof Collection) {
             // nested feature type could have multiple instances as the whole purpose
             // of feature chaining is to cater for multi-valued properties
-            Map<Object, Object> userData;
-            Map<Name, Expression> valueProperties = new HashMap<Name, Expression>();
             for (Object singleVal : (Collection) values) {
                 ArrayList valueList = new ArrayList();
                 // copy client properties from input features if they're complex features
@@ -522,9 +520,9 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                 if (singleVal instanceof Attribute) {
                     // copy client properties from input features if they're complex features
                     // wrapped in app-schema data access
-                    valueProperties = getClientProperties((Attribute) singleVal);
+                    Map<Name, Expression> valueProperties = getClientProperties((Attribute) singleVal);
                     if (!valueProperties.isEmpty()) {
-                        valueProperties.putAll(clientPropsMappings);
+                        clientPropsMappings.putAll(valueProperties);
                     }
                 }
                 if (!isNestedFeature) {
@@ -541,7 +539,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                 }
                 Attribute instance = xpathAttributeBuilder.set(target, xpath, valueList, id,
                         targetNodeType, false, sourceExpression);
-                setClientProperties(instance, source, valueProperties);
+                setClientProperties(instance, source, clientPropsMappings);
             }
         } else {
             if (values instanceof Attribute) {
@@ -570,8 +568,8 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
      * Special handling for polymorphic mapping where the value of the attribute determines that
      * this attribute should be a placeholder for an xlink:href.
      *
-     * @param xlinkHrefHints
-     *            the xlink:href hints holding the URI
+     * @param uri
+     *            the xlink:href URI
      * @param clientPropsMappings
      *            client properties
      * @param target
@@ -581,11 +579,10 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
      * @param targetNodeType
      *            the type of the attribute to be cast to, if any
      */
-    private void setPolymorphicReference(Hints xlinkHrefHints,
+    private void setPolymorphicReference(String uri,
             Map<Name, Expression> clientPropsMappings, Attribute target, StepList xpath,
             AttributeType targetNodeType) {
-
-        Object uri = xlinkHrefHints.get(ComplexFeatureConstants.STRING_KEY);
+        
         if (uri != null) {
             Attribute instance = xpathAttributeBuilder.set(target, xpath, null, "", targetNodeType,
                     true, null);
@@ -626,6 +623,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                     .getMappingByName((Name) mappingName);
             List<AttributeMapping> polymorphicMappings = fTypeMapping.getAttributeMappings();
             AttributeDescriptor attDescriptor = fTypeMapping.getTargetFeature();
+            AttributeType type = attDescriptor.getType();
             Name polymorphicTypeName = attDescriptor.getName();
             StepList prefixedXpath = xpath.clone();
             prefixedXpath.add(new Step(new QName(polymorphicTypeName.getNamespaceURI(),
@@ -635,10 +633,10 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                 id = fTypeMapping.getFeatureIdExpression().evaluate(source, String.class);
             }
             Attribute instance = xpathAttributeBuilder.set(target, prefixedXpath, null, id,
-                    attDescriptor.getType(), false, attDescriptor, null);
+                    type, false, attDescriptor, null);
             setClientProperties(instance, source, clientPropsMappings);
             for (AttributeMapping mapping : polymorphicMappings) {
-                if (isTopLevelmapping(polymorphicTypeName, mapping.getTargetXPath())) {
+                if (skipTopElement(polymorphicTypeName, mapping.getTargetXPath(), type)) {
                     // if the top level mapping for the Feature itself, the attribute instance
                     // has already been created.. just need to set the client properties
                     setClientProperties(instance, source, mapping.getClientProperties());
@@ -824,7 +822,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
         for (AttributeMapping attMapping : selectedMapping) {
             try {
-                if (isTopLevelmapping(targetNodeName, attMapping.getTargetXPath())) {
+                if (skipTopElement(targetNodeName, attMapping.getTargetXPath(), targetNode.getType())) {
                     // ignore the top level mapping for the Feature itself
                     // as it was already set
                     continue;
@@ -857,15 +855,9 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         return target;
     }
 
-    private boolean isTopLevelmapping(Name targetNodeName, StepList targetXPath) {
-        if (targetXPath.size() == 1) {
-            Step rootStep = targetXPath.get(0);
-            QName stepName = rootStep.getName();
-            if (Types.equals(targetNodeName, stepName)) {
-                return true;
-            }
-        }
-        return false;
+    protected boolean skipTopElement(Name topElement, StepList xpath, AttributeType type) {
+        // don't skip simple content e.g. when feature chaining gml:name
+        return Types.equals(topElement, xpath) && !Types.isSimpleContentType(type);
     }
 
     protected Feature populateFeatureData(String id) throws IOException {

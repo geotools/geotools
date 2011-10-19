@@ -62,7 +62,7 @@ import org.opengis.filter.Filter;
  * @source $URL$
  * @since 2.4
  */
-class MappingFeatureSource implements FeatureSource<FeatureType, Feature> {
+public class MappingFeatureSource implements FeatureSource<FeatureType, Feature> {
 
     private AppSchemaDataAccess store;
 
@@ -157,7 +157,7 @@ class MappingFeatureSource implements FeatureSource<FeatureType, Feature> {
         return mapping.getTargetFeature();
     }
 
-    protected FeatureTypeMapping getMapping() {
+    public FeatureTypeMapping getMapping() {
         return mapping;
     }
     

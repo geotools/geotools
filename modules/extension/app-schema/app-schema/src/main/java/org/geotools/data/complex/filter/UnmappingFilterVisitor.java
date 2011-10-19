@@ -815,7 +815,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
 
         if (matchingMappings.isEmpty() && simplifiedSteps.size() > 1) {
             // means some attributes are probably mapped separately in feature chaining
-            matchingMappings.add(new NestedAttributeExpression(targetXPath, mappings, this.mappings.getNamespaces()));
+            matchingMappings.add(new NestedAttributeExpression(targetXPath, mappings));
         }
 
         if (matchingMappings.size() == 0) {

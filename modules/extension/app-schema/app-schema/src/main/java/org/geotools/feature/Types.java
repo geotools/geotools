@@ -30,7 +30,10 @@ import javax.xml.namespace.QName;
 import org.opengis.feature.IllegalAttributeException;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
+import org.geotools.data.complex.filter.XPath.Step;
+import org.geotools.data.complex.filter.XPath.StepList;
 import org.geotools.feature.type.AttributeTypeImpl;
+import org.geotools.xs.XSSchema;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -661,6 +664,17 @@ public class Types extends org.geotools.feature.type.Types {
         }
         return typeName(name.getNamespaceURI(), name.getLocalPart());
     }
+    
+    public static boolean equals(Name targetNodeName, StepList targetXPath) {
+        if (targetXPath.size() == 1) {
+            Step rootStep = targetXPath.get(0);
+            QName stepName = rootStep.getName();
+            if (Types.equals(targetNodeName, stepName)) {
+                return true;
+            }
+        }
+        return false;
+    }  
 
     public static boolean equals(Name name, QName qName) {
         if (name == null && qName != null) {
@@ -703,7 +717,7 @@ public class Types extends org.geotools.feature.type.Types {
             return null;
         }
 
-        int prefixIdx = prefixedName.indexOf(':');
+        int prefixIdx = prefixedName.lastIndexOf(':');
         if (prefixIdx == -1) {
             return Types.typeName(prefixedName);
             // throw new IllegalArgumentException(prefixedName + " is not
@@ -725,7 +739,52 @@ public class Types extends org.geotools.feature.type.Types {
         name = Types.typeName(nsUri, localName);
 
         return name;
+    }   
+
+    /**
+     * Return true if the type is either a simple type or has a simple type as its supertype. In
+     * particular, complex types with simple content will return true.
+     * 
+     * @param type
+     * @return
+     */
+    public static boolean isSimpleContentType(PropertyType type) {
+        if (type == XSSchema.ANYSIMPLETYPE_TYPE) {
+            // should never happen as this type is abstract
+            throw new RuntimeException("Unexpected simple type");
+        }
+        PropertyType superType = type.getSuper();
+        if (superType == XSSchema.ANYSIMPLETYPE_TYPE) {
+            return true;
+        } else if (superType == null) {
+            return false;
+        } else {
+            return isSimpleContentType(superType);
+        }
     }
 
+    public static boolean isSimpleContent(StepList parentPath, PropertyType schema) {
+        boolean isSimpleContent = false;
+        if (schema instanceof ComplexType) {
+            Iterator<Step> iterator = parentPath.iterator();
+            Step step = iterator.next();
+            PropertyDescriptor parentDescriptor = ((ComplexType) schema).getDescriptor(Types
+                    .toTypeName(step.getName()));
+            while (iterator.hasNext() && parentDescriptor != null) {
+                step = iterator.next();
+                schema = parentDescriptor.getType();
+                if (schema instanceof ComplexType) {
+                    parentDescriptor = ((ComplexType) schema).getDescriptor(Types.toTypeName(step
+                            .getName()));
+                } else {
+                    parentDescriptor = null;
+                }
+            }
+            if (parentDescriptor != null) {
+                isSimpleContent = Types.isSimpleContentType(parentDescriptor.getType());
+            }
+        }
+        return isSimpleContent;
+    }
 
 }

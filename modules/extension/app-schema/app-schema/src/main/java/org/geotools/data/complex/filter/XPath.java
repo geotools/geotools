@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,16 +33,17 @@ import org.geotools.data.complex.ComplexFeatureConstants;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.AttributeBuilder;
 import org.geotools.feature.AttributeImpl;
-import org.geotools.feature.NameImpl;
 import org.geotools.feature.Types;
 import org.geotools.feature.ValidatingFeatureFactoryImpl;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.GeometryTypeImpl;
 import org.geotools.feature.type.UniqueNameFeatureTypeFactoryImpl;
+import org.geotools.gml3.GML;
 import org.geotools.util.CheckedArrayList;
 import org.geotools.xs.XSSchema;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
+import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureFactory;
 import org.opengis.feature.Property;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -57,6 +59,7 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.util.Cloneable;
+import org.xml.sax.Attributes;
 import org.xml.sax.helpers.NamespaceSupport;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -207,14 +210,8 @@ public class XPath {
             while (mine.hasNext()) {
                 myStep = (Step) mine.next();
                 hisStep = (Step) him.next();
-                if (myStep.isIndexed()) {
-                    if (!myStep.equals(hisStep)) {
-                        return false;
-                    }
-                } else {
-                    if (!myStep.equalsIgnoreIndex(hisStep)) {
-                        return false;
-                    }
+                if (!myStep.equalsIgnoreIndex(hisStep)) {
+                    return false;
                 }
             }
             return true;
@@ -427,6 +424,13 @@ public class XPath {
          */
         public boolean isXmlAttribute() {
             return isXmlAttribute;
+        }
+        
+        /**
+         * @return true if this step represents an id attribute
+         */
+        public boolean isId() {
+            return isXmlAttribute && attributeName.equals(GML.id);
         }
 
         public void setIndex(int index) {
@@ -675,22 +679,21 @@ public class XPath {
 
         final StepList steps = new StepList(xpath);
 
-        // if (steps.size() < 2) {
-        // throw new IllegalArgumentException("parent not yet built for " +
-        // xpath);
-        // }
-
         Attribute parent = att;
         Name rootName = null;
-        if (parent.getDescriptor() != null) {
-            rootName = parent.getDescriptor().getName();
+        AttributeDescriptor parentDescriptor = parent.getDescriptor();
+        if (parentDescriptor != null) {
+            rootName = parentDescriptor.getName();
             Step rootStep = (Step) steps.get(0);
             QName stepName = rootStep.getName();
-            if (stepName.getLocalPart().equals(rootName.getLocalPart())) {
-                if (XMLConstants.NULL_NS_URI.equals(stepName.getNamespaceURI())
-                        || stepName.getNamespaceURI().equals(rootName.getNamespaceURI())) {
-                    // first step is the self reference to att, so skip it
+            if (Types.equals(rootName, stepName)) {
+                // first step is the self reference to att, so skip it
+                if (steps.size() > 1) {
                     steps.remove(0);
+                } else {
+                    // except when the xpath is the root itself 
+                    // where it is done for feature chaining for simple content
+                    return setSimpleContentValue(parent, value);
                 }
             }
         }
@@ -795,8 +798,8 @@ public class XPath {
             if (isLastStep) {
                 // reached the leaf
                 if (currStepDescriptor == null) {
-                    throw new IllegalArgumentException(currStep
-                            + " is not a valid location path for type " + _parentType.getName());
+                    throw new IllegalArgumentException(currStep + " is not a valid location path for type "
+                            + _parentType.getName());
                 }
                 if (value == null && !currStepDescriptor.isNillable() && sourceExpression != null
                         && !sourceExpression.equals(Expression.NIL)) {
@@ -804,10 +807,8 @@ public class XPath {
                         return null;
                     }
                 }
-                int index = currStep.isIndexed ? currStep.getIndex() : -1;
-                Attribute attribute = setValue(currStepDescriptor, id, value, index, parent,
-                        targetNodeType, isXlinkRef);
-                return attribute;
+                return setLeafAttribute(currStepDescriptor, currStep, id, value,
+                        parent, targetNodeType, isXlinkRef);
             } else {
                 // parent = appendComplexProperty(parent, currStep,
                 // currStepDescriptor);
@@ -818,12 +819,54 @@ public class XPath {
         }
         throw new IllegalStateException();
     }
+    
+    /**
+     * Set a simple content value for an attribute.
+     * 
+     * @param attribute
+     *            Attribute of simple content type.
+     * @param value
+     *            Value for the simple content.
+     * @return The attribute with simple content type.
+     */
+    private Attribute setSimpleContentValue(Attribute attribute, Object value) {
+        ArrayList<Attribute> contents = new ArrayList<Attribute>();
+        Attribute simpleContent = buildSimpleContent(attribute.getType(), value);
+        contents.add(simpleContent);
+        attribute.setValue(contents);
+        return simpleContent;
+    }
+    
+    private Attribute setLeafAttribute(AttributeDescriptor currStepDescriptor,
+            Step currStep, String id, Object value, Attribute parent,
+            AttributeType targetNodeType, boolean isXlinkRef) {
+        int index = currStep.isIndexed ? currStep.getIndex() : -1;
+        Attribute attribute = setValue(currStepDescriptor, id, value, index, parent,
+                targetNodeType, isXlinkRef);
+        return attribute;
+    }
 
+    @SuppressWarnings("unchecked")
     private Attribute setValue(final AttributeDescriptor descriptor, final String id,
             final Object value, final int index, final Attribute parent,
             final AttributeType targetNodeType, boolean isXlinkRef) {
-        // adapt value to context
-        Object convertedValue = convertValue(descriptor, value);
+        
+        Object convertedValue;
+        Map <Object, Object> simpleContentProperties = null;
+        if (isFeatureChainedSimpleContent(descriptor, value)) {   
+            // get the simple content attribute from the value
+            Collection<Property> simpleContentList = extractSimpleContent(value);
+            convertedValue = simpleContentList;
+            // and also get the client properties from the feature that wraps the simple content
+            // and it will be merged with the created attribute's client properties later
+            if (!simpleContentList.isEmpty()) {
+                simpleContentProperties = simpleContentList.iterator().next().getUserData();    
+            }
+        } else {
+            // adapt value to context
+            convertedValue = convertValue(descriptor, value);   
+        }
+                
         Attribute leafAttribute = null;
         final Name attributeName = descriptor.getName();        
         if (!isXlinkRef) {
@@ -856,13 +899,13 @@ public class XPath {
                                         mappedIndex = valueIndex;
                                     }
                                     if (index == Integer.parseInt(String.valueOf(mappedIndex))) {
-                                        return stepValue;
+                                        leafAttribute = stepValue;
                                     }
                                     valueIndex++;
                                 }
                             } else {
                                 // get the last existing node
-                                return values.get(values.size() - 1);
+                                leafAttribute = values.get(values.size() - 1);
                             }
                         } else {
                             for (Attribute stepValue : values) {
@@ -878,7 +921,7 @@ public class XPath {
                                     }
                                 }
                                 if (sameIndex && stepValue.getValue().equals(convertedValue)) {
-                                    return stepValue;
+                                    leafAttribute = stepValue;
                                 }
                             }
                         }
@@ -930,7 +973,108 @@ public class XPath {
         if (!isEmpty(convertedValue)) {
             leafAttribute.setValue(convertedValue);
         }
+        if (simpleContentProperties != null) {
+            mergeClientProperties(leafAttribute, simpleContentProperties);
+        }
         return leafAttribute;
+    }
+
+    /**
+     * Extract the simple content attribute from a list of features.
+     * This is used when feature chaining is used for simple contents, such
+     * as gml:name.. therefore the iterator would create a list of features containing the
+     * simple content attributes. 
+     * @param value    List of features
+     * @return   The attribute with simple content
+     */
+    @SuppressWarnings("unchecked")
+    private Collection<Property> extractSimpleContent(Object value) {
+       if (value == null || !(value instanceof Collection)) {
+           return null;
+       }
+       Collection list = (Collection) value;
+       if (list.size() != 1) {
+           // there should only 1 feature in a list even if it's multi-valued
+           // since each value should be wrapped in its own parent node
+           // eg. the format is
+           // gsml:specification[1]/gsml:CompositionPart/...
+           // gsml:specification[2]/gsml:CompositionPart/...
+           throw new IllegalArgumentException("Expecting only 1 feature in the list!");
+       }
+       Object f = list.iterator().next();
+       if (!(f instanceof Feature)) {
+           throw new IllegalArgumentException("Expecting a feature!");
+       }
+       Feature feature = (Feature) f;
+       return feature.getProperties(ComplexFeatureConstants.SIMPLE_CONTENT);
+    }
+
+    /**
+     * Merge client properties from an attribute with a given map.
+     * 
+     * @param leafAttribute
+     *            The attribute which will have the client properties
+     * @param simpleContentProperties
+     *            Map of new client properties
+     */
+    @SuppressWarnings("unchecked")
+    private void mergeClientProperties(Attribute leafAttribute,
+            Map<Object, Object> simpleContentProperties) {
+
+        Map<Object, Object> origData = leafAttribute.getUserData();
+        for (Object key : simpleContentProperties.keySet()) {
+            if (key.equals(Attributes.class)) {
+                // client properties
+                Map inputMap = (Map) simpleContentProperties.get(key);
+                if (origData.containsKey(Attributes.class)) {
+                    // check each entry, and copy if it doesn't exist
+                    Map existingMap = (Map) origData.get(key);
+                    for (Object mapKey : inputMap.keySet()) {
+                        if (!existingMap.containsKey(mapKey)) {
+                            existingMap.put(mapKey, inputMap.get(mapKey));
+                        }
+                    }
+                } else {
+                    // copy the whole thing
+                    origData.put(Attributes.class, inputMap);
+                }
+            } else {
+                if (!origData.containsKey(key)) {
+                    origData.put(key, simpleContentProperties.get(key));
+                }
+            }
+        }
+    }
+
+    /**
+     * Determine whether or not the value is a feature with target descriptor that is of the given
+     * attribute descriptor. If it is, then it is a feature chained feature with only simple
+     * content.
+     * 
+     * @param descriptor
+     *            The attribute descriptor
+     * @param value
+     *            value to check
+     * @return true if the value is an arraylist containing a feature with the descriptor.
+     */
+    @SuppressWarnings("unchecked")
+    private boolean isFeatureChainedSimpleContent(AttributeDescriptor descriptor, Object value) {
+        boolean isFeatureChainedSimpleContent = false;
+        if (value != null) {
+            if (value instanceof Collection) {
+                Collection list = (Collection) value;
+                if (!list.isEmpty()) {
+                    Object f = list.iterator().next();
+                    if (f instanceof Feature) {
+                        Name featureName = ((Feature) f).getDescriptor().getName();
+                        if (descriptor.getName().equals(featureName)) {
+                            isFeatureChainedSimpleContent = true;
+                        }
+                    }
+                }
+            }
+        }
+        return isFeatureChainedSimpleContent;
     }
 
     private boolean isEmpty(Object convertedValue) {
@@ -956,7 +1100,7 @@ public class XPath {
         Class<?> binding = type.getBinding();
 
         if (type instanceof ComplexType && binding == Collection.class) {
-            if (!(value instanceof Collection) && isSimpleContentType(type)) {
+            if (!(value instanceof Collection) && Types.isSimpleContentType(type)) {
                 ArrayList<Property> list = new ArrayList<Property>();
                 if (value == null && !descriptor.isNillable()) {
                     return list;
@@ -971,28 +1115,6 @@ public class XPath {
             return collectionString.substring(1, collectionString.length() - 1);
         }
         return FF.literal(value).evaluate(value, binding);
-    }
-
-    /**
-     * Return true if the type is either a simple type or has a simple type as its supertype. In
-     * particular, complex types with simple content will return true.
-     * 
-     * @param type
-     * @return
-     */
-    static boolean isSimpleContentType(AttributeType type) {
-        if (type == XSSchema.ANYSIMPLETYPE_TYPE) {
-            // should never happen as this type is abstract
-            throw new RuntimeException("Unexpected simple type");
-        }
-        AttributeType superType = type.getSuper();
-        if (superType == XSSchema.ANYSIMPLETYPE_TYPE) {
-            return true;
-        } else if (superType == null) {
-            return false;
-        } else {
-            return isSimpleContentType(superType);
-        }
     }
 
     /**
@@ -1021,9 +1143,8 @@ public class XPath {
         AttributeType simpleContentType = getSimpleContentType(type);
         Object convertedValue = FF.literal(value).evaluate(value,
                 getSimpleContentType(type).getBinding());
-        Name name = new NameImpl(null, "simpleContent");
-        AttributeDescriptor descriptor = new AttributeDescriptorImpl(simpleContentType, name, 1, 1,
-                true, (Object) null);
+        AttributeDescriptor descriptor = new AttributeDescriptorImpl(simpleContentType,
+                ComplexFeatureConstants.SIMPLE_CONTENT, 1, 1, true, (Object) null);
         return new AttributeImpl(convertedValue, descriptor, null);
     }
 

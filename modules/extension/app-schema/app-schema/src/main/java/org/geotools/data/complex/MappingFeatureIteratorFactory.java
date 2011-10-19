@@ -25,6 +25,7 @@ import org.geotools.data.Query;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.filter.ComplexFilterSplitter;
 import org.geotools.data.joining.JoiningQuery;
+import org.geotools.feature.Types;
 import org.geotools.filter.FidFilterImpl;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.NestedAttributeExpression;
@@ -81,7 +82,11 @@ public class MappingFeatureIteratorFactory {
                 query.setFilter(Filter.INCLUDE);
                 Query unrolledQuery = store.unrollQuery(query, mapping);
                 unrolledQuery.setFilter(unrolledFilter);
-                iterator = new DataAccessMappingFeatureIterator(store, mapping, query, false, unrolledQuery);
+                if (isSimpleType(mapping)) {
+                    iterator = new MappingAttributeIterator(store, mapping, query, false, unrolledQuery);
+                } else {
+                    iterator = new DataAccessMappingFeatureIterator(store, mapping, query, false, unrolledQuery);
+                }
 
             } else {
                 Filter filter = query.getFilter();
@@ -102,7 +107,6 @@ public class MappingFeatureIteratorFactory {
             }
             return iterator;
         } else {
-
             if (query.getFilter() != null) {
                 Query unrolledQuery = store.unrollQuery(query, mapping);
                 Filter filter = unrolledQuery.getFilter();
@@ -130,13 +134,20 @@ public class MappingFeatureIteratorFactory {
                 } else if (!filter.equals(Filter.INCLUDE) && !filter.equals(Filter.EXCLUDE)
                         && !(filter instanceof FidFilterImpl)) {
                     // normal filters
-                    return new DataAccessMappingFeatureIterator(store, mapping, query, true,
-                            unrolledQuery);
+                    if (isSimpleType(mapping)) {
+                        return new MappingAttributeIterator(store, mapping, query, true, unrolledQuery);
+                    } else {
+                        return new DataAccessMappingFeatureIterator(store, mapping, query, true, unrolledQuery);
+                    }
                 }
             }
 
             return new DataAccessMappingFeatureIterator(store, mapping, query, false);
         }
+    }
+    
+    private static boolean isSimpleType(FeatureTypeMapping mapping) {
+        return Types.isSimpleContentType(mapping.getTargetFeature().getType());       
     }
     
     private static FilterCapabilities getFilterCapabilities(FeatureSource mappedSource)throws IllegalArgumentException{

@@ -31,6 +31,9 @@ import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.filter.XPath.Step;
 import org.geotools.data.complex.filter.XPath.StepList;
 import org.geotools.feature.Types;
+import org.geotools.filter.NestedAttributeExpression;
+import org.geotools.gml3.GML;
+import org.opengis.feature.Feature;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
@@ -49,11 +52,11 @@ import org.xml.sax.helpers.NamespaceSupport;
  */
 public class FeatureTypeMapping {
     /**
-     * It's bad to leave this with no parameters type, but we should allow for both complex and
+     * We should allow for both complex and
      * simple feature source as we could now take in a data access instead of a data store as the
      * source data store
      */
-    private FeatureSource<?,?> source;
+    private FeatureSource<? extends FeatureType,? extends Feature> source;
 
     /**
      * Encapsulates the name and type of target Features
@@ -83,8 +86,8 @@ public class FeatureTypeMapping {
         this(null, null, new LinkedList<AttributeMapping>(), new NamespaceSupport());
     }
 
-    public FeatureTypeMapping(FeatureSource<?,?> source, AttributeDescriptor target,
-            List<AttributeMapping> mappings, NamespaceSupport namespaces) {
+    public FeatureTypeMapping(FeatureSource<? extends FeatureType, ? extends Feature> source,
+            AttributeDescriptor target, List<AttributeMapping> mappings, NamespaceSupport namespaces) {
         this.source = source;
         this.target = target;
         this.attributeMappings = new LinkedList<AttributeMapping>(mappings);
@@ -223,9 +226,7 @@ public class FeatureTypeMapping {
      * propertyName is just <code>gml:name</code>, all three mappings apply.
      * </p>
      * 
-     * @param mappings
-     *            Feature type mapping to search for
-     * @param simplifiedSteps
+     * @param propertyName
      * @return
      */
     public List<Expression> findMappingsFor(final StepList propertyName) {
@@ -257,24 +258,26 @@ public class FeatureTypeMapping {
             parentPath.remove(parentPath.size() - 1);
 
             candidates = getAttributeMappingsIgnoreIndex(parentPath);
-              
-            expressions = getClientPropertyExpressions(candidates, clientPropertyName);            
+
+            expressions = getClientPropertyExpressions(candidates, clientPropertyName, parentPath);
             if (expressions.isEmpty()) {
                 // this might be a wrapper mapping for another complex mapping
                 // look for the client properties there
                 FeatureTypeMapping inputMapping = getUnderlyingComplexMapping();
                 if (inputMapping != null) {
                     return getClientPropertyExpressions(inputMapping
-                            .getAttributeMappingsIgnoreIndex(parentPath), clientPropertyName);
+                            .getAttributeMappingsIgnoreIndex(parentPath), clientPropertyName,
+                            parentPath);
                 }
             }
         }
         return expressions;
     }
 
-    private static List getClientPropertyExpressions(final List attributeMappings,
-            final Name clientPropertyName) {
-        List clientPropertyExpressions = new ArrayList(attributeMappings.size());
+    private List<Expression> getClientPropertyExpressions(final List attributeMappings,
+            final Name clientPropertyName, StepList parentPath) {
+        List<Expression> clientPropertyExpressions = new ArrayList<Expression>(attributeMappings
+                .size());
 
         AttributeMapping attMapping;
         Map clientProperties;
@@ -283,32 +286,45 @@ public class FeatureTypeMapping {
             attMapping = (AttributeMapping) it.next();
             clientProperties = attMapping.getClientProperties();
             // NC -added
-            //FIXME - Id Checking should be done in a better way
-            if (clientPropertyName.getLocalPart().equals("id")) {
+            if (clientPropertyName.equals(GML.id)) {
                 clientPropertyExpressions.add(attMapping.getIdentifierExpression());
-            } else // end NC - added      
-            if (clientProperties.containsKey(clientPropertyName)) {
+            } else if (clientProperties.containsKey(clientPropertyName)) {
+                // end NC - added
                 propertyExpression = (Expression) clientProperties.get(clientPropertyName);
                 clientPropertyExpressions.add(propertyExpression);
+            } else if (attMapping.isNestedAttribute() && Types.isSimpleContent(parentPath, getTargetFeature().getType())) {
+                // create the full xpath from the parent's attribute
+                // only bother if this is a simple content
+                // otherwise, it would be handled in NestedAttributeExpression since it'd
+                // already have the full path then
+                StepList fullXpath = parentPath.clone();
+                fullXpath.add(new Step(Types.toQName(clientPropertyName, namespaces), 1, true, false));
+                clientPropertyExpressions.add(new NestedAttributeExpression(
+                                        fullXpath, this));
             }
         }
 
         return clientPropertyExpressions;
     }
     
-
     /**
      * Extracts the source Expressions from a list of {@link AttributeMapping}s
      * 
      * @param attributeMappings
      */
-    private static List getExpressions(List attributeMappings) {
+    private List getExpressions(List attributeMappings) {
         List expressions = new ArrayList(attributeMappings.size());
         AttributeMapping mapping;
         Expression sourceExpression;
         for (Iterator it = attributeMappings.iterator(); it.hasNext();) {
             mapping = (AttributeMapping) it.next();
-            sourceExpression = mapping.getSourceExpression();
+            if (mapping instanceof NestedAttributeMapping) {
+                // nested attribute with simple content is possible now
+                sourceExpression = new NestedAttributeExpression(
+                        mapping.getTargetXPath(), this);
+            } else {
+                sourceExpression = mapping.getSourceExpression();
+            }
             expressions.add(sourceExpression);
         }
         return expressions;

@@ -23,7 +23,7 @@ import org.opengis.referencing.crs.GeographicCRS;
 /**
  * Returns a {@link ProjectionHandler} for any {@link GeographicCRS}
  *
- * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/render/src/main/java/org/geotools/renderer/crs/GeographicHandlerFactory.java $
+ * @source $URL$
  */
 public class GeographicHandlerFactory implements ProjectionHandlerFactory {
     

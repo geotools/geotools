@@ -59,6 +59,7 @@ public class GridCoverageLayer extends Layer {
 
     @Override
     public void dispose() {
+        preDispose();
         if( coverage != null ){
             try{
                 coverage.dispose(true);

@@ -43,7 +43,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * <p>
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
  *
- * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/render/src/main/java/org/geotools/map/FeatureSourceMapLayer.java $
+ * @source $URL$
  * @deprecated Please use MapLayer directly; or you are just interested in rendering a subclass of Layer
  */
 public class FeatureSourceMapLayer extends MapLayer {

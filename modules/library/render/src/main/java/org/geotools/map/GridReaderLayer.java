@@ -64,6 +64,7 @@ public class GridReaderLayer extends Layer {
 
     @Override
     public void dispose() {
+        preDispose();
         if (reader != null) {
             try{
                 reader.dispose();

@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ * 
+ *    (C) 2010-2011, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.map;
 
 import java.util.HashMap;
@@ -16,7 +32,7 @@ import org.geotools.util.logging.Logging;
  * <p>
  * Layers usually represent a single dataset; and arranged into a z-order by a Map for display.
  *
- * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/render/src/main/java/org/geotools/map/Layer.java $
+ * @source $URL$
  */
 public abstract class Layer {
 
@@ -37,6 +53,11 @@ public abstract class Layer {
      * Flag to mark the layer as selected (for general use by clients)
      */
     protected boolean selected;
+
+    /**
+     * Flag to record that {@linkplain #preDispose()} has been called.
+     */
+    private boolean preDispose;
 
     /**
      * Map of application supplied information.
@@ -159,6 +180,29 @@ public abstract class Layer {
     }
 
     /**
+     * Notifies all registered listeners that the layer is scheduled
+     * to be disposed.
+     * 
+     * @param event
+     *            The event to be fired
+     */
+    protected void fireMapLayerListenerLayerPreDispose() {
+        if (listenerList == null) {
+            return;
+        }
+        MapLayerEvent event = new MapLayerEvent(this, MapLayerEvent.PRE_DISPOSE);
+        for (MapLayerListener mapListener : listenerList) {
+            try {
+                mapListener.layerPreDispose(event);
+            } catch (Throwable t) {
+                if (LOGGER.isLoggable(Level.FINER)) {
+                    LOGGER.log(Level.FINER, "Layer Event failure:" + t, t);
+                }
+            }
+        }
+    }
+
+    /**
      * Layer creation; please use a concrete subclass to work with specific content.
      * <p>
      * Note you should dispose() a layer after use.
@@ -178,10 +222,25 @@ public abstract class Layer {
     }
 
     /**
+     * Alerts listeners that this layer has been scheduled to be disposed
+     * to give them a chance to finish or cancel any tasks using the layer.
+     */
+    public void preDispose() {
+        if (!preDispose) {
+            preDispose = true;
+            fireMapLayerListenerLayerPreDispose();
+        }
+    }
+
+    /**
      * Allows a Layer to clean up any listeners, or internal caches or resources it has added during
      * use.
      */
     public void dispose() {
+        if (!preDispose) {
+            LOGGER.severe("Layer preDispose was not called prior to calling dispose");
+        }
+        
         if (listenerList != null) {
             listenerList.clear();
             listenerList = null;

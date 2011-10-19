@@ -31,7 +31,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * rendering requirements for an entire Map; while a Style (defined by SE) is focused on a single
  * layer of content
  *
- * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/render/src/main/java/org/geotools/map/FeatureLayer.java $
+ * @source $URL$
  */
 public class FeatureLayer extends Layer {
     /** Style used for rendering */
@@ -100,6 +100,7 @@ public class FeatureLayer extends Layer {
 
     @Override
     public void dispose() {
+        preDispose();
         if (featureSource != null) {
             if (sourceListener != null) {
                 featureSource.removeFeatureListener(sourceListener);

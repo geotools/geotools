@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2011, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -20,7 +20,7 @@ import java.util.EventListener;
 
 
 /**
- * DOCUMENT ME!
+ * Listens for {@linkplain MapLayerListEvent} events.
  *
  * @author wolf
  *
@@ -54,4 +54,11 @@ public interface MapLayerListListener extends EventListener {
      * @param event encapsulating the event information
      */
     public void layerMoved(MapLayerListEvent event);
+    
+    /**
+     * Triggered when a layer is about to be disposed.
+     * 
+     * @param event encapsulating the event information
+     */
+    public void layerPreDispose(MapLayerListEvent event);
 }

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2011, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -31,8 +31,8 @@ import java.util.EventObject;
  * @source $URL$
  * @version $Id$
  *
- * @see Layer
- * @see LayerListener
+ * @see org.geotools.map.Layer
+ * @see MapLayerListener
  */
 public class MapLayerEvent extends EventObject {
     /**
@@ -70,15 +70,20 @@ public class MapLayerEvent extends EventObject {
      */
     public static final int FILTER_CHANGED = 5;
 
-    /** The reason for the change. */
-    private final int reason;
-
     /**
      * Flag set when the layer selection status is changed.
      *
      * @see #getReason
      */
     public static final int SELECTION_CHANGED = 6;
+
+    /**
+     * Flag set when the layer is about to be disposed.
+     */
+    public static final int PRE_DISPOSE = 7;
+
+    /** The reason for the change. */
+    private final int reason;
 
     /**
      * Creates a new instance of <code>LayerEvent</code> with the specified reason.
@@ -93,8 +98,8 @@ public class MapLayerEvent extends EventObject {
         super(source);
         this.reason = reason;
 
-        if ((reason <= 0) || (reason > SELECTION_CHANGED)) {
-            throw new IllegalArgumentException();
+        if ((reason <= 0) || (reason > PRE_DISPOSE)) {
+            throw new IllegalArgumentException("Invalid value for reason argument: " + reason);
         }
     }
 

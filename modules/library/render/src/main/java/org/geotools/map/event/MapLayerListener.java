@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2011, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -20,15 +20,12 @@ package org.geotools.map.event;
 // J2SE dependencies
 import java.util.EventListener;
 
-import org.geotools.map.MapLayer;
-
-
 /**
  * The listener that's notified when some {@linkplain MapLayer layer} property changes.
  *
  * @author Andrea Aime
  *
- * @see MapLayer
+ * @see org.geotools.map.MapLayer
  * @see MapLayerEvent
  *
  * @source $URL$
@@ -64,9 +61,17 @@ public interface MapLayerListener extends EventListener {
     void layerSelected(MapLayerEvent event);
 
     /**
-     * nvoked when the component has been set as not selected.
+     * Invoked when the component has been set as not selected.
      *
      * @param event encapsulating the event information
      */
     void layerDeselected(MapLayerEvent event);
+    
+    /**
+     * Invoked when the layer is scheduled for disposal to give listeners
+     * the chance to finish or cancel any tasks involving the layer.
+     * 
+     * @param event encapsulating the event information
+     */
+    void layerPreDispose(MapLayerEvent event);
 }

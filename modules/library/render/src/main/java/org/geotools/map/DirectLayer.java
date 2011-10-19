@@ -19,7 +19,7 @@ import java.awt.Graphics2D;
  * a separate data mode, style model and renderer. 
  * @author Jody
  *
- * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/render/src/main/java/org/geotools/map/DirectLayer.java $
+ * @source $URL$
  */
 public abstract class DirectLayer extends Layer {
 

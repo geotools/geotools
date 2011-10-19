@@ -65,35 +65,46 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @author Jody Garnett
  * @since 2.7
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/map/MapContent.java $
- * @version $Id: MapContent.java 38244 2011-10-18 04:59:15Z mbedward $
+ * @source $URL$
+ * @version $Id$
  */
 public class MapContent {
 
     /** The logger for the map module. */
     static protected final Logger LOGGER = Logging.getLogger("org.geotools.map");
+
     /** List of Layers to be rendered */
     private final LayerList layerList;
+
     /** MapLayerListListeners to be notified in the event of change */
     private CopyOnWriteArrayList<MapLayerListListener> mapListeners;
+
     /** Map used to hold application specific information */
     private HashMap<String, Object> userData;
+
     /** Map title */
     private String title;
+    
     /** PropertyListener list used for notifications */
     private CopyOnWriteArrayList<PropertyChangeListener> propertyListeners;
+
     /**
      * Viewport for map rendering.
      * 
-     * While the map maintains one viewport internally to better reflect a map context document you
-     * are free to maintain a seperate viewport; or indeed construct many viewports representing
-     * tiles to be renderered.
+     * While the map maintains one viewport internally to better reflect a map 
+     * context document you are free to maintain a separate viewport; or indeed 
+     * construct many viewports representing tiles to be rendered.
      */
     protected MapViewport viewport;
+    
+    private MapViewport defaultViewport;
+
     /** Listener used to watch individual layers and report changes to MapLayerListListeners */
     private MapLayerListener layerListener;
+    
     private final ReadWriteLock monitor;
 
+    
     /**
      * Creates a new map content.
      */
@@ -107,8 +118,8 @@ public class MapContent {
      */
     @Override
     protected void finalize() throws Throwable {
-        if (this.layerList != null) {
-            if (!this.layerList.isEmpty()) {
+        if( this.layerList != null){
+            if( !this.layerList.isEmpty()){
                 LOGGER.severe("Call MapContent dispose() to prevent memory leaks");
             }
         }
@@ -131,6 +142,10 @@ public class MapContent {
         }
         layerList.clear();
 
+        if (this.mapListeners != null) {
+            this.mapListeners.clear();
+            this.mapListeners = null;
+        }
 
         if (this.layerListener != null) {
             this.layerListener = null;
@@ -140,6 +155,7 @@ public class MapContent {
             this.propertyListeners.clear();
             this.propertyListeners = null;
         }
+        
         this.title = null;
         if (this.userData != null) {
             // remove property listeners prior to removing userData
@@ -289,6 +305,12 @@ public class MapContent {
                     }
 
                     public void layerChanged(MapLayerEvent event) {
+                        Layer layer = (Layer) event.getSource();
+                        int index = layerList.indexOf(layer);
+                        fireLayerEvent(layer, index, event);
+                    }
+
+                    public void layerPreDispose(MapLayerEvent event) {
                         Layer layer = (Layer) event.getSource();
                         int index = layerList.indexOf(layer);
                         fireLayerEvent(layer, index, event);
@@ -493,6 +515,28 @@ public class MapContent {
         }
     }
 
+    protected void fireLayerPreDispose(Layer element, int toIndex) {
+        monitor.readLock().lock();
+        try {
+            if (mapListeners == null) {
+                return;
+            }
+            MapLayerListEvent event = new MapLayerListEvent(this, element, toIndex);
+            for (MapLayerListListener mapLayerListListener : mapListeners) {
+                try {
+                    mapLayerListListener.layerPreDispose(event);
+                } catch (Throwable t) {
+                    if (LOGGER.isLoggable(Level.FINER)) {
+                        LOGGER.logp(Level.FINE, mapLayerListListener.getClass().getName(),
+                                "layerMoved", t.getLocalizedMessage(), t);
+                    }
+                }
+            }
+        } finally {
+            monitor.readLock().unlock();
+        }
+    }
+
     protected void fireLayerEvent(Layer element, int index, MapLayerEvent layerEvent) {
         monitor.readLock().lock();
         try {
@@ -502,7 +546,14 @@ public class MapContent {
             MapLayerListEvent mapEvent = new MapLayerListEvent(this, element, index, layerEvent);
             for (MapLayerListListener mapLayerListListener : mapListeners) {
                 try {
-                    mapLayerListListener.layerChanged(mapEvent);
+                    switch (layerEvent.getReason()) {
+                        case MapLayerEvent.PRE_DISPOSE:
+                            mapLayerListListener.layerPreDispose(mapEvent);
+                            break;
+
+                        default:
+                            mapLayerListListener.layerChanged(mapEvent);
+                    }
                 } catch (Throwable t) {
                     if (LOGGER.isLoggable(Level.FINER)) {
                         LOGGER.logp(Level.FINE, mapLayerListListener.getClass().getName(),
@@ -567,12 +618,13 @@ public class MapContent {
                         maxBounds.expandToInclude(normalized);
                     }
                 } catch (Throwable eek) {
-                    LOGGER.warning("Unable to determine bounds of " + layer + ":" + eek);
+                    LOGGER.log(Level.WARNING, "Unable to determine bounds of " + layer, eek);
                 }
             }
-            if (maxBounds == null && mapCrs != null) {
+            if (maxBounds == null) {
                 maxBounds = new ReferencedEnvelope(mapCrs);
             }
+            
             return maxBounds;
 
         } finally {
@@ -583,18 +635,28 @@ public class MapContent {
     //
     // Viewport Information
     //
+
     /**
-     * Viewport describing the area visiable on screen.
+     * Viewport describing the area visible on screen.
      * <p>
      * Applications may create multiple viewports (perhaps to render tiles of content); the viewport
      * recorded here is intended for interactive applications where it is helpful to have a single
      * viewport representing what the user is seeing on screen.
+     * <p>
+     * With that in mind; if the user has not already supplied a viewport one will be created:
+     * <ul>
+     * <li>The viewport will be configured to show the extent of the current layers as provided by
+     * {@link #getMaxBounds()}.</li>
+     * <li>The viewport will have an empty {@link MapViewport#getBounds()} if no layers have been
+     * added yet.</li>
+     * </ul>
+     * @return MapViewport describing how to draw this map
      */
     public MapViewport getViewport() {
         monitor.readLock().lock();
         try {
             if (viewport == null) {
-                viewport = new MapViewport();
+                viewport = new MapViewport(getMaxBounds());
             }
             return viewport;
         } finally {
@@ -756,15 +818,16 @@ public class MapContent {
         try {
             if (userData == null) {
                 userData = new HashMap<String, Object>() {
-
                     private static final long serialVersionUID = 8011733882551971475L;
 
+                    @Override
                     public Object put(String key, Object value) {
                         Object old = super.put(key, value);
                         fireProperty(key, old, value);
                         return old;
                     }
 
+                    @Override
                     public Object remove(Object key) {
                         Object old = super.remove(key);
                         fireProperty((String) key, old, null);
@@ -845,6 +908,31 @@ public class MapContent {
         }
     }
 
+    /**
+     * Sets the CRS of the viewport, if one exists, based on the first Layer
+     * with a non-null CRS. This is called when a new Layer is added to the
+     * Layer list. Does nothing if the viewport already has a CRS set or if 
+     * it has been set as non-editable.
+     */
+    private void checkViewportCRS() {
+        if (viewport != null 
+                && getCoordinateReferenceSystem() == null 
+                && viewport.isEditable()) {
+            
+            for (Layer layer : layerList) {
+                ReferencedEnvelope bounds = layer.getBounds();
+                if (bounds != null) {
+                    CoordinateReferenceSystem crs = bounds.getCoordinateReferenceSystem();
+                    if (crs != null) {
+                        viewport.setCoordinateReferenceSystem(crs);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    
     private class LayerList extends CopyOnWriteArrayList<Layer> {
 
         private static final long serialVersionUID = 8011733882551971475L;
@@ -863,6 +951,7 @@ public class MapContent {
                 if (layerListener != null) {
                     element.addMapLayerListener(layerListener);
                 }
+                checkViewportCRS();
                 fireLayerAdded(element, index, index);
             }
         }
@@ -919,6 +1008,7 @@ public class MapContent {
             }
 
             if (added) {
+                checkViewportCRS();
                 fireLayerAdded(null, index, size() - 1);
             }
 
@@ -942,6 +1032,7 @@ public class MapContent {
                         get(i).addMapLayerListener(layerListener);
                     }
                 }
+                checkViewportCRS();
                 fireLayerAdded(null, start, size() - 1);
             }
 
@@ -962,6 +1053,7 @@ public class MapContent {
                 if (layerListener != null) {
                     element.addMapLayerListener(layerListener);
                 }
+                checkViewportCRS();
                 fireLayerAdded(element, size() - 1, size() - 1);
             }
             return added;
@@ -1095,6 +1187,7 @@ public class MapContent {
              */
             Layer removed = remove(index);
             add(index, element);
+            checkViewportCRS();
             return removed;
         }
         

@@ -37,7 +37,7 @@ import static org.junit.Assert.*;
  * 
  * @author Jody Garnett
  * @author Michael Bedward
- * @since 8.0
+ * @since 2.7
  *
  * @source $URL$
  * @version $Id$

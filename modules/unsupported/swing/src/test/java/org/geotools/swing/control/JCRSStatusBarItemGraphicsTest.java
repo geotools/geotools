@@ -28,6 +28,7 @@ import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.fixture.JButtonFixture;
 
 import org.geotools.map.MapContent;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.swing.MapPane;
 import org.geotools.swing.testutils.GraphicsTestBase;
 import org.geotools.swing.testutils.GraphicsTestRunner;
@@ -63,6 +64,7 @@ public class JCRSStatusBarItemGraphicsTest extends GraphicsTestBase<Frame> {
                 JFrame frame = new JFrame();
                 frame.setLayout(new BorderLayout());
                 mapContent = new MapContent();
+                mapContent.getViewport().setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
                 mapPane = new MockMapPane();
                 mapPane.setMapContent(mapContent);
                 item = new JCRSStatusBarItem(mapPane);

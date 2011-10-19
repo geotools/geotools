@@ -33,14 +33,21 @@ import org.geotools.swing.testutils.GraphicsTestRunner;
 import org.geotools.swing.testutils.MockLayer;
 import org.geotools.swing.testutils.MockMapContent;
 import org.geotools.swing.testutils.WindowActivatedListener;
+import org.geotools.swing.tool.CursorTool;
+import org.geotools.swing.tool.InfoTool;
+import org.geotools.swing.tool.PanTool;
+import org.geotools.swing.tool.ZoomInTool;
+import org.geotools.swing.tool.ZoomOutTool;
 
 import org.fest.swing.core.GenericTypeMatcher;
+import org.fest.swing.fixture.JButtonFixture;
 import org.fest.swing.fixture.JPanelFixture;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static org.junit.Assert.*;
 
 /**
  * Tests for JMapFrame.
@@ -52,7 +59,15 @@ import org.junit.runner.RunWith;
  */
 @RunWith(GraphicsTestRunner.class)
 public class JMapFrameTest extends GraphicsTestBase<Frame> {
-    private static ReferencedEnvelope WORLD = new ReferencedEnvelope(0, 100, 0, 100, 
+    
+    private static final double TOL = 1.0e-8;
+    
+    private static final ReferencedEnvelope WORLD = new ReferencedEnvelope(
+            0, 100, 0, 100, 
+            DefaultEngineeringCRS.GENERIC_2D);
+    
+    private static final ReferencedEnvelope SMALL_WORLD = new ReferencedEnvelope(
+            25, 75, 25, 75,
             DefaultEngineeringCRS.GENERIC_2D);
 
     private WindowActivatedListener listener;
@@ -110,7 +125,63 @@ public class JMapFrameTest extends GraphicsTestBase<Frame> {
         
         statusBar.requireVisible();
     }
-
+    
+    @Test
+    public void toolbarButton_Info() throws Exception {
+        assertToolbarButtonLoadsCorrectTool(JMapFrame.TOOLBAR_INFO_BUTTON_NAME, InfoTool.class);
+    }
+    
+    @Test
+    public void toolbarButton_Pan() throws Exception {
+        assertToolbarButtonLoadsCorrectTool(JMapFrame.TOOLBAR_PAN_BUTTON_NAME, PanTool.class);
+    }
+    
+    @Test
+    public void toolbarButton_Pointer() throws Exception {
+        assertToolbarButtonLoadsCorrectTool(JMapFrame.TOOLBAR_POINTER_BUTTON_NAME, null);
+    }
+    
+    @Test
+    public void toolbarButton_ZoomIn() throws Exception {
+        assertToolbarButtonLoadsCorrectTool(JMapFrame.TOOLBAR_ZOOMIN_BUTTON_NAME, ZoomInTool.class);
+    }
+    
+    @Test
+    public void toolbarButton_ZoomOut() throws Exception {
+        assertToolbarButtonLoadsCorrectTool(JMapFrame.TOOLBAR_ZOOMOUT_BUTTON_NAME, ZoomOutTool.class);
+    }
+    
+    @Test
+    public void toolbarButton_Reset() throws Exception {
+        showWithStaticMethod(mapContent);
+        mapContent.getViewport().setBounds(SMALL_WORLD);
+        
+        JButtonFixture button = windowFixture.toolBar().button(JMapFrame.TOOLBAR_RESET_BUTTON_NAME);
+        
+        button.click();
+        windowFixture.robot.waitForIdle();
+        
+        assertTrue(mapContent.getViewport().getBounds().covers(WORLD));
+    }
+    
+    private void assertToolbarButtonLoadsCorrectTool(String btnName, 
+            Class<? extends CursorTool> expectedToolClass) throws Exception {
+        
+        showWithStaticMethod(mapContent);
+        
+        JButtonFixture button = windowFixture.toolBar().button(btnName);
+        
+        button.click();
+        windowFixture.robot.waitForIdle();
+        
+        CursorTool cursorTool = ((JMapFrame) windowFixture.component()).getMapPane().getCursorTool();
+        if (expectedToolClass == null) {
+            assertNull(cursorTool);   
+        } else {
+            assertEquals(expectedToolClass, cursorTool.getClass());
+        }
+    }
+    
     private void showWithStaticMethod(MapContent mapContent) throws Exception {
         JMapFrame.showMap(mapContent);
         assertComponentDisplayed(JMapFrame.class);

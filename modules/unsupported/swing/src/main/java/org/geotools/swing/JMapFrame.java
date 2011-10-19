@@ -72,6 +72,25 @@ import org.geotools.swing.control.JMapStatusBar;
  * @version $Id$
  */
 public class JMapFrame extends JFrame {
+    
+    /* 
+     * The following toolbar button names are primarily for unit testing
+     * but could also be useful for applications wanting to control appearance
+     * and behaviour at run-time.
+     */
+    
+    /** Name assigned to toolbar button for feature info queries. */
+    public static final String TOOLBAR_INFO_BUTTON_NAME = "ToolbarInfoButton";
+    /** Name assigned to toolbar button for map panning. */
+    public static final String TOOLBAR_PAN_BUTTON_NAME = "ToolbarPanButton";
+    /** Name assigned to toolbar button for default pointer. */
+    public static final String TOOLBAR_POINTER_BUTTON_NAME = "ToolbarPointerButton";
+    /** Name assigned to toolbar button for map reset. */
+    public static final String TOOLBAR_RESET_BUTTON_NAME = "ToolbarResetButton";
+    /** Name assigned to toolbar button for map zoom in. */
+    public static final String TOOLBAR_ZOOMIN_BUTTON_NAME = "ToolbarZoomInButton";
+    /** Name assigned to toolbar button for map zoom out. */
+    public static final String TOOLBAR_ZOOMOUT_BUTTON_NAME = "ToolbarZoomOutButton";
 
     /**
      * Constants for available toolbar buttons used with the
@@ -335,16 +354,19 @@ public class JMapFrame extends JFrame {
             
             if (toolSet.contains(Tool.POINTER)) {
                 btn = new JButton(new NoToolAction(mapPane));
+                btn.setName(TOOLBAR_POINTER_BUTTON_NAME);
                 toolBar.add(btn);
                 cursorToolGrp.add(btn);
             }
 
             if (toolSet.contains(Tool.ZOOM)) {
                 btn = new JButton(new ZoomInAction(mapPane));
+                btn.setName(TOOLBAR_ZOOMIN_BUTTON_NAME);
                 toolBar.add(btn);
                 cursorToolGrp.add(btn);
 
                 btn = new JButton(new ZoomOutAction(mapPane));
+                btn.setName(TOOLBAR_ZOOMOUT_BUTTON_NAME);
                 toolBar.add(btn);
                 cursorToolGrp.add(btn);
 
@@ -353,6 +375,7 @@ public class JMapFrame extends JFrame {
 
             if (toolSet.contains(Tool.PAN)) {
                 btn = new JButton(new PanAction(mapPane));
+                btn.setName(TOOLBAR_PAN_BUTTON_NAME);
                 toolBar.add(btn);
                 cursorToolGrp.add(btn);
 
@@ -361,6 +384,7 @@ public class JMapFrame extends JFrame {
 
             if (toolSet.contains(Tool.INFO)) {
                 btn = new JButton(new InfoAction(mapPane));
+                btn.setName(TOOLBAR_INFO_BUTTON_NAME);
                 toolBar.add(btn);
 
                 toolBar.addSeparator();
@@ -368,6 +392,7 @@ public class JMapFrame extends JFrame {
 
             if (toolSet.contains(Tool.RESET)) {
                 btn = new JButton(new ResetAction(mapPane));
+                btn.setName(TOOLBAR_RESET_BUTTON_NAME);
                 toolBar.add(btn);
             }
 

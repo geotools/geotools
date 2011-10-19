@@ -44,7 +44,6 @@ public class MockMapContent extends MapContent {
     private ReferencedEnvelope bounds;
 
     public MockMapContent() {
-        this.viewport = new MapViewport();
     }
     
     /**
@@ -57,14 +56,8 @@ public class MockMapContent extends MapContent {
 
     @Override
     public boolean addLayer(Layer layer) {
-        try {
-            this.layer = layer;
-            this.bounds = layer.getFeatureSource().getBounds();
-            this.viewport.setBounds(bounds);
-            
-        } catch (IOException ex) {
-            // do nothing
-        }
+        this.layer = layer;
+        this.bounds = layer.getBounds();
         
         return true;
     }

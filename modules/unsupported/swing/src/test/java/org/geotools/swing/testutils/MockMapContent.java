@@ -17,7 +17,18 @@
 
 package org.geotools.swing.testutils;
 
+import java.io.IOException;
+
+import java.util.Collections;
+import java.util.List;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
+import org.geotools.map.MapViewport;
+import org.geotools.map.event.MapBoundsListener;
+import org.geotools.map.event.MapLayerListListener;
+
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Mock MapContent class for testing.
@@ -28,7 +39,14 @@ import org.geotools.map.MapContent;
  * @version $URL$
  */
 public class MockMapContent extends MapContent {
+    
+    private Layer layer;
+    private ReferencedEnvelope bounds;
 
+    public MockMapContent() {
+        this.viewport = new MapViewport();
+    }
+    
     /**
      *  Overridden to avoid spurious log messages about memory leaks.
      */
@@ -36,4 +54,74 @@ public class MockMapContent extends MapContent {
     protected void finalize() throws Throwable {
         // does nothing
     }
+
+    @Override
+    public boolean addLayer(Layer layer) {
+        try {
+            this.layer = layer;
+            this.bounds = layer.getFeatureSource().getBounds();
+            this.viewport.setBounds(bounds);
+            
+        } catch (IOException ex) {
+            // do nothing
+        }
+        
+        return true;
+    }
+
+    @Override
+    public void addMapBoundsListener(MapBoundsListener listener) {
+        super.addMapBoundsListener(listener);
+    }
+
+    @Override
+    public List<Layer> layers() {
+        if (layer == null) {
+            return Collections.emptyList();
+        }
+        return Collections.singletonList(layer);
+    }
+
+    @Override
+    public void moveLayer(int sourcePosition, int destPosition) {
+        throw new UnsupportedOperationException("should not be called");
+    }
+
+    @Override
+    public boolean removeLayer(Layer layer) {
+        throw new UnsupportedOperationException("should not be called");
+    }
+
+    @Override
+    public void removeMapBoundsListener(MapBoundsListener listener) {
+        throw new UnsupportedOperationException("should not be called");
+    }
+
+    @Override
+    public void removeMapLayerListListener(MapLayerListListener listener) {
+        throw new UnsupportedOperationException("should not be called");
+    }
+
+    @Override
+    public synchronized void setViewport(MapViewport viewport) {
+        throw new UnsupportedOperationException("should not be called");
+    }
+
+    @Override
+    public CoordinateReferenceSystem getCoordinateReferenceSystem() {
+        if (bounds == null) {
+            return null;
+        }
+        return bounds.getCoordinateReferenceSystem();
+    }
+
+    @Override
+    public ReferencedEnvelope getMaxBounds() {
+        if (bounds == null) {
+            return new ReferencedEnvelope();
+        }
+        return new ReferencedEnvelope(bounds);
+    }
+    
+    
 }

@@ -35,7 +35,6 @@ import static org.junit.Assert.*;
  * Tests for concurrent use of MapContent.
  * 
  * @author Michael Bedward
- * @since 8.0
  * @source $URL$
  * @version $Id$
  */

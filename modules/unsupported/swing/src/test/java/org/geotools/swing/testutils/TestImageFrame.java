@@ -29,14 +29,15 @@ import org.jaitools.swing.ImageFrame;
 
 
 /**
- * Provides static utility methods for unit testing Swing components.
+ * Wraps a JAITools {@linkplain ImageFrame} and a {@linkplain CountDownLatch} to enable test
+ * methods to display the image and then wait until the frame is dismissed.
  * 
  * @author Michael Bedward
  * @since 8.0
  * @source $URL$
  * @version $Id$
  */
-public class TestUtils {
+public class TestImageFrame {
     
     /**
      * Displays the given image in an {@linkplain ImageFrame} and counts down the
@@ -45,7 +46,7 @@ public class TestUtils {
      * <pre><code>
      * // In test method
      * RenderedImage img = ...
-     * CountDownLatch latch = TestUtils.showImage(img, "Look at this image");
+     * CountDownLatch latch = TestImageFrame.showImage(img, "Look at this image");
      * 
      * // Wait for the user to close the frame
      * latch.await();

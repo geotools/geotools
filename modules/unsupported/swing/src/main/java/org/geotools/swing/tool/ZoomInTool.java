@@ -45,9 +45,6 @@ import org.geotools.swing.event.MapMouseEvent;
  * 
  * @author Michael Bedward
  * @since 2.6
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */

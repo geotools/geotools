@@ -31,7 +31,7 @@ import java.util.concurrent.CountDownLatch;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import org.geotools.swing.testutils.TestUtils;
+import org.geotools.swing.testutils.TestImageFrame;
 import org.geotools.swing.testutils.GraphicsTestRunner;
 
 import org.fest.swing.edt.GuiActionRunner;
@@ -135,7 +135,7 @@ public class DialogUtilsTest extends GraphicsTestBase {
         fixture.close();
         
         if (displayLabelImage) {
-            CountDownLatch latch = TestUtils.showImage(img, "Label screen shot");
+            CountDownLatch latch = TestImageFrame.showImage(img, "Label screen shot");
             latch.await();
         }
 

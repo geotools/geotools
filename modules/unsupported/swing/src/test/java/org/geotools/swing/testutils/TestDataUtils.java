@@ -33,6 +33,7 @@ import org.geotools.geometry.jts.Geometries;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
 
+import org.geotools.styling.SLD;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -133,7 +134,7 @@ public class TestDataUtils {
         String typeName = dataStore.getTypeNames()[0];
         SimpleFeatureSource featureSource = dataStore.getFeatureSource(typeName);
 
-        return new FeatureLayer(featureSource, null);
+        return new FeatureLayer(featureSource, SLD.createSimpleStyle(featureSource.getSchema()));
     }
 
 }

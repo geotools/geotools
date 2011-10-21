@@ -14,13 +14,13 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-
 package org.geotools.swing.tool;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.swing.event.MapPaneEvent;
 import org.geotools.swing.testutils.GraphicsTestRunner;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
@@ -35,23 +35,34 @@ import static org.junit.Assert.*;
  */
 @RunWith(GraphicsTestRunner.class)
 public class ZoomOutToolTest extends CursorToolTestBase {
-    
+
+    private ZoomOutTool tool;
+
+    @Before
+    public void setup() {
+        tool = new ZoomOutTool();
+    }
+
+    @Test
+    public void zoomOutDoesNotSupportDragging() throws Exception {
+        assertFalse(tool.drawDragBox());
+    }
+
     @Test
     public void clickZoomAtCentreOfMap() throws Exception {
         ReferencedEnvelope startEnv = mapPane.getDisplayArea();
-        mapPane.setCursorTool(new ZoomOutTool());
-        
+        mapPane.setCursorTool(tool);
+
         listener.setExpected(MapPaneEvent.Type.DISPLAY_AREA_CHANGED);
         mapPaneFixture.click();
-        
-        assertTrue( listener.await(MapPaneEvent.Type.DISPLAY_AREA_CHANGED, EVENT_TIMEOUT) );
+
+        assertTrue(listener.await(MapPaneEvent.Type.DISPLAY_AREA_CHANGED, EVENT_TIMEOUT));
         ReferencedEnvelope endEnv = mapPane.getDisplayArea();
-        
+
         double xZoom = endEnv.getWidth() / startEnv.getWidth();
         double yZoom = endEnv.getHeight() / startEnv.getHeight();
-        
+
         assertEquals(AbstractZoomTool.DEFAULT_ZOOM_FACTOR, xZoom, TOL);
         assertEquals(AbstractZoomTool.DEFAULT_ZOOM_FACTOR, yZoom, TOL);
     }
-
 }

@@ -17,10 +17,18 @@
 
 package org.geotools.swing.tool;
 
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.swing.event.MapPaneEvent;
 import org.geotools.swing.testutils.GraphicsTestRunner;
 
+import org.fest.swing.core.MouseButton;
+
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
@@ -35,11 +43,17 @@ import static org.junit.Assert.*;
  */
 @RunWith(GraphicsTestRunner.class)
 public class ZoomInToolTest extends CursorToolTestBase {
+    private ZoomInTool tool;
+    
+    @Before
+    public void setup() {
+        tool = new ZoomInTool();
+    }
     
     @Test
     public void clickZoomAtCentreOfMap() throws Exception {
         ReferencedEnvelope startEnv = mapPane.getDisplayArea();
-        mapPane.setCursorTool(new ZoomInTool());
+        mapPane.setCursorTool(tool);
         
         listener.setExpected(MapPaneEvent.Type.DISPLAY_AREA_CHANGED);
         mapPaneFixture.click();
@@ -52,6 +66,49 @@ public class ZoomInToolTest extends CursorToolTestBase {
         
         assertEquals(AbstractZoomTool.DEFAULT_ZOOM_FACTOR, xZoom, TOL);
         assertEquals(AbstractZoomTool.DEFAULT_ZOOM_FACTOR, yZoom, TOL);
+    }
+
+    @Test
+    public void zoomInToolSupportsDragging() throws Exception {
+        assertTrue(tool.drawDragBox());
+    }
+    
+    /*
+     * Note: this test relies on the map pane being displayed with equal
+     * width and height
+     */
+    @Test
+    public void drawBoxToZoom() throws Exception {
+        mapPane.setCursorTool(tool);
+        
+        Rectangle dragBoxRect = new Rectangle(
+                SCREEN.width / 4, SCREEN.height / 4,
+                SCREEN.width / 2, SCREEN.height / 2);
+
+        AffineTransform startTransform = mapPane.getScreenToWorldTransform();
+        Rectangle2D expectedRect = startTransform.createTransformedShape(dragBoxRect).getBounds2D();
+
+        ReferencedEnvelope expectedEnv = new ReferencedEnvelope(expectedRect, 
+                mapPane.getDisplayArea().getCoordinateReferenceSystem());
+        
+        Point screenPos = mapPaneFixture.component().getLocationOnScreen();
+        
+        Point mouseStartPos = new Point(
+                screenPos.x + dragBoxRect.x, 
+                screenPos.y + dragBoxRect.y);
+        
+        Point mouseEndPos = new Point(
+                screenPos.x + (int) dragBoxRect.getMaxX(), 
+                screenPos.y + (int) dragBoxRect.getMaxY());
+        
+        listener.setExpected(MapPaneEvent.Type.DISPLAY_AREA_CHANGED);
+        
+        mapPaneFixture.robot.pressMouse(mouseStartPos, MouseButton.LEFT_BUTTON);
+        mapPaneFixture.robot.moveMouse(mouseEndPos);
+        mapPaneFixture.robot.releaseMouseButtons();
+        
+        assertTrue( listener.await(MapPaneEvent.Type.DISPLAY_AREA_CHANGED, EVENT_TIMEOUT) );
+        assertTrue(expectedEnv.boundsEquals2D(mapPane.getDisplayArea(), TOL));
     }
 
 }

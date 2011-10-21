@@ -22,8 +22,10 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.map.Layer;
 import org.geotools.swing.event.MapPaneEvent;
 import org.geotools.swing.testutils.GraphicsTestRunner;
+import org.geotools.swing.testutils.TestDataUtils;
 
 import org.fest.swing.core.MouseButton;
 
@@ -90,6 +92,11 @@ public class PanToolTest extends CursorToolTestBase {
         
         assertEquals(startEnv.getMinX() + expectedDelta.getX(), endEnv.getMinX(), TOL);
         assertEquals(startEnv.getMinY() + expectedDelta.getY(), endEnv.getMinY(), TOL);
+    }
+
+    @Override
+    protected Layer getTestLayer() throws Exception {
+        return TestDataUtils.getPointLayer();
     }
 
 }

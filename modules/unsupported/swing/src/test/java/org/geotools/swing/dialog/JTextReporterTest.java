@@ -46,8 +46,8 @@ import org.geotools.util.logging.Logging;
 import org.geotools.swing.dialog.JTextReporter.Connection;
 import org.geotools.swing.testutils.GraphicsTestBase;
 import org.geotools.swing.testutils.GraphicsTestRunner;
-
 import org.geotools.swing.testutils.WindowActivatedListener;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -71,8 +71,19 @@ import static org.junit.Assert.*;
 public class JTextReporterTest extends GraphicsTestBase<Dialog> {
     
     private static final Class<? extends Dialog> DIALOG_CLASS = JTextReporter.TextDialog.class;
-    private static final String TITLE = "Test text reporter";
+    
     private static final long LISTENER_TIMEOUT = 1000;
+    
+    private static final String TITLE = "Test text reporter";
+    
+    private static final String[] TEXT = {
+        "A thing is called finite after its kind,",
+        "when it can be limited by another thing of the same nature;",
+        "for instance, a body is called finite because we always",
+        "conceive another greater body.",
+        "So, also, a thought is limited by another thought,",
+        "but a body is not limited by thought, nor a thought by body"
+    };
     
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();
     
@@ -135,9 +146,8 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
     
     @Test
     public void initialText() throws Exception {
-        final String text = "I'm interested in apathy";
-        showDialog(TITLE, text);
-        windowFixture.textBox().requireText(text);
+        showDialog(TITLE, TEXT[0]);
+        windowFixture.textBox().requireText(TEXT[0]);
     }
         
     @Test
@@ -156,20 +166,15 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
     public void appendText() throws Exception {
         Connection conn = showDialog(TITLE).get();
         
-        final String text = "I'm interested in apathy";
-        conn.append(text);
+        conn.append(TEXT[0]);
         windowFixture.robot.waitForIdle();
         
-        windowFixture.textBox().requireText(text);
+        windowFixture.textBox().requireText(TEXT[0]);
     }
 
     @Test
     public void appendTextWithFormattedNewlines() throws Exception {
-        String text = String.format(
-                  "That's not what motivates me %n"
-                + "Enough of this petty stuff for me %n"
-                + "Not interested in pedantry %n"
-                + "I'm interested in apathy");
+        final String text = getConcatenatedText(String.format("%n"));
         
         Connection conn = showDialog(TITLE).get();
         conn.append(text);
@@ -182,11 +187,7 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
     
     @Test
     public void appendTextWithEmbeddedNewlines() throws Exception {
-        String text = String.format(
-                  "That's not what motivates me \n"
-                + "Enough of this petty stuff for me \n"
-                + "Not interested in pedantry \n"
-                + "I'm interested in apathy");
+        final String text = getConcatenatedText("\n");
         
         Connection conn = showDialog(TITLE).get();
         conn.append(text);
@@ -200,30 +201,29 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
     
     @Test
     public void appendNewline() throws Exception {
-        Connection conn = showDialog(TITLE, "Foo Bar").get();
+        Connection conn = showDialog(TITLE, TEXT[0]).get();
         
         conn.appendNewline();
         conn.appendNewline();
-        conn.append("La La");
+        conn.append(TEXT[1]);
         conn.appendNewline();
         
         windowFixture.robot.waitForIdle();
         String displayedText = windowFixture.textBox().text();
-        String expectedText = String.format("Foo Bar%n%nLa La%n");
+        String expectedText = String.format("%s%n%n%s%n", TEXT[0], TEXT[1]);
         assertEquals(expectedText, displayedText);
     }
     
     @Test
     public void appendDefaultSeparatorLine() throws Exception {
-        final String text = "I'm interested in apathy";
-        Connection conn = showDialog(TITLE, text + "\n").get();
+        Connection conn = showDialog(TITLE, TEXT[0] + "\n").get();
         
         final int N = 10;
         conn.appendSeparatorLine(N);
         
         char[] chars = new char[N];
         Arrays.fill(chars, JTextReporter.DEFAULT_SEPARATOR_CHAR);
-        String expected = String.format("%s%n%s%n", text, String.valueOf(chars));
+        String expected = String.format("%s%n%s%n", TEXT[0], String.valueOf(chars));
         
         String displayedText = windowFixture.textBox().text();
         assertEquals(expected, displayedText);
@@ -231,8 +231,7 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
     
     @Test
     public void appendCustomSeparatorLine() throws Exception {
-        final String text = "I'm interested in apathy";
-        Connection conn = showDialog(TITLE, text + "\n").get();
+        Connection conn = showDialog(TITLE, TEXT[0] + "\n").get();
         
         final int N = 10;
         final char c = '#';
@@ -240,7 +239,7 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
         
         char[] chars = new char[N];
         Arrays.fill(chars, c);
-        String expected = String.format("%s%n%s%n", text, String.valueOf(chars));
+        String expected = String.format("%s%n%s%n", TEXT[0], String.valueOf(chars));
         
         String displayedText = windowFixture.textBox().text();
         assertEquals(expected, displayedText);
@@ -250,14 +249,11 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
     public void appendMethodsCanBeChained() throws Exception {
         Connection conn = showDialog(TITLE).get();
         
-        final String line1 = "Not interested in pedantry";
-        final String line2 = "I'm interested in apathy";
-        
-        conn.append(line1).appendNewline().append(line2);
+        conn.append(TEXT[0]).appendNewline().append(TEXT[1]);
         windowFixture.robot.waitForIdle();
         
         String actual = windowFixture.textBox().text();
-        String expected = String.format("%s%n%s", line1, line2);
+        String expected = String.format("%s%n%s", TEXT[0], TEXT[1]);
         assertEquals(expected, actual);
     }
     
@@ -277,6 +273,21 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
     }
     
     @Test
+    public void getTextFromConnection() throws Exception {
+        final String text = getConcatenatedText(String.format("%n"));
+        Connection conn = showDialog(TITLE, text).get();
+        assertEquals(text, conn.getText());
+    }
+    
+    @Test
+    public void getTextWhenNoneIsDisplayedReturnsEmptyString() throws Exception {
+        Connection conn = showDialog(TITLE).get();
+        String text = conn.getText();
+        assertNotNull(text);
+        assertTrue(text.length() == 0);
+    }
+    
+    @Test
     public void listenerInformedWhenTextIsUpdated() throws Exception {
         Connection conn = showDialog(TITLE).get();
 
@@ -291,7 +302,7 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
             }
         });
         
-        conn.append("I'm interested in apathy");
+        conn.append(TEXT[0]);
         assertTrue( latch.await(LISTENER_TIMEOUT, TimeUnit.MILLISECONDS) );
     }
     
@@ -336,14 +347,14 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
     @Ignore("have to work out how to do this one")
     @Test
     public void saveTextToFile() throws Exception {
-        showDialog(TITLE, "I'm interested in apathy").get();
+        showDialog(TITLE, TEXT[0]).get();
         
         getButton("Save...").click();
     }
     
     @Test
     public void clearText() throws Exception {
-        showDialog(TITLE, "I'm intereted in apathy").get();
+        showDialog(TITLE, TEXT[0]).get();
 
         getButton("Clear").click();
         windowFixture.robot.waitForIdle();
@@ -353,7 +364,7 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
     
     @Test
     public void copyTextToClipboard() throws Exception {
-        final String text = "I'm intereted in apathy";
+        final String text = getConcatenatedText(String.format("%n"));
         showDialog(TITLE, text).get();
 
         getButton("Copy to clipboard").click();
@@ -459,6 +470,17 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
 
         assertNotNull(logMsg);
         assertTrue(logMsg.toLowerCase().contains(expectedMsg.toLowerCase()));
+    }
+
+    private String getConcatenatedText(String concatStr) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < TEXT.length; i++) {
+            sb.append(TEXT[i]);
+            if (i < TEXT.length - 1) {
+                sb.append(concatStr);
+            }
+        }
+        return sb.toString();
     }
     
 }

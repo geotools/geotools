@@ -338,6 +338,47 @@ public class JTextReporter {
         }
 
         /**
+         * Gets the currently displayed text.
+         */
+        public String getText() {
+            updateLock.readLock().lock();
+            final String[] rtnText = new String[1];
+            try {
+                final TextDialog dialog = dialogRef.get();
+                if (dialog == null) {
+                    LOGGER.severe("Retrieving text from an expired JTextReporter connection");
+
+                } else {
+                    if (SwingUtilities.isEventDispatchThread()) {
+                        rtnText[0] = dialog.getText();
+
+                    } else {
+                        try {
+                            SwingUtilities.invokeAndWait(new Runnable() {
+                                @Override
+                                public void run() {
+                                    rtnText[0] = dialog.getText();
+                                }
+                            });
+                        } catch (InterruptedException ex) {
+                            LOGGER.severe("Thread interrupted while getting text from text reporter");
+                            rtnText[0] = "";
+
+                        } catch (InvocationTargetException ex) {
+                            LOGGER.log(Level.SEVERE, "Error while trying to get text from text reporter", ex);
+                            rtnText[0] = "";
+                        }
+                    }
+                }
+
+            } finally {
+                updateLock.readLock().unlock();
+                return rtnText[0];
+            }
+
+        }
+
+        /**
          * Closes the associated dialog.
          * The close operation is run on the event dispatch thread to try to avoid 
          * collisions with GUI actions, but you can call this method from
@@ -742,7 +783,7 @@ public class JTextReporter {
          * @param text the text to append
          * @param indent indent width as number of spaces
          */
-        void append(final String text, final int indent) {
+        private void append(final String text, final int indent) {
             int startLine = textArea.getLineCount();
 
             String appendText;
@@ -757,6 +798,15 @@ public class JTextReporter {
 
             textArea.append(appendText);
             textArea.setCaretPosition(textArea.getDocument().getLength());
+        }
+
+        /**
+         * Gets the currently displayed text.
+         * 
+         * @return currently displayed text
+         */
+        private String getText() {
+            return textArea.getText();
         }
         
     }

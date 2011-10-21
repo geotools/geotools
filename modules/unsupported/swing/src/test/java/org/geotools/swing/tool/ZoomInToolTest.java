@@ -23,8 +23,10 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.map.Layer;
 import org.geotools.swing.event.MapPaneEvent;
 import org.geotools.swing.testutils.GraphicsTestRunner;
+import org.geotools.swing.testutils.TestDataUtils;
 
 import org.fest.swing.core.MouseButton;
 
@@ -44,7 +46,7 @@ import static org.junit.Assert.*;
 @RunWith(GraphicsTestRunner.class)
 public class ZoomInToolTest extends CursorToolTestBase {
     private ZoomInTool tool;
-    
+
     @Before
     public void setup() {
         tool = new ZoomInTool();
@@ -109,6 +111,11 @@ public class ZoomInToolTest extends CursorToolTestBase {
         
         assertTrue( listener.await(MapPaneEvent.Type.DISPLAY_AREA_CHANGED, EVENT_TIMEOUT) );
         assertTrue(expectedEnv.boundsEquals2D(mapPane.getDisplayArea(), TOL));
+    }
+
+    @Override
+    protected Layer getTestLayer() throws Exception {
+        return TestDataUtils.getPointLayer();
     }
 
 }

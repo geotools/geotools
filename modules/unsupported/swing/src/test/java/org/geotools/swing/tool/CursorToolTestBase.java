@@ -22,11 +22,11 @@ import java.awt.Rectangle;
 
 import javax.swing.JFrame;
 
+import org.geotools.map.Layer;
 import org.geotools.swing.JMapPane;
 import org.geotools.swing.event.MapPaneEvent;
 import org.geotools.swing.testutils.GraphicsTestBase;
 import org.geotools.swing.testutils.MockMapContent;
-import org.geotools.swing.testutils.TestDataUtils;
 import org.geotools.swing.testutils.WaitingMapPaneListener;
 
 import org.fest.swing.edt.GuiActionRunner;
@@ -68,7 +68,7 @@ public abstract class CursorToolTestBase extends GraphicsTestBase {
     @Before
     public void setupPaneAndTool() throws Exception {
         mapContent = new MockMapContent();
-        mapContent.addLayer(TestDataUtils.getPointLayer());
+        mapContent.addLayer(getTestLayer());
         JFrame frame = GuiActionRunner.execute(new GuiQuery<JFrame>() {
 
             @Override
@@ -90,4 +90,5 @@ public abstract class CursorToolTestBase extends GraphicsTestBase {
         assertTrue(listener.await(MapPaneEvent.Type.RENDERING_STOPPED, ZoomInToolTest.RENDERING_TIMEOUT));
     }
     
+    protected abstract Layer getTestLayer() throws Exception;
 }

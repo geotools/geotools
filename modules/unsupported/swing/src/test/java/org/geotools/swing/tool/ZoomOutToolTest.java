@@ -17,6 +17,8 @@
 package org.geotools.swing.tool;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.map.Layer;
+import org.geotools.swing.testutils.TestDataUtils;
 import org.geotools.swing.event.MapPaneEvent;
 import org.geotools.swing.testutils.GraphicsTestRunner;
 
@@ -65,4 +67,10 @@ public class ZoomOutToolTest extends CursorToolTestBase {
         assertEquals(AbstractZoomTool.DEFAULT_ZOOM_FACTOR, xZoom, TOL);
         assertEquals(AbstractZoomTool.DEFAULT_ZOOM_FACTOR, yZoom, TOL);
     }
+
+    @Override
+    protected Layer getTestLayer() throws Exception {
+        return TestDataUtils.getPointLayer();
+    }
+
 }

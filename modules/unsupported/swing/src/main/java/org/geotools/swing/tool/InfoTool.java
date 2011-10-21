@@ -40,10 +40,22 @@ import org.geotools.util.logging.Logging;
  * A cursor tool to retrieve information about features that the user clicks
  * on with the mouse. It works with {@linkplain InfoToolHelper} objects which do
  * the work of querying feature data.
+ * <p>
+ * Feature information is displayed on screen using a {@linkplain JTextReporter}
+ * dialog. If you want to access the displayed text programmatically you can 
+ * override the {@linkplain #onReporterUpdated()} method as shown here:
+ * <pre><code>
+ * InfoTool tool = new InfoTool() {
+ *     &#64;Override
+ *     public void onReporterUpdated() {
+ *         String text = getTextReporterConnection().getText();
+ *         // do something with text
+ *     }
+ * };
+ * </code></pre>
  *
  * @author Michael Bedward
  * @since 2.6
- *
  * @source $URL$
  * @version $URL$
  */
@@ -66,9 +78,10 @@ public class InfoTool extends CursorTool implements TextReporterListener {
     public static final String ICON_IMAGE = "/org/geotools/swing/icons/mActionIdentify.png";
 
     private Cursor cursor;
-    private JTextReporter.Connection textReporterConnection;
     private WeakHashMap<Layer, InfoToolHelper> helperTable;
 
+    private JTextReporter.Connection textReporterConnection;
+    
     /**
      * Constructor
      */
@@ -148,6 +161,23 @@ public class InfoTool extends CursorTool implements TextReporterListener {
         textReporterConnection.appendSeparatorLine(10, '-');
         textReporterConnection.appendNewline();
     }
+    
+    /**
+     * Gets the connection to the text reporter displayed by this tool. Returns
+     * {@code null} if the reporter dialog is not currently displayed. The
+     * connection should not be stored because it will expire when the reporter
+     * dialog is closed.
+     * <p>
+     * This method was added for unit test purposes but may be useful for 
+     * applications wishing to access the feature data report text, e.g. by
+     * overriding {@linkplain #onReporterUpdated()}.
+     * 
+     * @return the text reporter connection or {@code null} if the reporter dialog
+     *     is not currently displayed
+     */
+    public JTextReporter.Connection getTextReporterConnection() {
+        return textReporterConnection;
+    }
 
     /**
      * Writes the mouse click position to a {@code JTextReporter}
@@ -190,8 +220,7 @@ public class InfoTool extends CursorTool implements TextReporterListener {
     }
 
     /**
-     * Called when a {@code JTextReporter} frame that was being used by this tool
-     * is closed by the user
+     * Called when a {@code JTextReporter} dialog used by this tool is closed.
      */
     @Override
     public void onReporterClosed() {
@@ -199,7 +228,9 @@ public class InfoTool extends CursorTool implements TextReporterListener {
     }
 
     /**
-     * Empty method. Defined to satisfy the {@code TextReporterListener} interface.
+     * Called when text is updated in a {@linkplain JTextReporter} dialog being used 
+     * by this tool. This is an empty method but may be useful to override.
+     * 
      */
     @Override
     public void onReporterUpdated() {

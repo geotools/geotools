@@ -115,8 +115,7 @@ class OGRFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature
         SimpleFeature f = mapper.convertOgrFeature(curr);
 
         // .. nullify curr, so that we can move to the next one
-        curr.release();
-        // OGR_F_Destroy(curr);
+        OGR_F_Destroy(curr);
         curr = null;
 
         return f;

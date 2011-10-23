@@ -35,10 +35,6 @@ import org.geotools.referencing.CRS;
 public class OGRPeformanceTest extends TestCaseSupport {
     final static String STATE_POP = "shapes/statepop.shp";
 
-    public OGRPeformanceTest(String name) throws IOException {
-        super(name);
-    }
-
     protected void setUp() throws Exception {
         super.setUp();
         CRS.decode("EPSG:4326");

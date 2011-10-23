@@ -34,10 +34,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  */
 public class OGRDataStoreFactoryTest extends TestCaseSupport {
 
-    public OGRDataStoreFactoryTest(String name) throws IOException {
-        super(name);
-    }
-
     public void testLookup() throws Exception {
         Map<String, Serializable> map = new HashMap<String, Serializable>();
         map.put(OGRDataStoreFactory.OGR_NAME.key, getAbsolutePath(STATE_POP));

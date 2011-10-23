@@ -72,9 +72,6 @@ import com.vividsolutions.jts.geom.Point;
  */
 public class OGRDataStoreTest extends TestCaseSupport {
 
-    public OGRDataStoreTest(String testName) throws IOException {
-        super(testName);
-    }
 
     public void testGetTypeNames() throws FileNotFoundException, IOException {
         OGRDataStore store = new OGRDataStore(getAbsolutePath(STATE_POP), null, null);
@@ -238,7 +235,7 @@ public class OGRDataStoreTest extends TestCaseSupport {
                 }
             }
             idx--;
-            assertEquals(idx, loadFeatures(sds, typeName).size());
+            assertEquals(idx, countFeatures(loadFeatures(sds, typeName)));
         }
     }
 
@@ -250,6 +247,7 @@ public class OGRDataStoreTest extends TestCaseSupport {
         String typeName = sds.getTypeNames()[0];
 
         int idx = loadFeatures(sds, typeName).size();
+        assertEquals(idx, countFeatures(loadFeatures(sds, typeName)));
 
         while (idx > 0) {
             FeatureWriter writer = null;
@@ -266,7 +264,7 @@ public class OGRDataStoreTest extends TestCaseSupport {
                     writer = null;
                 }
             }
-            assertEquals(--idx, loadFeatures(sds, typeName).size());
+            assertEquals(--idx, countFeatures(loadFeatures(sds, typeName)));
         }
 
     }
@@ -324,7 +322,6 @@ public class OGRDataStoreTest extends TestCaseSupport {
             SimpleFeature f = (SimpleFeature) writer.next();
             f.setAttributes(features[i].getAttributes());
             writer.write();
-            assertEquals(typeName + "." + i, f.getID());
         }
         writer.close();
 
@@ -434,8 +431,8 @@ public class OGRDataStoreTest extends TestCaseSupport {
         return s.getFeatureSource(s.getTypeNames()[0]);
     }
 
-    protected FeatureCollection loadFeatures(DataStore store, String typeName) throws Exception {
-        FeatureSource fs = store.getFeatureSource(typeName);
+    protected SimpleFeatureCollection loadFeatures(DataStore store, String typeName) throws Exception {
+        SimpleFeatureSource fs = store.getFeatureSource(typeName);
         return fs.getFeatures();
     }
 

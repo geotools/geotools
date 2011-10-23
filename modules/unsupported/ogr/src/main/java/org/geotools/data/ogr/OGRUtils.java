@@ -15,7 +15,9 @@ import org.bridj.Pointer;
 @SuppressWarnings("rawtypes")
 class OGRUtils {
 
-    public static void releaseDataSource(Pointer dataSet) {
+    private static boolean HAS_L_GETNAME;
+
+	public static void releaseDataSource(Pointer dataSet) {
         if (dataSet != null) {
             OGRReleaseDataSource(dataSet);
             dataSet.release();
@@ -50,6 +52,27 @@ class OGRUtils {
         } else {
             return ptr.getCString();
         }
+    }
+    
+    /**
+     * Gets a layer name in a version independent way
+     * @param layer
+     */
+    public static String getLayerName(Pointer layer) {
+    	Pointer<Byte> namePtr = null;
+    	try {
+    		// this one is more efficient but has been added recently
+    		if(HAS_L_GETNAME) {
+    			namePtr = OGR_L_GetName(layer);
+    		}
+    	} catch(Exception e) {
+    		HAS_L_GETNAME = false;
+    	}
+    	if(namePtr == null) {
+	    	Pointer layerDefinition = OGR_L_GetLayerDefn(layer);
+			namePtr = OGR_FD_GetName(layerDefinition);
+    	}
+		return getCString(namePtr);
     }
 
     /**

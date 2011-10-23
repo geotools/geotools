@@ -42,7 +42,7 @@ public class OGRFeatureStore extends ContentFeatureStore {
             layer = getDataStore().openOGRLayer(dataSource, typeName);
 
             FeatureReader<SimpleFeatureType, SimpleFeature> reader = delegate
-                    .getReaderInternal(query);
+                    .getReaderInternal(dataSource, layer, query);
             GeometryFactory gf = delegate.getGeometryFactory(query);
             OGRDirectFeatureWriter result = new OGRDirectFeatureWriter(dataSource, layer, reader,
                     getSchema(), gf);

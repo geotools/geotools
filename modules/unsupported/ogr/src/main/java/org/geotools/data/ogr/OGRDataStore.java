@@ -75,9 +75,9 @@ public class OGRDataStore extends ContentDataStore {
             int count = OGR_DS_GetLayerCount(dataSource);
             for (int i = 0; i < count; i++) {
                 layer = OGR_DS_GetLayer(dataSource, i);
-                Pointer<Byte> name = OGR_L_GetName(layer);
+                String name = getLayerName(layer);
                 if (name != null) {
-                    result.add(new NameImpl(getNamespaceURI(), name.getCString()));
+                    result.add(new NameImpl(getNamespaceURI(), name));
                 }
                 OGRUtils.releaseLayer(layer);
             }

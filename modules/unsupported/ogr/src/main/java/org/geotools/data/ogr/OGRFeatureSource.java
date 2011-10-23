@@ -148,20 +148,26 @@ public class OGRFeatureSource extends ContentFeatureSource {
     @Override
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
-        // check how much we can encode
+    	return getReaderInternal(null, null, query);
+    }
+    
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Pointer dataSource, Pointer layer, Query query)
+            throws IOException {
+    	// check how much we can encode
         OGRFilterTranslator filterTx = new OGRFilterTranslator(getSchema(), query.getFilter());
         if (Filter.EXCLUDE.equals(filterTx.getFilter())) {
             return new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(getSchema());
         }
 
         // encode and count
-        Pointer dataSource = null;
-        Pointer layer = null;
-        boolean cleanup = true;
+        boolean cleanup = false;
         try {
-            // grab the layer
+            // grab the data source
             String typeName = getEntry().getTypeName();
-            dataSource = getDataStore().openOGRDataSource(false);
+            if(dataSource == null) {
+            	dataSource = getDataStore().openOGRDataSource(false);
+            	cleanup = true;
+            }
 
             // extract the post filter
             Filter postFilter = null;
@@ -201,18 +207,22 @@ public class OGRFeatureSource extends ContentFeatureSource {
             }
 
             // build the layer query and execute it
-            String sql = getLayerSql(querySchema == sourceSchema ? null : querySchema,
-                    filterTx.getAttributeFilter(), query.getSortBy());
-            Pointer spatialFilterPtr = null;
-            Geometry spatialFilter = filterTx.getSpatialFilter();
-            if (spatialFilter != null) {
-                spatialFilterPtr = new GeometryMapper.WKB(new GeometryFactory())
-                        .parseGTGeometry(spatialFilter);
-
-            }
-            layer = OGR_DS_ExecuteSQL(dataSource, pointerToCString(sql), spatialFilterPtr, null);
             if(layer == null) {
-                throw new IOException("Failed to query the source layer with SQL" + sql);
+	            String sql = getLayerSql(querySchema == sourceSchema ? null : querySchema,
+	                    filterTx.getAttributeFilter(), query.getSortBy());
+	            Pointer spatialFilterPtr = null;
+	            Geometry spatialFilter = filterTx.getSpatialFilter();
+	            if (spatialFilter != null) {
+	                spatialFilterPtr = new GeometryMapper.WKB(new GeometryFactory())
+	                        .parseGTGeometry(spatialFilter);
+	
+	            }
+	            layer = OGR_DS_ExecuteSQL(dataSource, pointerToCString(sql), spatialFilterPtr, null);
+	            if(layer == null) {
+	                throw new IOException("Failed to query the source layer with SQL" + sql);
+	            }
+            } else {
+            	setLayerFilters(layer, filterTx);
             }
 
             // see if we have a geometry factory to use
@@ -240,13 +250,13 @@ public class OGRFeatureSource extends ContentFeatureSource {
             }
         }
     }
-
+    
     private String getLayerSql(SimpleFeatureType targetSchema, String attributeFilter,
             SortBy[] sortBy) {
         StringBuilder sb = new StringBuilder();
 
         // select attributues
-        sb.append("SELECT ");
+        sb.append("SELECT FID,");
         if (targetSchema == null) {
             sb.append("* ");
         } else {

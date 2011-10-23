@@ -117,5 +117,22 @@
       <scope>test</scope>
     </dependency>  
   </dependencies>
+  
+  <build>
+    <plugins>
+	    <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-surefire-plugin</artifactId>
+	        <configuration>
+	          <systemProperties>
+	            <property>
+	              <name>java.library.path</name>
+	              <value>${java.library.path}</value>
+	            </property>
+	          </systemProperties>
+	        </configuration>
+	      </plugin>
+      </plugins>
+  </build>
 
 </project>

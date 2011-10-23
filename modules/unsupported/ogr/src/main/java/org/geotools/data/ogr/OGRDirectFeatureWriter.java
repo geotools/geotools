@@ -85,7 +85,7 @@ class OGRDirectFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
             Pointer<?> driver = OGR_DS_GetDriver(dataSource);
             Pointer<Byte> driverName = OGR_Dr_GetName(driver);
             if ("ESRI Shapefile".equals(getCString(driverName)) && deletedFeatures) {
-                String layerName = getCString(OGR_L_GetName(layer));
+                String layerName = getLayerName(layer);
                 OGR_DS_ExecuteSQL(dataSource, pointerToCString("REPACK " + layerName), null, null);
             }
             OGR_L_SyncToDisk(layer);
@@ -130,7 +130,7 @@ class OGRDirectFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
             throw new IOException("No current feature to write");
 
         // this will return true only in update mode, otherwise original is null
-        boolean changed = live.equals(original);
+        boolean changed = !live.equals(original);
         if (!changed && original != null) {
             // nothing to do, just skip
         } else if (original != null) {
@@ -140,7 +140,8 @@ class OGRDirectFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
         } else {
             Pointer ogrFeature = mapper.convertGTFeature(layerDefinition, live);
             checkError(OGR_L_CreateFeature(layer, ogrFeature));
-            ((FeatureIdImpl) live.getIdentifier()).setID(mapper.convertOGRFID(featureType, ogrFeature));
+            String geotoolsId = mapper.convertOGRFID(featureType, ogrFeature);
+			((FeatureIdImpl) live.getIdentifier()).setID(geotoolsId);
             OGR_F_Destroy(ogrFeature);
         }
 

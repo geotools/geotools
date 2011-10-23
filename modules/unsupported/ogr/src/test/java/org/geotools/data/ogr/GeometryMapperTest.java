@@ -1,7 +1,8 @@
 package org.geotools.data.ogr;
 
-import static org.geotools.data.ogr.bridj.OgrLibrary.*;
-import junit.framework.TestCase;
+import static org.geotools.data.ogr.bridj.OgrLibrary.OGR_G_DestroyGeometry;
+
+import java.io.IOException;
 
 import org.bridj.Pointer;
 import org.geotools.data.ogr.bridj.GdalInit;
@@ -15,9 +16,9 @@ import com.vividsolutions.jts.io.WKTReader;
  *
  * @source $URL$
  */
-public class GeometryMapperTest extends TestCase {
+public class GeometryMapperTest extends TestCaseSupport {
     
-    GeometryFactory gf = new GeometryFactory();
+	GeometryFactory gf = new GeometryFactory();
 
     @Override
     protected void setUp() throws Exception {

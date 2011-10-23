@@ -27,9 +27,11 @@ import java.util.List;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
+import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
 import org.geotools.TestData;
+import org.geotools.data.ogr.bridj.GdalInit;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
@@ -72,14 +74,36 @@ public abstract class TestCaseSupport extends TestCase {
      */
     private final List tmpFiles = new ArrayList();
 
+	private static Boolean AVAILABLE;
+
+    
     /**
-     * Creates a new instance of {@code TestCaseSupport} with the given name.
+     * Override which checks if the fixture is available. If not the test is not
+     * executed.
      */
-    protected TestCaseSupport(final String name) throws IOException {
-        super(name);
+    @Override
+    public void run(TestResult result) {
+        if (gdalAvailable()) {
+            super.run(result);
+        } else {
+        	System.out.println("Skipping tests " + result.toString() + " since GDAL is not available");
+        }
     }
 
-    /**
+    private boolean gdalAvailable() {
+		if(AVAILABLE == null) {
+			try {
+				GdalInit.init();
+				AVAILABLE = true;
+			} catch(Exception e) {
+				AVAILABLE = false;
+				System.out.println("Failed to initialize GDAL, error is: " + e);
+			}
+		}
+		return AVAILABLE;
+	}
+
+	/**
      * Deletes all temporary files created by {@link #getTempFile}.
      * This method is automatically run after each test.
      */

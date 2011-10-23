@@ -4,8 +4,10 @@ import static org.bridj.Pointer.*;
 import static org.geotools.data.ogr.bridj.OgrLibrary.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.bridj.Pointer;
@@ -25,6 +27,7 @@ import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
@@ -148,12 +151,12 @@ public class OGRFeatureSource extends ContentFeatureSource {
     @Override
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
-    	return getReaderInternal(null, null, query);
+        return getReaderInternal(null, null, query);
     }
-    
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Pointer dataSource, Pointer layer, Query query)
-            throws IOException {
-    	// check how much we can encode
+
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Pointer dataSource,
+            Pointer layer, Query query) throws IOException {
+        // check how much we can encode
         OGRFilterTranslator filterTx = new OGRFilterTranslator(getSchema(), query.getFilter());
         if (Filter.EXCLUDE.equals(filterTx.getFilter())) {
             return new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(getSchema());
@@ -164,9 +167,9 @@ public class OGRFeatureSource extends ContentFeatureSource {
         try {
             // grab the data source
             String typeName = getEntry().getTypeName();
-            if(dataSource == null) {
-            	dataSource = getDataStore().openOGRDataSource(false);
-            	cleanup = true;
+            if (dataSource == null) {
+                dataSource = getDataStore().openOGRDataSource(false);
+                cleanup = true;
             }
 
             // extract the post filter
@@ -207,22 +210,24 @@ public class OGRFeatureSource extends ContentFeatureSource {
             }
 
             // build the layer query and execute it
-            if(layer == null) {
-	            String sql = getLayerSql(querySchema == sourceSchema ? null : querySchema,
-	                    filterTx.getAttributeFilter(), query.getSortBy());
-	            Pointer spatialFilterPtr = null;
-	            Geometry spatialFilter = filterTx.getSpatialFilter();
-	            if (spatialFilter != null) {
-	                spatialFilterPtr = new GeometryMapper.WKB(new GeometryFactory())
-	                        .parseGTGeometry(spatialFilter);
-	
-	            }
-	            layer = OGR_DS_ExecuteSQL(dataSource, pointerToCString(sql), spatialFilterPtr, null);
-	            if(layer == null) {
-	                throw new IOException("Failed to query the source layer with SQL" + sql);
-	            }
+            if (layer == null) {
+                String sql = getLayerSql(querySchema == sourceSchema ? null : querySchema,
+                        filterTx.getAttributeFilter(), query.getSortBy());
+                Pointer spatialFilterPtr = null;
+                Geometry spatialFilter = filterTx.getSpatialFilter();
+                if (spatialFilter != null) {
+                    spatialFilterPtr = new GeometryMapper.WKB(new GeometryFactory())
+                            .parseGTGeometry(spatialFilter);
+
+                }
+                layer = OGR_DS_ExecuteSQL(dataSource, pointerToCString(sql), spatialFilterPtr, null);
+                if (layer == null) {
+                    throw new IOException("Failed to query the source layer with SQL" + sql);
+                }
             } else {
-            	setLayerFilters(layer, filterTx);
+                setLayerFilters(layer, filterTx);
+                // would be nice, but it's not really working...
+                // setIgnoredFields(layer, querySchema, sourceSchema);
             }
 
             // see if we have a geometry factory to use
@@ -250,7 +255,37 @@ public class OGRFeatureSource extends ContentFeatureSource {
             }
         }
     }
-    
+
+    private void setIgnoredFields(Pointer layer, SimpleFeatureType querySchema,
+            SimpleFeatureType sourceSchema) throws IOException {
+        if (OGR_L_TestCapability(layer, pointerToCString(OLCIgnoreFields)) != 0) {
+            List<String> ignoredFields = new ArrayList<String>();
+            ignoredFields.add("OGR_STYLE");
+            // if no geometry, skip it
+            if (querySchema.getGeometryDescriptor() == null) {
+                ignoredFields.add("OGR_GEOMETRY");
+            }
+            // process all other attributes
+            for (AttributeDescriptor ad : sourceSchema.getAttributeDescriptors()) {
+                if (!(ad instanceof GeometryDescriptor)) {
+                    String name = ad.getLocalName();
+                    if (querySchema.getDescriptor(name) == null) {
+                        ignoredFields.add(name);
+                    }
+                }
+            }
+            if (ignoredFields.size() > 0) {
+                // the list should be NULL terminated
+                ignoredFields.add(null);
+                String[] ignoredFieldsArr = (String[]) ignoredFields
+                        .toArray(new String[ignoredFields.size()]);
+                Pointer<Pointer<Byte>> ifPtr = pointerToCStrings(ignoredFieldsArr);
+                OGRUtils.checkError(OGR_L_SetIgnoredFields(layer, ifPtr));
+            }
+        }
+
+    }
+
     private String getLayerSql(SimpleFeatureType targetSchema, String attributeFilter,
             SortBy[] sortBy) {
         StringBuilder sb = new StringBuilder();
@@ -291,7 +326,7 @@ public class OGRFeatureSource extends ContentFeatureSource {
             }
             sb.setLength(sb.length() - 2);
         }
-        
+
         return sb.toString();
     }
 

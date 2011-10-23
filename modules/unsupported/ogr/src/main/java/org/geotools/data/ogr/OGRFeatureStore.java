@@ -11,9 +11,12 @@ import org.geotools.data.ResourceInfo;
 import org.geotools.data.Transaction;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureStore;
+import org.geotools.data.store.ContentState;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.Name;
 
 import com.vividsolutions.jts.geom.GeometryFactory;
 
@@ -35,12 +38,14 @@ public class OGRFeatureStore extends ContentFeatureStore {
         try {
             // grab the layer
             String typeName = getEntry().getTypeName();
-            dataSource = getDataStore().openOGRDataSource(false);
+            dataSource = getDataStore().openOGRDataSource(true);
             layer = getDataStore().openOGRLayer(dataSource, typeName);
 
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader = delegate.getReaderInternal(query);
+            FeatureReader<SimpleFeatureType, SimpleFeature> reader = delegate
+                    .getReaderInternal(query);
             GeometryFactory gf = delegate.getGeometryFactory(query);
-            OGRDirectFeatureWriter result = new OGRDirectFeatureWriter(dataSource, layer, reader, getSchema(), gf);
+            OGRDirectFeatureWriter result = new OGRDirectFeatureWriter(dataSource, layer, reader,
+                    getSchema(), gf);
             cleanup = false;
             return result;
         } finally {
@@ -61,10 +66,6 @@ public class OGRFeatureStore extends ContentFeatureStore {
 
     public Transaction getTransaction() {
         return delegate.getTransaction();
-    }
-
-    public void setTransaction(Transaction transaction) {
-        delegate.setTransaction(transaction);
     }
 
     public ResourceInfo getInfo() {
@@ -94,6 +95,50 @@ public class OGRFeatureStore extends ContentFeatureStore {
     @Override
     protected SimpleFeatureType buildFeatureType() throws IOException {
         return delegate.buildFeatureType();
+    }
+
+    @Override
+    public ContentEntry getEntry() {
+        return delegate.getEntry();
+    }
+
+    @Override
+    public Name getName() {
+        return delegate.getName();
+    }
+
+    @Override
+    public ContentState getState() {
+        return delegate.getState();
+    }
+
+    @Override
+    public void setTransaction(Transaction transaction) {
+        super.setTransaction(transaction);
+
+        if (delegate.getTransaction() != transaction) {
+            delegate.setTransaction(transaction);
+        }
+    }
+
+    @Override
+    protected boolean canFilter() {
+        return delegate.canFilter();
+    }
+
+    @Override
+    protected boolean canSort() {
+        return delegate.canSort();
+    }
+
+    @Override
+    protected boolean canRetype() {
+        return delegate.canRetype();
+    }
+
+    @Override
+    protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
+        return delegate.handleVisitor(query, visitor);
     }
 
 }

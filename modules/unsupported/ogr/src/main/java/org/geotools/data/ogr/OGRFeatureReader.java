@@ -59,7 +59,7 @@ class OGRFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature
         this.schema = targetSchema;
         OGR_L_ResetReading(layer);
         this.layerCompleted = false;
-        this.mapper = new FeatureMapper(targetSchema, originalSchema, gf);
+        this.mapper = new FeatureMapper(targetSchema, layer, gf);
 
         // TODO: mark as ignored all the fields we don't want to handle, as well as ignoring
         // the per feature style, assuming the caps say we can

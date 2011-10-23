@@ -73,7 +73,7 @@ class OGRDirectFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
         this.dataSource = dataSource;
         this.layer = layer;
         this.layerDefinition = OGR_L_GetLayerDefn(layer);
-        this.mapper = new FeatureMapper(featureType, originalSchema, gf);
+        this.mapper = new FeatureMapper(featureType, layer, gf);
         this.deletedFeatures = false;
     }
 
@@ -135,10 +135,10 @@ class OGRDirectFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
         } else if (original != null) {
             // not equals, we're updating an existing one
             Pointer ogrFeature = mapper.convertGTFeature(layerDefinition, live);
-            OGR_L_SetFeature(layer, ogrFeature);
+            checkError(OGR_L_SetFeature(layer, ogrFeature));
         } else {
             Pointer ogrFeature = mapper.convertGTFeature(layerDefinition, live);
-            OGR_L_CreateFeature(layer, ogrFeature);
+            checkError(OGR_L_CreateFeature(layer, ogrFeature));
         }
 
         // reset state

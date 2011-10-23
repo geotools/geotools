@@ -21,9 +21,13 @@ import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
+import org.opengis.filter.sort.SortBy;
+import org.opengis.filter.sort.SortOrder;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
@@ -158,10 +162,6 @@ public class OGRFeatureSource extends ContentFeatureSource {
             // grab the layer
             String typeName = getEntry().getTypeName();
             dataSource = getDataStore().openOGRDataSource(false);
-            layer = getDataStore().openOGRLayer(dataSource, typeName);
-
-            // filter it
-            setLayerFilters(layer, filterTx);
 
             // extract the post filter
             Filter postFilter = null;
@@ -183,7 +183,8 @@ public class OGRFeatureSource extends ContentFeatureSource {
                     Set<String> queriedAttributes = new HashSet<String>(Arrays.asList(properties));
                     FilterAttributeExtractor extraAttributeExtractor = new FilterAttributeExtractor();
                     postFilter.accept(extraAttributeExtractor, null);
-                    Set<String> extraAttributeSet = new HashSet<String>(extraAttributeExtractor.getAttributeNameSet());
+                    Set<String> extraAttributeSet = new HashSet<String>(
+                            extraAttributeExtractor.getAttributeNameSet());
                     extraAttributeSet.removeAll(queriedAttributes);
                     if (extraAttributeSet.size() > 0) {
                         String[] queryProperties = new String[properties.length
@@ -193,13 +194,26 @@ public class OGRFeatureSource extends ContentFeatureSource {
                                 .toArray(new String[extraAttributeSet.size()]);
                         System.arraycopy(extraAttributes, 0, queryProperties, properties.length,
                                 extraAttributes.length);
-                        querySchema = SimpleFeatureTypeBuilder.retype(sourceSchema, queryProperties);
+                        querySchema = SimpleFeatureTypeBuilder
+                                .retype(sourceSchema, queryProperties);
                     }
                 }
             }
 
-            // tell OGR not to load all the attributes
-            // OGR_L_SetIgnoredFields(layer, charPtrPtr1)
+            // build the layer query and execute it
+            String sql = getLayerSql(querySchema == sourceSchema ? null : querySchema,
+                    filterTx.getAttributeFilter(), query.getSortBy());
+            Pointer spatialFilterPtr = null;
+            Geometry spatialFilter = filterTx.getSpatialFilter();
+            if (spatialFilter != null) {
+                spatialFilterPtr = new GeometryMapper.WKB(new GeometryFactory())
+                        .parseGTGeometry(spatialFilter);
+
+            }
+            layer = OGR_DS_ExecuteSQL(dataSource, pointerToCString(sql), spatialFilterPtr, null);
+            if(layer == null) {
+                throw new IOException("Failed to query the source layer with SQL" + sql);
+            }
 
             // see if we have a geometry factory to use
             GeometryFactory gf = getGeometryFactory(query);
@@ -227,6 +241,50 @@ public class OGRFeatureSource extends ContentFeatureSource {
         }
     }
 
+    private String getLayerSql(SimpleFeatureType targetSchema, String attributeFilter,
+            SortBy[] sortBy) {
+        StringBuilder sb = new StringBuilder();
+
+        // select attributues
+        sb.append("SELECT ");
+        if (targetSchema == null) {
+            sb.append("* ");
+        } else {
+            for (AttributeDescriptor attribute : targetSchema.getAttributeDescriptors()) {
+                sb.append(attribute.getLocalName()).append(", ");
+            }
+            sb.setLength(sb.length() - 2);
+            sb.append(" ");
+        }
+        sb.append("FROM ").append("'").append(getSchema().getTypeName()).append("' ");
+
+        // attribute filter
+        if (attributeFilter != null) {
+            sb.append("WHERE ").append(attributeFilter);
+        }
+
+        // order by
+        if (sortBy != null && sortBy.length > 0) {
+            sb.append("ORDER BY ");
+            for (SortBy sort : sortBy) {
+                if (sort == SortBy.NATURAL_ORDER) {
+                    sb.append("FID, ");
+                } else if (sort == SortBy.REVERSE_ORDER) {
+                    sb.append("FID DESC, ");
+                } else {
+                    sb.append(sort.getPropertyName().getPropertyName());
+                    if (sort.getSortOrder() == SortOrder.DESCENDING) {
+                        sb.append(" DESC");
+                    }
+                    sb.append(", ");
+                }
+            }
+            sb.setLength(sb.length() - 2);
+        }
+        
+        return sb.toString();
+    }
+
     GeometryFactory getGeometryFactory(Query query) {
         Hints hints = query.getHints();
         GeometryFactory gf = null;
@@ -252,7 +310,7 @@ public class OGRFeatureSource extends ContentFeatureSource {
     protected SimpleFeatureType buildFeatureType() throws IOException {
         String typeName = getEntry().getTypeName();
         String namespaceURI = getDataStore().getNamespaceURI();
-        
+
         Pointer dataSource = null;
         Pointer layer = null;
         try {
@@ -277,6 +335,16 @@ public class OGRFeatureSource extends ContentFeatureSource {
     @Override
     protected boolean canRetype() {
         return true;
+    }
+
+    @Override
+    protected boolean canSort() {
+        return true;
+    }
+
+    @Override
+    protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
+        return super.handleVisitor(query, visitor);
     }
 
 }

@@ -110,7 +110,11 @@ public class OGRDataStore extends ContentDataStore {
         Pointer ds = null;
         Pointer l = null;
         try {
-            ds = openOGRDataSource(false);
+            // try opening in update mode
+            ds = OGROpen(pointerToCString(ogrSourceName), 1, null);
+            if(ds == null) {
+                return false;
+            }
             l = openOGRLayer(ds, typeName);
             // for the moment we support working only with random writers
             boolean canDelete = OGR_L_TestCapability(l, pointerToCString(OLCDeleteFeature)) != 0;

@@ -20,12 +20,16 @@ import static org.bridj.Pointer.*;
 import static org.geotools.data.ogr.bridj.OgrLibrary.*;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.DateFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import org.bridj.Pointer;
@@ -73,20 +77,28 @@ class FeatureMapper {
     DateFormat timeFormat = new SimpleDateFormat("hh:mm:ss");
 
     HashMap<String, Integer> attributeIndexes;
+    
+    /**
+     * TODO: this is subscepitble to changes to the Locale in Java that might not affect
+     * the C code... we should probably figure out a way to get the OS level locale?
+     */
+    static final DecimalFormatSymbols DECIMAL_SYMBOLS = new DecimalFormatSymbols(); 
 
-    public FeatureMapper(SimpleFeatureType targetSchema, SimpleFeatureType sourceSchema, GeometryFactory geomFactory) {
+    public FeatureMapper(SimpleFeatureType targetSchema, Pointer layer, GeometryFactory geomFactory) {
         this.schema = targetSchema;
         this.builder = new SimpleFeatureBuilder(schema);
         this.geomMapper = new GeometryMapper.WKB(geomFactory);
         this.geomFactory = geomFactory;
         
         attributeIndexes = new HashMap<String, Integer>();
-        List<AttributeDescriptor> descriptors = sourceSchema.getAttributeDescriptors();
-        for (int i = 0; i < descriptors.size(); i++) {
-            AttributeDescriptor ad = descriptors.get(i);
-            if(!(ad instanceof GeometryDescriptor) && targetSchema.getDescriptor(ad.getLocalName()) != null) {
-                // the first one is the geometry, which does not count in ogr as an index
-                attributeIndexes.put(ad.getLocalName(), i - 1);
+        Pointer layerDefinition = OGR_L_GetLayerDefn(layer);
+        int size = OGR_FD_GetFieldCount(layerDefinition);
+        for(int i = 0; i < size; i++) {
+            Pointer  field = OGR_FD_GetFieldDefn(layerDefinition, i);
+            Pointer<Byte> namePtr = OGR_Fld_GetNameRef(field);
+            String name = namePtr.getCString();
+            if(targetSchema.getDescriptor(name) != null) {
+                attributeIndexes.put(name, i);
             }
         }
     }
@@ -244,12 +256,29 @@ class FeatureMapper {
         Class clazz = ad.getType().getBinding();
         if (clazz.equals(String.class)) {
             return  OGR_F_GetFieldAsString(ogrFeature, idx).getCString();
+        } else if (clazz.equals(Byte.class)) {
+            return (byte) OGR_F_GetFieldAsInteger(ogrFeature, idx);
+        } else if (clazz.equals(Short.class)) {
+            return (short) OGR_F_GetFieldAsInteger(ogrFeature, idx);
         } else if (clazz.equals(Integer.class)) {
             return OGR_F_GetFieldAsInteger(ogrFeature, idx);
+        } else if (clazz.equals(Long.class)) {
+            String value = OGR_F_GetFieldAsString(ogrFeature, idx).getCString();
+            return new Long(value);
+        } else if (clazz.equals(BigInteger.class)) {
+            String value = OGR_F_GetFieldAsString(ogrFeature, idx).getCString();
+            return new BigInteger(value);
         } else if (clazz.equals(Double.class)) {
             return OGR_F_GetFieldAsDouble(ogrFeature, idx);
         } else if (clazz.equals(Float.class)) {
             return (float) OGR_F_GetFieldAsDouble(ogrFeature, idx);
+        } else if (clazz.equals(BigDecimal.class)) {
+            String value = OGR_F_GetFieldAsString(ogrFeature, idx).getCString().trim();
+            char separator = DECIMAL_SYMBOLS.getDecimalSeparator();
+            if(separator != '.') {
+                value = value.replace(separator, '.');
+            }
+            return new BigDecimal(value);
         } else if (clazz.equals(java.sql.Date.class)) {
             Calendar cal = getDateField(ogrFeature, idx);
             cal.clear(Calendar.HOUR_OF_DAY);

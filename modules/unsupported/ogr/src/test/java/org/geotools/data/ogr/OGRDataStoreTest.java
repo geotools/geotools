@@ -227,61 +227,61 @@ public class OGRDataStoreTest extends TestCaseSupport {
 
     
 
-//    /**
-//     * Create a test file, then continue removing the first entry until there are no features left.
-//     */
-//    public void testRemoveFromFrontAndClose() throws Throwable {
-//        OGRDataStore sds = createDataStore();
-//
-//        String typeName = sds.getTypeNames()[0];
-//        int idx = loadFeatures(sds, typeName).size();
-//
-//        while (idx > 0) {
-//            FeatureWriter writer = null;
-//
-//            try {
-//                writer = sds.getFeatureWriter(typeName, Filter.INCLUDE, Transaction.AUTO_COMMIT);
-//                writer.next();
-//                writer.remove();
-//            } finally {
-//                if (writer != null) {
-//                    writer.close();
-//                    writer = null;
-//                }
-//            }
-//            idx--;
-//            assertEquals(idx, loadFeatures(sds, typeName).size());
-//        }
-//    }
-//
-//    /**
-//     * Create a test file, then continue removing the last entry until there are no features left.
-//     */
-//    public void testRemoveFromBackAndClose() throws Throwable {
-//        OGRDataStore sds = createDataStore();
-//        String typeName = sds.getTypeNames()[0];
-//
-//        int idx = loadFeatures(sds, typeName).size();
-//
-//        while (idx > 0) {
-//            FeatureWriter writer = null;
-//            try {
-//                writer = sds.getFeatureWriter(sds.getTypeNames()[0], Filter.INCLUDE,
-//                        Transaction.AUTO_COMMIT);
-//                while (writer.hasNext()) {
-//                    writer.next();
-//                }
-//                writer.remove();
-//            } finally {
-//                if (writer != null) {
-//                    writer.close();
-//                    writer = null;
-//                }
-//            }
-//            assertEquals(--idx, loadFeatures(sds, typeName).size());
-//        }
-//
-//    }
+    /**
+     * Create a test file, then continue removing the first entry until there are no features left.
+     */
+    public void testRemoveFromFrontAndClose() throws Throwable {
+        OGRDataStore sds = createDataStore();
+
+        String typeName = sds.getTypeNames()[0];
+        int idx = loadFeatures(sds, typeName).size();
+
+        while (idx > 0) {
+            FeatureWriter writer = null;
+
+            try {
+                writer = sds.getFeatureWriter(typeName, Filter.INCLUDE, Transaction.AUTO_COMMIT);
+                writer.next();
+                writer.remove();
+            } finally {
+                if (writer != null) {
+                    writer.close();
+                    writer = null;
+                }
+            }
+            idx--;
+            assertEquals(idx, loadFeatures(sds, typeName).size());
+        }
+    }
+
+    /**
+     * Create a test file, then continue removing the last entry until there are no features left.
+     */
+    public void testRemoveFromBackAndClose() throws Throwable {
+        OGRDataStore sds = createDataStore();
+        String typeName = sds.getTypeNames()[0];
+
+        int idx = loadFeatures(sds, typeName).size();
+
+        while (idx > 0) {
+            FeatureWriter writer = null;
+            try {
+                writer = sds.getFeatureWriter(sds.getTypeNames()[0], Filter.INCLUDE,
+                        Transaction.AUTO_COMMIT);
+                while (writer.hasNext()) {
+                    writer.next();
+                }
+                writer.remove();
+            } finally {
+                if (writer != null) {
+                    writer.close();
+                    writer = null;
+                }
+            }
+            assertEquals(--idx, loadFeatures(sds, typeName).size());
+        }
+
+    }
 
     public void testCreateSchema() throws Exception {
         String[] fileNames = shapeFileNames("test");
@@ -369,7 +369,6 @@ public class OGRDataStoreTest extends TestCaseSupport {
     public void testAttributeFilters() throws Exception {
         OGRDataStore s = new OGRDataStore(getAbsolutePath(STATE_POP), null, null);
         FeatureSource fs = s.getFeatureSource(s.getTypeNames()[0]);
-        System.out.println(fs.getSchema());
         
         // equality filter
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
@@ -461,7 +460,7 @@ public class OGRDataStoreTest extends TestCaseSupport {
     }
 
     private void writeFeatures(DataStore s, FeatureCollection<SimpleFeatureType, SimpleFeature> fc) throws Exception {
-        s.createSchema(fc.features().next().getFeatureType());
+        s.createSchema(fc.getSchema());
         FeatureWriter fw = s.getFeatureWriter(s.getTypeNames()[0], Transaction.AUTO_COMMIT);
         FeatureIterator it = fc.features();
         while (it.hasNext()) {

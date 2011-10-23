@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
@@ -72,6 +73,12 @@ public class OGRDataStoreFactoryTest extends TestCaseSupport {
         } finally {
             disposeQuietly(store);
         }
+    }
+    
+    public void testNames() throws Exception {
+        Set<String> drivers = OGRDataStoreFactory.getAvailableDrivers();
+        assertTrue(drivers.size() > 0);
+        assertTrue(drivers.contains("ESRI Shapefile"));
     }
 
 }

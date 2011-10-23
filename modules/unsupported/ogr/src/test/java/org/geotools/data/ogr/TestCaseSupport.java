@@ -170,9 +170,11 @@ public abstract class TestCaseSupport extends TestCase {
 
     /**
      * Creates a temporary file, to be automatically deleted at the end of the test suite.
+     * @param filePrefix TODO
+     * @param extension TODO
      */
-    protected File getTempFile() throws IOException {
-        File tmpFile = File.createTempFile("test-shp", ".shp");
+    protected File getTempFile(String filePrefix, String extension) throws IOException {
+        File tmpFile = File.createTempFile(filePrefix, extension, new File("./target"));
         assertTrue(tmpFile.isFile());
         
         // keep track of all temp files so we can delete them

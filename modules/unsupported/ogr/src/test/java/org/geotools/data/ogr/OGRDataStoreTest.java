@@ -32,6 +32,7 @@ import org.geotools.data.FeatureSource;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
+import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -213,19 +214,6 @@ public class OGRDataStoreTest extends TestCaseSupport {
         }
     }
 
-//    public void testShapeWriteCapabilities() throws Exception {
-//        String absolutePath = getAbsolutePath(STATE_POP);
-//        System.out.println(absolutePath);
-//        OGRDataStore ods = new OGRDataStore(absolutePath, null, null);
-//        assertTrue(ods.supportsInPlaceWrite(ods.getTypeNames()[0]));
-//    }
-//
-//    public void testMIFWriteCapabilities() throws Exception {
-//        OGRDataStore ods = new OGRDataStore(getAbsolutePath(MIXED), null, null);
-//        assertTrue(ods.supportsWriteNewLayer(ods.getTypeNames()[0]));
-//    }
-
-    
 
     /**
      * Create a test file, then continue removing the first entry until there are no features left.
@@ -309,62 +297,84 @@ public class OGRDataStoreTest extends TestCaseSupport {
         }
     }
 
-//    public void testCreateWriteRead() throws Exception {
-//        String typeName = "testw";
-//        String[] files = shapeFileNames(typeName);
-//        cleanFiles(files);
-//
-//        File file = new File(files[0]);
-//        OGRDataStore ds = new OGRDataStore(file.getAbsolutePath(), "ESRI shapefile", null);
-//        SimpleFeatureType schema = DataUtilities.createType(typeName, "geom:Point,cat:int,name:string");
-//        ds.createSchema(schema);
-//
-//        GeometryFactory gf = new GeometryFactory();
-//        // creating 20 geometries because with only a couple a finalization
-//        // related error that did blew up the VM would not appear
-//        SimpleFeature[] features = new SimpleFeature[20];
-//        for (int i = 0; i < features.length; i++) {
-//            features[i] = SimpleFeatureBuilder.build(schema, new Object[] { gf.createPoint(new Coordinate(i, i)),
-//                    new Integer(i), "" + i }, null);
-//        }
-//
-//        FeatureWriter writer = ds.getFeatureWriterAppend("testw", Transaction.AUTO_COMMIT);
-//        for (int i = 0; i < features.length; i++) {
-//            assertFalse(writer.hasNext());
-//            SimpleFeature f = (SimpleFeature) writer.next();
-//            f.setAttributes(features[i].getAttributes());
-//            writer.write();
-//            assertEquals(typeName + "." + i, f.getID());
-//        }
-//        writer.close();
-//
-//        FeatureReader reader = ds.getFeatureReader("testw");
-//        for (int i = 0; i < features.length; i++) {
-//            assertTrue(reader.hasNext());
-//            SimpleFeature f = (SimpleFeature) reader.next();
-//            for (int j = 0; j < schema.getAttributeCount(); j++) {
-//                if (f.getAttribute(j) instanceof Geometry) {
-//                    // this is necessary because geometry equality is
-//                    // implemented as Geometry.equals(Geometry)
-//                    Geometry a = (Geometry) f.getAttribute(j);
-//                    Geometry b = (Geometry) features[i].getAttribute(j);
-//                    assertTrue(a.equals(b));
-//                } else {
-//                    assertEquals(f.getAttribute(j), features[i].getAttribute(j));
-//                }
-//            }
-//        }
-//        assertFalse(reader.hasNext());
-//        reader.close();
-//    }
+    public void testCreateWriteRead() throws Exception {
+        String typeName = "testw";
+        String[] files = shapeFileNames(typeName);
+        cleanFiles(files);
 
-//    public void testAttributesWriting() throws Exception {
-//        FeatureCollection features = createFeatureCollection();
-//        File tmpFile = getTempFile();
-//        tmpFile.delete();
-//        OGRDataStore s = new OGRDataStore(tmpFile.getAbsolutePath(), "ESRI shapefile", null);
-//        writeFeatures(s, features);
-//    }
+        File file = new File(files[0]);
+        OGRDataStore ds = new OGRDataStore(file.getAbsolutePath(), "ESRI shapefile", null);
+        SimpleFeatureType schema = DataUtilities.createType(typeName,
+                "geom:Point,cat:int,name:string");
+        ds.createSchema(schema);
+
+        GeometryFactory gf = new GeometryFactory();
+        // creating 20 geometries because with only a couple a finalization
+        // related error that did blew up the VM would not appear
+        SimpleFeature[] features = new SimpleFeature[20];
+        for (int i = 0; i < features.length; i++) {
+            features[i] = SimpleFeatureBuilder.build(schema,
+                    new Object[] { gf.createPoint(new Coordinate(i, i)), new Integer(i), "" + i },
+                    null);
+        }
+
+        FeatureWriter writer = ds.getFeatureWriterAppend("testw", Transaction.AUTO_COMMIT);
+        for (int i = 0; i < features.length; i++) {
+            assertFalse(writer.hasNext());
+            SimpleFeature f = (SimpleFeature) writer.next();
+            f.setAttributes(features[i].getAttributes());
+            writer.write();
+            assertEquals(typeName + "." + i, f.getID());
+        }
+        writer.close();
+
+        FeatureReader reader = ds.getFeatureReader(new Query("testw"), null);
+        for (int i = 0; i < features.length; i++) {
+            assertTrue(reader.hasNext());
+            SimpleFeature f = (SimpleFeature) reader.next();
+            for (int j = 0; j < schema.getAttributeCount(); j++) {
+                if (f.getAttribute(j) instanceof Geometry) {
+                    // this is necessary because geometry equality is
+                    // implemented as Geometry.equals(Geometry)
+                    Geometry a = (Geometry) f.getAttribute(j);
+                    Geometry b = (Geometry) features[i].getAttribute(j);
+                    assertTrue(a.equals(b));
+                } else {
+                    assertEquals(f.getAttribute(j), features[i].getAttribute(j));
+                }
+            }
+        }
+        assertFalse(reader.hasNext());
+        reader.close();
+    }
+
+    public void testAttributesWritingShapefile() throws Exception {
+        FeatureCollection features = createFeatureCollection();
+        File tmpFile = getTempFile("test-shp", ".shp");
+        tmpFile.delete();
+        OGRDataStore s = new OGRDataStore(tmpFile.getAbsolutePath(), "ESRI shapefile", null);
+        writeFeatures(s, features);
+    }
+    
+    public void testAttributesWritingGML() throws Exception {
+        SimpleFeatureCollection features = createFeatureCollection();
+        File tmpFile = getTempFile("test-gml", ".gml");
+        tmpFile.delete();
+        OGRDataStore s = new OGRDataStore(tmpFile.getAbsolutePath(), "GML", null);
+        s.createSchema(features, true, null);
+        assertEquals(1, s.getTypeNames().length);
+        assertEquals(features.size(), s.getFeatureSource("junk").getFeatures().size());
+    }
+    
+    public void testAttributesWritingKML() throws Exception {
+        SimpleFeatureCollection features = createFeatureCollection();
+        File tmpFile = getTempFile("test-kml", ".kml");
+        tmpFile.delete();
+        OGRDataStore s = new OGRDataStore(tmpFile.getAbsolutePath(), "KML", null);
+        s.createSchema(features, true, null);
+        assertEquals(1, s.getTypeNames().length);
+        assertEquals(features.size(), s.getFeatureSource("junk").getFeatures().size());
+    }
     
     public void testAttributeFilters() throws Exception {
         OGRDataStore s = new OGRDataStore(getAbsolutePath(STATE_POP), null, null);
@@ -429,7 +439,7 @@ public class OGRDataStoreTest extends TestCaseSupport {
         return fs.getFeatures();
     }
 
-    protected FeatureCollection createFeatureCollection() throws Exception {
+    protected ListFeatureCollection createFeatureCollection() throws Exception {
         SimpleFeatureTypeBuilder tbuilder = new SimpleFeatureTypeBuilder();
         tbuilder.setName("junk");
         tbuilder.add("a", Point.class);
@@ -446,7 +456,7 @@ public class OGRDataStoreTest extends TestCaseSupport {
         tbuilder.add("l", BigInteger.class);
         SimpleFeatureType type = tbuilder.buildFeatureType();
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(type);
-        FeatureCollection features = FeatureCollections.newCollection();
+        ListFeatureCollection features = new ListFeatureCollection(type);
         for (int i = 0, ii = 20; i < ii; i++) {
             features.add(fb.buildFeature(null, new Object[] {
                     new GeometryFactory().createPoint(new Coordinate(1, -1)), new Byte((byte) i),
@@ -460,7 +470,8 @@ public class OGRDataStoreTest extends TestCaseSupport {
     }
 
     private void writeFeatures(DataStore s, FeatureCollection<SimpleFeatureType, SimpleFeature> fc) throws Exception {
-        s.createSchema(fc.getSchema());
+        SimpleFeatureType schema = fc.getSchema();
+        s.createSchema(schema);
         FeatureWriter fw = s.getFeatureWriter(s.getTypeNames()[0], Transaction.AUTO_COMMIT);
         FeatureIterator it = fc.features();
         while (it.hasNext()) {
@@ -481,7 +492,7 @@ public class OGRDataStoreTest extends TestCaseSupport {
     }
 
     private OGRDataStore createDataStore() throws Exception {
-        return createDataStore(getTempFile());
+        return createDataStore(getTempFile("test-shp", ".shp"));
     }
 
     private String[] shapeFileNames(String typeName) {

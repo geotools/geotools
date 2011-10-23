@@ -27,6 +27,7 @@ import org.bridj.Pointer;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.filter.identity.FeatureIdImpl;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -139,6 +140,8 @@ class OGRDirectFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleF
         } else {
             Pointer ogrFeature = mapper.convertGTFeature(layerDefinition, live);
             checkError(OGR_L_CreateFeature(layer, ogrFeature));
+            ((FeatureIdImpl) live.getIdentifier()).setID(mapper.convertOGRFID(featureType, ogrFeature));
+            OGR_F_Destroy(ogrFeature);
         }
 
         // reset state

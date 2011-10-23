@@ -141,67 +141,70 @@ class FeatureMapper {
     Pointer convertGTFeature(Pointer featureDefinition, SimpleFeature feature)
             throws IOException {
         // create a new empty OGR feature
-        Pointer result = OGR_F_Create(featureDefinition);
+        Pointer ogrFeature = OGR_F_Create(featureDefinition);
 
         // go thru GeoTools feature attributes, and convert
         SimpleFeatureType schema = feature.getFeatureType();
         for (int i = 0, j = 0; i < schema.getAttributeCount(); i++) {
-            AttributeDescriptor at = schema.getDescriptor(i);
             Object attribute = feature.getAttribute(i);
-            if (at instanceof GeometryDescriptor) {
+            if (attribute instanceof Geometry) {
                 // using setGeoemtryDirectly the feature becomes the owner of the generated
                 // OGR geometry and we don't have to .delete() it (it's faster, too)
                 Pointer geometry = geomMapper.parseGTGeometry((Geometry) attribute);
-                OGR_F_SetGeometryDirectly(result, geometry);
-                continue;
-            }
-
-            if (attribute == null) {
-                OGR_F_UnsetField(result, j);
+                OGR_F_SetGeometryDirectly(ogrFeature, geometry);
             } else {
-                Pointer fieldDefinition = OGR_FD_GetFieldDefn(featureDefinition, j);
-                long ogrType = OGR_Fld_GetType(fieldDefinition).value();
-                if (ogrType == OGRFieldType.OFTInteger.value()) {
-                    OGR_F_SetFieldInteger(result, j, ((Number) attribute).intValue());
-                } else if (ogrType == OGRFieldType.OFTReal.value()) {
-                    OGR_F_SetFieldDouble(result, j, ((Number) attribute).doubleValue());
-                } else if (ogrType == OGRFieldType.OFTBinary.value()) {
-                    byte[] attValue = (byte[]) attribute;
-                    OGR_F_SetFieldBinary(result, j, attValue.length, pointerToBytes(attValue));
-                } else if (ogrType == OGRFieldType.OFTDate.value()) {
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTime((Date) attribute);
-                    int year = cal.get(Calendar.YEAR);
-                    int month = cal.get(Calendar.MONTH);
-                    int day = cal.get(Calendar.DAY_OF_MONTH);
-                    OGR_F_SetFieldDateTime(result, j, year, month, day, 0, 0, 0, 0);
-                } else if (ogrType == OGRFieldType.OFTTime.value()) {
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTime((Date) attribute);
-                    int hour = cal.get(Calendar.HOUR_OF_DAY);
-                    int minute = cal.get(Calendar.MINUTE);
-                    int second = cal.get(Calendar.SECOND);
-                    OGR_F_SetFieldDateTime(result, j, 0, 0, 0, hour, minute, second, 0);
-                } else if (ogrType == OGRFieldType.OFTDateTime.value()) {
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTime((Date) attribute);
-                    int year = cal.get(Calendar.YEAR);
-                    int month = cal.get(Calendar.MONTH);
-                    int day = cal.get(Calendar.DAY_OF_MONTH);
-                    int hour = cal.get(Calendar.HOUR_OF_DAY);
-                    int minute = cal.get(Calendar.MINUTE);
-                    int second = cal.get(Calendar.SECOND);
-                    OGR_F_SetFieldDateTime(result, j, year, month, day, hour, minute, second, 0);
-                } else {
-                    // anything else we treat as a string
-                    String str = Converters.convert(attribute, String.class);
-                    OGR_F_SetFieldString(result, j, pointerToCString(str));
-                }
+                setFieldValue(featureDefinition, ogrFeature, j, attribute);
+                j++;
             }
-            j++;
         }
 
-        return result;
+        return ogrFeature;
+    }
+
+    static void setFieldValue(Pointer featureDefinition, Pointer ogrFeature, int fieldIdx,
+            Object value) throws IOException {
+         if (value == null) {
+            OGR_F_UnsetField(ogrFeature, fieldIdx);
+        } else {
+            Pointer fieldDefinition = OGR_FD_GetFieldDefn(featureDefinition, fieldIdx);
+            long ogrType = OGR_Fld_GetType(fieldDefinition).value();
+            if (ogrType == OGRFieldType.OFTInteger.value()) {
+                OGR_F_SetFieldInteger(ogrFeature, fieldIdx, ((Number) value).intValue());
+            } else if (ogrType == OGRFieldType.OFTReal.value()) {
+                OGR_F_SetFieldDouble(ogrFeature, fieldIdx, ((Number) value).doubleValue());
+            } else if (ogrType == OGRFieldType.OFTBinary.value()) {
+                byte[] attValue = (byte[]) value;
+                OGR_F_SetFieldBinary(ogrFeature, fieldIdx, attValue.length, pointerToBytes(attValue));
+            } else if (ogrType == OGRFieldType.OFTDate.value()) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime((Date) value);
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+                OGR_F_SetFieldDateTime(ogrFeature, fieldIdx, year, month, day, 0, 0, 0, 0);
+            } else if (ogrType == OGRFieldType.OFTTime.value()) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime((Date) value);
+                int hour = cal.get(Calendar.HOUR_OF_DAY);
+                int minute = cal.get(Calendar.MINUTE);
+                int second = cal.get(Calendar.SECOND);
+                OGR_F_SetFieldDateTime(ogrFeature, fieldIdx, 0, 0, 0, hour, minute, second, 0);
+            } else if (ogrType == OGRFieldType.OFTDateTime.value()) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime((Date) value);
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+                int hour = cal.get(Calendar.HOUR_OF_DAY);
+                int minute = cal.get(Calendar.MINUTE);
+                int second = cal.get(Calendar.SECOND);
+                OGR_F_SetFieldDateTime(ogrFeature, fieldIdx, year, month, day, hour, minute, second, 0);
+            } else {
+                // anything else we treat as a string
+                String str = Converters.convert(value, String.class);
+                OGR_F_SetFieldString(ogrFeature, fieldIdx, pointerToCString(str));
+            }
+        }
     }
 
     /**

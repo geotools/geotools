@@ -18,6 +18,7 @@ package org.geotools.data.ogr;
 
 import static org.bridj.Pointer.*;
 import static org.geotools.data.ogr.bridj.OgrLibrary.*;
+import static org.geotools.data.ogr.OGRUtils.*;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -25,7 +26,9 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.bridj.Pointer;
 import org.geotools.data.DataSourceException;
@@ -193,6 +196,18 @@ public class OGRDataStoreFactory implements DataStoreFactorySpi {
 
         return false;
 
+    }
+    
+    public static Set<String> getAvailableDrivers() {
+        int count = OGRGetDriverCount();
+        Set<String> result = new HashSet<String>();
+        for (int i = 0; i < count; i++) {
+            Pointer driver = OGRGetDriver(i);
+            String name = getCString(OGR_Dr_GetName(driver));
+            result.add(name);
+        }
+        
+        return result;
     }
 
     public Map getImplementationHints() {

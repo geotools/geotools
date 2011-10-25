@@ -45,8 +45,7 @@ public class FeatureGSProcessFactoryFactoryTest {
     
     @Test
     public void testSum() throws Exception {
-        String typeName = bugs.getTypeNames()[0];
-        SimpleFeatureSource source = bugs.getFeatureSource( typeName );
+        SimpleFeatureSource source = bugs.getFeatureSource("bugsites");
         
         Map<String,Object> input = new KVP(
                 "features", source.getFeatures(),

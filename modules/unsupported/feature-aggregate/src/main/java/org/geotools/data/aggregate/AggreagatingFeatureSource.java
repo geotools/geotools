@@ -35,6 +35,8 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 
+import com.vividsolutions.jts.geom.Envelope;
+
 class AggregatingFeatureSource extends ContentFeatureSource {
 
     /**
@@ -70,7 +72,9 @@ class AggregatingFeatureSource extends ContentFeatureSource {
             try {
                 ReferencedEnvelope bound = future.get();
                 if (bound != null) {
-                    result.expandToInclude(bound);
+                    // the inputs might have slightly different crs, compensate
+                    Envelope env = new Envelope(bound);
+                    result.expandToInclude(env);
                 }
             } catch (Exception e) {
                 throw new IOException("Failed to get the envelope from a delegate store", e);

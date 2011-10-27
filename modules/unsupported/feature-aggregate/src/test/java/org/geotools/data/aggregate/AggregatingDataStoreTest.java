@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -25,7 +24,6 @@ import org.geotools.referencing.CRS;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.sort.SortBy;
@@ -131,6 +129,17 @@ public class AggregatingDataStoreTest extends AbstractAggregatingStoreTest {
         Filter eq2 = ff.equals(ff.property("ID"), ff.literal("four"));
         assertEquals(new ReferencedEnvelope(2, 4, 2, 4, CRS.decode("EPSG:4326")), store
                 .getFeatureSource(BASIC_POLYGONS).getBounds(new Query(null, eq2)));
+    }
+    
+    @Test
+    public void testBoundMixed() throws Exception {
+        AggregateTypeConfiguration config = new AggregateTypeConfiguration(BASIC_POLYGONS);
+        config.addSourceType("store1", "BasicPolygons");
+        config.addSourceType("store2", "BasicPolygons4269");
+        store.addType(config);
+        
+        assertEquals(new ReferencedEnvelope(-2, 4, -1, 6, CRS.decode("EPSG:4326")), store
+                .getFeatureSource(BASIC_POLYGONS).getBounds(Query.ALL));
     }
 
     @Test

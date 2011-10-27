@@ -1,6 +1,10 @@
 package org.opengis.filter.identity;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
@@ -25,12 +29,13 @@ public class VersionTest {
 
     @Test
     public void versionInteger() {
-        Version version = new Version(1234567890);
+        Integer testInt = new Integer(1234567890);
+        Version version = new Version(testInt);
 
         assertNotNull(version.getIndex());
         assertTrue( version.isIndex() );
         assertEquals(1234567890, (int) version.getIndex());
-        
+
         assertFalse( version.isVersionAction() );
         assertNull(version.getVersionAction());
         
@@ -43,6 +48,7 @@ public class VersionTest {
 
         Version version = new Version(now);
 
+        assertTrue( version.isDateTime() );
         assertEquals(now, version.getDateTime());
         assertNull(version.getIndex());
         assertNull(version.getVersionAction());

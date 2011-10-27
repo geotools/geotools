@@ -92,10 +92,12 @@ public class FilterMockData {
         resourceId.setStartTime( new Date(1000) );
         resourceId.setEndTime(new Date(2000));
 
+        Integer testInt = new Integer(1234567890);
+        
         return f.id(new LinkedHashSet<Identifier>(Arrays.asList(
                 f.featureId("foo.1", "v1"),
                 f.resourceId("foo.2", "", new Version(new Date(1000))),//
-                f.resourceId("foo.3", "", new Version(5)),//
+                f.resourceId("foo.3", "", new Version(testInt)),//
                 resourceId)));
     }
 

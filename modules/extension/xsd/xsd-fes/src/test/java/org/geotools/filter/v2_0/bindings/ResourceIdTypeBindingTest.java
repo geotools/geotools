@@ -65,25 +65,25 @@ public class ResourceIdTypeBindingTest extends FESTestSupport {
         // This is in consistent as the FIRST entry cannot have a previous1
         ResourceIdImpl resourceId =  new ResourceIdImpl("rid1", "abc", new Version(FIRST));
         resourceId.setPreviousRid("previous1");
-        assertEquals( resourceId, ids.get(0));
+        assertEquals( resourceId.getID(), ids.get(0).getID());
         
-        assertEquals(ff.resourceId("rid2", "", new Version(LAST)),
-                     ids.get(1));
-        assertEquals(ff.resourceId("rid3", "", new Version(PREVIOUS)),
-                     ids.get(2));
-        assertEquals(ff.resourceId("rid4", "", new Version(NEXT)),
-                     ids.get(3));
-        assertEquals(ff.resourceId("rid5", "", new Version(ALL)),
-                     ids.get(4));
+        assertEquals(ff.resourceId("rid2", "", new Version(LAST)).getID(),
+                     ids.get(1).getID());
+        assertEquals(ff.resourceId("rid3", "", new Version(PREVIOUS)).getID(),
+                     ids.get(2).getID());
+        assertEquals(ff.resourceId("rid4", "", new Version(NEXT)).getID(),
+                     ids.get(3).getID());
+        assertEquals(ff.resourceId("rid5", "", new Version(ALL)).getID(),
+                     ids.get(4).getID());
         
         // This is inconsistent as date and resource based query cannot be used at the same time
         ResourceIdImpl resourceId2 =  new ResourceIdImpl("rid6", "", new Version(4));
         resourceId2.setPreviousRid("previous2");
         resourceId2.setStartTime(date1);
         resourceId2.setEndTime(date2);
-        assertEquals( resourceId2,
-                      ids.get(5));
+        assertEquals( resourceId2.getID(),
+                      ids.get(5).getID());
         
-        assertEquals(ff.resourceId("rid7", "123",  new Version(date1)), ids.get(6));
+        assertEquals(ff.resourceId("rid7", "123",  new Version(date1)).getID(), ids.get(6).getID());
     }
 }

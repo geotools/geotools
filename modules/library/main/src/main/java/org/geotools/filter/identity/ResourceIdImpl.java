@@ -54,6 +54,17 @@ public class ResourceIdImpl extends FeatureIdVersionedImpl implements ResourceId
         }
         this.version = version.union();
     }
+    
+    /**
+     * Obtain a ResourceId that assumes the default, i.e. last, version.
+     * 
+     * @param fid
+     * @param featureVersion
+     */
+    public ResourceIdImpl(String fid, String featureVersion) {
+    	this(fid, featureVersion, new Version(Version.Action.LAST));
+    }
+    
     /**
      * 
      * @param rid
@@ -126,5 +137,4 @@ public class ResourceIdImpl extends FeatureIdVersionedImpl implements ResourceId
         hash = Utilities.hash(endTime, hash);
         return hash;
     }
-
 }

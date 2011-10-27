@@ -45,9 +45,9 @@ public class FilterTypeBindingTest extends FESTestSupport {
     public void testParseId() throws Exception {
         String xml = 
             "<fes:Filter xmlns:fes='http://www.opengis.net/fes/2.0'>" + 
-                "<fes:ResourceId rid='InWaterA_1M.1234'/>" + 
+                "<fes:ResourceId rid='InWaterA_1M.1234' version='1'/>" + 
             "</fes:Filter>";
-        
+
         buildDocument(xml);
         Id f = (Id) parse();
         assertNotNull(f);
@@ -192,7 +192,7 @@ public class FilterTypeBindingTest extends FESTestSupport {
     public void testEncodeRsourceId() throws Exception {
         Document doc = encode(FilterMockData.resourceId(), FES.Filter);
         assertEquals("fes:Filter", doc.getDocumentElement().getNodeName());
-        //print(doc);
+        print(doc);
 
         assertEquals(4, getElementsByQName(doc, FES.ResourceId).getLength());
 

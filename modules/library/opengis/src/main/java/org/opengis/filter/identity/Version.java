@@ -54,9 +54,9 @@ public final class Version {
      */
     final long union;
 
-    public Version(long union){
+   public Version(long union){
         this.union = union;
-    }
+   }
     
     public Version(final Action action) {
         if (action == null) {
@@ -125,7 +125,7 @@ public final class Version {
     }
 
     /**
-     * Version requested as defined by an index (from 1 throught to the latest).
+     * Version requested as defined by an index (from 1 through to the latest).
      * <p>
      * The version attribute may be an integer N indicating that the Nth version of the resource shall be selected. The first version of a resource
      * shall be numbered 1. If N exceeds the number of versions available, the latest version of the resource shall be selected.

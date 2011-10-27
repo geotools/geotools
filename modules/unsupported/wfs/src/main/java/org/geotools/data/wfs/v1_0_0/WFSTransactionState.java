@@ -234,6 +234,8 @@ public class WFSTransactionState implements State {
         // System.out.println("connection to commit");
         Map<String,Object> hints = new HashMap<String,Object>();
         hints.put(DocumentWriter.BASE_ELEMENT, WFSSchema.getInstance().getElements()[24]); // Transaction
+        hints.put(DocumentWriter.ENCODING, ds.getDefaultEncoding());
+        
         Set<String> fts = new HashSet<String>();
         Iterator<Action> i = toCommit.iterator();
         while (i.hasNext()) {
@@ -272,7 +274,8 @@ public class WFSTransactionState implements State {
         OutputStream os = hc.getOutputStream();
 
         // write request
-        Writer w = new OutputStreamWriter(os);
+        final String encoding = ds.getDefaultEncoding();
+        Writer w = new OutputStreamWriter(os, encoding);
         Logger logger = Logging.getLogger("org.geotools.data.wfs");
         if (logger.isLoggable(Level.FINE)) {
             w = new LogWriterDecorator(w, logger, Level.FINE);

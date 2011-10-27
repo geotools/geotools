@@ -124,7 +124,7 @@ public class WFS_1_1_0_ProtocolTest {
         try {
             InputStream badData = new ByteArrayInputStream(new byte[1024]);
             HTTPProtocol connFac = new DefaultHTTPProtocol();
-            new WFS_1_1_0_Protocol(badData, connFac);
+            new WFS_1_1_0_Protocol(badData, connFac, null);
             fail("Excpected IOException as a capabilities document was not provided");
         } catch (IOException e) {
             assertTrue(true);

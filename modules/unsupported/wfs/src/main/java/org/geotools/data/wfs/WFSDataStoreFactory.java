@@ -27,6 +27,7 @@ import java.net.Authenticator;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -248,7 +249,12 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
         String name = "WFSDataStoreFactory:ENCODING";
         String description = "This allows the user to specify the character encoding of the "
                 + "XML-Requests sent to the Server. Defaults to UTF-8";
-        parametersInfo[4] = ENCODING = new WFSFactoryParam<String>(name, String.class, description, "UTF-8");
+        
+        String defaultValue = "UTF-8";
+        List<String> options = new ArrayList<String>(Charset.availableCharsets().keySet());
+        Collections.sort(options);
+        parametersInfo[4] = ENCODING = new WFSFactoryParam<String>(name, String.class, description,
+                defaultValue, Parameter.OPTIONS, options);
     }
     
     /**
@@ -428,7 +434,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
         } else {
             InputStream capsIn = new ByteArrayInputStream(wfsCapabilitiesRawData);
 
-            WFS_1_1_0_Protocol wfs = new WFS_1_1_0_Protocol(capsIn, http);
+            WFS_1_1_0_Protocol wfs = new WFS_1_1_0_Protocol(capsIn, http, defaultEncoding);
 
             WFSStrategy strategy = determineCorrectStrategy(getCapabilitiesRequest, capsDoc, wfsStrategy );
             wfs.setStrategy(strategy);

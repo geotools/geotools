@@ -184,7 +184,7 @@ public final class DataTestSupport {
 
         public TestWFS_1_1_0_Protocol(InputStream capabilitiesReader, HTTPProtocol http)
                 throws IOException {
-            super(capabilitiesReader, http);
+            super(capabilitiesReader, http, null);
         }
 
         /**

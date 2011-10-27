@@ -137,7 +137,11 @@ public class WFS_1_1_0_Protocol implements WFSProtocol {
 
     private HTTPProtocol http;
 
-    public WFS_1_1_0_Protocol(InputStream capabilitiesReader, HTTPProtocol http) throws IOException {
+    private final Charset defaultEncoding;
+
+    public WFS_1_1_0_Protocol(InputStream capabilitiesReader, HTTPProtocol http,
+            Charset defaultEncoding) throws IOException {
+        this.defaultEncoding = defaultEncoding;
         this.strategy = new DefaultWFSStrategy();
         this.capabilities = parseCapabilities(capabilitiesReader);
         this.http = http;
@@ -632,7 +636,8 @@ public class WFS_1_1_0_Protocol implements WFSProtocol {
             }
 
             public void writeBody(final OutputStream out) throws IOException {
-                final Charset charset = Charset.forName("UTF-8");
+                final Charset charset = defaultEncoding == null ? Charset.forName("UTF-8")
+                        : defaultEncoding;
                 encoder.setEncoding(charset);
                 // if (LOGGER.isLoggable(Level.FINEST)) {
                 // System.err.println("Sending POST request: ");

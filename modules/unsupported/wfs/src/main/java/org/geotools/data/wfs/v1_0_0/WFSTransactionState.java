@@ -277,7 +277,8 @@ public class WFSTransactionState implements State {
         OutputStream os = hc.getOutputStream();
 
         // write request
-        Writer w = new OutputStreamWriter(os);
+        final String encoding = ds.getDefaultEncoding();
+        Writer w = new OutputStreamWriter(os, encoding);
         Logger logger = Logging.getLogger("org.geotools.data.wfs");
         if (logger.isLoggable(Level.FINE)) {
             w = new LogWriterDecorator(w, logger, Level.FINE);

@@ -176,6 +176,11 @@ public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataSto
         determineCorrectStrategy();
     }
 
+    
+    public String getDefaultEncoding() {
+        return protocolHandler.getEncoding();
+    }
+
     public WFSServiceInfo getInfo() {
         return new WFSServiceInfo() {
             public String getDescription() {
@@ -555,7 +560,8 @@ public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataSto
     Writer getOutputStream(HttpURLConnection hc) throws IOException {
         OutputStream os = hc.getOutputStream();
 
-        Writer w = new OutputStreamWriter(os);
+        final String encoding = getDefaultEncoding();
+        Writer w = new OutputStreamWriter(os, encoding);
         // write request
         Logger logger = Logging.getLogger("org.geotools.data.wfs");
         if (logger.isLoggable(Level.FINE)) {

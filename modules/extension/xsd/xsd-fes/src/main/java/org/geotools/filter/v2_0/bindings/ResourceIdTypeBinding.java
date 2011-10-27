@@ -55,10 +55,12 @@ public class ResourceIdTypeBinding extends AbstractComplexBinding {
             featureVersion = rid.substring(idx + 1);
         }
         ResourceIdImpl resourceId = null;
-        if(version == null)
-        	resourceId = new ResourceIdImpl(fid, featureVersion);
-        else
-        	resourceId = new ResourceIdImpl(fid, featureVersion, version );
+        if(version == null){
+            resourceId = new ResourceIdImpl(fid, featureVersion);
+        }
+        else {
+            resourceId = new ResourceIdImpl(fid, featureVersion, version );
+        }
         resourceId.setPreviousRid(previousRid);
         resourceId.setStartTime(startTime);
         resourceId.setEndTime(endTime);

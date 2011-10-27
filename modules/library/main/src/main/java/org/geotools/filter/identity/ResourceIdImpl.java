@@ -62,7 +62,7 @@ public class ResourceIdImpl extends FeatureIdVersionedImpl implements ResourceId
      * @param featureVersion
      */
     public ResourceIdImpl(String fid, String featureVersion) {
-    	this(fid, featureVersion, new Version(Version.Action.LAST));
+        this(fid, featureVersion, new Version(Version.Action.LAST));
     }
     
     /**

@@ -363,7 +363,7 @@ case rather than evaluating the attributes we will directly match the FeatureId.
 .. image:: /images/filter_id.PNG
 
 The most common test is simply against FeatureId; the other Identifiers are used when woring with
-different data types such as records.
+versioned information or working with different data types such as records
   
   .. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
     :language: java
@@ -372,6 +372,20 @@ different data types such as records.
   
 Formally this style of Id matching is not supposed to be mixed with the traditional attribute
 based evaluation.
+
+You can also use a Set<FeatureId>:
+
+  .. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+    :language: java
+    :start-after: // idSet start
+    :end-before: // idSet end
+
+ResourceId can be used to explore versioned information:
+
+  .. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+    :language: java
+    :start-after: // rid start
+    :end-before: // rid end
 
 Spatial
 ^^^^^^^

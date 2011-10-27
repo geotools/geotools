@@ -64,6 +64,33 @@ These are handled in a similar manner:
 
       graphic.setSize( ff.literal( 8 ) );
 
+Filter
+^^^^^^
+
+The filter system was upgrade to match Filter 2.0 resulting in a few additions. This mostly
+effects people writing their own functions (as now we need to know about parameter types).
+
+FeatureId 
+''''''''''
+
+* BEFORE::
+
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    Filter filter;
+    
+    Set<FeatureId> selected = new HashSet<FeatureId>();
+    selected.add(ff.featureId("CITY.98734597823459687235"));
+    selected.add(ff.featureId("CITY.98734592345235823474"));
+    
+    filter = ff.id(selected);
+        
+* AFTER
+  
+  .. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+     :language: java
+     :start-after: // id start
+     :end-before: // id end
+
 Function
 ''''''''
 

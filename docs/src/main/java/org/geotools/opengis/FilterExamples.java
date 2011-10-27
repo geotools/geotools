@@ -19,6 +19,8 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.MultiValuedFilter.MatchAction;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.identity.Identifier;
+import org.opengis.filter.identity.Version;
+import org.opengis.filter.identity.Version.Action;
 import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
 
@@ -84,13 +86,34 @@ public void id(){
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
     Filter filter;
     
+    filter = ff.id(ff.featureId("CITY.98734597823459687235"),
+                   ff.featureId("CITY.98734592345235823474"));
+    // id end
+}
+
+public void rid(){
+    // rid start
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    Filter filter;
+    
+    filter = ff.id(ff.resourceId("CITY.98734597823459687235","A457",new Version(Action.PREVIOUS) ));
+    // rid end
+}
+
+public void idSet(){
+    // idSet start
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    Filter filter;
+    
     Set<FeatureId> selected = new HashSet<FeatureId>();
     selected.add(ff.featureId("CITY.98734597823459687235"));
     selected.add(ff.featureId("CITY.98734592345235823474"));
     
     filter = ff.id(selected);
-    // id end
+    // idSet end
 }
+
+
 public void logical() {
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
     Filter filter;

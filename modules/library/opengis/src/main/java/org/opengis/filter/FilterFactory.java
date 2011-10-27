@@ -9,6 +9,7 @@
  */
 package org.opengis.filter;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -39,6 +40,8 @@ import org.opengis.filter.expression.Subtract;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.identity.GmlObjectId;
 import org.opengis.filter.identity.Identifier;
+import org.opengis.filter.identity.ResourceId;
+import org.opengis.filter.identity.Version;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.opengis.filter.spatial.BBOX;
@@ -97,10 +100,19 @@ public interface FilterFactory {
 ////////////////////////////////////////////////////////////////////////////////
     /** Creates a new feautre id from a string */
     FeatureId featureId(String id);
+    
+    /** Creates a new feature id with version information */
+    FeatureId featureId(String fid, String featureVersion);
 
     /** Creates a new gml object id from a string */
     GmlObjectId gmlObjectId(String id);
 
+    /** ResouceId for identifier based query */
+    ResourceId resourceId(String fid, String featureVersion, Version version );
+    
+    /** ResourceId for time based query */
+    ResourceId resourceId(String fid, Date startTime, Date endTime);
+    
 ////////////////////////////////////////////////////////////////////////////////
 //
 //  FILTERS

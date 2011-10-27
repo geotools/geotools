@@ -22,6 +22,8 @@ package org.geotools.filter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -46,7 +48,9 @@ import org.geotools.filter.expression.MultiplyImpl;
 import org.geotools.filter.expression.PropertyAccessorFactory;
 import org.geotools.filter.expression.SubtractImpl;
 import org.geotools.filter.identity.FeatureIdImpl;
+import org.geotools.filter.identity.FeatureIdVersionedImpl;
 import org.geotools.filter.identity.GmlObjectIdImpl;
+import org.geotools.filter.identity.ResourceIdImpl;
 import org.geotools.filter.spatial.BBOXImpl;
 import org.geotools.filter.spatial.BeyondImpl;
 import org.geotools.filter.spatial.ContainsImpl;
@@ -117,6 +121,8 @@ import org.opengis.filter.expression.Subtract;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.identity.GmlObjectId;
 import org.opengis.filter.identity.Identifier;
+import org.opengis.filter.identity.ResourceId;
+import org.opengis.filter.identity.Version;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.opengis.filter.spatial.BBOX;
@@ -185,6 +191,21 @@ public class FilterFactoryImpl implements FilterFactory {
         return new GmlObjectIdImpl( id );
     }
     
+    /** Creates a new feature id with version information */
+    public FeatureId featureId(String fid, String featureVersion){
+        return new FeatureIdVersionedImpl(fid, featureVersion);
+    }
+
+    /** ResouceId for identifier based query */
+    public ResourceId resourceId(String fid, String featureVersion, Version version ){
+        return new ResourceIdImpl(fid, featureVersion, version);
+    }
+    
+    /** ResourceId for time based query */
+    public ResourceId resourceId(String fid, Date startTime, Date endTime){
+        return new ResourceIdImpl(fid, startTime, endTime );
+    }
+    
     public And and(Filter f, Filter g ) {
         List/*<Filter>*/ list = new ArrayList/*<Filter>*/( 2 );
         list.add( f );
@@ -214,6 +235,15 @@ public class FilterFactoryImpl implements FilterFactory {
     
     public Id id( Set id ){
         return new FidFilterImpl( id );
+    }
+    
+    public Id id(FeatureId... fids) {
+        Set<FeatureId> selection = new HashSet<FeatureId>();
+        for( FeatureId featureId : fids ){
+            if( featureId == null ) continue;
+            selection.add( featureId );
+        }
+        return id( selection );
     }
     
     public PropertyName property(String name) {

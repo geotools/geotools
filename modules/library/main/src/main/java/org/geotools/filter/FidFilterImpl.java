@@ -150,7 +150,7 @@ public class FidFilterImpl extends AbstractFilterImpl implements FidFilter {
         Set set = new TreeSet();
         for (Iterator i = fids.iterator(); i.hasNext();) {
             Identifier id = (Identifier) i.next();
-            set.add(id.toString());
+            set.add(id.getID().toString());
         }
 
         return set;
@@ -197,7 +197,7 @@ public class FidFilterImpl extends AbstractFilterImpl implements FidFilter {
 
         for (Iterator f = fids.iterator(); f.hasNext();) {
             Identifier featureId = (Identifier) f.next();
-            if (fid.equals(featureId.toString())) {
+            if (fid.equals(featureId.getID().toString())) {
                 f.remove();
             }
         }

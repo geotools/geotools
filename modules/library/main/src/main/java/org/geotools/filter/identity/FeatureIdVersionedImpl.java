@@ -18,6 +18,7 @@ package org.geotools.filter.identity;
 
 import org.opengis.feature.Feature;
 import org.opengis.filter.identity.FeatureId;
+import org.opengis.filter.identity.Version;
 
 /**
  * Implementation of {@link org.opengis.filter.identity.FeatureId}
@@ -32,48 +33,22 @@ import org.opengis.filter.identity.FeatureId;
  * @since 2.5
  * @version 8.0
  */
-public class FeatureIdImpl implements FeatureId {
-
-    /** underlying fid */
-    protected String fid;
-    protected String origionalFid;
-
-    public FeatureIdImpl(String fid) {
-        this.fid = fid;
-        if (fid == null) {
-            throw new NullPointerException("fid must not be null");
-        }
+public class FeatureIdVersionedImpl extends FeatureIdImpl {
+    protected static String VERSION_SEPARATOR = "@";
+    
+    protected String featureVersion;
+    protected String previousRid;
+    
+    public FeatureIdVersionedImpl(String fid, String version ) {
+        this( fid, version, null);
+    }
+    public FeatureIdVersionedImpl(String fid, String version, String previousRid) {
+        super( fid );
+        this.featureVersion = version;
+        this.previousRid = previousRid;
     }
 
-    public String getID() {
-        return fid;
-    }
-
-    public void setID(String id) {
-        if (id == null) {
-            throw new NullPointerException("fid must not be null");
-        }
-        if (origionalFid == null) {
-            origionalFid = fid;
-        }
-        fid = id;
-    }
-
-    public boolean matches(Feature feature) {
-        if( feature == null ){
-            return false;
-        }
-        return equalsExact( feature.getIdentifier() );
-    }
-
-
-    public boolean matches(Object object) {
-        if (object instanceof Feature) {
-            return matches((Feature) object);
-        }
-        return false;
-    }
-
+    
     public String toString() {
         return fid;
     }
@@ -109,17 +84,19 @@ public class FeatureIdImpl implements FeatureId {
 
     @Override
     public String getRid() {
-        return getID();
+        return featureVersion == null ? getID() : new StringBuilder(getID())
+                .append(VERSION_SEPARATOR).append(featureVersion).toString();
     }
 
     @Override
     public String getPreviousRid() {
-        return null;
+        return previousRid;
     }
-
+    
     @Override
     public String getFeatureVersion() {
-        return null;
+        return featureVersion;
     }
+
 
 }

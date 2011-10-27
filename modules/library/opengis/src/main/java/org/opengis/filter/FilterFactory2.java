@@ -16,6 +16,7 @@ import org.opengis.filter.MultiValuedFilter.MatchAction;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.Beyond;
 import org.opengis.filter.spatial.Contains;
@@ -120,6 +121,8 @@ public interface FilterFactory2 extends FilterFactory {
     //  FILTERS
     //
     ////////////////////////////////////////////////////////////////////////////////
+
+    Id id( FeatureId ...fids);
 
     /**
      * Retrieves the value of a {@linkplain org.opengis.feature.Feature feature}'s property.

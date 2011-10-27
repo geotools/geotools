@@ -17,15 +17,14 @@
 package org.geotools.filter.v1_1;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedHashSet;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import javax.xml.namespace.QName;
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
+
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.identity.ResourceIdImpl;
+import org.geotools.gml3.GML;
 import org.opengis.filter.And;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
@@ -46,6 +45,7 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.Subtract;
 import org.opengis.filter.identity.GmlObjectId;
 import org.opengis.filter.identity.Identifier;
+import org.opengis.filter.identity.Version;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.opengis.filter.spatial.Beyond;
@@ -58,8 +58,13 @@ import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.gml3.GML;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
 
 
 /**
@@ -80,6 +85,20 @@ public class FilterMockData {
             f.featureId("foo.1"), f.featureId("foo.2"), f.featureId("foo.3"))));
     }
     
+    public static Id resourceId() {
+        ResourceIdImpl resourceId = new ResourceIdImpl("foo.4","", new Version(Version.Action.NEXT));
+        
+        resourceId.setPreviousRid("previousRid");
+        resourceId.setStartTime( new Date(1000) );
+        resourceId.setEndTime(new Date(2000));
+
+        return f.id(new LinkedHashSet<Identifier>(Arrays.asList(
+                f.featureId("foo.1", "v1"),
+                f.resourceId("foo.2", "", new Version(new Date(1000))),//
+                f.resourceId("foo.3", "", new Version(5)),//
+                resourceId)));
+    }
+
     public static Element propertyName(Document document, Node parent) {
         return propertyName("foo", document, parent);
     }

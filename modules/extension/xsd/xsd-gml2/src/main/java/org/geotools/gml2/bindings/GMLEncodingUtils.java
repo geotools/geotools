@@ -113,7 +113,7 @@ public class GMLEncodingUtils {
         if (type == null) {
             if (featureType instanceof SimpleFeatureType) {
                 // could not find the feature type in the schema, create a mock one
-                LOGGER.fine("Could find type for " + typeName
+                LOGGER.warning("Could find type for " + typeName
                         + " in the schema, generating type from feature.");
                 type = createXmlTypeFromFeatureType((SimpleFeatureType) featureType, schemaIndex,
                         toFilter);

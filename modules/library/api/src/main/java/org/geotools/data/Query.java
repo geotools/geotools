@@ -20,11 +20,14 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.identity.ResourceId;
+import org.opengis.filter.identity.Version;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.factory.CommonFactoryFinder;
@@ -690,7 +693,40 @@ public class Query {
     public String getVersion() {
         return version; 
     }
-    
+    public void setVersion( int index ){
+        this.version = String.valueOf( index );
+    }
+    public void setVersion( Date date ){
+        this.version = date == null ? null : "date:"+date;
+    }
+    public void setVersion( Version.Action action ){
+        this.version = action == null ? null : action.name();
+    }
+    public void setVersion( Date startTime, Date endTime ){
+        if( startTime == null || endTime == null ){
+            this.version = null;
+        }
+        else {
+            this.version = "start:"+startTime+" end:"+endTime;
+        }
+    }
+    public void setVersion( ResourceId history ){
+        if( history.getStartTime() != null && history.getEndTime() != null ){
+            setVersion( history.getStartTime(),history.getEndTime() );
+        }
+        else if( history.getVersion() != null ){
+            Version ver = history.getVersion();
+            if( ver.isVersionAction()){
+                setVersion( ver.getVersionAction() );
+            }
+            else if( ver.isDateTime() ){
+                setVersion( ver.getDateTime() );
+            }
+            else if( ver.isIndex() ){
+                setVersion( ver.getIndex() );
+            }
+        }
+    }
     /**
      * Set the version of features to retrieve where this is supported by the
      * data source being queried.

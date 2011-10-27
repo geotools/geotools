@@ -115,4 +115,11 @@ public class QueryCapabilities {
     public boolean isJoiningSupported() {
         return false;
     }
+    
+    /**
+     * If true the datastore supports version information and allows version based queries.
+     */
+    public boolean isVersionSupported() {
+        return false;
+    }
 }

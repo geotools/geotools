@@ -66,6 +66,7 @@ import org.geotools.filter.v2_0.bindings.TEqualsBinding;
 import org.geotools.filter.v2_0.bindings.TOverlapsBinding;
 import org.geotools.filter.v2_0.bindings.TouchesBinding;
 import org.geotools.filter.v2_0.bindings.ValueReferenceBinding;
+import org.geotools.filter.v2_0.bindings.VersionTypeBinding;
 import org.geotools.filter.v2_0.bindings.WithinBinding;
 import org.geotools.gml3.v3_2.GMLConfiguration;
 import org.geotools.ows.v1_1.OWSConfiguration;
@@ -157,7 +158,7 @@ public class FESConfiguration extends Configuration {
 //        container.registerComponentImplementation(FES.UnaryLogicOpType,UnaryLogicOpTypeBinding.class);
 //        container.registerComponentImplementation(FES.UpperBoundaryType,UpperBoundaryTypeBinding.class);
 //        container.registerComponentImplementation(FES.VersionActionTokens,VersionActionTokensBinding.class);
-//        container.registerComponentImplementation(FES.VersionType,VersionTypeBinding.class);
+        container.registerComponentImplementation(FES.VersionType,VersionTypeBinding.class);
 //        container.registerComponentImplementation(FES._Filter_Capabilities,_Filter_CapabilitiesBinding.class);
 //        container.registerComponentImplementation(FES._LogicalOperators,_LogicalOperatorsBinding.class);
 //        container.registerComponentImplementation(FES.GeometryOperandsType_GeometryOperand,GeometryOperandsType_GeometryOperandBinding.class);

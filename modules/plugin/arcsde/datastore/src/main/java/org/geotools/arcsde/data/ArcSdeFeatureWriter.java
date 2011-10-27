@@ -883,17 +883,7 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
             if (id == null) {
                 id = SimpleFeatureBuilder.createDefaultFeatureId();
             }
-            return new FeatureIdImpl(id) {
-                public void setID(String id) {
-                    if (fid == null) {
-                        throw new NullPointerException("fid must not be null");
-                    }
-                    if (origionalFid == null) {
-                        origionalFid = fid;
-                    }
-                    fid = id;
-                }
-            };
+            return new FeatureIdImpl(id);
         }
 
         /**

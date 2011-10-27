@@ -189,6 +189,15 @@ public class FilterTypeBindingTest extends FESTestSupport {
         assertEquals(3, getElementsByQName(doc, FES.ResourceId).getLength());
     }
 
+    public void testEncodeRsourceId() throws Exception {
+        Document doc = encode(FilterMockData.resourceId(), FES.Filter);
+        assertEquals("fes:Filter", doc.getDocumentElement().getNodeName());
+        //print(doc);
+
+        assertEquals(4, getElementsByQName(doc, FES.ResourceId).getLength());
+
+    }
+
     public void testEncodeSpatial() throws Exception {
         Document doc = encode(FilterMockData.intersects(), FES.Filter);
         assertEquals("fes:Filter", doc.getDocumentElement().getNodeName());

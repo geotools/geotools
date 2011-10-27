@@ -25,7 +25,6 @@ import javax.xml.namespace.QName;
 
 import org.geotools.feature.FeatureImpl;
 import org.geotools.feature.NameImpl;
-import org.geotools.feature.type.FeatureTypeImpl;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.XSDIdRegistry;
 import org.geotools.util.Converters;
@@ -35,10 +34,10 @@ import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Feature;
-import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.identity.Identifier;
+import org.opengis.filter.identity.ResourceId;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.Attributes;
@@ -120,7 +119,12 @@ public class FeaturePropertyTypeBinding extends AbstractComplexBinding {
                 if (ident == null) {
                     return object;
                 }
-                String id = Converters.convert(ident.getID(), String.class);
+                String id;
+                if (ident instanceof ResourceId) {
+                    id = ((ResourceId) ident).getRid();
+                } else {
+                    id = Converters.convert(ident.getID(), String.class);
+                }
                 if (idSet.idExists(id)) {
                     return null;
                 }
@@ -162,7 +166,12 @@ public class FeaturePropertyTypeBinding extends AbstractComplexBinding {
         if (ident == null) {
             return;
         }
-        String id = Converters.convert(ident.getID(), String.class);
+        String id;
+        if (ident instanceof ResourceId) {
+            id = ((ResourceId) ident).getRid();
+        } else {
+            id = Converters.convert(ident.getID(), String.class);
+        }
         if (idSet.idExists(id)) {
             // XSD type ids can only appear once in the same document, otherwise the document is
             // not schema valid. Attributes of the same ids should be encoded as xlink:href to

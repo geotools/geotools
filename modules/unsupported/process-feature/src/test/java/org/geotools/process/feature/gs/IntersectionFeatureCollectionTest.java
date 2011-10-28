@@ -1,6 +1,13 @@
 package org.geotools.process.feature.gs;
 
-import static org.junit.Assert.*;
+import java.util.List;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryCollection;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.PrecisionModel;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,15 +28,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.PrecisionModel;
 
 /**
  * 
@@ -137,6 +140,17 @@ public class IntersectionFeatureCollectionTest {
         ArrayList<String> toRetainSnd = new ArrayList<String>();
         toRetainSnd.add("str2");
         SimpleFeatureCollection output2 = process.execute(zonesCollection, featuresCollection,toRetainFst,toRetainSnd, IntersectionMode.INTERSECTION, true, true);
+
+        System.out.println("count "+output2.getSchema().getAttributeCount());
+        assertNotNull(output2.getSchema().getDescriptor("the_geom"));
+        assertNotNull(output2.getSchema().getDescriptor("zones_str1"));
+        assertNotNull(output2.getSchema().getDescriptor("features_str2"));
+        assertNotNull(output2.getSchema().getDescriptor("percentageA"));
+        assertNotNull(output2.getSchema().getDescriptor("percentageB"));
+        assertNotNull(output2.getSchema().getDescriptor("areaA"));
+        assertNotNull(output2.getSchema().getDescriptor("areaB"));
+        assertNotNull(output2.getSchema().getDescriptor("INTERSECTION_ID"));
+        assertTrue(output2.getSchema().getAttributeCount()==8);
         SimpleFeatureIterator sfTemp2 = output2.features();
         sfTemp2.hasNext();
         SimpleFeature sf = sfTemp2.next();
@@ -149,7 +163,7 @@ public class IntersectionFeatureCollectionTest {
         assertNotNull(sf.getAttribute("percentageB"));
         assertNotNull(sf.getAttribute("areaA"));
         assertNotNull(sf.getAttribute("areaB"));
-        assertTrue(sf.getAttributeCount()==7);
+        assertTrue(sf.getAttributeCount()==8);
 
         // test without area and percentageAttributes
         SimpleFeatureCollection output3 = process.execute(zonesCollection, featuresCollection,toRetainFst,toRetainSnd, IntersectionMode.INTERSECTION, false, false);
@@ -159,7 +173,7 @@ public class IntersectionFeatureCollectionTest {
         assertNotNull(sf2.getAttribute("the_geom"));
         assertNotNull(sf2.getAttribute("zones_str1"));
         assertNotNull(sf2.getAttribute("features_str2"));
-        assertTrue(sf2.getAttributeCount()==3);
+        assertTrue(sf2.getAttributeCount()==4);
 
     }
 

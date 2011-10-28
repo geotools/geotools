@@ -72,7 +72,6 @@ import com.vividsolutions.jts.geom.Polygon;
 public class IntersectionFeatureCollection implements GSProcess {
     private static final Logger logger = Logger
             .getLogger("org.geotools.process.feature.gs.IntersectionFeatureCollection");
-
     public static enum IntersectionMode {
         INTERSECTION, FIRST, SECOND
     };
@@ -90,6 +89,8 @@ public class IntersectionFeatureCollection implements GSProcess {
             @DescribeParameter(name = "percentagesEnabled", min = 0, description = "Set it true to get the intersection percentage parameters, false  otherwise (DEFAULT=false)") Boolean percentagesEnabled,
             @DescribeParameter(name = "areasEnabled", min = 0, description = "Set it true to get the area attributes , false  otherwise (DEFAULT=false)") Boolean areasEnabled) {
         // assign defaults
+        logger.fine("INTERSECTION FEATURE COLLECTION WPS STARTED");
+       
         if (percentagesEnabled == null) {
             percentagesEnabled = false;
         }
@@ -139,7 +140,6 @@ public class IntersectionFeatureCollection implements GSProcess {
 
     static Geometry densify(Geometry geom, CoordinateReferenceSystem crs, double maxAreaError)
             throws FactoryException, TransformException {
-
         // basic checks
         if (maxAreaError <= 0) {
             throw new IllegalArgumentException("maxAreaError must be greater than 0");
@@ -150,19 +150,17 @@ public class IntersectionFeatureCollection implements GSProcess {
         if (crs == null) {
             throw new IllegalArgumentException("CRS cannot be set to null");
         }
-
         double previousArea = 0.0;
-        // Geometry targetGeometry = null;
         CoordinateReferenceSystem targetCRS = CRS.parseWKT(ECKERT_IV_WKT);
         MathTransform firstTransform = CRS.findMathTransform(crs, targetCRS);
         GeometryFactory geomFactory = new GeometryFactory();
         int ngeom = geom.getNumGeometries();
         Geometry densifiedGeometry = geom;
-
         double areaError = 1.0d;
+        int maxIterate  = 0;
         do {
             double max = 0;
-
+            maxIterate++;
             // check the maximum side length of the densifiedGeometry
             for (int j = 0; j < ngeom; j++) {
                 Geometry geometry = densifiedGeometry.getGeometryN(j);
@@ -187,9 +185,10 @@ public class IntersectionFeatureCollection implements GSProcess {
 
             // evaluate the current error
             areaError = Math.abs(previousArea - nextArea) / nextArea;
+      //      logger3.info("AREA ERROR"+areaError);
             previousArea = nextArea;
             // check whether the current error is greater than the maximum allowed
-        } while (areaError > maxAreaError);
+        } while (areaError > maxAreaError && maxIterate < 10);
         return densifiedGeometry;
     }
 
@@ -209,11 +208,16 @@ public class IntersectionFeatureCollection implements GSProcess {
             Geometry secondTargetGeometry = reprojectAndDensify(second, firstCRS, null);
             double numeratorArea = (double) (firstTargetGeometry.intersection(secondTargetGeometry))
                     .getArea();
-            if (divideFirst)
-                return numeratorArea / firstTargetGeometry.getArea();
-            return numeratorArea / secondTargetGeometry.getArea();
+            if (divideFirst) {
+                double denom = firstTargetGeometry.getArea();
+                if (denom!=0) return numeratorArea / denom;
+                return 0;
+            }
+            double denom = secondTargetGeometry.getArea();
+            if (denom!=0) return numeratorArea / denom;
+            return 0;
         } catch (Exception e) {
-            System.out.println("Exception " + e);
+            e.printStackTrace();
             return -1;
         }
     }
@@ -224,7 +228,7 @@ public class IntersectionFeatureCollection implements GSProcess {
             targetCRS = CRS.parseWKT(ECKERT_IV_WKT);
         }
         MathTransform firstTransform = CRS.findMathTransform(sourceCRS, targetCRS);
-        Geometry geometry = JTS.transform(densify(first, sourceCRS, 0.001d), firstTransform);
+        Geometry geometry = JTS.transform(densify(first, sourceCRS, 0.01d), firstTransform);
         return geometry;
     }
 
@@ -265,6 +269,12 @@ public class IntersectionFeatureCollection implements GSProcess {
      */
     static class IntersectedFeatureCollection extends DecoratingSimpleFeatureCollection {
 
+        @Override
+        public SimpleFeatureType getSchema() {
+            
+            return fb.getFeatureType();
+        }
+
         SimpleFeatureCollection features;
 
         List<String> firstAttributes = null;
@@ -276,6 +286,9 @@ public class IntersectionFeatureCollection implements GSProcess {
         boolean percentagesEnabled;
 
         boolean areasEnabled;
+        // added
+        SimpleFeatureBuilder fb;
+        AttributeDescriptor geomType = null;
 
         public IntersectedFeatureCollection(SimpleFeatureCollection delegate,
                 List<String> firstAttributes, SimpleFeatureCollection features,
@@ -288,14 +301,86 @@ public class IntersectionFeatureCollection implements GSProcess {
             this.intersectionMode = intersectionMode;
             this.percentagesEnabled = percentagesEnabled;
             this.areasEnabled = areasEnabled;
+            SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
 
+            SimpleFeatureType firstFeatureCollectionSchema = delegate.getSchema();
+            SimpleFeatureType secondFeatureCollectionSchema = features.getSchema();
+            
+            if (intersectionMode == IntersectionMode.FIRST) {
+                geomType = firstFeatureCollectionSchema.getGeometryDescriptor();
+        }
+            if (intersectionMode == IntersectionMode.SECOND) {
+                geomType = secondFeatureCollectionSchema.getGeometryDescriptor();
+            }
+            if (intersectionMode == IntersectionMode.INTERSECTION) {
+                geomType = getIntersectionType(delegate, features);
+            }
+            tb.add(geomType);
+
+            // gather the attributes from the first feature collection and skip
+            collectAttributes(firstFeatureCollectionSchema, firstAttributes, tb);
+            // gather the attributes from the second feature collection
+            collectAttributes(secondFeatureCollectionSchema, sndAttributes, tb);
+            // add the dyamic attributes as needed
+            if (percentagesEnabled) {
+                tb.add("percentageA", Double.class);
+                tb.add("percentageB", Double.class);
+            }
+            if (areasEnabled) {
+                tb.add("areaA", Double.class);
+                tb.add("areaB", Double.class);
+            }
+            tb.add("INTERSECTION_ID", Integer.class);
+            tb.setDescription(firstFeatureCollectionSchema.getDescription());
+            tb.setCRS(firstFeatureCollectionSchema.getCoordinateReferenceSystem());
+            tb.setAbstract(firstFeatureCollectionSchema.isAbstract());
+            tb.setSuperType((SimpleFeatureType) firstFeatureCollectionSchema.getSuper());
+            tb.setName(firstFeatureCollectionSchema.getName());
+
+            this.fb = new SimpleFeatureBuilder(tb.buildFeatureType());
+
+
+          
+            
+            
+        }
+        
+                private void collectAttributes(SimpleFeatureType schema, List<String> retainedAttributes,
+                SimpleFeatureTypeBuilder tb) {
+            for (AttributeDescriptor descriptor : schema.getAttributeDescriptors()) {
+                // check whether descriptor has been selected in the attribute list
+                boolean isInRetainList = true;
+                if (retainedAttributes != null) {
+                    
+                    isInRetainList = retainedAttributes.contains(descriptor.getLocalName());
+                    logger.fine("Checking "+descriptor.getLocalName()+" --> "+isInRetainList);
+                }
+                if (!isInRetainList || schema.getGeometryDescriptor() == descriptor) {
+                    continue;
+                }
+
+                // build the attribute to return
+                AttributeTypeBuilder builder = new AttributeTypeBuilder();
+                builder.setName(schema.getName().getLocalPart() + "_" + descriptor.getName());
+                builder.setNillable(descriptor.isNillable());
+                builder.setBinding(descriptor.getType().getBinding());
+                builder.setMinOccurs(descriptor.getMinOccurs());
+                builder.setMaxOccurs(descriptor.getMaxOccurs());
+                builder.setDefaultValue(descriptor.getDefaultValue());
+                builder.setCRS(schema.getCoordinateReferenceSystem());
+                AttributeDescriptor intersectionDescriptor = builder.buildDescriptor(schema
+                        .getName().getLocalPart() + "_" + descriptor.getName(),
+                        descriptor.getType());
+                tb.add(intersectionDescriptor);
+                tb.addBinding(descriptor.getType());
+            }
         }
 
         @Override
         public SimpleFeatureIterator features() {
             return new IntersectedFeatureIterator(delegate.features(), delegate, features,
                     delegate.getSchema(), features.getSchema(), firstAttributes, sndAttributes,
-                    intersectionMode, percentagesEnabled, areasEnabled);
+                    intersectionMode, percentagesEnabled, areasEnabled,fb);
         }
 
         @Override
@@ -316,9 +401,6 @@ public class IntersectionFeatureCollection implements GSProcess {
      */
     static class IntersectedFeatureIterator implements SimpleFeatureIterator {
         SimpleFeatureIterator delegate;
-
-        private static final Logger logger2 = Logger
-                .getLogger("org.geotools.process.feature.gs.IntersectionFeatureCollection.IntersectedFeatureIterator");
 
         SimpleFeatureCollection firstFeatures;
 
@@ -355,13 +437,15 @@ public class IntersectionFeatureCollection implements GSProcess {
         boolean areasEnabled;
 
         IntersectionMode intersectionMode;
+        int id=0;
 
         public IntersectedFeatureIterator(SimpleFeatureIterator delegate,
                 SimpleFeatureCollection firstFeatures, SimpleFeatureCollection secondFeatures,
                 SimpleFeatureType firstFeatureCollectionSchema,
                 SimpleFeatureType secondFeatureCollectionSchema,
                 List<String> retainAttributesFstPar, List<String> retainAttributesSndPar,
-                IntersectionMode intersectionMode, boolean percentagesEnabled, boolean areasEnabled) {
+                IntersectionMode intersectionMode, boolean percentagesEnabled, boolean areasEnabled, 
+                SimpleFeatureBuilder sfb) {
             this.retainAttributesFst = retainAttributesFstPar;
             this.retainAttributesSnd = retainAttributesSndPar;
             this.delegate = delegate;
@@ -371,9 +455,9 @@ public class IntersectionFeatureCollection implements GSProcess {
             this.areasEnabled = areasEnabled;
             this.intersectionMode = intersectionMode;
 
-            logger2.info("INFO----> Creating schema");
+            logger.fine("Creating schema");
             // create the geometry attribute descriptor for the result
-            SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+  //          SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
             if (intersectionMode == IntersectionMode.FIRST) {
                 geomType = firstFeatureCollectionSchema.getGeometryDescriptor();
             }
@@ -383,78 +467,31 @@ public class IntersectionFeatureCollection implements GSProcess {
             if (intersectionMode == IntersectionMode.INTERSECTION) {
                 geomType = getIntersectionType(firstFeatures, secondFeatures);
             }
-            tb.add(geomType);
 
-            // gather the attributes from the first feature collection and skip
-            collectAttributes(firstFeatureCollectionSchema, retainAttributesFstPar, tb);
-            // gather the attributes from the second feature collection
-            collectAttributes(secondFeatureCollectionSchema, retainAttributesSndPar, tb);
-            // add the dyamic attributes as needed
-            if (percentagesEnabled) {
-                tb.add("percentageA", Double.class);
-                tb.add("percentageB", Double.class);
-            }
-            if (areasEnabled) {
-                tb.add("areaA", Double.class);
-                tb.add("areaB", Double.class);
-            }
-
-            tb.setDescription(firstFeatureCollectionSchema.getDescription());
-            tb.setCRS(firstFeatureCollectionSchema.getCoordinateReferenceSystem());
-            tb.setAbstract(firstFeatureCollectionSchema.isAbstract());
-            tb.setSuperType((SimpleFeatureType) firstFeatureCollectionSchema.getSuper());
-            tb.setName(firstFeatureCollectionSchema.getName());
-
-            this.fb = new SimpleFeatureBuilder(tb.buildFeatureType());
-
+            this.fb = sfb;
             subFeatureCollection = this.secondFeatures;
 
             this.dataGeomName = this.firstFeatures.getSchema().getGeometryDescriptor()
                     .getLocalName();
-            logger2.info("INFO----> Schema created");
+            logger.fine("Schema created");
         }
 
-        private void collectAttributes(SimpleFeatureType schema, List<String> retainedAttributes,
-                SimpleFeatureTypeBuilder tb) {
-            for (AttributeDescriptor descriptor : schema.getAttributeDescriptors()) {
-                // check whether descriptor has been selected in the attribute list
-                boolean isInRetainList = true;
-                if (retainedAttributes != null) {
-                    isInRetainList = retainedAttributes.contains(descriptor.getLocalName());
-                }
-                if (!isInRetainList || schema.getGeometryDescriptor() == descriptor) {
-                    continue;
-                }
-
-                // build the attribute to return
-                AttributeTypeBuilder builder = new AttributeTypeBuilder();
-                builder.setName(schema.getName().getLocalPart() + "_" + descriptor.getName());
-                builder.setNillable(descriptor.isNillable());
-                builder.setBinding(descriptor.getType().getBinding());
-                builder.setMinOccurs(descriptor.getMinOccurs());
-                builder.setMaxOccurs(descriptor.getMaxOccurs());
-                builder.setDefaultValue(descriptor.getDefaultValue());
-                builder.setCRS(schema.getCoordinateReferenceSystem());
-                AttributeDescriptor intersectionDescriptor = builder.buildDescriptor(schema
-                        .getName().getLocalPart() + "_" + descriptor.getName(),
-                        descriptor.getType());
-                tb.add(intersectionDescriptor);
-                tb.addBinding(descriptor.getType());
-            }
-        }
 
         public void close() {
             delegate.close();
         }
 
         public boolean hasNext() {
+         //   logger.info("qui");
             logger.finer("HAS NEXT");
             while ((next == null && delegate.hasNext()) || (next == null && added)) {
+                       //     logger.info("qui nel while");
                 if (complete) {
                     first = delegate.next();
                     intersectedGeometries = null;
                 }
-                logger.finer("control HAS NEXT");
+                         //               logger.info("qui dopo check if (complete)");
+                //logger.finer("control HAS NEXT");
                 for (Object attribute : first.getAttributes()) {
                     if (attribute instanceof Geometry
                             && attribute.equals(first.getDefaultGeometry())) {
@@ -487,7 +524,7 @@ public class IntersectionFeatureCollection implements GSProcess {
                                     }
                                     if (((Geometry) attribute).getNumGeometries() > 0) {
                                         fb.add(attribute);
-                                        
+                                        fb.set("INTERSECTION_ID", id++);
                                         // add the non geometric attributes
                                         addAttributeValues(first, retainAttributesFst, fb);
                                         addAttributeValues(second, retainAttributesSnd, fb);
@@ -527,6 +564,8 @@ public class IntersectionFeatureCollection implements GSProcess {
             return next != null;
         }
 
+
+        
         private void addAttributeValues(SimpleFeature feature, List<String> retained,
                 SimpleFeatureBuilder fb) {
             Iterator<AttributeDescriptor> firstIterator = feature.getType().getAttributeDescriptors()
@@ -542,10 +581,9 @@ public class IntersectionFeatureCollection implements GSProcess {
         }
 
         private void addAreas(Geometry currentGeom, SimpleFeature second) {
-            CoordinateReferenceSystem firstCRS = first.getDefaultGeometryProperty().getDescriptor()
-                    .getCoordinateReferenceSystem();
-            CoordinateReferenceSystem secondCRS = first.getDefaultGeometryProperty()
-                    .getDescriptor().getCoordinateReferenceSystem();
+            CoordinateReferenceSystem firstCRS = firstFeatures.getSchema().getCoordinateReferenceSystem();
+            CoordinateReferenceSystem secondCRS = secondFeatures.getSchema().getCoordinateReferenceSystem();
+
             try {
                 double areaA = IntersectionFeatureCollection.reprojectAndDensify(currentGeom,
                         firstCRS, null).getArea();
@@ -561,16 +599,21 @@ public class IntersectionFeatureCollection implements GSProcess {
         }
 
         private void addPercentages(Geometry currentGeom, SimpleFeature second) {
-            CoordinateReferenceSystem firstCRS = first.getDefaultGeometryProperty().getDescriptor()
-                    .getCoordinateReferenceSystem();
-            CoordinateReferenceSystem secondCRS = first.getDefaultGeometryProperty()
-                    .getDescriptor().getCoordinateReferenceSystem();
+            CoordinateReferenceSystem firstCRS = firstFeatures.getSchema().getCoordinateReferenceSystem();
+
+            CoordinateReferenceSystem secondCRS = secondFeatures.getSchema().getCoordinateReferenceSystem();
+
+
             double percentageA = IntersectionFeatureCollection.getIntersectionArea(currentGeom,
                     firstCRS, (Geometry) second.getDefaultGeometry(), secondCRS, true);
+
             double percentageB = IntersectionFeatureCollection.getIntersectionArea(currentGeom,
                     firstCRS, (Geometry) second.getDefaultGeometry(), secondCRS, false);
+
             fb.set("percentageA", percentageA);
+
             fb.set("percentageB", percentageB);
+
         }
 
         public SimpleFeature next() throws NoSuchElementException {

@@ -41,7 +41,7 @@ private void exampleDensifiedSquareGrid() {
     ReferencedEnvelope gridBounds = new ReferencedEnvelope(
             110, 160, -45, -8, DefaultGeographicCRS.WGS84);
     
-    double squareWidth = 10.0;
+    double squareWidth = 20.0;
 
     // max distance between vertices
     double vertexSpacing = squareWidth / 20;

@@ -34,21 +34,23 @@ Grids for display in different map projections
 The grid created in the previous section consists of SimpleFeatures, each of which has a minimal
 polygon, ie. one represented by four corner vertices. This is fine if you only need to display it in
 the one map projection. But say we need to display the above map in EPSG:4462 (Lambert's Conformal
-Conic for Australia).  Reprojecting the grid results in the lines of latitude, which are now
-curved, appearing jagged rather than smooth:
+Conic for Australia). The image below shows a square grid created in WGS84 (lat-lon) and then
+transformed into Lambert's Conformal Conic. Because we only have vertices for the grid cell corners
+the cell edges appear straight rather than curved. We've used 20 degree wide grid squares in this
+example to make this effect obvious: 
 
-.. image:: /images/grid_tron.png
+.. image:: /images/grid_transformed.png
 
 We can achieve a much better result by creating a grid where the polygons are *densified* by
 inserting additional vertices along each side, so that when they are reprojected their edges
-appear smoother:
+approximate curves much better:
 
 .. literalinclude:: /../src/main/java/org/geotools/grid/GridExamples.java
    :language: java
    :start-after: // exampleDensifiedSquareGrid start
    :end-before: // exampleDensifiedSquareGrid end
 
-.. image:: /images/grid_smooth.png
+.. image:: /images/grid_transformed_densified.png
 
 Creating hexagonal grids
 ^^^^^^^^^^^^^^^^^^^^^^^^

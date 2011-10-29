@@ -755,6 +755,10 @@ public final class StreamingRenderer implements GTRenderer {
         }
         Future painterFuture = localThreadPool.submit(painterThread);
         try {
+            if(mapContent == null) {
+                throw new IllegalStateException("Cannot call paint, you did not set a MapContent in this renderer");
+            }
+            
             // ////////////////////////////////////////////////////////////////////
             //
             // Processing all the map layers in the context using the accompaining
@@ -1905,7 +1909,11 @@ public final class StreamingRenderer implements GTRenderer {
             final FeatureType schema = featureSource.getSchema();
 
             final GeometryDescriptor geometryAttribute = schema.getGeometryDescriptor();
-            sourceCrs = geometryAttribute.getType().getCoordinateReferenceSystem();
+            if(geometryAttribute != null && geometryAttribute.getType() != null) {
+                sourceCrs = geometryAttribute.getType().getCoordinateReferenceSystem();
+            } else {
+                sourceCrs = null;
+            }
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Processing " + style.featureTypeStyles().size() + 
                         " stylers for " + featureSource.getSchema().getName());

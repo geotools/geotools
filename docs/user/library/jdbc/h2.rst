@@ -8,6 +8,8 @@ a true spatial database as it does not have any form of spatial indexing.
 
 **Maven**::
    
+Note that the groupId is **org.geotools.jdbc** for this and other JDBC plugin modules.
+
    <dependency>
       <groupId>org.geotools.jdbc</groupId>
       <artifactId>gt-jdbc-h2</artifactId>

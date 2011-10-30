@@ -6,6 +6,8 @@ would like to help out.
 
 **Maven**::
 
+Note that the groupId is **org.geotools.jdbc** for this and other JDBC plugin modules.
+
    <dependency>
       <groupId>org.geotools.jdbc</groupId>
       <artifactId>gt-jdbc-ingres</artifactId>

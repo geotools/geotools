@@ -5,6 +5,8 @@ Supports direct access to an Oracle database.
 
 **Maven**::
 
+Note that the groupId is **org.geotools.jdbc** for this and other JDBC plugin modules.
+
    <dependency>
       <groupId>org.geotools.jdbc</groupId>
       <artifactId>gt-jdbc-jdbc</artifactId>

@@ -10,15 +10,17 @@ References:
   * http://www.sqlite.org/
   * http://www.gaia-gis.it/spatialite/
 
-**Maven**::
+**Maven**
 
-Note that the groupId is **org.geotools.jdbc** for this and other JDBC plugin modules.
+::
 
    <dependency>
       <groupId>org.geotools.jdbc</groupId>
       <artifactId>gt-jdbc-spatiallite</artifactId>
       <version>${geotools.version}</version>
     </dependency>
+
+Note that the groupId is **org.geotools.jdbc** for this and other JDBC plugin modules.
 
 Connection Parameters
 ^^^^^^^^^^^^^^^^^^^^^

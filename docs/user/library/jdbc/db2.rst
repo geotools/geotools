@@ -9,9 +9,11 @@ A couple of really good things have happened for DB2 support recently. We have o
 
 * http://www-01.ibm.com/software/data/db2/express/
 
-**Maven**::
+**Maven**
    
 Note that the groupId is **org.geotools.jdbc** for this and other JDBC plugin modules.
+
+::
 
    <dependency>
       <groupId>org.geotools.jdbc</groupId>

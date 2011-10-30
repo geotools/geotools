@@ -7,15 +7,17 @@ References:
 
 * http://www.microsoft.com/sqlserver/
 
-**Maven**::
+**Maven**
 
-Note that the groupId is **org.geotools.jdbc** for this and other JDBC plugin modules.
+::
 
    <dependency>
       <groupId>org.geotools.jdbc</groupId>
       <artifactId>gt-jdbc-sqlserver</artifactId>
       <version>${geotools.version}</version>
     </dependency>
+
+Note that the groupId is **org.geotools.jdbc** for this and other JDBC plugin modules.
 
 Connection Parameters
 ^^^^^^^^^^^^^^^^^^^^^

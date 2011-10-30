@@ -6,9 +6,11 @@ Supports direct access to a H2 database.
 H2 is the second generation of HSQL, a popular embedded Java database. The current database is not
 a true spatial database as it does not have any form of spatial indexing.
 
-**Maven**::
+**Maven**
    
 Note that the groupId is **org.geotools.jdbc** for this and other JDBC plugin modules.
+
+::
 
    <dependency>
       <groupId>org.geotools.jdbc</groupId>

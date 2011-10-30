@@ -9,15 +9,17 @@ Related
 
 * http://www.foss4g2007.org/workshops/W-04/ PostGIS workshop if you need an intro to setting up PostGIS
 
-**Maven**::
+**Maven**
 
-Note that the groupId is **org.geotools.jdbc** for this and other JDBC plugin modules.
+::
 
    <dependency>
       <groupId>org.geotools.jdbc</groupId>
       <artifactId>gt-jdbc-postgis</artifactId>
       <version>${geotools.version}</version>
     </dependency>
+
+Note that the groupId is **org.geotools.jdbc** for this and other JDBC plugin modules.
 
 Connection Parameters
 ^^^^^^^^^^^^^^^^^^^^^

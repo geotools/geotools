@@ -7,15 +7,17 @@ Supports direct access to a Teradata database.
 
 * http://www.teradata.com/t/
 
-**Maven**::
+**Maven**
 
-Note that the groupId is **org.geotools.jdbc** for this and other JDBC plugin modules.
+::
 
    <dependency>
       <groupId>org.geotools.jdbc</groupId>
       <artifactId>gt-jdbc-teradata</artifactId>
       <version>${geotools.version}</version>
     </dependency>
+
+Note that the groupId is **org.geotools.jdbc** for this and other JDBC plugin modules.
 
 Connection Parameters
 ^^^^^^^^^^^^^^^^^^^^^

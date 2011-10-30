@@ -8,6 +8,15 @@ Related Links:
 * :doc:`gt-main geometry</library/opengis/geometry>`
 * :doc:`gt-jts </library/jts/index>`
 
+**Maven**::
+   
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-jts-wrapper</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
+
+
 About JTS Wrapper
 -----------------
 

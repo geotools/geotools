@@ -8,6 +8,15 @@ level classes are availble for when more control over grid layout and attributes
 
 Note: Grids are currently constructed in memory with the whole grid being built at one time. 
 
+**Maven**::
+   
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-grid</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
+
+
 Polygon grids
 -------------
 

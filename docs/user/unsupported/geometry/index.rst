@@ -5,6 +5,15 @@ The Geometry module creates and manipulates geometric objects such as Points, Cu
 Users of this module can assemble the factories needed to create the various objects they will use,
 use the factories to make the objects, and then manipulate the objects directly.
 
+**Maven**::
+   
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-geometry</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
+
+
 **Volunteer Needed**
 
 This module currently has support for 2D objects; with the addition of 2.5D and 3D pending a

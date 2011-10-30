@@ -12,6 +12,15 @@ References:
 * http://vwfs.refractions.net/docs/Plugin_API.pdf
 * http://vwfs.refractions.net/docs/Validation_Language.pdf
 
+**Maven**::
+   
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-validation</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
+
+
 ValidationProcessor
 -------------------
 

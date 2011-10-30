@@ -4,6 +4,15 @@ GeoJSON Plugin
 Unsupported module illustrating how to encode and decode GeoJSON
 files into GeoTools Feature Collections.
 
+**Maven**::
+   
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-geojson</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
+
+
 Here is a small example from the test cases::
 
     GeometryJSON gjson = new GeometryJSON();

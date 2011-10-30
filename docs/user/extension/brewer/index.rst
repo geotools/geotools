@@ -22,6 +22,14 @@ References:
 * http://colorbrewer2.org/
 * :doc:`gt-main collection </library/main/collection>` (covering partition functions)
 
+**Maven**::
+   
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-brewer</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
+
 **Apache License**
 
 The module extension/brewer requires that this license be included in your

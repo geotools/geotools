@@ -6,6 +6,15 @@ Service requests and parse the responses. This module allows developers to
 create getCapabilities, describeProcess and Execute requests for WPS servers
 send requests and parse responses into objects
 
+**Maven**::
+   
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-wps</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
+
+
 A main design goal of this module is to make the process of building a request and handling the
 response quick and easy for programmers. By using Process Plugin wrapper classes, developers
 can easily build and create process requests with just a few lines of code.

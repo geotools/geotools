@@ -4,13 +4,23 @@ Graph
 
 The gt-graph package defines the concept of a graph (or network) made up of geotools Features.
 
+**Maven**::
+   
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-graph</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
+
+
 Graph Model
 -----------
 
-The graph module strives to provide a convenient, flexable and performant API for graph construction and query.
-In additional to generic Graph support, Networks based on LineStrings and Directed Networks have been implementations.
+The graph module provides a convenient, flexible and efficient API for graph construction and query.
+In additional to generic Graph support, it implements directed and undirected networks.
 
-This work is originally created at Refractions Research and has been used in Jump before being ported to GeoTools.
+This code was originally developed at Refractions Research and has been used in Jump before being
+ported to GeoTools.
 
 **Use of GeoTools**
 

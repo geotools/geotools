@@ -155,7 +155,7 @@ public class GeometryTransformationTest {
         renderer.paint(graphics, new Rectangle(100, 100), new ReferencedEnvelope(0, 10, 0, 10, null));
         graphics.dispose();
         
-        ImageIO.write(bi, "png", new File("/tmp/sample.png"));
+        // ImageIO.write(bi, "png", new File("/tmp/sample.png"));
         
         // check we have a diagonal set of dots
         int[] pixel = new int[3];

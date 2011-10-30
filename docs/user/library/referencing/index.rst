@@ -7,7 +7,6 @@ transformation services.
 
 .. image:: /images/gt-referencing.png
 
-
 The gt-referencing module is our first example that makes use of the plugin system provided
 by :doc:`gt-metadata <../metadata/index>`. It does require a little bit of care when configuring
 the module with appropriate epsg authority.
@@ -18,7 +17,6 @@ The gt-referencing module is responsible for:
   as CoordinateReferenceSystem and MathTransform
 * Providing a definition for common spatial reference system codes using plugins available
   on the CLASSPATH
-
 
 This module is basically care and feeding for the CoordinateReferenceSystem class - and enough
 math to make it useful. Before you get too worried it is easy to use (There is a class called
@@ -40,7 +38,12 @@ CRS that has helper methods for reprojection and stuff).
       <artifactId>gt-epsg-hsql</artifactId>
       <version>${geotools.version}</version>
     </dependency>
-
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-epsg-extension</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
+    
 **Contents**
 
 .. sidebar:: Details
@@ -63,7 +66,14 @@ CRS that has helper methods for reprojection and stuff).
    transform
    calculator
 
-Referencing plugins (choose only one epsg jar):
+Plugins:
+
+.. toctree::
+   :maxdepth: 1
+   
+   extension
+
+EPSG plugins (choose only one to prevent conflict):
 
 .. toctree::
    :maxdepth: 1
@@ -73,7 +83,8 @@ Referencing plugins (choose only one epsg jar):
    postgresql
    wkt
    3d
-   
+   extension
+
 Unsupported plugins:
    
 .. toctree::

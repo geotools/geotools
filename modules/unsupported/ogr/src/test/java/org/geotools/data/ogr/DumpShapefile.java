@@ -4,7 +4,6 @@ import static org.geotools.data.ogr.bridj.OgrLibrary.*;
 
 import org.bridj.BridJ;
 import org.bridj.Pointer;
-import org.geotools.data.ogr.bridj.GdalInit;
 import org.geotools.data.ogr.bridj.OgrLibrary.OGRFieldType;
 
 public class DumpShapefile {

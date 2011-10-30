@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.data.ogr;
 
 import org.geotools.filter.FilterCapabilities;
@@ -29,6 +45,11 @@ import org.opengis.filter.spatial.Within;
 
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * Helper which translates the GeoTools filters into the filter bits that OGR understands
+ * 
+ * @author Andrea Aime - GeoSolutions
+ */
 class OGRFilterTranslator {
 
     static final FilterCapabilities ATTRIBUTE_FILTER_CAPABILITIES;
@@ -65,11 +86,11 @@ class OGRFilterTranslator {
         GEOMETRY_FILTER_CAPABILITIES.addType(Overlaps.class);
         GEOMETRY_FILTER_CAPABILITIES.addType(Touches.class);
         GEOMETRY_FILTER_CAPABILITIES.addType(Within.class);
-        
+
         // the geometry filters we can encode 1-1
         STRICT_GEOMETRY_FILTER_CAPABILITIES = new FilterCapabilities();
         STRICT_GEOMETRY_FILTER_CAPABILITIES.addType(BBOX.class);
-        
+
         // the extended caps, which work only assuming there is at most a single bbox filter
         // in the filter to be encoded
         EXTENDED_FILTER_CAPABILITIES = new FilterCapabilities();
@@ -104,28 +125,30 @@ class OGRFilterTranslator {
         Filter postFilter = visitor.getFilterPost();
         return postFilter == Filter.INCLUDE || postFilter instanceof BBOX;
     }
-    
+
     /**
      * Returns the post filter that could not be encoded
+     * 
      * @return
      */
     public Filter getPostFilter() {
-        // see if the query has a single bbox filter (that's how much we're sure to be able to encode)
+        // see if the query has a single bbox filter (that's how much we're sure to be able to
+        // encode)
         PostPreProcessFilterSplittingVisitor visitor = new PostPreProcessFilterSplittingVisitor(
                 STRICT_GEOMETRY_FILTER_CAPABILITIES, schema, null);
         filter.accept(visitor, null);
         Filter preFilter = visitor.getFilterPre();
 
-        if(preFilter == null || preFilter instanceof BBOX) {
+        if (preFilter == null || preFilter instanceof BBOX) {
             // ok, then we can extract using the extended caps
-            visitor = new PostPreProcessFilterSplittingVisitor(
-                    EXTENDED_FILTER_CAPABILITIES, schema, null);
+            visitor = new PostPreProcessFilterSplittingVisitor(EXTENDED_FILTER_CAPABILITIES,
+                    schema, null);
             filter.accept(visitor, null);
             return visitor.getFilterPost();
         } else {
             // though luck, there is more than a single bbox filter
-            visitor = new PostPreProcessFilterSplittingVisitor(
-                    ATTRIBUTE_FILTER_CAPABILITIES, schema, null);
+            visitor = new PostPreProcessFilterSplittingVisitor(ATTRIBUTE_FILTER_CAPABILITIES,
+                    schema, null);
             filter.accept(visitor, null);
             return visitor.getFilterPost();
         }

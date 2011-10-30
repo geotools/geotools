@@ -37,9 +37,9 @@ import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -354,6 +354,10 @@ public class OGRDataStoreTest extends TestCaseSupport {
     }
     
     public void testAttributesWritingGML() throws Exception {
+        if(!ogrSupports("GML")) {
+            System.out.println("Skipping GML writing test as OGR was not built to support it");
+            
+        }
         SimpleFeatureCollection features = createFeatureCollection();
         File tmpFile = getTempFile("test-gml", ".gml");
         tmpFile.delete();
@@ -364,6 +368,10 @@ public class OGRDataStoreTest extends TestCaseSupport {
     }
     
     public void testAttributesWritingKML() throws Exception {
+        if(!ogrSupports("KML")) {
+            System.out.println("Skipping KML writing test as OGR was not built to support it");
+            
+        }
         SimpleFeatureCollection features = createFeatureCollection();
         File tmpFile = getTempFile("test-kml", ".kml");
         tmpFile.delete();
@@ -373,6 +381,7 @@ public class OGRDataStoreTest extends TestCaseSupport {
         assertEquals(features.size(), s.getFeatureSource("junk").getFeatures().size());
     }
     
+
     public void testAttributeFilters() throws Exception {
         OGRDataStore s = new OGRDataStore(getAbsolutePath(STATE_POP), null, null);
         FeatureSource fs = s.getFeatureSource(s.getTypeNames()[0]);

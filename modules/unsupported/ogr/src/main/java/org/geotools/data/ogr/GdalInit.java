@@ -1,13 +1,30 @@
-package org.geotools.data.ogr.bridj;
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
+package org.geotools.data.ogr;
 
 import org.bridj.BridJ;
+import org.geotools.data.ogr.bridj.OgrLibrary;
 
 /**
- * 
+ * Helper class allowing to locate the GDAL library and attach to it 
  *
  * @source $URL$
  */
-public class GdalInit {
+class GdalInit {
 
     private static volatile String NATIVE_NAME;
 

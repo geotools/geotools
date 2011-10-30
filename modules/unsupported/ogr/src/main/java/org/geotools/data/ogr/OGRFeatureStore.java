@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.data.ogr;
 
 import java.io.IOException;
@@ -20,7 +36,13 @@ import org.opengis.feature.type.Name;
 
 import com.vividsolutions.jts.geom.GeometryFactory;
 
-public class OGRFeatureStore extends ContentFeatureStore {
+/**
+ * FeatureStore for the OGR store, based on the {@link ContentFeatureStore} framework
+ * 
+ * @author Andrea Aime - GeoSolutions
+ */
+@SuppressWarnings("rawtypes")
+class OGRFeatureStore extends ContentFeatureStore {
 
     OGRFeatureSource delegate;
 
@@ -41,8 +63,8 @@ public class OGRFeatureStore extends ContentFeatureStore {
             dataSource = getDataStore().openOGRDataSource(true);
             layer = getDataStore().openOGRLayer(dataSource, typeName);
 
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader = delegate
-                    .getReaderInternal(dataSource, layer, query);
+            FeatureReader<SimpleFeatureType, SimpleFeature> reader = delegate.getReaderInternal(
+                    dataSource, layer, query);
             GeometryFactory gf = delegate.getGeometryFactory(query);
             OGRDirectFeatureWriter result = new OGRDirectFeatureWriter(dataSource, layer, reader,
                     getSchema(), gf);

@@ -31,7 +31,6 @@ import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
 import org.geotools.TestData;
-import org.geotools.data.ogr.bridj.GdalInit;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
@@ -250,4 +249,14 @@ public abstract class TestCaseSupport extends TestCase {
     public static Test suite(Class c) {
         return new TestSuite(c);
     }
+    
+    /**
+     * True if OGR supports the specified format
+     * @param format
+     * @return
+     */
+    protected boolean ogrSupports(String format) {
+        return OGRDataStoreFactory.getAvailableDrivers().contains(format);
+    }
+
 }

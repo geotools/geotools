@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.data.ogr;
 
 import static org.bridj.Pointer.*;
@@ -19,6 +35,7 @@ import org.geotools.data.ReTypeFeatureReader;
 import org.geotools.data.ogr.bridj.OGREnvelope;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
+import org.geotools.data.store.ContentFeatureStore;
 import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.FilterAttributeExtractor;
@@ -37,13 +54,14 @@ import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
-@SuppressWarnings("rawtypes")
 /**
+ * FeatureSource for the OGR store, based on the {@link ContentFeatureStore} framework
  * 
- *
+ * @author Andrea Aime - GeoSolutions
  * @source $URL$
  */
-public class OGRFeatureSource extends ContentFeatureSource {
+@SuppressWarnings("rawtypes")
+class OGRFeatureSource extends ContentFeatureSource {
 
     public OGRFeatureSource(ContentEntry entry, Query query) {
         super(entry, query);
@@ -256,7 +274,7 @@ public class OGRFeatureSource extends ContentFeatureSource {
         }
     }
 
-    private void setIgnoredFields(Pointer layer, SimpleFeatureType querySchema,
+    void setIgnoredFields(Pointer layer, SimpleFeatureType querySchema,
             SimpleFeatureType sourceSchema) throws IOException {
         if (OGR_L_TestCapability(layer, pointerToCString(OLCIgnoreFields)) != 0) {
             List<String> ignoredFields = new ArrayList<String>();

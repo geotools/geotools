@@ -5,7 +5,6 @@ import static org.geotools.data.ogr.bridj.OgrLibrary.OGR_G_DestroyGeometry;
 import java.io.IOException;
 
 import org.bridj.Pointer;
-import org.geotools.data.ogr.bridj.GdalInit;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;

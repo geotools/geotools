@@ -34,7 +34,6 @@ import org.bridj.Pointer;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.data.ogr.bridj.GdalInit;
 
 /**
  * Implementation of the DataStore service provider interface for OGR.

@@ -21,7 +21,7 @@ you.
    
     <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-wing</artifactId>
+      <artifactId>gt-swing</artifactId>
       <version>${geotools.version}</version>
     </dependency>
 

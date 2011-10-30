@@ -1,10 +1,23 @@
 JP2K Plugin
 -----------
 
-The JP2K plug-in allows GeoTools to make use of the JP2K format provided via the available JP2K image readers in the JAI ImageIO project plus an optional ImageIO plugin based on the Kakadu library which is activated only when the Kakadu SDK is in the path (the Kakakdu SDK is not Open Source but t comes with a variety of licenses). Notice that:
+The JP2K plug-in allows GeoTools to make use of the JP2K format provided via the available JP2K
+image readers in the JAI ImageIO project plus an optional ImageIO plugin based on the Kakadu
+library which is activated only when the Kakadu SDK is in the path (the Kakakdu SDK is not
+Open Source but t comes with a variety of licenses).
+
+Notice that:
 
 1. The Kakadu ImageIO plugin, when available, takes precedence over the standard ImageIO JP2K plugins
 2. The JP2K plugins available through GDAL, which relies on the ImageIO-Ext GDAL plugin, are separate from this plugin and leave in their own module
+
+**Maven**::
+   
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-jp2k</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
 
 Use of Kakadu
 ^^^^^^^^^^^^^

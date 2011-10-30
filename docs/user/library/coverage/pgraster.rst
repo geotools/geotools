@@ -1,8 +1,8 @@
 Postgis Raster Plug in
 ----------------------
 
-This plug in is an extension to the Image Mosaicing Pyramidal JDBC Plugin. Since a Postgis raster object offers spatial functions and predicates,  configuration is simple.
-
+This plug in is an extension to the Image Mosaicing Pyramidal JDBC Plugin. Since a Postgis raster
+object offers spatial functions and predicates,  configuration is simple.
 
 Prerequisites
 

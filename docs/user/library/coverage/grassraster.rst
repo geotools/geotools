@@ -1,7 +1,18 @@
 GrassRaster Plugin
 ------------------
 
-The module supplies support for reading and writing GRASS rasters. The metadata contain both the colortable and the categories (if available) of the raster map. The original colortable of the GRASS raster is read into the geotools coverage Categories and can as such be visualized if using a default styler.
+The module supplies support for reading and writing GRASS rasters. The metadata contain both the
+colortable and the categories (if available) of the raster map. The original colortable of the
+GRASS raster is read into the geotools coverage Categories and can as such be visualized
+if using a default styler.
+
+**Maven**::
+   
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-grassraster</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
 
 Data structure of a rastermap
 -----------------------------

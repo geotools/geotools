@@ -3,11 +3,19 @@ GeoTIFF Plugin
 
 The gt-geotiff module in the plugin group provides access to the GeoTiff file format.
 
-References:
+**References**
 
 * http://www.jroller.com/jsight/entry/back_to_code_geotools_geotiff
 * `GeoTiffReaderTest.java <http://svn.osgeo.org/geotools/trunk/modules/plugin/geotiff/src/test/java/org/geotools/gce/geotiff/GeoTiffReaderTest.java>`_
 * `GeoTiffWriterTest.java <http://svn.osgeo.org/geotools/trunk/modules/plugin/geotiff/src/test/java/org/geotools/gce/geotiff/GeoTiffWriterTest.java>`_
+
+**Maven**::
+   
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-geotiff</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
 
 **Happy Fun Ball License**
 

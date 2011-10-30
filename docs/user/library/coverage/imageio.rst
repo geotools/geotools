@@ -1,15 +1,29 @@
 ImageIO-EXT GDAL Plugin
 -----------------------
 
-The ImageIO-EXT plug-in allows geotools to make use of the additional formats provided via the Java Extension ImageIO-EXT.
+The ImageIO-EXT plug-in allows geotools to make use of the additional formats provided via the
+Java Extension ImageIO-EXT.
 
-The Java ImageIO library comes with a few formats out of the box (such as PNG, etc...) the imageio-ext project provides support for additional geospatial formats.
+The Java ImageIO library comes with a few formats out of the box (such as PNG, etc...) the
+imageio-ext project provides support for additional geospatial formats.
 
-References:
+**References**
 
 * http://java.net/projects/imageio-ext/
 
-At the GeoTools level, the set of formats supported by the GeoTools ImageIO-Ext GDAL plugin is composed of:
+**Maven**::
+   
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-imageio-ext-gdal</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
+
+Formats
+^^^^^^^
+
+At the GeoTools level, the set of formats supported by the GeoTools ImageIO-Ext GDAL plugin
+is composed of:
 
 * DTED Elevation Raster
 * ESRI .hdr labelled
@@ -24,7 +38,8 @@ At the GeoTools level, the set of formats supported by the GeoTools ImageIO-Ext 
 GDAL
 ^^^^
 
-If your Java Runtime Environment includes GDAL libraries you will be able to support additional file formats:
+If your Java Runtime Environment includes GDAL libraries you will be able to support additional
+file formats:
 
 * Arc/Info ASCII Grid
 * Arc/Info Binary Grid
@@ -33,7 +48,8 @@ If your Java Runtime Environment includes GDAL libraries you will be able to sup
 * GeoTIFF
 * JPEG
 
-The ImageIO-EXT website includes ready to use ImageIO-Ext binaries including GDAL libraries. See "Release Information" for more info about the list of supported formats and available drivers.
+The ImageIO-EXT website includes ready to use ImageIO-Ext binaries including GDAL libraries. See
+"Release Information" for more info about the list of supported formats and available drivers.
 
 Example Use
 ^^^^^^^^^^^

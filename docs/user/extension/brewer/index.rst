@@ -61,5 +61,5 @@ GeoTools documentation::
 	"ColorBrewer" appear in their name, without prior written permission of Cynthia 
 	Brewer.
 
-In keeping with the above license the GeoTools does an written permission to use the
+In keeping with the above license GeoTools does have written permission to use the
 name "ColorBrewer". Thanks Cynthia for your contribution to the state of the art.

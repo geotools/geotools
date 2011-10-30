@@ -3,6 +3,24 @@ XML
 
 Supports the parsing and encoding of geospatial information using XML.
 
+.. image:: /images/gt-xml.png
+
+There are a large number of supporting plugins capturing xml schemas, and "bindings" mapping
+these ideas into concrete Java objects.
+
+The Geotools library has spent a lot of time and energy on this problem, this document introduces
+you to what is available.
+
+**Maven**::
+   
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-xml</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
+
+**Contents**
+
 .. sidebar:: Details
    
    .. toctree::
@@ -17,9 +35,3 @@ Supports the parsing and encoding of geospatial information using XML.
    geometry
    filter
    style
-
-There are a large number of supporting plugins capturing xml schemas, and "bindings" mapping these ideas into concrete Java objects.
-
-.. image:: /images/gt-xml.png
-
-The Geotools library has spent a lot of time and energy on this problem, this document introduces you to what is available.

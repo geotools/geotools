@@ -1,17 +1,26 @@
 Mosaic Plugin
 -------------
 
-This format make use of a shapefile to act as a kind of index, the features in this shapefile list the filename of the "images" to display and the location in which they should be displayed.
+This format make use of a shapefile to act as a kind of index, the features in this shapefile
+list the filename of the "images" to display and the location in which they should be displayed.
 
-The best source of documentation is (surprise surprise) the code; here are a couple of javadoc links:
+**Reference**
 
-* ImageMosaicFormat
-* ImageMosaicReader
+* `ImageMosaicFormat <http://docs.geotools.org/latest/javadocs/org/geotools/gce/imagemosaic/ImageMosaicFormat.html>`_ (javadoc)
+* `ImageMosaicJDBCReader <http://docs.geotools.org/latest/javadocs/org/geotools/gce/imagemosaic/jdbc/ImageMosaicJDBCReader.html>`_ (javadoc)
+* :doc:`pyramid`
+* `Using the ImageMoasic plugin <http://docs.geoserver.org/stable/en/user/tutorials/image_mosaic_plugin/imagemosaic.html>`_
 
-Related
+**Maven**::
+   
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-imagemosaic</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
 
-* :doc:`pyramid`.
-* http://docs.geoserver.org/stable/en/user/tutorials/image_mosaic_plugin/imagemosaic.html
+Example
+^^^^^^^
 
 An example data set looks something like::
   

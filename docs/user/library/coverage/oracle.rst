@@ -1,13 +1,16 @@
 Oracle GeoRaster Plugin
 -----------------------
 
-This plugin is an extension to the Image Mosaicing Pyramidal JDBC Plugin. Since an Oracle Raster Object contains tiles and pyramids, configuration is simple.
+This plugin is an extension to the Image Mosaicing Pyramidal JDBC Plugin. Since an Oracle Raster
+Object contains tiles and pyramids, configuration is simple.
 
 Credits
 
 * Thanks to Steve Way and Pablo Najarro, who started with this module.
-* Baskar Dhanapal developed a lot of code for getting image metadata from Oracle GeoRaster and constructing a Java image from pure raster data.
-  Studying this code, I decided to request image data in TIFF format from GeoRaster and construct the Java image using JAI and AWT.
+* Baskar Dhanapal developed a lot of code for getting image metadata from Oracle
+  GeoRaster and constructing a Java image from pure raster data.
+  Studying this code, I decided to request image data in TIFF format from GeoRaster and construct
+  the Java image using JAI and AWT.
 
 Prerequisites
 

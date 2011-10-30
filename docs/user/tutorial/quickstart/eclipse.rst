@@ -4,8 +4,6 @@
 :Version: |release|
 :License: Create Commons with attribution
 
-.. _eclipse-quickstart:
-
 **********************
   Eclipse Quickstart 
 **********************

@@ -3,23 +3,39 @@ Image Plugin
 
 The image module in the plugin group provides access to the 'world plus image' file formats.
 
-This is the quickest way to get a GIF or JEPG onto a map display - simply add a small text file along side the image defining the image's extend and use this plugin.
+This is the quickest way to get a GIF or JEPG onto a map display - simply add a small text
+file along side the image defining the image's extend and use this plugin.
 
-Related:
+**References**
 
 * http://www.kralidis.ca/gis/worldfile.htm
 * http://geos.gsi.gov.il/vladi/FEFLOW/help/general/file_format.html#tfw_file
 
-The WorldImageReader allows access to image data through the GridFormatFinder. This supports raster images with an associated world file.::
+**Maven**::
+   
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-image</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
+    
+Example
+^^^^^^^
+
+The WorldImageReader allows access to image data through the GridFormatFinder. This supports
+raster images with an associated world file.::
   
   File file = new File("test.jpg");
   
   AbstractGridFormat format = GridFormatFinder.findFormat( file );
   AbstractGridCoverage2DReader reader = format.getReader( file );
 
-World files have the same name as the image (different file extension) and contain just enough information to convert pixel coordinates to real world coordinates. They do not store any coordinate reference system information for the coordinates.
+World files have the same name as the image (different file extension) and contain just
+enough information to convert pixel coordinates to real world coordinates. They do not
+store any coordinate reference system information for the coordinates.
 
-The gt-image plugin depends on Java to read the image file; so depending on how you have JAI / Image IO configured the following should be supported:
+The gt-image plugin depends on Java to read the image file; so depending on how you have
+JAI / Image IO configured the following should be supported:
 
 ============= ======================= =====================
 Image Format  Image Format Extension  World File Extension
@@ -30,11 +46,16 @@ PNG           file.png                file.pgw or file.wld
 GIF           file.gif                file.gfw or file.wld
 ============= ======================= =====================
 
-**World File**
 
-A world file is a small text file that says where the corners of the image is. The extension of a world file is the first and last letters of the image extension with "w" appended at the end. The coordinates are in the units of the projections, so -180,180 -90,90 for lat/long.
+World File
+^^^^^^^^^^
 
-If your image is not in lat/long you will have to include a .prj file, which is a text file with the WKT definition of the coordinate system that should be used.
+A world file is a small text file that says where the corners of the image is. The extension of
+a world file is the first and last letters of the image extension with "w" appended at the end.
+The coordinates are in the units of the projections, so -180,180 -90,90 for lat/long.
+
+If your image is not in lat/long you will have to include a .prj file, which is a text file with
+the WKT definition of the coordinate system that should be used.
 
 Example contents of a world file are as follows:
 

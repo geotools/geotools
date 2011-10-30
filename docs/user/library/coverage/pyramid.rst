@@ -1,19 +1,30 @@
 Image Pyramid Plugin
 ^^^^^^^^^^^^^^^^^^^^
 
-There are a series of interesting raster "formats" that make use of a bunch of raster files and present the result as a single image. This format uses a magic directory structure combined with a property file describing what goes where.
+There are a series of interesting raster "formats" that make use of a bunch of raster files and
+present the result as a single image. This format uses a magic directory structure combined with
+a property file describing what goes where.
 
-The best source of documentation is (surprise surprise) the code; here are a couple of javadoc links:
+**Reference**
 
-* ImagePyramidReader
-
-Related
-
-* :doc:`mosaic`.
+* `ImagePyramidReader <http://docs.geotools.org/latest/javadocs/index.html?org/geotools/gce/imagemosaic/ImageMosaicFormat.html>`_
+* :doc:`mosaic`
 * http://docs.geoserver.org/stable/en/user/data/imagepyramid.html
 * http://docs.geoserver.org/stable/en/user/tutorials/imagepyramid/imagepyramid.html?highlight=bluemarble
 
-On disk an image pyramid is going to look a bit like the following (you can use any format for the tiles from mrsid to tiff)::
+**Maven**::
+   
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-gt-imagepyramid</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
+
+Example
+^^^^^^^
+
+On disk an image pyramid is going to look a bit like the following (you can use any format for
+the tiles from mrsid to tiff)::
 
   directory/
   directory/pyramid.properties
@@ -27,7 +38,8 @@ On disk an image pyramid is going to look a bit like the following (you can use 
   directory/0/32/...
   directory/0/32/mosiac_file_n.tiff
 
-The format of that pyramid.properties file is magic, while we can look at the javadocs (and the following example), you are going to have to read the source code on this one::
+The format of that pyramid.properties file is magic, while we can look at the javadocs
+(and the following example), you are going to have to read the source code on this one::
   
   # Pyramid Description
   #

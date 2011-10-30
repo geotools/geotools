@@ -11,7 +11,7 @@ for those of you wanting a sneak peek.
 
 The following modules are provided for your amusement only to encourage collaborate on making these modules part of our library:
 
-**Research and Development**   
+Research and Development:
 
 .. toctree::
    :maxdepth: 1
@@ -30,7 +30,7 @@ The following modules are provided for your amusement only to encourage collabor
 
 Modules under active development:
 
-* :doc:`process/index` * API for working with GeoSpatial processes and annotations to make defining additional processes easy
+* :doc:`process/index` - API for working with GeoSpatial processes and annotations to make defining additional processes easy
 * :doc:`swing/index` - collection of GUI components and utilities based on the Swing framework
 * :doc:`swt/index` - collection of GUI components and utilities based on the SWT framework
 * :doc:`grid` - generates vector grids (lattices) of polygons or lines

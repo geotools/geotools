@@ -1,13 +1,6 @@
 Swing
 =====
 
-.. sidebar:: Details
-   
-   .. toctree::
-      :maxdepth: 1
-      
-      faq
-
 The **gt-swing** module contains GUI and utility classes which are based on the Java Swing library. Its main use is to
 provide the visual components for the GeoTools `tutorial applications <../../tutorial/index.html>`_. You can also use it
 for basic display purposes in your own projects, or use the classes as a starting point for your own custom components.
@@ -24,8 +17,33 @@ you.
         GeoTools, see `uDig <http://udig.refractions.net/>`_ which is based on `SWT
         <http://www.eclipse.org/swt/>`_ rather than Swing.
 
-Overview
---------
+**Maven**::
+   
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-wing</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
+
+**Contents**
+
+.. sidebar:: Details
+   
+   .. toctree::
+      :maxdepth: 1
+      
+      faq
+
+.. toctree::
+   :maxdepth: 1
+
+   jmappane
+   jmapframe
+   dialog
+   wizard
+
+
+**Overview**
 
 The module is centred around **JMapPane**, a spatially-aware canvas class which works with the GeoTools rendering
 system. If you need basic display services in your application this is the class you should start with. On the other
@@ -39,22 +57,9 @@ of Swing's JFileChooser; **JDataStoreWizard** to prompt for connection parameter
 **JSimpleStyleDialog** to set basic rendering style elements for vector layers; **JCRSChooser** to select a map
 projection.
 
-Development
------------
+**History**
 
 Of all the GeoTools modules, gt-swing has the longest history of participation from the GeoTools user list, has seen no
 fewer than five module maintainers come and go (a bit like drummers in Spinal Tap), and has been branched off as a
 separate project at various points in its history. However, if this doesn't put you off and you have a brilliant idea, a
 bug-fix or, best of all, a patch, we would love to hear from you.
-
-Main components
----------------
-
-.. toctree::
-   :maxdepth: 1
-
-   jmappane
-   jmapframe
-   dialog
-   wizard
-

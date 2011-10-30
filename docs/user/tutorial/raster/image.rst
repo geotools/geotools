@@ -150,10 +150,7 @@ and pass it to a **JMapFrame**.
 
 4. To display color we need to use a slightly more complex Style that specifies which bands in the
    grid coverage map to the R, G and B colors on screen. 
-   
-   While this will be very easy for a simple color image; it can be harder for things like
-   satellite images where none of the bands quite line up with what human eyes see.
-   
+      
    The methods checks the image to see if its bands (known as *sample dimensions*) have labels
    indicating which to use. If not, we just use the first three bands and hope for the best !
 
@@ -161,6 +158,10 @@ and pass it to a **JMapFrame**.
    :language: java
    :start-after: // docs start create rgb style
    :end-before: // docs end source
+
+5. Please note that the above technique (checking colour bands) is specific to RGB images.
+   While this is easy for a simple color image; it can be harder for things like
+   satellite images where none of the bands quite line up with what human eyes see.
 
 Running the application
 =======================
@@ -226,14 +227,28 @@ There are many kinds of grid coverage file formats. Some of the most common are:
 world plus image
     A normal image format like jpeg or png that has a side-car file describing where it is located
     as well as a prj sidecar file defining the map projection just like a shapefile uses.
+    
+    * jpeg - is common due to small download size; however performance at runtime is terrible as
+      the entire image needs be read into memory.
+    
+    * tiff 
+    
+    * 
                    
 Geotiff
-    A normal tiff image that has geospatial information stored in the image metadata fields.
+    A normal tiff image that has geospatial information stored in the image metadata fields. This
+    is generally a safe bet for fast performnace; especially if it has been prepaired with an
+    internal overlay (which can be used when zoomed out) or internal tiling (allowing for fast
+    pans when zoomed in.
+    
+    Performs best when your computer has faster disks than CPUs.
 
 JPEG2000
     The sequel to jpeg that uses wavelet compression  to handle massive images. The file
     format also supports metadata fields that can be used to store geospatial information.
-
+   
+    This format performs best when you have more faster CPUs than disk access.
+    
 There are also more exotic formats such as ECW and MRSID that can be supported if you have installed
 the imageio-ext project into your JRE.
 

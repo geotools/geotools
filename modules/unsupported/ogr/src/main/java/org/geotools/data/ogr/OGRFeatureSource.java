@@ -240,7 +240,7 @@ class OGRFeatureSource extends ContentFeatureSource {
                 }
                 layer = OGR_DS_ExecuteSQL(dataSource, pointerToCString(sql), spatialFilterPtr, null);
                 if (layer == null) {
-                    throw new IOException("Failed to query the source layer with SQL" + sql);
+                    throw new IOException("Failed to query the source layer with SQL: " + sql);
                 }
             } else {
                 setLayerFilters(layer, filterTx);
@@ -308,13 +308,19 @@ class OGRFeatureSource extends ContentFeatureSource {
             SortBy[] sortBy) {
         StringBuilder sb = new StringBuilder();
 
-        // select attributues
-        sb.append("SELECT FID,");
+        // list only the non geometry attributes
+        
+        // select attributes
+        sb.append("SELECT FID, ");
         if (targetSchema == null) {
             sb.append("* ");
         } else {
             for (AttributeDescriptor attribute : targetSchema.getAttributeDescriptors()) {
-                sb.append(attribute.getLocalName()).append(", ");
+                if(attribute instanceof GeometryDescriptor) {
+                    continue;
+                } else {
+                    sb.append(attribute.getLocalName()).append(", ");
+                }
             }
             sb.setLength(sb.length() - 2);
             sb.append(" ");

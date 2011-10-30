@@ -47,11 +47,11 @@ import org.geotools.data.DataStoreFactorySpi;
  */
 @SuppressWarnings("rawtypes")
 public class OGRDataStoreFactory implements DataStoreFactorySpi {
-    public static final Param OGR_NAME = new Param("OGRName", String.class,
+    public static final Param OGR_NAME = new Param("DatasourceName", String.class,
             "Name of the file, or data source to try and open", true);
 
     public static final Param OGR_DRIVER_NAME = new Param(
-            "OGRDriverName",
+            "DriverName",
             String.class,
             "Name of the OGR driver to be used. Required to create a new data source, optional when opening an existing one",
             false);
@@ -133,7 +133,7 @@ public class OGRDataStoreFactory implements DataStoreFactorySpi {
     }
 
     public String getDisplayName() {
-        return "Shapefile";
+        return "OGR";
     }
 
     /**
@@ -143,7 +143,7 @@ public class OGRDataStoreFactory implements DataStoreFactorySpi {
      *         datastore.
      */
     public String getDescription() {
-        return "OGR data store for shapefiles";
+        return "Uses OGR as a data source";
     }
 
     /**

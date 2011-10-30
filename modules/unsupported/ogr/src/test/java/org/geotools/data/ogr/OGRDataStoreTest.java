@@ -38,6 +38,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -56,6 +57,7 @@ import org.opengis.filter.FilterFactory;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 
 /**
@@ -186,6 +188,30 @@ public class OGRDataStoreTest extends TestCaseSupport {
         ofr.close();
         sds.dispose();
         ods.dispose();
+    }
+    
+    public void testLoadGeometry() throws Exception {
+        // load up the store and source
+        OGRDataStore ods = new OGRDataStore(getAbsolutePath(STATE_POP), null, null);
+        SimpleFeatureSource fs = ods.getFeatureSource("statepop");
+        
+        // query just the geometry field, check the collection returned
+        Query query = new Query("statepop");
+        query.setPropertyNames(new String[] {"the_geom"});
+        SimpleFeatureCollection fc = fs.getFeatures(query);
+        assertTrue(fc.size() > 0);
+        SimpleFeatureType schema = fc.getSchema();
+        assertEquals(1, schema.getDescriptors().size());
+        assertEquals(MultiPolygon.class, schema.getGeometryDescriptor().getType().getBinding());
+        
+        // get one feature, check it
+        SimpleFeatureIterator fi = fc.features();
+        SimpleFeature feature = fi.next();
+        fi.close();
+        schema = feature.getFeatureType();
+        assertEquals(1, schema.getDescriptors().size());
+        assertEquals(MultiPolygon.class, schema.getGeometryDescriptor().getType().getBinding());
+        assertNotNull(feature.getDefaultGeometry());
     }
     
     private void assertFeatureTypeEquals(SimpleFeatureType type1, SimpleFeatureType type2) {

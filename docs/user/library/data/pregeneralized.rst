@@ -7,9 +7,17 @@ This is an advanced plugin that is great for eking the greatest performance out 
 
 Consider it something like an image pyramid for raster data operating at different zoom levels.
 
-References:
+**References**
 
 *  :doc:`gt-main repository <../main/repository>`
+
+**Maven**::
+   
+   <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-feature-pregeneralized</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
 
 Connection Parameters
 ^^^^^^^^^^^^^^^^^^^^^

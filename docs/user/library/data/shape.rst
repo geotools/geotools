@@ -3,12 +3,20 @@ Shapefile Plugin
 
 Allows the GeoTools library to work with ESRI shapefiles.
 
-References:
+**References**
 
 * `ShapefileDataStoreFactory <http://docs.geotools.org/latest/javadocs/org/geotools/data/shapefile/ShapefileDataStoreFactory.html>`_ (javadocs)
 * http://en.wikipedia.org/wiki/Shapefile
 * http://en.wikipedia.org/wiki/DBase
 
+**Maven**::
+   
+   <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-shape</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
+    
 Connection Parameters
 ^^^^^^^^^^^^^^^^^^^^^
 

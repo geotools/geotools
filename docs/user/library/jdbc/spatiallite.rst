@@ -10,6 +10,14 @@ References:
   * http://www.sqlite.org/
   * http://www.gaia-gis.it/spatialite/
 
+**Maven**::
+
+   <dependency>
+      <groupId>org.geotools.jdbc</groupId>
+      <artifactId>gt-jdbc-spatiallite</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
+
 Connection Parameters
 ^^^^^^^^^^^^^^^^^^^^^
 

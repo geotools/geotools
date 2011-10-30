@@ -3,4 +3,11 @@ EDIGEO Plugin
 
 Unsupported plugin for the EDIGEO format.
 
-No documentation has been provided.
+**Maven**::
+   
+   <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-edigeo</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
+   

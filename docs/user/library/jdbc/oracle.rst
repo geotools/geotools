@@ -3,6 +3,14 @@ Oracle Plugin
 
 Supports direct access to an Oracle database.
 
+**Maven**::
+
+   <dependency>
+      <groupId>org.geotools.jdbc</groupId>
+      <artifactId>gt-jdbc-jdbc</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
+
 Connection Parameters
 ^^^^^^^^^^^^^^^^^^^^^
 

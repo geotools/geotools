@@ -3,6 +3,14 @@ Mark WKT Plugin
 
 This plugin adds the rendering of marks built from WKT geometries; moreover, it adds some Java-generated shapes that are used to draw meteorological symbols... hope the weathermen will find this useful.
 
+**Maven**::
+   
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-mark-wkt</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
+
 WKT Marks
 ^^^^^^^^^
 

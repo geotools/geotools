@@ -3,6 +3,14 @@ MySQL Plugin
 
 Supports direct access to a MySQL database.
 
+**Maven**::
+
+   <dependency>
+      <groupId>org.geotools.jdbc</groupId>
+      <artifactId>gt-jdbc-mysql</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
+
 Connection Parameters
 ^^^^^^^^^^^^^^^^^^^^^
 

@@ -6,15 +6,18 @@ About GeoTools
 GeoTools is an open source (LGPL) Java code library which provides standards
 compliant methods for the manipulation of geospatial data, for example to
 implement Geographic Information Systems (GIS). The GeoTools library implements
-Open Geospatial Consortium (OGC) specifications as they are developed. The
-capabilities of GeoTools are presented in the 
-`feature list <http://www.osgeo.org/geotools>`_.
+Open Geospatial Consortium (OGC) specifications as they are developed.
+
+The capabilities of GeoTools are presented in the User Guide 
+`feature list <http://docs.geotools.org/latest/userguide/geotools.html>`_.
 
 Geotools is used by a number of projects including Web Feature Servers, Web Map
 Servers, and desktop applications. For more information check out some
 fascinating 
 `screenshots <http://docs.codehaus.org/display/GEOTOOLS/Screenshots>`_  and
 applications powered by GeoTools!
+
+.. `Geomajas <http://www.geomajas.org/>`_ `GeoServer <http://geoserver.org/>`_ `uDig <http://udig.refractions.net/>`_ 
 
 Open Source
 -----------
@@ -37,5 +40,3 @@ release schedule. Please contact us on the
 GeoTools follows an open development process. Our policies and procedures are
 documented in the Developers Guide. Both our change proposals and 
 `issue tracker <http://jira.codehaus.org/browse/GEOT>`_ are open.
-
-

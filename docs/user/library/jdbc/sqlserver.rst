@@ -7,6 +7,14 @@ References:
 
 * http://www.microsoft.com/sqlserver/
 
+**Maven**::
+
+   <dependency>
+      <groupId>org.geotools.jdbc</groupId>
+      <artifactId>gt-jdbc-sqlserver</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
+
 Connection Parameters
 ^^^^^^^^^^^^^^^^^^^^^
 

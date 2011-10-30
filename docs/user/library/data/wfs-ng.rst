@@ -3,4 +3,10 @@ WFS-NG Plugin
 
 Unsupported web feature server "next generation" experiment.
 
-No documetnation has been provided.
+**Maven**::
+   
+   <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-wfs-ng</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>

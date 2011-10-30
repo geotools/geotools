@@ -23,12 +23,7 @@ lets you draw a map using all that data you set up.
    
     <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-referencing</artifactId>
-      <version>${geotools.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-epsg-hsql</artifactId>
+      <artifactId>gt-render</artifactId>
       <version>${geotools.version}</version>
     </dependency>
 

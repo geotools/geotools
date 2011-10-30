@@ -1,7 +1,8 @@
 DataStore
 ---------
 
-A **DataStore** is used to access and store geospatial data in a range of vector formats including shapefiles, GML files, databases, Web Feature Servers, and other formats.
+A **DataStore** is used to access and store geospatial data in a range of vector formats
+including shapefiles, GML files, databases, Web Feature Servers, and other formats.
 
 References:
 

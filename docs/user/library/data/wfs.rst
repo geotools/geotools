@@ -5,10 +5,19 @@ This plugin allows the GeoTools library to interact with a Web Feature Server us
 
 The WFS Plugin is currently unsupported, this represents a lack of funding rather than any short fall in maturity or stability.
 
-Resources:
+**Resources**
 
 * http://blogs.law.harvard.edu/jreyes/2007/08/03/geotools-wfs-t-update-request/ - a very nice blog post with a helpful walkthrough
+* `Web Feature Service <http://www.opengeospatial.org/standards/wfs>`_ (OGC Standard)
 
+**Maven**::
+   
+   <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-wfs</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
+    
 Connection Parameters
 ^^^^^^^^^^^^^^^^^^^^^
 

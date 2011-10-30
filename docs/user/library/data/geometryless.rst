@@ -7,3 +7,5 @@ encoding geometry on its own with all spatial operations
 perform in Java on the client side.
 
 No documentation has been provided.
+
+This plugin is no longer avaialble in |release|.

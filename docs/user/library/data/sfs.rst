@@ -1,6 +1,12 @@
 Simple Features Service Plugin
 ------------------------------
 
-Plugin to access an experimental GeoServer module.
+Unsupported plugin to access an experimental GeoServer "Simple Feature Service" module.
 
-No documetnation has been provided.
+**Maven**::
+   
+   <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-sfs</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>

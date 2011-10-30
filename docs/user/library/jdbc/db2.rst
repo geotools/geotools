@@ -5,9 +5,17 @@ Supports direct access to a DB2 database.
 
 A couple of really good things have happened for DB2 support recently. We have obtained permission to distribute the DB2 driver with GeoTools, and you can now download a free community version of DB2 .
 
-References:
+**References**
 
 * http://www-01.ibm.com/software/data/db2/express/
+
+**Maven**::
+   
+   <dependency>
+      <groupId>org.geotools.jdbc</groupId>
+      <artifactId>gt-jdbc-db2</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
 
 Connection Parameters
 ^^^^^^^^^^^^^^^^^^^^^

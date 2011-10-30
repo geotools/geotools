@@ -3,7 +3,16 @@ H2 Plugin
 
 Supports direct access to a H2 database.
 
-H2 is the second generation of HSQL, a popular embedded Java database. The current database is not a true spatial database as it does not have any form of spatial indexing.
+H2 is the second generation of HSQL, a popular embedded Java database. The current database is not
+a true spatial database as it does not have any form of spatial indexing.
+
+**Maven**::
+   
+   <dependency>
+      <groupId>org.geotools.jdbc</groupId>
+      <artifactId>gt-jdbc-h2</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
 
 Connection Parameters
 ^^^^^^^^^^^^^^^^^^^^^

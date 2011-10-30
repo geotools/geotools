@@ -9,6 +9,14 @@ References:
 * http://www.jfree.org/eastwood/
 * http://www.jfree.org/jfreechart/
 
+**Maven**::
+   
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-charts</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
+
 Example
 ^^^^^^^
 

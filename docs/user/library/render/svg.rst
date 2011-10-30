@@ -3,6 +3,14 @@ SVG Plugin
 
 The **gt-svg** plugin uses the Batik library to support the use of svg graphics.
 
+**Maven**::
+   
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-svg</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
+
 Example
 ^^^^^^^
 

@@ -24,20 +24,18 @@ and :doc:`extension </extension/index>`.
    
    For small typos and source code corrections email the module maintainer above.
 
+
 .. toctree::
    :maxdepth: 1
 
+   geotools
    welcome/index
+   faq
    
 .. toctree::
    :maxdepth: 2
 
    tutorial/index
-
-.. toctree::
-   :maxdepth: 1
-
-   faq
 
 .. toctree::
    :maxdepth: 2

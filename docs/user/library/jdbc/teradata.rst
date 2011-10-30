@@ -3,9 +3,17 @@ Teradata Plugin
 
 Supports direct access to a Teradata database.
 
-References:
+**References**
 
 * http://www.teradata.com/t/
+
+**Maven**::
+
+   <dependency>
+      <groupId>org.geotools.jdbc</groupId>
+      <artifactId>gt-jdbc-teradata</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
 
 Connection Parameters
 ^^^^^^^^^^^^^^^^^^^^^

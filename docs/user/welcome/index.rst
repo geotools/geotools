@@ -1,13 +1,12 @@
-*******************
-Welcome to GeoTools
-*******************
+*******
+Welcome
+*******
 
 Welcome to the Geotools Users Guide. This space serves as a reference to the GeoTools library, and collecting documentation and examples provided by the developer community.
 
 .. toctree::
    :maxdepth: 1
    
-   geotools
    license
    support
    userlistguide

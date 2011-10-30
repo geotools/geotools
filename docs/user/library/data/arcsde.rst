@@ -12,13 +12,19 @@ Supported Features:
 * `Geometry-less` Feature Types: "Non spatial" registered ArcSDE tables can be accessed as GeoTools FeatureTypes
 * `Spatial views`: Registered ArcSDE spatial-views are supported read-only.
 
-
-References:
+**References**
 
 * :doc:`gt-coverage arcsde <../coverage/arcsde>` raster code examples
 * `Esri ArcSDE documentation <http://help.arcgis.com/en/arcgisserver/10.0/help/arcgis_server_dotnet_help/index.html#/What_is_ArcSDE/009300000115000000/>`_
 
-
+**Maven**::
+   
+   <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-arcsde</artifactId>
+      <version>${geotools.version}</version>
+    </dependency>
+   
 Configuration Parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^
 

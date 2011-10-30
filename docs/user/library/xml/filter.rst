@@ -1,10 +1,11 @@
 Filter
 ------
 
-No utility class, this time out we will be making direct use of the two available GTXML configurations:
+No utility class, this time out we will be making direct use of the three available GTXML configurations:
 
 * org.geotools.filter.v1_0.OGCConfiguration
 * org.geotools.filter.v1_1.OGCConfiguration
+* org.geotools.filter.v2_0.FESConfiguration
 
 The definition of *filter* is considered part of the ogc schema, hence the use of OGCConfiguration above. 
 
@@ -153,3 +154,49 @@ To parse a filter::
   Parser parser = new Parser( configuration );
 
   Filter filter = (Filter) parser.parse( imputStream );
+
+Filter2
+^^^^^^^
+
+The Filter 2.0 specification is provided by v2_0 FESConfiguration.
+
+Parse
+'''''
+
+Sample document::
+
+            <fes:Filter 
+               xmlns:fes='http://www.opengis.net/fes/2.0'  
+               xmlns:gml='http://www.opengis.net/gml/3.2'  
+               xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' 
+               xsi:schemaLocation='http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0/filterAll.xsd 
+             http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd'> 
+               <fes:TOverlaps>  
+                  <fes:ValueReference>timeInstanceAttribute</fes:ValueReference> 
+               <gml:TimePeriod gml:id='TP1'>  
+                  <gml:begin>  
+                    <gml:TimeInstant gml:id='TI1'>  
+                      <gml:timePosition>2005-05-17T08:00:00Z</gml:timePosition>  
+                    </gml:TimeInstant>  
+                  </gml:begin>  
+                  <gml:end>  
+                    <gml:TimeInstant gml:id='TI2'>  
+                      <gml:timePosition>2005-05-23T11:00:00Z</gml:timePosition>  
+                    </gml:TimeInstant>  
+                  </gml:end>  
+                </gml:TimePeriod>   
+               </fes:TOverlaps>  
+            </fes:Filter>
+
+Parsing::
+
+        Configuration configuration = new org.geotools.filter.v2_0.FESConfiguration();
+        Parser parser = new Parser( configuration );
+        
+        Filter filter = (Filter) parser.parse( imputStream );
+
+Encode::
+  
+  org.geotools.xml.Configuration = new org.geotools.filter.v2_0.FESConfiguration();
+  org.geotools.xml.Encoder encoder = new org.geotools.xml.Encoder( configuration );
+  encoder.encode( org.geotools.filter.v2_0.FES.Filter, outputStream );

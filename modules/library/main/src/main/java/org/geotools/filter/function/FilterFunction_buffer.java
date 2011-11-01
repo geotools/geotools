@@ -68,8 +68,9 @@ public class FilterFunction_buffer extends FunctionExpressionImpl implements
      */
     public ReferencedEnvelope invert(ReferencedEnvelope renderingEnvelope) {
         Double buffer = getExpression(1).evaluate(null, Double.class);
-        if(buffer == null || buffer <= 0.0)
+        if(buffer == null || buffer <= 0.0) {
             return null;
+        }
         
         Envelope bufferedEnvelope = JTS.toGeometry((Envelope) renderingEnvelope).buffer(buffer).getEnvelopeInternal();
         return new ReferencedEnvelope(bufferedEnvelope, renderingEnvelope.getCoordinateReferenceSystem());

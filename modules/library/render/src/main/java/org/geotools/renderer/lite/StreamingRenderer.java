@@ -1108,8 +1108,12 @@ public final class StreamingRenderer implements GTRenderer {
             rules.addAll(Arrays.asList(lts.elseRules));
             for (Rule r : rules) {
                 for (Symbolizer s : r.symbolizers()) {
-                    if(s.getGeometry() != null)
-                        result.expandToInclude((ReferencedEnvelope) s.getGeometry().accept(visitor, envelope));
+                    if(s.getGeometry() != null) {
+                        ReferencedEnvelope re = (ReferencedEnvelope) s.getGeometry().accept(visitor, envelope);
+                        if(re != null) {
+                            result.expandToInclude(re);
+                        }
+                    }
                 }
             }
         }

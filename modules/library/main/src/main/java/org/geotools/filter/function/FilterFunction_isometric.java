@@ -90,12 +90,11 @@ public class FilterFunction_isometric extends FunctionExpressionImpl implements 
      * renderer buffer parameter
      */
     public ReferencedEnvelope invert(ReferencedEnvelope renderingEnvelope) {
-        Double offsetX = getExpression(1).evaluate(null, Double.class);
-        Double offsetY = getExpression(2).evaluate(null, Double.class);
+        Double offsetY = getExpression(1).evaluate(null, Double.class);
 
-        if (offsetX != null && offsetY != null) {
+        if (offsetY != null) {
             ReferencedEnvelope offseted = new ReferencedEnvelope(renderingEnvelope);
-            offseted.translate(offsetX, offsetY);
+            offseted.translate(0, offsetY);
             return offseted;
         } else {
             return null;

@@ -69,7 +69,7 @@ example.
    .. literalinclude:: artifacts/pom.xml
       :language: xml
       :start-after: <url>http://maven.apache.org</url>
-      :end-before: <dependencies>
+      :end-before: <repositories>
 
 2. Create the *QueryLab** class and copy and paste the following to get going.
    

@@ -14,24 +14,28 @@
         <geotools.version>8.0-M2</geotools.version>
     </properties>
     <dependencies>
-        <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-shapefile</artifactId>
-            <version>${geotools.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-swing</artifactId>
-            <version>${geotools.version}</version>
-        </dependency>
+        <!-- Provides map projections -->
         <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-epsg-hsql</artifactId>
             <version>${geotools.version}</version>
         </dependency>
+        <!-- Provides support for PostGIS. Note the different groupId -->
+        <dependency>
+            <groupId>org.geotools.jdbc</groupId>
+            <artifactId>gt-jdbc-postgis</artifactId>
+            <version>${geotools.version}</version>
+        </dependency>
+        <!-- Provides support for shapefiles -->
         <dependency>
             <groupId>org.geotools</groupId>
-            <artifactId>gt-jdbc-postgis</artifactId>
+            <artifactId>gt-shapefile</artifactId>
+            <version>${geotools.version}</version>
+        </dependency>
+        <!-- Provides GUI components -->
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-swing</artifactId>
             <version>${geotools.version}</version>
         </dependency>
     </dependencies>

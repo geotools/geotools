@@ -41,7 +41,7 @@ import com.vividsolutions.jts.geom.Point;
  * @source $URL$
  */
 public class GeometryTransformationTest {
-    private static final long TIME = 20000;
+    private static final long TIME = 2000;
 
     SimpleFeatureSource fs;
 
@@ -77,6 +77,19 @@ public class GeometryTransformationTest {
         renderer.setContext(mc);
 
         RendererBaseTest.showRender("lineBuffer.sld", renderer, TIME, bounds);
+    }
+    
+    @Test
+    public void testBufferPoly() throws Exception {
+        Style style = RendererBaseTest.loadStyle(this, "polyBuffer.sld");
+
+        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
+        mc.addLayer(bfs, style);
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setContext(mc);
+
+        RendererBaseTest.showRender("polyBuffer.sld", renderer, TIME, bounds);
     }
     
     @Test

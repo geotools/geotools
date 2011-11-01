@@ -71,7 +71,7 @@ example.
       :start-after: <url>http://maven.apache.org</url>
       :end-before: <repositories>
 
-2. Create the *QueryLab** class and copy and paste the following to get going.
+2. Create the *QueryLab* class and copy and paste the following to get going.
    
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/filter/QueryLab.java
       :language: java

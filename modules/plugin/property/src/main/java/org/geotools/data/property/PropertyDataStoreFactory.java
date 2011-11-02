@@ -56,7 +56,7 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
 
     // createNewDataStore start
     public DataStore createNewDataStore(Map params) throws IOException {
-    	File dir = directoryLookup(params);
+    	File dir = (File)DIRECTORY.lookUp(params);
 
         if (dir.exists()) {
             throw new IOException(dir + " already exists");

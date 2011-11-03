@@ -18,6 +18,8 @@ package org.geotools.renderer.label;
 
 import static org.geotools.styling.TextSymbolizer.*;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -90,6 +92,8 @@ import com.vividsolutions.jts.operation.linemerge.LineMerger;
  * @source $URL$
  */
 public final class LabelCacheImpl implements LabelCache {
+    
+    static final boolean DEBUG_CACHE_BOUNDS = Boolean.getBoolean("org.geotools.labelcache.showbounds");
     
     public enum LabelRenderingMode {
         /**
@@ -837,8 +841,14 @@ public final class LabelCacheImpl implements LabelCache {
                     if (painted) {
                         labelCount++;
                         groupLabels.addLabel(labelItem, labelEnvelope);
-                        if(labelItem.isConflictResolutionEnabled())
+                        if(labelItem.isConflictResolutionEnabled()) {
+                            if(DEBUG_CACHE_BOUNDS) {
+                                painter.graphics.setStroke(new BasicStroke());
+                                painter.graphics.setColor(Color.RED);
+                                painter.graphics.draw(labelEnvelope);
+                            }
                             paintedBounds.addLabel(labelItem, labelEnvelope);
+                        }
                     } else {
                         // this will generate a sequence like s, -2s, 3s, -4s,
                         // ...
@@ -992,8 +1002,14 @@ public final class LabelCacheImpl implements LabelCache {
         AffineTransform tx = new AffineTransform(tempTransform);
         
         // if straight paint works we're good
-        if(paintPointLabelInternal(painter, tx, displayArea, glyphs, labelItem, point, ts))
+        if(paintPointLabelInternal(painter, tx, displayArea, glyphs, labelItem, point, ts)) {
             return true;
+        }
+        
+        // see if we have a search radius
+        if(labelItem.maxDisplacement <= 0) {
+            return false;
+        }
         
         // get a cloned text style that we can modify without issues
         TextStyle2D cloned = new TextStyle2D(ts);
@@ -1087,9 +1103,11 @@ public final class LabelCacheImpl implements LabelCache {
                         glyphs.labelsWithinDistance(transformed, labelItem.getSpaceAround()))) {
             return false;
         } else {
-            // painter.graphics.setStroke(new BasicStroke());
-            // painter.graphics.setColor(Color.BLACK);
-            // painter.graphics.draw(transformed);
+            if(DEBUG_CACHE_BOUNDS) {
+                painter.graphics.setStroke(new BasicStroke());
+                painter.graphics.setColor(Color.RED);
+                painter.graphics.draw(transformed);
+            }
             painter.paintStraightLabel(tempTransform);
             if(labelItem.isConflictResolutionEnabled())
                 glyphs.addLabel(labelItem, transformed);
@@ -1249,7 +1267,11 @@ public final class LabelCacheImpl implements LabelCache {
             }
         }
             
-
+        if(DEBUG_CACHE_BOUNDS) {
+            painter.graphics.setStroke(new BasicStroke());
+            painter.graphics.setColor(Color.RED);
+            painter.graphics.draw(transformed);
+        }
         painter.paintStraightLabel(tempTransform);
         if(labelItem.isConflictResolutionEnabled()) {
             glyphs.addLabel(labelItem, transformed);

@@ -7,6 +7,7 @@ import java.util.Random;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.index.strtree.STRtree;
@@ -40,6 +41,17 @@ public class SnapToLine {
 
         FileDataStore store = FileDataStoreFinder.getDataStore(file);
         FeatureSource source = store.getFeatureSource();
+        
+        // Check that we have line features
+        Class<?> geomBinding = source.getSchema().getGeometryDescriptor().getType().getBinding();
+        boolean isLine = geomBinding != null 
+                && (LineString.class.isAssignableFrom(geomBinding) ||
+                    MultiLineString.class.isAssignableFrom(geomBinding));
+        
+        if (!isLine) {
+            System.out.println("This example needs a shapefile with line features");
+            return;
+        }
 
         // load shapefile end (docs marker)
 
@@ -134,7 +146,8 @@ public class SnapToLine {
                 System.out.println(pt + "- X");
 
             } else {
-                System.out.println(pt + " - snapped by moving " + minDist);
+                System.out.printf("%s - snapped by moving %.4f\n", 
+                        pt.toString(), minDist);
                 pointsSnapped++;
             }
         }

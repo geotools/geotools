@@ -9,8 +9,7 @@ What you will learn:
 
 * Use of a spatial index to cache features in memory and search efficiently.
 
-* Directly accessing the powerful methods in JTS that like behind the familiar Geometry class
-  methods.
+* Going beyond the familiar JTS Geometry class methods and making direct use of other classes.
 
 Related material:
 

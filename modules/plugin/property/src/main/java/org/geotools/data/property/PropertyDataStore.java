@@ -27,6 +27,8 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.geotools.data.AbstractDataStore;
 import org.geotools.data.DataSourceException;
@@ -39,10 +41,12 @@ import org.geotools.data.ServiceInfo;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.FeatureTypes;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.SchemaException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 
 /**
@@ -120,6 +124,15 @@ public class PropertyDataStore extends AbstractDataStore {
             list[i] = list[i].substring(0, list[i].lastIndexOf('.'));
         }
         return list;
+    }
+    
+    public List<Name> getNames() throws IOException {
+        String[] typeNames = getTypeNames();
+        List<Name> names = new ArrayList<Name>(typeNames.length);
+        for (String typeName : typeNames) {
+            names.add(new NameImpl(namespaceURI, typeName));
+        }
+        return names;
     }
 
     // START SNIPPET: getSchema

@@ -1,122 +1,58 @@
 Snap a Point to a Line
 ----------------------
 
-In this example we show how to use SpatialIndex to organise data by bounding box; and we show how get behind Geometry methods and use the internals of JTS.
+This example illustrates a common spatial operation: moving or *snapping* a point to lie on a nearby
+line. For instance, you might use this approach to align point locations from a mobile device with a
+map of roads. The JTS library is used for this sort of task day in and day out.
 
-Related:
+What you will learn:
+
+* Use of a spatial index to cache features in memory and search efficiently.
+
+* Directly accessing the powerful methods in JTS that like behind the familiar Geometry class
+  methods.
+
+Related material:
 
 * http://2007.foss4g.org/presentations/view.php?abstract_id=115
 
-This example is an optimised real world example - the kind of thing JTS is used for day in and day out.
+To begin, we prompt the user for a shapefile containing line features and connect to it:
 
-A couple of points to notice about the approach:
+.. literalinclude:: /../src/main/java/org/geotools/jts/SnapToLine.java
+   :language: java
+   :start-after: package org.geotools
+   :end-before: // load shapefile end
 
-* we are no longer being limited by the nice friendly Geometry classes; we are getting down into the guts and using the same utility classes that are behind method calls like geometry.getDistance( point ).
-* we are we are making use of several facilities of JTS (SpatialIndex and LocationIndexLine) in an intelligent manner based on the problem we are trying to solve.
+You might be used to working with shapefiles as a streaming data source, ie. reading features read
+of disk as required. Here we optimize things by extracting the line geometries from the features and
+caching in a JTS SpatialIndex object. This gives us speed in two ways: we have the lines in memory
+and can search for them efficiently by location:
 
-To start with let us read some features into a FeatureColection::
+.. literalinclude:: /../src/main/java/org/geotools/jts/SnapToLine.java
+   :language: java
+   :start-after: // load shapefile end
+   :end-before: // cache features end
 
-    public static void main(String[] args) throws Exception {
-        if( args.length != 1 ){
-            System.out.println("Please provide a filename");
-            return;
-        }
-        File file = new File( args[0]);
-        System.out.println("Snapping against:"+file);
-        Map<String,Serializable> params = new HashMap<String,Serializable>();
-        if( file.getName().endsWith(".properties")){
-            Properties properties = new Properties();
-            FileInputStream inStream = new FileInputStream(file);
-            try {
-                properties.load( inStream);
-            }
-            finally {
-                inStream.close();
-            }
-            for( Map.Entry<Object,Object> property : properties.entrySet() ){
-                params.put( (String) property.getKey(), (String) property.getValue() );
-            }
-        }
-        else {
-            params.put("url", file.toURL() );            
-        }        
-        DataStore data = DataStoreFinder.getDataStore(params);        
-        List<Name> names = data.getNames();
-        
-        FeatureSource<SimpleFeatureType, SimpleFeature> source = data.getFeatureSource( names.get(0));
-        
-        FeatureCollection<SimpleFeatureType, SimpleFeature> features = source.getFeatures();
+Notice that we wrapped each feature's line geometry in a JTS **LocationIndexedLine** object which
+we will use to find the point on a line closest to a reference point. We could have loaded the lines
+directly into the spatial index, but this way we will avoid wrapping each line every time it is
+tested against a point.
 
-Remember the FeatureCollection is just like a "result set" it does not actually do anything until we visit the features in the collection (the features stay on disk).
+Now let's make some pretend point data:
 
-We can now process these features into an internal form. We are going to use a use a SpatialIndex to hold information about each feature. A SpatialIndex is like a Map that you can query by Envelope. In this case our "keys" will be the bounds of each feature; and the value will be a ... LocationIndexedLine.
+.. literalinclude:: /../src/main/java/org/geotools/jts/SnapToLine.java
+   :language: java
+   :start-after: // cache features end 
+   :end-before: // generate points end
 
-We are using a FeatureVisitor to look at each feature in turn::
+At last we are ready to snap points. We create a search envelope of fixed size around each point and
+use this to query the lines in the spatial index. 
 
-        final SpatialIndex index = new STRtree();     
+In case your shapefile is large, we'll set a time limit on how long snapping continues:
 
-        System.out.println("Slurping in features ...");
-        features.accepts( new FeatureVisitor(){
-            public void visit(Feature feature) {
-                SimpleFeature simpleFeature = (SimpleFeature) feature;                
-                Geometry geom = (MultiLineString) simpleFeature.getDefaultGeometry();
-                Envelope bounds = geom.getEnvelopeInternal();
-                if( bounds.isNull() ) return; // must be empty geometry?                
-                index.insert( bounds, new LocationIndexedLine( geom ));
-            }
-        }, new NullProgressListener() );
-
-We are going to quickly make some sample points to snap to our lines; in a real world application these are often GPS data that we are trying to snap onto a road network.::
-
-        ReferencedEnvelope limit = features.getBounds();
-        Coordinate[] points = new Coordinate[10000];
-        Random rand = new Random(file.hashCode());
-        for( int i=0; i<10000;i++){
-            points[i] = new Coordinate(
-                    limit.getMinX()+rand.nextDouble()*limit.getWidth(),
-                    limit.getMinY()+rand.nextDouble()*limit.getHeight()
-            );
-        }
-
-Putting this together we are going to snap as many points as we can in a given duration. We are going to make an envelope of a set size around each point; allowing us to select from the spatial index some lines that are close enough to consider.::
-
-        final int DURATION = 6000;
-
-        double distance = limit.getSpan(0) / 100.0;
-        long now = System.currentTimeMillis();
-        long then = now+DURATION;
-        int count = 0;
-        System.out.println("we now have our spatial index and are going to snap for "+DURATION);
-
-        while( System.currentTimeMillis()<then){
-            Coordinate pt = points[rand.nextInt(10000)];
-            Envelope search = new Envelope(pt);
-            search.expandBy(distance);
-            
-            List<LocationIndexedLine> hits = index.query( search );
-            double d = Double.MAX_VALUE;
-            Coordinate best = null;
-            for( LocationIndexedLine line : hits ){
-                LinearLocation here = line.project( pt );                
-                Coordinate point = line.extractPoint( here );
-                double currentD = point.distance( pt );
-                if( currentD < d ){
-                    best = point;
-                }
-            }
-            if( best == null ){
-                // we did not manage to snap to a line? with real data sets this happens all the time...
-                System.out.println( pt + "-X");
-            }
-            else {
-                System.out.println( pt + "->" + best );
-            }
-            count++;
-        }
-        System.out.println("snapped "+count+" times - and now I am tired");
-        System.out.println("snapped "+count/DURATION+" per milli?");
-    }
-  }
+.. literalinclude:: /../src/main/java/org/geotools/jts/SnapToLine.java
+   :language: java
+   :start-after: // generate points end
 
 You can experiment with this code:
 

@@ -47,7 +47,6 @@ import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.identity.FeatureId;
-import org.opengis.filter.identity.ResourceId;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.w3c.dom.Document;
@@ -208,11 +207,7 @@ public class GML3EncodingUtils {
         String id = null;
         FeatureId identifier = feature.getIdentifier();
         if (identifier != null) {
-            if (identifier instanceof ResourceId) {
-                id = ((ResourceId) identifier).getRid();
-            } else {
-                id = identifier.getID();
-            }
+            id = identifier.getRid();
         }
         
         Name typeName;

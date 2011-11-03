@@ -37,7 +37,7 @@ import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.identity.Identifier;
-import org.opengis.filter.identity.ResourceId;
+import org.opengis.filter.identity.FeatureId;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.Attributes;
@@ -120,8 +120,8 @@ public class FeaturePropertyTypeBinding extends AbstractComplexBinding {
                     return object;
                 }
                 String id;
-                if (ident instanceof ResourceId) {
-                    id = ((ResourceId) ident).getRid();
+                if (ident instanceof FeatureId) {
+                    id = ((FeatureId) ident).getRid();
                 } else {
                     id = Converters.convert(ident.getID(), String.class);
                 }
@@ -167,8 +167,8 @@ public class FeaturePropertyTypeBinding extends AbstractComplexBinding {
             return;
         }
         String id;
-        if (ident instanceof ResourceId) {
-            id = ((ResourceId) ident).getRid();
+        if (ident instanceof FeatureId) {
+            id = ((FeatureId) ident).getRid();
         } else {
             id = Converters.convert(ident.getID(), String.class);
         }

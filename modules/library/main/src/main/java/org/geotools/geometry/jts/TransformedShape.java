@@ -64,6 +64,14 @@ public final class TransformedShape extends AffineTransform implements Shape {
 	 */
 	public TransformedShape() {
 	}
+	
+	/**
+     * Construct a transformed shape 
+     */
+    public TransformedShape(Shape shape, AffineTransform at) {
+        this.shape = shape;
+        setTransform(at);
+    }
 
 	/**
 	 * Returns the 6 coefficients values.
@@ -191,8 +199,12 @@ public final class TransformedShape extends AffineTransform implements Shape {
 	 * <code>Shape</code>.
 	 */
 	public Rectangle getBounds() {
-		final Rectangle rect = shape.getBounds();
-		return (Rectangle) XAffineTransform.transform(this, rect, rect);
+		Rectangle2D rect = getBounds2D();
+		int minx = (int) Math.floor(rect.getMinX());
+		int miny = (int) Math.floor(rect.getMinY());
+		int maxx = (int) Math.ceil(rect.getMaxX());
+        int maxy = (int) Math.ceil(rect.getMaxY());
+		return new Rectangle(minx, miny, maxx - minx, maxy - miny);
 	}
 
 	/**

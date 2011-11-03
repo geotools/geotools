@@ -85,6 +85,23 @@ public class ShapeMarkFactory implements MarkFactory {
        ExplicitBoundsShape carrow = new ExplicitBoundsShape(gp);
        carrow.setBounds(new Rectangle2D.Double(-0.5, -0.5, 1, 1));
        shapes.put("carrow", carrow);
+       
+       gp = new GeneralPath();
+       gp.moveTo(-0.5f, 0.3f);
+       gp.lineTo(0.5, 0);
+       gp.lineTo(-0.5f, -0.3f);
+       ExplicitBoundsShape coarrow = new ExplicitBoundsShape(gp);
+       coarrow.setBounds(new Rectangle2D.Double(-0.5, -0.3, 1, 0.6));
+       shapes.put("coarrow", coarrow);
+       
+       gp = new GeneralPath();
+       gp.moveTo(-0.5f, 0.3f);
+       gp.lineTo(0.5, 0);
+       gp.lineTo(-0.5f, -0.3f);
+       gp.closePath();
+       ExplicitBoundsShape ccarrow = new ExplicitBoundsShape(gp);
+       ccarrow.setBounds(new Rectangle2D.Double(-0.5, -0.3, 1, 0.6));
+       shapes.put("ccarrow", ccarrow);
     }
 
     public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature) throws Exception {

@@ -90,6 +90,7 @@ import org.geotools.map.StyleLayer;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
+import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.renderer.GTRenderer;
@@ -133,6 +134,7 @@ import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
@@ -2057,6 +2059,30 @@ public final class StreamingRenderer implements GTRenderer {
                 Feature gridWrapper = featureSource.getFeatures().features().next();
                 final Object params = paramsPropertyName.evaluate(gridWrapper);
                 final AbstractGridCoverage2DReader reader = (AbstractGridCoverage2DReader) gridPropertyName.evaluate(gridWrapper);
+                // don't read more than the native resolution (in case we are oversampling)
+                if(CRS.equalsIgnoreMetadata(reader.getCrs(), gridGeometry.getCoordinateReferenceSystem())) {
+                     MathTransform g2w = reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER);
+                     if(g2w instanceof AffineTransform2D && readGG.getGridToCRS2D() instanceof AffineTransform2D) {
+                         AffineTransform2D atOriginal = (AffineTransform2D) g2w;
+                         AffineTransform2D atMap = (AffineTransform2D) readGG.getGridToCRS2D(); 
+                         if(XAffineTransform.getScale(atMap) < XAffineTransform.getScale(atOriginal)) {
+                             // we need to go trough some convoluted code to make sure the new grid geometry
+                             // has at least one pixel
+                             
+                             org.opengis.geometry.Envelope worldEnvelope = gridGeometry.getEnvelope();
+                             GeneralEnvelope transformed = org.geotools.referencing.CRS.transform(atOriginal.inverse(), worldEnvelope);
+                             int minx = (int) Math.floor(transformed.getMinimum(0));
+                             int miny = (int) Math.floor(transformed.getMinimum(1));
+                             int maxx = (int) Math.ceil(transformed.getMaximum(0));
+                             int maxy = (int) Math.ceil(transformed.getMaximum(1));
+                             Rectangle rect = new Rectangle(minx, miny, (maxx - minx), (maxy - miny));
+                             GridEnvelope2D gridEnvelope = new GridEnvelope2D(rect);
+                             readGG = new GridGeometry2D(gridEnvelope, atOriginal, worldEnvelope.getCoordinateReferenceSystem());
+                             
+                             // readGG = new GridGeometry2D(PixelInCell.CELL_CORNER, );
+                         }
+                     }
+                }
                 coverage = readCoverage(reader, params, readGG);
                 
                 // readers will return null if there is no coverage in the area

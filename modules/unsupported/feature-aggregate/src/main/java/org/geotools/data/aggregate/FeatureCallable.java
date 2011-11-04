@@ -16,16 +16,20 @@
  */
 package org.geotools.data.aggregate;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.data.DataStore;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.data.store.EmptyFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.util.logging.Logging;
@@ -66,7 +70,7 @@ class FeatureCallable implements Callable<Void> {
 
     @Override
     public Void call() throws Exception {
-        SimpleFeatureIterator fi = null;
+        SimpleFeatureIterator fi = null;    
         int storeId = -1;
         try {
             // get the feature list
@@ -91,6 +95,8 @@ class FeatureCallable implements Callable<Void> {
                     q.setFilter(erased);
                 }
             }
+            // eliminate the extra attributes the delegate source does not know about
+            fixupProperties(q, builder.getFeatureType(), getSourceAttributes(source));
             fi = source.getFeatures(q).features();
 
             // put every item in the queue, including the exception
@@ -134,6 +140,33 @@ class FeatureCallable implements Callable<Void> {
             }
         }
         return null;
+    }
+
+    void fixupProperties(Query q, SimpleFeatureType featureType, Set<String> sourceNames) {
+        if(q.getPropertyNames() != null) {
+            if(q.getPropertyNames().length > 0) {
+                // some specific property was asked for, let's filter them
+                List<String> filtered = new ArrayList<String>();
+                for (String name : q.getPropertyNames()) {
+                    if(sourceNames.contains(name)) {
+                        filtered.add(name);
+                    }
+                }
+                String[] filteredArray = (String[]) filtered.toArray(new String[filtered.size()]);
+                q.setPropertyNames(filteredArray);
+            }
+        } else {
+            // all attributed were asked for, let's stick to the intersection between
+            // target and source then
+            List<String> filtered = new ArrayList<String>();
+            for (String name : sourceNames) {
+                if(featureType.getDescriptor(name) != null) {
+                    filtered.add(name);
+                }
+            }
+            String[] filteredArray = (String[]) filtered.toArray(new String[filtered.size()]);
+            q.setPropertyNames(filteredArray);
+        }
     }
 
     /**

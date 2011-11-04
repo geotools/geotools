@@ -17,6 +17,7 @@ import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -286,6 +287,24 @@ public class AggregatingDataStoreTest extends AbstractAggregatingStoreTest {
         features = collectFeatures(q);
         assertSchema(features.values(), store1.getSchema(ROAD_SEGMENTS));
         assertEquals(1, features.size());
+    }
+    
+    @Test
+    public void testRetrieveMissingAttribute() throws Exception {
+        Query q = new Query(ROAD_SEGMENTS);
+        q.setPropertyNames(new String[] {"NAME"});
+
+        // now we filter against a store that has the feature type, but misses the property
+        store.resetConfiguration();
+        store.autoConfigureStores(Arrays.asList("store1", "gt:store3"));
+        Map<String, SimpleFeature> features = collectFeatures(q);
+        assertSchema(features.values(), SimpleFeatureTypeBuilder.retype(store1.getSchema(ROAD_SEGMENTS), new String[] {"NAME"}));
+        assertEquals(6, features.size());
+        System.out.println(features);
+        SimpleFeature sf = features.get("RoadSegments.0.rs.1");
+        assertEquals("Route 5", sf.getAttribute("NAME"));
+        sf = features.get("RoadSegments.1.rs.6");
+        assertNull(sf.getAttribute("NAME"));
     }
 
     private Map<String, SimpleFeature> collectFeatures(Query query) throws IOException {

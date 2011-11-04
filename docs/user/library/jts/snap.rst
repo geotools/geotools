@@ -22,10 +22,10 @@ To begin, we prompt the user for a shapefile containing line features and connec
    :start-after: package org.geotools
    :end-before: // load shapefile end
 
-You might be used to working with shapefiles as a streaming data source, ie. reading features read
-of disk as required. Here we optimize things by extracting the line geometries from the features and
-caching in a JTS SpatialIndex object. This gives us speed in two ways: we have the lines in memory
-and can search for them efficiently by location:
+You might be used to working with shapefiles as a streaming data source, ie.  reading features from
+disk as required. Here we optimize things by extracting the line geometries from the features and
+caching them in a JTS SpatialIndex object. This gives us speed in two ways: we have the lines in
+memory and can search for them efficiently by location:
 
 .. literalinclude:: /../src/main/java/org/geotools/jts/SnapToLine.java
    :language: java

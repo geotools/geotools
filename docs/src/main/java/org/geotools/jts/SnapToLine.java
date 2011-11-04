@@ -99,11 +99,8 @@ public class SnapToLine {
          */
         final double MAX_SEARCH_DISTANCE = bounds.getSpan(0) / 100.0;
 
-
-
         // Maximum time to spend running the snapping process (milliseconds)
         final long DURATION = 5000;
-
 
         int pointsProcessed = 0;
         int pointsSnapped = 0;

@@ -16,22 +16,26 @@
  */
 package org.geotools.swing;
 
-import org.junit.BeforeClass;
+import java.awt.Dimension;
 import java.awt.Rectangle;
 
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.edt.GuiActionRunner;
-import org.fest.swing.edt.GuiQuery;
+import javax.swing.JFrame;
+
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.swing.event.MapPaneEvent;
-
 import org.geotools.swing.testutils.MockRenderer;
 import org.geotools.swing.testutils.WaitingMapPaneListener;
 
+import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
+import org.fest.swing.edt.GuiActionRunner;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.fixture.FrameFixture;
+
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -204,6 +208,18 @@ public class JMapPaneHeadlessTest extends JMapPaneTestBase {
 
         // just checking no exception is thrown
         mapPane.reset();
+    }
+    
+    @Test
+    public void moveImageIgnoredWhenPaneNotVisible() {
+        MapContent mapContent = createMapContent(WORLD);
+        mapPane.setMapContent(mapContent);
+        
+        mapPane.addMapPaneListener(listener);
+        listener.setExpected(MapPaneEvent.Type.DISPLAY_AREA_CHANGED);
+        mapPane.moveImage(100, 0);
+        
+        assertFalse(listener.await(MapPaneEvent.Type.DISPLAY_AREA_CHANGED, WAIT_TIMEOUT));
     }
     
     /**

@@ -68,6 +68,7 @@ public class JMapPaneHeadlessTest extends JMapPaneTestBase {
             }
         });
         listener = new WaitingMapPaneListener();
+        mapPane.addMapPaneListener(listener);
     }
     
     @Test
@@ -101,7 +102,6 @@ public class JMapPaneHeadlessTest extends JMapPaneTestBase {
     
     @Test
     public void setMapContentFiresEvent() {
-        mapPane.addMapPaneListener(listener);
         listener.setExpected(MapPaneEvent.Type.NEW_MAPCONTENT);
         
         MapContent mapContent = new MapContent();
@@ -138,7 +138,6 @@ public class JMapPaneHeadlessTest extends JMapPaneTestBase {
     @Test
     public void setDisplayAreaFiresEvent_WithMapContent() {
         mapPane.setMapContent(new MapContent());
-        mapPane.addMapPaneListener(listener);
         listener.setExpected(MapPaneEvent.Type.DISPLAY_AREA_CHANGED);
         
         mapPane.setDisplayArea(WORLD);
@@ -147,7 +146,6 @@ public class JMapPaneHeadlessTest extends JMapPaneTestBase {
     
     @Test
     public void setDisplayAreaFiresEvent_NoMapContent() {
-        mapPane.addMapPaneListener(listener);
         listener.setExpected(MapPaneEvent.Type.DISPLAY_AREA_CHANGED);
         
         mapPane.setDisplayArea(WORLD);
@@ -211,7 +209,6 @@ public class JMapPaneHeadlessTest extends JMapPaneTestBase {
         MapContent mapContent = createMapContent(WORLD);
         mapPane.setMapContent(mapContent);
         
-        mapPane.addMapPaneListener(listener);
         listener.setExpected(MapPaneEvent.Type.DISPLAY_AREA_CHANGED);
         mapPane.moveImage(100, 0);
         

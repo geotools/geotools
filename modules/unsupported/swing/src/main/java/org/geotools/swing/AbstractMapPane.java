@@ -557,7 +557,7 @@ public abstract class AbstractMapPane extends JPanel
                     }
 
                     setFullExtent();
-                    doSetDisplayArea(fullExtent);
+                    doSetDisplayArea(mapContent.getViewport().getBounds());
                 }
             }
 

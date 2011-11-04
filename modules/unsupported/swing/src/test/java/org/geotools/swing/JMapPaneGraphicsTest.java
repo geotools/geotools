@@ -17,6 +17,7 @@
 
 package org.geotools.swing;
 
+import java.awt.Rectangle;
 import java.awt.Dimension;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -28,6 +29,7 @@ import org.geotools.swing.testutils.GraphicsTestRunner;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.edt.GuiTask;
 import org.fest.swing.fixture.FrameFixture;
 
 import org.junit.After;
@@ -66,7 +68,6 @@ public class JMapPaneGraphicsTest extends JMapPaneGraphicsTestBase {
         });
         
         window = new FrameFixture(frame);
-        window.show(new Dimension(WIDTH, HEIGHT));
     }
     
     @After
@@ -78,7 +79,9 @@ public class JMapPaneGraphicsTest extends JMapPaneGraphicsTestBase {
     
     @Test
     public void resizingPaneFiresEvent() {
-        mapPane.setMapContent(createMapContentWithBoundsSet());
+        window.show(new Dimension(WIDTH, HEIGHT));
+        MapContent mapContent = createMapContent(createMatchedBounds(mapPane.getVisibleRect()));
+        mapPane.setMapContent(mapContent);
         
         listener.setExpected(MapPaneEvent.Type.DISPLAY_AREA_CHANGED);
         window.resizeTo(new Dimension(WIDTH * 2, HEIGHT * 2));
@@ -112,8 +115,8 @@ public class JMapPaneGraphicsTest extends JMapPaneGraphicsTestBase {
     }
     
     private void assertMoveImage(int dx, int dy) {
-        MapContent mapContent = createMapContent(createMatchedBounds());
-        mapPane.addMapPaneListener(listener);
+        window.show(new Dimension(WIDTH, HEIGHT));
+        MapContent mapContent = createMapContent(createMatchedBounds(mapPane.getVisibleRect()));
 
         // Wait for the display area and new map content events to be 
         // processed
@@ -149,6 +152,38 @@ public class JMapPaneGraphicsTest extends JMapPaneGraphicsTestBase {
         } else {
             assertTrue(startEnv.getMinY() < newEnv.getMinY());
         }
+    }
+    
+    @Test
+    public void mapPaneShouldHonourInitialViewportBounds() throws Exception {
+        window.show(new Dimension(WIDTH, HEIGHT));
+        Rectangle visRect = mapPane.getVisibleRect();
+        GuiActionRunner.execute(new GuiTask() {
+            @Override
+            protected void executeInEDT() throws Throwable {
+                window.component().setVisible(false);
+            }
+        });
+        
+        ReferencedEnvelope fullBounds = createMatchedBounds(mapPane.getVisibleRect());
+        MapContent mapContent = createMapContent(fullBounds);
+        
+        ReferencedEnvelope subBounds = new ReferencedEnvelope(
+                fullBounds.getMinX(), fullBounds.getMinX() + fullBounds.getWidth() / 2,
+                fullBounds.getMinY(), fullBounds.getMinY() + fullBounds.getHeight() / 2,
+                fullBounds.getCoordinateReferenceSystem());
+        
+        mapContent.getViewport().setBounds(subBounds);
+        listener.setExpected(MapPaneEvent.Type.NEW_MAPCONTENT);
+        mapPane.setMapContent(mapContent);
+        
+        // wait for the map pane to be ready
+        assertTrue(listener.await(MapPaneEvent.Type.NEW_MAPCONTENT, WAIT_TIMEOUT));
+
+        window.show(new Dimension(WIDTH, HEIGHT));
+        ReferencedEnvelope displayArea = mapPane.getDisplayArea();
+
+        assertTrue(subBounds.boundsEquals2D(displayArea, TOL));
     }
     
 }

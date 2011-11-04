@@ -58,26 +58,17 @@ public abstract class JMapPaneTestBase {
     protected JMapPane mapPane;
 
     /**
-     * Creates a new, empty MapContent with the bounds set for
-     * the viewport to match the aspect ratio of the map pane.
-     *
-     * @return new map content
-     */
-    protected MapContent createMapContentWithBoundsSet() {
-        MapContent mapContent = new MapContent();
-        mapContent.getViewport().setBounds(createMatchedBounds());
-        return mapContent;
-    }
-
-    /**
      * Creates a ReferencedEnvelope with the same aspect ratio as the
-     * map pane.
+     * given screen rectangle.
      *
+     * @param screenRect map pane or screen rectangle
      * @return new envelope
      */
-    protected ReferencedEnvelope createMatchedBounds() {
-        Rectangle r0 = mapPane.getVisibleRect();
-        return new ReferencedEnvelope(0, (double) r0.width / r0.height, 0, 1.0, DefaultEngineeringCRS.CARTESIAN_2D);
+    protected ReferencedEnvelope createMatchedBounds(Rectangle screenRect) {
+        return new ReferencedEnvelope(
+                0, (double) screenRect.width / screenRect.height, 
+                0, 1.0, 
+                DefaultEngineeringCRS.CARTESIAN_2D);
     }
 
     /**

@@ -16,9 +16,10 @@
  */
 package org.geotools.xs.bindings;
 
-import java.text.DateFormat;
+import java.sql.Date;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.TimeZone;
+
 import javax.xml.namespace.QName;
 import org.geotools.xml.InstanceComponent;
 import org.geotools.xml.SimpleBinding;
@@ -61,6 +62,7 @@ import org.geotools.xs.XS;
  * @generated
  *
  *
+ *
  * @source $URL$
  */
 public class XSDateBinding implements SimpleBinding {
@@ -83,7 +85,7 @@ public class XSDateBinding implements SimpleBinding {
 
     /**
      * <!-- begin-user-doc -->
-     * This binding returns objects of type {@link Date}.
+     * This binding returns objects of type {@link java.sql.Date}.
      * <!-- end-user-doc -->
      *
      * @generated modifiable
@@ -94,21 +96,21 @@ public class XSDateBinding implements SimpleBinding {
 
     /**
      * <!-- begin-user-doc -->
-     * This binding returns objects of type {@link Calendar}.
+     * This binding returns objects of type {@link java.sql.Date}.
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(InstanceComponent instance, Object value)
-        throws Exception {
-        Calendar calendar = DatatypeConverterImpl.getInstance().parseDate((String)value); 
-        return calendar.getTime();
+    public java.sql.Date parse(InstanceComponent instance, Object value) throws Exception {
+        Calendar calendar = DatatypeConverterImpl.getInstance().parseDate((String) value);
+        return new java.sql.Date(calendar.getTimeInMillis());
     }
 
     public String encode(Object object, String value) throws Exception {
-        Date date = (Date) object;
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
+        final Date date = (Date) object;
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        calendar.clear();
+        calendar.setTimeInMillis(date.getTime());
 
         return DatatypeConverterImpl.getInstance().printDate(calendar);
     }

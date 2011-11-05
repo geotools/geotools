@@ -52,8 +52,11 @@ import org.opengis.filter.spatial.Within;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.TimeZone;
 import java.util.logging.Logger;
 
 
@@ -518,5 +521,27 @@ public class DB2FilterToSQL extends PreparedFilterToSQL{
         this.looseBBOXEnabled = looseBBOXEnabled;
     }
 
-		
+    static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    static{
+        // Set DATE_FORMAT time zone to GMT, as Date's are always in GMT internaly. Otherwise we'll
+        // get a local timezone encoding regardless of the actual Date value        
+        DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
+    }
+
+    static SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+
+    @Override
+    protected void writeLiteral(Object literal) throws IOException {
+        if (literal instanceof Date) {
+            out.write("'");
+            if (literal instanceof java.sql.Date) {
+                out.write(DATE_FORMAT.format(literal));
+            } else {
+                out.write(DATETIME_FORMAT.format(literal));
+            }
+            out.write("'");
+        } else {
+            super.writeLiteral(literal);
+        }
+    }
 }

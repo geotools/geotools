@@ -21,6 +21,7 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -62,6 +63,7 @@ import org.geotools.factory.Hints;
  * 
  * @author Justin Deoliveira, The Open Planning Project
  * @since 2.4
+ *
  *
  *
  * @source $URL$
@@ -224,7 +226,7 @@ public class TemporalConverterFactory implements ConverterFactory {
     /**
      * Turns a timestamp specified in milliseconds into a date, making sure to shave off
      * the un-necessary parts when building java.sql time related classes
-     * @param time
+     * @param time the number of milliseconds since January 1, 1970, 00:00:00 <b>GMT</b>
      * @param target
      * @return
      */
@@ -232,7 +234,7 @@ public class TemporalConverterFactory implements ConverterFactory {
     	if(Timestamp.class.isAssignableFrom(target)) {
         	return new Timestamp(time);
         } else if(java.sql.Date.class.isAssignableFrom(target)) {
-        	Calendar cal = Calendar.getInstance();
+        	Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
         	cal.setTimeInMillis(time);
         	cal.set(Calendar.HOUR_OF_DAY, 0);
         	cal.set(Calendar.MINUTE, 0);
@@ -240,7 +242,7 @@ public class TemporalConverterFactory implements ConverterFactory {
         	cal.set(Calendar.MILLISECOND, 0);
          	return new java.sql.Date(cal.getTimeInMillis());
         } else if(java.sql.Time.class.isAssignableFrom(target)) {
-        	Calendar cal = Calendar.getInstance();
+        	Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
         	cal.setTimeInMillis(time);
         	cal.set(Calendar.YEAR, 0);
         	cal.set(Calendar.MONTH, 0);

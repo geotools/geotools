@@ -20,6 +20,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -102,6 +103,11 @@ public class TemporalConverterFactoryTest extends TestCase {
 	
 	public void testCalendarToTime() throws Exception {
 		Calendar calendar = Calendar.getInstance();
+		calendar.clear();
+		calendar.set(Calendar.HOUR_OF_DAY, 17);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 1);
+		
 		assertNotNull( factory.createConverter( Calendar.class, Time.class, null ) );
 		
 		Time time = (Time) factory.createConverter( Calendar.class, Time.class, null )
@@ -164,9 +170,8 @@ public class TemporalConverterFactoryTest extends TestCase {
 		Time time = (Time) factory.createConverter( Date.class, Time.class, null )
 			.convert( date, Time.class );
 		assertNotNull( time );
-		// need to remove the date part
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(date);
+		// need to remove the date part, use GMT as Date.getTime() is always GMT
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 		cal.setTime(date);
     	cal.set(Calendar.YEAR, 0);
     	cal.set(Calendar.MONTH, 0);

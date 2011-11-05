@@ -17,6 +17,9 @@
 package org.geotools.data.h2;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.filter.FilterCapabilities;
@@ -179,5 +182,30 @@ public class H2FilterToSQL extends FilterToSQL {
         }
         
         return extraData;
+    }
+    
+    static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    static{
+        // Set DATE_FORMAT time zone to GMT, as Date's are always in GMT internaly. Otherwise we'll
+        // get a local timezone encoding regardless of the actual Date value        
+        DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
+    }
+    static SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ");
+    
+    @Override
+    protected void writeLiteral(Object literal) throws IOException {
+        if (literal instanceof Date) {
+            out.write("PARSEDATETIME(");
+            if (literal instanceof java.sql.Date) {
+                out.write("'" + DATE_FORMAT.format(literal) + "', 'yyyy-MM-dd'");
+            }
+            else {
+                out.write("'" + DATETIME_FORMAT.format(literal) + "', 'yyyy-MM-dd HH:mm:ss.SSSZ'");
+            }
+            out.write(")");
+        }
+        else {
+            super.writeLiteral(literal);
+        }
     }
 }

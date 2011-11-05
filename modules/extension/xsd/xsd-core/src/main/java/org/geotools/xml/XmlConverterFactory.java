@@ -36,6 +36,8 @@ import org.geotools.xml.impl.DatatypeConverterImpl;
  * <ul>
  *         <li>String to {@link java.util.Date}
  *         <li>String to {@link java.util.Calendar}
+ *         <li>{@link java.util.Date} to String
+ *         <li>{@link java.util.Calendar} to String
  * </ul>
  * </p>
  *
@@ -49,15 +51,19 @@ import org.geotools.xml.impl.DatatypeConverterImpl;
 public class XmlConverterFactory implements ConverterFactory {
     
     public Converter createConverter(Class source, Class target, Hints hints) {
-        boolean canHandleTarget = String.class.equals(target)
-                || java.util.Date.class.isAssignableFrom(target) || Calendar.class.equals(target);
-        boolean canHandleSource = String.class.equals(source)
-                || java.util.Date.class.isAssignableFrom(source) || Calendar.class.equals(source);
-
-        if (canHandleSource && canHandleTarget) {
-            return new XmlConverter();
+        // make sure either source or target is String in order not to step over
+        // TemporalConverterFactory
+        if (String.class.equals(target)) {
+            if (java.util.Date.class.isAssignableFrom(source)
+                    || Calendar.class.isAssignableFrom(source)) {
+                return new XmlConverter();
+            }
+        } else if (String.class.equals(source)) {
+            if (java.util.Date.class.isAssignableFrom(target)
+                    || Calendar.class.isAssignableFrom(target)) {
+                return new XmlConverter();
+            }
         }
-
         return null;
     }
 

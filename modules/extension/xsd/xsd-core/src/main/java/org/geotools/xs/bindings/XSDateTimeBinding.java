@@ -18,6 +18,7 @@ package org.geotools.xs.bindings;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
 
 import javax.xml.namespace.QName;
@@ -115,7 +116,8 @@ public class XSDateTimeBinding implements SimpleBinding {
      * @generated modifiable
      */
     public String encode(Object object, String value) {
-        final Timestamp timestamp = (Timestamp) object;
+        final Date timestamp = (Date) object;// lets catch up java.util.Date as well as
+                                             // java.sql.Timestamp
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
         cal.clear();
         cal.setTimeInMillis(timestamp.getTime());

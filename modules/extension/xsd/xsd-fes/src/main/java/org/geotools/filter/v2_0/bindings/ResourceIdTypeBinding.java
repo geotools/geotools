@@ -1,6 +1,5 @@
 package org.geotools.filter.v2_0.bindings;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.xml.namespace.QName;
@@ -39,11 +38,8 @@ public class ResourceIdTypeBinding extends AbstractComplexBinding {
         final String rid = (String) node.getAttributeValue("rid");
         final String previousRid = (String) node.getAttributeValue("previousRid");
         final Version version = (Version) node.getAttributeValue("version");
-        final Calendar startTimeAtt = (Calendar) node.getAttributeValue("startDate");
-        final Calendar endTimeAtt = (Calendar) node.getAttributeValue("endDate");
-
-        Date startTime = startTimeAtt == null ? null : startTimeAtt.getTime();
-        Date endTime = endTimeAtt == null ? null : endTimeAtt.getTime();
+        final Date startTime = (Date) node.getAttributeValue("startDate");
+        final Date endTime = (Date) node.getAttributeValue("endDate");
 
         String fid;
         String featureVersion = null;

@@ -221,9 +221,27 @@ public class XsDateTimeFormat extends Format {
             }
         }
 
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone(digits.toString()));
-        cal.set(isMinus ? -year : year, parseDate ? month-1 : month, mday, hour, minute, second);
-        cal.set(Calendar.MILLISECOND, millis);
+        TimeZone tz;
+        if (parseTime) {
+            tz = TimeZone.getTimeZone(digits.toString());
+        } else {
+            // there's no meaning for timezone if not parsing time
+            // http://en.wikipedia.org/wiki/ISO_8601
+            tz = TimeZone.getTimeZone("GMT");
+        }
+        Calendar cal = Calendar.getInstance(tz);
+        cal.clear();//reset all fields
+        if(parseDate){
+            cal.set(Calendar.YEAR, isMinus ? -year : year);
+            cal.set(Calendar.MONTH, month - 1);
+            cal.set(Calendar.DAY_OF_MONTH, mday);
+        }
+        if(parseTime){
+            cal.set(Calendar.HOUR_OF_DAY, hour);
+            cal.set(Calendar.MINUTE, minute);
+            cal.set(Calendar.SECOND, second);
+            cal.set(Calendar.MILLISECOND, millis);
+        }
         pParsePosition.setIndex(offset);
         return cal;
     }
@@ -275,6 +293,13 @@ public class XsDateTimeFormat extends Format {
 	            append(pBuffer, millis, 3);
 	        }
         }
+        
+        // there's no meaning for timezone if not parting time
+        // http://en.wikipedia.org/wiki/ISO_8601. Still we need to leave the timezone be encoded to
+        // please WFS 1.1 CITE tests, which assert for a yyyy-MM-DD'Z' format
+        // if(!parseTime){
+        // return pBuffer;
+        // }
         TimeZone tz = cal.getTimeZone();
         // JDK 1.4: int offset = tz.getOffset(cal.getTimeInMillis());
         int offset = cal.get(Calendar.ZONE_OFFSET);

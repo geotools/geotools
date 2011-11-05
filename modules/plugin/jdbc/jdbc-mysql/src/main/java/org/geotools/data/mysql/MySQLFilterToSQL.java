@@ -19,6 +19,7 @@ package org.geotools.data.mysql;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.filter.FilterCapabilities;
@@ -188,8 +189,13 @@ public class MySQLFilterToSQL extends FilterToSQL {
     @Override
     protected void writeLiteral(Object literal) throws IOException {
         if (literal instanceof Date) {
-            Calendar c = Calendar.getInstance();
+            Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT"));//make sure Date and cal tz match
             c.setTime((Date)literal);
+            
+            // GR: TODO I think this method should check for whether literal is a
+            // java.sql.Date/Time/Timestamp and use the appropriate format instead for the server to
+            // evaluate to a SQL DATE/TIME/DATETIME as appropriate:
+            // http://dev.mysql.com/doc/refman/5.5/en/date-and-time-functions.html#function_str-to-date
 
             //JD: no timezone handling... str_to_date does not allow us to specify time zone..
             // instead we just get whatever the database/server default timezone is... so this

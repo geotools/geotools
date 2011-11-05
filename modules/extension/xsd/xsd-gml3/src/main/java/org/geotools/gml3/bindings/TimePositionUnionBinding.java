@@ -16,6 +16,7 @@
  */
 package org.geotools.gml3.bindings;
 
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -89,9 +90,9 @@ public class TimePositionUnionBinding extends AbstractSimpleBinding {
         //JD: for the moment we will just handle the easy ones of date and datetime
         Date date = null;
         try {
-            Calendar c = (Calendar) new XSDateTimeBinding().parse(instance, value);
+            Timestamp c = new XSDateTimeBinding().parse(instance, value);
             if (c != null) {
-                date = c.getTime();
+                date = new Date(c.getTime());
             }
         }
         catch(Exception e) {}

@@ -21,6 +21,7 @@ import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.TimeZone;
 import java.util.logging.Logger;
 
 import org.geotools.filter.FilterCapabilities;
@@ -434,6 +435,11 @@ public class DB2FilterToSQL extends PreparedFilterToSQL {
     }
 
     static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    static{
+        // Set DATE_FORMAT time zone to GMT, as Date's are always in GMT internaly. Otherwise we'll
+        // get a local timezone encoding regardless of the actual Date value        
+        DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
+    }
 
     static SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 

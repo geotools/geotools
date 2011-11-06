@@ -39,11 +39,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 
 
-/**
- * 
- *
- * @source $URL$
- */
 public class TiffRasterManagerBuilder extends RasterManagerBuilder<TIFFImageReader> {
 
     /** Logger. */
@@ -75,7 +70,7 @@ public class TiffRasterManagerBuilder extends RasterManagerBuilder<TIFFImageRead
         //
         // Overviews or full resolution?
         //
-        boolean fullResolution=true;
+        boolean fullResolution=true;    
 //        boolean multipage=false;
         final int newSubfileType;
         TIFFField tifField=null;

@@ -3,7 +3,9 @@ package org.geotools.jdbc;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureSource;
@@ -34,12 +36,15 @@ public abstract class JDBCDateTest extends JDBCTestSupport {
         
         FilterFactory ff = dataStore.getFilterFactory();
         
+        DateFormat df = new SimpleDateFormat("yyyy-dd-MM");
+        df.setTimeZone( TimeZone.getTimeZone("PST"));
+        
         //less than
-        Filter f = ff.lessOrEqual( ff.property( aname("d") ), ff.literal( /*df.parse(*/"2009-06-28"/*)*/ ) );
+        Filter f = ff.lessOrEqual( ff.property( aname("d") ), ff.literal( df.parse("2009-28-06")
+         ) );
         assertEquals( 2, fs.getCount( new DefaultQuery(tname("dates"),f ) ) );
         
-        f = ff.lessOrEqual( ff.property( aname("d") ), 
-            ff.literal( new SimpleDateFormat("yyyy-dd-MM").parse("2009-28-06") ) );
+        f = ff.lessOrEqual( ff.property( aname("d") ),ff.literal( df.parse("2009-28-06") ) );
         assertEquals( 2, fs.getCount( new DefaultQuery(tname("dates"),f ) ) );
     }
     

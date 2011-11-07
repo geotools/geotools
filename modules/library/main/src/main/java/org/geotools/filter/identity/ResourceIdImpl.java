@@ -21,6 +21,7 @@ import java.util.Date;
 import org.geotools.util.Utilities;
 import org.opengis.filter.identity.ResourceId;
 import org.opengis.filter.identity.Version;
+import org.opengis.filter.identity.Version.Action;
 
 /**
  * Implementation of {@link ResourceId} used for Query.
@@ -50,7 +51,7 @@ public class ResourceIdImpl extends FeatureIdVersionedImpl implements ResourceId
     public ResourceIdImpl(String fid, String featureVersion, Version version) {
         super(fid, featureVersion, null );
         if( version == null ){
-            this.version = 0l; // consider use of FeatureIdVersionedImpl
+            this.version = new Version(Action.LAST).union();
         }
         else {
             this.version = version.union();
@@ -112,9 +113,6 @@ public class ResourceIdImpl extends FeatureIdVersionedImpl implements ResourceId
 
     @Override
     public Version getVersion() {
-        if( version == 0 ){
-            return null;
-        }
         return new Version( version );
     }
     @Override

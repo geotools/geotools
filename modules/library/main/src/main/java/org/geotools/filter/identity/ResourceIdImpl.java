@@ -38,7 +38,6 @@ public class ResourceIdImpl extends FeatureIdVersionedImpl implements ResourceId
 
     private Date startTime;
     private Date endTime;
-
     private long version;
 
     /**
@@ -51,7 +50,7 @@ public class ResourceIdImpl extends FeatureIdVersionedImpl implements ResourceId
     public ResourceIdImpl(String fid, String featureVersion, Version version) {
         super(fid, featureVersion, null );
         if( version == null ){
-            this.version = new Version(Action.LAST).union();
+            this.version = new Version().union();
         }
         else {
             this.version = version.union();

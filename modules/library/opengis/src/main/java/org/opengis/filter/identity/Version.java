@@ -54,6 +54,10 @@ public final class Version {
      */
     final long union;
 
+   public Version(){
+        this.union = 0;
+   }
+
    public Version(long union){
         this.union = union;
    }
@@ -79,6 +83,10 @@ public final class Version {
         this.union = UNION_DATE | (dateTime.getTime());
     }
 
+    public boolean isEmpty(){
+        return union == 0;
+    }
+    
     public boolean isVersionAction() {
         return (UNION_ACTION & union) > 0;
     }

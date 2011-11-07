@@ -59,7 +59,17 @@ public class VersionTest {
         Version version = new Version(Version.Action.ALL);
 
         assertEquals(Version.Action.ALL, version.getVersionAction());
+        
+        assertTrue(version.isVersionAction());
+
         assertNull(version.getIndex());
         assertNull(version.getDateTime());
     }
+    @Test
+    public void versionEmpty() {
+        Version version = new Version();
+
+        assertTrue(version.isEmpty());
+    }
+
 }

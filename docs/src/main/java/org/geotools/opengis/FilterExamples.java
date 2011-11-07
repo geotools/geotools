@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TimeZone;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -91,12 +92,33 @@ public void id(){
     // id end
 }
 
-public void rid(){
+public void rid() throws Exception {
     // rid start
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
     Filter filter;
     
+    // grab a specific revision
+    filter = ff.id( ff.featureId("CITY.98734597823459687235","A457") );
+    
+    // grab the one before that
     filter = ff.id(ff.resourceId("CITY.98734597823459687235","A457",new Version(Action.PREVIOUS) ));
+    
+     // grab the one after that
+    filter = ff.id(ff.resourceId("CITY.98734597823459687235","A457",new Version(Action.NEXT) ));
+    
+     // grab the first one
+    filter = ff.id(ff.resourceId("CITY.98734597823459687235","A457",new Version(Action.FIRST) ));
+    
+    // grab the first one (ie index = 1 )
+    filter = ff.id(ff.resourceId("CITY.98734597823459687235","A457",new Version(1) ));
+    
+    // grab the twelfth record in the sequence (ie index = 12 )
+    filter = ff.id(ff.resourceId("CITY.98734597823459687235","A457",new Version(12) ));
+    
+    // Grab the entry close to Jan 1985
+    DateFormat df = DateFormat.getDateInstance( DateFormat.SHORT );
+    df.setTimeZone(TimeZone.getTimeZone("GMT"));
+    filter = ff.id(ff.resourceId("CITY.98734597823459687235","A457",new Version(df.parse("1985-1-1"))));
     // rid end
 }
 

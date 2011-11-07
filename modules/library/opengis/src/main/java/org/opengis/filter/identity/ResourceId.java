@@ -35,7 +35,9 @@ public interface ResourceId extends FeatureId {
     /**
      * Used to navigate versions of a resource.
      * <p>
-     * @return Version based resource query; or {@code null} to start and end time
+     * 
+     * @return Version based resource query; non {@code null} but possibly {@link Version#isEmpty()
+     *         empty} if used a date range query or asked for a specific feature id + version id
      */
     @XmlElement("version")
     Version getVersion();

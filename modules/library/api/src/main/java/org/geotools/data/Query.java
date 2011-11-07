@@ -678,7 +678,10 @@ public class Query {
     }
     
     /**
-     * From WFS Spec:  The version attribute is included in order to
+     * Defines version or version range requested.
+     * <p>
+     * 
+     * From WFS Spec: <i>The version attribute is included in order to
      * accommodate systems that  support feature versioning. A value of {@linkplain #ALL}
      * indicates that all versions of a feature should be fetched. Otherwise
      * an integer, n, can be specified  to return the n th version of a
@@ -686,9 +689,16 @@ public class Query {
      * If a version value larger than the largest version is specified then
      * the latest version is return. The default action shall be for the query
      * to return the latest version. Systems that do not support versioning
-     * can ignore the parameter and return the only version  that they have.
-     *
-     * @return the version of the feature to return, or null for latest.
+     * can ignore the parameter and return the only version  that they have.</i>
+     * <p>
+     * GeoTools employs the following options:
+     * <ul>
+     * <li>{@link #setVersion(Date)}: "date: <i>dow mon dd hh:mm:ss zzz yyyy</i>"</li>
+     * <li>{@link #setVersion(int)}: "<i>index</i>"</li>
+     * <li>{@link #setVersion(org.opengis.filter.identity.Version.Action)): "PREVIOUS", "LAST", "NEXT", "FIRST", "ALL" </li>
+     * <li>{@link #setVersion(Date, Date): "start: <i>dow mon dd hh:mm:ss zzz yyyy end: <i>dow mon dd hh:mm:ss zzz yyyy"</i>
+     * </ul>
+     * @return the version of the feature to return, or <code>null</code> for LAST.
      */
     public String getVersion() {
         return version; 

@@ -54,16 +54,19 @@ public class VersionTypeBinding implements SimpleBinding {
     @Override
     public String encode(Object object, String value) throws Exception {
         Version version = (Version) object;
-        if (version.getDateTime() != null) {
+        if(version.isEmpty()){
+            return null;
+        }
+        if(version.isDateTime()){
             Calendar cal = GregorianCalendar.getInstance(TimeZone.getTimeZone("GMT"));
             cal.setTimeInMillis(version.getDateTime().getTime());
             String dateTime = DatatypeConverterImpl.getInstance().printDateTime(cal);
             return dateTime;
         }
-        if (version.getIndex() != null) {
+        if(version.isIndex()){
             return String.valueOf(version.getIndex());
         }
-        if (version.getVersionAction() != null) {
+        if(version.isVersionAction()){
             return String.valueOf(version.getVersionAction());
         }
         throw new IllegalArgumentException("Empty version union");

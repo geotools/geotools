@@ -43,9 +43,11 @@ public interface ResourceId extends FeatureId {
     Version getVersion();
 
     /**
-     * Used to select versions of a resource between start and end time.
-     * </p>
-     * @return start time for a time based query; or {@code null} if using version
+     * Used to select versions of a resource between start and end time. </p>
+     * 
+     * @return start time for a time based query; or {@code null} if using version or an end time
+     *         was provided but the start time is unconstrained
+     * TODO: consider using an org.geotools.util.Range<Date> instead of both start and end time?
      */
     @XmlElement("startTime")
     Date getStartTime();
@@ -53,7 +55,9 @@ public interface ResourceId extends FeatureId {
     /**
      * Used to select versions of a resource between start and end time.
      * 
-     * @return end time for a time based query; or {@code null} if using version
+     * @return end time for a time based query; or {@code null} if using version or an start time
+     *         was provided but the end time is unconstrained
+     * TODO: consider using an org.geotools.util.Range<Date> instead of both start and end time?
      */
     @XmlElement("endTime")
     Date getEndTime();

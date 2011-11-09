@@ -54,15 +54,23 @@ public final class Version {
      */
     final long union;
 
-   public Version(){
+    /**
+     * The {@link #isEmpty() empty} Version constructor.
+     */
+    public Version() {
         this.union = 0;
-   }
+    }
 
-   public Version(long union){
+   private Version(long union){
         this.union = union;
    }
     
-    public Version(final Action action) {
+   public static Version valueOf(long union){
+       //TODO: some validity check?
+       return new Version(union);
+   }
+
+   public Version(final Action action) {
         if (action == null) {
             throw new IllegalArgumentException("action can't be null");
         }

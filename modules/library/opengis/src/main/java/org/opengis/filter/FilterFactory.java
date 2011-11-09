@@ -110,7 +110,22 @@ public interface FilterFactory {
     /** ResouceId for identifier based query */
     ResourceId resourceId(String fid, String featureVersion, Version version );
     
-    /** ResourceId for time based query */
+    /**
+     * ResourceId for time based query.
+     * <p>
+     * Date range constructor for a feature id; none or one of {@code start} and {@code end} can be
+     * {@code null}, making for an unconstrained date range at either of the ends.
+     * </p>
+     * 
+     * @param fid
+     *            feature id, non null;
+     * @param start
+     *            lower end timestamp of the time range, inclusive, or {@code null} only if
+     *            {@code end != null}
+     * @param start
+     *            upper end timestamp of the time range, inclusive, or {@code null} only if
+     *            {@code start != null}
+     */
     ResourceId resourceId(String fid, Date startTime, Date endTime);
     
 ////////////////////////////////////////////////////////////////////////////////

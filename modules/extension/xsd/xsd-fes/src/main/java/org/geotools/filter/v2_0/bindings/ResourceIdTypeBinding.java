@@ -4,7 +4,6 @@ import java.util.Date;
 
 import javax.xml.namespace.QName;
 
-import org.geotools.filter.identity.ResourceIdImpl;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
@@ -36,7 +35,7 @@ public class ResourceIdTypeBinding extends AbstractComplexBinding {
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         final String rid = (String) node.getAttributeValue("rid");
-        final String previousRid = (String) node.getAttributeValue("previousRid");
+        //final String previousRid = (String) node.getAttributeValue("previousRid");
         final Version version = (Version) node.getAttributeValue("version");
         final Date startTime = (Date) node.getAttributeValue("startDate");
         final Date endTime = (Date) node.getAttributeValue("endDate");
@@ -50,16 +49,14 @@ public class ResourceIdTypeBinding extends AbstractComplexBinding {
             fid = rid.substring(0, idx);
             featureVersion = rid.substring(idx + 1);
         }
-        ResourceIdImpl resourceId = null;
-        if(version == null){
-            resourceId = new ResourceIdImpl(fid, featureVersion);
+        ResourceId resourceId;
+        if (startTime != null || endTime != null) {
+            resourceId = factory.resourceId(fid, startTime, endTime);
+        } else {
+            resourceId = factory.resourceId(fid, featureVersion, version);
         }
-        else {
-            resourceId = new ResourceIdImpl(fid, featureVersion, version );
-        }
-        resourceId.setPreviousRid(previousRid);
-        resourceId.setStartTime(startTime);
-        resourceId.setEndTime(endTime);
+        //resourceId.setPreviousRid(previousRid);
+
         return resourceId;
     }
 

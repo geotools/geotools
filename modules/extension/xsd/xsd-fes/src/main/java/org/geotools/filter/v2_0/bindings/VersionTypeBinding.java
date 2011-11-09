@@ -36,7 +36,9 @@ public class VersionTypeBinding implements SimpleBinding {
     @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         final String content = (String) value;
-
+        if(null == content || content.length() == 0){
+            return new Version();
+        }
         try {
             Version.Action versionAction = Version.Action.valueOf(content);
             return new Version(versionAction);

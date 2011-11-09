@@ -16,9 +16,7 @@
  */
 package org.geotools.filter.identity;
 
-import org.opengis.feature.Feature;
 import org.opengis.filter.identity.FeatureId;
-import org.opengis.filter.identity.Version;
 
 /**
  * Implementation of {@link org.opengis.filter.identity.FeatureId}
@@ -34,7 +32,6 @@ import org.opengis.filter.identity.Version;
  * @version 8.0
  */
 public class FeatureIdVersionedImpl extends FeatureIdImpl {
-    protected static String VERSION_SEPARATOR = "@";
     
     protected String featureVersion;
     protected String previousRid;

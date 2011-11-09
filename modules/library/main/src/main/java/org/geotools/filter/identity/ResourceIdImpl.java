@@ -49,16 +49,11 @@ public class ResourceIdImpl extends FeatureIdVersionedImpl implements ResourceId
      */
     public ResourceIdImpl(String fid, String featureVersion, Version version) {
         super(fid, featureVersion, null );
-        if( version == null ){
-            this.version = new Version().union();
-        }
-        else {
-            this.version = version.union();
-        }
+        setVersion(version);
     }
     
     /**
-     * Obtain a ResourceId that assumes the default, i.e. last, version.
+     * Obtain a ResourceId that assumes the default, i.e. {@link Action#LAST last}, version.
      * 
      * @param fid
      * @param featureVersion
@@ -72,7 +67,7 @@ public class ResourceIdImpl extends FeatureIdVersionedImpl implements ResourceId
      * @param rid
      */
     public ResourceIdImpl(String fid, Date start, Date end ) {
-        super(fid, null, null );
+        this(fid, (String) null, (Version) null );
         if( start == null || end == null ){
             throw new NullPointerException("Start and end time are required for a lookup based on a date range");
         }
@@ -89,7 +84,11 @@ public class ResourceIdImpl extends FeatureIdVersionedImpl implements ResourceId
     }
 
     public void setVersion(final Version version) {
-        this.version = version.union();
+        if (version == null) {
+            this.version = new Version().union();
+        } else {
+            this.version = version.union();
+        }
     }
 
     @Override

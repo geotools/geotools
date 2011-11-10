@@ -89,6 +89,7 @@ public final class CommonFactoryFinder extends FactoryFinder {
         return registry;
     }
 
+    
     /**
      * Returns the first implementation of {@link StyleFactory} matching the specified hints.
      * If no implementation matches, a new one is created if possible or an exception is thrown
@@ -106,6 +107,20 @@ public final class CommonFactoryFinder extends FactoryFinder {
     {
         hints = mergeSystemHints(hints);
         return (StyleFactory) lookup(StyleFactory.class, hints, Hints.STYLE_FACTORY);
+    }
+    /**
+     * Returns the first implementation of {@link StyleFactory}.
+     * If no implementation matches, a new one is created if possible or an exception is thrown
+     * otherwise.
+     *
+     * @return The first style factory available
+     * @throws FactoryRegistryException if no implementation was found or can be created for the
+     *         {@link StyleFactory} interface.
+     *
+     * @see Hints#STYLE_FACTORY
+     */
+    public static StyleFactory getStyleFactory() throws FactoryRegistryException {
+        return getStyleFactory(null);
     }
 
     /**
@@ -240,7 +255,20 @@ public final class CommonFactoryFinder extends FactoryFinder {
         hints = mergeSystemHints(hints);
         return (FeatureCollections) lookup(FeatureCollections.class, hints, Hints.FEATURE_COLLECTIONS);
     }
-
+    /**
+     * Returns the first implementation of {@link FeatureCollections}.
+     * If no implementation matches, a new one is created if possible or an exception is thrown
+     * otherwise.
+     *
+     * @return The first feature collections implementation
+     * @throws FactoryRegistryException if no implementation was found or can be created for the
+     *         {@link FeatureCollections} interface.
+     *
+     * @see Hints#FEATURE_COLLECTIONS
+     */
+    public static FeatureCollections getFeatureCollections() {
+        return getFeatureCollections( null );
+    }
     /**
      * Returns a set of all available implementations for the {@link FeatureCollections} interface.
      *
@@ -270,6 +298,23 @@ public final class CommonFactoryFinder extends FactoryFinder {
     {
         hints = mergeSystemHints(hints);
         return (FilterFactory) lookup(FilterFactory.class, hints, Hints.FILTER_FACTORY);
+    }
+    
+    /**
+     * Returns the first implementation of {@link FilterFactory}.
+     * If no implementation matches, a new one is created if possible or an exception is thrown
+     * otherwise.
+     *
+     * @return The first filter factory implementation
+     * @throws FactoryRegistryException if no implementation was found or can be created for the
+     *         {@link FilterFactory} interface.
+     *
+     * @see Hints#FILTER_FACTORY
+     */
+    public static FilterFactory getFilterFactory()
+            throws FactoryRegistryException
+    {
+        return getFilterFactory(null);
     }
     
     /**
@@ -344,7 +389,20 @@ public final class CommonFactoryFinder extends FactoryFinder {
         }
         return (FilterFactory2) getFilterFactory(hints);
     }
-
+    /**
+     * Returns the first implementation of {@link FilterFactory2}.
+     * This is a convenience method invoking {@link #getFilterFactory} with a hint value set
+     * for requerying a {@link FactoryFilter2} implementation.
+     *
+     * @return The first filter factory implementation
+     * @throws FactoryRegistryException if no implementation was found or can be created for the
+     *         {@link FilterFactory2} interface.
+     *
+     * @see Hints#FILTER_FACTORY
+     */
+    public static FilterFactory2 getFilterFactory2() throws FactoryRegistryException {
+        return getFilterFactory2(null);
+    }
     /**
      * Scans for factory plug-ins on the application class path. This method is
      * needed because the application class path can theoretically change, or

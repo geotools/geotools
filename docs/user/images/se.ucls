@@ -1,8 +1,8 @@
-<class-diagram version="1.0.1" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+<class-diagram version="1.0.4" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
   realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
   <interface id="4" corner="BOTTOM_RIGHT" language="java" name="org.opengis.style.Symbolizer" project="gt-opengis" 
     file="/gt-opengis/src/main/java/org/opengis/style/Symbolizer.java" binary="false">    
-    <position x="513" y="399" width="-1" height="-1"/>    
+    <position height="-1" width="-1" x="512" y="388"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false"/>      
       <operations public="true" package="false" protected="false" private="false"/>    
@@ -10,7 +10,7 @@
   </interface>  
   <interface id="5" corner="BOTTOM_RIGHT" language="java" name="org.opengis.style.Rule" project="gt-opengis" 
     file="/gt-opengis/src/main/java/org/opengis/style/Rule.java" binary="false">    
-    <position x="513" y="189" width="-1" height="-1"/>    
+    <position height="-1" width="-1" x="513" y="189"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false"/>      
       <operations public="true" package="false" protected="false" private="false"/>    
@@ -18,19 +18,19 @@
   </interface>  
   <interface id="6" corner="BOTTOM_RIGHT" language="java" name="org.opengis.style.FeatureTypeStyle" project="gt-opengis" 
     file="/gt-opengis/src/main/java/org/opengis/style/FeatureTypeStyle.java" binary="false">    
-    <position x="159" y="188" width="-1" height="-1"/>    
+    <position height="-1" width="-1" x="221" y="188"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false"/>      
       <operations public="true" package="false" protected="false" private="false"/>    
     </display>  
   </interface>  
   <dependency>    
-    <end type="SOURCE" nodeId="5"/>    
-    <end type="TARGET" nodeId="4"/>  
-  </dependency>  
-  <dependency>    
     <end type="SOURCE" nodeId="6"/>    
     <end type="TARGET" nodeId="5"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="5"/>    
+    <end type="TARGET" nodeId="4"/>  
   </dependency>  
   <classifier-display autosize="true" package="true" initial-value="false" signature="true" visibility="true">    
     <attributes public="false" package="false" protected="false" private="false"/>    

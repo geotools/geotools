@@ -35,35 +35,16 @@ Field.getName()           AttributeDescriptor.getName().getLocalName()  Property
 Field.get( obj )          expression.evaulate( feature, Class )         descriptor.getReadMethod().invoke(obj)
 ========================= ============================================= =======================================
 
-Java code example::
-   
-   class Flag {
-      public Point location;
-      public String name;
-      public int classification;
-      public double height;
-   }
-   Flag here = new Flag();
-   here.location = geomFactory.createPoint( new Coordinate(23.3,-37.2) );  
-   here.name = "Here";
-   here.classification = 3;
-   here.height = 2.0;
+Java example:
 
-Feature model example::
-    
-    SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
-    b.setName( "Flag" );
-    b.setCRS( DefaultGeographicCRS.WSG84 );
-    b.add( "location", Point.class );
-    b.add( "name", String.class );
-    b.add( "classification", Integer.class );
-    b.add( "height", Double.class );
-    SimpleFeatureType type = b.build()
+  .. literalinclude:: /../src/main/java/org/geotools/opengis/FeatureExamples.java
+     :language: java
+     :start-after: // javaFlag start
+     :end-before: // javaFlag end
 
-    SimpleFeatureBuilder f = new SimpleFeatureBuilder( type );
-    f.add( geomFactory.createPoint( new Coordinate(23.3,-37.2) ) );
-    f.add("here");
-    f.add(3);
-    f.add(2.0);
-    SimpleFeature feature = f.build("fid.1");
+Feature example:
 
+  .. literalinclude:: /../src/main/java/org/geotools/opengis/FeatureExamples.java
+     :language: java
+     :start-after: // featureFlag start
+     :end-before: // featureFlag end

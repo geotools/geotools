@@ -81,7 +81,6 @@ SimpleFeatureCollection grabSelectedIds(Set<String> selection) throws IOExceptio
     Filter filter = ff.id(fids);
     return featureSource.getFeatures(filter);
 }
-
 // grabSelectedIds end
 
 /**
@@ -94,7 +93,7 @@ SimpleFeatureCollection grabSelectedIds(Set<String> selection) throws IOExceptio
  * @throws CQLException
  */
 // grabSelectedName start
-FeatureCollection grabSelectedName(String name) throws Exception {
+SimpleFeatureCollection grabSelectedName(String name) throws Exception {
     return featureSource.getFeatures(CQL.toFilter("Name = '" + name + "'"));
 }
 
@@ -286,7 +285,7 @@ SimpleFeatureCollection distance(MapMouseEvent ev) throws Exception {
 // distance end
 
 // polygonInteraction start
-private void polygonInteraction() {
+void polygonInteraction() {
     SimpleFeatureCollection polygonCollection = null;
     SimpleFeatureCollection fcResult = null;
     final SimpleFeatureCollection found = FeatureCollections.newCollection();

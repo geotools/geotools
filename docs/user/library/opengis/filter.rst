@@ -357,13 +357,12 @@ value for Query.getFilter() is Filter.INCLUDES.
 Identifer
 ^^^^^^^^^
 
-The other interesting way to use a filter to more as a "selection" in the GIS sence. In this
+The other interesting way to use a filter to more as a "selection" in the GIS sense. In this
 case rather than evaluating the attributes we will directly match the FeatureId.
 
 .. image:: /images/filter_id.PNG
 
-The most common test is simply against FeatureId; the other Identifiers are used when woring with
-versioned information or working with different data types such as records
+The most common test is simply against FeatureId:
   
   .. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
     :language: java
@@ -371,7 +370,7 @@ versioned information or working with different data types such as records
     :end-before: // id end
   
 Formally this style of Id matching is not supposed to be mixed with the traditional attribute
-based evaluation.
+based evaluation (such as a bounding box filter).
 
 You can also use a Set<FeatureId>:
 
@@ -379,6 +378,9 @@ You can also use a Set<FeatureId>:
     :language: java
     :start-after: // idSet start
     :end-before: // idSet end
+
+The other place where identifiers are used are when working with versioned information. In this
+case a ResourceId is used that consists of both a "fid" and a "rid".
 
 ResourceId can be used to explore versioned information:
 

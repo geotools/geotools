@@ -90,7 +90,17 @@ public class JTSFactoryFinder extends FactoryFinder {
         return (GeometryFactory) getServiceRegistry().getServiceProvider(
                 GeometryFactory.class, null, hints, Hints.JTS_GEOMETRY_FACTORY);
     }
-
+    /**
+     * Returns the first implementation of {@link GeometryFactory}, a new one is created if
+     * possible or an exception is thrown otherwise.
+     *
+     * @return The first geometry factory available on the classpath
+     * @throws FactoryRegistryException if no implementation was found or can be created for the
+     *         {@link GeometryFactory} category.
+     */
+    public static synchronized GeometryFactory getGeometryFactory() throws FactoryRegistryException {
+        return getGeometryFactory(null);
+    }
     /**
      * Returns a set of all available implementations for the {@link GeometryFactory} category.
      *

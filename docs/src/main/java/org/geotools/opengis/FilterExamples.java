@@ -100,6 +100,9 @@ public void rid() throws Exception {
     // grab a specific revision
     filter = ff.id( ff.featureId("CITY.98734597823459687235","A457") );
     
+    // You can also use ResourceId to grab a specific revision
+    filter = ff.id( ff.resourceId("CITY.98734597823459687235","A457", new Version()) );
+    
     // grab the one before that
     filter = ff.id(ff.resourceId("CITY.98734597823459687235","A457",new Version(Action.PREVIOUS) ));
     
@@ -119,6 +122,10 @@ public void rid() throws Exception {
     DateFormat df = DateFormat.getDateInstance( DateFormat.SHORT );
     df.setTimeZone(TimeZone.getTimeZone("GMT"));
     filter = ff.id(ff.resourceId("CITY.98734597823459687235","A457",new Version(df.parse("1985-1-1"))));
+    
+     // Grab all the entries in the 1990s
+    filter = ff.id(ff.resourceId("CITY.98734597823459687235",df.parse("1990-1-1"),df.parse("2000-1-1")));
+    
     // rid end
 }
 

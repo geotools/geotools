@@ -233,7 +233,8 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
         Iterator f = collection.iterator();
         try {
             while (f.hasNext()) {
-                FeatureId id = addFeature((SimpleFeature) f.next(), writer);
+                SimpleFeature feature = (SimpleFeature) f.next();
+                FeatureId id = addFeature(feature, writer);
                 ids.add( id );
             }
         } finally {

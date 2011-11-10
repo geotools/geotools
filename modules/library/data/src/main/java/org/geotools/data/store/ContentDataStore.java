@@ -333,7 +333,8 @@ public abstract class ContentDataStore implements DataStore {
      */
     public final SimpleFeatureType getSchema(String typeName)
         throws IOException {
-        return getFeatureSource(typeName).getSchema();
+        ContentFeatureSource featureSource = getFeatureSource(typeName);
+        return featureSource.getSchema();
     }
 
     /**
@@ -478,7 +479,13 @@ public abstract class ContentDataStore implements DataStore {
         throws IOException {
         
         ContentFeatureStore featureStore = ensureFeatureStore(typeName,tx);
-        return featureStore.getWriter( Filter.INCLUDE , WRITER_ADD );
+        FeatureWriter<SimpleFeatureType, SimpleFeature> writer = featureStore.getWriter( Filter.INCLUDE , WRITER_ADD );
+        
+        // ensure we are at the "end" as we are being asked to return this in "append" mode
+        while( writer.hasNext() ){
+            writer.next();
+        }
+        return writer;
     }
 
     public final LockingManager getLockingManager() {

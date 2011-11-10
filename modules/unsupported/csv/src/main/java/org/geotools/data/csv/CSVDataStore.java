@@ -63,7 +63,12 @@ public class CSVDataStore extends ContentDataStore {
 
     @Override
     protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
-        return new CSVFeatureSource(entry, Query.ALL);
+        if( file.canWrite() ){
+            return new CSVFeatureStore(entry,Query.ALL);
+        }
+        else {
+            return new CSVFeatureSource(entry, Query.ALL);
+        }
     }
 
 }

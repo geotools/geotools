@@ -24,41 +24,41 @@ import java.util.logging.Logger;
 import org.geotools.data.FeatureReader;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-
 /**
  * DOCUMENT ME!
- *
+ * 
  * @author jgarnett
- *
- *
+ * 
+ * 
  * @source $URL$
  * @version $Id
  */
-public class PropertyFeatureReader implements  FeatureReader<SimpleFeatureType, SimpleFeature> {
-	private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.data.property");
+public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
+    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.property");
+
     /** DOCUMENT ME! */
     PropertyAttributeReader reader;
 
     /**
      * Creates a new PropertyFeatureReader object.
-     *
+     * 
      * @param directory DOCUMENT ME!
      * @param typeName DOCUMENT ME!
-     *
+     * 
      * @throws IOException DOCUMENT ME!
      */
-    public PropertyFeatureReader(File directory, String typeName)
-        throws IOException {
+    public PropertyFeatureReader(File directory, String typeName) throws IOException {
         File file = new File(directory, typeName + ".properties");
         reader = new PropertyAttributeReader(file);
     }
 
     /**
      * DOCUMENT ME!
-     *
+     * 
      * @return DOCUMENT ME!
      */
     public SimpleFeatureType getFeatureType() {
@@ -67,15 +67,13 @@ public class PropertyFeatureReader implements  FeatureReader<SimpleFeatureType, 
 
     /**
      * DOCUMENT ME!
-     *
+     * 
      * @return DOCUMENT ME!
-     *
+     * 
      * @throws IOException DOCUMENT ME!
-     * @throws IllegalAttributeException DOCUMENT ME!
      * @throws NoSuchElementException DOCUMENT ME!
      */
-    public SimpleFeature next()
-        throws IOException, IllegalAttributeException, NoSuchElementException {
+    public SimpleFeature next() throws IOException, NoSuchElementException {
         reader.next();
 
         SimpleFeatureType type = reader.type;
@@ -84,12 +82,12 @@ public class PropertyFeatureReader implements  FeatureReader<SimpleFeatureType, 
 
         for (int i = 0; i < reader.getAttributeCount(); i++) {
             try {
-				values[i] = reader.read(i);
-			} catch (RuntimeException e) {
-				values[i] = null;
-			} catch (IOException e) {
-				throw e;
-			}
+                values[i] = reader.read(i);
+            } catch (RuntimeException e) {
+                values[i] = null;
+            } catch (IOException e) {
+                throw e;
+            }
         }
 
         return SimpleFeatureBuilder.build(type, values, fid);
@@ -97,9 +95,9 @@ public class PropertyFeatureReader implements  FeatureReader<SimpleFeatureType, 
 
     /**
      * DOCUMENT ME!
-     *
+     * 
      * @return DOCUMENT ME!
-     *
+     * 
      * @throws IOException DOCUMENT ME!
      */
     public boolean hasNext() throws IOException {
@@ -108,14 +106,14 @@ public class PropertyFeatureReader implements  FeatureReader<SimpleFeatureType, 
 
     /**
      * DOCUMENT ME!
-     *
+     * 
      * @throws IOException DOCUMENT ME!
      */
     public void close() throws IOException {
         if (reader == null) {
             LOGGER.warning("Stream seems to be already closed.");
-        }else{
-        	reader.close();
+        } else {
+            reader.close();
         }
 
         reader = null;

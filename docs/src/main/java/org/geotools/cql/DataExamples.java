@@ -23,78 +23,72 @@ import com.vividsolutions.jts.io.WKTReader;
  * This utility class provide the data required by the CQL/ECQL examples.
  * 
  * @author Mauricio Pazos
- *
+ * 
  */
 final class DataExamples extends ECQLExamples {
-	
-	
-	private static SimpleFeature COUNTRY = null;
-	private static SimpleFeature CITY = null;
 
-	private DataExamples(){
-		// utility class
-	}
-	
+    private static SimpleFeature COUNTRY = null;
+
+    private static SimpleFeature CITY = null;
+
+    private DataExamples() {
+        // utility class
+    }
+
     /**
      * Creates a feature that represent New York city
+     * 
      * @return a Feature
      * @throws Exception
      */
-	static public SimpleFeature getInstanceOfCity() throws Exception {
-		
-		if(CITY != null){
-			return CITY;
-		}
-		
-		final SimpleFeatureType type = DataUtilities.createType("Location",
-				"geometry:Point:srid=4326," + "cityName:String,"
-						+ "over65YearsOld:Double," + "under18YearsOld:Double,"
-						+ "population:Integer," + "lastEarthQuake:Date");
-		SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(type);
+    static public SimpleFeature getInstanceOfCity() throws Exception {
 
-		GeometryFactory geometryFactory = JTSFactoryFinder
-				.getGeometryFactory(null);
+        if (CITY != null) {
+            return CITY;
+        }
 
-		Point point = geometryFactory.createPoint(new Coordinate(-17.2053,
-				11.9517));
+        final SimpleFeatureType type = DataUtilities
+                .createType("Location", "geometry:Point:srid=4326," + "cityName:String,"
+                        + "over65YearsOld:Double," + "under18YearsOld:Double,"
+                        + "population:Integer," + "lastEarthQuake:Date");
+        SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(type);
 
-		featureBuilder.add(point);
-		featureBuilder.add("New York");
-		featureBuilder.add(22.6);
-		featureBuilder.add(13.4);
-		featureBuilder.add(19541453);
+        GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
 
-		SimpleDateFormat dateFormatter = new SimpleDateFormat(
-				"yyyy-MM-dd'T'HH:mm:ss'Z'");
-		featureBuilder.add(dateFormatter.parse("1737-11-30T01:30:00Z"));
+        Point point = geometryFactory.createPoint(new Coordinate(-17.2053, 11.9517));
 
-		CITY  = featureBuilder.buildFeature(null);
+        featureBuilder.add(point);
+        featureBuilder.add("New York");
+        featureBuilder.add(22.6);
+        featureBuilder.add(13.4);
+        featureBuilder.add(19541453);
 
-		return CITY;
-	}	
-	
-    
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        featureBuilder.add(dateFormatter.parse("1737-11-30T01:30:00Z"));
+
+        CITY = featureBuilder.buildFeature(null);
+
+        return CITY;
+    }
+
     public static SimpleFeature getInstanceOfCountry() throws Exception {
 
-    	if(COUNTRY != null){
-    		return COUNTRY;
-    	}
+        if (COUNTRY != null) {
+            return COUNTRY;
+        }
         final SimpleFeatureType type = DataUtilities.createType("Location",
-                "geometry:Polygon:srid=4326," + 
-                "countryName:String," + 
-                "population:Integer," +
-                "principalMineralResource:String"
-        );
+                "geometry:Polygon:srid=4326," + "countryName:String," + "population:Integer,"
+                        + "principalMineralResource:String");
         SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(type);
 
         WKTReader reader = new WKTReader();
-        MultiPolygon geometry = (MultiPolygon) reader.read(usaGeometry()); 
+        MultiPolygon geometry = (MultiPolygon) reader.read(usaGeometry());
 
         featureBuilder.add(geometry);
         featureBuilder.add("USA");
         featureBuilder.add(307006550);
         featureBuilder.add("oil");
-        
+
         COUNTRY = featureBuilder.buildFeature(null);
 
         return COUNTRY;

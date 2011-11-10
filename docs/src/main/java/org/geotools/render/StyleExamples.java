@@ -45,8 +45,8 @@ private void styleFactoryExample() throws Exception {
     // styleFactoryExample start
     //
     // We are using the GeoTools styleFactory that allows access to get/set methods
-    org.geotools.styling.StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    org.geotools.styling.StyleFactory sf = CommonFactoryFinder.getStyleFactory();
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
     
     StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
     sld.setName("sld");
@@ -203,7 +203,7 @@ private void splatExample() {
 
 private void sldExample() {
     // sldExample start
-    StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
+    StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
     
     StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
     sld.setName("example");
@@ -255,8 +255,8 @@ private void featureTypeStyleExample() {
 
 private void twoFeatureTypeStyles() {
     // twoFeatureTypeStyles start
-    StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
-    FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2(null);
+    StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+    FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2();
     
     Style style = styleFactory.getDefaultStyle();
     
@@ -340,7 +340,7 @@ private void quickTextSymbolizer() {
 private void quickPolygonSymbolizer() {
     // quickPolygonSymbolizer start
     StyleBuilder styleBuilder = new StyleBuilder();
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
     
     PolygonSymbolizer polygonSymbolizer = styleBuilder.createPolygonSymbolizer(Color.BLUE);
     polygonSymbolizer.getFill().setOpacity(ff.literal(0.5)); // 50% blue

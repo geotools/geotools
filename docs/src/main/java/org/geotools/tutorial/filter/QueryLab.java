@@ -52,7 +52,7 @@ import com.vividsolutions.jts.geom.Point;
  * show the results.
  * <p>
  * Remember when programming that you have other options then the CQL parser, you can directly make
- * a Filter using CommonFactoryFinder.getFilterFactory2(null).
+ * a Filter using CommonFactoryFinder.getFilterFactory2().
  */
 public class QueryLab extends JFrame {
     private DataStore dataStore;

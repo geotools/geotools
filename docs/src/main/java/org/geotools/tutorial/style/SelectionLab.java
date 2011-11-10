@@ -69,8 +69,8 @@ public class SelectionLab {
     /*
      * Factories that we will use to create style and filter objects
      */
-    private StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
-    private FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    private StyleFactory sf = CommonFactoryFinder.getStyleFactory();
+    private FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 
     /*
      * Convenient constants for the type of feature geometry in the shapefile

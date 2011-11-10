@@ -16,8 +16,8 @@ import org.opengis.filter.FilterFactory2;
 
 
 public class IntersectionBuilder extends GridFeatureBuilder {
-    final FilterFactory2 ff2 = CommonFactoryFinder.getFilterFactory2(null);
-    final GeometryFactory gf = JTSFactoryFinder.getGeometryFactory(null);
+    final FilterFactory2 ff2 = CommonFactoryFinder.getFilterFactory2();
+    final GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
 
     final SimpleFeatureSource source;
     int id = 0;

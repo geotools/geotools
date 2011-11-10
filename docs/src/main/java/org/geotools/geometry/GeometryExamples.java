@@ -14,7 +14,7 @@ public class GeometryExamples {
 
 public void createPoint() {
     // createPoint start
-    GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory(null);
+    GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
     
     Coordinate coord = new Coordinate(1, 1);
     Point point = geometryFactory.createPoint(coord);
@@ -23,7 +23,7 @@ public void createPoint() {
 
 public void createPointWKT() throws ParseException {
     // createPointWKT start
-    GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory(null);
+    GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
     
     WKTReader reader = new WKTReader(geometryFactory);
     Point point = (Point) reader.read("POINT (1 1)");

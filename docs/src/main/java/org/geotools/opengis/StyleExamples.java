@@ -32,8 +32,8 @@ public class StyleExamples {
 private void styleFactoryExample() throws Exception {
     // styleFactoryExample start
     //
-    org.opengis.style.StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    org.opengis.style.StyleFactory sf = CommonFactoryFinder.getStyleFactory();
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
     
     //
     // create the graphical mark used to represent a city

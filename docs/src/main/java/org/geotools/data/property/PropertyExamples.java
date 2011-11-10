@@ -163,7 +163,7 @@ public class PropertyExamples {
         params.put("directory", directory);
         DataStore store = DataStoreFinder.getDataStore(params);
 
-        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         Set<FeatureId> selection = new HashSet<FeatureId>();
         selection.add(ff.featureId("fid1"));

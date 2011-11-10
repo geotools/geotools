@@ -24,7 +24,7 @@ public void classiferExample() {
     SimpleFeatureCollection collection = null;
     SimpleFeature feature = null;
     // classiferExample start
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
     Function classify = ff.function("Quantile", ff.property("name"), ff.literal(2));
     
     Classifier groups = (Classifier) classify.evaluate(collection);
@@ -47,7 +47,7 @@ public void classiferQuantile() {
     SimpleFeatureCollection collection = null;
     SimpleFeature feature = null;
     // classiferQuantile start
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
     Function classify = ff.function("Quantile", ff.property("zone"), ff.literal(2));
     
     // Zones assigned by a municipal board do not have an intrinsic numerical
@@ -61,7 +61,7 @@ public void classiferEqualInterval() {
     SimpleFeatureCollection collection = null;
     SimpleFeature feature = null;
     // classiferEqualInterval start
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
     Function classify = ff.function("EqualInterval", ff.property("height"), ff.literal(5));
     
     // this will create a nice smooth series of intervals suitable for presentation
@@ -108,7 +108,7 @@ void colorBrewerExample(SimpleFeatureCollection featureCollection) {
     ColorBrewer brewer = ColorBrewer.instance();
     
     // STEP 1 - call a classifier function to summarise your content
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
     PropertyName propteryExpression = ff.property("height");
     
     // classify into five categories

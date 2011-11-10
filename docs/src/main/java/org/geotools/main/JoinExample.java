@@ -88,7 +88,7 @@ private static void joinExample(SimpleFeatureSource shapes, SimpleFeatureSource 
     SimpleFeatureType schema2 = shapes2.getSchema();
     String typeName2 = schema2.getTypeName();
     String geomName2 = schema2.getGeometryDescriptor().getLocalName();
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
     
     Query outerGeometry = new Query(typeName, Filter.INCLUDE, new String[] { geomName });
     SimpleFeatureCollection outerFeatures = shapes.getFeatures(outerGeometry);

@@ -46,8 +46,8 @@ import com.vividsolutions.jts.geom.Polygon;
 
 public class StyleLab {
 
-    static StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
-    static FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
+    static StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+    static FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 
     public static void main(String[] args) throws Exception {
         StyleLab me = new StyleLab();

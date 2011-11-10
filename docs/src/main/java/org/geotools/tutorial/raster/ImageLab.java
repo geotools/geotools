@@ -53,8 +53,8 @@ import org.opengis.style.ContrastMethod;
 
 public class ImageLab {
 
-    private StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
-    private FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    private StyleFactory sf = CommonFactoryFinder.getStyleFactory();
+    private FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 
     private JMapFrame frame;
     private AbstractGridCoverage2DReader reader;

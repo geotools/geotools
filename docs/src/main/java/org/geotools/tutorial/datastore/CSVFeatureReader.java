@@ -38,7 +38,7 @@ public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, Simple
             throw new IOException("Unable to read csv header");
         }
         builder = new SimpleFeatureBuilder( state.getFeatureType() );
-        geometryFactory = JTSFactoryFinder.getGeometryFactory(null);
+        geometryFactory = JTSFactoryFinder.getGeometryFactory();
         row = 0;
     }
 

@@ -75,7 +75,7 @@ public class Csv2Shape {
          * GeometryFactory will be used to create the geometry attribute of each feature (a Point
          * object for the location)
          */
-        GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory(null);
+        GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
 
         SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(TYPE);
 

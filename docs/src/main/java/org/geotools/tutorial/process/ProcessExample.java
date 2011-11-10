@@ -93,7 +93,7 @@ public class ProcessExample {
     }
 
     public static void example3() {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("featureType");
         tb.add("geometry", Point.class);

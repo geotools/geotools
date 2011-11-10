@@ -71,7 +71,7 @@ SimpleFeatureSource featureSource;
  */
 // grabSelectedIds start
 SimpleFeatureCollection grabSelectedIds(Set<String> selection) throws IOException {
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
     
     Set<FeatureId> fids = new HashSet<FeatureId>();
     for (String id : selection) {
@@ -105,7 +105,7 @@ SimpleFeatureCollection grabSelectedName(String name) throws Exception {
  */
 // grabSelectedNameIgnoreCase start
 SimpleFeatureCollection grabSelectedNameIgnoreCase(String name) throws Exception {
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
     
     Filter filter = ff.equal(ff.property("Name"), ff.literal(name), false);
     return featureSource.getFeatures(filter);
@@ -121,7 +121,7 @@ SimpleFeatureCollection grabSelectedNameIgnoreCase(String name) throws Exception
  */
 // grabSelectedNames start
 SimpleFeatureCollection grabSelectedNames(Set<String> selectedNames) throws Exception {
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
     
     List<Filter> match = new ArrayList<Filter>();
     for (String name : selectedNames) {
@@ -148,7 +148,7 @@ SimpleFeatureCollection grabSelectedNames(Set<String> selectedNames) throws Exce
 // grabFeaturesInBoundingBox start
 SimpleFeatureCollection grabFeaturesInBoundingBox(double x1, double y1, double x2, double y2)
         throws Exception {
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
     FeatureType schema = featureSource.getSchema();
     
     // usually "THE_GEOM" for shapefiles
@@ -167,27 +167,28 @@ SimpleFeatureCollection grabFeaturesInBoundingBox(double x1, double y1, double x
 // grabFeaturesInPolygon start
 SimpleFeatureCollection grabFeaturesInPolygon(double x1, double y1, double x2, double y2)
         throws Exception {
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
     FeatureType schema = featureSource.getSchema();
     CoordinateReferenceSystem worldCRS = DefaultGeographicCRS.WGS84;
-    
+
     // usually "THE_GEOM" for shapefiles
     String geometryPropertyName = schema.getGeometryDescriptor().getLocalName();
     CoordinateReferenceSystem targetCRS = schema.getGeometryDescriptor()
             .getCoordinateReferenceSystem();
-    
+
     ReferencedEnvelope click = new ReferencedEnvelope(x1, y1, x2, y2, worldCRS);
-    
+
     // will result in a slight larger BBOX then the original click
     ReferencedEnvelope bbox = click.transform(targetCRS, true);
-    
+
     // will result in a polygon matching the original click
     Polygon clickPolygon = JTS.toGeometry(bbox, null, 10);
     MathTransform transform = CRS.findMathTransform(worldCRS, targetCRS);
     Polygon polygon = (Polygon) JTS.transform(clickPolygon, transform);
-    
-    Filter filter = ff.intersects(ff.property(geometryPropertyName), ff.literal(polygon));
-    
+
+    Filter filter = ff.intersects(ff.property(geometryPropertyName),
+            ff.literal(polygon));
+
     return featureSource.getFeatures(filter);
 }
 
@@ -195,9 +196,9 @@ SimpleFeatureCollection grabFeaturesInPolygon(double x1, double y1, double x2, d
 
 // grabFeaturesOnScreen start
 SimpleFeatureCollection grabFeaturesOnScreen(ReferencedEnvelope screen) throws Exception {
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
     FeatureType schema = featureSource.getSchema();
-    
+
     // usually "THE_GEOM" for shapefiles
     String geometryPropertyName = schema.getGeometryDescriptor().getLocalName();
     CoordinateReferenceSystem targetCRS = schema.getGeometryDescriptor()
@@ -244,8 +245,8 @@ SimpleFeatureCollection click1(MapMouseEvent ev) throws Exception {
     
     ReferencedEnvelope bbox = worldBBox.transform(targetCRS, true, 10);
     
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
-    
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+
     // Option 1 BBOX
     Filter filter = ff.bbox(ff.property(geometryAttributeName), bbox);
     
@@ -276,7 +277,7 @@ SimpleFeatureCollection distance(MapMouseEvent ev) throws Exception {
     // threshold distance
     double distance = 10.0d;
     
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
     Filter filter = ff.dwithin(ff.property("POLYGON"), ff.literal(point), distance, uom.toString());
     
     return featureSource.getFeatures(filter);
@@ -290,7 +291,7 @@ void polygonInteraction() {
     SimpleFeatureCollection fcResult = null;
     final SimpleFeatureCollection found = FeatureCollections.newCollection();
     
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
     SimpleFeature feature = null;
     
     Filter polyCheck = null;
@@ -334,7 +335,7 @@ void polygonInteraction() {
 
 private void expressionExamples() {
     Geometry geometry = null;
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
     // expressionExamples start
     Expression propertyAccess = ff.property("THE_GEOM");
     Expression literal = ff.literal(geometry);

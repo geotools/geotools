@@ -16,6 +16,8 @@
  */
 package org.geotools.util;
 
+import java.math.BigDecimal;
+
 import junit.framework.TestCase;
 
 public class CommonsConverterFactoryTest extends TestCase {
@@ -42,6 +44,12 @@ public class CommonsConverterFactoryTest extends TestCase {
         assertEquals((double) Long.MAX_VALUE, convert(Long.MAX_VALUE + "", Double.class));
         assertEquals(1e100, convert("1e100", Double.class));
         assertEquals(12.5, convert("12.5", Double.class));
+        
+        BigDecimal d = new BigDecimal(12345);
+        d=d.divide(new BigDecimal(100));
+        assertEquals(d,convert("123.45", BigDecimal.class));
+
+        
     }
     
     Object convert( Object source, Class target ) throws Exception {

@@ -325,7 +325,7 @@ public class CommonsConverterFactory implements ConverterFactory {
         register.put(Float.TYPE, new FloatConverter());
         register.put(Double.class, new DoubleConverter());
         register.put(Double.TYPE, new DoubleConverter());
-        register.put(BigDecimalConverter.class, new BigDecimalConverter());
+        register.put(BigDecimal.class, new BigDecimalConverter());
         register.put(Boolean.class, new BooleanConverter());
         register.put(Boolean.TYPE, new BooleanConverter());
         register.put(Character.class, new CharacterConverter());

@@ -361,12 +361,12 @@ Change version number
    * You can just grab a fresh checkout::
        
        cd ../tags
-       svn checkout http://svn.geotools.org/tags/2.6-M2/
-       cd 2.5-M2
+       svn checkout http://svn.osgeo.org/geotools/tags/8.0-M3/
+       cd 8.0-M3
    
    * Our just "switch" your existing directory to the new tag::
        
-       svn switch http://svn.geotools/org/tags/2.6-M2
+       svn switch http://svn.osgeo.org/geotools/tags/8.0-M3
 
 2. From this point, all remaining operations in this page should be performed from this tag
    directory. You should not need to change directories to a different checkout anymore.
@@ -384,27 +384,18 @@ Change version number
     release you are making.
     
     This script mostly updates pom.xml files, and the GeoTools.java class (which is used by
-    applications to check the version of GeoTools they are working with at runtime).::
-        
-        <?xml version="1.0" encoding="ISO-8859-1"?>
-        <project name="Rename" default="rename">
-          <target name="rename">
-            <replace dir=".">
-              <include name="**/pom.xml"/>
-             <replacefilter token="&lt;version&gt;2.6-SNAPSHOT&lt;/version&gt;"
-                             value="&lt;version&gt;2.6-M4&lt;/version&gt;"/>
-            </replace>
-            <replace dir="./modules/library/metadata/src/main/java/org/geotools/factory">
-              <include name="GeoTools.java"/>
-             <replacefilter token="2.6-SNAPSHOT"
-                             value="2.6-M4"/>
-            </replace>
-          </target>
-        </project>
+    applications to check the version of GeoTools they are working with at runtime).:
+    
+   .. literalinclude:: /../../build/rename.xml
+      :language: xml
 
-6. Run the file::
+6. Run the file (the default build target will update the pom.xml files)::
      
      C:\java\geotools\2.6-M2>ant -f rename.xml
+
+6. Run the file with the "doc" build target to update the tutorials::
+     
+     C:\java\geotools\2.6-M2>ant -f rename.xml doc
 
 7. Check that the version numbers were updated as expected::
      
@@ -480,11 +471,6 @@ Update the README
    ============== ====================================================================
    @VERSION@      geotools version
    @DATE@         release date
-   @REQUIRED@     list of required modules (all those located in modules/library)
-   @PLUGIN@       list of plugins (all those located in modules/plugin)
-   @EXTENSION@    list of extensions (all those located in modules/extension)
-   @DEMO@         list of demos (all those located in demo)
-   @UNSUPPORTED@  list of unsupported modules (all those located modules/unsupported)
    ============== ====================================================================
 
 2. Substitute the appropriate values for in the file and then commit it. Remember, you are
@@ -492,13 +478,6 @@ Update the README
       
       svn status
       svn commit -m "Updated README for 2.6-M2."
-   
-3. A quick way to get the list of modules for the README under a Unix system is to enter
-   the directory that contains them and use::
-      
-      find . -maxdepth 1 -type d | sed 's|./||g' | sort
-   
-   Remember to remove ".", ".svn" and "target" from the output.
 
 Performing the Release
 ^^^^^^^^^^^^^^^^^^^^^^

@@ -18,7 +18,7 @@ This tutorial is for those who prefer the pleasant company of a text editor and 
 prompt. Even if you routinely use an IDE, you will find that it's often quicker and easier to
 compile, test and install your applications from the command line. We'll be using Maven
 (http://maven.apache.org/) to manage the large number of jars that a GeoTools projects depend on.
-Don't worry if you're not familiar with Maven because we will explain everythign step by step.
+Don't worry if you're not familiar with Maven because we will explain everything step by step.
 
 The example application is the same one used for the NetBeans and Eclipse Quickstart tutorials: a
 simple program to load and display a shapefile.
@@ -40,12 +40,12 @@ the time to do so.
    
 #. At the time of writing the latest JDK was:
    
-   jdk-6u20-windows-i586.exe
+   jdk-7u1-windows-i586.exe
    
 #. Click through the installer you will need to set an acceptance a license agreement and so forth.
    By default this will install to:     
    
-   C:\\Program Files\\Java\\jdk1.6.0_20\\
+   C:\\Program Files\\Java\\jdk1.7.0\\
      
 .. Note::
    In this tutorial we refer to file and directory paths as used by Windows. If you are fortunate
@@ -133,8 +133,8 @@ Creating a new project
 
    App.java and AppTest.java are just placeholder files not used in this tutorial.
    
-#. During the build progress your local maven repository will be used to store both
-   downloaded jars; and those you build locally.
+#. During the build process your local maven repository will be used to store both
+   downloaded jars, and those you build locally.
    
    Your local Maven repository is located in your home folder.
     
@@ -179,11 +179,11 @@ Creating a new project
     
       C:\java\example> mvn install
     
-#. If maven has trouble downloading any jar; you can try again by selecting
+#. If maven has trouble downloading any jar, you can try again by selecting
    :menuselection:`Project --> Update All Maven Dependencies`.
     
    If it really cannot connect you can switch to edit the `geotools.version` property in your
-   pom.xml to 8-SNAPSHOT (GeoTools development version) and then add a reference to the snapshot
+   pom.xml to |version|-SNAPSHOT (GeoTools development version) and then add a reference to the snapshot
    repository as shown below:
     
    .. literalinclude:: artifacts/pom2.xml
@@ -279,8 +279,8 @@ Things to Try
 ..  The ability to grab figure out what classes to import is a key skill; we are
     starting off here with a simple example with a single import.
   
-* Try and sort out what all the different “side car” files are – and what they are for. The sample
-  data set includes “shp”, “dbf” and “shx”. How many other side car files are there?
+* Try and sort out what all the different "side car" files are - and what they are for. The sample
+  data set includes "shp", "dbf" and "shx". How many other side car files are there?
 
 .. This exercise asks users to locate the geotools user guide or wikipedia
   
@@ -292,12 +292,12 @@ Things to Try
    :language: java
    :start-after: // start datastore
    :end-before:  // end datastore
-     
+   
 
-* Important: GeoTools is an active open source project – you can quickly use maven to try out the
-  latest nightly build by changing your pom.xml file to use a “SNAPSHOT” release.
+* Important: GeoTools is an active open source project - you can quickly use maven to try out the
+  latest nightly build by changing your pom.xml file to use a "SNAPSHOT" release.
   
-  At the time of writing |version|-SNAPSHOT under active development.
+  At the time of writing |version|-SNAPSHOT is under active development.
 
   .. literalinclude:: artifacts/pom2.xml
    :language: xml

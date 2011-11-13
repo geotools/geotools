@@ -13,5 +13,5 @@ This tutorial is available for:
    netbeans
    maven
 
-If you are interested in porting this tutorial to an additional IDE please contact us on the
+If you are interested in porting this tutorial to an additional IDE please `contact us <http://geotools.org/getinvolved.html>`_ on the
 users list.

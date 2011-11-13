@@ -13,40 +13,40 @@
 Welcome Eclipse Developers
 ==========================
 
-Welcome to Geospatial for Java - this workbook is aimed at Java developers who
+Welcome to Geospatial for Java. This workbook is aimed at Java developers who
 are new to geospatial and would like to get started.
 
-We are going to start out carefully with the steps needed to set up your IDE and are pleased this
-year to cover both NetBeans and Eclipse. If you are comfortable with the build tool Maven, it is
-our preferred option for downloading and managing jars but we will also document how to set up
-things by hand.
+We are going to start out carefully with the steps needed to set up your Eclipse IDE. This workbook
+is also available for NetBeans or Maven command line use. If you are comfortable with the build tool
+Maven, it is our preferred option for downloading and managing jars but we will also document how
+to set up things by hand.
 
-This is our second year offering visual tutorials allowing you to see what you are working with
-while learning. While these examples will make use of Swing, please be assured that this is
-only an aid in making the examples easy and fun to use. 
-
-These sessions are applicable to both server side and client side development.
+These are visual tutorials that allows you to see what you are working with while you learn.
+These examples make use of Swing; be assured that this is only to make the examples easy and
+fun to use. These sessions are applicable to both server side and client side development.
 
 Java Install
 ============
 
 .. sidebar:: Lab
 
-   If you are following this workbook in a lab setting you will find installer on the DVD.
+   If you are following this workbook in a lab setting you will find installers on the DVD.
    
 We are going to be making use of Java, so if you don't have a Java Development Kit installed now is
 the time to do so. Even if you have Java installed already check out the optional Java Advanced
 Imaging and Java Image IO section.
    
-#. Download the latest JDK from the the java.sun.com website:
+#. Download the latest Java Developer Kit (JDK) from the the java.sun.com website:
 
    http://java.sun.com/javase/downloads/index.jsp
    
 #. At the time of writing the latest JDK was:
    
-   jdk-7-windows-i586.exe
+   jdk-7u1-windows-i586.exe
    
-#. Click through the installer you will need to set an acceptance a license agreement and so forth.
+#. Click through the installer. You will need to accept a license agreement, choose a directory
+   and so forth.
+   
    By default this will install to:     
    
    C:\\Program Files\\Java\\jdk1.7.0\\
@@ -76,7 +76,7 @@ Eclipse
 
 .. sidebar:: Lab
 
-   In a lab setting you instructor will have downloaded these files for you, and often have a ready
+   In a lab setting your instructor will have downloaded these files for you, and often have a ready
    to go Eclipse zipped up and ready to use.
    
 Eclipse is a popular integrated development environment most often used for all kinds of Java
@@ -89,9 +89,9 @@ switch to the "Java Perspective".
    
    At the time of writing the latest release was:
    
-   * eclipse-java-indigo-win32.zip 
+   * eclipse-java-indigo-SR1-win32.zip 
    
-2. Eclipse does not provide an installer; just a directory to unzip and run.
+2. Eclipse does not provide an installer, just a directory to unzip and run.
 3. To start out with create the folder C:\\java to keep all our java development in one spot.
 4. Unzip the downloaded eclipse-java-indigo-win32.zip file to your C:\\java directory - the
    folder C:\\java\\eclipse will be created.
@@ -104,7 +104,7 @@ switch to the "Java Perspective".
    
 .. literalinclude:: artifacts/eclipse.ini
    
-7. Double click on your desktop short cut to start up eclipse.
+7. Double click on your desktop shortcut to start up eclipse.
 8. When you start up eclipse for the first time it will prompt you for a workspace. To keep our
    java work in one spot you can type in:
    
@@ -117,10 +117,10 @@ switch to the "Java Perspective".
 M2Eclipse
 ---------
   
-Maven is build system for Java which is very good at managing dependencies. The GeoTools library is
-plugin based and you get to pick and choose what features you need for your application. While this
-is useful when determining just what is needed for delivery - it can be a pain to manage by hand
-so we encourage the use of a tool such as maven.
+Maven is a build system for Java which is very good at managing dependencies. The GeoTools library
+is plugin based and you get to pick and choose what features you need for your application. While
+this is useful when determining just what is needed for delivery - it can be a pain to manage by
+hand so we encourage the use of a tool such as maven.
 
 In previous years we used the command line (gasp!) when working with maven. This year we are going
 to be using the M2Eclipse plugin from Sonyatype.
@@ -256,8 +256,8 @@ Tips:
 
 * If maven has trouble downloading any jar; you can try again by selecting
   :menuselection:`Project --> Update All Maven Dependencies`.
-    
-  If it really cannot connect you will need to switch to 8-SNAPSHOT and add the following
+  
+  If it really cannot connect you will need to switch to |version|-SNAPSHOT and add the following
   snap shot repository.
     
   .. literalinclude:: artifacts/pom2.xml
@@ -324,9 +324,10 @@ Here are some additional challenges for you to try:
   find that the very first time it will take a while as a spatial index is generated. After that
   performance should be very good when zoomed in.
   
-* Fast: We know that one of the ways people select a spatial library is based on speed. By design
-  GeoTools does not load the above shapefile into memory (instead it streams it off of disk
-  each time it is drawn using a spatial index to only bring the content required for display).
+* Performance: We know that one of the ways people select a spatial library is based on speed.
+  By design GeoTools does not load the above shapefile into memory (instead it streams it off
+  of disk each time it is drawn using a spatial index to only bring the content required for
+  display).
   
   If you would like to ask GeoTools to cache the shapefile in memory try the following code:
 
@@ -363,7 +364,7 @@ Here are some additional challenges for you to try:
 * Important: GeoTools is an active open source project - you can quickly use maven to try out the
   latest nightly build by changing your pom.xml file to use a "SNAPSHOT" release.
   
-  At the time of writing |version|-SNAPSHOT under active development.
+  At the time of writing |version|-SNAPSHOT is under active development.
 
   .. literalinclude:: artifacts/pom2.xml
    :language: xml
@@ -499,7 +500,7 @@ generating eclipse :file:`.project` and :file:`.classpath` files.
 21. You may find it easier to cut and paste into your existing file; or just
     :download:`download pom.xml<artifacts/pom.xml>` directly.
    
-    And easy way to pick up typing mistakes with tags is to Eclipse to format the xml file.
+    An easy way to pick up typing mistakes with tags is to Eclipse to format the xml file.
    
 22. Return to the command line and maven to download the required jars and tell eclipse about it::
     

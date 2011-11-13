@@ -198,12 +198,12 @@ Note that we are customizing the JMapFrame by adding a button to its toolbar. Wh
 What features did the user click on ?
 -------------------------------------
 
-Next we'll add the method that is called when the user is in selection mode (our custom toolbar button has been clicked)
-and has clicked somewhere on the map.
+Next we'll add the method that is called when the user is in selection mode. Our custom toolbar
+button has been pressed, and the user has now clicked somewhere on the map.
 
-The method first creates a 5x5 pixel wide rectangle around the mouse position to make it easier to select point and line
-features. This is transformed from pixel coordinates to world coordinates and used to create a Filter to identify
-features under, or close to, the mouse click.
+The method first creates a 5x5 pixel wide rectangle around the mouse position to make it easier to
+select point and line features. This is transformed from pixel coordinates to world coordinates
+and used to create a Filter to identify features under, or close to, the mouse click.
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/style/SelectionLab.java
       :language: java
@@ -381,5 +381,5 @@ The only symbolizer which is not drawn in order is TextSymbolizer which gathers 
 the next step.
 
 Finally in the composition step |hyphen| will take all the content drawn during portrayal and squish
-them together into a final image. The icing on the cake is the text labels (produced from any and
-all TextSymbolizers) which are drizzled on top taking care not to have any overlaps.
+them together into a final image. Finally the text labels are generated from all layers and drawn
+on top of the map (taking care to avoid overlapping any text).

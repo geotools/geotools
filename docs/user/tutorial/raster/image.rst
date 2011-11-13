@@ -33,14 +33,14 @@ end up as small rectangles on the surface of the earth.
 This idea is so similar to our concept of pixels we end up using a lot of the same file formats to
 represent a grid coverage in our computing systems.
 
-This workbook is part of the FOSS4G 2009 conference proceedings.
+This workbook is featured as part of OSDC2011, FOSS4G 2010 and FOSS4G 2009 conferences.
 
 Jody Garnett
 
    Jody Garnett is the lead architect for the uDig project; and on the steering
-   committee for GeoTools; GeoServer and uDig. Taking the roll of geospatial
+   committee for GeoTools; GeoServer and uDig. Taking the role of geospatial
    consultant a bit too literally Jody has presented workshops and training
-   courses in every continent (except Antarctica). Jody Garnett is an employee
+   courses on every continent (except Antarctica). Jody Garnett is an employee
    of LISAsoft.
 
 Michael Bedward
@@ -55,16 +55,14 @@ Image Lab Application
 
 In the earlier examples we looked at reading and displaying shapefiles. For 
 :download:`ImageLab.java </../src/main/java/org/geotools/tutorial/raster/ImageLab.java>` we are
-going add raster data to the the mix.
-
-By displaying a three-band global satellite image and overlaying it with country boundaries from
-a shapefile.
+going to add raster data into the mix by displaying a three-band global satellite image,
+and overlaying it with country boundaries from a shapefile.
 
 1. Please ensure your pom.xml includes the following.
 
-   Most of these dependencies in the earlier examples, the modules we have  added are **gt-geotiff**
-   which allows us to read raster map data from a GeoTIFF file and **gt-image** which allows us to
-   read an Image+World format file set (e.g. jpg + jpw).
+   We have already encountered most of these dependencies in earlier examples. The new modules we
+   have added are **gt-geotiff** which allows us to read raster map data from a GeoTIFF file
+   and **gt-image** which allows us to read an Image+World format file set (e.g. jpg + jpw).
 
 .. literalinclude:: artifacts/pom.xml
         :language: xml
@@ -151,7 +149,7 @@ and pass it to a **JMapFrame**.
 4. To display color we need to use a slightly more complex Style that specifies which bands in the
    grid coverage map to the R, G and B colors on screen. 
       
-   The methods checks the image to see if its bands (known as *sample dimensions*) have labels
+   The method checks the image to see if its bands (known as *sample dimensions*) have labels
    indicating which to use. If not, we just use the first three bands and hope for the best !
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/raster/ImageLab.java
@@ -228,13 +226,10 @@ world plus image
     A normal image format like jpeg or png that has a side-car file describing where it is located
     as well as a prj sidecar file defining the map projection just like a shapefile uses.
     
-    * jpeg - is common due to small download size; however performance at runtime is terrible as
-      the entire image needs be read into memory.
-    
-    * tiff 
-    
-    * 
-                   
+    Please note that alothough the jpeg format is common due to small download size; the
+    performance at runtime is terrible as the entire image needs be read into memory.
+    Formats such as TIFF do not have this limitation,
+
 Geotiff
     A normal tiff image that has geospatial information stored in the image metadata fields. This
     is generally a safe bet for fast performnace; especially if it has been prepaired with an

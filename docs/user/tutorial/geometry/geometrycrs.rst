@@ -4,8 +4,6 @@
 :Version: |release|
 :License: Create Commons with attribution
 
-.. _geometrycrs:
-
 ***********************
  Geometry CRS Tutorial
 ***********************
@@ -26,16 +24,17 @@ This work book covers the dirty raw underbelly of the GIS world; yes I am afraid
 we are talking about *Math*. However please do not be afraid, all the math
 amounts to is shapes drawn on the earth.
 
-This workbook is constructed in a code first manner; allowing you to work
-through the code example and read on if you have any questions. This workbook is
-part of the FOSS4G 2009 conference proceedings.
+This workbook is constructed in a code first manner, allowing you to work
+through the code example and read on if you have any questions.
+
+This workbook is featured as part of OSDC2011, FOSS4G 2010 and FOSS4G 2009 conferences.
 
 Jody Garnett
 
    Jody Garnett is the lead architect for the uDig project; and on the steering
-   committee for GeoTools; GeoServer and uDig. Taking the roll of geospatial
+   committee for GeoTools; GeoServer and uDig. Taking the role of geospatial
    consultant a bit too literally Jody has presented workshops and training
-   courses in every continent (except Antarctica). Jody Garnett is an employee
+   courses on every continent (except Antarctica). Jody Garnett is an employee
    of LISAsoft.
 
 Michael Bedward
@@ -49,7 +48,7 @@ CRS Lab Application
 ====================
 
 This tutorial gives a visual demonstration of coordinate reference systems by
-displaying a shapefile and showing how changing the map projection morphs
+displaying a shapefile and shows how changing the map projection morphs
 the geometry of the features.
 
 1. Please ensure your pom.xml includes the following:
@@ -78,7 +77,7 @@ the geometry of the features.
 4. Here is how we have configured JMapFrame
 
    * We have enabled a status line; this contains a button allowing the map
-     coordinate reference system to be chagned.
+     coordinate reference system to be changed.
      
    * We have enabled the toolbar and added two actions to it (which we will
      be defining in the next section).
@@ -86,7 +85,7 @@ the geometry of the features.
 Validate Geometry
 -------------------
 
-Our toobar action is implemented as a nested class, with most of the work being
+Our toolbar action is implemented as a nested class, with most of the work being
 done by a helper method in the parent class.
 
 1. Create the **ValidateGeometryAction** mentioned in the previous section
@@ -256,7 +255,7 @@ Here are a couple things to try with the above application.
   
   There are many tricks to fixing an invalid geometry. An easy place to start
   is to use geometry.buffer(0). Use this tip to build your own shapefile
-  data cleaner cleaner.
+  data cleaner.
   
 * An alternate to doing all the geometry transformations by hand is to ask
   for the data in the projection required.
@@ -345,7 +344,7 @@ Why not use Java Shape
 ----------------------
 
 Java Shape is actually very useful and covers ideas mentioned above – it is
-however very focused on drawing. Geometry allows us to handle the “information”
+however very focused on drawing. Geometry allows us to handle the "information"
 part of Geographic  Information System – we can use it to create new geometry
 and test the relationships between geometries.
 
@@ -393,7 +392,7 @@ bunch of math (a set of points in the mathematical sense). They have no meaning
 on their own.
 
 An easier example is the number 3. The number 3 has no meaning on
-its own. It is only when you attach a “unit” that  the number 3 can represent a
+its own. It is only when you attach a "unit" that  the number 3 can represent a
 concept. 3 metres. 3 feet. 3 score years.
 
 In order to provide a Geometry with meaning we need to know what those
@@ -413,7 +412,7 @@ concepts for us:
 
 * It defines the shape of the world. No really it does – not all coordinate
   reference systems imagine the same shape of the world. The CRS used by Google
-  pretends the world is a perfect sphere, while the CRS used by “EPSG:4326” has a
+  pretends the world is a perfect sphere, while the CRS used by "EPSG:4326" has a
   different shape in mind – so if you mix them up your data will be drawn in the
   wrong place.
 
@@ -438,7 +437,7 @@ EPSG:4326
    
    This is the big one: nformation measured by lat/lon using decimal degrees.
         
-   ``CRS.decode(“EPSG:4326”);``
+   ``CRS.decode("EPSG:4326");``
 
    `DefaultGeographicCRS.WGS84;``
 
@@ -448,11 +447,11 @@ EPSG: 3785
     .. image:: images/epsg3785.png
        :scale: 30
         
-    The official code for the “Google map” projection used by a lot of web mapping
+    The official code for the "Google map" projection used by a lot of web mapping
     applications.  It is nice to pretend the world is a sphere (it makes your math
     very fast). However it looks really odd if you draw a square in Oslo.
         
-    ``CRS.decode(“EPSG:3785”);``
+    ``CRS.decode("EPSG:3785");``
        
 EPSG:3005
     NAD83 / BC Albers
@@ -460,10 +459,10 @@ EPSG:3005
     .. image:: images/epsg3005.png
        :scale: 30
         
-    Example of an “equal area” projection for the west coast of Canada. The axes
+    Example of an "equal area" projection for the west coast of Canada. The axes
     are measured in metres which is handy for calculating distance or area.
         
-    ``CRS.decode(“EPSG:3005”);``
+    ``CRS.decode("EPSG:3005");``
 
 Note that both EPSG:4326 and EPSG:3785 are using lat/lon – but arrive at a very
 different shape for their map.
@@ -478,12 +477,12 @@ Axis Order
    have been traveling. Hence y/x order.
 
 This is also where I need to make a public apology. As computer scientists we
-occasionally get fed up when we work in a domain where “they are doing it
-wrong”. Map making is an example of this. When we arrived on the scene maps were
+occasionally get fed up when we work in a domain where "they are doing it
+wrong". Map making is an example of this. When we arrived on the scene maps were
 always recording position in latitude, followed by longitude; that is, with the
 north-south axis first and the east-west access second. When you draw that on
 the screen quickly it looks like the world is sideways as the coordinates are
-in”y/x” to my way of thinking and you need to swap them before drawing.
+in"y/x" to my way of thinking and you need to swap them before drawing.
 
 .. image:: images/axisOrder.png
    :scale: 40
@@ -491,11 +490,11 @@ in”y/x” to my way of thinking and you need to swap them before drawing.
 We are so used to working in x/y order that we would end up assuming it was
 supposed to be this way – and have been fighting with map makers ever since.
 
-So if you see some data in “EPSG:4326” you have no idea if it is in x/y order or
+So if you see some data in "EPSG:4326" you have no idea if it is in x/y order or
 in y/x order.
 
 We have finally sorted out an alternative; rather then EPSG:4326 we are supposed
-to use “urn:ogc:def:crs:EPSG:6.6:4326“. If you ever see that you can be sure
+to use "urn:ogc:def:crs:EPSG:6.6:4326". If you ever see that you can be sure
 that a) someone really knows what they are doing and b) the data is recorded in
 exactly the order defined by the EPSG database.
 
@@ -528,4 +527,4 @@ For more Information
 `Wikibook: Coordinate Reference Systems and Positioning <http://en.wikibooks.org/wiki/Coordinate_Reference_Systems_and_Positioning>`_
   A summary page with some useful definition and links to more detailed information
 
-  
+

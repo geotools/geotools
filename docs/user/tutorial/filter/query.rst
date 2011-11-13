@@ -35,14 +35,14 @@ to both a PostGIS database and shapefiles.
 We are trying out a code first idea with these workbooks |hyphen| offering you a chance to start with
 source code and explore the ideas that went into it later if you have any questions. 
 
-This workbook is part of the FOSS4G 2010 conference proceedings.
+This workbook is featured as part of OSDC2011, FOSS4G 2010 and FOSS4G 2009 conferences.
 
 Jody Garnett
 
    Jody Garnett is the lead architect for the uDig project; and on the steering
-   committee for GeoTools; GeoServer and uDig. Taking the roll of geospatial
+   committee for GeoTools; GeoServer and uDig. Taking the role of geospatial
    consultant a bit too literally Jody has presented workshops and training
-   courses in every continent (except Antarctica). Jody Garnett is an employee
+   courses on every continent (except Antarctica). Jody Garnett is an employee
    of LISAsoft.
 
 Michael Bedward
@@ -156,7 +156,7 @@ Here is our strategy for displaying the selected features:
     * Pass the filter to the getFeatures method which returns the features matching the query
       as a FeatureCollection.
     
-    * Create a FeatureCollectionTableModel for our dialog|apos|s JTable. This GeoTools
+    * Create a FeatureCollectionTableModel for our dialog's JTable. This GeoTools
       class takes a FeatureCollection and retrieves the feature attribute names and the data for
       each feature.
 
@@ -285,7 +285,7 @@ Things to Try
   Next the wizard will display a second page of optional parameters. For this example you can leave this blank and just
   click the *Finish* button.
 
-* We have sceen how to represent a Filter using CQL. There is also the origional XML representation
+* We have seen how to represent a Filter using CQL. There is also the origional XML representation
   used by web features servers to work with.
   
   .. code-block:: java
@@ -366,9 +366,9 @@ JavaBeans.
 
 .. HINT::
 
-   You may of noticed that Filter is actually an interface. Because the Filter data structure is
+   You may have noticed that Filter is actually an interface. Because the Filter data structure is
    defined by a specification we cannot support the definition of new kinds of Filter objects and
-   exepect them to be understood by the external services we communicate with.
+   expect them to be understood by the external services we communicate with.
 
    The good news is that Filter can be extended with new Functions; and our implementation can be
    taught how to work on new kinds of data using *PropertyAccessors*.

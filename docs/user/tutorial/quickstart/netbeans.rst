@@ -13,22 +13,21 @@
 Welcome NetBeans Developers
 ===========================
 
-Welcome to Geospatial for Java -this workbook is aimed at Java developers who are new to geospatial
+Welcome to Geospatial for Java. This workbook is aimed at Java developers who are new to geospatial
 and would like to get started.
 
-We are going to start out carefully with the steps needed to set up your IDE; and are pleased this
-year to cover both NetBeans and Eclipse. The build tool Maven (http://maven.apache.org/) is our
-preferred option for downloading and managing jars for GeoTools projects because there tend to a
-large number of jars involved. If you are already familiar with Maven that is an advantage but if
-not, don't worry, we will be explaining things step by step and we will also document how to set
-up things by hand as an alternative to using Maven.
+We are going to start out carefully with the steps needed to set up your Netbeans IDE.
+This workbook is also available for Eclipse or Maven command line use.  The build tool Maven
+(http://maven.apache.org/) is our preferred option for downloading and managing jars. GeoTools
+projects tend to use a large number of jars and an automated solution is preferable.
 
-Extra care has been taken to make this year's tutorial visual right from the get go. While these
-examples will make use of Swing please be assured that that this is only an aid in making the
-examples easy and fun to use so if your own work is based on another GUI framework the material
-that we cover here will still be relevant.
+If you are already familiar with Maven that is an advantage but if not, don't worry, we will be
+explaining things step by step and we will also document how to set up things by hand as an
+alternative to using Maven.
 
-These sessions are applicable to both server side and client side development.
+These are visual tutorials that allows you to see what you are working with while you learn.
+These examples make use of Swing; be assured that this is only to make the examples easy and
+fun to use. These sessions are applicable to both server side and client side development.
 
 We would like thank members of the GeoTools users list for their feedback while were preparing the
 course material, with special thanks to Tom Williamson for reviewing early drafts.
@@ -46,12 +45,12 @@ Imaging and Java Image IO section – both of these libraries are used by GeoToo
    
 #. At the time of writing the latest JDK was:
    
-   jdk-6u20-windows-i586.exe
+   jdk-7u1-windows-i586.exe
    
 #. Click through the installer you will need to set an acceptance a license agreement and so forth.
    By default this will install to:     
    
-   C:\\Program Files\\Java\\jdk1.6.0_20\\
+   C:\\Program Files\\Java\\jdk1.7.0\\
      
 #. Optional: Java Advanced Imaging is used by GeoTools for raster support. If you install JAI 1.1.3 
    performance will be improved:   
@@ -82,7 +81,7 @@ The NetBeans IDE is a popular choice for Java development and features excellent
 
      http://www.netbeans.org/ 
 
-#. At the time of netbeans-6.9-ml-javase-windows.exe was the latest installer.
+#. At the time of netbeans-7.0.1-ml-javase-windows.exe was the latest installer.
 
 #. Click through the steps of the installer. You will notice it will pick up on the JDK you
    installed earlier.
@@ -98,17 +97,17 @@ releases of NetBeans.
 
 The advantages of using Maven are:
 
-* You only download as much of GeoTools as your application requires Jars are downloaded to a single
-  location in your home directory (in a hidden folder called .m2/repository)
-
+* You only download as much of GeoTools as your application requires
+* Jars are downloaded to a single location in your home directory
+  (in a hidden folder called .m2/repository)
 * Source code and javadocs are automatically downloaded and hooked up
 
 Although Maven is a build tool it works by describing the contents of a project. This is a different
 approach then used by the Make or Ant tools which list the steps required to build.
 
-Part of the description of a project is the required jars and a repository on the internet where
-they can be downloaded from. We will be using these facilities to bring GeoTools jars as needed
-into our project.
+The description of a project inlcudes the required jars (called dependencies) and a repositor
+on the internet where the jars can be downloaded. We will be using these facilities to bring
+GeoTools jars into our project as needed.
 
 Creating the Project
 --------------------
@@ -121,7 +120,7 @@ Let's get started:
    .. image:: images/nbNewProject.png
       :scale: 60
       
-3. On the Maven Archetype page select “Maven Quickstart Archetype” and press Next.
+3. On the Maven Archetype page select "Maven Quickstart Archetype" and press Next.
 
    .. image:: images/nbNewProjectArchetype.png
       :scale: 60
@@ -170,7 +169,7 @@ When downloading jars maven makes use of public maven repositories on the intern
 such as GeoTools publish their work.
 
 1. The next step is for us to make it a GeoTools project by adding information to Maven's project
-   description file (“project object model” in Maven-speak) - pom.xml
+   description file ("project object model" in Maven-speak) - pom.xml
    
    In the Projects panel open up the Project Files folder and double click on pom.xml to open it.
    
@@ -182,11 +181,10 @@ such as GeoTools publish their work.
         :end-before: <dependencies>
   
    If you make any mistakes when editing the xml file you'll see that your project will be renamed
-   “<Badley formed Maven project>” in the Projects window. You can choose “Format” as a quick way to
+   "<Badly formed Maven project>" in the Projects window. You can choose "Format" as a quick way to
    check if the tags line up. Or just hit undo and try again. 
   
-3. Next we add two GeoTools modules to the dependencies section: gt-shapefile and gt-swing for our
-   project.
+3. Next we add two GeoTools modules to the dependencies section: gt-shapefile and gt-swing.
 
    .. literalinclude:: artifacts/pom.xml
         :language: xml
@@ -296,8 +294,8 @@ Here are some additional challenges for you to try:
 
        import org.geotools.data.CachingFeatureSource;
   
-* Try and sort out what all the different “side car” files are – and what they are for. The sample
-  data set includes “shp”, “dbf” and “shx”. How many other side car files are there?
+* Try and sort out what all the different "side car" files are – and what they are for. The sample
+  data set includes "shp", "dbf" and "shx". How many other side car files are there?
 
   .. This exercise asks users to locate the geotools user guide or wikipedia
   
@@ -312,9 +310,9 @@ Here are some additional challenges for you to try:
      
 
 * Important: GeoTools is an active open source project – you can quickly use maven to try out the
-  latest nightly build by changing your pom.xml file to use a “SNAPSHOT” release.
+  latest nightly build by changing your pom.xml file to use a "SNAPSHOT" release.
   
-  At the time of writing 8-SNAPSHOT under active development.
+  At the time of writing |version|-SNAPSHOT is under active development.
   
   .. literalinclude:: artifacts/pom2.xml
      :language: xml
@@ -342,7 +340,7 @@ The alternative to using Maven to download and manage jars for you is to manuall
 To start with we will obtain GeoTools from the website:
 
 1. Download the GeoTools binary release from http://sourceforge.net/projects/geotools/files 
-2. Extract the geotools-2.6.0-bin.zip file to C:\java\geotools-2.6.0 folder.
+2. Extract the geotools-2.6.0-bin.zip file to C:\\java\\geotools-2.6.0 folder.
 3. If you open up the folder and have a look you will see GeoTools and all of the other jars that
    it uses including those from other libraries such as GeoAPI and JTS.
 
@@ -354,11 +352,11 @@ To start with we will obtain GeoTools from the website:
    
 5. From the Library Manager press the New Library button.
 
-6. Enter “GeoTools” for the Library Name and press OK
+6. Enter "GeoTools" for the Library Name and press OK
 
-7. You can now press the Add JAR/Folder button and add in all the jars from C:\java\GeoTools-|release|
+7. You can now press the Add JAR/Folder button and add in all the jars from C:\\java\\GeoTools-|release|
    
-8. GeoTools includes a copy of the “EPSG” map projections database; but also allows you to hook up
+8. GeoTools includes a copy of the "EPSG" map projections database; but also allows you to hook up
    your own copy of the EPSG database as an option. However, only one copy can be used at a time
    so we will need to remove the following jars from the Library Manager:
    
@@ -386,9 +384,9 @@ To start with we will obtain GeoTools from the website:
 
 10. We are now ready to proceed with creating an example project. Select File > New Project
 
-11. Choose the default “Java Application”
+11. Choose the default "Java Application"
 
-12. Fill in “Tutorial” as the project name; and our initial Main class will be called “Quickstart”.
+12. Fill in "Tutorial" as the project name; and our initial Main class will be called "Quickstart".
 
 13. Open up Example in the Projects window, right click on Libraries and select Add Libraries.
     Choose GeoTools from the Add Library dialog.

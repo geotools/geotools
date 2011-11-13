@@ -4,8 +4,6 @@
 :Version: |release|
 :License: Create Commons with attribution
 
-.. _feature_tutorial:
-
 ********************
  Feature Tutorial
 ********************
@@ -23,17 +21,17 @@ prior to running through this workbook. We need to be sure that you have an envi
 in with GeoTools jars and all their dependencies. For those using maven we will start off each
 section with the dependencies required.
 
-This workbook features a new “code first” approach – we have made every effort to make these
+This workbook features a new "code first" approach. We have made every effort to make these
 examples both visual and code centered. We have included some background materials explaining
 the concepts and ideas in case you are interested.
 
-This workbook is part of the FOSS4G 2010 conference proceedings.
+This workbook is featured as part of OSDC2011, FOSS4G 2010 and FOSS4G 2009 conferences.
 
 About Your Instructors
 
 * Jody Garnett is the lead architect for the uDig project; and on the steering committee for
   GeoTools; GeoServer and uDig. Taking the role of geospatial consultant a bit too literally
-  Jody has presented workshops and training courses in every continent (except Antarctica).
+  Jody has presented workshops and training courses on every continent (except Antarctica).
   Jody Garnett is an employee of LISAsoft. 
 
 * Michael Bedward is a researcher with the NSW Department of Environment and Climate Change
@@ -43,7 +41,7 @@ About Your Instructors
 CSV2SHP
 =======
 
-We are trying a new track for introducing features this year; rather then reading through a
+We are trying a new track for introducing features this year; rather than reading through a
 shapefile and ripping things apart in an artificial exercise, we are going to start by building
 a shapefile from scratch so you get to see every last thing that goes into creating features.
 
@@ -96,7 +94,9 @@ Now we look at the rest of the main method in sections...
 Create a FeatureType
 --------------------
 
-We create a FeatureType to describe the data that we are importing from the CSV file and writing to a shapefile.
+We create a FeatureType to describe the data that we are importing from the CSV file and writing
+to a shapefile.
+
 Here we use the DataUtilities convenience class:
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
@@ -206,7 +206,7 @@ Other things to try
   .. instructor note: this is the real key to the exercise and why simple feature type builder
      exists ... allowing you to generate your own shapefile dynamically
   
-* Use the Geometry “buffer” method to create circles based on the population size of the each city.
+* Use the Geometry "buffer" method to create circles based on the population size of the each city.
 
     .. code-block:: java
 
@@ -280,7 +280,7 @@ will create a Feature Type called Airport.
  .. image:: images/airport.png
  
 Although it is not a capability supported by Java, early programming languages made use of a
-prototype system (rather than a class system) that supported lots of “one off” Objects. You will
+prototype system (rather than a class system) that supported lots of "one off" Objects. You will
 find this situation is fairly common when making maps – since how many Eiffel towers are there?
 You will also occasionally find the same real world thing represented a couple of different ways
 (the Eiffel tower can be a landmark or a tower depending on context).
@@ -297,8 +297,8 @@ Here is a handy cheat sheet:
   ====================== =============================
 
 The Feature model is actually a little bit more crazy than us Java programmers are used to since
-it considers both attribute and operation to be “properties” of a Feature. Perhaps when Java gets
-closures we may be able to catch up.
+it considers both attribute and operation to be "properties" of a Feature. Perhaps when Java
+gets closures we may be able to catch up.
 
 The really interesting thing for me is that map makers were sorting out all this stuff back in the
 1400s and got every bit as geeky as programmers do now. So although we would love to teach them
@@ -327,7 +327,7 @@ Geometry
 
 The other difference between an Object and a Feature is that a Feature has some form of location
 information (if not we would not be able to draw it on a map). The location information is going
-to be captured by a “Geometry” (or shape) that is stored in an attribute.
+to be captured by a "Geometry" (or shape) that is stored in an attribute.
 
  .. image:: images/geometry.png
  

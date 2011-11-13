@@ -560,7 +560,7 @@ Now we need to create the binary, source and javadoc archives that users can dow
       cd docs
       mvn install
       cd target/user
-      zip -9 -r ../../../target/geotools-2.6.5-welcome.zip html/
+      zip -9 -r ../../../target/geotools-2.6.5-userguide.zip html/
 
 Test the src release
 ^^^^^^^^^^^^^^^^^^^^

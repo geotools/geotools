@@ -87,7 +87,7 @@
       <groupId>com.nativelibs4java</groupId>
       <artifactId>bridj</artifactId>
       <classifier>c-only</classifier>
-      <version>0.6-SNAPSHOT</version>
+      <version>0.6</version>
 
       <exclusions>
         <exclusion>

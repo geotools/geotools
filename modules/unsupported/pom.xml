@@ -169,6 +169,12 @@
          <module>ogr</module>
        </modules>
      </profile>
+     <profile>
+       <id>shapefile-ng</id>
+       <modules>
+         <module>shapefile-ng</module>
+       </modules>
+     </profile>
 
      <profile>
        <id>unsupported</id>

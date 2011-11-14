@@ -1071,7 +1071,7 @@ class RasterLayerRequest {
 					
 
 	        
-			        final GridToEnvelopeMapper geMapper= new GridToEnvelopeMapper(new GridEnvelope2D(requestedRasterArea),cropBBox);
+			        final GridToEnvelopeMapper geMapper= new GridToEnvelopeMapper(new GridEnvelope2D(destinationRasterArea),cropBBox);
 			        final AffineTransform tempTransform = geMapper.createAffineTransform();
 //			        final double scaleX=XAffineTransform.getScaleX0((AffineTransform) requestedGridToWorld)/XAffineTransform.getScaleX0(tempTransform);
 //			        final double scaleY=XAffineTransform.getScaleY0((AffineTransform) requestedGridToWorld)/XAffineTransform.getScaleY0(tempTransform);

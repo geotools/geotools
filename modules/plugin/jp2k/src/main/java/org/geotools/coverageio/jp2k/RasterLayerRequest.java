@@ -753,7 +753,7 @@ class RasterLayerRequest {
 			        //
 					requestedResolution=null;
 
-			        final GridToEnvelopeMapper geMapper = new GridToEnvelopeMapper(new GridEnvelope2D(requestedRasterArea),cropBBox);
+			        final GridToEnvelopeMapper geMapper = new GridToEnvelopeMapper(new GridEnvelope2D(destinationRasterArea),cropBBox);
 			        final AffineTransform tempTransform = geMapper.createAffineTransform();
 			        requestedResolution= new double[] {
 							XAffineTransform.getScaleX0(tempTransform),

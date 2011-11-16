@@ -175,6 +175,12 @@
          <module>shapefile-ng</module>
        </modules>
      </profile>
+     <profile>
+       <id>geogit-versioned</id>
+       <modules>
+         <module>geogit-versioned</module>
+       </modules>
+     </profile>
 
      <profile>
        <id>unsupported</id>

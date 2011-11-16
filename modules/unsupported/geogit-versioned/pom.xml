@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ======================================================================= 
+	Maven Project Configuration File The Geotools Project http://www.geotools.org/ 
+	Version: $Id$ ======================================================================= -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.geotools</groupId>
+		<artifactId>unsupported</artifactId>
+		<version>8-SNAPSHOT</version>
+	</parent>
+
+
+	<!-- =========================================================== -->
+	<!-- Module Description -->
+	<!-- =========================================================== -->
+	<groupId>org.geotools.unsupported</groupId>
+	<artifactId>gt-geogit-versioned</artifactId>
+	<packaging>jar</packaging>
+	<name>GeoGIT DataStore</name>
+
+	<scm>
+		<connection>
+      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/geogit-versioned
+    </connection>
+		<url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/geogit-versioned</url>
+	</scm>
+
+	<description></description>
+
+	<licenses>
+		<license>
+			<name>Lesser General Public License (LGPL)</name>
+			<url>http://www.gnu.org/copyleft/lesser.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<!-- =========================================================== -->
+	<!-- Developers and Contributors -->
+	<!-- =========================================================== -->
+	<developers>
+		<developer>
+			<name>Gabriel Roldan</name>
+			<id>groldan</id>
+			<email></email>
+		</developer>
+	</developers>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.fasterxml.uuid</groupId>
+			<artifactId>java-uuid-generator</artifactId>
+			<version>3.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geogit</groupId>
+			<artifactId>geogit</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-cql</artifactId>
+			<version>8-SNAPSHOT</version>
+		</dependency>
+
+
+		<dependency>
+			<!-- Google Common Libraries. Featuring com.google.collect collection 
+				classes -->
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>r09</version>
+		</dependency>
+
+		<!-- Berkeley DB JE -->
+		<!--
+		<dependency>
+			<groupId>com.sleepycat</groupId>
+			<artifactId>je</artifactId>
+			<version>4.1.7</version>
+		</dependency>
+		-->
+
+		<!-- Test scope dependencies -->
+		<dependency>
+			<groupId>org.geogit</groupId>
+			<artifactId>geogit</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<classifier>tests</classifier>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.8.5</version>
+			<scope>test</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-property</artifactId>
+			<version>8-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+
+</project>

@@ -48,7 +48,23 @@
 			<id>groldan</id>
 			<email></email>
 		</developer>
+		<developer>
+			<name>Mark Leslie</name>
+			<id>mleslie</id>
+			<email>mark.leslie@lisasoft.com</email>
+		</developer>
 	</developers>
+
+	<repositories>
+		<repository>
+			<id>oracle</id>
+			<name>Oracles Maven Repository</name>
+			<url>http://download.oracle.com/maven/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 
 	<dependencies>
 		<dependency>
@@ -77,13 +93,11 @@
 		</dependency>
 
 		<!-- Berkeley DB JE -->
-		<!--
 		<dependency>
 			<groupId>com.sleepycat</groupId>
 			<artifactId>je</artifactId>
 			<version>4.1.7</version>
 		</dependency>
-		-->
 
 		<!-- Test scope dependencies -->
 		<dependency>

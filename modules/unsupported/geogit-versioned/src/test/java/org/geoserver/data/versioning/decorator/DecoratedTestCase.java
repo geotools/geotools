@@ -383,14 +383,60 @@ public abstract class DecoratedTestCase extends RepositoryTestCase {
         return featList;
     }
 
+    /**
+     * This function uses the custom comparison function compareFeature
+     * in order to ignore any featureVersion information held by the identifier.
+     * @param feat
+     * @param list
+     * @return
+     */
     protected boolean containsFeature(SimpleFeature feat,
             List<SimpleFeature> list) {
+        if(feat == null)
+            return false;
         Iterator<SimpleFeature> it = list.iterator();
         while (it.hasNext()) {
-            if (feat.equals(it.next()))
+            SimpleFeature otherFeat = it.next();
+            if(compareFeature(feat, otherFeat)) {
                 return true;
+            }
         }
         LOGGER.info("Could not match feature to list: " + feat);
         return false;
+    }
+    
+    /**
+     * This function is meant to compare feature contents with test features,
+     * and as such, needs to ignore featureVersion or rid information
+     * in FeatureId's.
+     * @param feat
+     * @param otherFeat 
+     * @return
+     */
+    private boolean compareFeature(SimpleFeature feat, SimpleFeature otherFeat) {
+        FeatureId fid = feat.getIdentifier();
+        FeatureId otherFid = otherFeat.getIdentifier();
+        if(!fid.equalsFID(otherFid)) {
+            return false;
+        }
+        if(!feat.getFeatureType().equals(otherFeat.getFeatureType())) {
+            return false;
+        }
+        for(int i = 0; i < feat.getAttributeCount(); i++) {
+            Object attr = feat.getAttribute(i);
+            Object otherAttr = otherFeat.getAttribute(i);
+            if(attr == null) {
+                if(otherAttr != null) {
+                    return false;
+                }
+            } else {
+                if(otherAttr == null) {
+                    return false;
+                } else if(!attr.equals(otherAttr)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

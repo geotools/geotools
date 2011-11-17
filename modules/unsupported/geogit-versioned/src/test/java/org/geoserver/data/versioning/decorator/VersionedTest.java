@@ -17,14 +17,29 @@
 package org.geoserver.data.versioning.decorator;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
+import org.geogit.api.LogOp;
+import org.geogit.api.ObjectId;
+import org.geogit.api.Ref;
+import org.geogit.api.RevCommit;
+import org.geogit.api.RevTree;
+import org.geogit.storage.ObjectReader;
+import org.geogit.storage.WrappedSerialisingFactory;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.filter.FilterFactoryImpl;
+import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.identity.Version;
@@ -308,5 +323,145 @@ public class VersionedTest extends DecoratedTestCase {
                 feats.close();
         }
     }
+    
+    public void testConsistencyNoHistory() throws Exception {
+        verifyVersionedConsistency();
+        verifyUnversionedConsistency();
+    }
+    
+    public void testConsistencyHistory() throws Exception {
+        updateTestFeatures();
+        updateSampleFeatures();
+        finalTestFeatureUpdate();
+        verifyVersionedConsistency();
+        verifyUnversionedConsistency();
+    }
+    
+    private void verifyUnversionedConsistency() throws Exception {
+        SimpleFeatureIterator feats = null;
+        try {
+            List<SimpleFeature> decoratedFeatures = new ArrayList<SimpleFeature>();
+            
+            SimpleFeatureSource source = unversioned.getFeatureSource(testName);
+            assertNotNull(source);
+            
+            Query query = new Query(testName);
+            SimpleFeatureCollection collection = source.getFeatures(query);
+            assertNotNull(collection);
+            feats = collection.features();
+            assertNotNull(feats);
+            while(feats.hasNext()) {
+                SimpleFeature feat = feats.next();
+                assertNotNull(feat);
+                decoratedFeatures.add(feat);
+            }
+            
+            List<SimpleFeature> versionedFeatures = getLatestFeatures(testType);
+            compareFeatureLists(decoratedFeatures, versionedFeatures);
+            
+        } finally {
+            if(feats != null)
+                feats.close();
+        }
+        
+    }
+   
+    private void verifyVersionedConsistency() throws Exception {
+        SimpleFeatureIterator feats = null;
+        try {
+            List<SimpleFeature> decoratedFeatures = new ArrayList<SimpleFeature>();
 
+            SimpleFeatureSource source = versioned.getFeatureSource(testName);
+            assertNotNull(source);
+
+            Query query = new Query(testName);
+            query.setVersion("ALL");
+
+            SimpleFeatureCollection collection = source.getFeatures(query);
+            assertNotNull(collection);
+            feats = collection.features();
+            assertNotNull(feats);
+            while(feats.hasNext()) {
+                SimpleFeature feat = feats.next();
+                assertNotNull(feat);
+                decoratedFeatures.add(feat);
+            }
+            
+            List<SimpleFeature> versionedFeatures = getAllFeatures(testType);
+            compareFeatureLists(decoratedFeatures, versionedFeatures);
+            
+        } finally {
+            if(feats != null)
+                feats.close();
+        }
+    }
+    
+    private void compareFeatureLists(List<SimpleFeature> left, List<SimpleFeature> right) {
+        assertEquals(left.size(), right.size());
+        Iterator<SimpleFeature> it = left.iterator();
+        while(it.hasNext()) {
+            SimpleFeature lfeat = it.next();
+            LOGGER.info(lfeat.toString());
+            assertTrue(containsFeature(lfeat, right));
+        }
+    }
+    
+    private List<SimpleFeature> getLatestFeatures(SimpleFeatureType featureType) {
+        Name typeName = featureType.getName();
+        
+        LogOp logOp = new LogOp(repo);
+        logOp.addPath(typeName.getNamespaceURI(), typeName.getLocalPart()).setLimit(1);
+        return getFeaturesFromLog(logOp, featureType);
+    }
+    
+    private List<SimpleFeature> getAllFeatures(SimpleFeatureType featureType) {
+        Name typeName = featureType.getName();
+        
+        LogOp logOp = new LogOp(repo);
+        logOp.addPath(typeName.getNamespaceURI(), typeName.getLocalPart());
+        return getFeaturesFromLog(logOp, featureType);
+    }
+    
+    private List<SimpleFeature> getFeaturesFromLog(LogOp logOp, SimpleFeatureType featureType) {
+        Name typeName = featureType.getName();
+        try {
+            Set<Ref> refs = new HashSet<Ref>();
+            Iterator<RevCommit> featureCommits = logOp.call();
+            while(featureCommits.hasNext()) {
+                RevCommit cmt = featureCommits.next();
+                refs.addAll(getRefsByCommit(cmt, typeName));
+            }
+            List<SimpleFeature> feats = new ArrayList<SimpleFeature>();
+            for(Ref ref : refs) {
+                SimpleFeature feat = (SimpleFeature)repo.getFeature(featureType, ref.getName(), ref.getObjectId());
+                feats.add(feat);
+            }
+            return feats;
+        } catch (Exception ex) {
+            /*
+             * Need some logging.
+             */
+            return Collections.emptyList();
+        }
+    }
+    
+    private List<Ref> getRefsByCommit(RevCommit commit, Name typeName) {
+        List<Ref> treeRefs = new ArrayList<Ref>();
+        if (commit != null) {
+            ObjectId commitTreeId = commit.getTreeId();
+            RevTree commitTree = repo.getTree(commitTreeId);
+            Ref nsRef = commitTree.get(typeName.getNamespaceURI());
+            RevTree nsTree = repo.getTree(nsRef.getObjectId());
+            Ref typeRef = nsTree.get(typeName.getLocalPart());
+            RevTree typeTree = repo.getTree(
+                    typeRef.getObjectId());
+            Iterator<Ref> it = typeTree.iterator(null);
+
+            while (it.hasNext()) {
+                Ref nextRef = it.next();
+                treeRefs.add(nextRef);
+            }
+        }
+        return treeRefs;
+    }
 }

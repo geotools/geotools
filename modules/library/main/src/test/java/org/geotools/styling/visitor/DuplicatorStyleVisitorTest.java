@@ -776,4 +776,18 @@ public class DuplicatorStyleVisitorTest extends TestCase {
         assertEquals("OtherText of TextSymbolizer2 has not been correctly duplicated", otherText.getText(), copy
                 .getOtherText().getText());        
     }
+    
+    /*
+     * Tests that perpendicularOffset for LineSymbolizer is duplicated correctly
+     */
+    public void testLineSymbolizerWithPerpendicularOffset(){
+        LineSymbolizer ls = sf.createLineSymbolizer();
+        ls.setPerpendicularOffset(ff.literal(0.88));
+        
+        //copy
+        LineSymbolizer copy = (LineSymbolizer) visitor.copy(ls);
+        
+        //compare
+        assertEquals("PerpendicularOffset of LineSymbolizer has not been correctly duplicated",ls.getPerpendicularOffset(),copy.getPerpendicularOffset());
+    }
 }

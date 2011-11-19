@@ -96,9 +96,12 @@ public class SLDParser {
     
     private static final String VendorOptionString = "VendorOption";
     
+    private static final String PerpendicularOffsetString = "PerpendicularOffset";
+    
     private static final Pattern WHITESPACES = Pattern.compile("\\s+", Pattern.MULTILINE);
     private static final Pattern LEADING_WHITESPACES = Pattern.compile("^\\s+");
     private static final Pattern TRAILING_WHITESPACES = Pattern.compile("\\s+$");
+
 
     private FilterFactory ff;
 
@@ -944,6 +947,9 @@ public class SLDParser {
                 symbol.setStroke(parseStroke(child));
             } else if (childName.equalsIgnoreCase(VendorOptionString)) {
                 parseVendorOption(symbol, child);
+            } else if (childName.equalsIgnoreCase(PerpendicularOffsetString)) {
+                final String offsetValue = getFirstChildValue(child);
+                symbol.setPerpendicularOffset((ff.literal(Double.parseDouble(offsetValue))));
             }
         }
 

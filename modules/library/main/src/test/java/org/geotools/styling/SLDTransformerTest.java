@@ -967,4 +967,34 @@ public class SLDTransformerTest {
                 .getOtherText().getText());        
         
     }
+    
+    /**
+     * Test that perpendicularOffset for LineSymbolizer is correctly exported and reimported
+     * 
+     * @throws TransformerException
+     * @throws SAXException
+     * @throws IOException
+     * @throws XpathException
+     */
+    @Test
+    public void testLineSymbolizerWithPerpendicularOffset() throws TransformerException, SAXException, IOException, XpathException {
+        StyleBuilder sb = new StyleBuilder(); 
+        LineSymbolizer ls = sb.createLineSymbolizer();
+        ls.setPerpendicularOffset(ff.literal(0.77));
+        
+        //check XML
+        Document doc = buildTestDocument(transformer.transform(ls));
+        assertXpathEvaluatesTo("1", "count(/sld:LineSymbolizer/sld:PerpendicularOffset)", doc);
+        
+        // Transform, reimport and compare
+        String xml = transformer.transform(sb.createStyle(ls));
+
+        SLDParser sldParser = new SLDParser(sf);
+        sldParser.setInput(new StringReader(xml));
+        Style importedStyle = (Style) sldParser.readXML()[0];
+        LineSymbolizer copy = (LineSymbolizer) importedStyle.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
+        
+        // compare
+        assertEquals("Perpendicular offset of LineSymbolizer has not been correctly ex- and reimported",ls.getPerpendicularOffset(),copy.getPerpendicularOffset());
+    }
 }

@@ -677,6 +677,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         copy.setUnitOfMeasure(line.getUnitOfMeasure());
         copy.setStroke( copy( line.getStroke()));
         copy.getOptions().putAll(line.getOptions());
+        copy.setPerpendicularOffset(line.getPerpendicularOffset());
         
         if( STRICT && !copy.equals( line )){
             throw new IllegalStateException("Was unable to duplicate provided LineSymbolizer:"+line );

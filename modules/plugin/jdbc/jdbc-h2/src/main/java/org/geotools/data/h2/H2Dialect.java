@@ -29,6 +29,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
 
 import org.geotools.geometry.jts.Geometries;
@@ -103,7 +104,9 @@ public class H2Dialect extends SQLDialect {
             throws SQLException {
         
         String typeName = columnMetaData.getString("TYPE_NAME");
-        if ("BLOB".equalsIgnoreCase(typeName)) {
+        if("UUID".equalsIgnoreCase(typeName)) {
+            return UUID.class;
+        } else if ("BLOB".equalsIgnoreCase(typeName)) {
             String schemaName = columnMetaData.getString("TABLE_SCHEM");
             String tableName = columnMetaData.getString("TABLE_NAME");
             String columnName = columnMetaData.getString("COLUMN_NAME");

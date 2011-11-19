@@ -79,7 +79,7 @@ GeoTools extends the concept of a TextSymbolizer allowing:
 * TextSymbolizer.getPriority()
   
   Priority used to determine precedence when labels collisions occur during rendering. The label with the highest priority
-  "wins" with the others being moved out of the way (within a tolerance) or simply not displayed.
+  "wins" with the others being moved out of the way (within a tolerance) or just not displayed.
 
 * TextSymbolizer.getOption(String)
   

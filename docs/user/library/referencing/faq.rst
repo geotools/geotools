@@ -264,7 +264,7 @@ The gt-epsg-wkt plugin is intended to be used on its own and should not be combi
 with any of the other gt-epsg-h2, or gt-epsg-hsql plugins as they will end up in
 conflict.
 
-If you simply want to add a few more definitions over and above those provided by the
+If you want to add a few more definitions over and above those provided by the
 official database (ie epsg-hsql or epsg-h2) please use the following (taken from the
 uDig application)::
   

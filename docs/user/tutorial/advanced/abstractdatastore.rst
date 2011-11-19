@@ -742,7 +742,7 @@ Now that we are going to be writing files we can fill in the createNewDataStore 
       :start-after: // createNewDataStore start
       :end-before: // createNewDataStore end
    
-   No surprises here; the code simply creates a directory for PropertyDataStore to work in.
+   No surprises here; the code creates a directory for PropertyDataStore to work in.
   
 PropertyDataStore
 ^^^^^^^^^^^^^^^^^
@@ -866,7 +866,7 @@ and inform the DataStore of modifications.
       :start-after: // remove start
       :end-before: // remove end
 
-  To implement remove, we simply won't write out the original Feature.
+  To implement remove, we will skip over the origional feature (and just won't write it out).
   Most of the method is devoted to gathering up the information needed to issue
   a feature removed event.
 
@@ -879,7 +879,7 @@ and inform the DataStore of modifications.
 
    To implement close() we must remember to write out any remaining features in the DataStore
    before closing our new file. To implement this we have performed a small optimization: we
-   simply echo the line acquired by the PropertyFeatureReader.
+   echo the line acquired by the PropertyFeatureReader.
    
    The last thing our FeatureWriter must do is replace the existing File with our new one.
 
@@ -910,7 +910,7 @@ now we can go ahead and define the class.
   JDBC ResultSets or random access file may use hasNext() to indicate that they are streaming
   over existing result set.
   
-  Our implementation of next() will simply start a newLine for the feature that is about to be written.
+  Our implementation of next() will start a newLine for the feature that is about to be written.
 
 3. Add writeFeatureID():
 
@@ -1028,7 +1028,7 @@ This produces the following output:
      
      This is shown after t1 commit, where transaction t2 is seeing 4 features (ie the
      current file contents plus the one feature that has been added on t2).
-   * This really shows that FeatureSource and FeatureStore are simply "views" into your data.
+   * This really shows that FeatureSource and FeatureStore are "views" into your data.
      
      * If you configure two FeatureStores with the same transaction they will act the same.
      * Transaction is important and represents what you are working on
@@ -1289,7 +1289,7 @@ provides a way for you to indicate if the information is unavilable.
 
 * PropertyDatastore.getFeatureSource( typeName );
 
-By default the implementations returned are based simply on FeatureReader and FeatureWriter.
+By default the implementations returned are based on FeatureReader and FeatureWriter.
 Override this method to return your own subclasses that are tuned for your data format.
 
 FeatureStore Optimisation

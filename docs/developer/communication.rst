@@ -69,8 +69,9 @@ Internet Relay Chat
 GeoTools developers use an IRC channel for real time collaboration (for situations where email is
 too slow) - this is also a suitable venue for questions.
 
-If you are new to IRC, you will need to find an IRC client. The later versions of Netscape and
-Mozilla have IRC built in, and you can connect to a GeoTools meeting simply by using the URL:
+If you are new to IRC, you will need to find an IRC client. If you have configured your browser
+to support IRC (Firefox can use the Chatzilla plugin for example), and you can connect to a
+GeoTools meeting by clicking on the following URL:
 irc://irc.freenode.net/geotools.
 
 The information you need to configure your IRC client are:

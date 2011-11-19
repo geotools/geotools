@@ -1,9 +1,12 @@
 Pregeneralized Plugin
 ---------------------
 
-This plugin offers the the possibility to use pregeneralized features to reduce cpu and memory usage at runtime. The effect for the client is simply a better response time.
+This plugin offers the the possibility to use pregeneralized features to reduce cpu and memory
+usage at runtime. The effect is used to improve the response time for client code.
 
-This is an advanced plugin that is great for eking the greatest performance out of the GeoTools rendering system. This plugin allows you to smoothly switch between data at different levels of simplification when rendering at different levels.
+This is an advanced plugin that is great for eking the greatest performance out of the GeoTools
+rendering system. This plugin allows you to smoothly switch between data at different levels of
+simplification when rendering at different levels.
 
 Consider it something like an image pyramid for raster data operating at different zoom levels.
 

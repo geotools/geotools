@@ -91,7 +91,7 @@ Using the container we just made we can get some factories but we get the interf
   PrimitiveFactory primF = cont.getComponentInstanceOfType( PrimitiveFactory.class );
   GeometryFactory geomF = cont.getComponentInstanceOfType( GeometryFactory.class );
 
-Here we simply asked the container to give us the factories of the different types we would need.
+Here we asked the container to give us the factories of the different types we would need.
 
 Creating a Point
 ^^^^^^^^^^^^^^^^

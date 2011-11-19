@@ -12,9 +12,10 @@ This plugin is well suited for use in a Java Applet or other restricted environm
 EPSG Definitions
 ''''''''''''''''
 
-The range of represented EPSG codes is not complete, it is limited by the projections supported by GeoTools, and allowances have been made to go with the axis order used by WMS 1.1.1.
+The range of represented EPSG codes is not complete, it is limited by the projections supported by
+GeoTools, and allowances have been made to go with the axis order used by WMS 1.1.1.
 
-The Plugin will work out of the box, simply drop it on your path.
+The Plugin will work out of the box, include it in your CLASSPATH.
 
 Beyond EPSG Database
 ''''''''''''''''''''

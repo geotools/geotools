@@ -52,7 +52,8 @@ The basic layout of a Graph is a collection of edges joined together at nodes.
 
 **Graph**
 
-The core graph data structure is simply a collection of nodes and edges, a range of methods are available allowing access using visitors.
+The core graph data structure is a collection of nodes and edges, a range of methods are available
+allowing access using visitors.
 
 **Node**
 
@@ -112,7 +113,7 @@ An alternative to direct access is the configure a **GraphTraversal** using:
 * **GraphWalker**: walker being iterated over the graph (usually to accomplish a specific goal)
   
    GeoTools provides out of the box implementations for many common problems: finding the the
-   shortest path, partition a graph into sections, or simply visiting all the elements.
+   shortest path, partition a graph into sections, or visiting all the elements.
 
 Directed Graph
 ^^^^^^^^^^^^^^

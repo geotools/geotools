@@ -18,9 +18,12 @@ Here is how to drawn an outputArea rectangle::
   
   draw.paint(g2d, outputArea, map.getLayerBounds() );
 
-If you have completed the Quickstart, this is the approach used by the JMapPane class we use in a lot of our tutorials.
+If you have completed the Quickstart, this is the approach used by the JMapPane class we use in a
+lot of our tutorials.
 
-The important part of the above example is that GTRenderer works on the Java2D class **Graphics2D**. You can find many implementations of Graphics2D allowing GeoTools to work with a range of graphics systems beyond simply the screen.
+The important part of the above example is that GTRenderer works on the Java2D class
+**Graphics2D**. You can find many implementations of Graphics2D allowing GeoTools to work with a
+range of graphics systems beyond the screen.
 
 Swing
 ^^^^^

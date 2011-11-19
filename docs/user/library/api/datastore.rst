@@ -450,8 +450,8 @@ For most purposes this class is an internal details, however if you want to look
   they can be processed into a DataStore. Note the DataStore may
   still not work (if for example the username and password were
   incorrect).
-  This method simply confirms the required information
-  is available.
+  
+  This method confirms the required information is available.
 
 * DataAccessFactory.isAvailable()
   

@@ -1,8 +1,8 @@
 Maven Install
 -------------
 
-We use Maven for our build environment, this page simply set's it up for you. Actual build
-instructions will happen later.
+We use Maven for our build environment, this page describes the development environment and
+configuration. Actual build instructions will happen later.
 
 Reference:
 

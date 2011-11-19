@@ -38,22 +38,25 @@ GeoTools requires a Java 1.6 SDK for versions 8.0 and above and Java 1.5 SDK for
 Why JAVA_HOME does not work on Windows
 ''''''''''''''''''''''''''''''''''''''
 
-How to Build using Java 5 and run using Java 6 on windows.
+How to use different versions of Java for building and running on windows.
 
-Several projects expect to make use of a JRE 6 runtime environment (simply for the speed benefit). If your computer is set up with both a JDK 1.5 for building GeoTools; and a JDK 6 for your other projects you will need to sort out how to switch between them.
+Several projects expect to make use of the latest JRE runtime environment
+(for speed or new features). If your computer is set up with both a stable JDK for buildin
+GeoTools; and an experimental JDK for your other projects you will need to sort out how
+to switch between them.
 
 One technique is to set up a batch file similar to the following:
 
 1. Hunt down the cmd.exe ( Start menu > Accessories > Command Prompt) and right click to send it to the desktop
 2. Edit the desktop cmd.exe short cut and change the target to::
       
-      %SystemRoot%\system32\cmd.exe /k C:\java\java15.bat
+      %SystemRoot%\system32\cmd.exe /k C:\java\java6.bat
 
-3. Create the C:\java\java15.bat file mentioned above::
+3. Create the C:\java\java6.bat file mentioned above::
    
       set ANT_HOME=C:\java\apache-ant-1.6.5
       set M2_HOME=C:\java\maven-2.0.9
-      set JAVA_HOME=C:\Program Files\Java\jdk1.5.0_19
+      set JAVA_HOME=C:\Program Files\Java\jdk1.6.0_29
       
       set PATH=%JAVA_HOME%\bin;%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;C:\Program Files\Subversion\bin;%M2_HOME%\bin;%ANT_HOME%\bin
 

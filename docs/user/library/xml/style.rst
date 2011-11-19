@@ -107,7 +107,7 @@ Parse a StyleLayerDescriptor from an input stream::
   SLDParser stylereader = new SLDParser(styleFactory, inputStream );
   StyledLayerDescriptor sld = stylereader.parseSLD();
 
-Or you can skip all of that and simply extract the defined Style objects::
+Or you can skip all of that and extract the defined Style objects as an array::
   
   SLDParser stylereader = new SLDParser( styleFactory, url);
   Style styles[] = stylereader.readXML();

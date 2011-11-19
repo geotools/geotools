@@ -96,7 +96,8 @@ Creating a Circle::
      return shapeFactory.createCircle();
    }
 
-Even though "GeometricShapeFactory" is provided out of the box from JTS; there is nothing fancy about the code. It simply creates a series of coordinates in a circle.
+Even though "GeometricShapeFactory" is provided out of the box from JTS; there is nothing fancy
+about the code. It creates a series of coordinates in a circle.
 
 Another approach is to create a curve or shape object with one of Java's handy Shape classes and then extract the coordinates from that object to create your geometry.
 

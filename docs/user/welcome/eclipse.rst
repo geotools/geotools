@@ -3,7 +3,7 @@ Welcome Eclipse Developers
 
 Eclipse is a popular integrated development environment for Java development. Since GeoTools is a Java library we would really like it to work out of the box for you.
 
-Our Eclipse Quickstart provides an excellent introduction to setting up eclipse for use with GeoTools covering the M2Eclipse project, command line maven or simply downloading GeoTools and using the jars in a project.
+Our Eclipse Quickstart provides an excellent introduction to setting up eclipse for use with GeoTools covering the M2Eclipse project, command line maven or downloading GeoTools and using the jars in a project.
 
 Making Associations with the SRC download
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

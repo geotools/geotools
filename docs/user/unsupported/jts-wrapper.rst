@@ -29,7 +29,8 @@ There have been reports of synchronization problems between the wrapper classes 
 Using JTS Wrapper
 -----------------
 
-The JTS Wrapper is a pure plugin and does not define any additional API. Simply place it on your CLASSPATH and the GeoTools GeometryFactory will be able to pick up this implementation and use it.
+The JTS Wrapper is a pure plugin and does not define any additional API. Place it on your
+CLASSPATH and the GeoTools GeometryFactory will be able to pick up this implementation and use it.
 
 It is recommended to use a GeometryBuilder in order to set up
 a group of factories to work together::

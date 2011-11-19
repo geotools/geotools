@@ -225,7 +225,7 @@ Creating a Style based on the selection
 ---------------------------------------
 
 Once the method above has worked out which features were selected, if any, it passes their FeatureIds to the
-**displaySelected** method.  This simply calls one of two Style creating methods and then redisplays the map with the
+**displaySelected** method.  This calls one of two Style creating methods and then redisplays the map with the
 updated Style:
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/style/SelectionLab.java

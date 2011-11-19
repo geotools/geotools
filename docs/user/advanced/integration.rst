@@ -124,7 +124,7 @@ Using OSGi with GeoTools is a great idea, and one we are still working on. OSGi 
 Single Plugin
 '''''''''''''
 
-The udig project uses this technique as a stopgap solution, simply placing all the GeoTools jars
+The udig project uses this technique as a stopgap solution: place all the GeoTools jars
 into a single plugin will allow the Factory SPI system to function.
 
 The Eclipse environment uses OSGi to manage the loading and unloading of "bundles" of resources,
@@ -147,11 +147,19 @@ explains how to create a bundle per jar manually.
 One Bundle per Jar
 ''''''''''''''''''
 
-In most cases, OSGi bundles are delivered as JAR files. The only difference between an OSGi bundle and a plain old JAR file is a number of special headers in the manifest required by the OSGi standard. Given a plain old JAR, you can simply wrap it in a bundle by creating an OSGi compliant manifest, putting your JAR on the Bundle-Classpath and creating a bundle JAR containing your new manifest and the plain old JAR. 
+In most cases, OSGi bundles are delivered as JAR files. The only difference between an OSGi bundle
+and a plain old JAR file is a number of special headers in the manifest required by the OSGi
+standard. Given a plain old JAR, you can wrap it in a bundle by creating an OSGi compliant
+manifest, putting your JAR on the Bundle-Classpath and creating a bundle JAR containing your
+new manifest and the plain old JAR. 
 
-However, this is not recommended, since a JAR-in-a-JAR means extra work for the classloader to retrieve classes from the inner JAR. To make a plain old JAR OSGi-compliant, you can simply unzip the JAR, add the required OSGi headers to the manifest and then rezip the whole lot.
+However, this is not recommended, since a JAR-in-a-JAR means extra work for the classloader
+to retrieve classes from the inner JAR. To make a plain old JAR OSGi-compliant, you can unzip
+the JAR, add the required OSGi headers to the manifest and then rezip the whole lot.
 
-After rebundling, any resources from the plain old JAR are now first-class citizens of the bundle JAR. This includes any files in META-INF/services, and this is in fact the first step to make the Factory SPI system work.
+After rebundling, any resources from the plain old JAR are now first-class citizens of the bundle
+JAR. This includes any files in META-INF/services, and this is in fact the first step to make the
+Factory SPI system work.
 
 .. note::
    
@@ -218,21 +226,33 @@ This should also solve the Factory SPI problem. The fragment requires the servic
    work in an OSGi environment in a way that is backward compatible, i.e. you
    can still use your bundle JARs as plain old JARs on the classpath.
 
-If at some point in future Geotools should decide to go the OSGi way (and allow itself to become dependent on OSGi), the Factory SPI approach should be dropped in favour of the OSGi service registry. Service providers would simply register their services under the class name of the implemented interface. Clients would use the OSGi service registry to look up the available services for an interface, possibly using additional parameters to select a specific implementation.
+If at some point in future Geotools should decide to go the OSGi way (and allow itself to become
+dependent on OSGi), the Factory SPI approach should be dropped in favour of the OSGi service
+registry. Service providers would register their services under the class name of the implemented
+interface. Clients would use the OSGi service registry to look up the available services for an
+interface, possibly using additional parameters to select a specific implementation.
 
 Third-Party Dependencies
 ''''''''''''''''''''''''
 
-In either approach, all-in-one or bundle-per-JAR, you also have to deal with external dependencies of Geotools, like vecmath, jdom, geoapi, and many others.
+In either approach, all-in-one or bundle-per-JAR, you also have to deal with external dependencies
+of Geotools, like vecmath, jdom, geoapi, and many others.
 
-You could further blow up your all-in-one bundle by also including the JARs for these external dependencies. Chances are high that some of these are also used by other non-Geotools bundles in your application, so this is likely to cause classloader problems, say if you already have a jdom bundle in your system.
+You could further blow up your all-in-one bundle by also including the JARs for these external
+dependencies. Chances are high that some of these are also used by other non-Geotools bundles in
+your application, so this is likely to cause classloader problems, say if you already have a JDOM
+bundle in your system.
 
-Thus, you should really follow the bundle-per-JAR approach and OSGify each third-party dependency into a separate bundle. Actually, there is no need to do all the work on your own: The SpringSource Enterprise Bundle Repository provides OSGified versions of many popular Java libraries.
+Thus, you should really follow the bundle-per-JAR approach and OSGify each third-party dependency
+into a separate bundle. Actually, there is no need to do all the work on your own: The SpringSource
+Enterprise Bundle Repository provides OSGified versions of many popular Java libraries.
 
 Eclipse-BuddyPolicy: ext
 ''''''''''''''''''''''''
 
-The GeoTools library makes use of Java Advanced Imaging - which is a Java extension. Just as OSGi is very careful about dependencies between bundles; it is also careful to ensure you do not accidentally depend on a Java extension that may not be present.
+The GeoTools library makes use of Java Advanced Imaging - which is a Java extension. Just as OSGi
+is very careful about dependencies between bundles; it is also careful to ensure you do not
+accidentally depend on a Java extension that may not be present.
 
 A normal application works like this:
 

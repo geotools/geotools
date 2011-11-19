@@ -37,7 +37,8 @@ Consider using a static constants instead::
    map.put(NO_DATA, value);
    value = map.get(NO_DATA);
 
-Note this static constant can still be used for generating human readable messages; it is simply used as a key to look up the appropriate translation.
+Note this static constant can still be used for generating human readable messages; it is
+used as a key to look up the appropriate translation.
 
 Use AffineTransform mathematic
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

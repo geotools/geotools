@@ -3,6 +3,6 @@ EPSG H2 Plugin
 
 This plugin works out of the box (as a pure java database with its own copy of the EPSG database included).
 
-To use simply place the gt-epsg-h2 jar on your CLASSPATH.
+To use place the gt-epsg-h2 jar on your CLASSPATH.
 
 Although this plugin is not supported, it is a drop in replacement for the gt-epsg-hsql plugin and is well suited if you are already using h2 and do not want a second pure java database dependency in your application. 

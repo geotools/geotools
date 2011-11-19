@@ -3,7 +3,7 @@ Image Plugin
 
 The image module in the plugin group provides access to the 'world plus image' file formats.
 
-This is the quickest way to get a GIF or JEPG onto a map display - simply add a small text
+This is the quickest way to get a GIF or JEPG onto a map display - add a small text
 file along side the image defining the image's extend and use this plugin.
 
 **References**

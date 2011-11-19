@@ -192,9 +192,13 @@ You (of course) must provide a replacement for deprecated API, it could be as si
 Documentation
 -------------
 
-You will need to update all test cases and demo code to use the new API; since our test cases are often used by those learning the library this is especially important (also leaving deprecated code in the test cases simply assures us of a broken build one release cycle later when the plug is pulled).
+You will need to update all test cases and demo code to use the new API; since our test cases are
+often used by those learning the library this is especially important (also leaving deprecated code
+in the test cases assures us of a broken build one release cycle later when the plug is pulled).
 
-The User Guide, and User Manual are often the target of documentation updates. The developers guide tries to stick to library architecture and only needs updating if you are changing the scope and/or focus of one of the core modules.
+The User Guide, and User Manual are often the target of documentation updates. The developers guide
+tries to stick to library architecture and only needs updating if you are changing the scope and/or
+focus of one of the core modules.
 
 Release
 -------

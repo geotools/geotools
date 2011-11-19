@@ -255,7 +255,7 @@ Feature
 
    You can also draw ideas like urban growth or predicted rain fall.
    
-A feature is quite simply something that can be drawn on a map. The strict definition is that a
+A feature is something that can be drawn on a map. The strict definition is that a
 feature is something in the real world – a feature of the landscape - Mt Everest, the Eiffel
 Tower, or even something that moves around like your great aunt Alice.
 
@@ -319,7 +319,7 @@ meet this requirement are so common we have broken out a sub-class to represent 
 SimpleFeature. 
 
 At the Java level the Feature API provided by GeoTools is similar to how java.util.Map is used – it
-is simply a data structure used to hold information. You can look up attribute values by key; and
+is a Java data structure used to hold information. You can look up attribute values by key; and
 the list of keys is provided by the FeatureType.
 
 Geometry

@@ -497,7 +497,7 @@ While the StyleVisitor interface will let modify a style in place we have never 
 
 The generic StyleVisitor interface is everything you would expect from the Gang of Four Visitor pattern, it has a visit methods one for each significant interface in a Style object.
 
-To use a StyleVisitor simply pass it to a style (or any style object)::
+To use a StyleVisitor pass it to a Style (or any style object) using the accepts method::
   
   style.accepts( styleVisitor );
 

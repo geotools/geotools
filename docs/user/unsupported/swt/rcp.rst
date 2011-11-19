@@ -20,7 +20,7 @@ Put the map panel inside the rcp application
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The source of the rcp application has been bundeled together with all the needed geotools libs and
-uploaded here. Simply import the project into eclipse and you are ready to go.
+uploaded here. From here import the project into eclipse and you are ready to go.
 
 * http://jgrasstools.googlecode.com/files/rcp-gt-swt.tar.gz
 

@@ -47,7 +47,7 @@ Encoding FeatureType into an XSD file::
   encode.setBaseURL(new URL("http://localhost/"));
   encode.encode(out, TYPE);
 
-This does simply write out an XSD file for the FeatureType and can be combined with the WFS 1.0 XSD file when writing feature collections.
+This writes out an XSD file for the FeatureType and can be combined with the WFS 1.0 XSD file when writing feature collections.
 
 FeatureCollection
 '''''''''''''''''
@@ -208,7 +208,7 @@ You can parse out a FeatureCollection in one gulp::
    GML gml = new GML(Version.WFS1_0);
    SimpleFeatureCollection featureCollection = gml.decodeFeatureCollection(in);
 
-Or for a more responsive user experience (or simply to work with large content) you can parse one feature at a time::
+Or for a more responsive user experience (or to work with large content) you can parse one feature at a time::
   
   URL url = TestData.getResource(this,"states.xml");
   InputStream in = url.openStream();

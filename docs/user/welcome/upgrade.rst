@@ -178,7 +178,7 @@ GeoTools 2.7
    
 The changes from GeoTools 2.6 to GeoTools 2.7 focus on making your code more readible; you will
 find a number of optional changes (such as using Query rather than DefaultQuery) which will
-simply make your code easier to follow.
+simplify make your code easier to follow.
 
 
 Query

@@ -98,7 +98,7 @@ dates on the copyright statement, the boilerplate itself covers project name and
 
 * Example of Reusing Code under another license
   
-  The simple rule of thumb here is to not modify the initial header at all; and simply
+  The simple rule of thumb here is to not modify the initial header at all; and
   stick the geotools header on top.
 
   * :download:`DateUtil.java </../../modules/library/main/src/main/java/org/geotools/feature/type/DateUtil.java>`    

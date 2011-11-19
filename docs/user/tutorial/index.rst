@@ -6,12 +6,11 @@ Tutorials
 Welcome to the GeoTools tutorial material. These workbooks are provided as part of an introduction
 to GIS workshop making use of examples from GeoTools and other Java libraries.
 
-.. sidebar:: OSDC
+.. sidebar:: Geospatial for Java
   
-  Have you signed up for the `Open Source Developers Conference 2011 <http://osdc.com.au/>`_ Canberra and
-  the `GeoTools Mini Conference <http://osdc.com.au/miniconfs/#geotools>`_?
-  
-  This course will be run on *November 14* and we hope to see you there!
+  If you are working through these tutorials as part of workshop please check with your
+  instructor. Many of the download materials should be available on a DVD in order to save
+  time.
   
 .. toctree::
    :maxdepth: 1

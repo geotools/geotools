@@ -30,7 +30,7 @@ The following are some of the core objects for this module:
   
   The main object of the design is the WebProcessingService class. WebProcessingService acts as a
   proxy for a remote WPS Server and can be used to examine and retrieve information from the server,
-  and to execute processes the server provides. To begin communicating with a server, simply pass
+  and to execute processes the server provides. To begin communicating with a server, pass
   in a URL pointing to a WPS Capabilities document (view examples below).
 
 * WPSFactory

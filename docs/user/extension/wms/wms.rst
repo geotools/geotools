@@ -5,8 +5,7 @@ The client code is fairly slick in that it takes care of version negotiation, an
 
 This page contains examples how how to connect and use the GeoTools WebMapServer class. WebMapServer acts as a proxy for a remote "Web Map Server" and can be used to examine and retrieve published information in the forms of descriptive java beans, and raw images.
 
-* To begin communicating with a server, simply pass in a URL pointing to 
-  a WMS Capabilities document.
+* To begin communicating with a server, pass in a URL pointing to a WMS Capabilities document.
   
   Constructing a WebMapServer object::
     

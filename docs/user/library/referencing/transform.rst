@@ -174,8 +174,8 @@ Notes
 
 Notes about projections in ESRI's ArcGIS 8.x
 
-* The "Mercator_1SP" and "Mercator_2SP" are simply called the "Mercator" in ArcGIS. The distinction between the 1 and 2 standard parallel cases is determined based on the "standard_parallel_1" parameter.
-* "Lambert_Conformal_Conic_1SP" and "Lambert_Conformal_Conic_2SP" are simply called the "Lambert_Conformal_Conic". The distinction is based on the values of the "standard_parallel_1" and "standard_parallel_2" parameters. Note that the "Lambert_Conformal_Conic" will NOT use the "latitude_of_origin" as the standard_parallel in the 1 SP case: you must also specify a "standard_parallel_1" parameter.
+* The "Mercator_1SP" and "Mercator_2SP" are called the "Mercator" in ArcGIS. The distinction between the 1 and 2 standard parallel cases is determined based on the "standard_parallel_1" parameter.
+* "Lambert_Conformal_Conic_1SP" and "Lambert_Conformal_Conic_2SP" are called the "Lambert_Conformal_Conic". The distinction is based on the values of the "standard_parallel_1" and "standard_parallel_2" parameters. Note that the "Lambert_Conformal_Conic" will NOT use the "latitude_of_origin" as the standard_parallel in the 1 SP case: you must also specify a "standard_parallel_1" parameter.
 * The "Albers_Conic_Equal_Area" is called the "Albers" in ArcGIS.
 
 Other Math Transform Parameters

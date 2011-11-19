@@ -9,9 +9,11 @@ References:
 
 *Before you Start*
 
-The most conservative way to deal with the definition of a **CoordinateReferenceSystem** is not to. Instead make use of an authority that provides complete definitions defined by a simple code.
+The most conservative way to deal with the definition of a **CoordinateReferenceSystem** is not
+to. Instead make use of an authority that provides complete definitions defined by a simple code.
 
-To hook this up simply make sure you have one of the **gt-epsg** plugins on your CLASSPATH. The **gt-epsg-hsql** plugin is recommended.
+To hook this up make sure you have one of the **gt-epsg** plugins on your CLASSPATH. The
+**gt-epsg-hsql** plugin is recommended.
 
 Defining a CoordinateReferenceSystem
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -24,7 +26,8 @@ This is easily the most common use for the CRS class::
 
 The example above assumes you have **gt-epsg-hsql** jar on your CLASSPATH.
 
-Depending on the jars you have on your CLASSPATH a range of authorities are available to define a coordinate reference system for you.
+Depending on the jars you have on your CLASSPATH a range of authorities are available to define a
+coordinate reference system for you.
 
 Using the "OGC URN" syntax::
   

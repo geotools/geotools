@@ -55,7 +55,7 @@ the quotes):
 
 ``--fix``
     The utility will attempt to fix any existing tags that have been incorrectly split across two
-    lines by auto-formatting. The default is to simply report files with such tags.
+    lines by auto-formatting. The default is to report files with such tags.
     
 ``--svn``
     The tag content will be enclosed in svn keyword delimiters ``$URL`` and ``$`` to be used for

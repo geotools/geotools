@@ -5,7 +5,7 @@ Provides an EPSG Coordinate Reference System authority based on the Java databas
 
 The plugin includes it's own copy of the EPSG database that has been converted from the original Microsoft Access.
 
-To use this plugin simply include it on your CLASSPATH.
+To use this plugin include it on your CLASSPATH.
 
 Database Creation
 ^^^^^^^^^^^^^^^^^

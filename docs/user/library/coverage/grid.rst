@@ -101,9 +101,13 @@ The basic pattern of the operations mechanism runs as follows:
 Operations
 ^^^^^^^^^^
 
-The Operations class provides a default instance with a series of methods to perform operations on a grid coverage. We use the static instance Operations.DEFAULT which acts merely as a convenience wrapper around the DefaultProcessor.doOperation(..) method and provides type safety and a simpler argument list.
+The Operations class provides a default instance with a series of methods to perform operations on
+a grid coverage. We use the static instance Operations.DEFAULT which acts merely as a convenience
+wrapper around the DefaultProcessor.doOperation(..) method and provides type safety and a simpler
+argument list.
 
-For all the methods which return Coverages, when using the GeoTools implementation we can simply cast them to the GridCoverage2D.
+When using GeoTools implementations of operations; for any methods which return a Coverage we can
+safely cast them to a GridCoverage2D.
 
 resample
 ''''''''

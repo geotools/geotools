@@ -362,7 +362,7 @@ case rather than evaluating the attributes we will directly match the FeatureId.
 
 .. image:: /images/filter_id.PNG
 
-The most common test is simply against FeatureId:
+The most common test is against FeatureId:
   
   .. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
     :language: java

@@ -51,9 +51,14 @@ ReferencedEnvelope does one thing very well; it is an Envelope that has a Coordi
    :start-after: // transformReferencedEnvelope start
    :end-before: // transformReferencedEnvelope end
 
-**ReferencedEnvelope** is used in a lot of GeoTools interfaces, basically anywhere we can get away with it. Simply put without knowing the the CoordinateReferenceSystem a raw JTS Envelope is incomplete; and difficult to use safely without making assumptions.
+**ReferencedEnvelope** is used in a lot of GeoTools interfaces, basically anywhere we can get away
+with it. Using a raw JTS Envelope without knowing the the CoordinateReferenceSystem is difficult to
+use as the information is incomplete forcing client code to make assumptions. Some code assumes
+the envelope is in WGS84 while other code assumes it is in the same Coordinate Reference System as
+the data being worked on.
 
-Some of our older interfaces that you are forced to read the javadocs in order to figure out the CoordinateReferenceSystem for a returned Envelope.
+Some of our older interfaces that you are forced to read the javadocs in order to figure out the
+CoordinateReferenceSystem for a returned Envelope.
 
 * Using a FeatureSource without ReferencedEnvelope example::
   

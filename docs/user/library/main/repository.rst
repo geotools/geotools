@@ -19,7 +19,8 @@ In the simplest approach, applications based on GeoTools keep track explicitly o
 
 An alternative approach for applications using more than one or a few DataStores, is to create a map structure with 'singleton' code to both ensure this singleton access to the data and easily grab the right DataStore when it is needed. The Map relates some identifier for the data store (the ID) with the DataStore class accessing that resource. URLs are often used for the ID.
 
-This second approach is so common that GeoTools developed the **Repository** interface along with two implementations to handle this situation.
+This second approach is so common that GeoTools developed the **Repository** interface along with
+two implementations to handle this situation.
 
 A more sophisticated approach "Catalog" approached is used by GeoServer and uDig in order to track
 large numbers of data sources (and lazily create DataStores as needed).
@@ -27,7 +28,8 @@ large numbers of data sources (and lazily create DataStores as needed).
 Singleton
 ^^^^^^^^^
 
-A simple application may simply track its use of DataStores on its own. Ideally, it will create a singleton structure around each DataStore to ensure that it only accesses the DataStore once.::
+A simple application may track its use of DataStores on its own. Ideally, it will create a
+singleton structure around each DataStore to ensure that it only accesses the DataStore once.::
   
   class MyApp {
      public static DataStore store;

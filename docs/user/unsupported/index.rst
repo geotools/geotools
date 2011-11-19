@@ -92,7 +92,7 @@ Unsupported Referencing implementations:
    GeoTools community taking care, fixing bugs and providing documentation. In some cases these modules are the work of students, in others
    a commercial company that donated the code (but in both cases more resources are needed to make the module usable and trustworthy).
    
-   In the past we simply threw out such work - we are trying a change of policy here by letting you see what can be done
+   In the past we threw out such work - we are trying a change of policy here by letting you see what can be done
    (and has been done).
    
    If you really do need one of these modules cleaned up, perhaps for a deadline, please check out our support page - a

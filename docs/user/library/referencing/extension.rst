@@ -6,7 +6,7 @@ codes into the mix. Internally it uses the same java property file as the :doc:`
 
 This plugin is compatible with a restricted environment and does not require disk access.
 
-The Plugin will work out of the box, simply drop it on your path.
+The Plugin will work out of the box, inlcude it in your CLASSPATH path.
 
 **References**
 

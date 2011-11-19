@@ -155,7 +155,7 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
                 ps.setCharacterStream(column, new StringReader(string), string.length());
                 break;
             default:
-                ps.setObject( column, value );
+                ps.setObject( column, value, Types.OTHER );
         }
         
     }

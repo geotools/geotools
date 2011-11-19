@@ -102,13 +102,17 @@ public class HeuristicPrimaryKeyFinder extends PrimaryKeyFinder {
             ResultSet columns = metaData.getColumns(null, databaseSchema, tableName, columnName);
             columns.next();
 
-            int binding = columns.getInt("DATA_TYPE");
-            Class columnType = store.getMapping(binding);
-
-            if (columnType == null) {
-                LOGGER.warning("No class for sql type " + binding);
-                columnType = Object.class;
+            Class columnType = store.getSQLDialect().getMapping(columns, cx);
+            if(columnType == null) {
+                int binding = columns.getInt("DATA_TYPE");
+                columnType = store.getMapping(binding);
+                if (columnType == null) {
+                    LOGGER.warning("No class for sql type " + binding);
+                    columnType = Object.class;
+                }
             }
+
+            
 
             // determine which type of primary key we have
             PrimaryKeyColumn col = null;

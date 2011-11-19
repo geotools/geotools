@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
 
 import org.geotools.data.jdbc.FilterToSQL;
@@ -297,6 +298,10 @@ public class PostGISDialect extends BasicSQLDialect {
             throws SQLException {
         
         String typeName = columnMetaData.getString("TYPE_NAME");
+        if("uuid".equalsIgnoreCase(typeName)) {
+            return UUID.class;
+        }
+        
         String gType = null;
         if ("geometry".equalsIgnoreCase(typeName)) {
             gType = lookupGeometryType(columnMetaData, cx, "geometry_columns", "f_geometry_column");

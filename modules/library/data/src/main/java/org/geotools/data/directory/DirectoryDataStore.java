@@ -18,14 +18,19 @@ package org.geotools.data.directory;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.geotools.data.DataStore;
+import org.geotools.data.DataStoreFinder;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultServiceInfo;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureStore;
@@ -116,17 +121,22 @@ public class DirectoryDataStore implements DataStore {
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         File f = new File(cache.directory, featureType.getTypeName()+".shp");
         
-        String shpDataStoreClassName = "org.geotools.data.shapefile.ShapefileDataStore";
+        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        params.put("url", DataUtilities.fileToURL(f));
+        params.put("filetype", "shapefile");
         DataStore ds = null;
         try {
-            ds = (DataStore) Class.forName(shpDataStoreClassName).getConstructor(URL.class)
-                .newInstance(f.toURL());
-            ds.createSchema(featureType);
-            ds.dispose();
-            cache.refreshCacheContents();
-        }
-        catch(Exception e) {
+            ds = DataStoreFinder.getDataStore(params);
+            if(ds != null) {
+                ds.createSchema(featureType);
+                ds.dispose();
+                cache.refreshCacheContents();
+            } 
+        } catch(Exception e) {
             throw (IOException) new IOException("Error creating new data store").initCause(e);
+        }
+        if(ds == null) {
+            throw new IOException("Could not find the shapefile data store in the classpath");
         }
     }
 

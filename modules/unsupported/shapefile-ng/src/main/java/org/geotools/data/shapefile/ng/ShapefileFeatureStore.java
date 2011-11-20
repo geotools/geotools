@@ -20,6 +20,7 @@ import java.io.IOException;
 
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
+import org.geotools.data.FilteringFeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.ResourceInfo;
@@ -33,6 +34,7 @@ import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
+import org.opengis.filter.Filter;
 
 /**
  * FeatureStore for the OGR store, based on the {@link ContentFeatureStore} framework
@@ -56,9 +58,11 @@ class ShapefileFeatureStore extends ContentFeatureStore {
             throw new IllegalArgumentException("no write flags set");
         }
 
-        ShapefileFeatureReader reader = (ShapefileFeatureReader) delegate.getReaderInternal(query);
-        ShapefileFeatureWriter writer = new ShapefileFeatureWriter(delegate.shpFiles, reader,
-                getDataStore().getCharset(), getDataStore().getTimeZone());
+        ShapefileFeatureReader reader = (ShapefileFeatureReader) delegate
+                .getReaderInternal(Query.ALL);
+        FeatureWriter<SimpleFeatureType, SimpleFeature> writer = new ShapefileFeatureWriter(
+                delegate.shpFiles, reader, getDataStore().getCharset(), getDataStore()
+                        .getTimeZone());
 
         // if we only have to add move to the end.
         // TODO: just make the code transfer the bytes in bulk instead and start actual writing at
@@ -67,6 +71,13 @@ class ShapefileFeatureStore extends ContentFeatureStore {
             while (writer.hasNext()) {
                 writer.next();
             }
+        }
+
+        // if we are filtering wrap the writer so that it returns only the selected features
+        // but writes down the mall
+        Filter filter = query.getFilter();
+        if (filter != null && !Filter.INCLUDE.equals(filter)) {
+            writer = new FilteringFeatureWriter(writer, filter);
         }
 
         return writer;

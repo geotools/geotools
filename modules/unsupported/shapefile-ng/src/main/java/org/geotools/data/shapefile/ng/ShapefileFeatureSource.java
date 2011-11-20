@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2002-2011, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.data.shapefile.ng;
 
 import static org.geotools.data.shapefile.ng.files.ShpFileType.*;
@@ -6,24 +22,31 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.data.DataSourceException;
+import org.geotools.data.EmptyFeatureReader;
 import org.geotools.data.FeatureReader;
+import org.geotools.data.FilteringFeatureReader;
 import org.geotools.data.Query;
+import org.geotools.data.ReTypeFeatureReader;
 import org.geotools.data.shapefile.ng.dbf.DbaseFileHeader;
 import org.geotools.data.shapefile.ng.dbf.DbaseFileReader;
 import org.geotools.data.shapefile.ng.files.FileReader;
-import org.geotools.data.shapefile.ng.files.ShpFileType;
 import org.geotools.data.shapefile.ng.files.ShpFiles;
+import org.geotools.data.shapefile.ng.index.CloseableIterator;
+import org.geotools.data.shapefile.ng.index.Data;
+import org.geotools.data.shapefile.ng.index.TreeException;
 import org.geotools.data.shapefile.ng.prj.PrjFileReader;
 import org.geotools.data.shapefile.ng.shp.IndexFile;
 import org.geotools.data.shapefile.ng.shp.JTSUtilities;
-import org.geotools.data.shapefile.ng.shp.ShapefileException;
 import org.geotools.data.shapefile.ng.shp.ShapefileHeader;
 import org.geotools.data.shapefile.ng.shp.ShapefileReader;
 import org.geotools.data.store.ContentEntry;
@@ -31,8 +54,10 @@ import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.Hints;
 import org.geotools.factory.Hints.Key;
 import org.geotools.feature.AttributeTypeBuilder;
+import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.BasicFeatureTypes;
+import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.renderer.ScreenMap;
@@ -45,6 +70,7 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.GeometryType;
 import org.opengis.filter.Filter;
+import org.opengis.filter.Id;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -148,7 +174,7 @@ public class ShapefileFeatureSource extends ContentFeatureSource {
     @Override
     protected int getCountInternal(Query query) throws IOException {
         if (query.getFilter() == Filter.INCLUDE) {
-            IndexFile file = openIndexFile();
+            IndexFile file = getDataStore().shpManager.openIndexFile();
             if (file != null) {
                 try {
                     return file.getRecordCount();
@@ -158,7 +184,8 @@ public class ShapefileFeatureSource extends ContentFeatureSource {
             }
 
             // no Index file so use the number of shapefile records
-            ShapefileReader reader = openShapeReader(new GeometryFactory());
+            ShapefileReader reader = getDataStore().shpManager.openShapeReader(
+                    new GeometryFactory(), false);
             int count = -1;
 
             try {
@@ -180,24 +207,63 @@ public class ShapefileFeatureSource extends ContentFeatureSource {
     @Override
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query q)
             throws IOException {
-        SimpleFeatureType resultSchema = getResultType(q);
-        List<AttributeDescriptor> attributes = resultSchema.getAttributeDescriptors();
+        SimpleFeatureType resultSchema = getResultSchema(q);
+        SimpleFeatureType readSchema = getReadSchema(q);
         GeometryFactory geometryFactory = getGeometryFactory(q);
 
-        ShapefileReader shapeReader = openShapeReader(geometryFactory);
-        ShapefileFeatureReader result;
+        // grab the target bbox, if any
+        Envelope bbox = new ReferencedEnvelope();
+        if (q.getFilter() != null) {
+            bbox = (Envelope) q.getFilter().accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, bbox);
+        }
+
+        // see if we can use indexing to speedup the data access
+        Filter filter = q != null ? q.getFilter() : null;
+        IndexManager indexManager = getDataStore().indexManager;
+        CloseableIterator<Data> goodRecs = null;
+        if (getDataStore().isFidIndexed() && filter instanceof Id && indexManager.hasFidIndex()) {
+            Id fidFilter = (Id) filter;
+            List<Data> records = indexManager.queryFidIndex(fidFilter);
+            if (records != null) {
+                goodRecs = new CloseableIteratorWrapper<Data>(records.iterator());
+            }
+        } else if (getDataStore().isIndexed() && !bbox.isNull()
+                && !Double.isInfinite(bbox.getWidth()) && !Double.isInfinite(bbox.getHeight())) {
+            try {
+                goodRecs = indexManager.querySpatialIndex(bbox);
+            } catch (TreeException e) {
+                throw new IOException("Error querying index: " + e.getMessage());
+            }
+        }
+        // do we have anything to read at all? If not don't bother opening all the files
+        if (goodRecs != null && !goodRecs.hasNext()) {
+            LOGGER.log(Level.FINE, "Empty results for " + resultSchema.getName().getLocalPart()
+                    + ", skipping read");
+            goodRecs.close();
+            return new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(resultSchema);
+        }
+
+        // setup the feature readers
+        ShapefileSetManager shpManager = getDataStore().shpManager;
+        ShapefileReader shapeReader = shpManager.openShapeReader(geometryFactory, goodRecs != null);
+        DbaseFileReader dbfReader = null;
+        List<AttributeDescriptor> attributes = readSchema.getAttributeDescriptors();
         if (attributes.size() < 1
-                || (attributes.size() == 1 && resultSchema.getGeometryDescriptor() != null)) {
+                || (attributes.size() == 1 && readSchema.getGeometryDescriptor() != null)) {
             LOGGER.fine("The DBF file won't be opened since no attributes will be read from it");
-            result = new ShapefileFeatureReader(resultSchema, shapeReader, null);
         } else {
-            result = new ShapefileFeatureReader(resultSchema, shapeReader, openDbfReader());
+            dbfReader = shpManager.openDbfReader(goodRecs != null);
+        }
+        ShapefileFeatureReader result;
+        if (goodRecs != null) {
+            result = new IndexedShapefileFeatureReader(readSchema, shapeReader, dbfReader,
+                    goodRecs);
+        } else {
+            result = new ShapefileFeatureReader(readSchema, shapeReader, dbfReader);
         }
 
         // setup the target bbox if any, and the generalization hints if available
         if (q != null) {
-            Envelope bbox = new ReferencedEnvelope();
-            bbox = (Envelope) q.getFilter().accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, bbox);
             if (bbox != null && !bbox.isNull()) {
                 result.setTargetBBox(bbox);
             }
@@ -217,14 +283,44 @@ public class ShapefileFeatureSource extends ContentFeatureSource {
 
         }
 
-        return result;
+        // do the filtering
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
+        if(filter != null && !Filter.INCLUDE.equals(filter)) {
+            reader = new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(result, filter);
+        } else {
+            reader = result;
+        }
+        
+        // do the retyping
+        if(!FeatureTypes.equals(readSchema, resultSchema)) {
+           return new ReTypeFeatureReader(reader, resultSchema);
+        } else {
+            return reader;
+        }
     }
 
-    SimpleFeatureType getResultType(Query q) {
+    SimpleFeatureType getResultSchema(Query q) {
         if (q.getPropertyNames() == null) {
             return getSchema();
         } else {
             return SimpleFeatureTypeBuilder.retype(getSchema(), q.getPropertyNames());
+        }
+    }
+    
+    SimpleFeatureType getReadSchema(Query q) {
+        if (q.getPropertyNames() == null) {
+            return getSchema();
+        } else {
+            LinkedHashSet<String> attributes = new LinkedHashSet<String>();
+            attributes.addAll(Arrays.asList(q.getPropertyNames()));
+            Filter filter = q.getFilter();
+            if(filter != null && !Filter.INCLUDE.equals(filter)) {
+                FilterAttributeExtractor fat = new FilterAttributeExtractor();
+                filter.accept(fat, null);
+                attributes.addAll(fat.getAttributeNameSet());
+            }
+            
+            return SimpleFeatureTypeBuilder.retype(getSchema(), new ArrayList<String>(attributes));
         }
     }
 
@@ -294,13 +390,14 @@ public class ShapefileFeatureSource extends ContentFeatureSource {
      * @throws IOException If AttributeType reading fails
      */
     protected List<AttributeDescriptor> readAttributes() throws IOException {
-        ShapefileReader shp = openShapeReader(new GeometryFactory());
-        DbaseFileReader dbf = openDbfReader();
+        ShapefileSetManager shpManager = getDataStore().shpManager;
+        ShapefileReader shp = shpManager.openShapeReader(new GeometryFactory(), false);
+        DbaseFileReader dbf = shpManager.openDbfReader(false);
         CoordinateReferenceSystem crs = null;
 
         PrjFileReader prj = null;
         try {
-            prj = openPrjReader();
+            prj = shpManager.openPrjReader();
 
             if (prj != null) {
                 crs = prj.getCoodinateSystem();
@@ -381,98 +478,6 @@ public class ShapefileFeatureSource extends ContentFeatureSource {
         }
     }
 
-    /**
-     * Convenience method for opening a ShapefileReader.
-     * 
-     * @return A new ShapefileReader.
-     * 
-     * @throws IOException If an error occurs during creation.
-     */
-    protected ShapefileReader openShapeReader(GeometryFactory gf) throws IOException {
-        try {
-            return new ShapefileReader(shpFiles, true, getDataStore().isMemoryMapped(), gf);
-        } catch (ShapefileException se) {
-            throw new DataSourceException("Error creating ShapefileReader", se);
-        }
-    }
-
-    /**
-     * Convenience method for opening a DbaseFileReader.
-     * 
-     * @return A new DbaseFileReader
-     * 
-     * @throws IOException If an error occurs during creation.
-     */
-    protected DbaseFileReader openDbfReader() throws IOException {
-        ShapefileDataStore ds = getDataStore();
-
-        if (shpFiles.get(ShpFileType.DBF) == null) {
-            return null;
-        }
-
-        if (shpFiles.isLocal() && !shpFiles.exists(DBF)) {
-            return null;
-        }
-
-        try {
-            return new DbaseFileReader(shpFiles, ds.isMemoryMapped(), ds.getCharset(),
-                    ds.getTimeZone());
-        } catch (IOException e) {
-            // could happen if dbf file does not exist
-            return null;
-        }
-    }
-
-    /**
-     * Convenience method for opening a DbaseFileReader.
-     * 
-     * @return A new DbaseFileReader
-     * 
-     * @throws IOException If an error occurs during creation.
-     * @throws FactoryException DOCUMENT ME!
-     */
-    protected PrjFileReader openPrjReader() throws IOException, FactoryException {
-
-        if (shpFiles.get(PRJ) == null) {
-            return null;
-        }
-
-        if (shpFiles.isLocal() && !shpFiles.exists(PRJ)) {
-            return null;
-        }
-
-        try {
-            return new PrjFileReader(shpFiles);
-        } catch (IOException e) {
-            // could happen if prj file does not exist remotely
-            return null;
-        }
-    }
-
-    /**
-     * Convenience method for opening an index file.
-     * 
-     * @return An IndexFile
-     * 
-     * @throws IOException
-     */
-    protected IndexFile openIndexFile() throws IOException {
-        if (shpFiles.get(SHX) == null) {
-            return null;
-        }
-
-        if (shpFiles.isLocal() && !shpFiles.exists(SHX)) {
-            return null;
-        }
-
-        try {
-            return new IndexFile(shpFiles, getDataStore().isMemoryMapped());
-        } catch (IOException e) {
-            // could happen if shx file does not exist remotely
-            return null;
-        }
-    }
-    
     @Override
     protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
         return super.handleVisitor(query, visitor);

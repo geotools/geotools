@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2002-2011, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.data.shapefile.ng;
 
 import java.io.IOException;
@@ -9,11 +25,9 @@ import org.geotools.data.FeatureReader;
 import org.geotools.data.shapefile.ng.dbf.DbaseFileHeader;
 import org.geotools.data.shapefile.ng.dbf.DbaseFileReader;
 import org.geotools.data.shapefile.ng.dbf.DbaseFileReader.Row;
-import org.geotools.data.shapefile.ng.dbf.DbaseFileWriter;
 import org.geotools.data.shapefile.ng.shp.ShapeType;
 import org.geotools.data.shapefile.ng.shp.ShapefileReader;
 import org.geotools.data.shapefile.ng.shp.ShapefileReader.Record;
-import org.geotools.data.shapefile.ng.shp.ShapefileWriter;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.renderer.ScreenMap;
 import org.opengis.feature.simple.SimpleFeature;
@@ -21,7 +35,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 
-import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -45,12 +58,20 @@ public class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, 
 
     ScreenMap screenMap;
 
+    StringBuffer idxBuffer;
+
+    int idxBaseLen;
+
     public ShapefileFeatureReader(SimpleFeatureType schema, ShapefileReader shp, DbaseFileReader dbf)
             throws IOException {
         this.schema = schema;
         this.shp = shp;
         this.dbf = dbf;
         this.builder = new SimpleFeatureBuilder(schema);
+        
+        idxBuffer = new StringBuffer(schema.getTypeName());
+        idxBuffer.append('.');
+        idxBaseLen = idxBuffer.length();
 
         if (dbf != null) {
             // build the list of dbf indexes we have to read taking into consideration the
@@ -136,30 +157,31 @@ public class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, 
             // read the geometry, so that we can decide if this row is to be skipped or not
             Envelope envelope = record.envelope();
             boolean skip = false;
-            Geometry geometry;
-            // ... if geometry is out of the target bbox, skip both geom and row
-            if (targetBBox != null && !targetBBox.isNull() && !targetBBox.intersects(envelope)) {
-                geometry = null;
-                skip = true;
-                // ... if the geometry is awfully small avoid reading it (unless it's a point)
-            } else if (simplificationDistance > 0 && envelope.getWidth() < simplificationDistance
-                    && envelope.getHeight() < simplificationDistance) {
-                try {
-                    if (screenMap != null && screenMap.checkAndSet(envelope)) {
-                        geometry = null;
-                        skip = true;
-                    } else {
-                        // if we are using the screenmap better provide a slightly modified
-                        // version of the geometry bounds or we'll end up with many holes
-                        // in the rendering
-                        geometry = (Geometry) record.getSimplifiedShape(screenMap);
+            Geometry geometry = null;
+            if(schema.getGeometryDescriptor() != null) {
+                // ... if geometry is out of the target bbox, skip both geom and row
+                if (targetBBox != null && !targetBBox.isNull() && !targetBBox.intersects(envelope)) {
+                    skip = true;
+                    // ... if the geometry is awfully small avoid reading it (unless it's a point)
+                } else if (simplificationDistance > 0 && envelope.getWidth() < simplificationDistance
+                        && envelope.getHeight() < simplificationDistance) {
+                    try {
+                        if (screenMap != null && screenMap.checkAndSet(envelope)) {
+                            geometry = null;
+                            skip = true;
+                        } else {
+                            // if we are using the screenmap better provide a slightly modified
+                            // version of the geometry bounds or we'll end up with many holes
+                            // in the rendering
+                            geometry = (Geometry) record.getSimplifiedShape(screenMap);
+                        }
+                    } catch (Exception e) {
+                        geometry = (Geometry) record.getSimplifiedShape();
                     }
-                } catch (Exception e) {
-                    geometry = (Geometry) record.getSimplifiedShape();
+                    // ... otherwise business as usual
+                } else {
+                    geometry = (Geometry) record.shape();
                 }
-                // ... otherwise business as usual
-            } else {
-                geometry = (Geometry) record.shape();
             }
 
             if (!skip) {
@@ -182,7 +204,7 @@ public class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, 
         return nextFeature != null;
     }
 
-    private SimpleFeature buildFeature(int number, Geometry geometry, Row row) throws IOException {
+    SimpleFeature buildFeature(int number, Geometry geometry, Row row) throws IOException {
         if (dbfindexes != null) {
             for (int i = 0; i < dbfindexes.length; i++) {
                 if (dbfindexes[i] == -1) {
@@ -191,10 +213,13 @@ public class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, 
                     builder.add(row.read(dbfindexes[i]));
                 }
             }
-        } else {
+        } else if(geometry != null) {
             builder.add(geometry);
         }
-        return builder.buildFeature(schema.getTypeName() + "." + number);
+        // build the feature id
+        idxBuffer.delete(idxBaseLen, idxBuffer.length());
+        idxBuffer.append(number);
+        return builder.buildFeature(idxBuffer.toString());
     }
 
     @Override

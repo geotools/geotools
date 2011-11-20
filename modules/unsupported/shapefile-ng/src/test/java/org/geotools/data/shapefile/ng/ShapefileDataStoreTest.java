@@ -26,16 +26,24 @@ import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TimeZone;
+import java.util.TreeSet;
 
 import org.geotools.TestData;
+import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultQuery;
 import org.geotools.data.DefaultTransaction;
@@ -43,26 +51,38 @@ import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
+import org.geotools.data.shapefile.ng.files.ShpFileType;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.factory.FactoryRegistryException;
 import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.BasicFeatureTypes;
+import org.geotools.filter.IllegalFilterException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.opengis.feature.Feature;
+import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.Id;
+import org.opengis.filter.identity.FeatureId;
+import org.opengis.filter.identity.Identifier;
+import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -85,6 +105,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     final static String DANISH = "shapes/danish_point.shp";
     final static String CHINESE = "shapes/chinese_poly.shp";
     final static String RUSSIAN = "shapes/rus-windows-1251.shp";
+    final static String UTF8 = "shapes/wgs1snt.shp";
     final static FilterFactory2 ff = CommonFactoryFinder
             .getFilterFactory2(null);
 	private ShapefileDataStore store;
@@ -98,6 +119,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     	if(store != null) {
     		store.dispose();
     	}
+    	System.clearProperty("org.geotools.shapefile.datetime");
     	super.tearDown();
     }
     
@@ -181,6 +203,56 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         }
     }
     
+    /**
+     * This is just another approach to open the shapefile and pass the Charset
+     * If the Shape is opened with "ISO-8859-1", the single UTF-8 encoded is shown as two ugly
+     * chars. As expected, because it's UTF8 two-byte.
+     */
+    public void testLoadingAndReadingUTF8Wrongly() throws Exception {
+        SimpleFeatureCollection features = loadFeatures(UTF8, Charset
+                .forName("ISO-8859-1"), null);
+        
+        SimpleFeatureIterator iterator = features.features();
+        assertTrue ( iterator.hasNext() );
+        assertEquals(4, features.size());
+        SimpleFeature f = iterator.next();
+        iterator.close();
+        
+        // GEOM, NAME,C,100   VISUAL,C,3      NUM1,N,5        NUM2,N,5  
+        assertEquals(5, f.getAttributeCount());
+        
+        String nameAttribute = (String) f.getAttribute("NAME");
+        
+        // We expect that the UTF8 is not understood here and there will be one extra char for the misinterpreted special char
+        assertEquals("Iconfee Stra\u00dfe".length()+1, nameAttribute.length());
+    }
+    
+
+    /**
+     * This is just another approach to open the shapefile and pass the Charset  
+     * Now we open the shape with UTF8 charset and expect the attribute to be correctly retuned with
+     * 4 chars and including the german special character.
+     */
+    public void testLoadingAndReadingUTF8Correctly() throws Exception {
+        SimpleFeatureCollection features = loadFeatures(UTF8, Charset
+                .forName("UTF8"), null);
+        
+        SimpleFeatureIterator iterator = features.features();
+        assertTrue(iterator.hasNext());
+        assertEquals(4, features.size());
+        SimpleFeature f = iterator.next();
+        iterator.close();
+
+        // GEOM, NAME,C,100   VISUAL,C,3      NUM1,N,5        NUM2,N,5  
+        assertEquals(5, f.getAttributeCount());
+
+        String nameAttribute = (String) f.getAttribute("NAME");
+
+        // We expect that the UTF8 is not understood here
+        assertEquals("Iconfee Stra\u00dfe".length(), nameAttribute.length());
+        assertEquals("Iconfee Stra\u00dfe", nameAttribute);
+    }
+    
 
     public void testNamespace() throws Exception {
         ShapefileDataStoreFactory factory = new ShapefileDataStoreFactory();
@@ -228,6 +300,209 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         assertEquals(features.getBounds(), all.getBounds());
         s.dispose();
     }
+    
+    public void testCreateAndReadQIX() throws Exception {
+        File shpFile = copyShapefiles(STATE_POP);
+        URL url = shpFile.toURI().toURL();
+
+        String name = shpFile.getName();
+        File file = new File(shpFile.getParent(), name.substring(0, name.lastIndexOf('.')) + ".qix");
+
+        if (file.exists()) {
+            file.delete();
+        }
+        file.deleteOnExit();
+
+        ShapefileDataStore ds = new ShapefileDataStore(url);
+        SimpleFeatureCollection features = ds.getFeatureSource().getFeatures();
+        SimpleFeatureIterator indexIter = features.features();
+
+        GeometryFactory factory = new GeometryFactory();
+        double area = Double.MAX_VALUE;
+        SimpleFeature smallestFeature = null;
+        while (indexIter.hasNext()) {
+            SimpleFeature newFeature = indexIter.next();
+
+            BoundingBox bounds = newFeature.getBounds();
+            Geometry geometry = factory.toGeometry(new ReferencedEnvelope(
+                    bounds));
+            double newArea = geometry.getArea();
+
+            if (smallestFeature == null || newArea < area) {
+                smallestFeature = newFeature;
+                area = newArea;
+            }
+        }
+        indexIter.close();
+
+        ShapefileDataStore ds2 = new ShapefileDataStore(url);
+        ds2.setIndexed(false);
+
+        // reduce the bounds, thus making the store use the spatial index
+        Envelope newBounds = ds.getFeatureSource().getBounds(Query.ALL);
+        double dx = newBounds.getWidth() / 4;
+        double dy = newBounds.getHeight() / 4;
+        newBounds = new Envelope(newBounds.getMinX() + dx, newBounds.getMaxX()
+                - dx, newBounds.getMinY() + dy, newBounds.getMaxY() - dy);
+
+        CoordinateReferenceSystem crs = features.getSchema().getCoordinateReferenceSystem();
+
+        performQueryComparison(ds, ds2, new ReferencedEnvelope(newBounds, crs));
+        performQueryComparison(ds, ds2, new ReferencedEnvelope(smallestFeature
+                .getBounds()));
+
+        assertTrue(file.exists());
+        ds.dispose();
+        ds2.dispose();
+    }
+    
+    public void testSelectionQuery() throws Exception {
+        File shpFile = copyShapefiles(STATE_POP);
+        URL url = shpFile.toURI().toURL();
+        ShapefileDataStore ds = new ShapefileDataStore(url);
+        ds.setIndexed(false);
+        SimpleFeatureSource featureSource = ds.getFeatureSource();
+        SimpleFeatureType schema = featureSource.getSchema();
+        Query query = new Query( schema.getTypeName() );
+        query.setPropertyNames(new String[0]);
+        SimpleFeatureCollection features = featureSource.getFeatures( query );
+        
+        assertNotNull( "selection query worked", features );
+        assertTrue( "selection non empty", features.size() > 0 );
+        ReferencedEnvelope bounds = features.getBounds();
+        
+        final Set<FeatureId> selection = new LinkedHashSet<FeatureId>();
+        features.accepts( new FeatureVisitor() {
+            public void visit(Feature feature) {
+                selection.add( feature.getIdentifier() );
+            }
+        }, null );
+        assertFalse( selection.isEmpty() );
+        
+        // try with filter and no attributes
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        String geomName = schema.getGeometryDescriptor().getName().getLocalPart();
+        
+        query.setFilter( ff.bbox( ff.property(geomName), bounds) );
+        features = featureSource.getFeatures( query );
+        
+        assertNotNull("selection query worked", features );
+        assertEquals(selection.size(), features.size());
+        ds.dispose();
+    }
+    
+    public void testQueryBboxNonGeomAttributes() throws Exception {
+        File shpFile = copyShapefiles(STATE_POP);
+        URL url = shpFile.toURI().toURL();
+        ShapefileDataStore ds = new ShapefileDataStore(url);
+        SimpleFeatureSource fs = ds.getFeatureSource();
+        
+        // build a query that extracts no geom but uses a bbox filter
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        Query q = new Query();
+        q.setPropertyNames(new String[] {"STATE_NAME", "PERSONS"});
+        ReferencedEnvelope queryBounds = new ReferencedEnvelope(-75.102613, -72.361859, 40.212597,
+                41.512517, null);
+        q.setFilter(ff.bbox(ff.property(""), queryBounds));
+        
+        // grab the features
+        SimpleFeatureCollection fc = fs.getFeatures(q);
+        assertTrue(fc.size() > 0);
+        ds.dispose();
+    }
+
+    public void testFidFilter() throws Exception {
+        File shpFile = copyShapefiles(STATE_POP);
+        URL url = shpFile.toURI().toURL();
+        ShapefileDataStore ds = new ShapefileDataStore(url);
+        SimpleFeatureSource featureSource = ds.getFeatureSource();
+        SimpleFeatureCollection features = featureSource.getFeatures();
+        SimpleFeatureIterator indexIter = features.features();
+
+        Set<String> expectedFids = new LinkedHashSet<String>();
+        final Filter fidFilter;
+        try {
+            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+            Set<FeatureId> fids = new HashSet<FeatureId>();
+            while (indexIter.hasNext()) {
+                SimpleFeature newFeature = indexIter.next();
+                String id = newFeature.getID();
+                expectedFids.add(id);
+                fids.add(ff.featureId(id));
+            }
+            fidFilter = ff.id(fids);
+        } finally {
+            indexIter.close();
+        }
+
+        Set<String> actualFids = new HashSet<String>();
+        {
+            features = featureSource.getFeatures(fidFilter);
+            indexIter = features.features();
+            while (indexIter.hasNext()) {
+                SimpleFeature next = indexIter.next();
+                String id = next.getID();
+                actualFids.add(id);
+            }
+        }
+
+        TreeSet<String> lackingFids = new TreeSet<String>(expectedFids);
+        lackingFids.removeAll(actualFids);
+
+        TreeSet<String> unexpectedFids = new TreeSet<String>(actualFids);
+        unexpectedFids.removeAll(expectedFids);
+
+        String lacking = String.valueOf(lackingFids);
+        String unexpected = String.valueOf(unexpectedFids);
+        String failureMsg = "lacking fids: " + lacking + ". Unexpected ones: " + unexpected;
+        assertEquals(failureMsg, expectedFids.size(), actualFids.size());
+        assertEquals(failureMsg, expectedFids, actualFids);
+        ds.dispose();
+    }
+    
+    private ArrayList performQueryComparison(
+            ShapefileDataStore indexedDS,
+            ShapefileDataStore baselineDS, ReferencedEnvelope newBounds)
+            throws FactoryRegistryException, IllegalFilterException,
+            IOException {
+        SimpleFeatureCollection features;
+        SimpleFeatureIterator indexIter;
+        FilterFactory2 fac = CommonFactoryFinder.getFilterFactory2(null);
+        String geometryName = indexedDS.getSchema().getGeometryDescriptor()
+                .getLocalName();
+
+        Filter filter = fac.bbox(fac.property(geometryName), newBounds);
+
+        features = indexedDS.getFeatureSource().getFeatures(filter);
+        SimpleFeatureCollection features2 = baselineDS.getFeatureSource()
+                .getFeatures(filter);
+
+        SimpleFeatureIterator baselineIter = features2.features();
+        indexIter = features.features();
+
+        ArrayList baselineFeatures = new ArrayList();
+        ArrayList indexedFeatures = new ArrayList();
+
+        try {
+            while (baselineIter.hasNext()) {
+                baselineFeatures.add(baselineIter.next());
+            }
+            while (indexIter.hasNext()) {
+                indexedFeatures.add(indexIter.next());
+            }
+            assertFalse(indexIter.hasNext());
+            assertFalse(baselineIter.hasNext());
+            assertEquals(baselineFeatures.size(), indexedFeatures.size());
+            for (Iterator it = baselineFeatures.iterator(); it.hasNext();) {
+                SimpleFeature f = (SimpleFeature) it.next();
+                assertTrue(f.getID() + ((Geometry) f.getDefaultGeometry()).getEnvelopeInternal(), indexedFeatures.contains(f));
+            }
+        } finally {
+            indexIter.close();
+            baselineIter.close();
+        }
+        return indexedFeatures;
+    }
 
     public void testLoadAndVerify() throws Exception {
         SimpleFeatureCollection features = loadFeatures(STATE_POP, Query.ALL);
@@ -253,7 +528,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     public void testLoadAndCheckParentTypeIsPolygon() throws Exception {
         SimpleFeatureCollection features = loadFeatures(STATE_POP, Query.ALL);
         SimpleFeatureType schema = firstFeature(features).getFeatureType();
-
+        
         assertTrue(FeatureTypes.isDecendedFrom(schema,
                 BasicFeatureTypes.POLYGON));
         assertTrue(FeatureTypes.isDecendedFrom(schema,
@@ -512,6 +787,38 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         // where the SimpleFeatureCollection has nothing in it.
         featureWriter.close();
         shapefileDataStore.dispose();
+    }
+    
+    public void testTransaction() throws Exception {
+        ShapefileDataStore sds = createDataStore();
+
+        int idx = sds.getFeatureSource().getCount(Query.ALL);
+
+        SimpleFeatureStore store = (SimpleFeatureStore) sds.getFeatureSource(sds
+                .getTypeNames()[0]);
+
+        Transaction transaction = new DefaultTransaction();
+        store.setTransaction(transaction);
+        SimpleFeature[] newFeatures1 = new SimpleFeature[1];
+        SimpleFeature[] newFeatures2 = new SimpleFeature[2];
+        GeometryFactory fac = new GeometryFactory();
+        newFeatures1[0] = DataUtilities.template(sds.getSchema());
+        newFeatures1[0].setDefaultGeometry(fac
+                .createPoint(new Coordinate(0, 0)));
+        newFeatures2[0] = DataUtilities.template(sds.getSchema());
+        newFeatures2[0].setDefaultGeometry(fac
+                .createPoint(new Coordinate(0, 0)));
+        newFeatures2[1] = DataUtilities.template(sds.getSchema());
+        newFeatures2[1].setDefaultGeometry(fac
+                .createPoint(new Coordinate(0, 0)));
+
+        store.addFeatures(DataUtilities.collection(newFeatures1));
+        store.addFeatures(DataUtilities.collection(newFeatures2));
+        transaction.commit();
+        transaction.close();
+        assertEquals(idx + 3, sds.getCount(Query.ALL));
+        sds.dispose();
+
     }
 
     /**
@@ -933,6 +1240,122 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     public void testReadWriteDatetimeAfterNewYear() throws Exception{
         System.setProperty("org.geotools.shapefile.datetime", "true");
         doTestReadWriteDate("2000-01-01");
+    }
+    
+    public void testIndexOutOfDate() throws Exception {
+        File shpFile = copyShapefiles(STATE_POP);
+        ShpFileType fix = ShpFileType.FIX;
+        File fixFile = sibling(shpFile, fix.extension);
+        fixFile.delete();
+        ShapefileDataStore ds = new ShapefileDataStore(shpFile.toURI().toURL());
+        ds.indexManager.createFidIndex();
+        
+        assertFalse(ds.indexManager.isIndexStale(fix));
+        long fixMod = fixFile.lastModified();
+        shpFile.setLastModified(fixMod+1000);
+        assertTrue(ds.indexManager.isIndexStale(fix));
+        fixFile.setLastModified(shpFile.lastModified());
+        assertFalse(ds.indexManager.isIndexStale(fix));
+        assertTrue(fixFile.delete());
+        assertTrue(ds.indexManager.isIndexStale(fix));
+        ds.dispose();
+    }
+    
+    
+    /**
+     * Issueing a request, whether its a query, update or delete, with a fid filter where feature
+     * ids match the {@code <typeName>.<number>} structure but the {@code <typeName>} part does not
+     * match the actual typeName, shoud ensure the invalid fids are ignored
+     * 
+     * @throws FileException
+     */
+    public void testWipesOutInvalidFidsFromFilters() throws Exception {
+        final ShapefileDataStore ds = createDataStore();
+        SimpleFeatureStore store;
+        store = (SimpleFeatureStore) ds.getFeatureSource();
+        
+        final String validFid1, validFid2, invalidFid1, invalidFid2;
+        {
+            SimpleFeatureIterator features = store.getFeatures().features();
+            validFid1 = features.next().getID();
+            validFid2 = features.next().getID();
+            invalidFid1 = "_" + features.next().getID();
+            invalidFid2 = features.next().getID() + "abc";
+            features.close();
+        }
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        Set<Identifier> ids = new HashSet<Identifier>();
+        ids.add(ff.featureId(validFid1));
+        ids.add(ff.featureId(validFid2));
+        ids.add(ff.featureId(invalidFid1));
+        ids.add(ff.featureId(invalidFid2));
+        Filter fidFilter = ff.id(ids);
+
+        final SimpleFeatureType schema = store.getSchema();
+        final String typeName = schema.getTypeName();
+        //get a property of type String to update its value by the given filter
+        final AttributeDescriptor attribute = schema.getDescriptor("f");
+        
+        assertEquals(2, count(ds, typeName, fidFilter));
+
+        store.modifyFeatures(attribute, "modified", fidFilter);
+        Filter modifiedFilter = ff.equals(ff.property("f"), ff.literal("modified"));
+        assertEquals(2, count(ds, typeName, modifiedFilter));
+        
+        final int initialCount = store.getCount(Query.ALL);
+        store.removeFeatures(fidFilter);
+        final int afterCount = store.getCount(Query.ALL);
+        assertEquals(initialCount - 2, afterCount);
+        ds.dispose();
+    }
+    
+    public void testCountTransaction() throws Exception {
+        // http://jira.codehaus.org/browse/GEOT-2357
+        
+        final ShapefileDataStore ds = createDataStore();
+        SimpleFeatureStore store;
+        store = (SimpleFeatureStore) ds.getFeatureSource();
+        Transaction t = new DefaultTransaction();
+        store.setTransaction(t);
+        
+        int initialCount = store.getCount(Query.ALL);
+        
+        SimpleFeatureIterator features = store.getFeatures().features();
+        String fid = features.next().getID();
+        features.close();
+        
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        String typeName = store.getSchema().getTypeName();
+        Id id = ff.id(Collections.singleton(ff.featureId(fid)));
+        
+        assertEquals(-1, store.getCount(new DefaultQuery(typeName, id)));
+        assertEquals(1, count(ds, typeName, id, t));
+        
+        store.removeFeatures(id);
+        
+        assertEquals(-1, store.getCount(new DefaultQuery(store.getSchema().getTypeName(), id)));
+        assertEquals(initialCount - 1, count(ds, typeName, Filter.INCLUDE, t));
+        assertEquals(0, count(ds, typeName, id, t));
+        ds.dispose();
+    }
+    
+    private int count(DataStore ds, String typeName, Filter filter) throws Exception {
+        return count(ds, typeName, filter, Transaction.AUTO_COMMIT);
+    }
+    
+    private int count(DataStore ds, String typeName, Filter filter, Transaction t) throws Exception {
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
+        reader = ds.getFeatureReader(new DefaultQuery(typeName, filter), t);
+        int count = 0;
+        try {
+            while (reader.hasNext()) {
+                reader.next();
+                count++;
+            }
+        } finally {
+            reader.close();
+        }
+        return count;
     }
     
     

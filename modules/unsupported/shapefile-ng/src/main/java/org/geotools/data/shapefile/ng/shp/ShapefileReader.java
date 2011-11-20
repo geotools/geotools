@@ -214,14 +214,6 @@ public class ShapefileReader implements FileReader {
     private boolean flatGeometry;
     
     /**
-     * @deprecated Use {@link #ShapefileReader(ShpFiles, boolean, boolean, GeometryFactory)} instead
-     */
-    public ShapefileReader(ShpFiles shapefileFiles, boolean strict,
-            boolean useMemoryMapped) throws IOException, ShapefileException {
-        this(shapefileFiles, strict, useMemoryMapped, new GeometryFactory());
-    }
-
-    /**
      * Creates a new instance of ShapeFile.
      * 
      * @param shapefileFiles

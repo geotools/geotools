@@ -58,12 +58,7 @@ public enum ShpFileType {
     /**
      * the .shp.xml file, it contains the metadata about the shapefile
      */
-    SHP_XML("shp.xml"),
-    /**
-     * the .grx file, an RTree spatial index of the shapefile.  This is not longer supported
-     * @deprecated
-     */
-    GRX("grx");
+    SHP_XML("shp.xml");
 
     public final String extension;
     public final String extensionWithPeriod;

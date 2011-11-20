@@ -32,6 +32,7 @@ import org.geotools.data.shapefile.ng.files.StreamLogging;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.resources.NIOUtilities;
 import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * 
@@ -47,8 +48,8 @@ public class PrjFileReader implements FileReader {
     CharsetDecoder decoder;
     StreamLogging streamLogger = new StreamLogging("PRJ reader");
 
-    org.opengis.referencing.crs.CoordinateReferenceSystem cs;
-    private boolean memoryMapped=true;
+    CoordinateReferenceSystem crs;
+    boolean memoryMapped=true;
 
     // private int[] content;
 
@@ -75,15 +76,15 @@ public class PrjFileReader implements FileReader {
         String wkt = charBuffer.toString();
 
         try {
-            cs = ReferencingFactoryFinder.getCRSFactory(null)
+            crs = ReferencingFactoryFinder.getCRSFactory(null)
                     .createFromWKT(wkt);
         } catch (FactoryException e) {
-            cs = null;
+            crs = null;
         }
     }
 
     public org.opengis.referencing.crs.CoordinateReferenceSystem getCoodinateSystem() {
-        return cs;
+        return crs;
     }
 
     private int fill(ByteBuffer buffer, ReadableByteChannel channel)

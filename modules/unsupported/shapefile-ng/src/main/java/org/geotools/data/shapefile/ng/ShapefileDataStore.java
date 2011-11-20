@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2002-2011, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.data.shapefile.ng;
 
 import static org.geotools.data.shapefile.ng.files.ShpFileType.*;
@@ -54,16 +70,19 @@ public class ShapefileDataStore extends ContentDataStore {
 
     public static final String ORIGINAL_FIELD_DUPLICITY_COUNT = "count";
 
-    public static final Charset DEFAULT_STRING_CHARSET = (Charset) ShapefileDataStoreFactory.DBFCHARSET.getDefaultValue();
-    
-    public static final TimeZone DEFAULT_TIMEZONE = (TimeZone) ShapefileDataStoreFactory.DBFTIMEZONE.getDefaultValue();
-    
+    public static final Charset DEFAULT_STRING_CHARSET = (Charset) ShapefileDataStoreFactory.DBFCHARSET
+            .getDefaultValue();
+
+    public static final TimeZone DEFAULT_TIMEZONE = (TimeZone) ShapefileDataStoreFactory.DBFTIMEZONE
+            .getDefaultValue();
+
     /**
-     * When true, the stack trace that got a lock that wasn't released is recorded and then
-     * printed out when warning the user about this.
+     * When true, the stack trace that got a lock that wasn't released is recorded and then printed
+     * out when warning the user about this.
      */
-    protected static final Boolean TRACE_ENABLED = "true".equalsIgnoreCase(System.getProperty("gt2.shapefile.trace"));
-    
+    protected static final Boolean TRACE_ENABLED = "true".equalsIgnoreCase(System
+            .getProperty("gt2.shapefile.trace"));
+
     /**
      * The stack trace used to track code that grabs the data store without disposing it
      */
@@ -81,12 +100,20 @@ public class ShapefileDataStore extends ContentDataStore {
 
     boolean indexed = true;
 
+    boolean fidIndexed = true;
+
+    IndexManager indexManager;
+
+    ShapefileSetManager shpManager;
+
     public ShapefileDataStore(URL url) {
         shpFiles = new ShpFiles(url);
-        if(TRACE_ENABLED) {
+        if (TRACE_ENABLED) {
             trace = new Exception();
             trace.fillInStackTrace();
         }
+        shpManager = new ShapefileSetManager(shpFiles, this);
+        indexManager = new IndexManager(shpFiles, this);
     }
 
     @Override
@@ -94,7 +121,7 @@ public class ShapefileDataStore extends ContentDataStore {
         return Collections.singletonList(getTypeName());
     }
 
-    private Name getTypeName() {
+    Name getTypeName() {
         return new NameImpl(namespaceURI, shpFiles.getTypeName());
     }
 
@@ -105,7 +132,7 @@ public class ShapefileDataStore extends ContentDataStore {
 
     public ContentFeatureSource getFeatureSource() throws IOException {
         ContentEntry entry = ensureEntry(getTypeName());
-        if(shpFiles.isWritable()) {
+        if (shpFiles.isWritable()) {
             return new ShapefileFeatureStore(entry, shpFiles);
         } else {
             return new ShapefileFeatureSource(entry, shpFiles);
@@ -157,36 +184,32 @@ public class ShapefileDataStore extends ContentDataStore {
     }
 
     public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader() throws IOException {
-        return super.getFeatureReader(new Query(getTypeName().getLocalPart()), Transaction.AUTO_COMMIT);
+        return super.getFeatureReader(new Query(getTypeName().getLocalPart()),
+                Transaction.AUTO_COMMIT);
     }
 
     public long getCount(Query query) throws IOException {
         return getFeatureSource().getCount(query);
     }
-    
+
     /**
-     * Set the FeatureType of this DataStore. This method will delete any
-     * existing local resources or throw an IOException if the DataStore is
-     * remote.
+     * Set the FeatureType of this DataStore. This method will delete any existing local resources
+     * or throw an IOException if the DataStore is remote.
      * 
-     * @param featureType
-     *                The desired FeatureType.
+     * @param featureType The desired FeatureType.
      * 
-     * @throws IOException
-     *                 If the DataStore is remote.
+     * @throws IOException If the DataStore is remote.
      */
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         if (!shpFiles.isLocal()) {
-            throw new IOException(
-                    "Cannot create FeatureType on remote or in-classpath shapefile");
+            throw new IOException("Cannot create FeatureType on remote or in-classpath shapefile");
         }
 
         shpFiles.delete();
 
         CoordinateReferenceSystem crs = featureType.getGeometryDescriptor()
                 .getCoordinateReferenceSystem();
-        final Class<?> geomType = featureType.getGeometryDescriptor().getType()
-                .getBinding();
+        final Class<?> geomType = featureType.getGeometryDescriptor().getType().getBinding();
         final ShapeType shapeType;
 
         if (Point.class.isAssignableFrom(geomType)) {
@@ -200,9 +223,8 @@ public class ShapefileDataStore extends ContentDataStore {
                 || MultiPolygon.class.isAssignableFrom(geomType)) {
             shapeType = ShapeType.POLYGON;
         } else {
-            throw new DataSourceException(
-                    "Cannot create a shapefile whose geometry type is "
-                            + geomType);
+            throw new DataSourceException("Cannot create a shapefile whose geometry type is "
+                    + geomType);
         }
 
         StorageFile shpStoragefile = shpFiles.getStorageFile(SHP);
@@ -248,31 +270,26 @@ public class ShapefileDataStore extends ContentDataStore {
             } finally {
                 prjWriter.close();
             }
-        }
-        else {
+        } else {
             LOGGER.warning("PRJ file not generated for null CoordinateReferenceSystem");
         }
-        StorageFile.replaceOriginals(shpStoragefile, shxStoragefile,
-                dbfStoragefile, prjStoragefile);
+        StorageFile
+                .replaceOriginals(shpStoragefile, shxStoragefile, dbfStoragefile, prjStoragefile);
     }
-    
+
     /**
-     * Attempt to create a DbaseFileHeader for the FeatureType. Note, we cannot
-     * set the number of records until the write has completed.
+     * Attempt to create a DbaseFileHeader for the FeatureType. Note, we cannot set the number of
+     * records until the write has completed.
      * 
-     * @param featureType
-     *                DOCUMENT ME!
+     * @param featureType DOCUMENT ME!
      * 
      * @return DOCUMENT ME!
      * 
-     * @throws IOException
-     *                 DOCUMENT ME!
-     * @throws DbaseFileException
-     *                 DOCUMENT ME!
+     * @throws IOException DOCUMENT ME!
+     * @throws DbaseFileException DOCUMENT ME!
      */
-    protected static DbaseFileHeader createDbaseHeader(
-            SimpleFeatureType featureType) throws IOException,
-            DbaseFileException {
+    protected static DbaseFileHeader createDbaseHeader(SimpleFeatureType featureType)
+            throws IOException, DbaseFileException {
 
         DbaseFileHeader header = new DbaseFileHeader();
 
@@ -285,8 +302,7 @@ public class ShapefileDataStore extends ContentDataStore {
             int fieldLen = FeatureTypes.getFieldLength(type);
             if (fieldLen == FeatureTypes.ANY_LENGTH)
                 fieldLen = 255;
-            if ((colType == Integer.class) || (colType == Short.class)
-                    || (colType == Byte.class)) {
+            if ((colType == Integer.class) || (colType == Short.class) || (colType == Byte.class)) {
                 header.addColumn(colName, 'N', Math.min(fieldLen, 9), 0);
             } else if (colType == Long.class) {
                 header.addColumn(colName, 'N', Math.min(fieldLen, 19), 0);
@@ -296,15 +312,14 @@ public class ShapefileDataStore extends ContentDataStore {
                 int l = Math.min(fieldLen, 33);
                 int d = Math.max(l - 2, 0);
                 header.addColumn(colName, 'N', l, d);
-            // This check has to come before the Date one or it is never reached
-            // also, this field is only activated with the following system property:
-            // org.geotools.shapefile.datetime=true
+                // This check has to come before the Date one or it is never reached
+                // also, this field is only activated with the following system property:
+                // org.geotools.shapefile.datetime=true
             } else if (java.util.Date.class.isAssignableFrom(colType)
-                       && Boolean.getBoolean("org.geotools.shapefile.datetime"))
-            {
+                    && Boolean.getBoolean("org.geotools.shapefile.datetime")) {
                 header.addColumn(colName, '@', fieldLen, 0);
-            } else if (java.util.Date.class.isAssignableFrom(colType) ||
-                    Calendar.class.isAssignableFrom(colType)) {
+            } else if (java.util.Date.class.isAssignableFrom(colType)
+                    || Calendar.class.isAssignableFrom(colType)) {
                 header.addColumn(colName, 'D', fieldLen, 0);
             } else if (colType == Boolean.class) {
                 header.addColumn(colName, 'L', 1, 0);
@@ -321,20 +336,18 @@ public class ShapefileDataStore extends ContentDataStore {
 
         return header;
     }
-    
+
     /**
      * This method is used to force the creation of a .prj file.
      * <p>
-     * The internally cached FeatureType will be removed, so the next call to
-     * getSchema() will read in the created file. This method is not thread safe
-     * and will have dire consequences for any other thread making use of the
-     * shapefile.
+     * The internally cached FeatureType will be removed, so the next call to getSchema() will read
+     * in the created file. This method is not thread safe and will have dire consequences for any
+     * other thread making use of the shapefile.
      * <p>
      * 
      * @param crs
      */
-    public void forceSchemaCRS(CoordinateReferenceSystem crs)
-            throws IOException {
+    public void forceSchemaCRS(CoordinateReferenceSystem crs) throws IOException {
         if (crs == null)
             throw new NullPointerException("CRS required for .prj file");
 
@@ -351,24 +364,55 @@ public class ShapefileDataStore extends ContentDataStore {
         storageFile.replaceOriginal();
         entries.clear();
     }
-    
+
     @Override
     public void dispose() {
         super.dispose();
-        if(shpFiles != null) {
+        if (shpFiles != null) {
             shpFiles.dispose();
             shpFiles = null;
         }
     }
-    
+
     @Override
     protected void finalize() throws Throwable {
         super.finalize();
-        if(shpFiles != null && trace != null) {
-            LOGGER.log(Level.SEVERE, "Undisposed of shapefile, you should call dispose() on all shapefile stores", trace);
+        if (shpFiles != null && trace != null) {
+            LOGGER.log(Level.SEVERE,
+                    "Undisposed of shapefile, you should call dispose() on all shapefile stores",
+                    trace);
         }
         dispose();
     }
 
+    /**
+     * Returns true if the store uses the .fix index file for feature ids. The .fix file speeds up
+     * filters by feature id and allows for stable ids in face of feature removals, without it the
+     * feature id is simply the position of the feature in the shapefile, something which changes
+     * when data is removed
+     * 
+     * @return
+     */
+    public boolean isFidIndexed() {
+        return fidIndexed;
+    }
+
+    /**
+     * Enables/disables the feature id index. The index is enabled by default
+     * @param fidIndexed
+     */
+    public void setFidIndexed(boolean fidIndexed) {
+        this.fidIndexed = fidIndexed;
+    }
+
+    @Override
+    public String toString() {
+        return "ShapefileDataStore [file=" + shpFiles.get(SHP) + ", charset=" + charset + ", timeZone=" + timeZone
+                + ", memoryMapped=" + memoryMapped + ", bufferCachingEnabled="
+                + bufferCachingEnabled + ", indexed=" + indexed + ", fidIndexed=" + fidIndexed
+                + "]";
+    }
+    
+    
 
 }

@@ -16,11 +16,7 @@
  */
 package org.geotools.data.shapefile.indexed;
 
-import static org.geotools.data.shapefile.ShpFileType.DBF;
-import static org.geotools.data.shapefile.ShpFileType.FIX;
-import static org.geotools.data.shapefile.ShpFileType.QIX;
-import static org.geotools.data.shapefile.ShpFileType.SHP;
-import static org.geotools.data.shapefile.ShpFileType.SHX;
+import static org.geotools.data.shapefile.ShpFileType.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,7 +33,6 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TimeZone;
 import java.util.TreeSet;
 import java.util.logging.Level;
 

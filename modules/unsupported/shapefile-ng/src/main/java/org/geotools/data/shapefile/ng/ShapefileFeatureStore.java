@@ -52,9 +52,24 @@ class ShapefileFeatureStore extends ContentFeatureStore {
     @Override
     protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(Query query,
             int flags) throws IOException {
+        if (flags == 0) {
+            throw new IllegalArgumentException("no write flags set");
+        }
+
         ShapefileFeatureReader reader = (ShapefileFeatureReader) delegate.getReaderInternal(query);
-        return new ShapefileFeatureWriter(delegate.shpFiles, reader, getDataStore().getCharset(),
-                getDataStore().getTimeZone());
+        ShapefileFeatureWriter writer = new ShapefileFeatureWriter(delegate.shpFiles, reader,
+                getDataStore().getCharset(), getDataStore().getTimeZone());
+
+        // if we only have to add move to the end.
+        // TODO: just make the code transfer the bytes in bulk instead and start actual writing at
+        // the end
+        if ((flags | WRITER_ADD) == WRITER_ADD) {
+            while (writer.hasNext()) {
+                writer.next();
+            }
+        }
+
+        return writer;
     }
 
     // ----------------------------------------------------------------------------------------

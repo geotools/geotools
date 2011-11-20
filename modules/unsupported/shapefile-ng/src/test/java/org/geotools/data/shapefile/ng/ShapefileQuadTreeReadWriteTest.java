@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.shapefile;
+package org.geotools.data.shapefile.ng;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +32,6 @@ import org.geotools.data.DefaultQuery;
 import org.geotools.data.Query;
 import org.geotools.data.shapefile.ng.ShapefileDataStore;
 import org.geotools.data.shapefile.ng.ShapefileDataStoreFactory;
-import org.geotools.data.shapefile.ng.TestCaseSupport;
 import org.geotools.data.shapefile.ng.index.CloseableIterator;
 import org.geotools.data.shapefile.ng.index.Data;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -258,7 +257,7 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
 
         Envelope result = ds.getFeatureSource().getBounds(query);
 
-        assertTrue(result.equals(bounds));
+        assertTrue(result == null || result.equals(bounds));
         ds.dispose();
     }
 

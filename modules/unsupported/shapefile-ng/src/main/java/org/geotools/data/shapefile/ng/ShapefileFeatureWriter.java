@@ -109,6 +109,8 @@ public class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, 
 
     private GeometryFactory gf = new GeometryFactory();
 
+    private boolean guessShapeType;
+
     public ShapefileFeatureWriter(ShpFiles shpFiles, ShapefileFeatureReader featureReader,
             Charset charset, TimeZone timezone) throws IOException {
         this.shpFiles = shpFiles;
@@ -151,6 +153,7 @@ public class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, 
 
         // don't try to read a shx file we're writing to in parallel
         featureReader.disableShxUsage();
+        guessShapeType = !featureReader.hasNext();
         shapeType = featureReader.getShapeType();
         handler = shapeType.getShapeHandler(new GeometryFactory());
         shpWriter.writeHeaders(bounds, shapeType, records, shapefileLength);
@@ -226,7 +229,6 @@ public class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, 
         // additional tail-end file flushing to do if the Writer was closed
         // before the end of the file
         if (featureReader != null) {
-            shapeType = featureReader.shp.getHeader().getShapeType();
             handler = shapeType.getShapeHandler(gf);
 
             // handle the case where zero records have been written, but the
@@ -343,7 +345,7 @@ public class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, 
         Geometry g = (Geometry) currentFeature.getDefaultGeometry();
 
         // if this is the first Geometry, find the shapeType and handler
-        if (shapeType == null) {
+        if (guessShapeType) {
             try {
                 if (g != null) {
                     int dims = JTSUtilities.guessCoorinateDims(g.getCoordinates());
@@ -356,6 +358,7 @@ public class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, 
                 // we must go back and annotate this after writing
                 shpWriter.writeHeaders(new Envelope(), shapeType, 0, 0);
                 handler = shapeType.getShapeHandler(gf);
+                guessShapeType = false;
             } catch (ShapefileException se) {
                 throw new RuntimeException("Unexpected Error", se);
             }

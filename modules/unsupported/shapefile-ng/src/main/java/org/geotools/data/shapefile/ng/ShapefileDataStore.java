@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.logging.Level;
 
 import org.geotools.data.DataSourceException;
 import org.geotools.data.FeatureReader;
@@ -56,6 +57,17 @@ public class ShapefileDataStore extends ContentDataStore {
     public static final Charset DEFAULT_STRING_CHARSET = (Charset) ShapefileDataStoreFactory.DBFCHARSET.getDefaultValue();
     
     public static final TimeZone DEFAULT_TIMEZONE = (TimeZone) ShapefileDataStoreFactory.DBFTIMEZONE.getDefaultValue();
+    
+    /**
+     * When true, the stack trace that got a lock that wasn't released is recorded and then
+     * printed out when warning the user about this.
+     */
+    protected static final Boolean TRACE_ENABLED = "true".equalsIgnoreCase(System.getProperty("gt2.shapefile.trace"));
+    
+    /**
+     * The stack trace used to track code that grabs the data store without disposing it
+     */
+    Exception trace;
 
     ShpFiles shpFiles;
 
@@ -71,6 +83,10 @@ public class ShapefileDataStore extends ContentDataStore {
 
     public ShapefileDataStore(URL url) {
         shpFiles = new ShpFiles(url);
+        if(TRACE_ENABLED) {
+            trace = new Exception();
+            trace.fillInStackTrace();
+        }
     }
 
     @Override
@@ -335,5 +351,24 @@ public class ShapefileDataStore extends ContentDataStore {
         storageFile.replaceOriginal();
         entries.clear();
     }
+    
+    @Override
+    public void dispose() {
+        super.dispose();
+        if(shpFiles != null) {
+            shpFiles.dispose();
+            shpFiles = null;
+        }
+    }
+    
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        if(shpFiles != null && trace != null) {
+            LOGGER.log(Level.SEVERE, "Undisposed of shapefile, you should call dispose() on all shapefile stores", trace);
+        }
+        dispose();
+    }
+
 
 }

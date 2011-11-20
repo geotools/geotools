@@ -553,14 +553,12 @@ Now we need to create the binary, source and javadoc archives that users can dow
       zip -9 -r ../../../target/geotools-2.7-M1-doc.zip apidocs/
       cd ../../..
 
-6. The javadoc plugin usage and configuration is explained in more details there.
-
 7. Generate sphinx documentation::
       
       cd docs
       mvn install
       cd target/user
-      zip -9 -r ../../../target/geotools-2.6.5-userguide.zip html/
+      zip -9 -r ../../../target/geotools-8.0-RC1-userguide.zip html/
 
 Test the src release
 ^^^^^^^^^^^^^^^^^^^^
@@ -579,20 +577,11 @@ If you like you can ask on the developer list for a volunteer to perform these s
       
       mvn install
 
-Export out the User Guide from the wiki
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-1. Login to confluence and visit the user guide: http://docs.codehaus.org/display/GEOTDOC/Home
-2. go to the Browse Space > Advanced
-3. Choose Export Space
-4. Select HTML and don't include the comments
-5. It will take a few moments for the zip file to be ready
-6. Rename this zip to gt-2.6-M4-guide.zip for later upload
-
 Update JIRA and create a changelog
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Any unresolved issues that did not make the release version need to be bumped back to the next release. Fortunately, JIRA allows you to do this en masse:
+Any unresolved issues that did not make the release version need to be bumped back to the next
+release. Fortunately, JIRA allows you to do this en masse:
 
 1. Login to Jira and head to the administration screen for the GeoTools project
 2. Click on manage versions
@@ -602,7 +591,7 @@ Any unresolved issues that did not make the release version need to be bumped ba
    * it will ask you where you want to move unresolved issues
      select the next release number you created above.
      
-     In this example 2.6-M5
+     In this example 8.0-RC1
 
 5.  This will update the changelog file to show what has been fixed since the last release.
     
@@ -638,97 +627,81 @@ Details on how to use them can be found here:
 
 2. As the last sanity check email the geotools list and ask people to try it out.
 
-Update the Downloads Page
-^^^^^^^^^^^^^^^^^^^^^^^^^
+Anounce on GeoTools Blog
+^^^^^^^^^^^^^^^^^^^^^^^^
 
-1. Navigate to the Downloads Page; and choose the download page for the version you are releasing
-2. Press Add Child Page
-3. Enter in the title of the release (it is important to use '.' and '-' correctly for the sorting order)
+1. Navigate to the GeoTools blog; and sign in: http://geotoolsnews.blogspot.com/
+2. Create a new blog post anouncing your release; you can cut and paste the following as a starting
+   point::
    
-   ======= ==================================================================================
-   2.7-M4  Milestone release - adding a planned feature from a RnD branch
-   2.7-RC2 Release candidate - feature complete, waiting on fixes, docs and QA checks
-   2.7.0   Major release - formal release we API committed to supporting
-   2.2.1   Patch release - remember that support? this is an examples of fixes
-   ======= ==================================================================================
+        The GeoTools community is pleased to announce the availability of GeoTools 8.0-M3 for <a
+        href="https://sourceforge.net/projects/geotools/files/GeoTools%208.0%20Releases/8.0-M3/">download
+        from source forge</a>:
+        <ul>
+        <li><a href="http://sourceforge.net/projects/geotools/files/GeoTools%208.0%20Releases/8.0-M3/geotools-8.0-M3-bin.zip/download">geotools-8.0-M3-bin.zip</a></li>
+        <li><a href="http://sourceforge.net/projects/geotools/files/GeoTools%208.0%20Releases/8.0-M3/geotools-8.0-M3-doc.zip/download">geotools-8.0-M3-doc.zip</a></li>
+        <li><a href="http://sourceforge.net/projects/geotools/files/GeoTools%208.0%20Releases/8.0-M3/geotools-8.0-M3-userguide.zip/download">geotools-2.7.3-userguide.zip</a></li>
+        <li><a href="http://sourceforge.net/projects/geotools/files/GeoTools%208.0%20Releases/8.0-M3/geotools-8.0-M3-project.zip/download">geotools-8.0-M3-project.zip/download</a></li>
+        </ul>
+        If you are using Maven this release is deployed to our OSGeo Maven Repository: For more information on setting up your project with Maven
+        see the <a href="http://docs.geotools.org/latest/userguide/tutorial/quickstart/index.html">Quickstart</a> (included
+        in the userguide documentation pack above).
+        <br/>
+        <br/>
+        This is a milestone release made in conjunction with the (OPTIONAL LINK TO PRODUCT, CONFERENCE).
+        <br/>
+        <br/>BLURB ABOUT RELEASE CONTENTS<br/>
+        <ul>
+        <li>THANKS LINKING TO ANY BLOG POSTS, DOCS OR JIRA</li>
+        <li>THANKS LINKING TO ANY BLOG POSTS, DOCS OR JIRA</li>
+        <li></li>
+        <li>And XX more
+        in the <a href="https://jira.codehaus.org/secure/ReleaseNote.jspa?projectId=10270&version=17864">GeoTools
+        8.0-M3  Release Notes</a></li>
+        </ul>
+        Finally thanks to YOU and ORGANISATION for putting this release out.
+        
+        <br/>Enjoy,
+        <br/>The GeoTools Community
+        <br/><a href="http://geotools.org/">http://geotools.org</a>
 
-4. Press the 'select a template page' link and choose Geotools Release from the list
-5. Press next to view the generated page
 6. You will need to correct the following information:
    
-   * Update the date (between the excerpt macros).
    * Update the Source forge links above to reflect the release by following this link
-   * Update the Release Notes by choosing the the correct version from this link.
-   * Fill in a blurb about the release
-   * List any completed proposals or interesting new features provided by the release
-
+   * Update the Release Notes by choosing the the correct version from `JIRA <https://jira.codehaus.org/browse/GEOT#selectedTab=com.atlassian.jira.plugin.system.project:changelog-panel&allVersions=false>`_
+   * Fill in the BLURB ABOUT RELEASE CONTENTS
+   * Thank those involved with the relese (listing any completed proposals, docs or jira items)
+  
 Tell the World
 ^^^^^^^^^^^^^^
 
 After the list has had a chance to try things out - make an announcement.
 
-Here is an example; we try to include download links to the release artifacts, the release notes
-and documentation associated with the release.::
-   
-   The GeoTools 2.6-M4 release is now available for download:
-   
-   geotools-2.6-M4-bin.zip
-   geotools-2.6-M4-project.zip
-   geotools-2.6-M4-doc.zip
-   geotools-2.6-M4-welcome.zip
-   geotools-2.6-M4-guide.zip
-   
-   This is a bug fix release made in conjunction with uDig 1.2-RC3.
-   
-   This release adds support for Oracle Georaster access as the result of a productive
-   collaboration between Christian and Baskar. It is great to see developers from different
-   organisations combine forces.
-   
-   There are many small but interesting improvements in the release notes. I am exited by the
-   new interpolate functions which will be very useful when styling maps, generated SLD files
-   no longer write out "default" values which will make for a more readable result.
-   
-   For more information please review the Release Notes:
-   
-   http://jira.codehaus.org/secure/ConfigureReleaseNote.jspa?projectId=10270&version=16316
-   
-   http://geotools.org
-   http://docs.codehaus.org/display/GEOTOOLS/2.6.x
-   http://docs.codehaus.org/display/GEOTOOLS/Upgrade+to+2.6
-   
-   Enjoy,
-   The GeoTools Community
+Cut and paste from the blog post to the following:
 
 1. geotools-devel@lists.sourceforge.net
    
    * To: geotools-devel@lists.sourceforge.net
-   * Subject: 2.6-M4 Released
+   * Subject: 8.0-RC1 Released
    
-2. http://geotoolsnews.blogspot.com/
-   
-   Sign in and make a new blog post.
-   
-   * News Title: GeoTools 2.6-M4 released
-   * Content: allows wiki links 
-
-3. geotools-gt2-users@lists.sourceforge.net
+2. geotools-gt2-users@lists.sourceforge.net
    
    Let the user list know:
    
    * To: geotools-gt2-users@lists.sourceforge.net
-   * Subject: GeoTools 2.6-M4 Released
+   * Subject: GeoTools 8.0-RC1 Released
 
-4. Open Source Geospatial Foundation
+3. Open Source Geospatial Foundation
    
     Only to be used for "significant" releases (Major release only, not for milestone
     or point releases)
     
     https://www.osgeo.org/content/news/submit_news.html
     
-5. Post a message to the osgeo news email list (you are subscribed right?)
+4. Post a message to the osgeo news email list (you are subscribed right?)
    
    * To: news_item@osgeo.org
-   * Subject: GeoTools 2.6-M4 Released
+   * Subject: GeoTools 8.0-RC1 Released
 
 Tell More of the World!
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -783,7 +756,7 @@ Well that was not very much of the world was it? Lets do freshmeat, sf.net, geot
    
    Submit a news article
    
-   * Use form at: http://slashgisrs.org/submit.pl (gotta login!)
+   * Use form at: http://slashgeo.org/ (gotta login!)
    * Use your profile page (example: http://docs.codehaus.org/display/~jive) for Home page
    * Section: Technology Topic: Open Source Community
    * Warning: You may wish to change to HTML Formatted, and insert a few links in!

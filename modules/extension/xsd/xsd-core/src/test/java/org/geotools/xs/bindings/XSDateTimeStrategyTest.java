@@ -158,6 +158,16 @@ public class XSDateTimeStrategyTest extends TestSchema {
         cal = calendar(2011, 9, 24, 10, 53, 31, 999);
         testEncodeCalendar(cal, TEST.DATETIME, "2011-10-24T10:53:31.999Z");
     }
+    
+    public void testDirectlyEncodeCalendarDateTime() throws Exception {
+        Calendar cal = calendar(2011, 9, 24, 10, 53, 31);
+        String encoded = new XSDateTimeBinding().encode(cal, null);
+        assertEquals("2011-10-24T10:53:31Z", encoded);
+        
+        cal = calendar(2011, 9, 24, 10, 53, 31, 999);
+        encoded = new XSDateTimeBinding().encode(cal, null);
+        assertEquals("2011-10-24T10:53:31.999Z", encoded);
+    }
 
     private void testEncodeCalendar(Calendar cal, QName qname, String expected) throws Exception {
         Encoder encoder = new Encoder(new TestConfiguration());

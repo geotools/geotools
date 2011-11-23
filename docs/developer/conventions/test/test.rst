@@ -51,13 +51,16 @@ module you will need to make use of the provided profile::
 Code Coverage vs Regression Testing
 ------------------------------------
 
-Code Coverage reports are available via::
+1. Code Coverage reports are available via::
    
-   mvn clean install
-   mvn cobertura:cobertura
+     mvn -o clean cobertura:cobertura
+
+2. The result is available for each module:
+
+     target/site/cobertura/index.html
 
 The percentage reported is based on the lines of code your test cases manage to test, please limit
-this to "real" tests - although we demand 40% test coverage for supported modules we would much
+this to "real" tests - although we ask for 40% test coverage for supported modules we would much
 rather this is produced honestly.
 
 Creating boiler plate tests that just call assertEquals against every method, and cutting and

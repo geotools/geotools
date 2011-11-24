@@ -29,6 +29,8 @@ import javax.xml.parsers.SAXParserFactory;
 import junit.framework.TestCase;
 
 import org.geotools.TestData;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.xml.PrintHandler;
 import org.geotools.xml.XSISAXHandler;
 import org.geotools.xml.schema.Element;
@@ -76,9 +78,9 @@ public class GeometryEncoderTest extends TestCase {
                 new Coordinate(0,0)
             });
         Polygon polygon = factory.createPolygon(ring, new LinearRing[0]);
-        polygon.setUserData("EPSG:4326");
+        polygon.setUserData(CRS.decode("EPSG:4326"));
         MultiPolygon geom = factory.createMultiPolygon(new Polygon[]{polygon});
-        geom.setUserData("EPSG:4326");
+        geom.setUserData(CRS.decode("EPSG:4326"));
         final StringWriter writer = new StringWriter();
 //        DocumentWriter.writeDocument(geom, schema, writer, new HashMap());
         
@@ -136,7 +138,8 @@ public class GeometryEncoderTest extends TestCase {
             
         };
         geomElement.getType().encode(geomElement, geom, output, new HashMap());
-        String expected="<GEOM><MultiPolygon srsName=EPSG:4326><polygonMember><Polygon srsName=EPSG:4326><outerBoundaryIs><LinearRing><coordinates decimal=. cs=, ts= >0.0,0.0 10.0,0.0 0.0,10.0 0.0,0.0</coordinates></LinearRing></outerBoundaryIs></Polygon></polygonMember></MultiPolygon></GEOM>";
+        String expected="<GEOM><MultiPolygon srsName=http://www.opengis.net/gml/srs/epsg.xml#4326><polygonMember><Polygon srsName=http://www.opengis.net/gml/srs/epsg.xml#4326><outerBoundaryIs><LinearRing><coordinates decimal=. cs=, ts= >0.0,0.0 10.0,0.0 0.0,10.0 0.0,0.0</coordinates></LinearRing></outerBoundaryIs></Polygon></polygonMember></MultiPolygon></GEOM>";
+        System.out.println(writer.toString());
         assertEquals(expected, writer.toString());
     }
 

@@ -65,6 +65,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotSupportedException;
@@ -267,19 +268,7 @@ public class GMLComplexTypes {
 
         AttributesImpl ai = new AttributesImpl();
 
-        // no GID
-        if (g.getUserData() != null) {
-            // TODO Fix this when parsing is better ... should be a coord reference system
-            ai.addAttribute("", "srsName", "", "anyURI",
-                g.getUserData().toString());
-        } else {
-//            if (g.getSRID() != 0) {
-//                // deprecated version
-//                ai.addAttribute("", "srsName", "", "anyURI", "" + g.getSRID());
-//            } else {
-                ai = null;
-//            }
-        }
+        lookupSrs(g, ai);
 
         if (e == null) {
             output.startElement(GMLSchema.NAMESPACE, "Polygon", ai);
@@ -309,18 +298,7 @@ public class GMLComplexTypes {
 
         AttributesImpl ai = new AttributesImpl();
 
-        // 	no GID
-        if (g.getUserData() != null) {
-            ai.addAttribute("", "srsName", "", "anyURI",
-                g.getUserData().toString());
-        } else {
-            if (g.getSRID() != 0) {
-                // deprecated version
-                ai.addAttribute("", "srsName", "", "anyURI", "" + g.getSRID());
-            } else {
-            	throw new IOException("srsName required for MultiPoint "+e.getName());
-            }
-        }
+        lookupSrs(g, ai);
 
         if (e == null) {
             output.startElement(GMLSchema.NAMESPACE, "MultiPoint", ai);
@@ -350,18 +328,7 @@ public class GMLComplexTypes {
 
         AttributesImpl ai = new AttributesImpl();
 
-        // 	no GID
-        if (g.getUserData() != null) {
-            ai.addAttribute("", "srsName", "", "anyURI",
-                g.getUserData().toString());
-        } else {
-            if (g.getSRID() != 0) {
-                // deprecated version
-                ai.addAttribute("", "srsName", "", "anyURI", "" + g.getSRID());
-            } else {
-            	throw new IOException("srsName required for MultiPoint "+(e==null?"":e.getName()));
-            }
-        }
+        lookupSrs(g, ai);
 
         if (e == null) {
             output.startElement(GMLSchema.NAMESPACE, "MultiLineString", ai);
@@ -390,23 +357,7 @@ public class GMLComplexTypes {
 
         AttributesImpl ai = new AttributesImpl();
 
-        // 	no GID
-        if (g.getUserData() != null) {
-            ai.addAttribute("", "srsName", "", "anyURI",
-                g.getUserData().toString());
-        } else {
-            if (g.getSRID() != 0) {
-                // deprecated version
-                ai.addAttribute("", "srsName", "", "anyURI", "" + g.getSRID());
-            } else {
-                if( e == null ){
-                    throw new IOException("srsName required for MultiPolygon" );
-                }
-                else {
-                    throw new IOException("srsName required for MultiPolygon "+e.getName());
-                }                
-            }
-        }
+        lookupSrs(g, ai);
 
         if (e == null) {
             output.startElement(GMLSchema.NAMESPACE, "MultiPolygon", ai);
@@ -435,19 +386,7 @@ public class GMLComplexTypes {
 
         AttributesImpl ai = new AttributesImpl();
 
-        // 	no GID
-        if (g.getUserData() != null) {
-            // TODO Fix this when parsing is better ... should be a coord reference system
-            ai.addAttribute("", "srsName", "", "anyURI",
-                g.getUserData().toString());
-        } else {
-//            if (g.getSRID() != 0) {
-//                // deprecated version
-//                ai.addAttribute("", "srsName", "", "anyURI", "" + g.getSRID());
-//            } else {
-                ai = null;
-//            }
-        }
+        lookupSrs(g, ai);
 
         if (e == null) {
             output.startElement(GMLSchema.NAMESPACE, "MultiGeometry", ai);
@@ -465,6 +404,26 @@ public class GMLComplexTypes {
             output.endElement(GMLSchema.NAMESPACE, "MultiGeometry");
         } else {
             output.endElement(e.getNamespace(), e.getName());
+        }
+    }
+
+    private static void lookupSrs(Geometry g, AttributesImpl ai) {
+        // no GID
+        if (g.getUserData() instanceof CoordinateReferenceSystem) {
+            try {
+                CoordinateReferenceSystem crs = (CoordinateReferenceSystem) g.getUserData();
+                Integer code = CRS.lookupEpsgCode(crs, false);
+                if(code != null) {
+                    ai.addAttribute("", "srsName", "", "anyURI", "http://www.opengis.net/gml/srs/epsg.xml#" + code);
+                }
+            } catch(Exception ex) {
+                logger.log(Level.SEVERE, "Failed to encode geometry CRS", ex);
+            }
+        } else {
+            if (g.getSRID() > 0) {
+                // deprecated version
+                ai.addAttribute("", "srsName", "", "anyURI",  "http://www.opengis.net/gml/srs/epsg.xml#" + g.getSRID());
+            }
         }
     }
 

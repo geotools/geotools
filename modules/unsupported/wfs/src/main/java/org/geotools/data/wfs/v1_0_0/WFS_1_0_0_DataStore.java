@@ -74,6 +74,7 @@ import org.geotools.filter.GeometryFilter;
 import org.geotools.filter.LiteralExpression;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
+import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -606,6 +607,9 @@ public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataSto
         // ogc filter
         Map hints = new HashMap();
         hints.put(DocumentWriter.BASE_ELEMENT, FilterSchema.getInstance().getElements()[2]); // Filter
+        
+        SimplifyingFilterVisitor simplifier = new SimplifyingFilterVisitor();
+        f = (Filter) f.accept(simplifier, null);
 
         StringWriter w = new StringWriter();
 

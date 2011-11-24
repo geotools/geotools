@@ -25,6 +25,7 @@ import javax.naming.OperationNotSupportedException;
 
 import org.geotools.data.Query;
 import org.geotools.filter.Filter;
+import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.xml.PrintHandler;
 import org.geotools.xml.filter.FilterSchema;
 import org.geotools.xml.gml.GMLComplexTypes;
@@ -583,13 +584,16 @@ public class WFSBasicComplexTypes {
                     }
                 }
 
-                if (Filter.INCLUDE != query.getFilter()) {
-                    if ((query.getFilter() != null)
-                            && elems[1].getType().canEncode(elems[1],
-                                query.getFilter(), hints)) {
-                        elems[1].getType().encode(elems[1], query.getFilter(),
+                // simplify the filter before sending it down, it will be faster
+                // and we avoid getting Filter.INCLUDE and Filter.EXCLUDE in and/or
+                // inside the filter (that the encoding code does not know how to handle)
+                org.opengis.filter.Filter filter = query.getFilter();
+                SimplifyingFilterVisitor simplifier = new SimplifyingFilterVisitor();
+                filter = (org.opengis.filter.Filter) filter.accept(simplifier, null);
+                if (Filter.INCLUDE != filter && filter != null && elems[1].getType().canEncode(elems[1],
+                                filter, hints)) {
+                        elems[1].getType().encode(elems[1], filter,
                             output, hints);
-                    }
                 }
 
                 output.endElement(element.getNamespace(), element.getName());

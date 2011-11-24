@@ -148,7 +148,7 @@ public class UnversionedTest extends DecoratedTestCase {
             assertTrue(feats.hasNext());
             SimpleFeature feat = feats.next();
             assertNotNull(feat);
-            assertTrue(feat.equals(expectedFeature));
+            compareFeature(feat, expectedFeature);
             assertFalse(feats.hasNext());
         } finally {
             if (feats != null)

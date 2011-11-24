@@ -29,6 +29,7 @@ import org.geogit.api.RevTree;
 import org.geogit.storage.ObjectDatabase;
 import org.geogit.storage.RefDatabase;
 import org.geogit.storage.WrappedSerialisingFactory;
+import org.geogit.storage.hessian.HessianSimpleFeatureTypeReader;
 import org.geogit.test.RepositoryTestCase;
 import org.geotools.data.SchemaNotFoundException;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -91,9 +92,11 @@ public class GeoGitDataStoreTest extends RepositoryTestCase {
 
             WrappedSerialisingFactory serialisingFactory;
             serialisingFactory = WrappedSerialisingFactory.getInstance();
-            SimpleFeatureType readType = objectDatabase.get(typeRef
-                    .getObjectId(), serialisingFactory
-                    .createSimpleFeatureTypeReader(featureType.getName()));
+//            SimpleFeatureType readType = objectDatabase.get(typeRef
+//                    .getObjectId(), serialisingFactory
+//                    .createSimpleFeatureTypeReader(featureType.getName()));
+            SimpleFeatureType readType = objectDatabase.get(typeRef.getObjectId(), 
+                    new HessianSimpleFeatureTypeReader(featureType.getName()));
 
             assertEquals(featureType, readType);
 

@@ -34,6 +34,8 @@ import org.geogit.storage.ObjectReader;
 import org.geogit.storage.ObjectWriter;
 import org.geogit.storage.RefDatabase;
 import org.geogit.storage.WrappedSerialisingFactory;
+import org.geogit.storage.hessian.HessianSimpleFeatureTypeReader;
+import org.geogit.storage.hessian.HessianSimpleFeatureTypeWriter;
 import org.geoserver.data.versioning.VersioningDataStore;
 import org.geotools.data.DefaultServiceInfo;
 import org.geotools.data.FeatureReader;
@@ -237,10 +239,11 @@ public class GeoGitDataStore implements VersioningDataStore {
 
         try {
             final ObjectId featureTypeBlobId;
-            WrappedSerialisingFactory serialisingFactory;
-            serialisingFactory = WrappedSerialisingFactory.getInstance();
-            featureTypeBlobId = objectDatabase.put(serialisingFactory
-                    .createSimpleFeatureTypeWriter(createType));
+//            WrappedSerialisingFactory serialisingFactory;
+//            serialisingFactory = WrappedSerialisingFactory.getInstance();
+//            featureTypeBlobId = objectDatabase.put(serialisingFactory
+//                    .createSimpleFeatureTypeWriter(createType));
+            featureTypeBlobId = objectDatabase.put(new HessianSimpleFeatureTypeWriter(createType));
 
             final List<String> namespaceTreePath = Collections
                     .singletonList(namespace);
@@ -295,8 +298,10 @@ public class GeoGitDataStore implements VersioningDataStore {
         final ObjectId objectId = typeRef.getObjectId();
         WrappedSerialisingFactory serialisingFactory;
         serialisingFactory = WrappedSerialisingFactory.getInstance();
-        final ObjectReader<SimpleFeatureType> reader = serialisingFactory
-                .createSimpleFeatureTypeReader(name);
+//        final ObjectReader<SimpleFeatureType> reader = serialisingFactory
+//                .createSimpleFeatureTypeReader(name);
+        final ObjectReader<SimpleFeatureType> reader = 
+                new HessianSimpleFeatureTypeReader(name);
         final SimpleFeatureType featureType = objectDatabase.get(objectId,
                 reader);
         return featureType;

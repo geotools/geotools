@@ -17,9 +17,7 @@
 package org.geoserver.data.versioning.decorator;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -32,18 +30,17 @@ import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Transaction;
-import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.property.PropertyDataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.Hints;
 import org.geotools.feature.DefaultFeatureCollection;
-import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.util.logging.Logging;
-import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.identity.FeatureId;
@@ -69,6 +66,8 @@ public abstract class DecoratedTestCase extends RepositoryTestCase {
     private static String newString3 = "Third iteration change.";
 
     protected SimpleFeatureType sampleType;
+    
+    protected Name sampleTypeName = new NameImpl(sampleNs, sampleName);
 
     protected SimpleFeature sample1;
 
@@ -99,6 +98,8 @@ public abstract class DecoratedTestCase extends RepositoryTestCase {
     protected static final String testTypeSpec = "st:String,ln:LineString:srid=4326,it:Integer";
 
     protected SimpleFeatureType testType;
+    
+    protected Name testTypeName = new NameImpl(sampleNs, sampleName);
 
     protected SimpleFeature test1;
 
@@ -123,7 +124,7 @@ public abstract class DecoratedTestCase extends RepositoryTestCase {
      * Holds a reference to the decorated datastore that will track versioning
      * info in the backing geogit repository.
      */
-    protected DataStore versioned;
+    protected DataStoreDecorator versioned;
 
     private Integer newInt = new Integer(0);
 
@@ -408,12 +409,12 @@ public abstract class DecoratedTestCase extends RepositoryTestCase {
     /**
      * This function is meant to compare feature contents with test features,
      * and as such, needs to ignore featureVersion or rid information
-     * in FeatureId's.
+     * in FeatureId's, as this won't be available during initial creation.
      * @param feat
      * @param otherFeat 
      * @return
      */
-    private boolean compareFeature(SimpleFeature feat, SimpleFeature otherFeat) {
+    protected boolean compareFeature(SimpleFeature feat, SimpleFeature otherFeat) {
         FeatureId fid = feat.getIdentifier();
         FeatureId otherFid = otherFeat.getIdentifier();
         if(!fid.equalsFID(otherFid)) {

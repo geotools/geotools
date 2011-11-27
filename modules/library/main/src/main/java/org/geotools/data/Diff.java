@@ -16,6 +16,7 @@
  */
 package org.geotools.data;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -26,10 +27,18 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.opengis.feature.GeometryAttribute;
+import org.opengis.feature.IllegalAttributeException;
+import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.Name;
+import org.opengis.filter.identity.FeatureId;
 import org.opengis.geometry.BoundingBox;
 
 import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
 
@@ -318,4 +327,154 @@ public class Diff{
 		
 		return tree;
 	}
+
+	    /**
+	     * A NullObject used to represent the absence of a SimpleFeature.
+	     * <p>
+	     * This class is used by TransactionStateDiff as a placeholder to represent features that have been removed. The concept is generally useful and
+	     * may wish to be taken out as a separate class (used for example to represent deleted rows in a shapefile).
+	     */
+	    public static final SimpleFeature NULL = new SimpleFeature() {
+	        public Object getAttribute(String path) {
+	            return null;
+	        }
+
+	        public Object getAttribute(int index) {
+	            return null;
+	        }
+
+	        // public Object[] getAttributes(Object[] attributes) {
+	        // return null;
+	        // }
+
+	        public ReferencedEnvelope getBounds() {
+	            return null;
+	        }
+
+	        public Geometry getDefaultGeometry() {
+	            return null;
+	        }
+
+	        public SimpleFeatureType getFeatureType() {
+	            return null;
+	        }
+
+	        public String getID() {
+	            return null;
+	        }
+
+	        public FeatureId getIdentifier() {
+	            return null;
+	        }
+
+	        // public int getNumberOfAttributes() {
+	        // return 0;
+	        // }
+
+	        public void setAttribute(int position, Object val) {
+	        }
+
+	        public void setAttribute(String path, Object attribute) throws IllegalAttributeException {
+	        }
+
+	        // public void setDefaultGeometry(Geometry geometry)
+	        // throws IllegalAttributeException {
+	        // }
+
+	        public Object getAttribute(Name name) {
+	            return null;
+	        }
+
+	        public int getAttributeCount() {
+	            return 0;
+	        }
+
+	        public List<Object> getAttributes() {
+	            return null;
+	        }
+
+	        public SimpleFeatureType getType() {
+	            return null;
+	        }
+
+	        public void setAttribute(Name name, Object value) {
+	        }
+
+	        public void setAttributes(List<Object> values) {
+	        }
+
+	        public void setAttributes(Object[] values) {
+	        }
+
+	        public void setDefaultGeometry(Object geometry) {
+	        }
+
+	        public GeometryAttribute getDefaultGeometryProperty() {
+	            return null;
+	        }
+
+	        public void setDefaultGeometryProperty(GeometryAttribute geometryAttribute) {
+	        }
+
+	        public Collection<Property> getProperties(Name name) {
+	            return null;
+	        }
+
+	        public Collection<Property> getProperties() {
+	            return null;
+	        }
+
+	        public Collection<Property> getProperties(String name) {
+	            return null;
+	        }
+
+	        public Property getProperty(Name name) {
+	            return null;
+	        }
+
+	        public Property getProperty(String name) {
+	            return null;
+	        }
+
+	        public Collection<? extends Property> getValue() {
+	            return null;
+	        }
+
+	        public void setValue(Collection<Property> values) {
+	        }
+
+	        public AttributeDescriptor getDescriptor() {
+	            return null;
+	        }
+
+	        public Name getName() {
+	            return null;
+	        }
+
+	        public Map<Object, Object> getUserData() {
+	            return null;
+	        }
+
+	        public boolean isNillable() {
+	            return false;
+	        }
+
+	        public void setValue(Object newValue) {
+	        }
+
+	        public String toString() {
+	            return "<NullFeature>";
+	        }
+
+	        public int hashCode() {
+	            return 0;
+	        }
+
+	        public boolean equals(Object arg0) {
+	            return arg0 == this;
+	        }
+
+	        public void validate() {
+	        }
+	    };
 }

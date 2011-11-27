@@ -20,6 +20,8 @@ import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryComponentFilter;
 import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.LinearRing;
+
 import java.util.logging.Level;
 import org.geotools.util.logging.Logging;
 import org.opengis.referencing.operation.MathTransform;
@@ -69,7 +71,8 @@ class WrappingCoordinateFilter implements GeometryComponentFilter {
             if (direction == NOWRAP)
                 return;
             
-            applyOffset(cs, direction == EAST_TO_WEST ? 0 : wrapLimit * 2);
+            boolean ring = geom instanceof LinearRing || cs.getCoordinate(0).equals(cs.getCoordinate(cs.size() - 1));
+            applyOffset(cs, direction == EAST_TO_WEST ? 0 : wrapLimit * 2, ring);
         }
     }
 
@@ -88,10 +91,11 @@ class WrappingCoordinateFilter implements GeometryComponentFilter {
         return NOWRAP;
     }
 
-    private void applyOffset(CoordinateSequence cs, double offset) {
+    private void applyOffset(CoordinateSequence cs, double offset, boolean ring) {
         final double maxWrap = wrapLimit * 1.9;
         double lastX = cs.getX(0);
-        for (int i = 0; i < cs.size(); i++) {
+        int last = ring ? cs.size() - 1 : cs.size(); 
+        for (int i = 0; i < last; i++) {
             final double x = cs.getX(i);
             final double distance = Math.abs(x - lastX);
             // heuristic: an object crossing the dateline is not as big as the world, if it
@@ -134,6 +138,9 @@ class WrappingCoordinateFilter implements GeometryComponentFilter {
                 cs.setOrdinate(i, 0, x + offset);
             
             lastX = x;
+        }
+        if(ring) {
+            cs.setOrdinate(last, 0, cs.getOrdinate(0, 0));
         }
     }
     

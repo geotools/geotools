@@ -28,8 +28,10 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.sort.SortBy;
 
 /**
+ * FeatureReader used to sort contents.
+ * <p>
+ * The implementation makes use of {@link MergeSortDumper).
  * 
- *
  * @source $URL$
  */
 public class SortedFeatureReader implements SimpleFeatureReader {

@@ -25,6 +25,7 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import org.geotools.data.BatchFeatureEvent;
+import org.geotools.data.Diff;
 import org.geotools.data.FeatureEvent;
 import org.geotools.data.FeatureListener;
 import org.geotools.data.FeatureSource;
@@ -39,21 +40,22 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.identity.FeatureId;
 
 /**
- * The state of an entry in a datastore, maintained on a per-transaction basis.
+ * The state of an entry in a datastore, maintained on a per-transaction basis. For information
+ * maintained on a typeName basis see {@link ContentEntry}.
+ *
+ * <h3>Data Cache Synchronization Required</h2>
  * <p>
- * State is maintained on a per transaction basis (see {@link ContentEntry}}. 
- * State maintained includes cached values such as:
+ * The default ContentState implementation maintains cached values on a per transaction
+ * basis:
  * <ul>
  *   <li>feature type ({@link #getFeatureType()}
  *   <li>number of features ({@link #getCount()}
- *   <li>spatial extent ({@link #getBounds()}.
+ *   <li>spatial extent ({@link #getBounds()}
  * </ul>
- * Other types of state depend on the data format. For instance, a jdbc database
- * backed format would probably want to store a database connection as state.
- *</p>
+ * Other types of state depend on the data format and must be handled by a subclass.
  * <p>
- * This class is a "data object" and is not thread safe. It is up to clients of 
- * this class to ensure that values are set in a thread-safe / synchronized 
+ * This class is a "data object" used to store values and is not thread safe. It is up to
+ * clients of this class to ensure that values are set in a thread-safe / synchronized 
  * manner. For example:
  * <pre>
  *   <code>
@@ -66,25 +68,48 @@ import org.opengis.filter.identity.FeatureId;
  *       count = calculateCount();
  *       state.setCount( count );
  *     }
- *   }
- *   </code>
- * </pre>
+ *   }</code></pre>
  * </p>
+ * <h3>Event Notification</h3>
+ * The list of listeners interested in event notification as features are modified and edited
+ * is stored as part of ContentState. Each notification is considered to be broadcast from a
+ * specific FeatureSource. Since several ContentFeatureStores can be on the same transaction
+ * (and thus share a ContentState) the fire methods listed here require you pass in the
+ * FeatureSource making the change; this requires that your individual FeatureWriters keep a
+ * pointer to the ContentFeatureStore which created them.
  * <p>
- * This class may be extended. Subclasses may extend (not override) the 
- * following methods:
+ * You may also make use of {@link ContentFeatureSource#canEvent} value of {@code false} allowing
+ * the base ContentFeatureStore class to take responsibility for sending event notifications.
+ * 
+ * <h3>Transaction Independence</h3>
+ * <p>
+ * The default ContentState implementation also supports the handling of
+ * {@link ContentFeatureSource#canTransaction} value of {@code false}. The implementation asks
+ * ContentState to store a {@link Diff} which is used to record any modifications made until
+ * commit is called.
+ * <p>
+ * Internally a {@link Transaction.State} is used to notify the implementation of
+ * {{@link Transaction#commit} and {@link Transaction#rollback()}.
+ * 
+ * <h3>Extension</h3>
+ * This class may be extended if your implementaiton wishes to capture additional information
+ * per transaction. A database implementation using a JDBCContentState to store a JDBC Connection
+ * remains a good example.
+ * <p>
+ * Subclasses may extend (not override) the following methods:
  * <ul>
- * <li>{@link #flush()}
- * <li>{@link #close()}
+ * <li>{@link #flush()} - remember to call super.flush()
+ * <li>{@link #close()} - remember to call super.close()
  * </ul>
- * Subclasses should also override {@link #copy()}.
+ * Subclasses should also override {@link #copy()} to ensure any additional state they are keeping
+ * is correctly accounted for.
  * </p>
  * 
- * @author Jody Garnett, Refractions Research Inc.
+ * @author Jody Garnett (LISASoft)
  * @author Justin Deoliveira, The Open Planning Project
  *
- *
- *
+ * @version 8.0
+ * @since 2.6
  * @source $URL$
  */
 public class ContentState {
@@ -93,7 +118,13 @@ public class ContentState {
      * Transaction the state works from.
      */
     protected Transaction tx;
+    
+    /**
+     * entry maintaining the state
+     */
+    protected ContentEntry entry;
 
+    // CACHE
     /**
      * cached feature type
      */
@@ -109,11 +140,7 @@ public class ContentState {
      */
     protected ReferencedEnvelope bounds;
 
-    /**
-     * entry maintaining the state
-     */
-    protected ContentEntry entry;
-
+    // EVENT NOTIFICATION SUPPORT
     /**
      * Even used for batch notification; used to collect the bounds and feature ids generated
      * over the course of a transaction.
@@ -125,6 +152,7 @@ public class ContentState {
      */
     protected List<FeatureListener> listeners = Collections.synchronizedList(new ArrayList<FeatureListener>());
 
+    // TRANSACTION SUPPORT
     /**
      * Callback used to issue batch feature events when commit/rollback issued
      * on the transaction.
@@ -141,6 +169,12 @@ public class ContentState {
             fireBatchFeatureEvent(false);
         }
     };
+    /**
+     * In memory Diff used to collect modifications made on this transaction.
+     * 
+     * @see ContentFeatureSource#canTransaction
+     */
+    Diff diff;
     
     /**
      * Creates a new state.
@@ -161,8 +195,8 @@ public class ContentState {
      * @param state The existing state.
      */
     protected ContentState(ContentState state) {
-		this( state.getEntry() );
-		
+        this(state.getEntry());
+
         featureType = state.featureType;
         count = state.count;
         bounds = state.bounds == null ? 

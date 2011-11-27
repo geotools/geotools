@@ -681,7 +681,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * feature reader created by the subclass to be wrapped in a reprojecting 
      * decorator when the query specifies a coordinate system reproject.
      * </p>
-     * TODO: link to decorating feature reader
+     * @see ReprojectFeatureReader
      */
     protected boolean canReproject() {
         return false;
@@ -758,7 +758,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * feature reader created by the subclass to be wrapped in a retyping feature
      * reader when the query specifies a retype.
      * </p>
-     * TODO: link to feature decorator
+     * @see ReTypeFeatureReader
      */
     protected boolean canRetype() {
         return false;
@@ -774,6 +774,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * <p>
      * Not overriding this method or returning <code>false</code> will cause an 
      * exception to be thrown when the query specifies sorting.
+     * @see SortedFeatureReader
      */
     protected boolean canSort() {
         return false;

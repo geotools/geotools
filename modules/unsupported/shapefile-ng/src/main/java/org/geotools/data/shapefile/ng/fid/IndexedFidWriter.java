@@ -205,11 +205,13 @@ public class IndexedFidWriter implements FileWriter {
     }
 
     private void finishLastWrite() throws IOException {
-        while( hasNext() )
+        while( hasNext() ) {
             next();
+        }
 
-        if (current != -1)
+        if (current != -1) {
             write();
+        }
 
         drain();
         writeHeader();

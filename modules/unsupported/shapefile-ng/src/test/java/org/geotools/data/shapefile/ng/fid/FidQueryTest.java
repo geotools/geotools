@@ -205,8 +205,9 @@ public class FidQueryTest extends FIDTestCase {
             query.setFilter(filter);
             SimpleFeatureIterator features = featureStore.getFeatures(query).features();
             try {
+                assertTrue("Missing feature for fid " + fid, features.hasNext());
                 SimpleFeature feature = features.next();
-                assertFalse(features.hasNext());
+                assertFalse("More than one feature with fid " + fid, features.hasNext());
                 assertEquals(i + "th feature", entry.getValue(), feature);
             } finally {
                 if (features != null)

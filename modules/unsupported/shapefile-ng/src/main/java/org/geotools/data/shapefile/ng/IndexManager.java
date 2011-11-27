@@ -113,11 +113,11 @@ class IndexManager {
      * 
      * @return
      */
-    boolean hasFidIndex() {
+    boolean hasFidIndex(boolean createIfMissing) {
         if (isIndexUseable(FIX)) {
             return true;
         } else {
-            if (shpFiles.isLocal()) {
+            if (shpFiles.isLocal() && (shpFiles.exists(FIX) || createIfMissing)) {
                 return createFidIndex();
             } else {
                 return false;

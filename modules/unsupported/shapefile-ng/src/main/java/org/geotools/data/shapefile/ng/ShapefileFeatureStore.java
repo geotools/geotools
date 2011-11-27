@@ -60,9 +60,14 @@ class ShapefileFeatureStore extends ContentFeatureStore {
 
         ShapefileFeatureReader reader = (ShapefileFeatureReader) delegate
                 .getReaderInternal(Query.ALL);
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer = new ShapefileFeatureWriter(
-                delegate.shpFiles, reader, getDataStore().getCharset(), getDataStore()
-                        .getTimeZone());
+        FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
+        ShapefileDataStore ds = getDataStore();
+        if(ds.indexManager.hasFidIndex(false) || ds.isFidIndexed() && ds.indexManager.hasFidIndex(true)) {
+            writer = new IndexedShapefileFeatureWriter(ds.indexManager, reader, ds.getCharset(), ds.getTimeZone());
+        } else {
+            writer = new ShapefileFeatureWriter(delegate.shpFiles, reader, ds.getCharset(), 
+                    ds.getTimeZone());
+        }
 
         // if we only have to add move to the end.
         // TODO: just make the code transfer the bytes in bulk instead and start actual writing at

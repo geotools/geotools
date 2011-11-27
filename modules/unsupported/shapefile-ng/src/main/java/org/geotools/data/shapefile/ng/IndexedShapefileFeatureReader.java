@@ -21,10 +21,12 @@ import java.io.IOException;
 import org.geotools.data.shapefile.ng.dbf.DbaseFileReader;
 import org.geotools.data.shapefile.ng.dbf.DbaseFileReader.Row;
 import org.geotools.data.shapefile.ng.dbf.IndexedDbaseFileReader;
+import org.geotools.data.shapefile.ng.fid.IndexedFidReader;
 import org.geotools.data.shapefile.ng.index.CloseableIterator;
 import org.geotools.data.shapefile.ng.index.Data;
 import org.geotools.data.shapefile.ng.shp.ShapefileReader;
 import org.geotools.data.shapefile.ng.shp.ShapefileReader.Record;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -42,6 +44,8 @@ class IndexedShapefileFeatureReader extends ShapefileFeatureReader {
 
     private Data next;
 
+    private IndexedFidReader fidReader;
+
     /**
      * Create the shape reader
      * 
@@ -52,9 +56,10 @@ class IndexedShapefileFeatureReader extends ShapefileFeatureReader {
      * @param goodRecs Collection of good indexes that match the query.
      */
     public IndexedShapefileFeatureReader(SimpleFeatureType schema, ShapefileReader shp,
-            DbaseFileReader dbf, CloseableIterator<Data> goodRecs) throws IOException {
-        super(schema, shp, dbf);
+            DbaseFileReader dbf, IndexedFidReader fidReader, CloseableIterator<Data> goodRecs) throws IOException {
+        super(schema, shp, dbf, fidReader);
         this.goodRecs = goodRecs;
+        this.fidReader = fidReader;
     }
 
     public void close() throws IOException {
@@ -120,5 +125,7 @@ class IndexedShapefileFeatureReader extends ShapefileFeatureReader {
 
         return nextFeature != null;
     }
+    
+    
 
 }

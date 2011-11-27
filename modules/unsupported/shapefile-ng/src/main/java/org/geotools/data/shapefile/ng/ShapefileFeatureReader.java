@@ -25,6 +25,7 @@ import org.geotools.data.FeatureReader;
 import org.geotools.data.shapefile.ng.dbf.DbaseFileHeader;
 import org.geotools.data.shapefile.ng.dbf.DbaseFileReader;
 import org.geotools.data.shapefile.ng.dbf.DbaseFileReader.Row;
+import org.geotools.data.shapefile.ng.fid.IndexedFidReader;
 import org.geotools.data.shapefile.ng.shp.ShapeType;
 import org.geotools.data.shapefile.ng.shp.ShapefileReader;
 import org.geotools.data.shapefile.ng.shp.ShapefileReader.Record;
@@ -38,7 +39,7 @@ import org.opengis.feature.type.GeometryDescriptor;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
-public class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
+class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 
     SimpleFeatureType schema;
 
@@ -62,11 +63,14 @@ public class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, 
 
     int idxBaseLen;
 
-    public ShapefileFeatureReader(SimpleFeatureType schema, ShapefileReader shp, DbaseFileReader dbf)
+    IndexedFidReader fidReader;
+
+    public ShapefileFeatureReader(SimpleFeatureType schema, ShapefileReader shp, DbaseFileReader dbf, IndexedFidReader fidReader)
             throws IOException {
         this.schema = schema;
         this.shp = shp;
         this.dbf = dbf;
+        this.fidReader = fidReader;
         this.builder = new SimpleFeatureBuilder(schema);
         
         idxBuffer = new StringBuffer(schema.getTypeName());
@@ -217,9 +221,19 @@ public class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, 
             builder.add(geometry);
         }
         // build the feature id
-        idxBuffer.delete(idxBaseLen, idxBuffer.length());
-        idxBuffer.append(number);
-        return builder.buildFeature(idxBuffer.toString());
+        String featureId = buildFeatureId(number);
+        return builder.buildFeature(featureId);
+    }
+    
+    protected String buildFeatureId(int number) throws IOException {
+        if(fidReader == null) {
+            idxBuffer.delete(idxBaseLen, idxBuffer.length());
+            idxBuffer.append(number);
+            return idxBuffer.toString();
+        } else {
+            fidReader.goTo(number - 1);
+            return fidReader.next();
+        }
     }
 
     @Override

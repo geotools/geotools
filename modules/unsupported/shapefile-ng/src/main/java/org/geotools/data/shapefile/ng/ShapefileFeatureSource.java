@@ -39,6 +39,7 @@ import org.geotools.data.Query;
 import org.geotools.data.ReTypeFeatureReader;
 import org.geotools.data.shapefile.ng.dbf.DbaseFileHeader;
 import org.geotools.data.shapefile.ng.dbf.DbaseFileReader;
+import org.geotools.data.shapefile.ng.fid.IndexedFidReader;
 import org.geotools.data.shapefile.ng.files.FileReader;
 import org.geotools.data.shapefile.ng.files.ShpFiles;
 import org.geotools.data.shapefile.ng.index.CloseableIterator;
@@ -221,7 +222,7 @@ public class ShapefileFeatureSource extends ContentFeatureSource {
         Filter filter = q != null ? q.getFilter() : null;
         IndexManager indexManager = getDataStore().indexManager;
         CloseableIterator<Data> goodRecs = null;
-        if (getDataStore().isFidIndexed() && filter instanceof Id && indexManager.hasFidIndex()) {
+        if (getDataStore().isFidIndexed() && filter instanceof Id && indexManager.hasFidIndex(false)) {
             Id fidFilter = (Id) filter;
             List<Data> records = indexManager.queryFidIndex(fidFilter);
             if (records != null) {
@@ -242,6 +243,12 @@ public class ShapefileFeatureSource extends ContentFeatureSource {
             goodRecs.close();
             return new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(resultSchema);
         }
+        
+        // get the .fix file reader, if we have a .fix file
+        IndexedFidReader fidReader = null;
+        if (getDataStore().isFidIndexed() && filter instanceof Id && indexManager.hasFidIndex(false)) {
+            fidReader = new IndexedFidReader(shpFiles);
+        }
 
         // setup the feature readers
         ShapefileSetManager shpManager = getDataStore().shpManager;
@@ -256,10 +263,10 @@ public class ShapefileFeatureSource extends ContentFeatureSource {
         }
         ShapefileFeatureReader result;
         if (goodRecs != null) {
-            result = new IndexedShapefileFeatureReader(readSchema, shapeReader, dbfReader,
+            result = new IndexedShapefileFeatureReader(readSchema, shapeReader, dbfReader, fidReader, 
                     goodRecs);
         } else {
-            result = new ShapefileFeatureReader(readSchema, shapeReader, dbfReader);
+            result = new ShapefileFeatureReader(readSchema, shapeReader, dbfReader, fidReader);
         }
 
         // setup the target bbox if any, and the generalization hints if available

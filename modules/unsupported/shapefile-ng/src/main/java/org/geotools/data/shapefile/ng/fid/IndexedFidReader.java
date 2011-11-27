@@ -53,7 +53,6 @@ public class IndexedFidReader implements FIDReader, FileReader {
     private boolean done;
     private int removes;
     private int currentShxIndex = -1;
-    private RecordNumberTracker reader;
     private long currentId;
     private StringBuilder fidBuilder;
     
@@ -68,13 +67,6 @@ public class IndexedFidReader implements FIDReader, FileReader {
 
     public IndexedFidReader(ShpFiles shpFiles) throws IOException {
         init( shpFiles, shpFiles.getReadChannel(FIX, this) );
-    }
-
-    public IndexedFidReader(ShpFiles shpFiles, RecordNumberTracker reader)
-            throws IOException {
-        this(shpFiles);
-        this.reader = reader;
-
     }
 
     public IndexedFidReader( ShpFiles shpFiles, ReadableByteChannel in ) throws IOException {
@@ -276,12 +268,8 @@ public class IndexedFidReader implements FIDReader, FileReader {
             if (buffer != null) {
                 NIOUtilities.clean(buffer, false);
             }
-            if (reader != null) {
-                reader.close();
-            }
         } finally {
             buffer = null;
-            reader = null;
             readChannel.close();
             streamLogger.close();
         }
@@ -308,13 +296,9 @@ public class IndexedFidReader implements FIDReader, FileReader {
     }
 
     public String next() throws IOException {
-        if (reader != null) {
-            goTo(reader.getRecordNumber() - 1);
-        }
-
         if (!hasNext()) {
             throw new NoSuchElementException(
-                    "Feature could not be read; a the index may be invalid");
+                    "FID index could not be read; the index may be invalid");
         }
 
         currentId = buffer.getLong();

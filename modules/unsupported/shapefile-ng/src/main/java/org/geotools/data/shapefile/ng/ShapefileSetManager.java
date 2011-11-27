@@ -23,7 +23,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * @author Andrea Aime - GeoSolutions
  * 
  */
-public class ShapefileSetManager {
+class ShapefileSetManager {
 
     ShpFiles shpFiles;
 

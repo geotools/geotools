@@ -57,7 +57,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  *
  * @source $URL$
  */
-public class ShapeFileIndexer implements FileWriter {
+class ShapeFileIndexer implements FileWriter {
     private static final Logger LOGGER = Logging.getLogger(ShapeFileIndexer.class);
     
     private int max = -1;

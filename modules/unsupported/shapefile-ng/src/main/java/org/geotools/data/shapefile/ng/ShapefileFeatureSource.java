@@ -34,6 +34,7 @@ import java.util.logging.Logger;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.EmptyFeatureReader;
 import org.geotools.data.FeatureReader;
+import org.geotools.data.FeatureSource;
 import org.geotools.data.FilteringFeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.ReTypeFeatureReader;
@@ -85,7 +86,12 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
-public class ShapefileFeatureSource extends ContentFeatureSource {
+/**
+ * A {@link FeatureSource} for shapefiles based on {@link ContentFeatureSource}
+ * 
+ * @author Andrea Aime - GeoSolutions
+ */
+class ShapefileFeatureSource extends ContentFeatureSource {
 
     static final Logger LOGGER = Logging.getLogger(ShapefileFeatureSource.class);
 

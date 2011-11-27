@@ -24,7 +24,7 @@ import org.geotools.data.shapefile.ng.index.CloseableIterator;
 /**
  * Wraps a plain iterator into a closeable one.
  */
-public class CloseableIteratorWrapper<E> implements CloseableIterator<E> {
+class CloseableIteratorWrapper<E> implements CloseableIterator<E> {
     Iterator<E> delegate;
 
     public CloseableIteratorWrapper(Iterator<E> delegate) {

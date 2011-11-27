@@ -57,7 +57,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * 
  * @source $URL$
  */
-public class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
+class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
 
     // the FeatureReader<SimpleFeatureType, SimpleFeature> to obtain the current Feature from
     protected ShapefileFeatureReader featureReader;

@@ -37,7 +37,7 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 
 /**
- * FeatureStore for the OGR store, based on the {@link ContentFeatureStore} framework
+ * FeatureStore for the Shapefile store, based on the {@link ContentFeatureStore} framework
  * 
  * @author Andrea Aime - GeoSolutions
  */

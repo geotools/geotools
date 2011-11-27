@@ -531,6 +531,11 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         return getDataStore().getSQLDialect().isLimitOffsetSupported();
     }
     
+    @Override
+    protected boolean canTransact() {
+        return true;
+    }
+    
     protected  FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
         // split the filter
         Filter[] split = splitFilter(query.getFilter());

@@ -157,7 +157,7 @@ public class PropertyDataStore2Test extends TestCase {
     public void testQuery() throws Exception {
         SimpleFeatureSource road = store.getFeatureSource( "road" );
                 
-        DefaultQuery query = new DefaultQuery( "road", Filter.INCLUDE,
+        Query query = new Query( "road", Filter.INCLUDE,
                 new String[]{ "name" } );
         
         SimpleFeatureCollection features = road.getFeatures( query );

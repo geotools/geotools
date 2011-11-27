@@ -33,8 +33,6 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-import com.sun.jdi.connect.spi.TransportService.Capabilities;
-
 /**
  * 
  * 

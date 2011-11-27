@@ -210,6 +210,11 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
     }
     
     @Override
+    protected boolean canTransact() {
+        return delegate.canTransact();
+    }
+    
+    @Override
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(
             Query query) throws IOException {
         return delegate.getReaderInternal(query);

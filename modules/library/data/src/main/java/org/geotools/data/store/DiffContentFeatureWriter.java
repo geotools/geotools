@@ -22,19 +22,13 @@ import java.util.NoSuchElementException;
 
 import org.geotools.data.DataSourceException;
 import org.geotools.data.Diff;
-import org.geotools.data.DiffFeatureReader;
-import org.geotools.data.FeatureEvent;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
-import org.geotools.data.TransactionStateDiff;
 import org.geotools.factory.Hints;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.Filter;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * A FeatureWriter that captures modifications against a FeatureReader.
@@ -44,8 +38,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * </p>
  * 
  * <p>
- * The api has been implemented in terms of FeatureReader<SimpleFeatureType, SimpleFeature> to make explicit that no Features are writen out by this
- * Class.
+ * The api has been implemented in terms of FeatureReader<SimpleFeatureType, SimpleFeature> to make
+ * explicit that no Features are writen out by this Class.
  * </p>
  * 
  * @author Jody Garnett, Refractions Research
@@ -54,14 +48,10 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * 
  * @source $URL$
  */
-public class DiffContentFeatureWriter implements
-        FeatureWriter<SimpleFeatureType, SimpleFeature> {
+public class DiffContentFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
     protected FeatureReader<SimpleFeatureType, SimpleFeature> reader;
 
-    /** FeatureStore providing this writer used as the source of any event notifications */
-    ContentFeatureStore store;
-    
-    DiffContentState state;
+    ContentState state;
 
     protected Diff diff;
 
@@ -71,15 +61,7 @@ public class DiffContentFeatureWriter implements
 
     SimpleFeature current; // duplicate provided to user
 
-    /**
-     * DiffFeatureWriter construction.
-     * 
-     * @param reader
-     * @param diff
-     */
-    public DiffContentFeatureWriter(ContentFeatureStore store, FeatureReader<SimpleFeatureType,SimpleFeature> reader) {
-        this(store, reader, Filter.INCLUDE);
-    }
+    ContentFeatureStore store;
 
     /**
      * DiffFeatureWriter construction.
@@ -88,12 +70,12 @@ public class DiffContentFeatureWriter implements
      * @param diff
      * @param filter
      */
-    public DiffContentFeatureWriter(ContentFeatureStore store, FeatureReader<SimpleFeatureType, SimpleFeature> reader,
-            Filter filter) {
-        this.reader = new DiffContentFeatureReader<SimpleFeatureType, SimpleFeature>(store, reader, filter );
+    public DiffContentFeatureWriter(ContentFeatureStore store, Diff diff,
+            FeatureReader<SimpleFeatureType, SimpleFeature> reader) {
         this.store = store;
-        this.state = (DiffContentState) store.getState();
-        this.diff = state.diff();
+        this.reader = reader;
+        this.state = store.getState();
+        this.diff = diff;
     }
 
     /**
@@ -115,29 +97,21 @@ public class DiffContentFeatureWriter implements
         if (hasNext()) {
             // hasNext() will take care recording
             // any modifications to current
-            try {
-                live = next; // update live value
-                next = null; // hasNext will need to search again
-                current = SimpleFeatureBuilder.copy(live);
+            live = next; // update live value
+            next = null; // hasNext will need to search again
+            current = SimpleFeatureBuilder.copy(live);
 
-                return current;
-            } catch (IllegalAttributeException e) {
-                throw (IOException) new IOException("Could not modify content").initCause(e);
-            }
+            return current;
         } else {
             // Create new content
             // created with an empty ID
             // (The real writer will supply a FID later)
-            try {
-                live = null;
-                next = null;
-                current = SimpleFeatureBuilder.build(type, new Object[type.getAttributeCount()],
-                        "new" + diff.nextFID);
-                diff.nextFID++;
-                return current;
-            } catch (IllegalAttributeException e) {
-                throw new IOException("Could not create new content");
-            }
+            live = null;
+            next = null;
+            current = SimpleFeatureBuilder.build(type, new Object[type.getAttributeCount()], "new"+
+                     diff.nextFID);
+            diff.nextFID++;
+            return current;
         }
     }
 
@@ -148,7 +122,7 @@ public class DiffContentFeatureWriter implements
         if (live != null) {
             // mark live as removed
             diff.remove(live.getID());
-            state.fireFeatureRemoved(null, live);
+            state.fireFeatureRemoved(store, live);
 
             live = null;
             current = null;
@@ -174,7 +148,7 @@ public class DiffContentFeatureWriter implements
             diff.modify(live.getID(), current);
 
             ReferencedEnvelope bounds = ReferencedEnvelope.reference(current.getBounds());
-            state.fireFeatureUpdated(store, live, bounds );
+            state.fireFeatureUpdated(store, live, bounds);
             live = null;
             current = null;
         } else if ((live == null) && (current != null)) {
@@ -191,7 +165,7 @@ public class DiffContentFeatureWriter implements
                 }
             }
             diff.add(fid, current);
-            state.fireFeatureAdded(store,  current );
+            state.fireFeatureAdded(store, current);
             current = null;
         } else {
             throw new IOException("No feature available to write");
@@ -217,8 +191,6 @@ public class DiffContentFeatureWriter implements
                 next = reader.next();
             } catch (NoSuchElementException e) {
                 throw new DataSourceException("No more content", e);
-            } catch (IllegalAttributeException e) {
-                throw new DataSourceException("No more content", e);
             }
 
             return true;
@@ -231,7 +203,8 @@ public class DiffContentFeatureWriter implements
      * Clean up resources associated with this writer.
      * 
      * <p>
-     * Diff is not clear()ed as it is assumed that it belongs to a Transaction.State object and may yet be written out.
+     * Diff is not clear()ed as it is assumed that it belongs to a Transaction.State object and may
+     * yet be written out.
      * </p>
      * 
      * @see org.geotools.data.FeatureWriter#close()

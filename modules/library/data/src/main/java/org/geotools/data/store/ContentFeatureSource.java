@@ -22,11 +22,15 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.geotools.data.AbstractDataStore;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.Diff;
+import org.geotools.data.DiffFeatureReader;
 import org.geotools.data.FeatureListener;
 import org.geotools.data.FeatureLock;
 import org.geotools.data.FeatureLockException;
@@ -41,9 +45,11 @@ import org.geotools.data.QueryCapabilities;
 import org.geotools.data.ReTypeFeatureReader;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.Transaction;
+import org.geotools.data.TransactionStateDiff;
 import org.geotools.data.crs.ReprojectFeatureReader;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.sort.SortedFeatureReader;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -62,7 +68,11 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.Id;
+import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.sort.SortBy;
+import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 
@@ -365,33 +375,59 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
     public final ReferencedEnvelope getBounds(Query query) throws IOException {
         query = joinQuery( query );
         query = resolvePropertyNames(query);
-        /*
-        if ( query == Query.ALL ) {
-            //check the cache
-            //TODO: there should be a check for a view here
-            if ( getState().getBounds() != null ) {
-                return getState().getBounds();
-            }
-        }
-        */
-        
+
         //
         //calculate the bounds
         //
-        ReferencedEnvelope bounds = getBoundsInternal(query);
-        
-        /*
-        if ( query == Query.ALL ) {
-            //update the cache
-            synchronized (getState()) {
-                getState().setBounds(bounds);
+        ReferencedEnvelope bounds;
+        if(!canTransact() && transaction != null && transaction != Transaction.AUTO_COMMIT) {
+            // grab the in memory transaction diff
+            DiffTransactionState state = (DiffTransactionState) getTransaction().getState(getEntry());
+            Diff diff = state.getDiff();
+            
+            // don't compute the bounds of the features that are modified or removed in the diff
+            Iterator it = diff.getModified().values().iterator();
+            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+            Set<FeatureId> modifiedFids = new HashSet<FeatureId>();
+            while(it.hasNext()){
+                SimpleFeature feature = (SimpleFeature) it.next();
+                modifiedFids.add(ff.featureId(feature.getID()));
             }
+            Id idFilter = ff.id(modifiedFids);
+            Query q = new Query(query);
+            q.setFilter(ff.and(idFilter, query.getFilter()));
+            bounds = getBoundsInternal(q);
+            
+            // update with the diff contents, all added feaatures and all modified, not deleted ones
+            if(bounds != null) {
+                // new ones
+                it = diff.getAdded().values().iterator();
+                while(it.hasNext()){
+                    SimpleFeature feature = (SimpleFeature) it.next();
+                    BoundingBox fb = feature.getBounds();
+                    if(fb != null) {
+                        bounds.expandToInclude(ReferencedEnvelope.reference(fb));
+                    }
+                }
+                
+                // modified ones
+                it = diff.getModified().values().iterator();
+                while(it.hasNext()){
+                    SimpleFeature feature = (SimpleFeature) it.next();
+                    if(feature != TransactionStateDiff.NULL) {
+                        BoundingBox fb = feature.getBounds();
+                        if(fb != null) {
+                            bounds.expandToInclude(ReferencedEnvelope.reference(fb));
+                        }
+                    }
+                }
+            }
+        } else {
+            bounds = getBoundsInternal(query);
         }
-        */
+        
         return bounds;
     }
-    //    return filtered(entry.getState(transaction), query.getFilter()).getBounds();
-    //}
 
     /**
      * Calculates the bounds of a specified query. Subclasses must implement this
@@ -410,32 +446,62 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
     public final int getCount(Query query) throws IOException {
         query = joinQuery( query );
         query = resolvePropertyNames( query );
-        /*
-        if ( query == Query.ALL ) {
-            //check the cache
-            if ( getState().getCount() != -1 ) {
-                return getState().getCount();
-            }
-        }
-        */
         
         //calculate the count
-        //TODO: figure out if we need to calculate manually based on canFilter
         int count = getCountInternal( query );
-        
-        /*
-        if ( query == Query.ALL ) {
-            //update the cache
-            synchronized (getState()) {
-                getState().setCount( count );
+
+        // if the internal actually counted, consider transactions
+        if(count >= 0 && !canTransact() && transaction != null && transaction != Transaction.AUTO_COMMIT) {
+            DiffTransactionState state = (DiffTransactionState) getTransaction().getState(getEntry());
+            Diff diff = state.getDiff();
+            synchronized (diff) {
+                // consider newly added features that satisfy the filter
+                Iterator it = diff.getAdded().values().iterator();
+                Filter filter = query.getFilter();
+                while(it.hasNext()){
+                    Object feature = it.next();
+                    if(filter.evaluate(feature)) {
+                        count++;
+                    }
+                        
+                }
+                
+                // consider removed features that satisfy the filter
+                it = diff.getModified().values().iterator();
+                FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+                Set<FeatureId> modifiedFids = new HashSet<FeatureId>();
+                int modifiedPostCount = 0;
+                while(it.hasNext()){
+                    SimpleFeature feature = (SimpleFeature) it.next();
+                    
+                    if(feature == TransactionStateDiff.NULL) {
+                        count--;
+                    } else {
+                        modifiedFids.add(ff.featureId(feature.getID()));
+                        if(filter.evaluate(feature)) {
+                            modifiedPostCount++;
+                        }
+                    }
+                }
+                
+                // consider the updated feature if any, we need to know how
+                // many of those matched the filter before
+                if(modifiedFids.size() > 0) {
+                    Id idFilter = ff.id(modifiedFids);
+                    Query q = new Query(query);
+                    q.setFilter(ff.and(idFilter, query.getFilter()));
+                    int modifiedPreCount = getCountInternal(q);
+                    if(modifiedPreCount == -1) {
+                        return -1;
+                    } else {
+                        count = count + modifiedPostCount - modifiedPreCount;
+                    }
+                }
             }
         }
-        */
         
         return count;
     }
-    //    return filtered(entry.getState(transaction), query.getFilter()).size();
-    //}
 
     /**
      * Calculates the number of features of a specified query. Subclasses must 
@@ -498,6 +564,12 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         //
         //apply wrappers based on subclass capabilities
         //
+        // transactions
+        if( !canTransact() && transaction != null && transaction != Transaction.AUTO_COMMIT) {
+            DiffTransactionState state = (DiffTransactionState) getTransaction().getState(getEntry());
+            reader = new DiffFeatureReader<SimpleFeatureType, SimpleFeature>(reader, state.getDiff());
+        }
+        
         //filtering
         if ( !canFilter() ) {
             if (query.getFilter() != null && query.getFilter() != Filter.INCLUDE ) {
@@ -652,6 +724,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      *   <li>max feature limiting</li>
      *   <li>sorting</li>
      *   <li>locking</li>
+     *   <li>transactions</li>
      * </ul>
      * Then it <b>*must*</b> set the corresponding flags to <code>true</code>:
      * <ul>
@@ -663,6 +736,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      *   <li>{@link #canRetype()} - handles {@link Query#getProperties()} natively. Example would
      *   be only parsing the properties the user asks for from an XML file</li>
      *   <li>{@link #canLock()} - handles read-locks natively</li>
+     *   <li>{@link #canTransact()} - handles transactions natively</li>
      * </ul>
      * </p>
      * 
@@ -777,6 +851,18 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * @see SortedFeatureReader
      */
     protected boolean canSort() {
+        return false;
+    }
+    
+    /**
+     * Determines if the store can natively manage transactions.
+     * <p>
+     * If a subclass can handle transactions natively it should override this
+     * method to return <code>true</code> and deal with transactions on its own,
+     * including firing feature modifications events.
+     * @return
+     */
+    protected boolean canTransact() {
         return false;
     }
     
@@ -951,7 +1037,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * In particular this method of data access is intended for rendering and other high speed
      * operations; care should be taken to optimize the use of FeatureVisitor.
      * <p>
-     * @param state
+     * @param transactionState
      * @param filter
      * @return readonly access
      */

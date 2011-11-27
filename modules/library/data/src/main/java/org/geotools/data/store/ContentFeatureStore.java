@@ -21,11 +21,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import org.geotools.data.FeatureLock;
-import org.geotools.data.FeatureLockException;
 import org.geotools.data.FeatureLocking;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
@@ -33,13 +29,13 @@ import org.geotools.data.FilteringFeatureWriter;
 import org.geotools.data.InProcessLockingManager;
 import org.geotools.data.LockingManager;
 import org.geotools.data.Query;
+import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.identity.FeatureIdImpl;
-import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -144,20 +140,27 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
         query = joinQuery( query );
         query = resolvePropertyNames(query);
         
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer = getWriterInternal( query, flags );
-        
-        //TODO: apply wrappers
-        //filtering
-        if ( !canFilter() ) {
-            if (query.getFilter() != null && query.getFilter() != Filter.INCLUDE ) {
-                writer = new FilteringFeatureWriter( writer, query.getFilter() );
-            }    
-        }
-        
-        // Use InProcessLockingManager to assert write locks?
-        if(!canLock()) {
-            LockingManager lockingManager = getDataStore().getLockingManager();
-            return ((InProcessLockingManager)lockingManager).checkedWriter(writer, transaction);
+        FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
+        if (!canTransact() && transaction != null && transaction != Transaction.AUTO_COMMIT) {
+            DiffTransactionState state = (DiffTransactionState) getTransaction().getState(getEntry());
+            FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(query);
+            writer = new DiffContentFeatureWriter(this, state.getDiff(), reader);
+        } else {
+            writer = getWriterInternal(query, flags);
+
+            // filtering
+            if (!canFilter()) {
+                if (query.getFilter() != null && query.getFilter() != Filter.INCLUDE) {
+                    writer = new FilteringFeatureWriter(writer, query.getFilter());
+                }
+            }
+
+            // Use InProcessLockingManager to assert write locks?
+            if (!canLock()) {
+                LockingManager lockingManager = getDataStore().getLockingManager();
+                writer = ((InProcessLockingManager) lockingManager).checkedWriter(writer,
+                        transaction);
+            }
         }
         
         // Finished
@@ -205,7 +208,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
         // gather up id's
     	List<FeatureId> ids = new LinkedList<FeatureId>();
         
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer = getWriter( Filter.INCLUDE, WRITER_ADD );
+    	FeatureWriter<SimpleFeatureType, SimpleFeature> writer = getWriterAppend();
         try {
             for ( Iterator f = collection.iterator(); f.hasNext(); ) {
                 FeatureId id = addFeature((SimpleFeature) f.next(), writer);
@@ -229,7 +232,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
         // gather up id's
         List<FeatureId> ids = new LinkedList<FeatureId>();
         
-        FeatureWriter<SimpleFeatureType, SimpleFeature> writer = getWriter( Filter.INCLUDE, WRITER_ADD );
+        FeatureWriter<SimpleFeatureType, SimpleFeature> writer = getWriterAppend();
         Iterator f = collection.iterator();
         try {
             while (f.hasNext()) {
@@ -242,6 +245,19 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
             collection.close( f );
         }        
         return ids;
+    }
+
+    /**
+     * Utility method that ensures we are going to write only in append mode
+     * @return
+     * @throws IOException
+     */
+    private FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterAppend() throws IOException {
+        FeatureWriter<SimpleFeatureType, SimpleFeature> writer = getWriter( Filter.INCLUDE, WRITER_ADD );
+        while(writer.hasNext()) {
+            writer.next();
+        }
+        return writer;
     }
 
     FeatureId addFeature(SimpleFeature feature, FeatureWriter<SimpleFeatureType, SimpleFeature> writer) throws IOException {

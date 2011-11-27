@@ -218,6 +218,23 @@ public class ProjectionHandlerTest {
     }
     
     @Test
+    public void testWrapJumpLast() throws Exception {
+        ReferencedEnvelope world = new ReferencedEnvelope(-180, 180, -90, 90, WGS84);
+        Geometry g = new WKTReader().read("POLYGON((-131 -73.5,0 -90,163 -60,174 -60,-131 -73.5))");
+        Geometry original = new WKTReader().read("POLYGON((-131 -73.5,0 -90,163 -60,174 -60,-131 -73.5))");
+        // make sure the geometry is not wrapped, but it is preserved
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(world, true);
+        assertTrue(handler.requiresProcessing(WGS84, g));
+        Geometry preProcessed = handler.preProcess(WGS84, g);
+        // no cutting expected
+        assertEquals(original, preProcessed);
+        // post process (provide identity transform to force wrap heuristic)
+        Geometry postProcessed = handler.postProcess(CRS.findMathTransform(WGS84, WGS84), g);
+        // check the geometry is in the same area as the rendering envelope
+        assertEquals(original, postProcessed);
+    }
+    
+    @Test
     public void testWrapGeometryWGS84Duplicate() throws Exception {
         ReferencedEnvelope world = new ReferencedEnvelope(-200, 200, -90, 90, WGS84);
 

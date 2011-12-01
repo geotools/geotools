@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.geotools.geometry.jts.GeometryClipper;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -33,6 +34,9 @@ import org.opengis.referencing.operation.TransformException;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.precision.EnhancedPrecisionOp;
+
 import org.opengis.referencing.operation.MathTransform;
 
 /**
@@ -183,7 +187,17 @@ public class ProjectionHandler {
         ReferencedEnvelope envInt = envIntWgs84.transform(geomCRS, true);
 
         // turn the envelope into a geometry and perform the intersection
-        Geometry result = geometry.intersection(JTS.toGeometry((Envelope) envInt));
+        Polygon envelopeGeometry = JTS.toGeometry((Envelope) envInt);
+        Geometry result;
+        try {
+            result = geometry.intersection(envelopeGeometry);
+        } catch(Exception e1) {
+            try {
+                result = EnhancedPrecisionOp.intersection(geometry, envelopeGeometry);
+            } catch(Exception e2) {
+                result = geometry;
+            }
+        }
         
         // handle in special way empty intersections
         if (result instanceof GeometryCollection && ((GeometryCollection) result).isEmpty())

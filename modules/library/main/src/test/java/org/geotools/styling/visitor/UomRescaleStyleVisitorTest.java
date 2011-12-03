@@ -33,21 +33,25 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
 import org.geotools.styling.LinePlacement;
+import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.LineSymbolizerImpl;
+import org.geotools.styling.Mark;
 import org.geotools.styling.PointPlacement;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PointSymbolizerImpl;
+import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.PolygonSymbolizerImpl;
+import org.geotools.styling.Rule;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.StyleBuilder;
+import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizerImpl;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
-import org.opengis.style.LineSymbolizer;
-import org.opengis.style.PolygonSymbolizer;
+import org.opengis.style.GraphicalSymbol;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
@@ -576,5 +580,44 @@ public class UomRescaleStyleVisitorTest extends TestCase
             e2.printStackTrace();
             Assert.fail(e2.getClass().getSimpleName() + " should not be thrown.");
         }
+    }
+    
+    public void testRescaleGraphicFillStrokes() {
+        // create a graphic that needs rescaling
+        StyleBuilder sb = new StyleBuilder();
+        
+        // a graphic stroke
+        Stroke stroke = sb.createStroke();
+        stroke.setColor(null);
+        stroke.setGraphicStroke(sb.createGraphic(null, sb.createMark("square", null, sb.createStroke(1)), null));
+        
+        // a graphic fill
+        Fill fill = sb.createFill();
+        fill.setColor(null);
+        fill.setGraphicFill(sb.createGraphic(null, sb.createMark("square", null, sb.createStroke(2)), null));
+        
+        // a polygon and line symbolizer using them
+        PolygonSymbolizer ps = sb.createPolygonSymbolizer(stroke, fill);
+        ps.setUnitOfMeasure(SI.METER);
+        
+        // rescale it
+        UomRescaleStyleVisitor visitor = new UomRescaleStyleVisitor(10);
+        ps.accept(visitor);
+        PolygonSymbolizer rps = (PolygonSymbolizer) visitor.getCopy();
+        Mark rm = (Mark) rps.getStroke().getGraphicStroke().graphicalSymbols().get(0);
+        assertEquals(10.0, rm.getStroke().getWidth().evaluate(null));
+        rm = (Mark) rps.getFill().getGraphicFill().graphicalSymbols().get(0);
+        assertEquals(20.0, rm.getStroke().getWidth().evaluate(null));
+
+        
+        // a line symbolizer that uses a graphic stroke
+        LineSymbolizer ls = sb.createLineSymbolizer(stroke);
+        ls.setUnitOfMeasure(SI.METER);
+        
+        // rescale it
+        ls.accept(visitor);
+        LineSymbolizer lps = (LineSymbolizer) visitor.getCopy();
+        rm = (Mark) lps.getStroke().getGraphicStroke().graphicalSymbols().get(0);
+        assertEquals(10.0, rm.getStroke().getWidth().evaluate(null));
     }
 }

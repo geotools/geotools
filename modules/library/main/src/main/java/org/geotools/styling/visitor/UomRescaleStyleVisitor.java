@@ -22,20 +22,23 @@ import javax.measure.unit.NonSI;
 import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
 
-import org.geotools.filter.LiteralExpression;
 import org.geotools.styling.Displacement;
+import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.LabelPlacement;
 import org.geotools.styling.LinePlacement;
 import org.geotools.styling.LineSymbolizer;
+import org.geotools.styling.Mark;
 import org.geotools.styling.PointPlacement;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.TextSymbolizer;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
+import org.opengis.style.GraphicalSymbol;
 
 /**
  * Visitor used for rescaling a Style given a map scale (e.g., meters per pixel) and taking into
@@ -107,7 +110,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
         if (unscaled == null || unscaled.equals(Expression.NIL))
             return unscaled;
 
-        if (unscaled instanceof LiteralExpression && unscaled.evaluate(null, Double.class) != null) {
+        if (unscaled instanceof Literal && unscaled.evaluate(null, Double.class) != null) {
             // if given Expression is a literal, we can return a literal
             double rescaled = rescale(unscaled.evaluate(null, Double.class), mapScale, uom);
             return ff.literal(rescaled);
@@ -174,6 +177,8 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
             stroke.setWidth(rescale(stroke.getWidth(), mapScale, uom));
             stroke.setDashArray(rescale(stroke.getDashArray(), mapScale, uom));
             stroke.setDashOffset(rescale(stroke.getDashOffset(), mapScale, uom));
+            rescale(stroke.getGraphicFill(), mapScale, uom);
+            rescale(stroke.getGraphicStroke(), mapScale, uom);
         }
     }
 
@@ -183,8 +188,23 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
         PointSymbolizer copy = (PointSymbolizer) pages.peek();
 
         Graphic copyGraphic = copy.getGraphic();
-        copyGraphic.setSize(rescale(copyGraphic.getSize(), mapScale, copy.getUnitOfMeasure()));
+        rescale(copyGraphic, mapScale, copy.getUnitOfMeasure());
         copy.setUnitOfMeasure(NonSI.PIXEL);
+    }
+
+    private void rescale(Graphic graphic, double mapScale, Unit<Length> unit) {
+        if(graphic != null) {
+            graphic.setSize(rescale(graphic.getSize(), mapScale, unit));
+            if(graphic.graphicalSymbols() != null) {
+                for (GraphicalSymbol gs : graphic.graphicalSymbols()) {
+                    if(gs instanceof Mark) {
+                        Mark mark = (Mark) gs;
+                        rescaleStroke(mark.getStroke(), mapScale, unit);
+                        rescaleFill(mark.getFill(), mapScale, unit);
+                    } 
+                }
+            }
+        }
     }
 
     @Override
@@ -202,21 +222,16 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
         super.visit(poly);
         PolygonSymbolizer copy = (PolygonSymbolizer) pages.peek();
 
-        Stroke copyStroke = copy.getStroke();
-        rescaleStroke(copyStroke, mapScale, copy.getUnitOfMeasure());
-
-        // rescales the graphic fill, if available
-        Fill copyFill = copy.getFill();
-        if (copyFill != null) {
-            Graphic copyGraphic = copyFill.getGraphicFill();
-            if (copyGraphic != null) {
-                copyGraphic.setSize(rescale(copyGraphic.getSize(), mapScale, copy
-                        .getUnitOfMeasure()));
-                copyFill.setGraphicFill(copyGraphic);
-            }
-            copy.setFill(copyFill);
-        }
+        rescaleStroke(copy.getStroke(), mapScale, copy.getUnitOfMeasure());
+        rescaleFill(copy.getFill(), mapScale, copy.getUnitOfMeasure());
         copy.setUnitOfMeasure(NonSI.PIXEL);
+    }
+
+    private void rescaleFill(Fill copyFill, double mapScale, Unit<Length> unit) {
+        // rescale the graphic fill, if any
+        if (copyFill != null) {
+            rescale(copyFill.getGraphicFill(), mapScale, unit);
+        }
     }
 
     @SuppressWarnings("deprecation")

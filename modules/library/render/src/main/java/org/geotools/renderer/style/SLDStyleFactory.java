@@ -876,7 +876,7 @@ public class SLDStyleFactory {
             styleCode = styleCode | java.awt.Font.BOLD;
         }
 
-        int size = evalToInt(curr.getFontSize(), feature, 10);
+        float size = evalToFloat(curr.getSize(), feature, 10);
 
         return javaFont.deriveFont(styleCode, size);
     }
@@ -1090,7 +1090,7 @@ public class SLDStyleFactory {
 					.getWidth() > 0) ? shapeBounds.getWidth()
 					/ shapeBounds.getHeight() : 1.0;
 
-			int size = evalToInt(gr.getSize(), feature, 16);
+			double size = evalToDouble(gr.getSize(), feature, 16);
 			final double sizeX = size * shapeAspectRatio; // apply the aspect
 															// ratio to fix the
 															// sample's width.

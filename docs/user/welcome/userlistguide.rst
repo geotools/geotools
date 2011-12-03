@@ -5,7 +5,17 @@ Regardless of whether you are just starting out with GeoTools or have been using
 encourage you to subscribe to the `user list
 <https://lists.sourceforge.net/lists/listinfo/geotools-gt2-users>`_ and take an active part in the
 community. To help make the user list as useful and friendly as possible we ask you to observe the
-following code of behaviour:
+following guidelines: 
+
+No advertising
+--------------
+
+The user list is for technical discussion directly related to programming with GeoTools. Other
+topics such as job notices or advertising products or services are best placed elsewhere. For job
+notices there is the `FOSS GIS mailing list <http://lists.osgeo.org/mailman/listinfo/jobs>`_ and the
+`OSGeo Jobs Board <http://wiki.osgeo.org/wiki/Jobs_Board>`_. For other topics such as product or
+company news, please contact a member of the GeoTools Project Management Committee to discuss
+pubishing an item on the GeoTools blog.
 
 Be polite 
 ---------

@@ -1778,14 +1778,14 @@ public class SLDParser {
                 // process the css entry
                 //
                 if (res.equalsIgnoreCase(strokeString)) {
-                    Expression color = parseParameterValueExpression(child, false);
+                    Expression color = parseCssParameter(child, false);
                     stroke.setColor(color);
                 } else if (res.equalsIgnoreCase("width") || res.equalsIgnoreCase("stroke-width")) {
-                    Expression width = parseParameterValueExpression(child, false);
+                    Expression width = parseCssParameter(child, false);
                     stroke.setWidth(width);
                 } else if (res.equalsIgnoreCase(opacityString)
                         || res.equalsIgnoreCase("stroke-opacity")) {
-                    Expression opacity = parseParameterValueExpression(child, false);
+                    Expression opacity = parseCssParameter(child, false);
                     stroke.setOpacity(opacity);
                 } else if (res.equalsIgnoreCase("linecap")
                         || res.equalsIgnoreCase("stroke-linecap")) {

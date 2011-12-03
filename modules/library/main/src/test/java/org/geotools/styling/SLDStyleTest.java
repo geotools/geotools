@@ -32,6 +32,7 @@ import junit.framework.TestSuite;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
 import org.geotools.filter.function.FilterFunction_buffer;
+import org.geotools.filter.function.FilterFunction_strConcat;
 import org.geotools.test.TestData;
 import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Filter;
@@ -265,6 +266,19 @@ public class SLDStyleTest extends TestCase {
          String labelValue = (String) label.evaluate(null, String.class);
 
          assertEquals("literal_1\nliteral_2", labelValue);
+    }
+    
+    public void testStrokeCssParameter() throws Exception {
+        java.net.URL surl = TestData.getResource(this, "strokeParam.sld");
+        SLDParser stylereader = new SLDParser(sf, surl);
+        StyledLayerDescriptor sld = stylereader.parseSLD();
+        
+        PolygonSymbolizer ps = (PolygonSymbolizer) ((NamedLayer) sld.getStyledLayers()[0]).getStyles()[0]
+               .featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
+
+        Expression color = ps.getStroke().getColor();
+        Expression expected = ff.function("strConcat", ff.literal("#"), ff.function("env", ff.literal("stroke"), ff.literal("0000FF")));
+        assertEquals(expected, color);
     }
 
     /**

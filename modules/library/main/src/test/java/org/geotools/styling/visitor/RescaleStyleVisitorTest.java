@@ -18,12 +18,18 @@ package org.geotools.styling.visitor;
 
 import java.awt.Color;
 
+import javax.measure.unit.SI;
+
 import junit.framework.TestCase;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
+import org.geotools.styling.LineSymbolizer;
+import org.geotools.styling.Mark;
+import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Stroke;
@@ -138,6 +144,42 @@ public class RescaleStyleVisitorTest extends TestCase {
         ts.accept(visitor);
         TextSymbolizer clone = (TextSymbolizer) visitor.getCopy();
         assertEquals("20", clone.getOptions().get(TextSymbolizer.MAX_DISPLACEMENT_KEY));
+    }
+    
+    public void testRescaleGraphicFillStrokes() {
+        // create a graphic that needs rescaling
+        StyleBuilder sb = new StyleBuilder();
+        
+        // a graphic stroke
+        Stroke stroke = sb.createStroke();
+        stroke.setColor(null);
+        stroke.setGraphicStroke(sb.createGraphic(null, sb.createMark("square", null, sb.createStroke(1)), null));
+        
+        // a graphic fill
+        Fill fill = sb.createFill();
+        fill.setColor(null);
+        fill.setGraphicFill(sb.createGraphic(null, sb.createMark("square", null, sb.createStroke(2)), null));
+        
+        // a polygon and line symbolizer using them
+        PolygonSymbolizer ps = sb.createPolygonSymbolizer(stroke, fill);
+        
+        // rescale it
+        ps.accept(visitor);
+        PolygonSymbolizer rps = (PolygonSymbolizer) visitor.getCopy();
+        Mark rm = (Mark) rps.getStroke().getGraphicStroke().graphicalSymbols().get(0);
+        assertEquals(2.0, rm.getStroke().getWidth().evaluate(null));
+        rm = (Mark) rps.getFill().getGraphicFill().graphicalSymbols().get(0);
+        assertEquals(4.0, rm.getStroke().getWidth().evaluate(null));
+
+        
+        // a line symbolizer that uses a graphic stroke
+        LineSymbolizer ls = sb.createLineSymbolizer(stroke);
+        
+        // rescale it
+        ls.accept(visitor);
+        LineSymbolizer lps = (LineSymbolizer) visitor.getCopy();
+        rm = (Mark) lps.getStroke().getGraphicStroke().graphicalSymbols().get(0);
+        assertEquals(2.0, rm.getStroke().getWidth().evaluate(null));
     }
     
 }

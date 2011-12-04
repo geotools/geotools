@@ -45,6 +45,8 @@ import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.geometry.XRectangle2D;
+import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -804,41 +806,14 @@ class RasterLayerRequest {
                     //
                     requestedResolution = null;
 
-                    // compute the raster that correspond to the crop bbox at the highest resolution
-                    final Rectangle sourceRasterArea = new GeneralGridEnvelope(CRS.transform(
-                            PixelTranslation.translate(rasterManager.getRaster2Model(),
-                                    PixelInCell.CELL_CENTER, PixelInCell.CELL_CORNER).inverse(),
-                            cropBBox), PixelInCell.CELL_CORNER, false).toRectangle();
-                    XRectangle2D.intersect(sourceRasterArea,
-                            rasterManager.spatialDomainManager.coverageRasterArea, sourceRasterArea);
-                    if (sourceRasterArea.isEmpty())
-                        throw new DataSourceException("aaa");
-
-                    // transform the crop bbox to the request model space
-                    final GeneralEnvelope envelope = CRS.transform(
-                            destinationToSourceTransform.inverse(), cropBBox);
-                    final GridToEnvelopeMapper geMapper = new GridToEnvelopeMapper(
-                            new GridEnvelope2D(sourceRasterArea), envelope);
+                    final GridToEnvelopeMapper geMapper= new GridToEnvelopeMapper(new GridEnvelope2D(destinationRasterArea),cropBBox);
                     final AffineTransform tempTransform = geMapper.createAffineTransform();
-                    final double scaleX = XAffineTransform
-                            .getScaleX0((AffineTransform) requestedGridToWorld)
-                            / XAffineTransform.getScaleX0(tempTransform);
-                    final double scaleY = XAffineTransform
-                            .getScaleY0((AffineTransform) requestedGridToWorld)
-                            / XAffineTransform.getScaleY0(tempTransform);
-                    //
-                    // empiric adjustment to get a finer resolution to have better quality when
-                    // reprojecting
-                    // TODO make it parametric
-                    //
+                    
                     requestedRasterScaleFactors = new double[2];
-                    requestedRasterScaleFactors[0] = scaleX * 1.0;
-                    requestedRasterScaleFactors[1] = scaleY * 1.0;
-
-                    // adjust the final grid to world
-                    final GridToEnvelopeMapper geMapper1 = new GridToEnvelopeMapper(
-                            new GridEnvelope2D(destinationRasterArea), cropBBox);
-                    requestedGridToWorld = geMapper1.createAffineTransform();
+                    requestedResolution = new double[] {
+                            XAffineTransform.getScaleX0(tempTransform),
+                            XAffineTransform.getScaleY0(tempTransform) 
+                    };
 
                 } else {
 
@@ -850,28 +825,12 @@ class RasterLayerRequest {
                     requestedResolution = new double[] {
                             XAffineTransform.getScaleX0(requestedGridToWorld),
                             XAffineTransform.getScaleY0(requestedGridToWorld) };
-                    // }
-                    // else{
-                    // // get the matrix
-                    // final Matrix matrix= ((LinearTransform)requestedGridToWorld).getMatrix();
-                    // final XAffineTransform transform=new XAffineTransform(
-                    // matrix.getElement(0, 0),
-                    // matrix.getElement(1, 0),
-                    // matrix.getElement(0, 1),
-                    // matrix.getElement(1, 1),
-                    // matrix.getElement(0, 2),
-                    // matrix.getElement(1, 2));
-                    // requestedResolution= new double[]
-                    // {
-                    // XAffineTransform.getScaleX0(transform),
-                    // XAffineTransform.getScaleY0(transform)
-                    // };
-                    // }
-                    //
                 }
-            }
-
-            // leave
+            } else
+                // should not happen
+                throw new UnsupportedOperationException(Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1,requestedGridToWorld.toString()));
+                
+            //leave
             return;
         } catch (Throwable e) {
             if (LOGGER.isLoggable(Level.INFO)) {

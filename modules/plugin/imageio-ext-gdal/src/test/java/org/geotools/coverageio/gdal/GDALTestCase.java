@@ -17,6 +17,7 @@
 package org.geotools.coverageio.gdal;
 
 import java.io.File;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
@@ -84,23 +85,19 @@ public class GDALTestCase  {
 
     @Before
     public void setUp() throws Exception {
+        if(!testingEnabled())
+            return;
         ImageIO.setUseCache(false);
         JAI.getDefaultInstance().getTileCache().setMemoryCapacity(16 * 1024 * 1024);
         JAI.getDefaultInstance().getTileCache().setMemoryThreshold(1.0f);
-        JAI.getDefaultInstance().getTileScheduler().setParallelism(2);
-        JAI.getDefaultInstance().getTileScheduler().setPrefetchParallelism(2);
-        JAI.getDefaultInstance().getTileScheduler().setPrefetchPriority(5);
-        JAI.getDefaultInstance().getTileScheduler().setPriority(5);
-        
-        try{
-        	final File file = TestData.file(this, "test.zip");
-
-            // unzip it
-            TestData.unzipFile(this, "test.zip"); 
+        try {
+            final File file = TestData.file(this, "test.zip");
+            if(file!=null&&file.exists()&&file.canRead())
+                // unzip it
+                TestData.unzipFile(this, "test.zip");
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
-        catch (Exception e) {
-			// TODO: handle exception
-		}
        
     }
 

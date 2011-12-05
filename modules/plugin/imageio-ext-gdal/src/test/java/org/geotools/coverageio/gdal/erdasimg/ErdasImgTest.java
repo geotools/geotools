@@ -65,7 +65,7 @@ public final class ErdasImgTest extends GDALTestCase {
     private final static String fileName = "sample.img";
 
     /**
-     * Creates a new instance of {@code ErdasImgTest}
+     * Creates a new instance of {@code IDRISIImgTest}
      *
      * @param name
      */

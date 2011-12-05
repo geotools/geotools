@@ -5,6 +5,7 @@ org.geotools.coverageio.gdal.jp2ecw.JP2ECWFormatFactory
 org.geotools.coverageio.gdal.ecw.ECWFormatFactory
 org.geotools.coverageio.gdal.dted.DTEDFormatFactory
 org.geotools.coverageio.gdal.erdasimg.ErdasImgFormatFactory
+org.geotools.coverageio.gdal.idrisi.IDRISIFormatFactory
 org.geotools.coverageio.gdal.nitf.NITFFormatFactory
 org.geotools.coverageio.gdal.ehdr.EsriHdrFormatFactory
 org.geotools.coverageio.gdal.envihdr.EnviHdrFormatFactory

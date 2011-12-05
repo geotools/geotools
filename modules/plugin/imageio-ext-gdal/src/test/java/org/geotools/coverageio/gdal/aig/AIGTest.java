@@ -44,7 +44,7 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  * 
- * Testing {@link AIGReader}
+ * Testing {@link IDRISIReader}
  *
  *
  *
@@ -58,7 +58,7 @@ public final class AIGTest extends GDALTestCase {
      private final static String fileName = "hdr.adf";
 
     /**
-     * Creates a new instance of {@code AIGReader}
+     * Creates a new instance of {@code IDRISIReader}
      * 
      * @param name
      */
@@ -128,8 +128,8 @@ public final class AIGTest extends GDALTestCase {
             }
         }
 
-        Assert.assertTrue("AIGFormatFactory not registered", found);
-        Assert.assertTrue("AIGFormatFactory not available", fac.isAvailable());
+        Assert.assertTrue("IDRISIFormatFactory not registered", found);
+        Assert.assertTrue("IDRISIFormatFactory not available", fac.isAvailable());
         Assert.assertNotNull(new AIGFormatFactory().createFormat());
     }
 }

@@ -91,7 +91,7 @@
     <test.exclude.pattern>disabled</test.exclude.pattern>
     <test.maxHeapSize>512M</test.maxHeapSize>
     <src.output>${basedir}/target</src.output>
-    <imageio.ext.version>1.1.0</imageio.ext.version>
+    <imageio.ext.version>1.1.2</imageio.ext.version>
     <jt.version>1.2.0</jt.version>
     <jvm.opts></jvm.opts>
     <maven.build.timestamp.format>dd-MMM-yyyy HH:mm</maven.build.timestamp.format>
@@ -107,7 +107,6 @@
          <property><name>all</name></property>
        </activation>
       <modules>
-        <module>docs</module>
       </modules>
     </profile>
     <profile>
@@ -627,7 +626,12 @@
         <groupId>it.geosolutions.imageio-ext</groupId>
         <artifactId>imageio-ext-gdalkakadujp2</artifactId>
         <version>${imageio.ext.version}</version>
-      </dependency>
+      </dependency>     
+      <dependency>
+        <groupId>it.geosolutions.imageio-ext</groupId>
+        <artifactId>imageio-ext-gdalidrisi</artifactId>
+        <version>${imageio.ext.version}</version>
+      </dependency>           
       <dependency>
         <groupId>it.geosolutions.imageio-ext</groupId>
         <artifactId>imageio-ext-gdalmrsidjp2</artifactId>

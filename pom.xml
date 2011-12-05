@@ -107,6 +107,7 @@
          <property><name>all</name></property>
        </activation>
       <modules>
+        <module>docs</module>      
       </modules>
     </profile>
     <profile>

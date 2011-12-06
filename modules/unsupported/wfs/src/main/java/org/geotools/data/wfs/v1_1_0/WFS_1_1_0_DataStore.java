@@ -36,7 +36,6 @@ import javax.xml.namespace.QName;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.EmptyFeatureReader;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
@@ -59,7 +58,6 @@ import org.geotools.data.wfs.protocol.wfs.WFSExtensions;
 import org.geotools.data.wfs.protocol.wfs.WFSOperationType;
 import org.geotools.data.wfs.protocol.wfs.WFSProtocol;
 import org.geotools.data.wfs.protocol.wfs.WFSResponse;
-import org.geotools.data.wfs.v1_1_0.parsers.EmfAppSchemaParser;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.SchemaException;
@@ -70,7 +68,6 @@ import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.util.logging.Logging;
-import org.geotools.xml.Configuration;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
@@ -95,14 +92,14 @@ import org.opengis.referencing.operation.TransformException;
  * @author Gabriel Roldan
  * @version $Id$
  * @since 2.5.x
- *
- *
- *
+ * 
+ * 
+ * 
  * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/wfs/src/main/java/org/geotools
  *         /wfs/v_1_1_0/data/WFSDataStore.java $
  */
-@SuppressWarnings( { "nls" })
+@SuppressWarnings({ "nls" })
 public final class WFS_1_1_0_DataStore implements WFSDataStore {
     private static final Logger LOGGER = Logging.getLogger("org.geotools.data.wfs");
 
@@ -138,10 +135,10 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
     /**
      * @see org.geotools.data.wfs.WFSDataStore#setNamespaceOverride(java.lang.String)
      */
-    public void setNamespaceOverride(String namespaceOverride){
+    public void setNamespaceOverride(String namespaceOverride) {
         this.namespaceOverride = namespaceOverride;
     }
-    
+
     /**
      * @see WFSDataStore#setMaxFeatures(Integer)
      */
@@ -223,7 +220,9 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
             SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
             builder.init(featureType);
             builder.setName(prefixedTypeName);
-            builder.setNamespaceURI(namespaceOverride);
+            if (namespaceOverride != null) {
+                builder.setNamespaceURI(namespaceOverride);
+            }
             GeometryDescriptor defaultGeometry = featureType.getGeometryDescriptor();
             if (defaultGeometry != null) {
                 builder.setDefaultGeometry(defaultGeometry.getLocalName());
@@ -298,7 +297,7 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
         // TODO: handle output format preferences
         final String outputFormat = wfs.getDefaultOutputFormat(GET_FEATURE);
 
-        String srsName = adaptQueryForSupportedCrs((DefaultQuery) query);
+        String srsName = adaptQueryForSupportedCrs((Query) query);
 
         GetFeature request = new GetFeatureQueryAdapter(query, outputFormat, srsName, resultType);
 
@@ -317,14 +316,14 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
             return new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(getQueryType(query));
         }
 
-        query = new DefaultQuery(query);
+        query = new Query(query);
         Filter[] filters = wfs.splitFilters(query.getFilter());
         Filter supportedFilter = filters[0];
         Filter postFilter = filters[1];
         System.out.println("Supported filter:  " + supportedFilter);
         System.out.println("Unupported filter: " + postFilter);
-        ((DefaultQuery) query).setFilter(supportedFilter);
-        ((DefaultQuery) query).setMaxFeatures(getMaxFeatures(query));
+        ((Query) query).setFilter(supportedFilter);
+        ((Query) query).setMaxFeatures(getMaxFeatures(query));
 
         final CoordinateReferenceSystem queryCrs = query.getCoordinateSystem();
 
@@ -363,7 +362,8 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
         }
 
         if (Filter.INCLUDE != postFilter) {
-            reader = new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(reader, postFilter);
+            reader = new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(reader,
+                    postFilter);
         }
 
         if (!contentType.equals(readerType)) {
@@ -372,7 +372,9 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
         }
 
         if (this.maxFeaturesHardLimit.intValue() > 0 || query.getMaxFeatures() != Integer.MAX_VALUE) {
-            int maxFeatures = maxFeaturesHardLimit.intValue() > 0 ? Math.min(maxFeaturesHardLimit.intValue(), query.getMaxFeatures()) : query.getMaxFeatures();
+            int maxFeatures = maxFeaturesHardLimit.intValue() > 0 ? Math.min(
+                    maxFeaturesHardLimit.intValue(), query.getMaxFeatures()) : query
+                    .getMaxFeatures();
             reader = new MaxFeatureReader<SimpleFeatureType, SimpleFeature>(reader, maxFeatures);
         }
         return reader;
@@ -497,8 +499,7 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
     /**
      * @see org.geotools.data.DataAccess#getFeatureSource(org.opengis.feature.type.Name)
      */
-    public SimpleFeatureSource getFeatureSource(Name typeName)
-            throws IOException {
+    public SimpleFeatureSource getFeatureSource(Name typeName) throws IOException {
         Set<QName> featureTypeNames = wfs.getFeatureTypeNames();
 
         final String namespaceURI = typeName.getNamespaceURI();
@@ -580,12 +581,14 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
         try {
             nativeBounds = wgs84Bounds.transform(ftypeCrs, true);
         } catch (TransformException e) {
-            LOGGER.log(Level.WARNING, "Can't transform bounds of " + typeName + " to "
-                    + wfs.getDefaultCRS(typeName), e);
+            LOGGER.log(Level.WARNING,
+                    "Can't transform bounds of " + typeName + " to " + wfs.getDefaultCRS(typeName),
+                    e);
             nativeBounds = new ReferencedEnvelope(ftypeCrs);
         } catch (FactoryException e) {
-            LOGGER.log(Level.WARNING, "Can't transform bounds of " + typeName + " to "
-                    + wfs.getDefaultCRS(typeName), e);
+            LOGGER.log(Level.WARNING,
+                    "Can't transform bounds of " + typeName + " to " + wfs.getDefaultCRS(typeName),
+                    e);
             nativeBounds = new ReferencedEnvelope(ftypeCrs);
         }
         return nativeBounds;
@@ -719,13 +722,13 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
     }
 
     /**
-     * If the query is fully supported, makes a {@code GetFeature} request with {@code
-     * resultType=hits} and returns the counts returned by the server, otherwise returns {@code -1}
-     * as the result is too expensive to calculate.
+     * If the query is fully supported, makes a {@code GetFeature} request with
+     * {@code resultType=hits} and returns the counts returned by the server, otherwise returns
+     * {@code -1} as the result is too expensive to calculate.
      * 
      * @param query
-     * @return the number of features returned by a GetFeature?resultType=hits request, or {@code
-     *         -1} if not supported
+     * @return the number of features returned by a GetFeature?resultType=hits request, or
+     *         {@code -1} if not supported
      */
     public int getCount(final Query query) throws IOException {
         Filter[] filters = wfs.splitFilters(query.getFilter());
@@ -763,8 +766,7 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
     }
 
     /**
-     * @return
-     *         <code>true<code> if HTTP POST method should be used to issue the given WFS operation, <code>false</code>
+     * @return <code>true<code> if HTTP POST method should be used to issue the given WFS operation, <code>false</code>
      *         if HTTP GET method should be used instead
      */
     private boolean useHttpPostFor(final WFSOperationType operation) {
@@ -795,7 +797,7 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
      * @return
      * @throws IOException
      */
-    private String adaptQueryForSupportedCrs(DefaultQuery query) throws IOException {
+    private String adaptQueryForSupportedCrs(Query query) throws IOException {
         // The CRS the query is performed in
         final String typeName = query.getTypeName();
         final CoordinateReferenceSystem queryCrs = query.getCoordinateSystem();

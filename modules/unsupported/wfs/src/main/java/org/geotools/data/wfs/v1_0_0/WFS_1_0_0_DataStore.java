@@ -88,6 +88,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
+import org.opengis.filter.Id;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
@@ -381,11 +382,11 @@ public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataSto
         if (fsd != null) {
             crsName = fsd.getSRS();
             ftName = fsd.getName();
-
+            
             CoordinateReferenceSystem crs;
             try {
                 if (crsName != null) {
-                    crs = CRS.decode(crsName);
+                    crs = CRS.decode(crsName, true);
                     featureType = WFSFeatureTypeTransformer.transform(featureType, crs);
                 }
             } catch (FactoryException e) {
@@ -399,8 +400,9 @@ public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataSto
             SimpleFeatureTypeBuilder build = new SimpleFeatureTypeBuilder();
             build.init(featureType);
             build.setName(ftName);
-            build.setNamespaceURI(namespaceOverride);
-
+            if( namespaceOverride != null ){
+                build.setNamespaceURI(namespaceOverride);
+            }
             featureType = build.buildFeatureType();
             // t = FeatureTypeBuilder.newFeatureType(
             // t.getAttributeTypes(),
@@ -544,32 +546,38 @@ public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataSto
                 url += ("&MAXFEATURES=" + request.getMaxFeatures());
             }
 
-            if (request.getFilter() != null) {
-                if (Filters.getFilterType(request.getFilter()) == FilterType.GEOMETRY_BBOX) {
-                    String bb = printBBoxGet(((GeometryFilter) request.getFilter()), request
-                            .getTypeName());
-                    if (bb != null)
+            Filter filter = request.getFilter();
+            String typeName = request.getTypeName();
+            if (filter != null) {
+                if (filter instanceof BBOX) {
+                    String bb = printBBoxGet( (BBOX) filter , typeName );
+                    if (bb != null) {
                         url += ("&BBOX=" + URLEncoder.encode(bb, protocolHandler.getEncoding()));
-                } else {
-                    if (Filters.getFilterType(request.getFilter()) == FilterType.FID) {
-                        FidFilter ff = (FidFilter) request.getFilter();
-
-                        if ((ff.getFids() != null) && (ff.getFids().length > 0)) {
-                            url += ("&FEATUREID=" + ff.getFids()[0]);
-
-                            for (int i = 1; i < ff.getFids().length; i++) {
-                                url += ("," + ff.getFids()[i]);
-                            }
-                        }
-                    } else {
-                        // rest
-                        if (request.getFilter() != Filter.INCLUDE
-                                && request.getFilter() != Filter.EXCLUDE) {
-                            url += "&FILTER="
-                                    + URLEncoder.encode(printFilter(request.getFilter()),
-                                            protocolHandler.getEncoding());
-                        }
                     }
+                } else if (filter instanceof Id) {
+                    Id ff = (Id) filter;
+                    Set<Object> fids = ff.getIDs();
+                    
+                    if ( fids != null && !fids.isEmpty()) {
+                        StringBuilder build = new StringBuilder();
+                        
+                        build.append("&FEATUREID=");
+                        boolean first = true;
+                        for( Object fid : fids ){
+                            if( first ){
+                                first = false;
+                            }
+                            else {
+                                build.append(",");
+                            }
+                            build.append( fid );
+                        }
+                        url += build.toString();
+                    }
+                } else if (filter != Filter.INCLUDE && filter != Filter.EXCLUDE) {
+                    String print = printFilter(filter);
+                    String encode = URLEncoder.encode(print,protocolHandler.getEncoding());
+                    url += "&FILTER=" + encode;
                 }
             }
         }
@@ -675,44 +683,45 @@ public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataSto
 
         return w.toString();
     }
-
-    private String printBBoxGet(GeometryFilter gf, String typename) throws IOException {
-        Envelope e = null;
-
-        if (gf.getLeftGeometry().getType() == ExpressionType.LITERAL_GEOMETRY) {
-            e = ((Geometry) ((LiteralExpression) gf.getLeftGeometry()).getLiteral())
-                    .getEnvelopeInternal();
-        } else {
-            if (gf.getRightGeometry().getType() == ExpressionType.LITERAL_GEOMETRY) {
-                LiteralExpression literal = (LiteralExpression) gf.getRightGeometry();
-                Geometry geometry = (Geometry) literal.getLiteral();
-                e = geometry.getEnvelopeInternal();
-            } else {
-                throw new IOException("Cannot encode BBOX:" + gf);
-            }
-        }
-
-        if (e == null || e.isNull())
-            return null;
-
-        // Cannot check against layer bbounding box because they may be in
-        // different CRS
-        // We could insert ReferencedEnvelope fun here - note a check is already
-        // performed
-        // as part clipping the request bounding box.
-
-        /*
-         * // find layer's bbox Envelope lbb = null; if(capabilities != null &&
-         * capabilities.getFeatureTypes() != null && typename!=null && !"".equals(typename)){ List
-         * fts = capabilities.getFeatureTypes(); if(!fts.isEmpty()){ for(Iterator
-         * i=fts.iterator();i.hasNext() && lbb == null;){ FeatureSetDescription fsd =
-         * (FeatureSetDescription)i.next(); if(fsd!=null && typename.equals(fsd.getName())){ lbb =
-         * fsd.getLatLongBoundingBox(); } } } } if(lbb == null || lbb.contains(e))
-         */
-        return e.getMinX() + "," + e.getMinY() + "," + e.getMaxX() + "," + e.getMaxY();
-        // return null;
+    private String printBBoxGet( BBOX bbox, String typeName ) throws IOException {
+        return bbox.getMinX() + "," + bbox.getMinY() + "," + bbox.getMaxX() + "," + bbox.getMaxY();
     }
-
+//    private String printBBoxGet( org.opengis.filter.Filter f, String typename) throws IOException {
+//        Envelope e = null;
+//
+//        if (gf.getLeftGeometry().getType() == ExpressionType.LITERAL_GEOMETRY) {
+//            e = ((Geometry) ((LiteralExpression) gf.getLeftGeometry()).getLiteral())
+//                    .getEnvelopeInternal();
+//        } else {
+//            if (gf.getRightGeometry().getType() == ExpressionType.LITERAL_GEOMETRY) {
+//                LiteralExpression literal = (LiteralExpression) gf.getRightGeometry();
+//                Geometry geometry = (Geometry) literal.getLiteral();
+//                e = geometry.getEnvelopeInternal();
+//            } else {
+//                throw new IOException("Cannot encode BBOX:" + gf);
+//            }
+//        }
+//
+//        if (e == null || e.isNull())
+//            return null;
+//
+//        // Cannot check against layer bbounding box because they may be in
+//        // different CRS
+//        // We could insert ReferencedEnvelope fun here - note a check is already
+//        // performed
+//        // as part clipping the request bounding box.
+//
+//        /*
+//         * // find layer's bbox Envelope lbb = null; if(capabilities != null &&
+//         * capabilities.getFeatureTypes() != null && typename!=null && !"".equals(typename)){ List
+//         * fts = capabilities.getFeatureTypes(); if(!fts.isEmpty()){ for(Iterator
+//         * i=fts.iterator();i.hasNext() && lbb == null;){ FeatureSetDescription fsd =
+//         * (FeatureSetDescription)i.next(); if(fsd!=null && typename.equals(fsd.getName())){ lbb =
+//         * fsd.getLatLongBoundingBox(); } } } } if(lbb == null || lbb.contains(e))
+//         */
+//        return e.getMinX() + "," + e.getMinY() + "," + e.getMaxX() + "," + e.getMaxY();
+//        // return null;
+//    }
     // protected for testing
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReaderPost(Query query,
             Transaction transaction) throws SAXException, IOException {
@@ -840,7 +849,7 @@ public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataSto
                         DefaultGeographicCRS.WGS84);
 
                 try {
-                    return referencedEnvelope.transform(CRS.decode(fsd.getSRS()), true);
+                    return referencedEnvelope.transform(CRS.decode(fsd.getSRS(), true), true);
                 } catch (NoSuchAuthorityCodeException e) {
                     return referencedEnvelope;
                 } catch (TransformException e) {

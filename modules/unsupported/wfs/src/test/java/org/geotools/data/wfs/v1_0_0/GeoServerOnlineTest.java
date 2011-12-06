@@ -38,7 +38,6 @@ import java.util.logging.Level;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureEvent;
 import org.geotools.data.FeatureListener;
@@ -57,6 +56,7 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -65,7 +65,6 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.Id;
 import org.opengis.filter.PropertyIsNull;
-import org.opengis.filter.MultiValuedFilter.MatchAction;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.FeatureId;
@@ -154,7 +153,7 @@ public class GeoServerOnlineTest {
             features.getSchema();
             // features.getFeatureType();
 
-            DefaultQuery query = new DefaultQuery(typeName, Filter.INCLUDE, 20, Query.ALL_NAMES,
+            Query query = new Query(typeName, Filter.INCLUDE, 20, Query.ALL_NAMES,
                     "work already");
             features = source.getFeatures(query);
             features.size();
@@ -202,7 +201,7 @@ public class GeoServerOnlineTest {
         features.getSchema();
         // features.getFeatureType();
 
-        DefaultQuery query = new DefaultQuery(typeName, Filter.INCLUDE, 20, Query.ALL_NAMES,
+        Query query = new Query(typeName, Filter.INCLUDE, 20, Query.ALL_NAMES,
                 "work already");
         features = source.getFeatures(query);
         features.size();
@@ -306,7 +305,7 @@ public class GeoServerOnlineTest {
             }
         };
         
-        final DefaultQuery query = new DefaultQuery(ft.getTypeName());
+        final Query query = new Query(ft.getTypeName());
         query.setFilter(strictBBox);
         
         FeatureReader<SimpleFeatureType, SimpleFeature> reader;
@@ -377,7 +376,7 @@ public class GeoServerOnlineTest {
 
         Filter filter = fac.equals(fac.property("NAME"), fac.literal("E 58th St"));
 
-        Query query = new DefaultQuery("tiger:tiger_roads", filter);
+        Query query = new Query("tiger:tiger_roads", filter);
         FeatureReader<SimpleFeatureType, SimpleFeature> reader = wfs.getFeatureReader(query,
                 new DefaultTransaction());
         int expected = 0;
@@ -385,7 +384,7 @@ public class GeoServerOnlineTest {
             expected++;
             reader.next();
         }
-        query = new DefaultQuery("tiger:tiger_roads", filter, 100, new String[] { "CFCC" }, "");
+        query = new Query("tiger:tiger_roads", filter, 100, new String[] { "CFCC" }, "");
         reader = wfs.getFeatureReader(query, new DefaultTransaction());
         int count = 0;
         while (reader.hasNext()) {
@@ -401,8 +400,11 @@ public class GeoServerOnlineTest {
      * <p>
      * Makes reference to the standard featureTypes that geoserver ships with.
      * </p>
+     * NOTE: Ignoring this test for now because it edits topp:states and GeoServer doesn't return
+     * the correct Feature IDs on transactions against shapefiles
      */
     @Test
+    @Ignore
     public void testWrite() throws NoSuchElementException, IllegalFilterException, IOException,
             IllegalAttributeException {
         if (url == null)
@@ -442,7 +444,7 @@ public class GeoServerOnlineTest {
             PropertyName geometryAttributeExpression = filterFac.property(ft
                     .getGeometryDescriptor().getLocalName());
             PropertyIsNull geomNullCheck = filterFac.isNull(geometryAttributeExpression);
-            Query query = new DefaultQuery(typename, filterFac.not(geomNullCheck), 1,
+            Query query = new Query(typename, filterFac.not(geomNullCheck), 1,
                     Query.ALL_NAMES, null);
             SimpleFeatureIterator inStore = fs.getFeatures(query).features();
 
@@ -468,7 +470,7 @@ public class GeoServerOnlineTest {
 
             // / okay now count ...
             FeatureReader<SimpleFeatureType, SimpleFeature> count = post.getFeatureReader(
-                    new DefaultQuery(ft.getTypeName()), Transaction.AUTO_COMMIT);
+                    new Query(ft.getTypeName()), Transaction.AUTO_COMMIT);
             int i = 0;
             while (count.hasNext() && i < 3) {
                 f = count.next();

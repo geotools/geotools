@@ -38,7 +38,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.geotools.data.DefaultQuery;
+import org.geotools.data.Query;
 import org.geotools.data.wfs.protocol.http.DefaultHTTPProtocol;
 import org.geotools.data.wfs.protocol.http.HTTPProtocol;
 import org.geotools.data.wfs.protocol.http.HTTPResponse;
@@ -628,8 +628,8 @@ public class WFS_1_1_0_ProtocolTest {
      * 
      * HTTPProtocol mockHttp = new TestHttpProtocol(response);
      * 
-     * createTestProtocol(GEOS_ARCHSITES.CAPABILITIES, mockHttp); DefaultQuery query = new
-     * DefaultQuery(GEOS_ARCHSITES.FEATURETYPENAME);
+     * createTestProtocol(GEOS_ARCHSITES.CAPABILITIES, mockHttp); Query query = new
+     * Query(GEOS_ARCHSITES.FEATURETYPENAME);
      * 
      * int featureHits = wfs.getFeatureHits(query); assertEquals(217, featureHits); }
      */
@@ -660,8 +660,8 @@ public class WFS_1_1_0_ProtocolTest {
      * 
      * HTTPProtocol mockHttp = new TestHttpProtocol(response);
      * 
-     * createTestProtocol(GEOS_ARCHSITES.CAPABILITIES, mockHttp); DefaultQuery query = new
-     * DefaultQuery(GEOS_ARCHSITES.FEATURETYPENAME);
+     * createTestProtocol(GEOS_ARCHSITES.CAPABILITIES, mockHttp); Query query = new
+     * Query(GEOS_ARCHSITES.FEATURETYPENAME);
      * 
      * try { wfs.getFeatureHits(query);
      * fail("Expected IOException if the server returned an exception report"); } catch (IOException
@@ -695,8 +695,8 @@ public class WFS_1_1_0_ProtocolTest {
      * 
      * HTTPProtocol mockHttp = new TestHttpProtocol(response);
      * 
-     * createTestProtocol(GEOS_ARCHSITES.CAPABILITIES, mockHttp); DefaultQuery query = new
-     * DefaultQuery(GEOS_ARCHSITES.FEATURETYPENAME);
+     * createTestProtocol(GEOS_ARCHSITES.CAPABILITIES, mockHttp); Query query = new
+     * Query(GEOS_ARCHSITES.FEATURETYPENAME);
      * 
      * int featureHits = wfs.getFeatureHits(query); assertEquals(-1, featureHits); }
      */
@@ -721,7 +721,7 @@ public class WFS_1_1_0_ProtocolTest {
         WFSStrategy strategy = new GeoServerStrategy();
         wfs.setStrategy(strategy);
 
-        DefaultQuery query = new DefaultQuery(GEOS_ARCHSITES.FEATURETYPENAME);
+        Query query = new Query(GEOS_ARCHSITES.FEATURETYPENAME);
         GetFeature getFeature = new GetFeatureQueryAdapter(query, defaultWfs11OutputFormat,
                 "EPSG:4326", ResultType.RESULTS);
 
@@ -763,7 +763,7 @@ public class WFS_1_1_0_ProtocolTest {
         TestHttpProtocol mockHttp = new TestHttpProtocol(httpResponse);
         createTestProtocol(GEOS_ARCHSITES.CAPABILITIES, mockHttp);
 
-        DefaultQuery query = new DefaultQuery(GEOS_ARCHSITES.FEATURETYPENAME);
+        Query query = new Query(GEOS_ARCHSITES.FEATURETYPENAME);
         query.setMaxFeatures(1000);
         query.setPropertyNames(new String[] { "cat", "the_geom" });
         query.setCoordinateSystem(CRS.decode("EPSG:23030"));
@@ -840,7 +840,7 @@ public class WFS_1_1_0_ProtocolTest {
         WFSStrategy strategy = new GeoServerStrategy();
         wfs.setStrategy(strategy);
 
-        DefaultQuery query = new DefaultQuery(GEOS_ARCHSITES.FEATURETYPENAME);
+        Query query = new Query(GEOS_ARCHSITES.FEATURETYPENAME);
         GetFeature getFeature = new GetFeatureQueryAdapter(query, defaultWfs11OutputFormat,
                 "EPSG:4326", ResultType.RESULTS);
 

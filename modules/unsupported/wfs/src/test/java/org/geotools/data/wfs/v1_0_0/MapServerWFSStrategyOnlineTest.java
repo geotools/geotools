@@ -16,7 +16,6 @@
  */
 package org.geotools.data.wfs.v1_0_0;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +24,6 @@ import junit.framework.TestCase;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -89,9 +87,9 @@ public class MapServerWFSStrategyOnlineTest extends TestCase {
         String attName = ds.getSchema(TYPE_NAME).getGeometryDescriptor().getLocalName();
         filter.addLeftGeometry(fac.createAttributeExpression(attName));
         
-        filter.addRightGeometry(fac.createBBoxExpression(ds.getBounds(new DefaultQuery(TYPE_NAME))));
+        filter.addRightGeometry(fac.createBBoxExpression(ds.getBounds(new Query(TYPE_NAME))));
         
-        Query query=new DefaultQuery(TYPE_NAME, filter);
+        Query query=new Query(TYPE_NAME, filter);
         
         SimpleFeatureCollection features = ds.getFeatureSource(TYPE_NAME).getFeatures(query);
         
@@ -115,7 +113,7 @@ public class MapServerWFSStrategyOnlineTest extends TestCase {
         reader = source.getFeatures(Filter.NONE);
         assertCorrectSize(reader, totalFeatures);
 
-        reader = source.getFeatures(new DefaultQuery(TYPE_NAME, Filter.NONE));
+        reader = source.getFeatures(new Query(TYPE_NAME, Filter.NONE));
         assertCorrectSize(reader, totalFeatures);
 }
 

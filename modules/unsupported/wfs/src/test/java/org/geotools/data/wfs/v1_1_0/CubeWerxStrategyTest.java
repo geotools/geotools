@@ -32,7 +32,7 @@ import java.util.Map;
 import net.opengis.wfs.GetFeatureType;
 import net.opengis.wfs.ResultTypeType;
 
-import org.geotools.data.DefaultQuery;
+import org.geotools.data.Query;
 import org.geotools.data.wfs.protocol.wfs.GetFeature;
 import org.geotools.data.wfs.protocol.wfs.GetFeature.ResultType;
 import org.geotools.data.wfs.v1_1_0.WFSStrategy.RequestComponents;
@@ -75,7 +75,7 @@ public class CubeWerxStrategyTest {
 
     @Test
     public void testCreateGetFeatureRequest() throws IOException {
-        GetFeature query = new GetFeatureQueryAdapter(new DefaultQuery(
+        GetFeature query = new GetFeatureQueryAdapter(new Query(
                 CUBEWERX_GOVUNITCE.FEATURETYPENAME), "GML2", "EPSG:4326", ResultType.RESULTS);
         RequestComponents getFeatureRequest = strategy.createGetFeatureRequest(wfs, query);
         GetFeatureType serverRequest = getFeatureRequest.getServerRequest();

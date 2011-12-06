@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -105,7 +104,7 @@ class WFSFeatureCollection extends DataFeatureCollection {
                 // + this.schema.getName());
                 // bad luck, do a full scan
                 final Name defaultgeom = contentType.getGeometryDescriptor().getName();
-                final DefaultQuery geomQuery = new DefaultQuery(this.query);
+                final Query geomQuery = new Query(this.query);
                 geomQuery.setPropertyNames(new String[] { defaultgeom.getLocalPart() });
 
                 FeatureReader<SimpleFeatureType, SimpleFeature> reader;

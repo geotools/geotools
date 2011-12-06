@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.geotools.data.DataStore;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -56,7 +55,7 @@ public class WFSDemo {
             m.put(WFSDataStoreFactory.PROTOCOL.key,Boolean.FALSE);
 
             DataStore wfs = (new WFSDataStoreFactory()).createNewDataStore(m);
-            Query query = new DefaultQuery(wfs.getTypeNames()[1]);
+            Query query = new Query(wfs.getTypeNames()[1]);
              FeatureReader<SimpleFeatureType, SimpleFeature> ft = wfs.getFeatureReader(query,Transaction.AUTO_COMMIT);
             int count = 0;
             while(ft.hasNext())

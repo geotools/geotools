@@ -27,7 +27,6 @@ import java.util.logging.Logger;
 
 import junit.framework.TestCase;
 
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -113,7 +112,7 @@ public class WFSDataStoreReadTest extends TestCase {
         WFS_1_0_0_DataStore wfs = getDataStore(url);
         assertNotNull("No featureTypes",wfs.getTypeNames());
         assertNotNull("Null featureType in [0]",wfs.getTypeNames()[i]);
-        Query query = new DefaultQuery(wfs.getTypeNames()[i]);
+        Query query = new Query(wfs.getTypeNames()[i]);
         
         if(post){
         // 	post
@@ -150,7 +149,7 @@ public class WFSDataStoreReadTest extends TestCase {
         String[] props;
         props = new String[] {ft.getGeometryDescriptor().getLocalName()};
         
-        DefaultQuery query = new DefaultQuery(ft.getTypeName());
+        Query query = new Query(ft.getTypeName());
         query.setPropertyNames(props);
         String fid=null;
         if(get){
@@ -248,7 +247,7 @@ public class WFSDataStoreReadTest extends TestCase {
         
         // take atleast attributeType 3 to avoid the undeclared one .. inherited optional attrs
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
-        DefaultQuery query = new DefaultQuery(featureType.getTypeName());
+        Query query = new Query(featureType.getTypeName());
         PropertyName theGeom = ff.property( featureType.getGeometryDescriptor().getName() );
         Filter filter = ff.bbox( theGeom, bbox.getMinX(), bbox.getMinY(), bbox.getMaxX(), bbox.getMaxY(), "EPSG:4326" );
                 
@@ -258,9 +257,20 @@ public class WFSDataStoreReadTest extends TestCase {
             //  get
             FeatureReader<SimpleFeatureType, SimpleFeature> fr = wfs.getFeatureReaderGet(query,Transaction.AUTO_COMMIT);
             assertNotNull("GET "+typeName+" FeatureType was null",featureType);
-            assertTrue("GET "+typeName+ " must have 1 feature -- fair assumption",fr.hasNext() && fr.getFeatureType()!=null && fr.next()!=null);
-            int j=0;while(fr.hasNext()){fr.next();j++;}
-            System.out.println("bbox selected "+j+" Features");
+                        
+            assertTrue("GET " + typeName + " has next?", fr.hasNext());
+            assertNotNull("GET " + typeName + " has feature type", fr.getFeatureType());
+
+            SimpleFeature feature = fr.next();
+
+            assertNotNull("GET " + typeName + " has non null feature", feature);
+
+            int j = 0;
+            while (fr.hasNext()) {
+                fr.next();
+                j++;
+            }
+            System.out.println("bbox selected " + j + " Features");
             fr.close();
         }if(post){
             //  post

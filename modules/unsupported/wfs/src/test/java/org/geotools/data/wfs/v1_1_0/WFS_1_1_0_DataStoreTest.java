@@ -30,8 +30,8 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureReader;
+import org.geotools.data.Query;
 import org.geotools.data.SchemaNotFoundException;
 import org.geotools.data.Transaction;
 import org.geotools.data.wfs.v1_1_0.DataTestSupport.TestHttpProtocol;
@@ -125,7 +125,7 @@ public class WFS_1_1_0_DataStoreTest {
         wfs.setDescribeFeatureTypeURLOverride(describeUrl);
 
         WFS_1_1_0_DataStore ds = new WFS_1_1_0_DataStore(wfs);
-        DefaultQuery query = new DefaultQuery(CUBEWERX_GOVUNITCE.FEATURETYPENAME);
+        Query query = new Query(CUBEWERX_GOVUNITCE.FEATURETYPENAME);
         FeatureReader<SimpleFeatureType, SimpleFeature> featureReader;
         featureReader = ds.getFeatureReader(query, Transaction.AUTO_COMMIT);
         assertNotNull(featureReader);

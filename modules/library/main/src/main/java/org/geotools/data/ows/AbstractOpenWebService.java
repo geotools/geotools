@@ -143,6 +143,15 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
     }
 
     /**
+     * Get the getCapabilities document. If there was an error parsing it
+     * during creation, it will return null (and it should have thrown an
+     * exception during creation).
+     * 
+     * @return a Capabilities object, representing the Capabilities of the server
+     */
+    public abstract C getCapabilities();
+    
+    /**
      * Description of this service.
      * <p>
      * Provides a very quick description of the service, for more information

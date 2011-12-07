@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>org.geotools</groupId>
 		<artifactId>unsupported</artifactId>
-		<version>8-SNAPSHOT</version>
+		<version>8.0-M4</version>
 	</parent>
 
 
@@ -88,7 +88,7 @@
 		<dependency>
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-cql</artifactId>
-			<version>8-SNAPSHOT</version>
+			<version>8.0-M4</version>
 		</dependency>
 
 
@@ -134,7 +134,7 @@
 		<dependency>
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-property</artifactId>
-			<version>8-SNAPSHOT</version>
+			<version>8.0-M4</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

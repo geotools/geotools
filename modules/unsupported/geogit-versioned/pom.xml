@@ -64,6 +64,14 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+		<repository>
+			<id>caucho</id>
+			<name>caucho</name>
+			<url>http://caucho.com/m2</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
 	</repositories>
 
 	<dependencies>
@@ -113,7 +121,11 @@
 			<version>1.8.5</version>
 			<scope>test</scope>
 		</dependency>
-
+		<dependency>
+			<groupId>com.caucho</groupId>
+			<artifactId>resin-hessian</artifactId>
+			<version>4.0.20</version>
+		</dependency>
 
 		<dependency>
 			<groupId>commons-io</groupId>

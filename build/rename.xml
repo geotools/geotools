@@ -1,33 +1,45 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project name="Rename" default="rename">
-
-  <target name="rename">
-    <replace dir=".">
+  
+  <target name="rename" depends="code,doc,readme"
+          description="Update the version references in code, doc and readme"
+   />
+  
+  <target name="code">
+    <replace dir="..">
       <include name="**/pom.xml"/>
       <replacefilter token="&lt;version&gt;8-SNAPSHOT&lt;/version&gt;"
-                     value="&lt;version&gt;8.0-M4&lt;/version&gt;"/>
+                     value="&lt;version&gt;8.0-M5&lt;/version&gt;"/>
     </replace>
     
-    <replace dir="./modules/library/metadata/src/main/java/org/geotools/factory">
+    <replace dir="../modules/library/metadata/src/main/java/org/geotools/factory">
       <include name="GeoTools.java"/>
      <replacefilter token="8-SNAPSHOT"
-                     value="8.0-M4"/>
+                     value="8.0-M5"/>
     </replace>
   </target>
   
   <target name="doc">
-    <replace dir="./docs/user/tutorial/">
+    <replace dir="../docs/user/tutorial/">
       <include name="**/pom.xml"/>
-      <replacefilter token="&lt;geotools.version&gt;8.0-M3&lt;/geotools.version&gt;"
-                     value="&lt;geotools.version&gt;8.0-M4&lt;/geotools.version&gt;"/>
+      <replacefilter token="&lt;geotools.version&gt;8-SNAPSHOT&lt;/geotools.version&gt;"
+                     value="&lt;geotools.version&gt;8.0-M5&lt;/geotools.version&gt;"/>
     </replace>
-    <replace dir="./docs/">
+    <replace dir="../docs/">
       <include name="pom.xml"/>
-      <replacefilter token="8.0-M3"
-                     value="8.0-M4"/>
+      <replacefilter token="8-SNAPSHOT"
+                     value="8.0-M5"/>
     </replace>
   </target>
-
+  
+    <target name="readme">
+    <replace file="../README.html">
+      <replacefilter token="@RELEASE@"
+                     value="8.0-M5"/>
+      <replacefilter token="@DATE@"
+                     value="Dec, 8th, 2011"/>
+    </replace>
+  </target>
 
 </project>
 

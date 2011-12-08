@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.io.FileUtils;
-import org.geogit.test.RepositoryTestCase;
+import org.geoserver.data.RepositoryTestCase;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
@@ -119,6 +119,9 @@ public abstract class DecoratedTestCase extends RepositoryTestCase {
      * Holds a reference to the unversioned datastore.
      */
     protected DataStore unversioned;
+    
+    private boolean setupInternal = false;
+
 
     /**
      * Holds a reference to the decorated datastore that will track versioning
@@ -130,93 +133,7 @@ public abstract class DecoratedTestCase extends RepositoryTestCase {
 
     protected static final Logger LOGGER = Logging
             .getLogger(DecoratedTestCase.class);
-
-    @Override
-    protected void setUpInternal() throws Exception {
-        PropertyDataStoreFactory fact = new PropertyDataStoreFactory();
-
-        File target = new File("target");
-        File directory = new File(target, "properties");
-        FileUtils.deleteDirectory(directory);
-
-        Map params = new HashedMap();
-        params.put(PropertyDataStoreFactory.DIRECTORY.key, directory.getPath());
-        params.put(PropertyDataStoreFactory.NAMESPACE.key, sampleNs);
-
-        unversioned = fact.createNewDataStore(params);
-
-        versioned = new DataStoreDecorator(unversioned, repo);
-
-        sampleType = DataUtilities.createType(sampleNs, sampleName,
-                sampleTypeSpec);
-
-        sample1 = (SimpleFeature) feature(sampleType, idS1, "Sample String 1",
-                new Integer(1), "POINT (0 1)", new Double(2.34));
-        sample1.getUserData().put(Hints.USE_PROVIDED_FID, Boolean.TRUE);
-        sample2 = (SimpleFeature) feature(sampleType, idS2, "Sample String 2",
-                new Integer(4), "POINT (1 0)", new Double(3380));
-        sample2.getUserData().put(Hints.USE_PROVIDED_FID, Boolean.TRUE);
-        sample3 = (SimpleFeature) feature(sampleType, idS3, "Sample String 3",
-                new Integer(81), "POINT (2 2)", new Double(78.2));
-        sample3.getUserData().put(Hints.USE_PROVIDED_FID, Boolean.TRUE);
-        LOGGER.info(sample1.toString());
-        LOGGER.info(sample2.toString());
-        LOGGER.info(sample3.toString());
-
-        testType = DataUtilities.createType(sampleNs, testName, testTypeSpec);
-
-        test1 = (SimpleFeature) feature(testType, idT1, "Test String A",
-                "LINESTRING(1 0,0 0,0 1)", new Integer(5));
-        test1.getUserData().put(Hints.USE_PROVIDED_FID, Boolean.TRUE);
-        test2 = (SimpleFeature) feature(testType, idT2, "Test String B",
-                "LINESTRING(2 6,2 8,3 18)", new Integer(-2));
-        test2.getUserData().put(Hints.USE_PROVIDED_FID, Boolean.TRUE);
-        test3 = (SimpleFeature) feature(testType, idT3, "Test String C",
-                "LINESTRING(1 0,0 1,-1 0,0 -1,1 0)", new Integer(37));
-        test3.getUserData().put(Hints.USE_PROVIDED_FID, Boolean.TRUE);
-        LOGGER.info(test1.toString());
-        LOGGER.info(test2.toString());
-        LOGGER.info(test3.toString());
-
-        versioned.createSchema(sampleType);
-        SimpleFeatureStore store = (SimpleFeatureStore) versioned
-                .getFeatureSource(sampleName);
-        Transaction tranny = new DefaultTransaction(
-                "DecoratedTestCase.setupInternal()");
-        store.setTransaction(tranny);
-
-        DefaultFeatureCollection collection = new DefaultFeatureCollection(
-                sampleName, sampleType);
-        collection.add(sample1);
-        collection.add(sample2);
-        collection.add(sample3);
-        List<FeatureId> ids = store.addFeatures(collection);
-        assertEquals(3, ids.size());
-        sampleFid1 = ids.get(0);
-        sampleFid2 = ids.get(1);
-        sampleFid3 = ids.get(2);
-
-        tranny.commit();
-        tranny.close();
-
-        versioned.createSchema(testType);
-        SimpleFeatureStore store2 = (SimpleFeatureStore) versioned
-                .getFeatureSource(testName);
-        Transaction tranny2 = new DefaultTransaction(
-                "DecoratedTestCase.setupInternal().2");
-        store2.setTransaction(tranny2);
-
-        DefaultFeatureCollection collection2 = new DefaultFeatureCollection(
-                testName, testType);
-        collection2.add(test1);
-        collection2.add(test2);
-        collection2.add(test3);
-        store2.addFeatures(collection2);
-
-        tranny2.commit();
-        tranny2.close();
-    }
-
+    
     protected void updateSampleFeatures() throws Exception {
         Transaction trans = null;
         assertNull(sample1b);
@@ -235,13 +152,12 @@ public abstract class DecoratedTestCase extends RepositoryTestCase {
                     newString2, newInt }, filter);
             trans.commit();
 
-            SimpleFeatureBuilder fb = new SimpleFeatureBuilder(sampleType);
-            sample1b = fb.copy(sample1);
+            sample1b = SimpleFeatureBuilder.copy(sample1);
             sample1b.setAttribute("st", newString1);
-            sample2b = fb.copy(sample2);
+            sample2b = SimpleFeatureBuilder.copy(sample2);
             sample2b.setAttribute("st", newString2);
             sample2b.setAttribute("it", newInt);
-            sample3b = fb.copy(sample3);
+            sample3b = SimpleFeatureBuilder.copy(sample3);
             sample3b.setAttribute("st", newString2);
             sample3b.setAttribute("it", newInt);
 
@@ -273,13 +189,12 @@ public abstract class DecoratedTestCase extends RepositoryTestCase {
                     newString2, newInt }, filter);
             trans.commit();
 
-            SimpleFeatureBuilder fb = new SimpleFeatureBuilder(testType);
-            test1b = fb.copy(test1);
+            test1b = SimpleFeatureBuilder.copy(test1);
             test1b.setAttribute("st", newString1);
-            test2b = fb.copy(test2);
+            test2b = SimpleFeatureBuilder.copy(test2);
             test2b.setAttribute("st", newString2);
             test2b.setAttribute("it", newInt);
-            test3b = fb.copy(test3);
+            test3b = SimpleFeatureBuilder.copy(test3);
             test3b.setAttribute("st", newString2);
             test3b.setAttribute("it", newInt);
         } catch (Exception ex) {
@@ -306,8 +221,7 @@ public abstract class DecoratedTestCase extends RepositoryTestCase {
             store.modifyFeatures("st", newString3, filter);
             trans.commit();
 
-            SimpleFeatureBuilder fb = new SimpleFeatureBuilder(testType);
-            test2c = fb.copy(test2b);
+            test2c = SimpleFeatureBuilder.copy(test2b);
             test2c.setAttribute("st", newString3);
         } catch (Exception ex) {
             if (trans != null)
@@ -440,4 +354,118 @@ public abstract class DecoratedTestCase extends RepositoryTestCase {
         }
         return true;
     }
+    
+    @Override
+        public void setUpInternal() throws Exception {
+            if (setupInternal) {
+            	throw new IllegalStateException("Are you calling super.setUpInternal()!?");
+            }
+            setupInternal = true; 
+    
+            PropertyDataStoreFactory fact = new PropertyDataStoreFactory();
+    
+            File target = new File("target");
+            File directory = new File(target, "properties");
+            FileUtils.deleteDirectory(directory);
+    
+            Map params = new HashedMap();
+            params.put(PropertyDataStoreFactory.DIRECTORY.key, directory.getPath());
+            params.put(PropertyDataStoreFactory.NAMESPACE.key, sampleNs);
+    
+            unversioned = fact.createNewDataStore(params);
+    
+            versioned = new DataStoreDecorator(unversioned, repo);
+    
+            sampleType = DataUtilities.createType(sampleNs, sampleName,
+                    sampleTypeSpec);
+    
+            sample1 = (SimpleFeature) feature(sampleType, idS1, "Sample String 1",
+                    new Integer(1), "POINT (0 1)", new Double(2.34));
+            sample1.getUserData().put(Hints.USE_PROVIDED_FID, Boolean.TRUE);
+            sample2 = (SimpleFeature) feature(sampleType, idS2, "Sample String 2",
+                    new Integer(4), "POINT (1 0)", new Double(3380));
+            sample2.getUserData().put(Hints.USE_PROVIDED_FID, Boolean.TRUE);
+            sample3 = (SimpleFeature) feature(sampleType, idS3, "Sample String 3",
+                    new Integer(81), "POINT (2 2)", new Double(78.2));
+            sample3.getUserData().put(Hints.USE_PROVIDED_FID, Boolean.TRUE);
+            LOGGER.info(sample1.toString());
+            LOGGER.info(sample2.toString());
+            LOGGER.info(sample3.toString());
+    
+            testType = DataUtilities.createType(sampleNs, testName, testTypeSpec);
+    
+            test1 = (SimpleFeature) feature(testType, idT1, "Test String A",
+                    "LINESTRING(1 0,0 0,0 1)", new Integer(5));
+            test1.getUserData().put(Hints.USE_PROVIDED_FID, Boolean.TRUE);
+            test2 = (SimpleFeature) feature(testType, idT2, "Test String B",
+                    "LINESTRING(2 6,2 8,3 18)", new Integer(-2));
+            test2.getUserData().put(Hints.USE_PROVIDED_FID, Boolean.TRUE);
+            test3 = (SimpleFeature) feature(testType, idT3, "Test String C",
+                    "LINESTRING(1 0,0 1,-1 0,0 -1,1 0)", new Integer(37));
+            test3.getUserData().put(Hints.USE_PROVIDED_FID, Boolean.TRUE);
+            LOGGER.info(test1.toString());
+            LOGGER.info(test2.toString());
+            LOGGER.info(test3.toString());
+    
+            versioned.createSchema(sampleType);
+            SimpleFeatureStore store = (SimpleFeatureStore) versioned
+                    .getFeatureSource(sampleName);
+            Transaction tranny = new DefaultTransaction(
+                    "DecoratedTestCase.setupInternal()");
+            store.setTransaction(tranny);
+    
+            DefaultFeatureCollection collection = new DefaultFeatureCollection(
+                    sampleName, sampleType);
+            collection.add(sample1);
+            collection.add(sample2);
+            collection.add(sample3);
+            List<FeatureId> ids = store.addFeatures(collection);
+            assertEquals(3, ids.size());
+            sampleFid1 = ids.get(0);
+            sampleFid2 = ids.get(1);
+            sampleFid3 = ids.get(2);
+    
+            tranny.commit();
+            tranny.close();
+    
+            versioned.createSchema(testType);
+            SimpleFeatureStore store2 = (SimpleFeatureStore) versioned
+                    .getFeatureSource(testName);
+            Transaction tranny2 = new DefaultTransaction(
+                    "DecoratedTestCase.setupInternal().2");
+            store2.setTransaction(tranny2);
+    
+            DefaultFeatureCollection collection2 = new DefaultFeatureCollection(
+                    testName, testType);
+            collection2.add(test1);
+            collection2.add(test2);
+            collection2.add(test3);
+            store2.addFeatures(collection2);
+    
+            tranny2.commit();
+            tranny2.close();
+            
+            setUpChild();
+        }
+
+    @Override
+    public void tearDownInternal() throws Exception {
+        if (!setupInternal) {
+            throw new IllegalStateException("Are you calling super.tearDownInternal()!?");
+        }
+        setupInternal = false;
+        tearDownChild();
+        unversioned = null;
+        versioned = null;
+        repositoryDatabase = null;
+    }
+    
+    protected void setUpChild() throws Exception {
+        
+    }
+    
+    protected void tearDownChild() throws Exception {
+        
+    }
+    
 }

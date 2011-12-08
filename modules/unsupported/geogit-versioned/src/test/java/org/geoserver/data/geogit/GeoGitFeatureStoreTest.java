@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.geogit.api.GeoGIT;
-import org.geogit.test.RepositoryTestCase;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Transaction;
@@ -38,7 +37,7 @@ import org.opengis.filter.Id;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.identity.ResourceId;
 
-public class GeoGitFeatureStoreTest extends RepositoryTestCase {
+public class GeoGitFeatureStoreTest extends GeoGITRepositoryTestCase {
 
     private static final FilterFactory2 ff = CommonFactoryFinder
             .getFilterFactory2(null);
@@ -50,7 +49,7 @@ public class GeoGitFeatureStoreTest extends RepositoryTestCase {
     private GeoGitFeatureStore lines;
 
     @Override
-    protected void setUpInternal() throws Exception {
+    protected void setUpChild() throws Exception {
         dataStore = new GeoGitDataStore(repo);
         dataStore.createSchema(super.pointsType);
         dataStore.createSchema(super.linesType);
@@ -58,6 +57,13 @@ public class GeoGitFeatureStoreTest extends RepositoryTestCase {
         points = (GeoGitFeatureStore) dataStore
                 .getFeatureSource(pointsTypeName);
         lines = (GeoGitFeatureStore) dataStore.getFeatureSource(linesTypeName);
+    }
+    
+    @Override
+    protected void tearDownChild() throws Exception {
+        dataStore = null;
+        points = null;
+        lines = null;
     }
 
     public void testAddFeatures() throws Exception {

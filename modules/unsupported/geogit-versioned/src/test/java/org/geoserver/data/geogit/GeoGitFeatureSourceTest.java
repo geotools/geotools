@@ -29,7 +29,6 @@ import java.util.Set;
 import org.geogit.api.GeoGIT;
 import org.geogit.api.Ref;
 import org.geogit.api.RevTree;
-import org.geogit.test.RepositoryTestCase;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -50,7 +49,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Polygon;
 
-public class GeoGitFeatureSourceTest extends RepositoryTestCase {
+public class GeoGitFeatureSourceTest extends GeoGITRepositoryTestCase {
 
     private static final FilterFactory2 ff = CommonFactoryFinder
             .getFilterFactory2(null);
@@ -62,7 +61,7 @@ public class GeoGitFeatureSourceTest extends RepositoryTestCase {
     private GeoGitFeatureSource linesSource;
 
     @Override
-    protected void setUpInternal() throws Exception {
+    protected void setUpChild() throws Exception {
         dataStore = new GeoGitDataStore(repo);
         dataStore.createSchema(super.pointsType);
         dataStore.createSchema(super.linesType);
@@ -72,6 +71,13 @@ public class GeoGitFeatureSourceTest extends RepositoryTestCase {
 
         pointsSource = dataStore.getFeatureSource(pointsTypeName);
         linesSource = dataStore.getFeatureSource(linesTypeName);
+    }
+    
+    @Override
+    protected void tearDownChild() throws Exception {
+        dataStore = null;
+        pointsSource = null;
+        linesSource = null;
     }
 
     public void testGetName() {
@@ -139,7 +145,7 @@ public class GeoGitFeatureSourceTest extends RepositoryTestCase {
         Filter filter;
 
         filter = ff.id(Collections.singleton(ff
-                .featureId(RepositoryTestCase.idP2)));
+                .featureId(GeoGITRepositoryTestCase.idP2)));
         bounds = pointsSource.getBounds(new Query(pointsName, filter));
         assertEquals(boundsOf(points2), bounds);
 
@@ -180,7 +186,7 @@ public class GeoGitFeatureSourceTest extends RepositoryTestCase {
         Filter filter;
 
         filter = ff.id(Collections.singleton(ff
-                .featureId(RepositoryTestCase.idP2)));
+                .featureId(GeoGITRepositoryTestCase.idP2)));
         assertEquals(1, pointsSource.getCount(new Query(pointsName, filter)));
 
         ReferencedEnvelope queryBounds = boundsOf(points1, points2);
@@ -255,7 +261,7 @@ public class GeoGitFeatureSourceTest extends RepositoryTestCase {
         Filter filter;
 
         filter = ff.id(Collections.singleton(ff
-                .featureId(RepositoryTestCase.idP2)));
+                .featureId(GeoGITRepositoryTestCase.idP2)));
         collection = pointsSource.getFeatures(new Query(pointsName, filter));
         actual = new HashSet<Collection<Property>>();
         for (Feature f : toList(collection.iterator())) {

@@ -177,6 +177,9 @@
      </profile>
      <profile>
        <id>geogit-versioned</id>
+       <activation>
+         <property><name>all</name></property>
+       </activation>
        <modules>
          <module>geogit-versioned</module>
        </modules>

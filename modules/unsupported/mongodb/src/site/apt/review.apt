@@ -1,0 +1,17 @@
+MODULE MongoDB
+~~~~~~~~~~~~~~
+
+  Module Maintainer: Alan Mangan
+
+  IP Review:
+
+
+  STATUS: New
+
+  This module was added to the GeoTools project by Alan Mangan under the LGPL license.
+
+* org.geotools.mongodb
+  ~~~~~~~~~~~~~~~~~~~~
+  Initial commit LGPL under OSGeo LGPL license.
+
+---------------------------------------------------------------------------------

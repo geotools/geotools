@@ -197,6 +197,7 @@
          <module>sfs</module>
          <module>mark-wkt</module>
          <module>feature-aggregate</module>
+         <module>mongodb</module>
        </modules>
      </profile>
   </profiles>
@@ -204,7 +205,7 @@
   <!-- Modules included in a normal build -->
   <modules>
     <module>swing</module>
-	<module>swt</module>
+    <module>swt</module>
     <module>process</module>
     <module>wfs</module>
     <module>geojson</module>

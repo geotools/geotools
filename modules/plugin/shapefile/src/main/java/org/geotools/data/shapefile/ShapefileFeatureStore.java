@@ -42,6 +42,7 @@ public class ShapefileFeatureStore extends AbstractFeatureStore {
         super(hints);
         shapefile = shapefileDataStore;
         this.featureType = featureType;
+        this.queryCapabilities = new ShapefileQueryCapabilities();
     }
     public DataStore getDataStore() {
         return shapefile;

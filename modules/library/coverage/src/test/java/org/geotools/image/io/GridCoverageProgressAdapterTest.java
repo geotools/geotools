@@ -29,12 +29,15 @@ import javax.imageio.ImageWriter;
 import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.image.ImageWorkerTest;
+import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.DefaultProgressListener;
 import org.geotools.util.logging.Logging;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.util.InternationalString;
 import org.opengis.util.ProgressListener;
+
+import com.sun.media.imageioimpl.common.PackageUtil;
 
 
 /**
@@ -161,7 +164,10 @@ public class GridCoverageProgressAdapterTest extends Assert {
         image.flush();
         image=null;
         
-        assertFalse(adaptee.isCompleted());
+        // this particular test does not work if CLIB is available
+        if(!PackageUtil.isCodecLibAvailable()) {
+            assertFalse(adaptee.isCompleted());
+        }
         assertTrue(adaptee.isStarted());
         assertTrue(adaptee.isCanceled());
     }

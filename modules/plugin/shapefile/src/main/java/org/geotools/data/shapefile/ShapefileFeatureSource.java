@@ -23,9 +23,11 @@ import org.geotools.data.AbstractFeatureSource;
 import org.geotools.data.DataStore;
 import org.geotools.data.FeatureListener;
 import org.geotools.data.Query;
+import org.geotools.data.QueryCapabilities;
 import org.geotools.data.ResourceInfo;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.sort.SortBy;
 
 /**
  * Allows transaction control when editing a shapefile.
@@ -40,6 +42,7 @@ class ShapefileFeatureSource extends AbstractFeatureSource {
         super(hints);
         shapefile = shapefileDataStore;
         this.featureType = featureType;
+        this.queryCapabilities = new ShapefileQueryCapabilities();
     }
     public DataStore getDataStore() {
         return shapefile;

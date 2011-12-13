@@ -42,6 +42,7 @@ public class ShapefileFeatureLocking extends AbstractFeatureLocking {
         super(hints);
         shapefile = shapefileDataStore;
         this.featureType = featureType;
+        this.queryCapabilities = new ShapefileQueryCapabilities();
     }
     public DataStore getDataStore() {
         return shapefile;

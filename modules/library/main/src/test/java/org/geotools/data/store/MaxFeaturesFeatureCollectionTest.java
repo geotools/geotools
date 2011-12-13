@@ -28,25 +28,42 @@ import org.geotools.feature.collection.MaxSimpleFeatureCollection;
 public class MaxFeaturesFeatureCollectionTest extends
 		FeatureCollectionWrapperTestSupport {
 
-	MaxSimpleFeatureCollection max;
-	
-	protected void setUp() throws Exception {
-		super.setUp();
-		max = new MaxSimpleFeatureCollection( delegate, 2 );
-	}
-	
-	public void testSize() throws Exception {
-		assertEquals( 2, max.size() );
-	}
-	
-	public void testIterator() throws Exception {
-	
-		Iterator i = max.iterator();
-		for ( int x = 0; x < 2; x++ ) {
-			assertTrue( i.hasNext() );
-			i.next();
-		}
-		
-		assertFalse( i.hasNext() );
-	}
+    public void testSize() throws Exception {
+        // in the common case it's as big as the max
+        MaxSimpleFeatureCollection max = new MaxSimpleFeatureCollection(delegate, 2);
+        assertEquals(2, max.size());
+
+        // however if we skip much it's going to be just as big as the remainder
+        max = new MaxSimpleFeatureCollection(delegate, delegate.size() - 1, 10);
+        assertEquals(1, max.size());
+        
+        // and if we skip more than the size
+        max = new MaxSimpleFeatureCollection(delegate, delegate.size() + 1, 10);
+        assertEquals(0, max.size());
+    }
+
+    public void testIteratorMax() throws Exception {
+        MaxSimpleFeatureCollection max = new MaxSimpleFeatureCollection(delegate, 2);
+        Iterator i = max.iterator();
+        for (int x = 0; x < 2; x++) {
+            assertTrue(i.hasNext());
+            i.next();
+        }
+
+        assertFalse(i.hasNext());
+    }
+    
+    public void testIteratorSkipMax() throws Exception {
+        MaxSimpleFeatureCollection max = new MaxSimpleFeatureCollection(delegate, delegate.size() - 1, 2);
+        Iterator i = max.iterator();
+        assertTrue(i.hasNext());
+        i.next();
+        assertFalse(i.hasNext());
+    }
+    
+    public void testIteratorSkipMoreSize() throws Exception {
+        MaxSimpleFeatureCollection max = new MaxSimpleFeatureCollection(delegate, delegate.size() + 1, 2);
+        Iterator i = max.iterator();
+        assertFalse(i.hasNext());
+    }
 }

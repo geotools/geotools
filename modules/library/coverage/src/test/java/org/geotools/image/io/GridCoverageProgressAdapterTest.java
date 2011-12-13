@@ -36,6 +36,8 @@ import org.junit.Test;
 import org.opengis.util.InternationalString;
 import org.opengis.util.ProgressListener;
 
+import com.sun.media.imageioimpl.common.PackageUtil;
+
 
 /**
  * @author Simone Giannecchini, GeoSolutions SAS
@@ -161,7 +163,9 @@ public class GridCoverageProgressAdapterTest extends Assert {
         image.flush();
         image=null;
         
-        assertFalse(adaptee.isCompleted());
+        if(!PackageUtil.isCodecLibAvailable()) {
+            assertFalse(adaptee.isCompleted());
+        }
         assertTrue(adaptee.isStarted());
         assertTrue(adaptee.isCanceled());
     }

@@ -83,7 +83,7 @@ public class MaxFeaturesIterator<F extends Feature> implements Iterator<F> {
 
     private void skip() {
         if (counter < start) {
-            while (hasNext() && counter < start) {
+            while (delegate.hasNext() && counter < start) {
                 counter++;
                 F skip = delegate.next(); // skip!
             }

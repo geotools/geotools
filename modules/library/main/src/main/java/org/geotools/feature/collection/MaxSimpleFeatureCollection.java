@@ -98,7 +98,13 @@ public class MaxSimpleFeatureCollection extends
 	}
 
 	public int size() {
-		return (int) Math.min( delegate.size(), max );
+		int size = delegate.size();
+		if(size < start) {
+		    return 0;
+		} else {
+		    return (int) Math.min( size - start, max );
+		}
+        
 	}
 
 	public boolean isEmpty() {

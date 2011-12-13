@@ -146,6 +146,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//GetFeatureType/traverseXlinkExpiry"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//GetFeatureType/formatOptions"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//GetFeatureType/metadata"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//GetFeatureType/startIndex"/>
     </genClasses>
     <genClasses ecoreClass="wfs.ecore#//GetFeatureWithLockType">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//GetFeatureWithLockType/expiry"/>

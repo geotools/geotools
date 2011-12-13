@@ -1348,6 +1348,15 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
 
     /**
      * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getGetFeatureType_StartIndex() {
+        return (EAttribute)getFeatureTypeEClass.getEStructuralFeatures().get(8);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      */
@@ -2485,6 +2494,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
         createEAttribute(getFeatureTypeEClass, GET_FEATURE_TYPE__TRAVERSE_XLINK_EXPIRY);
         createEAttribute(getFeatureTypeEClass, GET_FEATURE_TYPE__FORMAT_OPTIONS);
         createEAttribute(getFeatureTypeEClass, GET_FEATURE_TYPE__METADATA);
+        createEAttribute(getFeatureTypeEClass, GET_FEATURE_TYPE__START_INDEX);
 
         getFeatureWithLockTypeEClass = createEClass(GET_FEATURE_WITH_LOCK_TYPE);
         createEAttribute(getFeatureWithLockTypeEClass, GET_FEATURE_WITH_LOCK_TYPE__EXPIRY);
@@ -2767,6 +2777,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
         initEAttribute(getGetFeatureType_TraverseXlinkExpiry(), theXMLTypePackage.getPositiveInteger(), "traverseXlinkExpiry", null, 0, 1, GetFeatureType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getGetFeatureType_FormatOptions(), this.getMap(), "formatOptions", null, 0, 1, GetFeatureType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getGetFeatureType_Metadata(), this.getMap(), "metadata", null, 0, 1, GetFeatureType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getGetFeatureType_StartIndex(), ecorePackage.getEBigInteger(), "startIndex", null, 0, 1, GetFeatureType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(getFeatureWithLockTypeEClass, GetFeatureWithLockType.class, "GetFeatureWithLockType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getGetFeatureWithLockType_Expiry(), theXMLTypePackage.getPositiveInteger(), "expiry", "5", 0, 1, GetFeatureWithLockType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

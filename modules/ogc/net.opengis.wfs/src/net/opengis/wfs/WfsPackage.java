@@ -1176,13 +1176,22 @@ public interface WfsPackage extends EPackage {
     int GET_FEATURE_TYPE__METADATA = BASE_REQUEST_TYPE_FEATURE_COUNT + 7;
 
     /**
+     * The feature id for the '<em><b>Start Index</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int GET_FEATURE_TYPE__START_INDEX = BASE_REQUEST_TYPE_FEATURE_COUNT + 8;
+
+    /**
      * The number of structural features of the '<em>Get Feature Type</em>' class.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int GET_FEATURE_TYPE_FEATURE_COUNT = BASE_REQUEST_TYPE_FEATURE_COUNT + 8;
+	int GET_FEATURE_TYPE_FEATURE_COUNT = BASE_REQUEST_TYPE_FEATURE_COUNT + 9;
 
 	/**
      * The meta object id for the '{@link net.opengis.wfs.impl.GetFeatureWithLockTypeImpl <em>Get Feature With Lock Type</em>}' class.
@@ -1319,6 +1328,15 @@ public interface WfsPackage extends EPackage {
      * @ordered
      */
     int GET_FEATURE_WITH_LOCK_TYPE__METADATA = GET_FEATURE_TYPE__METADATA;
+
+    /**
+     * The feature id for the '<em><b>Start Index</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int GET_FEATURE_WITH_LOCK_TYPE__START_INDEX = GET_FEATURE_TYPE__START_INDEX;
 
     /**
      * The feature id for the '<em><b>Expiry</b></em>' attribute.
@@ -3743,6 +3761,17 @@ public interface WfsPackage extends EPackage {
     EAttribute getGetFeatureType_Metadata();
 
     /**
+     * Returns the meta object for the attribute '{@link net.opengis.wfs.GetFeatureType#getStartIndex <em>Start Index</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Start Index</em>'.
+     * @see net.opengis.wfs.GetFeatureType#getStartIndex()
+     * @see #getGetFeatureType()
+     * @generated
+     */
+    EAttribute getGetFeatureType_StartIndex();
+
+    /**
      * Returns the meta object for class '{@link net.opengis.wfs.GetFeatureWithLockType <em>Get Feature With Lock Type</em>}'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5717,6 +5746,14 @@ public interface WfsPackage extends EPackage {
          * @generated
          */
         EAttribute GET_FEATURE_TYPE__METADATA = eINSTANCE.getGetFeatureType_Metadata();
+
+        /**
+         * The meta object literal for the '<em><b>Start Index</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute GET_FEATURE_TYPE__START_INDEX = eINSTANCE.getGetFeatureType_StartIndex();
 
         /**
          * The meta object literal for the '{@link net.opengis.wfs.impl.GetFeatureWithLockTypeImpl <em>Get Feature With Lock Type</em>}' class.

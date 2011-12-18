@@ -26,12 +26,15 @@ import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.geotools.data.DataUtilities;
@@ -46,7 +49,8 @@ import org.opengis.referencing.datum.PixelInCell;
 /**
  * Code to build a pyramid from a gdal_retile output
  * 
- * @author Andrea Aime - OpenGeo
+ * @author Andrea Aime - GeoSolutions SAS
+ * @author Simone Giannecchini, GeoSolutions SAS
  *
  */
 class Utils {
@@ -60,11 +64,10 @@ class Utils {
     static URL checkSource(Object source, Hints hints) {
         URL sourceURL = null;
         File sourceFile = null;
-        // /////////////////////////////////////////////////////////////////////
+
         //
         // Check source
         //
-        // /////////////////////////////////////////////////////////////////////
         // if it is a URL or a String let's try to see if we can get a file to
         // check if we have to build the index
         if (source instanceof File) {
@@ -94,15 +97,23 @@ class Utils {
             }
         } else {
             // we really don't know how to convert the thing... give up
+            if(LOGGER.isLoggable(Level.WARNING)){
+                LOGGER.warning("we really don't know how to convert the thing:"+source!=null?source.toString():"null");
+            }
             return null;
         }
-        
-        // /////////////////////////////////////////////////////////////////////
+
+        // logging
+        if(LOGGER.isLoggable(Level.INFO)){
+            if(sourceFile!=null){
+                final String message = fileStatus(sourceFile);
+                LOGGER.info(message);
+            }
+        }
+
         //
         // Handle cases where the pyramid descriptor file already exists
         //
-        // /////////////////////////////////////////////////////////////////////
-        
         // can't do anything with it
         if(sourceFile == null || !sourceFile.exists())
             return sourceURL;
@@ -114,16 +125,20 @@ class Utils {
         // it's a directory, let's see if it already has a pyramid description file inside
         File directory = sourceFile;
         sourceFile = new File(directory, directory.getName() + ".properties");
+        // logging
+        if(LOGGER.isLoggable(Level.INFO)){
+            if(sourceFile!=null){
+                final String message = fileStatus(sourceFile);
+                LOGGER.info(message);
+            }
+        }        
         if(sourceFile.exists())
             return DataUtilities.fileToURL(sourceFile);
         
 
-        // /////////////////////////////////////////////////////////////////////
         //
         // Try to build the sub-folders mosaics
         //
-        // /////////////////////////////////////////////////////////////////////
-        
         // if the structure of the directories is gdal_retile like, move the root files in their
         // own sub directory
         File zeroLevelDirectory = new File(directory, "0");
@@ -132,21 +147,39 @@ class Utils {
         File[] directories = directory.listFiles((FileFilter) directoryFilter);
         
         // do we have at least one sub-directory?
-        if(directories.length == 0)
+        if(directories.length == 0){
+            if(LOGGER.isLoggable(Level.INFO)){
+                LOGGER.info("I was unable to determine a structure similar to the GDAL Retile one!!");
+            }
             return null;
+        }
         
         // check the gdal case and move files if necessary
         if(!zeroLevelDirectory.exists() && numericDirectories.length == directories.length) {
             LOGGER.log(Level.INFO, "Detected gdal_retile file structure, " +
             		"moving root files to the '0' subdirectory");
             if(zeroLevelDirectory.mkdir()) {
+                if(LOGGER.isLoggable(Level.FINE)){
+                    LOGGER.fine("Created '0' subidr, now moving files");
+                }                   
                 FileFilter notDirFilter = FileFilterUtils.notFileFilter(directoryFilter);
                 for (File f : directory.listFiles(notDirFilter)) {
+                    if(LOGGER.isLoggable(Level.FINE)){
+                        LOGGER.fine("Moving file"+f.getAbsolutePath());
+                    }  
+                    if(LOGGER.isLoggable(Level.FINEST)){
+                        LOGGER.finest(fileStatus(f));
+                    }                      
                     if(!f.renameTo(new File(zeroLevelDirectory, f.getName())))
-                        LOGGER.log(Level.INFO, "Could not move " + f.getAbsolutePath() + 
+                        LOGGER.log(Level.WARNING, "Could not move " + f.getAbsolutePath() + 
                                 " to " + zeroLevelDirectory);
                 }
                 directories = directory.listFiles((FileFilter) directoryFilter);
+            } else {
+                if(LOGGER.isLoggable(Level.INFO)){
+                    LOGGER.info("I was unable to create the 0 directory. check the file permission in the parent directory:"+sourceFile.getParent());
+                }
+                return null;
             }
         }
         
@@ -155,7 +188,14 @@ class Utils {
         ImageMosaicFormat mosaicFactory = new ImageMosaicFormat();
         for (File subdir : directories) {
             if(mosaicFactory.accepts(subdir, hints)) {
+                if(LOGGER.isLoggable(Level.FINE)){
+                    LOGGER.fine("Trying to build mosaic for the directory:"+subdir.getAbsolutePath());
+                }                
                 mosaics.add(new MosaicInfo(subdir, mosaicFactory.getReader(subdir, hints)));
+            } else {
+                if(LOGGER.isLoggable(Level.INFO)){
+                    LOGGER.info("Unable to build mosaic for the directory:"+subdir.getAbsolutePath());
+                }
             }
         }
         
@@ -178,12 +218,9 @@ class Utils {
             }
         }
         
-        // /////////////////////////////////////////////////////////////////////
         //
         // We have everything we need, build the final pyramid descriptor info
-        //
-        // /////////////////////////////////////////////////////////////////////
-        
+        //        
         // build the property file
         Properties properties = new Properties();
         properties.put("Name", directory.getName());
@@ -210,7 +247,7 @@ class Utils {
             return null;
         } finally {
             if(os != null)
-                try { os.close(); } catch(IOException e) {}
+                IOUtils.closeQuietly(os);
         }
         
         // build the .prj file if possible
@@ -231,12 +268,40 @@ class Utils {
         
         return DataUtilities.fileToURL(sourceFile);
     }
+
+    /**
+     * Prepares a message with the status of the provided file.
+     * @param sourceFile The {@link File} to provided the status message for
+     * @return a status message for the provided {@link File} or a {@link NullPointerException} in case the {@link File}is <code>null</code>.
+     */
+    private static String fileStatus(File sourceFile) {
+        if(sourceFile==null){
+            throw new NullPointerException("Provided null input to fileStatus method");
+        }
+        final StringBuilder builder = new StringBuilder();
+        builder.append("Checking file:").append(FilenameUtils.getFullPath(sourceFile.getAbsolutePath())).append("\n");
+        builder.append("exists").append(sourceFile.exists()).append("\n");
+        builder.append("isFile").append(sourceFile.isFile()).append("\n");
+        builder.append("canRead:").append(sourceFile.canRead()).append("\n");
+        builder.append("canWrite").append(sourceFile.canWrite()).append("\n");
+        builder.append("canExecute").append(sourceFile.canExecute()).append("\n");        
+        builder.append("isHidden:").append(sourceFile.isHidden()).append("\n");
+        builder.append("lastModified").append(sourceFile.lastModified()).append("\n");
+        
+        return builder.toString();
+    }
     
     
     /**
      * Stores informations about a mosaic 
      */
     static class MosaicInfo implements Comparable<MosaicInfo>{
+        @Override
+        public String toString() {
+            return "MosaicInfo [directory=" + directory + ", resolutions="
+                    + Arrays.toString(resolutions) + "]";
+        }
+
         File directory;
         ImageMosaicReader reader;
         double[] resolutions;

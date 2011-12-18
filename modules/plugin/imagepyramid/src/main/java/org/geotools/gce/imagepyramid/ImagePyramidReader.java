@@ -24,9 +24,9 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.nio.channels.Channels;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -49,7 +49,6 @@ import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
-import org.geotools.util.SoftValueHashMap;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridCoverageReader;
@@ -141,8 +140,8 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
 	/**
 	 * Cache of {@link ImageMosaicReader} objects for the different levels.
 	 * 
-	 */
-	private Map<Integer, ImageMosaicReader> readers;
+	 */    
+	private ConcurrentHashMap<Integer, ImageMosaicReader> readers =new ConcurrentHashMap<Integer, ImageMosaicReader>();
 
 	/**
 	 * Constructor for an {@link ImagePyramidReader}.
@@ -175,21 +174,14 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
 		// //
 		if (source == null) {
 
-			final NullPointerException ex = new NullPointerException("ImagePyramidReader:No source set to read this coverage.");
-			throw new DataSourceException(ex);
+			throw new DataSourceException("ImagePyramidReader:null source set to read this coverage.");
 		}
 		this.source = source;
 		this.sourceURL = Utils.checkSource(source, uHints);
 		if(sourceURL == null) {
-		    throw new IllegalArgumentException(
-                "This plugin accepts only File, URL and String pointing to a file");
+		    throw new IllegalArgumentException("This plugin accepts only File, URL and String pointing to a file");
 		} 
 		
-		// //
-		//
-		// Load tiles informations, especially the bounds, which will be
-		// reused
-		//
 		// //
 		// //
 		//
@@ -228,8 +220,6 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
 		//
 		// Load properties file with information about levels and envelope
 		//
-		
-		// property file
 		parseMainFile(sourceURL);
 	}
 
@@ -242,6 +232,10 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
 	 * @throws FileNotFoundException
 	 */
 	private void parseMainFile(final URL sourceURL) throws IOException {
+	    
+	    if(LOGGER.isLoggable(Level.FINE)){
+	        LOGGER.fine("Parsing pyramid properties file at:"+sourceURL.toExternalForm());
+	    }
 		BufferedInputStream propertyStream = null;
 		InputStream openStream = null;
 		try {
@@ -266,10 +260,6 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
 			// overviews dir
 			numOverviews = Integer.parseInt(properties.getProperty("LevelsNum")) - 1;
 			levelsDirs = properties.getProperty("LevelsDirs").split(" ");
-
-			// readers soft map
-			final int readersCacheSize = (numOverviews + 1) / 3;
-			readers = new SoftValueHashMap<Integer, ImageMosaicReader>(readersCacheSize == 0 ? numOverviews + 1 : readersCacheSize);
 
 			// resolutions levels
 			final String levels = properties.getProperty("Levels");
@@ -297,7 +287,11 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
 					);
 			final GridToEnvelopeMapper geMapper= new GridToEnvelopeMapper(originalGridRange,originalEnvelope);
 			geMapper.setPixelAnchor(PixelInCell.CELL_CORNER);
-			raster2Model= geMapper.createTransform();			
+			raster2Model= geMapper.createTransform();
+			
+		         if(LOGGER.isLoggable(Level.FINE)){
+		                LOGGER.fine("Parsed pyramid properties file at:"+sourceURL.toExternalForm());
+		         }
 		}  finally {
 			// close input stream
 			if (propertyStream != null)
@@ -369,11 +363,10 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
 				}
 			}
 		}
-		// /////////////////////////////////////////////////////////////////////
+
 		//
 		// Loading tiles
 		//
-		// /////////////////////////////////////////////////////////////////////
 		return loadTiles(requestedEnvelope, dim, params, overviewPolicy);
 	}
 
@@ -393,7 +386,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
 			Rectangle dim, GeneralParameterValue[] params, OverviewPolicy overviewPolicy)
 			throws IOException {
 
-		// /////////////////////////////////////////////////////////////////////
+		
 		//
 		// Check if we have something to load by intersecting the requested
 		// envelope with the bounds of the data set.
@@ -402,7 +395,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
 		// we have to perform a conversion towards the latter crs before
 		// intersecting anything.
 		//
-		// /////////////////////////////////////////////////////////////////////
+		
 		if (requestedEnvelope != null) {
 			if (!CRS.equalsIgnoreMetadata(requestedEnvelope
 					.getCoordinateReferenceSystem(), this.crs)) {
@@ -470,37 +463,56 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader imple
 			throws TransformException, IOException {
 
 		// if we get here we have something to load
-		// /////////////////////////////////////////////////////////////////////
+	    
 		//
 		// compute the requested resolution
 		//
-		// /////////////////////////////////////////////////////////////////////
 		final ImageReadParam readP = new ImageReadParam();
 		Integer imageChoice=0;
 		if (dim != null)
 			imageChoice = setReadParams(overviewPolicy, readP,requestedEnvelope, dim);
-		// /////////////////////////////////////////////////////////////////////
+		
 		//
 		// Check to have the needed reader in memory
 		// 
-		// /////////////////////////////////////////////////////////////////////
-		ImageMosaicReader reader = null;
-		synchronized (readers) {
-			Object o = readers.get(imageChoice);
-			if (o == null) {
-				final String levelDirName = levelsDirs[imageChoice.intValue()];
-				final URL parentUrl = DataUtilities.getParentUrl(sourceURL);
-				// look for a shapefile first
-				final String extension = new StringBuilder(levelDirName).append("/").append(coverageName).append(".shp").toString();
-				final URL shpFileUrl = DataUtilities.extendURL(parentUrl,extension);
-				if(shpFileUrl.getProtocol()!=null&&shpFileUrl.getProtocol().equalsIgnoreCase("file")&&!DataUtilities.urlToFile(shpFileUrl).exists())
-					reader= new ImageMosaicReader(DataUtilities.extendURL(parentUrl,levelDirName), hints);
-				else
-					reader = new ImageMosaicReader(shpFileUrl,hints);
-				readers.put(imageChoice, reader);
-
-			} else
-				reader = (ImageMosaicReader) o;
+		
+                // light check to see if this reader had been disposed, not synching for performance. 
+                if (readers == null) {
+                    throw new IllegalStateException("This ImagePyramidReader has already been disposed");
+                }
+		
+                ImageMosaicReader reader = readers.get(imageChoice);
+                if (reader == null) {
+        
+                    //
+                    // we must create the underlying mosaic 
+                    //
+                    final String levelDirName = levelsDirs[imageChoice.intValue()];
+                    final URL parentUrl = DataUtilities.getParentUrl(sourceURL);
+                    // look for a shapefile first
+                    final String extension = new StringBuilder(levelDirName).append("/").append(coverageName).append(".shp").toString();
+                    final URL shpFileUrl = DataUtilities.extendURL(parentUrl, extension);
+                    if (shpFileUrl.getProtocol() != null
+                            && shpFileUrl.getProtocol().equalsIgnoreCase("file")
+                            && !DataUtilities.urlToFile(shpFileUrl).exists())
+                        reader = new ImageMosaicReader(DataUtilities.extendURL(parentUrl, levelDirName), hints);
+                    else
+                        reader = new ImageMosaicReader(shpFileUrl, hints);
+                    final ImageMosaicReader putByOtherThreadJustNow =readers.putIfAbsent(imageChoice, reader);
+                    if(putByOtherThreadJustNow!=null){
+                        // some other thread just did inserted this
+                        try{
+                            reader.dispose();
+                        } catch (Exception e) {
+                            if(LOGGER.isLoggable(Level.FINE)){
+                                LOGGER.log(Level.FINE,e.getLocalizedMessage(),e);
+                            }
+                        }
+                        
+                        //use the other one
+                        reader=putByOtherThreadJustNow;
+                    }
+        
 		}
 
 	

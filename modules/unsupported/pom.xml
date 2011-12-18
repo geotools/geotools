@@ -152,12 +152,6 @@
        </modules>
      </profile>
      <profile>
-       <id>property</id>
-       <modules>
-         <module>property-ng</module>
-       </modules>
-     </profile>
-     <profile>
        <id>feature-aggreate</id>
        <modules>
          <module>feature-aggreate</module>
@@ -201,6 +195,7 @@
          <module>mark-wkt</module>
          <module>feature-aggregate</module>
          <module>mongodb</module>
+         <module>property-ng</module>
        </modules>
      </profile>
   </profiles>

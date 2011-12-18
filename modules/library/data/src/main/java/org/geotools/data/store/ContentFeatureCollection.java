@@ -25,6 +25,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultQuery;
@@ -40,9 +42,11 @@ import org.geotools.feature.CollectionListener;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.FeatureTypes;
+import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.SortBy;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -63,6 +67,7 @@ import com.vividsolutions.jts.geom.Point;
  */
 public class ContentFeatureCollection implements SimpleFeatureCollection {
     
+    protected static final Logger LOGGER = Logging.getLogger("org.geotools.data.store");
     /**
      * feature store the collection originated from.
      */
@@ -103,8 +108,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
                     listener.collectionChanged( event );
                 }
                 catch (Throwable t ){
-                    //TODO: log this
-                    //ContentDataStore.LOGGER.log( Level.WARNING, "Problem encountered during notification of "+event, t );
+                    LOGGER.log( Level.WARNING, "Problem encountered during notification of "+event, t );
                 }
             }
         }           
@@ -120,6 +124,19 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
         if ( query.getPropertyNames() != Query.ALL_NAMES ) {
             this.featureType = 
                 SimpleFeatureTypeBuilder.retype(this.featureType, query.getPropertyNames() );
+        }
+        // Check for change in coordinate reference system
+        // (Even if featureSource.canReproject the feature reader, we will need to adjust the
+        //  featureType generated here to be correct)
+        try {
+            if (query.getCoordinateSystemReproject() != null){
+                this.featureType = FeatureTypes.transform(this.featureType, query.getCoordinateSystemReproject() );
+            }
+            else if (query.getCoordinateSystem() != null){
+                this.featureType = FeatureTypes.transform(this.featureType, query.getCoordinateSystem() );
+            }
+        } catch (SchemaException e) {
+            LOGGER.log(Level.FINER,"Problem handling Query change of CoordinateReferenceSystem:"+e,e);
         }
 
         //check for join and expand attributes as necessary

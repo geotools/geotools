@@ -29,6 +29,11 @@ public class CSVFeatureStore extends ContentFeatureStore {
     public CSVFeatureStore(ContentEntry entry, Query query) {
         super(entry,query);
     }
+    /** We handle events internally */
+    protected boolean canEvent() {
+        return true;
+    }
+
     /**
      * Access parent CSVDataStore
      */

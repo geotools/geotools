@@ -93,6 +93,11 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
     	getDataStore().getSQLDialect().addSupportedHints(jdbcHints);
     	hints=Collections.unmodifiableSet(jdbcHints);    	
     }
+    
+    /** We handle events internally */
+    protected boolean canEvent() {
+        return true;
+    }
 
     @Override
     public JDBCDataStore getDataStore() {

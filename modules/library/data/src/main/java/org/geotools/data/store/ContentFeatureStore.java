@@ -141,6 +141,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
         query = resolvePropertyNames(query);
         
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
+
         if (!canTransact() && transaction != null && transaction != Transaction.AUTO_COMMIT) {
             DiffTransactionState state = (DiffTransactionState) getTransaction().getState(getEntry());
             FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(query);
@@ -148,6 +149,10 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
         } else {
             writer = getWriterInternal(query, flags);
 
+            // events
+            if (canTransact() && !canEvent()){
+                writer = new EventContentFeatureWriter(this, writer );
+            }
             // filtering
             if (!canFilter()) {
                 if (query.getFilter() != null && query.getFilter() != Filter.INCLUDE) {

@@ -860,11 +860,24 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * If a subclass can handle transactions natively it should override this
      * method to return <code>true</code> and deal with transactions on its own,
      * including firing feature modifications events.
-     * @return
+     * @return true if transaction independence has custom implementation
      */
     protected boolean canTransact() {
         return false;
     }
+    
+    /**
+     * Determines if the store takes responsibility for issuing events.
+     * <p>
+     * If a subclass issue events (as part of its low level writer implementation)
+     * then it should override this method to return true.
+     * 
+     * @return true if event notification has custom implementation
+     */
+    protected boolean canEvent() {
+        return false;
+    }
+    
     
     /**
      * Creates a new feature source for the specified query.

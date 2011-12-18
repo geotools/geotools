@@ -48,7 +48,11 @@ public class PropertyFeatureStore extends ContentFeatureStore {
         this.store = (PropertyDataStore) entry.getDataStore();
         this.typeName = entry.getTypeName();
     }
-    
+    /** We handle events internally */
+    protected boolean canEvent() {
+        return false;
+    }
+
     protected QueryCapabilities buildQueryCapabilities() {
         return new QueryCapabilities(){
             public boolean isUseProvidedFIDSupported() {

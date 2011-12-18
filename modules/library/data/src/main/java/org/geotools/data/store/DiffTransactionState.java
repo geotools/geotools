@@ -79,35 +79,8 @@ class DiffTransactionState implements Transaction.State {
     /**
      * Will apply differences to store.
      * 
-     * @see org.geotools.data.Transaction.State#commit()
-     */
-    public synchronized void commit() throws IOException {
-        applyDiff();
-    }
-
-    @Override
-    /**
-     * @see org.geotools.data.Transaction.State#rollback()
-     */
-    public synchronized void rollback() throws IOException {
-        diff.clear(); // rollback differences
-        state.fireBatchFeatureEvent(false);
-    }
-
-    @Override
-    
-    /**
-     * @see org.geotools.data.Transaction.State#addAuthorization(java.lang.String)
-     */
-    public synchronized void addAuthorization(String AuthID) throws IOException {
-        // not required for TransactionStateDiff
-    }
-
-    /**
-     * Called by commit() to apply one set of diff
-     * 
      * <p>
-     * The provided <code> will be modified as the differences are applied,
+     * The provided diff will be modified as the differences are applied,
      * If the operations are all successful diff will be empty at
      * the end of this process.
      * </p>
@@ -131,9 +104,10 @@ class DiffTransactionState implements Transaction.State {
      * @param diff differences to apply to FeatureWriter
      * 
      * @throws IOException If the entire diff cannot be writen out
-     * @throws DataSourceException If the entire diff cannot be writen out
+     * @t
+     * @see org.geotools.data.Transaction.State#commit()
      */
-    void applyDiff() throws IOException {
+    public synchronized void commit() throws IOException {
         if (diff.isEmpty()) {
             return; // nothing to do
         }
@@ -241,5 +215,23 @@ class DiffTransactionState implements Transaction.State {
                 throw e;
             }
         }
+    }
+
+    @Override
+    /**
+     * @see org.geotools.data.Transaction.State#rollback()
+     */
+    public synchronized void rollback() throws IOException {
+        diff.clear(); // rollback differences
+        state.fireBatchFeatureEvent(false);
+    }
+
+    @Override
+    
+    /**
+     * @see org.geotools.data.Transaction.State#addAuthorization(java.lang.String)
+     */
+    public synchronized void addAuthorization(String AuthID) throws IOException {
+        // not required for TransactionStateDiff
     }
 }

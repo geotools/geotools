@@ -166,28 +166,36 @@ public final class ImagePyramidFormat extends AbstractGridFormat implements Form
 	 */
 	@Override
 	public boolean accepts(Object source, Hints hints) {
-		try {
+	    if(source==null){
+	        throw new NullPointerException("Null parameter provided to the accepts method of this ImagePyramidFormat");
+	    }
+	    
+            try {
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("Accepts method of ImagePyramid with source" + source);
+            }
 
-            // /////////////////////////////////////////////////////////////////////
             //
             // Check source
             //
-            // /////////////////////////////////////////////////////////////////////
-			URL sourceURL = Utils.checkSource(source, hints);
+            		URL sourceURL = Utils.checkSource(source, hints);
 			if(sourceURL == null)
 			    return false;
             try {
                 sourceURL.openStream().close();
             } catch (Throwable e) {
+                if(LOGGER.isLoggable(Level.FINE)){
+                    LOGGER.log(Level.FINE,e.getLocalizedMessage(),e);
+                }
                 return false;
             }
 			
-			// ///////////////////////////////////////////////////////////////////
+			
 			//
 			// Trying to load informations
 			//
 			//
-			// ///////////////////////////////////////////////////////////////////
+			
 			// //
 			//
 			// get the crs if able to
@@ -204,15 +212,15 @@ public final class ImagePyramidFormat extends AbstractGridFormat implements Form
 			if (tempcrs == null) {
 				// use the default crs
 				tempcrs = AbstractGridFormat.getDefaultCRS();
-				LOGGER.log(Level.FINE,new StringBuffer("Unable to find a CRS for this coverage, using a default one: ").append(tempcrs.toWKT()).toString());
+				LOGGER.log(Level.FINE,new StringBuilder("Unable to find a CRS for this coverage, using a default one: ").append(tempcrs.toWKT()).toString());
 			}
 			//
-			// ///////////////////////////////////////////////////////////////////
+			
 			//
 			// Load properties file with information about levels and envelope
 			//
 			//
-			// ///////////////////////////////////////////////////////////////////
+			
 			// property file
 			final Properties properties = new Properties();
 			BufferedInputStream propertyStream = null;

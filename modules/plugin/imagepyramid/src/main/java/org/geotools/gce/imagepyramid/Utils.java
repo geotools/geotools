@@ -172,7 +172,7 @@ class Utils {
                     }                      
                     if(!f.renameTo(new File(zeroLevelDirectory, f.getName())))
                         LOGGER.log(Level.WARNING, "Could not move " + f.getAbsolutePath() + 
-                                " to " + zeroLevelDirectory);
+                                " to " + zeroLevelDirectory+ " check the permission inside the source directory "+f.getParent()+ " and target directory "+zeroLevelDirectory);
                 }
                 directories = directory.listFiles((FileFilter) directoryFilter);
             } else {

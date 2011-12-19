@@ -283,8 +283,7 @@ class Utils {
         builder.append("exists").append(sourceFile.exists()).append("\n");
         builder.append("isFile").append(sourceFile.isFile()).append("\n");
         builder.append("canRead:").append(sourceFile.canRead()).append("\n");
-        builder.append("canWrite").append(sourceFile.canWrite()).append("\n");
-        builder.append("canExecute").append(sourceFile.canExecute()).append("\n");        
+        builder.append("canWrite").append(sourceFile.canWrite()).append("\n");     
         builder.append("isHidden:").append(sourceFile.isHidden()).append("\n");
         builder.append("lastModified").append(sourceFile.lastModified()).append("\n");
         

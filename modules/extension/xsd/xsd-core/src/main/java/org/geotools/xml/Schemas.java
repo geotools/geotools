@@ -18,6 +18,8 @@ package org.geotools.xml;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -45,7 +47,11 @@ import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.URIConverter;
+import org.eclipse.emf.ecore.resource.URIHandler;
+import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.resource.impl.URIHandlerImpl;
 import org.eclipse.xsd.XSDAttributeDeclaration;
 import org.eclipse.xsd.XSDAttributeGroupContent;
 import org.eclipse.xsd.XSDAttributeGroupDefinition;
@@ -214,15 +220,50 @@ public class Schemas {
      * @return The parsed schema, or null if the schema could not be parsed.
      *
      * @throws IOException In the event of a schema parsing error.
+     * @deprecated use {@link #parse(String, List, List)}
      */
     public static final XSDSchema parse(String location, XSDSchemaLocator[] locators,
         XSDSchemaLocationResolver[] resolvers) throws IOException {
         return parse(location, (locators != null) ? Arrays.asList(locators) : Collections.EMPTY_LIST,
             (resolvers != null) ? Arrays.asList(resolvers) : Collections.EMPTY_LIST);
     }
-    
+
+    /**
+     * Parses a schema at the specified location.
+     *
+     * @param location A uri pointing to the location of the schema.
+     * @param locators A list of schema locator objects to be used when
+     * parsing imports/includes of the main schema.
+     * @param resolvers A list of schema location resolvers used to override
+     * schema locations encountered in an instance document or an imported
+     * schema.
+     *
+     * @return The parsed schema, or null if the schema could not be parsed.
+     *
+     * @throws IOException In the event of a schema parsing error.
+     */
     public static final XSDSchema parse(String location, List locators, List resolvers)
         throws IOException {
+        return parse(location, locators, resolvers, null);
+    }
+
+    /**
+     * Parses a schema at the specified location.
+     *
+     * @param location A uri pointing to the location of the schema.
+     * @param locators A list of schema locator objects to be used when
+     * parsing imports/includes of the main schema.
+     * @param resolvers A list of schema location resolvers used to override
+     * schema locations encountered in an instance document or an imported schema.
+     * @param uriHandlers A list of uri handlers to inject into the parsing chain, to handle 
+     * externally referenced resources, like external schemas, etc...
+     *
+     * @return The parsed schema, or null if the schema could not be parsed.
+     *
+     * @throws IOException In the event of a schema parsing error.
+     */
+    public static final XSDSchema parse(String location, List locators, List resolvers, 
+        List<URIHandler> uriHandlers) throws IOException {
         ResourceSet resourceSet = new ResourceSetImpl();
         
         //add the specialized schema location resolvers
@@ -236,10 +277,14 @@ public class Schemas {
             AdapterFactory adapterFactory = new SchemaLocatorAdapterFactory(locators);
             resourceSet.getAdapterFactories().add(adapterFactory);
         }
-               
+
+        //add the specifialized uri handlers
+        if (uriHandlers != null && !uriHandlers.isEmpty()) {
+            resourceSet.getURIConverter().getURIHandlers().addAll(0, uriHandlers);
+        }
         return parse(location, resourceSet); 
     }
-      
+    
     public static final XSDSchema parse(String location, ResourceSet resourceSet)
         throws IOException {
         //check for case of file url, make sure it is an absolute reference
@@ -261,7 +306,7 @@ public class Schemas {
         XSDResourceImpl xsdMainResource = (XSDResourceImpl) resourceSet.createResource(URI.createURI(
                     ".xsd"));
         xsdMainResource.setURI(uri);
-        
+
         // schema building has effects on referenced schemas, it will alter them -> we need 
         // to synchronize this call so that only one of these operations is active at any time
         synchronized(Schemas.class) {

@@ -32,6 +32,7 @@ import java.util.Stack;
 
 import javax.xml.namespace.QName;
 
+import org.eclipse.emf.ecore.resource.URIHandler;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 import org.eclipse.xsd.util.XSDSchemaLocator;

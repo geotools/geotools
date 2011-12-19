@@ -38,6 +38,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.xerces.parsers.SAXParser;
+import org.eclipse.emf.ecore.resource.URIHandler;
 import org.eclipse.xsd.XSDSchema;
 import org.geotools.xml.impl.ParserHandler;
 import org.geotools.xs.XS;
@@ -484,6 +485,18 @@ public class Parser {
      */
     public NamespaceSupport getNamespaces() {
         return handler.getNamespaceSupport();
+    }
+
+    /**
+     * Returns the list of {@link URIHandler} used when parsing schemas.
+     * <p>
+     * URI handlers are invoked to handle external references that occur during parsing.
+     * </p> 
+     * 
+     * @since 2.7
+     */
+    public List<URIHandler> getURIHandlers() {
+        return handler.getURIHandlers();
     }
 
     protected SAXParser parser() throws ParserConfigurationException, SAXException {

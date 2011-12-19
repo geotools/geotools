@@ -1241,8 +1241,17 @@
                </entry>
             </entries>
          </configuration>
-     </plugin>
+      </plugin>
       
+      <!-- ======================================================= -->
+      <!--     Git revision info.                                  -->
+      <!-- ======================================================= -->
+      <plugin>
+        <groupId>pl.project13.maven</groupId>
+        <artifactId>git-commit-id-plugin</artifactId>
+        <version>1.9</version>
+      </plugin>
+
     </plugins>
   </build>
 
@@ -1404,6 +1413,14 @@
       <name>OpenGeo Maven Repository</name>
       <url>http://repo.opengeo.org</url>
     </pluginRepository> 
+    <pluginRepository>
+     <id>sonatype-snapshots</id>
+     <name>sonatype-snapshots</name>
+     <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+     <snapshots>
+       <enabled>false</enabled>
+     </snapshots>
+    </pluginRepository>
   </pluginRepositories>
 
 

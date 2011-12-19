@@ -17,6 +17,8 @@
 package org.geotools.xml.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +28,7 @@ import java.util.logging.Logger;
 
 import javax.xml.namespace.QName;
 
+import org.eclipse.emf.ecore.resource.URIHandler;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDFactory;
 import org.eclipse.xsd.XSDImport;
@@ -114,6 +117,9 @@ public class ParserHandler extends DefaultHandler {
     /** whether the parser should maintain order for elements with mixed content */ 
     boolean handleMixedContent = false;
     
+    /** uri handlers for handling uri references during parsing */
+    List<URIHandler> uriHandlers = new ArrayList<URIHandler>();
+
     public ParserHandler(Configuration config) {
         this.config = config;
         namespaces = new NamespaceSupport();
@@ -197,6 +203,10 @@ public class ParserHandler extends DefaultHandler {
         return namespaces;
     }
 
+    public List<URIHandler> getURIHandlers() {
+        return uriHandlers;
+    }
+
     public void startPrefixMapping(String prefix, String uri)
         throws SAXException {
         namespaces.declarePrefix(prefix, uri);
@@ -277,8 +287,8 @@ public class ParserHandler extends DefaultHandler {
             }
 
             //look up schema overrides
-            XSDSchemaLocator[] locators = findSchemaLocators();
-            XSDSchemaLocationResolver[] resolvers = findSchemaLocationResolvers();
+            List<XSDSchemaLocator> locators = Arrays.asList(findSchemaLocators());
+            List<XSDSchemaLocationResolver> resolvers = Arrays.asList(findSchemaLocationResolvers());
 
             if ((locations != null) && (locations.length > 0)) {
                 //parse each namespace location pair into schema objects
@@ -297,8 +307,8 @@ public class ParserHandler extends DefaultHandler {
                     }
 
                     //first check for a location override
-                    for (int j = 0; j < resolvers.length; j++) {
-                        String override = resolvers[j].resolveSchemaLocation(null, namespace,
+                    for (int j = 0; j < resolvers.size(); j++) {
+                        String override = resolvers.get(j).resolveSchemaLocation(null, namespace,
                                 location);
                         if (override != null) {
                             //ensure that override has no spaces
@@ -312,8 +322,8 @@ public class ParserHandler extends DefaultHandler {
                     }
 
                     //next check for schema override 
-                    for (int j = 0; j < locators.length; j++) {
-                        XSDSchema schema = locators[j].locateSchema(null, namespace, location, null);
+                    for (int j = 0; j < locators.size(); j++) {
+                        XSDSchema schema = locators.get(j).locateSchema(null, namespace, location, null);
 
                         if (schema != null) {
                             schemas[i / 2] = schema;
@@ -336,7 +346,7 @@ public class ParserHandler extends DefaultHandler {
                         
                         //parse the document
                         try {
-                            schemas[i / 2] = Schemas.parse(location, locators, resolvers);
+                            schemas[i / 2] = Schemas.parse(location, locators, resolvers, uriHandlers);
                         } catch (Exception e) {
                             String msg = "Error parsing: " + location;
                             logger.warning(msg);
@@ -351,8 +361,8 @@ public class ParserHandler extends DefaultHandler {
             } else {
                 //could not find a schemaLocation attribute, use the locators
                 //look for schema with locators
-                for (int i = 0; i < locators.length; i++) {
-                    XSDSchema schema = locators[i].locateSchema(null, uri, null, null);
+                for (int i = 0; i < locators.size(); i++) {
+                    XSDSchema schema = locators.get(i).locateSchema(null, uri, null, null);
 
                     if (schema != null) {
                         schemas = new XSDSchema[] { schema };

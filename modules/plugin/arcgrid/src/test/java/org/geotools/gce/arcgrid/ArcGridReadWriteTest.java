@@ -25,7 +25,9 @@ import java.util.Random;
 
 import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -305,5 +307,17 @@ public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
 	public static final void main(String[] args) throws Exception {
 		junit.textui.TestRunner.run(ArcGridReadWriteTest.class);
 	}
-
+    
+        public void testFormatFinder() throws Exception {
+            // get a gzipped ascii grid
+            final File f = TestData.file(this, "arcgrid/arcGrid.asc");
+            // Reading the coverage through a file
+            AbstractGridFormat format = GridFormatFinder.findFormat(f);
+            AbstractGridCoverage2DReader reader = format.getReader(f);
+    
+            GridCoverage2D gc = reader.read(null);
+    
+            assertNotNull(gc);
+    
+        }
 }

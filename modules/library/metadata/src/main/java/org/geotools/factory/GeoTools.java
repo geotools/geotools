@@ -79,6 +79,11 @@ public final class GeoTools {
         Properties props = new Properties();
         try {
             props.load(GeoTools.class.getResourceAsStream("GeoTools.properties"));
+
+            //load git info if it is avaialble
+            if (GeoTools.class.getResource("/git.properties") != null) {
+                props.load(GeoTools.class.getResourceAsStream("/git.properties"));
+            }
         }
         catch(Exception e) {}
         
@@ -93,8 +98,15 @@ public final class GeoTools {
     /**
      * The version control (svn) revision at which this version of geotools was built.
      */
-    private static final String BUILD_REVISION = PROPS.getProperty("build.revision", "-1");
-    
+    private static final String BUILD_REVISION;
+    static {
+        String rev = PROPS.getProperty("build.revision", "-1");
+        if ("-1".equals(rev)) {
+            rev = PROPS.getProperty("git.commit.id", "-1");
+        }
+        BUILD_REVISION = rev;
+    }
+
     /**
      * The timestamp at which this version of geotools was built.
      */
@@ -321,7 +333,7 @@ public final class GeoTools {
     public static String getBuildRevision() {
         return BUILD_REVISION;
     }
-    
+
     /**
      * Reports back the timestamp at which the version of GeoTools of built. 
      * 
@@ -329,6 +341,15 @@ public final class GeoTools {
      */
     public static String getBuildTimestamp() {
         return BUILD_TIMESTAMP;
+    }
+
+    /**
+     * Returns the raw properties object containing all properties about this GeoTools build.
+     */
+    public static Properties getBuildProperties() {
+        Properties props = new Properties();
+        props.putAll(PROPS);
+        return props;
     }
 
     /**

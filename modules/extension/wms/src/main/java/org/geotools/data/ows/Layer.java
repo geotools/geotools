@@ -213,9 +213,13 @@ public class Layer implements Comparable<Layer> {
         if (allBoundingBoxesCache == null) {
             allBoundingBoxesCache = new HashMap<String, CRSEnvelope>();
             
+            for( CRSEnvelope bbox : getLayerBoundingBoxes() ){
+                allBoundingBoxesCache.put( bbox.getSRSName(), bbox );
+            }
+            
             Layer parent = this.getParent();
-            while (parent != null) {
-                for( CRSEnvelope bbox : getLayerBoundingBoxes() ){
+            while (parent != null && allBoundingBoxesCache.size() == 0) {
+                for( CRSEnvelope bbox : parent.getLayerBoundingBoxes() ){
                     allBoundingBoxesCache.put( bbox.getSRSName(), bbox );
                 }
                 parent = parent.getParent();

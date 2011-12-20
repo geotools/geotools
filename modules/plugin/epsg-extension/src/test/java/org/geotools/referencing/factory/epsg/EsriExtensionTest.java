@@ -118,7 +118,7 @@ public class EsriExtensionTest extends TestCase {
         assertTrue(codes.containsAll(subset));
         assertFalse(codes.contains("26910"));  // This is an EPSG code.
         // The following number may be adjusted if esri.properties is updated.
-        assertEquals(779, codes.size());
+        assertEquals(798, codes.size());
     }
 
     /**
@@ -181,9 +181,9 @@ public class EsriExtensionTest extends TestCase {
     /**
      * Tests an extra code (neither EPSG or ESRI).
      */
-    public void test42102() throws FactoryException {
+    public void test42333() throws FactoryException {
         try {
-            CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem("42102");
+            CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem("42333");
             fail();
         } catch (NoSuchAuthorityCodeException e) {
             // This is the expected exception.

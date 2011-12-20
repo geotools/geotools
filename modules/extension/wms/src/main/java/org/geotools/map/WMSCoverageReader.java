@@ -34,6 +34,7 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.renderer.lite.RendererUtilities;
 import org.geotools.util.Version;
 import org.opengis.coverage.grid.Format;
@@ -115,11 +116,6 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
     CoordinateReferenceSystem requestCRS;
     
     /**
-     * Flag telling us if we have to flip geographic bounds before using them
-     */
-    boolean flipGeographic;
-
-    /**
      * Builds a new WMS coverage reader
      * 
      * @param wms
@@ -128,10 +124,6 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
     public WMSCoverageReader(WebMapServer wms, Layer layer) {
         this.wms = wms;
         
-        // check if we need coordinate flipping
-        Version version = new Version(wms.getCapabilities().getVersion());
-        flipGeographic = version.compareTo(new Version("1.3.0")) >= 0;
-
         // init the reader
         addLayer(layer);
 
@@ -390,7 +382,7 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
         
         // bbox might need flipping
         ReferencedEnvelope requestEnvelope = gridEnvelope;
-        if(requestCRS instanceof GeographicCRS && flipGeographic) {
+        if(axisFlipped(requestSrs)) {
             requestEnvelope = flipEnvelope(requestEnvelope);
         }
         mapRequest.setBBox(requestEnvelope);
@@ -401,6 +393,29 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
         this.height = height;
 
         return gridEnvelope;
+    }
+
+    private boolean axisFlipped(String srsName) {
+        Version version = new Version(wms.getCapabilities().getVersion());
+        if(version.compareTo(new Version("1.3.0")) < 0) {
+            // aah, sheer simplicity
+            return false;
+        } else {
+            // gah, hell gates breaking loose
+            if(srsName.startsWith("EPSG:")) {
+                try {
+                    String epsgNative =  "urn:x-ogc:def:crs:EPSG:".concat(srsName.substring(5));
+                    return CRS.getAxisOrder(CRS.decode(epsgNative)) == AxisOrder.NORTH_EAST;
+                } catch(Exception e) {
+                    LOGGER.log(Level.WARNING, "Failed to determine axis order for " 
+                            + srsName + ", assuming east/north", e);
+                    return false;
+                }
+            } else {
+                // CRS or AUTO, none of them is flipped so far
+                return false;
+            }
+        }
     }
 
     private ReferencedEnvelope flipEnvelope(ReferencedEnvelope requestEnvelope) {
@@ -423,13 +438,14 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
      * @return
      */
     public void updateBounds() {
+        boolean axisFlipped = axisFlipped(srsName);
         ReferencedEnvelope result = reference(layers.get(0).getEnvelope(crs));
-        if(result.getCoordinateReferenceSystem() instanceof GeographicCRS && flipGeographic) {
+        if(result.getCoordinateReferenceSystem() instanceof GeographicCRS && axisFlipped) {
             result = flipEnvelope(result);
         }
         for (int i = 1; i < layers.size(); i++) {
             ReferencedEnvelope layerEnvelope = reference(layers.get(i).getEnvelope(crs));
-            if(layerEnvelope.getCoordinateReferenceSystem() instanceof GeographicCRS && flipGeographic) {
+            if(layerEnvelope.getCoordinateReferenceSystem() instanceof GeographicCRS && axisFlipped) {
                 layerEnvelope = flipEnvelope(layerEnvelope);
             }
             result.expandToInclude(layerEnvelope);
@@ -462,4 +478,5 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
         return new ReferencedEnvelope(ge.getMinimum(0), ge.getMaximum(0), ge.getMinimum(1), ge
                 .getMaximum(1), ge.getCoordinateReferenceSystem());
     }
+    
 }

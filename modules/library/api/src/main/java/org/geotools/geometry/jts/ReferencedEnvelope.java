@@ -663,7 +663,11 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
             final CoordinateReferenceSystem otherCRS = (object instanceof ReferencedEnvelope)
                 ? ((ReferencedEnvelope) object).crs : null;
 
-            return Utilities.equals(crs, otherCRS);
+            if(otherCRS == null) {
+                return crs == null;
+            } else {
+                return CRS.equalsIgnoreMetadata(crs, otherCRS);
+            }
         }
         return false;
     }

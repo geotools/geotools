@@ -262,7 +262,8 @@ public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {
             request.setFormat("image/jpeg");
             //System.out.println(request.getFinalURL().toExternalForm());
             
-            assertTrue(request.getFinalURL().toExternalForm().indexOf("image/jpeg") >= 0);
+            String externalForm = request.getFinalURL().toExternalForm();
+            assertTrue(externalForm.indexOf("image%2Fjpeg") >= 0);
         } catch(java.net.ConnectException ce){
             if(ce.getMessage().indexOf("timed out")>0){
                 System.err.println("Unable to test - timed out: "+ce);

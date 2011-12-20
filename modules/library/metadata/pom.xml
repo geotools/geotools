@@ -140,15 +140,6 @@
   <profiles>
     <profile>
        <id>gitinfo</id>
-       <activation>
-         <file>
-           <!-- .git directory specified relative to working directory, so
-                this profile only engaged when building from root. This is
-                changed/fixed in maven 3, so when build server switches to 
-                maven 3 change this to '../../../.git' -->
-           <exists>.git</exists>
-         </file>
-       </activation> 
        <build>
         <plugins>
           <plugin>

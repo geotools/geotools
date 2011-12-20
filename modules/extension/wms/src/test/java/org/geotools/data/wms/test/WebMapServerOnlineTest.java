@@ -204,7 +204,7 @@ public class WebMapServerOnlineTest extends ServerTestCase {
         
         WMSCapabilities caps = wms.getCapabilities();
         
-        Layer layer = (Layer) caps.getLayerList().get(1);
+        Layer layer = (Layer) caps.getLayerList().get(0);
         CoordinateReferenceSystem crs = CRS.decode("EPSG:4326");
         
         GeneralEnvelope envelope = wms.getEnvelope(layer, crs);

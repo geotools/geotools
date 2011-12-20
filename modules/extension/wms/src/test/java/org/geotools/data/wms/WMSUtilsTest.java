@@ -81,7 +81,7 @@ public class WMSUtilsTest extends TestCase {
 	public void testMatchEPSG() throws Exception {
 		CoordinateReferenceSystem crs4326 = CRS.decode("EPSG:4326");
 		CoordinateReferenceSystem crs3005 = CRS.decode("EPSG:3005");
-		CoordinateReferenceSystem crs42101 = CRS.decode("EPSG:42101");
+		CoordinateReferenceSystem crs3347 = CRS.decode("EPSG:3347");
 		
 		Set codes = new TreeSet();
 		codes.add("EPSG:4326");
@@ -100,7 +100,7 @@ public class WMSUtilsTest extends TestCase {
 		assertNotNull(result2);
 		assertEquals("EPSG:42102", result2);
 		
-		String result3 = WMSUtils.matchEPSG(crs42101, codes);
+		String result3 = WMSUtils.matchEPSG(crs3347, codes);
 		assertNull(result3);
 	}
 

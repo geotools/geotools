@@ -44,7 +44,7 @@ public class LocalGeoServerOnlineTest extends TestCase {
     static private URL serverURL;
     static {
         try {
-            serverURL = new URL("http://127.0.0.1:8080/geoserver/wms?SERVICE=WMS&");
+            serverURL = new URL("http://127.0.0.1:8080/geoserver/ows?SERVICE=WMS&");
         } catch (MalformedURLException e) {
             serverURL = null;
         };
@@ -102,7 +102,7 @@ public class LocalGeoServerOnlineTest extends TestCase {
         assertNotNull( info );
         
         assertEquals( serverURL, wms.getCapabilities().getRequest().getGetCapabilities().getGet() );
-        assertEquals( "My GeoServer WMS", info.getTitle() );
+        assertEquals( "GeoServer Web Map Service", info.getTitle() );
         
         assertNotNull( info.getDescription() );        
     }

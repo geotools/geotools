@@ -128,7 +128,13 @@
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-epsg-wkt</artifactId>
+      <artifactId>gt-epsg-hsql</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-epsg-extension</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
@@ -136,6 +142,11 @@
       <groupId>org.geotools</groupId>
       <artifactId>gt-sample-data</artifactId>
       <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -160,7 +171,6 @@
             <exclude>**/WMS1_1_1_OnlineTest.java</exclude>
             <exclude>**/WMS1_3_0_OnlineTest.java</exclude>
             <!-- The following tests fail -->
-            <exclude>**/Geot553Test.java</exclude>
             <exclude>**/WMSSchemaTest.java</exclude>
           </excludes>
         </configuration>

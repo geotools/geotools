@@ -34,7 +34,7 @@ import org.geotools.data.Base64;
  */
 public class SimpleHttpClient implements HTTPClient {
 
-    private static final int DEFAULT_TIMEOUT = 30000;// 30 seconds
+    private static final int DEFAULT_TIMEOUT = 30;// 30 seconds
 
     private String user;
 
@@ -131,8 +131,9 @@ public class SimpleHttpClient implements HTTPClient {
     private HttpURLConnection openConnection(URL finalURL) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) finalURL.openConnection();
         connection.addRequestProperty("Accept-Encoding", "gzip");
-        connection.setConnectTimeout(getConnectTimeout());
-        connection.setReadTimeout(getReadTimeout());
+        // mind, connect timeout is in seconds
+        connection.setConnectTimeout(1000 * getConnectTimeout());
+        connection.setReadTimeout(1000 * getReadTimeout());
 
         final String username = getUser();
         final String password = getPassword();

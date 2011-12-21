@@ -19,11 +19,14 @@ package org.geotools.data.ows;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.logging.Logger;
 
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.Header;
+import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.HttpState;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
@@ -32,17 +35,25 @@ import org.apache.commons.httpclient.methods.InputStreamRequestEntity;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
+import org.geotools.util.logging.Logging;
 
 /**
  * An Apache commons HTTP client based {@link HTTPClient} backed by a multithreaded connection
  * manager that allows to reuse connections to the backing server and to limit the
  * {@link #setMaxConnections(int) max number of concurrent connections}.
  * 
+ * <p>
+ * Java System properties {@code http.proxyHost}, {@code http.proxyPort}, {@code http.proxyUser},
+ * and {@code http.proxyPassword} are respected.
+ * </p>
+ * 
  * @author groldan
  * @see AbstractOpenWebService#setHttpClient(HTTPClient)
  */
 public class MultithreadedHttpClient implements HTTPClient {
 
+    private static final Logger LOGGER = Logging.getLogger(MultithreadedHttpClient.class);
+    
     private MultiThreadedHttpConnectionManager connectionManager;
 
     private HttpClient client;
@@ -59,10 +70,45 @@ public class MultithreadedHttpClient implements HTTPClient {
         params.setConnectionTimeout(30000);
         params.setMaxTotalConnections(6);
         params.setDefaultMaxConnectionsPerHost(6);
-
+        
         connectionManager.setParams(params);
 
         client = new HttpClient(connectionManager);
+        
+        applySystemProxySettings();
+    }
+
+    private void applySystemProxySettings() {
+        final String proxyHost = System.getProperty("http.proxyHost");
+        final int proxyPort = Integer.parseInt(System.getProperty("http.proxyPort", "80"));
+        // String nonProxyHost = System.getProperty("http.nonProxyHosts");
+
+        if (proxyHost != null) {
+            LOGGER.fine("Found 'http.proxyHost' Java System property. Using it as proxy server. Port: "
+                    + proxyPort);
+            HostConfiguration hostConfig = client.getHostConfiguration();
+            hostConfig.setProxy(proxyHost, proxyPort);
+        }
+
+        final String proxyUser = System.getProperty("http.proxyUser");
+        final String proxyPassword = System.getProperty("http.proxyPassword");
+        if (proxyUser != null) {
+            if (proxyPassword == null || proxyPassword.length() == 0) {
+                LOGGER.warning("System property http.proxyUser provided but http.proxyPassword "
+                        + "not provided or empty. Proxy auth credentials will be passed as is anyway.");
+            } else {
+                LOGGER.fine("System property http.proxyUser and http.proxyPassword found,"
+                        + " setting proxy auth credentials");
+            }
+            HttpState state = client.getState();
+            if (state == null) {
+                state = new HttpState();
+                client.setState(state);
+            }
+            AuthScope authscope = AuthScope.ANY;
+            Credentials credentials = new UsernamePasswordCredentials(proxyUser, proxyPassword);
+            state.setProxyCredentials(authscope, credentials);
+        }
     }
 
     // @Override

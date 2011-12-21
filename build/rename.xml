@@ -3,13 +3,13 @@
   <target name="rename">
     <replace dir=".">
       <include name="**/pom.xml"/>
-     <replacefilter token="&lt;version&gt;2.6-SNAPSHOT&lt;/version&gt;"
-                     value="&lt;version&gt;2.6-RC2&lt;/version&gt;"/>
+     <replacefilter token="&lt;version&gt;2.7-SNAPSHOT&lt;/version&gt;"
+                     value="&lt;version&gt;2.7.4&lt;/version&gt;"/>
     </replace>
     <replace dir="./modules/library/metadata/src/main/java/org/geotools/factory">
       <include name="GeoTools.java"/>
-     <replacefilter token="2.6-SNAPSHOT"
-                     value="2.6-RC2"/>
+     <replacefilter token="2.7-SNAPSHOT"
+                     value="2.7.4"/>
     </replace>
   </target>
 </project>

@@ -97,6 +97,7 @@
     <maven.build.timestamp.format>dd-MMM-yyyy HH:mm</maven.build.timestamp.format>
     <build.timestamp>${maven.build.timestamp}</build.timestamp>
     <fork.javac>true</fork.javac>
+    <javac.maxHeapSize>256M</javac.maxHeapSize>
   </properties>
 
   <!-- Profiles set on the command-line overwrite default properties. -->
@@ -1106,6 +1107,7 @@
                too many classes in the permanent generation, see GEOT-2462  
           -->
           <fork>${fork.javac}</fork> 
+          <maxmem>${javac.maxHeapSize}</maxmem>
         </configuration>
       </plugin>
 

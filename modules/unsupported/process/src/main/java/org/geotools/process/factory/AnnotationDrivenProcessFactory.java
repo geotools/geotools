@@ -249,8 +249,8 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
     	String methodName = name.getLocalPart();
         Method meth = method(methodName);
     	Object process = createProcessBean(name); 
-    	if (process != null && (lookupInvertGridGeometry(process, methodName) != null 
-    	        || lookupInvertQuery(process, methodName) != null)) {
+    	if (process != null && (lookupInvertGridGeometry(process, meth.getName()) != null 
+    	        || lookupInvertQuery(process, meth.getName()) != null)) {
     		return new InvokeMethodRenderingProcess(meth, process);
     	} else {
     		return new InvokeMethodProcess(meth, process);

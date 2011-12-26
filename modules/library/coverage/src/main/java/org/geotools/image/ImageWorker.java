@@ -2411,10 +2411,12 @@ public class ImageWorker {
             throws IOException
     {
         // Reformatting this image for PNG.
-        if (!paletted) {
-            forceComponentColorModel();
-        }else{
+        if (paletted && !(image.getColorModel() instanceof IndexColorModel)) {
+            // we have to reduce colors
         	forceIndexColorModelForGIF(true);
+        } else if(!(image.getColorModel() instanceof ComponentColorModel) && !(image.getColorModel() instanceof IndexColorModel)) {
+            // png supports gray, rgb, rgba and paletted, but not, for example, double and float values
+            forceComponentColorModel();
         }
         if(LOGGER.isLoggable(Level.FINER))
 			LOGGER.finer("Encoded input image for png writer");

@@ -387,6 +387,13 @@ public final class ImageWorkerTest {
         readWorker.setImage(ImageIO.read(outFile));
         show(readWorker, "Pure  PNG8");
         outFile.delete();
+        
+        // Check we are not expanding to RGB a paletted image
+        worker.setImage(sstImage);
+        assertTrue(sstImage.getColorModel() instanceof IndexColorModel);
+        worker.writePNG(outFile, "FILTERED", 0.75f, false, false);
+        readWorker.setImage(ImageIO.read(outFile));
+        assertTrue(readWorker.getRenderedImage().getColorModel() instanceof IndexColorModel);
     }
 
     /**

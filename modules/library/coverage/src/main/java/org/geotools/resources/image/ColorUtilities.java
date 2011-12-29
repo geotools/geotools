@@ -17,6 +17,7 @@
 package org.geotools.resources.image;
 
 import java.awt.Color;
+import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
@@ -518,6 +519,73 @@ public final class ColorUtilities {
                 return i;
         }
         return -1;
+    }
+    
+    /**
+     * Applies the specified background color to an index color model, building a new index color
+     * model (or returning the same index color mode if it has no transparency at all)
+     */
+    public static IndexColorModel applyBackgroundColor(IndexColorModel icm, Color bg) {
+        int trasparentIdx = icm.getTransparentPixel();
+        if (icm.getTransparency() == Transparency.OPAQUE && trasparentIdx == -1) {
+            // no transparency at all
+            return icm;
+        }
+
+        // grab the components
+        int size = icm.getMapSize();
+        byte[] reds = new byte[size];
+        byte[] greens = new byte[size];
+        byte[] blues = new byte[size];
+        icm.getReds(reds);
+        icm.getGreens(greens);
+        icm.getBlues(blues);
+
+        // single transparent pixel? replace it
+        if (icm.getTransparency() == Transparency.OPAQUE && trasparentIdx != -1) {
+            reds[trasparentIdx] = (byte) bg.getRed();
+            greens[trasparentIdx] = (byte) bg.getGreen();
+            blues[trasparentIdx] = (byte) bg.getBlue();
+            return new IndexColorModel(icm.getPixelSize(), size, reds, greens, blues);
+        } else {
+            // grab the alpha and do the merge
+            byte[] alphas = new byte[size];
+            icm.getAlphas(alphas);
+
+            int r = bg.getRed() & 0xFF;
+            int g = bg.getGreen() & 0xFF;
+            int b = bg.getBlue() & 0xFF;
+            int a = bg.getAlpha() & 0xFF;
+            for (int i = 0; i < size; i++) {
+                int t1 = alphas[i] & 0xFF;  // a1
+                float t2 = (a & 0xFF) * (1.0f - t1 / 255f); // a2 * (1 - a1 / maxValue)
+                float t3 = t1 + t2; // output alpha
+                float t4, t5;
+                if (t3 == 0.0F) {
+                    t4 = 0.0F;
+                    t5 = 0.0F;
+                } else {
+                    t4 = t1 / t3;
+                    t5 = 1.0f - t4;
+                }
+                
+                int ri = reds[i] & 0xFF;
+                reds[i] = (byte) (ri * t4 + r * t5);
+                int gi = greens[i] & 0xFF;
+                greens[i] = (byte) (gi * t4 + g * t5);
+                int bi = blues[i] & 0xFF;
+                blues[i] = (byte) (bi * t4 + b * t5);
+                alphas[i] = (byte) t3;
+            }
+
+            // if the bg color had transparency we still have a translucent image, otherwise
+            // an opaque one
+            if (a < 255) {
+                return new IndexColorModel(icm.getPixelSize(), size, reds, greens, blues, alphas);
+            } else {
+                return new IndexColorModel(icm.getPixelSize(), size, reds, greens, blues);
+            }
+        }
     }
     
     /**

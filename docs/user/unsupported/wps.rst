@@ -50,6 +50,79 @@ The following are some of the core objects for this module:
   By using these wrapper classes, a programmer can quickly build process requests and get results
   with only a few lines of code (view examples below).
 
+WPS with custom HTTPClient Example
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The following example shows how to create a WebProcessingService using a custom implementation of org.geotools.data.ows.HTTPClient ::
+
+    public class MyWpsHTTPClient implements HTTPClient
+    {
+       @Override
+       public abstract org.geotools.data.ows.HTTPResponse post(java.net.URL arg0, java.io.InputStream arg1, java.lang.String arg2) throws java.io.IOException;
+       
+       @Override
+       public abstract org.geotools.data.ows.HTTPResponse get(java.net.URL arg0) throws java.io.IOException
+       {
+          //csutom method implementation here...
+       }
+       
+       @Override
+       public abstract java.lang.String getUser();
+       {
+          //csutom method implementation here...
+       }
+       
+       @Override
+       public abstract void setUser(java.lang.String arg0);
+       {
+          //csutom method implementation here...
+       }
+       
+       @Override
+       public abstract java.lang.String getPassword();
+       {
+          //csutom method implementation here...
+       }
+       
+       @Override
+       public abstract void setPassword(java.lang.String arg0);
+       {
+          //csutom method implementation here...
+       }
+       
+       @Override
+       public abstract int getConnectTimeout();
+       {
+          //csutom method implementation here...
+       }
+       
+       @Override
+       public abstract void setConnectTimeout(int arg0);
+       {
+          //csutom method implementation here...
+       }
+       
+       @Override
+       public abstract int getReadTimeout();
+       {
+          //csutom method implementation here...
+       }
+       
+       @Override
+       public abstract void setReadTimeout(int arg0);
+       {
+          //csutom method implementation here...
+       }
+    }
+
+It's possible now to allow the WecProcessingService make use of MyWpsHTTPClient by simply passing it to the class Constructor.::
+
+    wps = new WebProcessingService(url, new MyWpsHTTPClient(), null);
+
+Notice also that GeoTools already has an available implementation of HTTPClient which may be used for the most common cases, allowing also Basic authentication.::
+
+    org.geotools.data.ows.SimpleHttpClient
+
 WPS getCapabilties Example
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -111,3 +184,47 @@ simple "double addition" process.::
     Double result = (Double) results.get("result");
 
 Now you you have a result that was calculated on the WPS server.
+
+WPS getExecutionResponse Example
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This example shows how to ask to the WPS for the status of a process request and handle 
+the different status codes.::
+
+    WebProcessingService wps = new WebProcessingService(
+        new URL(storedRequestURL),
+        this.wpsHTTPClient,
+        null);
+    
+    GetExecutionStatusRequest execRequest = wps.createGetExecutionStatusRequest();
+    execRequest.setIdentifier(this.wpsProcessIdentifier);
+
+    GetExecutionStatusResponse response = wps.issueRequest(execRequest);
+    
+    // Checking for Exceptions and Status...
+    if ((response.getExceptionResponse() == null) && (response.getExecuteResponse() != null))
+    {
+        if (response.getExecuteResponse().getStatus().getProcessSucceeded() != null)
+        {
+            // Process complete ... checking output
+            for (Object processOutput : response.getExecuteResponse().getProcessOutputs().getOutput())
+            {
+                OutputDataType wpsOutput = (OutputDataType) processOutput;
+                // retrieve the value of the output ...
+                wpsOutput.getData().getLiteralData().getValue();
+            }
+            else if (response.getExecuteResponse().getStatus().getProcessFailed() != null)
+            {
+                // Process failed ... handle failed status
+            }
+            else if (response.getExecuteResponse().getStatus().getProcessStarted() != null)
+            {
+                // Updating status percentage...
+                int percentComplete =
+                    response.getExecuteResponse().getStatus().getProcessStarted().getPercentCompleted().intValue();
+            }
+        }
+        else
+        {
+            // Retrieve here the Exception message and handle the errored status ...
+        }

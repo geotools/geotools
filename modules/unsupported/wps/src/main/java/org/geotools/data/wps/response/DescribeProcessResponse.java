@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -32,66 +32,88 @@ import org.geotools.xml.Configuration;
 import org.geotools.xml.Parser;
 import org.xml.sax.SAXException;
 
+
 /**
  * Represents the response from a server after a DescribeProcess request
  * has been issued.
- * 
+ *
  * @author gdavis
  *
  *
  * @source $URL$
  */
-public class DescribeProcessResponse extends Response {
+public class DescribeProcessResponse extends Response
+{
 
     private ProcessDescriptionsType processDescs;
-    private ExceptionReportType excepResponse;    
+    private ExceptionReportType excepResponse;
 
     /**
-     * @param response
-     * @throws ServiceException 
+     * @param contentType
+     * @param inputStream
+     * @throws ServiceException
      * @throws SAXException
      */
-    public DescribeProcessResponse( HTTPResponse response ) throws IOException, ServiceException {
-        super(response);
-        
-        try {
-	        //Map hints = new HashMap();
-	        //hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WPSSchema.getInstance());
-        	Configuration config = new WPSConfiguration();
-        	Parser parser = new Parser(config);
-	
-	        Object object;
-	        excepResponse = null;
-	        processDescs = null;	        
-			try {
-				//object = DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
-				object =  parser.parse(response.getResponseStream());
-			} catch (SAXException e) {
-				throw (IOException) new IOException().initCause(e);
-			} catch (ParserConfigurationException e) {
-				throw (IOException) new IOException().initCause(e);
-			}
-	        
-			// try casting the response
-			if (object instanceof ProcessDescriptionsType) {
-				processDescs = (ProcessDescriptionsType) object;
-			}
-			// exception caught on server and returned
-			else if (object instanceof ExceptionReportType) {
-				excepResponse = (ExceptionReportType) object;
-			}			
-			
-        } finally {
-        	response.dispose();
+    public DescribeProcessResponse(HTTPResponse httpResponse) throws IOException, ServiceException
+    {
+        super(httpResponse);
+
+        InputStream inputStream = null;
+        try
+        {
+            inputStream = httpResponse.getResponseStream();
+
+            // Map hints = new HashMap();
+            // hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WPSSchema.getInstance());
+            Configuration config = new WPSConfiguration();
+            Parser parser = new Parser(config);
+
+            Object object;
+            excepResponse = null;
+            processDescs = null;
+            try
+            {
+                // object = DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
+                object = parser.parse(inputStream);
+            }
+            catch (SAXException e)
+            {
+                throw (IOException) new IOException().initCause(e);
+            }
+            catch (ParserConfigurationException e)
+            {
+                throw (IOException) new IOException().initCause(e);
+            }
+
+            // try casting the response
+            if (object instanceof ProcessDescriptionsType)
+            {
+                processDescs = (ProcessDescriptionsType) object;
+            }
+            // exception caught on server and returned
+            else if (object instanceof ExceptionReportType)
+            {
+                excepResponse = (ExceptionReportType) object;
+            }
+
+        }
+        finally
+        {
+            if (inputStream != null)
+            {
+                inputStream.close();
+            }
         }
     }
 
-    public ProcessDescriptionsType getProcessDesc() {
+    public ProcessDescriptionsType getProcessDesc()
+    {
         return processDescs;
     }
-    
-    public ExceptionReportType getExceptionResponse() {
+
+    public ExceptionReportType getExceptionResponse()
+    {
         return excepResponse;
-    }      
+    }
 
 }

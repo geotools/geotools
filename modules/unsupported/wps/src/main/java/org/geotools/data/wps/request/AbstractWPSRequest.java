@@ -22,8 +22,9 @@ import java.util.Properties;
 
 import org.geotools.data.ows.AbstractRequest;
 
+
 /**
- * 
+ *
  *
  * @source $URL$
  */

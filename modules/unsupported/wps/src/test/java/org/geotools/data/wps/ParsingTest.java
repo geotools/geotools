@@ -16,9 +16,6 @@
  */
 package org.geotools.data.wps;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -34,8 +31,6 @@ import net.opengis.wps10.OutputDataType;
 import net.opengis.wps10.ProcessDescriptionsType;
 import net.opengis.wps10.UOMsType;
 import net.opengis.wps10.WPSCapabilitiesType;
-import net.opengis.wps10.Wps10Package;
-import net.opengis.wps10.impl.UOMsTypeImpl;
 import net.opengis.wps10.impl.Wps10FactoryImpl;
 
 import org.geotools.TestData;
@@ -45,12 +40,15 @@ import org.geotools.xml.EMFUtils;
 import org.geotools.xml.Parser;
 import org.junit.Test;
 import org.xml.sax.SAXException;
-/**
- * 
- *
- * @source $URL$
- */
-public class ParsingTest {
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+
+public class ParsingTest
+{
+
+    private static final boolean DISABLE = "true".equalsIgnoreCase(System.getProperty("disableTest", "true"));
 
     private static final boolean ONLINE = false; // to do check -o maven option?
 
@@ -62,106 +60,153 @@ public class ParsingTest {
      * <li>http://schemas.opengis.net/wps/1.0.0/examples/40_wpsDescribeProcess_response.xml <br>
      * referenceProcessDescriptions.xml</li>
      * </ul>
-     * 
+     *
      * @throws IOException
      */
     @Test
-    public void testDescribeProcessParsing() throws Exception {
+    public void testDescribeProcessParsing() throws Exception
+    {
+
+        if (DISABLE)
+        {
+            return;
+        }
 
         Object object;
         BufferedReader in = null;
-        try {
+        try
+        {
             Configuration config = new WPSConfiguration();
 
             URL url;
-            if (ONLINE) {
+            if (ONLINE)
+            {
                 url = new URL(
-                "http://schemas.opengis.net/wps/1.0.0/examples/40_wpsDescribeProcess_response.xml");
-            } else {
+                        "http://schemas.opengis.net/wps/1.0.0/examples/40_wpsDescribeProcess_response.xml");
+            }
+            else
+            {
                 url = TestData.url(this, "referenceProcessDescriptions.xml");
             }
+
             Parser parser = new Parser(config);
             in = new BufferedReader(new InputStreamReader(url.openStream()));
             object = parser.parse(in);
 
             ProcessDescriptionsType processDesc = (ProcessDescriptionsType) object;
             assertNotNull(processDesc);
-        } finally {
+        }
+        finally
+        {
             in.close();
         }
     }
-    
+
     @Test
-    public void testDegree3CapabilitiesParsing() throws Exception {
+    public void testDegree3CapabilitiesParsing() throws Exception
+    {
+        if (DISABLE)
+        {
+            return;
+        }
+
         Object object;
         BufferedReader in = null;
-        try {
+        try
+        {
             Configuration config = new WPSConfiguration();
 
             URL url;
             url = TestData.url(this, "deegree3Capabilities.xml");
-            
+
             Parser parser = new Parser(config);
             in = new BufferedReader(new InputStreamReader(url.openStream()));
             object = parser.parse(in);
-            
-            assertNotNull("parsed",object);
+
+            assertNotNull("parsed", object);
+
             WPSCapabilitiesType capabiliites = (WPSCapabilitiesType) object;
-            assertEquals("1.0.0", capabiliites.getVersion() );
-            
-        } finally {
+            assertEquals("1.0.0", capabiliites.getVersion());
+
+        }
+        finally
+        {
             in.close();
         }
     }
-    
+
     @Test
-    public void testGeoServer3CapabilitiesParsing() throws Exception {
+    public void testGeoServer3CapabilitiesParsing() throws Exception
+    {
+        if (DISABLE)
+        {
+            return;
+        }
+
         Object object;
         BufferedReader in = null;
-        try {
+        try
+        {
             Configuration config = new WPSConfiguration();
 
             URL url;
             url = TestData.url(this, "geoserverCapabilities.xml");
-            
+
             Parser parser = new Parser(config);
             in = new BufferedReader(new InputStreamReader(url.openStream()));
             object = parser.parse(in);
-            
-            assertNotNull("parsed",object);
+
+            assertNotNull("parsed", object);
+
             WPSCapabilitiesType capabiliites = (WPSCapabilitiesType) object;
-            assertEquals("1.0.0", capabiliites.getVersion() );
-            
-        } finally {
+            assertEquals("1.0.0", capabiliites.getVersion());
+
+        }
+        finally
+        {
             in.close();
         }
     }
-    
+
     @Test
-    public void testDegree3DescribeProcessParsing() throws Exception {
+    public void testDegree3DescribeProcessParsing() throws Exception
+    {
+        if (DISABLE)
+        {
+            return;
+        }
+
         Object object;
         BufferedReader in = null;
-        try {
+        try
+        {
             Configuration config = new WPSConfiguration();
 
             URL url;
             url = TestData.url(this, "deegree3ProcessDescriptions.xml");
-            
+
             Parser parser = new Parser(config);
             in = new BufferedReader(new InputStreamReader(url.openStream()));
             object = parser.parse(in);
 
             ProcessDescriptionsType processDesc = (ProcessDescriptionsType) object;
             assertNotNull(processDesc);
-        } finally {
+        }
+        finally
+        {
             in.close();
         }
     }
-    
+
 
     @Test
-    public void testExeResponseLiteralDataType() throws IOException, SAXException,
-            ParserConfigurationException {
+    public void testExeResponseLiteralDataType() throws IOException, SAXException, ParserConfigurationException
+    {
+        if (DISABLE)
+        {
+            return;
+        }
+
         File file = TestData.file(this, "LiteralDataTypeTestFile.xml");
         BufferedReader in = new BufferedReader(new FileReader(file));
         Configuration config = new WPSConfiguration();
@@ -171,7 +216,8 @@ public class ParsingTest {
 
         // try casting the response
         ExecuteResponseType exeResponse = null;
-        if (object instanceof ExecuteResponseType) {
+        if (object instanceof ExecuteResponseType)
+        {
             exeResponse = (ExecuteResponseType) object;
         }
 
@@ -184,11 +230,17 @@ public class ParsingTest {
     }
 
     @Test
-    public void testUOMsList() {
+    public void testUOMsList()
+    {
+        if (DISABLE)
+        {
+            return;
+        }
+
         UOMsType uoMsType = Wps10FactoryImpl.eINSTANCE.createUOMsType();
         Unit newValue = Unit.valueOf("m");
         EMFUtils.add(uoMsType, "UOM", newValue);
-        
+
         // uoMsType.eSet(Wps10Package.UO_MS_TYPE__UOM, newValue);
     }
 

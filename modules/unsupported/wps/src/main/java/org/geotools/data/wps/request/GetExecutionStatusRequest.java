@@ -16,45 +16,30 @@
  */
 package org.geotools.data.wps.request;
 
-import java.util.List;
-
-import net.opengis.wps10.DataType;
-import net.opengis.wps10.ResponseFormType;
-
 import org.geotools.data.ows.Request;
 
 
 /**
- * Executes a process.
+ * Retrieves information about the given execution on
+ * the WPS Server.
  *
- * @author gdavis
+ * The only parameter it takes is a process which it uses to
+ * return the information about.
  *
+ * @author afabiani
  *
- *
- *
- * @source $URL$
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wps/src/main/java/org/geotools/data/wps/request/GetExecutionStatusRequest.java $
  */
-public interface ExecuteProcessRequest extends Request
+public interface GetExecutionStatusRequest extends Request
 {
 
     /** Represents the PROCESS parameter */
     public static final String IDENTIFIER = "IDENTIFIER"; // $NON-NLS-1$
 
     /**
-     * Sets the name of the process to execute
+     * Sets the name of the process to look up
      *
-     * @param processname a unique process name
+     * @param processname A comma-delimited list of unique process names
      */
-    public void setIdentifier(String processname);
-
-    /**
-     * Sets an input for the process to execute
-     *
-     * @param name the input name
-     * @param value the list of input datatype objects
-     */
-    public void addInput(String name, List<DataType> value);
-
-
-    public void setResponseForm(ResponseFormType responseForm);
+    public void setIdentifier(String processnames);
 }

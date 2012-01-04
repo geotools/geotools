@@ -34,15 +34,14 @@ import org.xml.sax.SAXException;
 
 
 /**
- * Represents the response from a server after an ExecuteProcess request
+ * Represents the response from a server after a DescribeProcess request
  * has been issued.
  *
  * @author gdavis
  *
- *
- * @source $URL$
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wps/src/main/java/org/geotools/data/wps/response/DescribeProcessResponse.java $
  */
-public class ExecuteProcessResponse extends Response
+public class GetExecutionStatusResponse extends Response
 {
 
     private ExecuteResponseType exeResponse;
@@ -54,7 +53,7 @@ public class ExecuteProcessResponse extends Response
      * @throws ServiceException
      * @throws SAXException
      */
-    public ExecuteProcessResponse(HTTPResponse httpResponse) throws IOException, ServiceException
+    public GetExecutionStatusResponse(HTTPResponse httpResponse) throws IOException, ServiceException
     {
         super(httpResponse);
 
@@ -69,8 +68,8 @@ public class ExecuteProcessResponse extends Response
             Parser parser = new Parser(config);
 
             Object object;
-            excepResponse = null;
             exeResponse = null;
+            excepResponse = null;
             try
             {
                 // object = DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
@@ -95,6 +94,7 @@ public class ExecuteProcessResponse extends Response
             {
                 excepResponse = (ExceptionReportType) object;
             }
+
         }
         finally
         {

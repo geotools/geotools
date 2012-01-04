@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -23,10 +23,11 @@ import net.opengis.wps10.WPSCapabilitiesType;
 
 import org.geotools.ows.ServiceException;
 
+
 /**
  * Base class for WPS GetCapabilities responses. They should typically attempt to
- * parse the Capabilities document in inputStream in the constructor. 
- * 
+ * parse the Capabilities document in inputStream in the constructor.
+ *
  * @author gdavis
  *
  *
@@ -34,23 +35,27 @@ import org.geotools.ows.ServiceException;
  *
  * @source $URL$
  */
-public abstract class AbstractWPSGetCapabilitiesResponse extends Response {
+public abstract class AbstractWPSGetCapabilitiesResponse extends Response
+{
 
-	protected WPSCapabilitiesType capabilities;
-    protected ExceptionReportType excepResponse;  
+    protected WPSCapabilitiesType capabilities;
+    protected ExceptionReportType excepResponse;
 
-	public AbstractWPSGetCapabilitiesResponse(HTTPResponse response) throws ServiceException, IOException {
-		super(response);
-	}
- 
-	/**
-	 * Returns the capabilities object parsed during the response
-	 */
-	public WPSCapabilitiesType getCapabilities() {
-		return capabilities;
-	}
-	
-    public ExceptionReportType getExceptionResponse() {
+    public AbstractWPSGetCapabilitiesResponse(HTTPResponse httpResponse) throws ServiceException, IOException
+    {
+        super(httpResponse);
+    }
+
+    /**
+     * Returns the capabilities object parsed during the response
+     */
+    public WPSCapabilitiesType getCapabilities()
+    {
+        return capabilities;
+    }
+
+    public ExceptionReportType getExceptionResponse()
+    {
         return excepResponse;
-    }  	
+    }
 }

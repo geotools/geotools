@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,15 +16,10 @@
  */
 package org.geotools.data.ows;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,93 +28,151 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.zip.GZIPInputStream;
 
 import net.opengis.wps10.WPSCapabilitiesType;
 
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
-import org.geotools.data.ows.SimpleHttpClient.SimpleHTTPResponse;
 import org.geotools.ows.ServiceException;
 
+
 /**
- * This abstract class provides a building block for one to implement a 
- * WPS client. 
- * 
+ * This abstract class provides a building block for one to implement a
+ * WPS client.
+ *
  * This class provides version negotiation, Capabilities document retrieval,
  * and a request/response infrastructure. Implementing subclasses need to
- * provide their own Specifications 
- * 
+ * provide their own Specifications
+ *
  * @author gdavis
- *
- *
- *
  *
  *
  * @source $URL$
  */
-public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Object> {
+public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Object>
+{
+
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.data.ows");
+    private HTTPClient httpClient;
     protected final URL serverURL;
     protected C capabilities;
     protected ServiceInfo info;
-    protected Map<R,ResourceInfo> resourceInfo = new HashMap<R,ResourceInfo>();
-    
+    protected Map<R, ResourceInfo> resourceInfo = new HashMap<R, ResourceInfo>();
+
     /** Contains the specifications that are to be used with this service */
     protected Specification[] specs;
     protected Specification specification;
-    
-    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.data.ows");
 
     /**
      * Set up the specifications used and retrieve the Capabilities document
      * given by serverURL.
-     * 
+     *
      * @param serverURL a URL that points to the capabilities document of a server
      * @throws IOException if there is an error communicating with the server
      * @throws ServiceException if the server responds with an error
      */
-    public AbstractWPS( final URL serverURL ) throws IOException, ServiceException {
-    	if (serverURL == null) {
-			throw new NullPointerException("ServerURL cannot be null");
-		}
-    	
-    	this.serverURL = serverURL;
+    public AbstractWPS(final URL serverURL) throws IOException, ServiceException
+    {
+        this(serverURL, new SimpleHttpClient(), null);
 
-        setupSpecifications();
-        
         capabilities = negotiateVersion();
-        if (capabilities == null) {
-        	throw new ServiceException("Unable to retrieve or parse Capabilities document.");
+        if (capabilities == null)
+        {
+            throw new ServiceException("Unable to retrieve or parse Capabilities document.");
+        }
+        else if (capabilities != null)
+        {
+            setupSpecification(capabilities);
         }
     }
 
-    public AbstractWPS(C capabilties, URL serverURL) {
-		if (capabilties == null) {
-			throw new NullPointerException("Capabilities cannot be null.");
-		}
-		
-		if (serverURL == null) {
-			throw new NullPointerException("ServerURL cannot be null");
-		}
-		
-		setupSpecifications();
-		
-		for (int i = 0; i < specs.length; i++) {
-			if (specs[i].getVersion().equals(capabilties.getVersion())) {
-				specification = specs[i];
-				break;
-			}
-		}
-		
-		if (specification == null) {
-			specification = specs[specs.length-1];
-			LOGGER.warning("Unable to choose a specification based on cached capabilities. "
-					+"Arbitrarily choosing spec '"+specification.getVersion()+"'.");
-		}
-		
-		this.serverURL = serverURL;
-		this.capabilities = capabilties;
-	}
+    /**
+     * @throws IOException
+     * @throws ServiceException
+     * @deprecated use {@link #AbstractWPS(OWSConfig)}
+     */
+    public AbstractWPS(final URL serverURL, int requestTimeout) throws ServiceException, IOException
+    {
+        this(serverURL, new SimpleHttpClient(), null);
+        this.httpClient.setConnectTimeout(requestTimeout);
+        this.httpClient.setReadTimeout(requestTimeout);
+    }
+
+    /**
+     * @deprecated use {@link #AbstractWPS(OWSConfig, Capabilities)}
+     */
+    public AbstractWPS(C capabilties, URL serverURL) throws ServiceException, IOException
+    {
+        this(serverURL, new SimpleHttpClient(), capabilties);
+    }
+
+    public AbstractWPS(final URL serverURL, final HTTPClient httpClient,
+        final C capabilities) throws ServiceException, IOException
+    {
+        if (serverURL == null)
+        {
+            throw new NullPointerException("serverURL");
+        }
+        if (httpClient == null)
+        {
+            throw new NullPointerException("httpClient");
+        }
+
+        this.serverURL = serverURL;
+        this.httpClient = httpClient;
+
+        setupSpecifications();
+
+        if (capabilities != null)
+        {
+            setupSpecification(capabilities);
+
+            this.capabilities = capabilities;
+        }
+        else
+        {
+            this.capabilities = negotiateVersion();
+            if (this.capabilities == null)
+            {
+                throw new ServiceException("Unable to retrieve or parse Capabilities document.");
+            }
+            setupSpecification(this.capabilities);
+        }
+
+    }
+
+    /**
+     * @param capabilities
+     */
+    private void setupSpecification(final C capabilities)
+    {
+        for (int i = 0; i < specs.length; i++)
+        {
+            if (specs[i].getVersion().equals(capabilities.getVersion()))
+            {
+                specification = specs[i];
+
+                break;
+            }
+        }
+
+        if (specification == null)
+        {
+            specification = specs[specs.length - 1];
+            LOGGER.warning("Unable to choose a specification based on cached capabilities. " +
+                "Arbitrarily choosing spec '" + specification.getVersion() + "'.");
+        }
+    }
+
+    public void setHttpClient(HTTPClient httpClient)
+    {
+        this.httpClient = httpClient;
+    }
+
+    public HTTPClient getHTTPClient()
+    {
+        return this.httpClient;
+    }
 
     /**
      * Description of this service.
@@ -129,34 +182,44 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
      * <p>
      * @return description of  this service.
      */
-    public ServiceInfo getInfo(){
-        synchronized ( capabilities ){
-            if( info == null ){
+    public ServiceInfo getInfo()
+    {
+        synchronized (capabilities)
+        {
+            if (info == null)
+            {
                 info = createInfo();
             }
+
             return info;
-        }                
+        }
     }
+
     /**
      * Implemented by a subclass to describe service
      * @return ServiceInfo
      */
     protected abstract ServiceInfo createInfo();
 
-    public ResourceInfo getInfo( R resource ){
-        synchronized ( capabilities ){ 
-            if( !resourceInfo.containsKey( resource ) ){
-                resourceInfo.put( resource, createInfo( resource ) );
+    public ResourceInfo getInfo(R resource)
+    {
+        synchronized (capabilities)
+        {
+            if (!resourceInfo.containsKey(resource))
+            {
+                resourceInfo.put(resource, createInfo(resource));
             }
         }
-        return resourceInfo.get( resource );
-    }
-    
-    protected abstract ResourceInfo createInfo(R resource );
 
-    
-    private void syncrhonized( Capabilities capabilities2 ) {
-        // TODO Auto-generated method stub        
+        return resourceInfo.get(resource);
+    }
+
+    protected abstract ResourceInfo createInfo(R resource);
+
+
+    private void syncrhonized(Capabilities capabilities2)
+    {
+        // TODO Auto-generated method stub
     }
 
     /**
@@ -183,26 +246,28 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
      * </ul>
      * </p>
      * <p>
-     * The OGC tells us to repeat this process (or give up). This means we are 
-     * actually going to come up with a bit of setup cost in figuring out our 
+     * The OGC tells us to repeat this process (or give up). This means we are
+     * actually going to come up with a bit of setup cost in figuring out our
      * GetCapabilities request. This means that it is possible that we may make
-     * multiple requests before being satisfied with a response. 
-     * 
-     * Also, if we are unable to parse a given version for some reason, 
+     * multiple requests before being satisfied with a response.
+     *
+     * Also, if we are unable to parse a given version for some reason,
      * for example, malformed XML, we will request a lower version until
      * we have run out of versions to request with. Thus, a server that does
-     * not play nicely may take some time to parse and might not even 
+     * not play nicely may take some time to parse and might not even
      * succeed.
-     * 
+     *
      * @return a capabilities object that represents the Capabilities on the server
      * @throws IOException if there is an error communicating with the server, or the XML cannot be parsed
      * @throws ServiceException if the server returns a ServiceException
      */
-    protected C negotiateVersion() throws IOException, ServiceException {
+    protected C negotiateVersion() throws IOException, ServiceException
+    {
         List versions = new ArrayList(specs.length);
         Exception exception = null;
 
-        for( int i = 0; i < specs.length; i++ ) {
+        for (int i = 0; i < specs.length; i++)
+        {
             versions.add(i, specs[i].getVersion());
         }
 
@@ -211,80 +276,101 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
 
         int test = maxClient;
 
-        while( (minClient <= test) && (test <= maxClient) ) {
+        while ((minClient <= test) && (test <= maxClient))
+        {
             Specification tempSpecification = specs[test];
             String clientVersion = tempSpecification.getVersion();
 
             GetCapabilitiesRequest request = tempSpecification.createGetCapabilitiesRequest(serverURL);
 
-            //Grab document
+            // Grab document
             C tempCapabilities;
-            try {
+            try
+            {
                 tempCapabilities = (C) issueRequest(request).getCapabilities();
-            } catch (ServiceException e) {
-            	tempCapabilities = null;
-            	exception = e;
+            }
+            catch (ServiceException e)
+            {
+                tempCapabilities = null;
+                exception = e;
             }
 
             int compare = -1;
-            String serverVersion = clientVersion; //Ignored if caps is null
+            String serverVersion = clientVersion; // Ignored if caps is null
 
-            if (tempCapabilities != null) {
+            if (tempCapabilities != null)
+            {
 
                 serverVersion = tempCapabilities.getVersion();
 
                 compare = serverVersion.compareTo(clientVersion);
             }
 
-            if (compare == 0) {
-                //we have an exact match and have capabilities as well!
+            if (compare == 0)
+            {
+                // we have an exact match and have capabilities as well!
                 this.specification = tempSpecification;
 
                 return tempCapabilities;
             }
 
-            if (tempCapabilities != null && versions.contains(serverVersion)) {
+            if ((tempCapabilities != null) && versions.contains(serverVersion))
+            {
                 // we can communicate with this server
                 int index = versions.indexOf(serverVersion);
                 this.specification = specs[index];
 
                 return tempCapabilities;
 
-            } else if (compare < 0) {
+            }
+            else if (compare < 0)
+            {
                 // server responded lower then we asked - and we don't understand.
                 maxClient = test - 1; // set current version as limit
 
                 // lets try and go one lower?
-                //	           
+                //
                 clientVersion = before(versions, serverVersion);
 
-                if (clientVersion == null) {
-                    if (exception != null) {
-                    	if (exception instanceof ServiceException) {
-                    		throw (ServiceException) exception;
-                    	}
+                if (clientVersion == null)
+                {
+                    if (exception != null)
+                    {
+                        if (exception instanceof ServiceException)
+                        {
+                            throw (ServiceException) exception;
+                        }
+
                         IOException e = new IOException(exception.getMessage());
                         throw e;
                     }
+
                     return null; // do not know any lower version numbers
                 }
 
                 test = versions.indexOf(clientVersion);
-            } else {
+            }
+            else
+            {
                 // server responsed higher than we asked - and we don't understand
                 minClient = test + 1; // set current version as lower limit
 
                 // lets try and go one higher
                 clientVersion = after(versions, serverVersion);
 
-                if (clientVersion == null) {
-                    if (exception != null) {
-                    	if (exception instanceof ServiceException) {
-                    		throw (ServiceException) exception;
-                    	}
+                if (clientVersion == null)
+                {
+                    if (exception != null)
+                    {
+                        if (exception instanceof ServiceException)
+                        {
+                            throw (ServiceException) exception;
+                        }
+
                         IOException e = new IOException(exception.getMessage());
                         throw e;
                     }
+
                     return null; // do not know any lower version numbers
                 }
 
@@ -293,33 +379,40 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
         }
 
         // could not talk to this server
-        if (exception != null) {
+        if (exception != null)
+        {
             IOException e = new IOException(exception.getMessage());
             throw e;
         }
+
         return null;
     }
 
     /**
      * Utility method returning the known version, just before the provided version
-     * 
+     *
      * @param known List<String> of all known versions
      * @param version the boundary condition
      * @return the version just below the provided boundary version
      */
-    String before( List known, String version ) {
-        if (known.isEmpty()) {
+    String before(List known, String version)
+    {
+        if (known.isEmpty())
+        {
             return null;
         }
 
         String before = null;
 
-        for( Iterator i = known.iterator(); i.hasNext(); ) {
+        for (Iterator i = known.iterator(); i.hasNext();)
+        {
             String test = (String) i.next();
 
-            if (test.compareTo(version) < 0) {
+            if (test.compareTo(version) < 0)
+            {
 
-                if ((before == null) || (before.compareTo(test) < 0)) {
+                if ((before == null) || (before.compareTo(test) < 0))
+                {
                     before = test;
                 }
             }
@@ -330,23 +423,28 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
 
     /**
      * Utility method returning the known version, just after the provided version
-     * 
+     *
      * @param known a List<String> of all known versions
      * @param version the boundary condition
      * @return a version just after the provided boundary condition
      */
-    String after( List known, String version ) {
-        if (known.isEmpty()) {
+    String after(List known, String version)
+    {
+        if (known.isEmpty())
+        {
             return null;
         }
 
         String after = null;
 
-        for( Iterator i = known.iterator(); i.hasNext(); ) {
+        for (Iterator i = known.iterator(); i.hasNext();)
+        {
             String test = (String) i.next();
 
-            if (test.compareTo(version) > 0) {
-                if ((after == null) || (after.compareTo(test) < 0)) {
+            if (test.compareTo(version) > 0)
+            {
+                if ((after == null) || (after.compareTo(test) < 0))
+                {
                     after = test;
                 }
             }
@@ -358,68 +456,56 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
     /**
      * Issues a request to the server and returns that server's response. It
      * asks the server to send the response gzipped to provide a faster transfer
-     * time. 
-     * 
+     * time.
+     *
      * @param request the request to be issued
      * @return a response from the server, which is created according to the specific Request
      * @throws IOException if there was a problem communicating with the server
      * @throws ServiceException if the server responds with an exception or returns bad content
      */
-    protected Response internalIssueRequest( Request request ) throws IOException, ServiceException {
-        URL finalURL = request.getFinalURL();
+    protected Response internalIssueRequest(Request request) throws IOException, ServiceException
+    {
+        final URL finalURL = request.getFinalURL();
 
-        HttpURLConnection connection = (HttpURLConnection) finalURL.openConnection();
-        
-        connection.addRequestProperty("Accept-Encoding", "gzip");
-        
-        if (request.requiresPost()) {
-        	connection.setRequestMethod("POST");
-        	connection.setDoOutput(true);
-        	connection.setRequestProperty("Content-type", request.getPostContentType());
+        final HTTPResponse httpResponse;
 
-        	OutputStream outputStream = connection.getOutputStream();
+        if (request.requiresPost())
+        {
 
-        	if (LOGGER.isLoggable(Level.FINE)) {
-        		ByteArrayOutputStream out = new ByteArrayOutputStream();
-        		request.performPostOutput(out);
-        		
-        		InputStream in = new ByteArrayInputStream(out.toByteArray());
-        		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            final String postContentType = request.getPostContentType();
 
-        		PrintStream stream = new PrintStream(outputStream);
-        		
-        		StringBuffer postText = new StringBuffer();
-        		
-        		while (reader.ready()) {
-        			String input = reader.readLine();
-        			postText = postText.append(input);
-        			stream.println(input);
-        		}
-        		LOGGER.fine(postText.toString());
-        		//System.out.println(postText);
-        		
-        		stream.close();
-        		out.close();
-        		in.close();
-        	} else {
-        		request.performPostOutput(outputStream);
-        	}
-        	
-        	outputStream.flush();
-        	outputStream.close();
-        } else {
-        	connection.setRequestMethod("GET");
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            request.performPostOutput(out);
+
+            InputStream in = new ByteArrayInputStream(out.toByteArray());
+
+            try
+            {
+                httpResponse = httpClient.post(finalURL, in, postContentType);
+            }
+            finally
+            {
+                in.close();
+            }
         }
-        
-        HTTPResponse httpResponse = new SimpleHttpClient.SimpleHTTPResponse(connection);
-        return request.createResponse(httpResponse);
+        else
+        {
+            httpResponse = httpClient.get(finalURL);
+        }
+
+        final Response response = request.createResponse(httpResponse);
+
+        return response;
     }
-    
-    public AbstractWPSGetCapabilitiesResponse issueRequest(GetCapabilitiesRequest request) throws IOException, ServiceException {
-    	return (AbstractWPSGetCapabilitiesResponse) internalIssueRequest(request);
+
+    public AbstractWPSGetCapabilitiesResponse issueRequest(GetCapabilitiesRequest request) throws IOException,
+        ServiceException
+    {
+        return (AbstractWPSGetCapabilitiesResponse) internalIssueRequest(request);
     }
-    
-    public void setLoggingLevel(Level newLevel) {
-    	LOGGER.setLevel(newLevel);
+
+    public void setLoggingLevel(Level newLevel)
+    {
+        LOGGER.setLevel(newLevel);
     }
 }

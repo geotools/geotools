@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,6 +17,7 @@
 package org.geotools.data.wps.response;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -31,9 +32,10 @@ import org.geotools.xml.Configuration;
 import org.geotools.xml.Parser;
 import org.xml.sax.SAXException;
 
+
 /**
  * Provides a hook up to parse the capabilities document from inputstream.
- * 
+ *
  * @author gdavis
  *
  *
@@ -42,43 +44,64 @@ import org.xml.sax.SAXException;
  *
  * @source $URL$
  */
-public class WPSGetCapabilitiesResponse extends AbstractWPSGetCapabilitiesResponse {
+public class WPSGetCapabilitiesResponse extends AbstractWPSGetCapabilitiesResponse
+{
 
-	public WPSGetCapabilitiesResponse(HTTPResponse response) throws ServiceException, IOException {
-		super(response);
-		
-	        //Map hints = new HashMap();
-	        //hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WPSSchema.getInstance());
-	        //hints.put(DocumentFactory.VALIDATION_HINT, Boolean.FALSE);
-        	Configuration config = new WPSConfiguration();
-        	Parser parser = new Parser(config);
-	
-	        Object object;
-	        excepResponse = null;
-	        capabilities = null;		        
-			try {
-				//object = DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
-				object = parser.parse(response.getResponseStream());
-			} catch (SAXException e) {
-				throw (ServiceException) new ServiceException("Error while parsing XML.").initCause(e);
-			} catch (ParserConfigurationException e) {
-				throw (ServiceException) new ServiceException("Error while parsing XML.").initCause(e);
-			}finally{
-			    response.dispose();
-			}
-	        
-	        //if (object instanceof ServiceException) {
-	        //	throw (ServiceException) object;
-	        //}
-	        
-			// try casting the response
-			if (object instanceof WPSCapabilitiesType) {
-				capabilities = (WPSCapabilitiesType) object;
-			}
-			// exception caught on server and returned
-			else if (object instanceof ExceptionReportType) {
-				excepResponse = (ExceptionReportType) object;
-			}				
-	}
+    public WPSGetCapabilitiesResponse(HTTPResponse httpResponse) throws ServiceException, IOException
+    {
+        super(httpResponse);
+
+        InputStream inputStream = null;
+        try
+        {
+            inputStream = httpResponse.getResponseStream();
+
+            // Map hints = new HashMap();
+            // hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WPSSchema.getInstance());
+            // hints.put(DocumentFactory.VALIDATION_HINT, Boolean.FALSE);
+            Configuration config = new WPSConfiguration();
+            Parser parser = new Parser(config);
+
+            Object object;
+            excepResponse = null;
+            capabilities = null;
+            try
+            {
+                // object = DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
+                object = parser.parse(inputStream);
+            }
+            catch (SAXException e)
+            {
+                throw (ServiceException) new ServiceException("Error while parsing XML.").initCause(e);
+            }
+            catch (ParserConfigurationException e)
+            {
+                throw (ServiceException) new ServiceException("Error while parsing XML.").initCause(e);
+            }
+
+            // if (object instanceof ServiceException) {
+            // throw (ServiceException) object;
+            // }
+
+            // try casting the response
+            if (object instanceof WPSCapabilitiesType)
+            {
+                capabilities = (WPSCapabilitiesType) object;
+            }
+            // exception caught on server and returned
+            else if (object instanceof ExceptionReportType)
+            {
+                excepResponse = (ExceptionReportType) object;
+            }
+
+        }
+        finally
+        {
+            if (inputStream != null)
+            {
+                inputStream.close();
+            }
+        }
+    }
 
 }

@@ -236,9 +236,8 @@ public class WMSComplexTypes {
 				}
 			}
 
-			capabilities.setVersion(attrs.getValue("", "version"));
-
-			// Update sequence ignored
+			capabilities.setVersion(attrs.getValue("", "version")); //$NON-NLS-1$//$NON-NLS-2$
+			capabilities.setUpdateSequence(attrs.getValue("", "updateSequence")); //$NON-NLS-1$//$NON-NLS-2$
 
 			capabilities.setService(service);
 
@@ -356,9 +355,8 @@ public class WMSComplexTypes {
 				}
 			}
 
-			capabilities.setVersion(attrs.getValue("", "version"));
-
-			// Update sequence ignored
+			capabilities.setVersion(attrs.getValue("", "version")); //$NON-NLS-1$//$NON-NLS-2$
+			capabilities.setUpdateSequence(attrs.getValue("", "updateSequence")); //$NON-NLS-1$//$NON-NLS-2$
 
 			capabilities.setService(service);
 

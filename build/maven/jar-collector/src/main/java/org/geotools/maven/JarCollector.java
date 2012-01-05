@@ -18,8 +18,10 @@ package org.geotools.maven;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
+import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -65,14 +67,6 @@ public class JarCollector extends AbstractMojo {
      * @required
      */
     private String jarName;
-
-    /**
-     * Project dependencies.
-     *
-     * @parameter expression="${project.artifacts}"
-     * @required
-     */
-    private Set<Artifact> dependencies;
 
     /**
      * The Maven project running this plugin.
@@ -146,8 +140,10 @@ public class JarCollector extends AbstractMojo {
             }
         }
         FileUtils.copyFileToDirectory(jarFile, collect);
+		Set<Artifact> dependencies = project.getDependencyArtifacts();
         if (dependencies != null) {
             for (final Artifact artifact : dependencies) {
+				System.out.println("+++++++++++++++++++++++ DEP: " + artifact.getDependencyTrail());
                 final String scope = artifact.getScope();
                 if (scope != null &&  // Maven 2.0.6 bug?
                    (scope.equalsIgnoreCase(Artifact.SCOPE_COMPILE) ||

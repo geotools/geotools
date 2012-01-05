@@ -1,6 +1,7 @@
-This directory contains a JavaScript file; MetaDataCompute.js; that need to be installed
-on the MongoDB database server as a stored JavaScript module.
+This directory contains two JavaScript files; MetaDataCompute.js and gtmpFuncs.js; that need to be installed
+on the MongoDB database server as stored JavaScript modules.
 
-Copy MetaDataCompute.js to your MongoDB server, then install it as follows:
+Copy both files to your MongoDB server, then install them as follows:
 > mongo MetaDataCompute.js
-(Assumes "mongo" executable in path. The JavaScript file installs the necessary server-side scripts.)
+> mongo gtmpFuncs.js
+(Assumes "mongo" executable in path. The JavaScript files install the necessary server-side scripts.)

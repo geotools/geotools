@@ -1,9 +1,15 @@
-Spatial Lite Plugin
--------------------
+SpatiaLite Plugin
+-----------------
 
 Supports direct access to a SQLite/SpatiaLite database.
 
 SQLite is a popular embedded relational database. SpatiaLite is the spatial extension to SQLite.
+
+.. note::
+
+   The plugin uses internal versions of SpatiaLite (2.3.1) and SQLite (3.7.2). 
+   Therefore the plugin is only capable of accessing databases that are 
+   compatible with these versions.
 
 References:
 

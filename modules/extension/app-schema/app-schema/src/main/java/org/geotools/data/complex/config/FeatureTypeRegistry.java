@@ -20,13 +20,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
-import java.util.Set;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,9 +36,6 @@ import org.eclipse.xsd.XSDAttributeUse;
 import org.eclipse.xsd.XSDAttributeUseCategory;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDElementDeclaration;
-import org.eclipse.xsd.XSDSchema;
-import org.eclipse.xsd.XSDSchemaContent;
-import org.eclipse.xsd.XSDSchemaDirective;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.geotools.feature.Types;
 import org.geotools.feature.type.ComplexFeatureTypeFactoryImpl;
@@ -130,8 +125,6 @@ public class FeatureTypeRegistry {
 
     private FeatureTypeFactory typeFactory;
 
-    private NamespaceSupport namespaces;
-
     /**
      * stack of currently being built type names, used by
      * {@link #createType(Name, XSDTypeDefinition)} to prevent recursive type definitions by
@@ -145,7 +138,6 @@ public class FeatureTypeRegistry {
     }
 
     public FeatureTypeRegistry(NamespaceSupport namespaces) {
-        this.namespaces = namespaces;
         schemas = new ArrayList<SchemaIndex>();
         typeFactory = new ComplexFeatureTypeFactoryImpl();
         descriptorRegistry = new HashMap<Name, AttributeDescriptor>();
@@ -474,7 +466,9 @@ public class FeatureTypeRegistry {
         if (baseType != null) {
             String targetNamespace = baseType.getTargetNamespace();
             String name = baseType.getName();
-            superType = getType(targetNamespace, name);
+            if (name != null) {
+                superType = getType(targetNamespace, name);
+            }
             if (superType == null) {
                 superType = createType(baseType, crs, attMappings);
             }

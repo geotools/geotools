@@ -16,6 +16,7 @@
  */
 package org.geotools.geojson.geom;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -26,7 +27,6 @@ import java.util.Map;
 
 import org.geotools.geojson.GeoJSONUtil;
 import org.geotools.geojson.IContentHandler;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONAware;
 import org.opengis.geometry.BoundingBox;
 
@@ -492,12 +492,17 @@ public class GeometryJSON {
             }
             
             for (int i = 0; i < seq.size(); i++) {
+                Coordinate coord = seq.getCoordinate(i);
                 sb.append("[");
-                formatDecimal(seq.getX(i), sb);
+                formatDecimal(coord.x, sb);
                 
                 sb.append(",");
-                formatDecimal(seq.getY(i), sb);
+                formatDecimal(coord.y, sb);
                 
+                if (!Double.isNaN(coord.z)) {
+                    sb.append(",");
+                    formatDecimal(coord.z, sb);
+                }
                 sb.append("],");
             }
             sb.setLength(sb.length()-1);
@@ -517,10 +522,15 @@ public class GeometryJSON {
             }
             
             for (int i = 0; i < seq.size(); i++) {
+                Coordinate coord = seq.getCoordinate(i);
                 out.write("[");
-                out.write(String.valueOf(seq.getX(i)));
+                out.write(String.valueOf(coord.x));
                 out.write(",");
-                out.write(String.valueOf(seq.getY(i)));
+                out.write(String.valueOf(coord.y));
+                if (!Double.isNaN(coord.z)){
+                    out.write(",");
+                    out.write(String.valueOf(coord.z));
+                }
                 out.write("]");
                 if (i < seq.size()-1) {
                     out.write(",");

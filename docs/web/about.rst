@@ -8,16 +8,16 @@ compliant methods for the manipulation of geospatial data, for example to
 implement Geographic Information Systems (GIS). The GeoTools library implements
 Open Geospatial Consortium (OGC) specifications as they are developed.
 
-The capabilities of GeoTools are presented in the User Guide 
+For an overview of the capabilities of GeoTools please check the User Guide 
 `feature list <http://docs.geotools.org/latest/userguide/geotools.html>`_.
 
-Geotools is used by a number of projects including Web Feature Servers, Web Map
-Servers, and desktop applications. For more information check out some
-fascinating 
-`screenshots <http://docs.codehaus.org/display/GEOTOOLS/Screenshots>`_  and
-applications powered by GeoTools!
+Current `version <http://docs.geotools.org/latest/developer/conventions/version.html>`_ information:
 
-.. `Geomajas <http://www.geomajas.org/>`_ `GeoServer <http://geoserver.org/>`_ `uDig <http://udig.refractions.net/>`_ 
+* `8.0 <http://sourceforge.net/projects/geotools/files/GeoTools%208.0%20Releases/>`_: Development
+* `2.7 <http://sourceforge.net/projects/geotools/files/GeoTools%202.7%20Releases/>`_: Stable
+
+GeoTools is used by a `number of projects <http://docs.codehaus.org/display/GEOTOOLS/Screenshots>`_
+including Web Feature Servers, Web Map Servers, and desktop applications.
 
 Open Source
 -----------

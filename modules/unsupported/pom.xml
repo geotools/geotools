@@ -164,12 +164,6 @@
        </modules>
      </profile>
      <profile>
-       <id>shapefile-ng</id>
-       <modules>
-         <module>shapefile-ng</module>
-       </modules>
-     </profile>
-     <profile>
        <id>geogit-versioned</id>
        <activation>
          <property><name>all</name></property>
@@ -196,6 +190,7 @@
          <module>feature-aggregate</module>
          <module>mongodb</module>
          <module>property-ng</module>
+         <module>shapefile-ng</module>
        </modules>
      </profile>
   </profiles>

@@ -125,7 +125,7 @@ public class ShapefileDataStoreFactory extends AbstractDataStoreFactory {
     };
 
     public String getDisplayName() {
-        return "Shapefile";
+        return "Shapefile Next Generation";
     }
 
     public String getDescription() {

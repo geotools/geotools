@@ -16,7 +16,7 @@
  */
 package org.geotools.coverageio;
 
-import it.geosolutions.imageio.imageioimpl.imagereadmt.DefaultCloneableImageReadParam;
+import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
 
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -71,6 +71,7 @@ import org.opengis.referencing.operation.TransformException;
  * @author Simone Giannecchini, GeoSolutions
  */
 class RasterLayerRequest {
+    static boolean useDestinationRegion = /*Boolean.getBoolean("org.geotools.destination")*/true;
 
     /** Logger. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging
@@ -145,7 +146,7 @@ class RasterLayerRequest {
      * subsampling factors) which will be used by a coverageResponse to read
      * data.
      */
-    private ImageReadParam imageReadParam = null;
+    private EnhancedImageReadParam imageReadParam = null;
 
     /** The source */
     private Rectangle coverageRequestedRasterArea;
@@ -343,12 +344,8 @@ class RasterLayerRequest {
             //
             // //
             useJAI = requestUsesJaiImageread();
-            if (useMultithreading) {
-                imageReadParam = new DefaultCloneableImageReadParam();
-            } else {
-                imageReadParam = new ImageReadParam();
-            }
-
+            imageReadParam = new EnhancedImageReadParam();
+            
             // //
             //
             // Set the read parameters
@@ -505,28 +502,6 @@ class RasterLayerRequest {
             return;
         }
 
-        // //
-        //
-        // Resolution requested. I am here computing the resolution required
-        // by the user.
-        //
-        // //
-//        if (requestedEnvelope != null) {
-//            final GridToEnvelopeMapper geMapper = new GridToEnvelopeMapper();
-//            geMapper.setEnvelope(requestedEnvelope);
-//            geMapper.setGridRange(new GridEnvelope2D(requestedDim));
-//
-//            // CELL_CORNER comes from GDAL based reader.
-//            geMapper.setPixelAnchor(PixelInCell.CELL_CORNER);
-//            AffineTransform transform = geMapper.createAffineTransform();
-//            requestedRes = CoverageUtilities.getResolution(transform);
-//
-//            if (LOGGER.isLoggable(Level.FINE)) {
-//                LOGGER.log(Level.FINE, "requested resolution: ("
-//                        + requestedRes[0] + "," + requestedRes[1] + ")");
-//            }
-//        }
-        
         // ////////////////////////////////////////////////////////////////////
         //
         // DECIMATION ON READING since GDAL will automatically use the
@@ -724,32 +699,26 @@ class RasterLayerRequest {
             if (requestedRes == null) {
                 imageReadParam.setSourceSubsampling(1, 1, 0, 0);
             } else {
-                int subSamplingFactorX = (int) Math.floor(requestedRes[0]
-                        / fullResolution[0]);
-                subSamplingFactorX = (subSamplingFactorX == 0) ? 1
-                        : subSamplingFactorX;
+                if (useDestinationRegion && !useJAI){
+                    final double xRatio = fullResolution[0]/requestedRes[0];
+                    final double yRatio = fullResolution[1]/requestedRes[1];
+                    imageReadParam.setDestinationRegion(new Rectangle(0,0,
+                            (int)Math.floor(coverageRequestedRasterArea.width*xRatio),
+                            (int)Math.floor(coverageRequestedRasterArea.height*yRatio)));
+                } else {
+                    int subSamplingFactorX = (int) Math.floor(requestedRes[0] / fullResolution[0]);
+                    subSamplingFactorX = (subSamplingFactorX == 0) ? 1 : subSamplingFactorX;
+                    while (((w / subSamplingFactorX) <= 0) && (subSamplingFactorX >= 0))
+                        subSamplingFactorX--;
+                    subSamplingFactorX = (subSamplingFactorX == 0) ? 1 : subSamplingFactorX;
 
-                while (((w / subSamplingFactorX) <= 0)
-                        && (subSamplingFactorX >= 0))
-                    subSamplingFactorX--;
-
-                subSamplingFactorX = (subSamplingFactorX == 0) ? 1
-                        : subSamplingFactorX;
-
-                int subSamplingFactorY = (int) Math.floor(requestedRes[1]
-                        / fullResolution[1]);
-                subSamplingFactorY = (subSamplingFactorY == 0) ? 1
-                        : subSamplingFactorY;
-
-                while (((h / subSamplingFactorY) <= 0)
-                        && (subSamplingFactorY >= 0))
-                    subSamplingFactorY--;
-
-                subSamplingFactorY = (subSamplingFactorY == 0) ? 1
-                        : subSamplingFactorY;
-
-                imageReadParam.setSourceSubsampling(subSamplingFactorX,
-                        subSamplingFactorY, 0, 0);
+                    int subSamplingFactorY = (int) Math.floor(requestedRes[1] / fullResolution[1]);
+                    subSamplingFactorY = (subSamplingFactorY == 0) ? 1 : subSamplingFactorY;
+                    while (((h / subSamplingFactorY) <= 0) && (subSamplingFactorY >= 0))
+                        subSamplingFactorY--;
+                    subSamplingFactorY = (subSamplingFactorY == 0) ? 1 : subSamplingFactorY;
+                    imageReadParam.setSourceSubsampling(subSamplingFactorX, subSamplingFactorY, 0, 0);
+                }
             }
         }
     }
@@ -833,29 +802,6 @@ class RasterLayerRequest {
             final GridToEnvelopeMapper geMapper= new GridToEnvelopeMapper(new GridEnvelope2D(requestedRasterArea),requestedBBox);
             requestedResolution=CoverageUtilities.getResolution(geMapper.createAffineTransform());
  
-//        	////
-//        	//
-//            // STEP 3: Go back to destination space with the nevelope
-//        	//
-//        	////            
-//            // transform the intersection envelope from the destination world
-//            // space to the requested raster space
-//            if (destinationToSourceTransform != null&& !destinationToSourceTransform.isIdentity() )
-//            {
-//            	final GeneralEnvelope temp =CRS.transform(destinationToSourceTransform.inverse(),requestedBBoxInSourceCRS2D) ;
-//            	temp.setCoordinateReferenceSystem(requestedBBoxCRS2D);
-//            	requestedBBox = new ReferencedEnvelope(temp);
-//            	
-//            }
-//            else
-//            	//we do not need to do anything
-//            	requestedBBox=new ReferencedEnvelope(
-//            			requestedBBoxInSourceCRS2D.getMinX(),
-//            			requestedBBoxInSourceCRS2D.getMaxX(),
-//            			requestedBBoxInSourceCRS2D.getMinY(),
-//            			requestedBBoxInSourceCRS2D.getMaxY(),
-//            			coverageCRS2D);
-//            
             
             return;
         } catch (TransformException te) {

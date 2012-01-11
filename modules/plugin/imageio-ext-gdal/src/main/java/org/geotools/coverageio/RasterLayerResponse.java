@@ -291,9 +291,8 @@ class RasterLayerResponse {
      * Returns a {@code PlanarImage} given a set of parameter specifying the
      * type of read operation to be performed.
      * 
-     * @param new
-     *                FileImageInputStreamExtImplinput the input
-     *                {@code ImageInputStream} to be used for reading the image.
+     * @param input
+     *                a File input to be used for reading the image.
      * @param useJAI
      *                {@code true} if we need to use a JAI ImageRead operation,
      *                {@code false} if we need a simple direct
@@ -311,9 +310,14 @@ class RasterLayerResponse {
             final ImageReadParam imageReadParam, final boolean useMultithreading)
             throws IOException {
         PlanarImage raster;
+        final ImageReader reader;
+        FileImageInputStreamExtImpl fiis = null;
         if (useJAI) {
+            fiis = new FileImageInputStreamExtImpl(input);
+            reader = readerSpi.createReaderInstance();
+
             final ParameterBlock pbjImageRead = new ParameterBlock();
-            pbjImageRead.add(new FileImageInputStreamExtImpl(input));
+            pbjImageRead.add(fiis);
             pbjImageRead.add(0);
             pbjImageRead.add(Boolean.FALSE);
             pbjImageRead.add(Boolean.FALSE);
@@ -321,28 +325,40 @@ class RasterLayerResponse {
             pbjImageRead.add(null);
             pbjImageRead.add(null);
             pbjImageRead.add(imageReadParam);
-            pbjImageRead.add(readerSpi.createReaderInstance());
+            pbjImageRead.add(reader);
 
             // Check if to use a simple JAI ImageRead operation or a
             // multithreaded one
             final String jaiOperation = useMultithreading ? GridCoverageUtilities.IMAGEREADMT: GridCoverageUtilities.IMAGEREAD;
             raster = JAI.create(jaiOperation, pbjImageRead, hints);
         } else {
-            final ImageReader reader = readerSpi.createReaderInstance();
+            reader = readerSpi.createReaderInstance();
+            fiis = new FileImageInputStreamExtImpl(input);
             try {
-                reader.setInput(new FileImageInputStreamExtImpl(input), true, true);
+                reader.setInput(fiis, true, true);
                 raster = PlanarImage.wrapRenderedImage(reader.read(0,imageReadParam));
             }
             finally {
-            	if(reader!=null)
-            		try {
-            			reader.dispose();
-            		}catch (Exception e) {
-						if(LOGGER.isLoggable(Level.FINE))
-							LOGGER.log(Level.FINE,e.getLocalizedMessage(),e);
-					}
-            }
+                
+                if (fiis != null) {
+                    try {
+                        fiis.close();
+                    } catch (Exception e) {
+                        if (LOGGER.isLoggable(Level.FINE)){
+                            LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
+                        }
+                    }
+                }
 
+                if (reader != null)
+                    try {
+                        reader.dispose();
+                    } catch (Exception e) {
+                        if (LOGGER.isLoggable(Level.FINE)){
+                            LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
+                        }
+                    }
+            }
             
         }
         return raster;

@@ -27,7 +27,8 @@ enum GtEntityType implements Serializable {
     BYTE_ARRAY(12, byte[].class), CHAR_ARRAY(13, char[].class), DOUBLE_ARRAY(14, double[].class), 
     FLOAT_ARRAY(15, float[].class), INT_ARRAY(16, int[].class), LONG_ARRAY(17, long[].class), 
     GEOMETRY(9, Geometry.class), NULL(10, null), UNKNOWN_SERIALISABLE(18, Serializable.class), 
-    UNKNOWN(19, null), UUID(20, java.util.UUID.class);
+    UNKNOWN(19, null), UUID(20, java.util.UUID.class), DATE_UTIL(21, java.util.Date.class), DATE_SQL(22, java.sql.Date.class);
+    
     
     public static GtEntityType determineType(Object value) {
         if (value == null)
@@ -68,6 +69,10 @@ enum GtEntityType implements Serializable {
             return UUID;
         if (value instanceof Geometry)
             return GEOMETRY;
+        if (value instanceof java.util.Date)
+            return DATE_UTIL;
+        if (value instanceof java.sql.Date)
+            return DATE_SQL;
         if (value instanceof Serializable)
             return UNKNOWN_SERIALISABLE;
         return UNKNOWN;

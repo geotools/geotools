@@ -976,6 +976,35 @@
         <version>2.6.0</version>
       </dependency>
 
+      <!-- GeoGIT -->
+      <dependency>
+        <groupId>org.geogit</groupId>
+        <artifactId>geogit</artifactId>
+        <version>1.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>com.sleepycat</groupId>
+        <artifactId>je</artifactId>
+        <version>4.1.7</version>
+      </dependency> 
+      <dependency>
+        <groupId>com.caucho</groupId>
+        <artifactId>resin-hessian</artifactId>
+        <version>4.0.20</version>
+      </dependency>      
+      <dependency>
+        <groupId>com.fasterxml.uuid</groupId>
+        <artifactId>java-uuid-generator</artifactId>
+        <version>3.1.2</version>
+      </dependency>
+      <dependency>
+        <!-- Google Common Libraries. Featuring com.google.collect collection 
+          classes -->
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>r09</version>
+      </dependency>      
+      
       <!-- Other random non test dependencies -->
       <dependency>
         <groupId>net.sf.ehcache</groupId>

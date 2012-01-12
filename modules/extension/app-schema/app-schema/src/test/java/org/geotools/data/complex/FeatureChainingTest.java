@@ -34,7 +34,7 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureImpl;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.Types;
-import org.geotools.filter.FilterFactoryImpl;
+import org.geotools.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.gml3.bindings.GML3EncodingUtils;
 import org.geotools.test.AppSchemaTestSupport;
 import org.junit.BeforeClass;
@@ -90,8 +90,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
 
     static final Name CONTROLLED_CONCEPT = Types.typeName(GSMLNS, "ControlledConcept");
 
-    static FilterFactory2 ff = new FilterFactoryImpl(null);
-
+    static FilterFactory2 ff;
 
     private NamespaceSupport namespaces = new NamespaceSupport();
 
@@ -99,6 +98,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         namespaces.declarePrefix("gml", GMLNS);
         namespaces.declarePrefix("gsml", GSMLNS);
         namespaces.declarePrefix("xlink", XLINKNS);
+        ff = new FilterFactoryImplNamespaceAware(namespaces);
     }
 
     /**
@@ -557,11 +557,11 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         assertEquals(1, values.size());
         Feature cgiFeature = (Feature) values.iterator().next();
         // and that both gsml:exposureColor values from 2 denormalised view rows are there
-        assertEquals("Yellow", cgiFeature.getIdentifier().toString());
+        assertEquals("Blue", cgiFeature.getIdentifier().toString());
         values = (Collection) propIterator.next().getValue();
         assertEquals(1, values.size());
         cgiFeature = (Feature) values.iterator().next();
-        assertEquals("Blue", cgiFeature.getIdentifier().toString());
+        assertEquals("Yellow", cgiFeature.getIdentifier().toString());
     }
 
     /**
@@ -786,9 +786,12 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
 
     private static int size(FeatureCollection<FeatureType, Feature> features) {
         int size = 0;
-        for (Iterator i = features.iterator(); i.hasNext(); i.next()) {
+        FeatureIterator<Feature> iterator = features.features();
+        while (iterator.hasNext()) {
+            iterator.next();
             size++;
         }
+        iterator.close();
         return size;
     }
 }

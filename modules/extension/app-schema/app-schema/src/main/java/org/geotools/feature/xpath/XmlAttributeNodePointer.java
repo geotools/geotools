@@ -88,8 +88,9 @@ public class XmlAttributeNodePointer extends NodePointer {
             Map<Name, Object> map = (Map<Name, Object>) feature.getUserData().get(Attributes.class);
             if (map != null) {
                 return map.get(name);
+            } else {
+                return null;
             }
-            else throw new NullPointerException();
         }
     }
 

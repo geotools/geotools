@@ -31,13 +31,13 @@ import org.geotools.data.complex.PathAttributeList.Pair;
 import org.geotools.data.complex.filter.XPath.*;
 import org.geotools.data.complex.xml.*;
 import org.geotools.feature.AttributeBuilder;
+import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.Types;
 import org.geotools.feature.type.ComplexTypeImpl;
 import org.geotools.filter.LiteralExpressionImpl;
 import org.geotools.util.XmlXpathUtilites;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.Feature;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.expression.Expression;
@@ -90,7 +90,7 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
      */
     public XmlMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
             Query query) throws IOException {
-        super(store, mapping, query, false);
+        super(store, mapping, query);
 
         setIdXPath();
         
@@ -104,7 +104,7 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
 
     public XmlMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
             Query query, String xpath, String value) throws IOException {
-        super(store, mapping, query, false);
+        super(store, mapping, query);
 
         setIdXPath();
 
@@ -121,7 +121,7 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
                 .getFeatureIdExpression().toString();
     }
 
-    protected Iterator<SimpleFeature> getSourceFeatureIterator() {
+    protected FeatureIterator<? extends Feature> getSourceFeatureIterator() {
         return null;
     }
 
@@ -538,18 +538,9 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
     }
 
     @Override
-    protected Feature computeNext() throws IOException {
-        if (!isHasNextCalled()) {
-            // hasNext needs to be called to set nextSrcFeature
-            if (!hasNext()) {
-                return null;
-            }
-        }
-        setHasNextCalled(false);
-        if (isNextSourceFeatureNull()) {
-            throw new UnsupportedOperationException("No more features produced!");
-        }       
+    protected Feature computeNext() throws IOException {     
         Feature f = populateFeatureData();
+        super.cleanEmptyElements(f);        
         return f;
     }
 }

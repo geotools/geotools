@@ -66,6 +66,10 @@
 			<sourceType>CGITermValue</sourceType>
 			<targetElement>gsml:CGI_TermValue</targetElement>
 			<attributeMappings>
+			    <AttributeMapping>
+			        <targetAttribute>gsml:CGI_TermValue</targetAttribute>
+			        <idExpression><OCQL>getID()</OCQL></idExpression>
+			    </AttributeMapping>
 				<AttributeMapping>
 					<targetAttribute>gsml:value</targetAttribute>
 					<sourceExpression>
@@ -93,6 +97,10 @@
 			<sourceType>exposureColor</sourceType>
 			<targetElement>gsml:CGI_TermValue</targetElement>
 			<attributeMappings>
+			    <AttributeMapping>
+			        <targetAttribute>gsml:CGI_TermValue</targetAttribute>
+			        <idExpression><OCQL>getID()</OCQL></idExpression>
+			    </AttributeMapping>
 				<AttributeMapping>
 					<targetAttribute>gsml:value</targetAttribute>
 					<sourceExpression>

@@ -158,8 +158,10 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         }
     }
     
-    protected void addMultiValuedSort(String tableName, SortBy[] sort , StringBuffer sql, JoiningQuery.QueryJoin join ) throws IOException, FilterToSQLException {
-        sql.append(" CASE WHEN ");            
+    protected void addMultiValuedSort(String tableName, StringBuffer sql,
+            JoiningQuery.QueryJoin join) throws IOException,
+            FilterToSQLException, SQLException {
+        sql.append(" CASE WHEN ");
         FilterToSQL toSQL1 = createFilterToSQL(getDataStore().getSchema(tableName));
         toSQL1.setFieldEncoder(new JoiningFieldEncoder(tableName));  
         FilterToSQL toSQL2 = createFilterToSQL(getDataStore().getSchema(join.getJoiningTypeName()));
@@ -193,22 +195,23 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                 }    
                 if (j < 0) {
                     sort(query.getTypeName(), sort, sql, false);
-                    if (query.getQueryJoins()!= null && query.getQueryJoins().size()>0) {
-                        addMultiValuedSort(query.getTypeName(), sort, sql, query.getQueryJoins().get(0));
+                    if (query.getQueryJoins() != null && query.getQueryJoins().size() > 0) {
+                        addMultiValuedSort(query.getTypeName(), sql, query.getQueryJoins().get(0));                        
                     }
                 } else {
-                    if (aliases!=null && aliases[j] != null) {
-                        sort(aliases[j] , sort, sql, true);
+                    if (aliases != null && aliases[j] != null) {
+                        sort(aliases[j], sort, sql, true);
                     } else {
-                        sort(join.getJoiningTypeName() , sort, sql, false);
+                        sort(join.getJoiningTypeName(), sort, sql, false);
                     }
-                    if (query.getQueryJoins().size()>j+1) {
-                        addMultiValuedSort(join.getJoiningTypeName(), sort, sql, query.getQueryJoins().get(j+1));
-                    }
+                    if (query.getQueryJoins().size() > j + 1) {
+                        addMultiValuedSort(join.getJoiningTypeName(), sql, query.getQueryJoins()
+                                .get(j + 1));
+                    } 
                 }
             }
         }   
-        
+                      
         if (orderby) {
             sql.setLength(sql.length() - 1);
         }
@@ -264,14 +267,16 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
     }
     
     protected static String createAlias(String typeName, Set<String> tableNames){
-        String alias;
+        String alias = typeName;
         if (typeName.length() > 20) {
             typeName = typeName.substring(0, 20);
         }
-        int index =0;
-        do {
+        int index =0;  
+        // if the typeName doesn't already exist, it won't create alias
+        // if alias already exists, create a new one with new index
+        while (tableNames.contains(alias)) {            
             alias = typeName + "_" + ++index;
-        } while (tableNames.contains(alias));
+        }
         return alias;
     }
     
@@ -310,51 +315,28 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         
         if (query.getQueryJoins() != null) {
             
-            SortBy[] lastSortBy = query.getSortBy();          
             aliases = new String[query.getQueryJoins().size()];
             
             for (int i=0; i< query.getQueryJoins().size(); i++) {
                 JoiningQuery.QueryJoin join = query.getQueryJoins().get(i);
-                
-                if (lastSortBy!= null && lastSortBy.length > 0) {       
-                    tableNames.add(curTypeName);
-                    String temp_alias = createAlias(lastTypeName, tableNames);
-                    
-                    fromclause.append(" INNER JOIN ");
-                    getDataStore().encodeTableName(lastTypeName, fromclause, query.getHints());                    
-                    fromclause.append(" ").append(temp_alias);
-                    fromclause.append(" ON (");
-                    
-                    for (int j=0; j < query.getSortBy().length; j++) {
-                        if (lastTypeName != curTypeName) {
-                           encodeColumnName2(lastSortBy[j].getPropertyName().getPropertyName(), curTypeName , fromclause, null);   
-                        } else {
-                           encodeColumnName(lastSortBy[j].getPropertyName().getPropertyName(), curTypeName , fromclause, null);
-                        }
-                        fromclause.append(" = ");
-                        encodeColumnName2(lastSortBy[j].getPropertyName().getPropertyName(), temp_alias , fromclause, null);
-                        if (j < lastSortBy.length-1) fromclause.append(" AND ");
-                    }
-                    fromclause.append(" ) ");
-                    
-                    curTypeName = temp_alias;                    
-                }
-                lastSortBy = join.getSortBy();
                 
                 fromclause.append(" INNER JOIN ");
                 String alias = null;
                 
                 FilterToSQL toSQL1 = createFilterToSQL(getDataStore().getSchema(lastTypeName));
                 FilterToSQL toSQL2 = createFilterToSQL(getDataStore().getSchema(join.getJoiningTypeName()));
-            
-                tableNames.add(curTypeName);                
+                
+                String last_alias = createAlias(lastTypeName, tableNames);                        
+                tableNames.add(last_alias);
+                curTypeName = last_alias;       
                 if (tableNames.contains(join.getJoiningTypeName()) ) {
                     alias = createAlias(join.getJoiningTypeName(), tableNames);
 
                     aliases[i] = alias;
                     
                     getDataStore().encodeTableName(join.getJoiningTypeName(), fromclause, query.getHints());
-                    fromclause.append(" " + alias);
+                    fromclause.append(" ");
+                    getDataStore().dialect.encodeTableName(alias, fromclause);
                     fromclause.append(" ON ( ");
                     
                     toSQL2.setFieldEncoder(new JoiningFieldEncoder(alias));                 
@@ -417,10 +399,17 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         }
         
         if (query.getQueryJoins() != null && query.getQueryJoins().size() > 0) {
-            for (int i=0; i<query.getQueryJoins().size(); i++) {
-                for (int j=0; j<query.getQueryJoins().get(i).getSortBy().length; j++) {
-                    encodeColumnName(query.getQueryJoins().get(i).getSortBy()[j].getPropertyName().getPropertyName(), 
-                            query.getQueryJoins().get(i).getJoiningTypeName(), sql, query.getHints());
+            for (int i = 0; i < query.getQueryJoins().size(); i++) {
+                for (int j = 0; j < query.getQueryJoins().get(i).getSortBy().length; j++) {
+                    if (aliases[i] != null) {
+                        getDataStore().dialect.encodeColumnName(aliases[i], query.getQueryJoins()
+                                .get(i).getSortBy()[j].getPropertyName().getPropertyName(), sql);
+                    } else {
+                        encodeColumnName(query.getQueryJoins().get(i).getSortBy()[j]
+                                .getPropertyName().getPropertyName(), query.getQueryJoins().get(i)
+                                .getJoiningTypeName(), sql, query.getHints());
+                        
+                    }
                     sql.append(" ").append(FOREIGN_ID + "_" + i + "_" + j).append(",");                    
                 }
             }
@@ -456,7 +445,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                     
                     sql.append(" INNER JOIN ( SELECT DISTINCT ");
                     for (int i=0; i < lastSortBy.length; i++) {
-                         getDataStore().dialect.encodeColumnName(lastSortBy[i].getPropertyName().getPropertyName(), sql);
+                         getDataStore().dialect.encodeColumnName(null, lastSortBy[i].getPropertyName().getPropertyName(), sql);
                          if (i < lastSortBy.length-1) sql.append(",");
                     }
                     sql.append(" FROM ");
@@ -492,8 +481,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         }
         
         return sql.toString();
-    }
-        
+    }        
        
     /**
      * Generates a 'SELECT p1, p2, ... FROM ... WHERE ...' prepared statement.

@@ -306,7 +306,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     @SuppressWarnings("unchecked")
     public Query unrollQuery(Query query, FeatureTypeMapping mapping) {
         Query unrolledQuery = Query.ALL;
-        FeatureSource<FeatureType, Feature> source = mapping.getSource();
+        FeatureSource source = mapping.getSource();
 
         if (!Query.ALL.equals(query)) {
             Filter complexFilter = query.getFilter();
@@ -339,8 +339,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
                JoiningQuery jQuery = new JoiningQuery(newQuery);
                jQuery.setQueryJoins(((JoiningQuery)query).getQueryJoins());                
                unrolledQuery = jQuery;
-            }
-            else {
+            } else {                
                 unrolledQuery = newQuery;
             }
         }

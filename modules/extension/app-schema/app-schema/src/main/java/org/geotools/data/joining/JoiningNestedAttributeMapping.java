@@ -60,12 +60,10 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
     protected static class Instance {
 
         public static class Skip {
-            Object foreignKeyValue;
 
             List<Object> idValues;
 
-            public Skip(Object foreignKeyValue, List<Object> idValues) {
-                this.foreignKeyValue = foreignKeyValue;
+            public Skip(List<Object> idValues) {
                 this.idValues = idValues;
             }
         }
@@ -130,13 +128,13 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
 
         FeatureTypeMapping fMapping = AppSchemaDataAccessRegistry.getMappingByName(featureTypeName);
 
-        List<AttributeMapping> mappings = fMapping
-                .getAttributeMappingsIgnoreIndex(this.nestedTargetXPath);
-        if (mappings.size() < 1) {
+        AttributeMapping mapping = fMapping
+                .getAttributeMapping(this.nestedTargetXPath);
+        if (mapping == null) {
             throw new IllegalArgumentException("Mapping is missing for: '" + this.nestedTargetXPath
                     + "'!");
         }
-        Expression nestedSourceExpression = mappings.get(0).getSourceExpression();
+        Expression nestedSourceExpression = mapping.getSourceExpression();
 
         List<JoiningQuery.QueryJoin> joins = new ArrayList<JoiningQuery.QueryJoin>();
         if (instance.baseTableQuery instanceof JoiningQuery) {
@@ -206,9 +204,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
 
         for (Instance.Skip toSkip : instance.skipped) {
             while (daFeatureIterator.hasNext()
-                    && daFeatureIterator.checkForeignIdValues(toSkip.idValues)
-                    && daFeatureIterator.peekNextValue(nestedSourceExpression).toString().equals(
-                            toSkip.foreignKeyValue.toString())) {
+                    && daFeatureIterator.checkForeignIdValues(toSkip.idValues)) {
                 daFeatureIterator.skip();
             }
         }
@@ -320,7 +316,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
                         idValues);
             }
         }
-        instance.skipped.add(new Instance.Skip(foreignKeyValue, idValues));
+        instance.skipped.add(new Instance.Skip(idValues));
 
         return matchingFeatures;
     }
@@ -375,10 +371,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         ArrayList<Feature> matchingFeatures = new ArrayList<Feature>();
 
         if (featureIterator != null) {
-            while (featureIterator.hasNext()
-                    && featureIterator.peekNextValue(nestedSourceExpression).toString()
-                            .equals(foreignKeyValue.toString())
-                    && featureIterator.checkForeignIdValues(idValues)) {
+            while (featureIterator.hasNext() && featureIterator.checkForeignIdValues(idValues)) {
                 matchingFeatures.add(featureIterator.next());
             }
         }
@@ -391,7 +384,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
                         idValues);
             }
         }
-        instance.skipped.add(new Instance.Skip(foreignKeyValue, idValues));
+        instance.skipped.add(new Instance.Skip(idValues));
 
         return matchingFeatures;
     }
@@ -429,7 +422,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
             skipFeatures(fIt, nestedSourceExpression, foreignKeyValue, idValues);
         }
 
-        instance.skipped.add(new Instance.Skip(foreignKeyValue, idValues));
+        instance.skipped.add(new Instance.Skip(idValues));
 
     }
 

@@ -19,14 +19,19 @@ package org.geotools.data.complex;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
-import org.apache.commons.collections.IteratorUtils;
 import org.geotools.data.Query;
+import org.geotools.data.store.ReprojectingIterator;
+import org.geotools.factory.FactoryRegistryException;
+import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.opengis.feature.Feature;
-import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.OperationNotFoundException;
 
 /**
  * An extension to {@linkplain org.geotools.data.complex.DataAccessMappingFeatureIterator} where
@@ -42,67 +47,125 @@ import org.opengis.filter.Filter;
  */
 public class FilteringMappingFeatureIterator extends DataAccessMappingFeatureIterator {
 
-    protected ListIterator<SimpleFeature> listFeatureIterator;
-
     private Filter filter;
 
+    private List<Feature> sources;
+    
+    private String currentFeatureId;
+    
+    private CoordinateReferenceSystem targetCrs;
+    
     public FilteringMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
             Query query, Query unrolledQuery, Filter filter) throws IOException {
-        super(store, mapping, query, false, unrolledQuery);
+        super(store, mapping, query, unrolledQuery);
         this.filter = filter;
+        // don't reproject if there's no geometry, therefore no source CRS (will cause exception)
+        this.targetCrs = (sourceFeatures.getSchema().getGeometryDescriptor() != null) ? super.reprojection
+                : null;
+    }
+    
+    public FilteringMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
+            Query query, Query unrolledQuery, Filter filter, CoordinateReferenceSystem crs)
+            throws IOException {
+        super(store, mapping, query, unrolledQuery);
+        this.filter = filter;
+        this.targetCrs = crs;
     }
 
     @Override
-    protected void initialiseSourceFeatures(FeatureTypeMapping mapping, Query query)
-            throws IOException {
-        super.initialiseSourceFeatures(mapping, query);
-        listFeatureIterator = IteratorUtils.toListIterator(super.getSourceFeatureIterator());
+    protected void initialiseSourceFeatures(FeatureTypeMapping mapping, Query query,
+            CoordinateReferenceSystem crs) throws IOException {
+        super.initialiseSourceFeatures(mapping, query, crs);
     }
 
     @Override
     protected void closeSourceFeatures() {
         super.closeSourceFeatures();
-        listFeatureIterator = null;
-    }
-
-    @Override
-    protected ListIterator<SimpleFeature> getSourceFeatureIterator() {
-        return listFeatureIterator;
-    }
+        this.sources = null;
+    }    
 
     @Override
     public boolean hasNext() {
+        if (sources != null) {
+            // this is called in the beginning of next()
+            // we don't want to actually check the source iterator again
+            return true;
+        }
+        List<Feature> groupedFeatures;
         // check that the feature exists
-        while (super.hasNext()) {
-            // apply filter
-            if (filter.evaluate(curSrcFeature)) {
-               return true;
+        boolean matches = false;
+        while (!matches && super.hasNext()) {
+            sources = null;
+            // get all rows with same id from denormalised views
+            // and evaluate each row
+            currentFeatureId = extractIdForFeature(curSrcFeature);
+            try {
+                groupedFeatures = super.getSources(currentFeatureId);
+                Iterator<Feature> srcFeatures = groupedFeatures.iterator();
+                while (!matches && srcFeatures.hasNext()) {
+                    // apply filter
+                    if (filter == null || filter.evaluate(srcFeatures.next())) {
+                        sources = reprojectFeatures(groupedFeatures);
+                        matches = true;
+                    }
+                }
+            } catch (IOException e) {
+                close();
+                throw new RuntimeException(e);
             }
-
-            setHasNextCalled(false);
+            // reset so next time we call hasNext, it will get the next row
+            setHasNextCalled(false);            
         }
-        return false;
+        return matches;
     }
-
+    
+    /**
+     * Reproject source features if reprojection is set in the query. This has to be done after filtering, so 
+     * it's consistent with JDBCFeatureSource way of filtering and reprojection.
+     * @param srcFeatures
+     * @return
+     * @throws OperationNotFoundException
+     * @throws FactoryRegistryException
+     * @throws FactoryException
+     */
+    @SuppressWarnings("unchecked")
+    private List<Feature> reprojectFeatures(List<Feature> srcFeatures) {
+        if (targetCrs != null) {
+            List<Feature> features = new ArrayList<Feature>();
+            GeometryCoordinateSequenceTransformer transformer = new GeometryCoordinateSequenceTransformer();
+            Iterator<Feature> reprojectedFeatures;
+            try {
+                reprojectedFeatures = new ReprojectingIterator(srcFeatures.iterator(), mappedSource
+                        .getSchema().getCoordinateReferenceSystem(), targetCrs,
+                        (SimpleFeatureType) this.mappedSource.getSchema(), transformer);
+                while (reprojectedFeatures.hasNext()) {
+                    features.add(reprojectedFeatures.next());
+                }
+            } catch (Exception e) {
+                close();
+                throw new RuntimeException ("Failed to reproject features in app-schema!", e);
+            }
+            return features;
+        }
+        return srcFeatures;
+    }
+    
     @Override
-    protected void setNextFeature(String fId, List<Object> foreignIds, ArrayList<Feature> features) throws IOException {
-        int prevCount = 0;
-        while (listFeatureIterator.hasPrevious()) {
-            Feature prev = listFeatureIterator.previous();
-            prevCount++;
-            // include other rows that don't match the filter, but matches the id of the
-            // matching feature.. for denormalised view
-            if (extractIdForFeature(prev).equals(fId)) {
-                features.add(prev);
-            } else {
-                break;
-            }
-        }
-        // get back to the original position
-        for (int i = 0; i < prevCount; i++) {
-            listFeatureIterator.next();
-        }
-        // then add next features to same id
-        super.setNextFeature(fId, foreignIds, features);
+    protected String getNextFeatureId() {
+        return currentFeatureId;
     }
+    
+    @Override
+    protected List<Feature> getSources(String id) throws IOException {
+        // return grouped source features
+        List<Feature> features;
+        if (sources != null) {
+            features = sources;
+            // reset for the next hasNext call
+            sources = null;
+        } else {
+            features = super.getSources(id);
+        } 
+        return features;
+    }    
 }

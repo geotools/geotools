@@ -30,6 +30,7 @@ import org.geotools.data.FeatureSource;
 import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.filter.XPath.Step;
 import org.geotools.data.complex.filter.XPath.StepList;
+import org.geotools.data.joining.JoiningNestedAttributeMapping;
 import org.geotools.feature.Types;
 import org.geotools.filter.NestedAttributeExpression;
 import org.geotools.gml3.GML;
@@ -284,23 +285,30 @@ public class FeatureTypeMapping {
         Expression propertyExpression;
         for (Iterator it = attributeMappings.iterator(); it.hasNext();) {
             attMapping = (AttributeMapping) it.next();
-            clientProperties = attMapping.getClientProperties();
-            // NC -added
-            if (clientPropertyName.equals(GML.id)) {
-                clientPropertyExpressions.add(attMapping.getIdentifierExpression());
-            } else if (clientProperties.containsKey(clientPropertyName)) {
-                // end NC - added
-                propertyExpression = (Expression) clientProperties.get(clientPropertyName);
-                clientPropertyExpressions.add(propertyExpression);
-            } else if (attMapping.isNestedAttribute() && Types.isSimpleContent(parentPath, getTargetFeature().getType())) {
-                // create the full xpath from the parent's attribute
-                // only bother if this is a simple content
-                // otherwise, it would be handled in NestedAttributeExpression since it'd
-                // already have the full path then
-                StepList fullXpath = parentPath.clone();
-                fullXpath.add(new Step(Types.toQName(clientPropertyName, namespaces), 1, true, false));
-                clientPropertyExpressions.add(new NestedAttributeExpression(
-                                        fullXpath, this));
+            if (attMapping instanceof JoiningNestedAttributeMapping) {
+                // if it's joining for simple content feature chaining it has to be empty
+                // so it will be added to the post filter
+                clientPropertyExpressions.add(null);
+            } else {
+                clientProperties = attMapping.getClientProperties();
+                // NC -added
+                if (clientPropertyName.equals(GML.id)) {
+                    clientPropertyExpressions.add(attMapping.getIdentifierExpression());
+                } else if (clientProperties.containsKey(clientPropertyName)) {
+                    // end NC - added
+                    propertyExpression = (Expression) clientProperties.get(clientPropertyName);
+                    clientPropertyExpressions.add(propertyExpression);
+                } else if (attMapping.isNestedAttribute()
+                        && Types.isSimpleContent(parentPath, getTargetFeature().getType())) {
+                    // create the full xpath from the parent's attribute
+                    // only bother if this is a simple content
+                    // otherwise, it would be handled in NestedAttributeExpression since it'd
+                    // already have the full path then
+                    StepList fullXpath = parentPath.clone();
+                    fullXpath.add(new Step(Types.toQName(clientPropertyName, namespaces), 1, true,
+                            false));
+                    clientPropertyExpressions.add(new NestedAttributeExpression(fullXpath, this));
+                }
             }
         }
 
@@ -318,10 +326,13 @@ public class FeatureTypeMapping {
         Expression sourceExpression;
         for (Iterator it = attributeMappings.iterator(); it.hasNext();) {
             mapping = (AttributeMapping) it.next();
-            if (mapping instanceof NestedAttributeMapping) {
+            if (mapping instanceof JoiningNestedAttributeMapping) {
+                // if it's joining for simple content feature chaining it has to be null
+                // so it will be added to the post filter
+                sourceExpression = null;
+            } else if (mapping instanceof NestedAttributeMapping) {
                 // nested attribute with simple content is possible now
-                sourceExpression = new NestedAttributeExpression(
-                        mapping.getTargetXPath(), this);
+                sourceExpression = new NestedAttributeExpression(mapping.getTargetXPath(), this);
             } else {
                 sourceExpression = mapping.getSourceExpression();
             }

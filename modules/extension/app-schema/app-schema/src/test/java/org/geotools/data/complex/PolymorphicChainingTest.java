@@ -24,9 +24,8 @@ import org.geotools.data.FeatureSource;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.Types;
-import org.geotools.filter.FilterFactoryImpl;
+import org.geotools.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.test.AppSchemaTestSupport;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.feature.Feature;
@@ -55,7 +54,7 @@ public class PolymorphicChainingTest extends AppSchemaTestSupport {
 
     static final Name ARTIFACT = Types.typeName(EX_NS, "Artifact");
 
-    static FilterFactory2 ff = new FilterFactoryImpl(null);
+    static FilterFactory2 ff;
 
     private static final String schemaBase = "/test-data/";
 
@@ -65,6 +64,7 @@ public class PolymorphicChainingTest extends AppSchemaTestSupport {
 
     public PolymorphicChainingTest() {
         namespaces.declarePrefix("ex", EX_NS);
+        ff = new FilterFactoryImplNamespaceAware(namespaces);
     }
 
     @BeforeClass

@@ -708,7 +708,7 @@ public class XPath {
             final Name attributeName = Types.toName(stepName);
 
             final AttributeType _parentType = parent.getType();
-            if (_parentType.equals(XSSchema.ANYTYPE_TYPE) && targetDescriptor != null) {
+            if (_parentType.getName().equals(XSSchema.ANYTYPE_TYPE.getName()) && targetDescriptor != null) {
                 // this needs to be passed on if casting anyType to something else, since it won't
                 // exist in the schema
                 currStepDescriptor = targetDescriptor;
@@ -945,7 +945,7 @@ public class XPath {
             builder.setType(parent.getType());
 
             if (targetNodeType != null) {
-                if (parent.getType().equals(XSSchema.ANYTYPE_TYPE)) {
+                if (parent.getType().getName().equals(XSSchema.ANYTYPE_TYPE.getName())) {
                     // special handling for casting any type since there's no attributes in its
                     // schema
                     leafAttribute = builder.addAnyTypeValue(convertedValue, targetNodeType,
@@ -953,7 +953,9 @@ public class XPath {
                 } else {
                     leafAttribute = builder.add(id, convertedValue, attributeName, targetNodeType);
                 }
-            } else if (value == null && descriptor.getType().equals(XSSchema.ANYTYPE_TYPE)) {
+            } else if (descriptor.getType().getName().equals(XSSchema.ANYTYPE_TYPE.getName())
+                    && (value == null || (value instanceof Collection && ((Collection) value)
+                            .isEmpty()))) {
                 // casting anyType as a complex attribute so we can set xlink:href
                 leafAttribute = builder.addComplexAnyTypeAttribute(convertedValue, descriptor, id);
             } else {

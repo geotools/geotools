@@ -76,6 +76,7 @@
 			<attributeMappings>
 				<AttributeMapping>
 					<targetAttribute>gsml:GeologicUnit</targetAttribute>
+				  	<idExpression><OCQL>getID()</OCQL></idExpression> 
 				</AttributeMapping>
 				<AttributeMapping>
 					<targetAttribute>gml:description</targetAttribute>

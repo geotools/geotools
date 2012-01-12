@@ -36,6 +36,9 @@
 			<attributeMappings>
 			    <AttributeMapping>
 					<targetAttribute>ex:SecondParentFeature</targetAttribute>
+					<idExpression>
+					    <OCQL>getID()</OCQL>
+					</idExpression>
 				</AttributeMapping>
 				<AttributeMapping>
 					<targetAttribute>ex:nestedFeature</targetAttribute>

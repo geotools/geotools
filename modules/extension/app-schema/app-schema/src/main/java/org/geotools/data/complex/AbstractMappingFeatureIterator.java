@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -30,6 +29,7 @@ import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.filter.XPath.StepList;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.AppSchemaFeatureFactoryImpl;
+import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.Types;
 import org.geotools.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.xlink.XLINK;
@@ -40,7 +40,6 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.Property;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
@@ -155,7 +154,7 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         }
         xpathAttributeBuilder = new XPath();
         xpathAttributeBuilder.setFeatureFactory(attf);
-        initialiseSourceFeatures(mapping, unrolledQuery);
+        initialiseSourceFeatures(mapping, unrolledQuery, query.getCoordinateSystemReproject());
         xpathAttributeBuilder.setFilterFactory(namespaceAwareFilterFactory);
     }
     
@@ -268,73 +267,22 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
      * @see java.util.Iterator#next()
      */
     public Feature next() {      
-        if (!isHasNextCalled()) {
-            LOGGER.warning("hasNext not called before calling next() in the iterator!");
-            if (!hasNext()) {
-                return null;
-            }
+        if (!hasNext()) {
+            throw new IllegalStateException("there are no more features in this iterator");
         }
+
         Feature next;
         try {
             next = computeNext();
-            this.cleanEmptyElements(next);
         } catch (IOException e) {
             close();
             throw new RuntimeException(e);
         }
-        ++featureCounter;
+        ++featureCounter;        
+        
+        setHasNextCalled(false);
                 
         return next;
-    }
-    
-    private void cleanEmptyElements(Feature target) throws DataSourceException {
-        try {
-            ArrayList values = new ArrayList<Property>();
-            for (Iterator i = target.getValue().iterator(); i.hasNext();) {
-                Property p = (Property) i.next();
-
-                if (hasChild(p) || p.getDescriptor().getMinOccurs() > 0) {
-                    values.add(p);
-                }
-            }
-            target.setValue(values);
-        } catch (DataSourceException e) {
-            throw new DataSourceException("Unable to clean empty element", e);
-        }
-    }
-    
-    private boolean hasChild(Property p) throws DataSourceException {
-        boolean result = false;
-        if (p.getValue() instanceof Collection) {
-
-            Collection c = (Collection) p.getValue();
-            
-            if (this.getClientProperties(p).containsKey(XLINK_HREF_NAME)) {
-                return true;
-            }
-            
-            ArrayList values = new ArrayList();
-            for (Object o : c) {
-                if (o instanceof Property) {
-                    if (hasChild((Property) o)) {
-                        values.add(o);
-                        result = true;
-                    } else if (((Property) o).getDescriptor().getMinOccurs() > 0) {
-                        if (((Property) o).getDescriptor().isNillable()) {
-                            // add nil mandatory property
-                            values.add(o);
-                        }
-                    }
-                }
-            }
-            p.setValue(values);
-        } else if (p.getName().equals(ComplexFeatureConstants.FEATURE_CHAINING_LINK_NAME)) {
-            // ignore fake attribute FEATURE_LINK
-            result = false;
-        } else if (p.getValue() != null && p.getValue().toString().length() > 0) {
-            result = true;
-        }
-        return result;
     }
     
     protected Map getClientProperties(Property attribute) throws DataSourceException {
@@ -439,10 +387,10 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
     
     protected abstract void closeSourceFeatures();
 
-    protected abstract Iterator<SimpleFeature> getSourceFeatureIterator();
+    protected abstract FeatureIterator<? extends Feature> getSourceFeatureIterator();
 
-    protected abstract void initialiseSourceFeatures(FeatureTypeMapping mapping, Query query)
-            throws IOException;
+    protected abstract void initialiseSourceFeatures(FeatureTypeMapping mapping, Query query,
+            CoordinateReferenceSystem crs) throws IOException;
 
     protected abstract boolean unprocessedFeatureExists();
 

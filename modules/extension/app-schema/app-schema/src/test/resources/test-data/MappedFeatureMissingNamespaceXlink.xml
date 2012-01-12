@@ -39,6 +39,10 @@
 				gsml:MappedFeature
 			</targetElement>
 			<attributeMappings>
+			    <AttributeMapping>
+			        <targetAttribute>gsml:MappedFeature</targetAttribute>
+			        <idExpression><OCQL>getID()</OCQL></idExpression>
+			    </AttributeMapping>
 				<AttributeMapping>
 					<targetAttribute>gsml:specification</targetAttribute>
 					<ClientProperty>

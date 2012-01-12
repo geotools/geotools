@@ -57,7 +57,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.Feature;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.ComplexType;
@@ -465,7 +464,7 @@ public class TimeSeriesTest extends AppSchemaTestSupport {
         it.close();
 
         count = 0;
-        Iterator<SimpleFeature> simpleIterator = ((AbstractMappingFeatureIterator) features.features()).getSourceFeatureIterator();
+        FeatureIterator<? extends Feature> simpleIterator = ((AbstractMappingFeatureIterator) features.features()).getSourceFeatureIterator();
         for (; simpleIterator.hasNext();) {
             feature = (Feature) simpleIterator.next();
             count++;

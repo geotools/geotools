@@ -139,12 +139,18 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
             return null;
         } else {
             for (Expression expr : matchingMappings) {
-                CapabilitiesExpressionVisitor visitor = new CapabilitiesExpressionVisitor();
-                expr.accept(visitor, null);
-
-                if (!visitor.isCapable()) {
+                if (expr == null) {
+                    // this is joining for simple content
+                    // has to go to post stack because it comes from another table
                     postStack.push(expression);
                     return null;
+                } else {
+                    CapabilitiesExpressionVisitor visitor = new CapabilitiesExpressionVisitor();
+                    expr.accept(visitor, null);
+                    if (!visitor.isCapable()) {
+                        postStack.push(expression);
+                        return null;
+                    }
                 }
             }
         }

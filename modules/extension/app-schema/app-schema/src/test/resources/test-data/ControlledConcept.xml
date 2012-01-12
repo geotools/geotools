@@ -43,6 +43,10 @@
 			<sourceType>ControlledConcept</sourceType>
 			<targetElement>gsml:ControlledConcept</targetElement>
 			<attributeMappings>
+			    <AttributeMapping>
+			        <targetAttribute>gsml:ControlledConcept</targetAttribute>
+			        <idExpression><OCQL>getID()</OCQL></idExpression>
+			    </AttributeMapping>
 				<AttributeMapping>
 					<targetAttribute>gml:name</targetAttribute>
 					<sourceExpression>

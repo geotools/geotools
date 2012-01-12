@@ -13,6 +13,10 @@ Here is a quick example of accessing a shapefile::
 References:
 
 * :doc:`gt-data <../data/datastore>` DataStore Code Examples
+* javadoc: `DataStore <http://docs.geotools.org/latest/javadocs/org/geotools/data/DataStore.html>`_
+* javadoc: `FeatureSource <http://docs.geotools.org/latest/javadocs/org/geotools/data/FeatureSource.html>`_
+* javadoc: `SimpleFeatureSource <http://docs.geotools.org/latest/javadocs/org/geotools/data/simple/SimpleFeatureSource.html>`_
+
 
 DataAccess
 ^^^^^^^^^^
@@ -128,7 +132,6 @@ FeatureSource
 
 A FeatureSource is used to provide access to the contents of a DataStore.
 
-
 .. image:: /images/FeatureSource.PNG
 
 **Approach**
@@ -169,12 +172,11 @@ In a similar fashion you can check if locking is supported between threads::
       // locking supported
   }
 
-  
 SimpleFeatureSource
 '''''''''''''''''''
 
-SimpleFeatueSource is the extension of FeatureSource returned by DataStore to explicitly work with SimpleFeature and SimpleFeatureCollection.
-
+SimpleFeatueSource is the extension of FeatureSource returned by DataStore to explicitly work with
+SimpleFeature and SimpleFeatureCollection.
 
 .. image:: /images/SimpleFeatureSource.PNG
 
@@ -210,7 +212,14 @@ Summary information:
 
 * FeatureSource.getBounds()
 * FeatureSource.getBounds(Query)
+  
+  May return null if the bounds are unknown or too costly to calculate.
+
 * FeatureSource.getCount(Query)
+  
+  May return -1 if the information is not readily avaialble. Formats such as shapefile 
+  keep this information avaialble in the header for handy reference. WFS does not provide
+  any way to ask for this information and thus always returns -1.
 
 Where a request is captured by a **Query**:
 
@@ -304,6 +313,29 @@ Where a request is captured by a **Query**:
       
       query.setHints( new Hints( Query.INCLUDE_MANDITORY_PROPS, Boolean.TRUE ) );
 
+Examples:
+
+* How to count the number of features.
+  
+  Because the getCount method just checks the file or database header information it is designed
+  to be very fast. Not all implementations have access to this information making it a bit tricky
+  to count the number of avaialble features.
+  
+  The following code shows how to quickly count all the feautres available::
+    
+    int count = featureSource.getCount( Query.ALL );
+    if( count == -1 ){
+        count = featureSource.getFeatures().size();
+    }
+  
+  You can modify this to use your own Query::
+  
+    Query query = new Query( CQL.toFilter("REGION = 3") );
+    int count = featureSource.getCount( query );
+    if( count == -1 ){
+        count = featureSource.getFeatures( query ).size();
+    }
+  
 SimpleFeatureStore
 ''''''''''''''''''
 

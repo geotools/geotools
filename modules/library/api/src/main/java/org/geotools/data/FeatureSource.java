@@ -217,8 +217,13 @@ public interface FeatureSource<T extends FeatureType, F extends Feature>{
      * <p>
      * It is possible that this method will return {@code -1} if the calculation
      * of number of features is judged to be too costly by the implementing class.
-     * In this case, you might call <code>getFeatures(query).getBounds()</code>
+     * In this case, you might call <code>getFeatures(query).size()</code>
      * instead.
+     * <p>
+     * Example use:<pre><code> int count = featureSource.getCount();
+     * if( count == -1 ){
+     *    count = featureSource.getFeatures( count ).size();
+     * }
      *
      * @param query the query to select features
      *

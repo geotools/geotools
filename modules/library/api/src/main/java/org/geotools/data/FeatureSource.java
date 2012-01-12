@@ -222,7 +222,7 @@ public interface FeatureSource<T extends FeatureType, F extends Feature>{
      * <p>
      * Example use:<pre><code> int count = featureSource.getCount();
      * if( count == -1 ){
-     *    count = featureSource.getFeatures( count ).size();
+     *    count = featureSource.getFeatures( "typeName", count ).size();
      * }
      *
      * @param query the query to select features

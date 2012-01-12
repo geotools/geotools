@@ -321,21 +321,20 @@ Examples:
   to be very fast. Not all implementations have access to this information making it a bit tricky
   to count the number of avaialble features.
   
-  The following code shows how to quickly count all the feautres available::
-    
-    int count = featureSource.getCount( Query.ALL );
-    if( count == -1 ){
-        count = featureSource.getFeatures().size();
-    }
+  The following code shows how to quickly count all the feautres available:
   
-  You can modify this to use your own Query::
+  .. literalinclude:: /../src/main/java/org/geotools/api/DataStoreExamples.java
+     :language: java
+     :start-after: // all start
+     :end-before: // all end
   
-    Query query = new Query( CQL.toFilter("REGION = 3") );
-    int count = featureSource.getCount( query );
-    if( count == -1 ){
-        count = featureSource.getFeatures( query ).size();
-    }
+  You can modify this to use your own Query:
   
+  .. literalinclude:: /../src/main/java/org/geotools/api/DataStoreExamples.java
+     :language: java
+     :start-after: // count start
+     :end-before: // count end
+
 SimpleFeatureStore
 ''''''''''''''''''
 

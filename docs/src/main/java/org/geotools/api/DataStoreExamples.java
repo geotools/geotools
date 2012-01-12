@@ -5,12 +5,16 @@ import java.util.Set;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.Query;
 import org.geotools.data.ServiceInfo;
+import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.filter.text.cql2.CQL;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 public class DataStoreExamples {
 
 DataStore dataStore = null;
+SimpleFeatureSource featureSource = null;
 
 void exampleInfo() {
     // exampleInfo start
@@ -39,4 +43,24 @@ void exampleCreateSchema() throws Exception {
     // exampleCreateSchema end
     
 }
+
+void exampleAllCount() throws Exception {
+    // all start
+    int count = featureSource.getCount( Query.ALL );
+    if( count == -1 ){
+        count = featureSource.getFeatures().size();
+    }
+    // all end
+}
+
+void exampleQueryCount() throws Exception {
+    // count start
+    Query query = new Query( "typeName", CQL.toFilter("REGION = 3") );
+    int count = featureSource.getCount( query );
+    if( count == -1 ){
+        count = featureSource.getFeatures( query ).size();
+    }
+    // count end
+}
+
 }

@@ -435,7 +435,7 @@ public final class FilterDOMParser {
                     return FILTER_FACT.touches( left, right );
                     
                 case FilterType.GEOMETRY_CROSSES:
-                    return FILTER_FACT.touches( left, right );
+                    return FILTER_FACT.crosses( left, right );
                     
                 case FilterType.GEOMETRY_WITHIN:
                     return FILTER_FACT.within( left, right );

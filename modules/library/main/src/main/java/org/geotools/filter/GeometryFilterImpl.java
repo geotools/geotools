@@ -263,6 +263,8 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
             operator = " disjoint ";
         } else if (filterType == GEOMETRY_INTERSECTS) {
             operator = " intersects ";
+        } else if (filterType == GEOMETRY_TOUCHES) {
+            operator = " touches ";
         } else if (filterType == GEOMETRY_CROSSES) {
             operator = " crosses ";
         } else if (filterType == GEOMETRY_WITHIN) {

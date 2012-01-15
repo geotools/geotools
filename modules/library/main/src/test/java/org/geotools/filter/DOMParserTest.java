@@ -35,6 +35,7 @@ import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.Beyond;
+import org.opengis.filter.spatial.Crosses;
 import org.opengis.filter.spatial.DWithin;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -43,6 +44,7 @@ import org.w3c.dom.NodeList;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
 
 /**
@@ -233,6 +235,15 @@ public class DOMParserTest extends FilterTestSupport {
         assertTrue(((Literal) bd.getExpression2()).getValue() instanceof Point);
         assertEquals(5000.0, bd.getDistance());
         assertEquals("metre", bd.getDistanceUnits());
+        LOGGER.fine("parsed filter is " + test);
+    }
+
+    public void testCrosses() throws Exception {
+        Filter test = parseDocument("crosses.xml");
+        assertTrue(test instanceof Crosses);
+        Crosses cr = (Crosses) test;
+        assertEquals("the_geom", ((PropertyName) cr.getExpression1()).getPropertyName());
+        assertTrue(((Literal) cr.getExpression2()).getValue() instanceof LineString);
         LOGGER.fine("parsed filter is " + test);
     }
 

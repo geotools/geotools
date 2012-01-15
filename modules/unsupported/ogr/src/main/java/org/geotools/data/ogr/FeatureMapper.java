@@ -16,15 +16,27 @@
  */
 package org.geotools.data.ogr;
 
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import static org.bridj.Pointer.*;
+import static org.geotools.data.ogr.bridj.OgrLibrary.*;
 
-import org.gdal.ogr.FeatureDefn;
-import org.gdal.ogr.FieldDefn;
-import org.gdal.ogr.ogr;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.text.DateFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
+
+import org.bridj.Pointer;
 import org.geotools.data.DataSourceException;
+import org.geotools.data.ogr.bridj.OgrLibrary.OGRFieldType;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.util.Converters;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -64,11 +76,31 @@ class FeatureMapper {
 
     DateFormat timeFormat = new SimpleDateFormat("hh:mm:ss");
 
-    public FeatureMapper(SimpleFeatureType schema, GeometryFactory geomFactory) {
-        this.schema = schema;
+    HashMap<String, Integer> attributeIndexes;
+    
+    /**
+     * TODO: this is subscepitble to changes to the Locale in Java that might not affect
+     * the C code... we should probably figure out a way to get the OS level locale?
+     */
+    static final DecimalFormatSymbols DECIMAL_SYMBOLS = new DecimalFormatSymbols(); 
+
+    public FeatureMapper(SimpleFeatureType targetSchema, Pointer layer, GeometryFactory geomFactory) {
+        this.schema = targetSchema;
         this.builder = new SimpleFeatureBuilder(schema);
-        this.geomMapper = new GeometryMapper(geomFactory);
+        this.geomMapper = new GeometryMapper.WKB(geomFactory);
         this.geomFactory = geomFactory;
+        
+        attributeIndexes = new HashMap<String, Integer>();
+        Pointer layerDefinition = OGR_L_GetLayerDefn(layer);
+        int size = OGR_FD_GetFieldCount(layerDefinition);
+        for(int i = 0; i < size; i++) {
+            Pointer  field = OGR_FD_GetFieldDefn(layerDefinition, i);
+            Pointer<Byte> namePtr = OGR_Fld_GetNameRef(field);
+            String name = namePtr.getCString();
+            if(targetSchema.getDescriptor(name) != null) {
+                attributeIndexes.put(name, i);
+            }
+        }
     }
 
     /**
@@ -79,7 +111,7 @@ class FeatureMapper {
      * @return
      * @throws IOException
      */
-    SimpleFeature convertOgrFeature(org.gdal.ogr.Feature ogrFeature)
+    SimpleFeature convertOgrFeature(Pointer<?> ogrFeature)
             throws IOException {
         // Extract all attributes (do not assume any specific order, the feature
         // type may have been re-ordered by the Query)
@@ -89,16 +121,7 @@ class FeatureMapper {
         // which extraction method to call
         for (int i = 0; i < attributes.length; i++) {
             AttributeDescriptor at = schema.getDescriptor(i);
-            if (at instanceof GeometryDescriptor) {
-                org.gdal.ogr.Geometry ogrGeometry = ogrFeature.GetGeometryRef();
-                try {
-                    builder.add(fixGeometryType(geomMapper.parseOgrGeometry(ogrGeometry), at));
-                } finally {
-                    ogrGeometry.delete();
-                }
-            } else {
-                builder.add(getOgrField(at, ogrFeature));
-            }
+            builder.add(getOgrField(at, ogrFeature));
         }
 
         // .. gather the FID
@@ -115,46 +138,73 @@ class FeatureMapper {
      * @return
      * @throws DataSourceException
      */
-    org.gdal.ogr.Feature convertGTFeature(FeatureDefn ogrSchema, SimpleFeature feature)
+    Pointer convertGTFeature(Pointer featureDefinition, SimpleFeature feature)
             throws IOException {
         // create a new empty OGR feature
-        org.gdal.ogr.Feature result = new org.gdal.ogr.Feature(ogrSchema);
+        Pointer ogrFeature = OGR_F_Create(featureDefinition);
 
         // go thru GeoTools feature attributes, and convert
         SimpleFeatureType schema = feature.getFeatureType();
         for (int i = 0, j = 0; i < schema.getAttributeCount(); i++) {
-            AttributeDescriptor at = schema.getDescriptor(i);
             Object attribute = feature.getAttribute(i);
-            if (at instanceof GeometryDescriptor) {
+            if (attribute instanceof Geometry) {
                 // using setGeoemtryDirectly the feature becomes the owner of the generated
                 // OGR geometry and we don't have to .delete() it (it's faster, too)
-                result.SetGeometryDirectly(geomMapper.parseGTGeometry((Geometry) attribute));
-                continue;
-            }
-
-            if (attribute == null) {
-                result.UnsetField(j);
+                Pointer geometry = geomMapper.parseGTGeometry((Geometry) attribute);
+                OGR_F_SetGeometryDirectly(ogrFeature, geometry);
             } else {
-                final FieldDefn ogrField = ogrSchema.GetFieldDefn(j);
-                final int ogrType = ogrField.GetFieldType();
-                ogrField.delete();
-                if (ogrType == ogr.OFTInteger)
-                    result.SetField(j, ((Number) attribute).intValue());
-                else if (ogrType == ogr.OFTReal)
-                    result.SetField(j, ((Number) attribute).doubleValue());
-                else if (ogrType == ogr.OFTDateTime)
-                    result.SetField(j, dateTimeFormat.format((java.util.Date) attribute));
-                else if (ogrType == ogr.OFTDate)
-                    result.SetField(j, dateFormat.format((java.util.Date) attribute));
-                else if (ogrType == ogr.OFTTime)
-                    result.SetField(j, timeFormat.format((java.util.Date) attribute));
-                else
-                    result.SetField(j, attribute.toString());
+                setFieldValue(featureDefinition, ogrFeature, j, attribute);
+                j++;
             }
-            j++;
         }
 
-        return result;
+        return ogrFeature;
+    }
+
+    static void setFieldValue(Pointer featureDefinition, Pointer ogrFeature, int fieldIdx,
+            Object value) throws IOException {
+         if (value == null) {
+            OGR_F_UnsetField(ogrFeature, fieldIdx);
+        } else {
+            Pointer fieldDefinition = OGR_FD_GetFieldDefn(featureDefinition, fieldIdx);
+            long ogrType = OGR_Fld_GetType(fieldDefinition).value();
+            if (ogrType == OGRFieldType.OFTInteger.value()) {
+                OGR_F_SetFieldInteger(ogrFeature, fieldIdx, ((Number) value).intValue());
+            } else if (ogrType == OGRFieldType.OFTReal.value()) {
+                OGR_F_SetFieldDouble(ogrFeature, fieldIdx, ((Number) value).doubleValue());
+            } else if (ogrType == OGRFieldType.OFTBinary.value()) {
+                byte[] attValue = (byte[]) value;
+                OGR_F_SetFieldBinary(ogrFeature, fieldIdx, attValue.length, pointerToBytes(attValue));
+            } else if (ogrType == OGRFieldType.OFTDate.value()) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime((Date) value);
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+                OGR_F_SetFieldDateTime(ogrFeature, fieldIdx, year, month, day, 0, 0, 0, 0);
+            } else if (ogrType == OGRFieldType.OFTTime.value()) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime((Date) value);
+                int hour = cal.get(Calendar.HOUR_OF_DAY);
+                int minute = cal.get(Calendar.MINUTE);
+                int second = cal.get(Calendar.SECOND);
+                OGR_F_SetFieldDateTime(ogrFeature, fieldIdx, 0, 0, 0, hour, minute, second, 0);
+            } else if (ogrType == OGRFieldType.OFTDateTime.value()) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime((Date) value);
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+                int hour = cal.get(Calendar.HOUR_OF_DAY);
+                int minute = cal.get(Calendar.MINUTE);
+                int second = cal.get(Calendar.SECOND);
+                OGR_F_SetFieldDateTime(ogrFeature, fieldIdx, year, month, day, hour, minute, second, 0);
+            } else {
+                // anything else we treat as a string
+                String str = Converters.convert(value, String.class);
+                OGR_F_SetFieldString(ogrFeature, fieldIdx, pointerToCString(str));
+            }
+        }
     }
 
     /**
@@ -191,45 +241,110 @@ class FeatureMapper {
      * @param ad
      * @return
      */
-    Object getOgrField(AttributeDescriptor ad, org.gdal.ogr.Feature ogrFeature) throws IOException {
-        String name = ad.getLocalName();
-        Class clazz = ad.getType().getBinding();
+    Object getOgrField(AttributeDescriptor ad, Pointer<?> ogrFeature) throws IOException {
+        if(ad instanceof GeometryDescriptor) {
+            // gets the geometry as a reference, we don't own it, we should not deallocate it
+            Pointer<?> ogrGeometry = OGR_F_GetGeometryRef(ogrFeature);
+            return fixGeometryType(geomMapper.parseOgrGeometry(ogrGeometry), ad);
+        }
+        
+        Integer idx = attributeIndexes.get(ad.getLocalName());
 
         // check for null fields
-        if (!ogrFeature.IsFieldSet(name))
+        if (idx == null || OGR_F_IsFieldSet(ogrFeature, idx) == 0) {
             return null;
+        }
 
         // hum, ok try and parse it
+        Class clazz = ad.getType().getBinding();
         if (clazz.equals(String.class)) {
-            return ogrFeature.GetFieldAsString(name);
+            return  OGR_F_GetFieldAsString(ogrFeature, idx).getCString();
+        } else if (clazz.equals(Byte.class)) {
+            return (byte) OGR_F_GetFieldAsInteger(ogrFeature, idx);
+        } else if (clazz.equals(Short.class)) {
+            return (short) OGR_F_GetFieldAsInteger(ogrFeature, idx);
         } else if (clazz.equals(Integer.class)) {
-            return new Integer(ogrFeature.GetFieldAsInteger(name));
+            return OGR_F_GetFieldAsInteger(ogrFeature, idx);
+        } else if (clazz.equals(Long.class)) {
+            String value = OGR_F_GetFieldAsString(ogrFeature, idx).getCString();
+            return new Long(value);
+        } else if (clazz.equals(BigInteger.class)) {
+            String value = OGR_F_GetFieldAsString(ogrFeature, idx).getCString();
+            return new BigInteger(value);
         } else if (clazz.equals(Double.class)) {
-            return new Double(ogrFeature.GetFieldAsDouble(name));
+            return OGR_F_GetFieldAsDouble(ogrFeature, idx);
         } else if (clazz.equals(Float.class)) {
-            return new Float(ogrFeature.GetFieldAsDouble(name));
-        } else if (clazz.equals(Integer.class)) {
-            return new Integer(ogrFeature.GetFieldAsInteger(name));
-        } else if (clazz.equals(java.util.Date.class)) {
-            String date = ogrFeature.GetFieldAsString(name);
-            if (date == null || date.trim().equals(""))
-                return null;
-            int ogrType = ogrFeature.GetFieldType(name);
-            try {
-                if (ogrType == ogr.OFTDateTime)
-                    return dateTimeFormat.parse(date);
-                else if (ogrType == ogr.OFTDate)
-                    return dateFormat.parse(date);
-                else if (ogrType == ogr.OFTTime)
-                    return timeFormat.parse(date);
-            } catch (java.text.ParseException e) {
-                throw new DataSourceException("Could not parse date value", e);
+            return (float) OGR_F_GetFieldAsDouble(ogrFeature, idx);
+        } else if (clazz.equals(BigDecimal.class)) {
+            String value = OGR_F_GetFieldAsString(ogrFeature, idx).getCString().trim();
+            char separator = DECIMAL_SYMBOLS.getDecimalSeparator();
+            if(separator != '.') {
+                value = value.replace(separator, '.');
             }
-            throw new IOException("Date attribute, but field type is not compatible: " + ogrType);
+            return new BigDecimal(value);
+        } else if (clazz.equals(java.sql.Date.class)) {
+            Calendar cal = getDateField(ogrFeature, idx);
+            cal.clear(Calendar.HOUR_OF_DAY);
+            cal.clear(Calendar.MINUTE);
+            cal.clear(Calendar.SECOND);
+            return new java.sql.Date(cal.getTimeInMillis());
+        } else if (clazz.equals(java.sql.Time.class)) {
+            Calendar cal = getDateField(ogrFeature, idx);
+            cal.clear(Calendar.YEAR);
+            cal.clear(Calendar.MONTH);
+            cal.clear(Calendar.DAY_OF_MONTH);
+            return new java.sql.Time(cal.getTimeInMillis());
+        } else if (clazz.equals(java.sql.Timestamp.class)) {
+            Calendar cal = getDateField(ogrFeature, idx);
+            return new java.sql.Time(cal.getTimeInMillis());
+        } else if (clazz.equals(java.util.Date.class)) {
+            Calendar cal = getDateField(ogrFeature, idx);
+            return cal.getTime();
         } else {
             throw new IllegalArgumentException("Don't know how to read " + clazz.getName()
                     + " fields");
         }
+    }
+
+    /**
+     * Reads a date field from the OGR api
+     * @param ogrFeature
+     * @param idx
+     * @return
+     */
+    private Calendar getDateField(Pointer<?> ogrFeature, Integer idx) {
+        Pointer<Integer> year = allocateInt();
+        Pointer<Integer> month = allocateInt();
+        Pointer<Integer> day = allocateInt();
+        Pointer<Integer> hour = allocateInt();
+        Pointer<Integer> minute = allocateInt();
+        Pointer<Integer> second = allocateInt();
+        Pointer<Integer> timeZone = allocateInt();
+        
+        OGR_F_GetFieldAsDateTime(ogrFeature, idx, year, month, day, hour, minute, second, timeZone);
+        
+        Calendar cal = Calendar.getInstance();
+        // from ogr_core.h 
+        // 0=unknown, 1=localtime(ambiguous), 100=GMT, 104=GMT+1, 80=GMT-5, etc
+        int tz = timeZone.getInt();
+        if(tz != 0 && tz != 1) {
+            int offset = tz - 100 / 4;
+            if(offset < 0) {
+                cal.setTimeZone(TimeZone.getTimeZone("GMT" + offset));
+            } else if(offset == 0) {
+                cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+            } else {
+                cal.setTimeZone(TimeZone.getTimeZone("GMT+" + offset));
+            }               
+        }
+        cal.clear();
+        cal.set(Calendar.YEAR, year.getInt());
+        cal.set(Calendar.MONTH, month.getInt());
+        cal.set(Calendar.DAY_OF_MONTH, day.getInt());
+        cal.set(Calendar.HOUR_OF_DAY, hour.getInt());
+        cal.set(Calendar.MINUTE, minute.getInt());
+        cal.set(Calendar.SECOND, second.getInt());
+        return cal;
     }
 
     /**
@@ -239,8 +354,9 @@ class FeatureMapper {
      * @param ogrFeature
      * @return
      */
-    String convertOGRFID(SimpleFeatureType schema, org.gdal.ogr.Feature ogrFeature) {
-        return schema.getTypeName() + "." + ogrFeature.GetFID();
+    String convertOGRFID(SimpleFeatureType schema, Pointer<?> ogrFeature) {
+        long id = OGR_F_GetFID(ogrFeature);
+        return schema.getTypeName() + "." + id;
     }
 
     /**
@@ -249,9 +365,9 @@ class FeatureMapper {
      * @param feature
      * @return
      */
-    int convertGTFID(SimpleFeature feature) {
+    long convertGTFID(SimpleFeature feature) {
         String id = feature.getID();
-        return Integer.parseInt(id.substring(id.indexOf(".") + 1));
+        return Long.parseLong(id.substring(id.indexOf(".") + 1));
     }
 
 }

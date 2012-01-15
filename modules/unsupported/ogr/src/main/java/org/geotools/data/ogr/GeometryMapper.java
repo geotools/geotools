@@ -16,10 +16,14 @@
  */
 package org.geotools.data.ogr;
 
+import static org.bridj.Pointer.*;
+import static org.geotools.data.ogr.OGRUtils.*;
+import static org.geotools.data.ogr.bridj.OgrLibrary.*;
+
 import java.io.IOException;
 
-import org.gdal.ogr.ogr;
-import org.geotools.data.DataSourceException;
+import org.bridj.Pointer;
+import org.geotools.data.ogr.bridj.OgrLibrary.OGRwkbByteOrder;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -31,99 +35,99 @@ import com.vividsolutions.jts.io.WKTWriter;
 
 /**
  * Converts between JTS and OGR geometries
- * @author Andrea Aime - OpenGeo
- *
- * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/ogr/src/main/java/org/geotools/data/ogr/GeometryMapper.java $
+ * 
+ * @author Andrea Aime - GeoSolutions
+ * 
+ * 
+ * @source $URL:
+ *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/ogr/src/main/java/org/geotools
+ *         /data/ogr/GeometryMapper.java $
  */
-public class GeometryMapper {
-    /**
-     * From ogr_core.h, the byte order constants
-     */
-    static final int WKB_XDR = 1;
+@SuppressWarnings("rawtypes")
+abstract class GeometryMapper {
 
-    /**
-     * Enables usage of WKB encoding for OGR/Java Geometry conversion. At the time of writing, it
-     * cannot be used because it'll bring the virtual machine down (yes, a real crash...)
-     */
-    static final boolean USE_WKB = true;
+    abstract Geometry parseOgrGeometry(Pointer geom) throws IOException;
 
-    GeometryFactory geomFactory;
+    abstract Pointer parseGTGeometry(Geometry geometry) throws IOException;
 
-    WKBReader wkbReader;
+    static class WKB extends GeometryMapper {
+        GeometryFactory geomFactory;
 
-    WKTReader wktReader;
+        WKBReader wkbReader;
 
-    WKBWriter wkbWriter;
+        WKBWriter wkbWriter;
 
-    WKTWriter wktWriter;
-
-    public GeometryMapper(GeometryFactory geomFactory) {
-        this.geomFactory = geomFactory;
-        if (USE_WKB) {
+        public WKB(GeometryFactory geomFactory) {
+            this.geomFactory = geomFactory;
             this.wkbReader = new WKBReader(geomFactory);
             this.wkbWriter = new WKBWriter();
-        } else {
+        }
+
+        /**
+         * Reads the current feature's geometry using wkb encoding. A wkbReader should be provided
+         * since it's not thread safe by design.
+         * 
+         * @throws IOException
+         */
+        Geometry parseOgrGeometry(Pointer geom) throws IOException {
+            int wkbSize = OGR_G_WkbSize(geom);
+            Pointer<Byte> ptrBytes = pointerToBytes(new byte[wkbSize]);
+            checkError(OGR_G_ExportToWkb(geom, OGRwkbByteOrder.wkbXDR, ptrBytes));
+            try {
+                byte[] wkb = ptrBytes.getBytes();
+                Geometry g = wkbReader.read(wkb);
+                return g;
+            } catch (ParseException pe) {
+                throw (IOException) new IOException("Could not parse the current Geometry in WKB format.").initCause(pe);
+            }
+        }
+
+        Pointer parseGTGeometry(Geometry geometry) throws IOException {
+            byte[] wkb = wkbWriter.write(geometry);
+            Pointer<Pointer<?>> ptr = allocatePointer();
+            checkError(OGR_G_CreateFromWkb(pointerToBytes(wkb), null, ptr, wkb.length));
+            return ptr.getPointer(Pointer.class);
+        }
+
+    }
+
+    static class WKT extends GeometryMapper {
+        GeometryFactory geomFactory;
+
+        WKTReader wktReader;
+
+        WKTWriter wktWriter;
+
+        public WKT(GeometryFactory geomFactory) {
+            this.geomFactory = geomFactory;
             this.wktReader = new WKTReader(geomFactory);
             this.wktWriter = new WKTWriter();
         }
-    }
 
-
-    /**
-     * Reads the current feature's geometry using wkb encoding. A wkbReader should be provided since
-     * it's not thread safe by design.
-     * 
-     * @throws IOException
-     */
-    Geometry parseOgrGeometry(org.gdal.ogr.Geometry geom) throws IOException {
-        // Extract the geometry using either WKT or WKB. Rationale: the SWIG
-        // bindings do not provide subclasses. Even if they did, going thru the
-        // JNI barrier often is expensive, so it's better to gather the geometry
-        // is a single call
-        if (USE_WKB) {
-            int wkbSize = geom.WkbSize();
-            // the gdal interface uses a char* type, maybe because in C it's
-            // unsigned and has
-            // the same size as a byte, unfortunately this means we have to
-            // unpack it
-            // to byte format by doing bit masking and shifting
-            byte[] byteBuffer = new byte[wkbSize];
-            geom.ExportToWkb(byteBuffer, WKB_XDR);
+        /**
+         * Reads the current feature's geometry using wkb encoding. A wkbReader should be provided
+         * since it's not thread safe by design.
+         * 
+         * @throws IOException
+         */
+        Geometry parseOgrGeometry(Pointer geom) throws IOException {
+            Pointer<Pointer<Byte>> wktPtr = allocatePointer(Byte.class);
+            checkError(OGR_G_ExportToWkt(geom, wktPtr));
             try {
-                Geometry g = wkbReader.read(byteBuffer);
-                return g;
+                String wkt = wktPtr.getPointer(Byte.class).getCString();
+                return wktReader.read(wkt);
             } catch (ParseException pe) {
-                throw new RuntimeException(
-                        "Could not parse the current Geometry in WKB format.", pe);
-            }
-        } else {
-            String[] stringArray = new String[1];
-            geom.ExportToWkt(stringArray);
-            try {
-                return wktReader.read(stringArray[0]);
-            } catch (ParseException pe) {
-                throw new RuntimeException(
-                        "Could not parse the current Geometry in WKB format.", pe);
+                throw (IOException) new IOException("Could not parse the current Geometry in WKT format.").initCause(pe);
             }
         }
-    }
 
-    org.gdal.ogr.Geometry parseGTGeometry(Geometry geometry) throws RuntimeException {
-        final org.gdal.ogr.Geometry ogrGeom;
-        if (USE_WKB) {
-            byte[] wkb = wkbWriter.write(geometry);
-            ogrGeom = ogr.CreateGeometryFromWkb(wkb, null);
-            if (ogrGeom == null)
-                throw new RuntimeException(
-                        "Could not turn JTS geometry into an OGR one thought WKB");
-        } else {
+        Pointer parseGTGeometry(Geometry geometry) throws IOException {
             String wkt = wktWriter.write(geometry);
-            ogrGeom = ogr.CreateGeometryFromWkt(wkt, null);
-            if (ogrGeom == null)
-                throw new RuntimeException(
-                        "Could not turn JTS geometry into an OGR one thought WKT");
+            Pointer<Pointer<Byte>> ptr = pointerToPointer(pointerToCString(wkt));
+            Pointer<Pointer<?>> geom = allocatePointer();
+            checkError(OGR_G_CreateFromWkt(ptr, null, geom));
+            return geom.getPointer(Pointer.class);
         }
-        return ogrGeom;
-    }
 
+    }
 }

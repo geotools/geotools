@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Filter xmlns:gml="http://www.opengis.net/gml">
+  <Crosses>
+    <PropertyName>the_geom</PropertyName>
+    <gml:LineString srsName="http://www.opengis.net/gml/srs/EPSG#4326">
+   <gml:coordinates>1.25,0.25 1.75,0.75</gml:coordinates>
+    </gml:LineString>
+  </Crosses>
+</Filter>

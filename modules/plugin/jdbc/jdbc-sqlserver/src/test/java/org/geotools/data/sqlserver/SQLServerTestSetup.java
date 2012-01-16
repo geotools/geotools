@@ -18,6 +18,7 @@ package org.geotools.data.sqlserver;
 
 import java.util.Properties;
 
+import org.apache.commons.dbcp.BasicDataSource;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCTestSetup;
@@ -86,5 +87,11 @@ public class SQLServerTestSetup extends JDBCTestSetup {
             + "geometry::STGeomFromText('POINT(2 2)',4326), 2, 2.2,'two');";
         run(sql);
     }
+    
+    @Override
+    protected void initializeDataSource(BasicDataSource ds, Properties db) {
+        super.initializeDataSource(ds, db);
+        ds.setValidationQuery("select 1");
+    }   
 
 }

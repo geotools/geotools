@@ -63,6 +63,16 @@
         <role>Java Developer</role>
       </roles>
     </developer>
+    <developer>
+      <name>Andrea Aime</name>
+      <id>aaime</id>
+      <email>andrea.aime@geo-solutions.it</email>
+      <organization>GeoSolutions</organization>
+      <roles>
+        <role>Module Maintainer</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
   </developers>
 
   <profiles>
@@ -72,9 +82,13 @@
           <dependency>
            <groupId>com.microsoft</groupId>
            <artifactId>sqljdbc</artifactId>
-           <version>1.2</version>
+           <version>${sqlServerDriverVersion}</version>
           </dependency>
         </dependencies>
     </profile>
   </profiles>
+
+  <properties>
+    <sqlServerDriverVersion>3.0</sqlServerDriverVersion>
+  </properties>
 </project>

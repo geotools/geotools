@@ -60,7 +60,7 @@ public class SQLServerTestSetup extends JDBCTestSetup {
 
         //create the data
 
-        String sql = "CREATE TABLE ft1 (id int IDENTITY(1,1) PRIMARY KEY, "
+        String sql = "CREATE TABLE ft1 (id int IDENTITY(0,1) PRIMARY KEY, "
             + "geometry geometry, intProperty int, "
             + "doubleProperty float, stringProperty varchar(255))";
         run(sql);

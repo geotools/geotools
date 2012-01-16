@@ -190,6 +190,8 @@ public class SQLServerFilterToSQL extends FilterToSQL {
     protected void writeLiteral(Object literal) throws IOException {
         if (literal instanceof Date) {
             out.write("'" + DATETIME_FORMAT.format(literal) + "'");
+        } else {
+            super.writeLiteral(literal);
         }
     }
 }

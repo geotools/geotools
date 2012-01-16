@@ -32,5 +32,13 @@ public class SQLServerFeatureStoreTest extends JDBCFeatureStoreTest {
     public void testAddInTransaction() throws IOException {
         // does not work, see GEOT-2832
     }
+    
+    public void testAddFeaturesUseProvidedFid() throws IOException {
+        // cannot work in general since the primary column is an identity:
+        // - it is not possible to insert into an indentity column unless the IDENTITY_INSERT
+        //   property is set on it
+        // - however if IDENTITY_INSERT is setup, then the column stops generating values and
+        //   requires one to insert values manually, which breaks other tests
+    }
 
 }

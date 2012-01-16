@@ -4,12 +4,19 @@ GeoTools SQL Server DataStore README
 JDBC Driver
 -----------
 
-To use the sql server datastore the jdbc driver must be downloaded from 
+To use the sql server datastore the jdbc 3.0 driver must be downloaded from 
 Microsoft:
 
-  http://msdn.microsoft.com/en-us/data/aa937724.aspx
+  http://www.microsoft.com/download/en/details.aspx?displaylang=en&id=19847
 
-The current tested driver version is 1.2 (SQL Server 2005). 
+The current tested driver version is 3.0 for SQL Server and SQL Azure. According to Microsoft this
+driver provides access to SQL Azure, SQL Server 2008 R2, SQL Server 2008, SQL Server 2005 and 
+SQL Server 2000 from any Java application, application server, or Java-enabled applet.
+
+Make sure to unpack the sqljdbc4.jar file, as that's the one providing support for the Java
+version in this series.
+If you are using Java 5 you should downgrade to GeoTools 2.7.x, while Java 7 is, at the time
+of writing, not officially supported   
 
 Maven
 -----
@@ -18,10 +25,10 @@ If developing with the datastore and the rest of GeoTools:
 
   1. install the JDBC driver into the location maven repository:
 
-     mvn install:install-file  -Dfile=<path to sqljdbc.jar>
-         -DartifactId=sqljdbc \ 
+     mvn install:install-file  -Dfile=<path to sqljdbc4.jar>
+         -DartifactId=sqljdbc4 \ 
          -DgroupId=com.microsoft \ 
-         -Dversion=1.2 \
+         -Dversion=3.0 \
          -Dpackaging=jar \ 
          -DgeneratePom=true
 

@@ -59,8 +59,7 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
 
     @Override
     protected String getValidationQuery() {
-        // no known way to validate a connection, if you know any, please advise
-        return null;
+        return "select 1";
     }
     
     @SuppressWarnings("unchecked")
@@ -91,4 +90,5 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
         return url;
     }
 
+    
 }

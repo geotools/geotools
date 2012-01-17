@@ -42,6 +42,7 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKBReader;
 import com.vividsolutions.jts.io.WKTReader;
 
 /**
@@ -59,7 +60,7 @@ public class SQLServerDialect extends BasicSQLDialect {
     public SQLServerDialect(JDBCDataStore dataStore) {
         super(dataStore);
     }
-
+    
     @Override
     public boolean includeTable(String schemaName, String tableName,
             Connection cx) throws SQLException {
@@ -184,17 +185,8 @@ public class SQLServerDialect extends BasicSQLDialect {
     
     @Override
     public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix, int srid, StringBuffer sql) {
-        sql.append( "CAST(");
         encodeColumnName( prefix, gatt.getLocalName(), sql );
-        sql.append( ".STSrid as VARCHAR)");
-        
-        sql.append( " + ':' + " );
-        
-        encodeColumnName( prefix, gatt.getLocalName(), sql );
-        sql.append( ".STAsText()");
-        
-        //encodeColumnName(gatt.getLocalName(), sql);
-        //sql.append( ".STAsText()");
+        sql.append( ".STAsBinary()");
     }
     
     @Override
@@ -213,8 +205,15 @@ public class SQLServerDialect extends BasicSQLDialect {
     public Geometry decodeGeometryValue(GeometryDescriptor descriptor,
             ResultSet rs, String column, GeometryFactory factory, Connection cx)
             throws IOException, SQLException {
-        String s = rs.getString( column );
-        return decodeGeometry ( s, factory );
+       byte[] bytes = rs.getBytes(column);
+       if(bytes == null) {
+           return null;
+       }
+       try {
+           return new WKBReader(factory).read(bytes);
+       } catch ( ParseException e ) {
+           throw (IOException) new IOException().initCause( e );
+       }
     }
     
     Geometry decodeGeometry( String s, GeometryFactory factory ) throws IOException {
@@ -329,4 +328,5 @@ public class SQLServerDialect extends BasicSQLDialect {
             sql.append(tableName);
         }
     }
+    
 }

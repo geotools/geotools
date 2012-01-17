@@ -34,6 +34,8 @@ public class SQLServerDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
             + "geometry::STGeomFromText('LINESTRING(3 0, 3 2, 3 3, 3 4)',4326)," + "'r2')");
         run("INSERT INTO road (id,geom,name) VALUES ( 2,"
             + "geometry::STGeomFromText('LINESTRING(3 2, 4 2, 5 3)',4326)," + "'r3')");
+        
+        run("CREATE SPATIAL INDEX _road_geometry_index on road(geom) WITH (BOUNDING_BOX = (-10, -10, 10, 10))");
     }
 
     @Override
@@ -46,6 +48,8 @@ public class SQLServerDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
             + "'rv1', 4.5)");
         run("INSERT INTO river (id,geom,river, flow) VALUES ( 1,"
             + "geometry::STGeomFromText('MULTILINESTRING((4 6, 4 8, 6 10))',4326)," + "'rv2', 3.0)");
+        
+        run("CREATE SPATIAL INDEX _river_geometry_index on river(geom) WITH (BOUNDING_BOX = (-10, -10, 10, 10))");
     }
 
     @Override
@@ -55,6 +59,8 @@ public class SQLServerDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
 
         run("INSERT INTO lake (id,geom,name) VALUES ( 0,"
             + "geometry::STGeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326)," + "'muddy')");
+        
+        run("CREATE SPATIAL INDEX _lake_geometry_index on lake(geom) WITH (BOUNDING_BOX = (-100, -100, 100, 100))");
     }
 
     @Override

@@ -81,6 +81,9 @@ public class SQLServerTestSetup extends JDBCTestSetup {
         sql = "INSERT INTO ft1 (geometry,intProperty,doubleProperty,stringProperty) VALUES ("
             + "geometry::STGeomFromText('POINT(2 2)',4326), 2, 2.2,'two');";
         run(sql);
+        
+        // create the spatial index
+        run("CREATE SPATIAL INDEX _ft1_geometry_index on ft1(geometry) WITH (BOUNDING_BOX = (-10, -10, 10, 10))");
     }
     
     @Override

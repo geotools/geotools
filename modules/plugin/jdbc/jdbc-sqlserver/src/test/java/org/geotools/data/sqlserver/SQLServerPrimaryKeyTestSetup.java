@@ -32,6 +32,8 @@ public class SQLServerPrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
         run( "INSERT INTO auto (name,geom ) VALUES ('one',geometry::STGeomFromText('POINT(1 1)',4326))");
         run( "INSERT INTO auto (name,geom ) VALUES ('two',geometry::STGeomFromText('POINT(2 2)',4326))");
         run( "INSERT INTO auto (name,geom ) VALUES ('three',geometry::STGeomFromText('POINT(3 3)',4326))");
+        
+        run("CREATE SPATIAL INDEX _auto_geometry_index on auto(geom) WITH (BOUNDING_BOX = (-10, -10, 10, 10))");
     }
     
     @Override
@@ -46,6 +48,8 @@ public class SQLServerPrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
         run( "INSERT INTO noninc VALUES (1, 'one', geometry::STGeomFromText('POINT(1 1)',4326))");
         run( "INSERT INTO noninc VALUES (2, 'two', geometry::STGeomFromText('POINT(2 2)',4326))");
         run( "INSERT INTO noninc VALUES (3, 'three', geometry::STGeomFromText('POINT(3 3)',4326))");
+        
+        run("CREATE SPATIAL INDEX _noninc_geometry_index on noninc(geom) WITH (BOUNDING_BOX = (-10, -10, 10, 10))");
     }
     
     @Override
@@ -57,6 +61,8 @@ public class SQLServerPrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
         run( "INSERT INTO multi VALUES (1, 'x', 'one', geometry::STGeomFromText('POINT(1 1)',4326))");
         run( "INSERT INTO multi VALUES (2, 'y', 'two', geometry::STGeomFromText('POINT(2 2)',4326))");
         run( "INSERT INTO multi VALUES (3, 'z', 'three', geometry::STGeomFromText('POINT(3 3)',4326))");
+        
+        run("CREATE SPATIAL INDEX _multi_geometry_index on multi(geom) WITH (BOUNDING_BOX = (-10, -10, 10, 10))");
     }
 
     @Override
@@ -75,6 +81,9 @@ public class SQLServerPrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
         run( "INSERT INTO uniq VALUES (1, 'one',geometry::STGeomFromText('POINT(1 1)',4326))");
         run( "INSERT INTO uniq VALUES (2, 'two',geometry::STGeomFromText('POINT(2 2)',4326))");
         run( "INSERT INTO uniq VALUES (3, 'three',geometry::STGeomFromText('POINT(3 3)',4326))");
+        
+        // spatial indexes in sql server require a primary key
+        // run("CREATE SPATIAL INDEX _uniq_geometry_index on uniq(geom) WITH (BOUNDING_BOX = (-10, -10, 10, 10))");
     }
     
     @Override

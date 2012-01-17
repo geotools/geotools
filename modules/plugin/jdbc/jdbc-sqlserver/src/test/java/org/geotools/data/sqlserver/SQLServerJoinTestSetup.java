@@ -28,12 +28,14 @@ public class SQLServerJoinTestSetup extends JDBCJoinTestSetup {
     protected void createJoinTable() throws Exception {
         
         run( "CREATE TABLE ftjoin ( id int, name VARCHAR(10), geom GEOMETRY)" );
-        //run("CALL AddGeometryColumn('geotools', 'ftjoin', 'geom', 4326, 'GEOMETRY', 2)");
         run("ALTER TABLE ftjoin ALTER COLUMN name VARCHAR(255) COLLATE Latin1_General_CS_AS");
         run( "INSERT INTO ftjoin VALUES (0, 'zero', geometry::STGeomFromText('POLYGON ((-0.1 -0.1, -0.1 0.1, 0.1 0.1, 0.1 -0.1, -0.1 -0.1))', 4326))");
         run( "INSERT INTO ftjoin VALUES (1, 'one', geometry::STGeomFromText('POLYGON ((-1.1 -1.1, -1.1 1.1, 1.1 1.1, 1.1 -1.1, -1.1 -1.1))', 4326))");
         run( "INSERT INTO ftjoin VALUES (2, 'two', geometry::STGeomFromText('POLYGON ((-10 -10, -10 10, 10 10, 10 -10, -10 -10))', 4326))");
         run( "INSERT INTO ftjoin VALUES (3, 'three', NULL)");
+        
+        // won't work in sql server since the table has no primary key
+        // run("CREATE SPATIAL INDEX _ftjoin_geometry_index on ftjoin(geom) WITH (BOUNDING_BOX = (-10, -10, 10, 10))");
     }
 
     @Override

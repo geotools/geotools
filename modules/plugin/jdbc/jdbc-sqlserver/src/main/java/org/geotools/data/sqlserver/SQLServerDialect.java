@@ -370,4 +370,19 @@ public class SQLServerDialect extends BasicSQLDialect {
         }
     }
     
+    @Override
+    public void encodeValue(Object value, Class type, StringBuffer sql) {
+        if(byte[].class.equals(type)) {
+            byte[] b = (byte[]) value;
+            
+            //encode as hex string
+            sql.append("0x");
+            for (int i=0; i < b.length; i++) {
+                sql.append(Integer.toString( ( b[i] & 0xff ) + 0x100, 16).substring( 1 ));
+            }
+        } else {
+            super.encodeValue(value, type, sql);
+        }
+    }
+    
 }

@@ -25,6 +25,7 @@ import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Types;
 import java.util.Map;
+import java.util.UUID;
 
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -35,7 +36,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.ProjectedCRS;
 import org.opengis.referencing.cs.CoordinateSystem;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -87,6 +87,7 @@ public class SQLServerDialect extends BasicSQLDialect {
         
         
         mappings.put( "geometry", Geometry.class );
+        mappings.put( "uniqueidentifier", UUID.class );
     }
     
     @Override
@@ -171,7 +172,8 @@ public class SQLServerDialect extends BasicSQLDialect {
                 if ( rs.next() ) {
                     return rs.getInt( 1 );
                 }
-                return -1;
+                // the default sql server srid
+                return 0;
             }
             finally {
                 dataStore.closeSafe( rs );

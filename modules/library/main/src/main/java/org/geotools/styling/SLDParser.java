@@ -110,6 +110,9 @@ public class SLDParser {
 
     /** useful for detecting relative onlineresources */
     private URL sourceUrl;
+    
+    /** provides complete control for detecting relative onlineresources */
+    private ResourceLocator onlineResourceLocator;
 
     /**
      * Create a Stylereader - use if you already have a dom to parse.
@@ -124,6 +127,7 @@ public class SLDParser {
     public SLDParser(StyleFactory factory, FilterFactory filterFactory) {
         this.factory = factory;
         this.ff = filterFactory;
+        this.onlineResourceLocator = new DefaultResourceLocator();
     }
 
     /**
@@ -271,6 +275,10 @@ public class SLDParser {
      */
     public void setInput(java.io.Reader in) {
         source = new InputSource(in);
+    }
+    
+    public void setOnLineResourceLocator(ResourceLocator onlineResourceLocator) {
+    	this.onlineResourceLocator = onlineResourceLocator;
     }
 
     /**
@@ -1634,26 +1642,7 @@ public class SLDParser {
             }
         }
 
-        URL url = null;
-        try {
-            url = new URL(uri);
-        } catch (MalformedURLException mfe) {
-            LOGGER.fine("Looks like " + uri + " is a relative path..");
-            if (sourceUrl != null) {
-                try {
-                    url = new URL(sourceUrl, uri);
-                } catch (MalformedURLException e) {
-                    LOGGER.warning("can't parse " + uri + " as relative to"
-                            + sourceUrl.toExternalForm());
-                }
-            }
-            if (url == null)
-            {
-            	url = getClass().getResource(uri);
-            	if (url == null)
-            		LOGGER.warning("can't parse " + uri + " as a java resource present in the classpath");
-            }
-        }
+        URL url = onlineResourceLocator.locateResource(uri);
 
         ExternalGraphic extgraph;
         if (url == null) {
@@ -2338,5 +2327,40 @@ public class SLDParser {
 
         return halo;
         
+    }
+    
+	/**
+	 * Default locator for online resources. Searches by absolute URL, relative
+	 * path w.r.t. to SLD document or classpath.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+    class DefaultResourceLocator implements ResourceLocator {
+
+		public URL locateResource(String uri) {
+			URL url = null;
+	        try {
+	            url = new URL(uri);
+	        } catch (MalformedURLException mfe) {
+	            LOGGER.fine("Looks like " + uri + " is a relative path..");
+	            if (sourceUrl != null) {
+	                try {
+	                    url = new URL(sourceUrl, uri);
+	                } catch (MalformedURLException e) {
+	                    LOGGER.warning("can't parse " + uri + " as relative to"
+	                            + sourceUrl.toExternalForm());
+	                }
+	            }
+	            if (url == null)
+	            {
+	            	url = getClass().getResource(uri);
+	            	if (url == null)
+	            		LOGGER.warning("can't parse " + uri + " as a java resource present in the classpath");
+	            }
+	        }
+	        return url;
+		}
+    	
     }
 }

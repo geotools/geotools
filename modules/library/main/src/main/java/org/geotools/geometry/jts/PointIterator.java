@@ -41,6 +41,8 @@ public final class PointIterator extends AbstractLiteIterator {
     /** True when the point has been read once */
     private boolean done;
     
+    /** Current coordinate */
+    private boolean moved;
 
     /**
      * Creates a new PointIterator object.
@@ -56,6 +58,7 @@ public final class PointIterator extends AbstractLiteIterator {
         this.at = at;
         this.point = point;
         done = false;
+        moved = false;
     }
 
     /**
@@ -78,18 +81,27 @@ public final class PointIterator extends AbstractLiteIterator {
      * @see java.awt.geom.PathIterator#isDone()
      */
     public boolean isDone() {
-        return done;
+        return done && moved;
     }
 
     /**
      * @see java.awt.geom.PathIterator#currentSegment(double[])
      */
     public int currentSegment(double[] coords) {
-        coords[0] = point.getX();
-        coords[1] = point.getY();
-        at.transform(coords, 0, coords, 0, 1);
+        if (!done && !moved) {
+            coords[0] = point.getX();
+            coords[1] = point.getY();
+            at.transform(coords, 0, coords, 0, 1);
 
-        return SEG_MOVETO;
+            return SEG_MOVETO;
+        } else {
+            coords[0] = point.getX();
+            coords[1] = point.getY();
+            at.transform(coords, 0, coords, 0, 1);
+
+            moved = true;
+            return SEG_LINETO;
+        }
     }
 
 }

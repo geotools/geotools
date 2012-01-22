@@ -37,7 +37,7 @@ import org.geotools.util.Utilities;
  */
 public class CatalogBuilderConfiguration {
 
-	public Hints hints;
+	private Hints hints;
 
 	private String timeAttribute;
 
@@ -241,7 +241,6 @@ public class CatalogBuilderConfiguration {
 	public void setRootMosaicDirectory(final String rootMosaicDirectory) {
 		Utilities.ensureNonNull("rootMosaicDirectory", rootMosaicDirectory);
 		String testingDirectory = rootMosaicDirectory;
-		Utils.checkDirectory(testingDirectory);
 		this.rootMosaicDirectory = testingDirectory;
 
 	}
@@ -323,13 +322,13 @@ public class CatalogBuilderConfiguration {
 		return builder.toString();
 	}
 
-	public void check() throws IllegalStateException {
+	public void check() {
 		// check parameters
 		if (indexingDirectories == null || indexingDirectories.size() <= 0)
 			throw new IllegalStateException("Indexing directories are empty");
 		final List<String> directories = new ArrayList<String>();
 		for (String dir : indexingDirectories)
-			directories.add(Utils.checkDirectory(dir));
+			directories.add(Utils.checkDirectory(dir,false));
 		indexingDirectories = directories;
 
 		if (indexName == null || indexName.length() == 0)
@@ -339,7 +338,7 @@ public class CatalogBuilderConfiguration {
 			throw new IllegalStateException(
 					"RootMosaicDirectory name cannot be empty");
 
-		rootMosaicDirectory = Utils.checkDirectory(rootMosaicDirectory);
+		rootMosaicDirectory = Utils.checkDirectory(rootMosaicDirectory,true);
 		if (wildcard == null || wildcard.length() == 0)
 			throw new IllegalStateException(
 					"WildcardString name cannot be empty");

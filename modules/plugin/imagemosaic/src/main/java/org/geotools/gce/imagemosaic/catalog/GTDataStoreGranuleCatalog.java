@@ -51,7 +51,6 @@ import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
-import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.collection.AbstractFeatureVisitor;
 import org.geotools.feature.visitor.FeatureCalc;
@@ -61,6 +60,7 @@ import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.gce.imagemosaic.PathType;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.DefaultProgressListener;
+import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.Utilities;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
@@ -93,10 +93,10 @@ class GTDataStoreGranuleCatalog extends AbstractGranuleCatalog {
 	/** Logger. */
 	final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GTDataStoreGranuleCatalog.class);
 
-	/**
-     * UTC timezone to serve as reference
-     */
-    static final TimeZone UTC_TZ = TimeZone.getTimeZone("UTC");
+        /**
+         * UTC timezone to serve as reference
+         */
+        static final TimeZone UTC_TZ = TimeZone.getTimeZone("UTC");
     
 	final static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints() );
 	
@@ -153,6 +153,8 @@ class GTDataStoreGranuleCatalog extends AbstractGranuleCatalog {
 	private String parentLocation;
 	
 	private boolean heterogeneous;
+	
+	private final SoftValueHashMap<String, GranuleDescriptor> granuleDescriptorsCache= new SoftValueHashMap<String, GranuleDescriptor>(0);
 
 	public GTDataStoreGranuleCatalog(
 			final Map<String, Serializable> params, 
@@ -446,7 +448,7 @@ class GTDataStoreGranuleCatalog extends AbstractGranuleCatalog {
 
 	public void  getGranules(final Query q, final GranuleCatalogVisitor visitor)
 	throws IOException {
-		Utilities.ensureNonNull("q",q);
+		Utilities.ensureNonNull("query",q);
 
 		final Lock lock=rwLock.readLock();
 		try{
@@ -457,8 +459,6 @@ class GTDataStoreGranuleCatalog extends AbstractGranuleCatalog {
 			// Load tiles informations, especially the bounds, which will be
 			// reused
 			//
-			
-
 			final SimpleFeatureSource featureSource = tileIndexStore.getFeatureSource(this.typeName);
 			if (featureSource == null) 
 				throw new NullPointerException(
@@ -491,14 +491,26 @@ class GTDataStoreGranuleCatalog extends AbstractGranuleCatalog {
 			        if(feature instanceof SimpleFeature)
 			        {
 			        	final SimpleFeature sf= (SimpleFeature) feature;
-						// create the granule descriptor
-						final GranuleDescriptor granule= new GranuleDescriptor(
-								sf,
-								suggestedSPI,
-								pathType,
-								locationAttribute,
-								parentLocation,
-								heterogeneous);
+			        	final GranuleDescriptor granule;
+			        	synchronized (granuleDescriptorsCache) {
+			        	    String granuleLocation = (String) sf.getAttribute(locationAttribute);
+                                            if(granuleDescriptorsCache.containsKey(granuleLocation)){
+                                                granule=granuleDescriptorsCache.get(granuleLocation);
+                                            } else{
+                                                // create the granule descriptor
+                                                granule= new GranuleDescriptor(
+                                                                sf,
+                                                                suggestedSPI,
+                                                                pathType,
+                                                                locationAttribute,
+                                                                parentLocation,
+                                                                heterogeneous);
+                                                granuleDescriptorsCache.put(granuleLocation, granule);
+                                            }
+  
+			        	    
+			        	    
+                                        }
 			        	visitor.visit(granule, null);
 			        	
 			        	// check if something bad occurred
@@ -525,76 +537,16 @@ class GTDataStoreGranuleCatalog extends AbstractGranuleCatalog {
 	}
 
 	public List<GranuleDescriptor> getGranules(final Query q) throws IOException {
-		Utilities.ensureNonNull("q",q);
-
-		FeatureIterator<SimpleFeature> it=null;
-		final Lock lock=rwLock.readLock();
-		try{
-			lock.lock();		
-			checkStore();
-			
-			//
-			// Load tiles informations, especially the bounds, which will be
-			// reused
-			//
-			final SimpleFeatureSource featureSource = tileIndexStore.getFeatureSource(this.typeName);
-			if (featureSource == null) 
-				throw new NullPointerException(
-						"The provided SimpleFeatureSource is null, it's impossible to create an index!");			
-			final SimpleFeatureCollection features = featureSource.getFeatures( q );
-			if (features == null) 
-				throw new NullPointerException(
-						"The provided SimpleFeatureCollection is null, it's impossible to create an index!");
-	
-			if (LOGGER.isLoggable(Level.FINE))
-				LOGGER.fine("Index Loaded");
-						
-			
-			//load the feature from the underlying datastore as needed
-			it = features.features();
-			if (!it.hasNext()) {
-				if(LOGGER.isLoggable(Level.FINE))
-					LOGGER.fine("The provided SimpleFeatureCollection  or empty, it's impossible to create an index!");
-				return Collections.emptyList();
-					
-			}
-			
-			// now build the index
-			// TODO make it configurable as far the index is involved
-			final ArrayList<GranuleDescriptor> retVal= new ArrayList<GranuleDescriptor>(features.size());
-			while (it.hasNext()) {
-				// get the feature
-				final SimpleFeature sf = it.next();
-				
-				try {
-        				// create the granule descriptor
-        				final GranuleDescriptor granule = new GranuleDescriptor(
-        						sf,
-        						suggestedSPI,
-        						pathType,
-        						locationAttribute,
-        						parentLocation, 
-        						heterogeneous);
-
-                                        retVal.add(granule);
-				} catch (Throwable t) {
-                                    if(LOGGER.isLoggable(Level.SEVERE))
-                                        LOGGER.log(Level.SEVERE,"Skipping granule " + sf.toString(), t);
-                                }
-			}
-			return retVal;
-
-		}
-		catch (Throwable e) {
-			throw new  IllegalArgumentException(e);
-		}
-		finally{
-			lock.unlock();
-			if(it!=null)
-				// closing he iterator to free some resources.
-    			it.close();
-
-		}
+	    // create a list to return and reuse the visitor enabled method
+	    final List<GranuleDescriptor> returnValue= new ArrayList<GranuleDescriptor>();
+	    getGranules(q, new GranuleCatalogVisitor() {
+                
+                public void visit(GranuleDescriptor granule, Object o) {
+                    returnValue.add(granule);
+                    
+                }
+            });
+	    return returnValue;
 	}
 
 	public Collection<GranuleDescriptor> getGranules()throws IOException {
@@ -656,7 +608,7 @@ class GTDataStoreGranuleCatalog extends AbstractGranuleCatalog {
 			final SimpleFeatureType featureType= DataUtilities.createType(identification, typeSpec);
 			tileIndexStore.createSchema(featureType);
 			extractBasicProperties(featureType.getTypeName());
-		}finally{
+		} finally{
 			lock.unlock();
 		}			
 		

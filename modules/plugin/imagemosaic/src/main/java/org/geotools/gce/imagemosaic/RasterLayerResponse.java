@@ -126,6 +126,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for jar:file:foo.jar/bar.properties URLs
  */
+@SuppressWarnings("rawtypes")
 class RasterLayerResponse{
     
     private static final class SimplifiedGridSampleDimension extends GridSampleDimension implements SampleDimension{
@@ -289,7 +290,7 @@ class RasterLayerResponse{
 		}
 
 		@SuppressWarnings("unchecked")
-		@Override
+        @Override
 		public void visit(Feature feature) {
 			super.visit(feature);
 			// if we got a NAN let's leave
@@ -905,7 +906,6 @@ class RasterLayerResponse{
                                                     true)); 
                                             } else {
                                                 // convert to range and create a correct range filter
-                                                @SuppressWarnings("rawtypes")
                                                 final NumberRange range= (NumberRange)elevation;
                                                 elevationF.add( 
                                                         FeatureUtilities.DEFAULT_FILTER_FACTORY.and(

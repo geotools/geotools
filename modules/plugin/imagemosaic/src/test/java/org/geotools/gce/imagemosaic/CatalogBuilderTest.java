@@ -22,11 +22,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Properties;
 
 import javax.media.jai.PlanarImage;
 
+import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -150,7 +152,27 @@ public class CatalogBuilderTest extends Assert {
 		// Test the output coverage
 		coverage = (GridCoverage2D) reader.read(new GeneralParameterValue[] {gg,useJai ,tileSize});
 		Assert.assertNotNull(coverage);
-		PlanarImage.wrapRenderedImage( coverage.getRenderedImage()).getTiles();;
+		PlanarImage.wrapRenderedImage( coverage.getRenderedImage()).getTiles();
+		
+		//caching should be false by default
+		Properties props= new Properties();
+		InputStream in= null;
+		try{
+		    in= TestData.openStream(this, "/overview/"+c1.getIndexName()+".properties");
+		    assertNotNull("unable to find mosaic properties file",in);
+		    props.load(in);
+		    
+		    assertTrue(props.containsKey("Caching"));
+		    assertTrue(props.getProperty("Caching").equalsIgnoreCase("false"));
+		} finally {
+		    if(in!=null){
+		        IOUtils.closeQuietly(in);
+		    }
+		}
+		
+		// dispose
+		coverage.dispose(true);
+		reader.dispose();
 
 		
 		//build an absolute index and then make it run
@@ -158,6 +180,7 @@ public class CatalogBuilderTest extends Assert {
 		c2.setIndexName("shpindex_absolute");
 		c2.setLocationAttribute("location");
 		c2.setAbsolute(true);
+		c2.setCaching(true);
 		c2.setRootMosaicDirectory(TestData.file(this,"/overview").toString());
 		c2.setIndexingDirectories(Arrays.asList(TestData.file(this,"/overview/0").toString()));
 		assertNotNull(c2.toString());		
@@ -167,6 +190,22 @@ public class CatalogBuilderTest extends Assert {
 		builder.run();
 		final File absoluteMosaic=TestData.file(this,"/overview/"+c2.getIndexName()+".shp");
 		assertTrue(absoluteMosaic.exists());
+		
+	        //caching should be false by default
+                props= new Properties();
+                in= null;
+                try{
+                    in= TestData.openStream(this, "/overview/"+c2.getIndexName()+".properties");
+                    assertNotNull("unable to find mosaic properties file",in);
+                    props.load(in);
+                    
+                    assertTrue(props.containsKey("Caching"));
+                    assertTrue(props.getProperty("Caching").equalsIgnoreCase("true"));
+                } finally {
+                    if(in!=null){
+                        IOUtils.closeQuietly(in);
+                    }
+                }
 		
 		assertTrue(new ImageMosaicFormat().accepts(absoluteMosaic));
 		reader = (ImageMosaicReader) new ImageMosaicReader(absoluteMosaic);
@@ -186,7 +225,12 @@ public class CatalogBuilderTest extends Assert {
 		// Test the output coverage
 		coverage = (GridCoverage2D) reader.read(new GeneralParameterValue[] {gg,useJai ,tileSize});
 		Assert.assertNotNull(coverage);
-		PlanarImage.wrapRenderedImage( coverage.getRenderedImage()).getTiles();;
+		PlanarImage.wrapRenderedImage( coverage.getRenderedImage()).getTiles();
+		
+		
+                // dispose
+                coverage.dispose(true);
+                reader.dispose();		
 	}
 	
 	
@@ -229,13 +273,9 @@ public class CatalogBuilderTest extends Assert {
 			GranuleCatalog catalog = reader.rasterManager.granuleCatalog;
 			assertTrue(catalog.getClass().toString().endsWith("GTDataStoreGranuleCatalog"));
 		} finally {
-			try {
-				if (inStream != null){
-					inStream.close();
-				}
-			} catch (Throwable t){
-				//Eat exception
-			}
+		    if (inStream != null){
+                        IOUtils.closeQuietly(inStream);
+                    }
 			
 			try {
 				if (reader != null){
@@ -272,13 +312,9 @@ public class CatalogBuilderTest extends Assert {
 			assertTrue(catalog.getClass().toString().endsWith("STRTreeGranuleCatalog"));
 
 		} finally {
-			try {
-				if (inStream != null){
-					inStream.close();
-				}
-			} catch (Throwable t){
-				//Eat exception
-			}
+                    if (inStream != null){
+                        IOUtils.closeQuietly(inStream);
+                    }
 			
 			try {
 				if (reader != null){

@@ -32,7 +32,6 @@ import org.geotools.util.Utilities;
  * @author Simone Giannecchini, GeoSolutions SAS
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for jar:file:foo.jar/bar.properties URLs
  * 
- *
  * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/imagemosaic/src/main/java/org/geotools/gce/imagemosaic/PathType.java $
  */
 public enum PathType {
@@ -67,19 +66,6 @@ public enum PathType {
 			} catch (MalformedURLException e) {
 				return null;
 			}
-			
-//			// create a file for the provided location, relative to parent location
-//			File rasterFile= new File(parentLocation,location);
-//			if(!ImageMosaicUtils.checkFileReadable(rasterFile))
-//			{		
-//				if (LOGGER.isLoggable(Level.INFO))
-//					LOGGER.info("Unable to read image for file "+ rasterFile.getAbsolutePath());
-//				
-//				return null;
-//				
-//			}		
-//			return rasterFile;
-
 		}
 		
 	},

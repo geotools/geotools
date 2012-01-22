@@ -189,8 +189,6 @@ class RasterManager {
 	
 	String elevationAttribute;
 	
-	String runtimeAttribute;
-
 	ImageLayout defaultImageLayout;
 
 	public RasterManager(final ImageMosaicReader reader) throws DataSourceException {
@@ -207,7 +205,6 @@ class RasterManager {
 		
         timeAttribute=parent.timeAttribute;
         elevationAttribute=parent.elevationAttribute;
-        runtimeAttribute=parent.runtimeAttribute;
         coverageIdentifier=reader.getName();
         hints = reader.getHints();
         this.coverageIdentifier =reader.getName();

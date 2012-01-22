@@ -34,6 +34,9 @@ import org.geotools.util.Utilities;
  */
 public class MosaicConfigurationBean {
 
+        /**
+         * Default constructor
+         */
 	public MosaicConfigurationBean() {
 		
 	}
@@ -54,7 +57,7 @@ public class MosaicConfigurationBean {
 	/**
 	 * <code>true</code> it tells us if the mosaic points to absolute paths or to relative ones. (in case of <code>false</code>).
 	 */
-	private boolean absolutePath;
+	private boolean absolutePath= Utils.DEFAULT_PATH_BEHAVIOR;
 	
 	/**
 	 * <code>true</code> if we need to expand to RGB(A) the single tiles in case they use a different {@link IndexColorModel}.
@@ -71,7 +74,7 @@ public class MosaicConfigurationBean {
 	private int levelsNum;
 	
 	/** location attribute name*/
-	private String locationAttribute;
+	private String locationAttribute=Utils.DEFAULT_LOCATION_ATTRIBUTE;
 	
 	/**Suggested SPI for the various tiles. May be null.**/
 	private String suggestedSPI;
@@ -81,9 +84,6 @@ public class MosaicConfigurationBean {
 	
 	/** elevation attribute name. <code>null</code> if absent.*/
 	private String elevationAttribute;
-
-	/** runtime attribute name. <code>null</code> if absent.*/
-	private String runtimeAttribute;
 	
         /** 
          * mosaic's dummy sample model useful to store dataType and number of bands. All the other fields
@@ -117,13 +117,6 @@ public class MosaicConfigurationBean {
 	}
 	public void setElevationAttribute(final String elevationAttribute) {
 		this.elevationAttribute = elevationAttribute;
-	}
-
-	public String getRuntimeAttribute() {
-		return runtimeAttribute;
-	}
-	public void setRuntimeAttribute(final String runtimeAttribute) {
-		this.runtimeAttribute = runtimeAttribute;
 	}
 
 	/** we want to use caching for our index.*/

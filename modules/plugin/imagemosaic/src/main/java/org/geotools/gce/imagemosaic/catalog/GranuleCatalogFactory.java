@@ -79,6 +79,7 @@ public abstract class GranuleCatalogFactory {
 			if (sourceURL.getProtocol().equalsIgnoreCase("file"))
 				params.put(ShapefileDataStoreFactory.CREATE_SPATIAL_INDEX.key,Boolean.TRUE);
 			params.put(ShapefileDataStoreFactory.MEMORY_MAPPED.key, Boolean.TRUE);
+			params.put(ShapefileDataStoreFactory.CACHE_MEMORY_MAPS.key, Boolean.TRUE);
 			params.put(ShapefileDataStoreFactory.DBFTIMEZONE.key, TimeZone.getTimeZone("UTC"));
 			
 			// add other standard params
@@ -91,8 +92,7 @@ public abstract class GranuleCatalogFactory {
 				parentDirectory=parentDirectory.getParentFile();
 			params.put("ParentLocation", DataUtilities.fileToURL(parentDirectory).toString());
 			
-			final DataStoreFactorySpi spi=configuration.isCaching() ? Utils.SHAPE_SPI : Utils.INDEXED_SHAPE_SPI;
-			return configuration.isCaching()?new STRTreeGranuleCatalog(params,spi):new GTDataStoreGranuleCatalog(params,false,spi);
+			return configuration.isCaching()?new STRTreeGranuleCatalog(params,Utils.SHAPE_SPI):new GTDataStoreGranuleCatalog(params,false,Utils.SHAPE_SPI);
 		}
 		else
 		{

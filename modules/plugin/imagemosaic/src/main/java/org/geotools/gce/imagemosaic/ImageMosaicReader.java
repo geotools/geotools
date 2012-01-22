@@ -28,7 +28,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -141,8 +140,6 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 	boolean cachingIndex;
 
 	String elevationAttribute;
-	
-	String runtimeAttribute;
 
 	boolean imposedBBox;
 	
@@ -523,12 +520,7 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 		// elevation param
 		final String elevationAttribute = configuration.getElevationAttribute();
 		if(elevationAttribute != null)
-			this.elevationAttribute = elevationAttribute;		
-
-		// runtime param
-		final String runtimeAttribute = configuration.getRuntimeAttribute();
-		if(runtimeAttribute != null)
-			this.runtimeAttribute = runtimeAttribute;		
+			this.elevationAttribute = elevationAttribute;				
 
 
 		// caching for the index

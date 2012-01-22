@@ -19,7 +19,6 @@ package org.geotools.gce.imagemosaic.catalog;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.Serializable;
-import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -34,9 +33,7 @@ import java.util.logging.Logger;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
-import org.geotools.data.Transaction;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.SchemaException;
 import org.geotools.feature.visitor.FeatureCalc;
 import org.geotools.gce.imagemosaic.GranuleDescriptor;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
@@ -52,7 +49,6 @@ import org.opengis.geometry.BoundingBox;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.index.ItemVisitor;
-import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.index.strtree.STRtree;
 
 /**
@@ -83,6 +79,10 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
 		
 		private Filter filter;
 
+                private int maxGranules=-1;
+                
+                private int granuleIndex=0;
+
 		/**
 		 * @param indexLocation
 		 */
@@ -93,6 +93,7 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
 		public JTSIndexVisitorAdapter(final GranuleCatalogVisitor adaptee, Query q) {
 			this.adaptee=adaptee;
 			this.filter=q==null?Query.ALL.getFilter():q.getFilter();
+                        this.maxGranules= q.getMaxFeatures();		
 		}
 		/**
 		 * @param indexLocation
@@ -109,11 +110,16 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
 		 * com.vividsolutions.jts.index.ItemVisitor#visitItem(java.lang.Object)
 		 */
 		public void visitItem(Object o) {
+		    if(maxGranules>0&&granuleIndex>maxGranules){
+		        return; //Skip
+		    }
 			if(o instanceof GranuleDescriptor){
 				final GranuleDescriptor g=(GranuleDescriptor) o;
 				final SimpleFeature originator = g.getOriginator();
-				if(originator!=null&&filter.evaluate(originator))
-					adaptee.visit(g,null);
+				if(originator!=null&&filter.evaluate(originator)){
+				    adaptee.visit(g,null);
+				    granuleIndex++;
+				}
 				return;
 			}
 			throw new IllegalArgumentException("Unable to visit provided item"+o);
@@ -125,23 +131,7 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
 	private GranuleCatalog wrappedCatalogue;
 	
 	public STRTreeGranuleCatalog(final Map<String,Serializable> params, DataStoreFactorySpi spi) {
-		Utilities.ensureNonNull("params",params);
-		try{
-			wrappedCatalogue= new GTDataStoreGranuleCatalog(params,false,spi);
-		}
-		catch (Throwable e) {
-			try {
-				if (wrappedCatalogue != null)
-					wrappedCatalogue.dispose();
-			} catch (Throwable e2) {
-				if (LOGGER.isLoggable(Level.FINE))
-					LOGGER.log(Level.FINE, e2.getLocalizedMessage(), e2);
-			} 
-
-			
-			throw new  IllegalArgumentException(e);
-		}
-		
+	        this(new GTDataStoreGranuleCatalog(params,false,spi));
 	}
 	
 
@@ -160,8 +150,8 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
         this.wrappedCatalogue = catalogue;
     }
 
-    /** The {@link STRtree} index. */
-	private SoftReference<STRtree> index= new SoftReference<STRtree>(null);
+        /** The {@link STRtree} index. */
+	private STRtree index;
 
 	private final ReadWriteLock rwLock= new ReentrantReadWriteLock(true);
 
@@ -172,27 +162,21 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
 	 * @param features
 	 * @throws IOException
 	 */
-	private SpatialIndex getIndex(Lock readLock) throws IOException {
+	private void checkIndex(Lock readLock) throws IOException {
 		final Lock writeLock=rwLock.writeLock();
 		try{
 			// upgrade the read lock to write lock
 			readLock.unlock();
 			writeLock.lock();
-					
-			// check if the index has been cleared
-			checkStore();
 			
 			// do your thing
-			STRtree tree = index.get();
-			if (tree == null) {
+			if (index == null) {
 				if (LOGGER.isLoggable(Level.FINE))
 					LOGGER.fine("No index exits and we create a new one.");
 				createIndex();
-				tree = index.get();
 			} else if (LOGGER.isLoggable(Level.FINE))
 				LOGGER.fine("Index does not need to be created...");
 			
-			return tree;
 		}finally{
 			// get read lock again
 			readLock.lock();
@@ -233,6 +217,7 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
 			// now build the index
 			// TODO make it configurable as far the index is involved
 			STRtree tree = new STRtree();
+			long size=0;
 			while (it.hasNext()) {
 				final GranuleDescriptor granule = it.next();
 				final ReferencedEnvelope env=ReferencedEnvelope.reference(granule.getGranuleBBOX());
@@ -241,12 +226,12 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
 				tree.insert(g.getEnvelopeInternal(), granule);
 			}
 			
-			// force index construction --> STRTrees are build on first call to
+			// force index construction --> STRTrees are built on first call to
 			// query
 			tree.build();
 			
 			// save the soft reference
-			index= new SoftReference<STRtree>(tree);
+			index=tree;
 		}
 		catch (Throwable e) {
 			throw new  IllegalArgumentException(e);
@@ -264,8 +249,8 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
 		try{
 			lock.lock();
 			checkStore();
-			
-			return getIndex(lock).query(ReferencedEnvelope.reference(envelope));
+			checkIndex(lock);
+			return index.query(ReferencedEnvelope.reference(envelope));
 		}finally{
 			lock.unlock();
 		}			
@@ -282,7 +267,9 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
 			lock.lock();
 			checkStore();
 			
-			getIndex(lock).query(ReferencedEnvelope.reference(envelope), new JTSIndexVisitorAdapter(visitor));
+			checkIndex(lock);
+			
+			index.query(ReferencedEnvelope.reference(envelope), new JTSIndexVisitorAdapter(visitor));
 		}finally{
 			lock.unlock();
 		}				
@@ -293,15 +280,7 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
 	public void dispose() {
 		final Lock l=rwLock.writeLock();
 		try{
-			l.lock();
-			if(index!=null)
-                            try {
-                                index.clear();
-                            } catch (Exception e) {
-                                if (LOGGER.isLoggable(Level.FINE))
-                                    LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
-                            }
-	        
+			l.lock();	        
 			 
 			// original index
 			if(wrappedCatalogue!=null)
@@ -337,19 +316,19 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
 			ReferencedEnvelope requestedBBox=extractAndCombineBBox(filter);
 			
 			// load what we need to load
-			final List<GranuleDescriptor> features= getIndex(lock).query(requestedBBox);
+			checkIndex(lock);
+			final List<GranuleDescriptor> features= index.query(requestedBBox);
 			if(q.equals(Query.ALL))
 				return features;
 			
 			final List<GranuleDescriptor> retVal= new ArrayList<GranuleDescriptor>();
 			final int maxGranules= q.getMaxFeatures();
 			int numGranules=0;
-			for (Iterator<GranuleDescriptor> it = features.iterator();it.hasNext();)
+			for(GranuleDescriptor g :features)
 			{       
 			        // check how many tiles we are returning
 			        if(maxGranules>0&&numGranules>=maxGranules)
 			            break;
-				GranuleDescriptor g= it.next();
 				final SimpleFeature originator = g.getOriginator();
 				if(originator!=null&&filter.evaluate(originator))
 					retVal.add(g);
@@ -396,7 +375,8 @@ class STRTreeGranuleCatalog extends AbstractGranuleCatalog {
 			ReferencedEnvelope requestedBBox=extractAndCombineBBox(filter);
 			
 			// get filter and check bbox
-			getIndex(lock).query(requestedBBox,new JTSIndexVisitorAdapter(visitor,q));
+			checkIndex(lock);
+                        index.query(requestedBBox,new JTSIndexVisitorAdapter(visitor,q));
 			
 		}finally{
 			lock.unlock();

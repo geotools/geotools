@@ -109,7 +109,7 @@ import org.opengis.referencing.operation.MathTransform;
  */
 public final class ImageMosaicReader extends AbstractGridCoverage2DReader implements GridCoverageReader, GridCoverageWriter {
 
-        /** Logger. */
+		/** Logger. */
 	private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ImageMosaicReader.class);
 
 	/**
@@ -783,54 +783,7 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
     
             }
         		
-//		final boolean getRuntimeAttribute=name.equalsIgnoreCase("runtime_domain");
-//		if(getRuntimeAttribute){
-//			Query query;
-//			try {
-//				query = new DefaultQuery(rasterManager.granuleCatalog.getType().getTypeName());
-//				query.setPropertyNames(Arrays.asList("runtime"));
-//				final SortBy[] sortBy=new SortBy[]{
-//						new SortByImpl(
-//								FeatureUtilities.DEFAULT_FILTER_FACTORY.property("runtime"),
-//								SortOrder.DESCENDING
-//						)};
-//				if(queryCapabilities.supportsSorting(sortBy))
-//					query.setSortBy(sortBy);
-////				else
-////					manualSort=true;				
-//				final UniqueVisitor visitor= new UniqueVisitor("runtime");
-//				rasterManager.granuleCatalog.computeAggregateFunction(query, visitor);
-//				
-//				// check result
-//				final Set<Integer> result = new TreeSet<Integer>(new Comparator<Integer>() {
-//
-//					public int compare(Integer o1, Integer o2) {
-//						// Revert Order
-//						if (o1 > 02)
-//							return -1;
-//						else if (o1 < o2)
-//							return 1;
-//						return 0;
-//					}
-//				});
-//				result.addAll(visitor.getUnique());
-//				if(result.size()<=0)
-//					return null;
-//				final StringBuilder buff= new StringBuilder();
-//				for(Iterator<Integer> it=result.iterator();it.hasNext();){
-//					final int value= it.next();
-//					buff.append(value);
-//					if(it.hasNext())
-//						buff.append(",");
-//				}
-//				return buff.toString();
-//			} catch (IOException e) {
-//				if(LOGGER.isLoggable(Level.WARNING))
-//					LOGGER.log(Level.WARNING,"Unable to parse attribute:"+name,e);
-//			}
-//			
-//		}
-//		
+
 		return super.getMetadataValue(name);
 	}
 
@@ -897,8 +850,12 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
             final FeatureCalc visitor = createExtremaQuery(metadataName,rasterManager.elevationAttribute);
             
             // check result
-            final Double result=(Double) visitor.getResult().getValue();
-            return Double.toString(result);
+            final Object result = visitor.getResult().getValue();
+            if(result instanceof Number) {
+                return result.toString();
+            } else {
+                return null;
+            }
         } catch (IOException e) {
             if(LOGGER.isLoggable(Level.WARNING))
                     LOGGER.log(Level.WARNING,"Unable to compute extrema for ELEVATION_DOMAIN",e);
@@ -917,14 +874,14 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
             return null;
         }
         try {
-            final Set<Double> result = extractDomain(elevationAttribute);          
+            final Set<Number> result = extractDomain(elevationAttribute);          
             // check result
             if(result.size()<=0)
-                    return null;
+                    return "";
             
             final StringBuilder buff= new StringBuilder();
-            for(Iterator<Double> it=result.iterator();it.hasNext();){
-                    final double value= (Double) it.next();
+            for(Iterator<Number> it= result.iterator(); it.hasNext();){
+                    final double value= ((Number) it.next()).doubleValue();
                     buff.append(value);
                     if(it.hasNext())
                     	buff.append(",");
@@ -933,7 +890,7 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
         } catch (IOException e) {
             if(LOGGER.isLoggable(Level.WARNING))
                     LOGGER.log(Level.WARNING,"Unable to parse attribute: ELEVATION_DOMAIN",e);
-            return null;
+            return "";
         }
     }
 

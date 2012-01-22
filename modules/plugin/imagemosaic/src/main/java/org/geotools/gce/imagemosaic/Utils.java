@@ -103,11 +103,12 @@ import com.vividsolutions.jts.geom.Geometry;
  * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/imagemosaic/src/main/java/org/geotools/gce/imagemosaic/Utils.java $
  */
 public class Utils {
+
+    public final static String INDEXER_PROPERTIES = "indexer.properties";
     
     /** EHCache instance to cache histograms */ 
     private static Cache ehcache;    
     
-    public  final static String INDEXER_PROPERTIES = "indexer.properties";
     
     /** RGB to GRAY coefficients (for Luminance computation) */
     public final static double RGB_TO_GRAY_MATRIX [][]= {{ 0.114, 0.587, 0.299, 0 }};

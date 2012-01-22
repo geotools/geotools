@@ -162,8 +162,8 @@ class Utils {
                 if(LOGGER.isLoggable(Level.FINE)){
                     LOGGER.fine("Created '0' subidr, now moving files");
                 }                   
-                FileFilter notDirFilter = FileFilterUtils.notFileFilter(directoryFilter);
-                for (File f : directory.listFiles(notDirFilter)) {
+                FileFilter zeroLevelsFiles = FileFilterUtils.makeSVNAware(FileFilterUtils.makeCVSAware(FileFilterUtils.notFileFilter(directoryFilter)));
+                for (File f : directory.listFiles(zeroLevelsFiles)) {
                     if(LOGGER.isLoggable(Level.FINE)){
                         LOGGER.fine("Moving file"+f.getAbsolutePath());
                     }  

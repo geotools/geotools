@@ -23,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetAddress;
 import java.util.Arrays;
 import java.util.Properties;
 
@@ -35,13 +36,14 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilder;
-import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilder.ExceptionEvent;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilder.ProcessingEvent;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilder.ProcessingEventListener;
+import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.test.TestData;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
@@ -55,6 +57,19 @@ import org.opengis.parameter.ParameterValue;
  * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/imagemosaic/src/test/java/org/geotools/gce/imagemosaic/CatalogBuilderTest.java $
  */
 public class CatalogBuilderTest extends Assert {
+    
+    /** Used to avoid errors if building on a system where hostname is not defined */
+    private boolean hostnameDefined;
+    
+    @Before
+    public void setup() {
+        try {
+            InetAddress.getLocalHost();
+            hostnameDefined = true;
+        } catch (Exception ex) {
+            hostnameDefined = false;
+        }
+    }
 	
 	private final class CatalogBuilderListener extends ProcessingEventListener{
 
@@ -72,7 +87,7 @@ public class CatalogBuilderTest extends Assert {
 	}
 
 	@Test
-	public void catalogBuilderConfiguration() throws FileNotFoundException, IOException, CloneNotSupportedException{
+	public void catalogBuilderConfiguration() throws Exception{
 		// create a stub configuration
 		final CatalogBuilderConfiguration c1= new CatalogBuilderConfiguration();
 		c1.setIndexName("index");
@@ -102,8 +117,9 @@ public class CatalogBuilderTest extends Assert {
 		
 	}
 	
-	@Test
-	public void buildCatalog() throws FileNotFoundException, IOException{
+    @Test
+    public void buildCatalog() throws FileNotFoundException, IOException{
+        if (hostnameDefined){
             CatalogBuilder builder = null;
             ImageMosaicReader reader = null;
             ParameterValue<GridGeometry2D> gg = null;
@@ -228,14 +244,16 @@ public class CatalogBuilderTest extends Assert {
 		PlanarImage.wrapRenderedImage( coverage.getRenderedImage()).getTiles();
 		
 		
-                // dispose
-                coverage.dispose(true);
-                reader.dispose();		
+		// dispose
+        coverage.dispose(true);
+        reader.dispose();
+        }
 	}
 	
 	
 	@Test
 	public void buildCachingIndex() throws FileNotFoundException, IOException {
+	    if (hostnameDefined){
 		CatalogBuilder builder = null;
 		ImageMosaicReader reader = null;
 		FileInputStream inStream = null;
@@ -324,6 +342,6 @@ public class CatalogBuilderTest extends Assert {
 				//Eat exception
 			}
 		}
-		
+	    }
 	}
 }

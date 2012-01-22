@@ -51,6 +51,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.ImageTypeSpecifier;
+import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
 import javax.swing.SwingUtilities;
@@ -86,6 +87,7 @@ import org.geotools.gce.imagemosaic.properties.PropertiesCollectorFinder;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.referencing.CRS;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.Utilities;
@@ -116,8 +118,6 @@ public class CatalogBuilder implements Runnable {
 
 	/** Default Logger * */
 	final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(CatalogBuilder.class);
-	
-	
 	
 	static abstract public class ProcessingEventListener implements EventListener {
 
@@ -327,23 +327,35 @@ public class CatalogBuilder implements Runnable {
 				// STEP 1
 				// Getting an ImageIO reader for this coverage.
 				//
-				inStream = ImageIO.createImageInputStream(fileBeingProcessed);
-				if(inStream==null) {
-					fireEvent(Level.INFO,fileBeingProcessed+" has been skipped since we could not get a stream for it", ((fileIndex * 100.0) / numFiles));
-					return;
-				}
+			        // try to use cache
+			        if(cachedStreamSPI!=null ){
+			            inStream=cachedStreamSPI.createInputStreamInstance(fileBeingProcessed);
+			        } 
+			        if(inStream==null ){
+			            // failed, look for a new SPI
+			            cachedStreamSPI= ImageIOExt.getImageInputStreamSPI(fileBeingProcessed);
+			            if(cachedStreamSPI!=null){
+			                inStream=cachedStreamSPI.createInputStreamInstance(fileBeingProcessed);
+			            }
+			            
+			        } 
+    				if(inStream==null) {
+    				    // failed again
+    					fireEvent(Level.INFO,fileBeingProcessed+" has been skipped since we could not get a stream for it", ((fileIndex * 100.0) / numFiles));
+    					return;
+    				}
 				inStream.mark();
 				
 				
-				cachedSPITest: {
+				cachedReaderSPITest: {
 					// there is no cached reader spi, let's look for one
-					if(cachedSPI==null){
+					if(cachedReaderSPI==null){
 						final Iterator<ImageReader> it = ImageIO.getImageReaders(inStream);
 						if (it.hasNext()) {
 							imageioReader = it.next();
 							if(imageioReader!=null){
 								//cache the SPI
-								cachedSPI=imageioReader.getOriginatingProvider();
+								cachedReaderSPI=imageioReader.getOriginatingProvider();
 								imageioReader.setInput(inStream);
 							}
 						} else {
@@ -351,14 +363,14 @@ public class CatalogBuilder implements Runnable {
 						}
 					} else {
 						// we have a cached SPI, let's try to use it
-						if(!cachedSPI.canDecodeInput(inStream)){				
+						if(!cachedReaderSPI.canDecodeInput(inStream)){				
 							// the SPI is no good for this input
-							cachedSPI=null;
+							cachedReaderSPI=null;
 							//take me to the SPI search
-							break cachedSPITest;
+							break cachedReaderSPITest;
 						}
 						// the spi is good
-						imageioReader=cachedSPI.createReaderInstance();
+						imageioReader=cachedReaderSPI.createReaderInstance();
 						imageioReader.setInput(inStream);
 					}
 				}
@@ -877,8 +889,10 @@ public class CatalogBuilder implements Runnable {
 
 	private CatalogBuilderConfiguration runConfiguration;
 
-	private ImageReaderSpi cachedSPI;
+	private ImageReaderSpi cachedReaderSPI;
 
+	private ImageInputStreamSpi cachedStreamSPI;
+	
 	private List<PropertiesCollector> propertiesCollectors;
 
 	private SampleModel defaultSM;
@@ -1497,9 +1511,9 @@ public class CatalogBuilder implements Runnable {
 		properties.setProperty("ExpandToRGB", Boolean.toString(mustConvertToRGB));
 		properties.setProperty("Heterogeneous", Boolean.toString(mosaicConfiguration.isHeterogeneous()));
 		
-		if (cachedSPI != null){
+		if (cachedReaderSPI != null){
 			// suggested spi
-			properties.setProperty("SuggestedSPI", cachedSPI.getClass().getName());
+			properties.setProperty("SuggestedSPI", cachedReaderSPI.getClass().getName());
 		}
 
 		// write down imposed bbox

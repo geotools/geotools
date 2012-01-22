@@ -241,6 +241,7 @@ public class CatalogBuilderConfiguration {
 	public void setRootMosaicDirectory(final String rootMosaicDirectory) {
 		Utilities.ensureNonNull("rootMosaicDirectory", rootMosaicDirectory);
 		String testingDirectory = rootMosaicDirectory;
+		Utils.checkDirectory(testingDirectory,false);
 		this.rootMosaicDirectory = testingDirectory;
 
 	}

@@ -1008,7 +1008,7 @@ public class Utils {
 					sampleImageFile));
 			ooStream = new ObjectOutputStream(outStream);
 			sri = new SerializableRenderedImage(sampleImage, true);
-                        ooStream.writeObject(sri);
+			ooStream.writeObject(sri);
 		} finally {
 			try {
 				if (ooStream != null)

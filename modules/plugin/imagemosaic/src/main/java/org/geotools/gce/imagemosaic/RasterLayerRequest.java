@@ -81,7 +81,7 @@ class RasterLayerRequest {
 
     /** The {@link BoundingBox} requested */
     private BoundingBox requestedBBox;
-    
+        
     /** The {@link BoundingBox} of the portion of the coverage that intersects the requested bbox */
     private BoundingBox cropBBox;
     

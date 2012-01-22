@@ -902,6 +902,12 @@
         <version>2.6.0</version>
       </dependency>
 
+      <!-- Other random non test dependencies -->
+      <dependency>
+        <groupId>net.sf.ehcache</groupId>
+        <artifactId>ehcache</artifactId>
+        <version>1.6.2</version>
+      </dependency>
       <!-- Tests or legacy -->
       <dependency>
         <groupId>junit</groupId>

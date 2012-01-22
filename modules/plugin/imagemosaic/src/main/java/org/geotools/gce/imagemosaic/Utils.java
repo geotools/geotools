@@ -869,7 +869,6 @@ public class Utils {
         builder.append("isFile").append(file.isFile()).append("\n");
         builder.append("canRead:").append(file.canRead()).append("\n");        
         builder.append("canWrite").append(file.canWrite()).append("\n");
-        builder.append("canExecute:").append(file.canExecute()).append("\n");
         builder.append("isAbsolute:").append(file.isAbsolute()).append("\n");
         builder.append("lastModified:").append(file.lastModified()).append("\n");
         builder.append("length:").append(file.length());

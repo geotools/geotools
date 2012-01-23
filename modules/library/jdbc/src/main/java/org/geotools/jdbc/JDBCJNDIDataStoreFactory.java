@@ -157,7 +157,8 @@ public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(NAMESPACE.key, NAMESPACE);
         parameters.put(EXPOSE_PK.key, EXPOSE_PK);
         parameters.put(PK_METADATA_TABLE.key, PK_METADATA_TABLE);
-
+        parameters.put(SQL_ON_BORROW.key, SQL_ON_BORROW);
+        parameters.put(SQL_ON_RELEASE.key, SQL_ON_RELEASE);
     }
 
     @Override

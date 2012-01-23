@@ -42,6 +42,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 
 import javax.sql.DataSource;
@@ -263,6 +264,11 @@ public final class JDBCDataStore extends ContentDataStore
      * Contains the SQL definition of the various virtual tables
      */
     protected Map<String, VirtualTable> virtualTables = new ConcurrentHashMap<String, VirtualTable>();
+    
+    /**
+     * The listeners that are allowed to handle the connection lifecycle
+     */
+    protected List<ConnectionLifecycleListener> connectionLifecycleListeners = new CopyOnWriteArrayList<ConnectionLifecycleListener>();
 
     /**
      * Adds a virtual table to the data store. If a virtual table with the same name was registered this
@@ -280,6 +286,14 @@ public final class JDBCDataStore extends ContentDataStore
             virtualTables.remove(vtable.getName());
             throw e;
         }
+    }
+    
+    /**
+     * Returns a modifiable list of connection lifecycle listeners
+     * @return
+     */
+    public List<ConnectionLifecycleListener> getConnectionLifecycleListeners() {
+        return connectionLifecycleListeners;
     }
     
     /**
@@ -1616,6 +1630,12 @@ public final class JDBCDataStore extends ContentDataStore
 
             //call dialect callback to initialize the connection
             dialect.initializeConnection( cx );
+            
+            // if there is any lifecycle listener use it
+            if(connectionLifecycleListeners.size() > 0) {
+                List<ConnectionLifecycleListener> locals = new ArrayList<ConnectionLifecycleListener>(connectionLifecycleListeners);
+                cx = new LifecycleConnection(this, cx, locals);
+            }
             return cx;
         } catch (SQLException e) {
             throw new RuntimeException("Unable to obtain connection: " + e.getMessage(), e);

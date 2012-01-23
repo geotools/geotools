@@ -108,7 +108,7 @@
          <property><name>all</name></property>
        </activation>
       <modules>
-        <module>docs</module>      
+        <!--module>docs</module-->      
       </modules>
     </profile>
     <profile>
@@ -684,6 +684,11 @@
         <artifactId>imageio-ext-utilities</artifactId>
         <version>${imageio.ext.version}</version>
       </dependency>
+      <dependency>
+        <groupId>it.geosolutions.imageio-ext</groupId>
+        <artifactId>imageio-ext-streams</artifactId>
+        <version>${imageio.ext.version}</version>
+      </dependency>      
       <dependency>
         <groupId>it.geosolutions.imageio-ext</groupId>
         <artifactId>imageio-ext-netcdf</artifactId>
@@ -1404,6 +1409,13 @@
       <id>maven2-repository.dev.java.net</id>
       <name>Java.net repository</name>
       <url>http://download.java.net/maven/2</url>
+    </repository>
+    
+
+    <repository>
+      <id>geosolutions</id>
+      <name>geosolutions repository</name>
+      <url>http://maven.geo-solutions.it/</url>
     </repository>
 
     <repository>

@@ -855,6 +855,9 @@ public final class JDBCDataStore extends ContentDataStore
             DatabaseMetaData metaData = cx.getMetaData();
             ResultSet tables = metaData.getTables(null, databaseSchema, "%",
                     new String[] { "TABLE", "VIEW" });
+            if(fetchSize > 1) {
+                tables.setFetchSize(fetchSize);
+            }
 
             try {
                 while (tables.next()) {

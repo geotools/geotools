@@ -640,6 +640,9 @@ public class JDBCFeatureSource extends ContentFeatureSource {
          * </UL>
          */
         ResultSet columns = metaData.getColumns(null, databaseSchema, tableName, "%");
+        if(getDataStore().getFetchSize() > 0) {
+            columns.setFetchSize(getDataStore().getFetchSize());
+        }
 
         try {
             while (columns.next()) {

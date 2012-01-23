@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2010-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2010-2012, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -51,9 +51,9 @@ import org.geotools.data.DataUtilities;
  * {@link AppSchemaResolver#getSimpleHttpResourcePath(URI))}.
  * 
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- *
- *
- *
+ * 
+ * 
+ * 
  * @source $URL$
  */
 public class AppSchemaCache {
@@ -67,27 +67,29 @@ public class AppSchemaCache {
     private static final int DEFAULT_DOWNLOAD_BLOCK_SIZE = 4096;
 
     /**
-     * Filenames used to recognise a GeoServer data directory.
+     * Filenames used to recognise a GeoServer data directory if automatic configuration is enabled.
      */
     private static final String[] GEOSERVER_DATA_DIRECTORY_FILENAMES = { "global.xml", "wcs.xml",
             "wfs.xml", "wms.xml" };
 
     /**
-     * Subdirectories used to recognise a GeoServer data directory.
+     * Subdirectories used to recognise a GeoServer data directory if automatic configuration is
+     * enabled.
      */
     private static final String[] GEOSERVER_DATA_DIRECTORY_SUBDIRECTORIES = { "styles",
             "workspaces" };
 
     /**
-     * Name of the subdirectory of the GeoServer data directory used for the cache.
+     * Name of the subdirectory of a GeoServer data directory (or other directory) used for the
+     * cache if automatic configuration is enabled.
      */
-    private static final String GEOSERVER_CACHE_DIRECTORY_NAME = "app-schema-cache";
+    private static final String CACHE_DIRECTORY_NAME = "app-schema-cache";
 
     /**
-     * Is support for automatic detection of GeoServer data directories enabled? It is useful to
-     * disable this in tests, to prevent downloading.
+     * Is support for automatic detection of GeoServer data directories or existing cache
+     * directories enabled? It is useful to disable this in tests, to prevent downloading.
      */
-    private static boolean geoserverSupportEnabled = true;
+    private static boolean automaticConfigurationEnabled = true;
 
     /**
      * Root directory of the cache.
@@ -306,15 +308,17 @@ public class AppSchemaCache {
     }
 
     /**
-     * Search parents of url for a GeoServer data directory. If found, use it to create a cache in
-     * the "app-schema-cache" subdirectory, with downloading enabled.
+     * If automatic configuration is enabled, recursively search parent directories of file url for
+     * a GeoServer data directory or directory containing an existing cache. If found, use it to
+     * create a cache in the "app-schema-cache" subdirectory with downloading enabled.
      * 
      * @param url
      *            a URL for a file in a GeoServer data directory.
-     * @return a cache in the "app-schema-cache" subdirectory
+     * @return a cache in the "app-schema-cache" subdirectory or null if not found or automatic
+     *         configuration disabled.
      */
-    public static AppSchemaCache buildFromGeoserverUrl(URL url) {
-        if (!geoserverSupportEnabled) {
+    public static AppSchemaCache buildAutomaticallyConfiguredUsingFileUrl(URL url) {
+        if (!automaticConfigurationEnabled) {
             return null;
         }
         File file = DataUtilities.urlToFile(url);
@@ -322,58 +326,63 @@ public class AppSchemaCache {
             if (file == null) {
                 return null;
             }
-            if (isGeoserverDataDirectory(file)) {
-                return new AppSchemaCache(new File(file, GEOSERVER_CACHE_DIRECTORY_NAME), true);
+            if (isSuitableDirectoryToContainCache(file)) {
+                return new AppSchemaCache(new File(file, CACHE_DIRECTORY_NAME), true);
             }
             file = file.getParentFile();
         }
     }
 
     /**
-     * Turn off support for automatic construction of a cache in GeoServer data directory. Intended
-     * for testing.
+     * Turn off support for automatic configuration of a cache in GeoServer data directory or
+     * detection of an existing cache. Intended for testing. Automatic configuration is enabled by
+     * default.
      */
-    public static void disableGeoserverSupport() {
-        geoserverSupportEnabled = false;
+    public static void disableAutomaticConfiguration() {
+        automaticConfigurationEnabled = false;
     }
 
     /**
-     * The opposite of {@link #disableGeoserverSupport()}
+     * The opposite of {@link #disableAutomaticConfiguration()}. Automatic configuration is enabled
+     * by default.
      */
-    public static void enableGeoserverSupport() {
-        geoserverSupportEnabled = true;
+    public static void enableAutomaticConfiguration() {
+        automaticConfigurationEnabled = true;
     }
 
     /**
-     * @see #disableGeoserverSupport()
-     */
-    public static boolean isGeoserverSupportEnabled() {
-        return geoserverSupportEnabled;
-    }
-
-    /**
-     * Guess whether a file is a GeoServer data directory.
+     * Is automatic configuration enabled? Automatic configuration is enabled by default.
      * 
-     * @param dataDirectory
+     * @see #disableAutomaticConfiguration()
+     */
+    public static boolean isAutomaticConfigurationEnabled() {
+        return automaticConfigurationEnabled;
+    }
+
+    /**
+     * Guess whether a file is a GeoServer data directory or contains an existing app-schema-cache
+     * subdirectory.
+     * 
+     * @param directory
      *            the candidate file
      * @return true if it has the files and subdirectories expected of a GeoServer data directory,
      *         or contains an existing app-schema-cache subdirectory
      */
-    static boolean isGeoserverDataDirectory(File dataDirectory) {
-        if (dataDirectory.isDirectory() == false) {
+    static boolean isSuitableDirectoryToContainCache(File directory) {
+        if (directory.isDirectory() == false) {
             return false;
         }
-        if ((new File(dataDirectory, GEOSERVER_CACHE_DIRECTORY_NAME)).isDirectory()) {
+        if ((new File(directory, CACHE_DIRECTORY_NAME)).isDirectory()) {
             return true;
         }
         for (String filename : GEOSERVER_DATA_DIRECTORY_FILENAMES) {
-            File file = new File(dataDirectory, filename);
+            File file = new File(directory, filename);
             if (!file.isFile()) {
                 return false;
             }
         }
         for (String subdirectory : GEOSERVER_DATA_DIRECTORY_SUBDIRECTORIES) {
-            File dir = new File(dataDirectory, subdirectory);
+            File dir = new File(directory, subdirectory);
             if (!dir.isDirectory()) {
                 return false;
             }

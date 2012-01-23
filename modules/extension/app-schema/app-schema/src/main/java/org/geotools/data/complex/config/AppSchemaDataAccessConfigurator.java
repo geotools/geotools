@@ -583,7 +583,8 @@ public class AppSchemaDataAccessConfigurator {
      */
     private AppSchemaCache buildCache() {
         try {
-            return AppSchemaCache.buildFromGeoserverUrl(new URL(config.getBaseSchemasUrl()));
+            return AppSchemaCache.buildAutomaticallyConfiguredUsingFileUrl(
+                    new URL(config.getBaseSchemasUrl()));
         } catch (MalformedURLException e) {
             LOGGER.warning("Malformed mapping file URL: " + config.getBaseSchemasUrl() + " Detail: "
                     + e.getMessage());

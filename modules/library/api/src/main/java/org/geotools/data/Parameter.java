@@ -89,6 +89,11 @@ public class Parameter<T> implements org.opengis.parameter.Parameter<T>{
      * provides a hint for UI's to mask text fields, configuration systems to encrypt content, etc
      */
     public static final String IS_PASSWORD = "isPassword";
+    
+    /** Boolean indicating whether the parameter is meant to be a long text, 
+     *  provides a hint for UI's use long text fields, textareas and the like
+     */
+    public static final String IS_LARGE_TEXT = "isLargeText";
 
     /**
      * "length" Integer used to limit the length of strings or literal geometries.

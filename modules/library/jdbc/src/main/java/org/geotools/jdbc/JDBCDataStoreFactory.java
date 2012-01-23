@@ -114,6 +114,17 @@ public abstract class JDBCDataStoreFactory extends AbstractDataStoreFactory {
     public static final Param EXPOSE_PK = new Param("Expose primary keys", Boolean.class, "Expose primary key columns as " +
     		"attributes of the feature type", false, false);
     
+    /** SQL executed when the session begins */
+    public static final Param SQL_ON_BORROW = new Param("Session startup SQL", String.class, 
+            "SQL statement executed when the connection is grabbed from the pool", false, null, 
+            Collections.singletonMap(Parameter.IS_LARGE_TEXT, Boolean.TRUE));
+    
+    /** SQL executed when the session ends */
+    public static final Param SQL_ON_RELEASE = new Param("Session close-up SQL", String.class, 
+            "SQL statement executed when the connection is released to the pool", false, null,
+            Collections.singletonMap(Parameter.IS_LARGE_TEXT, Boolean.TRUE));
+
+    
     @Override
     public String getDisplayName() {
         return getDescription();
@@ -208,6 +219,14 @@ public abstract class JDBCDataStoreFactory extends AbstractDataStoreFactory {
             dataStore.setExposePrimaryKeyColumns(exposePk);
         }
         
+        // session startup and teardown
+        String sqlOnBorrow = (String) SQL_ON_BORROW.lookUp(params);
+        String sqlOnRelease = (String) SQL_ON_RELEASE.lookUp(params);
+        if(sqlOnBorrow != null || sqlOnRelease != null) {
+            SessionCommandsListener listener = new SessionCommandsListener(sqlOnBorrow, sqlOnRelease);
+            dataStore.getConnectionLifecycleListeners().add(listener);
+        }
+        
         // factories
         dataStore.setFilterFactory(CommonFactoryFinder.getFilterFactory(null));
         dataStore.setGeometryFactory(new GeometryFactory());
@@ -293,6 +312,8 @@ public abstract class JDBCDataStoreFactory extends AbstractDataStoreFactory {
         if(getValidationQuery() != null)
             parameters.put(VALIDATECONN.key, VALIDATECONN);
         parameters.put(PK_METADATA_TABLE.key, PK_METADATA_TABLE);
+        parameters.put(SQL_ON_BORROW.key, SQL_ON_BORROW);
+        parameters.put(SQL_ON_RELEASE.key, SQL_ON_RELEASE);
     }
 
     /**

@@ -153,6 +153,12 @@ public class ExpressionExtractor {
         return result;
     }
 
+    /**
+     * Builds a CQL expression equivalent to the specified string, see class javadocs for
+     * rules on how to build the expression in string form
+     * @param expression
+     * @return
+     */
     public static Expression extractCqlExpressions(String expression) {
         return catenateExpressions(splitCqlExpressions(expression));
     }

@@ -60,6 +60,8 @@ import com.sun.media.jai.util.ImageUtil;
 @SuppressWarnings("unchecked")
 public final class ArtifactsFilterOpImage extends PointOpImage {
 
+    private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ArtifactsFilterOpImage.class);
+    
     class RoiAccessor{
         RandomIter iterator;
         ROI roi;

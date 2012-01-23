@@ -102,6 +102,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @source $URL$
  */
+@SuppressWarnings("rawtypes")
 public final class ImageMosaicFormat extends AbstractGridFormat implements Format {
 
     final static double DEFAULT_ARTIFACTS_FILTER_PTILE_THRESHOLD = 0.1;
@@ -200,7 +201,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
     }
 
     /**
-     * @see org.geotools.data.coverage.grid.AbstractGridFormat#getImageioReader(Object)
+     * @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object)
      */
     @Override
     public ImageMosaicReader getReader( Object source ) {
@@ -265,6 +266,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
         return true;
     }
 
+    @SuppressWarnings("unchecked")
     private boolean checkForUrl( Object source, Hints hints){
          try {
             
@@ -278,12 +280,11 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                     return false; // file does not exist
                 }
             }
-            // /////////////////////////////////////////////////////////////////////
+            
             //
             // Load tiles informations, especially the bounds, which will be
             // reused
             //
-            // /////////////////////////////////////////////////////////////////////
             DataStore tileIndexStore = null;
             CoordinateReferenceSystem crs=null;
             boolean shapefile=true;
@@ -358,11 +359,9 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                 if(crs==null)
     				return false;
    
-	            // /////////////////////////////////////////////////////////////////////
-	            //
-	            // Now look for the properties file and try to parse relevant fields
-	            //
-	            // /////////////////////////////////////////////////////////////////////            
+                //
+                // Now look for the properties file and try to parse relevant fields
+                //
                 URL propsUrl = null;
                 if(shapefile)
                 	propsUrl=DataUtilities.changeUrlExt(sourceURL, "properties");

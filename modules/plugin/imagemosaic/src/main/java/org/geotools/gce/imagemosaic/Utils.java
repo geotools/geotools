@@ -16,8 +16,6 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import it.geosolutions.imageio.stream.input.spi.URLImageInputStreamSpi;
-
 import java.awt.Color;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -50,9 +48,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.imageio.ImageIO;
-import javax.imageio.spi.ImageInputStreamSpi;
-import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.Histogram;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.remote.SerializableRenderedImage;
@@ -156,15 +151,10 @@ public class Utils {
 	public static final boolean DEFAULT_PATH_BEHAVIOR = false;
 
 	/**
-	 * Default path behavior with respect to index caching.
+	 * Default behavior with respect to index caching.
 	 */
 	private static final boolean DEFAULT_CACHING_BEHAVIOR = false;
-
-	/**
-	 * Cached instance of {@link URLImageInputStreamSpi} for creating
-	 * {@link ImageInputStream} instances.
-	 */
-	private static ImageInputStreamSpi CACHED_STREAM_SPI = new URLImageInputStreamSpi();
+	
 	
 	/**
 	 * Creates a mosaic for the provided input parameters.
@@ -511,39 +501,6 @@ public class Utils {
 	}
 
 	/**
-	 * Retrieves an {@link ImageInputStream} for the provided input {@link File}
-	 * .
-	 * 
-	 * @param file
-	 * @return
-	 * @throws IOException
-	 */
-	static ImageInputStream getInputStream(final File file) throws IOException {
-        Utilities.ensureNonNull("file", file);
-		final ImageInputStream inStream = ImageIO.createImageInputStream(file);
-		if (inStream == null)
-			return null;
-		return inStream;
-	}
-
-	/**
-	 * Retrieves an {@link ImageInputStream} for the provided input {@link URL}.
-	 * 
-	 * @param url
-	 * @return
-	 * @throws IOException
-	 */
-	static ImageInputStream getInputStream(final URL url) throws IOException {
-        Utilities.ensureNonNull("url", url);
-		final ImageInputStream inStream = CACHED_STREAM_SPI
-				.createInputStreamInstance(url, ImageIO.getUseCache(), ImageIO
-						.getCacheDirectory());
-		if (inStream == null)
-			return null;
-		return inStream;
-	}
-
-	/**
 	 * Default priority for the underlying {@link Thread}.
 	 */
 	public static final int DEFAULT_PRIORITY = Thread.NORM_PRIORITY;
@@ -565,20 +522,41 @@ public class Utils {
 	 */
 	public static boolean checkFileReadable(final File file) {
 		if (LOGGER.isLoggable(Level.FINE)) {
-			final StringBuilder builder = new StringBuilder();
-			builder.append("Checking file:").append(
-					FilenameUtils.getFullPath(file.getAbsolutePath())).append(
-					"\n");
-			builder.append("canRead:").append(file.canRead()).append("\n");
-			builder.append("isHidden:").append(file.isHidden()).append("\n");
-			builder.append("isFile").append(file.isFile()).append("\n");
-			builder.append("canWrite").append(file.canWrite()).append("\n");
-			LOGGER.fine(builder.toString());
+			final String message = getFileInfo(file);
+			LOGGER.fine(message);
 		}
 		if (!file.exists() || !file.canRead() || !file.isFile())
 			return false;
 		return true;
 	}
+
+    /**
+     * Creates a human readable message that describe the provided {@link File} object in terms of its properties.
+     * 
+     * <p>
+     * Useful for creating meaningful log messages.
+     * 
+     * @param file the {@link File} object to create a descriptive message for
+     * @return a {@link String} containing a descriptive message about the provided {@link File}.
+     * 
+     */
+    public static String getFileInfo(final File file) {
+        final StringBuilder builder = new StringBuilder();
+        builder.append("Checking file:").append(
+        		FilenameUtils.getFullPath(file.getAbsolutePath())).append(
+        		"\n");
+        builder.append("isHidden:").append(file.isHidden()).append("\n");
+        builder.append("exists:").append(file.exists()).append("\n");
+        builder.append("isFile").append(file.isFile()).append("\n");
+        builder.append("canRead:").append(file.canRead()).append("\n");        
+        builder.append("canWrite").append(file.canWrite()).append("\n");
+        builder.append("canExecute:").append(file.canExecute()).append("\n");
+        builder.append("isAbsolute:").append(file.isAbsolute()).append("\n");
+        builder.append("lastModified:").append(file.lastModified()).append("\n");
+        builder.append("length:").append(file.length());
+        final String message=builder.toString();
+        return message;
+    }
 
 	/**
 	 * @param testingDirectory
@@ -586,13 +564,24 @@ public class Utils {
 	 * @throws IllegalArgumentException
 	 * @throws IOException
 	 */
-	public static String checkDirectoryReadable(String testingDirectory)
+	public static String checkDirectory(String testingDirectory, boolean writable)
 			throws IllegalArgumentException {
+	    
 		File inDir = new File(testingDirectory);
-		if (!inDir.isDirectory() || !inDir.canRead()) {
-			LOGGER.severe("Provided input dir does not exist or is not a dir!");
-			throw new IllegalArgumentException(
-					"Provided input dir does not exist or is not a dir!");
+		boolean failure= !inDir.exists()||!inDir.isDirectory()||inDir.isHidden()||!inDir.canRead();
+		if(writable){
+		    failure|=!inDir.canWrite();
+		}
+		if (failure) {
+		        String message="Unable to create the mosaic\n"+
+                        "location is:"+testingDirectory+"\n"+
+                        "location exists:"+inDir.exists()+"\n"+
+                        "location is a directory:"+inDir.isDirectory()+"\n"+
+                        "location is writable:"+inDir.canWrite()+"\n"+
+                        "location is readable:"+inDir.canRead()+"\n"+
+                        "location is hidden:"+inDir.isHidden()+"\n";
+			LOGGER.severe(message);
+			throw new IllegalArgumentException(message);
 		}
 		try {
 			testingDirectory = inDir.getCanonicalPath();
@@ -604,15 +593,25 @@ public class Utils {
 			testingDirectory = testingDirectory + File.separator;
 		// test to see if things are still good
 		inDir = new File(testingDirectory);
-		if (!inDir.isDirectory() || !inDir.canRead()) {
-			LOGGER.severe("Provided input dir does not exist or is not a dir!");
-			throw new IllegalArgumentException(
-					"Provided input dir does not exist or is not a dir!");
-		}
+		failure= !inDir.exists()||!inDir.isDirectory()||inDir.isHidden()||!inDir.canRead();
+                if(writable){
+                    failure|=!inDir.canWrite();
+                }
+                if (failure) {
+                        String message="Unable to create the mosaic\n"+
+                        "location is:"+testingDirectory+"\n"+
+                        "location exists:"+inDir.exists()+"\n"+
+                        "location is a directory:"+inDir.isDirectory()+"\n"+
+                        "location is writable:"+inDir.canWrite()+"\n"+
+                        "location is readable:"+inDir.canRead()+"\n"+
+                        "location is hidden:"+inDir.isHidden()+"\n";
+                        LOGGER.severe(message);
+                        throw new IllegalArgumentException(message);
+                }
 		return testingDirectory;
 	}
 
-	static public boolean checkURLReadable(URL url) {
+	static boolean checkURLReadable(URL url) {
 		try {
 			url.openStream().close();
 		} catch (Exception e) {
@@ -622,8 +621,6 @@ public class Utils {
 	}
 
 	public static final DataStoreFactorySpi SHAPE_SPI = new ShapefileDataStoreFactory();
-
-	public static final DataStoreFactorySpi INDEXED_SHAPE_SPI = new ShapefileDataStoreFactory();
 
 	static final String DIRECT_KAKADU_PLUGIN = "it.geosolutions.imageio.plugins.jp2k.JP2KKakaduImageReader";
 
@@ -709,7 +706,7 @@ public class Utils {
 			try {
                             if (sri != null)
                                     sri.dispose();
-			} catch (Throwable e) {
+                        } catch (Throwable e) {
                         }
 		}
 	}
@@ -785,7 +782,7 @@ public class Utils {
 	
     public static final boolean DEFAULT_FOOTPRINT_MANAGEMENT = true;
 	
-	public static final boolean DEFAULT_CONFIGURATION_CACHING = true;
+	public static final boolean DEFAULT_CONFIGURATION_CACHING = false;
 
             public static Map<String, Serializable> createDataStoreParamsFromPropertiesFile(
 			Properties properties, DataStoreFactorySpi spi) throws IOException {
@@ -806,11 +803,10 @@ public class Utils {
     static URL checkSource(Object source, Hints hints) {
         URL sourceURL = null;
         File sourceFile = null;
-        // /////////////////////////////////////////////////////////////////////
+
         //
         // Check source
         //
-        // /////////////////////////////////////////////////////////////////////
         // if it is a URL or a String let's try to see if we can get a file to
         // check if we have to build the index
         if (source instanceof File) {
@@ -931,16 +927,39 @@ public class Utils {
 
                         }
 
-                        // did we find anything?
+                        // did we find anything? If no, we try to build a new mosaic
                         if (buildMosaic) {
+                                ////
+                                //
+                                // Creating a new mosaic
+                                //
+                                ////
                                 // try to build a mosaic inside this directory and see what
                                 // happens
+                            
+                                // preliminar checks
+                                final File mosaicDirectory= new File(locationPath);
+                                if(!mosaicDirectory.exists()||mosaicDirectory.isFile()||!mosaicDirectory.canWrite()){
+                                    if(LOGGER.isLoggable(Level.SEVERE)){
+                                        LOGGER.log(Level.SEVERE,"Unable to create the mosaic, check the location:\n"+
+                                                "location is:"+locationPath+"\n"+
+                                                "location exists:"+mosaicDirectory.exists()+"\n"+
+                                                "location is a directory:"+mosaicDirectory.isDirectory()+"\n"+
+                                                "location is writable:"+mosaicDirectory.canWrite()+"\n"+
+                                                "location is readable:"+mosaicDirectory.canRead()+"\n"+
+                                                "location is hidden:"+mosaicDirectory.isHidden()+"\n");
+                                    }
+                                    return null;
+                                }
+                            
+                                // actual creation
                                 createMosaic(locationPath, defaultIndexName,DEFAULT_WILCARD, DEFAULT_PATH_BEHAVIOR,hints);
 
                                 // check that the mosaic properties file was created
                                 final File propertiesFile = new File(locationPath,
                                                 defaultIndexName + ".properties");
                                 if (!Utils.checkFileReadable(propertiesFile)) {
+                                        // retrieve a null so that we shows that a problem occurred
                                         sourceURL = null;
                                         return sourceURL;
                                 }
@@ -959,10 +978,12 @@ public class Utils {
                                         dataStoreProperties = new File(locationPath,"datastore.properties");
 
                                         // datastore.properties as the source
-                                        if (!Utils.checkFileReadable(dataStoreProperties))
-                                                sourceURL = null;
-                                        else
-                                                sourceURL = DataUtilities.fileToURL(dataStoreProperties);
+                                        if (!Utils.checkFileReadable(dataStoreProperties)){
+                                            sourceURL = null;
+                                        }
+                                        else {
+                                            sourceURL = DataUtilities.fileToURL(dataStoreProperties);
+                                        }
                                 }
 
                         } else
@@ -978,51 +999,12 @@ public class Utils {
         return sourceURL;
     }
     
-//    /**
-//     * Scan back the rendered op chain (navigating the sources) 
-//     * to find an {@link ImageReader} used to read the main source.
-//     *  
-//     * @param rOp
-//     * @return the {@link ImageReader} related to this operation, if any.
-//     * {@code null} in case no readers are found.
-//     */
-//    public static ImageReader getReader(RenderedImage rOp) {
-//        if (rOp != null) {
-//            if (rOp instanceof RenderedOp) {
-//                RenderedOp renderedOp = (RenderedOp) rOp;
-//
-//                final int nSources = renderedOp.getNumSources();
-//                if (nSources > 0) {
-//                    for (int k = 0; k < nSources; k++) {
-//                        Object source = null;
-//                        try {
-//                            source = renderedOp.getSourceObject(k);
-//                            
-//                        } catch (ArrayIndexOutOfBoundsException e) {
-//                            // Ignore
-//                        }
-//                        if (source != null) {
-//                            if (source instanceof RenderedOp) {
-//                                getReader((RenderedOp) source);
-//                            }
-//                        }
-//                    }
-//                } else {
-//                    // get the reader
-//                    Object imageReader = rOp.getProperty(ImageReadDescriptor.PROPERTY_NAME_IMAGE_READER);
-//                    if (imageReader != null && imageReader instanceof ImageReader) {
-//                        final ImageReader reader = (ImageReader) imageReader;
-//                        return reader;
-//                    }
-//                }
-//            }
-//        }
-//        return null;
-//    }
 
     static final double SAMEBBOX_THRESHOLD_FACTOR = 20;
 
     static final double AFFINE_IDENTITY_EPS = 1E-6;
+
+    public static final boolean DEFAULT_COLOR_EXPANSION_BEHAVIOR = false;
     
     /**
      * Private constructor to initialize the ehCache instance.
@@ -1040,7 +1022,7 @@ public class Utils {
      * @param file
      * @return the deserialized histogram.
      */
-    public static Histogram getHistogram(final String file){
+    static Histogram getHistogram(final String file){
         Utilities.ensureNonNull("file", file);
         Histogram histogram = null;
         

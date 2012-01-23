@@ -71,6 +71,7 @@ import org.opengis.referencing.operation.TransformException;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini, GeoSolutions
  */
+@SuppressWarnings("rawtypes")
 class RasterLayerRequest {
 
 	/** Logger. */
@@ -243,7 +244,6 @@ class RasterLayerRequest {
         prepare();
     }
 
-    @SuppressWarnings({ "unchecked"})
     private void setDefaultParameterValues() {
         
         // get the read parameters for this format plus the ones for the basic format and set them to the default
@@ -465,7 +465,6 @@ class RasterLayerRequest {
      * @param name
      *                the name of the parameter
      */
-    @SuppressWarnings("unchecked")
 	private void extractParameter(ParameterValue<?> param, Identifier name) {
 
         // //

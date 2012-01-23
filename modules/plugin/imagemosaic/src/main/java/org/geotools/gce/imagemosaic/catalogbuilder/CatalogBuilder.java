@@ -60,6 +60,7 @@ import org.apache.commons.io.DirectoryWalker;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOCase;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.FalseFileFilter;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.HiddenFileFilter;
@@ -111,6 +112,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  *
  * @source $URL$
  */
+@SuppressWarnings("rawtypes")
 public class CatalogBuilder implements Runnable {
 
     final private static double RESOLUTION_TOLERANCE_FACTOR = 1E-2;
@@ -412,13 +414,13 @@ public class CatalogBuilder implements Runnable {
 				//
 				final ImageTypeSpecifier its = ((ImageTypeSpecifier) imageioReader.getImageTypes(0).next());
 				if (numberOfProcessedFiles==0) {
-					// /////////////////////////////////////////////////////////////////////
+					
 					//
 					// at the first step we initialize everything that we will
 					// reuse afterwards starting with color models, sample
 					// models, crs, etc....
 					//
-					// /////////////////////////////////////////////////////////////////////
+					
 					defaultCM = its.getColorModel();
 					defaultSM = its.getSampleModel();
 					if (defaultCM instanceof IndexColorModel) {
@@ -434,11 +436,11 @@ public class CatalogBuilder implements Runnable {
 					}
 					defaultCRS = actualCRS;
 
-					// /////////////////////////////////////////////////////////////////////
+					
 					//
 					// getting information about resolution
 					//
-					// /////////////////////////////////////////////////////////////////////
+					
 
 
 					// get the dimension of the hr image and build the model
@@ -473,11 +475,11 @@ public class CatalogBuilder implements Runnable {
 					mosaicConfiguration.setLevelsNum(numberOfLevels);
 					mosaicConfiguration.setLevels(resolutionLevels);
 
-					// /////////////////////////////////////////////////////////////////////
+					
 					//
 					// creating the schema
 					//
-					// /////////////////////////////////////////////////////////////////////
+					
 					final String schemaDef= runConfiguration.getSchema();
 					if(schemaDef!=null){
 						// get the schema
@@ -723,13 +725,13 @@ public class CatalogBuilder implements Runnable {
 		private boolean checkColorModels(ColorModel defaultCM,
 				byte[][] defaultPalette, ColorModel actualCM) {
 		
-			// /////////////////////////////////////////////////////////////////////
+			
 			//
 			//
 			// ComponentColorModel
 			//
 			//
-			// /////////////////////////////////////////////////////////////////////
+			
 			if (defaultCM instanceof ComponentColorModel
 					&& actualCM instanceof ComponentColorModel) {
 				final ComponentColorModel defCCM = (ComponentColorModel) defaultCM, actualCCM = (ComponentColorModel) actualCM;
@@ -755,13 +757,13 @@ public class CatalogBuilder implements Runnable {
 						.getTransferType() == actualCCM.getTransferType());
 			}
 			
-			// /////////////////////////////////////////////////////////////////////
+			
 			//
 			//
 			// IndexColorModel
 			//
 			//
-			// /////////////////////////////////////////////////////////////////////
+			
 			if (defaultCM instanceof IndexColorModel
 					&& actualCM instanceof IndexColorModel) {
 				final IndexColorModel defICM = (IndexColorModel) defaultCM, actualICM = (IndexColorModel) actualCM;
@@ -876,7 +878,7 @@ public class CatalogBuilder implements Runnable {
 	 * original images uses different color maps between each other making for
 	 * us impossible to reuse it for the mosaic.
 	 */
-	private boolean mustConvertToRGB = false;
+	private boolean mustConvertToRGB = Utils.DEFAULT_COLOR_EXPANSION_BEHAVIOR;
 
 	private int fileIndex=0;
 
@@ -1424,10 +1426,6 @@ public class CatalogBuilder implements Runnable {
         			if (elevationAttribute != null) {
         				mosaicConfiguration.setElevationAttribute(runConfiguration.getElevationAttribute());
         			}
-        			final String runtimeAttribute= runConfiguration.getRuntimeAttribute();
-        			if (runtimeAttribute != null) {
-        				mosaicConfiguration.setRuntimeAttribute(runConfiguration.getRuntimeAttribute());
-        			}
         			createPropertiesFiles();
         			
         			// processing information
@@ -1478,13 +1476,13 @@ public class CatalogBuilder implements Runnable {
 	 * Creates the final properties file.
 	 */
 	private void createPropertiesFiles() {
-		// /////////////////////////////////////////////////////////////////////
+		
 		//
 		// FINAL STEP
 		//
 		// CREATING GENERAL INFO FILE
 		//
-		// /////////////////////////////////////////////////////////////////////
+		
 		fireEvent(Level.INFO,"Creating final properties file ", 99.9);
 	
 		// envelope
@@ -1498,10 +1496,6 @@ public class CatalogBuilder implements Runnable {
 		final String elevationAttribute=mosaicConfiguration.getElevationAttribute();
 		if (elevationAttribute != null) {
 			properties.setProperty("ElevationAttribute", mosaicConfiguration.getElevationAttribute());
-		}
-		final String runtimeAttribute=mosaicConfiguration.getRuntimeAttribute();
-		if (runtimeAttribute != null) {
-			properties.setProperty("RuntimeAttribute", mosaicConfiguration.getRuntimeAttribute());
 		}
 		
 		final int numberOfLevels=mosaicConfiguration.getLevelsNum();
@@ -1537,14 +1531,10 @@ public class CatalogBuilder implements Runnable {
 		} catch (IOException e) {
 			fireEvent(Level.SEVERE,e.getLocalizedMessage(), 0);
 		} finally {
-			try {
 				if (outStream != null) {
-					outStream.close();
+					IOUtils.closeQuietly(outStream);
 				}
-			} catch (Throwable e) {
-				if (LOGGER.isLoggable(Level.FINE))
-					LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
-			}
+
 		}
 	}
 

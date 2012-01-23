@@ -34,8 +34,10 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
+import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.BorderExtender;
@@ -265,9 +267,12 @@ public class GranuleDescriptor {
 	ImageReaderSpi cachedReaderSPI;
 
 	SimpleFeature originator;
+	
 	boolean handleArtifactsFiltering = false;
 	
 	boolean filterMe = false;
+
+        ImageInputStreamSpi cachedStreamSPI;
 	
 	private void init(final BoundingBox granuleBBOX, final URL granuleUrl,
                 final ImageReaderSpi suggestedSPI, final Geometry inclusionGeometry,
@@ -294,9 +299,29 @@ public class GranuleDescriptor {
 			//
 			
 			// get a stream
-			inStream = Utils.getInputStream(granuleUrl);
-			if(inStream == null)
-				throw new IllegalArgumentException("Unable to get an input stream for the provided file "+granuleUrl.toString());
+		        if(cachedStreamSPI==null){
+		            cachedStreamSPI=ImageIOExt.getImageInputStreamSPI(granuleUrl, true);
+		            if(cachedStreamSPI==null){
+		                final File file = DataUtilities.urlToFile(granuleUrl);
+		                if(file!=null){
+		                    if(LOGGER.isLoggable(Level.WARNING)){
+		                        LOGGER.log(Level.WARNING,Utils.getFileInfo(file));
+		                    }
+		                }
+		                throw new IllegalArgumentException("Unable to get an input stream for the provided granule "+granuleUrl.toString());
+		            }
+		        }
+		        assert cachedStreamSPI!=null:"no cachedStreamSPI available!";
+			inStream = cachedStreamSPI.createInputStreamInstance(granuleUrl, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
+			if(inStream == null){
+                            final File file = DataUtilities.urlToFile(granuleUrl);
+                            if(file!=null){
+                                if(LOGGER.isLoggable(Level.WARNING)){
+                                    LOGGER.log(Level.WARNING,Utils.getFileInfo(file));
+                                }
+                            }
+			    throw new IllegalArgumentException("Unable to get an input stream for the provided file "+granuleUrl.toString());
+			}
 			
 			// get a reader and try to cache the suggested SPI first
 			if(cachedReaderSPI == null){
@@ -596,7 +621,8 @@ public class GranuleDescriptor {
 			//
 			
 			// get a stream
-			inStream = Utils.getInputStream(granuleUrl);
+		        assert cachedStreamSPI!=null:"no cachedStreamSPI available!";
+                        inStream = cachedStreamSPI.createInputStreamInstance(granuleUrl, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
 			if(inStream==null)
 				return null;
 	
@@ -888,7 +914,7 @@ public class GranuleDescriptor {
 
                 } finally {
                     try {
-                        if (inStream != null) {
+                        if (request.getReadType() != ReadType.JAI_IMAGEREAD && inStream != null) {
                             inStream.close();
                         }
                     } finally {
@@ -952,7 +978,8 @@ public class GranuleDescriptor {
 			try {
 				
 				// get a stream
-				inStream = Utils.getInputStream(granuleUrl);
+			        assert cachedStreamSPI!=null:"no cachedStreamSPI available!";
+			        inStream = cachedStreamSPI.createInputStreamInstance(granuleUrl, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
 				if(inStream==null)
 					throw new IllegalArgumentException("Unable to create an inputstream for the granuleurl:"+(granuleUrl!=null?granuleUrl:"null"));
 		

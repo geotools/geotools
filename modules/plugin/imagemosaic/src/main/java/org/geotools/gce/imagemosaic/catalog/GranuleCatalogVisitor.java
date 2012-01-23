@@ -19,6 +19,7 @@ package org.geotools.gce.imagemosaic.catalog;
 import org.geotools.gce.imagemosaic.GranuleDescriptor;
 
 /**
+ * Simple interface for creating visitors to a {@link GranuleCatalog} implementation.
  * 
  * @author Simone Giannecchini, GeoSolutions SAS
  *
@@ -27,5 +28,11 @@ import org.geotools.gce.imagemosaic.GranuleDescriptor;
  * @source $URL$
  */
 public interface GranuleCatalogVisitor{
-        public void visit(final GranuleDescriptor granule, Object o);
+    /**
+     * Method that can be used to perform a visit to a {@link GranuleCatalog}.
+     * 
+     * @param granule the {@link GranuleDescriptor} we are visiting
+     * @param o a sibling {@link Object} to pass along while visiting
+     */
+    public void visit(final GranuleDescriptor granule, Object o);
 }

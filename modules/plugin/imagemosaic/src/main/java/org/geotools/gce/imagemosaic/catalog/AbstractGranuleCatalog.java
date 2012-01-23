@@ -34,7 +34,7 @@ import org.opengis.geometry.BoundingBox;
  *
  * @source $URL$
  */
-public abstract class AbstractGranuleCatalog implements GranuleCatalog {
+public class AbstractGranuleCatalog implements GranuleCatalog {
 
     public void addGranule(SimpleFeature granule, Transaction transaction) throws IOException {
         throw new UnsupportedOperationException("This Catalog does not support adding granules ");
@@ -61,20 +61,32 @@ public abstract class AbstractGranuleCatalog implements GranuleCatalog {
     }
 
     public void dispose() {
-        
+        throw new UnsupportedOperationException("This Catalog does not support this method");
     }
 
-    public abstract BoundingBox getBounds();
+    public BoundingBox getBounds(){
+        throw new UnsupportedOperationException("This Catalog does not support this method");
+    }
 
-    public abstract Collection<GranuleDescriptor> getGranules(BoundingBox envelope) throws IOException;
+    public Collection<GranuleDescriptor> getGranules(BoundingBox envelope) throws IOException{
+        throw new UnsupportedOperationException("This Catalog does not support this method");
+    }
 
-    public abstract Collection<GranuleDescriptor> getGranules(Query q) throws IOException;
+    public Collection<GranuleDescriptor> getGranules(Query q) throws IOException{
+        throw new UnsupportedOperationException("This Catalog does not support this method");
+    }
 
-    public abstract Collection<GranuleDescriptor> getGranules() throws IOException;
+    public  Collection<GranuleDescriptor> getGranules() throws IOException{
+        throw new UnsupportedOperationException("This Catalog does not support this method");
+    }
 
-    public abstract void getGranules(BoundingBox envelope, GranuleCatalogVisitor visitor) throws IOException;
+    public  void getGranules(BoundingBox envelope, GranuleCatalogVisitor visitor) throws IOException{
+        throw new UnsupportedOperationException("This Catalog does not support this method");
+    }
 
-    public abstract void getGranules(Query q, GranuleCatalogVisitor visitor) throws IOException;
+    public  void getGranules(Query q, GranuleCatalogVisitor visitor) throws IOException{
+        throw new UnsupportedOperationException("This Catalog does not support this method");
+    }
 
     public QueryCapabilities getQueryCapabilities(){
         return null;

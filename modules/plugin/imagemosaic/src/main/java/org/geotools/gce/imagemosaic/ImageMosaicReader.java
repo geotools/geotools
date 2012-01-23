@@ -141,8 +141,6 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 	boolean cachingIndex;
 
 	String elevationAttribute;
-	
-	String runtimeAttribute;
 
 	boolean imposedBBox;
 	
@@ -523,12 +521,7 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 		// elevation param
 		final String elevationAttribute = configuration.getElevationAttribute();
 		if(elevationAttribute != null)
-			this.elevationAttribute = elevationAttribute;		
-
-		// runtime param
-		final String runtimeAttribute = configuration.getRuntimeAttribute();
-		if(runtimeAttribute != null)
-			this.runtimeAttribute = runtimeAttribute;		
+			this.elevationAttribute = elevationAttribute;				
 
 
 		// caching for the index
@@ -791,54 +784,7 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
     
             }
         		
-//		final boolean getRuntimeAttribute=name.equalsIgnoreCase("runtime_domain");
-//		if(getRuntimeAttribute){
-//			Query query;
-//			try {
-//				query = new DefaultQuery(rasterManager.granuleCatalog.getType().getTypeName());
-//				query.setPropertyNames(Arrays.asList("runtime"));
-//				final SortBy[] sortBy=new SortBy[]{
-//						new SortByImpl(
-//								FeatureUtilities.DEFAULT_FILTER_FACTORY.property("runtime"),
-//								SortOrder.DESCENDING
-//						)};
-//				if(queryCapabilities.supportsSorting(sortBy))
-//					query.setSortBy(sortBy);
-////				else
-////					manualSort=true;				
-//				final UniqueVisitor visitor= new UniqueVisitor("runtime");
-//				rasterManager.granuleCatalog.computeAggregateFunction(query, visitor);
-//				
-//				// check result
-//				final Set<Integer> result = new TreeSet<Integer>(new Comparator<Integer>() {
-//
-//					public int compare(Integer o1, Integer o2) {
-//						// Revert Order
-//						if (o1 > 02)
-//							return -1;
-//						else if (o1 < o2)
-//							return 1;
-//						return 0;
-//					}
-//				});
-//				result.addAll(visitor.getUnique());
-//				if(result.size()<=0)
-//					return null;
-//				final StringBuilder buff= new StringBuilder();
-//				for(Iterator<Integer> it=result.iterator();it.hasNext();){
-//					final int value= it.next();
-//					buff.append(value);
-//					if(it.hasNext())
-//						buff.append(",");
-//				}
-//				return buff.toString();
-//			} catch (IOException e) {
-//				if(LOGGER.isLoggable(Level.WARNING))
-//					LOGGER.log(Level.WARNING,"Unable to parse attribute:"+name,e);
-//			}
-//			
-//		}
-//		
+
 		return super.getMetadataValue(name);
 	}
 

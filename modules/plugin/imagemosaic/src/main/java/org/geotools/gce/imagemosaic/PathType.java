@@ -68,19 +68,6 @@ public enum PathType {
 			} catch (MalformedURLException e) {
 				return null;
 			}
-			
-//			// create a file for the provided location, relative to parent location
-//			File rasterFile= new File(parentLocation,location);
-//			if(!ImageMosaicUtils.checkFileReadable(rasterFile))
-//			{		
-//				if (LOGGER.isLoggable(Level.INFO))
-//					LOGGER.info("Unable to read image for file "+ rasterFile.getAbsolutePath());
-//				
-//				return null;
-//				
-//			}		
-//			return rasterFile;
-
 		}
 		
 	},

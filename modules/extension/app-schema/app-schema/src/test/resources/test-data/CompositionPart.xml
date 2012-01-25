@@ -96,7 +96,7 @@
 				<AttributeMapping>
 					<targetAttribute>gsml:lithology</targetAttribute>
 					<sourceExpression>
-						<OCQL>strTrim(getId())</OCQL>
+						<OCQL>getID()</OCQL>
 						<linkElement>gsml:ControlledConcept</linkElement>
 						<linkField>FEATURE_LINK</linkField>
 					</sourceExpression>
@@ -107,7 +107,7 @@
 					    FEATURE_LINK
 		            </targetAttribute>
 					<sourceExpression>
-						<OCQL>strTrim(getId())</OCQL>
+						<OCQL>getId()</OCQL>
 					</sourceExpression>
 				</AttributeMapping>
 			</attributeMappings>

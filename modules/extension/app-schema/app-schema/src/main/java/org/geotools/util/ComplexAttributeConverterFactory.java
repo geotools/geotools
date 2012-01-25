@@ -20,9 +20,12 @@ package org.geotools.util;
 import java.util.Collection;
 
 import org.geotools.factory.Hints;
+import org.geotools.feature.AttributeImpl;
+import org.geotools.filter.identity.FeatureIdImpl;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Property;
+import org.opengis.filter.identity.FeatureId;
 
 /**
  * This converter retrieves the values out of attributes. 
@@ -39,32 +42,31 @@ public class ComplexAttributeConverterFactory implements ConverterFactory {
         if (ComplexAttribute.class.isAssignableFrom(source)) {
             return new Converter() {
                 public Object convert(Object source, Class target) throws Exception {
-                    while (source instanceof ComplexAttribute) {
-                        if (!((ComplexAttribute) source).getType().getDescriptors().isEmpty()) {
-                            // this is not the leaf type.. 
+                    if (source instanceof ComplexAttribute) {
+                        Collection<? extends Property> valueMap = ((ComplexAttribute) source)
+                                .getValue();
+                        if (valueMap.isEmpty() || valueMap.size() > 1) {
                             return null;
                         } else {
-                            Collection<? extends Property> valueMap = ((ComplexAttribute) source)
-                                    .getValue();
-                            if (valueMap.isEmpty()) {
-                                return null;
-                            } else {
-                                // there should only be one value
-                                source = valueMap.iterator().next();
+                            // there should only be one value
+                            source = valueMap.iterator().next();
+                            if (AttributeImpl.class.equals(source.getClass())) {
+                                return Converters.convert(((Attribute) source).getValue(), target);
                             }
                         }
-                    }
-                    if (source instanceof Attribute) {
-                        return ((Attribute) source).getValue();
                     }
                     return null;
                 }
             };
         }
-        if (Attribute.class.isAssignableFrom(source)) {
+        // String to FeatureId comparison
+        if (FeatureId.class.isAssignableFrom(target) && String.class.isAssignableFrom(source)) {
             return new Converter() {
-                public Object convert(Object source, Class target) throws Exception {
-                    return ((Attribute) source).getValue();
+                public Object convert(Object source, Class target) {
+                    if (source != null) {
+                        return new FeatureIdImpl((String) source);
+                    }
+                    return null;
                 }
             };
         }

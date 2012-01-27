@@ -17,11 +17,20 @@
 package org.geotools.data.shapefile.ng;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
+import java.util.Map;
 
 import org.geotools.TestData;
+import org.geotools.data.DataStore;
+import org.geotools.data.QueryCapabilities;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.util.KVP;
 import org.junit.Test;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.Name;
+import org.opengis.filter.sort.SortBy;
+import org.opengis.filter.sort.SortOrder;
 
 import static org.geotools.data.shapefile.ng.ShapefileDataStoreFactory.*;
 
@@ -67,5 +76,27 @@ public class ShapefileDataStoreFactoryTest extends TestCaseSupport {
         params.put( FSTYPE.key, "smurf" );
         assertFalse( "Feeling blue; don't try a smruf", factory.canProcess(params) );
     }
-
+    @Test
+    public void testQueryCapabilities() throws Exception {
+        URL url = TestData.url(STATE_POP);
+        
+        Map params = new KVP( URLP.key,url );
+        DataStore dataStore = factory.createDataStore( params );
+        Name typeName = dataStore.getNames().get(0);
+        SimpleFeatureSource featureSource = dataStore.getFeatureSource( typeName);
+        
+        QueryCapabilities caps = featureSource.getQueryCapabilities();
+        
+        SortBy[] sortBy = new SortBy[]{SortBy.NATURAL_ORDER,};
+        assertTrue( "Natural", caps.supportsSorting( sortBy ));
+        
+        SimpleFeatureType schema = featureSource.getSchema();
+        String attr = schema.getDescriptor(1).getLocalName();
+        
+        sortBy[0] = ff.sort( attr, SortOrder.ASCENDING );
+        assertTrue( "Sort "+attr, caps.supportsSorting( sortBy ));
+        
+        sortBy[0] = ff.sort( "the_geom", SortOrder.ASCENDING );
+        assertFalse( "Cannot sort the_geom", caps.supportsSorting( sortBy ));
+    }
 }

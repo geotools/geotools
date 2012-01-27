@@ -20,8 +20,17 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.geotools.TestData;
+import org.geotools.data.DataStore;
+import org.geotools.data.QueryCapabilities;
+import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.KVP;
 import org.junit.Test;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.Name;
+import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.sort.SortBy;
+import org.opengis.filter.sort.SortOrder;
 
 import static org.geotools.data.shapefile.ShapefileDataStoreFactory.*;
 
@@ -53,7 +62,7 @@ public class ShapefileDataStoreFactoryTest extends TestCaseSupport {
         
         KVP params = new KVP( URLP.key,url );
         
-        assertTrue( "Sorting is optional", factory.canProcess(params) );
+        assertTrue( "FST is optional", factory.canProcess(params) );
         
         params.put(FSTYPE.key, "shape" );
         assertTrue( "Plain shape implementation provided", factory.canProcess(params) );
@@ -68,4 +77,27 @@ public class ShapefileDataStoreFactoryTest extends TestCaseSupport {
         assertFalse( "Feeling blue; don't try a smruf", factory.canProcess(params) );
     }
 
+    @Test
+    public void testQueryCapabilities() throws Exception {
+        URL url = TestData.url(STATE_POP);
+        
+        KVP params = new KVP( URLP.key,url );
+        DataStore dataStore = factory.createDataStore( params );
+        Name typeName = dataStore.getNames().get(0);
+        SimpleFeatureSource featureSource = dataStore.getFeatureSource( typeName);
+        
+        QueryCapabilities caps = featureSource.getQueryCapabilities();
+        
+        SortBy[] sortBy = new SortBy[]{SortBy.NATURAL_ORDER,};
+        assertTrue( "Natural", caps.supportsSorting( sortBy ));
+        
+        SimpleFeatureType schema = featureSource.getSchema();
+        String attr = schema.getDescriptor(1).getLocalName();
+        
+        sortBy[0] = ff.sort( attr, SortOrder.ASCENDING );
+        assertFalse( "Cannot sort "+attr, caps.supportsSorting( sortBy ));
+        
+        sortBy[0] = ff.sort( "the_geom", SortOrder.ASCENDING );
+        assertFalse( "Cannot sort the_geom", caps.supportsSorting( sortBy ));
+    }
 }

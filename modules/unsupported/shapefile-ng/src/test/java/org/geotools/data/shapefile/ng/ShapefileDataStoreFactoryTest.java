@@ -23,7 +23,6 @@ import org.geotools.TestData;
 import org.geotools.util.KVP;
 import org.junit.Test;
 
-import static org.geotools.data.shapefile.ShapefileDataStoreFactory.FSTYPE;
 import static org.geotools.data.shapefile.ng.ShapefileDataStoreFactory.*;
 
 /**

@@ -23,6 +23,7 @@ import org.geotools.TestData;
 import org.geotools.util.KVP;
 import org.junit.Test;
 
+import static org.geotools.data.shapefile.ShapefileDataStoreFactory.FSTYPE;
 import static org.geotools.data.shapefile.ng.ShapefileDataStoreFactory.*;
 
 /**
@@ -63,6 +64,9 @@ public class ShapefileDataStoreFactoryTest extends TestCaseSupport {
         
         params.put(FSTYPE.key, "index" );
         assertFalse( "Plain index not supported", factory.canProcess(params) );
+        
+        params.put( FSTYPE.key, "smurf" );
+        assertFalse( "Feeling blue; don't try a smruf", factory.canProcess(params) );
     }
 
 }

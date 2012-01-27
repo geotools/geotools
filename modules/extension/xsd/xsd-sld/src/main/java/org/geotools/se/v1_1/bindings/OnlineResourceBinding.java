@@ -18,6 +18,7 @@ package org.geotools.se.v1_1.bindings;
 
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDOnlineResourceBinding;
+import org.geotools.styling.ResourceLocator;
 import org.geotools.xml.*;
 
 import javax.xml.namespace.QName;
@@ -47,6 +48,10 @@ import javax.xml.namespace.QName;
  * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/extension/xsd/xsd-sld/src/main/java/org/geotools/se/v1_1/bindings/OnlineResourceBinding.java $
  */
 public class OnlineResourceBinding extends SLDOnlineResourceBinding {
+
+    public OnlineResourceBinding(ResourceLocator resourceLocator) {
+        super(resourceLocator);
+    }
 
     /**
      * @generated

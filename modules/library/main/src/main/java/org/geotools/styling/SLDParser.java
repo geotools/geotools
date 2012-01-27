@@ -219,7 +219,7 @@ public class SLDParser {
         File f = new File(filename);
         source = new InputSource(new java.io.FileInputStream(f));
         try {
-            sourceUrl = f.toURI().toURL();
+            setSourceUrl(f.toURI().toURL());
         } catch (MalformedURLException e) {
             LOGGER.warning("Can't build URL for file " + f.getAbsolutePath());
         }
@@ -237,7 +237,7 @@ public class SLDParser {
     public void setInput(File f) throws java.io.FileNotFoundException {
         source = new InputSource(new java.io.FileInputStream(f));
         try {
-            sourceUrl = f.toURI().toURL();
+            setSourceUrl(f.toURI().toURL());
         } catch (MalformedURLException e) {
             LOGGER.warning("Can't build URL for file " + f.getAbsolutePath());
         }
@@ -254,7 +254,7 @@ public class SLDParser {
      */
     public void setInput(java.net.URL url) throws java.io.IOException {
         source = new InputSource(url.openStream());
-        sourceUrl = url;
+        setSourceUrl(url);
     }
 
     /**
@@ -276,9 +276,22 @@ public class SLDParser {
     public void setInput(java.io.Reader in) {
         source = new InputSource(in);
     }
-    
+
+    /**
+     * Sets the resource loader implementation for parsing online resources.
+     */
     public void setOnLineResourceLocator(ResourceLocator onlineResourceLocator) {
     	this.onlineResourceLocator = onlineResourceLocator;
+    }
+
+    /**
+     * Internal setter for source url.
+     */
+    void setSourceUrl(URL sourceUrl) {
+        this.sourceUrl = sourceUrl;
+        if (onlineResourceLocator instanceof DefaultResourceLocator) {
+            ((DefaultResourceLocator) onlineResourceLocator).setSourceUrl(sourceUrl);
+        }
     }
 
     /**
@@ -2327,40 +2340,5 @@ public class SLDParser {
 
         return halo;
         
-    }
-    
-	/**
-	 * Default locator for online resources. Searches by absolute URL, relative
-	 * path w.r.t. to SLD document or classpath.
-	 * 
-	 * @author Jan De Moerloose
-	 * 
-	 */
-    class DefaultResourceLocator implements ResourceLocator {
-
-		public URL locateResource(String uri) {
-			URL url = null;
-	        try {
-	            url = new URL(uri);
-	        } catch (MalformedURLException mfe) {
-	            LOGGER.fine("Looks like " + uri + " is a relative path..");
-	            if (sourceUrl != null) {
-	                try {
-	                    url = new URL(sourceUrl, uri);
-	                } catch (MalformedURLException e) {
-	                    LOGGER.warning("can't parse " + uri + " as relative to"
-	                            + sourceUrl.toExternalForm());
-	                }
-	            }
-	            if (url == null)
-	            {
-	            	url = getClass().getResource(uri);
-	            	if (url == null)
-	            		LOGGER.warning("can't parse " + uri + " as a java resource present in the classpath");
-	            }
-	        }
-	        return url;
-		}
-    	
     }
 }

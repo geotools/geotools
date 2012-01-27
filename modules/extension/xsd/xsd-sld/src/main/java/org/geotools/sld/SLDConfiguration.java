@@ -16,6 +16,9 @@
  */
 package org.geotools.sld;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.picocontainer.MutablePicoContainer;
 import org.geotools.filter.v1_0.OGCConfiguration;
 import org.geotools.sld.bindings.SLD;
@@ -66,6 +69,8 @@ import org.geotools.sld.bindings.SLDTextSymbolizerBinding;
 import org.geotools.sld.bindings.SLDUserLayerBinding;
 import org.geotools.sld.bindings.SLDUserStyleBinding;
 import org.geotools.sld.bindings.SLDVendorOptionBinding;
+import org.geotools.styling.DefaultResourceLocator;
+import org.geotools.styling.ResourceLocator;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyleFactoryImpl;
 import org.geotools.xml.Configuration;
@@ -188,6 +193,7 @@ public class SLDConfiguration extends Configuration {
         super.configureContext(container);
 
         container.registerComponentImplementation(StyleFactory.class, StyleFactoryImpl.class);
+        container.registerComponentInstance(ResourceLocator.class, new DefaultResourceLocator());
     }
     
     @Override

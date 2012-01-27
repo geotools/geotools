@@ -20,7 +20,11 @@ import org.picocontainer.MutablePicoContainer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import java.net.URI;
+import java.net.URL;
+
 import javax.xml.namespace.QName;
+
+import org.geotools.styling.ResourceLocator;
 import org.geotools.xml.*;
 
 
@@ -50,6 +54,13 @@ import org.geotools.xml.*;
  * @source $URL$
  */
 public class SLDOnlineResourceBinding extends AbstractComplexBinding {
+
+    ResourceLocator resourceLocator;
+
+    public SLDOnlineResourceBinding(ResourceLocator resourceLocator) {
+        this.resourceLocator = resourceLocator;
+    }
+
     /**
      * @generated
      */
@@ -95,6 +106,14 @@ public class SLDOnlineResourceBinding extends AbstractComplexBinding {
     public Object parse(ElementInstance instance, Node node, Object value)
         throws Exception {
         //just grab the URI and pass it back
-        return node.getAttributeValue("href");
+        Object href = node.getAttributeValue("href");
+        if (href != null) {
+            URL located = resourceLocator.locateResource(href.toString());
+            if (located != null) {
+                //return as a uri
+                return located.toURI();
+            }
+        }
+        return href;
     }
 }

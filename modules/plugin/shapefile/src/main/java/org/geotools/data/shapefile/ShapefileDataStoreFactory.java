@@ -22,6 +22,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +34,7 @@ import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFactorySpi;
+import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.directory.DirectoryDataStore;
 import org.geotools.data.directory.FileStoreFactory;
 import org.geotools.data.shapefile.indexed.IndexType;
@@ -149,7 +151,13 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
         }
     };
 
-
+    /**
+     * Optional - marker parameter to allow shapefile ng support to be specified
+     */
+    public static final Param SORT = new Param("sort",
+            String.class, "Sort strategy 'none' supported, 'memory' and 'disk' not supported", false, "none",
+            new KVP(Param.LEVEL, "advanced", Param.OPTIONS,Arrays.asList(new String[]{"none","memory","disk"})));
+    
     /**
      * Takes a map of parameters which describes how to access a DataStore and
      * determines if it can be read by the ShapefileDataStore or
@@ -164,6 +172,23 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
      */
     public boolean canProcess(Map params) {
         boolean accept = false;
+        try {
+            String sort = (String) SORT.lookUp(params);
+            if( sort == null || "none".equals( sort )){
+                // this is fine we can support that
+            }
+            else if ("memory".equals(sort)){
+                return false; // not supported
+            }
+            else if ("disk".equals(sort)){
+                return false; // not supported
+            }
+            else {
+                LOGGER.warning("Unexpected sort level request: '"+sort+"'");
+            }
+        } catch (IOException e) {
+            return false;
+        }
         if (params.containsKey(URLP.key)) {
             try {
                 URL url = (URL) URLP.lookUp(params);

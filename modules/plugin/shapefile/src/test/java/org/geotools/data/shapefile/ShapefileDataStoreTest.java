@@ -80,14 +80,7 @@ import com.vividsolutions.jts.geom.Polygon;
  */
 public class ShapefileDataStoreTest extends TestCaseSupport {
 
-    final static String STATE_POP = "shapes/statepop.shp";
-    final static String STREAM = "shapes/stream.shp";
-    final static String DANISH = "shapes/danish_point.shp";
-    final static String CHINESE = "shapes/chinese_poly.shp";
-    final static String RUSSIAN = "shapes/rus-windows-1251.shp";
-    final static FilterFactory2 ff = CommonFactoryFinder
-            .getFilterFactory2(null);
-	private ShapefileDataStore store;
+    private ShapefileDataStore store;
 
     public ShapefileDataStoreTest(String testName) throws IOException {
         super(testName);

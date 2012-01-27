@@ -32,7 +32,9 @@ import org.geotools.TestData;
 import org.geotools.data.shapefile.ng.index.CloseableIterator;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.filter.FilterFactory2;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.ParseException;
@@ -54,6 +56,26 @@ import com.vividsolutions.jts.io.WKTReader;
  * @author Martin Desruisseaux
  */
 public class TestCaseSupport extends TestCase {
+    
+
+    /** References a known test file provided by sample data. */
+    final static String STATE_POP = "shapes/statepop.shp";
+    
+    /** References a known test file provided by sample data. */
+    final static String STREAM = "shapes/stream.shp";
+    
+    /** References a known test file provided by sample data. */
+    final static String DANISH = "shapes/danish_point.shp";
+    
+    /** References a known test file provided by sample data. */
+    final static String CHINESE = "shapes/chinese_poly.shp";
+    
+    /** References a known test file provided by sample data. */
+    final static String RUSSIAN = "shapes/rus-windows-1251.shp";
+
+    /** References a known test file provided by sample data. */
+    final static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    
     /**
      * Set to {@code true} if {@code println} are wanted during normal
      * execution. It doesn't apply to message displayed in case of errors.

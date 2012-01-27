@@ -23,6 +23,7 @@ import java.io.Serializable;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +33,7 @@ import java.util.logging.Logger;
 import org.geotools.data.AbstractDataStoreFactory;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.directory.DirectoryDataStore;
 import org.geotools.data.directory.FileStoreFactory;
 import org.geotools.data.shapefile.ng.files.ShpFiles;
@@ -108,6 +110,13 @@ public class ShapefileDataStoreFactory extends AbstractDataStoreFactory {
         }
     };
 
+    /**
+     * Optional - marker parameter to allow shapefile ng support to be specified
+     */
+    public static final Param SORT = new Param("sort",
+            String.class, "Sort strategy 'disk' supported, 'memory' and 'none' not supported", false, "none",
+            new KVP(Param.LEVEL, "advanced", Param.OPTIONS,Arrays.asList(new String[]{"none","memory","disk"})));
+    
     /**
      * Optional - timezone to decode dates from the DBF file
      */
@@ -210,7 +219,20 @@ public class ShapefileDataStoreFactory extends AbstractDataStoreFactory {
         if (!super.canProcess(params)) {
             return false;
         }
-
+        try {
+            String sort = (String) SORT.lookUp(params);
+            if( sort == null || "disk".equals( sort )){
+                // this is fine we can support that
+            }
+            else if ("memory".equals(sort) || "none".equals(sort)){
+                return false; // not supported
+            }
+            else {
+                LOGGER.warning("Unexpected sort level request: '"+sort+"'");
+            }
+        } catch (IOException e) {
+            return false;
+        }
         try {
             URL url = (URL) URLP.lookUp(params);
             if (canProcess(url)) {

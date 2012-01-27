@@ -19,6 +19,7 @@ package org.geotools.data;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.geotools.data.DataAccessFactory.Param;
@@ -141,6 +142,15 @@ public abstract class AbstractDataStoreFactory implements DataStoreFactorySpi {
             } else {
                 if ( !param.type.isInstance( value )){
                     return false; // value was not of the required type
+                }
+                if( param.metadata != null ){
+                    // check metadata
+                    if( param.metadata.containsKey(Param.OPTIONS)){
+                        List<Object> options = (List<Object>) param.metadata.get(Param.OPTIONS);
+                        if( options != null && !options.contains(value) ){
+                            return false; // invalid option
+                        }
+                    }
                 }
             }
         }

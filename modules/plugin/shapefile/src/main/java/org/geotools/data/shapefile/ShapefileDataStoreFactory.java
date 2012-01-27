@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.logging.Logger;
 
+import org.geotools.data.AbstractDataStoreFactory;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
@@ -59,12 +60,10 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  * @author Chris Holmes, TOPP
  *
- *
  * @source $URL$
- * @version $Id: ShapefileDataStoreFactory.java 27856 2007-11-12 17:23:35Z
- *          desruisseaux $
+ * @version $Id: ShapefileDataStoreFactory.java 27856 2007-11-12 17:23:35Z desruisseaux $
  */
-public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
+public class ShapefileDataStoreFactory extends AbstractDataStoreFactory implements FileDataStoreFactorySpi {
 
     public static final Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger("org.geotools.data.shapefile");
@@ -152,12 +151,13 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
     };
 
     /**
-     * Optional - marker parameter to allow shapefile ng support to be specified
+     * Optional parameter used to indicate 'shape' or 'index' (marker to select the implementation
+     * of DataStore to use).
      */
-    public static final Param SORT = new Param("sort",
-            String.class, "Sort strategy 'none' supported, 'memory' and 'disk' not supported", false, "none",
-            new KVP(Param.LEVEL, "advanced", Param.OPTIONS,Arrays.asList(new String[]{"none","memory","disk"})));
-    
+    public static final Param FSTYPE = new Param("fstype",
+            String.class, "Enable 'shape' or 'index'.", false, "shape",
+            new KVP(Param.LEVEL, "advanced", Param.OPTIONS, Arrays.asList(new String[]{"shape","index"})));
+
     /**
      * Takes a map of parameters which describes how to access a DataStore and
      * determines if it can be read by the ShapefileDataStore or
@@ -171,41 +171,27 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
      *         ending in shp
      */
     public boolean canProcess(Map params) {
-        boolean accept = false;
-        try {
-            String sort = (String) SORT.lookUp(params);
-            if( sort == null || "none".equals( sort )){
-                // this is fine we can support that
-            }
-            else if ("memory".equals(sort)){
-                return false; // not supported
-            }
-            else if ("disk".equals(sort)){
-                return false; // not supported
-            }
-            else {
-                LOGGER.warning("Unexpected sort level request: '"+sort+"'");
-            }
-        } catch (IOException e) {
-            return false;
+        if (!super.canProcess(params)) {
+            return false; // fail basic param check
         }
         if (params.containsKey(URLP.key)) {
             try {
                 URL url = (URL) URLP.lookUp(params);
-                accept = canProcess(url);
-                if(!accept) {
+                if( !canProcess(url) ){
                     // maybe it's a directory?
                     Object fileType = FILE_TYPE.lookUp(params);
                     File dir = DataUtilities.urlToFile(url);
-                    // check for null fileType for backwards compatibility
-                    accept = dir.isDirectory() && (fileType == null || "shapefile".equals(fileType));  
+                    boolean testFileTest = dir.isDirectory() && (fileType == null || "shapefile".equals(fileType));  
+                    if (!testFileTest){
+                        return false; // check for null fileType for backwards compatibility
+                    }
                 }
             } catch (IOException ioe) {
                 // yes, I am eating this - since it is my job to return a
                 // true/false
             }
         }
-        return accept;
+        return true;
     }
 
     /**
@@ -376,7 +362,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
      */
     public Param[] getParametersInfo() {
         return new Param[] { URLP, NAMESPACEP, CREATE_SPATIAL_INDEX,
-                DBFCHARSET, DBFTIMEZONE, MEMORY_MAPPED, CACHE_MEMORY_MAPS, FILE_TYPE };
+                DBFCHARSET, DBFTIMEZONE, MEMORY_MAPPED, CACHE_MEMORY_MAPS, FILE_TYPE, FSTYPE };
     }
 
     /**

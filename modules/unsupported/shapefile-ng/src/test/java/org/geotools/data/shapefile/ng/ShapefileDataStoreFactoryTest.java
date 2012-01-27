@@ -23,16 +23,7 @@ import org.geotools.TestData;
 import org.geotools.util.KVP;
 import org.junit.Test;
 
-import static org.geotools.data.shapefile.ng.ShapefileDataStoreFactory.CACHE_MEMORY_MAPS;
-import static org.geotools.data.shapefile.ng.ShapefileDataStoreFactory.CREATE_SPATIAL_INDEX;
-import static org.geotools.data.shapefile.ng.ShapefileDataStoreFactory.DBFCHARSET;
-import static org.geotools.data.shapefile.ng.ShapefileDataStoreFactory.DBFTIMEZONE;
-import static org.geotools.data.shapefile.ng.ShapefileDataStoreFactory.FILE_TYPE;
-import static org.geotools.data.shapefile.ng.ShapefileDataStoreFactory.LOGGER;
-import static org.geotools.data.shapefile.ng.ShapefileDataStoreFactory.MEMORY_MAPPED;
-import static org.geotools.data.shapefile.ng.ShapefileDataStoreFactory.NAMESPACEP;
-import static org.geotools.data.shapefile.ng.ShapefileDataStoreFactory.SORT;
-import static org.geotools.data.shapefile.ng.ShapefileDataStoreFactory.URLP;
+import static org.geotools.data.shapefile.ng.ShapefileDataStoreFactory.*;
 
 /**
  * Test the functionality of ShapefileDataStoreFactory; specifically the handling of 
@@ -57,21 +48,21 @@ public class ShapefileDataStoreFactoryTest extends TestCaseSupport {
     }
     
     @Test
-    public void testSortParameter() throws Exception {
+    public void testFSTypeParameter() throws Exception {
         URL url = TestData.url(STATE_POP);
         
         KVP params = new KVP( URLP.key,url );
         
         assertTrue( "Sorting is optional", factory.canProcess(params) );
         
-        params.put( SORT.key, "memory" );
-        assertFalse( "Memory sorting not supported", factory.canProcess(params) );
+        params.put( FSTYPE.key, "shape-ng" );
+        assertTrue( "Shape NG supported", factory.canProcess(params) );
         
-        params.put(SORT.key, "disk" );
-        assertTrue( "Disk sorting not supported", factory.canProcess(params) );
+        params.put(FSTYPE.key, "shape" );
+        assertFalse( "Plain shape not supported", factory.canProcess(params) );
         
-        params.put(SORT.key, "none" );
-        assertFalse( "Sorting is not supported", factory.canProcess(params) );
+        params.put(FSTYPE.key, "index" );
+        assertFalse( "Plain index not supported", factory.canProcess(params) );
     }
 
 }

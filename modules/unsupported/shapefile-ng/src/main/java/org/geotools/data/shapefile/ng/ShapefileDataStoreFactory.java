@@ -109,14 +109,13 @@ public class ShapefileDataStoreFactory extends AbstractDataStoreFactory {
             return ((Charset) value).name();
         }
     };
-
     /**
-     * Optional - marker parameter to allow shapefile ng support to be specified
+     * Optional parameter used to indicate 'shape-ng' (as a marker to select the implementation
+     * of DataStore to use).
      */
-    public static final Param SORT = new Param("sort",
-            String.class, "Sort strategy 'disk' supported, 'memory' and 'none' not supported", false, "none",
-            new KVP(Param.LEVEL, "advanced", Param.OPTIONS,Arrays.asList(new String[]{"none","memory","disk"})));
-    
+    public static final Param FSTYPE = new Param("fstype",
+            String.class, "Enable using a setting of 'shape-ng'.", false, "shape-ng",
+            new KVP(Param.LEVEL, "advanced", Param.OPTIONS,Arrays.asList(new String[]{"shape-ng"})));
     /**
      * Optional - timezone to decode dates from the DBF file
      */
@@ -143,7 +142,7 @@ public class ShapefileDataStoreFactory extends AbstractDataStoreFactory {
 
     public Param[] getParametersInfo() {
         return new Param[] { URLP, NAMESPACEP, CREATE_SPATIAL_INDEX, DBFCHARSET, DBFTIMEZONE,
-                MEMORY_MAPPED, CACHE_MEMORY_MAPS, FILE_TYPE };
+                MEMORY_MAPPED, CACHE_MEMORY_MAPS, FILE_TYPE, FSTYPE };
     }
 
     public boolean isAvailable() {
@@ -217,21 +216,7 @@ public class ShapefileDataStoreFactory extends AbstractDataStoreFactory {
     @Override
     public boolean canProcess(Map params) {
         if (!super.canProcess(params)) {
-            return false;
-        }
-        try {
-            String sort = (String) SORT.lookUp(params);
-            if( sort == null || "disk".equals( sort )){
-                // this is fine we can support that
-            }
-            else if ("memory".equals(sort) || "none".equals(sort)){
-                return false; // not supported
-            }
-            else {
-                LOGGER.warning("Unexpected sort level request: '"+sort+"'");
-            }
-        } catch (IOException e) {
-            return false;
+            return false; // fail basic param check
         }
         try {
             URL url = (URL) URLP.lookUp(params);
@@ -272,7 +257,7 @@ public class ShapefileDataStoreFactory extends AbstractDataStoreFactory {
         public DataStore getDataStore(File file) throws IOException {
             final URL url = DataUtilities.fileToURL(file);
             if (shpFactory.canProcess(url)) {
-                Map params = new HashMap(originalParams);
+                Map<String,Serializable> params = new HashMap<String,Serializable>(originalParams);
                 params.put(URLP.key, url);
                 return shpFactory.createDataStore(params);
             } else {

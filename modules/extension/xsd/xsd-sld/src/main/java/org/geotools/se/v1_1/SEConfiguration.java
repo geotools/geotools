@@ -18,6 +18,8 @@ package org.geotools.se.v1_1;
 import org.eclipse.xsd.util.XSDSchemaLocationResolver;	
 import org.geotools.filter.v1_1.OGCConfiguration;
 import org.geotools.se.v1_1.bindings.*;
+import org.geotools.styling.DefaultResourceLocator;
+import org.geotools.styling.ResourceLocator;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyleFactoryImpl;
 import org.geotools.xml.Configuration;
@@ -127,6 +129,7 @@ public class SEConfiguration extends Configuration {
         super.configureContext(container);
         
         container.registerComponentImplementation(StyleFactory.class, StyleFactoryImpl.class);
+        container.registerComponentInstance(ResourceLocator.class, new DefaultResourceLocator());
     }
     
     @Override

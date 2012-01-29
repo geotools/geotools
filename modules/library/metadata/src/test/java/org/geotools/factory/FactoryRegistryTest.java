@@ -16,14 +16,21 @@
  */
 package org.geotools.factory;
 
+import static org.junit.Assert.*;
+
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 import org.geotools.resources.LazySet;
-
-import org.junit.*;
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 
 /**
@@ -282,11 +289,49 @@ public final class FactoryRegistryTest {
         URLClassLoader cl = new URLClassLoader(new URL[]{url});
         GeoTools.addClassLoader(cl);
         reg.scanForPlugins();
-        
+
+        // collect the classes
         it = reg.getServiceProviders(DummyInterface.class, false);
-        assertTrue(it.hasNext());
+        Set<String> classes = new HashSet<String>();
+        while(it.hasNext()) {
+            classes.add(it.next().getClass().getName());
+        }
         
-        Object next = it.next();
-        assertEquals( "pkg.Foo", next.getClass().getName() );
+        assertEquals(2, classes.size());
+        assertTrue(classes.contains("pkg.Foo"));
+        assertTrue(classes.contains("org.geotools.factory.DummyInterfaceImpl"));
     }
+    	
+    /**
+     * Tests for GEOT-2817
+     * @throws MalformedURLException
+     * @throws ClassNotFoundException
+     */
+	@Test
+	public void testLookupWithSameFactoryInTwoClassLoaders() throws MalformedURLException, ClassNotFoundException {
+		// create url to this project's classes
+		URL projectClasses = getClass().getResource("/");
+		// create 2 classloaders with parent null to avoid delegation to the system class loader !
+		// this occurs in reality with split class loader hierarchies (e.g. GWT plugin and
+		// some application servers)
+		URLClassLoader cl1 = new URLClassLoader(new URL[] { projectClasses }, null);
+		URLClassLoader cl2 = new URLClassLoader(new URL[] { projectClasses }, null);
+		// extend with both class loaders 
+		GeoTools.addClassLoader(cl1);
+		GeoTools.addClassLoader(cl2);
+		// code below was throwing ClassCastException (before java 7) prior to adding isAssignableFrom() check (line 862)
+		for (int i = 0; i < 2; i++) {
+			ClassLoader loader = (i == 0 ? cl1 : cl2);
+			Class dummy = loader.loadClass("org.geotools.factory.DummyInterface");
+			FactoryRegistry reg = new FactoryCreator(dummy);
+			reg.scanForPlugins();
+			Iterator it = reg.getServiceProviders(dummy, false);
+			assertTrue(it.hasNext());
+			Object next = it.next();
+			// factory class should have same class loader as interface
+			assertSame(loader, next.getClass().getClassLoader());
+		}
+	}
+
+	
 }

@@ -38,12 +38,12 @@ import javax.swing.event.EventListenerList;
 
 import org.geotools.resources.Arguments;
 import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.util.logging.LoggerFactory;
-import org.geotools.util.logging.Logging;
+import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
 import org.geotools.util.Version;
+import org.geotools.util.logging.LoggerFactory;
+import org.geotools.util.logging.Logging;
 
 
 /**
@@ -733,7 +733,7 @@ public final class GeoTools {
     static Set<ClassLoader> getClassLoaders() {
         return addedClassLoaders;
     }
-    
+
     /**
      * Reports the GeoTools {@linkplain #getVersion version} number to the
      * {@linkplain System#out standard output stream}.

@@ -249,7 +249,7 @@ public class FidFilterImpl extends AbstractFilterImpl implements FidFilter {
             return false;		
         } else {
             for(Object identifier : fids) {
-                FeatureId fid = (FeatureId) identifier;
+                Identifier fid = (Identifier) identifier;
                 if(fid.getID().equals(evaluate)) {
                     return true;
                 }

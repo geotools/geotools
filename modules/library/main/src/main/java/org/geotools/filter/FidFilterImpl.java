@@ -30,6 +30,7 @@ import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.SimpleFeaturePropertyAccessorFactory;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterVisitor;
+import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.identity.Identifier;
 
 /**
@@ -247,7 +248,13 @@ public class FidFilterImpl extends AbstractFilterImpl implements FidFilter {
         if(evaluate == null) {
             return false;		
         } else {
-            return fids.contains(ff.featureId(evaluate));
+            for(Object identifier : fids) {
+                FeatureId fid = (FeatureId) identifier;
+                if(fid.getID().equals(evaluate)) {
+                    return true;
+                }
+            }
+            return false;
         }
 	}
 	

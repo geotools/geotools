@@ -706,6 +706,8 @@ public class FactoryRegistry extends ServiceRegistry {
             loaders.add(loader);
         }
         loaders.remove(null);
+        loaders.addAll(GeoTools.getClassLoaders());
+        
         /*
          * We now have a set of class loaders with duplicated object already removed
          * (e.g. system classloader == context classloader). However, we may still
@@ -857,26 +859,31 @@ public class FactoryRegistry extends ServiceRegistry {
                 loadingFailure(category, error, true);
                 continue;
             }
-            final Class<? extends T> factoryClass = factory.getClass().asSubclass(category);
-            /*
-             * If the factory implements more than one interface and an instance were
-             * already registered, reuse the same instance instead of duplicating it.
-             */
-            final T replacement = getServiceProviderByClass(factoryClass);
-            if (replacement != null) {
-                factory = replacement;
-                // Need to register anyway, because the category may not be the same.
-            }
-            if (registerServiceProvider(factory, category)) {
+            if (category.isAssignableFrom(factory.getClass())) {
+                final Class<? extends T> factoryClass = factory.getClass().asSubclass(category);
                 /*
-                 * The factory is now registered. Add it to the message to be logged. We will log
-                 * all factories together in a single log event because some registration (e.g.
-                 * MathTransformProviders) would be otherwise quite verbose.
+                 * If the factory implements more than one interface and an
+                 * instance were already registered, reuse the same instance
+                 * instead of duplicating it.
                  */
-                message.append(lineSeparator);
-                message.append("  ");
-                message.append(factoryClass.getName());
-                newServices = true;
+                final T replacement = getServiceProviderByClass(factoryClass);
+                if (replacement != null) {
+                    factory = replacement;
+                    // Need to register anyway, because the category may not be
+                    // the same.
+                }
+                if (registerServiceProvider(factory, category)) {
+                    /*
+                     * The factory is now registered. Add it to the message to
+                     * be logged. We will log all factories together in a single
+                     * log event because some registration (e.g.
+                     * MathTransformProviders) would be otherwise quite verbose.
+                     */
+                    message.append(lineSeparator);
+                    message.append("  ");
+                    message.append(factoryClass.getName());
+                    newServices = true;
+                }
             }
         }
         return newServices;

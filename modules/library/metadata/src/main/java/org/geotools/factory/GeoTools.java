@@ -20,9 +20,11 @@ import java.awt.RenderingHints;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,12 +38,12 @@ import javax.swing.event.EventListenerList;
 
 import org.geotools.resources.Arguments;
 import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.util.logging.LoggerFactory;
-import org.geotools.util.logging.Logging;
+import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
 import org.geotools.util.Version;
+import org.geotools.util.logging.LoggerFactory;
+import org.geotools.util.logging.Logging;
 
 
 /**
@@ -196,6 +198,15 @@ public final class GeoTools {
     static {
         bind(RESAMPLE_TOLERANCE, Hints.RESAMPLE_TOLERANCE);
     }
+
+    /**
+     * Class loaders to be added to the list in ${link {@link FactoryRegistry#getClassLoaders()}} 
+     * which are used to look-up plug-ins. Class loaders are added via 
+     * {@link #addClassLoader(ClassLoader)}
+     */
+    private static final Set<ClassLoader> addedClassLoaders = 
+        Collections.synchronizedSet(new HashSet<ClassLoader>());
+
 
     /**
      * The initial context. Will be created only when first needed.
@@ -685,6 +696,29 @@ public final class GeoTools {
                 ((ChangeListener) listeners[i+1]).stateChanged(event);
             }
         }
+    }
+
+    /**
+     * Adds a class loader to be included in the list of class loaders that are used to locate
+     * GeoTools plug-ins.
+     * <p>
+     * Client code that calls this method may also need to call {@link FactoryRegistry#scanForPlugins()}
+     * on any existing registry to force it to clear its cache and use the added class loader to 
+     * locate plugins.
+     * </p>
+     * 
+     * @param classLoader The class loader.
+     */
+    public static void addClassLoader(ClassLoader classLoader) {
+        addedClassLoaders.add(classLoader);
+        fireConfigurationChanged();
+    }
+    
+    /**
+     * Returns the class loaders added via {@link #addClassLoader(ClassLoader)}. 
+     */
+    static Set<ClassLoader> getClassLoaders() {
+        return addedClassLoaders;
     }
 
     /**

@@ -16,11 +16,25 @@
  */
 package org.geotools.factory;
 
-import java.util.*;
-import org.geotools.resources.LazySet;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import org.junit.*;
-import static org.junit.Assert.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import org.geotools.resources.LazySet;
+import org.junit.Before;
+import org.junit.Test;
 
 
 /**
@@ -265,4 +279,39 @@ public final class FactoryRegistryTest {
         factory = registry.getServiceProvider(DummyFactory.class, null, hints, key);
         assertEquals("An instance of Factory #4 should have been created.", DummyFactory.Example4.class, factory.getClass());
     }
+    	
+    /**
+     * Tests for GEOT-2817
+     * @throws MalformedURLException
+     * @throws ClassNotFoundException
+     */
+	@Test
+	public void testLookupWithSameFactoryInTwoClassLoaders() throws MalformedURLException, ClassNotFoundException {
+		// create url to this project's classes
+		URL projectClasses = getClass().getResource("/");
+		// create 2 classloaders with parent null to avoid delegation to the system class loader !
+		// this occurs in reality with split class loader hierarchies (e.g. GWT plugin and
+		// some application servers)
+		URLClassLoader cl1 = new URLClassLoader(new URL[] { projectClasses }, null);
+		URLClassLoader cl2 = new URLClassLoader(new URL[] { projectClasses }, null);
+		// extend with both class loaders 
+		GeoTools.addClassLoader(cl1);
+		GeoTools.addClassLoader(cl2);
+		// code below was throwing ClassCastException (before java 7) prior to adding isAssignableFrom() check (line 862)
+		for (int i = 0; i < 2; i++) {
+			ClassLoader loader = (i == 0 ? cl1 : cl2);
+			Class dummy = loader.loadClass("org.geotools.factory.DummyInterface");
+			FactoryRegistry reg = new FactoryCreator(dummy);
+			reg.scanForPlugins();
+			Iterator it = reg.getServiceProviders(dummy, false);
+			assertTrue(it.hasNext());
+			Object next = it.next();
+			// factory class should have same class loader as interface
+			assertSame(loader, next.getClass().getClassLoader());
+		}
+	}
+
+	
+
+	
 }

@@ -25,7 +25,7 @@ import org.geotools.xml.test.XMLTestSupport;
  *
  * @source $URL$
  */
-public class FilterTestSupport extends XMLTestSupport {
+public abstract class FilterTestSupport extends XMLTestSupport {
     protected Configuration createConfiguration() {
         return new OGCConfiguration();
     }

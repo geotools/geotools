@@ -19,12 +19,13 @@ package org.geotools.wfs.v1_0;
 import org.geotools.filter.v1_0.OGCConfiguration;
 
 /**
- * Parser configuration for the wfs 1.0 schema.
- *
+ * Parser configuration for the wfs 1.0 {@link WFS schema}, for capabilities documents use
+ * {@link WFSCapabilitiesConfiguration} instead.
+ * 
  * @generated
- *
- *
- *
+ * 
+ * 
+ * 
  * @source $URL$
  */
 public class WFSConfiguration extends org.geotools.wfs.WFSConfiguration {
@@ -40,6 +41,7 @@ public class WFSConfiguration extends org.geotools.wfs.WFSConfiguration {
     }
     
     protected void configureBindings(org.picocontainer.MutablePicoContainer container) {
+        super.configureBindings(container);
         container.registerComponentImplementation(WFS.QueryType, QueryTypeBinding.class);
     }
 }

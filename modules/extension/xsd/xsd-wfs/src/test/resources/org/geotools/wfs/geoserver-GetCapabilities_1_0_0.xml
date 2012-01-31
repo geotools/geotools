@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WFS_Capabilities 
+  version="1.0.0" 
+  xmlns="http://www.opengis.net/wfs" 
+  xmlns:tiger="http://www.census.gov"
+  xmlns:topp="http://www.openplans.org/topp" 
+  xmlns:ogc="http://www.opengis.net/ogc" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.0.0/WFS-capabilities.xsd">
+  <Service>
+    <Name>WFS</Name>
+    <Title>GeoServer Web Feature Service</Title>
+    <Abstract>This is the reference implementation of WFS 1.0.0 and WFS 1.1.0, supports all WFS operations including
+      Transaction.
+    </Abstract>
+    <Keywords>WFS, NY, New York</Keywords>
+    <OnlineResource>http://localhost:8080/geoserver/wfs</OnlineResource>
+    <Fees>NONE</Fees>
+    <AccessConstraints>NONE</AccessConstraints>
+  </Service>
+  <Capability>
+    <Request>
+      <GetCapabilities>
+        <DCPType>
+          <HTTP>
+            <Get onlineResource="http://localhost:8080/geoserver/wfs?request=GetCapabilities" />
+          </HTTP>
+        </DCPType>
+        <DCPType>
+          <HTTP>
+            <Post onlineResource="http://localhost:8080/geoserver/wfs" />
+          </HTTP>
+        </DCPType>
+      </GetCapabilities>
+      <DescribeFeatureType>
+        <SchemaDescriptionLanguage>
+          <XMLSCHEMA />
+        </SchemaDescriptionLanguage>
+        <DCPType>
+          <HTTP>
+            <Get onlineResource="http://localhost:8080/geoserver/wfs?request=DescribeFeatureType" />
+          </HTTP>
+        </DCPType>
+        <DCPType>
+          <HTTP>
+            <Post onlineResource="http://localhost:8080/geoserver/wfs" />
+          </HTTP>
+        </DCPType>
+      </DescribeFeatureType>
+      <GetFeature>
+        <ResultFormat>
+          <GML2 />
+          <GML3 />
+          <SHAPE-ZIP />
+          <GEOJSON />
+          <CSV />
+        </ResultFormat>
+        <DCPType>
+          <HTTP>
+            <Get onlineResource="http://localhost:8080/geoserver/wfs?request=GetFeature" />
+          </HTTP>
+        </DCPType>
+        <DCPType>
+          <HTTP>
+            <Post onlineResource="http://localhost:8080/geoserver/wfs" />
+          </HTTP>
+        </DCPType>
+      </GetFeature>
+      <Transaction>
+        <DCPType>
+          <HTTP>
+            <Get onlineResource="http://localhost:8080/geoserver/wfs?request=Transaction" />
+          </HTTP>
+        </DCPType>
+        <DCPType>
+          <HTTP>
+            <Post onlineResource="http://localhost:8080/geoserver/wfs" />
+          </HTTP>
+        </DCPType>
+      </Transaction>
+      <LockFeature>
+        <DCPType>
+          <HTTP>
+            <Get onlineResource="http://localhost:8080/geoserver/wfs?request=LockFeature" />
+          </HTTP>
+        </DCPType>
+        <DCPType>
+          <HTTP>
+            <Post onlineResource="http://localhost:8080/geoserver/wfs" />
+          </HTTP>
+        </DCPType>
+      </LockFeature>
+      <GetFeatureWithLock>
+        <ResultFormat>
+          <GML2 />
+        </ResultFormat>
+        <DCPType>
+          <HTTP>
+            <Get onlineResource="http://localhost:8080/geoserver/wfs?request=GetFeatureWithLock" />
+          </HTTP>
+        </DCPType>
+        <DCPType>
+          <HTTP>
+            <Post onlineResource="http://localhost:8080/geoserver/wfs" />
+          </HTTP>
+        </DCPType>
+      </GetFeatureWithLock>
+    </Request>
+  </Capability>
+  <FeatureTypeList>
+    <Operations>
+      <Query />
+      <Insert />
+      <Update />
+      <Delete />
+      <Lock />
+    </Operations>
+    <FeatureType>
+      <Name>tiger:poly_landmarks</Name>
+      <Title>Manhattan (NY) landmarks</Title>
+      <Abstract>Manhattan landmarks, identifies water, lakes, parks, interesting buildilngs</Abstract>
+      <Keywords>landmarks, DS_poly_landmarks, manhattan, poly_landmarks</Keywords>
+      <SRS>EPSG:4326</SRS>
+      <LatLongBoundingBox minx="-74.047185" miny="40.679648" maxx="-73.90782" maxy="40.882078" />
+    </FeatureType>
+    <FeatureType>
+      <Name>tiger:poi</Name>
+      <Title>Manhattan (NY) points of interest</Title>
+      <Abstract>Points of interest in New York, New York (on Manhattan). One of the attributes contains the name of a
+        file with a picture of the point of interest.
+      </Abstract>
+      <Keywords>poi, Manhattan, DS_poi, points_of_interest</Keywords>
+      <SRS>EPSG:4326</SRS>
+      <LatLongBoundingBox minx="-74.0118315772888" miny="40.70754683896324" maxx="-74.00857344353275"
+        maxy="40.711945649065406" />
+    </FeatureType>
+    <FeatureType>
+      <Name>topp:states</Name>
+      <Title>USA Population</Title>
+      <Abstract>This is some census data on the states.</Abstract>
+      <Keywords>census, united, boundaries, state, states</Keywords>
+      <SRS>EPSG:4326</SRS>
+      <LatLongBoundingBox minx="-124.731422" miny="24.955967" maxx="-66.969849" maxy="49.371735" />
+    </FeatureType>
+  </FeatureTypeList>
+  <ogc:Filter_Capabilities>
+    <ogc:Spatial_Capabilities>
+      <ogc:Spatial_Operators>
+        <ogc:Disjoint />
+        <ogc:Equals />
+        <ogc:DWithin />
+        <ogc:Beyond />
+        <ogc:Intersect />
+        <ogc:Touches />
+        <ogc:Crosses />
+        <ogc:Within />
+        <ogc:Contains />
+        <ogc:Overlaps />
+        <ogc:BBOX />
+      </ogc:Spatial_Operators>
+    </ogc:Spatial_Capabilities>
+    <ogc:Scalar_Capabilities>
+      <ogc:Logical_Operators />
+      <ogc:Comparison_Operators>
+        <!-- ogc:Simple_Comparisons /-->
+        <ogc:Between />
+        <ogc:Like />
+        <ogc:NullCheck />
+      </ogc:Comparison_Operators>
+      <ogc:Arithmetic_Operators>
+        <ogc:Simple_Arithmetic />
+        <ogc:Functions>
+          <ogc:Function_Names>
+            <ogc:Function_Name nArgs="1">abs</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">area</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">asin</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">atan</ogc:Function_Name>
+            <ogc:Function_Name nArgs="3">between</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">boundary</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">buffer</ogc:Function_Name>
+          </ogc:Function_Names>
+        </ogc:Functions>
+      </ogc:Arithmetic_Operators>
+    </ogc:Scalar_Capabilities>
+  </ogc:Filter_Capabilities>
+</WFS_Capabilities>

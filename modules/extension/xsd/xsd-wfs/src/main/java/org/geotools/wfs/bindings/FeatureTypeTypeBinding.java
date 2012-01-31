@@ -16,13 +16,19 @@
  */
 package org.geotools.wfs.bindings;
 
+import java.math.BigInteger;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.namespace.QName;
 
+import net.opengis.ows10.KeywordsType;
+import net.opengis.ows10.Ows10Factory;
+import net.opengis.ows10.WGS84BoundingBoxType;
 import net.opengis.wfs.FeatureTypeType;
 import net.opengis.wfs.WfsFactory;
 
@@ -161,9 +167,22 @@ public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
                 URI uri = (URI) value;
                 value = uri.toString();
             }
-        } else if ("DefaultCRS".equals(property)) {
+        } else if ("DefaultCRS".equals(property) || "SRS".equals(property)) { // WFS 1.0
             String crs = value == null ? null : String.valueOf(value);
             ((FeatureTypeType) eObject).setDefaultSRS(crs);
+        } else if ("Keywords".equals(property)){
+            if (value instanceof String) {
+                String[] split = ((String) value).split(",");
+                KeywordsType kwd = Ows10Factory.eINSTANCE.createKeywordsType();
+                for(int i = 0; i < split.length; i++){
+                    String kw = split[i].trim();
+                    kwd.getKeyword().add(kw);
+                }
+                ((FeatureTypeType) eObject).getKeywords().add(kwd);
+                return;
+            }
+        } else if ("LatLongBoundingBox".equals(property)){ // WFS 1.0
+            property = "WGS84BoundingBox";
         }
         super.setProperty(eObject, property, value, lax);
     }

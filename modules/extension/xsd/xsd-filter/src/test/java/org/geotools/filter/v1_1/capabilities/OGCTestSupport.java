@@ -30,7 +30,7 @@ import org.geotools.xml.test.XMLTestSupport;
  *
  * @source $URL$
  */
-public class OGCTestSupport extends XMLTestSupport {
+public abstract class OGCTestSupport extends XMLTestSupport {
     protected Configuration createConfiguration() {
         return new OGCConfiguration();
     }

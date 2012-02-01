@@ -110,6 +110,8 @@ public class MultiPolygonTypeBinding extends AbstractComplexBinding implements C
                 members[i] = (Polygon) multiPolygon.getGeometryN(i);
             }
 
+            GML3EncodingUtils.setChildIDs(multiPolygon);
+
             return members;
         }
 

@@ -126,6 +126,8 @@ public class MultiPointTypeBinding extends AbstractComplexBinding {
                 members[i] = (Point) multiPoint.getGeometryN(i);
             }
 
+            GML3EncodingUtils.setChildIDs(multiPoint);
+
             return members;
         }
 

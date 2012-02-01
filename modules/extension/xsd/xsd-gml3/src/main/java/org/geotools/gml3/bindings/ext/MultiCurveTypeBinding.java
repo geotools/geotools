@@ -17,13 +17,8 @@
 package org.geotools.gml3.bindings.ext;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import javax.xml.namespace.QName;
-
-import org.geotools.gml3.GML;
-import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 

@@ -111,6 +111,8 @@ public class MultiLineStringTypeBinding extends AbstractComplexBinding {
                 members[i] = (LineString) multiLineString.getGeometryN(i);
             }
 
+            GML3EncodingUtils.setChildIDs(multiLineString);
+
             return members;
         }
 

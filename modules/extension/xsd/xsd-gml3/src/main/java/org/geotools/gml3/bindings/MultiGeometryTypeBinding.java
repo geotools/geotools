@@ -120,6 +120,8 @@ public class MultiGeometryTypeBinding extends AbstractComplexBinding {
                 members[i] = (Geometry) multiGeometry.getGeometryN(i);
             }
 
+            GML3EncodingUtils.setChildIDs(multiGeometry);
+
             return members;
         }
 

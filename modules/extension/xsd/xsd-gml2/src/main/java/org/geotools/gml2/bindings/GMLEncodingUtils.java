@@ -3,7 +3,6 @@ package org.geotools.gml2.bindings;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -24,7 +23,6 @@ import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.util.XSDConstants;
 import org.geotools.feature.NameImpl;
-import org.geotools.gml2.GML;
 import org.geotools.gml2.GMLConfiguration;
 import org.geotools.util.logging.Logging;
 import org.geotools.xlink.XLINK;
@@ -415,14 +413,6 @@ public class GMLEncodingUtils {
     }
     
     public List GeometryPropertyType_getProperties(Geometry geometry) {
-
-        String id = getID( geometry );
-        
-        if ( !isEmpty(geometry) && id != null ) {
-            // return a comment which is hte xlink href
-            return Collections.singletonList(new Object[] { Encoder.COMMENT, "#" +id });            
-        }
-        
         return null;
     }
     
@@ -453,6 +443,19 @@ public class GMLEncodingUtils {
     }
     
     /**
+     * Set the identifier (gml:id) of the geometry as a key in the user data map
+     * {@link Geometry#getUserData()} (creating it with{@link Geometry#getUserData()}
+     * if it does not already exist). If the user data exists and is not a
+     * {@link Map}, this method has no effect.
+     * 
+     * @param g the geometry
+     * @param id the gml:id to be set
+     */
+    public void setID(Geometry g, String id) {
+        setMetadata(g, "gml:id", id);
+    }
+    
+    /**
      * Determines the description (gml:description) of the geometry by checking
      * {@link Geometry#getUserData()}.
      * <p>
@@ -461,6 +464,19 @@ public class GMLEncodingUtils {
      */
     public String getName(Geometry g) {
         return getMetadata( g, "gml:name" );
+    }
+    
+    /**
+     * Set the name (gml:name) of the geometry as a key in the user data map
+     * {@link Geometry#getUserData()} (creating it with{@link Geometry#getUserData()}
+     * if it does not already exist). If the user data exists and is not a
+     * {@link Map}, this method has no effect.
+     * 
+     * @param g the geometry
+     * @param name the gml:name to be set
+     */
+    public void setName(Geometry g, String name) {
+        setMetadata(g, "gml:name", name);
     }
     
     /**
@@ -474,14 +490,36 @@ public class GMLEncodingUtils {
         return getMetadata( g, "gml:description" );
     }
     
+    /**
+     * Set the description (gml:description) of the geometry as a key in the user data map
+     * {@link Geometry#getUserData()} (creating it with{@link Geometry#getUserData()}
+     * if it does not already exist). If the user data exists and is not a
+     * {@link Map}, this method has no effect.
+     * 
+     * @param g the geometry
+     * @param description the gml:description to be set
+     */
+    public void setDescription(Geometry g, String description) {
+        setMetadata(g, "gml:description", description);
+    }
+    
+    @SuppressWarnings("rawtypes")
     String getMetadata(Geometry g, String metadata) {
         if (g.getUserData() instanceof Map) {
             Map userData = (Map) g.getUserData();
-
             return (String) userData.get(metadata);
         }
-
         return null;
     }
     
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    void setMetadata(Geometry g, String metadata, String value) {
+        if (g.getUserData() == null) {
+            g.setUserData(new HashMap());
+        }
+        if (g.getUserData() instanceof Map) {
+            ((Map) g.getUserData()).put(metadata, value);
+        }
+    }
+
 }

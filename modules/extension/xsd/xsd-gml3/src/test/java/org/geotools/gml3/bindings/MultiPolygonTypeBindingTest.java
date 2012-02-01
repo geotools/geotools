@@ -19,7 +19,9 @@ package org.geotools.gml3.bindings;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
 
 
@@ -38,8 +40,16 @@ public class MultiPolygonTypeBindingTest extends GML3TestSupport {
     }
 
     public void testEncode() throws Exception {
-        Document dom = encode(GML3MockData.multiPolygon(), GML.MultiPolygon);
-        assertEquals(2,
-            dom.getElementsByTagNameNS(GML.NAMESPACE, GML.polygonMember.getLocalPart()).getLength());
+        Geometry geometry = GML3MockData.multiPolygon();
+        GML3EncodingUtils.setID(geometry, "geometry");
+        Document dom = encode(geometry, GML.MultiPolygon);
+        // print(dom);
+        assertEquals("geometry", getID(dom.getDocumentElement()));
+        assertEquals(2, dom.getElementsByTagNameNS(GML.NAMESPACE, "polygonMember").getLength());
+        NodeList children = dom.getElementsByTagNameNS(GML.NAMESPACE, GML.Polygon.getLocalPart());
+        assertEquals(2, children.getLength());
+        assertEquals("geometry.1", getID(children.item(0)));
+        assertEquals("geometry.2", getID(children.item(1)));
     }
+
 }

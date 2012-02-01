@@ -19,6 +19,7 @@ package org.geotools.gml3;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.test.XMLTestSupport;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /*
  * Test bindings by extending this class with test cases that follow this pattern:
@@ -87,4 +88,16 @@ public abstract class GML3TestSupport extends XMLTestSupport {
     protected boolean enableExtendedArcSurfaceSupport() {
         return false;
     }
+    
+    /**
+     * Return the gml:id of a Node (must be an Element).
+     * 
+     * @param node
+     * @return the gml:id
+     */
+    protected String getID(Node node) {
+        return node.getAttributes().getNamedItemNS(GML.NAMESPACE, GML.id.getLocalPart())
+                .getNodeValue();
+    }
+    
 }

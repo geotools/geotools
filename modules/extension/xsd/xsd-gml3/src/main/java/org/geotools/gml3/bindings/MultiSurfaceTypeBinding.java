@@ -123,6 +123,8 @@ public class MultiSurfaceTypeBinding extends AbstractComplexBinding {
                 members[i] = (Polygon) multiSurface.getGeometryN(i);
             }
 
+            GML3EncodingUtils.setChildIDs(multiSurface);
+
             return members;
         }
         

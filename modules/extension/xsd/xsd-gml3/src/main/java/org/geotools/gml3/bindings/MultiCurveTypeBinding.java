@@ -16,7 +16,6 @@
  */
 package org.geotools.gml3.bindings;
 
-import java.util.Arrays;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -133,6 +132,8 @@ public class MultiCurveTypeBinding extends AbstractComplexBinding {
             for (int i = 0; i < members.length; i++) {
                 members[i] = (LineString) multiCurve.getGeometryN(i);
             }
+
+            GML3EncodingUtils.setChildIDs(multiCurve);
 
             return members;
         }

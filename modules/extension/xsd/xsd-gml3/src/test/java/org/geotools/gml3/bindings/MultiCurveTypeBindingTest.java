@@ -19,10 +19,10 @@ package org.geotools.gml3.bindings;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPolygon;
-
 
 /**
  * 
@@ -30,11 +30,21 @@ import com.vividsolutions.jts.geom.MultiPolygon;
  * @source $URL$
  */
 public class MultiCurveTypeBindingTest extends GML3TestSupport {
+
     public void testEncode() throws Exception {
-        Document dom = encode(GML3MockData.multiLineString(), GML.MultiCurve);
+        Geometry geometry = GML3MockData.multiLineString();
+        GML3EncodingUtils.setID(geometry, "geometry");
+        Document dom = encode(geometry, GML.MultiCurve);
+        // print(dom);
+        assertEquals("geometry", getID(dom.getDocumentElement()));
         assertEquals(2, dom.getElementsByTagNameNS(GML.NAMESPACE, "curveMember").getLength());
+        NodeList children = dom
+                .getElementsByTagNameNS(GML.NAMESPACE, GML.LineString.getLocalPart());
+        assertEquals(2, children.getLength());
+        assertEquals("geometry.1", getID(children.item(0)));
+        assertEquals("geometry.2", getID(children.item(1)));
     }
-    
+
     public void testParseWithCurveMember() throws Exception {
         GML3MockData.multiCurve(document, document);
         MultiLineString mline = (MultiLineString) parse();

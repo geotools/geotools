@@ -24,7 +24,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import org.eclipse.xsd.XSDElementDeclaration;
@@ -32,7 +31,6 @@ import org.geotools.feature.NameImpl;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.gml2.bindings.GMLEncodingUtils;
-//import org.geotools.gml3.GML;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.XSDIdRegistry;
 import org.geotools.util.Converters;
@@ -136,12 +134,44 @@ public class GML3EncodingUtils {
         return GML2EncodingUtils.getID(g);
     }
 
+    static void setID(Geometry g, String id) {
+        GML2EncodingUtils.setID(g, id);
+    }
+
     static String getName(Geometry g) {
         return GML2EncodingUtils.getName(g);
     }
 
+    static void setName(Geometry g, String name) {
+        GML2EncodingUtils.setName(g, name);
+    }
+
     static String getDescription(Geometry g) {
         return GML2EncodingUtils.getDescription(g);
+    }
+
+    static void setDescription(Geometry g, String description) {
+        GML2EncodingUtils.setDescription(g, description);
+    }
+    
+    /**
+     * Set a synthetic gml:id on each child of a multigeometry. If the multigeometry has no gml:id,
+     * this method has no effect. The synthetic gml:id of each child is constructed from that of the
+     * parent by appending "." and then an integer starting from one for the first child.
+     * 
+     * @param multiGeometry
+     *            parent multigeometry containing the children to be modified
+     */
+    static void setChildIDs(Geometry multiGeometry) {
+        String id = getID(multiGeometry);
+        if (id != null) {
+            for (int i = 0; i < multiGeometry.getNumGeometries(); i++) {
+                StringBuilder builder = new StringBuilder(id);
+                builder.append(".");  // separator
+                builder.append(i + 1);  // synthetic gml:id suffix one-based
+                GML2EncodingUtils.setID(multiGeometry.getGeometryN(i), builder.toString());
+            }
+        }
     }
 
     /**

@@ -165,9 +165,9 @@
      </profile>
      <profile>
        <id>geogit-versioned</id>
-       <activation>
+       <!--activation>
          <property><name>all</name></property>
-       </activation>
+       </activation-->
        <modules>
          <module>geogit-versioned</module>
        </modules>

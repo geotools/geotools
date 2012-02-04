@@ -1165,7 +1165,7 @@ public class ShapefileDataStore extends AbstractFileDataStore {
                 header.addColumn(colName, 'D', fieldLen, 0);
             } else if (colType == Boolean.class) {
                 header.addColumn(colName, 'L', 1, 0);
-            } else if (CharSequence.class.isAssignableFrom(colType)) {
+            } else if (CharSequence.class.isAssignableFrom(colType) || colType == java.util.UUID.class) {
                 // Possible fix for GEOT-42 : ArcExplorer doesn't like 0 length
                 // ensure that maxLength is at least 1
                 header.addColumn(colName, 'C', Math.min(254, fieldLen), 0);

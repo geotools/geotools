@@ -435,6 +435,7 @@ public class PostGISDialect extends BasicSQLDialect {
             if(srid == null) {
                 String sqlStatement = "SELECT SRID(\"" + columnName + "\") " +
                                "FROM \"" + schemaName + "\".\"" + tableName + "\" " +
+                               "WHERE " + columnName + " IS NOT NULL " +
                                "LIMIT 1";
                 result = statement.executeQuery(sqlStatement);
                 if (result.next()) {

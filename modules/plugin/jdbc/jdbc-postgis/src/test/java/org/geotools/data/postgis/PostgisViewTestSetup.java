@@ -14,6 +14,24 @@ public class PostgisViewTestSetup extends JDBCViewTestSetup {
     }
     
     @Override
+    protected void setUpData() throws Exception {
+        super.setUpData();
+        
+        runSafe("DROP VIEW \"lakes_null_view\"");
+        runSafe("DROP TABLE \"lakes_null\"");
+        
+        run("CREATE TABLE \"lakes_null\"(\"fid\" int primary key, \"id\" int, "
+                + "\"geom\" geometry, \"name\" varchar )");
+
+        run("INSERT INTO \"lakes_null\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (-1, -1,"
+                + "null, 'empty')");
+        run("INSERT INTO \"lakes_null\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (0, 0,"
+                + "GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
+                + "'muddy')");
+        run("CREATE VIEW \"lakes_null_view\" AS SELECT * FROM \"lakes_null\"");
+    }
+    
+    @Override
     protected void createLakesTable() throws Exception {
         run("CREATE TABLE \"lakes\"(\"fid\" int primary key, \"id\" int, "
                 + "\"geom\" geometry, \"name\" varchar )");

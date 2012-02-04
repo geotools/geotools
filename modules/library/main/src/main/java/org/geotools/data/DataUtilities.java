@@ -44,6 +44,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -163,6 +164,9 @@ public class DataUtilities {
         typeMap.put("Boolean", Boolean.class);
         typeMap.put("true", Boolean.class);
         typeMap.put("false", Boolean.class);
+
+        typeEncode.put(UUID.class, "UUID");
+        typeMap.put("UUID", UUID.class);
 
         typeEncode.put(Geometry.class, "Geometry");
         typeMap.put("Geometry", Geometry.class);
@@ -826,8 +830,20 @@ public class DataUtilities {
      * <ul>
      * <li>String</li>
      * <li>Object - will return empty string</li>
-     * <li>Number</li>
+     * <li>Integer</li>
+     * <li>Double</li>
+     * <li>Long</li>
+     * <li>Short</li>
+     * <li>Float</li>
+     * <li>BigDecimal</li>
+     * <li>BigInteger</li>
      * <li>Character</li>
+     * <li>Boolean</li> 
+     * <li>UUID</li>
+     * <li>Timestamp</li>
+     * <li>java.sql.Date</li>
+     * <li>java.sql.Time</li>
+     * <li>java.util.Date</li> 
      * <li>JTS Geometries</li>
      * </ul>
      * 
@@ -866,6 +882,9 @@ public class DataUtilities {
         if (type == Boolean.class) {
             return Boolean.FALSE;
         }
+        if (type == UUID.class) {
+            return UUID.fromString("00000000-0000-0000-0000-000000000000");
+        }        
         if (type == Timestamp.class)
             return new Timestamp(System.currentTimeMillis());
         if (type == java.sql.Date.class)

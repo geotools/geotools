@@ -903,7 +903,7 @@ public final class JDBCDataStore extends ContentDataStore
                     Connection cx = createConnection();
 
                     try {
-                        PrimaryKey pkey;
+                        PrimaryKey pkey = null;
                         String tableName = entry.getName().getLocalPart();
                         if(virtualTables.containsKey(tableName)) {
                             VirtualTable vt = virtualTables.get(tableName);
@@ -929,7 +929,12 @@ public final class JDBCDataStore extends ContentDataStore
                                 pkey = new PrimaryKey(tableName, kcols);
                             }
                         } else {
-                            pkey = primaryKeyFinder.getPrimaryKey(this, databaseSchema, tableName, cx);
+                            try {
+                                pkey = primaryKeyFinder.getPrimaryKey(this, databaseSchema, tableName, cx);
+                            } catch(SQLException e) {
+                                LOGGER.warning("Failure occurred while looking up the primary key with " +
+                                		"finder: " + primaryKeyFinder);
+                            }
                             
                             if ( pkey == null ) {
                                 String msg = "No primary key or unique index found for " + tableName + ".";

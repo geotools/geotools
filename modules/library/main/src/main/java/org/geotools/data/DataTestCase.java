@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 import junit.framework.TestCase;
 
@@ -108,7 +109,7 @@ public class DataTestCase extends TestCase {
     protected void dataSetUp() throws Exception {
         String namespace = getName();
         roadType = DataUtilities.createType(namespace + ".road",
-                "id:0,geom:LineString,name:String");
+                "id:0,geom:LineString,name:String,uuid:UUID");
         subRoadType = DataUtilities.createType(namespace + "road",
                 "id:0,geom:LineString");
         gf = new GeometryFactory();
@@ -123,6 +124,7 @@ public class DataTestCase extends TestCase {
                 new Integer(1),
                 line(new int[] { 1, 1, 2, 2, 4, 2, 5, 1 }),
                 "r1",
+                UUID.randomUUID()
             },
             "road.rd1"
         );
@@ -134,7 +136,8 @@ public class DataTestCase extends TestCase {
         //    3,0+
         roadFeatures[1] = SimpleFeatureBuilder.build(roadType, new Object[] {
                 new Integer(2), line(new int[] { 3, 0, 3, 2, 3, 3, 3, 4 }),
-                "r2"
+                "r2",
+                UUID.randomUUID()
             },
             "road.rd2"
         );
@@ -144,7 +147,9 @@ public class DataTestCase extends TestCase {
         //  3,2 +----+ 4,2
         roadFeatures[2] = SimpleFeatureBuilder.build(roadType, new Object[] {
                 new Integer(3),
-                line(new int[] { 3, 2, 4, 2, 5, 3 }), "r3"
+                line(new int[] { 3, 2, 4, 2, 5, 3 }),
+                "r3",
+                UUID.randomUUID()
             },
             "road.rd3"
         );
@@ -167,7 +172,7 @@ public class DataTestCase extends TestCase {
         //  / rd4
         // + 1,2
         newRoad = SimpleFeatureBuilder.build(roadType, new Object[] {
-                    new Integer(4), line(new int[] { 1, 2, 2, 3 }), "r4"
+                    new Integer(4), line(new int[] { 1, 2, 2, 3 }), "r4", UUID.randomUUID()
                 }, "road.rd4");
 
         riverType = DataUtilities.createType(namespace+".river",

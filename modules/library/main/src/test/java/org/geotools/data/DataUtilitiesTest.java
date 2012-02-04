@@ -246,10 +246,11 @@ public class DataUtilitiesTest extends DataTestCase {
         String[] names;
 
         names = DataUtilities.attributeNames(roadType);
-        assertEquals(3, names.length);
+        assertEquals(4, names.length);
         assertEquals("id", names[0]);
         assertEquals("geom", names[1]);
         assertEquals("name", names[2]);
+        assertEquals("uuid", names[3]);
 
         names = DataUtilities.attributeNames(subRoadType);
         assertEquals(2, names.length);
@@ -382,7 +383,7 @@ public class DataUtilitiesTest extends DataTestCase {
 
         // different namespace
         SimpleFeatureType road3 = DataUtilities.createType("test.road",
-                "id:0,geom:LineString,name:String");
+                "id:0,geom:LineString,name:String,uuid:UUID");
         assertEquals(0, DataUtilities.compare(road3, roadType));
     }
 

@@ -102,7 +102,7 @@ public class TemporalConverterFactoryTest extends TestCase {
 	}
 	
 	public void testCalendarToTime() throws Exception {
-		Calendar calendar = Calendar.getInstance();
+		Calendar calendar = Calendar.getInstance( TimeZone.getTimeZone("GMT") );
 		calendar.clear();
 		calendar.set(Calendar.HOUR_OF_DAY, 17);
 		calendar.set(Calendar.MINUTE, 0);

@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
+import java.util.TimeZone;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -43,6 +44,7 @@ import org.geotools.factory.Hints;
  * <li>{@link Calendar} to {@link XMLGregorianCalendar}
  * <li>{@link XMLGregorianCalendar} to {@link Date}
  * <li>{@link Date} to {@link XMLGregorianCalendar}
+ * <li>{@link String} to {@link TimeZone}
  * </ul>
  * </p>
  * <p>
@@ -216,6 +218,19 @@ public class TemporalConverterFactory implements ConverterFactory {
                                     calendar, Date.class);
                         }
                         return null;
+                    }
+                };
+            }
+        }
+        
+        if (TimeZone.class.isAssignableFrom(source)) {
+            if (String.class == target) {
+                return new Converter() {
+                    public <T> T convert(Object source, Class<T> target) throws Exception {
+                        if (source == null) {
+                            return null;
+                        }
+                        return target.cast(((TimeZone) source).getID());
                     }
                 };
             }

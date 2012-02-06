@@ -27,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
+import java.util.TimeZone;
 import org.geotools.factory.Hints;
 
 /**
@@ -304,6 +305,19 @@ public class CommonsConverterFactory implements ConverterFactory {
             }
         }
     }
+    static class TimeZoneConverter implements Converter {
+        public <T> T convert(Object source, Class<T> target) throws Exception {
+            if( source == null ) return null;
+            String string = (String) source;
+            TimeZone timezone = TimeZone.getTimeZone(string);
+            if (!string.equals(timezone.getID())) {
+                // timezone will return UTC if nothing matches, so technically,
+                // this is not a valid parse
+                return null;
+            }
+            return target.cast(timezone);
+        }
+    }
     /**
      * No need for FastHashMap - we are only registering during construction
      */
@@ -340,6 +354,7 @@ public class CommonsConverterFactory implements ConverterFactory {
         register.put(java.sql.Date.class, new SQLDateConverter() );
         register.put(java.sql.Time.class, new SQLTimeConverter() );
         register.put(java.sql.Timestamp.class, new SQLTimestampConverter() );
+        register.put(TimeZone.class, new TimeZoneConverter());
         
         register.put(Date.class, new DateConverter() );
 

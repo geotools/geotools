@@ -18,6 +18,7 @@ package org.geotools.util;
 
 import java.math.BigDecimal;
 
+import java.util.TimeZone;
 import junit.framework.TestCase;
 
 /**
@@ -53,6 +54,12 @@ public class CommonsConverterFactoryTest extends TestCase {
         BigDecimal d = new BigDecimal(12345);
         d=d.divide(new BigDecimal(100));
         assertEquals(d,convert("123.45", BigDecimal.class));
+    }
+    
+    public void testTimeZoneConversion() throws Exception {
+        assertEquals(TimeZone.getTimeZone("UTC"), convert("UTC", TimeZone.class));
+        assertNull(convert("foobar", TimeZone.class));
+        assertNull(factory.createConverter(String.class, TimeZone.class, null).convert(null, TimeZone.class));
     }
     
     Object convert( Object source, Class target ) throws Exception {

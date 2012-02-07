@@ -40,10 +40,15 @@ import org.opengis.util.ProgressListener;
 
 /**
  * Implement a feature collection just based on provision of iterator.
- * 
- * @author Jody Garnett (Refractions Research Inc)
- *
- *
+ * <p>
+ * You will need to implement the following methods:
+ * <ul>
+ * <li>{@link #getBounds()}</li>
+ * <li>{@link #size()}</li>
+ * <li>{@link #closeIterator(Iterator)}</li>
+ * <li>{@link #openIterator()}</li>
+ * </ul>
+ * @author Jody Garnett (LISAsoft)
  *
  * @source $URL$
  */
@@ -601,7 +606,6 @@ public abstract class AdaptorFeatureCollection implements SimpleFeatureCollectio
     	listeners.remove(listener);
     }
 
-
     public SimpleFeatureType getSchema() {
     	return schema;
     }
@@ -610,6 +614,6 @@ public abstract class AdaptorFeatureCollection implements SimpleFeatureCollectio
      * Subclasses need to override this.
      */
     public ReferencedEnvelope getBounds() {
-    	throw new UnsupportedOperationException("subclasses should override");
+        throw new UnsupportedOperationException("Subclasses "+getClass().getSimpleName()+" should override");
     }
 }

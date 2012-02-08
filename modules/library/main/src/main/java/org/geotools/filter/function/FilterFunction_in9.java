@@ -31,7 +31,7 @@ import org.opengis.filter.capability.FunctionName;
  */
 public class FilterFunction_in9 extends FunctionExpressionImpl {
     
-    public static FunctionName NAME = new FunctionNameImpl("in10", Boolean.class,
+    public static FunctionName NAME = new FunctionNameImpl("in9", Boolean.class,
             parameter("value", Boolean.class),
             parameter("in1", Object.class),
             parameter("in2", Object.class),

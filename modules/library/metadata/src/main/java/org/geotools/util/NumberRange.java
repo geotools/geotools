@@ -492,7 +492,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
          * throw an exception otherwise.
          */
         range = convertAndCast((Range) range, (Class) type);
-        return castTo((Class) type).containsNC(range);
+        return castTo((Class) type).containsNC((Range) range);
     }
 
     /**
@@ -509,7 +509,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
          * throw an exception otherwise.
          */
         range = convertAndCast((Range) range, (Class) type);
-        return castTo((Class) type).intersectsNC(range);
+        return castTo((Class) type).intersectsNC((Range)range);
     }
 
     /**
@@ -521,7 +521,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
     public NumberRange<?> union(Range<?> range) {
         final Class<? extends Number> type = getWidestClass(elementClass, getElementClass(range));
         range = convertAndCast((Range) range, (Class) type);
-        return (NumberRange) castTo((Class) type).unionNC(range);
+        return (NumberRange) castTo((Class) type).unionNC((Range)range);
     }
 
     /**

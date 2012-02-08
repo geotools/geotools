@@ -298,9 +298,9 @@ public class Range<T extends Comparable<? super T>> implements Serializable  {
      * Implementation of {@link #contains(T)} to be invoked directly by subclasses.
      * "NC" stands for "No Cast" - this method do not try to cast the value to a compatible type.
      */
-    final boolean containsNC(final T value) {
+    final boolean containsNC(final Comparable value) {
         if (minValue != null) {
-            final int c = minValue.compareTo(value);
+            final int c = minValue.compareTo((T)value);
             if (c >= 0) {
                 if (c != 0 || !isMinIncluded) {
                     return false;
@@ -308,7 +308,7 @@ public class Range<T extends Comparable<? super T>> implements Serializable  {
             }
         }
         if (maxValue != null) {
-            final int c = maxValue.compareTo(value);
+            final int c = maxValue.compareTo((T)value);
             if (c <= 0) {
                 if (c != 0 || !isMaxIncluded) {
                     return false;

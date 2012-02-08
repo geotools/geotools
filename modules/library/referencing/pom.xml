@@ -206,5 +206,18 @@
     </dependency>
   </dependencies>
 
+  <profiles>
+    <profile>
+      <id>mac</id>
+      <activation>
+        <os>
+         <family>mac</family>
+        </os>
+      </activation>
+      <properties>
+        <test.exclude.pattern>**/WarpTransformTest.*</test.exclude.pattern> 
+      </properties>
+    </profile>
+  </profiles>
 
 </project>

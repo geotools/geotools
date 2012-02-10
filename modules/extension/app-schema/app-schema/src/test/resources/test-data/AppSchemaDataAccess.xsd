@@ -430,6 +430,15 @@
           </documentation>
         </annotation>
       </element>
+      <element name="isList" type="boolean" default="false" minOccurs="0">
+        <annotation>
+          <documentation>
+            <![CDATA[ Flag to indicate the target element addressed by this mapping has to be treated as
+            a container of a list of values. This is similar to isMultiple except the values are concatenated
+            as one big value instead of multiple elements with each value.]]>
+          </documentation>
+        </annotation>
+      </element>
       <element name="ClientProperty" minOccurs="0" maxOccurs="unbounded">
         <complexType>
           <sequence>

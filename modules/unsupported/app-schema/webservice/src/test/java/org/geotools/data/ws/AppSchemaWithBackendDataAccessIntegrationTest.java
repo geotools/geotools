@@ -85,7 +85,7 @@ public class AppSchemaWithBackendDataAccessIntegrationTest extends TestCase {
         setFilterFactory();
         typeName = Types.typeName("GeologicUnit1");
         URL url = XmlDataStoreTest.class.getResource(schemaBase
-                + "GuDaBackend.xml");
+                + "xmlDataAccessConfig.xml");
 
         assertNotNull(url);
 

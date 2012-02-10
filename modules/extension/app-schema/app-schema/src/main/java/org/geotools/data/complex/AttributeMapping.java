@@ -46,6 +46,8 @@ public class AttributeMapping {
     protected StepList targetXPath;
 
     private boolean isMultiValued;
+    
+    private boolean isList;
 
     /**
      * If present, represents our way to deal polymorphic attribute instances, so this node should
@@ -92,6 +94,10 @@ public class AttributeMapping {
 
     public boolean isMultiValued() {
         return isMultiValued;
+    }
+    
+    public boolean isList() {
+        return isList;
     }
 
     public Expression getSourceExpression() {
@@ -142,6 +148,10 @@ public class AttributeMapping {
         this.instancePath = instancePath;
     }
     
+    public void setList(boolean isList) {
+        this.isList = isList;
+    }
+    
     /********END specific web service methods*******************/
     
     @Override
@@ -160,6 +170,9 @@ public class AttributeMapping {
                 && Utilities.equals(sourceExpression, other.sourceExpression)
                 && Utilities.equals(targetXPath, other.targetXPath)
                 && Utilities.equals(targetNodeInstance, other.targetNodeInstance)
+                && Utilities.equals(isList, other.isList)
+                && Utilities.equals(isMultiValued, other.isMultiValued)
+                && Utilities.equals(clientProperties, other.clientProperties)
                 && Utilities.equals(label, other.label)
                 && Utilities.equals(parentLabel, other.parentLabel);
     }

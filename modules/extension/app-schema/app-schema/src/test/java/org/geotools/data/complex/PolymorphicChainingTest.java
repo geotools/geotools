@@ -123,11 +123,11 @@ public class PolymorphicChainingTest extends AppSchemaTestSupport {
         retVal = getFeatures(filteredResults);
         assertEquals(0, retVal.size());
 
-//        property = ff.property("ex:attributes/ex:key");
-//        filter = ff.equals(property, ff.literal("stringKey1"));
-//        filteredResults = artifactSource.getFeatures(filter);
-//        retVal = getFeatures(filteredResults);
-//        assertEquals(0, retVal.size());
+        property = ff.property("ex:attributes/ex:key");
+        filter = ff.equals(property, ff.literal("stringKey1"));
+        filteredResults = artifactSource.getFeatures(filter);
+        retVal = getFeatures(filteredResults);
+        assertEquals(0, retVal.size());
     }
 
     protected static void assertId(String expected, Feature f) {

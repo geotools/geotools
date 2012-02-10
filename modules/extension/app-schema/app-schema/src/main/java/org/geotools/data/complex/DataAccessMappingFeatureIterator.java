@@ -30,6 +30,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.apache.commons.lang.StringUtils;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.FeatureSource;
@@ -439,14 +440,12 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             if (mappingName != null) {
                 if (nestedMapping.isSameSource() && mappingName instanceof Name) {
                     // data type polymorphism mapping
-                    setPolymorphicValues((Name) mappingName, target, id, nestedMapping, source,
+                    return setPolymorphicValues((Name) mappingName, target, id, nestedMapping, source,
                             xpath, clientPropsMappings);
-                    return null;
                 } else if (mappingName instanceof String) {
                     // referential polymorphism mapping
-                    setPolymorphicReference((String) mappingName, clientPropsMappings, target,
+                    return setPolymorphicReference((String) mappingName, clientPropsMappings, target,
                             xpath, targetNodeType);
-                    return null;
                 }
             } else {
                 // polymorphism could result in null, to skip the attribute
@@ -507,6 +506,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                 return null;
             }
         }
+        Attribute instance = null;
         if (values instanceof Collection) {
             // nested feature type could have multiple instances as the whole purpose
             // of feature chaining is to cater for multi-valued properties
@@ -534,7 +534,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                 } else {
                     valueList.add(singleVal);
                 }
-                Attribute instance = xpathAttributeBuilder.set(target, xpath, valueList, id,
+                instance = xpathAttributeBuilder.set(target, xpath, valueList, id,
                         targetNodeType, false, sourceExpression);
                 setClientProperties(instance, source, clientPropsMappings);
             }
@@ -549,16 +549,12 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                 }
                 values = ((Attribute) values).getValue();
             }
-            Attribute instance = xpathAttributeBuilder.set(target, xpath, values, id,
+            instance = xpathAttributeBuilder.set(target, xpath, values, id,
                     targetNodeType, false, sourceExpression);
             setClientProperties(instance, source, clientPropsMappings);
 
-            // required by XmlMappingFeatureIterator so it can be passed on for setting
-            // client properties there
-            return instance;
-
         }
-        return null;
+        return instance;
     }
 
     /**
@@ -576,7 +572,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
      * @param targetNodeType
      *            the type of the attribute to be cast to, if any
      */
-    private void setPolymorphicReference(String uri,
+    private Attribute setPolymorphicReference(String uri,
             Map<Name, Expression> clientPropsMappings, Attribute target, StepList xpath,
             AttributeType targetNodeType) {
         
@@ -587,7 +583,9 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             newClientProps.putAll(clientPropsMappings);
             newClientProps.put(XLINK_HREF_NAME, namespaceAwareFilterFactory.literal(uri));
             setClientProperties(instance, null, newClientProps);
+            return instance;
         }
+        return null;
     }
 
     /**
@@ -608,7 +606,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
      *            Client properties
      * @throws IOException
      */
-    private void setPolymorphicValues(Name mappingName, Attribute target, String id,
+    private Attribute setPolymorphicValues(Name mappingName, Attribute target, String id,
             NestedAttributeMapping nestedMapping, Object source, StepList xpath,
             Map<Name, Expression> clientPropsMappings) throws IOException {
         // process sub-type mapping
@@ -640,7 +638,9 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                 }
                 setAttributeValue(instance, null, source, mapping, null, null, selectedProperties.get(mapping));
             }
+            return instance;
         }
+        return null;
     }
 
     /**
@@ -816,10 +816,32 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                     // as it was already set
                     continue;
                 }
-
-                // extract the values from multiple source features of the same id
-                // and set them to one built feature
-                if (attMapping.isMultiValued()) {
+                if (attMapping.isList()) {
+                    Attribute instance = setAttributeValue(target, null, sources.get(0),
+                            attMapping, null, null, selectedProperties.get(attMapping));
+                    if (sources.size() > 1 && instance != null) {
+                        Object[] values = new Object[sources.size()];
+                        Expression sourceExpr = attMapping.getSourceExpression();
+                        int i = 0;
+                        for (Feature source : sources) {
+                            values[i] = getValue(sourceExpr, source);
+                            i++;
+                        }
+                        String valueString = StringUtils.join(values, " ");
+                        StepList fullPath = attMapping.getTargetXPath();
+                        StepList leafPath = fullPath.subList(fullPath.size() - 1, fullPath.size());
+                        if (ComplexFeatureConstants.SIMPLE_CONTENT.equals(instance.getDescriptor()
+                                .getName())) {
+                            instance.setValue(valueString);
+                        } else {
+                            // xpath builder will work out the leaf attribute to set values on
+                            xpathAttributeBuilder.set(instance, leafPath, valueString, null, null,
+                                    false, sourceExpr);
+                        }
+                    }
+                } else if (attMapping.isMultiValued()) {
+                    // extract the values from multiple source features of the same id
+                    // and set them to one built feature
                     for (Feature source : sources) {
                         setAttributeValue(target, null, source, attMapping, null, null, selectedProperties.get(attMapping));
                     }

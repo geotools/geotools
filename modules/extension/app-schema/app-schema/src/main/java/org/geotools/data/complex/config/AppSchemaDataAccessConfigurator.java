@@ -345,6 +345,8 @@ public class AppSchemaDataAccessConfigurator {
             validateConfiguredNamespaces(targetXPathSteps);
 
             final boolean isMultiValued = attDto.isMultiple();
+            
+            final boolean isList = attDto.isList();
 
             final Expression idExpression = (idXpath == null) ? parseOgcCqlExpression(idExpr)
                     : new AttributeExpressionImpl(idXpath, new Hints(
@@ -401,6 +403,10 @@ public class AppSchemaDataAccessConfigurator {
             } else {
                 attMapping = new AttributeMapping(idExpression, sourceExpression, targetXPathSteps,
                         expectedInstanceOf, isMultiValued, clientProperties);
+            }
+            
+            if (attDto.isList()) {
+                attMapping.setList(true);
             }
 
             /**

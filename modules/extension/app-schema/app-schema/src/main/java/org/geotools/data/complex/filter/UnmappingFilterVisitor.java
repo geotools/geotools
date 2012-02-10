@@ -30,6 +30,7 @@ import javax.xml.namespace.QName;
 
 import org.geotools.data.complex.AttributeMapping;
 import org.geotools.data.complex.FeatureTypeMapping;
+import org.geotools.data.complex.NestedAttributeMapping;
 import org.geotools.data.complex.filter.XPath.Step;
 import org.geotools.data.complex.filter.XPath.StepList;
 import org.geotools.factory.CommonFactoryFinder;
@@ -808,14 +809,20 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         NamespaceSupport namespaces = mappings.getNamespaces();
         AttributeDescriptor root = mappings.getTargetFeature();
 
+        List<NestedAttributeMapping> nestedMappings = mappings.getNestedMappings();
         // break into single steps
         StepList simplifiedSteps = XPath.steps(root, targetXPath, namespaces);
 
         List<Expression> matchingMappings = mappings.findMappingsFor(simplifiedSteps);
 
-        if (matchingMappings.isEmpty() && simplifiedSteps.size() > 1) {
-            // means some attributes are probably mapped separately in feature chaining
-            matchingMappings.add(new NestedAttributeExpression(targetXPath, mappings));
+        if (!nestedMappings.isEmpty()) {
+            // means some attributes are mapped separately in feature chaining
+            for (NestedAttributeMapping nestedMapping : nestedMappings) {
+                if (simplifiedSteps.startsWith(nestedMapping.getTargetXPath())) {
+                    matchingMappings.add(new NestedAttributeExpression(simplifiedSteps,
+                            nestedMapping));
+                }
+            }
         }
 
         if (matchingMappings.size() == 0) {

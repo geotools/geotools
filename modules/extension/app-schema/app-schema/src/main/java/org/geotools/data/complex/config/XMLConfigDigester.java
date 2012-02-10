@@ -222,6 +222,9 @@ public class XMLConfigDigester {
 
         digester.addCallMethod(attMap + "/isMultiple", "setMultiple", 1);
         digester.addCallParam(attMap + "/isMultiple", 0);
+        
+        digester.addCallMethod(attMap + "/isList", "setList", 1);
+        digester.addCallParam(attMap + "/isList", 0);
 
         digester.addCallMethod(attMap + "/targetAttribute", "setTargetAttributePath", 1);
         digester.addCallParam(attMap + "/targetAttribute", 0);

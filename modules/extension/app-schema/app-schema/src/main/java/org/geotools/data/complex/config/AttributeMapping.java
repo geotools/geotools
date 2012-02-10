@@ -114,10 +114,17 @@ public class AttributeMapping implements Serializable {
 
     /**
      * If <code>true</code>, indicates that one instance of this attribute mapping must be
-     * created for every repeating group of attributes. In other words, indicates wether this
+     * created for every repeating group of attributes. In other words, indicates whether this
      * attribute corresponds to a multivalued or a single valued attribute.
      */
     private boolean isMultiple;
+    
+    /**
+     * If <code>true</code>, indicates that this attribute corresponds to a list of values.
+     * This is similar to isMultiple, except the values are concatenated as a big String inside 
+     * the attribute.
+     */
+    private boolean isList;
 
     /**
      * Client properties definitions for instances of the target attribute. The map is keys are
@@ -306,9 +313,9 @@ public class AttributeMapping implements Serializable {
     public boolean isMultiple() {
         return isMultiple;
     }
-
+    
     /**
-     * Sets wether this attribute should be treated as a single or multi valued property.
+     * Sets whether this attribute should be treated as a single or multi valued property.
      * 
      * @param isMultiple
      *                <code>true</code> if this attribute corresponds to a multivalued property,
@@ -316,6 +323,38 @@ public class AttributeMapping implements Serializable {
      */
     public void setMultiple(boolean isMultiple) {
         this.isMultiple = isMultiple;
+    }
+
+    /**
+     * Sets whether this attribute should be treated as a list valued property.
+     * 
+     * @param isList
+     *                <code>true</code> if this attribute corresponds to a list valued property,
+     *                <code>false</code> otherwise.
+     */
+    public void setList(boolean isList) {
+        this.isList = isList;
+    }
+    
+    /**
+     * Helper method to allow config digester passing a string.
+     * 
+     * @see #setList(boolean)
+     * @param isList
+     */
+    public void setList(String list) {
+        boolean isList = Boolean.valueOf(list).booleanValue();
+        setList(isList);
+    }
+    
+    /**
+     * Returns whether this attribute should be treated as a list valued property.
+     * 
+     * @return <code>true</code> if this attribute corresponds to a list valued property,
+     *         <code>false</code> otherwise.
+     */
+    public boolean isList() {
+        return isList;
     }
 
     /**

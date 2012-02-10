@@ -762,29 +762,4 @@ public class Types extends org.geotools.feature.type.Types {
             return isSimpleContentType(superType);
         }
     }
-
-    public static boolean isSimpleContent(StepList parentPath, PropertyType schema) {
-        boolean isSimpleContent = false;
-        if (schema instanceof ComplexType) {
-            Iterator<Step> iterator = parentPath.iterator();
-            Step step = iterator.next();
-            PropertyDescriptor parentDescriptor = ((ComplexType) schema).getDescriptor(Types
-                    .toTypeName(step.getName()));
-            while (iterator.hasNext() && parentDescriptor != null) {
-                step = iterator.next();
-                schema = parentDescriptor.getType();
-                if (schema instanceof ComplexType) {
-                    parentDescriptor = ((ComplexType) schema).getDescriptor(Types.toTypeName(step
-                            .getName()));
-                } else {
-                    parentDescriptor = null;
-                }
-            }
-            if (parentDescriptor != null) {
-                isSimpleContent = Types.isSimpleContentType(parentDescriptor.getType());
-            }
-        }
-        return isSimpleContent;
-    }
-
 }

@@ -160,6 +160,18 @@ public class XPath {
             
             return false;
         }
+        
+        public boolean startsWith(StepList other) {
+            if (other.size() > this.size()) {
+                return false;
+            }
+            for (int i = 0; i < other.size(); i++) {
+                if (!this.get(i).equalsIgnoreIndex(other.get(i))) {
+                    return false;
+                }
+            }
+            return true;
+        }
 
         public StepList subList(int fromIndex, int toIndex) {
             if (fromIndex < 0)

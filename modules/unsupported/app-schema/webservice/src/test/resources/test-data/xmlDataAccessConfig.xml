@@ -49,6 +49,7 @@
   </targetTypes>
   <typeMappings>
     <FeatureTypeMapping>
+      <mappingName>GeologicUnit1</mappingName>
       <sourceDataStore>ws</sourceDataStore>     
       <sourceType>gss:GEOLOGICALUNIT_250K_POLY</sourceType>
       <targetElement>gsml:GeologicUnit</targetElement>

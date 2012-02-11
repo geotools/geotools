@@ -200,4 +200,11 @@ class FastBBOX implements BBOX, BinarySpatialOperator, BinaryComparisonOperator,
         return MatchAction.ANY;
     }
 
+    @Override
+    public String toString() {
+        return "FastBBOX [property=" + property + ", envelope=" + envelope + "]";
+    }
+    
+    
+
 }

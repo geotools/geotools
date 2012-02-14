@@ -22,9 +22,12 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import net.opengis.ows10.KeywordsType;
 
 import org.geotools.data.AbstractFeatureSource;
 import org.geotools.data.DataStore;
@@ -122,7 +125,25 @@ public class WFSFeatureSource extends AbstractFeatureSource implements SimpleFea
 
             @SuppressWarnings("unchecked")
             public Set<String> getKeywords() {
-                return new HashSet<String>(featureSetDescription.getKeywords());
+                return extractKeywords(featureSetDescription.getKeywords());
+            }
+            
+            @SuppressWarnings("unchecked")
+            private Set<String> extractKeywords(List<KeywordsType> keywordsList) {
+                Set<String> keywords = new HashSet<String>();
+                if (keywordsList != null) {
+                    for (KeywordsType keys : keywordsList) {
+                        if (keys != null) {
+                            List<String> kws = keys.getKeyword();
+                            for (String kw : kws) {
+                                if (kw != null && kw.trim().length() > 0) {
+                                    keywords.add(kw);
+                                }
+                            }
+                        }
+                    }
+                }
+                return keywords;
             }
 
             public String getName() {

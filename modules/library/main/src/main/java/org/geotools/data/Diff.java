@@ -317,7 +317,7 @@ public class Diff{
 					tree.insert(ReferencedEnvelope.reference(f.getBounds()), f);
 				}
 			}
-			Iterator<Entry<String,SimpleFeature>> j = diff.modified2.entrySet().iterator();
+			Iterator<Entry<String,SimpleFeature>> j = diff.getModified().entrySet().iterator();
 			while( j.hasNext() ){
 				Entry<String,SimpleFeature> e = j.next();
 				SimpleFeature f = (SimpleFeature) e.getValue();

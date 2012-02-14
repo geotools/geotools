@@ -20,12 +20,14 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.filter.AttributeExpression;
 import org.opengis.feature.Feature;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
@@ -110,8 +112,8 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature> impleme
         	if( indexedGeometryFilter ){
         		spatialIndexIterator=getIndexedFeatures().iterator();
         	}
-        	addedIterator=(Iterator<F>)diff.added.values().iterator();
-        	modifiedIterator=(Iterator<F>)diff.modified2.values().iterator();
+        	addedIterator=(Iterator<F>)diff.getAdded().values().iterator();
+        	modifiedIterator=(Iterator<F>)diff.getModified().values().iterator();
         }
     }
 
@@ -162,8 +164,9 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature> impleme
             String fid = peek.getIdentifier().getID();
             encounteredFids.add(fid);
 
-            if (diff.modified2.containsKey(fid)) {
-                F changed = (F) diff.modified2.get(fid);
+            Map<String, SimpleFeature> modified = diff.getModified();
+            if (modified.containsKey(fid)) {
+                F changed = (F) modified.get(fid);
                 if (changed == TransactionStateDiff.NULL || !filter.evaluate(changed) ) {
                     continue;
                 } else {
@@ -243,9 +246,9 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature> impleme
         while( fids.hasNext() && next == null ) {
 		    String fid = fids.next().toString();
 		    if( !encounteredFids.contains(fid) ){
-    			next = (F) diff.modified2.get(fid);
+    			next = (F) diff.getModified().get(fid);
     		    if( next==null ){
-    		    	next = (F) diff.added.get(fid);
+    		    	next = (F) diff.getAdded().get(fid);
     		    }
 		    }
 		}

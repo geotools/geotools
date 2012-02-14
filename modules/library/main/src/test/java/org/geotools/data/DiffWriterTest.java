@@ -61,18 +61,18 @@ public class DiffWriterTest extends TestCase {
 		writer.next();
 		SimpleFeature feature=writer.next();
 		writer.remove();
-		assertNull(writer.diff.added.get(feature.getID()));
+		assertNull(writer.diff.getAdded().get(feature.getID()));
 	}
 
 	public void testHasNext() throws Exception {
 		assertTrue(writer.hasNext());
-		assertEquals(2, writer.diff.added.size()+writer.diff.modified2.size());
+		assertEquals(2, writer.diff.getAdded().size()+writer.diff.getModified().size());
 		writer.next();
 		assertTrue(writer.hasNext());
-		assertEquals(2, writer.diff.added.size()+writer.diff.modified2.size());
+		assertEquals(2, writer.diff.getAdded().size()+writer.diff.getModified().size());
 		writer.next();
 		assertFalse(writer.hasNext());
-		assertEquals(2, writer.diff.added.size()+writer.diff.modified2.size());
+		assertEquals(2, writer.diff.getAdded().size()+writer.diff.getModified().size());
 	}
 	
 	public void testWrite() throws IOException, Exception {
@@ -84,13 +84,13 @@ public class DiffWriterTest extends TestCase {
 		feature.setAttribute("name", "new1");
 		
 		writer.write();
-		assertEquals(2, writer.diff.added.size() );
+		assertEquals(2, writer.diff.getAdded().size() );
 		feature=writer.next();
 		feature.setAttribute("name", "new2");
 		
 		writer.write();
 		
-		assertEquals(3, writer.diff.added.size() );
+		assertEquals(3, writer.diff.getAdded().size() );
 	}
 
 

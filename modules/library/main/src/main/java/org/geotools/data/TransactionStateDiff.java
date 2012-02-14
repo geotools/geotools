@@ -201,8 +201,8 @@ public class TransactionStateDiff implements State {
                 feature = (SimpleFeature) writer.next();
                 String fid = feature.getID();
 
-                if (diff.modified2.containsKey(fid)) {
-                    update = (SimpleFeature) diff.modified2.get(fid);
+                if (diff.getModified().containsKey(fid)) {
+                    update = (SimpleFeature) diff.getModified().get(fid);
 
                     if (update == NULL) {
                         writer.remove();

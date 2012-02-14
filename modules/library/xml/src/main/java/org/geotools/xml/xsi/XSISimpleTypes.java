@@ -19,14 +19,15 @@ package org.geotools.xml.xsi;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
 
 import javax.naming.OperationNotSupportedException;
 
+import org.geotools.util.Converters;
 import org.geotools.xml.PrintHandler;
 import org.geotools.xml.schema.Attribute;
 import org.geotools.xml.schema.AttributeValue;
@@ -1169,25 +1170,11 @@ public class XSISimpleTypes {
             Attributes attrs, Map hints) throws SAXException {
             if ((value.length == 1) && (value[0].getValue() != null)) {
                 java.lang.String svalue = (java.lang.String) value[0].getValue();
-                java.lang.String[] values = svalue.split("\\-");
-
-                if (values.length != 3) {
-                    throw new SAXException("Could not parse the DateTime "
-                        + value);
+                java.sql.Date parsed = Converters.convert(svalue, java.sql.Date.class);
+                if (null == parsed) {
+                    throw new SAXException("Could not parse the Date '" + svalue + "'");
                 }
-
-                int year;
-                int month;
-                int day;
-                year = java.lang.Integer.parseInt(values[0]);
-                month = java.lang.Integer.parseInt(values[1]);
-                day = java.lang.Integer.parseInt(values[2]);
-
-                Calendar c = Calendar.getInstance();
-                c.clear();
-                c.set(year, month, day);
-
-                return c.getTime();
+                return parsed;
             }
 
             return null;
@@ -1232,76 +1219,11 @@ public class XSISimpleTypes {
             Attributes attrs, Map hints) throws SAXException {
             if ((value.length == 1) && (value[0].getValue() != null)) {
                 java.lang.String svalue = (java.lang.String) value[0].getValue();
-                java.lang.String[] values = svalue.split("T");
-
-                if (values.length != 2) {
-                    throw new SAXException("Could not parse the DateTime "
-                        + value);
+                Timestamp parsed = Converters.convert(svalue, java.sql.Timestamp.class);
+                if (null == parsed) {
+                    throw new SAXException("Could not parse the DateTime '" + svalue + "'");
                 }
-
-                java.lang.String date = values[0];
-                java.lang.String time = values[1];
-
-                values = date.split("\\-");
-
-                if (values.length != 3) {
-                    throw new SAXException("Could not parse the DateTime "
-                        + value);
-                }
-
-                int year;
-                int month;
-                int day;
-                year = java.lang.Integer.parseInt(values[0]);
-                month = java.lang.Integer.parseInt(values[1]);
-                day = java.lang.Integer.parseInt(values[2]);
-
-                values = time.split("\\:", 3);
-
-                if (values.length != 3) {
-                    throw new SAXException("Could not parse the DateTime "
-                        + value);
-                }
-
-                int hour;
-                int minute;
-                int second;
-                hour = java.lang.Integer.parseInt(values[0]);
-                minute = java.lang.Integer.parseInt(values[1]);
-
-                int i = values[2].indexOf("-");
-                Calendar c = null;
-
-                if (i == -1) {
-                    i = values[2].indexOf("+");
-                }
-
-                if (i == -1) {
-                    if (values[2].endsWith("Z")) {
-                        second = (int) java.lang.Float.parseFloat(values[2]
-                                .substring(0, values[2].length() - 1));
-                    } else {
-                        second = (int) java.lang.Float.parseFloat(values[2]);
-                    }
-
-                    TimeZone tz = TimeZone.getTimeZone("GMT");
-                    c = Calendar.getInstance(tz);
-                    c.clear();
-                } else {
-                    second = (int) java.lang.Float.parseFloat(values[2]
-                            .substring(0, i));
-
-                    TimeZone tz = TimeZone.getTimeZone("GMT"
-                            + values[2].substring(i));
-                    c = Calendar.getInstance(tz);
-                    c.clear();
-                }
-
-                c.set(year, month, day, hour, minute, second);
-
-                java.util.Date r = c.getTime();
-
-                return r;
+                return parsed;
             }
 
             return null;
@@ -1727,54 +1649,11 @@ public class XSISimpleTypes {
             Attributes attrs, Map hints) throws SAXException {
             if ((value.length == 1) && (value[0].getValue() != null)) {
                 java.lang.String svalue = (java.lang.String) value[0].getValue();
-                java.lang.String[] values = svalue.split("\\:", 3);
-
-                if (values.length != 3) {
-                    throw new SAXException("Could not parse the DateTime "
-                        + value);
+                java.sql.Time parsed = Converters.convert(svalue, java.sql.Time.class);
+                if (null == parsed) {
+                    throw new SAXException("Could not parse the DateTime '" + svalue + "'");
                 }
-
-                int hour;
-                int minute;
-                int second;
-                hour = java.lang.Integer.parseInt(values[0]);
-                minute = java.lang.Integer.parseInt(values[1]);
-
-                int i = values[2].indexOf("-");
-                Calendar c = null;
-
-                if (i == -1) {
-                    i = values[2].indexOf("+");
-                }
-
-                if (i == -1) {
-                    if (values[2].endsWith("Z")) {
-                        second = (int) java.lang.Float.parseFloat(values[2]
-                                .substring(0, values[2].length() - 1));
-                    } else {
-                        second = (int) java.lang.Float.parseFloat(values[2]);
-                    }
-
-                    TimeZone tz = TimeZone.getTimeZone("GMT");
-                    c = Calendar.getInstance(tz);
-                    c.clear();
-                } else {
-                    second = (int) java.lang.Float.parseFloat(values[2]
-                            .substring(0, i));
-
-                    TimeZone tz = TimeZone.getTimeZone("GMT"
-                            + values[2].substring(i));
-                    c = Calendar.getInstance(tz);
-                    c.clear();
-                }
-
-                c.set(Calendar.HOUR_OF_DAY, hour);
-                c.set(Calendar.MINUTE, minute);
-                c.set(Calendar.SECOND, second);
-
-                java.util.Date r = c.getTime();
-
-                return r;
+                return parsed;
             }
 
             return null;

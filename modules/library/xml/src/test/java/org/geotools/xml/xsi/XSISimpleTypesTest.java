@@ -112,7 +112,7 @@ public class XSISimpleTypesTest extends TestCase {
     }
 
     public void testParseTime() throws Exception {
-        SimpleType timeBinding = XSISimpleTypes.DateTime.getInstance();
+        SimpleType timeBinding = XSISimpleTypes.Time.getInstance();
 
         Element element = null;
         Attributes attrs = null;

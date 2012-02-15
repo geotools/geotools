@@ -114,8 +114,7 @@
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>1.4</version>
+      <artifactId>commons-io</artifactId>      
     </dependency>
   </dependencies>
 

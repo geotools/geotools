@@ -5,7 +5,7 @@
         The Geotools Project                                                    
             http://www.geotools.org/                                            
                                                                                 
-        Version: $Id$              
+        Version: $Id: pom.xml 33470 2009-07-03 07:15:22Z danieleromagnoli $              
      ======================================================================= -->
   <project xmlns="http://maven.apache.org/POM/4.0.0" 
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
@@ -15,33 +15,29 @@
 
   <parent>
     <groupId>org.geotools</groupId>
-    <artifactId>plugin</artifactId>
-    <version>2.7-SNAPSHOT</version>
+    <artifactId>unsupported</artifactId>
+    <version>8-SNAPSHOT</version>
   </parent>
 
-  <!--properties>
-     <maven.test.skip>true</maven.test.skip>
-  </properties-->
-  
+
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
   <groupId>org.geotools</groupId>
-  <artifactId>gt-imagepyramid</artifactId>
+  <artifactId>gt-imagecollection</artifactId>
   <packaging>jar</packaging>
-  <name>imagepyramid datasource module</name>
+  <name>ImageCollection module</name>
   
 
   <scm>
     <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/imagepyramid/
+      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/imagecollection/
     </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/imagepyramid/</url>
+    <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/imagecollection/</url>
   </scm>
 
   <description>
-    Datasource created to read a pyramid of georeferenced images or geotiff 
-    (and in future also JPEG2K).
+    Datasource created to read images from an ImageCollection available on a folder.
   </description>
 
   <licenses>
@@ -52,45 +48,51 @@
     </license>
   </licenses>
 
-
-  <!-- =========================================================== -->
-  <!--     Developers and Contributors                             -->
-  <!-- =========================================================== -->
-  <developers>
-    <developer>
-      <name>Simone Giannecchini</name>
-      <id>simboss</id>
-      <email>simone.giannecchini@geo-solutions.it</email>
-      <organization>GeoSolutions S.A.S.</organization>
-      <organizationUrl>http://www.geo-solutions.it</organizationUrl>
-      <roles>
-        <role>Java Developer</role>
-        <role>Documentation</role>
-        <role>Module Maintainer</role>
-      </roles>
-    </developer> 
-  </developers>
-
-
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
   <!-- =========================================================== -->
   <dependencies>
     <dependency>
-        <groupId>org.geotools</groupId>
-        <artifactId>gt-imagemosaic</artifactId>
-        <version>${project.version}</version>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-main</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-    </dependency>    
-    
-
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-coverage</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-referencing</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-geotiff</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.media</groupId>
+      <artifactId>jai_imageio</artifactId>
+    </dependency>
     <!-- Test dependencies -->
+    <dependency>
+      <!-- We need this to make the referencing module useful. -->
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-epsg-hsql</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-sample-data</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-cql</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
@@ -100,12 +102,11 @@
       <!-- The version number is specified in the parent POM. -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>javax.media</groupId>
-      <artifactId>jai_imageio</artifactId>
-      <!-- The version number is specified in the parent POM. -->
-      <scope>test</scope>
-    </dependency>
+     <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>1.4</version>
+    </dependency>   
   </dependencies>
 
 </project>

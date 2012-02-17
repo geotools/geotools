@@ -126,23 +126,24 @@ public class WFSFeatureSource extends AbstractFeatureSource implements SimpleFea
                 return featureSetDescription.getAbstract();
             }
 
-            @SuppressWarnings("unchecked")
             public Set<String> getKeywords() {
                 return extractKeywords(featureSetDescription.getKeywords());
             }
             
             @SuppressWarnings("unchecked")
-            private Set<String> extractKeywords(List<KeywordsType> keywordsList) {
+            private Set<String> extractKeywords(List<?> keywordsList) {
                 Set<String> keywords = new HashSet<String>();
                 if (keywordsList != null) {
-                    for (KeywordsType keys : keywordsList) {
-                        if (keys != null) {
-                            List<String> kws = keys.getKeyword();
+                    for (Object keys : keywordsList) {
+                        if (keys instanceof KeywordsType) {
+                            List<String> kws = ((KeywordsType)keys).getKeyword();
                             for (String kw : kws) {
                                 if (kw != null && kw.trim().length() > 0) {
                                     keywords.add(kw);
                                 }
                             }
+                        } else if (keys instanceof String) {
+                            keywords.add((String)keys);
                         }
                     }
                 }

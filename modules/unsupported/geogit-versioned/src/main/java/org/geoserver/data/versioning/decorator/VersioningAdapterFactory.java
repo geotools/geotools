@@ -27,7 +27,6 @@ import org.geotools.data.simple.SimpleFeatureLocking;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.opengis.feature.type.Name;
-import org.springframework.util.Assert;
 
 public class VersioningAdapterFactory {
 
@@ -74,7 +73,9 @@ public class VersioningAdapterFactory {
     @SuppressWarnings("rawtypes")
     public static DataAccess create(final DataAccess subject,
             Repository versioningRepo) {
-        Assert.notNull(subject);
+        if( subject == null ){
+            throw new NullPointerException("DataAccess subject is required");
+        }
 
         // if (subject instanceof DataStore) {
         // return new VersioningDataStore((DataStore) subject, versioningRepo);

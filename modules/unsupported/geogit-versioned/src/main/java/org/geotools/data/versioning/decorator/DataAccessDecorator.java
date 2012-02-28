@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2010, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -44,6 +44,13 @@ import org.springframework.util.Assert;
 
 import com.google.common.base.Throwables;
 
+/**
+ * Decorator around an unversioned DataAccess allowing it to be used in conjunction
+ * with a GeoGit repository (for revision information).
+ *
+ * @param <T> FeatureType
+ * @param <F> Feature
+ */
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class DataAccessDecorator<T extends FeatureType, F extends Feature>
         implements VersioningDataAccess<T, F> {

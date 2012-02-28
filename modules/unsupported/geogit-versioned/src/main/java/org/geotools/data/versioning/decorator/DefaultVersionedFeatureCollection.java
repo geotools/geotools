@@ -52,6 +52,9 @@ import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.geometry.BoundingBox;
 
+/**
+ * SimpleFeatureCollection accessing revision information.
+ */
 public class DefaultVersionedFeatureCollection implements SimpleFeatureCollection {
 
     public DefaultVersionedFeatureCollection(

@@ -26,6 +26,8 @@ import org.geogit.api.GeoGIT;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Transaction;
+import org.geotools.data.geogit.GeoGitDataStore;
+import org.geotools.data.geogit.GeoGitFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;

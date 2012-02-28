@@ -17,9 +17,9 @@
 package org.geoserver.data.versioning;
 
 import org.geoserver.data.geogit.GeoGITRepositoryTestCase;
-import org.geoserver.data.versioning.decorator.DataStoreDecorator;
 import org.geotools.data.DataStore;
 import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.data.versioning.decorator.DataStoreDecorator;
 
 /**
  * Base class for versioning tests.

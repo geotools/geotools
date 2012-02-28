@@ -31,6 +31,8 @@ import org.geogit.storage.RefDatabase;
 import org.geogit.storage.WrappedSerialisingFactory;
 import org.geogit.storage.hessian.HessianSimpleFeatureTypeReader;
 import org.geotools.data.SchemaNotFoundException;
+import org.geotools.data.geogit.GeoGitDataStore;
+import org.geotools.data.geogit.GeoGitFeatureSource;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;

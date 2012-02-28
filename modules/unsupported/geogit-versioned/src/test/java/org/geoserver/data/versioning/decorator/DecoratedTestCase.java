@@ -32,6 +32,7 @@ import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Transaction;
 import org.geotools.data.property.PropertyDataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.data.versioning.decorator.DataStoreDecorator;
 import org.geotools.factory.Hints;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.NameImpl;

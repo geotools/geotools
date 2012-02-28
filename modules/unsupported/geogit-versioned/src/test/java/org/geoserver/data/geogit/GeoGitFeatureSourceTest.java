@@ -30,6 +30,8 @@ import org.geogit.api.GeoGIT;
 import org.geogit.api.Ref;
 import org.geogit.api.RevTree;
 import org.geotools.data.Query;
+import org.geotools.data.geogit.GeoGitDataStore;
+import org.geotools.data.geogit.GeoGitFeatureSource;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;

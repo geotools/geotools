@@ -556,13 +556,13 @@ public class TestData {
      * <li>7. Shape - values:
      * <ul>
      * <li> <code>POINT(0 0)</code>
-     * <li> <code>MULTIPOINT(0 0, 180 0)</code>
-     * <li> <code>LINESTRING(0 0, 180 90)</code>
-     * <li> <code>MULTILINESTRING((-180 -90, 180 90), (-180 90, 180 -90))</code>
+     * <li> <code>MULTIPOINT(0 0, 170 0)</code>
+     * <li> <code>LINESTRING(0 0, 170 80)</code>
+     * <li> <code>"MULTILINESTRING((-170 -80, 170 80), (-170 80, 170 -80))"</code>
      * <li> <code>POLYGON((-10 -10, -10 10, 10 10, 10 -10, -10 -10))</code>
      * <li>
-     * <code>MULTIPOLYGON( ((-1 -1, -1 1, 1 1, 1 -1, -1 -1)), ((-180 -90, -180 -80, -170 -80, -170 -90, -180 -90)) )</code>
-     * <li> <code>GEOMETRYCOLLECTION(POINT(1 1), LINESTRING(0 0, 180 90))</code>
+     * <code>MULTIPOLYGON( "MULTIPOLYGON( ((-1 -1, -1 1, 1 1, 1 -1, -1 -1)), ((-170 -80, -170 -70, -160 -70, -160 -80, -170 -80)) )" )</code>
+     * <li> <code>POINT EMPTY</code>
      * <li> <code>null</code>
      * </ul>
      * </li>

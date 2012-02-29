@@ -58,7 +58,8 @@ public class FeatureGSProcessFactory extends AnnotatedBeanProcessFactory {
                 SnapProcess.class,
                 UnionFeatureCollection.class,
                 UniqueProcess.class,
-                VectorZonalStatistics.class);
+                VectorZonalStatistics.class,
+                ReShapeProcess.class);
     }
 
 }

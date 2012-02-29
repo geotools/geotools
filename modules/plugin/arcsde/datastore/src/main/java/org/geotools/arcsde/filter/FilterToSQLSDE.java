@@ -232,10 +232,8 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
             return unused;
         }
 
-        String fidField = layerFidFieldName;
-
         try {
-            String sql = buildFilter(fids, fidField + " IN(", ")", ",", 1000, " OR ");
+            String sql = buildFidFilter(fids, layerFidFieldName,  " IN(", ")", ",", 1000, " OR ");
 
             if (LOGGER.isLoggable(Level.FINER)) {
                 LOGGER.finer("added fid filter: " + sql);
@@ -249,16 +247,20 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
     }
 
     // return a string
-    private String buildFilter(long[] fids, String prefix, String suffix, String separator,
-            int groupSize, String groupSeparator) {
+    private String buildFidFilter(long[] fids, String fidAttribute, String prefix, String suffix,
+            String separator, int groupSize, String groupSeparator) {
         final int count = fids.length;
         final int groups = count / groupSize;
         final int remainder = count % groupSize;
         final StringBuilder sql = new StringBuilder();
+        
+        final String encodedFidAttribute = getColumnDefinition(fidAttribute);
+        
         for (int i = 0; i < groups; i++) {
             if (i > 0) {
                 sql.append(groupSeparator);
             }
+            sql.append(encodedFidAttribute);
             sql.append(prefix);
             addSubList(sql, fids, i * groupSize, (i + 1) * groupSize, separator);
             sql.append(suffix);
@@ -267,6 +269,7 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
             if (groups > 0) {
                 sql.append(groupSeparator);
             }
+            sql.append(encodedFidAttribute);
             sql.append(prefix);
             addSubList(sql, fids, count - remainder, count, separator);
             sql.append(suffix);

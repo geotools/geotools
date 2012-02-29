@@ -575,11 +575,16 @@ class ArcSDEQuery {
         final SimpleFeatureType schema = this.schema;
 
         final String colName;
-        if (fidReader.getFidColumn() == null) {
-            colName = schema.getDescriptor(0).getLocalName();
-        } else {
-            colName = fidReader.getFidColumn();
+        {
+            String fidAtt;
+            if (fidReader.getFidColumn() == null) {
+                fidAtt = schema.getDescriptor(0).getLocalName();
+            } else {
+                fidAtt = fidReader.getFidColumn();
+            }
+            colName = filters.getSqlEncoder().getColumnDefinition(fidAtt);
         }
+
         final SeQueryInfo qInfo = filters.getQueryInfo(new String[] { colName });
 
         final SeFilter[] spatialFilters = filters.getSpatialFilters();
@@ -588,6 +593,8 @@ class ArcSDEQuery {
             @Override
             public Integer execute(ISession session, SeConnection connection) throws SeException,
                     IOException {
+
+                final SeQueryInfo queryInfo = qInfo;
 
                 SeQuery query = new SeQuery(connection);
 
@@ -616,7 +623,7 @@ class ArcSDEQuery {
                              */
                         }
 
-                        query.prepareQueryInfo(qInfo);
+                        query.prepareQueryInfo(queryInfo);
                         query.execute();
                         int count = 0;
                         while (query.fetch() != null) {
@@ -628,7 +635,7 @@ class ArcSDEQuery {
                     final int defaultMaxDistinctValues = 0;
                     final SeTable.SeTableStats tableStats;
                     tableStats = query.calculateTableStatistics(colName,
-                            SeTable.SeTableStats.SE_COUNT_STATS, qInfo, defaultMaxDistinctValues);
+                            SeTable.SeTableStats.SE_COUNT_STATS, queryInfo, defaultMaxDistinctValues);
 
                     int actualCount = tableStats.getCount();
                     return new Integer(actualCount);
@@ -657,7 +664,13 @@ class ArcSDEQuery {
                 public SeExtent execute(ISession session, SeConnection connection)
                         throws SeException, IOException {
 
-                    final String[] spatialCol = { schema.getGeometryDescriptor().getLocalName() };
+                    final String[] spatialCol;
+                    {
+                        String geomCol = schema.getGeometryDescriptor().getLocalName();
+                        geomCol = filters.getSqlEncoder().getColumnDefinition(geomCol);
+                        spatialCol = new String[] { geomCol };
+                    }
+
                     // fullConstruct may hold information about multiple tables in case of an
                     // in-process view
                     final SeSqlConstruct fullConstruct = filters.getQueryInfo(spatialCol)

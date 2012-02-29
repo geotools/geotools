@@ -45,9 +45,9 @@ import org.opengis.feature.type.GeometryType;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.xmlpull.mxp1.MXParser;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
@@ -102,14 +102,10 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
         this.targetType = targetType;
         this.builder = new SimpleFeatureBuilder(targetType);
 
-        XmlPullParserFactory factory;
         try {
-            factory = XmlPullParserFactory.newInstance();
-            factory.setNamespaceAware(true);
-            factory.setValidating(false);
-
             // parse root element
-            parser = factory.newPullParser();
+            parser = new MXParser();
+            parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true);
             parser.setInput(inputStream, "UTF-8");
             parser.nextTag();
             parser.require(XmlPullParser.START_TAG, WFS.NAMESPACE, WFS.FeatureCollection
@@ -549,7 +545,7 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
                 parser.nextTag();
                 tagName = parser.getName();
                 eventType = parser.getEventType();
-            } while (eventType == XmlPullParser.START_TAG && tagName == GML.pos.getLocalPart());
+            } while (eventType == XmlPullParser.START_TAG && GML.pos.getLocalPart().equals(tagName));
 
             shellCoords = coords.toArray(new Coordinate[coords.size()]);
 

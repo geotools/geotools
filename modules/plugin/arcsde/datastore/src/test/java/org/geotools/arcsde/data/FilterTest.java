@@ -17,8 +17,7 @@
  */
 package org.geotools.arcsde.data;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,6 +48,7 @@ import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.spatial.BBOX;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
@@ -197,37 +197,49 @@ public class FilterTest {
      * TODO: resurrect testDisjointFilter
      */
     @Test
-    @Ignore
     public void testDisjointFilter() throws Exception {
         FeatureType ft = this.dataStore.getSchema(testData.getTempTableName());
 
-        // Build the filter
-        double minx = -179;
-        double maxx = -170;
-        double miny = -90;
-        double maxy = -80;
-        Polygon p = buildPolygon(minx, miny, maxx, maxy);
+        // Build a polygon that intercepts some of the geometries, but not all of them
+        Polygon p = buildPolygon(-180, 0, -160, 90);
 
         Filter filter = ff.not(ff.isNull(ff.property("SHAPE")));
         filter = ff.and(filter, ff.disjoint(ff.property("SHAPE"), ff.literal(p)));
 
-        runTestWithFilter(ft, filter);
+        runTestWithFilter(ft, filter, false);
     }
 
     @Test
     public void testContainsFilter() throws Exception {
         FeatureType ft = this.dataStore.getSchema(testData.getTempTableName());
 
-        // Build the filter
-        double minx = 106.6666;
-        double maxx = 106.6677;
-        double miny = -6.1676;
-        double maxy = -6.1672;
-        Polygon p = buildPolygon(minx, miny, maxx, maxy);
-
+        // Build the filter with a polygon that is inside POLYGON((-10 -10, -10 10, 10 10, 10 -10, -10 -10))
+        Polygon p = buildPolygon(-9, -9, -8, -8);
         Filter filter = ff.contains(ff.property("SHAPE"), ff.literal(p));
+        runTestWithFilter(ft, filter, false);
+        
+        // now build the opposite filter, the polygon contains the shape
+        p = buildPolygon(-1, -1, 1, 1);
+        filter = ff.contains(ff.literal(p), ff.property("SHAPE"));
+        runTestWithFilter(ft, filter, false);
+    }
+    
+    @Test
+    public void testContainsSDESemanticsFilter() throws Exception {
+        FeatureType ft = this.dataStore.getSchema(testData.getTempTableName());
 
-        runTestWithFilter(ft, filter);
+        // Build a filter so that SDE would actually catch more geometries, it would
+        // actually include "MULTIPOLYGON( ((-1 -1, -1 1, 1 1, 1 -1, -1 -1)), ((-170 -80, -170 -70, -160 -70, -160 -80, -170 -80)) )"
+        // in the results as well. It seems the containment semantics is applied in or to the multigeometry
+        // components. We do in memory post filtering to get the right semantics
+        Polygon p = buildPolygon(-1, -1, 1, 1);
+        Filter filter = ff.contains(ff.property("SHAPE"), ff.literal(p));
+        runTestWithFilter(ft, filter, false);
+        
+        // now build the opposite filter, the polygon contains the shape
+        p = buildPolygon(-1, -1, 1, 1);
+        filter = ff.contains(ff.literal(p), ff.property("SHAPE"));
+        runTestWithFilter(ft, filter, false);
     }
 
     @Test
@@ -235,13 +247,25 @@ public class FilterTest {
         FeatureType ft = this.dataStore.getSchema(testData.getTempTableName());
 
         // Build the filter
-        double minx = 106.6337;
-        double maxx = 106.6381;
-        double miny = -6.1794;
-        double maxy = -6.1727;
-        Filter filter = ff.bbox("SHAPE", minx, miny, maxx, maxy, "EPSG:4326");
+        Filter filter = ff.bbox("SHAPE", -1, -1, 1, 1, "EPSG:4326");
 
-        runTestWithFilter(ft, filter);
+        runTestWithFilter(ft, filter, false);
+    }
+    
+    @Test
+    public void testOrBBoxFilter() throws Exception {
+        FeatureType ft = this.dataStore.getSchema(testData.getTempTableName());
+        
+        System.out.println(this.dataStore.getFeatureSource(ft.getName().getLocalPart()).getBounds());
+
+        // build a or of bbox so that
+        // - the intersection of the bboxes is empty 
+        // - the union of the bboxes actually gets more data than necessary
+        BBOX bbox1 = ff.bbox("SHAPE", -171, -90, -169, 90, "EPSG:4326");
+        BBOX bbox2 = ff.bbox("SHAPE", 169, -90, 171, 90, "EPSG:4326");
+        Filter filter = ff.or(bbox1, bbox2);
+
+        runTestWithFilter(ft, filter, false);
     }
 
     @Test
@@ -249,14 +273,10 @@ public class FilterTest {
         FeatureType ft = this.dataStore.getSchema(testData.getTempTableName());
 
         // Build the filter
-        double minx = 106.6337;
-        double maxx = 106.6381;
-        double miny = -6.1794;
-        double maxy = -6.1727;
-        Polygon p = buildPolygon(minx, miny, maxx, maxy);
+        Polygon p = buildPolygon(-1, -1, 1, 1);
         Filter filter = ff.intersects(ff.property("SHAPE"), ff.literal(p));
 
-        runTestWithFilter(ft, filter);
+        runTestWithFilter(ft, filter, false);
     }
 
     @Test
@@ -264,14 +284,10 @@ public class FilterTest {
         FeatureType ft = this.dataStore.getSchema(testData.getTempTableName());
 
         // Build the filter
-        double minx = 106.6337;
-        double maxx = 106.6381;
-        double miny = -6.1794;
-        double maxy = -6.1727;
-        Polygon p = buildPolygon(minx, miny, maxx, maxy);
+        Polygon p = buildPolygon(-10, -10, -8, -8);
         Filter filter = ff.overlaps(ff.property("SHAPE"), ff.literal(p));
 
-        runTestWithFilter(ft, filter);
+        runTestWithFilter(ft, filter, false);
     }
 
     @Test
@@ -279,14 +295,16 @@ public class FilterTest {
         FeatureType ft = this.dataStore.getSchema(testData.getTempTableName());
 
         // Build the filter
-        double minx = 106.6337;
-        double maxx = 106.6381;
-        double miny = -6.1794;
-        double maxy = -6.1727;
-        Polygon p = buildPolygon(minx, miny, maxx, maxy);
-        Filter filter = ff.within(ff.property("SHAPE"), ff.literal(p));
+        Polygon p = buildPolygon(-9, -9, -8, -8);
+        Filter filter = ff.within(ff.literal(p), ff.property("SHAPE"));
+        runTestWithFilter(ft, filter, false);
+        
+        // now build the opposite filter, the polygon contains the shape
+        p = buildPolygon(-1, -1, 1, 1);
+        filter = ff.within(ff.property("SHAPE"), ff.literal(p));
+        runTestWithFilter(ft, filter, false);
 
-        runTestWithFilter(ft, filter);
+        runTestWithFilter(ft, filter, false);
     }
 
     @Test
@@ -294,14 +312,10 @@ public class FilterTest {
         FeatureType ft = this.dataStore.getSchema(testData.getTempTableName());
 
         // Build the filter
-        double minx = 106.6337;
-        double maxx = 106.6381;
-        double miny = -6.1794;
-        double maxy = -6.1727;
-        LineString ls = buildSegment(minx, miny, maxx, maxy);
+        LineString ls = buildSegment(-12, -12, 12, 12);
         Filter filter = ff.crosses(ff.property("SHAPE"), ff.literal(ls));
 
-        runTestWithFilter(ft, filter);
+        runTestWithFilter(ft, filter, false);
     }
 
     /**
@@ -326,10 +340,10 @@ public class FilterTest {
         // Build the filter
         Filter filter = ff.equal(ff.property("SHAPE"), ff.literal(g));
 
-        runTestWithFilter(ft, filter);
+        runTestWithFilter(ft, filter, false);
     }
 
-    private void runTestWithFilter(FeatureType ft, Filter filter) throws Exception {
+    private void runTestWithFilter(FeatureType ft, Filter filter, boolean empty) throws Exception {
         System.err.println("****************");
         System.err.println("**");
         System.err.println("** TESTING FILTER: " + filter);
@@ -365,8 +379,15 @@ public class FilterTest {
         fr.close();
         endTime = System.currentTimeMillis();
         System.err.println("Fast read took " + (endTime - startTime) + " milliseconds.");
-
+        
         assertFeatureListsSimilar(slowResults, fastResults);
+        
+        if(empty) {
+            assertEquals("Result was supposed to be empty", 0, fastResults.size());
+        } else {
+            assertTrue("Result was supposed to be non empty", fastResults.size() > 0);
+        }
+
     }
 
     private String[] safePropertyNames(FeatureType ft) {

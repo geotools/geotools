@@ -109,7 +109,10 @@ public class GeometryEncoderSDE implements FilterVisitor {
     private static FilterCapabilities capabilities = new FilterCapabilities();
 
     static {
-        capabilities.addAll(FilterCapabilities.LOGICAL_OPENGIS);
+        capabilities.addType(And.class);
+        capabilities.addType(Not.class);
+        // capabilities.addType(Or.class);
+
         capabilities.addType(Id.class);
 
         capabilities.addType(BBOX.class);
@@ -324,7 +327,13 @@ public class GeometryEncoderSDE implements FilterVisitor {
     }
 
     public Object visit(Contains filter, Object extraData) {
-        addSpatialFilter(filter, SeFilter.METHOD_PC, true, extraData);
+        // SDE can assert only one way, we need to invert from contains to within in case the
+        // assertion is the other way around
+        if (filter.getExpression1() instanceof PropertyName && filter.getExpression2() instanceof Literal) {
+            addSpatialFilter(filter, SeFilter.METHOD_PC, true, extraData);
+        } else {
+            addSpatialFilter(filter, SeFilter.METHOD_SC, true, extraData);
+        }
         return extraData;
     }
 
@@ -358,13 +367,23 @@ public class GeometryEncoderSDE implements FilterVisitor {
 
     public Object visit(Overlaps filter, Object extraData) {
         addSpatialFilter(filter, SeFilter.METHOD_II, true, extraData);
-        addSpatialFilter(filter, SeFilter.METHOD_PC, false, extraData);
-        addSpatialFilter(filter, SeFilter.METHOD_SC, false, extraData);
+        // AA: nope, Overlaps definition is The geometries have some but not all points in common, 
+        // they have the same dimension, and the intersection of the interiors of the two geometries 
+        // has the same dimension as the geometries themselves.
+        // --> that is, one can be contained in the other and they still overlap
+        // addSpatialFilter(filter, SeFilter.METHOD_PC, false, extraData);
+        // addSpatialFilter(filter, SeFilter.METHOD_SC, false, extraData);
         return extraData;
     }
 
     public Object visit(Within filter, Object extraData) {
-        addSpatialFilter(filter, SeFilter.METHOD_SC, true, extraData);
+        // SDE can assert only one way, we need to invert from contains to within in case the
+        // assertion is the other way around
+        if (filter.getExpression1() instanceof PropertyName && filter.getExpression2() instanceof Literal) {
+            addSpatialFilter(filter, SeFilter.METHOD_SC, true, extraData);
+        } else {
+            addSpatialFilter(filter, SeFilter.METHOD_PC, true, extraData);
+        }
         return extraData;
     }
 

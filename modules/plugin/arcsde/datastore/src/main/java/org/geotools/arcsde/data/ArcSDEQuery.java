@@ -33,6 +33,7 @@ import net.sf.jsqlparser.statement.select.PlainSelect;
 import org.geotools.arcsde.ArcSdeException;
 import org.geotools.arcsde.data.FIDReader.SdeManagedFidReader;
 import org.geotools.arcsde.data.FIDReader.UserManagedFidReader;
+import org.geotools.arcsde.filter.ArcSdeSimplifyingFilterVisitor;
 import org.geotools.arcsde.filter.FilterToSQLSDE;
 import org.geotools.arcsde.filter.GeometryEncoderException;
 import org.geotools.arcsde.filter.GeometryEncoderSDE;
@@ -952,10 +953,15 @@ class ArcSDEQuery {
          */
         private void createGeotoolsFilters() {
             FilterToSQLSDE sqlEncoder = getSqlEncoder();
-
+            
+            // first off, simplify the filter
+            ArcSdeSimplifyingFilterVisitor visitor = new ArcSdeSimplifyingFilterVisitor(featureType);
+            Filter simplified = (Filter) sourceFilter.accept(visitor, null);
+            
+            // then perform the splits
             PostPreProcessFilterSplittingVisitor unpacker = new PostPreProcessFilterSplittingVisitor(
                     sqlEncoder.getCapabilities(), featureType, null);
-            sourceFilter.accept(unpacker, null);
+            simplified.accept(unpacker, null);
 
             SimplifyingFilterVisitor filterSimplifier = new SimplifyingFilterVisitor();
             final String typeName = this.featureType.getTypeName();
@@ -980,8 +986,9 @@ class ArcSDEQuery {
             if (LOGGER.isLoggable(Level.FINE) && geometryFilter != null)
                 LOGGER.fine("Spatial-Filter portion of SDE Query: '" + geometryFilter + "'");
 
-            this.unsupportedFilter = unpacker.getFilterPost();
-            this.unsupportedFilter = (Filter) this.unsupportedFilter.accept(filterSimplifier, null);
+            // SDE geometry filters are setup to be same or less restrictive than the JTS ones,
+            // so we do post filterin in memory with the full filter (it's fast anyways)
+            this.unsupportedFilter = remainingFilter; 
             if (LOGGER.isLoggable(Level.FINE) && unsupportedFilter != null)
                 LOGGER.fine("Unsupported (and therefore ignored) portion of SDE Query: '"
                         + unsupportedFilter + "'");

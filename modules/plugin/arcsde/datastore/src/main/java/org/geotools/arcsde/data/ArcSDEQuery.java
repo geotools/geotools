@@ -60,6 +60,7 @@ import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
 import com.esri.sde.sdk.client.SeConnection;
+import com.esri.sde.sdk.client.SeDBMSInfo;
 import com.esri.sde.sdk.client.SeException;
 import com.esri.sde.sdk.client.SeExtent;
 import com.esri.sde.sdk.client.SeFilter;
@@ -489,7 +490,8 @@ class ArcSDEQuery {
      * Convenient method to just calculate the result count of a given query.
      */
     public static int calculateResultCount(final ISession session, final FeatureTypeInfo typeInfo,
-            final Query query, final ArcSdeVersionHandler versioningHandler) throws IOException {
+            final Query query, final ArcSdeVersionHandler versioningHandler) throws IOException,
+            UnsupportedOperationException {
 
         ArcSDEQuery countQuery = null;
         final int count;
@@ -568,17 +570,15 @@ class ArcSDEQuery {
      * the result is traversed counting the number of rows inside a while loop
      * 
      */
-    public int calculateResultCount() throws IOException {
+    public int calculateResultCount() throws IOException, UnsupportedOperationException {
 
         final SimpleFeatureType schema = this.schema;
-        final GeometryDescriptor geometryDescriptor = schema.getGeometryDescriptor();
 
         final String colName;
-        if (geometryDescriptor == null) {
-            // gemetryless type, use any other column for the query
+        if (fidReader.getFidColumn() == null) {
             colName = schema.getDescriptor(0).getLocalName();
         } else {
-            colName = geometryDescriptor.getLocalName();
+            colName = fidReader.getFidColumn();
         }
         final SeQueryInfo qInfo = filters.getQueryInfo(new String[] { colName });
 
@@ -590,15 +590,45 @@ class ArcSDEQuery {
                     IOException {
 
                 SeQuery query = new SeQuery(connection);
+
                 try {
                     versioningHandler.setUpStream(session, query);
 
                     if (spatialFilters != null && spatialFilters.length > 0) {
-                        query.setSpatialConstraints(SeQuery.SE_OPTIMIZE, true, spatialFilters);
+
+                        final boolean calcMasks = true;// use the spatial query to calculate
+                        // statistics.
+                        final short searchOrder = SeQuery.SE_OPTIMIZE;
+                        query.setSpatialConstraints(searchOrder, calcMasks, spatialFilters);
+
+                        final SeDBMSInfo dbmsInfo = connection.getDBMSInfo();
+                        final boolean unsupported = versioningHandler != ArcSdeVersionHandler.NONVERSIONED_HANDLER
+                                && dbmsInfo.dbmsId == SeDBMSInfo.SE_DBMS_IS_ORACLE;
+
+                        if (unsupported) {
+                            LOGGER.fine("ArcSDE on Oracle can't calculate count statistics "
+                                    + "on versioned layers with spatial filters");
+                            /*
+                             * Despite the FeatureSource.getCount() contract saying it's ok to
+                             * return -1 if count is too expensive to calculate, the GeoServer
+                             * codebase is plagued of FeatureCollection.size() calls depending on
+                             * actual result counts or some operations don't work at all. return -1;
+                             */
+                        }
+
+                        query.prepareQueryInfo(qInfo);
+                        query.execute();
+                        int count = 0;
+                        while (query.fetch() != null) {
+                            count++;
+                        }
+                        return count;
                     }
 
-                    SeTable.SeTableStats tableStats = query.calculateTableStatistics("*",
-                            SeTable.SeTableStats.SE_COUNT_STATS, qInfo, 0);
+                    final int defaultMaxDistinctValues = 0;
+                    final SeTable.SeTableStats tableStats;
+                    tableStats = query.calculateTableStatistics(colName,
+                            SeTable.SeTableStats.SE_COUNT_STATS, qInfo, defaultMaxDistinctValues);
 
                     int actualCount = tableStats.getCount();
                     return new Integer(actualCount);
@@ -828,8 +858,8 @@ class ArcSDEQuery {
      * @author $author$
      * 
      * 
- *
- * @source $URL$
+     * 
+     * @source $URL$
      *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java
      *         /org/geotools/arcsde/data/ArcSDEQuery.java $
      * @version $Revision: 1.9 $

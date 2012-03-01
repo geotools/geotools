@@ -245,7 +245,11 @@ public class ReShapeProcess implements GSProcess {
             this.definition = definition;
             this.schema = toReShapeFeatureType( delegate, definition );
         }
-
+        @Override
+        public SimpleFeatureType getSchema() {
+            return schema;
+        }
+        
         @Override
         public SimpleFeatureIterator features() {
             return new ReshapeFeatureIterator(delegate.features(), definition, schema);
@@ -282,6 +286,7 @@ public class ReShapeProcess implements GSProcess {
             fb = new SimpleFeatureBuilder(schema);
         }
 
+        
         public void close() {
             delegate.close();
         }

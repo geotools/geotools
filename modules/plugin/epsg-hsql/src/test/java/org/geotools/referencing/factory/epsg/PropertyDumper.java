@@ -49,6 +49,7 @@ public class PropertyDumper {
         Properties props = new Properties();
         List<String> codes = new ArrayList(CRS.getSupportedCodes("EPSG"));
         Collections.sort(codes, new Comparator<String>() {
+
             public int compare(String c1, String c2) {
                 try {
                     Long n1 = new Long(c1);

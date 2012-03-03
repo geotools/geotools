@@ -73,7 +73,7 @@ public class SimilarityTransformProvider extends MathTransformProvider {
             new NamedIdentifier(Citations.EPSG, "Scale difference"),
             new NamedIdentifier(Citations.EPSG, "8611")
         },
-        1, Double.MIN_NORMAL, Double.POSITIVE_INFINITY, Dimensionless.UNIT);
+        1, /* Double.MIN_NORMAL, but not available in jdk 1.5 */ 0x1.0p-1022 , Double.POSITIVE_INFINITY, Dimensionless.UNIT);
     
     /**
      * "Rotation angle of source coordinate reference system axes" EPSG::8614

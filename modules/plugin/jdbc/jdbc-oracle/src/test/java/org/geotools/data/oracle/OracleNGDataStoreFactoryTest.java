@@ -31,6 +31,7 @@ import java.util.Properties;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
+import org.geotools.test.FixtureUtilities;
 
 public class OracleNGDataStoreFactoryTest extends JDBCTestSupport {
 
@@ -50,14 +51,13 @@ public class OracleNGDataStoreFactoryTest extends JDBCTestSupport {
     }
 
     private void checkCreateConnection(OracleNGDataStoreFactory factory, String dbtype) throws IOException {
-        Properties db = new Properties();
-        db.load(getClass().getResourceAsStream("factory.properties"));
+        Properties db = FixtureUtilities.loadFixture("oracle");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put(HOST.key, db.getProperty(HOST.key));
         params.put(DATABASE.key, db.getProperty(DATABASE.key));
         params.put(PORT.key, db.getProperty(PORT.key));
         params.put(USER.key, db.getProperty(USER.key));
-        params.put(PASSWD.key, db.getProperty(PASSWD.key));
+        params.put(PASSWD.key, db.getProperty("password"));
         
         params.put(DBTYPE.key, dbtype);
 

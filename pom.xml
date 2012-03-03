@@ -1284,15 +1284,6 @@
          </configuration>
       </plugin>
       
-      <!-- ======================================================= -->
-      <!--     Git revision info.                                  -->
-      <!-- ======================================================= -->
-      <plugin>
-        <groupId>pl.project13.maven</groupId>
-        <artifactId>git-commit-id-plugin</artifactId>
-        <version>1.9</version>
-      </plugin>
-
     </plugins>
   </build>
 

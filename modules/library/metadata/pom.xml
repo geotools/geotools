@@ -137,39 +137,4 @@
     </resources>
   </build>
 
-  <profiles>
-    <profile>
-       <id>gitinfo</id>
-       <activation>
-         <file>
-           <!-- .git directory specified relative to working directory, so
-                this profile only engaged when building from root. This is
-                changed/fixed in maven 3, so when build server switches to 
-                maven 3 change this to '../../../.git' -->
-           <exists>.git</exists>
-         </file>
-       </activation> 
-       <build>
-        <plugins>
-          <plugin>
-            <groupId>pl.project13.maven</groupId>
-            <artifactId>git-commit-id-plugin</artifactId>
-             <executions>
-               <execution>
-                 <phase>generate-resources</phase>
-                 <goals>
-                   <goal>revision</goal>
-                 </goals>
-               </execution>
-            </executions>
-            <configuration>
-              <generateGitPropertiesFile>true</generateGitPropertiesFile>
-              <generateGitPropertiesFilename>target/classes/git.properties</generateGitPropertiesFilename>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
-
 </project>

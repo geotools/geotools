@@ -2491,6 +2491,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
     {
         ensureNonNull("code", code);
         CoordinateOperation returnValue = null;
+        ResultSet result = null;
         try {
             final String primaryKey = toPrimaryKey(CoordinateOperation.class, code,
                     "[Coordinate_Operation]", "COORD_OP_CODE", "COORD_OP_NAME");
@@ -2509,8 +2510,8 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                                                          + " FROM [Coordinate_Operation]"
                                                          + " WHERE COORD_OP_CODE = ?");
             stmt.setInt(1, Integer.parseInt(primaryKey));
-            ResultSet result = stmt.executeQuery();
-            while (result.next()) {
+            result = stmt.executeQuery();
+            while (hasNext(result)) {
                 final String epsg = getString(result, 1, code);
                 final String name = getString(result, 2, code);
                 final String type = getString(result, 3, code).trim().toLowerCase();
@@ -2579,7 +2580,6 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                     try {
                         num = Integer.parseInt(methodCode);
                     } catch (NumberFormatException exception) {
-                        result.close();
                         throw new FactoryException(exception);
                     }
                     isBursaWolf = (num>=BURSA_WOLF_MIN_CODE && num<=BURSA_WOLF_MAX_CODE);
@@ -2654,7 +2654,6 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                      * to avoid loading the quite large Geotools's implementation of this factory,
                      * and also because it is not part of FactoryGroup anyway.
                      */
-                    result.close();
                     result = null;
                     final PreparedStatement cstmt = prepareStatement("ConcatenatedOperation",
                                                         "SELECT SINGLE_OPERATION_CODE"
@@ -2708,7 +2707,6 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                             parameters.parameter("tgt_dim").setValue(targetCRS.getCoordinateSystem().getDimension());
                         }
                     } catch (ParameterNotFoundException exception) {
-                        result.close();
                         throw new FactoryException(Errors.format(
                                 ErrorKeys.GEOTOOLS_EXTENSION_REQUIRED_$1,
                                 method.getName().getCode(), exception));
@@ -2723,7 +2721,6 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                     } else if (isConversion) {
                         expected = Conversion.class;
                     } else {
-                        result.close();
                         throw new FactoryException(Errors.format(ErrorKeys.UNKNOW_TYPE_$1, type));
                     }
                     final MathTransform mt = factories.getMathTransformFactory().createBaseToDerived(
@@ -2733,20 +2730,35 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                                                         mt, method, expected);
                 }
                 returnValue = ensureSingleton(operation, returnValue, code);
-                if (result == null) {
-                    // Bypass the 'result.close()' line below:
-                    // the ResultSet has already been closed.
-                    return returnValue;
-                }
             }
-            result.close();
         } catch (SQLException exception) {
             throw databaseFailure(CoordinateOperation.class, code, exception);
+        } finally {
+            if(result != null) {
+                try {
+                    result.close();
+                } catch(Exception e) {
+                    // fine, we tried
+                }
+            }
         }
         if (returnValue == null) {
              throw noSuchAuthorityCode(CoordinateOperation.class, code);
         }
         return returnValue;
+    }
+
+    private boolean hasNext(ResultSet result) throws SQLException {
+        // this stuff works around a cross issue between h2 and hsql
+        // hsql does not have the isClosed method, h2 apparently caches
+        // and returns the ResultSet of a previous call even if the
+        // result was closed (crazy)
+        try {
+            return result.next();
+        } catch(SQLException e) {
+            // ugly I know, on trunk it looks better but here I don't have the necessary method
+            return false;
+        }
     }
 
     /**

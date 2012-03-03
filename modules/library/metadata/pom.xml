@@ -137,30 +137,4 @@
     </resources>
   </build>
 
-  <profiles>
-    <profile>
-       <id>gitinfo</id>
-       <build>
-        <plugins>
-          <plugin>
-            <groupId>pl.project13.maven</groupId>
-            <artifactId>git-commit-id-plugin</artifactId>
-             <executions>
-               <execution>
-                 <phase>generate-resources</phase>
-                 <goals>
-                   <goal>revision</goal>
-                 </goals>
-               </execution>
-            </executions>
-            <configuration>
-              <generateGitPropertiesFile>true</generateGitPropertiesFile>
-              <generateGitPropertiesFilename>target/classes/git.properties</generateGitPropertiesFilename>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
-
 </project>

@@ -35,6 +35,7 @@ import org.geotools.factory.Hints;
 import org.geotools.factory.OptionalFactory;
 import org.geotools.factory.FactoryRegistryException;
 import org.geotools.referencing.AbstractIdentifiedObject;
+import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.factory.BackingStoreException;
 import org.geotools.resources.i18n.Loggings;
@@ -369,7 +370,12 @@ public class AuthorityBackedFactory extends DefaultCoordinateOperationFactory
             throws FactoryException
     {
         if ((prepend == null || prepend.isIdentity()) && (append == null || append.isIdentity())) {
-            return operation;
+            if(!CRS.equalsIgnoreMetadata(sourceCRS, operation.getSourceCRS()) ||
+               !CRS.equalsIgnoreMetadata(targetCRS, operation.getTargetCRS())) {
+                return new ForcedCRSOperation(operation, sourceCRS, targetCRS);
+            } else {
+                return operation;
+            }
         }
         final Map<String,?> properties = AbstractIdentifiedObject.getProperties(operation);
         /*

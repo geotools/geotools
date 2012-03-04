@@ -1,14 +1,14 @@
-Process Feature Plugin
+Process Raster Plugin
 ----------------------
 
-The gt-process-feature plugin gathers up a number of high quality processes for working with
-vector information.
+The gt-process-raster plugin a provides a number of ready to use raster processign chains - and
+provide a great example of how to work with rasters.
 
 **Maven**::
    
    <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-process-feature</artifactId>
+      <artifactId>gt-process-raster</artifactId>
       <version>${geotools.version}</version>
     </dependency>
 

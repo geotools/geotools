@@ -32,6 +32,8 @@ import org.opengis.referencing.cs.CoordinateSystem;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.CoordinateOperation;
+import org.opengis.referencing.operation.CoordinateOperationFactory;
 import org.opengis.referencing.operation.MathTransform;
 
 import org.geotools.factory.Hints;
@@ -437,5 +439,22 @@ public class CRSTest extends TestCase {
         mt.inverse().transform(dst, 0, src, 0, 1);
         assertEquals(20000, src[0], 0.001);
         assertEquals(10000, src[1], 0.001);
+    }
+    
+    public void testOperationSourceTarget() throws Exception{
+        // flip one way 
+        CoordinateReferenceSystem source = CRS.decode("EPSG:32638", true); // lon/lat
+        CoordinateReferenceSystem target = CRS.decode("EPSG:4326", false); // lat/lon
+        CoordinateOperationFactory coordinateOperationFactory = CRS.getCoordinateOperationFactory(true);
+        CoordinateOperation co = coordinateOperationFactory.createOperation(source, target);
+        assertEquals(source, co.getSourceCRS());
+        assertEquals(target, co.getTargetCRS());
+        
+        // flip the other
+        source = CRS.decode("EPSG:32638", false); // lat/lon
+        target = CRS.decode("EPSG:4326", true); // lon/lat
+        co = coordinateOperationFactory.createOperation(source, target);
+        assertEquals(source, co.getSourceCRS());
+        assertEquals(target, co.getTargetCRS());
     }
 }

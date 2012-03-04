@@ -51,34 +51,62 @@ import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
 import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
 
 /**
- * Used to reshape a feature collection as defined using a series of expressions.
+ * Used to transform a feature collection as defined using a series of expressions.
  * <p>
- * This is a port of the uDig Reshape operation to the GeoTools process framework.
- * <p>
- * This is a very flexable process which can be used to:
- * <ul>
- * <li>Change the order of attribtues - resulting in a new feature type</li>
- * <li>Rename attribtues - resulting in a new feature type</li>
- * <li>Process geometry - using functions like "the_geom=simplify( the_geom, 2.0 )" or "the_geom=centriod( the_geom )"</li>
- * <li>Generate additional attribtues using the form: area=area( the_geom )</li>
- * </ul>
- * <p>
- * The definition of the output feature type can be provided as a data structure or using a simple string format:
+ * The definition of the output feature type can be provided as a {@link Definition} data structure
+ * or using a simple string format:
  * 
  * <pre>
  * the_geom=the_geom
  * name=name
  * area=area( the_geom )
  * </pre>
+
+ * <p>
+ * This is a very flexible process which can be used to:
+ * <ul>
+ * <li>Change the order of attributes - resulting in a new feature type:<pre>
+ * INPUT Schema          DEFINITION                     OUTPUT Schema
+ * the_geom: Polygon     the_geom                       the_geom: Polygon
+ * name: String          id                             id: Long
+ * id: Long              name                           name: String
+ * description: String   description                    description: String
+ * </pre></li>
+ * <li>Rename or remove attributes - resulting in a new feature type:<pre>
+ * INPUT Schema          DEFINITION                     OUTPUT Schema
+ * the_geom: Polygon     the_geom                       the_geom: Polygon
+ * name: String          id_code=id                     id_code: Long
+ * id: Long              summary=description            summary: String
+ * description: String
+ * </pre></li>
+ * <li>Process geometry - using functions like "the_geom=simplify( the_geom, 2.0 )" or "the_geom=centriod( the_geom )":<pre>
+ * INPUT Schema          DEFINITION                     OUTPUT Schema
+ * the_geom: Polygon     the_geom=centriod(the_geom)    the_geom: Point
+ * name: String          name                           name: String
+ * id: Long              id                             id: Long
+ * description: String   description                    description: String
+ * </pre></li>
+ * <li>Generate additional attributes using the form: area=area( the_geom ):<pre>
+ * INPUT Schema          DEFINITION                     OUTPUT Schema
+ * the_geom: Polygon     the_geom=centriod(the_geom)    the_geom: Point
+ * name: String          name                           name: String
+ * id: Long              id                             id: Long
+ * description: String   description                    description: String
+ *                       area=area( the_geom)           area: Double
+ *                       text=concatenate(name,'-',id)  text: String
+ * </pre></li>
+ * </ul>
+ * <p>
+ * This is a port of the uDig "reshape" operation to the GeoTools process framework.  
  * 
  * @author Jody Garnett (LISAsoft)
  * 
  * @source $URL$
  */
-@DescribeProcess(title = "simplify", description = "Simplifies the geometry")
-public class ReShapeProcess implements GSProcess {
+@DescribeProcess(title = "transform", description = "Transform feature collection")
+public class TransformProcess implements GSProcess {
     /**
-     * Definition of an attribute used during reshape.
+     * Definition of an attribute used during transform
      * <p>
      * Note this definition is terse as we are gathering the details from the origional FeatureType.
      * 
@@ -94,27 +122,27 @@ public class ReShapeProcess implements GSProcess {
         /** Class binding (if known) */
         public Class<?> binding;
     }
-    @DescribeResult(name = "result", description = "rehaped feature collection")
+    @DescribeResult(name = "result", description = "transformed features")
     public SimpleFeatureCollection execute(
-            @DescribeParameter(name = "features", description = "The feature collection to rehaped") SimpleFeatureCollection features,
-            @DescribeParameter(name = "definition", description = "Definition of output feature type using attribute=expr pairs") String definition)
+            @DescribeParameter(name = "features", description = "The feature collection to transform") SimpleFeatureCollection features,
+            @DescribeParameter(name = "transform", description = "Transform defined with one 'attribute=expr' pair per line") String transform)
             throws ProcessException {
-        if (definition == null) {
+        if (transform == null) {
             return features; // no change
         }
-        List<Definition> list = toDefinition(definition);
+        List<Definition> list = toDefinition(transform);
         return executeList(features, list);
     }
 
-    @DescribeResult(name = "result", description = "rehaped feature collection")
+    @DescribeResult(name = "result", description = "transformed features")
     public SimpleFeatureCollection executeList(
             @DescribeParameter(name = "features", description = "The feature collection to rehaped") SimpleFeatureCollection features,
-            @DescribeParameter(name = "list", description = "List of Definitions for the output feature type") List<Definition> list)
+            @DescribeParameter(name = "transform", description = "List of Definitions for the output feature type") List<Definition> transform)
             throws ProcessException {
-        if (list == null) {
+        if (transform == null) {
             return features; // no change
         }
-        return new ReshapeFeatureCollection(features, list);
+        return new ReshapeFeatureCollection(features, transform);
     }
     
 

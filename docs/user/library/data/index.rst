@@ -68,7 +68,6 @@ Unsupported plugins:
    dxf
    edigeo
    excel
-   geometryless
    georest
    ogr
    sfs

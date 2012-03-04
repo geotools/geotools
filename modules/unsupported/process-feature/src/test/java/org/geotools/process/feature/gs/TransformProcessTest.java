@@ -31,7 +31,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.process.feature.gs.AggregateProcess.AggregationFunction;
 import org.geotools.process.feature.gs.AggregateProcess.Results;
-import org.geotools.process.feature.gs.ReShapeProcess.Definition;
+import org.geotools.process.feature.gs.TransformProcess.Definition;
 import org.geotools.test.TestData;
 import org.junit.After;
 import org.junit.Before;
@@ -45,7 +45,7 @@ import org.opengis.filter.expression.PropertyName;
  *
  * @source $URL$
  */
-public class ReShapeProcessTest {
+public class TransformProcessTest {
     DataStore bugs;
     
     @Before
@@ -62,7 +62,7 @@ public class ReShapeProcessTest {
     @Test
     public void testDefinition() throws Exception {
         String definition = "the_geom=the_geom";
-        List<Definition> def = ReShapeProcess.toDefinition( definition );
+        List<Definition> def = TransformProcess.toDefinition( definition );
 
         assertEquals( 1, def.size() );
         
@@ -75,7 +75,7 @@ public class ReShapeProcessTest {
         SimpleFeatureSource source = bugs.getFeatureSource("bugsites");
 
         
-        ReShapeProcess process = new ReShapeProcess();
+        TransformProcess process = new TransformProcess();
         
         String definition = "the_geom=the_geom\nnumber=cat";
         SimpleFeatureCollection origional = source.getFeatures();

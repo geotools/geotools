@@ -59,7 +59,7 @@ public class FeatureGSProcessFactory extends AnnotatedBeanProcessFactory {
                 UnionFeatureCollection.class,
                 UniqueProcess.class,
                 VectorZonalStatistics.class,
-                ReShapeProcess.class);
+                TransformProcess.class);
     }
 
 }

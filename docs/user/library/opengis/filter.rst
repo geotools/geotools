@@ -27,7 +27,7 @@ extract information.
 
 * Here is an example of using filter and expression together::
    
-       final FilterFactory ff = CommonFactoryFinder.getFilterFactory( null );
+       final FilterFactory ff = CommonFactoryFinder.getFilterFactory();
        Filter filter = ff.propertyLessThan( ff.property( "AGE"), ff.literal( 12 ) );
        
        SimpleFeatureCollection features = featureSource.getFeatures( filter );

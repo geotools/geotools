@@ -15,13 +15,14 @@ vector information.
 Transform
 ^^^^^^^^^
 
-Transform a feature collection using a series of expressions.
+Transform a feature collection using a series of expressions to define each attribute.
 
-The definition of the output feature type can be provided as a Definition data structure or using a simple string format::
+The definition of the output feature type can be provided as a Definition data structure or using a simple string format:
   
-  the_geom=the_geom
-  name=name
-  area=area( the_geom )
+.. literalinclude:: /../src/main/java/org/geotools/process/FeatureProcessExamples.java
+   :language: java
+   :start-after: // transform start
+   :end-before: // transform end
  
 This is a very flexible process which can be used to:
 

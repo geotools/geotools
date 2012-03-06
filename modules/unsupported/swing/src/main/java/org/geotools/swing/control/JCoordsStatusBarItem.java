@@ -67,7 +67,7 @@ public class JCoordsStatusBarItem extends StatusBarItem {
      *
      * @param mapPane the map pane
      */
-    JCoordsStatusBarItem(MapPane mapPane) {
+    public JCoordsStatusBarItem(MapPane mapPane) {
         super(COMPONENT_NAME);
 
         if (mapPane == null) {

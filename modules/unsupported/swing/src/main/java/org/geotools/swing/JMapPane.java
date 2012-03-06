@@ -85,7 +85,12 @@ public class JMapPane extends AbstractMapPane {
     public void setMapContent(MapContent content) {
         super.setMapContent(content);
         if (content != null && renderer != null) {
-            renderer.setMapContent(mapContent);
+            // If the new map content had layers to draw, and this pane is visible,
+            // then the map content will already have been set with the renderer
+            //
+            if (renderer.getMapContent() != content) { // just check reference equality
+                renderer.setMapContent(mapContent);
+            }
         }
     }
 

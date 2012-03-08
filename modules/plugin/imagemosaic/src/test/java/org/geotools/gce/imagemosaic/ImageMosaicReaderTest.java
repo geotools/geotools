@@ -19,6 +19,8 @@ package org.geotools.gce.imagemosaic;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -34,7 +36,9 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.logging.Logger;
 
+import javax.imageio.ImageIO;
 import javax.media.jai.PlanarImage;
+import javax.media.jai.iterator.RectIterFactory;
 import javax.media.jai.widget.ScrollingImagePanel;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -52,6 +56,7 @@ import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.UnknownFormat;
 import org.geotools.factory.Hints;
+import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
@@ -61,8 +66,8 @@ import org.geotools.util.NumberRange;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
@@ -868,6 +873,79 @@ public class ImageMosaicReaderTest extends Assert{
 		checkCoverage(reader, new GeneralParameterValue[] { gg, outTransp },title);
 
 	}
+	
+    @Test
+    public void testRequestInHole() throws Exception {
+        final AbstractGridFormat format = getFormat(rgbAURL);
+        final ImageMosaicReader reader = getReader(rgbAURL, format);
+
+        assertNotNull(reader);
+
+        // ask to extract an area that is inside the coverage bbox, but in a hole (no data)
+        final ParameterValue<GridGeometry2D> ggp =  AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        Envelope2D env = new Envelope2D(reader.getCrs(), 500000, 3200000, 1000, 1000);
+        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 100, 100), (Envelope) env);
+        ggp.setValue(gg);
+
+        // red background
+        final ParameterValue<double[]> bgp =  ImageMosaicFormat.BACKGROUND_VALUES.createValue();
+        bgp.setValue(new double[] {255, 0, 0, 255});
+        
+        // read and check we actually got a coverage in the requested area
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {ggp, bgp});
+        assertNotNull(coverage);
+        assertTrue(coverage.getEnvelope2D().intersects(env));
+        
+        // and that the color is the expected one given the background values provided
+        RenderedImage ri = coverage.getRenderedImage();
+        int[] pixel = new int[4];
+        Raster tile = ri.getTile(ri.getMinTileX() + 1, ri.getMinTileY() + 1);
+        tile.getPixel(tile.getMinX(), tile.getMinY(), pixel);
+        assertEquals(255, pixel[0]);
+        assertEquals(0, pixel[1]);
+        assertEquals(0, pixel[2]);
+        assertEquals(255, pixel[3]);
+    }
+    
+    @Test
+    public void testRequestInOut() throws Exception {
+        final AbstractGridFormat format = getFormat(rgbAURL);
+        final ImageMosaicReader reader = getReader(rgbAURL, format);
+
+        assertNotNull(reader);
+
+        // ask to extract an area that is inside the coverage bbox, so that the area is partly
+        // inside the raster, and partly outside
+        final ParameterValue<GridGeometry2D> ggp =  AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        Envelope2D env = new Envelope2D(reader.getCrs(), 64887, 2499342, 646897 - 64887 , 3155705 - 2499342);
+        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 100, 100), (Envelope) env);
+        ggp.setValue(gg);
+
+        // red background
+        final ParameterValue<double[]> bgp =  ImageMosaicFormat.BACKGROUND_VALUES.createValue();
+        bgp.setValue(new double[] {255, 0, 0, 255});
+        
+        // read and check we actually got a coverage in the requested area
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {ggp, bgp});
+        assertNotNull(coverage);
+        System.out.println(coverage.getEnvelope2D());
+        System.out.println(env);
+        assertTrue(coverage.getEnvelope2D().contains(env));
+        
+        // and that the color is the expected one given the background values provided
+        RenderedImage ri = coverage.getRenderedImage();
+        ImageIO.write(ri, "PNG", new File("/tmp/mix.png"));
+        System.out.println(ri.getNumXTiles());
+        System.out.println(ri.getNumYTiles());
+        int[] pixel = new int[4];
+        Raster tile = ri.getTile(ri.getMinTileX() + ri.getNumXTiles()  - 1, 
+                ri.getMinTileY() + ri.getNumYTiles() - 1);
+        tile.getPixel(tile.getWidth() / 2, tile.getHeight() / 2, pixel);
+        assertEquals(255, pixel[0]);
+        assertEquals(0, pixel[1]);
+        assertEquals(0, pixel[2]);
+        assertEquals(255, pixel[3]);
+    }
 
 	/**
 	 * @param args

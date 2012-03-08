@@ -18,7 +18,9 @@ package org.geotools.gce.imagemosaic;
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
@@ -805,16 +807,12 @@ public class Utils {
 	 *             in case the {@link ImageReader} or the
 	 *             {@link ImageInputStream} fail.
 	 */
-	static Rectangle getDimension(final int imageIndex,
-			final ImageInputStream inStream, final ImageReader reader)
+	static Rectangle getDimension(final int imageIndex,final ImageReader reader)
 			throws IOException {
-		Utilities.ensureNonNull("inStream", inStream);
 		Utilities.ensureNonNull("reader", reader);
 		if (imageIndex < 0)
 			throw new IllegalArgumentException(Errors.format(
 					ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, imageIndex));
-		inStream.reset();
-		reader.setInput(inStream);
 		return new Rectangle(0, 0, reader.getWidth(imageIndex), reader
 				.getHeight(imageIndex));
 	}
@@ -1561,4 +1559,89 @@ public class Utils {
                 return true;
             return false;
     }
+
+	/**
+	 * Checks if the Shape equates to a Rectangle, if it does it performs a conversion, otherwise
+	 * returns null
+	 * @param shape
+	 * @return
+	 */
+	static Rectangle toRectangle(Shape shape) {
+	    if(shape instanceof Rectangle) {
+	        return (Rectangle) shape;
+	    }
+	    
+	    if(shape == null) {
+	        return null;
+	    }
+	    
+	    // check if it's equivalent to a rectangle
+	    PathIterator iter = shape.getPathIterator(new AffineTransform());
+	    double[] coords = new double[2];
+	    
+	    // not enough points?
+	    if(iter.isDone()) {
+	        return null;
+	    }
+	    
+	    // get the first and init the data structures
+	    iter.next();
+	    int action = iter.currentSegment(coords);
+	    if(action != PathIterator.SEG_MOVETO && action != PathIterator.SEG_LINETO) {
+	        return null;
+	    }
+	    double minx = coords[0];
+	    double miny = coords[1];
+	    double maxx = minx;
+	    double maxy = miny;
+	    double prevx = minx;
+	    double prevy = miny;
+	    int i = 0;
+	    
+	    // at most 4 steps, if more it's not a strict rectangle
+	    for (; i < 4 && !iter.isDone(); i++) {
+	        iter.next();
+	        action = iter.currentSegment(coords);
+	        
+	        if(action == PathIterator.SEG_CLOSE) {
+	            break;
+	        }
+	        if(action != PathIterator.SEG_LINETO) {
+	            return null;
+	        }
+	        
+	        // check orthogonal step (x does not change and y does, or vice versa)
+	        double x = coords[0];
+	        double y = coords[1];
+	        if(!(prevx == x && prevy != y) &&
+	           !(prevx != x && prevy == y)) {
+	            return null;
+	        }
+	        
+	        // update mins and maxes
+	        if(x < minx) {
+	            minx = x;
+	        } else if(x > maxx) {
+	            maxx = x;
+	        }
+	        if(y < miny) {
+	            miny = y;
+	        } else if(y > maxy) {
+	            maxy = y;
+	        }
+	        
+	        // keep track of prev step
+	        prevx = x;
+	        prevy = y;
+	    }
+	    
+	    // if more than 4 other points it's not a standard rectangle
+	    iter.next();
+	    if(!iter.isDone() || i != 3) {
+	        return null;
+	    }
+	    
+	    // turn it into a rectangle
+	    return new Rectangle2D.Double(minx, miny, maxx - minx, maxy - miny).getBounds();
+	}
 }

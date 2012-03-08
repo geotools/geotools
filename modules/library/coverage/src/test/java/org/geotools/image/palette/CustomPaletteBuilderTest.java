@@ -19,19 +19,24 @@ package org.geotools.image.palette;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
+import java.awt.image.SampleModel;
 
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.OperationDescriptor;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.PlanarImage;
+import javax.media.jai.TiledImage;
 
 import junit.framework.TestCase;
 
 import org.geotools.image.ImageWorker;
 import org.junit.Test;
+
+import com.sun.media.jai.codecimpl.util.RasterFactory;
 
 /**
  * Testing custom code for color reduction.
@@ -97,6 +102,26 @@ public class CustomPaletteBuilderTest extends TestCase {
         assertEquals(4, icm.getMapSize()); //Black background, white fill, light gray fill, dark gray fill = 4 colors
 		
 	}
+	
+	@Test
+    public void testTranslatedImage() {
+	    BufferedImage bi = new BufferedImage(256, 256, BufferedImage.TYPE_BYTE_GRAY);
+        TiledImage image = new TiledImage(0, 0, 256, 256, 1, 1, bi.getSampleModel().createCompatibleSampleModel(256, 256), bi.getColorModel());
+        Graphics g = image.createGraphics();
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, 20, 20);
+        g.setColor(new Color(20, 20, 20)); // A dark gray
+        g.fillRect(20, 20, 20, 20);
+        g.setColor(new Color(200, 200, 200)); // A light gray
+        g.fillRect(0, 20, 20, 20);
+        g.dispose();
+        CustomPaletteBuilder builder = new CustomPaletteBuilder(image, 256, 1, 1, 1);
+        RenderedImage indexed =  builder.buildPalette().getIndexedImage();
+        assertTrue(indexed.getColorModel() instanceof IndexColorModel);
+        IndexColorModel icm = (IndexColorModel) indexed.getColorModel();
+        assertEquals(4, icm.getMapSize()); //Black background, white fill, light gray fill, dark gray fill = 4 colors
+        
+    }
 	
     
     @Test

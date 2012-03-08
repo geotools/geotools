@@ -173,12 +173,18 @@ public final class CustomPaletteBuilder {
 
 				int minx = r.getMinX();
 				int miny = r.getMinY();
+				int sampleModelTx = r.getSampleModelTranslateX();
+				int sampleModelTy = r.getSampleModelTranslateY();
+				
 				minx = minx < minx_ ? minx_ : minx;
 				miny = miny < miny_ ? miny_ : miny;
 				int maxx = minx + tileW;
 				int maxy = miny + tileH;
-				maxx = maxx > maxx_ ? maxx_ : maxx;
-				maxy = maxy > maxy_ ? maxy_ : maxy;
+				int maxxR = maxx + sampleModelTx;
+				int maxyR = maxy + sampleModelTy;
+				maxx = maxx > maxx_ ? (maxx_ > maxxR ? maxxR : maxx_) : (maxx > maxxR ? maxxR : maxx);
+				maxy = maxy > maxy_ ? (maxy_ > maxyR ? maxyR : maxy_) : (maxy > maxyR ? maxyR : maxy);
+				
 				actualWidth = maxx - minx;
 				actualHeight = maxy - miny;
 				for (int j = miny, jj = dstTempY; j < maxy; j++, jj++) {
@@ -316,12 +322,17 @@ public final class CustomPaletteBuilder {
 
 				int minx = r.getMinX();
 				int miny = r.getMinY();
+				int sampleModelTx = r.getSampleModelTranslateX();
+				int sampleModelTy = r.getSampleModelTranslateY();
 				minx = minx < minx_ ? minx_ : minx;
 				miny = miny < miny_ ? miny_ : miny;
 				int maxx = minx + tileW;
 				int maxy = miny + tileH;
-				maxx = maxx > maxx_ ? maxx_ : maxx;
-				maxy = maxy > maxy_ ? maxy_ : maxy;
+				int maxxR = maxx + sampleModelTx;
+				int maxyR = maxy + sampleModelTy;
+				maxx = maxx > maxx_ ? (maxx_ > maxxR ? maxxR : maxx_) : (maxx > maxxR ? maxxR : maxx);
+				maxy = maxy > maxy_ ? (maxy_ > maxyR ? maxyR : maxy_) : (maxy > maxyR ? maxyR : maxy);
+				
 				for (int j = miny; j < maxy; j++) {
 					if ((subsampley > 1) && ((j % subsampley) != 0)) {
 						continue;

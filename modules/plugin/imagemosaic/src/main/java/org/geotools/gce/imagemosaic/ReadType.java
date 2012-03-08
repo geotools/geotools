@@ -143,6 +143,7 @@ enum ReadType {
 	                        // check input stream
 	                        final ImageInputStream inStream=(ImageInputStream) reader.getInput();
 				// read data    
+	            inStream.seek(0);
 				final RenderedOp raster = ImageReadDescriptor.create(
 						inStream, 
 						imageIndex,

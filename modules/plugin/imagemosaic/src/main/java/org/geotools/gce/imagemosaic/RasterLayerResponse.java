@@ -20,11 +20,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
-import java.awt.geom.PathIterator;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.MultiPixelPackedSampleModel;
@@ -60,6 +57,7 @@ import javax.media.jai.TileScheduler;
 import javax.media.jai.operator.ConstantDescriptor;
 import javax.media.jai.operator.FormatDescriptor;
 import javax.media.jai.operator.MosaicDescriptor;
+import javax.media.jai.operator.TranslateDescriptor;
 
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.Category;
@@ -1018,11 +1016,14 @@ class RasterLayerResponse{
 
                         final Number[] values = ImageUtilities.getBackgroundValues(rasterManager.defaultSM, backgroundValues);
                         // create a constant image with a proper layout
-                        final RenderedImage finalImage = ConstantDescriptor.create(
+                        RenderedImage finalImage = ConstantDescriptor.create(
                                 Float.valueOf(rasterBounds.width),
                                 Float.valueOf(rasterBounds.height),
                                 values,
                                 null);
+                        if (rasterBounds.x != 0 || rasterBounds.y != 0) {
+                            finalImage = TranslateDescriptor.create(finalImage, Float.valueOf(rasterBounds.x), Float.valueOf(rasterBounds.y), Interpolation.getInstance(Interpolation.INTERP_NEAREST), null);
+                        }
                         if(rasterManager.defaultCM!=null){
                             final ImageLayout2 il= new ImageLayout2();
                             il.setColorModel(rasterManager.defaultCM);
@@ -1165,19 +1166,19 @@ class RasterLayerResponse{
 		//
 		// SPECIAL CASE
 		// 1 single tile, we try not do a mosaic.
+        final ROI[] sourceRoi = visitor.sourceRoi;
 		if(visitor.granulesNumber==1 && Utils.OPTIMIZE_CROP){
 		    // the roi is exactly equal to the 
 		    final ROI roi = visitor.rois.get(0);
-		    Rectangle bounds = toRectangle(roi.getAsShape());
+		    Rectangle bounds = Utils.toRectangle(roi.getAsShape());
 	        if (bounds != null) {
-	            final RenderedImage image= visitor.getSourcesAsArray()[0];
-	            final Rectangle imageBounds= PlanarImage.wrapRenderedImage(image).getBounds();
+	            RenderedImage image= visitor.getSourcesAsArray()[0];
+	            Rectangle imageBounds= PlanarImage.wrapRenderedImage(image).getBounds();
 	            if(imageBounds.equals(bounds)){
 	                
-	                // do we need to crop
-	                if(!imageBounds.equals(rasterBounds)){
+	                // do we need to crop? (image is bigger than requested?)
+	                if(!rasterBounds.contains(imageBounds)){
 	                    // we have to crop
-	                    
 	                    XRectangle2D.intersect(imageBounds, rasterBounds, imageBounds);
 	                    
 	                    if(imageBounds.isEmpty()){
@@ -1188,15 +1189,28 @@ class RasterLayerResponse{
 	                    ImageWorker iw = new ImageWorker(image);
 	                    iw.setRenderingHints(localHints);
 	                    iw.crop(imageBounds.x, imageBounds.y, imageBounds.width, imageBounds.height);
-	                    return iw.getRenderedImage();
+	                    
+	                    image = iw.getRenderedImage();
+	                    imageBounds = PlanarImage.wrapRenderedImage(image).getBounds();
 	                }
+	                
+	                // and, do we need to add a border around the image?
+	                if(!imageBounds.contains(rasterBounds)) {
+	                    image = MosaicDescriptor.create(
+	                            new RenderedImage[] {image}, 
+	                            request.isBlend()? MosaicDescriptor.MOSAIC_TYPE_BLEND: MosaicDescriptor.MOSAIC_TYPE_OVERLAY, 
+	                            (alphaIn || visitor.doInputTransparency) ? visitor.alphaChannels : null, sourceRoi, 
+	                            visitor.sourceThreshold, 
+	                            backgroundValues, 
+	                            localHints);
+	                }
+	                
 	                return image;
 	            }
 	        }
 		}
 
 
-		final ROI[] sourceRoi = visitor.sourceRoi;
 		final RenderedImage mosaic = MosaicDescriptor.create(
 		        visitor.getSourcesAsArray(), 
 		        request.isBlend()? MosaicDescriptor.MOSAIC_TYPE_BLEND: MosaicDescriptor.MOSAIC_TYPE_OVERLAY, 
@@ -1228,91 +1242,6 @@ class RasterLayerResponse{
 		// create the coverage
 		return mosaic;
 
-	}
-	
-	/**
-	 * Checks if the Shape equates to a Rectangle, if it does it performs a conversion, otherwise
-	 * returns null
-	 * @param shape
-	 * @return
-	 */
-	Rectangle toRectangle(Shape shape) {
-	    if(shape instanceof Rectangle) {
-	        return (Rectangle) shape;
-	    }
-	    
-	    if(shape == null) {
-	        return null;
-	    }
-	    
-	    // check if it's equivalent to a rectangle
-	    PathIterator iter = shape.getPathIterator(new AffineTransform());
-        double[] coords = new double[2];
-	    
-        // not enough points?
-	    if(iter.isDone()) {
-	        return null;
-	    }
-	    
-	    // get the first and init the data structures
-	    iter.next();
-	    int action = iter.currentSegment(coords);
-	    if(action != PathIterator.SEG_MOVETO && action != PathIterator.SEG_LINETO) {
-	        return null;
-	    }
-        double minx = coords[0];
-        double miny = coords[1];
-        double maxx = minx;
-        double maxy = miny;
-        double prevx = minx;
-        double prevy = miny;
-        int i = 0;
-        
-        // at most 4 steps, if more it's not a strict rectangle
-	    for (; i < 4 && !iter.isDone(); i++) {
-	        iter.next();
-	        action = iter.currentSegment(coords);
-	        
-	        if(action == PathIterator.SEG_CLOSE) {
-	            break;
-	        }
-	        if(action != PathIterator.SEG_LINETO) {
-	            return null;
-	        }
-	        
-	        // check orthogonal step (x does not change and y does, or vice versa)
-            double x = coords[0];
-	        double y = coords[1];
-	        if(!(prevx == x && prevy != y) &&
-	           !(prevx != x && prevy == y)) {
-	            return null;
-	        }
-	        
-	        // update mins and maxes
-	        if(x < minx) {
-	            minx = x;
-	        } else if(x > maxx) {
-	            maxx = x;
-	        }
-	        if(y < miny) {
-	            miny = y;
-	        } else if(y > maxy) {
-	            maxy = y;
-	        }
-	        
-	        // keep track of prev step
-	        prevx = x;
-	        prevy = y;
-        }
-	    
-	    // if more than 4 other points it's not a standard rectangle
-	    iter.next();
-	    if(!iter.isDone() || i != 3) {
-	        return null;
-	    }
-	    
-	    // turn it into a rectangle
-	    return new Rectangle2D.Double(minx, miny, maxx - minx, maxy - miny).getBounds();
 	}
 	
 	/**
@@ -1424,12 +1353,11 @@ class RasterLayerResponse{
 	        		null
 	        		).geophysics(true);
 		}
-
         return coverageFactory.create(
                 rasterManager.getCoverageIdentifier(),
                 image,
                 new GridGeometry2D(
-                        new GridEnvelope2D(PlanarImage.wrapRenderedImage(image).getBounds()), 
+                        new GridEnvelope2D(PlanarImage.wrapRenderedImage(image).getBounds()),
                         PixelInCell.CELL_CORNER,
                         finalGridToWorldCorner,
                         this.mosaicBBox.getCoordinateReferenceSystem(),

@@ -343,9 +343,9 @@ public class GranuleDescriptor {
 			reader = cachedReaderSPI.createReaderInstance();
 			if(reader == null)
 				throw new IllegalArgumentException("Unable to get an ImageReader for the provided file "+granuleUrl.toString());
-			
+			reader.setInput(inStream);
 			//get selected level and base level dimensions
-			final Rectangle originalDimension = ImageUtilities.getDimension(0,inStream, reader);
+			final Rectangle originalDimension = Utils.getDimension(0, reader);
 			
 			// build the g2W for this tile, in principle we should get it
 			// somehow from the tile itself or from the index, but at the moment
@@ -625,6 +625,7 @@ public class GranuleDescriptor {
                         inStream = cachedStreamSPI.createInputStreamInstance(granuleUrl, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
 			if(inStream==null)
 				return null;
+			
 	
 			// get a reader and try to cache the relevant SPI
 			if(cachedReaderSPI==null){
@@ -663,7 +664,7 @@ public class GranuleDescriptor {
 			}
 			
 			//get selected level and base level dimensions
-			final GranuleOverviewLevelDescriptor selectedlevel= getLevel(imageIndex,reader,inStream);
+			final GranuleOverviewLevelDescriptor selectedlevel= getLevel(imageIndex,reader);
 	
 			
 			// now create the crop grid to world which can be used to decide
@@ -925,13 +926,10 @@ public class GranuleDescriptor {
                 }
             }
 
-	private GranuleOverviewLevelDescriptor getLevel(final int index, final ImageReader reader, final ImageInputStream inStream) {
+	private GranuleOverviewLevelDescriptor getLevel(final int index, final ImageReader reader) {
 
 		if(reader==null)
-			throw new NullPointerException("Null reader passed to the internal GranuleOverviewLevelDescriptor method");
-		if(inStream==null)
-			throw new NullPointerException("Null stream passed to the internal GranuleOverviewLevelDescriptor method");
-		
+			throw new NullPointerException("Null reader passed to the internal GranuleOverviewLevelDescriptor method");		
 		synchronized (granuleLevels) {
 			if(granuleLevels.containsKey(Integer.valueOf(index)))
 				return granuleLevels.get(Integer.valueOf(index));
@@ -945,7 +943,7 @@ public class GranuleDescriptor {
 					//
 					
 					//get selected level and base level dimensions
-					final Rectangle levelDimension = ImageUtilities.getDimension(index,inStream, reader);
+					final Rectangle levelDimension = Utils.getDimension(index, reader);
 					
 					final GranuleOverviewLevelDescriptor baseLevel= granuleLevels.get(0);
 					final double scaleX=baseLevel.width/(1.0*levelDimension.width);
@@ -993,9 +991,10 @@ public class GranuleDescriptor {
 					reader=cachedReaderSPI.createReaderInstance();
 				if(reader==null)
 					throw new IllegalArgumentException("Unable to get an ImageReader for the provided file "+granuleUrl.toString());					
+				reader.setInput(inStream);
 				
 				// call internal method which will close everything
-				return getLevel(index, reader, inStream);
+				return getLevel(index, reader);
 
 			} catch (IllegalStateException e) {
 				

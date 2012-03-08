@@ -17,7 +17,11 @@
 package org.geotools.gce.imagemosaic;
 
 import java.awt.Color;
+import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.PathIterator;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.RenderedImage;
@@ -40,6 +44,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Properties;
@@ -48,6 +53,9 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.Histogram;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.remote.SerializableRenderedImage;
@@ -71,6 +79,8 @@ import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilder.ProcessingEven
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
+import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Converters;
 import org.geotools.util.Utilities;
 
@@ -498,6 +508,64 @@ public class Utils {
 					FileFilterUtils.notFileFilter(filter));
 		}
 		return retFilter;
+	}
+
+	/**
+	 * Look for an {@link ImageReader} instance that is able to read the
+	 * provided {@link ImageInputStream}, which must be non null.
+	 * 
+	 * <p>
+	 * In case no reader is found, <code>null</code> is returned.
+	 * 
+	 * @param inStream
+	 *            an instance of {@link ImageInputStream} for which we need to
+	 *            find a suitable {@link ImageReader}.
+	 * @return a suitable instance of {@link ImageReader} or <code>null</code>
+	 *         if one cannot be found.
+	 */
+	static ImageReader getReader(final ImageInputStream inStream) {
+		Utilities.ensureNonNull("inStream", inStream);
+		// get a reader
+		inStream.mark();
+		final Iterator<ImageReader> readersIt = ImageIO
+				.getImageReaders(inStream);
+		if (!readersIt.hasNext()) {
+			return null;
+		}
+		return readersIt.next();
+	}
+
+	/**
+	 * Retrieves the dimensions of the {@link RenderedImage} at index
+	 * <code>imageIndex</code> for the provided {@link ImageReader} and
+	 * {@link ImageInputStream}.
+	 * 
+	 * <p>
+	 * Notice that none of the input parameters can be <code>null</code> or a
+	 * {@link NullPointerException} will be thrown. Morevoer the
+	 * <code>imageIndex</code> cannot be negative or an
+	 * {@link IllegalArgumentException} will be thrown.
+	 * 
+	 * @param imageIndex
+	 *            the index of the image to get the dimensions for.
+	 * @param inStream
+	 *            the {@link ImageInputStream} to use as an input
+	 * @param reader
+	 *            the {@link ImageReader} to decode the image dimensions.
+	 * @return a {@link Rectangle} that contains the dimensions for the image at
+	 *         index <code>imageIndex</code>
+	 * @throws IOException
+	 *             in case the {@link ImageReader} or the
+	 *             {@link ImageInputStream} fail.
+	 */
+	static Rectangle getDimension(final int imageIndex,final ImageReader reader)
+			throws IOException {
+		Utilities.ensureNonNull("reader", reader);
+		if (imageIndex < 0)
+			throw new IllegalArgumentException(Errors.format(
+					ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, imageIndex));
+		return new Rectangle(0, 0, reader.getWidth(imageIndex), reader
+				.getHeight(imageIndex));
 	}
 
 	/**
@@ -1134,4 +1202,89 @@ public class Utils {
                 return true;
             return false;
     }
+
+	/**
+	 * Checks if the Shape equates to a Rectangle, if it does it performs a conversion, otherwise
+	 * returns null
+	 * @param shape
+	 * @return
+	 */
+	static Rectangle toRectangle(Shape shape) {
+	    if(shape instanceof Rectangle) {
+	        return (Rectangle) shape;
+	    }
+	    
+	    if(shape == null) {
+	        return null;
+	    }
+	    
+	    // check if it's equivalent to a rectangle
+	    PathIterator iter = shape.getPathIterator(new AffineTransform());
+	    double[] coords = new double[2];
+	    
+	    // not enough points?
+	    if(iter.isDone()) {
+	        return null;
+	    }
+	    
+	    // get the first and init the data structures
+	    iter.next();
+	    int action = iter.currentSegment(coords);
+	    if(action != PathIterator.SEG_MOVETO && action != PathIterator.SEG_LINETO) {
+	        return null;
+	    }
+	    double minx = coords[0];
+	    double miny = coords[1];
+	    double maxx = minx;
+	    double maxy = miny;
+	    double prevx = minx;
+	    double prevy = miny;
+	    int i = 0;
+	    
+	    // at most 4 steps, if more it's not a strict rectangle
+	    for (; i < 4 && !iter.isDone(); i++) {
+	        iter.next();
+	        action = iter.currentSegment(coords);
+	        
+	        if(action == PathIterator.SEG_CLOSE) {
+	            break;
+	        }
+	        if(action != PathIterator.SEG_LINETO) {
+	            return null;
+	        }
+	        
+	        // check orthogonal step (x does not change and y does, or vice versa)
+	        double x = coords[0];
+	        double y = coords[1];
+	        if(!(prevx == x && prevy != y) &&
+	           !(prevx != x && prevy == y)) {
+	            return null;
+	        }
+	        
+	        // update mins and maxes
+	        if(x < minx) {
+	            minx = x;
+	        } else if(x > maxx) {
+	            maxx = x;
+	        }
+	        if(y < miny) {
+	            miny = y;
+	        } else if(y > maxy) {
+	            maxy = y;
+	        }
+	        
+	        // keep track of prev step
+	        prevx = x;
+	        prevy = y;
+	    }
+	    
+	    // if more than 4 other points it's not a standard rectangle
+	    iter.next();
+	    if(!iter.isDone() || i != 3) {
+	        return null;
+	    }
+	    
+	    // turn it into a rectangle
+	    return new Rectangle2D.Double(minx, miny, maxx - minx, maxy - miny).getBounds();
+	}
 }

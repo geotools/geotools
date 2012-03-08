@@ -26,6 +26,7 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Color;
 import java.awt.Transparency;
 import java.awt.color.ColorSpace;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
@@ -835,5 +836,27 @@ public final class ImageWorkerTest {
         for (int i = 0; i < inputCM.getMapSize(); i++) {
             assertEquals(Math.round(inputCM.getAlpha(i) * 0.5), outputCM.getAlpha(i));
         }
+    }
+    
+    @Test
+    public void testOptimizeAffine() throws Exception {
+        BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
+        ImageWorker iw = new ImageWorker(bi);
+        
+        // apply straight translation
+        AffineTransform at = AffineTransform.getTranslateInstance(100, 100);
+        iw.affine(at, null, null);
+        RenderedImage t1 = iw.getRenderedImage();
+        assertEquals(100, t1.getMinX());
+        assertEquals(100, t1.getMinY());
+        
+        // now go back
+        AffineTransform atInverse = AffineTransform.getTranslateInstance(-100, -100);
+        iw.affine(atInverse, null, null);
+        RenderedImage t2 = iw.getRenderedImage();
+        assertEquals(0, t2.getMinX());
+        assertEquals(0, t2.getMinY());
+        assertSame(bi, t2);
+        
     }
 }

@@ -2863,6 +2863,7 @@ public class ImageWorker {
         
         // did it become a identity after the combination?
         if(!hasScaleX && !hasScaleY && !hasShearX && !hasShearY && !hasTranslateX && !hasTranslateY) {
+            this.image = source;
             return this;
         }
 

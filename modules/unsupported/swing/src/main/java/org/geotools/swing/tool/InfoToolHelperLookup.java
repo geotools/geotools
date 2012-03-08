@@ -17,14 +17,10 @@
 
 package org.geotools.swing.tool;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
+import java.util.ServiceLoader;
 import java.util.logging.Logger;
 
 import org.geotools.map.Layer;
@@ -40,19 +36,17 @@ import org.geotools.map.Layer;
 class InfoToolHelperLookup {
     private static final Logger LOGGER = Logger.getLogger("org.geotools.swing");
 
-    private static final String SPI_NAME =
-            "META-INF/services/org.geotools.swing.tool.InfoToolHelper";
-    
-    private static WeakReference<List<Class>> cache;
+    private static List<InfoToolHelper> cachedInstances;
 
     public static InfoToolHelper getHelper(Layer layer) {
-        List<Class> helperClasses = InfoToolHelperLookup.getProviders();
-        for (Class c : helperClasses) {
+        loadProviders();
+        
+        for (InfoToolHelper helper : cachedInstances) {
             try {
-                InfoToolHelper helper = (InfoToolHelper) c.newInstance();
                 if (helper.isSupportedLayer(layer)) {
-                    return helper;
+                    return helper.getClass().newInstance();
                 }
+                
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
@@ -62,78 +56,22 @@ class InfoToolHelperLookup {
     }
 
     /**
-     * Gets classes that implement the InfoToolHelper SPI.
-     *
-     * @return list of implementing classes
+     * Caches available classes which implement the InfoToolHelper SPI.
      */
-    private static List<Class> getProviders() {
+    private static void loadProviders() {
         List<Class> providers = null;
         
-        if (cache != null) {
-            providers = cache.get();
-        }
-
-        if (providers == null) {
-            providers = getProvidersFromSpiFile();
-            cache = new WeakReference<List<Class>>(providers);
-        }
-
-        return providers;
-    }
-
-    /**
-     * Read class names from a registry file and return the list of
-     * implementing classes.
-     *
-     * @param SPI_NAME a fully qualified interface name
-     *
-     * @return list of implementing classes
-     */
-    private static List<Class> getProvidersFromSpiFile() {
-        List<Class> providers = new ArrayList<Class>();
-
-        ClassLoader cl = InfoToolHelperLookup.class.getClassLoader();
-        if (cl != null) {
-            InputStream str = cl.getResourceAsStream(SPI_NAME);
-            if (str != null) {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(str));
-                String line = null;
-
-                try {
-                    while ((line = reader.readLine()) != null) {
-                        String text = line.trim();
-                        if (text.length() > 0 && !text.startsWith("#")) {
-                            try {
-                                providers.add(Class.forName(text));
-                            } catch (ClassNotFoundException ex) {
-                                LOGGER.log(Level.WARNING, "Class not found: {0}", text);
-                            }
-                        }
-                    }
-                } catch (IOException ex) {
-                    LOGGER.log(Level.SEVERE, "Problem reading services file: {0}", SPI_NAME);
-
-                } finally {
-                    try {
-                        str.close();
-                    } catch (Throwable e) {
-                        // ignore
-                    }
-
-                    try {
-                        if (reader != null) {
-                            reader.close();
-                        }
-                    } catch (Throwable e) {
-                        // ignore
-                    }
-                }
-
-            } else {
-                LOGGER.log(Level.SEVERE, "Could not find {0}", SPI_NAME);
+        if (cachedInstances == null) {
+            cachedInstances = new ArrayList<InfoToolHelper>();
+            
+            ServiceLoader<InfoToolHelper> loader = 
+                    ServiceLoader.load(InfoToolHelper.class);
+            
+            Iterator<InfoToolHelper> iter = loader.iterator();
+            while (iter.hasNext()) {
+                cachedInstances.add(iter.next());
             }
         }
-
-        return providers;
     }
+
 }

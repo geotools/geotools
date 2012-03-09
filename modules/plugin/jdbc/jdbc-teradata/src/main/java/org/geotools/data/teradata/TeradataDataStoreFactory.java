@@ -50,7 +50,7 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
      */
     public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "teradata");
     
-    public static final Param LOBWORKAROUND = new Param("LOB Workaround",Boolean.class,
+    public static final Param LOBWORKAROUND = new Param("Disable LOB Workaround",Boolean.class,
             "Disable LOB workaround", false, Boolean.FALSE);
 
     /**
@@ -131,6 +131,12 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
         TeradataDialect dialect = (TeradataDialect) dataStore.getSQLDialect();
         
         Boolean lobWorkaround = (Boolean) LOBWORKAROUND.lookUp(params);
+        // check for old name and respect setting if provided and new name is not
+        // NOTE: this will not appear updated in geoserver's UI however
+        if (lobWorkaround == null && params.containsKey("LOB Workaround")) {
+            lobWorkaround = (Boolean) LOBWORKAROUND.handle((String)params.get("LOB Workaround"));
+            params.put(LOBWORKAROUND.key, lobWorkaround.toString());
+        }
         dialect.setLobWorkaroundEnabled(lobWorkaround == null || !lobWorkaround);
 
         Boolean loose = (Boolean) LOOSEBBOX.lookUp(params);

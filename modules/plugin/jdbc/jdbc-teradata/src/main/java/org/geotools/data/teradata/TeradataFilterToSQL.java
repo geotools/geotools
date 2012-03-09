@@ -243,12 +243,14 @@ public class TeradataFilterToSQL extends PreparedFilterToSQL {
             return false;
         }
         
+        out.write('(');
         for (Iterator<PrimaryKeyColumn> it = primaryKey.getColumns().iterator(); it.hasNext();) {
             out.write(it.next().getName());
             if (it.hasNext()) {
                 out.write(", ");
             }
         }
+        out.write(')');
 
         out.write(" IN (SELECT DISTINCT ");
         for (Iterator<PrimaryKeyColumn> it = primaryKey.getColumns().iterator(); it.hasNext();) {

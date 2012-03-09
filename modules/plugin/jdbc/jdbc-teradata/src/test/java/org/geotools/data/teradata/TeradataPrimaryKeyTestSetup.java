@@ -46,8 +46,8 @@ public class TeradataPrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
 
 
     protected void createMultiColumnPrimaryKeyTable() throws Exception {
-        run("CREATE TABLE \"multi\" ( \"key1\" int NOT NULL, \"key2\" varchar(20) NOT NULL, "
-                + "\"name\" varchar(20), geom ST_Geometry)");
+        run("CREATE TABLE \"multi\" ( \"key1\" int NOT NULL, \"key2\" varchar(40) NOT NULL, "
+                + "\"name\" varchar(40), geom ST_Geometry)");
         run("INSERT INTO SYSSPATIAL.GEOMETRY_COLUMNS (F_TABLE_CATALOG, F_TABLE_SCHEMA, F_TABLE_NAME, " +
             "F_GEOMETRY_COLUMN, COORD_DIMENSION, SRID, GEOM_TYPE) VALUES ('','test','multi', 'geom', " +
             "2, " + getDelegate().getSrid4326() + ", 'ST_Geometry')");

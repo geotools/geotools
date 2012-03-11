@@ -89,6 +89,7 @@ public abstract class JDBCConnectionLifecycleTest extends JDBCTestSupport {
         // and now do a rollback
         t.rollback();
         assertTrue(mockListener.onRollbackCalled);
+        t.close();
     }
     
     public void testConnectionReleased() throws IOException {

@@ -167,6 +167,7 @@ public abstract class JDBCGeographyTest extends JDBCTestSupport {
         f.setDefaultGeometry(point);
 
         fw.write();
+        fw.close();
 
         Filter filter = ff.equals(ff.property("name"), ff.literal("append"));
         Query q = new Query(tname("geopoint"), filter);

@@ -335,42 +335,50 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
             super.modifyFeatures(innerTypes, values, filter);
         } else {
             // let's grab the connection
-            Connection cx = getDataStore().getConnection(getState());
-            
-            // we want to support a "batch" update, but we need to be weary of locks
-            SimpleFeatureType featureType = getSchema();
+            Connection cx = null;
+            Transaction tx = getState().getTransaction();
             try {
-                getDataStore().ensureAuthorization(featureType, preFilter, getTransaction(), cx);
-            }
-            catch (SQLException e) {
-                throw (IOException) new IOException().initCause( e );
-            }
-            ContentState state = getEntry().getState(transaction);
-            ReferencedEnvelope bounds = new ReferencedEnvelope( getSchema().getCoordinateReferenceSystem() );
-            if( state.hasListener() ){
-                // gather bounds before modification
-                ReferencedEnvelope before = getBounds( new DefaultQuery( getSchema().getTypeName(), preFilter ) );                
-                if( before != null && !before.isEmpty() ){
-                    bounds = before;
+                cx = getDataStore().getConnection(tx);
+            
+                // we want to support a "batch" update, but we need to be weary of locks
+                SimpleFeatureType featureType = getSchema();
+                try {
+                    getDataStore().ensureAuthorization(featureType, preFilter, getTransaction(), cx);
                 }
-            }
-            try {
-                getDataStore().update(getSchema(), innerTypes, values, preFilter, cx);
-            } catch(SQLException e) {
-                throw (IOException) (new IOException(e.getMessage()).initCause(e));
-            }
-            
-            if( state.hasListener() ){
-                // gather any updated bounds due to a geometry modification
-                for( Object value : values ){
-                    if( value instanceof Geometry ){
-                        Geometry geometry = (Geometry) value;
-                        bounds.expandToInclude( geometry.getEnvelopeInternal() );
+                catch (SQLException e) {
+                    throw (IOException) new IOException().initCause( e );
+                }
+                ContentState state = getEntry().getState(transaction);
+                ReferencedEnvelope bounds = new ReferencedEnvelope( getSchema().getCoordinateReferenceSystem() );
+                if( state.hasListener() ){
+                    // gather bounds before modification
+                    ReferencedEnvelope before = getBounds( new DefaultQuery( getSchema().getTypeName(), preFilter ) );                
+                    if( before != null && !before.isEmpty() ){
+                        bounds = before;
                     }
                 }
-                // issue notificaiton
-                FeatureEvent event = new FeatureEvent(this, Type.CHANGED, bounds, preFilter );
-                state.fireFeatureEvent( event );
+                try {
+                    getDataStore().update(getSchema(), innerTypes, values, preFilter, cx);
+                } catch(SQLException e) {
+                    throw (IOException) (new IOException(e.getMessage()).initCause(e));
+                }
+                
+                if( state.hasListener() ){
+                    // gather any updated bounds due to a geometry modification
+                    for( Object value : values ){
+                        if( value instanceof Geometry ){
+                            Geometry geometry = (Geometry) value;
+                            bounds.expandToInclude( geometry.getEnvelopeInternal() );
+                        }
+                    }
+                    // issue notificaiton
+                    FeatureEvent event = new FeatureEvent(this, Type.CHANGED, bounds, preFilter );
+                    state.fireFeatureEvent( event );
+                }
+            } finally {
+                if(tx == null || tx == Transaction.AUTO_COMMIT) {
+                    getDataStore().closeSafe(cx);
+                }
             }
         }
     }
@@ -387,30 +395,39 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
             super.removeFeatures(filter);
         } else {
             // let's grab the connection
-            Connection cx = getDataStore().getConnection(getState());
+            Transaction tx = getState().getTransaction();
+            Connection cx = null;
             
-            // we want to support a "batch" delete, but we need to be weary of locks
-            SimpleFeatureType featureType = getSchema();
             try {
-                getDataStore().ensureAuthorization(featureType, preFilter, getTransaction(), cx);
-            } 
-            catch (SQLException e) {
-                throw (IOException) new IOException().initCause( e );
-            }
-            ContentState state = getEntry().getState(transaction);
-            ReferencedEnvelope bounds = new ReferencedEnvelope( getSchema().getCoordinateReferenceSystem() );
-            if( state.hasListener() ){
-                // gather bounds before modification
-                ReferencedEnvelope before = getBounds( new DefaultQuery( getSchema().getTypeName(), preFilter ) );                
-                if( before != null && !before.isEmpty() ){
-                    bounds = before;
+                cx = getDataStore().getConnection(tx);
+                
+                // we want to support a "batch" delete, but we need to be weary of locks
+                SimpleFeatureType featureType = getSchema();
+                try {
+                    getDataStore().ensureAuthorization(featureType, preFilter, getTransaction(), cx);
+                } 
+                catch (SQLException e) {
+                    throw (IOException) new IOException().initCause( e );
                 }
-            }            
-            getDataStore().delete(featureType, preFilter, cx);
-            if( state.hasListener() ){
-                // issue notification
-                FeatureEvent event = new FeatureEvent(this, Type.REMOVED, bounds, preFilter );
-                state.fireFeatureEvent( event );
+                ContentState state = getEntry().getState(transaction);
+                ReferencedEnvelope bounds = new ReferencedEnvelope( getSchema().getCoordinateReferenceSystem() );
+                if( state.hasListener() ){
+                    // gather bounds before modification
+                    ReferencedEnvelope before = getBounds( new DefaultQuery( getSchema().getTypeName(), preFilter ) );                
+                    if( before != null && !before.isEmpty() ){
+                        bounds = before;
+                    }
+                }            
+                getDataStore().delete(featureType, preFilter, cx);
+                if( state.hasListener() ){
+                    // issue notification
+                    FeatureEvent event = new FeatureEvent(this, Type.REMOVED, bounds, preFilter );
+                    state.fireFeatureEvent( event );
+                }
+            } finally {
+                if(tx == null || tx == Transaction.AUTO_COMMIT) {
+                    getDataStore().closeSafe(cx);
+                }
             }
         }
     }

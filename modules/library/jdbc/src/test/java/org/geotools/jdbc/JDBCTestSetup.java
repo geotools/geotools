@@ -16,6 +16,8 @@
  */
 package org.geotools.jdbc;
 
+import static junit.framework.Assert.*;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -98,8 +100,19 @@ public abstract class JDBCTestSetup {
     }
 
     public void tearDown() throws Exception {
+        final String leakMessage = "Expected no active connection, either there is a connection leak " +
+        		"or you forgot to close some object holding onto connections in the tests (e.g., a reader, an iterator)";
         if(dataSource instanceof BasicDataSource) {
-            ((BasicDataSource) dataSource).close();
+            BasicDataSource bds = (BasicDataSource) dataSource;
+            assertEquals(leakMessage, 0, bds.getNumActive());
+        } else if(dataSource instanceof DBCPDataSource) {
+            BasicDataSource bds = (BasicDataSource) ((DBCPDataSource) dataSource).getWrapped();
+            assertEquals(leakMessage, 0, bds.getNumActive());
+        }
+        
+        if(dataSource instanceof BasicDataSource) {
+            BasicDataSource bds = (BasicDataSource) dataSource;
+            bds.close();
         } else if(dataSource instanceof ManageableDataSource) {
             ((ManageableDataSource) dataSource).close();
         }

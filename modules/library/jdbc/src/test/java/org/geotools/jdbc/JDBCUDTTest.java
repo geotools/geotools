@@ -75,6 +75,7 @@ public abstract class JDBCUDTTest extends JDBCTestSupport {
         
         f.setAttribute(aname("ut"), "34cd");
         w.write();
+        w.close();
         
         assertEquals(count+1, dataStore.getFeatureSource(tname("udt")).getCount(Query.ALL));
     }

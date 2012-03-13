@@ -20,6 +20,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.io.File;
@@ -36,9 +37,7 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.logging.Logger;
 
-import javax.imageio.ImageIO;
 import javax.media.jai.PlanarImage;
-import javax.media.jai.iterator.RectIterFactory;
 import javax.media.jai.widget.ScrollingImagePanel;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -934,7 +933,7 @@ public class ImageMosaicReaderTest extends Assert{
         
         // and that the color is the expected one given the background values provided
         RenderedImage ri = coverage.getRenderedImage();
-        ImageIO.write(ri, "PNG", new File("/tmp/mix.png"));
+        // ImageIO.write(ri, "PNG", new File("/tmp/mix.png"));
         System.out.println(ri.getNumXTiles());
         System.out.println(ri.getNumYTiles());
         int[] pixel = new int[4];

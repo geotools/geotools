@@ -144,7 +144,19 @@ public class GeometryCollector {
             return gf.createMultiPoint(array);
         } else if (collectionClass == MultiPolygon.class) {
             Polygon[] array = (Polygon[]) geometries.toArray(new Polygon[geometries.size()]);
-            return gf.createMultiPolygon(array);
+            MultiPolygon mp = gf.createMultiPolygon(array);
+            
+            // a collection of valid polygon does not necessarily make up a valid multipolygon
+            if(array.length > 1 && !mp.isValid()) {
+                Geometry g = mp.buffer(0);
+                if(g instanceof Polygon) {
+                    return gf.createMultiPolygon(new Polygon[] {(Polygon) g});
+                } else {
+                    return (GeometryCollection) g;
+                }
+            } else {
+                return mp;
+            }
         } else if (collectionClass == MultiLineString.class) {
             LineString[] array = (LineString[]) geometries
                     .toArray(new LineString[geometries.size()]);

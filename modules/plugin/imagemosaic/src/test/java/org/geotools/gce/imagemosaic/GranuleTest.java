@@ -31,22 +31,29 @@ import javax.imageio.spi.ImageReaderSpi;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 
+import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
+import org.geotools.filter.text.generated.parsers.ParseException;
 import org.geotools.gce.imagemosaic.GranuleDescriptor.GranuleOverviewLevelDescriptor;
+import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.crs.DefaultProjectedCRS;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
+import org.geotools.referencing.wkt.Parser;
 import org.geotools.test.TestData;
 import org.jaitools.imageutils.ImageLayout2;
 import org.junit.Assert;
 import org.junit.Test;
+import org.opengis.geometry.BoundingBox;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.NoninvertibleTransformException;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -188,4 +195,106 @@ public class GranuleTest extends Assert {
 		assertEquals(translatedRaster.getHeight(), 50);
 	}
 	
+	
+	
+    static final String NZTM_WKT_NE = "PROJCS[\"NZGD2000 / New Zealand Transverse Mercator 2000\", \n"
+            + "  GEOGCS[\"NZGD2000\", \n"
+            + "    DATUM[\"New Zealand Geodetic Datum 2000\", \n"
+            + "      SPHEROID[\"GRS 1980\", 6378137.0, 298.257222101, AUTHORITY[\"EPSG\",\"7019\"]], \n"
+            + "      TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], \n"
+            + "      AUTHORITY[\"EPSG\",\"6167\"]], \n"
+            + "    PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], \n"
+            + "    UNIT[\"degree\", 0.017453292519943295], \n"
+            + "    AXIS[\"Geodetic latitude\", NORTH], \n"
+            + "    AXIS[\"Geodetic longitude\", EAST], \n"
+            + "    AUTHORITY[\"EPSG\",\"4167\"]], \n"
+            + "  PROJECTION[\"Transverse_Mercator\", AUTHORITY[\"EPSG\",\"9807\"]], \n"
+            + "  PARAMETER[\"central_meridian\", 173.0], \n"
+            + "  PARAMETER[\"latitude_of_origin\", 0.0], \n"
+            + "  PARAMETER[\"scale_factor\", 0.9996], \n"
+            + "  PARAMETER[\"false_easting\", 1600000.0], \n"
+            + "  PARAMETER[\"false_northing\", 10000000.0], \n"
+            + "  UNIT[\"m\", 1.0], \n"
+            + "  AXIS[\"Northing\", NORTH], \n"
+            + "  AXIS[\"Easting\", EAST], \n"
+            + "  AUTHORITY[\"EPSG\",\"2193\"]]";
+
+    static final String NZTM_WKT_EN = "PROJCS[\"NZGD2000 / New Zealand Transverse Mercator 2000\", \n"
+            + "  GEOGCS[\"NZGD2000\", \n"
+            + "    DATUM[\"New Zealand Geodetic Datum 2000\", \n"
+            + "      SPHEROID[\"GRS 1980\", 6378137.0, 298.257222101, AUTHORITY[\"EPSG\",\"7019\"]], \n"
+            + "      TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], \n"
+            + "      AUTHORITY[\"EPSG\",\"6167\"]], \n"
+            + "    PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], \n"
+            + "    UNIT[\"degree\", 0.017453292519943295], \n"
+            + "    AXIS[\"Geodetic longitude\", EAST], \n"
+            + "    AXIS[\"Geodetic latitude\", NORTH], \n"
+            + "    AUTHORITY[\"EPSG\",\"4167\"]], \n"
+            + "  PROJECTION[\"Transverse_Mercator\"], \n"
+            + "  PARAMETER[\"central_meridian\", 173.0], \n"
+            + "  PARAMETER[\"latitude_of_origin\", 0.0], \n"
+            + "  PARAMETER[\"scale_factor\", 0.9996], \n"
+            + "  PARAMETER[\"false_easting\", 1600000.0], \n"
+            + "  PARAMETER[\"false_northing\", 10000000.0], \n"
+            + "  UNIT[\"m\", 1.0], \n"
+            + "  AXIS[\"Easting\", EAST], \n"
+            + "  AXIS[\"Northing\", NORTH], \n"
+            + "  AUTHORITY[\"EPSG\",\"2193\"]]";
+
+    @Test
+    public void testCRS_NorthingEasting() throws Exception {
+        // get some test data
+        final File testMosaic = TestData.file(this, "/crs_nztm");
+        assertTrue(testMosaic.exists());
+
+        final Parser parser = new Parser();
+        final DefaultProjectedCRS crs_EN = (DefaultProjectedCRS) parser.parseObject(NZTM_WKT_EN);
+        final DefaultProjectedCRS crs_NE = (DefaultProjectedCRS) parser.parseObject(NZTM_WKT_NE);
+
+        final ImageMosaicReader reader = (ImageMosaicReader) new ImageMosaicFormat()
+                .getReader(testMosaic);
+
+        assertNotNull(reader);
+        final RasterManager manager = new RasterManager(reader);
+
+        // FIXME: somehow when run under JUnit the bounds end up as (y,x) rather than (x,y). Works
+        // fine in GeoServer. Hack it :(
+        final ReferencedEnvelope mosaicBounds = new ReferencedEnvelope(1587997.8835, 1612003.2265,
+                6162000.4515, 6198002.1165, crs_EN);
+        manager.spatialDomainManager.coverageBBox = mosaicBounds;
+        manager.spatialDomainManager.coverageEnvelope = new GeneralEnvelope(mosaicBounds);
+
+        // set up the request (north-east version)
+        final ReferencedEnvelope requestBBoxNE = new ReferencedEnvelope(6154440.101350001,
+                6204842.43235, 1583436.86902, 1617044.34782, crs_NE);
+        final ParameterValue<GridGeometry2D> requestedBBox = AbstractGridFormat.READ_GRIDGEOMETRY2D
+                .createValue();
+        requestedBBox.setValue(new GridGeometry2D(PixelInCell.CELL_CENTER, reader
+                .getOriginalGridToWorld(PixelInCell.CELL_CENTER), requestBBoxNE, null));
+
+        final RasterLayerRequest requestNE = new RasterLayerRequest(
+                new GeneralParameterValue[] { requestedBBox }, manager);
+
+        BoundingBox checkCropBBox = requestNE.getCropBBox();
+        assertNotNull(checkCropBBox);
+        assertEquals(
+                "ReferencedEnvelope[1587997.8835 : 1612003.2265, 6162000.4515 : 6198002.1165]",
+                checkCropBBox.toString());
+
+        // set up the request (east-north version)
+        final ReferencedEnvelope requestBBoxEN = new ReferencedEnvelope(1583436.86902,
+                1617044.34782, 6154440.101350001, 6204842.43235, crs_EN);
+        requestedBBox.setValue(new GridGeometry2D(PixelInCell.CELL_CENTER, reader
+                .getOriginalGridToWorld(PixelInCell.CELL_CENTER), requestBBoxEN, null));
+
+        final RasterLayerRequest requestEN = new RasterLayerRequest(
+                new GeneralParameterValue[] { requestedBBox }, manager);
+
+        checkCropBBox = requestEN.getCropBBox();
+        assertNotNull(checkCropBBox);
+        assertEquals(
+                "ReferencedEnvelope[1587997.8835 : 1612003.2265, 6162000.4515 : 6198002.1165]",
+                checkCropBBox.toString());
+    }
+
 }

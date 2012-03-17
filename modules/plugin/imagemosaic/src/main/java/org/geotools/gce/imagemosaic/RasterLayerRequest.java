@@ -1140,15 +1140,9 @@ class RasterLayerRequest {
         try {
 
         	//
-			// If this approach succeeds, either the request crs is the same of
-			// the coverage crs or the request bbox can be reprojected to that
-			// crs
-        	//
+			// The destination to source transform has been computed (and eventually erased) already
+            // by inspectCoordinateSystem()
         	
-        	
-            // STEP 1: reproject requested BBox to native CRS if needed
-            if (!CRS.equalsIgnoreMetadata(requestCRS,rasterManager.spatialDomainManager.coverageCRS2D))
-                destinationToSourceTransform = CRS.findMathTransform(requestCRS,rasterManager.spatialDomainManager.coverageCRS2D, true);
             // now transform the requested envelope to source crs
             if (destinationToSourceTransform != null && !destinationToSourceTransform.isIdentity())
             {
@@ -1196,16 +1190,9 @@ class RasterLayerRequest {
             // envelope. let's try with wgs84
             if(LOGGER.isLoggable(Level.FINE))
             	LOGGER.log(Level.FINE,te.getLocalizedMessage(),te);
-        } catch (FactoryException fe) {
-            // something bad happened while trying to transform this
-            // envelope. let's try with wgs84
-            if(LOGGER.isLoggable(Level.FINE))
-            	LOGGER.log(Level.FINE,fe.getLocalizedMessage(),fe);
-        }
-        
+        }        
 
         try {
-            
             // can we proceed? Do we have geo stuff to do all these operations?
             if(rasterManager.spatialDomainManager.coverageGeographicCRS2D!=null&&rasterManager.spatialDomainManager.coverageGeographicBBox!=null){
                 

@@ -458,4 +458,19 @@ public class CRSTest extends TestCase {
         assertEquals(source, co.getSourceCRS());
         assertEquals(target, co.getTargetCRS());
     }
+    
+    public void testNadCon() throws Exception {
+        CoordinateReferenceSystem crs4138 = CRS.decode("EPSG:4138");
+        CoordinateReferenceSystem crs4326 = CRS.decode("EPSG:4326");
+        MathTransform mt = CRS.findMathTransform(crs4138, crs4326);
+        
+        assertTrue(mt.toWKT().contains("NADCON"));
+     
+        double[] src = new double[] {56.575, -169.625};
+        double[] expected = new double [] {56.576034, -169.62744};
+        double[] p = new double[2];
+        mt.transform(src, 0, p, 0, 1);
+        assertEquals(expected[0], p[0], 1e-6);
+        assertEquals(expected[1], p[1], 1e-6);
+    }
 }

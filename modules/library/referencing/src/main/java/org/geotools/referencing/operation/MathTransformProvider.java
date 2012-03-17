@@ -238,7 +238,7 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
      * Put the identifiers into a properties map suitable for {@link IdentifiedObject}
      * constructor.
      */
-    private static Map<String,Object> toMap(final ReferenceIdentifier[] identifiers) {
+    protected static Map<String,Object> toMap(final ReferenceIdentifier[] identifiers) {
         ensureNonNull("identifiers", identifiers);
         if (identifiers.length == 0) {
             throw new IllegalArgumentException(Errors.format(ErrorKeys.EMPTY_ARRAY));

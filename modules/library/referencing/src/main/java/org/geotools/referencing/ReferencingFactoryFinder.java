@@ -18,35 +18,36 @@ package org.geotools.referencing;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Set;
-import java.util.Locale;
 import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.Locale;
+import java.util.Set;
+
 import javax.imageio.spi.ServiceRegistry;
 
-import org.opengis.metadata.Identifier;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.referencing.Factory;
-import org.opengis.referencing.AuthorityFactory;
-import org.opengis.referencing.crs.CRSFactory;
-import org.opengis.referencing.crs.CRSAuthorityFactory;
-import org.opengis.referencing.cs.CSFactory;
-import org.opengis.referencing.cs.CSAuthorityFactory;
-import org.opengis.referencing.datum.DatumFactory;
-import org.opengis.referencing.datum.DatumAuthorityFactory;
-import org.opengis.referencing.operation.CoordinateOperationFactory;
-import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
-import org.opengis.referencing.operation.MathTransformFactory;
-
-import org.geotools.factory.Hints;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.FactoryFinder;
 import org.geotools.factory.FactoryCreator;
+import org.geotools.factory.FactoryFinder;
 import org.geotools.factory.FactoryRegistry;
 import org.geotools.factory.FactoryRegistryException;
+import org.geotools.factory.GeoTools;
+import org.geotools.factory.Hints;
 import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.referencing.factory.gridshift.GridShiftLocator;
 import org.geotools.resources.Arguments;
 import org.geotools.resources.LazySet;
+import org.opengis.metadata.Identifier;
+import org.opengis.metadata.citation.Citation;
+import org.opengis.referencing.AuthorityFactory;
+import org.opengis.referencing.Factory;
+import org.opengis.referencing.crs.CRSAuthorityFactory;
+import org.opengis.referencing.crs.CRSFactory;
+import org.opengis.referencing.cs.CSAuthorityFactory;
+import org.opengis.referencing.cs.CSFactory;
+import org.opengis.referencing.datum.DatumAuthorityFactory;
+import org.opengis.referencing.datum.DatumFactory;
+import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
+import org.opengis.referencing.operation.CoordinateOperationFactory;
+import org.opengis.referencing.operation.MathTransformFactory;
 
 
 /**
@@ -120,7 +121,8 @@ public final class ReferencingFactoryFinder extends FactoryFinder {
                     CRSAuthorityFactory.class,
                     MathTransformFactory.class,
                     CoordinateOperationFactory.class,
-                    CoordinateOperationAuthorityFactory.class});
+                    CoordinateOperationAuthorityFactory.class,
+                    GridShiftLocator.class});
         }
         return registry;
     }
@@ -486,7 +488,20 @@ loop:       for (int i=0; ; i++) {
     {
         return getFactories(CoordinateOperationAuthorityFactory.class, hints);
     }
-
+    
+    /**
+     * Returns a set of all available implementations for the
+     * {@link GridShiftLocator} interface.
+     *
+     * @param  hints An optional map of hints, or {@code null} if none.
+     * @return Set of available grid shift factory implementations.
+     */
+    public static Set<GridShiftLocator> getGridShiftLocators(
+            final Hints hints)
+    {
+        return getFactories(GridShiftLocator.class, hints);
+    }
+    
     /**
      * Returns the first implementation of {@link MathTransformFactory} matching the specified
      * hints. If no implementation matches, a new one is created if possible or an exception is

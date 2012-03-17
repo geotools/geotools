@@ -16,25 +16,30 @@
  */
 package org.geotools.referencing.operation.transform;
 
-import java.io.BufferedReader;
-import java.io.EOFException;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.net.URI;
 import java.net.URL;
-import java.net.MalformedURLException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
-import java.util.StringTokenizer;
 import java.util.prefs.Preferences;
 
+import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.parameter.DefaultParameterDescriptor;
+import org.geotools.parameter.Parameter;
+import org.geotools.parameter.ParameterGroup;
+import org.geotools.referencing.NamedIdentifier;
+import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.referencing.factory.gridshift.GridShiftLocator;
+import org.geotools.referencing.factory.gridshift.NADCONGridShiftFactory;
+import org.geotools.referencing.factory.gridshift.NADConGridShift;
+import org.geotools.referencing.operation.MathTransformProvider;
+import org.geotools.referencing.operation.builder.LocalizationGrid;
+import org.geotools.resources.Arguments;
+import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
+import org.geotools.resources.i18n.Vocabulary;
+import org.geotools.resources.i18n.VocabularyKeys;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
@@ -42,23 +47,11 @@ import org.opengis.parameter.ParameterNotFoundException;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchIdentifierException;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.Transformation;
 import org.opengis.referencing.operation.TransformException;
-
-import org.geotools.metadata.iso.citation.Citations;
-import org.geotools.parameter.DefaultParameterDescriptor;
-import org.geotools.parameter.Parameter;
-import org.geotools.parameter.ParameterGroup;
-import org.geotools.referencing.NamedIdentifier;
-import org.geotools.referencing.operation.MathTransformProvider;
-import org.geotools.referencing.operation.builder.LocalizationGrid;
-import org.geotools.resources.Arguments;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
+import org.opengis.referencing.operation.Transformation;
 
 
 /**
@@ -140,6 +133,11 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
      * Serial number for interoperability with different versions.
      */
     private static final long serialVersionUID = -4707304160205218546L;
+    
+    /**
+     * The factory that loads the NADCON grids
+     */
+    private static NADCONGridShiftFactory FACTORY = new NADCONGridShiftFactory();
 
     /**
      * Preference node for the grid shift file location.
@@ -170,43 +168,14 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
     /**
      * Latitude grid shift file names. Output in WKT.
      */
-    private final String latGridName;
+    private final URI latGridName;
 
     /**
      * Longitude grid shift file names. Output in WKT.
      */
-    private final String longGridName;
+    private final URI longGridName;
 
-    /**
-     * The minimum longitude value covered by this grid (decimal degrees)
-     */
-    private double xmin;
-
-    /**
-     * The minimum latitude value covered by this grid (decimal degrees)
-     */
-    private double ymin;
-
-    /**
-     * The maximum longitude value covered by this grid (decimal degrees)
-     */
-    private double xmax;
-
-    /**
-     * The maximum latitude value covered by this grid (decimal degrees)
-     */
-    private double ymax;
-
-    /**
-     * The difference between longitude grid points (decimal degrees)
-     */
-    private double dx;
-
-    /**
-     * The difference between latitude grid points (decimal degrees)
-     */
-    private double dy;
-
+   
     /**
      * Longitude and latitude grid shift values. Values are organized from low
      * to high longitude (low x index to high) and low to high latitude (low y
@@ -226,6 +195,12 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
     private transient MathTransform2D inverse;
 
     /**
+     * The grid driving this transform
+     */
+    NADConGridShift grid;
+
+
+    /**
      * Constructs a {@code NADCONTransform} from the specified grid shift files.
      *
      * @param latGridName path and name (or just name if {@link #GRID_LOCATION}
@@ -240,41 +215,39 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
      *         (ie file extentions are unknown or there is an error reading the
      *          grid files)
      */
-    public NADCONTransform(final String latGridName, final String longGridName)
+    public NADCONTransform(final URI latGridName, final URI longGridName)
             throws ParameterNotFoundException, FactoryException
     {
+        if(latGridName == null) {
+            throw new NoSuchIdentifierException("Latitud grid shift file name is null", null);
+        }
+        
+        if(longGridName == null) {
+            throw new NoSuchIdentifierException("Latitud grid shift file name is null", null);
+        }
+        
         this.latGridName  = latGridName;
         this.longGridName = longGridName;
-
-        //decide if text or binary grid will be used
-        try {
-            final URL latGridURL  = makeURL(latGridName);
-            final URL longGridURL = makeURL(longGridName);
-
-            if ((latGridName.endsWith(".las") && longGridName.endsWith(".los"))
-                    || (latGridName.endsWith(".LAS") && longGridName.endsWith(".LOS"))) {
-                loadBinaryGrid(latGridURL, longGridURL);
-            } else if ((latGridName.endsWith(".laa") && longGridName.endsWith(".loa"))
-                    || (latGridName.endsWith(".LAA") && longGridName.endsWith(".LOA"))) {
-                loadTextGrid(latGridURL, longGridURL);
-            } else {
-                throw new FactoryException(Errors.format(ErrorKeys.UNSUPPORTED_FILE_TYPE_$2,
-                        latGridName.substring(latGridName.lastIndexOf('.') + 1),
-                        longGridName.substring(longGridName.lastIndexOf('.') + 1)));
-                // Note: the +1 above hide the dot, but also make sure that the code is
-                //       valid even if the path do not contains '.' at all (-1 + 1 == 0).
-            }
-
-            gridShiftTransform = gridShift.getMathTransform();
-        } catch (IOException exception) {
-            final Throwable cause = exception.getCause();
-            if (cause instanceof FactoryException) {
-                throw (FactoryException) cause;
-            }
-            throw new FactoryException(exception.getLocalizedMessage(),
-                exception);
-        }
+        
+        URL latGridURL = locateGrid(latGridName);
+        URL longGridURL = locateGrid(longGridName);
+        
+        this.grid = FACTORY.loadGridShift(latGridURL, longGridURL);
+        this.gridShiftTransform = grid.getMathTransform();
     }
+    
+    URL locateGrid(URI uri ) throws FactoryException {
+        String grid = uri.toString();
+        for (GridShiftLocator locator : ReferencingFactoryFinder.getGridShiftLocators(null)) {
+            URL result = locator.locateGrid(grid);
+            if(result != null) {
+                return result;
+            }
+        };
+        
+        throw new FactoryException("Could not locate grid file " + grid);
+    }
+
 
     /**
      * Returns the parameter descriptors for this math transform.
@@ -320,332 +293,6 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
     }
 
     /**
-     * Returns a URL from the string representation. If the string has no
-     * path, the default path preferece is added.
-     *
-     * @param str a string representation of a URL
-     * @return a URL created from the string representation
-     * @throws MalformedURLException if the URL cannot be created
-     */
-    private URL makeURL(final String str) throws MalformedURLException {
-        //has '/' or '\' or ':', so probably full path to file
-        if ((str.indexOf('\\') >= 0) || (str.indexOf('/') >= 0) || (str.indexOf(':') >= 0)) {
-            return makeURLfromString(str);
-        } else {
-            // just a file name , prepend base location
-            final Preferences prefs = Preferences.userNodeForPackage(NADCONTransform.class);
-            final String baseLocation = prefs.get(GRID_LOCATION, DEFAULT_GRID_LOCATION);
-            return makeURLfromString(baseLocation + "/" + str);
-        }
-    }
-
-    /**
-     * Returns a URL based on a string representation. If no protocol is given,
-     * it is assumed to be a local file.
-     *
-     * @param str a string representation of a URL
-     * @return a URL created from the string representation
-     * @throws MalformedURLException if the URL cannot be created
-     */
-    private URL makeURLfromString(final String str) throws MalformedURLException {
-        try {
-            return new URL(str);
-        } catch (MalformedURLException e) {
-            //try making this with a file protocal
-            return new URL("file", "", str);
-        }
-    }
-
-    /**
-     * Reads latitude and longitude binary grid shift file data into {@link
-     * grid}.  The file is organized into records, with the first record
-     * containing the  header information, followed by the shift data. The
-     * header values are: text describing grid (64 bytes), num. columns (int),
-     * num. rows (int),  num. z (int), min x (float), delta x (float), min y
-     * (float), delta y (float)  and angle (float). Each record is num.
-     * columns  4 bytes + 4 byte separator long and the file contains num.
-     * rows + 1 (for the header) records. The data records (with the grid
-     * shift values) are all floats and have a 4 byte  separator (0's) before
-     * the data. Row records are organized from low  y (latitude) to high and
-     * columns are orderd from low longitude to high.  Everything is written
-     * in low byte order.
-     *
-     * @param latGridUrl URL to the binary latitude shift file (.las extention).
-     * @param longGridUrl URL to the binary longitude shift file (.los extention).
-     * @throws IOException if the data files cannot be read.
-     * @throws FactoryException if there is an inconsistency in the data
-     */
-    private void loadBinaryGrid(final URL latGridUrl, final URL longGridUrl)
-            throws IOException, FactoryException
-    {
-        final int HEADER_BYTES = 96;
-        final int SEPARATOR_BYTES = 4;
-        final int DESCRIPTION_LENGTH = 64;
-        ReadableByteChannel latChannel;
-        ReadableByteChannel longChannel;
-        ByteBuffer latBuffer;
-        ByteBuffer longBuffer;
-
-        ////////////////////////
-        //setup
-        ////////////////////////
-        latChannel = getReadChannel(latGridUrl);
-        latBuffer = fillBuffer(latChannel, HEADER_BYTES);
-
-        longChannel = getReadChannel(longGridUrl);
-        longBuffer = fillBuffer(longChannel, HEADER_BYTES);
-
-        ////////////////////////
-        //read header info
-        ////////////////////////
-        //skip the header description
-        latBuffer.position(latBuffer.position() + DESCRIPTION_LENGTH);
-
-        int nc = latBuffer.getInt();
-        int nr = latBuffer.getInt();
-        int nz = latBuffer.getInt();
-
-        xmin = latBuffer.getFloat();
-        dx   = latBuffer.getFloat();
-        ymin = latBuffer.getFloat();
-        dy   = latBuffer.getFloat();
-
-        float angle = latBuffer.getFloat();
-        xmax = xmin + ((nc - 1) * dx);
-        ymax = ymin + ((nr - 1) * dy);
-
-        //skip the longitude header description
-        longBuffer.position(longBuffer.position() + DESCRIPTION_LENGTH);
-
-        //check that latitude grid header is the same as for latitude grid
-        if (       (nc    != longBuffer.getInt())
-                || (nr    != longBuffer.getInt())
-                || (nz    != longBuffer.getInt())
-                || (xmin  != longBuffer.getFloat())
-                || (dx    != longBuffer.getFloat())
-                || (ymin  != longBuffer.getFloat())
-                || (dy    != longBuffer.getFloat())
-                || (angle != longBuffer.getFloat())) {
-            throw new FactoryException(Errors.format(ErrorKeys.GRID_LOCATIONS_UNEQUAL));
-        }
-
-        ////////////////////////
-        //read grid shift data into LocalizationGrid
-        ////////////////////////
-        final int RECORD_LENGTH = (nc * 4) + SEPARATOR_BYTES;
-        final int NUM_BYTES_LEFT = ((nr + 1) * RECORD_LENGTH) - HEADER_BYTES;
-        final int START_OF_DATA = RECORD_LENGTH - HEADER_BYTES;
-
-        latBuffer = fillBuffer(latChannel, NUM_BYTES_LEFT);
-        latBuffer.position(START_OF_DATA); //start of second record (data)
-
-        longBuffer = fillBuffer(longChannel, NUM_BYTES_LEFT);
-        longBuffer.position(START_OF_DATA);
-
-        gridShift = new LocalizationGrid(nc, nr);
-
-        int i = 0;
-        int j = 0;
-        for (i = 0; i < nr; i++) {
-            latBuffer.position(latBuffer.position() + SEPARATOR_BYTES); //skip record separator
-            longBuffer.position(longBuffer.position() + SEPARATOR_BYTES);
-
-            for (j = 0; j < nc; j++) {
-                gridShift.setLocalizationPoint(j, i, longBuffer.getFloat(), latBuffer.getFloat());
-            }
-        }
-
-        assert i == nr : i;
-        assert j == nc : j;
-    }
-
-    /**
-     * Returns a new bytebuffer, of numBytes length and little endian byte
-     * order, filled from the channel.
-     *
-     * @param channel the channel to fill the buffer from
-     * @param numBytes number of bytes to read
-     * @return a new bytebuffer filled from the channel
-     * @throws IOException if there is a problem reading the channel
-     * @throws EOFException if the end of the channel is reached
-     */
-    private ByteBuffer fillBuffer(ReadableByteChannel channel, int numBytes)
-        throws IOException {
-        ByteBuffer buf = ByteBuffer.allocate(numBytes);
-
-        if (fill(buf, channel) == -1) {
-            throw new EOFException(Errors.format(ErrorKeys.END_OF_DATA_FILE));
-        }
-
-        buf.flip();
-        buf.order(ByteOrder.LITTLE_ENDIAN);
-
-        return buf;
-    }
-
-    /**
-     * Fills the bytebuffer from the channel. Code was lifted from
-     * ShapefileDataStore.
-     *
-     * @param buffer bytebuffer to fill from the channel
-     * @param channel channel to fill the buffer from
-     * @return number of bytes read
-     * @throws IOException if there is a problem reading the channel
-     */
-    private int fill(ByteBuffer buffer, ReadableByteChannel channel)
-        throws IOException {
-        int r = buffer.remaining();
-
-        // channel reads return -1 when EOF or other error
-        // because they a non-blocking reads, 0 is a valid return value!!
-        while ((buffer.remaining() > 0) && (r != -1)) {
-            r = channel.read(buffer);
-        }
-
-        if (r == -1) {
-            buffer.limit(buffer.position());
-        }
-
-        return r;
-    }
-
-    /**
-     * Obtain a ReadableByteChannel from the given URL. If the url protocol is
-     * file, a FileChannel will be returned. Otherwise a generic channel will
-     * be obtained from the urls input stream. Code swiped from
-     * ShapefileDataStore.
-     *
-     * @param url URL to create the channel from
-     * @return a new PeadableByteChannel from the input url
-     * @throws IOException if there is a problem creating the channel
-     */
-    private ReadableByteChannel getReadChannel(URL url)
-        throws IOException {
-        ReadableByteChannel channel = null;
-
-        if (url.getProtocol().equals("file")) {
-            File file = new File(url.getFile());
-
-            if (!file.exists() || !file.canRead()) {
-                throw new IOException(Errors.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, file));
-            }
-
-            FileInputStream in = new FileInputStream(file);
-            channel = in.getChannel();
-        } else {
-            InputStream in = url.openConnection().getInputStream();
-            channel = Channels.newChannel(in);
-        }
-
-        return channel;
-    }
-
-    /**
-     * Reads latitude and longitude text grid shift file data into {@link
-     * grid}.    The first two lines of the shift data file contain the
-     * header, with the first being a description of the grid. The second line
-     * contains 8 values separated by spaces: num. columns, num. rows, num. z,
-     * min x, delta x, min y, delta y and angle. Shift data values follow this
-     * and are also  separated by spaces. Row records are organized from low y
-     * (latitude) to  high and columns are orderd from low longitude to high.
-     *
-     * @param latGridUrl URL to the text latitude shift file (.laa extention).
-     * @param longGridUrl URL to the text longitude shift file (.loa
-     *        extention).
-     * @throws IOException if the data files cannot be read.
-     * @throws FactoryException if there is an inconsistency in the data
-     */
-    private void loadTextGrid(URL latGridUrl, URL longGridUrl)
-        throws IOException, FactoryException {
-        String latLine;
-        String longLine;
-        StringTokenizer latSt;
-        StringTokenizer longSt;
-
-        ////////////////////////
-        //setup
-        ////////////////////////
-        InputStreamReader latIsr = new InputStreamReader(latGridUrl.openStream());
-        BufferedReader latBr = new BufferedReader(latIsr);
-
-        InputStreamReader longIsr = new InputStreamReader(longGridUrl.openStream());
-        BufferedReader longBr = new BufferedReader(longIsr);
-
-        ////////////////////////
-        //read header info
-        ////////////////////////
-        latLine = latBr.readLine(); //skip header description
-        latLine = latBr.readLine();
-        latSt = new StringTokenizer(latLine, " ");
-
-        if (latSt.countTokens() != 8) {
-            throw new FactoryException(Errors.format(ErrorKeys.HEADER_UNEXPECTED_LENGTH_$1,
-                                       String.valueOf(latSt.countTokens())));
-        }
-
-        int nc = Integer.parseInt(latSt.nextToken());
-        int nr = Integer.parseInt(latSt.nextToken());
-        int nz = Integer.parseInt(latSt.nextToken());
-
-        xmin = Float.parseFloat(latSt.nextToken());
-        dx = Float.parseFloat(latSt.nextToken());
-        ymin = Float.parseFloat(latSt.nextToken());
-        dy = Float.parseFloat(latSt.nextToken());
-
-        float angle = Float.parseFloat(latSt.nextToken());
-        xmax = xmin + ((nc - 1) * dx);
-        ymax = ymin + ((nr - 1) * dy);
-
-        //now read long shift grid
-        longLine = longBr.readLine(); //skip header description
-        longLine = longBr.readLine();
-        longSt = new StringTokenizer(longLine, " ");
-
-        if (longSt.countTokens() != 8) {
-            throw new FactoryException(Errors.format(ErrorKeys.HEADER_UNEXPECTED_LENGTH_$1,
-                                       String.valueOf(longSt.countTokens())));
-        }
-
-        //check that latitude grid header is the same as for latitude grid
-        if (       (nc    != Integer.parseInt(longSt.nextToken()))
-                || (nr    != Integer.parseInt(longSt.nextToken()))
-                || (nz    != Integer.parseInt(longSt.nextToken()))
-                || (xmin  != Float.parseFloat(longSt.nextToken()))
-                || (dx    != Float.parseFloat(longSt.nextToken()))
-                || (ymin  != Float.parseFloat(longSt.nextToken()))
-                || (dy    != Float.parseFloat(longSt.nextToken()))
-                || (angle != Float.parseFloat(longSt.nextToken()))) {
-            throw new FactoryException(Errors.format(ErrorKeys.GRID_LOCATIONS_UNEQUAL));
-        }
-
-        ////////////////////////
-        //read grid shift data into LocalizationGrid
-        ////////////////////////
-        gridShift = new LocalizationGrid(nc, nr);
-
-        int i = 0;
-        int j = 0;
-        for (i = 0; i < nr; i++) {
-            for (j = 0; j < nc;) {
-                latLine = latBr.readLine();
-                latSt = new StringTokenizer(latLine, " ");
-                longLine = longBr.readLine();
-                longSt = new StringTokenizer(longLine, " ");
-
-                while (latSt.hasMoreTokens() && longSt.hasMoreTokens()) {
-                    gridShift.setLocalizationPoint(j, i,
-                        (double) Float.parseFloat(longSt.nextToken()),
-                        (double) Float.parseFloat(latSt.nextToken()));
-                    ++j;
-                }
-            }
-        }
-
-        assert i == nr : i;
-        assert j == nc : j;
-    }
-
-    /**
      * Transforms a list of coordinate point ordinal values. This method is
      * provided for efficiently transforming many points. The supplied array
      * of ordinal values will contain packed ordinal values.  For example, if
@@ -685,15 +332,14 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
             double y = srcPts[srcOff++];
 
             //check bounding box
-//issue of bbox crossing +- 180 degrees (ie input point of -188 longitude);
-//abs(x - xmin) > 0 , rollLongitude() ???
-            if (((x < xmin) || (x > xmax)) || ((y < ymin) || (y > ymax))) {
-                throw new TransformException(Errors.format(ErrorKeys.POINT_OUTSIDE_GRID));
+            if (((x < grid.getMinX()) || (x > grid.getMaxX())) || ((y < grid.getMinY()) || (y > grid.getMaxY()))) {
+                throw new TransformException("Point (" + x + " " + y + ") is not outside of ((" + grid.getMinX() 
+                        + " " + grid.getMinY() + ")(" + grid.getMaxX() + " " + grid.getMaxY() + "))"); 
             }
 
             //find the grid the point is in (index is 0 based)
-            final double xgrid = (x - xmin) / dx;
-            final double ygrid = (y - ymin) / dy;
+            final double xgrid = (x - grid.getMinX()) / grid.getDx();
+            final double ygrid = (y - grid.getMinY()) / grid.getDy();
             double[] array = new double[] { xgrid, ygrid };
 
             //use the LocalizationGridTransform2D transform method (bilineal interpolation)
@@ -784,32 +430,13 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
         return inverse;
     }
 
-    /**
-     * Returns a hash value for this transform. To make this faster it does not
-     * check the grid values.
-     *
-     * @return a hash value for this transform.
-     */
     @Override
-    public final int hashCode() {
-        final long code = Double.doubleToLongBits(xmin)
-            + (37 * (Double.doubleToLongBits(ymin)
-            + (37 * (Double.doubleToLongBits(xmax)
-            + (37 * (Double.doubleToLongBits(ymax)
-            + (37 * (Double.doubleToLongBits(dx)
-            + (37 * (Double.doubleToLongBits(dy)))))))))));
-
-        return (int) code ^ (int) (code >>> 32);
+    public int hashCode() {
+        return grid.hashCode();
     }
-
-    /**
-     * Compares the specified object with this math transform for equality.
-     *
-     * @param object the object to compare to
-     * @return {@code true} if the objects are equal.
-     */
+    
     @Override
-    public final boolean equals(final Object object) {
+    public boolean equals(Object object) {
         if (object == this) {
             // Slight optimization
             return true;
@@ -817,17 +444,11 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
 
         if (super.equals(object)) {
             final NADCONTransform that = (NADCONTransform) object;
-
-            return (Double.doubleToLongBits(this.xmin) == Double.doubleToLongBits(that.xmin))
-                && (Double.doubleToLongBits(this.ymin) == Double.doubleToLongBits(that.ymin))
-                && (Double.doubleToLongBits(this.xmax) == Double.doubleToLongBits(that.xmax))
-                && (Double.doubleToLongBits(this.ymax) == Double.doubleToLongBits(that.ymax))
-                && (Double.doubleToLongBits(this.dx)   == Double.doubleToLongBits(that.dx))
-                && (Double.doubleToLongBits(this.dy)   == Double.doubleToLongBits(that.dy))
-                && (this.gridShiftTransform).equals(that.gridShiftTransform);
+            
+            return this.grid.equals(that.grid);
+        } else {
+            return false;
         }
-
-        return false;
     }
 
     /**
@@ -964,14 +585,14 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
          * parameter value. The default value is "conus.las".
          */
         public static final ParameterDescriptor LAT_DIFF_FILE = new DefaultParameterDescriptor(
-                "Latitude_difference_file", String.class, null, "conus.las");
+                "Latitude difference file", URI.class, null, null);
 
         /**
          * The operation parameter descriptor for the "Longitude_difference_file"
          * parameter value. The default value is "conus.los".
          */
         public static final ParameterDescriptor LONG_DIFF_FILE = new DefaultParameterDescriptor(
-                "Longitude_difference_file", String.class, null, "conus.los");
+                "Longitude difference file", URI.class, null, null);
 
         /**
          * The parameters group.
@@ -1017,8 +638,8 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
                 throws ParameterNotFoundException, FactoryException
         {
             return new NADCONTransform(
-                stringValue(LAT_DIFF_FILE,  values),
-                stringValue(LONG_DIFF_FILE, values));
+                    (URI) getParameter(LAT_DIFF_FILE, values).getValue(),
+                    (URI) getParameter(LONG_DIFF_FILE, values).getValue());
         }
     }
 }

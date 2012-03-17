@@ -1,0 +1,25 @@
+BALR2009.gsb - Copyright and disclaimer
+=======================================
+
+
+Thi grid file is free ; you can redistribute or include 
+in commercial/personal applications.
+
+Creative Commons License CC-By FjgMatesanz
+
+In the event that you wish to alter the grid file which 
+appears at this ZIP file , for a purpose other than 
+personal, in-house or non-commercial use, you can apply to 
+the Instituto Geográfico Nacional at the following address 
+for formal permission.
+
+Instituto Geográfico Nacional 
+General Ibañez Ibero 3 
+28003 
+Madrid, Spain 
+Subdirección General de Producción Cartográfica
+
+Whilst all effort is made to ensure the accuracy and 
+currency of this grid file, IGN and CNIG does not accept 
+responsibility for any actions arising from the use of 
+this data.

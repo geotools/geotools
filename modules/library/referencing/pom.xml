@@ -189,6 +189,11 @@
       <artifactId>gt-metadata</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>jgridshift</groupId>
+      <artifactId>jgridshift</artifactId>
+      <version>1.0</version>
+    </dependency>
 
     <!-- Test dependencies -->
     <dependency>

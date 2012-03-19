@@ -142,7 +142,7 @@ public class NTv2GridShiftFactory extends ReferencingFactory implements Buffered
             // in memory, but is a quick method to see if file format
             // is NTv2.
             if (url.getProtocol().equals("file")) {
-                File file = new File(url.getFile());
+                File file = DataUtilities.urlToFile(url);
 
                 if (!file.exists() || !file.canRead()) {
                     throw new IOException(Errors.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, file));

@@ -134,8 +134,8 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
     private NADConGridShift loadGridShiftInternal(URL latGridURL, URL longGridURL)
             throws FactoryException {
         // decide if text or binary grid will be used
-        String latGridName = latGridURL.getFile();
-        String longGridName = longGridURL.getFile();
+        String latGridName = DataUtilities.urlToFile(latGridURL).getPath();
+        String longGridName = DataUtilities.urlToFile(longGridURL).getPath();
         try {
             if ((latGridName.endsWith(".las") && longGridName.endsWith(".los"))
                     || (latGridName.endsWith(".LAS") && longGridName.endsWith(".LOS"))) {
@@ -316,7 +316,7 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
         ReadableByteChannel channel = null;
 
         if (url.getProtocol().equals("file")) {
-            File file = new File(url.getFile());
+            File file = DataUtilities.urlToFile(url);
 
             if (!file.exists() || !file.canRead()) {
                 throw new IOException(Errors.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, file));

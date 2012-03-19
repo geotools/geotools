@@ -286,7 +286,7 @@ public class WPS1_0_0 extends WPSSpecification
 
         public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException
         {
-            return new ExecuteProcessResponse(httpResponse);
+            return new ExecuteProcessResponse(httpResponse, responseForm != null && responseForm.getRawDataOutput() != null);
         }
 
     }

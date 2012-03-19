@@ -16,11 +16,36 @@
  */
 package org.geotools.data.wps;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+
+import net.opengis.ows11.ExceptionReportType;
+import net.opengis.wps10.DataType;
+import net.opengis.wps10.ExecuteResponseType;
+import net.opengis.wps10.InputDescriptionType;
+import net.opengis.wps10.LiteralDataType;
+import net.opengis.wps10.OutputDataType;
+import net.opengis.wps10.OutputDefinitionType;
+import net.opengis.wps10.ProcessBriefType;
+import net.opengis.wps10.ProcessDescriptionType;
+import net.opengis.wps10.ProcessDescriptionsType;
+import net.opengis.wps10.ProcessOfferingsType;
+import net.opengis.wps10.ResponseFormType;
+import net.opengis.wps10.WPSCapabilitiesType;
+
+import org.eclipse.emf.common.util.EList;
+import org.geotools.data.wps.request.DescribeProcessRequest;
+import org.geotools.data.wps.request.ExecuteProcessRequest;
+import org.geotools.data.wps.response.DescribeProcessResponse;
+import org.geotools.data.wps.response.ExecuteProcessResponse;
+import org.geotools.ows.ServiceException;
+import org.geotools.test.OnlineTestCase;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -32,28 +57,6 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
-
-import junit.framework.TestCase;
-
-import net.opengis.ows11.ExceptionReportType;
-import net.opengis.wps10.DataType;
-import net.opengis.wps10.ExecuteResponseType;
-import net.opengis.wps10.InputDescriptionType;
-import net.opengis.wps10.LiteralDataType;
-import net.opengis.wps10.OutputDataType;
-import net.opengis.wps10.ProcessBriefType;
-import net.opengis.wps10.ProcessDescriptionType;
-import net.opengis.wps10.ProcessDescriptionsType;
-import net.opengis.wps10.ProcessOfferingsType;
-import net.opengis.wps10.WPSCapabilitiesType;
-
-import org.eclipse.emf.common.util.EList;
-import org.geotools.data.wps.request.DescribeProcessRequest;
-import org.geotools.data.wps.request.ExecuteProcessRequest;
-import org.geotools.data.wps.response.DescribeProcessResponse;
-import org.geotools.data.wps.response.ExecuteProcessResponse;
-import org.geotools.ows.ServiceException;
-import org.geotools.test.OnlineTestCase;
 
 
 /**
@@ -79,6 +82,8 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
     private URL url;
 
     private String processIden;
+
+    private ResponseFormType response ;
 
     /**
      * The wps.geoserver fixture consisting of service and processId.
@@ -634,5 +639,180 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         list2.add(input2);
         exeRequest.addInput(idt2.getIdentifier().getValue(), list2);
 
+    }
+    
+    /**
+     * Try to get an area grid in arcgrid format, raw
+     *
+     * @throws ServiceException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public void testExecuteLocalAreaGrid() throws ServiceException, IOException, ParseException
+    {
+
+        // don't run the test if the server is not up
+        if (fixture == null)
+        {
+            return;
+        }
+
+        if (DISABLE)
+        {
+            return;
+        }
+
+        String processIdenLocal = "gs:AreaGrid";
+
+        WPSCapabilitiesType capabilities = wps.getCapabilities();
+
+        // get the first process and execute it
+        ProcessOfferingsType processOfferings = capabilities.getProcessOfferings();
+        EList processes = processOfferings.getProcess();
+        // ProcessBriefType process = (ProcessBriefType) processes.get(0);
+
+        // does the server contain the specific process I want
+        boolean found = false;
+        Iterator iterator = processes.iterator();
+        while (iterator.hasNext())
+        {
+            ProcessBriefType process = (ProcessBriefType) iterator.next();
+            if (process.getIdentifier().getValue().equalsIgnoreCase(processIdenLocal))
+            {
+                found = true;
+
+                break;
+            }
+        }
+
+        // exit test if my process doesn't exist on server
+        if (!found)
+        {
+            System.out.println("Skipping, gs:AreaGrid not found!");
+            return;
+        }
+
+        // do a full describeprocess on my process
+        DescribeProcessRequest descRequest = wps.createDescribeProcessRequest();
+        descRequest.setIdentifier(processIdenLocal);
+
+        DescribeProcessResponse descResponse = wps.issueRequest(descRequest);
+
+        // based on the describeprocess, setup the execute
+        ProcessDescriptionsType processDesc = descResponse.getProcessDesc();
+        ExecuteProcessRequest exeRequest = wps.createExecuteProcessRequest();
+        exeRequest.setIdentifier(processIdenLocal);
+        exeRequest.addInput("envelope", Arrays.asList(wps.createBoundingBoxInputValue("EPSG:4326", 2, Arrays.asList(-180d, -90d), Arrays.asList(180d, 90d))));
+        exeRequest.addInput("width", Arrays.asList(wps.createLiteralInputValue("2")));
+        exeRequest.addInput("height", Arrays.asList(wps.createLiteralInputValue("1")));
+        OutputDefinitionType rawOutput = wps.createOutputDefinitionType("result");
+        rawOutput.setMimeType("application/arcgrid");
+        ResponseFormType responseForm = wps.createResponseForm(null, rawOutput);
+        exeRequest.setResponseForm(responseForm);
+
+        // send the request
+        ExecuteProcessResponse response = wps.issueRequest(exeRequest);
+
+        // response should not be null and no exception should occur.
+        assertNotNull(response);
+
+        // we should get a raw response, no exception, no response document
+        ExecuteResponseType executeResponse = response.getExecuteResponse();
+        assertNull(executeResponse);
+        ExceptionReportType exceptionResponse = response.getExceptionResponse();
+        assertNull(exceptionResponse);
+
+        // check result correctness
+        assertEquals("application/arcgrid", response.getRawContentType());
+        BufferedReader reader = new BufferedReader(new InputStreamReader(response.getRawResponseStream()));
+        StringBuilder sb = new StringBuilder();
+        String line = null;
+        while((line = reader.readLine()) != null) {
+            sb.append(line).append("\n");
+        }
+        String arcgrid = sb.toString();
+        String expectedHeader = "NCOLS 2\n" + 
+        		"NROWS 1\n" + 
+        		"XLLCORNER -180.0\n" + 
+        		"YLLCORNER -90.0\n" + 
+        		"CELLSIZE 180.0\n" + 
+        		"NODATA_VALUE -9999";
+        assertTrue(arcgrid.startsWith(expectedHeader));
+    }
+    
+    /**
+     * Request for area grid with raw output but wrong parameters, check the response is an exception
+     *
+     * @throws ServiceException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public void testExecuteLocalAreaGridException() throws ServiceException, IOException, ParseException
+    {
+
+        // don't run the test if the server is not up
+        if (fixture == null)
+        {
+            return;
+        }
+
+        if (DISABLE)
+        {
+            return;
+        }
+
+        String processIdenLocal = "gs:AreaGrid";
+
+        WPSCapabilitiesType capabilities = wps.getCapabilities();
+
+        // get the first process and execute it
+        ProcessOfferingsType processOfferings = capabilities.getProcessOfferings();
+        EList processes = processOfferings.getProcess();
+        // ProcessBriefType process = (ProcessBriefType) processes.get(0);
+
+        // does the server contain the specific process I want
+        boolean found = false;
+        Iterator iterator = processes.iterator();
+        while (iterator.hasNext())
+        {
+            ProcessBriefType process = (ProcessBriefType) iterator.next();
+            if (process.getIdentifier().getValue().equalsIgnoreCase(processIdenLocal))
+            {
+                found = true;
+
+                break;
+            }
+        }
+
+        // exit test if my process doesn't exist on server
+        if (!found)
+        {
+            System.out.println("Skipping, gs:AreaGrid not found!");
+            return;
+        }
+
+        // build the request
+        ExecuteProcessRequest exeRequest = wps.createExecuteProcessRequest();
+        exeRequest.setIdentifier(processIdenLocal);
+        exeRequest.addInput("envelope", Arrays.asList(wps.createBoundingBoxInputValue("EPSG:4326", 2, Arrays.asList(-180d, -90d), Arrays.asList(180d, 90d))));
+        // don't set the width, height required params
+        //        exeRequest.addInput("width", Arrays.asList(wps.createLiteralInputValue("abc")));
+        //        exeRequest.addInput("height", Arrays.asList(wps.createLiteralInputValue("def")));
+        OutputDefinitionType rawOutput = wps.createOutputDefinitionType("result");
+        rawOutput.setMimeType("application/arcgrid");
+        ResponseFormType responseForm = wps.createResponseForm(null, rawOutput);
+        exeRequest.setResponseForm(responseForm);
+
+        // send the request
+        ExecuteProcessResponse response = wps.issueRequest(exeRequest);
+
+        // response should not be null and no exception should occur.
+        assertNotNull(response);
+
+        // we should get a raw response, no exception, no response document
+        ExecuteResponseType executeResponse = response.getExecuteResponse();
+        assertNotNull(executeResponse);
+        assertNotNull(executeResponse.getStatus().getProcessFailed());
+        assertNotNull( executeResponse.getStatus().getProcessFailed().getExceptionReport());
     }
 }

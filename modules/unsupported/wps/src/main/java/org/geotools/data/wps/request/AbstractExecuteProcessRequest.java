@@ -65,7 +65,7 @@ public abstract class AbstractExecuteProcessRequest extends AbstractWPSRequest i
      */
     private Properties inputs;
 
-    private ResponseFormType responseForm;
+    protected ResponseFormType responseForm;
 
     /**
      * Constructs a basic ExecuteProcessRequest, without versioning info.

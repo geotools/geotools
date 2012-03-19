@@ -16,6 +16,7 @@
  */
 package org.geotools.data.wps.response;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -31,6 +32,9 @@ import org.geotools.wps.WPSConfiguration;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.Parser;
 import org.xml.sax.SAXException;
+import org.xmlpull.mxp1.MXParser;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
 
 /**
@@ -47,6 +51,8 @@ public class ExecuteProcessResponse extends Response
 
     private ExecuteResponseType exeResponse;
     private ExceptionReportType excepResponse;
+    private InputStream rawResponseStream;
+    private String rawContentType;
 
     /**
      * @param contentType
@@ -54,46 +60,51 @@ public class ExecuteProcessResponse extends Response
      * @throws ServiceException
      * @throws SAXException
      */
-    public ExecuteProcessResponse(HTTPResponse httpResponse) throws IOException, ServiceException
+    public ExecuteProcessResponse(HTTPResponse httpResponse, boolean raw) throws IOException, ServiceException
     {
         super(httpResponse);
 
         InputStream inputStream = null;
         try
         {
-            inputStream = httpResponse.getResponseStream();
+            if(!raw) {
+                inputStream = httpResponse.getResponseStream();
+                parseDocumentResponse(inputStream);
+            } else {
+                // we need to know if the response was an exception, unfortunately we cannot
+                // make that determination just by looking at the mime type ...
 
-            // Map hints = new HashMap();
-            // hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WPSSchema.getInstance());
-            Configuration config = new WPSConfiguration();
-            Parser parser = new Parser(config);
+                // could be gml or other stuff, not necessarily a service exception, we need to check if it's an exception or not
+                rawContentType = httpResponse.getContentType();
+                if(rawContentType.startsWith("text/xml")) {
+                    // make sure we don't throw away info
+                    inputStream = new BufferedInputStream(httpResponse.getResponseStream());
+                    inputStream.mark(8192);
+                    
+                    try {
+                        XmlPullParser parser = new MXParser();
+                        parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true);
+                        parser.setInput(inputStream, "UTF-8");
+                        parser.nextTag();
+    
+                        // get the first tag name
+                        String name = parser.getName();
+                        String namespace = parser.getNamespace();
+                        inputStream.reset();
+                        if("ServiceException".equals(name) ||  "ExecuteResponse".equals(name)) {
+                            parseDocumentResponse(inputStream);
+                            return;
+                        }
+                    } catch(XmlPullParserException e) {
+                        throw new IOException("Failed to parse the response", e);
+                    }
+                } else {
+                    inputStream = httpResponse.getResponseStream();
+                }
 
-            Object object;
-            excepResponse = null;
-            exeResponse = null;
-            try
-            {
-                // object = DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
-                object = parser.parse(inputStream);
-            }
-            catch (SAXException e)
-            {
-                throw (IOException) new IOException().initCause(e);
-            }
-            catch (ParserConfigurationException e)
-            {
-                throw (IOException) new IOException().initCause(e);
-            }
-
-            // try casting the response
-            if (object instanceof ExecuteResponseType)
-            {
-                exeResponse = (ExecuteResponseType) object;
-            }
-            // exception caught on server and returned
-            else if (object instanceof ExceptionReportType)
-            {
-                excepResponse = (ExceptionReportType) object;
+                // ok, it's really the raw response, store it and avoid closing it
+                rawResponseStream = inputStream;
+                inputStream = null;
             }
         }
         finally
@@ -105,6 +116,41 @@ public class ExecuteProcessResponse extends Response
         }
     }
 
+    private void parseDocumentResponse(InputStream inputStream) throws IOException {
+        // Map hints = new HashMap();
+        // hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WPSSchema.getInstance());
+        Configuration config = new WPSConfiguration();
+        Parser parser = new Parser(config);
+
+        Object object;
+        excepResponse = null;
+        exeResponse = null;
+        try
+        {
+            // object = DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
+            object = parser.parse(inputStream);
+        }
+        catch (SAXException e)
+        {
+            throw (IOException) new IOException().initCause(e);
+        }
+        catch (ParserConfigurationException e)
+        {
+            throw (IOException) new IOException().initCause(e);
+        }
+
+        // try casting the response
+        if (object instanceof ExecuteResponseType)
+        {
+            exeResponse = (ExecuteResponseType) object;
+        }
+        // exception caught on server and returned
+        else if (object instanceof ExceptionReportType)
+        {
+            excepResponse = (ExceptionReportType) object;
+        }
+    }
+
     public ExecuteResponseType getExecuteResponse()
     {
         return exeResponse;
@@ -113,6 +159,22 @@ public class ExecuteProcessResponse extends Response
     public ExceptionReportType getExceptionResponse()
     {
         return excepResponse;
+    }
+
+    /**
+     * If a raw response was requested, and no service exception has been sent, we should get
+     * the raw response stream here
+     */
+    public InputStream getRawResponseStream() {
+        return rawResponseStream;
+    }
+    
+    /**
+     * The raw response stream content type
+     * @return
+     */
+    public String getRawContentType() {
+        return rawContentType;
     }
 
 }

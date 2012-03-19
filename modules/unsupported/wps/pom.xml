@@ -124,6 +124,10 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+       <groupId>xpp3</groupId>
+       <artifactId>xpp3_min</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.geotools</groupId>
 			<artifactId>gt-xml</artifactId>
 			<version>${project.version}</version>

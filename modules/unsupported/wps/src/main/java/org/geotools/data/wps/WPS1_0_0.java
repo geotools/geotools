@@ -39,13 +39,10 @@ import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
 import org.geotools.data.wps.request.AbstractDescribeProcessRequest;
 import org.geotools.data.wps.request.AbstractExecuteProcessRequest;
-import org.geotools.data.wps.request.AbstractGetExecutionStatusRequest;
 import org.geotools.data.wps.request.DescribeProcessRequest;
 import org.geotools.data.wps.request.ExecuteProcessRequest;
-import org.geotools.data.wps.request.GetExecutionStatusRequest;
 import org.geotools.data.wps.response.DescribeProcessResponse;
 import org.geotools.data.wps.response.ExecuteProcessResponse;
-import org.geotools.data.wps.response.GetExecutionStatusResponse;
 import org.geotools.data.wps.response.WPSGetCapabilitiesResponse;
 import org.geotools.ows.ServiceException;
 
@@ -115,13 +112,6 @@ public class WPS1_0_0 extends WPSSpecification
     public ExecuteProcessRequest createExecuteProcessRequest(URL onlineResource) throws UnsupportedOperationException
     {
         return new InternalExecuteProcessRequest(onlineResource, null);
-    }
-
-    @Override
-    public GetExecutionStatusRequest createGetExecutionStatusRequest(URL onlineResource)
-        throws UnsupportedOperationException
-    {
-        return new InternalGetExecutionStatusRequest(onlineResource, null);
     }
 
     @Override
@@ -289,29 +279,6 @@ public class WPS1_0_0 extends WPSSpecification
             return new ExecuteProcessResponse(httpResponse, responseForm != null && responseForm.getRawDataOutput() != null);
         }
 
-    }
-
-    public static class InternalGetExecutionStatusRequest extends AbstractGetExecutionStatusRequest
-    {
-
-        /**
-         * @param onlineResource
-         * @param properties
-         */
-        public InternalGetExecutionStatusRequest(URL onlineResource, Properties properties)
-        {
-            super(onlineResource, properties);
-        }
-
-        protected void initVersion()
-        {
-            setProperty(VERSION, "1.0.0");
-        }
-
-        public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException
-        {
-            return new GetExecutionStatusResponse(httpResponse);
-        }
     }
 
 }

@@ -16,7 +16,10 @@
  */
 package org.geotools.data.wps;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -43,13 +46,13 @@ import org.geotools.data.ows.AbstractWPS;
 import org.geotools.data.ows.AbstractWPSGetCapabilitiesResponse;
 import org.geotools.data.ows.GetCapabilitiesRequest;
 import org.geotools.data.ows.HTTPClient;
+import org.geotools.data.ows.HTTPResponse;
+import org.geotools.data.ows.Response;
 import org.geotools.data.ows.Specification;
 import org.geotools.data.wps.request.DescribeProcessRequest;
 import org.geotools.data.wps.request.ExecuteProcessRequest;
-import org.geotools.data.wps.request.GetExecutionStatusRequest;
 import org.geotools.data.wps.response.DescribeProcessResponse;
 import org.geotools.data.wps.response.ExecuteProcessResponse;
-import org.geotools.data.wps.response.GetExecutionStatusResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.wps.WPS;
 
@@ -227,11 +230,15 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
     {
         return (ExecuteProcessResponse) internalIssueRequest(request);
     }
-
-    public GetExecutionStatusResponse issueRequest(GetExecutionStatusRequest request) throws IOException,
-        ServiceException
+    
+    public ExecuteProcessResponse issueStatusRequest(URL statusURL) throws IOException, ServiceException
     {
-        return (GetExecutionStatusResponse) internalIssueRequest(request);
+        final HTTPResponse httpResponse;
+
+        httpResponse = httpClient.get(statusURL);
+
+        // a request with status can never use raw requests
+        return new ExecuteProcessResponse(httpResponse, false);
     }
 
     /**
@@ -281,26 +288,6 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
         }
 
         ExecuteProcessRequest request = getSpecification().createExecuteProcessRequest(onlineResource);
-
-        return request;
-    }
-
-    public GetExecutionStatusRequest createGetExecutionStatusRequest() throws UnsupportedOperationException
-    {
-        ProcessOfferingsType processOfferings = getCapabilities().getProcessOfferings();
-        if ((processOfferings == null) || !processOfferings.eAllContents().hasNext())
-        {
-            throw new UnsupportedOperationException(
-                "Server does not specify a GetExecutionStatus operation. Cannot be performed.");
-        }
-
-        URL onlineResource = getOperationURL("getexecutionstatus", capabilities, true);
-        if (onlineResource == null)
-        {
-            onlineResource = serverURL;
-        }
-
-        GetExecutionStatusRequest request = getSpecification().createGetExecutionStatusRequest(onlineResource);
 
         return request;
     }

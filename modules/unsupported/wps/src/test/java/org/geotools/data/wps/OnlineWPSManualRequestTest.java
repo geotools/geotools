@@ -27,6 +27,7 @@ import java.util.List;
 
 import net.opengis.ows11.ExceptionReportType;
 import net.opengis.wps10.DataType;
+import net.opengis.wps10.DocumentOutputDefinitionType;
 import net.opengis.wps10.ExecuteResponseType;
 import net.opengis.wps10.InputDescriptionType;
 import net.opengis.wps10.LiteralDataType;
@@ -36,6 +37,7 @@ import net.opengis.wps10.ProcessBriefType;
 import net.opengis.wps10.ProcessDescriptionType;
 import net.opengis.wps10.ProcessDescriptionsType;
 import net.opengis.wps10.ProcessOfferingsType;
+import net.opengis.wps10.ResponseDocumentType;
 import net.opengis.wps10.ResponseFormType;
 import net.opengis.wps10.WPSCapabilitiesType;
 
@@ -730,6 +732,7 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         while((line = reader.readLine()) != null) {
             sb.append(line).append("\n");
         }
+        reader.close();
         String arcgrid = sb.toString();
         String expectedHeader = "NCOLS 2\n" + 
         		"NROWS 1\n" + 
@@ -814,5 +817,120 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         assertNotNull(executeResponse);
         assertNotNull(executeResponse.getStatus().getProcessFailed());
         assertNotNull( executeResponse.getStatus().getProcessFailed().getExceptionReport());
+    }
+    
+    /**
+     * Try to get an area grid with output in asynchronous mode
+     *
+     * @throws ServiceException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public void testExecuteAsynchAreaGrid() throws ServiceException, IOException, ParseException
+    {
+
+        // don't run the test if the server is not up
+        if (fixture == null)
+        {
+            return;
+        }
+
+        if (DISABLE)
+        {
+            return;
+        }
+
+        String processIdenLocal = "gs:AreaGrid";
+
+        WPSCapabilitiesType capabilities = wps.getCapabilities();
+
+        // get the first process and execute it
+        ProcessOfferingsType processOfferings = capabilities.getProcessOfferings();
+        EList processes = processOfferings.getProcess();
+        // ProcessBriefType process = (ProcessBriefType) processes.get(0);
+
+        // does the server contain the specific process I want
+        boolean found = false;
+        Iterator iterator = processes.iterator();
+        while (iterator.hasNext())
+        {
+            ProcessBriefType process = (ProcessBriefType) iterator.next();
+            if (process.getIdentifier().getValue().equalsIgnoreCase(processIdenLocal))
+            {
+                found = true;
+
+                break;
+            }
+        }
+
+        // exit test if my process doesn't exist on server
+        if (!found)
+        {
+            System.out.println("Skipping, gs:AreaGrid not found!");
+            return;
+        }
+
+        // based on the describeprocess, setup the execute
+        ExecuteProcessRequest exeRequest = wps.createExecuteProcessRequest();
+        exeRequest.setIdentifier(processIdenLocal);
+        exeRequest.addInput("envelope", Arrays.asList(wps.createBoundingBoxInputValue("EPSG:4326", 2, Arrays.asList(-180d, -90d), Arrays.asList(180d, 90d))));
+        exeRequest.addInput("width", Arrays.asList(wps.createLiteralInputValue("100")));
+        exeRequest.addInput("height", Arrays.asList(wps.createLiteralInputValue("50")));
+        ResponseDocumentType doc = wps.createResponseDocumentType(false, true, true, "result");
+        DocumentOutputDefinitionType odt = (DocumentOutputDefinitionType) doc.getOutput().get(0);
+        odt.setMimeType("application/arcgrid");
+        odt.setAsReference(true);
+        ResponseFormType responseForm = wps.createResponseForm(doc, null);
+        exeRequest.setResponseForm(responseForm);
+
+        // send the request
+        ExecuteProcessResponse response = wps.issueRequest(exeRequest);
+
+        // response should not be null and no exception should occur.
+        assertNotNull(response);
+
+        // we should get a raw response, no exception, no response document
+        ExecuteResponseType executeResponse = response.getExecuteResponse();
+        assertNotNull(executeResponse);
+
+        // loop and wait for the process to be complete
+        while(executeResponse.getStatus().getProcessFailed() == null 
+                && executeResponse.getStatus().getProcessSucceeded() == null) {
+            
+            String location = executeResponse.getStatusLocation();
+            URL url = new URL(location);
+            response = wps.issueStatusRequest(url);
+            
+            executeResponse = response.getExecuteResponse();
+            assertNotNull(executeResponse);
+        }
+
+        // check result correctness
+        assertEquals(1, executeResponse.getProcessOutputs().getOutput().size());
+        OutputDataType output = (OutputDataType) executeResponse.getProcessOutputs().getOutput().get(0);
+        
+        assertEquals("result", output.getIdentifier().getValue());
+        assertEquals("application/arcgrid", output.getReference().getMimeType());
+        assertNotNull(output.getReference().getHref());
+        
+        URL dataURL = new URL(output.getReference().getHref());
+        BufferedReader reader = new BufferedReader(new InputStreamReader(dataURL.openStream()));
+        StringBuilder sb = new StringBuilder();
+        String line = null;
+        int count = 0;
+        while((line = reader.readLine()) != null && count <= 5) {
+            sb.append(line).append("\n");
+            count++;
+        }
+        reader.close();
+        String arcgrid = sb.toString();
+        String expectedHeader = "NCOLS 100\n" + 
+                "NROWS 50\n" + 
+                "XLLCORNER -180.0\n" + 
+                "YLLCORNER -90.0\n" + 
+                "CELLSIZE 3.6\n" + 
+                "NODATA_VALUE -9999";
+        System.out.println(arcgrid);
+        assertTrue(arcgrid.startsWith(expectedHeader));
     }
 }

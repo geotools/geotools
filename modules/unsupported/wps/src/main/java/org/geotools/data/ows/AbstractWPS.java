@@ -53,7 +53,7 @@ public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Objec
 {
 
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.data.ows");
-    private HTTPClient httpClient;
+    protected HTTPClient httpClient;
     protected final URL serverURL;
     protected C capabilities;
     protected ServiceInfo info;

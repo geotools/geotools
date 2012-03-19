@@ -27,7 +27,6 @@ import net.opengis.wps10.ResponseFormType;
 import org.geotools.data.ows.Specification;
 import org.geotools.data.wps.request.DescribeProcessRequest;
 import org.geotools.data.wps.request.ExecuteProcessRequest;
-import org.geotools.data.wps.request.GetExecutionStatusRequest;
 
 
 /**
@@ -58,9 +57,6 @@ public abstract class WPSSpecification extends Specification
      * @throws UnsupportedOperationException if the version of the specification doesn't support this request
      */
     public abstract ExecuteProcessRequest createExecuteProcessRequest(URL onlineResource)
-        throws UnsupportedOperationException;
-
-    public abstract GetExecutionStatusRequest createGetExecutionStatusRequest(URL onlineResource)
         throws UnsupportedOperationException;
 
     public abstract DataType createLiteralInputValue(String literalValue);

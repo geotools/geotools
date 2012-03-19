@@ -1218,10 +1218,14 @@ public class SLDStyleFactory {
 		Iterator<ExternalGraphicFactory> it = DynamicSymbolFactoryFinder
 				.getExternalGraphicFactories();
 		while (it.hasNext()) {
+		    ExternalGraphicFactory egf = it.next();
 			try {
-			    Expression formatExpression = ExpressionExtractor.extractCqlExpressions(eg.getFormat());
-			    String format = formatExpression.evaluate(feature, String.class);
-				Icon icon = it.next().getIcon((Feature) feature, location, format, toImageSize(size));
+			    String format = null;
+			    if(eg.getFormat() != null) {
+    			    Expression formatExpression = ExpressionExtractor.extractCqlExpressions(eg.getFormat());
+    			    format = formatExpression.evaluate(feature, String.class);
+			    }
+                Icon icon = egf.getIcon((Feature) feature, location, format, toImageSize(size));
 				if (icon != null) {
 					return icon;
 				}

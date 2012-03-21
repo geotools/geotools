@@ -60,6 +60,11 @@ public class AppSchemaResolver {
     private AppSchemaCatalog catalog;
 
     /**
+     * True if schemas can be resolved on the classpath.
+     */
+    private boolean classpath = true;
+
+    /**
      * Cache of schemas with optional downloading support(null if not present).
      */
     private AppSchemaCache cache;
@@ -77,11 +82,23 @@ public class AppSchemaResolver {
      * Constructor.
      * 
      * @param catalog
+     * @param classpath whether schemas can be located on the classpath
+     * @param cache
+     */
+    public AppSchemaResolver(AppSchemaCatalog catalog, boolean classpath, AppSchemaCache cache) {
+        this.catalog = catalog;
+        this.classpath = classpath;
+        this.cache = cache;
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param catalog
      * @param cache
      */
     public AppSchemaResolver(AppSchemaCatalog catalog, AppSchemaCache cache) {
-        this.catalog = catalog;
-        this.cache = cache;
+        this(catalog, true, cache);
     }
 
     /**
@@ -175,7 +192,7 @@ public class AppSchemaResolver {
             resolvedLocation = catalog.resolveLocation(location);
         }
         // Look on classpath.
-        if (resolvedLocation == null) {
+        if (resolvedLocation == null && classpath) {
             resolvedLocation = resolveClasspathLocation(location);
         }
         // Use download cache.

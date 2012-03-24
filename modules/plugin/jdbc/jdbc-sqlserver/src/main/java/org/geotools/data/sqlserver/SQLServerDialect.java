@@ -151,7 +151,7 @@ public class SQLServerDialect extends BasicSQLDialect {
     public Integer getGeometrySRID(String schemaName, String tableName,
             String columnName, Connection cx) throws SQLException {
         
-        StringBuffer sql = new StringBuffer("SELECT ");
+        StringBuffer sql = new StringBuffer("SELECT TOP 1 ");
         encodeColumnName(columnName, sql);
         sql.append( ".STSrid");
         

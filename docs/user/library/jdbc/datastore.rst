@@ -38,7 +38,11 @@ Here is an example::
   map.put( "max connections", 25);
   map.put( "min connections", 10);
   map.put( "connection timeout", 5);
-  map.put( "validating connections", true);
+  
+Connection validation is on by default, it takes a small toll to make sure the connection is still valid before using it (e.g., make sure the DBMS did not drop it due to a server side timeout).
+If you want to get extra performance and you're sure the connections will never be dropped you can disable connection validation with::
+  
+  map.put( "validating connections", false);
 
 Connection Parameters
 ^^^^^^^^^^^^^^^^^^^^^

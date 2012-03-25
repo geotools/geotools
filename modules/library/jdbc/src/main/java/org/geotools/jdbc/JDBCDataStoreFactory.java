@@ -91,7 +91,7 @@ public abstract class JDBCDataStoreFactory extends AbstractDataStoreFactory {
     
     /** If connections should be validated before using them */
     public static final Param VALIDATECONN = new Param("validate connections", Boolean .class,
-            "check connection is alive before using it", false, Boolean.FALSE);
+            "check connection is alive before using it", false, Boolean.TRUE);
     
     /** If connections should be validated before using them */
     public static final Param FETCHSIZE = new Param("fetch size", Integer.class,

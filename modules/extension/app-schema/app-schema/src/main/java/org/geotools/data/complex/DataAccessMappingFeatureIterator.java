@@ -41,6 +41,7 @@ import org.geotools.data.complex.filter.XPath.StepList;
 import org.geotools.data.joining.JoiningNestedAttributeMapping;
 import org.geotools.data.joining.JoiningQuery;
 import org.geotools.feature.AttributeBuilder;
+import org.geotools.feature.ComplexAttributeImpl;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureImpl;
 import org.geotools.feature.FeatureIterator;
@@ -830,13 +831,13 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                         String valueString = StringUtils.join(values, " ");
                         StepList fullPath = attMapping.getTargetXPath();
                         StepList leafPath = fullPath.subList(fullPath.size() - 1, fullPath.size());
-                        if (ComplexFeatureConstants.SIMPLE_CONTENT.equals(instance.getDescriptor()
-                                .getName())) {
-                            instance.setValue(valueString);
-                        } else {
+                        if (instance instanceof ComplexAttributeImpl) {              
                             // xpath builder will work out the leaf attribute to set values on
                             xpathAttributeBuilder.set(instance, leafPath, valueString, null, null,
                                     false, sourceExpr);
+                        } else {
+                            // simple attributes
+                            instance.setValue(valueString);
                         }
                     }
                 } else if (attMapping.isMultiValued()) {

@@ -38,9 +38,9 @@ import org.geotools.xml.SchemaIndex;
 import org.geotools.xml.Schemas;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
+import org.xmlpull.mxp1.MXParser;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
 
 /**
  * Parses an application schema given by a gtxml {@link Configuration} into a set of
@@ -167,12 +167,9 @@ public class EmfAppSchemaReader {
         XmlPullParser parser = null;
 
         try {
-            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-            factory.setNamespaceAware(true);
-            factory.setValidating(false);
-
             // parse root element
-            parser = factory.newPullParser();
+            parser = new MXParser();
+            parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true);
             parser.setInput(input, "UTF-8");
             parser.nextTag();
 

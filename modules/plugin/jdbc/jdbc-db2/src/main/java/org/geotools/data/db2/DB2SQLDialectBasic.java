@@ -51,6 +51,15 @@ public class DB2SQLDialectBasic extends BasicSQLDialect {
      * @see org.geotools.jdbc.SQLDialect#createCRS(int, java.sql.Connection)
      *      
      */
+    
+    public boolean isLooseBBOXEnabled() {
+        return delegate.isLooseBBOXEnabled();
+    }
+
+    public void setLooseBBOXEnabled(boolean looseBBOXEnabled) {
+        delegate.setLooseBBOXEnabled(looseBBOXEnabled);
+    }    
+    
     @Override
     public CoordinateReferenceSystem createCRS(int srid, Connection cx) throws SQLException {
     	return delegate.createCRS(srid, cx);
@@ -58,7 +67,9 @@ public class DB2SQLDialectBasic extends BasicSQLDialect {
     
     @Override
     public FilterToSQL createFilterToSQL() {
-    	return new DB2FilterToSQL((Writer) null);
+        DB2FilterToSQL sql = new DB2FilterToSQL((Writer) null);
+        sql.setLooseBBOXEnabled(delegate.isLooseBBOXEnabled());
+        return sql;	
     }
 
     

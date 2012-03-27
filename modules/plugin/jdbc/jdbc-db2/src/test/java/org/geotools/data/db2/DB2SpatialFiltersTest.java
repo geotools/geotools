@@ -16,8 +16,15 @@
  */
 package org.geotools.data.db2;
 
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.FeatureCollection;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCSpatialFiltersTest;
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.spatial.BBOX;
+
+
+
 
 public class DB2SpatialFiltersTest extends JDBCSpatialFiltersTest {
 
@@ -32,4 +39,22 @@ public class DB2SpatialFiltersTest extends JDBCSpatialFiltersTest {
 		dataStore.setDatabaseSchema("geotools");
 	}
 
+    public void testBboxFilter() throws Exception {
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+       // should  match  "r2" and "r3"
+        BBOX bbox = ff.bbox(aname("geom"), 2, 3, 4, 5, "EPSG:4326");
+        FeatureCollection features = dataStore.getFeatureSource(tname("road")).getFeatures(bbox);
+        assertEquals(2, features.size());
+    }
+	            
+    public void testBboxFilterDefault() throws Exception {
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        // should  match  "r2" and "r3"
+        BBOX bbox = ff.bbox("", 2, 3, 4, 5, "EPSG:4326");
+        FeatureCollection features = dataStore.getFeatureSource(tname("road")).getFeatures(bbox);
+        assertEquals(2, features.size());
+    }
+    
+
+	
 }

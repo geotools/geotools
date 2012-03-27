@@ -351,19 +351,19 @@ public class DB2FilterToSQL extends PreparedFilterToSQL{
 		        throw new RuntimeException(e);
 		    }
 	
-		    LOGGER.fine(this.out.toString());
+		    LOGGER.finer(this.out.toString());
 		    return extraData;
 	    }	
 	    
 	    /**
-	     * Encode a bounding-box filter using the EnvelopesIntersect spatial
-	     * predicate.
+	     * Encode a bounding-box filter using either the EnvelopesIntersect (loose)
+	     * or ST_Intersects (precise) predicate.
 	     *
 	     * @param filter a BBOX filter object
 	     * @param extraData not used
 	     */
 	    private Object encodeBBox(BBOX filter, Object extraData) {
-	        LOGGER.finer("Generating EnvelopesIntersect WHERE clause for " + filter);
+	        LOGGER.finer("encodeBBOX: Generating EnvInt WHERE clause for " + filter);
 
 	        try {
 	            String spatialColumn = filter.getPropertyName();
@@ -382,6 +382,7 @@ public class DB2FilterToSQL extends PreparedFilterToSQL{
 	            double maxy = filter.getMaxY();
 
 	            if (isLooseBBOXEnabled()) {
+	    	        LOGGER.finer("looseBBOX");
 	            	this.out.write("db2gse.EnvelopesIntersect(");
 	            	this.out.write(escapeName(spatialColumn));
 	            	this.out.write(", ");
@@ -389,6 +390,7 @@ public class DB2FilterToSQL extends PreparedFilterToSQL{
 	                    + maxx + ", " + maxy + ", " + srid);
 	            	this.out.write(") = 1");
 	            } else {
+	    	        LOGGER.finer("not looseBBOX");
 	            	this.out.write("db2gse.st_intersects(");
 	            	this.out.write(escapeName(spatialColumn));
 	            	this.out.write(", ");

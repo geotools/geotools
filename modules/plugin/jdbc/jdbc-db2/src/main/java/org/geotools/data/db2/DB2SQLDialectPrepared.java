@@ -39,7 +39,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 
 public class DB2SQLDialectPrepared extends PreparedStatementSQLDialect {
 
-	private DB2SQLDialect delegate = null;
+        private DB2SQLDialect delegate = null;
     
     public DB2SQLDialectPrepared(JDBCDataStore dataStore, DB2DialectInfo info) {
         super(dataStore);
@@ -59,10 +59,20 @@ public class DB2SQLDialectPrepared extends PreparedStatementSQLDialect {
 
   
 	@Override
-	public PreparedFilterToSQL createPreparedFilterToSQL() {
-		return new DB2FilterToSQL(this);
-	}
+   public PreparedFilterToSQL createPreparedFilterToSQL() {
+        DB2FilterToSQL sql = new DB2FilterToSQL(this);
+        sql.setLooseBBOXEnabled(delegate.isLooseBBOXEnabled());
+        return sql;		
+   }
 
+    public boolean isLooseBBOXEnabled() {
+        return delegate.isLooseBBOXEnabled();
+    }
+
+    public void setLooseBBOXEnabled(boolean looseBBOXEnabled) {
+        delegate.setLooseBBOXEnabled(looseBBOXEnabled);
+    }
+    
 	@Override
     public void encodePrimaryKey(String column, StringBuffer sql) {
     	delegate.encodePrimaryKey(column, sql);

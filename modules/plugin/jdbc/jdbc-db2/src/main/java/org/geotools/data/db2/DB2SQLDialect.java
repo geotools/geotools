@@ -17,6 +17,7 @@
 package org.geotools.data.db2;
 
 import java.io.IOException;
+import java.io.Writer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,6 +27,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
+import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.factory.Hints;
 import org.geotools.factory.Hints.Key;
 import org.geotools.jdbc.JDBCDataStore;
@@ -75,8 +77,11 @@ public class DB2SQLDialect extends SQLDialect  {
 	
 	private static String DEFAULT_SRS_NAME = "DEFAULT_SRS";
 	private static Integer DEFAULT_SRS_ID=0;
+	
+	private boolean looseBBOXEnabled;
 	 
 	
+
     private static String SELECT_SRSID_WITH_SCHEMA = 
     	"select SRS_ID from DB2GSE.ST_GEOMETRY_COLUMNS where TABLE_SCHEMA = ? and "+
     	"TABLE_NAME = ? and COLUMN_NAME = ?";
@@ -588,6 +593,14 @@ public class DB2SQLDialect extends SQLDialect  {
         if (info.getMinorVersion()==5 && fpNumber>=5) return true;
         if (info.getMinorVersion()==7 && fpNumber>=1) return true;
         return false;
+    }
+
+    public boolean isLooseBBOXEnabled() {
+        return looseBBOXEnabled;
+    }
+
+    public void setLooseBBOXEnabled(boolean looseBBOXEnabled) {
+        this.looseBBOXEnabled = looseBBOXEnabled;
     }
     
 }

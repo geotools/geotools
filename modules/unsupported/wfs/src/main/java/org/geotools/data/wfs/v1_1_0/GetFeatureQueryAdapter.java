@@ -16,7 +16,10 @@
  */
 package org.geotools.data.wfs.v1_1_0;
 
+import java.util.Map;
+
 import org.geotools.data.Query;
+import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.protocol.wfs.GetFeature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.sort.SortBy;
@@ -70,6 +73,14 @@ public class GetFeatureQueryAdapter implements GetFeature {
 
     public SortBy[] getSortBy() {
         return query.getSortBy();
+    }
+    
+    public Map<String, String> getVendorParameter() {
+        if(query.getHints() != null) {
+            return (Map<String, String>) query.getHints().get(WFSDataStore.WFS_VENDOR_PARAMETERS);
+        } else {
+            return null;
+        }
     }
 
 }

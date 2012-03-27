@@ -56,7 +56,7 @@ public class WFS100ProtocolHandler extends WFSProtocolHandler {
     }
     
     @SuppressWarnings("unchecked")
-    private WFSCapabilities parseCapabilities(InputStream capabilitiesReader) throws IOException {
+    protected WFSCapabilities parseCapabilities(InputStream capabilitiesReader) throws IOException {
         // TODO: move to some 1.0.0 specific class
         Map hints = new HashMap();
         hints.put(DocumentFactory.VALIDATION_HINT, Boolean.FALSE);

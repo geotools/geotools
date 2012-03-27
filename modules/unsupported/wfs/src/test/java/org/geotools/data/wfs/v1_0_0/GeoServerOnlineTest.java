@@ -17,13 +17,12 @@
  */
 package org.geotools.data.wfs.v1_0_0;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ConnectException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.NoRouteToHostException;
 import java.net.URL;
@@ -45,17 +44,22 @@ import org.geotools.data.FeatureListener;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
+import org.geotools.data.ows.WFSCapabilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.WFSDataStoreFactory;
+import org.geotools.data.wfs.protocol.http.HttpMethod;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
+import org.geotools.factory.Hints;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.wfs.protocol.ConnectionFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
@@ -478,6 +482,74 @@ public class GeoServerOnlineTest {
             }
         }
     }
+    
+    @Test
+    public void testVendorParametersGet() throws Exception {
+        testVendorParameters(Boolean.FALSE);
+    }
+    
+    @Test
+    public void testVendorParametersPost() throws Exception {
+        testVendorParameters(Boolean.TRUE);
+    }
+
+    private void testVendorParameters(Boolean usePost) throws IOException {
+        if (url == null)
+            return;
+        
+        Map m = new HashMap();
+        m.put(WFSDataStoreFactory.URL.key, url);
+        m.put(WFSDataStoreFactory.TIMEOUT.key, new Integer(100000));
+        m.put(WFSDataStoreFactory.PROTOCOL.key, usePost);
+        WFS_1_0_0_DataStore wfs = (WFS_1_0_0_DataStore) (new WFSDataStoreFactory())
+                .createDataStore(m);
+
+        final WFS100ProtocolHandler originalHandler = wfs.protocolHandler;
+        wfs.protocolHandler = new WFS100ProtocolHandler(null, originalHandler.getConnectionFactory()) {
+            @Override
+            protected WFSCapabilities parseCapabilities(InputStream capabilitiesReader)
+                    throws IOException {
+                return originalHandler.getCapabilities();
+            }
+            
+            @Override
+            public ConnectionFactory getConnectionFactory() {
+                return new ConnectionFactoryWrapper(super.getConnectionFactory()) {
+                    
+                    @Override
+                    public HttpURLConnection getConnection(URL query, HttpMethod method)
+                            throws IOException {
+                        String[] keyValueArray = query.getQuery().split("&");
+                        Map<String, String> kvp = new HashMap<String, String>();
+                        for (String keyValue : keyValueArray) {
+                            String[] skv = keyValue.split("=");
+                            kvp.put(skv[0], skv[1]);
+                        }
+                        
+                        // check the vendor params actually made it into the url
+                        assertEquals("true", kvp.get("strict"));
+                        assertEquals("mysecret", kvp.get("authkey"));
+                        assertEquals("low%3A2000000%3Bhigh%3A5000000", kvp.get("viewparams"));
+                        
+                        return super.getConnection(query, method);
+                    }
+                };
+            }
+        };
+
+        Map<String, String> vparams = new HashMap<String, String>();
+        vparams.put("authkey", "mysecret");
+        vparams.put("viewparams", "low:2000000;high:5000000");
+        vparams.put("strict", "true");
+        Hints hints = new Hints(WFSDataStore.WFS_VENDOR_PARAMETERS, vparams);
+        Query q = new Query("topp:states");
+        q.setHints(hints);
+        
+        // try with 
+        FeatureReader fr = wfs.getFeatureReader(q, Transaction.AUTO_COMMIT);
+        assertTrue(fr.hasNext());
+        fr.close();
+    }
 
     private Id createFidFilter(SimpleFeatureSource fs)
             throws IOException {
@@ -496,4 +568,6 @@ public class GeoServerOnlineTest {
             iter.close();
         }
     }
+    
+    
 }

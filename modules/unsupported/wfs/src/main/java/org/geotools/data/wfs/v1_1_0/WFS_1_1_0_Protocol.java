@@ -29,6 +29,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -70,6 +71,7 @@ import net.opengis.wfs.WFSCapabilitiesType;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.emf.ecore.EObject;
 import org.geotools.data.DataSourceException;
+import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.protocol.http.HTTPProtocol;
 import org.geotools.data.wfs.protocol.http.HTTPResponse;
 import org.geotools.data.wfs.protocol.http.HttpMethod;
@@ -135,9 +137,9 @@ public class WFS_1_1_0_Protocol implements WFSProtocol {
      */
     private final Map<String, FeatureTypeType> typeInfos;
 
-    private HTTPProtocol http;
+    protected HTTPProtocol http;
 
-    private final Charset defaultEncoding;
+    protected final Charset defaultEncoding;
 
     public WFS_1_1_0_Protocol(InputStream capabilitiesReader, HTTPProtocol http,
             Charset defaultEncoding) throws IOException {
@@ -468,11 +470,18 @@ public class WFS_1_1_0_Protocol implements WFSProtocol {
         URL url = getOperationURL(WFSOperationType.GET_FEATURE, false);
 
         RequestComponents reqParts = strategy.createGetFeatureRequest(this, request);
-        Map<String, String> getFeatureKvp = reqParts.getKvpParameters();
         GetFeatureType requestType = reqParts.getServerRequest();
+        
+        // build the kvp taking into account eventual vendor params
+        Map<String, String> getFeatureKvp = reqParts.getKvpParameters();
+        if(request instanceof GetFeatureQueryAdapter) {
+            GetFeatureQueryAdapter adapter = (GetFeatureQueryAdapter) request;
+            if(adapter.getVendorParameter() != null) {
+                getFeatureKvp.putAll(adapter.getVendorParameter());
+            }
+        }
+        
 
-        System.out.println(" > getFeatureGET: Request url: " + url + ". Parameters: "
-                + getFeatureKvp);
         WFSResponse response = issueGetRequest(requestType, url, getFeatureKvp);
 
         return response;
@@ -486,7 +495,30 @@ public class WFS_1_1_0_Protocol implements WFSProtocol {
             throw new UnsupportedOperationException(
                     "The server does not support GetFeature for HTTP method POST");
         }
-        URL url = getOperationURL(WFSOperationType.GET_FEATURE, true);
+        URL postURL = getOperationURL(WFSOperationType.GET_FEATURE, true);
+        
+        // support vendor parameters, GeoServer way
+        if(request instanceof GetFeatureQueryAdapter) {
+            GetFeatureQueryAdapter adapter = (GetFeatureQueryAdapter) request;
+            if(adapter.getVendorParameter() != null) {
+                String url = postURL.toString();
+                if ((url == null) || !url.endsWith("?")) {
+                    url += "?";
+                }
+                
+                boolean first = true;
+                for (Map.Entry<String, String> entry : adapter.getVendorParameter().entrySet()) {
+                    if(first) {
+                        first = false;
+                    } else {
+                        url += "&";
+                    }
+                    url += entry.getKey() + "=" + URLEncoder.encode(entry.getValue(), "UTF-8");
+                }
+                
+                postURL = new URL(url);
+            }
+        }
 
         RequestComponents reqParts = strategy.createGetFeatureRequest(this, request);
         GetFeatureType serverRequest = reqParts.getServerRequest();
@@ -502,7 +534,7 @@ public class WFS_1_1_0_Protocol implements WFSProtocol {
         if (!XMLConstants.DEFAULT_NS_PREFIX.equals(prefix)) {
             encoder.getNamespaces().declarePrefix(prefix, namespace);
         }
-        WFSResponse response = issuePostRequest(serverRequest, url, encoder);
+        WFSResponse response = issuePostRequest(serverRequest, postURL, encoder);
 
         return response;
     }
@@ -536,7 +568,7 @@ public class WFS_1_1_0_Protocol implements WFSProtocol {
         return typeInfos.get(typeName);
     }
 
-    private WFSCapabilitiesType parseCapabilities(InputStream capabilitiesReader)
+    protected WFSCapabilitiesType parseCapabilities(InputStream capabilitiesReader)
             throws IOException {
         final Configuration wfsConfig = strategy.getWfsConfiguration();
         final Parser parser = new Parser(wfsConfig);

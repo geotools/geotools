@@ -109,7 +109,7 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
      */
     private static final boolean DEFAULT_HTTP_METHOD = true;
 
-    private final WFSProtocol wfs;
+    protected WFSProtocol wfs;
 
     private Map<String, SimpleFeatureType> byTypeNameTypes;
 
@@ -319,8 +319,8 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
         Filter[] filters = wfs.splitFilters(query.getFilter());
         Filter supportedFilter = filters[0];
         Filter postFilter = filters[1];
-        System.out.println("Supported filter:  " + supportedFilter);
-        System.out.println("Unupported filter: " + postFilter);
+        LOGGER.fine("Supported filter:  " + supportedFilter);
+        LOGGER.fine("Unupported filter: " + postFilter);
         ((DefaultQuery) query).setFilter(supportedFilter);
         ((DefaultQuery) query).setMaxFeatures(getMaxFeatures(query));
 

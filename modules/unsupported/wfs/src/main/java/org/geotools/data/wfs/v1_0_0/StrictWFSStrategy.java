@@ -153,12 +153,13 @@ class StrictWFSStrategy extends NonStrictWFSStrategy {
             if( visitor.requiresPostProcessing() && query.getPropertyNames()!=Query.ALL_NAMES){
                 FilterAttributeExtractor attributeExtractor=new FilterAttributeExtractor();
                 query.getFilter().accept( attributeExtractor, null );
-                Set properties=new HashSet(attributeExtractor.getAttributeNameSet());
+                Set properties = new HashSet(attributeExtractor.getAttributeNameSet());
                 properties.addAll(Arrays.asList(query.getPropertyNames()));
-                this.query=new DefaultQuery(query.getTypeName(), query.getFilter(), query.getMaxFeatures(),
-                        (String[]) properties.toArray(new String[0]), query.getHandle());
-            }else
+                this.query=new DefaultQuery(query);
+                this.query.setPropertyNames((String[]) properties.toArray(new String[0]));
+            } else {
                 this.query=query;
+            }
             
             this.filter=visitor.getFilter();
 

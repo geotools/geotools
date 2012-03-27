@@ -27,6 +27,7 @@ import org.geotools.data.Transaction;
 import org.geotools.data.crs.ForceCoordinateSystemFeatureReader;
 import org.geotools.data.ows.FeatureSetDescription;
 import org.geotools.data.ows.WFSCapabilities;
+import org.geotools.data.wfs.protocol.http.HttpMethod;
 import org.geotools.feature.SchemaException;
 import org.geotools.filter.Filters;
 import org.geotools.filter.visitor.WFSBBoxFilterVisitor;
@@ -95,10 +96,18 @@ class NonStrictWFSStrategy implements WFSStrategy {
     protected  FeatureReader<SimpleFeatureType, SimpleFeature> createFeatureReader(Transaction transaction, Query query)
             throws IOException {
         Data data;
-        data = createFeatureReaderPOST(query, transaction);
-
-        if (data.reader == null)
+        
+        if(store.preferredProtocol == HttpMethod.POST) {
+            data = createFeatureReaderPOST(query, transaction);
+    
+            if (data.reader == null)
+                data = createFeatureReaderGET(query, transaction);
+        } else {
             data = createFeatureReaderGET(query, transaction);
+            
+            if (data.reader == null)
+                data = createFeatureReaderPOST(query, transaction);
+        }
 
         if (data.reader == null && data.saxException != null)
             throw (IOException) new IOException(data.saxException.toString()).initCause(data.saxException);

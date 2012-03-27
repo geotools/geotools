@@ -18,12 +18,14 @@ package org.geotools.data.wfs;
 
 import java.net.URI;
 import java.net.URL;
+import java.util.Map;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
 
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataStore;
+import org.geotools.factory.Hints.ClassKey;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -39,6 +41,15 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *         /data/wfs/WFSDataStore.java $
  */
 public interface WFSDataStore extends DataStore {
+    
+    /**
+     * Provides the vendor parameters to be used in a query
+     *
+     * @since 2.7.5
+     */
+    public static final ClassKey WFS_VENDOR_PARAMETERS = new ClassKey(Map.class);
+
+    
     /**
      * Overrides {@link DataAccess#getInfo()} so it type narrows to a {@link WFSServiceInfo}
      * 

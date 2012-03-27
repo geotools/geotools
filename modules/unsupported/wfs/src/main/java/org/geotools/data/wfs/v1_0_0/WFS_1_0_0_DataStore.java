@@ -515,6 +515,15 @@ public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataSto
                         }
                     }
                 }
+                
+                // inject vendor params, if any
+                if(request.getHints() != null && request.getHints().get(WFSDataStore.WFS_VENDOR_PARAMETERS) != null) {
+                    Map<String, String> vendorParams = (Map<String, String>) request.getHints().get(WFSDataStore.WFS_VENDOR_PARAMETERS);
+                    for (Map.Entry<String, String> entry : vendorParams.entrySet()) {
+                        url += "&" + entry.getKey() + "=" + URLEncoder.encode(entry.getValue(), protocolHandler
+                                .getEncoding());
+                    }
+                }
             }
         }
 
@@ -667,6 +676,30 @@ public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataSto
 
         if (postUrl == null) {
             return null;
+        }
+
+        // inject vendor params, if any
+        if(query != null && query.getHints() != null && query.getHints().get(WFSDataStore.WFS_VENDOR_PARAMETERS) != null) {
+            String url = postUrl.toString();
+            if ((url == null) || !url.endsWith("?")) {
+                url += "?";
+            }
+            
+            boolean first = true;
+            if(query.getHints() != null && query.getHints().get(WFSDataStore.WFS_VENDOR_PARAMETERS) != null) {
+                Map<String, String> vendorParams = (Map<String, String>) query.getHints().get(WFSDataStore.WFS_VENDOR_PARAMETERS);
+                for (Map.Entry<String, String> entry : vendorParams.entrySet()) {
+                    if(first) {
+                        first = false;
+                    } else {
+                        url += "&";
+                    }
+                    url += entry.getKey() + "=" + URLEncoder.encode(entry.getValue(), protocolHandler
+                            .getEncoding());
+                }
+            }
+            
+            postUrl = new URL(url);
         }
 
         HttpURLConnection hc = protocolHandler.getConnectionFactory().getConnection(postUrl, POST);

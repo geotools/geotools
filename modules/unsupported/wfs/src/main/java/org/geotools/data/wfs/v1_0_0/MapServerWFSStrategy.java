@@ -94,8 +94,8 @@ public class MapServerWFSStrategy extends StrictWFSStrategy implements WFSStrate
                         BBOX newFilter = fac.bbox(attName, bbox.getMinX(), bbox.getMinY(), 
                                 bbox.getMaxX(), bbox.getMaxY(), "EPSG:4326");
                         
-                        query2=new DefaultQuery(query.getTypeName(), query.getNamespace(), newFilter, 
-                                query.getMaxFeatures(), query.getPropertyNames(), query.getHandle());
+                        query2 = new DefaultQuery(query);
+                        query2.setFilter(newFilter);
                     }
                 } catch (IllegalFilterException e) {
                     query2=query;

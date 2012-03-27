@@ -59,7 +59,7 @@ public class WFS100ProtocolHandler extends WFSProtocolHandler {
         return super.connectionFac;
     }
     
-    private WFSCapabilities parseCapabilities(InputStream capabilitiesReader) throws IOException {
+    protected WFSCapabilities parseCapabilities(InputStream capabilitiesReader) throws IOException {
         // TODO: move to some 1.0.0 specific class
         Map<String,Object> hints = new HashMap<String,Object>();
         hints.put(DocumentFactory.VALIDATION_HINT, Boolean.FALSE);

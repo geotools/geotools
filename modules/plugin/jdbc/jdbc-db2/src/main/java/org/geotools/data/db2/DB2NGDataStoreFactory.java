@@ -55,7 +55,11 @@ public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {
     /** parameter for database type */
     public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "db2");
     
-	public final static String DriverClassName = "com.ibm.db2.jcc.DB2Driver"; 
+    /** enables using EnvelopesIntersect in bbox queries */
+    public static final Param LOOSEBBOX = new Param("Loose bbox", Boolean.class, "Perform only primary filter on bbox", false, Boolean.TRUE);    
+
+    
+    public final static String DriverClassName = "com.ibm.db2.jcc.DB2Driver"; 
 	
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
         return new DB2SQLDialectPrepared(dataStore, new DB2DialectInfo());
@@ -128,7 +132,10 @@ public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {
     protected void setupParameters(Map parameters) {
         super.setupParameters(parameters);
         parameters.put(DBTYPE.key, DBTYPE);
+        parameters.put(LOOSEBBOX.key, LOOSEBBOX);
+
     }
+    
 
     @Override
     protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map params)
@@ -136,7 +143,12 @@ public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {
     Connection con = null;
     try {    
     con = dataStore.getDataSource().getConnection();
-    DB2DialectInfo di = ((DB2SQLDialectPrepared) dataStore.getSQLDialect()).getDb2DialectInfo(); 
+    DB2DialectInfo di = ((DB2SQLDialectPrepared) dataStore.getSQLDialect()).getDb2DialectInfo();
+    
+    DB2SQLDialectPrepared dialect = (DB2SQLDialectPrepared) dataStore.getSQLDialect();
+    Boolean loose = (Boolean) LOOSEBBOX.lookUp(params);
+    dialect.setLooseBBOXEnabled(loose == null || Boolean.TRUE.equals(loose));
+
     DatabaseMetaData md = con.getMetaData();
     di.setMajorVersion(md.getDatabaseMajorVersion());
     di.setMinorVersion(md.getDatabaseMinorVersion());

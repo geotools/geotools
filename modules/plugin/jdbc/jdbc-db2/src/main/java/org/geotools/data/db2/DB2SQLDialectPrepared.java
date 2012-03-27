@@ -25,6 +25,7 @@ import java.sql.SQLException;
 import java.util.Map;
 import java.util.Set;
 
+import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.factory.Hints.Key;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedFilterToSQL;
@@ -65,11 +66,23 @@ public class DB2SQLDialectPrepared extends PreparedStatementSQLDialect {
 
   
 	@Override
-	public PreparedFilterToSQL createPreparedFilterToSQL() {
+    public PreparedFilterToSQL createPreparedFilterToSQL() {
            DB2FilterToSQL filter = new DB2FilterToSQL(this);
            filter.setFunctionEncodingEnabled(isFunctionEncodingEnabled());
+           filter.setLooseBBOXEnabled(delegate.isLooseBBOXEnabled());
            return filter;
-	}
+    }
+	
+	
+
+    public boolean isLooseBBOXEnabled() {
+	        return delegate.isLooseBBOXEnabled();
+	    }
+
+    public void setLooseBBOXEnabled(boolean looseBBOXEnabled) {
+	        delegate.setLooseBBOXEnabled(looseBBOXEnabled);
+	    }    
+
 
 	@Override
     public void encodePrimaryKey(String column, StringBuffer sql) {

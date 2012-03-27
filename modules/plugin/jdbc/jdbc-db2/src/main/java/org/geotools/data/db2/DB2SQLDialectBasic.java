@@ -65,9 +65,19 @@ public class DB2SQLDialectBasic extends BasicSQLDialect {
     public FilterToSQL createFilterToSQL() {
     	DB2FilterToSQL filter = new DB2FilterToSQL((Writer) null);
     	filter.setFunctionEncodingEnabled(isFunctionEncodingEnabled());
+    	filter.setLooseBBOXEnabled(delegate.isLooseBBOXEnabled());
         return filter;
     }
 
+    public boolean isLooseBBOXEnabled() {
+        return delegate.isLooseBBOXEnabled();
+    }
+
+    public void setLooseBBOXEnabled(boolean looseBBOXEnabled) {
+        delegate.setLooseBBOXEnabled(looseBBOXEnabled);
+    }    
+
+    
     
     @Override
     public void encodePrimaryKey(String column, StringBuffer sql) {

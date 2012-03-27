@@ -16,6 +16,8 @@
  */
 package org.geotools.data.db2;
 
+import java.util.Map;
+
 import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
 
 /**
@@ -33,4 +35,11 @@ public class DB2NGJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
     public DB2NGJNDIDataStoreFactory() {
         super(new DB2NGDataStoreFactory());
     }
+    
+    protected void setupParameters(Map parameters) {
+        super.setupParameters(parameters);
+        parameters.put(DBTYPE.key, DBTYPE);
+        parameters.put(DB2NGDataStoreFactory.LOOSEBBOX.key, DB2NGDataStoreFactory.LOOSEBBOX);
+    }
+
 }

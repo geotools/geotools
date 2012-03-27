@@ -80,8 +80,10 @@ public class DB2SQLDialect extends SQLDialect  {
 	
 	private static String DEFAULT_SRS_NAME = "DEFAULT_SRS";
 	private static Integer DEFAULT_SRS_ID=0;
-	 
+
+	private boolean looseBBOXEnabled;
 	
+
     private static String SELECT_SRSID_WITH_SCHEMA = 
     	"select SRS_ID from DB2GSE.ST_GEOMETRY_COLUMNS where TABLE_SCHEMA = ? and "+
     	"TABLE_NAME = ? and COLUMN_NAME = ?";
@@ -654,6 +656,14 @@ public class DB2SQLDialect extends SQLDialect  {
 
     public void setFunctionEncodingEnabled(boolean functionEncodingEnabled) {
         this.functionEncodingEnabled = functionEncodingEnabled;
+    }
+
+    public boolean isLooseBBOXEnabled() {
+        return looseBBOXEnabled;
+    }
+
+    public void setLooseBBOXEnabled(boolean looseBBOXEnabled) {
+        this.looseBBOXEnabled = looseBBOXEnabled;
     }
 
 }

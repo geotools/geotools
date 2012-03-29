@@ -20,7 +20,9 @@ package org.geotools.data.complex;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -30,6 +32,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang.StringUtils;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataSourceException;
@@ -89,6 +92,35 @@ import org.xml.sax.Attributes;
  * @since 2.4
  */
 public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIterator {
+
+    class ValueComparator implements Comparator {
+        @Override
+        public int compare(Object o1, Object o2) {
+            if (o1 == null) {
+                if (o2 == null) {
+                    return 0;
+                } else {
+                    return -1;
+                }
+            }
+            if (o2 == null) {
+                return 1;
+            }
+
+            String string1 = o1.toString();
+            String string2 = o2.toString();
+
+            // in case numbers are stored as string, make sure the order is correct
+            if (NumberUtils.isNumber(string1) && NumberUtils.isNumber(string2)) {
+                return Double.valueOf(string1).compareTo(Double.valueOf(string2));
+            }
+
+            if (o1 instanceof Comparable) {
+                return ((Comparable) o1).compareTo(o2);
+            }
+            return string1.compareTo(string2);
+        }
+    }
     /**
      * Hold on to iterator to allow features to be streamed.
      */
@@ -118,6 +150,8 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     private boolean isFiltered = false;
     
     private ArrayList<String> filteredFeatures;
+
+    private ValueComparator comparator;
 
     public DataAccessMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
             Query query, boolean isFiltered) throws IOException {
@@ -827,7 +861,11 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                         for (Feature source : sources) {
                             values[i] = getValue(sourceExpr, source);
                             i++;
+                        }                        
+                        if (comparator == null) {
+                            comparator = new ValueComparator();
                         }
+                        Arrays.sort(values, comparator);
                         String valueString = StringUtils.join(values, " ");
                         StepList fullPath = attMapping.getTargetXPath();
                         StepList leafPath = fullPath.subList(fullPath.size() - 1, fullPath.size());

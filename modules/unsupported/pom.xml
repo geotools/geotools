@@ -119,15 +119,6 @@
        </modules>
      </profile>
      <profile>
-       <id>epsg-h2</id>
-       <activation>
-         <property><name>all</name></property>
-       </activation>
-       <modules>
-         <module>epsg-h2</module>
-       </modules>
-     </profile>
-     <profile>
        <id>app-schema</id>
        <activation>
          <property><name>all</name></property>

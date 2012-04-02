@@ -351,13 +351,14 @@ public class IndexedShapefileDataStore extends ShapefileDataStore implements
         if (query.getFilter() == Filter.EXCLUDE)
             return new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(getSchema());
 
+        boolean allProperties = query.getPropertyNames() == null;
         String[] propertyNames = query.getPropertyNames() == null ? new String[0]
                 : query.getPropertyNames();
         String defaultGeomName = schema.getGeometryDescriptor().getLocalName();
 
 
         // add the attributes we need to read to keep the filtering going
-        if(propertyNames.length  > 0) {
+        if(!allProperties) {
             FilterAttributeExtractor fae = new FilterAttributeExtractor(schema);
             query.getFilter().accept(fae, null);
     

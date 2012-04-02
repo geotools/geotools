@@ -17,6 +17,8 @@
 package org.geotools.factory;
 
 import java.awt.RenderingHints;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -79,15 +81,27 @@ public final class GeoTools {
      */
     private static final Properties PROPS;  
     static {
-        Properties props = new Properties();
-        try {
-            props.load(GeoTools.class.getResourceAsStream("GeoTools.properties"));
-        }
-        catch(Exception e) {}
-        
-        PROPS = props;
+        PROPS = loadProperites("GeoTools.properties");
     }
-    
+
+    private static Properties loadProperites(String resource) {
+        Properties props = new Properties();
+        InputStream stream = GeoTools.class.getResourceAsStream(resource);
+        if (stream != null) {
+            try {
+                props.load(stream);
+            } catch (IOException ignore) {
+            } finally {
+                try {
+                    stream.close();
+                } catch (IOException ignore) {
+                }
+            }
+        }
+
+        return props;
+    }
+
     /**
      * The current GeoTools version. The separator character must be the dot.
      */

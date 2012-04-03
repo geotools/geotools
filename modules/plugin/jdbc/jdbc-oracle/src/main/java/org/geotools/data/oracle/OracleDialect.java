@@ -140,6 +140,12 @@ public class OracleDialect extends PreparedStatementSQLDialect {
      * Remembers whether the USER_SDO_* views could be accessed or not
      */
     Boolean canAccessUserViews;
+    
+    /**
+     * The direct geometry metadata table, if any
+     * @param dataStore
+     */
+    String geometryMetadataTable;
 
     public OracleDialect(JDBCDataStore dataStore) {
         super(dataStore);
@@ -204,88 +210,138 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         final int TYPE_NAME = 6;
         String typeName = columnMetaData.getString(TYPE_NAME);
 		if (typeName.equals("SDO_GEOMETRY")) {
-	            String tableName = columnMetaData.getString(TABLE_NAME);
-	            String columnName = columnMetaData.getString(COLUMN_NAME);
-	            String schema = dataStore.getDatabaseSchema();
+            String tableName = columnMetaData.getString(TABLE_NAME);
+            String columnName = columnMetaData.getString(COLUMN_NAME);
+            String schema = dataStore.getDatabaseSchema();
 
-                    if (canAccessUserViews(cx)) {
-                        //we only try this block if we are able to access the
-                        //user_sdo views
+            Class geometryClass = lookupGeometryOnMetadataTable(cx, tableName, columnName, schema); 
+            if (geometryClass == null) {
+                lookupGeometryClassOnUserIndex(cx, tableName, columnName, schema);
+            }
+            if (geometryClass == null) {
+                geometryClass = lookupGeometryClassOnAllIndex(cx, tableName, columnName, schema);
+            }
+            if (geometryClass == null) {
+                geometryClass = Geometry.class;
+            }
 
-                        //setup the sql to use for the USER_SDO table
-                        String userSdoSqlStatement = "SELECT META.SDO_LAYER_GTYPE\n" +
-                            "FROM ALL_INDEXES INFO\n" +
-                            "INNER JOIN MDSYS.USER_SDO_INDEX_METADATA META\n" +
-                            "ON INFO.INDEX_NAME = META.SDO_INDEX_NAME\n" +
-                            "WHERE INFO.TABLE_NAME = '" + tableName + "'\n" +
-                            "AND REPLACE(meta.sdo_column_name, '\"') = '" + columnName + "'\n";
-
-                        if(schema != null && !"".equals(schema)) {
-                            userSdoSqlStatement += " AND INFO.TABLE_OWNER = '" + schema + "'";
-                        }
-
-                        Statement userSdoStatement = null;
-                        ResultSet userSdoResult = null;
-                        try {
-                            userSdoStatement = cx.createStatement();
-                            LOGGER.log(Level.FINE, "Geometry type check; {0} ", userSdoSqlStatement);
-                            userSdoResult = userSdoStatement.executeQuery(userSdoSqlStatement);
-                            if (userSdoResult.next()) {
-                                String gType = userSdoResult.getString(1);
-                                Class geometryClass = (Class) TT.GEOM_CLASSES.get(gType);
-                                if(geometryClass == null)
-                                    geometryClass = Geometry.class;
-
-                                return geometryClass;
-                            }
-                        } finally {
-                            dataStore.closeSafe(userSdoResult);
-                            dataStore.closeSafe(userSdoStatement);
-                        }
-                    }
-
-                    Statement allSdoStatement = null;
-                    ResultSet allSdoResult = null;
-                    try {
-                        //setup the sql to use for the ALL_SDO table
-                        String allSdoSqlStatement = "SELECT META.SDO_LAYER_GTYPE\n" +
-                            "FROM ALL_INDEXES INFO\n" +
-                            "INNER JOIN MDSYS.ALL_SDO_INDEX_METADATA META\n" +
-                            "ON INFO.INDEX_NAME = META.SDO_INDEX_NAME\n" +
-                            "WHERE INFO.TABLE_NAME = '" + tableName + "'\n" +
-                            "AND REPLACE(meta.sdo_column_name, '\"') = '" + columnName + "'\n";
-
-                        if(schema != null && !"".equals(schema)) {
-                            allSdoSqlStatement += " AND INFO.TABLE_OWNER = '" + schema + "'";
-                            allSdoSqlStatement += " AND META.SDO_INDEX_OWNER = '" + schema + "'";
-                        }
-
-                        allSdoStatement = cx.createStatement();
-                        LOGGER.log(Level.FINE, "Geometry type check; {0} ", allSdoSqlStatement);
-                        allSdoResult = allSdoStatement.executeQuery(allSdoSqlStatement);
-                        if (allSdoResult.next()) {
-                            String gType = allSdoResult.getString(1);
-                            Class geometryClass = (Class) TT.GEOM_CLASSES.get(gType);
-                            if(geometryClass == null)
-                                geometryClass = Geometry.class;
-
-                            return geometryClass;
-                        } else {
-                            //must default at this point, this is as far as we can go
-                            return Geometry.class;
-                        }
-
-                    } finally {
-                        dataStore.closeSafe(allSdoResult);
-                        dataStore.closeSafe(allSdoStatement);
-                    }
-
+            return geometryClass;
 		} else {
 			// if we know, return non null value, otherwise returning
 			// null will force the datatore to figure it out using 
 			// jdbc metadata
 			return TYPES_TO_CLASSES.get(typeName);
 		}
+    }
+    
+    /**
+     * Tries to use the geometry metadata table, if available
+     * @param cx
+     * @param tableName
+     * @param columnName
+     * @param schema
+     * @return
+     * @throws SQLException
+     */
+    private Class<?> lookupGeometryOnMetadataTable(Connection cx, String tableName,
+            String columnName, String schema) throws SQLException {
+        if(geometryMetadataTable == null) {
+            return null;
+        }
+        
+        // setup the sql to use for the ALL_SDO table
+        String metadataTableStatement = "SELECT TYPE FROM " + geometryMetadataTable 
+                + " WHERE F_TABLE_NAME = '" + tableName + "'" 
+                + " AND F_GEOMETRY_COLUMN = '" + columnName + "'";
+
+        if(schema != null && !"".equals(schema)) {
+            metadataTableStatement += " AND F_TABLE_SCHEMA = '" + schema + "'";
+        }
+        
+        return readGeometryClassFromStatement(cx, metadataTableStatement);
+    }
+
+    /**
+     * Looks up the geometry type on the "ALL_*" metadata views
+     */
+    private Class<?> lookupGeometryClassOnAllIndex(Connection cx, String tableName,
+            String columnName, String schema) throws SQLException {
+        // setup the sql to use for the ALL_SDO table
+        String allSdoSqlStatement = "SELECT META.SDO_LAYER_GTYPE\n" +
+            "FROM ALL_INDEXES INFO\n" +
+            "INNER JOIN MDSYS.ALL_SDO_INDEX_METADATA META\n" +
+            "ON INFO.INDEX_NAME = META.SDO_INDEX_NAME\n" +
+            "WHERE INFO.TABLE_NAME = '" + tableName + "'\n" +
+            "AND REPLACE(meta.sdo_column_name, '\"') = '" + columnName + "'\n";
+
+        if(schema != null && !"".equals(schema)) {
+            allSdoSqlStatement += " AND INFO.TABLE_OWNER = '" + schema + "'";
+            allSdoSqlStatement += " AND META.SDO_INDEX_OWNER = '" + schema + "'";
+        }
+        
+        return readGeometryClassFromStatement(cx, allSdoSqlStatement);
+    }
+
+    /**
+     * Looks up the geometry type on the "USER_*" metadata views
+     */
+
+    private Class lookupGeometryClassOnUserIndex(Connection cx, String tableName, String columnName,
+            String schema) throws SQLException {
+        // we only try this if we are able to access the
+        // user_sdo views
+        if (!canAccessUserViews(cx)) {
+            return null;
+        }
+            
+        //setup the sql to use for the USER_SDO table
+        String userSdoSqlStatement = "SELECT META.SDO_LAYER_GTYPE\n" +
+            "FROM ALL_INDEXES INFO\n" +
+            "INNER JOIN MDSYS.USER_SDO_INDEX_METADATA META\n" +
+            "ON INFO.INDEX_NAME = META.SDO_INDEX_NAME\n" +
+            "WHERE INFO.TABLE_NAME = '" + tableName + "'\n" +
+            "AND REPLACE(meta.sdo_column_name, '\"') = '" + columnName + "'\n";
+
+        if(schema != null && !"".equals(schema)) {
+            userSdoSqlStatement += " AND INFO.TABLE_OWNER = '" + schema + "'";
+        }
+
+        return readGeometryClassFromStatement(cx, userSdoSqlStatement);
+    }
+    
+    /**
+     * Reads the geometry type from the first column returned by executing the specified SQL statement
+     * @param cx
+     * @param sql
+     * @return
+     * @throws SQLException
+     */
+    private Class readGeometryClassFromStatement(Connection cx, String sql)
+            throws SQLException {
+        Statement st = null;
+        ResultSet rs = null;
+        try {
+            st = cx.createStatement();
+            LOGGER.log(Level.FINE, "Geometry type check; {0} ", sql);
+            rs = st.executeQuery(sql);
+            if (rs.next()) {
+                String gType = rs.getString(1);
+                Class geometryClass = (Class) TT.GEOM_CLASSES.get(gType);
+                if(geometryClass == null) {
+                    // if there was a record but it's not a recognized geometry type fall back on
+                    // geometry for backwards compatibility, but at least log the info
+                    LOGGER.log(Level.WARNING, "Unrecognized geometry type " + gType + " falling back on generic 'GEOMETRY'");
+                    geometryClass = Geometry.class;
+                }
+
+                return geometryClass;
+            } 
+        } finally {
+            dataStore.closeSafe(rs);
+            dataStore.closeSafe(st);
+        }
+        
+        return null;
     }
 
     
@@ -506,56 +562,93 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     public Integer getGeometrySRID(String schemaName, String tableName,
             String columnName, Connection cx) throws SQLException {
         
-        if (canAccessUserViews(cx)) {
-            StringBuffer userSdoSql = new StringBuffer("SELECT SRID FROM MDSYS.USER_SDO_GEOM_METADATA WHERE ");
-            userSdoSql.append( "TABLE_NAME='").append( tableName.toUpperCase() ).append("' AND ");
-            userSdoSql.append( "COLUMN_NAME='").append( columnName.toUpperCase() ).append( "'");
-
-            Statement userSdoStatement = null;
-            ResultSet userSdoResult = null;
-            try {
-                userSdoStatement = cx.createStatement();
-                LOGGER.log(Level.FINE, "SRID check; {0} ", userSdoSql.toString());
-                userSdoResult = userSdoStatement.executeQuery(userSdoSql.toString());
-                if (userSdoResult.next()) {
-                    Object srid = userSdoResult.getObject( 1 );
-                    if ( srid != null ) {
-                        //return the SRID number if it was found in the USER_SDO
-                        return ((Number) srid).intValue();
-                    }
-                }
-            } finally {
-                dataStore.closeSafe(userSdoResult);
-                dataStore.closeSafe(userSdoStatement);
-            }
+        Integer srid = lookupSRIDOnMetadataTable(schemaName, tableName, columnName, cx);
+        if(srid == null) {
+            srid = lookupSRIDFromUserViews(tableName, columnName, cx);
         }
+        if(srid == null) {
+            srid = lookupSRIDFromAllViews(schemaName, tableName, columnName, cx);
+        } 
+        return srid;
+    }
 
+    /**
+     * Reads the SRID from the geometry metadata table, if available
+     */
+    private Integer lookupSRIDOnMetadataTable(String schema, String tableName, String columnName, Connection cx) throws SQLException {
+        if(geometryMetadataTable == null) {
+            return null;
+        }
+        
+        // setup the sql to use for the ALL_SDO table
+        String metadataTableStatement = "SELECT SRID FROM " + geometryMetadataTable 
+                + " WHERE F_TABLE_NAME = '" + tableName + "'" 
+                + " AND F_GEOMETRY_COLUMN = '" + columnName + "'";
+
+        if(schema != null && !"".equals(schema)) {
+            metadataTableStatement += " AND F_TABLE_SCHEMA = '" + schema + "'";
+        }
+        
+        return readSRIDFromStatement(cx, metadataTableStatement);
+    }
+
+    /**
+     *  Reads the SRID from the SDO_ALL* views
+     */
+    private Integer lookupSRIDFromAllViews(String schemaName, String tableName, String columnName,
+            Connection cx) throws SQLException {
         StringBuffer allSdoSql = new StringBuffer("SELECT SRID FROM MDSYS.ALL_SDO_GEOM_METADATA WHERE ");
         allSdoSql.append( "TABLE_NAME='").append( tableName.toUpperCase() ).append("' AND ");
         allSdoSql.append( "COLUMN_NAME='").append( columnName.toUpperCase() ).append( "'");
-        if(schemaName != null)
+        if(schemaName != null) {
             allSdoSql.append(" AND OWNER='" + schemaName + "'");
+        }
 
-        Statement allSdoStatement = null;
-        ResultSet allSdoResult = null;
+        return readSRIDFromStatement(cx, allSdoSql.toString());
+    }
+
+    /**
+     * Reads the SRID from the SDO_USER* views
+     * @param tableName
+     * @param columnName
+     * @param cx
+     * @return
+     * @throws SQLException
+     */
+    private Integer lookupSRIDFromUserViews(String tableName, String columnName, Connection cx)
+            throws SQLException {
+        // we run this only if we can access the user views
+        if (!canAccessUserViews(cx)) {
+            return null;
+        }
+        
+        StringBuffer userSdoSql = new StringBuffer("SELECT SRID FROM MDSYS.USER_SDO_GEOM_METADATA WHERE ");
+        userSdoSql.append( "TABLE_NAME='").append( tableName.toUpperCase() ).append("' AND ");
+        userSdoSql.append( "COLUMN_NAME='").append( columnName.toUpperCase() ).append( "'");
+
+        return readSRIDFromStatement(cx, userSdoSql.toString());
+    }
+
+    private Integer readSRIDFromStatement(Connection cx, String sql) throws SQLException {
+        Statement userSdoStatement = null;
+        ResultSet userSdoResult = null;
         try {
-            allSdoStatement = cx.createStatement();
-            LOGGER.log(Level.FINE, "SRID check; {0} ", allSdoSql.toString());
-            allSdoResult = allSdoStatement.executeQuery(allSdoSql.toString());
-            if (allSdoResult.next()) {
-                Object srid = allSdoResult.getObject( 1 );
-                if ( srid == null ) {
-                    return null;
+            userSdoStatement = cx.createStatement();
+            LOGGER.log(Level.FINE, "SRID check; {0} ", sql);
+            userSdoResult = userSdoStatement.executeQuery(sql);
+            if (userSdoResult.next()) {
+                Object srid = userSdoResult.getObject( 1 );
+                if ( srid != null ) {
+                    //return the SRID number if it was found in the USER_SDO
+                    return ((Number) srid).intValue();
                 }
-                //return the SRID number if it was found in the ALL_SDO
-                return ((Number) srid).intValue();
-            } else {
-                return null;
             }
         } finally {
-            dataStore.closeSafe(allSdoResult);
-            dataStore.closeSafe(allSdoStatement);
+            dataStore.closeSafe(userSdoResult);
+            dataStore.closeSafe(userSdoStatement);
         }
+        
+        return null;
     }
     
     @Override
@@ -933,6 +1026,22 @@ public class OracleDialect extends PreparedStatementSQLDialect {
             boolean geodetic = isGeodeticSrid(srid, cx);
             att.getUserData().put(GEODETIC, geodetic);
         }
+    }
+
+    /**
+     * The geometry metadata table in use, if any
+     * @return
+     */
+    public String getGeometryMetadataTable() {
+        return geometryMetadataTable;
+    }
+
+    /**
+     * Sets the geometry metadata table
+     * @param geometryMetadataTable
+     */
+    public void setGeometryMetadataTable(String geometryMetadataTable) {
+        this.geometryMetadataTable = geometryMetadataTable;
     }
 
 }

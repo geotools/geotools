@@ -16,12 +16,8 @@
  */
 package org.geotools.data.oracle;
 
-import static org.geotools.jdbc.JDBCDataStoreFactory.DATABASE;
-import static org.geotools.jdbc.JDBCDataStoreFactory.DBTYPE;
-import static org.geotools.jdbc.JDBCDataStoreFactory.HOST;
-import static org.geotools.jdbc.JDBCDataStoreFactory.PASSWD;
-import static org.geotools.jdbc.JDBCDataStoreFactory.PORT;
-import static org.geotools.jdbc.JDBCDataStoreFactory.USER;
+import static org.geotools.data.oracle.OracleNGDataStoreFactory.GEOMETRY_METADATA_TABLE;
+import static org.geotools.jdbc.JDBCDataStoreFactory.*;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -31,6 +27,7 @@ import java.util.Properties;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
+import org.geotools.jdbc.SQLDialect;
 import org.geotools.test.FixtureUtilities;
 
 /**
@@ -54,6 +51,32 @@ public class OracleNGDataStoreFactoryTest extends JDBCTestSupport {
         OracleNGDataStoreFactory factory = new OracleNGDataStoreFactory();
         checkCreateConnection(factory, "oracle");
     }
+    
+    public void testGeometryMetadata() throws IOException {
+        OracleNGDataStoreFactory factory = new OracleNGDataStoreFactory();
+        Properties db = FixtureUtilities.loadFixture("oracle");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put(HOST.key, db.getProperty(HOST.key));
+        params.put(DATABASE.key, db.getProperty(DATABASE.key));
+        params.put(PORT.key, db.getProperty(PORT.key));
+        params.put(USER.key, db.getProperty(USER.key));
+        params.put(PASSWD.key, db.getProperty("password"));
+        params.put(DBTYPE.key, "oracle");
+        params.put(GEOMETRY_METADATA_TABLE.key, "geometry_columns_test");
+
+        assertTrue(factory.canProcess(params));
+        JDBCDataStore store = factory.createDataStore(params);
+        assertNotNull(store);
+        try {
+            // check dialect
+            OracleDialect dialect = (OracleDialect) store.getSQLDialect();
+
+            // check the metadata table has been set (other tests check it's actually working)
+            assertEquals("geometry_columns_test", dialect.getGeometryMetadataTable());
+        } finally {
+            store.dispose();
+        }
+    }
 
     private void checkCreateConnection(OracleNGDataStoreFactory factory, String dbtype) throws IOException {
         Properties db = FixtureUtilities.loadFixture("oracle");
@@ -63,7 +86,6 @@ public class OracleNGDataStoreFactoryTest extends JDBCTestSupport {
         params.put(PORT.key, db.getProperty(PORT.key));
         params.put(USER.key, db.getProperty(USER.key));
         params.put(PASSWD.key, db.getProperty("password"));
-        
         params.put(DBTYPE.key, dbtype);
 
         assertTrue(factory.canProcess(params));
@@ -78,5 +100,7 @@ public class OracleNGDataStoreFactoryTest extends JDBCTestSupport {
             store.dispose();
         }
     }
+    
+    
 
 }

@@ -2687,7 +2687,7 @@ public final class StreamingRenderer implements GTRenderer {
      */
     org.opengis.referencing.crs.CoordinateReferenceSystem getAttributeCRS(PropertyName geomName,
             FeatureType schema) {
-        if (geomName == null || "".equals (geomName.getPropertyName()) {
+        if (geomName == null || "".equals (geomName.getPropertyName())) {
             GeometryDescriptor geom = schema.getGeometryDescriptor();
             return geom.getType().getCoordinateReferenceSystem();
         } else {

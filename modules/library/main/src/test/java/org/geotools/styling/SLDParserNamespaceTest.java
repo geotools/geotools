@@ -31,9 +31,10 @@ import org.xml.sax.helpers.NamespaceSupport;
 import junit.framework.TestCase;
 
 /**
+ * Tests whether SLD Parser encodes Namespace in PropertyNames
  * 
- *
- * @source $URL$
+ * 
+ * @author Niels Charlier
  */
 public class SLDParserNamespaceTest extends TestCase {
 
@@ -52,7 +53,10 @@ public class SLDParserNamespaceTest extends TestCase {
         "      </ogc:PropertyIsEqualTo>"+
         "      </ogc:Filter>"+
         "      <PolygonSymbolizer>"+
-        "       <Fill>"+
+        "           <Geometry> " +
+        "              <ogc:PropertyName>gsml:shape</ogc:PropertyName>" +
+        "           </Geometry> " +
+        "        <Fill>"+
         "        <CssParameter name=\"fill\">#FF0000</CssParameter>"+
         "       </Fill>"+
         "      </PolygonSymbolizer>"+
@@ -81,6 +85,14 @@ public class SLDParserNamespaceTest extends TestCase {
         assert(expr instanceof PropertyName);
         NamespaceSupport ns = ((PropertyName) expr).getNamespaceContext();
         assertEquals(ns.getURI("xlink"), "http://www.w3.org/1999/xlink");
+        assertEquals(ns.getURI("gml"), "http://www.opengis.net/gml");
+        assertEquals(ns.getURI("gsml"), "urn:cgi:xmlns:CGI:GeoSciML:2.0");
+        
+        Symbolizer s = rule.getSymbolizers()[0];
+        expr = s.getGeometry();
+        assert(expr instanceof PropertyName);
+        ns = ((PropertyName) expr).getNamespaceContext();
+        assertEquals(ns.getURI("xlink"), null);
         assertEquals(ns.getURI("gml"), "http://www.opengis.net/gml");
         assertEquals(ns.getURI("gsml"), "urn:cgi:xmlns:CGI:GeoSciML:2.0");
         

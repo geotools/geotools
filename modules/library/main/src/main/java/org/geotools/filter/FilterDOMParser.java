@@ -45,6 +45,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * A dom based parser to build filters as per OGC 01-067
  *
  * @author Ian Turton, CCG
+ * @author Niels Charlier
  *
  *
  * @source $URL$
@@ -116,31 +117,6 @@ public final class FilterDOMParser {
     private FilterDOMParser() {
     }
     
-    private static NamespaceSupport getNameSpaces(Node node)
-    {
-        NamespaceSupport namespaces = new NamespaceSupport();
-        while (node != null)
-        {
-            NamedNodeMap atts = node.getAttributes();
-            
-            if (atts != null) {
-                for (int i=0; i<atts.getLength(); i++){
-                    Node att = atts.item(i);
-                    
-                    if (att.getNamespaceURI() != null
-                            && att.getNamespaceURI().equals("http://www.w3.org/2000/xmlns/")
-                            && namespaces.getURI(att.getLocalName()) == null){
-                        namespaces.declarePrefix(att.getLocalName(), att.getNodeValue());
-                    }
-                }
-            }
-            
-            node = node.getParentNode();
-        }
-        
-        return namespaces;
-    }
-
     /**
      * Parses the filter using DOM.
      *
@@ -151,11 +127,8 @@ public final class FilterDOMParser {
      * @task TODO: split up this insanely long method.
      */
     public static org.opengis.filter.Filter parseFilter(Node root) {
-        //NC - NameSpaceSupport
-        NamespaceSupport namespaces = getNameSpaces(root);
         
         final ExpressionDOMParser expressionDOMParser = new ExpressionDOMParser(FILTER_FACT);
-        expressionDOMParser.setNamespaceContext(namespaces);
         
         
         LOGGER.finer("parsingFilter " + root.getLocalName());
@@ -604,11 +577,7 @@ public final class FilterDOMParser {
     private static PropertyIsNull parseNullFilter(Node nullNode)
         throws IllegalFilterException {
         
-        //NC - NameSpaceSupport
-        NamespaceSupport namespaces = getNameSpaces(nullNode);
-        
         final ExpressionDOMParser expressionDOMParser = new ExpressionDOMParser(FILTER_FACT);
-        expressionDOMParser.setNamespaceContext(namespaces);
         
         LOGGER.finest("parsing null node: " + nullNode);
 

@@ -26,18 +26,27 @@ import junit.framework.TestCase;
 import org.geotools.data.complex.ComplexFeatureConstants;
 import org.geotools.feature.AttributeImpl;
 import org.geotools.feature.ComplexAttributeImpl;
+import org.geotools.feature.GeometryAttributeImpl;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.AttributeDescriptorImpl;
+import org.geotools.feature.type.GeometryDescriptorImpl;
+import org.geotools.feature.type.GeometryTypeImpl;
 import org.geotools.gml3.GMLSchema;
 import org.geotools.xs.XSSchema;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
+import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.Property;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.identity.FeatureId;
+import com.vividsolutions.jts.geom.EmptyGeometry;
+import com.vividsolutions.jts.geom.Geometry;
+
 /**
  * Tests for {@link ComplexAttributeConverterFactory}.
  * 
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
+ * @author Niels Charlier
  *
  *
  *
@@ -100,5 +109,16 @@ public class ComplexAttributeConverterFactoryTest extends TestCase {
         assertNotNull(id);
         assertEquals(id.getID(), "blah");
     }
+    
+    /**
+    * Test extracting geometry from geometryattribute should be successful.
+    */
+    public void testGeometry() {
+    	Geometry geometry = new EmptyGeometry();
+		GeometryAttribute geoatt = new GeometryAttributeImpl(geometry, new GeometryDescriptorImpl(new GeometryTypeImpl(new NameImpl(""), EmptyGeometry.class, null, false, false, null, null, null), new NameImpl(""), 0, 0, false, null), null);
+		Geometry geometry2 = Converters.convert(geoatt, Geometry.class);
+   		assertTrue(geometry == geometry2);
+    }
+   
     
 }

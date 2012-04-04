@@ -47,6 +47,7 @@ import com.vividsolutions.jts.geom.TopologyException;
  * can get away without a full parser here.
  *
  * @author iant
+ * @author Niels Charlier
  *
  *
  * @source $URL$
@@ -58,9 +59,6 @@ public final class ExpressionDOMParser {
     /** Factory for creating filters. */
     private FilterFactory2 ff;
     
-    /** Namespace Context for creating expressions */
-    private NamespaceSupport namespaceContext = null;
-
     /** Factory for creating geometry objects */
     private static GeometryFactory gfac = new GeometryFactory();
 
@@ -95,9 +93,30 @@ public final class ExpressionDOMParser {
     	ff = factory;
     }
     
-    /** Namespace Support Setter */
-    public void setNamespaceContext( NamespaceSupport namespaceContext ){
-        this.namespaceContext = namespaceContext;
+  
+    private static NamespaceSupport getNameSpaces(Node node)
+    {
+        NamespaceSupport namespaces = new NamespaceSupport();
+        while (node != null)
+        {
+            NamedNodeMap atts = node.getAttributes();
+            
+            if (atts != null) {
+                for (int i=0; i<atts.getLength(); i++){
+                    Node att = atts.item(i);
+                    
+                    if (att.getNamespaceURI() != null
+                            && att.getNamespaceURI().equals("http://www.w3.org/2000/xmlns/")
+                            && namespaces.getURI(att.getLocalName()) == null){
+                        namespaces.declarePrefix(att.getLocalName(), att.getNodeValue());
+                    }
+                }
+            }
+            
+            node = node.getParentNode();
+        }
+        
+        return namespaces;
     }
     
     /**
@@ -344,7 +363,7 @@ public final class ExpressionDOMParser {
             	//JD: trim whitespace here
             	String value = child.getFirstChild().getNodeValue();
             	value = value != null ? value.trim() : value;
-                PropertyName attribute = ff.property( value, namespaceContext );
+                PropertyName attribute = ff.property( value, getNameSpaces(root) );
 
                 //                attribute.setAttributePath(child.getFirstChild().getNodeValue());
                 return attribute;

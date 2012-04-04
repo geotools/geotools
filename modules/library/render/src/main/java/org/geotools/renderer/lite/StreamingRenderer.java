@@ -2658,15 +2658,14 @@ public final class StreamingRenderer implements GTRenderer {
 
             String geomName = null;
             if(geometry instanceof PropertyName) {
-                geomName = ((PropertyName) geometry).getPropertyName();
-                return getAttributeCRS(geomName, schema);
+                return getAttributeCRS((PropertyName) geometry, schema);
             } else if(geometry == null) {
                 return getAttributeCRS(null, schema);
             } else {
                 StyleAttributeExtractor attExtractor = new StyleAttributeExtractor();
                 geometry.accept(attExtractor, null);
-                for(String name : attExtractor.getAttributeNameSet()) {
-                    if(schema.getDescriptor(name) instanceof GeometryDescriptor) {
+                for(PropertyName name : attExtractor.getAttributes()) {
+                    if(name.evaluate(schema) instanceof GeometryDescriptor) {
                         return getAttributeCRS(name, schema);
                     }
                 }
@@ -2686,13 +2685,13 @@ public final class StreamingRenderer implements GTRenderer {
      * @param schema
      * @return
      */
-    org.opengis.referencing.crs.CoordinateReferenceSystem getAttributeCRS(String geomName,
+    org.opengis.referencing.crs.CoordinateReferenceSystem getAttributeCRS(PropertyName geomName,
             FeatureType schema) {
-        if (geomName == null || "".equals(geomName)) {
+        if (geomName == null || "".equals (geomName.getPropertyName()) {
             GeometryDescriptor geom = schema.getGeometryDescriptor();
             return geom.getType().getCoordinateReferenceSystem();
         } else {
-            GeometryDescriptor geom = (GeometryDescriptor) schema.getDescriptor( geomName );
+            GeometryDescriptor geom = (GeometryDescriptor) geomName.evaluate(schema);
             return geom.getType().getCoordinateReferenceSystem();
         }
     }

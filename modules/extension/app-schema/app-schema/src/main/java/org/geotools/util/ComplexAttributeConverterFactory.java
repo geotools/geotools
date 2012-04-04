@@ -24,13 +24,14 @@ import org.geotools.feature.AttributeImpl;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
+import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.Property;
 import org.opengis.filter.identity.FeatureId;
 
 /**
  * This converter retrieves the values out of attributes. 
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering) 
- *
+ * @author Niels Charlier
  *
  *
  *
@@ -59,6 +60,20 @@ public class ComplexAttributeConverterFactory implements ConverterFactory {
                 }
             };
         }
+        
+        //GeometryAttribute unwrapper
+        if (GeometryAttribute.class.isAssignableFrom(source)) {
+            return new Converter() {
+                public Object convert(Object source, Class target) throws Exception {
+                    if (source instanceof GeometryAttribute) {
+                        return Converters.convert(((GeometryAttribute) source).getValue(), target);
+                            
+                    }
+                    return null;
+                }
+            };
+        }
+        
         // String to FeatureId comparison
         if (FeatureId.class.isAssignableFrom(target) && String.class.isAssignableFrom(source)) {
             return new Converter() {

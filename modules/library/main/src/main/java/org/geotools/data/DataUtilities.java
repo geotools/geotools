@@ -63,12 +63,14 @@ import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.data.store.ArrayDataStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
+import org.geotools.feature.AttributeImpl;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.FeatureTypes;
+import org.geotools.feature.GeometryAttributeImpl;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -88,8 +90,10 @@ import org.geotools.util.Converters;
 import org.geotools.util.Utilities;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.feature.Feature;
+import org.opengis.feature.FeatureFactory;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.IllegalAttributeException;
+import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -2498,6 +2502,30 @@ public class DataUtilities {
                 return false;
             }
         };
+    }
+    
+    
+    /**
+     * Create a non-simple template feature from feature type schema
+     * 
+     * @param schema the feature type
+     * @return a template feature
+     */
+    public static Feature templateFeature(FeatureType schema) {
+    	FeatureFactory ff = CommonFactoryFinder.getFeatureFactory(null);
+    	Collection<Property> value = new ArrayList<Property>();
+    	
+    	for (PropertyDescriptor pd : schema.getDescriptors()) {
+    		if (pd instanceof AttributeDescriptor) {
+    			if (pd instanceof GeometryDescriptor) {
+    				value.add(new GeometryAttributeImpl (((AttributeDescriptor) pd).getDefaultValue(), (GeometryDescriptor) pd, null) );
+    			} else {
+    				value.add(new AttributeImpl (((AttributeDescriptor) pd).getDefaultValue(), (AttributeDescriptor) pd, null) );
+    			}
+    		}                
+        }
+    	
+    	return ff.createFeature(value, (FeatureType)  schema, SimpleFeatureBuilder.createDefaultFeatureId());    		
     }
 
 }

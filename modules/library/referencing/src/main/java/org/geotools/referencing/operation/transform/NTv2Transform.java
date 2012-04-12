@@ -35,7 +35,9 @@ import org.geotools.referencing.factory.IdentifiedObjectSet;
 import org.geotools.referencing.factory.gridshift.GridShiftLocator;
 import org.geotools.referencing.factory.gridshift.NTv2GridShiftFactory;
 import org.geotools.referencing.operation.MathTransformProvider;
+import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
+import org.opengis.geometry.DirectPosition;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
 import org.opengis.parameter.ParameterNotFoundException;
@@ -131,6 +133,38 @@ public class NTv2Transform extends AbstractMathTransform implements MathTransfor
         };
         
         return null;
+    }
+    
+    /**
+     * Returns a hash value for this transform.
+     */
+    @Override
+    public int hashCode() {
+        return this.grid.hashCode();
+    }
+    
+    /**
+     * Compares the specified object with this one for equality.
+     * Checks if {@code object} is {@code this} same instance, or a NTv2Transform
+     * with the same parameter values.
+     *
+     * @param object The object to compare with this transform.
+     * @return {@code true} if the given object is {@code this}, or
+     *         a NTv2Transform with same parameter values, which would
+     *         mean that given identical source position, the
+     *         {@linkplain #transform(DirectPosition,DirectPosition) transformed}
+     *         position would be the same.
+     */
+    @Override
+    public boolean equals(final Object object) {
+        if(object==this) return true;
+        
+        if (object!=null && getClass().equals(object.getClass())) {
+            final NTv2Transform that = (NTv2Transform) object;
+            return Utilities.equals(this.getParameterValues(),
+                                    that.getParameterValues());
+        }
+        return false;
     }
     
     /**

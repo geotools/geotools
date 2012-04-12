@@ -106,6 +106,12 @@ public class NTv2TransformTest {
             new NTv2Transform(new URI(INEXISTENT_GRID));
         } catch (NoSuchIdentifierException e) {
             return;
+        }
+        
+        try {
+            new NTv2Transform(new URI(INEXISTENT_GRID));
+        } catch (NoSuchIdentifierException e) {
+            return;
         }            
     }
     
@@ -148,6 +154,13 @@ public class NTv2TransformTest {
         transform.inverseTransform(TEST_POINT_DST, 0, p, 0, 1);
         assertEquals(p[0], TEST_POINT_SRC[0], TOLERANCE);
         assertEquals(p[1], TEST_POINT_SRC[1], TOLERANCE);
+    }
+    
+    @Test
+    public void testHashCodeEquals() throws Exception {
+        NTv2Transform t2 = new NTv2Transform(new URI(TEST_GRID));
+        assertEquals(transform, t2);
+        assertEquals(transform.hashCode(), t2.hashCode());
     }
 
 }

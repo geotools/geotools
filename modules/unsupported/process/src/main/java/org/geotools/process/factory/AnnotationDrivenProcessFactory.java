@@ -41,7 +41,14 @@ import org.opengis.util.ProgressListener;
 
 /**
  * A process factory that uses annotations to determine much of the metadata
- * needed to describe a process.
+ * needed to describe a {@link Process}.
+ * <p>
+ * The annotations supported are:
+ * <ul>
+ * <li>{@link DescribeProcess} - describes the process functionality
+ * <li>{@link DescribeResult} - describes a process result
+ * <li>{@link DescribeParameter} - describes a process parameter
+ * </ul>
  * 
  * @author jody
  * @author aaime
@@ -339,8 +346,12 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
     protected abstract Object createProcessBean(Name name);
 
     /**
-     * Executes the method as a process; when process execute is called the method will be
-     * invoked to produce a result.
+     * A wrapper which executes the given method as a {@link Process}.
+     * When the process {@link #execute(Map, ProgressListener)} is called 
+     * the method is invoked to produce a result.
+     * The mapping from the process parameters to the method parameters 
+     * is determined by the {@link DescribeParameter} annotations on the method parameters.
+     * 
      */
     class InvokeMethodProcess implements Process {
         /**
@@ -352,6 +363,12 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
          */
         Object targetObject;
 
+        /**
+         * Creates a wrapper for invoking a method as a process
+         * 
+         * @param method method to invoke.  May be static
+         * @param targetObject object used to invoke method.  May be null
+         */
         public InvokeMethodProcess(Method method, Object targetObject) {
             this.method = method;
             this.targetObject = targetObject;
@@ -518,22 +535,38 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
     
     
     /**
-     * Executes the method as a rendering process.
+     * A wrapper which executes the given method as a {@linkplain RenderingProcess}.
+     * When the process {@link #execute(Map, ProgressListener)} is called 
+     * the method is invoked to produce a result.
+     * The mapping from the process parameters to the method parameters 
+     * is determined by the {@link DescribeParameter} annotations on the method parameters.
      * <p>
-     * This implementation supports the additional methods required for RenderingProcess:
+     * This implementation supports the additional methods required for a RenderingProcess:
      * <ul>
      * <li>invertQuery
      * <li>invertGridGeometry
      * </ul>
+     * The signature of these methods in the Process class is annotation-driven.
+     * Each method must accept a {@link Query} and a {@link GridGeometry} as its final parameters,
+     * but may have any number of parameters preceding them.
+     * These parameters must be a subset of the parameters of the given execution
+     * method, and they use the same annotation to describe them.
+     * 
      */
     class InvokeMethodRenderingProcess extends InvokeMethodProcess implements RenderingProcess {
         
+        /**
+         * Creates a wrapper for invoking a method as a process
+         * 
+         * @param method method to invoke.  May be static
+         * @param targetObject object used to invoke method.  May be null
+         */
         public InvokeMethodRenderingProcess(Method method, Object targetObject) {
             super(method, targetObject);
         }
 
         public Query invertQuery(Map<String, Object> input, Query targetQuery,
-                GridGeometry gridGeometry) throws ProcessException {
+                GridGeometry targetGridGeometry) throws ProcessException {
             Method invertQueryMethod = lookupInvertQuery(targetObject, method.getName() );
 
             if (invertQueryMethod == null) {
@@ -543,7 +576,7 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
             try {
                 Object[] args = buildProcessArguments(invertQueryMethod, input, null, true);
                 args[args.length - 2] = targetQuery;
-                args[args.length - 1] = gridGeometry;
+                args[args.length - 1] = targetGridGeometry;
 
 
                 return (Query) invertQueryMethod.invoke(targetObject, args);

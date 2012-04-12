@@ -41,8 +41,12 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 
 /**
- * A function wrapping a {@link Process} with a single output. All inputs to the function are
- * supposed to evaluate to Map<String, Object> where the key is the name of an argument and the
+ * A wrapper allowing a {@link Process} with a single output to be called as a {@link Function}.
+ * Since Function parameters are positional and Process parameters are named,
+ * the following strategy is used to allow specifying named Process parameters
+ * as function inputs. 
+ * All inputs to the function must evaluate to Map<String, Object>,
+ * with a single entry where the key is the name of a process parameter and the
  * value is the argument value
  * 
  * @author Andrea Aime - GeoSolutions
@@ -96,7 +100,41 @@ class ProcessFunction implements Function {
     }
 
     public Object evaluate(Object object) {
-        // collect the entries
+        Map<String, Object> processInputs = evaluateInputs(object);
+
+        // execute the process
+        try {
+            ExceptionProgressListener listener = new ExceptionProgressListener();
+            Map<String, Object> results = process.execute(processInputs, listener);
+            
+            // some processes have the bad habit of not throwing exceptions, but to
+            // report them to the listener
+            if(listener.getExceptions().size() > 0) {
+                // uh oh, an exception occurred during processing
+                Throwable t = listener.getExceptions().get(0);
+                throw new RuntimeException("Failed to evaluate process function, error is: " 
+                        + t.getMessage(), t);
+            }
+            
+            return getResult(results, processInputs);
+        } catch (ProcessException e) {
+            throw new RuntimeException("Failed to evaluate the process function, error is: "
+                    + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Evaluates the process input expressions.
+     * The object provides the context for evaluating the input expressions,
+     * and may be null if no context is available
+     * (for instance, when being called to evaluation the inputs
+     * for the {@link RenderingProcessFunction} inversion methods).
+     * 
+     * @param object the object to evaluate the input expressions against.
+     * @return the map of inputs
+     */
+	protected Map<String, Object> evaluateInputs(Object object) {
+		// collect the entries
         Map<String, Object> processInputs = new HashMap<String, Object>();
         for (Expression input : inputExpressions) {
             Object result = input.evaluate(object, Map.class);
@@ -168,27 +206,8 @@ class ProcessFunction implements Function {
                 }
             }
         }
-
-        // execute the process
-        try {
-            ExceptionProgressListener listener = new ExceptionProgressListener();
-            Map<String, Object> results = process.execute(processInputs, listener);
-            
-            // some processes have the bad habit of not throwing exceptions, but to
-            // report them to the listener
-            if(listener.getExceptions().size() > 0) {
-                // uh oh, an exception occurred during processing
-                Throwable t = listener.getExceptions().get(0);
-                throw new RuntimeException("Failed to evaluate process function, error is: " 
-                        + t.getMessage(), t);
-            }
-            
-            return getResult(results, processInputs);
-        } catch (ProcessException e) {
-            throw new RuntimeException("Failed to evaluate the process function, error is: "
-                    + e.getMessage(), e);
-        }
-    }
+		return processInputs;
+	}
 
     private Object getResult(Map<String, Object> results, Map<String, Object> processInputs) {
         if (results.size() == 1) {

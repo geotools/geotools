@@ -259,23 +259,25 @@ public class NTv2Transform extends AbstractMathTransform implements MathTransfor
         
         try {
             GridShift shift = new GridShift();
-            for (int i=0; i<srcPts.length; i=i+2) {
-                shift.setLonPositiveEastDegrees(srcPts[i]);
-                shift.setLatDegrees(srcPts[i+1]);
+            while(--numPts >= 0) {
+                shift.setLonPositiveEastDegrees(srcPts[srcOff++]);
+                shift.setLatDegrees(srcPts[srcOff++]);
                 if (forward) {
                     shifted = gridShift.gridShiftForward(shift);
                 } else {
                     shifted = gridShift.gridShiftReverse(shift);
                 }
                 if (shifted) {
-                    dstPts[i]=shift.getShiftedLonPositiveEastDegrees();
-                    dstPts[i+1]=shift.getShiftedLatDegrees();
+                    dstPts[dstOff++]=shift.getShiftedLonPositiveEastDegrees();
+                    dstPts[dstOff++]=shift.getShiftedLatDegrees();
                 } else {
-                    LOGGER.log(Level.WARNING, "Point (" + srcPts[i] + ", " + srcPts[i+1] +
-                            ") is not covered by '" + this.gridShift + "' NTv2 grid, " +
-            		    " it will not be shifted.");
-                    dstPts[i]=srcPts[i];
-                    dstPts[i+1]=srcPts[i+1];                    
+                    if(LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.log(Level.FINE, "Point (" + srcPts[srcOff-2] + ", " + srcPts[srcOff-1] +
+                                ") is not covered by '" + this.grid + "' NTv2 grid," +
+                		    " it will not be shifted.");
+                    }
+                    dstPts[dstOff++]=srcPts[srcOff-2];
+                    dstPts[dstOff++]=srcPts[srcOff-1];
                 }
             }
         } catch (IOException e) {

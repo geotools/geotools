@@ -32,6 +32,7 @@ import org.geotools.feature.collection.DecoratingSimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.GeometryTypeImpl;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.Converters;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -86,20 +87,43 @@ public class BufferFeatureCollection implements GSProcess {
     /**
      * Wrapper that will trigger the buffer computation as features are requested
      */
-    static class BufferedFeatureCollection extends DecoratingSimpleFeatureCollection {
+    static class BufferedFeatureCollection extends SimpleProcessingCollection {
 
         Double distance;
 
         String attribute;
-
-        SimpleFeatureType schema;
+        
+        SimpleFeatureCollection delegate;
 
         public BufferedFeatureCollection(SimpleFeatureCollection delegate, String attribute,
                 Double distance) {
-            super(delegate);
             this.distance = distance;
             this.attribute = attribute;
+            this.delegate = delegate;
 
+            
+        }
+
+        @Override
+        public SimpleFeatureIterator features() {
+            return new BufferedFeatureIterator(delegate, this.attribute, this.distance, getSchema());
+        }
+
+        @Override
+        public ReferencedEnvelope getBounds() {
+            if(attribute == null) {
+                // in this case we just have to expand the original collection bounds
+                ReferencedEnvelope re = delegate.getBounds();
+                re.expandBy(distance);
+                return re;
+            } else {
+                // unlucky case, we need to actually compute by hand...
+                return getFeatureBounds();
+            }
+        }
+
+        @Override
+        protected SimpleFeatureType buildTargetFeatureType() {
             // create schema
             SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
             for (AttributeDescriptor descriptor : delegate.getSchema().getAttributeDescriptors()) {
@@ -120,30 +144,15 @@ public class BufferFeatureCollection implements GSProcess {
             tb.setDescription(delegate.getSchema().getDescription());
             tb.setCRS(delegate.getSchema().getCoordinateReferenceSystem());
             tb.setName(delegate.getSchema().getName());
-            this.schema = tb.buildFeatureType();
+            return tb.buildFeatureType();
         }
 
         @Override
-        public SimpleFeatureIterator features() {
-            return new BufferedFeatureIterator(delegate, this.attribute, this.distance, getSchema());
+        public int size() {
+            return delegate.size();
         }
 
-        @Override
-        public Iterator<SimpleFeature> iterator() {
-            return new WrappingIterator(features());
-        }
-
-        @Override
-        public void close(Iterator<SimpleFeature> close) {
-            if (close instanceof WrappingIterator) {
-                ((WrappingIterator) close).close();
-            }
-        }
-
-        @Override
-        public SimpleFeatureType getSchema() {
-            return this.schema;
-        }
+      
     }
 
     /**

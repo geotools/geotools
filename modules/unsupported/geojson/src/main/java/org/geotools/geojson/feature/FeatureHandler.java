@@ -208,9 +208,7 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
         SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
         typeBuilder.setName("feature");
         typeBuilder.setNamespaceURI("http://geotools.org");
-        if (crs != null) {
-            typeBuilder.setCRS(crs);
-        }
+        typeBuilder.setCRS(crs);
 
         if (properties != null) {
             for (int i = 0; i < properties.size(); i++) {

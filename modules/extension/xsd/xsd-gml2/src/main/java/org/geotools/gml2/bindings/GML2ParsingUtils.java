@@ -173,7 +173,7 @@ public class GML2ParsingUtils {
         SimpleFeatureTypeBuilder ftBuilder = new SimpleFeatureTypeBuilder();
         ftBuilder.setName(node.getComponent().getName());
         ftBuilder.setNamespaceURI(node.getComponent().getNamespace());
-
+        ftBuilder.setCRS(null); //JD: set explicitly to null to avoid warning
         //mandatory gml attributes
         if (!node.hasChild("description")) {
             ftBuilder.add("description", String.class);

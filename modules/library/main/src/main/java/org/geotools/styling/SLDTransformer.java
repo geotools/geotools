@@ -993,6 +993,10 @@ public class SLDTransformer extends TransformerBase {
             if ((fts.featureTypeNames() != null) && (fts.featureTypeNames().size() > 0)) {
                 element("FeatureTypeName", fts.featureTypeNames().iterator().next().toString());
             }
+            
+            if (fts.getTransformation() != null) {
+                element("Transformation", fts.getTransformation());
+            }
 
             String[] sti = fts.getSemanticTypeIdentifiers();
 

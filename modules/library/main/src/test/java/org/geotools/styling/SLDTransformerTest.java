@@ -27,6 +27,7 @@ import static org.custommonkey.xmlunit.XMLUnit.setXpathNamespaceContext;
 import java.awt.Color;
 import java.io.IOException;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -996,5 +997,61 @@ public class SLDTransformerTest {
         
         // compare
         assertEquals("Perpendicular offset of LineSymbolizer has not been correctly ex- and reimported",ls.getPerpendicularOffset(),copy.getPerpendicularOffset());
+    }
+    
+       
+    /**
+     * Make sure the FeatureTypeStyle Transformation element survives a SLD to Style to SLD round
+     * trip.
+     * 
+     * @throws Exception if an error occurs
+     */
+    @Test
+    public void testFeatureTypeStyleTransformation() throws Exception {
+
+        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                + "<sld:UserStyle xmlns=\"http://www.opengis.net/sld\" "
+                + "    xmlns:sld=\"http://www.opengis.net/sld\" "
+                + "    xmlns:ogc=\"http://www.opengis.net/ogc\" "
+                + "    xmlns:gml=\"http://www.opengis.net/gml\">"
+                + "    <sld:Name>Default Styler</sld:Name>"
+                + "    <sld:Title/>"
+                + "    <sld:FeatureTypeStyle>"
+                + "        <sld:Name>Buffer</sld:Name>"
+                + "        <sld:Transformation>"
+                + "            <ogc:Function name=\"buffer\">"
+                + "               <ogc:PropertyName>the_geom</ogc:PropertyName>"
+                + "               <ogc:Literal>500</ogc:Literal>"
+                + "            </ogc:Function>"
+                + "        </sld:Transformation>"
+                + "        <sld:Rule>"
+                + "            <sld:LineSymbolizer>"
+                + "                <sld:Stroke>"
+                + "                    <sld:CssParameter name=\"stroke\">#312624</sld:CssParameter>"
+                + "                    <sld:CssParameter name=\"stroke-width\">0.1</sld:CssParameter>"
+                + "                </sld:Stroke>" + "            </sld:LineSymbolizer>"
+                + "            <sld:PolygonSymbolizer>" + "                <sld:Fill>"
+                + "                    <sld:CssParameter name=\"fill\">#f5deb3</sld:CssParameter>"
+                + "                </sld:Fill>" + "            </sld:PolygonSymbolizer>"
+                + "       </sld:Rule>" + "    </sld:FeatureTypeStyle>" + "</sld:UserStyle>";
+
+        StringReader reader = new StringReader(xml);
+        SLDParser sldParser = new SLDParser(sf, reader);
+
+        Style[] styles = sldParser.readXML();
+        assertNotNull("parsed xml", styles);
+        assertTrue("parsed xml into style", styles.length > 0);
+
+        SLDTransformer styleTransform = new SLDTransformer();
+        styleTransform.setIndentation(2);
+        StringWriter writer = new StringWriter();
+        styleTransform.transform(styles[0], writer);
+        String actualXml = writer.toString();
+        assertTrue(actualXml.contains("<sld:Transformation>"));
+        assertTrue(actualXml.contains("<ogc:Function name=\"buffer\">"));
+        assertTrue(actualXml.contains("<ogc:PropertyName>the_geom</ogc:PropertyName>"));
+        assertTrue(actualXml.contains("<ogc:Literal>500</ogc:Literal>"));
+        assertTrue(actualXml.contains("</ogc:Function>"));
+        assertTrue(actualXml.contains("</sld:Transformation>"));
     }
 }

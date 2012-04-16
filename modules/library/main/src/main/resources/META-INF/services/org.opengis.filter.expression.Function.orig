@@ -70,8 +70,6 @@ org.geotools.filter.function.FilterFunction_numInteriorRing
 org.geotools.filter.function.FilterFunction_minimumCircle
 org.geotools.filter.function.FilterFunction_minimumRectangle
 org.geotools.filter.function.FilterFunction_interiorRingN
-org.geotools.filter.function.FilterFunction_octagonalEnvelope
-org.geotools.filter.function.FilterFunction_minimumDiameter
 org.geotools.filter.function.FilterFunction_strConcat
 org.geotools.filter.function.FilterFunction_strEndsWith
 org.geotools.filter.function.FilterFunction_strStartsWith

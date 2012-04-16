@@ -26,6 +26,7 @@ import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.OctagonalEnvelope;
 import com.vividsolutions.jts.io.WKTReader;
 
 
@@ -448,6 +449,18 @@ import com.vividsolutions.jts.io.WKTReader;
          if (g == null) return null;
          MinimumDiameter min = new MinimumDiameter(g);
          return min.getMinimumRectangle();
+     }
+
+     static public Geometry octagonalEnvelope(Geometry arg0) {
+         if (arg0 == null) return null;
+         OctagonalEnvelope env = new OctagonalEnvelope(arg0);
+         return env.toGeometry(arg0.getFactory());
+     }
+     
+     static public Geometry minimumDiameter(Geometry arg0) {
+         if (arg0 == null) return null;
+         MinimumDiameter minDiameter = new MinimumDiameter(arg0);
+         return minDiameter.getDiameter();
      }
 
  	//--------------------------------------------------------------------------

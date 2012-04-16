@@ -546,14 +546,14 @@ import com.vividsolutions.jts.io.WKTReader;
      static public String strSubstring(String s1, Integer beg, Integer end)
      {
         if (s1 == null || beg == null || end == null) return null;
-        if (beg < 0 || end < 0 || beg >= s1.length() || end >= s1.length()) return null;
+        if (beg < 0 || end > s1.length() || beg > end) return null;
      	return s1.substring(beg,end);
      }
   
      static public String strSubstringStart(String s1, Integer beg)
      {
         if (s1 == null || beg == null) return null;
-        if (beg < 0 || beg >= s1.length()) return null;
+        if (beg < 0 || beg > s1.length()) return null;
      	return s1.substring(beg);
      }
      

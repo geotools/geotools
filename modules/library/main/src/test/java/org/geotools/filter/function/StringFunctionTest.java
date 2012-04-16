@@ -17,6 +17,7 @@
 package org.geotools.filter.function;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Test;
@@ -91,4 +92,70 @@ public class StringFunctionTest  {
         assertEquals("4", ff.function("strPosition", ff.literal("l"), ff.literal("hello"), 
                 ff.literal("backToFront")).evaluate(null, String.class));
     }
+
+    @Test
+    public void testStrSubstring() throws Exception {
+        // test bad ranges return null
+        assertNull(ff.function("strSubstring", ff.literal("ABCD"), ff.literal(-1), ff.literal(2))
+                .evaluate(null));
+        assertNull(ff.function("strSubstring", ff.literal("ABCD"), ff.literal(2), ff.literal(5))
+                .evaluate(null));
+        assertNull(ff.function("strSubstring", ff.literal("ABCD"), ff.literal(3), ff.literal(2))
+                .evaluate(null));
+        // test empty string input
+        assertEquals("", ff.function("strSubstring", ff.literal(""), ff.literal(0), ff.literal(0))
+                .evaluate(null));
+        // test empty string output
+        assertEquals("",
+                ff.function("strSubstring", ff.literal("ABCD"), ff.literal(0), ff.literal(0))
+                        .evaluate(null));
+        assertEquals("",
+                ff.function("strSubstring", ff.literal("ABCD"), ff.literal(2), ff.literal(2))
+                        .evaluate(null));
+        assertEquals("",
+                ff.function("strSubstring", ff.literal("ABCD"), ff.literal(4), ff.literal(4))
+                        .evaluate(null));
+        // test non-empty substrings
+        assertEquals("ABCD",
+                ff.function("strSubstring", ff.literal("ABCD"), ff.literal(0), ff.literal(4))
+                        .evaluate(null));
+        assertEquals("A",
+                ff.function("strSubstring", ff.literal("ABCD"), ff.literal(0), ff.literal(1))
+                        .evaluate(null));
+        assertEquals("AB",
+                ff.function("strSubstring", ff.literal("ABCD"), ff.literal(0), ff.literal(2))
+                        .evaluate(null));
+        assertEquals("BC",
+                ff.function("strSubstring", ff.literal("ABCD"), ff.literal(1), ff.literal(3))
+                        .evaluate(null));
+        assertEquals("CD",
+                ff.function("strSubstring", ff.literal("ABCD"), ff.literal(2), ff.literal(4))
+                        .evaluate(null));
+        assertEquals("D",
+                ff.function("strSubstring", ff.literal("ABCD"), ff.literal(3), ff.literal(4))
+                        .evaluate(null));
+    }
+
+    @Test
+    public void testStrSubstringStart() throws Exception {
+        // test bad index returns null
+        assertNull(ff.function("strSubstringStart", ff.literal("ABCD"), ff.literal(-1)).evaluate(
+                null));
+        assertNull(ff.function("strSubstringStart", ff.literal("ABCD"), ff.literal(5)).evaluate(
+                null));
+        // test empty string input
+        assertEquals("",
+                ff.function("strSubstringStart", ff.literal(""), ff.literal(0)).evaluate(null));
+        // test empty string output
+        assertEquals("", ff.function("strSubstringStart", ff.literal("ABCD"), ff.literal(4))
+                .evaluate(null));
+        // test non-empty substrings
+        assertEquals("ABCD", ff.function("strSubstringStart", ff.literal("ABCD"), ff.literal(0))
+                .evaluate(null));
+        assertEquals("CD", ff.function("strSubstringStart", ff.literal("ABCD"), ff.literal(2))
+                .evaluate(null));
+        assertEquals("D", ff.function("strSubstringStart", ff.literal("ABCD"), ff.literal(3))
+                .evaluate(null));
+    }
+
 }

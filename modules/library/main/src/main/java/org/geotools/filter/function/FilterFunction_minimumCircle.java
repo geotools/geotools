@@ -16,29 +16,23 @@ package org.geotools.filter.function;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+import org.geotools.filter.FunctionExpression;
 import org.geotools.filter.FunctionExpressionImpl;
-import org.geotools.filter.capability.FunctionNameImpl;
-import org.opengis.filter.capability.FunctionName;
 
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * A FilterFunction that expects a Geometry and returns it's minimum bounding circle.
  * @author Jared Erickson
- *
- *
- * @source $URL$
  */
-public class FilterFunction_minimumCircle extends FunctionExpressionImpl {
-
-    public static FunctionName NAME = new FunctionNameImpl("mincircle","geometry");
+public class FilterFunction_minimumCircle extends FunctionExpressionImpl implements
+        FunctionExpression {
 
     /**
      * Create a new FilterFunction_minimumCircle instance
      */
     public FilterFunction_minimumCircle() {
         super("mincircle");
-        functionName = NAME;
     }
 
     /**

@@ -438,15 +438,15 @@ import com.vividsolutions.jts.io.WKTReader;
            return _this.getInteriorRingN(arg1);
      }
      
-     static public Geometry minimumCircle(Geometry arg0) {
-         if (arg0 == null) return null;
-         MinimumBoundingCircle circle = new MinimumBoundingCircle(arg0);
+     static public Geometry minimumCircle(Geometry g) {
+         if (g == null) return null;
+         MinimumBoundingCircle circle = new MinimumBoundingCircle(g);
          return circle.getCircle();
      }
      
-     static public Geometry minimumRectangle(Geometry arg0) {
-         if (arg0 == null) return null;
-         MinimumDiameter min = new MinimumDiameter(arg0);
+     static public Geometry minimumRectangle(Geometry g) {
+         if (g == null) return null;
+         MinimumDiameter min = new MinimumDiameter(g);
          return min.getMinimumRectangle();
      }
 

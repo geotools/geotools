@@ -51,17 +51,17 @@ import org.geotools.styling.UserLayer;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 
-
 /**
  * Searches for translucent symbolizers
- *
+ * 
  * @author jones
- *
- *
+ * 
+ * 
  * @source $URL$
  */
 public class OpacityFinder implements StyleVisitor {
     private Class[] acceptableTypes;
+
     public boolean hasOpacity;
 
     public OpacityFinder(Class[] acceptableTypes) {
@@ -70,7 +70,7 @@ public class OpacityFinder implements StyleVisitor {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Style)
      */
     public void visit(Style style) {
@@ -87,7 +87,7 @@ public class OpacityFinder implements StyleVisitor {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Rule)
      */
     public void visit(Rule rule) {
@@ -104,7 +104,7 @@ public class OpacityFinder implements StyleVisitor {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.FeatureTypeStyle)
      */
     public void visit(FeatureTypeStyle fts) {
@@ -121,7 +121,7 @@ public class OpacityFinder implements StyleVisitor {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Fill)
      */
     public void visit(Fill fill) {
@@ -150,6 +150,13 @@ public class OpacityFinder implements StyleVisitor {
                 } else if (obj instanceof Byte) {
                     Byte i = (Byte) obj;
                     opacity = i.floatValue();
+                } else if (obj instanceof String) {
+                    try {
+                        Double value = Double.valueOf((String) obj);
+                        opacity = value.floatValue();
+                    } catch (NumberFormatException e) {
+                        return;
+                    }
                 } else {
                     return;
                 }
@@ -162,7 +169,7 @@ public class OpacityFinder implements StyleVisitor {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Stroke)
      */
     public void visit(Stroke stroke) {
@@ -171,7 +178,7 @@ public class OpacityFinder implements StyleVisitor {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Symbolizer)
      */
     public void visit(Symbolizer sym) {
@@ -189,11 +196,16 @@ public class OpacityFinder implements StyleVisitor {
             PolygonSymbolizer ps = (PolygonSymbolizer) sym;
             ps.accept(this);
         }
+
+        if (sym instanceof RasterSymbolizer) {
+            RasterSymbolizer rs = (RasterSymbolizer) sym;
+            rs.accept(this);
+        }
     }
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PointSymbolizer)
      */
     public void visit(PointSymbolizer ps) {
@@ -216,33 +228,33 @@ public class OpacityFinder implements StyleVisitor {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.LineSymbolizer)
      */
     public void visit(LineSymbolizer line) {
         if (isAcceptable(line)) {
-            if( line.getStroke()!=null )
-            line.getStroke().accept(this);
+            if (line.getStroke() != null)
+                line.getStroke().accept(this);
         }
     }
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PolygonSymbolizer)
      */
     public void visit(PolygonSymbolizer poly) {
         if (isAcceptable(poly)) {
-            if( poly.getStroke()!=null )
+            if (poly.getStroke() != null)
                 poly.getStroke().accept(this);
-            if( poly.getFill()!=null)
+            if (poly.getFill() != null)
                 poly.getFill().accept(this);
         }
     }
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.TextSymbolizer)
      */
     public void visit(TextSymbolizer text) {
@@ -250,16 +262,23 @@ public class OpacityFinder implements StyleVisitor {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.RasterSymbolizer)
      */
     public void visit(RasterSymbolizer raster) {
-        // TODO Auto-generated method stub
+        if (isAcceptable(raster)) {
+            if (raster.getOpacity() != null) {
+                checkOpacity(raster.getOpacity());
+            }
+            if (raster.getColorMap() != null) {
+                raster.getColorMap().accept(this);
+            }
+        }
     }
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Graphic)
      */
     public void visit(Graphic gr) {
@@ -268,7 +287,7 @@ public class OpacityFinder implements StyleVisitor {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Mark)
      */
     public void visit(Mark mark) {
@@ -277,7 +296,7 @@ public class OpacityFinder implements StyleVisitor {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.ExternalGraphic)
      */
     public void visit(ExternalGraphic exgr) {
@@ -286,7 +305,7 @@ public class OpacityFinder implements StyleVisitor {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PointPlacement)
      */
     public void visit(PointPlacement pp) {
@@ -295,7 +314,7 @@ public class OpacityFinder implements StyleVisitor {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.AnchorPoint)
      */
     public void visit(AnchorPoint ap) {
@@ -304,7 +323,7 @@ public class OpacityFinder implements StyleVisitor {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Displacement)
      */
     public void visit(Displacement dis) {
@@ -313,7 +332,7 @@ public class OpacityFinder implements StyleVisitor {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.LinePlacement)
      */
     public void visit(LinePlacement lp) {
@@ -322,7 +341,7 @@ public class OpacityFinder implements StyleVisitor {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Halo)
      */
     public void visit(Halo halo) {
@@ -331,70 +350,73 @@ public class OpacityFinder implements StyleVisitor {
 
     /**
      * DOCUMENT ME!
-     *
+     * 
      * @param args
      */
     public static void main(String[] args) {
         // TODO Auto-generated method stub
     }
 
-	public void visit(StyledLayerDescriptor sld) {
-		// TODO Auto-generated method stub
-		
-	}
+    public void visit(StyledLayerDescriptor sld) {
+        // TODO Auto-generated method stub
 
-	public void visit(NamedLayer layer) {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
-	public void visit(UserLayer layer) {
-		// TODO Auto-generated method stub
-		
-	}
+    public void visit(NamedLayer layer) {
+        // TODO Auto-generated method stub
 
-	public void visit(FeatureTypeConstraint ftc) {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
-	public void visit(ColorMap arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+    public void visit(UserLayer layer) {
+        // TODO Auto-generated method stub
 
-	public void visit(ColorMapEntry arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
-	public void visit(ContrastEnhancement contrastEnhancement) {
-		// TODO Auto-generated method stub
-		
-	}
+    public void visit(FeatureTypeConstraint ftc) {
+        // TODO Auto-generated method stub
 
-	public void visit(ImageOutline outline) {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
-	public void visit(ChannelSelection cs) {
-		// TODO Auto-generated method stub
-		
-	}
+    public void visit(ColorMap cm) {
+        for (ColorMapEntry cme : cm.getColorMapEntries()) {
+            cme.accept(this);
+        }
+    }
 
-	public void visit(OverlapBehavior ob) {
-		// TODO Auto-generated method stub
-		
-	}
+    public void visit(ColorMapEntry cme) {
+        if(cme.getOpacity() != null) {
+            checkOpacity(cme.getOpacity());
+        }
 
-	public void visit(SelectedChannelType sct) {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
-	public void visit(ShadedRelief sr) {
-		// TODO Auto-generated method stub
-		
-	}
+    public void visit(ContrastEnhancement contrastEnhancement) {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void visit(ImageOutline outline) {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void visit(ChannelSelection cs) {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void visit(OverlapBehavior ob) {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void visit(SelectedChannelType sct) {
+        // TODO Auto-generated method stub
+
+    }
+
+    public void visit(ShadedRelief sr) {
+        // TODO Auto-generated method stub
+
+    }
 }

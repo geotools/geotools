@@ -61,7 +61,10 @@ public class FeatureGSProcessFactory extends AnnotatedBeanProcessFactory {
                 UnionFeatureCollection.class,
                 UniqueProcess.class,
                 VectorZonalStatistics.class,
-                TransformProcess.class);
+                TransformProcess.class,
+                LRSGeocodeProcess.class,
+                LRSMeasureProcess.class,
+                LRSSegmentProcess.class);
     }
 
 }

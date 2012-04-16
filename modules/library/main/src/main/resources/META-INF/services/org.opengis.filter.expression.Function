@@ -67,6 +67,8 @@ org.geotools.filter.function.FilterFunction_endAngle
 org.geotools.filter.function.FilterFunction_isRing
 org.geotools.filter.function.FilterFunction_exteriorRing
 org.geotools.filter.function.FilterFunction_numInteriorRing
+org.geotools.filter.function.FilterFunction_minimumCircle
+org.geotools.filter.function.FilterFunction_minimumRectangle
 org.geotools.filter.function.FilterFunction_interiorRingN
 org.geotools.filter.function.FilterFunction_strConcat
 org.geotools.filter.function.FilterFunction_strEndsWith

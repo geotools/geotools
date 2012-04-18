@@ -115,8 +115,8 @@ public class GML3EncodingTest extends TestCase {
             return;
         }
 
-        String schemaLocation = new File(TestConfiguration.class.getResource("test.xsd").getFile())
-            .getAbsolutePath();
+        // The schema location needs to be a well formed URI/URL, a file path is not sufficient.
+        String schemaLocation = TestConfiguration.class.getResource("test.xsd").toString();
 
         ApplicationSchemaConfiguration configuration = new ApplicationSchemaConfiguration(TEST.NAMESPACE,
                 schemaLocation);

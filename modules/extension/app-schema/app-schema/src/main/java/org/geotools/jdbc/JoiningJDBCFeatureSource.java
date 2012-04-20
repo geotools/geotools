@@ -23,10 +23,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang.StringUtils;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -131,45 +133,46 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
      * 
      * @param tableName
      * @param sort
-     * @param sql
+     * @param orderByFields
      * @throws IOException
      * @throws SQLException
      */
-    protected void sort(String tableName, SortBy[] sort , StringBuffer sql, boolean alias) throws IOException, SQLException {
+    protected void sort(String tableName, SortBy[] sort , Set<String> orderByFields, boolean alias) throws IOException, SQLException {        
         for (int i = 0; i < sort.length; i++) {
-            String order;
-            if (sort[i].getSortOrder() == SortOrder.DESCENDING) {
-                order = " DESC";
-            } else {
-                order = " ASC";
-            }
-            
             if(SortBy.NATURAL_ORDER.equals(sort[i])|| SortBy.REVERSE_ORDER.equals(sort[i])) {
                 throw new IOException("Cannot do natural order in joining queries");                    
             } else {
+                StringBuffer sql = new StringBuffer();
                 if (alias) {
-                   encodeColumnName2(sort[i].getPropertyName().getPropertyName(), tableName , sql, null);
+                   encodeColumnName2(sort[i].getPropertyName().getPropertyName(), tableName, sql, null);
                 } else {
-                   encodeColumnName(sort[i].getPropertyName().getPropertyName(), tableName , sql, null);
+                   encodeColumnName(sort[i].getPropertyName().getPropertyName(), tableName, sql, null);
                 }
-                sql.append(order);
-                sql.append(",");
+                if (sort[i].getSortOrder() == SortOrder.DESCENDING) {
+                    sql.append(" DESC");
+                } else {
+                    sql.append(" ASC");
+                }
+                if (!sql.toString().isEmpty()) {
+                    orderByFields.add(sql.toString());
+                }
             }
         }
     }
     
-    protected void addMultiValuedSort(String tableName, StringBuffer sql,
+    protected void addMultiValuedSort(String tableName, Set<String> orderByFields,
             JoiningQuery.QueryJoin join) throws IOException,
             FilterToSQLException, SQLException {
-        sql.append(" CASE WHEN ");
+        StringBuffer orderString = new StringBuffer(" CASE WHEN ");
         FilterToSQL toSQL1 = createFilterToSQL(getDataStore().getSchema(tableName));
         toSQL1.setFieldEncoder(new JoiningFieldEncoder(tableName));  
         FilterToSQL toSQL2 = createFilterToSQL(getDataStore().getSchema(join.getJoiningTypeName()));
         toSQL2.setFieldEncoder(new JoiningFieldEncoder(join.getJoiningTypeName()));
-        sql.append(toSQL2.encodeToString(join.getForeignKeyName()));
-        sql.append(" = ");
-        sql.append(toSQL1.encodeToString(join.getJoiningKeyName()));
-        sql.append(" THEN 0 ELSE 1 END ASC,");
+        orderString.append(toSQL2.encodeToString(join.getForeignKeyName()));
+        orderString.append(" = ");
+        orderString.append(toSQL1.encodeToString(join.getJoiningKeyName()));
+        orderString.append(" THEN 0 ELSE 1 END ASC");
+        orderByFields.add(orderString.toString());
     }
     
     /**
@@ -181,9 +184,9 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
      * @throws IOException
      * @throws SQLException
      */
-    protected void sort(JoiningQuery query, StringBuffer sql, String[] aliases) throws IOException, SQLException, FilterToSQLException {
+    protected void sort(JoiningQuery query, StringBuffer sql, String[] aliases, Set<String> pkColumnNames) throws IOException, SQLException, FilterToSQLException {
         boolean orderby = false;
-        
+        Set<String> orderByFields = new LinkedHashSet<String>();
         for (int j = query.getQueryJoins() == null? -1 : query.getQueryJoins().size() -1; j >= -1 ; j-- ) {                
             JoiningQuery.QueryJoin join = j<0 ? null : query.getQueryJoins().get(j);
             SortBy[] sort = j<0? query.getSortBy() : join.getSortBy();
@@ -194,26 +197,41 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                     sql.append(" ORDER BY ");
                 }    
                 if (j < 0) {
-                    sort(query.getTypeName(), sort, sql, false);
+                    sort(query.getTypeName(), sort, orderByFields, false);
                     if (query.getQueryJoins() != null && query.getQueryJoins().size() > 0) {
-                        addMultiValuedSort(query.getTypeName(), sql, query.getQueryJoins().get(0));                        
+                        addMultiValuedSort(query.getTypeName(), orderByFields, query.getQueryJoins().get(0));
+                    }
+                    if (!pkColumnNames.isEmpty()) {
+                        for (String pk : pkColumnNames) {
+                            orderByFields.add(query.getTypeName() + "." + pk);
+                        }
                     }
                 } else {
                     if (aliases != null && aliases[j] != null) {
-                        sort(aliases[j], sort, sql, true);
+                        sort(aliases[j], sort, orderByFields, true);
                     } else {
-                        sort(join.getJoiningTypeName(), sort, sql, false);
+                        sort(join.getJoiningTypeName(), sort, orderByFields, false);
                     }
                     if (query.getQueryJoins().size() > j + 1) {
-                        addMultiValuedSort(join.getJoiningTypeName(), sql, query.getQueryJoins()
-                                .get(j + 1));
-                    } 
+                        addMultiValuedSort(join.getJoiningTypeName(), orderByFields, query
+                                .getQueryJoins().get(j + 1));
+                    }
+                    try {
+                        // sort by primary key to cater for multi valued rows
+                        JDBCDataStore ds = getDataStore();
+                        PrimaryKey key = ds.getPrimaryKey(ds.getSchema(join.getJoiningTypeName()));
+                        pkColumnNames = new HashSet<String>();
+                        for (PrimaryKeyColumn pkCol : key.getColumns()) {
+                            pkColumnNames.add(pkCol.getName());
+                        }
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
-        }   
-                      
+        }
         if (orderby) {
-            sql.setLength(sql.length() - 1);
+            sql.append(StringUtils.join(orderByFields.toArray(), ", "));
         }
     }
     
@@ -370,11 +388,13 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Set<String> pkColumnNames = getDataStore().getColumnNames(key);
-
+        Set<String> pkColumnNames = new HashSet<String>();
+        String colName;
         for ( PrimaryKeyColumn col : key.getColumns() ) {
-            encodeColumnName(col.getName(), featureType.getTypeName(), sql, query.getHints());
+            colName = col.getName();
+            encodeColumnName(colName, featureType.getTypeName(), sql, query.getHints());
             sql.append(",");
+            pkColumnNames.add(colName);
         }
         
         //other columns
@@ -471,7 +491,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         }
 
         //sorting
-        sort(query, sql, aliases);
+        sort(query, sql, aliases, pkColumnNames);
         
         // finally encode limit/offset, if necessary
         getDataStore().applyLimitOffset(sql, query);

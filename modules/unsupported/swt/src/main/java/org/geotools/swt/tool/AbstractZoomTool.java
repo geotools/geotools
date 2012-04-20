@@ -38,11 +38,22 @@ public abstract class AbstractZoomTool extends CursorTool {
     protected double zoom;
 
     /**
-     * Constructor
+     * Constructs a new abstract zoom tool.
+     * @param triggeringMouseButton Mouse button which triggers the tool's activation
+     * or {@value #ANY_BUTTON} if the tool is to be triggered by any button
      */
-    public AbstractZoomTool() {
-        setZoom(DEFAULT_ZOOM_FACTOR);
-    }
+     public AbstractZoomTool(int triggeringMouseButton) {
+         super(triggeringMouseButton);
+         setZoom(DEFAULT_ZOOM_FACTOR);
+     }
+
+     /**
+      * Constructs a new abstract zoom tool which is triggered by any mouse button.
+      */
+     public AbstractZoomTool() {
+         this(CursorTool.ANY_BUTTON);
+     }
+
     
     /**
      * Get the current areal zoom increment. 

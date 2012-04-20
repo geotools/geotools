@@ -84,14 +84,26 @@ public class InfoTool extends CursorTool {
     private WeakHashMap<Layer, InfoToolHelper<?>> helperTable;
 
     /**
-     * Constructor
+     * Constructs a new info tool.
+     * @param triggeringMouseButton Mouse button which triggers the tool's activation
+     * or {@value #ANY_BUTTON} if the tool is to be triggered by any button
      */
-    public InfoTool() {
+    public InfoTool(int triggeringMouseButton) {
+
+        super(triggeringMouseButton);
 
         cursor = CursorManager.getInstance().getInfoCursor();
 
         helperTable = new WeakHashMap<Layer, InfoToolHelper<?>>();
     }
+
+    /**
+     * Constructs a new info tool which is triggered by any mouse button.
+     */
+    public InfoTool() {
+        this(CursorTool.ANY_BUTTON);
+    }
+
 
     /**
      * Respond to a mouse click by querying each of the {@code MapLayers}. The
@@ -111,6 +123,11 @@ public class InfoTool extends CursorTool {
      */
     @Override
     public void onMouseClicked( MapMouseEvent ev ) {
+
+        if ( ! isTriggerMouseButton(ev)) {
+            return;
+        }
+
         DirectPosition2D pos = ev.getMapPosition();
         report(pos);
 

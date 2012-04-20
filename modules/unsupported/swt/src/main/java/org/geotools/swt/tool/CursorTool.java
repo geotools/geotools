@@ -20,6 +20,7 @@ package org.geotools.swt.tool;
 import org.eclipse.swt.graphics.Cursor;
 import org.geotools.swt.SwtMapPane;
 import org.geotools.swt.event.MapMouseAdapter;
+import org.geotools.swt.event.MapMouseEvent;
 import org.geotools.swt.utils.CursorManager;
 import org.geotools.swt.utils.Messages;
 
@@ -36,7 +37,31 @@ import org.geotools.swt.utils.Messages;
  */
 public abstract class CursorTool extends MapMouseAdapter {
 
+    /**
+     * Flag indicating that the tool should be triggered whenever any mouse button
+     * is used.
+     */
+    public static final int ANY_BUTTON = -1;
+
     private SwtMapPane mapPane;
+    private int triggeringMouseButton;
+
+
+    /**
+     * Constructs a new cursor tool.
+     * @param triggeringMouseButton Mouse button which triggers the tool's activation
+     * or {@value #ANY_BUTTON} if the tool is to be triggered by any button
+     */
+    public CursorTool(int triggeringMouseButton) {
+        this.triggeringMouseButton = triggeringMouseButton;
+    }
+
+    /**
+     * Constructs a new cursor tool which is triggered by any mouse button.
+     */
+    public CursorTool() {
+        this(ANY_BUTTON);
+    }
 
     /**
      * Set the map pane that this cursor tool is associated with
@@ -83,4 +108,14 @@ public abstract class CursorTool extends MapMouseAdapter {
      * @return <code>true</code> if the tool can move the map while dragging.
      */
     public abstract boolean canMove();
+
+    /**
+     * Checks if the tool should be triggered by the event.
+     * @param event event to be checked
+     * @return <code>true</code> if the tool is triggered by the event
+     */
+    protected boolean isTriggerMouseButton(MapMouseEvent event)
+    {
+        return triggeringMouseButton == ANY_BUTTON || triggeringMouseButton == event.getMouseButton();
+    }
 }

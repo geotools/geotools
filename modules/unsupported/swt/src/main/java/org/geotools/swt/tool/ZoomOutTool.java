@@ -52,10 +52,20 @@ public class ZoomOutTool extends AbstractZoomTool {
     private Cursor cursor;
 
     /**
-     * Constructor
+     * Constructs a new zoom out tool.
+     * @param triggeringMouseButton Mouse button which triggers the tool's activation
+     * or {@value #ANY_BUTTON} if the tool is to be triggered by any button
+     */
+    public ZoomOutTool(int triggeringMouseButton) {
+        super(triggeringMouseButton);
+        cursor = CursorManager.getInstance().getZoomoutCursor();
+    }
+
+    /**
+     * Constructs a new zoom out tool which is triggered by any mouse button.
      */
     public ZoomOutTool() {
-        cursor = CursorManager.getInstance().getZoomoutCursor();
+        this(CursorTool.ANY_BUTTON);
     }
 
     /**
@@ -67,6 +77,11 @@ public class ZoomOutTool extends AbstractZoomTool {
      */
     @Override
     public void onMouseClicked( MapMouseEvent ev ) {
+
+        if ( ! isTriggerMouseButton(ev)) {
+            return;
+        }
+
         Rectangle paneArea = getMapPane().getBounds();
         DirectPosition2D mapPos = ev.getMapPosition();
 

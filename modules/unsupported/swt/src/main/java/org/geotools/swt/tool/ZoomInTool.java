@@ -62,13 +62,24 @@ public class ZoomInTool extends AbstractZoomTool {
     private boolean dragged;
 
     /**
-     * Constructor
+     * Constructs a new zoom in tool.
+     * @param triggeringMouseButton Mouse button which triggers the tool's activation
+     * or {@value #ANY_BUTTON} if the tool is to be triggered by any button
      */
-    public ZoomInTool() {
+    public ZoomInTool(int triggeringMouseButton) {
+        super(triggeringMouseButton);
+
         cursor = CursorManager.getInstance().getZoominCursor();
 
         startDragPos = new DirectPosition2D();
         dragged = false;
+    }
+
+    /**
+     * Constructs a new zoom in tool which is triggered by any mouse button.
+     */
+    public ZoomInTool() {
+        this(CursorTool.ANY_BUTTON);
     }
 
     /**
@@ -80,6 +91,11 @@ public class ZoomInTool extends AbstractZoomTool {
      */
     @Override
     public void onMouseClicked( MapMouseEvent e ) {
+
+        if ( ! isTriggerMouseButton(e)) {
+            return;
+        }
+
         startDragPos = new DirectPosition2D();
         startDragPos.setLocation(e.getMapPosition());
     }
@@ -101,6 +117,11 @@ public class ZoomInTool extends AbstractZoomTool {
      */
     @Override
     public void onMouseDragged( MapMouseEvent ev ) {
+
+        if ( ! isTriggerMouseButton(ev)) {
+            return;
+        }
+
         dragged = true;
     }
 
@@ -114,6 +135,11 @@ public class ZoomInTool extends AbstractZoomTool {
      */
     @Override
     public void onMouseReleased( MapMouseEvent ev ) {
+
+        if ( ! isTriggerMouseButton(ev)) {
+            return;
+        }
+
         if (dragged) {
             Envelope2D env = new Envelope2D();
             env.setFrameFromDiagonal(startDragPos, ev.getMapPosition());

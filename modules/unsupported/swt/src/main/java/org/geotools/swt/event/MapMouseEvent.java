@@ -97,6 +97,18 @@ public final class MapMouseEvent {
     }
 
     /**
+     * The button that was pressed or released; 1 for the
+     * first button, 2 for the second button, and 3 for the
+     * third button, etc.
+     *
+     * @return the button that was pressed or released
+     * @see MouseEvent#button
+     */
+    public int getMouseButton() {
+        return event.button;
+    }
+
+    /**
      * Get the position, in map (world) coordinates of this mouse event
      * 
      * @return a new DirectPosition2D object for the world coordinates

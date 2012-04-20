@@ -50,12 +50,23 @@ public class PanTool extends CursorTool {
     boolean panning;
 
     /**
-     * Constructor
+     * Constructs a new pan tool.
+     * @param triggeringMouseButton Mouse button which triggers the tool's activation
+     * or {@value #ANY_BUTTON} if the tool is to be triggered by any button
      */
-    public PanTool() {
+    public PanTool(int triggeringMouseButton) {
+        super(triggeringMouseButton);
+
         cursor = CursorManager.getInstance().getPanCursor();
 
         panning = false;
+    }
+
+    /**
+     * Constructs a new pan tool which is triggered by any mouse button.
+     */
+    public PanTool() {
+        this(CursorTool.ANY_BUTTON);
     }
 
     /**
@@ -65,6 +76,11 @@ public class PanTool extends CursorTool {
      */
     @Override
     public void onMousePressed( MapMouseEvent ev ) {
+
+        if ( ! isTriggerMouseButton(ev)) {
+            return;
+        }
+
         panePos = ev.getPoint();
         panning = true;
     }
@@ -91,8 +107,10 @@ public class PanTool extends CursorTool {
      */
     @Override
     public void onMouseReleased( MapMouseEvent ev ) {
-        panning = false;
-        getMapPane().redraw();
+        if (panning) {
+            panning = false;
+            getMapPane().redraw();
+        }
     }
 
     /**

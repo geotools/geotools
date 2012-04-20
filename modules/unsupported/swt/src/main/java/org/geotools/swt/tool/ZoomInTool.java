@@ -22,6 +22,7 @@ import static java.lang.Math.sqrt;
 
 import java.awt.geom.Point2D;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Rectangle;
 import org.geotools.geometry.DirectPosition2D;
@@ -62,12 +63,15 @@ public class ZoomInTool extends AbstractZoomTool {
     private boolean dragged;
 
     /**
-     * Constructs a new zoom in tool.
-     * @param triggeringMouseButton Mouse button which triggers the tool's activation
+     * Constructs a new zoom in tool. To activate the tool only on certain
+     * mouse events provide a single mask, e.g. {@link SWT#BUTTON1}, or
+     * a combination of multiple SWT-masks.
+     *
+     * @param triggerButtonMask Mouse button which triggers the tool's activation
      * or {@value #ANY_BUTTON} if the tool is to be triggered by any button
      */
-    public ZoomInTool(int triggeringMouseButton) {
-        super(triggeringMouseButton);
+    public ZoomInTool(int triggerButtonMask) {
+        super(triggerButtonMask);
 
         cursor = CursorManager.getInstance().getZoominCursor();
 
@@ -177,7 +181,12 @@ public class ZoomInTool extends AbstractZoomTool {
         return false;
     }
 
-    public static double pythagoras( double d1, double d2 ) {
+    @Override
+	public boolean isDrawing() {
+		return dragged;
+	}
+
+	public static double pythagoras( double d1, double d2 ) {
         return sqrt(pow(d1, 2.0) + pow(d2, 2.0));
     }
 }

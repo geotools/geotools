@@ -84,13 +84,16 @@ public class InfoTool extends CursorTool {
     private WeakHashMap<Layer, InfoToolHelper<?>> helperTable;
 
     /**
-     * Constructs a new info tool.
-     * @param triggeringMouseButton Mouse button which triggers the tool's activation
+     * Constructs a new info tool. To activate the tool only on certain
+     * mouse events provide a single mask, e.g. {@link SWT#BUTTON1}, or
+     * a combination of multiple SWT-masks.
+     *
+     * @param triggerButtonMask Mouse button which triggers the tool's activation
      * or {@value #ANY_BUTTON} if the tool is to be triggered by any button
      */
-    public InfoTool(int triggeringMouseButton) {
+    public InfoTool(int triggerButtonMask) {
 
-        super(triggeringMouseButton);
+        super(triggerButtonMask);
 
         cursor = CursorManager.getInstance().getInfoCursor();
 

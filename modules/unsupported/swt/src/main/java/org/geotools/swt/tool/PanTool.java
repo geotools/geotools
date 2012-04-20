@@ -17,6 +17,7 @@
 
 package org.geotools.swt.tool;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Point;
 import org.geotools.swt.SwtMapPane;
@@ -50,12 +51,15 @@ public class PanTool extends CursorTool {
     boolean panning;
 
     /**
-     * Constructs a new pan tool.
-     * @param triggeringMouseButton Mouse button which triggers the tool's activation
+     * Constructs a new pan tool. To activate the tool only on certain
+     * mouse events provide a single mask, e.g. {@link SWT#BUTTON1}, or
+     * a combination of multiple SWT-masks.
+     *
+     * @param triggerButtonMask Mouse button which triggers the tool's activation
      * or {@value #ANY_BUTTON} if the tool is to be triggered by any button
      */
-    public PanTool(int triggeringMouseButton) {
-        super(triggeringMouseButton);
+    public PanTool(int triggerButtonMask) {
+        super(triggerButtonMask);
 
         cursor = CursorManager.getInstance().getPanCursor();
 

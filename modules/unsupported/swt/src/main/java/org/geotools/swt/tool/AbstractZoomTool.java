@@ -17,6 +17,8 @@
 
 package org.geotools.swt.tool;
 
+import org.eclipse.swt.SWT;
+
 
 /**
  * Abstract base class for the zoom-in and zoom-out tools. Provides getter / setter
@@ -38,12 +40,15 @@ public abstract class AbstractZoomTool extends CursorTool {
     protected double zoom;
 
     /**
-     * Constructs a new abstract zoom tool.
-     * @param triggeringMouseButton Mouse button which triggers the tool's activation
+     * Constructs a new abstract zoom tool. To activate the tool only on certain
+     * mouse events provide a single mask, e.g. {@link SWT#BUTTON1}, or
+     * a combination of multiple SWT-masks.
+     *
+     * @param triggerButtonMask Mouse button which triggers the tool's activation
      * or {@value #ANY_BUTTON} if the tool is to be triggered by any button
      */
-     public AbstractZoomTool(int triggeringMouseButton) {
-         super(triggeringMouseButton);
+     public AbstractZoomTool(int triggerButtonMask) {
+         super(triggerButtonMask);
          setZoom(DEFAULT_ZOOM_FACTOR);
      }
 

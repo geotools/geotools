@@ -17,6 +17,7 @@
 
 package org.geotools.swt.tool;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
 import org.geotools.swt.SwtMapPane;
 import org.geotools.swt.event.MapMouseAdapter;
@@ -41,19 +42,22 @@ public abstract class CursorTool extends MapMouseAdapter {
      * Flag indicating that the tool should be triggered whenever any mouse button
      * is used.
      */
-    public static final int ANY_BUTTON = -1;
+    public static final int ANY_BUTTON = SWT.BUTTON_MASK;
 
     private SwtMapPane mapPane;
-    private int triggeringMouseButton;
+    private int triggerButtonMask;
 
 
     /**
-     * Constructs a new cursor tool.
-     * @param triggeringMouseButton Mouse button which triggers the tool's activation
+     * Constructs a new cursor tool. To activate the tool only on certain
+     * mouse events provide a single mask, e.g. {@link SWT#BUTTON1}, or
+     * a combination of multiple SWT-masks.
+     *
+     * @param triggerButtonMask Mouse button which triggers the tool's activation
      * or {@value #ANY_BUTTON} if the tool is to be triggered by any button
      */
-    public CursorTool(int triggeringMouseButton) {
-        this.triggeringMouseButton = triggeringMouseButton;
+    public CursorTool(int triggerButtonMask) {
+        this.triggerButtonMask = triggerButtonMask;
     }
 
     /**
@@ -110,12 +114,37 @@ public abstract class CursorTool extends MapMouseAdapter {
     public abstract boolean canMove();
 
     /**
+     * Returns <code>true</code> for any tool which is drawing
+     * while dragging. For tools which are triggered only by a certain
+     * mouse event it might be the case that {@link #canDraw()} is
+     * <code>true</code> while they are actually not active.
+     *
+     * @return <code>true</code> if the tool is drawing while dragging
+     */
+    public boolean isDrawing()
+    {
+    	return canDraw();
+    }
+
+    /**
      * Checks if the tool should be triggered by the event.
      * @param event event to be checked
      * @return <code>true</code> if the tool is triggered by the event
      */
     protected boolean isTriggerMouseButton(MapMouseEvent event)
     {
-        return triggeringMouseButton == ANY_BUTTON || triggeringMouseButton == event.getMouseButton();
+        return
+        		triggerButtonMask == ANY_BUTTON
+        	|| // on mouse move or mouse drag the mouse button field is 0 but the state mask is set
+        	    0 != (triggerButtonMask & event.getStateMask())
+        	|| // on mouse click the state mask is 0, but the mouse button field is set
+        	   (	event.getStateMask() == 0
+        	  	&& ( ((triggerButtonMask & SWT.BUTTON1) != 0 && event.getMouseButton() == 1)
+        	  	  || ((triggerButtonMask & SWT.BUTTON2) != 0 && event.getMouseButton() == 2)
+        	  	  || ((triggerButtonMask & SWT.BUTTON3) != 0 && event.getMouseButton() == 3)
+        	  	  || ((triggerButtonMask & SWT.BUTTON4) != 0 && event.getMouseButton() == 4)
+        	  	  || ((triggerButtonMask & SWT.BUTTON5) != 0 && event.getMouseButton() == 5)
+        	  	   )
+        		);
     }
 }

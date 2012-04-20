@@ -17,6 +17,7 @@
 
 package org.geotools.swt.tool;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Rectangle;
 import org.geotools.geometry.DirectPosition2D;
@@ -52,12 +53,15 @@ public class ZoomOutTool extends AbstractZoomTool {
     private Cursor cursor;
 
     /**
-     * Constructs a new zoom out tool.
-     * @param triggeringMouseButton Mouse button which triggers the tool's activation
+     * Constructs a new zoom out tool. To activate the tool only on certain
+     * mouse events provide a single mask, e.g. {@link SWT#BUTTON1}, or
+     * a combination of multiple SWT-masks.
+     *
+     * @param triggerButtonMask Mouse button which triggers the tool's activation
      * or {@value #ANY_BUTTON} if the tool is to be triggered by any button
      */
-    public ZoomOutTool(int triggeringMouseButton) {
-        super(triggeringMouseButton);
+    public ZoomOutTool(int triggerButtonMask) {
+        super(triggerButtonMask);
         cursor = CursorManager.getInstance().getZoomoutCursor();
     }
 
@@ -105,7 +109,7 @@ public class ZoomOutTool extends AbstractZoomTool {
     }
 
     public boolean canDraw() {
-        return true;
+        return false;
     }
 
     public boolean canMove() {

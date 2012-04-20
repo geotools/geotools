@@ -152,6 +152,10 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
     private Color white;
     private Color yellow;
 
+    private Color cursorToolColor;
+    private int cursorToolLineWidth;
+    private int cursorToolLineStyle;
+
     /**
      * Constructor - creates an instance of JMapPane with no map
      * context or renderer initially
@@ -216,6 +220,9 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
             }
         });
 
+        cursorToolColor = getDisplay().getSystemColor(SWT.COLOR_YELLOW);
+        cursorToolLineWidth = 2;
+        cursorToolLineStyle = SWT.LINE_SOLID;
     }
 
     /**
@@ -1123,7 +1130,7 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
                  * draw a boundingbox while dragging, we draw the box 
                  * keeping the current drawn image
                  */
-                if (toolCanDraw && isDragging) {
+                if (toolCanDraw && toolManager.getCursorTool().isDrawing() && isDragging) {
                     // System.out.println("draw box: " + startX + "/" + startY + "/" + endX +
                     // "/" + endY);
                     if (swtImage != null) {
@@ -1132,8 +1139,9 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
                     gc.setXORMode(true);
 
                     org.eclipse.swt.graphics.Color fC = gc.getForeground();
-                    gc.setLineWidth(2);
-                    gc.setForeground(yellow);
+                    gc.setLineStyle(cursorToolLineStyle);
+                    gc.setLineWidth(cursorToolLineWidth);
+                    gc.setForeground(cursorToolColor);
                     gc.drawRectangle(startX, startY, endX - startX, endY - startY);
 
                     gc.setForeground(fC);
@@ -1181,7 +1189,7 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
                         swtImage.dispose();
                         swtImage = null;
                     }
-                    System.out.println("READRAWBASEIMAGE");
+                    // System.out.println("READRAWBASEIMAGE");
                     swtImage = new Image(getDisplay(), awtToSwt(baseImage, curPaintArea.width + 1, curPaintArea.height + 1));
                 }
 
@@ -1290,4 +1298,72 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
     public void layerPreDispose( MapLayerListEvent event ) {
 
     }
+
+    /**
+     * Returns the colour which is used to draw the bounding box
+     * of the currently active cursor tool. The bounding box is
+     * drawn in xor mode.
+     *
+     * @return the colour used for the tool's bounding box
+     */
+    public Color getCursorToolColor() {
+        return cursorToolColor;
+    }
+
+    /**
+     * Sets the colour which is used to draw the bounding box
+     * of the currently active cursor tool. The bounding box is
+     * drawn in xor mode.
+     *
+     * @param color the colour used for the tool's bounding box
+     */
+    public void setCursorToolColor( Color color ) {
+        this.cursorToolColor = color;
+    }
+
+    /**
+     * Returns the line width of the bounding box of the currently
+     * active cursor tool.
+     *
+     * @return line width
+     */
+    public int getCursorToolLineWidth() {
+        return cursorToolLineWidth;
+    }
+
+    /**
+     * Sets the line width of the bounding box of the currently
+     * active cursor tool.
+     *
+     * @param lineWidth line width
+     */
+    public void setCursorToolLineWidth( int lineWidth ) {
+        this.cursorToolLineWidth = lineWidth;
+    }
+
+    /**
+     * Returns the line style of the bounding box of the currently
+     * active cursor tool.
+     *
+     * @return line style
+     */
+    public int getCursorToolLineStyle() {
+        return cursorToolLineStyle;
+    }
+
+    /**
+     * Sets the line style of the bounding box of the currently
+     * active cursor tool.
+     *
+     * @param lineStyle line style
+     * @see SWT#LINE_SOLID
+     * @see SWT#LINE_DASH
+     * @see SWT#LINE_DOT
+     * @see SWT#LINE_DASHDOT
+     * @see SWT#LINE_DASHDOTDOT
+     */
+    public void setCursorToolLineStyle( int lineStyle ) {
+        this.cursorToolLineStyle = lineStyle;
+    }
+
 }

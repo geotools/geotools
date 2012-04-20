@@ -29,9 +29,11 @@ import org.geotools.filter.text.cql2.CQLException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.filter.And;
+import org.opengis.filter.ExcludeFilter;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
+import org.opengis.filter.IncludeFilter;
 import org.opengis.filter.Not;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
@@ -74,6 +76,27 @@ import org.opengis.filter.temporal.Before;
  */
 public final class ECQLTest  {
     
+    @Test
+    public void include() throws CQLException{
+
+        Assert.assertEquals("INCLUDE", ECQL.toCQL(Filter.INCLUDE) );
+        
+        Filter filter = ECQL.toFilter("INCLUDE");
+        
+        Assert.assertEquals(Filter.INCLUDE, filter);
+    }
+
+    @Test
+    public void exclude() throws CQLException{
+        
+        Assert.assertEquals("EXCLUDE", ECQL.toCQL(Filter.EXCLUDE) );
+        
+        Filter filter = ECQL.toFilter("EXCLUDE");
+        
+        Assert.assertEquals(Filter.EXCLUDE, filter);
+
+    }
+
     
     /**
      * Between predicate sample

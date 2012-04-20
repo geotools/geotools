@@ -80,13 +80,13 @@ public final class FilterToTextUtil {
 
 	public static Object buildInclude(Object extraData) {
         StringBuilder output = FilterToTextUtil.asStringBuilder(extraData);
-        output.append("1 = 1");        
+        output.append("INCLUDE");        
         return output;
 	}
 
 	public static Object buildExclude(Object extraData) {
         StringBuilder output = FilterToTextUtil.asStringBuilder(extraData);
-        output.append("1 = 0");        
+        output.append("EXCLUDE");        
         return output;
 	}
 

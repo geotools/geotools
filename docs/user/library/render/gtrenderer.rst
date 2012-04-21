@@ -1,5 +1,5 @@
-GTRenderer
-----------
+GTRenderer to draw maps
+-----------------------
 
 GTRenderer renderer is the reason why you signed up for this whole GeoTools experience; you want to see a Map.
 

@@ -1,7 +1,10 @@
-Style
------
+Styling features for display
+----------------------------
 
-GeoTools Rendering process is controlled styling information that you provide. The data structures we use to describe styling are based on the Style Layer Descriptor (SLD) and Symbology Encoding (SE) specifications provided by the OGC. The SLD specification defines an XML document you can use to save and load your styles.
+GeoTools Rendering process is controlled styling information that you provide. The data structures
+we use to describe styling are based on the Style Layer Descriptor (SLD) and Symbology Encoding (SE)
+specifications provided by the OGC. The SLD specification defines an XML document you can use to
+save and load your styles.
 
 This page is devoted to examples, to review the concepts consult the references below.
 

@@ -1,5 +1,5 @@
-Map
----
+Map data and display classes
+----------------------------
 
 The gt-render module defines a new data structure to represent the contents of a map. MapContent
 defines a map as a series of layers (which are drawn in order). This is not part of the formal
@@ -20,15 +20,19 @@ These ideas are broken down into the following three classes:
 
 * **MapViewport**
   
-  Represents the area of the map to drawn. This includes both:
-  
-  * The area of the world: the spatial extent (and conceptually the height / depth / time
-    information) needed to render a slice of data.
-    At a pragmatic level the MapViewport includes the "world" coordinate reference system
-    into which all content is transformed prior to display.
-  * The area of the screen: either expressed as a rectangle or provided as an affine transform
-    used to zoom into a specific area.
+  Represents the area of the map to drawn. The viewport stores:
+ 
+  * the world bounds (spatial extent in world units) of the area to be drawn;
+  * the screen, image or device bounds to draw into;
+  * the coordinate transforms used to convert between world and screen positions.
 
+  In practice, you provide the world and screen bounds to a MapViewport object and
+  it calculates the coordinate transforms for you (see :ref:`aspect-ratio` for more details).
+
+  Potentially, a viewport could also work with parameters other than horizontal spatial extent when
+  defining the map data to be drawn such as height or time. The MapViewport class does not presently
+  support such usage but you could derive a sub-class for this purpose.
+  
 * **Layer** - represents a layer of content to be drawn; layers are held in a list and are drawn in
   order.
 
@@ -62,6 +66,28 @@ Examples:
             }
         }
         viewport.setBounds( maxBounds );
+
+
+.. _aspect-ratio:
+
+Aspect-ratio of map and screen bounds
+'''''''''''''''''''''''''''''''''''''
+
+Very often, the aspect ratio (ratio of width to height) of the world and screen bounds will differ.
+By default, MapViewport does not make any correction for this (this behaviour accords with the OGC
+WMS specification which states that a map server should honour the bounds provided by the user
+regardless of any distortion which results).
+
+In many cases, it is preferable to have MapViewport automagically correct for differing aspect
+ratios, thereby avoiding distortion in the map display. You can request this behaviour as follows::
+
+    MapViewport vp = myMapContent.getViewport();
+    vp.setMatchingAspectRatio( true );
+
+With this setting, the viewport will calculate coordinate transforms such that the user requested
+world bounds are centered in the screen or image display area. Note that when such a correction has
+been applied, the world bounds stored by the viewport will be larger than those requested by the
+user.
 
 Layer
 ^^^^^

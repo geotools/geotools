@@ -776,6 +776,28 @@ public class SLDTransformerTest {
       assertEquals("parsed xml must contain attribbute type with correct value", -1, st.transform(cm).indexOf("type="));
     }
     
+    @Test
+    public void testColorMapExtended() throws Exception {
+      SLDTransformer st = new SLDTransformer();
+      ColorMap cm = sf.createColorMap();
+      
+      // Test type = values, extended = true
+      cm.setType(ColorMap.TYPE_VALUES);
+      cm.setExtendedColors(true);
+      assertTrue("parsed xml must contain attribbute type with correct value", st.transform(cm).contains("extended=\"true\""));
+      
+      // Test type = intervals, extended = true
+      cm.setType(ColorMap.TYPE_INTERVALS);
+      cm.setExtendedColors(true);
+      assertTrue("parsed xml must contain attribbute type with correct value", st.transform(cm).contains("extended=\"true\""));
+      
+      // Test type = ramp, extended = true
+      cm.setType(ColorMap.TYPE_RAMP);
+      cm.setExtendedColors(true);
+      assertTrue("parsed xml must contain attribbute type with correct value", st.transform(cm).contains("extended=\"true\""));
+      
+    }
+    
     /**
      * Checks the output of encoding a default line symbolizer does not include all the default values
      * @throws Exception

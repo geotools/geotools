@@ -18,6 +18,8 @@
 package org.geotools.map;
 
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.io.ByteArrayOutputStream;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -239,6 +241,53 @@ public class MapViewportTest {
         
         vp.setBounds(BIG_WORLD_1_1);
         assertTrue( BIG_WORLD_1_1.boundsEquals2D(vp.getBounds(), TOL) );
+    }
+    
+    @Test
+    public void coordinateTransform_MatchingAspectRatioDisabled() throws Exception {
+        MapViewport vp = new MapViewport(false);
+        
+        // world and screen bounds with different aspect ratios
+        final ReferencedEnvelope world = WORLD_1_1;
+        final Rectangle screen = SCREEN_2_1;
+        vp.setBounds(world);
+        vp.setScreenArea(screen);
+
+        double[] screenXY = {
+            screen.getMinX(), screen.getMinY(), screen.getMaxX(), screen.getMaxY()
+        };
+        
+        double[] worldXY = new double[screenXY.length];
+        vp.getScreenToWorld().transform(screenXY, 0, worldXY, 0, screenXY.length / 2);
+        
+        assertEquals(world.getMinX(), worldXY[0], TOL);
+        assertEquals(world.getMaxY(), worldXY[1], TOL);
+        assertEquals(world.getMaxX(), worldXY[2], TOL);
+        assertEquals(world.getMinY(), worldXY[3], TOL);
+    }
+    
+    @Test
+    public void coordinateTransform_MatchingAspectRatioEnabled() throws Exception {
+        MapViewport vp = new MapViewport(true);
+        
+        // world and screen bounds with different aspect ratios
+        final Rectangle screen = SCREEN_2_1;
+        vp.setBounds(WORLD_1_1);
+        vp.setScreenArea(screen);
+        
+        ReferencedEnvelope actualWorld = vp.getBounds();
+
+        double[] screenXY = {
+            screen.getMinX(), screen.getMinY(), screen.getMaxX(), screen.getMaxY()
+        };
+        
+        double[] worldXY = new double[screenXY.length];
+        vp.getScreenToWorld().transform(screenXY, 0, worldXY, 0, screenXY.length / 2);
+        
+        assertEquals(actualWorld.getMinX(), worldXY[0], TOL);
+        assertEquals(actualWorld.getMaxY(), worldXY[1], TOL);
+        assertEquals(actualWorld.getMaxX(), worldXY[2], TOL);
+        assertEquals(actualWorld.getMinY(), worldXY[3], TOL);
     }
     
     @Test

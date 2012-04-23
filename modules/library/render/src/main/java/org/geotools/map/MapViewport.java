@@ -327,7 +327,7 @@ public class MapViewport {
     private void copyBounds(ReferencedEnvelope newBounds) {
         if (newBounds == null || newBounds.isEmpty()) {
             this.bounds = new ReferencedEnvelope();
-            } else {
+        } else {
             this.bounds = new ReferencedEnvelope(newBounds);
         }
     }
@@ -560,9 +560,11 @@ public class MapViewport {
     private void calculateSimpleTransforms(ReferencedEnvelope requestedBounds) {
         double xscale = screenArea.getWidth() / requestedBounds.getWidth();
         double yscale = screenArea.getHeight() / requestedBounds.getHeight();
-        double scale = Math.min(xscale, yscale);
-        worldToScreen = new AffineTransform(scale, 0, 0, -scale,
-                -requestedBounds.getMinX(), requestedBounds.getMaxY());
+        
+        worldToScreen = new AffineTransform(
+                xscale, 0, 0, -yscale,
+                -xscale * requestedBounds.getMinX(), 
+                yscale * requestedBounds.getMaxY());
         try {
             screenToWorld = worldToScreen.createInverse();
 

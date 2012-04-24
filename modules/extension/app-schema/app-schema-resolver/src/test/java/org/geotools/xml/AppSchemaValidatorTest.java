@@ -39,7 +39,7 @@ public class AppSchemaValidatorTest {
      */
     @Test
     public void validateErMineralOccurrence() {
-        AppSchemaValidator.validateResource("/test-data/er_MineralOccurrence.xml");
+        AppSchemaValidator.validateResource("/test-data/er_MineralOccurrence.xml", null);
     }
 
     /**
@@ -49,7 +49,7 @@ public class AppSchemaValidatorTest {
     @Test
     public void validateErMineralOccurrenceWithErrors() {
         try {
-            AppSchemaValidator.validateResource("/test-data/er_MineralOccurrence_with_errors.xml");
+            AppSchemaValidator.validateResource("/test-data/er_MineralOccurrence_with_errors.xml", null);
             Assert.fail("Unexpected schema validation success for known-invalid XML instance document");
         } catch (Exception e) {
             Assert.assertTrue(
@@ -65,7 +65,7 @@ public class AppSchemaValidatorTest {
      */
     @Test
     public void validateWfs20Example01() {
-        AppSchemaValidator.validateResource("/test-data/Example01.xml");
+        AppSchemaValidator.validateResource("/test-data/Example01.xml", null);
     }
 
     /**
@@ -104,7 +104,7 @@ public class AppSchemaValidatorTest {
             int count = input.read(bytes);
             Assert.assertEquals("Unexpected read underrun", bytes.length, count);
             String xml = new String(bytes);
-            AppSchemaValidator.validate(xml);
+            AppSchemaValidator.validate(xml, null);
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
@@ -164,7 +164,7 @@ public class AppSchemaValidatorTest {
                 + "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " //
                 + "xsi:schemaLocation=\"" //
                 + "http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd" //
-                + "\"><wfs:Query typeName=\"test\"/></wfs:GetFeature>");
+                + "\"><wfs:Query typeName=\"test\"/></wfs:GetFeature>", null);
     }
 
     /**
@@ -175,7 +175,7 @@ public class AppSchemaValidatorTest {
         try {
             AppSchemaValidator.validate("<wfs:GetFeature " //
                     + "xmlns:wfs=\"http://www.opengis.net/wfs\">" //
-                    + "<wfs:Query typeName=\"test\"/></wfs:GetFeature>");
+                    + "<wfs:Query typeName=\"test\"/></wfs:GetFeature>", null);
             Assert.fail("Unexpected validation success for GetFeature with missing schemaLocation");
         } catch (Exception e) {
             Assert.assertEquals(e.getMessage(), "Schema validation failure caused by "

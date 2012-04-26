@@ -16,7 +16,10 @@
  */
 package org.geotools.data.h2;
 
+import static org.geotools.data.h2.H2DataStoreFactory.*;
+
 import java.io.File;
+import java.util.Map;
 
 import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
 
@@ -46,5 +49,11 @@ public class H2JNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
      */
     public File getBaseDirectory() {
         return ((H2DataStoreFactory)delegate).getBaseDirectory();
+    }
+    
+    @Override
+    protected void setupParameters(Map parameters) {
+        super.setupParameters(parameters);
+        parameters.put(ASSOCIATIONS.key, ASSOCIATIONS);
     }
 }

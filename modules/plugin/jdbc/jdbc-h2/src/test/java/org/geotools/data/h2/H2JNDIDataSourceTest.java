@@ -17,13 +17,25 @@
 
 package org.geotools.data.h2;
 
+import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCJNDIDataSourceTest;
+import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
 import org.geotools.jdbc.JDBCJNDITestSetup;
 
 public class H2JNDIDataSourceTest extends JDBCJNDIDataSourceTest {
 
     protected JDBCJNDITestSetup createTestSetup() {
         return new JDBCJNDITestSetup(new H2TestSetup());
+    }
+
+    @Override
+    protected JDBCJNDIDataStoreFactory getJNDIStoreFactory() {
+        return new H2JNDIDataStoreFactory();
+    }
+
+    @Override
+    protected JDBCDataStoreFactory getDataStoreFactory() {
+        return new H2DataStoreFactory();
     }
 
 }

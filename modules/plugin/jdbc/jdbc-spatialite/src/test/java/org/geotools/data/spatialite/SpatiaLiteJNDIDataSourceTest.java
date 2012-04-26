@@ -17,7 +17,9 @@
 
 package org.geotools.data.spatialite;
 
+import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCJNDIDataSourceTest;
+import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
 import org.geotools.jdbc.JDBCJNDITestSetup;
 
 public  class SpatiaLiteJNDIDataSourceTest extends JDBCJNDIDataSourceTest {
@@ -25,5 +27,17 @@ public  class SpatiaLiteJNDIDataSourceTest extends JDBCJNDIDataSourceTest {
     protected JDBCJNDITestSetup createTestSetup() {
         return new JDBCJNDITestSetup(new SpatiaLiteTestSetup());
     }
+
+    @Override
+    protected JDBCJNDIDataStoreFactory getJNDIStoreFactory() {
+        return new SpatiaLiteJNDIDataStoreFactory();
+    }
+
+    @Override
+    protected JDBCDataStoreFactory getDataStoreFactory() {
+        return new SpatiaLiteDataStoreFactory();
+    }
+    
+    
 
 }

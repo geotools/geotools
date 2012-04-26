@@ -26,4 +26,12 @@ public  class OracleJNDIDataSourceTest extends JDBCJNDIDataSourceTest {
         return new JDBCJNDITestSetup(new OracleTestSetup());
     }
 
+    protected OracleNGJNDIDataStoreFactory getJNDIStoreFactory() {
+        return new OracleNGJNDIDataStoreFactory();
+    }
+
+    protected OracleNGDataStoreFactory getDataStoreFactory() {
+        return new OracleNGDataStoreFactory();
+    }
+
 }

@@ -16,6 +16,10 @@
  */
 package org.geotools.data.sqlserver;
 
+import static org.geotools.data.sqlserver.SQLServerDataStoreFactory.*;
+
+import java.util.Map;
+
 import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
 
 /**
@@ -31,5 +35,12 @@ public class SQLServerJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
 
     public SQLServerJNDIDataStoreFactory() {
         super(new SQLServerDataStoreFactory());
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    protected void setupParameters(Map parameters) {
+        super.setupParameters(parameters);
+        parameters.put(INTSEC.key, INTSEC);
     }
 }

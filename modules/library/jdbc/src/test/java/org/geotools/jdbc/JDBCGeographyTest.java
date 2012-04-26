@@ -259,4 +259,18 @@ public abstract class JDBCGeographyTest extends JDBCTestSupport {
         assertEquals("Reykjavik", feature.getAttribute("name"));
         fi.close();
     }
+
+    public void testVirtualTable() throws Exception {
+        //geopoint( id:Integer; name:String; geo:Geography(Point) )
+        StringBuffer sb = new StringBuffer();
+        sb.append("select * from ");
+        dialect.encodeTableName(tname("geopoint"), sb);
+        
+        VirtualTable vt = new VirtualTable("geopoint_vt", sb.toString());
+        dataStore.addVirtualTable(vt);
+
+        SimpleFeatureType featureType = dataStore.getSchema("geopoint_vt");
+        assertNotNull(featureType);
+        assertNotNull(featureType.getGeometryDescriptor());
+    }
 }

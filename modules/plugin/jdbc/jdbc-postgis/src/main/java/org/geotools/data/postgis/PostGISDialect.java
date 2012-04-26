@@ -63,6 +63,7 @@ public class PostGISDialect extends BasicSQLDialect {
     final static Map<String, Class> TYPE_TO_CLASS_MAP = new HashMap<String, Class>() {
         {
             put("GEOMETRY", Geometry.class);
+            put("GEOGRAPHY", Geometry.class);
             put("POINT", Point.class);
             put("POINTM", Point.class);
             put("LINESTRING", LineString.class);
@@ -546,6 +547,7 @@ public class PostGISDialect extends BasicSQLDialect {
         super.registerSqlTypeNameToClassMappings(mappings);
 
         mappings.put("geometry", Geometry.class);
+        mappings.put("geography", Geometry.class);
         mappings.put("text", String.class);
         mappings.put("int8", Long.class);
         mappings.put("int4", Integer.class);

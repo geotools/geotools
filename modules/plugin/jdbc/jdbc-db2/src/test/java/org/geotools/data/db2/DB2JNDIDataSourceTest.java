@@ -17,7 +17,9 @@
 
 package org.geotools.data.db2;
 
+import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCJNDIDataSourceTest;
+import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
 import org.geotools.jdbc.JDBCJNDITestSetup;
 
 /**
@@ -29,6 +31,16 @@ public  class DB2JNDIDataSourceTest extends JDBCJNDIDataSourceTest {
 
     protected JDBCJNDITestSetup createTestSetup() {
         return new JDBCJNDITestSetup(new DB2TestSetup());
+    }
+
+    @Override
+    protected JDBCJNDIDataStoreFactory getJNDIStoreFactory() {
+        return new DB2NGJNDIDataStoreFactory();
+    }
+
+    @Override
+    protected JDBCDataStoreFactory getDataStoreFactory() {
+        return new DB2NGDataStoreFactory();
     }
 
 }

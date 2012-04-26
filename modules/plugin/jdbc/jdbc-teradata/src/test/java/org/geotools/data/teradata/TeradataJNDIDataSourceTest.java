@@ -17,7 +17,9 @@
 
 package org.geotools.data.teradata;
 
+import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCJNDIDataSourceTest;
+import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
 import org.geotools.jdbc.JDBCJNDITestSetup;
 
 /**
@@ -29,6 +31,16 @@ public class TeradataJNDIDataSourceTest extends JDBCJNDIDataSourceTest {
 
     protected JDBCJNDITestSetup createTestSetup() {
         return new JDBCJNDITestSetup(new TeradataTestSetup());
+    }
+
+    @Override
+    protected JDBCJNDIDataStoreFactory getJNDIStoreFactory() {
+        return new TeradataJNDIDataStoreFactory();
+    }
+
+    @Override
+    protected JDBCDataStoreFactory getDataStoreFactory() {
+        return new TeradataDataStoreFactory();
     }
 
 }

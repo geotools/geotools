@@ -41,6 +41,7 @@ public class OracleNGJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
         super.setupParameters(parameters);
         
         parameters.put(OracleNGDataStoreFactory.LOOSEBBOX.key, OracleNGDataStoreFactory.LOOSEBBOX);
-        parameters.put(MAX_OPEN_PREPARED_STATEMENTS.key, MAX_OPEN_PREPARED_STATEMENTS);
+        parameters.put(OracleNGDataStoreFactory.ESTIMATED_EXTENTS.key, OracleNGDataStoreFactory.ESTIMATED_EXTENTS);
+        parameters.put(OracleNGDataStoreFactory.GEOMETRY_METADATA_TABLE.key, OracleNGDataStoreFactory.GEOMETRY_METADATA_TABLE);
     }
 }

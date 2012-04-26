@@ -22,13 +22,21 @@ import org.geotools.jdbc.JDBCJNDITestSetup;
 
 /**
  * 
- *
+ * 
  * @source $URL$
  */
-public  class OracleJNDIDataSourceTest extends JDBCJNDIDataSourceTest {
+public class OracleJNDIDataSourceTest extends JDBCJNDIDataSourceTest {
 
     protected JDBCJNDITestSetup createTestSetup() {
         return new JDBCJNDITestSetup(new OracleTestSetup());
+    }
+
+    protected OracleNGJNDIDataStoreFactory getJNDIStoreFactory() {
+        return new OracleNGJNDIDataStoreFactory();
+    }
+
+    protected OracleNGDataStoreFactory getDataStoreFactory() {
+        return new OracleNGDataStoreFactory();
     }
 
 }

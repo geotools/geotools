@@ -17,7 +17,9 @@
 
 package org.geotools.data.mysql;
 
+import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCJNDIDataSourceTest;
+import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
 import org.geotools.jdbc.JDBCJNDITestSetup;
 
 /**
@@ -29,6 +31,16 @@ public  class MySQLJNDIDataSourceTest extends JDBCJNDIDataSourceTest {
 
     protected JDBCJNDITestSetup createTestSetup() {
         return new JDBCJNDITestSetup(new MySQLTestSetup());
+    }
+
+    @Override
+    protected JDBCJNDIDataStoreFactory getJNDIStoreFactory() {
+        return new MySQLJNDIDataStoreFactory();
+    }
+
+    @Override
+    protected JDBCDataStoreFactory getDataStoreFactory() {
+        return new MySQLDataStoreFactory();
     }
 
 }

@@ -83,8 +83,12 @@ public class OracleNGOCIDataStoreFactory extends OracleNGDataStoreFactory {
         if (getValidationQuery() != null)
             parameters.put(VALIDATECONN.key, VALIDATECONN);
         parameters.put(PK_METADATA_TABLE.key, PK_METADATA_TABLE);
-        
-        parameters.put(LOOSEBBOX.key, LOOSEBBOX);
+
+        parameters.put(OracleNGDataStoreFactory.LOOSEBBOX.key, OracleNGDataStoreFactory.LOOSEBBOX);
         parameters.put(MAX_OPEN_PREPARED_STATEMENTS.key, MAX_OPEN_PREPARED_STATEMENTS);
+        
+        parameters.put(OracleNGDataStoreFactory.ESTIMATED_EXTENTS.key, OracleNGDataStoreFactory.ESTIMATED_EXTENTS);
+        parameters.put(OracleNGDataStoreFactory.GEOMETRY_METADATA_TABLE.key, OracleNGDataStoreFactory.GEOMETRY_METADATA_TABLE);
+
     }
 }

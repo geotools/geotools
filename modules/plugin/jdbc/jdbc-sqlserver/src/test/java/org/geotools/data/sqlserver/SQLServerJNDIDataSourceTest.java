@@ -17,7 +17,9 @@
 
 package org.geotools.data.sqlserver;
 
+import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCJNDIDataSourceTest;
+import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
 import org.geotools.jdbc.JDBCJNDITestSetup;
 
 /**
@@ -29,6 +31,16 @@ public  class SQLServerJNDIDataSourceTest extends JDBCJNDIDataSourceTest {
 
     protected JDBCJNDITestSetup createTestSetup() {
         return new JDBCJNDITestSetup(new SQLServerTestSetup());
+    }
+
+    @Override
+    protected JDBCJNDIDataStoreFactory getJNDIStoreFactory() {
+        return new SQLServerJNDIDataStoreFactory();
+    }
+
+    @Override
+    protected JDBCDataStoreFactory getDataStoreFactory() {
+        return new SQLServerDataStoreFactory();
     }
 
 }

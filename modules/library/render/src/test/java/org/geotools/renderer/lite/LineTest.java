@@ -7,6 +7,8 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
+import javax.imageio.ImageIO;
+
 import junit.framework.TestCase;
 
 import org.geotools.data.property.PropertyDataStore;
@@ -87,4 +89,18 @@ public class LineTest extends TestCase {
         ImageAssert.assertEquals(file("dotstar"), image, 10);
     }
 
+    public void testRenderingTransform() throws Exception {
+        Style style = RendererBaseTest.loadStyle(this, "line_rendering_transform.sld");
+        
+        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
+        mc.addLayer(fs, style);
+        
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setContext(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        
+        BufferedImage image = RendererBaseTest.showRender("Lines with buffer rendering transform", renderer, TIME, bounds);
+        ImageAssert.assertEquals(file("renderingTransform"), image, 10);
+    }
+    
 }

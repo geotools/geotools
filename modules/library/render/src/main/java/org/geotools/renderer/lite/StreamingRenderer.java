@@ -1932,21 +1932,7 @@ public final class StreamingRenderer implements GTRenderer {
             applyUnitRescale(lfts);
             
             // classify by transformation
-            List<List<LiteFeatureTypeStyle>> txClassified = new ArrayList<List<LiteFeatureTypeStyle>>();
-            txClassified.add(new ArrayList<LiteFeatureTypeStyle>());
-            Expression transformation = null;
-            for (int i = 0; i < lfts.size(); i++) {
-                LiteFeatureTypeStyle curr = lfts.get(i);
-                if(i == 0) {
-                    transformation = curr.transformation;
-                } else if(!(transformation == curr.transformation) 
-                        || (transformation != null && curr.transformation != null && 
-                                !curr.transformation.equals(transformation))) {
-                    txClassified.add(new ArrayList<LiteFeatureTypeStyle>());
-                    
-                }  
-                txClassified.get(txClassified.size() - 1).add(curr);
-            }
+            List<List<LiteFeatureTypeStyle>> txClassified = classifyByTransformation(lfts);
             
             // render groups by uniform transformation
             for (List<LiteFeatureTypeStyle> uniform : txClassified) {
@@ -1959,11 +1945,11 @@ public final class StreamingRenderer implements GTRenderer {
                         uniform, mapArea, destinationCrs, sourceCrs, screenSize,
                         geometryAttribute, at);
                 FeatureCollection rawFeatures;
-                if(transformation != null) {
+                if(transform != null) {
                     GridEnvelope2D ge = new GridEnvelope2D(screenSize);
                     ReferencedEnvelope re = new ReferencedEnvelope(mapArea, destinationCrs);
                     GridGeometry2D gridGeometry = new GridGeometry2D(ge, re);
-                    rawFeatures = applyRenderingTransformation(transformation, featureSource, query,
+                    rawFeatures = applyRenderingTransformation(transform, featureSource, query,
                             gridGeometry);
                     if(rawFeatures == null) {
                         return;
@@ -2005,6 +1991,30 @@ public final class StreamingRenderer implements GTRenderer {
                         scaleRange, lfts);
             }
         }
+    }
+    
+    /**
+     * Classify a List of LiteFeatureTypeStyle objects by Transformation.
+     * @param lfts A List of LiteFeatureTypeStyles
+     * @return A List of List of LiteFeatureTypeStyles
+     */
+    List<List<LiteFeatureTypeStyle>> classifyByTransformation(List<LiteFeatureTypeStyle> lfts) {
+        List<List<LiteFeatureTypeStyle>> txClassified = new ArrayList<List<LiteFeatureTypeStyle>>();
+        txClassified.add(new ArrayList<LiteFeatureTypeStyle>());
+        Expression transformation = null;
+        for (int i = 0; i < lfts.size(); i++) {
+            LiteFeatureTypeStyle curr = lfts.get(i);
+            if(i == 0) {
+                transformation = curr.transformation;
+            } else if(!(transformation == curr.transformation) 
+                    || (transformation != null && curr.transformation != null && 
+                            !curr.transformation.equals(transformation))) {
+                txClassified.add(new ArrayList<LiteFeatureTypeStyle>());
+
+            }  
+            txClassified.get(txClassified.size() - 1).add(curr);
+        }
+        return txClassified;
     }
     
     /**

@@ -145,6 +145,7 @@ public class MultiLineHandler implements ShapeHandler {
             }
 
             length = finish - start;
+            int xyLength = length;
             if (length == 1) {
                 length = 2;
                 clonePoint = true;
@@ -153,9 +154,9 @@ public class MultiLineHandler implements ShapeHandler {
             }
 
             CoordinateSequence cs = geometryFactory.getCoordinateSequenceFactory().create(length, dimensions);
-            double[] xy = new double[length * 2];
+            double[] xy = new double[xyLength * 2];
             doubleBuffer.get(xy);
-            for (int i = 0; i < length; i++) {
+            for (int i = 0; i < xyLength; i++) {
                 cs.setOrdinate(i, 0, xy[i * 2]);
                 cs.setOrdinate(i, 1, xy[i * 2 + 1]);
             }

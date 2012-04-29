@@ -67,7 +67,9 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
@@ -85,8 +87,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     final static String DANISH = "shapes/danish_point.shp";
     final static String CHINESE = "shapes/chinese_poly.shp";
     final static String RUSSIAN = "shapes/rus-windows-1251.shp";
-    final static FilterFactory2 ff = CommonFactoryFinder
-            .getFilterFactory2(null);
+    final static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 	private ShapefileDataStore store;
 
     public ShapefileDataStoreTest(String testName) throws IOException {
@@ -934,6 +935,39 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     public void testReadWriteDatetimeAfterNewYear() throws Exception{
         System.setProperty("org.geotools.shapefile.datetime", "true");
         doTestReadWriteDate("2000-01-01");
+    }
+    
+    public void testLinestringOnePoint() throws Exception {
+        URL u = TestData.url(TestCaseSupport.class, "lsOnePoint/lsOnePoint.shp");
+        File f = DataUtilities.urlToFile(u);
+        assertTrue(f.exists());
+
+        store = new ShapefileDataStore(u);
+        SimpleFeatureSource fs = store.getFeatureSource(store.getTypeNames()[0]);
+        SimpleFeatureCollection fc = fs.getFeatures();
+        assertEquals(3, fc.size());
+        
+        int i = 418;
+        SimpleFeatureIterator it = fc.features();
+        while(it.hasNext()) {
+            SimpleFeature sf = it.next();
+            assertEquals("Activity" + i, sf.getAttribute("Name"));
+        
+            if(i == 419) {
+                assertNotNull(sf.getDefaultGeometry());
+                assertTrue(sf.getDefaultGeometry() instanceof MultiLineString);
+                MultiLineString mls = (MultiLineString) sf.getDefaultGeometry();
+                assertEquals(1, mls.getNumGeometries());
+                LineString ls = (LineString) mls.getGeometryN(0);
+                assertEquals(2, ls.getNumPoints());
+                assertTrue(ls.getStartPoint().equals(ls.getEndPoint()));
+            }
+            i++;
+        }
+   
+        assertEquals(421, i);
+        
+        assertEquals(3, fc.toArray().length);
     }
     
     

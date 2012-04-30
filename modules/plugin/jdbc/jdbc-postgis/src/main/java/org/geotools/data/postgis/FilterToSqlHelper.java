@@ -24,7 +24,9 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.factory.CommonFactoryFinder;
@@ -89,6 +91,24 @@ import com.vividsolutions.jts.geom.Polygon;
 class FilterToSqlHelper {
     
     protected static final String IO_ERROR = "io problem writing filter";
+    
+    /**
+     * Conversion factor from common units to meter
+     */
+    private static final Map<String, Double> UNITS_MAP = new HashMap<String, Double>() {
+        {
+            put("kilometers", 1000.0);
+            put("kilometer", 1000.0);
+            put("mm", 0.001);
+            put("millimeter", 0.001);
+            put("mi", 1609.344);
+            put("miles", 1609.344);
+            put("NM", 1852d);
+            put("feet", 0.3048);
+            put("ft", 0.3048);
+            put("in", 0.0254);
+        }
+    };
     
     private static final Envelope WORLD = new Envelope(-180, 180, -90, 90);
     
@@ -193,7 +213,7 @@ class FilterToSqlHelper {
             out.write(",");
             geometry.accept(delegate, extraData);
             out.write(",");
-            out.write(Double.toString(filter.getDistance()));
+            out.write(toMeters(filter.getDistance(), filter.getDistanceUnits()));
             out.write(")");
         }
         if ((filter instanceof DWithin && swapped)
@@ -205,6 +225,19 @@ class FilterToSqlHelper {
             out.write(") > ");
             out.write(Double.toString(filter.getDistance()));
         }
+    }
+
+    private String toMeters(double distance, String unit) {
+        // only geography uses metric units
+        if(isCurrentGeography()) {
+            Double conversion = UNITS_MAP.get(unit);
+            if(conversion != null) {
+                return String.valueOf(distance * conversion);
+            }
+        }
+        
+        // in case unknown unit or not geography, use as-is
+        return String.valueOf(distance);
     }
 
     void visitComparisonSpatialOperator(BinarySpatialOperator filter,

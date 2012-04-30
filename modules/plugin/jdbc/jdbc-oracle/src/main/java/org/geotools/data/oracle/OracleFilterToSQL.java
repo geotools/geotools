@@ -265,7 +265,8 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
     protected void doSDODistance(BinarySpatialOperator filter,
             PropertyName property, Literal geometry, Object extraData) throws IOException {
         double distance = ((DistanceBufferOperator) filter).getDistance();
-        String unit = ((DistanceBufferOperator) filter).getDistanceUnits();
+        String unit = getSDOUnitFromOGCUnit(((DistanceBufferOperator) filter).getDistanceUnits());
+
         String within = filter instanceof DWithin ? "TRUE" : "FALSE"; 
         
         out.write("SDO_WITHIN_DISTANCE(");
@@ -279,5 +280,28 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         else
             out.write(",'distance=" + distance + "') = '" + within + "' ");
     }
-   
+
+    /**
+     * The mapping between OGC filter units and Oracle Units.
+     * The full list of Oracle Units can be obtained by issuing
+     *  "select * from MDSYS.SDO_DIST_UNITS WHERE SDO_UNIT IS NOT NULL order by SDO_UNIT;"
+     */
+    private static final Map<String, String> UNITS_MAP = new HashMap<String, String>() {
+        {
+            put("metre", "m");
+            put("meters", "m");
+            put("kilometers", "km");
+            put("mi", "Mile");
+            put("miles", "Mile");
+            put("NM", "naut_mile");
+            put("feet", "foot");
+            put("ft", "foot");
+            put("in", "inch");
+        }
+    };
+
+    private static String getSDOUnitFromOGCUnit(String ogcUnit) {
+        Object sdoUnit = UNITS_MAP.get(ogcUnit);
+        return sdoUnit != null ? sdoUnit.toString() : ogcUnit;
+    }
 }

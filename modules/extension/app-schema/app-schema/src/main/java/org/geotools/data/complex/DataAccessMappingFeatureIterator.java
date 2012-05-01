@@ -61,6 +61,7 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
+import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.FeatureId;
@@ -118,6 +119,12 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     private boolean isFiltered = false;
     
     private ArrayList<String> filteredFeatures;
+    /**
+     * Temporary/experimental changes for enabling subsetting for isList only. 
+     */
+    private Filter listFilter;
+
+    private List<StepList> listFilterProperties;
 
     public DataAccessMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
             Query query, boolean isFiltered) throws IOException {
@@ -821,14 +828,28 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                     Attribute instance = setAttributeValue(target, null, sources.get(0),
                             attMapping, null, null, selectedProperties.get(attMapping));
                     if (sources.size() > 1 && instance != null) {
-                        Object[] values = new Object[sources.size()];
+                        List<Object> values = new ArrayList<Object>();
                         Expression sourceExpr = attMapping.getSourceExpression();
-                        int i = 0;
-                        for (Feature source : sources) {
-                            values[i] = getValue(sourceExpr, source);
-                            i++;
+                        if (listFilter != null
+                                && listFilterProperties.contains(attMapping.getTargetXPath())) {
+                            for (Feature source : sources) {
+                                // HACK HACK HACK
+                                // evaluate filter that applies to this list as we want a subset
+                                // instead of full result
+                                // this is a temporary solution for Bureau of Meteorology
+                                // requirement for timePositionList
+                                if (listFilter.evaluate(source)) {
+                                    // only add to subset if filter matches value
+                                    values.add(getValue(sourceExpr, source));
+                                }
+                            }
+                        } else {
+                            // no filter concerning the list
+                            for (Feature source : sources) {
+                                values.add(getValue(sourceExpr, source));
+                            }
                         }
-                        String valueString = StringUtils.join(values, " ");
+                        String valueString = StringUtils.join(values.iterator(), " ");
                         StepList fullPath = attMapping.getTargetXPath();
                         StepList leafPath = fullPath.subList(fullPath.size() - 1, fullPath.size());
                         if (instance instanceof ComplexAttributeImpl) {              
@@ -954,6 +975,8 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             sourceFeatureIterator = null;
             sourceFeatures = null;
             filteredFeatures = null;
+            listFilterProperties = null;
+            listFilter = null;
 
             //NC - joining nested atts
             for (AttributeMapping attMapping : selectedMapping) {
@@ -1084,5 +1107,13 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     
     public boolean isReprojectionCrsEqual(CoordinateReferenceSystem source,CoordinateReferenceSystem target) {
         return CRS.equalsIgnoreMetadata(source,target);
+    }
+    
+    public void setListFilter(Filter filter) {
+        listFilter = filter;
+    }    
+
+    public void setListFilterProperties(List<StepList> properties) {
+        listFilterProperties = properties;
     }
 }

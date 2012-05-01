@@ -223,10 +223,23 @@ public class FeatureTypeMapping {
     public Name getMappingName() {
         return mappingName;
     }
-    
-    
-    
-    
+
+    /**
+     * Return list of attribute mappings that are configured as list (isList = true). 
+     * @return attribute mappings with isList enabled.
+     */
+    public List<AttributeMapping> getIsListMappings() {
+        List<AttributeMapping> mappings = new ArrayList<AttributeMapping>();
+        AttributeMapping attMapping;
+        for (Iterator<AttributeMapping> it = attributeMappings.iterator(); it.hasNext();) {
+            attMapping = (AttributeMapping) it.next();
+            if (attMapping.isList()) {
+                mappings.add(attMapping);
+            }
+        }
+        return mappings;
+    }
+
     /**
      * Looks up for attribute mappings matching the xpath expression <code>propertyName</code>.
      * <p>

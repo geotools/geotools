@@ -54,8 +54,14 @@ public class PostFilteringMappingFeatureIterator implements IMappingFeatureItera
     protected Feature getFilteredNext() {
         while (delegate.hasNext() && count < maxFeatures) {
             Feature feature = delegate.next();
-            if (filter.evaluate(feature)) {
-                return feature;
+            try {
+                if (filter.evaluate(feature)) {
+                    return feature;
+                }
+            } catch (NullPointerException e) {
+                // ignore this exception
+                // this is to cater the case if the attribute has no value and 
+                // has been skipped in the delegate DataAccessMappingFeatureIterator
             }
         }
         return null;

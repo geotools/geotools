@@ -10,7 +10,7 @@ Creating a JDBCDataStore
 
 The process of creating a JDBC data store follows the regular steps of creating any type of datastore. That is defining the parameters to connect to the database in a map, and then creating the data store factory.:
   
-.. literalinclude:: /../src/main/java/org/geotools/data/SimpleFeatureStoreExamples.java
+.. literalinclude:: /../src/main/java/org/geotools/jdbc/JDBCExamples.java
    :language: java
    :start-after: // postgisExample start
    :end-before: // postgisExample end

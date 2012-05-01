@@ -36,7 +36,26 @@ Creating
 
 Here is a quick example:
 
-.. literalinclude:: /../src/main/java/org/geotools/data/SimpleFeatureStoreExamples.java
+.. literalinclude:: /../src/main/java/org/geotools/jdbc/JDBCExamples.java
    :language: java
    :start-after: // h2Example start
    :end-before: // h2Example end
+
+The above will reference a database file named "geotools" located in the current working directory. 
+A full path may also be specified:
+
+.. literalinclude:: /../src/main/java/org/geotools/jdbc/JDBCExamples.java
+   :language: java
+   :start-after: // h2AbsPathExample start
+   :end-before: // h2AbsPathExample end
+   
+The above examples create a connection to H2 in "embedded" mode. One limitation to this approach is 
+that it only allows for a single java process to access the database at any one time. H2 also offers 
+a `server mode <http://www.h2database.com/html/tutorial.html#using_server>`_ in which access
+to the underlying database is made via traditional client-server TCP connection, and removes the embedded
+single process restriction:
+
+.. literalinclude:: /../src/main/java/org/geotools/jdbc/JDBCExamples.java
+   :language: java
+   :start-after: // h2TcpExample start
+   :end-before: // h2TcpExample end

@@ -41,7 +41,7 @@ Creation
 
 Connect using DataStore finder:
 
-.. literalinclude:: /../src/main/java/org/geotools/data/SimpleFeatureStoreExamples.java
+.. literalinclude:: /../src/main/java/org/geotools/jdbc/JDBCExamples.java
    :language: java
    :start-after: // postgisExample start
    :end-before: // postgisExample end

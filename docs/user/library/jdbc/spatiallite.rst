@@ -55,9 +55,24 @@ Setup
 
 * Native Libraries
   
-  The SpatiaLite data store requires the native libraries for SQLite
-  and SpatiaLite to be installed on the system. Precompiled libraries for
-  SQLite and SpatiaLite are available.
+  The SpatiaLite datastore ships with its own build of the SQLite and SpatiaLite 
+  libraries. The SpatiaLite component has been compiled with GEOS and PROJ support
+  so those libraries need to be installed on the system for the datastore to 
+  function. Binaries for a variety of platforms are available at https://www.gaia-gis.it/fossil/libspatialite/index.
+
+  See also:
   
-  * http://www.sqlite.org/download.html
-  * http://www.gaia-gis.it/spatialite/binaries.html
+     * http://trac.osgeo.org/proj/
+     * http://trac.osgeo.org/geos/
+
+* Java Environment
+
+  In order to load the native libraries at runtime Java must be told where the libraries live
+  with a system property named "java.library.path". This is specified during java startup::
+  
+     java -Djava.library.path=/usr/local/lib ...
+     
+  Depending on how the O/S is configured the additional ``LD_LIBRARY_PATH`` (unix/linux) and 
+  ``DYLD_LIBRARY_PATH`` (osx) environment variables may need to be set.
+
+  

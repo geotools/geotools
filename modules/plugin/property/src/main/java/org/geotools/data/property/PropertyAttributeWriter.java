@@ -20,6 +20,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.regex.MatchResult;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.geotools.data.AttributeWriter;
 import org.geotools.data.DataUtilities;
@@ -110,21 +113,41 @@ public class PropertyAttributeWriter implements AttributeWriter {
         if (attribute == null) {
             writer.write("<null>"); // nothing!
         } else if( attribute instanceof String){
-            // encode newlines
-            String txt = (String) attribute;
-            txt = txt.replace("\n", "\\n");
-            txt = txt.replace("\r", "\\r");
-            writer.write( txt );            
+            String txt = encodeString((String) attribute);
+            writer.write( txt );
         } else if (attribute instanceof Geometry) {
             Geometry geometry = (Geometry) attribute;
-            writer.write( geometry.toText() );
+            String txt = geometry.toText();
+            
+            txt = encodeString( txt );
+            writer.write( txt );
         } else {
             String txt = Converters.convert( attribute, String.class );
             if( txt == null ){ // could not convert?
                 txt = attribute.toString();
             }
+            txt = encodeString( txt );
             writer.write( txt );
         }
+    }
+    
+    /**
+     * Used to encode common whitespace characters and | character for safe transport.
+     * 
+     * @param txt
+     * @return txt encoded for storage
+     * @see PropertyAttributeReader#decodeString(String)
+     */
+    String encodeString( String txt ){
+        // encode our escaped characters
+        // txt = txt.replace("\\", "\\\\");
+        txt = txt.replace("|","\\|");
+
+        // encode whitespace constants
+        txt = txt.replace("\n", "\\n");
+        txt = txt.replace("\r", "\\r");
+
+        return txt;
     }
     // write end
 

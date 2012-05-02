@@ -105,6 +105,7 @@ public class PropertyFeatureWriter implements
 
     // writeImplementation end
     // next start
+    long nextFid = System.currentTimeMillis(); // seed with a big number
     public SimpleFeature next() throws IOException {
         if (writer == null) {
             throw new IOException("Writer has been closed");
@@ -125,7 +126,7 @@ public class PropertyFeatureWriter implements
                 live = SimpleFeatureBuilder.copy(origional);
                 return live;
             } else {
-                fid = type.getTypeName() + "." + System.currentTimeMillis();
+                fid = type.getTypeName() + "." + (nextFid++);
                 Object values[] = DataUtilities.defaultValues(type);
 
                 origional = null;

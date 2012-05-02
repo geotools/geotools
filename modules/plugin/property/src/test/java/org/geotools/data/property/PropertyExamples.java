@@ -3,16 +3,10 @@ package org.geotools.data.property;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
@@ -30,20 +24,10 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.filter.text.cql2.CQL;
-import org.geotools.filter.text.cql2.CQLException;
-import org.opengis.feature.Feature;
-import org.opengis.feature.FeatureVisitor;
-import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
-import org.opengis.filter.identity.FeatureId;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * 
@@ -89,6 +73,7 @@ public class PropertyExamples {
                 transactionExample();
                 removeAllExample();
                 appendContent();
+                replaceAll();
             } catch (Throwable t) {
                 t.printStackTrace();
                 System.exit(1);
@@ -225,8 +210,7 @@ public class PropertyExamples {
             } finally {
                 writer.close();
             }
-            System.out.println("commit " + t); // only now are the contents
-                                               // removed
+            System.out.println("commit " + t); // now the contents are removed
             t.commit();
         } catch (Throwable eek) {
             t.rollback();
@@ -238,7 +222,7 @@ public class PropertyExamples {
         System.out.println("\nremoveAllExample end\n");
     }
 
-    private void replaceAll() throws Exception {
+    private static void replaceAll() throws Exception {
         System.out.println("replaceAll start\n");
         // replaceAll start
         Map<String, Serializable> params = new HashMap<String, Serializable>();

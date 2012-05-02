@@ -4,8 +4,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.geotools.data.AttributeReader;
 import org.geotools.data.DataSourceException;
@@ -48,13 +51,18 @@ import com.vividsolutions.jts.geom.Geometry;
  * </p>
  * 
  * <pre>
- *  <code>
- *  fid4=4||<null> -> Feature( id=2, name="", geom=null )
- *  </code>
+ *  fid4=4||<null>
+ * </pre>
+ * <p>
+ * You can use \ to escape a | character, you can also use it to protect newlines::
+ * <pre>
+ * fid4=4|I have a \\|splitting\\| headache|POINT(0,0)
+ * fid5=5|Example of \nmulti-lin text|POINT(1,1)
+ * fid6=6|Second \\
+ * example of multi-line text|POINT(2,2)
  * </pre>
  * 
  * @author Jody Garnett
- *
  *
  * @source $URL$
  */
@@ -183,10 +191,14 @@ public class PropertyAttributeReader implements AttributeReader {
             if( txt == null ){
                 break;
             }
+            // skip comments
             if( txt.startsWith("#") || txt.startsWith("!")){
-                continue; // skip content
+                continue;
             }
+            // ignore leading white space
             txt = trimLeft( txt );
+            
+            // handle escaped line feeds used to span multiple lines
             if( txt.endsWith("\\")){
                 buffer.append(txt.substring(0,txt.length()-1) );
                 buffer.append("\n");
@@ -201,13 +213,30 @@ public class PropertyAttributeReader implements AttributeReader {
             return null; // there is no line
         }
         String raw = buffer.toString();
-        raw = raw.replace("\\n", "\n" );
-        raw = raw.replace("\\r", "\r" );
-        raw = raw.replace("\\t", "\t" );
+//        String line = decodeString(raw);
+//        return line;
         return raw;
     }
     /**
-     * Trim leading white space as described Properties.
+     * Used to decode common whitespace chracters and escaped | characters.
+     * 
+     * @param txt Origional raw text as stored
+     * @return decoded text as provided for storage
+     * @see PropertyAttributeWriter#encodeString(String)
+     */
+    String decodeString( String txt ){
+        // unpack whitespace constants
+        txt = txt.replace( "\\n", "\n");
+        txt = txt.replaceAll("\\r", "\r" );
+
+        // unpack our our escaped characters
+        txt = txt.replace("\\|", "|" );
+        // txt = txt.replace("\\\\", "\\" );
+        
+        return txt;
+    }
+    /**
+     * Trim leading white space as described Properties file standard.
      * @see Properties#load(java.io.Reader)
      * @param txt
      * @return txt leading whitespace removed
@@ -241,13 +270,60 @@ public class PropertyAttributeReader implements AttributeReader {
 
             int split = line.indexOf('=');
             fid = line.substring(0, split);
-            text = line.substring(split + 1).split("\\|", -1);//use -1 as limit to include empty trailing spaces
-            if (type.getAttributeCount() != text.length)
-                throw new DataSourceException("format error: expected " + type.getAttributeCount()
-                        + " attributes, but found " + text.length + ". [" + line + "]");
+            String data = line.substring(split+1);
+            
+            text = splitIntoText(data);
         } else {
             throw new NoSuchElementException();
         }
+    }
+    /**
+     * Split the provided text using | charater as a seperator.
+     * <p>
+     * This method respects the used of \ to "escape" a | character allowing
+     * representations such as the following:<pre>
+     * String example="text|example of escaped \\| character|text";
+     * 
+     * // represents: "text|example of escaped \| character|text"
+     * String split=splitIntoText( example );</pre>
+     * 
+     * @param data Origional raw text as stored
+     * @return data split using | as seperator
+     * @throws DataSourceException if the information stored is inconsistent with the headered provided
+     */
+    private String[] splitIntoText(String data) throws DataSourceException {
+        // return data.split("|", -1); // use -1 as a limit to include empty trailing spaces
+        // return data.split("[.-^\\\\]\\|",-1); //use -1 as limit to include empty trailing spaces
+
+        String split[] = new String[type.getAttributeCount()];
+        int i = 0;
+        StringBuilder item = new StringBuilder();
+        for (String str : data.split("\\|",-1)) {
+            if (i == type.getAttributeCount()) {
+                // limit reached
+                throw new DataSourceException("format error: expected " + text.length
+                        + " attributes, stopped after finding " + i + ". [" + line
+                        + "] split into " + Arrays.asList(text));
+            }
+            if (str.endsWith("\\")) {
+//                String shorter = str.substring(0, str.length() - 1);
+//                item.append(shorter);
+                item.append(str);
+                item.append("|");
+            } else {
+                item.append(str);
+                split[i] = item.toString();
+
+                i++;
+                item = new StringBuilder();
+            }
+        }
+        if (i < type.getAttributeCount()) {
+            throw new DataSourceException("format error: expected " + type.getAttributeCount()
+                    + " attributes, but only found " + i + ". [" + line + "] split into "
+                    + Arrays.asList(text));
+        }
+        return split;
     }
 
     /**
@@ -281,18 +357,18 @@ public class PropertyAttributeReader implements AttributeReader {
         AttributeDescriptor attType = type.getDescriptor(index);
 
         String stringValue = null;
-        boolean isEmpty = "".equals(stringValue);
+        //boolean isEmpty = "".equals(stringValue);
         try {
-            // read the value
-            stringValue = text[index];
-        } catch (RuntimeException e1) {
-            e1.printStackTrace();
+            // read the value and decode any interesting characters
+            stringValue = decodeString( text[index] );
+        } catch (RuntimeException huh) {
+            huh.printStackTrace();
             stringValue = null;
         }
         // check for special <null> flag
         if ("<null>".equals(stringValue)) {
             stringValue = null;
-            isEmpty = true;
+        //    isEmpty = true;
         }
         if (stringValue == null) {
             if (attType.isNillable()) {

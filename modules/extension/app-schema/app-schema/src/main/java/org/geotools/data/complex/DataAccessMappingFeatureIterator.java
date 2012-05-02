@@ -124,8 +124,6 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
      */
     private Filter listFilter;
 
-    private List<StepList> listFilterProperties;
-
     public DataAccessMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
             Query query, boolean isFiltered) throws IOException {
         this(store, mapping, query, null);
@@ -181,6 +179,24 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                         }
                     }
                 }
+                // HACK HACK HACK
+                // evaluate filter that applies to this list as we want a subset
+                // instead of full result
+                // this is a temporary solution for Bureau of Meteorology
+                // requirement for timePositionList
+                if (listFilter != null) {
+                    while (exists && !listFilter.evaluate(curSrcFeature)) {
+                        // only add to subset if filter matches value
+                        if (getSourceFeatureIterator() != null
+                                && getSourceFeatureIterator().hasNext()) {
+                            this.curSrcFeature = getSourceFeatureIterator().next();
+                            exists = true;
+                        } else {
+                            exists = false;
+                        }
+                    }
+                }
+                // END OF HACK
             } else {
                 exists = false;
             }
@@ -714,8 +730,26 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         while (getSourceFeatureIterator().hasNext()) {
             Feature next = getSourceFeatureIterator().next();
             if (extractIdForFeature(next).equals(fId) && checkForeignIdValues(foreignIdValues, next)) {
-                features.add(next);
-            } else {
+                // HACK HACK HACK
+                // evaluate filter that applies to this list as we want a subset
+                // instead of full result
+                // this is a temporary solution for Bureau of Meteorology
+                // requirement for timePositionList
+                if (listFilter != null) {
+                    if (listFilter.evaluate(next)) {
+                        features.add(next);
+                    }
+                // END OF HACK
+                } else {
+                    features.add(next);
+                }
+            // HACK HACK HACK
+            // evaluate filter that applies to this list as we want a subset
+            // instead of full result
+            // this is a temporary solution for Bureau of Meteorology
+            // requirement for timePositionList
+            } else if (listFilter == null || listFilter.evaluate(next)) {
+            // END OF HACK
                 curSrcFeature = next;
                 break;
             }
@@ -740,6 +774,8 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                 query.setCoordinateSystemReproject(reprojection);
             }
         }
+        
+        Filter fidFilter;
 
         if (mapping.getFeatureIdExpression().equals(Expression.NIL)) {
             // no real feature id mapping,
@@ -747,16 +783,30 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             Set<FeatureId> ids = new HashSet<FeatureId>();
             FeatureId featureId = namespaceAwareFilterFactory.featureId(fId);
             ids.add(featureId);
-            query.setFilter(namespaceAwareFilterFactory.id(ids));
-            matchingFeatures = this.mappedSource.getFeatures(query);
+            fidFilter = namespaceAwareFilterFactory.id(ids);
         } else {
             // in case the expression is wrapped in a function, eg. strConcat
             // that's why we don't always filter by id, but do a PropertyIsEqualTo
-            query.setFilter(namespaceAwareFilterFactory.equals(mapping.getFeatureIdExpression(),
-                    namespaceAwareFilterFactory.literal(fId)));
-            matchingFeatures = this.mappedSource.getFeatures(query);
+            fidFilter = namespaceAwareFilterFactory.equals(mapping.getFeatureIdExpression(),
+                    namespaceAwareFilterFactory.literal(fId));
         }
+        
+        // HACK HACK HACK
+        // evaluate filter that applies to this list as we want a subset
+        // instead of full result
+        // this is a temporary solution for Bureau of Meteorology
+        // requirement for timePositionList
+        if (listFilter != null) {
+            List<Filter> filters = new ArrayList<Filter>();
+            filters.add(listFilter);
+            filters.add(fidFilter);
+            fidFilter = namespaceAwareFilterFactory.and(filters);
+        }
+        // END OF HACK
 
+        query.setFilter(fidFilter);
+        matchingFeatures = this.mappedSource.getFeatures(query);
+        
         FeatureIterator<? extends Feature> iterator = matchingFeatures.features();
 
         List<Feature> features = new ArrayList<Feature>();
@@ -830,24 +880,8 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                     if (sources.size() > 1 && instance != null) {
                         List<Object> values = new ArrayList<Object>();
                         Expression sourceExpr = attMapping.getSourceExpression();
-                        if (listFilter != null
-                                && listFilterProperties.contains(attMapping.getTargetXPath())) {
-                            for (Feature source : sources) {
-                                // HACK HACK HACK
-                                // evaluate filter that applies to this list as we want a subset
-                                // instead of full result
-                                // this is a temporary solution for Bureau of Meteorology
-                                // requirement for timePositionList
-                                if (listFilter.evaluate(source)) {
-                                    // only add to subset if filter matches value
-                                    values.add(getValue(sourceExpr, source));
-                                }
-                            }
-                        } else {
-                            // no filter concerning the list
-                            for (Feature source : sources) {
-                                values.add(getValue(sourceExpr, source));
-                            }
+                        for (Feature source : sources) {
+                            values.add(getValue(sourceExpr, source));                        
                         }
                         String valueString = StringUtils.join(values.iterator(), " ");
                         StepList fullPath = attMapping.getTargetXPath();
@@ -975,7 +1009,6 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             sourceFeatureIterator = null;
             sourceFeatures = null;
             filteredFeatures = null;
-            listFilterProperties = null;
             listFilter = null;
 
             //NC - joining nested atts
@@ -1111,9 +1144,5 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     
     public void setListFilter(Filter filter) {
         listFilter = filter;
-    }    
-
-    public void setListFilterProperties(List<StepList> properties) {
-        listFilterProperties = properties;
-    }
+    } 
 }

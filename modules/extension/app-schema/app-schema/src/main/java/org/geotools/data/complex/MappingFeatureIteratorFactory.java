@@ -18,7 +18,6 @@
 package org.geotools.data.complex;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -69,15 +68,15 @@ public class MappingFeatureIteratorFactory {
         // Attribute mappings that have isList enabled
         private List<AttributeMapping> listMappings;
 
-        // Filter properties that are configured as isList
-        private List<StepList> listFilterProperties;
+        // True if the filter has properties that are configured as isList
+        private boolean isListFilter;
 
         private FeatureTypeMapping mappings;
 
         public IsListFilterVisitor(List<AttributeMapping> listMappings, FeatureTypeMapping mappings) {
             this.listMappings = listMappings;
             this.mappings = mappings;
-            listFilterProperties = new ArrayList<StepList>();
+            isListFilter = false;
         }
 
         @Override
@@ -91,14 +90,15 @@ public class MappingFeatureIteratorFactory {
                 targetXpath = mapping.getTargetXPath();
                 if (targetXpath.equals(simplifiedSteps)) {
                     // TODO: support feature chaining too?
-                    listFilterProperties.add(targetXpath);
+                    isListFilter = true;
+                    return extraData;
                 }
             }
             return extraData;
         }
 
-        public List<StepList> getListFilterProperties() {
-            return listFilterProperties;
+        public boolean isListFilterExists() {
+            return isListFilter;
         }
     }
 
@@ -107,23 +107,7 @@ public class MappingFeatureIteratorFactory {
 
         if (mapping instanceof XmlFeatureTypeMapping) {
             return new XmlMappingFeatureIterator(store, mapping, query);
-        }
-        
-        // HACK HACK HACK
-        // experimental/temporary solution for isList subsetting by filtering
-        List<AttributeMapping> listMappings = mapping.getIsListMappings();
-        Filter isListFilter = null;
-        List<StepList> listFilterProperties = null;
-        if (!listMappings.isEmpty()) {
-            IsListFilterVisitor listChecker = new IsListFilterVisitor(listMappings, mapping);
-            Filter complexFilter = query.getFilter();
-            complexFilter.accept(listChecker, null);
-            listFilterProperties = listChecker.getListFilterProperties();
-            if (!listFilterProperties.isEmpty()) {
-                isListFilter = AppSchemaDataAccess.unrollFilter(complexFilter, mapping);
-            }
-        }
-        // END OF HACK
+        }        
 
         boolean isJoining = AppSchemaDataAccessConfigurator.isJoining();
 
@@ -146,6 +130,19 @@ public class MappingFeatureIteratorFactory {
                         unrolledQuery);
             }
         } else {
+            // HACK HACK HACK
+            // experimental/temporary solution for isList subsetting by filtering
+            List<AttributeMapping> listMappings = mapping.getIsListMappings();
+            Filter isListFilter = null;
+            if (!listMappings.isEmpty()) {
+                IsListFilterVisitor listChecker = new IsListFilterVisitor(listMappings, mapping);
+                Filter complexFilter = query.getFilter();
+                complexFilter.accept(listChecker, null);
+                if (listChecker.isListFilterExists()) {
+                    isListFilter = AppSchemaDataAccess.unrollFilter(complexFilter, mapping);
+                }
+            }
+            // END OF HACK
             FeatureSource mappedSource = mapping.getSource();
             if (isJoining || mappedSource instanceof JDBCFeatureSource
                     || mappedSource instanceof JDBCFeatureStore) {
@@ -169,15 +166,12 @@ public class MappingFeatureIteratorFactory {
                 iterator = new DataAccessMappingFeatureIterator(store, mapping, query, isFiltered);
                 // HACK HACK HACK
                 // experimental/temporary solution for isList subsetting by filtering
-                if (isListFilter != null) {
-                    ((DataAccessMappingFeatureIterator) iterator).setListFilter(isListFilter);
-                    ((DataAccessMappingFeatureIterator) iterator)
-                            .setListFilterProperties(listFilterProperties);
-                }
+                if (isListFilter == null) {
                 // END OF HACK
-                if (filter != null && filter != Filter.INCLUDE) {
-                    iterator = new PostFilteringMappingFeatureIterator(iterator, filter,
+                    if (filter != null && filter != Filter.INCLUDE) {
+                        iterator = new PostFilteringMappingFeatureIterator(iterator, filter,
                             maxFeatures);
+                    }
                 }
             } else if (mappedSource instanceof MappingFeatureSource) {
                 // web service data access wrapper
@@ -212,17 +206,13 @@ public class MappingFeatureIteratorFactory {
                     iterator = new DataAccessMappingFeatureIterator(store, mapping, query);
                 }
             }
+             // HACK HACK HACK
+            // experimental/temporary solution for isList subsetting by filtering
+            if (isListFilter != null && iterator instanceof DataAccessMappingFeatureIterator) {
+                ((DataAccessMappingFeatureIterator) iterator).setListFilter(isListFilter);
+            }
+            // END OF HACK
         }
-        
-        // HACK HACK HACK
-        // experimental/temporary solution for isList subsetting by filtering
-        if (isListFilter != null && iterator instanceof DataAccessMappingFeatureIterator) {
-            ((DataAccessMappingFeatureIterator) iterator).setListFilter(isListFilter);
-            ((DataAccessMappingFeatureIterator) iterator)
-                    .setListFilterProperties(listFilterProperties);
-        }
-        // END OF HACK
-
         return iterator;
     }
 

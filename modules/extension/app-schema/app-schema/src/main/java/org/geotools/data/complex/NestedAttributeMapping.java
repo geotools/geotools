@@ -127,7 +127,7 @@ public class NestedAttributeMapping extends AttributeMapping {
             StepList targetXPath, boolean isMultiValued, Map<Name, Expression> clientProperties,
             Expression sourceElement, StepList sourcePath, NamespaceSupport namespaces)
             throws IOException {
-        super(idExpression, parentExpression, targetXPath, null, isMultiValued, clientProperties);
+        super(idExpression, parentExpression, null, targetXPath, null, isMultiValued, clientProperties);
         this.nestedTargetXPath = sourcePath;
         this.nestedFeatureType = sourceElement;
         this.filterFac = new FilterFactoryImplNamespaceAware(namespaces);

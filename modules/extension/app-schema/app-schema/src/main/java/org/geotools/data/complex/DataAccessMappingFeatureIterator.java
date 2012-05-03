@@ -902,7 +902,17 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                         setAttributeValue(target, null, source, attMapping, null, null, selectedProperties.get(attMapping));
                     }
                 } else {
-                    setAttributeValue(target, null, sources.get(0), attMapping, null, null, selectedProperties.get(attMapping));
+                    String indexString = attMapping.getSourceIndex();
+                    // if not specified, get the first row by default
+                    int index = 0;
+                    if (indexString != null) {
+                        if (ComplexFeatureConstants.LAST_INDEX.equals(indexString)) {
+                            index = sources.size() - 1;
+                        } else {
+                            index = Integer.parseInt(indexString);
+                        }
+                    }
+                    setAttributeValue(target, null, sources.get(index), attMapping, null, null, selectedProperties.get(attMapping));
                     // When a feature is not multi-valued but still has multiple rows with the same ID in
                     // a denormalised table, by default app-schema only takes the first row and ignores
                     // the rest (see above). The following line is to make sure that the cursors in the

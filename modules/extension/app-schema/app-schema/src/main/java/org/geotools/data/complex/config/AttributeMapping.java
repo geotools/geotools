@@ -62,6 +62,17 @@ public class AttributeMapping implements Serializable {
     private String sourceExpression;
 
     /**
+     * Expression whose evaluation result in numeric value to indicate row number to extract {@link
+     * this#sourceExpression} from denormalised database rows.
+     * 
+     * <p>
+     * At this stage, the expression must be a valid integer, or LAST would work to
+     * get the last dynamic result.
+     * </p>
+     */
+    private String sourceIndex;
+
+    /**
      * Label used to refer to an attribute.
      */
     private String label;
@@ -159,6 +170,31 @@ public class AttributeMapping implements Serializable {
      */
     public void setSourceExpression(String sourceExpression) {
         this.sourceExpression = sourceExpression;
+    }
+    
+    /**
+     * Returns the expression whose evaluation result in numeric value to indicate row number to extract {@link
+     * this#sourceExpression} from denormalised database rows.
+     * 
+     * <p>
+     * At this stage, the expression must be a valid integer, or LAST would work to
+     * get the last dynamic result.
+     * </p>
+     * 
+     * @return OGC CQL expression for the attribute value
+     */
+    public String getSourceIndex() {
+        return sourceIndex;
+    }
+
+    /**
+     * Sets the OGC CQL expression index for the attribute value.
+     * 
+     * @param sourceIndex
+     *                OGC CQL expression index for the attribute value.
+     */
+    public void setSourceIndex(String sourceIndex) {
+        this.sourceIndex = sourceIndex;
     }
     
     /**

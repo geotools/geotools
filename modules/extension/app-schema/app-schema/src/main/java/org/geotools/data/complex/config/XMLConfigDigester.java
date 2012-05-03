@@ -238,6 +238,9 @@ public class XMLConfigDigester {
 
         digester.addCallMethod(attMap + "/sourceExpression/OCQL", "setSourceExpression", 1);
         digester.addCallParam(attMap + "/sourceExpression/OCQL", 0);
+        
+        digester.addCallMethod(attMap + "/sourceExpression/index", "setSourceIndex", 1);
+        digester.addCallParam(attMap + "/sourceExpression/index", 0);
 
         digester.addCallMethod(attMap + "/idExpression/inputAttribute", "setIdentifierPath", 1);
         digester.addCallParam(attMap + "/idExpression/inputAttribute", 0);

@@ -346,8 +346,6 @@ public class AppSchemaDataAccessConfigurator {
 
             final boolean isMultiValued = attDto.isMultiple();
             
-            final boolean isList = attDto.isList();
-
             final Expression idExpression = (idXpath == null) ? parseOgcCqlExpression(idExpr)
                     : new AttributeExpressionImpl(idXpath, new Hints(
                             FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, this.namespaces));
@@ -401,7 +399,7 @@ public class AppSchemaDataAccessConfigurator {
                 }
                 
             } else {
-                attMapping = new AttributeMapping(idExpression, sourceExpression, targetXPathSteps,
+                attMapping = new AttributeMapping(idExpression, sourceExpression, attDto.getSourceIndex(), targetXPathSteps,
                         expectedInstanceOf, isMultiValued, clientProperties);
             }
             

@@ -297,7 +297,7 @@ public class TestData {
         id = ff.property("id[1]");
         source = null;
         target = "wq_plus/measurement";
-        mappings.add(new AttributeMapping(id, source, XPath
+        mappings.add(new AttributeMapping(id, source, null, XPath
                 .steps(targetFeature, target, namespaces), null, true, null));
 
         source = ff.property("determinand_description");

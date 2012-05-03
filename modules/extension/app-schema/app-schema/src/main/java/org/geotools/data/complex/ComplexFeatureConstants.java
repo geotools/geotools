@@ -85,4 +85,9 @@ public class ComplexFeatureConstants {
      * Fake attribute name for simple contents of a complex type, eg. gml:name of gml:CodeType type
      */
     public static final Name SIMPLE_CONTENT = new NameImpl(null, "simpleContent");
+    
+    /**
+     * Constant to indicate the last row from denormalised rows.
+     */
+    public static final String LAST_INDEX = "LAST";
 }

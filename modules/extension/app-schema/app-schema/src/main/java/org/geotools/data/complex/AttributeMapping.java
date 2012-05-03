@@ -63,6 +63,8 @@ public class AttributeMapping {
 
     private String instancePath;
 
+    private String sourceIndex;
+
     /**
      * Creates a new AttributeMapping object.
      * 
@@ -73,10 +75,10 @@ public class AttributeMapping {
      */
     public AttributeMapping(Expression idExpression, Expression sourceExpression,
             StepList targetXPath) {
-        this(idExpression, sourceExpression, targetXPath, null, false, null);
+        this(idExpression, sourceExpression, null, targetXPath, null, false, null);
     }
 
-    public AttributeMapping(Expression idExpression, Expression sourceExpression,
+    public AttributeMapping(Expression idExpression, Expression sourceExpression, String sourceIndex,
             StepList targetXPath, AttributeType targetNodeInstance, boolean isMultiValued,
             Map<Name, Expression> clientProperties) {
 
@@ -86,6 +88,7 @@ public class AttributeMapping {
         if (this.sourceExpression == null) {
             this.sourceExpression = Expression.NIL;
         }
+        this.sourceIndex = sourceIndex;
         this.targetXPath = targetXPath;
         this.targetNodeInstance = targetNodeInstance;
         this.clientProperties = clientProperties == null ? Collections
@@ -102,6 +105,10 @@ public class AttributeMapping {
 
     public Expression getSourceExpression() {
         return sourceExpression;
+    }
+    
+    public String getSourceIndex() {
+        return sourceIndex;
     }
 
     public StepList getTargetXPath() {

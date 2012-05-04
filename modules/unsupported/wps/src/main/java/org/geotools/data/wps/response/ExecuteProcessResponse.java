@@ -76,7 +76,7 @@ public class ExecuteProcessResponse extends Response
 
                 // could be gml or other stuff, not necessarily a service exception, we need to check if it's an exception or not
                 rawContentType = httpResponse.getContentType();
-                if(rawContentType.startsWith("text/xml")) {
+                if(rawContentType.matches(".*/xml.*")) {
                     // make sure we don't throw away info
                     inputStream = new BufferedInputStream(httpResponse.getResponseStream());
                     inputStream.mark(8192);
@@ -89,9 +89,8 @@ public class ExecuteProcessResponse extends Response
     
                         // get the first tag name
                         String name = parser.getName();
-                        String namespace = parser.getNamespace();
                         inputStream.reset();
-                        if("ServiceException".equals(name) ||  "ExecuteResponse".equals(name)) {
+                        if("ServiceException".equals(name) || "ExceptionReport".equals(name) || "ExecuteResponse".equals(name)) {
                             parseDocumentResponse(inputStream);
                             return;
                         }
@@ -143,6 +142,10 @@ public class ExecuteProcessResponse extends Response
         if (object instanceof ExecuteResponseType)
         {
             exeResponse = (ExecuteResponseType) object;
+            // in case of exceptions let's be explicit about them
+            if(exeResponse.getStatus() != null && exeResponse.getStatus().getProcessFailed() != null) {
+                excepResponse = exeResponse.getStatus().getProcessFailed().getExceptionReport();
+            }
         }
         // exception caught on server and returned
         else if (object instanceof ExceptionReportType)

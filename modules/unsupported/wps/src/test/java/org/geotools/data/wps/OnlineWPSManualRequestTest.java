@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.opengis.ows11.ExceptionReportType;
+import net.opengis.ows11.ExceptionType;
 import net.opengis.wps10.DataType;
 import net.opengis.wps10.DocumentOutputDefinitionType;
 import net.opengis.wps10.ExecuteResponseType;
@@ -933,4 +934,152 @@ public class OnlineWPSManualRequestTest extends OnlineTestCase
         System.out.println(arcgrid);
         assertTrue(arcgrid.startsWith(expectedHeader));
     }
+    
+    /**
+     * Test exception parsing on invalid process request
+     *
+     * @throws ServiceException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public void testInvalidProcess() throws ServiceException, IOException, ParseException
+    {
+
+        // don't run the test if the server is not up
+        if (fixture == null)
+        {
+            return;
+        }
+
+        if (DISABLE)
+        {
+            return;
+        }
+
+        String processIdenLocal = "gs:InvalidProcessName";
+
+        WPSCapabilitiesType capabilities = wps.getCapabilities();
+
+        // get the first process and execute it
+        ProcessOfferingsType processOfferings = capabilities.getProcessOfferings();
+        EList processes = processOfferings.getProcess();
+        // ProcessBriefType process = (ProcessBriefType) processes.get(0);
+
+        // does the server contain the specific process I want
+        boolean found = false;
+        Iterator iterator = processes.iterator();
+        while (iterator.hasNext())
+        {
+            ProcessBriefType process = (ProcessBriefType) iterator.next();
+            if (process.getIdentifier().getValue().equalsIgnoreCase(processIdenLocal))
+            {
+                found = true;
+
+                break;
+            }
+        }
+
+        // exit test if my process doesn't exist on server
+        if (found)
+        {
+            System.out.println("Skipping, gs:InvalidProcessName has been found!");
+            return;
+        }
+
+        // setup a fake call to fake process
+        ExecuteProcessRequest exeRequest = wps.createExecuteProcessRequest();
+        exeRequest.setIdentifier(processIdenLocal);
+        ResponseDocumentType doc = wps.createResponseDocumentType(false, true, true, "result");
+        DocumentOutputDefinitionType odt = (DocumentOutputDefinitionType) doc.getOutput().get(0);
+        odt.setMimeType("application/arcgrid");
+        odt.setAsReference(true);
+        ResponseFormType responseForm = wps.createResponseForm(doc, null);
+        exeRequest.setResponseForm(responseForm);
+
+        // send the request
+        ExecuteProcessResponse response = wps.issueRequest(exeRequest);
+
+        // response should not be null and no exception should occur.
+        assertNotNull(response);
+
+        // we should get an exception
+        ExceptionReportType report = response.getExceptionResponse();
+        assertNotNull(report);
+        ExceptionType exception = (ExceptionType) report.getException().get(0);
+        String errorMessage = exception.getExceptionText().get(0).toString();
+        assertTrue(errorMessage.contains(processIdenLocal));
+    }
+    
+    /**
+     * Make sure we get the proper exception report
+     *
+     * @throws ServiceException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public void testInvalidParamsRawOutput() throws ServiceException, IOException, ParseException
+    {
+
+        // don't run the test if the server is not up
+        if (fixture == null)
+        {
+            return;
+        }
+
+        if (DISABLE)
+        {
+            return;
+        }
+
+        String processIdenLocal = "gs:AreaGrid";
+
+        WPSCapabilitiesType capabilities = wps.getCapabilities();
+
+        // get the first process and execute it
+        ProcessOfferingsType processOfferings = capabilities.getProcessOfferings();
+        EList processes = processOfferings.getProcess();
+        // ProcessBriefType process = (ProcessBriefType) processes.get(0);
+
+        // does the server contain the specific process I want
+        boolean found = false;
+        Iterator iterator = processes.iterator();
+        while (iterator.hasNext())
+        {
+            ProcessBriefType process = (ProcessBriefType) iterator.next();
+            if (process.getIdentifier().getValue().equalsIgnoreCase(processIdenLocal))
+            {
+                found = true;
+
+                break;
+            }
+        }
+
+        // exit test if my process doesn't exist on server
+        if (!found)
+        {
+            System.out.println("Skipping, gs:AreaGrid not found!");
+            return;
+        }
+
+        // based on the describeprocess, setup the execute
+        ExecuteProcessRequest exeRequest = wps.createExecuteProcessRequest();
+        exeRequest.setIdentifier(processIdenLocal);
+        // don't send over the inputs
+        OutputDefinitionType rawOutput = wps.createOutputDefinitionType("result");
+        rawOutput.setMimeType("application/arcgrid");
+        ResponseFormType responseForm = wps.createResponseForm(null, rawOutput);
+        exeRequest.setResponseForm(responseForm);
+
+        // send the request
+        ExecuteProcessResponse response = wps.issueRequest(exeRequest);
+
+        // response should not be null and no exception should occur.
+        assertNotNull(response);
+
+        // we should get an exception here too
+        ExceptionReportType report = response.getExceptionResponse();
+        assertNotNull(report);
+    }
+    
+    
 }

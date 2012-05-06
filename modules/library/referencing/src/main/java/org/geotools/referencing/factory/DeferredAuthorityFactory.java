@@ -126,7 +126,7 @@ public abstract class DeferredAuthorityFactory extends BufferedAuthorityFactory
      * @throws FactoryException if the creation of backing store failed.
      */
     @Override
-    final AbstractAuthorityFactory getBackingStore() throws FactoryException {
+    protected final AbstractAuthorityFactory getBackingStore() throws FactoryException {
         if (backingStore == null) {
             synchronized (this) {
                 if(backingStore == null) {

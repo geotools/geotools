@@ -1,3 +1,4 @@
+org.geotools.referencing.factory.epsg.CoordinateOperationFactoryUsingWKT
 org.geotools.referencing.factory.epsg.DefaultFactory
 org.geotools.referencing.factory.epsg.LongitudeFirstFactory
 org.geotools.referencing.factory.URN_AuthorityFactory

@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.wkt;
 
+import java.net.URI;
 import java.text.ParseException;
 import java.text.ParsePosition;
 
@@ -184,6 +185,8 @@ public class MathTransformParser extends AbstractParser {
                 parameter.setValue(param.pullInteger("value"));
             } else if (Double.class.equals(type)) {
                 parameter.setValue(param.pullDouble("value"));
+            } else if (URI.class.equals(type)){
+                parameter.setValue(URI.create(param.pullString("value")));
             } else {
                 parameter.setValue(param.pullString("value"));
             }

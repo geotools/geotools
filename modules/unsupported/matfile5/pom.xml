@@ -29,6 +29,10 @@
   <name>SAS Matlab grid coverage readers</name>
   <url>http://maven.geotools.fr/reports/modules/unsupported/sas/</url>
 
+  <properties>
+      <imageio.mat.version>1.1M012010</imageio.mat.version>
+  </properties>
+      
   <scm>
     <connection>
       scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/matfile5
@@ -75,14 +79,6 @@
     </developer>
   </developers>
 
- <repositories>
-    <repository>
-      <id>geosolutions</id>
-      <name>GeoSolutions libraries repository</name>
-      <url>http://mvn.geo-solutions.it/</url>
-    </repository>
- </repositories>
-
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
   <!-- =========================================================== -->
@@ -95,12 +91,12 @@
     <dependency>
       <groupId>it.geosolutions.imageio-ext</groupId>
       <artifactId>imageio-ext-mat-sas</artifactId>
-      <version>1.1M012010</version>
+      <version>${imageio.mat.version}</version>
     </dependency>
     <dependency>
       <groupId>it.geosolutions.imageio-ext</groupId>
       <artifactId>imageio-ext-imagereadmt</artifactId>
-      <version>1.1M012010</version>
+      <version>${imageio.mat.version}</version>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>

@@ -269,19 +269,24 @@ public class FeatureTypeMapping {
         }
         List expressions = getExpressions(candidates);
 
-        // does the last step refer to a client property of the parent step?
+        // Does the last step refer to a client property of the parent step?
+        // The parent step could be the root element which may not be on the path.
         // i.e. a client property maps to an xml attribute, and the step list
         // could have been generated from an xpath of the form
-        // propA/propB@attName
-        if (candidates.size() == 0 && propertyName.size() > 1) {
+        // @attName or propA/propB@attName
+        if (candidates.size() == 0 && propertyName.size() > 0) {
             XPath.Step clientPropertyStep = (Step) propertyName.get(propertyName.size() - 1);
             Name clientPropertyName = Types.toTypeName(clientPropertyStep.getName());
+            XPath.StepList parentPath;
 
-            XPath.StepList parentPath = new XPath.StepList(propertyName);
-            parentPath.remove(parentPath.size() - 1);
+            if (propertyName.size() == 1) {
+                parentPath = XPath.rootElementSteps(this.target, this.namespaces);
+            } else {  
+                parentPath = new XPath.StepList(propertyName);
+                parentPath.remove(parentPath.size() - 1);
+            }
 
             candidates = getAttributeMappingsIgnoreIndex(parentPath);
-
             expressions = getClientPropertyExpressions(candidates, clientPropertyName, parentPath);
             if (expressions.isEmpty()) {
                 // this might be a wrapper mapping for another complex mapping

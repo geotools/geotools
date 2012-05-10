@@ -424,4 +424,56 @@ public abstract class ComplexTestData {
         assertEquals(superType, type.getSuper());
     }
 
+    /**
+     * Similar to the feature type return by {@link createExample01MultiValuedComplexProperty}
+     * except that there is no namespace uri specified.
+     * 
+     * @param typeFactory
+     * @return FeatureType
+     */
+    public static FeatureType createExample05NoNamespaceURI(FeatureTypeFactory typeFactory) {
+        FeatureType wqPlusType;
+
+        TypeBuilder builder = new TypeBuilder(typeFactory);
+
+        builder.setName("sitename");
+        builder.setBinding(String.class);
+        AttributeType SITENAME = builder.attribute();
+
+        builder.setName("anzlic_noType");
+        builder.setBinding(String.class);
+        AttributeType ANZLIC_NO = builder.attribute();
+
+        builder.setName("locationType");
+        builder.setBinding(Point.class);
+        GeometryType LOCATION = builder.geometry();
+
+        // build complex attribute
+        AttributeType MEASUREMENT = createMeasurementType(typeFactory);
+
+        builder.setName("project_noType");
+        builder.setBinding(String.class);
+        AttributeType PROJECT_NO = builder.attribute();
+
+        builder.setName("wq_plus");
+
+        builder.cardinality(1, 1);
+        builder.addAttribute("sitename", SITENAME);
+
+        builder.cardinality(0, 1);
+        builder.addAttribute("anzlic_no", ANZLIC_NO);
+
+        builder.cardinality(0, 1);
+        builder.addAttribute("location", LOCATION);
+
+        builder.cardinality(0, Integer.MAX_VALUE);
+        builder.addAttribute("measurement", MEASUREMENT);
+
+        builder.cardinality(0, 1);
+        builder.addAttribute("project_no", PROJECT_NO);
+
+        wqPlusType = builder.feature();
+
+        return wqPlusType;
+    }
 }

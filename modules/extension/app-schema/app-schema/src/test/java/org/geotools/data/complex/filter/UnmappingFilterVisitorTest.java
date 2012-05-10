@@ -41,7 +41,6 @@ import org.geotools.data.DataAccessFinder;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.complex.AppSchemaDataAccess;
 import org.geotools.data.complex.AttributeMapping;
-import org.geotools.data.complex.DataAccessRegistry;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.TestData;
 import org.geotools.data.complex.filter.XPath.Step;
@@ -53,14 +52,12 @@ import org.geotools.feature.NameImpl;
 import org.geotools.feature.TypeBuilder;
 import org.geotools.feature.Types;
 import org.geotools.feature.type.UniqueNameFeatureTypeFactoryImpl;
-import org.geotools.filter.FidFilterImpl;
 import org.geotools.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.filter.IsEqualsToImpl;
 import org.geotools.filter.OrImpl;
 import org.geotools.gml3.GML;
 import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.xlink.XLINK;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -397,6 +394,57 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         assertNotNull(unrolled);
         assertEquals(1, unrolled.size());
         assertTrue(unrolled.get(0) instanceof Expression);
+    }
+
+    /**
+     * An x-path expression may target a "client property" mapping (in xml land, an xml attribute
+     * rather than a xml element).
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testPropertyNameWithGmlIdAttribute() throws Exception {
+        final String XMMLNS = "http://www.opengis.net/xmml";
+        final Name typeName = new NameImpl(XMMLNS, "Borehole");
+
+        AppSchemaDataAccess complexDs = (AppSchemaDataAccess) mappingDataStore;
+
+        mapping = complexDs.getMappingByElement(typeName);
+
+        NamespaceSupport namespaces = new NamespaceSupport();
+        namespaces.declarePrefix("gml", GML.NAMESPACE);
+        namespaces.declarePrefix("xmml", XMMLNS);
+        namespaces.declarePrefix("xlink", XLINK.NAMESPACE);
+
+        visitor = new UnmappingFilterVisitor(mapping);
+        FilterFactory2 ff = new FilterFactoryImplNamespaceAware(namespaces);
+
+        String xpathExpression = "@gml:id";
+        PropertyName propNameExpression = ff.property(xpathExpression);
+
+        List /* <Expression> */unrolled = (List) propNameExpression.accept(visitor, null);
+        assertNotNull(unrolled);
+        assertEquals(1, unrolled.size());
+        assertTrue(unrolled.get(0) instanceof Expression);
+        assertEquals(((Expression) unrolled.get(0)).toString(), "strConcat([bh.], [BGS_ID])");
+
+        xpathExpression = "/@gml:id";
+        propNameExpression = ff.property(xpathExpression);
+
+        unrolled = (List) propNameExpression.accept(visitor, null);
+        assertNotNull(unrolled);
+        assertEquals(1, unrolled.size());
+        assertTrue(unrolled.get(0) instanceof Expression);
+        assertEquals(((Expression) unrolled.get(0)).toString(), "strConcat([bh.], [BGS_ID])");
+
+        xpathExpression = "xmml:Borehole/@gml:id";
+        propNameExpression = ff.property(xpathExpression);
+
+        unrolled = (List) propNameExpression.accept(visitor, null);
+        assertNotNull(unrolled);
+        assertEquals(1, unrolled.size());
+        assertTrue(unrolled.get(0) instanceof Expression);
+        assertEquals(((Expression) unrolled.get(0)).toString(), "strConcat([bh.], [BGS_ID])");
     }
 
     @Test

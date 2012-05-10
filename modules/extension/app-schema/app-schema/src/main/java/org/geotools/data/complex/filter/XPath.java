@@ -480,6 +480,29 @@ public class XPath {
     }
 
     /**
+     * Returns the list of steps in an x-path expression that represents the root element.
+     * 
+     * @param root
+     *            non null descriptor of the root attribute, generally the Feature descriptor.
+     * @param namespaces
+     *            namespace support for generating qnames from namespaces.
+     * @return A list of unique of steps in an xpath expression.
+     * @throws IllegalArgumentException
+     *             if <code>root</code> is undefined.
+     */
+    public static StepList rootElementSteps(final AttributeDescriptor rootElement,
+            final NamespaceSupport namespaces) throws IllegalArgumentException {
+
+        if (rootElement == null) {
+            throw new NullPointerException("root");
+        }
+        StepList steps = new StepList();
+        QName qName = Types.toQName(rootElement.getName(), namespaces);
+        steps.add(new Step(qName, 1, false, false));
+        return steps;
+    }
+
+    /**
      * Returns the list of stepts in <code>xpathExpression</code> by cleaning it up removing
      * unnecessary elements.
      * <p>

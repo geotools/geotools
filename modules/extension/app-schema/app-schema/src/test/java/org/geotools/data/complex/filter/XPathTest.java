@@ -172,4 +172,54 @@ public class XPathTest extends AppSchemaTestSupport {
         assertFalse(Types.isSimpleContentType(GMLSchema.ABSTRACTFEATURECOLLECTIONTYPE_TYPE));
     }
 
+  /**
+   * Test that the {@link StepList} for the root element is properly formed.
+   */
+  @Test
+    public void testRootElementSteps() {
+        NamespaceSupport namespaces = new NamespaceSupport();
+
+        try {
+            XPath.rootElementSteps(null, namespaces);
+            fail("passed null");
+        } catch (NullPointerException e) {
+        }
+
+        FeatureType complexType = ComplexTestData
+                .createExample05NoNamespaceURI(new UniqueNameFeatureTypeFactoryImpl());
+        Name name = complexType.getName();
+        AttributeDescriptor descriptor = new AttributeDescriptorImpl(complexType, name, 0,
+                Integer.MAX_VALUE, true, null);
+
+        try {
+            XPath.rootElementSteps(descriptor, namespaces);
+        } catch (NullPointerException e) {
+            fail("failed null");
+        }
+
+        assertEquals(1, XPath.rootElementSteps(descriptor, namespaces).size());
+        XPath.Step step = XPath.rootElementSteps(descriptor, namespaces).get(0);
+        QName rootQName = new QName(name.getNamespaceURI(), name.getLocalPart(), "");
+        assertEquals(rootQName, step.getName());
+
+        complexType = ComplexTestData
+                .createExample01MultiValuedComplexProperty(new UniqueNameFeatureTypeFactoryImpl());
+        name = complexType.getName();
+        descriptor = new AttributeDescriptorImpl(complexType, name, 0, Integer.MAX_VALUE, true,
+                null);
+
+        String prefix = "wq";
+        namespaces.declarePrefix(prefix, name.getNamespaceURI());
+
+        try {
+            XPath.rootElementSteps(descriptor, namespaces);
+        } catch (NullPointerException e) {
+            fail("failed null");
+        }
+
+        assertEquals(1, XPath.rootElementSteps(descriptor, namespaces).size());
+        step = XPath.rootElementSteps(descriptor, namespaces).get(0);
+        rootQName = new QName(name.getNamespaceURI(), name.getLocalPart(), prefix);
+        assertEquals(rootQName, step.getName());
+    }
 }

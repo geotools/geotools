@@ -60,6 +60,8 @@ public final class FallbackAuthorityFactoryTest {
     @Before
     public void setUp() {
         assertNull(extra);
+        
+        CRS.reset("all");
         extra = new FactoryEPSGExtra();
         ReferencingFactoryFinder.addAuthorityFactory(extra);
         ReferencingFactoryFinder.scanForPlugins();
@@ -81,12 +83,15 @@ public final class FallbackAuthorityFactoryTest {
      */
     @Test
     public void testFactoryOrdering() {
-        Set factories =  ReferencingFactoryFinder.getCRSAuthorityFactories(null);
+        Set<CRSAuthorityFactory> factories =  ReferencingFactoryFinder.getCRSAuthorityFactories(null);
+        for( CRSAuthorityFactory factory : factories ){
+            System.out.println("--> "+factory.getClass().getSimpleName() );
+        }
         boolean foundWkt = false;
         boolean foundExtra = false;
-        for (Iterator it = factories.iterator(); it.hasNext();) {
+        for (Iterator<CRSAuthorityFactory> it = factories.iterator(); it.hasNext();) {
             CRSAuthorityFactory factory = (CRSAuthorityFactory) it.next();
-            Class type = factory.getClass();
+            Class<?> type = factory.getClass();
             if (VERBOSE) {
                 System.out.println(type);
             }

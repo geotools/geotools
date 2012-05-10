@@ -88,6 +88,8 @@ public class URN_EPSG_Test extends TestCase {
      * Tests versioning.
      */
     public void testVersion() throws FactoryException {
+        CRS.reset("all");
+        
         CoordinateReferenceSystem expected = CRS.decode("EPSG:4326");
         final String version = String.valueOf(CRS.getVersion("EPSG"));
         final String urn = "urn:ogc:def:crs:EPSG:" + version + ":4326";

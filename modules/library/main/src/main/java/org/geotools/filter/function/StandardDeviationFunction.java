@@ -47,27 +47,26 @@ public class StandardDeviationFunction extends ClassificationFunction {
 	private Object calculate(SimpleFeatureCollection featureCollection) {
         try {
             int classNum = getClasses();
-    		// find the average
-    		AverageVisitor averageVisit = new AverageVisitor(getExpression());
-    		if (progress == null) progress = new NullProgressListener();
-                featureCollection.accepts(averageVisit, progress);
-    		if (progress.isCanceled()) return null;
-    		CalcResult calcResult = averageVisit.getResult();
-    		if (calcResult == null) return null;
-    		double average = calcResult.toDouble();
-    		// find the standard deviation
-    		StandardDeviationVisitor sdVisit = new StandardDeviationVisitor(getExpression(), average);
-    		featureCollection.accepts(sdVisit, progress);
-    		if (progress.isCanceled()) return null;
-    		calcResult = sdVisit.getResult();
-    		if (calcResult == null) return null;
-    		double standardDeviation = calcResult.toDouble();
+
+            // find the standard deviation
+            StandardDeviationVisitor sdVisit = new StandardDeviationVisitor(getExpression());
+
+            featureCollection.accepts(sdVisit, progress);
+            if (progress != null && progress.isCanceled()) {
+                return null;
+            }
+            CalcResult calcResult = sdVisit.getResult();
+            if (calcResult == null) {
+                return null;
+            }
+            double standardDeviation = calcResult.toDouble();
+            
             //figure out the min and max values
             Double min[] = new Double[classNum];
             Double max[] = new Double[classNum];
             for (int i = 0; i < classNum; i++) {
-                min[i] = getMin(i, classNum, average, standardDeviation);
-                max[i] = getMax(i, classNum, average, standardDeviation);
+                min[i] = getMin(i, classNum, sdVisit.getMean(), standardDeviation);
+                max[i] = getMax(i, classNum, sdVisit.getMean(), standardDeviation);
             }
             return new RangedClassifier(min, max);
         } catch (IOException e) {

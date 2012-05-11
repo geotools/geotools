@@ -20,6 +20,8 @@ import java.util.logging.Logger;
 
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.FeatureCollections;
+import org.opengis.feature.Feature;
+import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
@@ -72,46 +74,72 @@ public class StandardDeviationFunctionTest extends FunctionTestSupport {
         assertEquals(12, func.getClasses());
     }
     
-    public void xTestGetValue() throws Exception{
+    public void testGetValue() throws Exception{
         //doesn't work yet?
         Literal classes = ff.literal(5);
         PropertyName exp = ff.property("foo");
-        Function func = ff.function("StandardDeviation", exp, classes);
+        Function standardDeviation = ff.function("StandardDeviation", exp, classes);
+        assertNotNull( "step 1 - standard deviation function", standardDeviation );
+        
+        final Classifier classifer = standardDeviation.evaluate( featureCollection, Classifier.class );
+        featureCollection.accepts( new FeatureVisitor() {
+            @Override
+            public void visit(Feature f) {
+                SimpleFeature feature = (SimpleFeature) f;
+                Object value = feature.getAttribute("foo");
+                assertNotNull( feature.getID()+" foo", value );
+                
+                int slot = classifer.classify( value );
+                assertNotNull( "Slot "+slot, classifer.getTitle( slot ) );
+            }
+        }, null );
+        
+        Function classify = ff.function("classify", exp, ff.literal(classifer));
+        assertNotNull( "step 2 - classify function", classify );
         
         SimpleFeatureIterator list = featureCollection.features();
+        
         //feature 1
         SimpleFeature f = list.next();
-        int slot = ((Number)func.evaluate(f)).intValue();
-        assertEquals(1, slot);
+        Integer slot = classify.evaluate(f,Integer.class);
+        assertEquals( "value "+f.getAttribute("foo"), 1, slot.intValue());
+        
         //feature 2
         f = list.next();
-        slot = ((Number)func.evaluate(f)).intValue();
-        assertEquals(4, slot);
+        slot = classify.evaluate(f,Integer.class);
+        assertEquals( "value "+f.getAttribute("foo"),4, slot.intValue());
+
+        
         //feature 3
         f = list.next();
-        slot = ((Number)func.evaluate(f)).intValue();
-        assertEquals(2, slot);
+        slot = classify.evaluate(f,Integer.class);
+        assertEquals( "value "+f.getAttribute("foo"),2, slot.intValue());
+        
         //feature 4
         f = list.next();
-        slot = ((Number)func.evaluate(f)).intValue();
-        assertEquals(2, slot);
+        slot = classify.evaluate(f,Integer.class);
+        assertEquals( "value "+f.getAttribute("foo"),2, slot.intValue());
+
+        
         //feature 5
         f = list.next();
-        slot = ((Number)func.evaluate(f)).intValue();
-        assertEquals(2, slot);
+        slot = classify.evaluate(f,Integer.class);
+        assertEquals( "value "+f.getAttribute("foo"),2, slot.intValue());
+
+        
         //feature 6
         f = list.next();
-        slot = ((Number)func.evaluate(f)).intValue();
-        assertEquals(3, slot);
+        slot = classify.evaluate(f,Integer.class);
+        assertEquals( "value "+f.getAttribute("foo"),3, slot.intValue());
+        
         //feature 7
         f = list.next();
-        slot = ((Number)func.evaluate(f)).intValue();
-        assertEquals(1, slot);
+        slot = classify.evaluate(f,Integer.class);
+        assertEquals( "value "+f.getAttribute("foo"),1, slot.intValue());
+        
         //feature 8
         f = list.next();
-        slot = ((Number)func.evaluate(f)).intValue();
-        assertEquals(1, slot);
+        slot = classify.evaluate(f,Integer.class);
+        assertEquals( "value "+f.getAttribute("foo"),1, slot.intValue());
     }
-    
-    
 }

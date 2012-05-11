@@ -124,6 +124,10 @@ public class StandardDeviationVisitor implements FeatureCalc {
 	    this.mean = 0;
 	}
 
+    /** mean value generated when calcualting standard deviation */
+    public double getMean() {
+        return mean;
+    }
     /**
      * @return the number of features which returned a NaN
      */

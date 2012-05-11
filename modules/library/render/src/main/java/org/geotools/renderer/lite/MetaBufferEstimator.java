@@ -58,10 +58,12 @@ import org.geotools.styling.StyledLayer;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UserLayer;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.NilExpression;
 import org.opengis.style.GraphicalSymbol;
 
 /**
@@ -163,14 +165,21 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
     public void visit(Stroke stroke) {
         try {
             Expression width = stroke.getWidth();
-            if (width != null) {
+            if (!isNull(width)) {
                 evaluateWidth(width);
+            }
+            if(stroke.getGraphicStroke() != null) {
+                stroke.getGraphicStroke().accept(this);
             }
         } catch (ClassCastException e) {
             estimateAccurate = false;
             LOGGER.info("Could not parse stroke width, "
                     + "it's a literal but not a Number...");
         }
+    }
+    
+    protected boolean isNull(Expression exp) {
+        return exp == null || exp instanceof NilExpression; 
     }
 
     /**
@@ -249,7 +258,13 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.TextSymbolizer)
      */
     public void visit(TextSymbolizer text) {
-        // nothing to do here
+        // take into account label shields if any
+        if(text instanceof TextSymbolizer2) {
+            Graphic graphic = ((TextSymbolizer2) text).getGraphic();
+            if(graphic != null) {
+                graphic.accept(this);
+            }
+        }
     }
 
     /**
@@ -258,7 +273,7 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
     public void visit(Graphic gr) {
         try {
             Expression grSize = gr.getSize();
-            if (grSize != null) {
+            if (!isNull(grSize)) {
                 evaluateWidth(grSize);
             } else {
                 for (GraphicalSymbol gs : gr.graphicalSymbols()) {

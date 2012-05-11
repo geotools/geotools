@@ -77,9 +77,17 @@ public final class Version {
         this.union = UNION_ACTION | action.ordinal();
     }
 
+    /**
+     * @param index a positive integer > 0, representing the 1 based index of the requested feature
+     *        in its version history.
+     */
     public Version(final Integer index) {
         if (index == null) {
             throw new IllegalArgumentException("index can't be null");
+        }
+        if (0 >= index.intValue()) {
+            throw new IllegalArgumentException("Invalid version index: " + index
+                    + ". Must be a positive integer > 0.");
         }
         this.union = UNION_INTEGER | (long) index;
     }

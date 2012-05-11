@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Date;
 
@@ -29,6 +30,19 @@ public class VersionTest {
 
     @Test
     public void versionInteger() {
+        try {
+            new Version(-1);
+            fail("Expected IAE on negative version");
+        } catch (IllegalArgumentException e) {
+            assertTrue(true);
+        }
+        try {
+            new Version(0);
+            fail("Expected IAE");
+        } catch (IllegalArgumentException e) {
+            assertTrue(true);
+        }
+        
         Integer testInt = new Integer(1234567890);
         Version version = new Version(testInt);
 

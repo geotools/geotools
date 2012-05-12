@@ -85,6 +85,10 @@ public abstract class BasicSQLDialect extends SQLDialect {
      *  The <tt>srid</tt> parameter is the spatial reference system identifier
      *  of the geometry, or 0 if not known.
      * </p>
+     * <p>
+     * Attention should be paid to emtpy geometries (<code>g.isEmtpy() == true</code>) as 
+     * they cannot be encoded in WKB and several databases fail to handle them property.
+     * Common treatment is to equate them to NULL</p>
      */
     public abstract void encodeGeometryValue(Geometry value, int srid, StringBuffer sql)
         throws IOException;

@@ -189,7 +189,7 @@ public class H2DialectBasic extends BasicSQLDialect {
     @Override
     public void encodeGeometryValue(Geometry value, int srid, StringBuffer sql)
             throws IOException {
-        if (value != null) {
+        if (value != null && !value.isEmpty()) {
             sql.append("ST_GeomFromText ('");
             sql.append(new WKTWriter().write(value));
             sql.append("',");

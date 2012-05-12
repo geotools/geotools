@@ -174,7 +174,7 @@ public class H2DialectPrepared extends PreparedStatementSQLDialect {
     public void setGeometryValue(Geometry g, int srid,
             Class binding, PreparedStatement ps, int column)
             throws SQLException {
-        if ( g == null ) {
+        if ( g == null || g.isEmpty() ) {
             ps.setNull( column, Types.BLOB );
             return;
         }

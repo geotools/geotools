@@ -69,11 +69,12 @@ public class PostGISTestSetup extends JDBCTestSetup {
         run("INSERT INTO \"ft1\" VALUES(0, GeometryFromText('POINT(0 0)', 4326), 0, 0.0, 'zero')"); 
         run("INSERT INTO \"ft1\" VALUES(1, GeometryFromText('POINT(1 1)', 4326), 1, 1.1, 'one')");
         run("INSERT INTO \"ft1\" VALUES(2, GeometryFromText('POINT(2 2)', 4326), 2, 2.2, 'two')");
-        // advance the sequence to 2
+                // advance the sequence to 2
         run("SELECT nextval(pg_get_serial_sequence('ft1','id'))");
         run("SELECT nextval(pg_get_serial_sequence('ft1','id'))");
         // analyze so that the stats will be up to date
         run("ANALYZE \"ft1\"");
+        
 
     }
 

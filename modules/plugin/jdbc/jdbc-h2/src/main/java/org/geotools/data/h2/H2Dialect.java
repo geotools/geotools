@@ -340,11 +340,15 @@ public class H2Dialect extends SQLDialect {
 
     public void encodeGeometryValue(Geometry value, int srid, StringBuffer sql)
         throws IOException {
-        sql.append("ST_GeomFromText ('");
-        sql.append(new WKTWriter().write(value));
-        sql.append("',");
-        sql.append(srid);
-        sql.append(")");
+        if(value == null || value.isEmpty()) {
+            sql.append("ST_GeomFromText ('");
+            sql.append(new WKTWriter().write(value));
+            sql.append("',");
+            sql.append(srid);
+            sql.append(")");
+        } else {
+            sql.append("NULL");
+        }
     }
     
     

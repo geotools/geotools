@@ -94,7 +94,9 @@ public class ReprojectingFeatureCollectionTest extends FeatureCollectionWrapperT
         // the reprojection of the full bounds is going to be bigger than the sum of the
         // feature by feature reprojected bounds
         assertTrue(bounds.transform(target, true).contains((BoundingBox) rfc.getBounds()));
-        
+
+        // make sure that the reprojected bounds contain the target CRS
+        assertEquals(target, rfc.getBounds().getCoordinateReferenceSystem());
     }
     
     public void testFilter() throws Exception {

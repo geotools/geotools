@@ -241,7 +241,7 @@ public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollec
                     newBBox.expandToInclude(internal);
                 }
             }
-            return ReferencedEnvelope.reference(newBBox);
+            return new ReferencedEnvelope(newBBox, target);
         } catch (Exception e) {
             throw new RuntimeException(
                     "Exception occurred while computing reprojected bounds", e);

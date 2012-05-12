@@ -18,8 +18,10 @@ package org.geotools.xml.transform;
 
 import java.io.StringWriter;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -434,6 +436,154 @@ public abstract class TransformerBase {
         protected final Attributes NULL_ATTS = new AttributesImpl();
         protected NamespaceSupport nsSupport = new NamespaceSupport();
         protected SchemaLocationSupport schemaLocation;
+
+        /**
+         * The queue of write operations pending for this translator.
+         * This should be empty if no mark is set.
+         */
+        private List<Action> pending = new ArrayList<Action>();
+
+        /**
+         * An Action records a call to one of the SAX-event-generating methods
+         * on this translator.
+         */
+        private interface Action {
+            void commit();
+        }
+
+        /**
+         * The Start class implements an Action corresponding to starting an
+         * XML element
+         */
+        private class Start implements Action {
+            private final String element;
+            private final Attributes attributes;
+
+            public Start(String element, Attributes attributes) {
+                this.element = element;
+                this.attributes = new AttributesImpl(attributes);
+            }
+
+            public void commit() {
+                _start(element, attributes);
+            }
+        }
+
+        /**
+         * The Chars class implements an Action corresponding to writing a text
+         * block in the XML output
+         */
+        private class Chars implements Action {
+            private final String text;
+
+            public Chars(String text) {
+                this.text = text;
+            }
+
+            public void commit() {
+                _chars(text);
+            }
+        }
+
+        /**
+         * The CData class implements an Action corresponding to writing a
+         * CDATA block in the XML output
+         */
+        private class CData implements Action {
+            private final String text;
+
+            public CData(String text) {
+                this.text = text;
+            }
+
+            public void commit() {
+                _cdata(text);
+            }
+        }
+
+        /**
+         * The End class implements an Action corresponding to closing an XML
+         * element
+         */
+        private class End implements Action {
+            private final String element;
+
+            public End(String element) {
+                this.element = element;
+            }
+
+            public void commit() {
+                _end(element);
+            }
+        }
+
+        /**
+         * The Backend class encapsulates a strategy for writing back to the underlying stream.
+         */
+        private interface Backend {
+            public void start(String element, Attributes attributes);
+            public void chars(String text);
+            public void cdata(String text);
+            public void end(String element);
+        }
+
+        /**
+         * The BufferedBackend queues up write operations in memory, to be committed at a later time.
+         */
+        private class BufferedBackend implements Backend {
+            public void start(String element, Attributes attributes) {
+                pending.add(new Start(element, attributes));
+            }
+
+            public void chars(String text) {
+                pending.add(new Chars(text));
+            }
+            
+            public void cdata(String text) {
+                pending.add(new CData(text));
+            }
+            
+            public void end(String element) {
+                pending.add(new End(element));
+            }
+        }
+
+        /**
+         * The DirectBackend writes immediately to the underlying output stream.
+         */
+        private class DirectBackend implements Backend {
+            public void start(String element, Attributes attributes) {
+                _start(element, attributes);
+            }
+
+            public void chars(String text) {
+                _chars(text);
+            }
+
+            public void cdata(String text) {
+                _cdata(text);
+            }
+
+            public void end(String element) {
+                _end(element);
+            }
+        }
+
+        /**
+         * A singleton instance of the DirectBackend for this TranslatorSupport instance
+         */
+        private final Backend directBackend = new DirectBackend();
+
+        /**
+         * A singleton instance of the BufferedBackend for this TranslatorSupport instance
+         */
+        private final Backend bufferedBackend = new BufferedBackend();
+
+        /**
+         * The backend currently in use.  This should only be modified in the mark/reset/commit methods!
+         */
+        private Backend backend = directBackend;
+
         /**
          * Subclasses should check this flag in case an abort message was sent
          * and stop any internal iteration if false.
@@ -454,11 +604,69 @@ public abstract class TransformerBase {
             this(contentHandler, prefix, nsURI);
             this.schemaLocation = schemaLocation;
         }
-        
+
         public void abort() {
             running = false;
         }
-        
+
+        /**
+         * Set a mark() to which we can later "roll back" writes.  After a call
+         * to mark(), the Translator stores pending write operations in memory
+         * until commit() is called.  The pending writes can be discarded with
+         * the reset() method.
+         *
+         * Typically, one would use marks in conjunction with an exception handler:
+         *
+         * <pre>
+         *   void encodeFoo(Foo f) {
+         *     try {
+         *       mark();
+         *       element(foo.riskyMethod());
+         *       element(foo.dangerousMethod());
+         *       commit();
+         *     } catch (BadThingHappened disaster) {
+         *         mitigate(disaster);
+         *         reset();
+         *     }
+         *   }
+         * </pre>
+         *
+         * @throws IllegalStateException if a mark is already set
+         */
+        protected void mark() {
+            if (backend == bufferedBackend) throw new IllegalStateException("Mark already set");
+            backend = bufferedBackend;
+        }
+
+        /**
+         * Discard pending write operations after a mark() has been set.
+         *
+         * This method is safe to call even if no mark is set - so it returns
+         * to a "known good" state as far as marks are concerned.
+         *
+         * @see #mark()
+         */
+        protected void reset() {
+            pending.clear();
+            backend = directBackend;
+        }
+
+        /**
+         * Commit pending write operations.  After setting a mark, this method
+         * will commit the pending writes.
+         *
+         * @see #mark()
+         * @throws IllegalStateException if no mark is set
+         */
+        protected void commit() {
+            if (backend != bufferedBackend) throw new IllegalStateException("Can't commit without a mark");
+            for (Action a : pending) {
+                a.commit();
+            }
+            pending.clear();
+            backend = directBackend;
+        }
+
         /**
          * Utility method to copy namespace declarations from "sub" translators
          * into this ns support...
@@ -498,7 +706,7 @@ public abstract class TransformerBase {
         protected void element(String element, String content) {
             element(element, content, NULL_ATTS);
         }
-        
+
         /**
          * Will only issue the provided element if content is non empty
          * @param element
@@ -525,9 +733,12 @@ public abstract class TransformerBase {
         }
 
         protected void start(String element, Attributes atts) {
+            backend.start(element, atts);
+        }
+
+        private void _start(String element, Attributes atts) {
             try {
-                String el = (prefix == null) ? element : (prefix + ":"
-                    + element);
+                String el = (prefix == null) ? element : (prefix + ":" + element);
                 contentHandler.startElement("", "", el, atts);
             } catch (SAXException se) {
                 throw new RuntimeException(se);
@@ -535,6 +746,10 @@ public abstract class TransformerBase {
         }
 
         protected void chars(String text) {
+            backend.chars(text);
+        }
+
+        private void _chars(String text) {
             try {
                 char[] ch = text.toCharArray();
                 contentHandler.characters(ch, 0, ch.length);
@@ -544,6 +759,10 @@ public abstract class TransformerBase {
         }
 
         protected void end(String element) {
+            backend.end(element);
+        }
+
+        private void _end(String element) {
             try {
                 String el = (prefix == null) ? element : (prefix + ":"
                     + element);
@@ -553,13 +772,18 @@ public abstract class TransformerBase {
             }
         }
 
-        protected void cdata( String cdata ) {
-            if ( contentHandler instanceof LexicalHandler ) {
+        protected void cdata(String cdata) {
+            backend.cdata(cdata);
+        }
+
+        private void _cdata(String cdata) {
+            if (contentHandler instanceof LexicalHandler) {
                 LexicalHandler lexicalHandler = (LexicalHandler) contentHandler;
                 try {
                     lexicalHandler.startCDATA();
-                    chars(cdata);
-                    lexicalHandler.endCDATA();    
+                    char[] carray = cdata.toCharArray();
+                    contentHandler.characters(carray, 0, carray.length);
+                    lexicalHandler.endCDATA();
                 }
                 catch( SAXException e ) {
                     throw new RuntimeException( e );

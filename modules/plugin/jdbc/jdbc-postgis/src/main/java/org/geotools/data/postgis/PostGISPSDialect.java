@@ -193,7 +193,7 @@ public class PostGISPSDialect extends PreparedStatementSQLDialect {
     @Override
     public void setGeometryValue(Geometry g, int srid, Class binding,
             PreparedStatement ps, int column) throws SQLException {
-        if (g != null) {
+        if (g != null && !g.isEmpty()) {
             if (g instanceof LinearRing ) {
                 //postgis does not handle linear rings, convert to just a line string
                 g = g.getFactory().createLineString(((LinearRing) g).getCoordinateSequence());

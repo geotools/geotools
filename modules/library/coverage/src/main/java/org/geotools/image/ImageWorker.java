@@ -2414,9 +2414,20 @@ public class ImageWorker {
             // we have to reduce colors
         	forceIndexColorModelForGIF(true);
         } else if(!(image.getColorModel() instanceof ComponentColorModel) && !(image.getColorModel() instanceof IndexColorModel)) {
-            // png supports gray, rgb, rgba and paletted, but not, for example, double and float values
+            // png supports gray, rgb, rgba and paletted 8 bit, but not, for example, double and float values, or 16 bits palettes
             forceComponentColorModel();
         }
+        
+        // PNG does not support all kinds of index color models
+        if(image.getColorModel() instanceof IndexColorModel) {
+            IndexColorModel icm = (IndexColorModel) image.getColorModel();
+            // PNG supports up to 256 colors, beyond that we have to expand to RGB 
+            if(icm.getMapSize() > 256) {
+                forceComponentColorModel(true, true);
+                rescaleToBytes();
+            }
+        }
+        
         if(LOGGER.isLoggable(Level.FINER))
 			LOGGER.finer("Encoded input image for png writer");
 

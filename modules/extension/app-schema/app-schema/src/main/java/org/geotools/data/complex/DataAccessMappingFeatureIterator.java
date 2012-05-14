@@ -40,12 +40,14 @@ import org.geotools.data.complex.filter.XPath.Step;
 import org.geotools.data.complex.filter.XPath.StepList;
 import org.geotools.data.joining.JoiningNestedAttributeMapping;
 import org.geotools.data.joining.JoiningQuery;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.AttributeBuilder;
 import org.geotools.feature.ComplexAttributeImpl;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureImpl;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.Types;
+import org.geotools.feature.type.ComplexFeatureTypeFactoryImpl;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
@@ -60,8 +62,12 @@ import org.opengis.feature.Property;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.FeatureType;
+import org.opengis.feature.type.FeatureTypeFactory;
+import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.feature.type.GeometryType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
+import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.FeatureId;
@@ -110,6 +116,8 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     protected FeatureCollection<? extends FeatureType, ? extends Feature> sourceFeatures;
 
     protected List<Expression> foreignIds = null;
+    
+	protected AttributeDescriptor targetFeature;
 
     /**
      * True if joining is turned off and pre filter exists. There's a need to run extra query to get
@@ -325,22 +333,37 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             // gather declared CRS
             CoordinateReferenceSystem declaredCRS = this.getDeclaredCrs(crs, version);
             CoordinateReferenceSystem target;
-            URI uri=(URI)this.mapping.getTargetFeature().getType().getUserData().get("targetCrs");
-            if (uri != null) {
-                try {
-                    target = CRS.decode(uri.toString());
-                } catch (Exception e) {
-                    String msg = "Unable to support srsName: " + uri;
-                    throw new UnsupportedOperationException(msg, e);
-                }
+            Object crsobject = this.mapping.getTargetFeature().getType().getUserData().get("targetCrs");
+            if (crsobject instanceof CoordinateReferenceSystem) {
+            	target = (CoordinateReferenceSystem) crsobject;
+            } else if (crsobject instanceof URI) {
+            
+	            URI uri=(URI) crsobject;
+	            if (uri != null) {
+	                try {
+	                    target = CRS.decode(uri.toString());
+	                } catch (Exception e) {
+	                    String msg = "Unable to support srsName: " + uri;
+	                    throw new UnsupportedOperationException(msg, e);
+	                }
+	            } else {
+	                target = declaredCRS;
+	            }
             } else {
-                target = declaredCRS;
+            	target = declaredCRS;
             }
             this.reprojection = target;
-
+            
         } else {
             this.reprojection = targetCRS;
         }
+        
+        //clean up user data related to request
+        mapping.getTargetFeature().getType().getUserData().put("targetVersion", null);
+        mapping.getTargetFeature().getType().getUserData().put("targetCrs", null);
+        
+        //reproject target feature
+        targetFeature = reprojectAttribute(mapping.getTargetFeature());
 
         // we need to disable the max number of features retrieved so we can
         // sort them manually just in case the data is denormalised
@@ -854,22 +877,61 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         }
         return sources;
     }
+    
+    private GeometryDescriptor reprojectGeometry(GeometryDescriptor descr) {
+    	if (descr == null) {
+    		return null;
+    	}
+    	GeometryType type = ftf.createGeometryType(descr.getType().getName(), descr.getType().getBinding(), reprojection, descr.getType().isIdentified(), descr.getType().isAbstract(), descr.getType().getRestrictions(), descr.getType().getSuper(), descr.getType().getDescription());
+    	type.getUserData().putAll(descr.getType().getUserData());
+    	GeometryDescriptor gd = ftf.createGeometryDescriptor(type, descr.getName(), descr.getMinOccurs(), descr.getMaxOccurs(), descr.isNillable(), descr.getDefaultValue());
+    	gd.getUserData().putAll(descr.getUserData());
+    	return gd;
+    }
+
+    private FeatureType reprojectType(FeatureType type) {
+    	Collection<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();
+    	
+    	for (PropertyDescriptor descr : type.getDescriptors()) {
+    		if (descr instanceof GeometryDescriptor) {
+    			schema.add(reprojectGeometry((GeometryDescriptor)descr));    			
+    			}
+    		else {
+    			schema.add(descr);
+    		}
+    	}
+    	
+    	FeatureType ft = ftf.createFeatureType(type.getName(), schema, reprojectGeometry(type.getGeometryDescriptor()), type.isAbstract(), type.getRestrictions(), type.getSuper(), type.getDescription());
+    	ft.getUserData().putAll(type.getUserData());
+    	return ft;
+    }
+
+    
+    private AttributeDescriptor reprojectAttribute(AttributeDescriptor descr) {
+    	
+    	if ( reprojection != null && descr.getType() instanceof FeatureType ) {    	
+    		AttributeDescriptor ad = ftf.createAttributeDescriptor(reprojectType((FeatureType) descr.getType()), descr.getName(), descr.getMinOccurs(), descr.getMaxOccurs(), descr.isNillable(), descr.getDefaultValue());
+    		ad.getUserData().putAll(descr.getUserData());
+    		return ad;
+    	} else {    		
+    		return descr;
+    	}
+    }
 
     protected Feature computeNext() throws IOException {
 
         String id = getNextFeatureId();
         List<Feature> sources = getSources(id);
 
-        final AttributeDescriptor targetNode = mapping.getTargetFeature();
-        final Name targetNodeName = targetNode.getName();
+        final Name targetNodeName = targetFeature.getName();
 
         AttributeBuilder builder = new AttributeBuilder(attf);
-        builder.setDescriptor(targetNode);
+        builder.setDescriptor(targetFeature);
         Feature target = (Feature) builder.build(id);
 
         for (AttributeMapping attMapping : selectedMapping) {
             try {
-                if (skipTopElement(targetNodeName, attMapping.getTargetXPath(), targetNode.getType())) {
+                if (skipTopElement(targetNodeName, attMapping.getTargetXPath(), targetFeature.getType())) {
                     // ignore the top level mapping for the Feature itself
                     // as it was already set
                     continue;

@@ -1958,7 +1958,20 @@ public final class StreamingRenderer implements GTRenderer {
                     checkAttributeExistence(featureSource.getSchema(), query);
                     rawFeatures = featureSource.getFeatures(query);
                 }
-                features = prepFeatureCollection(rawFeatures, sourceCrs);            
+                features = prepFeatureCollection(rawFeatures, sourceCrs);          
+
+                // HACK HACK HACK
+                // For complex features, we need the targetCrs and version in scenario where we have
+                // a top level feature that does not contain a geometry(therefore no crs) and has a
+                // nested feature that contains geometry as its property.Furthermore it is possible
+                // for each nested feature to have different crs hence we need to reproject on each
+                // feature accordingly.
+                // This is a Hack, this information should not be passed through feature type
+                // appschema will need to remove this information from the feature type again
+                if (!(features instanceof SimpleFeatureCollection)) {
+                	features.getSchema().getUserData().put("targetCrs", destinationCrs);
+                	features.getSchema().getUserData().put("targetVersion", "wms:getmap");
+                }
 
                 // finally, perform rendering
                 if(isOptimizedFTSRenderingEnabled() && lfts.size() > 1) {

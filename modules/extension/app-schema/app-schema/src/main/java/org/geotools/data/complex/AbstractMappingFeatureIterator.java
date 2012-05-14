@@ -31,12 +31,14 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.AppSchemaFeatureFactoryImpl;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.Types;
+import org.geotools.feature.type.ComplexFeatureTypeFactoryImpl;
 import org.geotools.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.xlink.XLINK;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureFactory;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.FeatureTypeFactory;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.Property;
@@ -67,6 +69,8 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
             .getLogger("org.geotools.data.complex");
     
     private FilterFactory2 filterFac = CommonFactoryFinder.getFilterFactory2(null);
+    
+    protected FeatureTypeFactory ftf = new ComplexFeatureTypeFactoryImpl();
 
     /**
      * Name representation of xlink:href

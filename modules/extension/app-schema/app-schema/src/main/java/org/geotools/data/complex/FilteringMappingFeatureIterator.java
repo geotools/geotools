@@ -137,7 +137,7 @@ public class FilteringMappingFeatureIterator extends DataAccessMappingFeatureIte
             try {
                 reprojectedFeatures = new ReprojectingIterator(srcFeatures.iterator(), mappedSource
                         .getSchema().getCoordinateReferenceSystem(), targetCrs,
-                        (SimpleFeatureType) this.mappedSource.getSchema(), transformer);
+                        (SimpleFeatureType) this.sourceFeatures.getSchema(), transformer);
                 while (reprojectedFeatures.hasNext()) {
                     features.add(reprojectedFeatures.next());
                 }

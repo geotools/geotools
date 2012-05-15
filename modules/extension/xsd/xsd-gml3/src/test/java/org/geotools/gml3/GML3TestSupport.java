@@ -18,8 +18,11 @@ package org.geotools.gml3;
 
 import org.geotools.xml.Configuration;
 import org.geotools.xml.test.XMLTestSupport;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /*
  * Test bindings by extending this class with test cases that follow this pattern:
@@ -80,6 +83,52 @@ public abstract class GML3TestSupport extends XMLTestSupport {
     protected Configuration createConfiguration() {
         return new GMLConfiguration(enableExtendedArcSurfaceSupport());
     }
+
+    protected void checkPosOrdinates(Document doc,  int expectedNumOrdinates) 
+    {
+    	checkOrdinates(doc, GML.pos.getLocalPart(), expectedNumOrdinates);
+    }
+    
+    protected void checkPosListOrdinates(Document doc,  int expectedNumOrdinates) 
+    {
+    	checkOrdinates(doc, GML.posList.getLocalPart(), expectedNumOrdinates);
+    }
+    
+    
+	/**
+	 * Checks that a posList exists, has a string as content,
+	 * and the string encodes nOrdinates ordinates correctly
+	 * (i.e. blank-separated).
+	 * 
+	 * @param doc
+	 * @param expectedNumOrdinates
+	 */
+	private void checkOrdinates(Document doc, String ordTag, int expectedNumOrdinates) {
+	    NodeList nl = doc.getElementsByTagNameNS(GML.NAMESPACE, ordTag);
+	    Node posListNode = nl.item(0);
+	    assertEquals(1, posListNode.getChildNodes().getLength());
+	    String content = posListNode.getChildNodes().item(0).getNodeValue();
+		String[] ord = content.split("\\s+");
+		assertEquals(expectedNumOrdinates, ord.length);
+	}
+
+	/**
+	 * Checks that a given geometry element has an srsDimension attribute with an expected value
+	 * 
+	 * @param doc
+	 * @param tag
+	 * @param expectedDim  
+	 */
+	protected void checkDimension(Document doc, String tag, int expectedDim) {
+	    NodeList lsNL = doc.getElementsByTagNameNS(GML.NAMESPACE, tag);
+	    Node geomNode = lsNL.item(0);
+	    NamedNodeMap attrMap = geomNode.getAttributes();
+	    Node dimNode = attrMap.getNamedItem("srsDimension");
+	    assertNotNull(dimNode);
+	    String dimStr = dimNode.getChildNodes().item(0).getNodeValue();
+		int dim = Integer.parseInt(dimStr);
+		assertEquals(dim, expectedDim);
+	}
     
     /*
      * To be overriden by subclasses that require the extended arc/surface bindings

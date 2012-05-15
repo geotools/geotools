@@ -18,6 +18,7 @@ package org.geotools.gml3.bindings;
 
 import javax.xml.namespace.QName;
 
+import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
@@ -116,10 +117,12 @@ public class AbstractGeometryTypeBinding extends AbstractComplexBinding {
         }
 
         if ("srsDimension".equals(name.getLocalPart())) {
-            CoordinateReferenceSystem crs = GML3EncodingUtils.getCRS(geometry);
-            if (crs != null) {
-                return crs.getCoordinateSystem().getDimension();
-            }
+            /**
+             * For the dimension, use the actual dimension of the geometry. Using
+             * the dimension of the CRS is not sufficient, since currently CRSes
+             * don't support 3D.
+             */
+            return CoordinateSequences.coordinateDimension(geometry);
         }
 
         // FIXME: should be gml:id, but which GML?

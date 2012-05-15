@@ -22,6 +22,7 @@ import javax.xml.namespace.QName;
 
 import org.geotools.geometry.DirectPosition1D;
 import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
@@ -30,6 +31,8 @@ import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import com.vividsolutions.jts.geom.CoordinateSequence;
 
 /**
  * Binding object for the type
@@ -86,7 +89,7 @@ public class DirectPositionListTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Class getType() {
-        return DirectPosition[].class;
+        return CoordinateSequence.class;
     }
 
     /**
@@ -144,21 +147,36 @@ public class DirectPositionListTypeBinding extends AbstractComplexBinding {
         return dps;
     }
 
+    /**
+     * 
+     * @param object a CoordinateSequence
+     * 
+     * @see org.geotools.xml.AbstractComplexBinding#encode(java.lang.Object, org.w3c.dom.Document, org.w3c.dom.Element)
+     */
     public Element encode(Object object, Document document, Element value) throws Exception {
         // TODO: remove this when the parser can do lists
-        DirectPosition[] dps = (DirectPosition[]) object;
+        CoordinateSequence cs = (CoordinateSequence) object;
         StringBuffer sb = new StringBuffer();
 
-        for (int i = 0; i < dps.length; i++) {
-            sb.append(dps[i].getOrdinate(0) + " " + dps[i].getOrdinate(1));
+        int dim = CoordinateSequences.coordinateDimension(cs);
+        int size = cs.size();
+        int nOrdWithSpace = size * dim - 1;
+        int count = 0;
+        for (int i = 0; i < size; i++) {
+        	for (int d = 0; d < dim; d++) {
+	            sb.append(cs.getOrdinate(i, d));
+	
+	            if (count < nOrdWithSpace) {
+	                sb.append(" ");
+	            }
+	            count++;
 
-            if (i < (dps.length - 1)) {
-                sb.append(" ");
-            }
+        	}
         }
 
         value.appendChild(document.createTextNode(sb.toString()));
 
         return value;
     }
+      
 }

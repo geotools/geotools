@@ -21,6 +21,10 @@ import org.geotools.geometry.DirectPosition2D;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.opengis.geometry.DirectPosition;
+import org.w3c.dom.Document;
+
+import com.vividsolutions.jts.geom.CoordinateSequence;
+import com.vividsolutions.jts.geom.LineString;
 
 
 /**
@@ -79,5 +83,19 @@ public class DirectPositionListTypeBindingTest extends GML3TestSupport {
 
         assertEquals(3d, dps[1].getOrdinate(0), 0d);
         assertEquals(4d, dps[1].getOrdinate(1), 0d);
+    }
+    
+    public void testEncode2D() throws Exception {
+    	LineString line = GML3MockData.lineStringLite2D();
+    	CoordinateSequence seq = line.getCoordinateSequence();
+        Document doc = encode(seq, GML.posList);
+        checkPosListOrdinates(doc, 2 * line.getNumPoints());
+    }
+    
+    public void testEncode3D() throws Exception {
+    	LineString line = GML3MockData.lineStringLite3D();
+    	CoordinateSequence seq = line.getCoordinateSequence();
+        Document doc = encode(seq, GML.posList);
+        checkPosListOrdinates(doc, 3 * line.getNumPoints());
     }
 }

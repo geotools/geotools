@@ -51,6 +51,9 @@ public class MultiLineStringTypeBindingTest extends GML3TestSupport {
         assertEquals(2, children.getLength());
         assertEquals("geometry.1", getID(children.item(0)));
         assertEquals("geometry.2", getID(children.item(1)));
-    }
 
+        checkDimension(dom, GML.MultiLineString.getLocalPart(), 2);
+        checkDimension(dom, GML.LineString.getLocalPart(), 2);
+        checkPosListOrdinates(dom, 2 * geometry.getGeometryN(0).getNumPoints());
+    }
 }

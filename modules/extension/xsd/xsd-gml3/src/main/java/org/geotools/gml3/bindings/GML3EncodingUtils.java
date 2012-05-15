@@ -28,7 +28,6 @@ import javax.xml.namespace.QName;
 
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.feature.NameImpl;
-import org.geotools.geometry.DirectPosition2D;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.gml2.bindings.GMLEncodingUtils;
 import org.geotools.gml3.GML;
@@ -45,7 +44,6 @@ import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.identity.FeatureId;
-import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -85,20 +83,8 @@ public class GML3EncodingUtils {
         e = new GMLEncodingUtils(gml);
     }
 
-    static DirectPosition[] positions(LineString line) {
-        CoordinateSequence coordinates = line.getCoordinateSequence();
-        DirectPosition[] dps = new DirectPosition[coordinates.size()];
-
-        double x;
-        double y;
-
-        for (int i = 0; i < dps.length; i++) {
-            x = coordinates.getOrdinate(i, 0);
-            y = coordinates.getOrdinate(i, 1);
-            dps[i] = new DirectPosition2D(x, y);
-        }
-
-        return dps;
+    static CoordinateSequence positions(LineString line) {
+        return line.getCoordinateSequence();
     }
 
     static URI toURI(CoordinateReferenceSystem crs) {

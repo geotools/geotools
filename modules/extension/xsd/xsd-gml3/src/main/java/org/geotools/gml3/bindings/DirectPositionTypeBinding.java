@@ -29,6 +29,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
 
@@ -87,7 +88,7 @@ public class DirectPositionTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Class getType() {
-        return DirectPosition2D.class;
+        return CoordinateSequence.class;
     }
 
     /**
@@ -118,21 +119,27 @@ public class DirectPositionTypeBinding extends AbstractComplexBinding {
 
     public Element encode(Object object, Document document, Element value)
         throws Exception {
-        DirectPosition dp = (DirectPosition) object;
-
-        double[] coordinates = dp.getCoordinate();
+        CoordinateSequence cs = (CoordinateSequence) object;
 
         StringBuffer sb = new StringBuffer();
 
-        for (int i = 0; i < coordinates.length; i++) {
-            sb.append(String.valueOf(coordinates[i]));
+        // assume either zero or one coordinate
+        if (cs.size() >= 1) {
+            int dim = cs.getDimension();
+            for (int d = 0; d < dim; d++) {
+                double v = cs.getOrdinate(0, d);
+                if (Double.isNaN(v) && d > 1) {
+                    continue;
+                }
 
-            if (i != (coordinates.length - 1)) {
-                sb.append(" ");
+                // separator char is a blank
+                sb.append(String.valueOf(v)).append(" ");
+            }
+            if (dim > 0) {
+                sb.setLength(sb.length()-1);
             }
         }
 
-        //Element pos = document.createElementNS(GML.pos.getNamespaceURI(), GML.pos.getLocalPart());
         value.appendChild(document.createTextNode(sb.toString()));
 
         return value;

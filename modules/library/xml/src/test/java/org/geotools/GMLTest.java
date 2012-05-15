@@ -191,7 +191,7 @@ public class GMLTest {
 
         out.close();
         String gml = out.toString();
-        assertTrue(gml.indexOf("<gml:Point>") != -1);
+        assertTrue(gml.indexOf("<gml:Point") != -1);
     }
 
     //

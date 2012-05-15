@@ -20,7 +20,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
@@ -166,11 +166,11 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
         }
 
         if (name.getLocalPart().equals("lowerCorner")) {
-            return new DirectPosition2D(envelope.getMinX(), envelope.getMinY());
+        	return new LiteCoordinateSequence(new double[] { envelope.getMinX(), envelope.getMinY() }, 2);
         }
 
         if (name.getLocalPart().equals("upperCorner")) {
-            return new DirectPosition2D(envelope.getMaxX(), envelope.getMaxY());
+        	return new LiteCoordinateSequence(new double[] { envelope.getMaxX(), envelope.getMaxY() }, 2);
         }
 
         if (envelope instanceof ReferencedEnvelope) {

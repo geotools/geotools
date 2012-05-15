@@ -17,6 +17,7 @@
 package org.geotools.geometry.jts;
 
 import com.vividsolutions.jts.geom.CoordinateSequence;
+import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -34,9 +35,14 @@ import org.opengis.referencing.operation.TransformException;
 
 
 /**
- * Service object that takes a geometry an applies a MathTransform on top
- * of it.
+ * Service object that takes a geometry and applies a {@link MathTransform} to the coordinates it 
+ * contains.
+ * <p>
+ * New geometries are constructed using the {@link GeometryFactory} of the input geometries.
+ * By default, this will use the same {@link CoordinateSequenceFactory} as the input geometries.
+ * </p>
  * @author Andrea Aime
+ * @author Martin Davis
  *
  * @source $URL$
  */
@@ -44,11 +50,23 @@ public class GeometryCoordinateSequenceTransformer {
     private MathTransform transform;
     private CoordinateSequenceTransformer csTransformer;
     private CoordinateReferenceSystem crs;
-    
+
+    /**
+     * Creates a transformer which uses the {@link CoordinateSequenceFactory}
+     * of the source geometries. 
+     */
     public GeometryCoordinateSequenceTransformer() {
-        csTransformer = new DefaultCoordinateSequenceTransformer();
+        // the csTransformer is initialized from the first geometry
     }
 
+    /**
+     * Creates a transformer which uses a client-specified {@link CoordinateSequenceTransformer}.
+     * <p>
+     * <b>WARNING:</b> The CoordinateSequenceTransformer must use the same CoordinateSequenceFactory 
+     * as the input geometries, so that geometries are constructed consistently.  
+     *  
+     * @param transformer
+     */
     public GeometryCoordinateSequenceTransformer(CoordinateSequenceTransformer transformer) {
         csTransformer = transformer;
     }
@@ -82,6 +100,12 @@ public class GeometryCoordinateSequenceTransformer {
     public Geometry transform(Geometry g) throws TransformException {
         GeometryFactory factory = g.getFactory();
         Geometry transformed = null;
+        
+        // if required, lazily init csTransformer using geometry's CSFactory
+        if (csTransformer == null) {
+            CoordinateSequenceFactory csf = g.getFactory().getCoordinateSequenceFactory();
+            csTransformer = new DefaultCoordinateSequenceTransformer(csf);
+        }
         
         if (g instanceof Point) {
             transformed = transformPoint((Point) g, factory);
@@ -147,7 +171,7 @@ public class GeometryCoordinateSequenceTransformer {
      *
      * @throws TransformException
      */
-    public LineString transformLineString(LineString ls, GeometryFactory gf)
+    private LineString transformLineString(LineString ls, GeometryFactory gf)
         throws TransformException {
         CoordinateSequence cs = projectCoordinateSequence(ls.getCoordinateSequence());
         LineString transformed = null;
@@ -167,7 +191,7 @@ public class GeometryCoordinateSequenceTransformer {
      *
      * @throws TransformException
      */
-    public Point transformPoint(Point point, GeometryFactory gf)
+    private Point transformPoint(Point point, GeometryFactory gf)
         throws TransformException {
         CoordinateSequence cs = projectCoordinateSequence(point.getCoordinateSequence());
         Point transformed = gf.createPoint(cs);;
@@ -180,7 +204,7 @@ public class GeometryCoordinateSequenceTransformer {
      *
      * @throws TransformException
      */
-    public CoordinateSequence projectCoordinateSequence(CoordinateSequence cs)
+    private CoordinateSequence projectCoordinateSequence(CoordinateSequence cs)
         throws TransformException {
         return csTransformer.transform(cs, transform);
     }
@@ -189,7 +213,7 @@ public class GeometryCoordinateSequenceTransformer {
      * @param polygon
      * @throws TransformException
      */
-    public Polygon transformPolygon(Polygon polygon, GeometryFactory gf)
+    private Polygon transformPolygon(Polygon polygon, GeometryFactory gf)
         throws TransformException {
         LinearRing exterior = (LinearRing) transformLineString(polygon.getExteriorRing(), gf);
         LinearRing[] interiors = new LinearRing[polygon.getNumInteriorRing()];

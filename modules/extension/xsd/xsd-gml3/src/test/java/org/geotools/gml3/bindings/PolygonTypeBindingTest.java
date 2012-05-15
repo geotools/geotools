@@ -16,8 +16,11 @@
  */
 package org.geotools.gml3.bindings;
 
+import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
+import org.w3c.dom.Document;
 
+import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Polygon;
 
 
@@ -28,4 +31,22 @@ public class PolygonTypeBindingTest extends GML3TestSupport {
         Polygon polygon = (Polygon) parse();
         assertNotNull(polygon);
     }
+    
+    public void testEncode3D() throws Exception {
+    	Polygon poly = GML3MockData.polygonLite3D();
+        Document doc = encode(poly, GML.Polygon);
+        
+        checkDimension(doc, GML.Polygon.getLocalPart(), 3);
+        checkPosListOrdinates(doc, 3 * poly.getNumPoints());
+    }
+    
+    public void testEncode2D() throws Exception {
+    	Polygon poly = GML3MockData.polygonLite2D();
+        Document doc = encode(poly, GML.Polygon);
+        
+        checkDimension(doc, GML.Polygon.getLocalPart(), 2);
+        checkPosListOrdinates(doc, 2 * poly.getNumPoints());
+    }
+    
+
 }

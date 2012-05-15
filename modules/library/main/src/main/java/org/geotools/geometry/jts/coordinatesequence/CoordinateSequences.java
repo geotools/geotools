@@ -21,10 +21,17 @@ package org.geotools.geometry.jts.coordinatesequence;
 import com.vividsolutions.jts.algorithm.RobustDeterminant;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateSequence;
+import com.vividsolutions.jts.geom.CoordinateSequenceFilter;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 
 /**
  * Utility functions for coordinate sequences (extends the same named JTS class)
  * @author Andrea Aime - OpenGeo
+ * @author Martin Davis - OpenGeo
  *
  * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/main/src/main/java/org/geotools/geometry/jts/coordinatesequence/CoordinateSequences.java $
  */
@@ -124,4 +131,90 @@ public class CoordinateSequences extends com.vividsolutions.jts.geom.CoordinateS
         return RobustDeterminant.signOfDet2x2(dx1, dy1, dx2, dy2);
       }
 
+
+    /**
+     * Gets the dimension of the coordinates in a {@link Geometry},
+     * by reading it from a component {@link CoordinateSequence}.
+     * This will be usually either 2 or 3.
+     * 
+     * @param g a Geometry
+     * @return the dimension of the coordinates in the Geometry
+     */
+    public static int coordinateDimension(Geometry g)
+    {
+        // common fast cases
+        if (g instanceof Point)
+            return coordinateDimension(((Point) g).getCoordinateSequence());
+        if (g instanceof LineString)
+            return coordinateDimension(((LineString) g).getCoordinateSequence());
+        if (g instanceof Polygon)
+            return coordinateDimension(((Polygon) g).getExteriorRing()
+                    .getCoordinateSequence());
+    
+        // dig down to find a CS
+        CoordinateSequence cs = CoordinateSequenceFinder.find(g);
+        return coordinateDimension(cs);
+    }
+    
+   /**
+    * Gets the effective dimension of a CoordinateSequence.
+    * This is a workaround for the issue that CoordinateArraySequence
+    * does not keep an accurate dimension - it always 
+    * reports dim=3, even if there is no Z ordinate (ie they are NaN).
+    * This method checks for that case and reports dim=2.
+    * Only the first coordinate is checked.
+    * <p>
+    * There is one small hole: if a CoordinateArraySequence is empty,
+    * the dimension will be reported as 3.
+    * 
+    * @param seq a CoordinateSequence
+    * @return the effective dimension of the coordinate sequence
+    */
+    public static int coordinateDimension(CoordinateSequence seq)
+    {
+        int dim = seq.getDimension();
+        if (dim != 3)
+            return dim;
+    
+        // hack to handle issue that CoordinateArraySequence always reports
+        // dimension = 3
+        // check if a Z value is NaN - if so, assume dim is 2
+        if (seq instanceof CoordinateArraySequence) {
+            if (seq.size() > 0) {
+                if (Double.isNaN(seq.getOrdinate(0, CoordinateSequence.Z)))
+                    return 2;
+            }
+        }
+        return 3;
+    }
+
+    private static class CoordinateSequenceFinder implements CoordinateSequenceFilter {
+        
+        public static CoordinateSequence find(Geometry g) {
+            CoordinateSequenceFinder finder = new CoordinateSequenceFinder();
+            g.apply(finder);
+            return finder.getSeq();
+        }
+        
+        private CoordinateSequence firstSeqFound = null;
+        
+        public CoordinateSequence getSeq() {
+            return firstSeqFound;
+        }
+
+        public void filter(CoordinateSequence seq, int i) {
+            if (firstSeqFound == null)
+                firstSeqFound = seq;
+        
+        }
+
+        public boolean isDone() {
+            return firstSeqFound != null;
+        }
+
+        public boolean isGeometryChanged() {
+            return false;
+        }
+    
+    }
 }

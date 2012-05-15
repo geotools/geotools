@@ -22,6 +22,8 @@ import javax.xml.namespace.QName;
 
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.geometry.jts.LiteCoordinateSequence;
+import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml3.GML;
 import org.geotools.referencing.CRS;
@@ -34,6 +36,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
@@ -58,6 +61,10 @@ import com.vividsolutions.jts.geom.Polygon;
  */
 public class GML3MockData {
     static GeometryFactory gf = new GeometryFactory();
+    
+    static LiteCoordinateSequenceFactory liteCSF = new LiteCoordinateSequenceFactory();
+    static GeometryFactory liteGF = new GeometryFactory(liteCSF);
+    
     static XSD gml = GML.getInstance();
     
     public static void setGML(XSD gml) {
@@ -96,8 +103,62 @@ public class GML3MockData {
         return p;
     }
 
+    /**
+     * Creates a Point using a LiteCoordinateSequence
+     * with a 2D coordinate.
+     * 
+     * @return a 2D Point
+     */
+    public static Point pointLite2D() {
+        return liteGF.createPoint(new LiteCoordinateSequence(new double[] { 1, 2}, 2));
+    }
+
+    /**
+     * Creates a Point using a LiteCoordinateSequence
+     * with a 2D coordinate.
+     * 
+     * @return a 2D Point
+     */
+    public static Point pointLite3D() {
+        return liteGF.createPoint(new LiteCoordinateSequence(new double[] { 1, 2, 100}, 3));
+    }
+
     public static LineString lineString() {
         return gf.createLineString(new Coordinate[] { new Coordinate(1, 2), new Coordinate(3, 4) });
+    }
+
+    /**
+     * Creates a LineString using a LiteCoordinateSequence
+     * with 2 2D coordinates.
+     * 
+     * @return a 2D LineString
+     */
+    public static LineString lineStringLite2D() {
+        return liteGF.createLineString(new Coordinate[] { new Coordinate(1, 2), new Coordinate(3, 4) });
+    }
+
+    /**
+     * Creates a LineString using a LiteCoordinateSequence
+     * with 2 2D coordinates.
+     * 
+     * @return a 2D LineString
+     */
+    public static LineString lineStringLite2D(int size) {
+    	Coordinate[] coords = new Coordinate[size];
+    	for (int i = 0; i < size; i++) {
+    		coords[i] = new Coordinate(i, i+1);
+    	}
+        return liteGF.createLineString(coords);
+    }
+
+    /**
+     * Creates a LineString using a LiteCoordinateSequence
+     * with 2 3D coordinates.
+     * 
+     * @return a 3D LineString
+     */
+    public static LineString lineStringLite3D() {
+        return liteGF.createLineString(liteCSF.create(new double[] { 1, 2, 100,  3, 4, 200}, 3));
     }
 
     public static Element lineString(Document document, Node parent) {
@@ -190,6 +251,32 @@ public class GML3MockData {
 
     public static Polygon polygon() {
         return gf.createPolygon(linearRing(), null);
+    }
+
+    /**
+     * Creates a Polygon using a LiteCoordinateSequence
+     * with 2D coordinates.
+     * 
+     * @return a 2D Polygon
+     */
+    public static Polygon polygonLite2D() {
+        return liteGF.createPolygon(
+        		liteGF.createLinearRing(liteCSF.create(
+        				new double[] { 1,1,  2,1, 2,2, 1,2, 1,1 }, 2 )),
+        				null);
+    }
+
+    /**
+     * Creates a Polygon using a LiteCoordinateSequence
+     * with 3D coordinates.
+     * 
+     * @return a 3D Polygon
+     */
+    public static Polygon polygonLite3D() {
+        return liteGF.createPolygon(
+        		liteGF.createLinearRing(liteCSF.create(
+        				new double[] { 1,1,100,  2,1,99, 2,2,98, 1,2,97, 1,1,100}, 3)),
+        				null);
     }
 
     public static Element polygon(Document document, Node parent) {

@@ -142,12 +142,7 @@ public class PointTypeBinding extends AbstractComplexBinding {
         
         if ("pos".equals(name.getLocalPart())) {
             Point point = (Point) object;
-
-            DirectPosition2D dp = new DirectPosition2D();
-            dp.setOrdinate(0, point.getX());
-            dp.setOrdinate(1, point.getY());
-
-            return dp;
+            return point.getCoordinateSequence();
         }
 
         return null;

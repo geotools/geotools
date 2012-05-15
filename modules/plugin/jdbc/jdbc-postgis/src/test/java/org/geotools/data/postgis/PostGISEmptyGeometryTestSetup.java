@@ -55,6 +55,7 @@ public class PostGISEmptyGeometryTestSetup extends JDBCEmptyGeometryTestSetup {
 
 	@Override
 	protected void dropEmptyGeometryTable() throws Exception {
+	     runSafe("DELETE GEOMETRY_COLUMNS WHERE F_TABLE_NAME = 'empty'");
 		 run( "DROP TABLE \"empty\"");
 		
 	}

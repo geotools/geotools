@@ -51,7 +51,7 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema/src/test/java/org/geotools/util/ComplexAttributeConverterFactoryTest.java $
+ * @source $URL$
  */
 public class ComplexAttributeConverterFactoryTest extends TestCase {
     

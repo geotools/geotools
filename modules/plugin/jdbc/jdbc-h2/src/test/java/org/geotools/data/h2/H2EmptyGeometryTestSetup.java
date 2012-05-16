@@ -55,14 +55,8 @@ public class H2EmptyGeometryTestSetup extends JDBCEmptyGeometryTestSetup {
 
 	@Override
 	protected void dropEmptyGeometryTable() throws Exception {
-         run("CALL DropGeometryColumn('geotools', 'empty', 'geom_point')");
-         run("CALL DropGeometryColumn('geotools', 'empty', 'geom_linestring')");
-         run("CALL DropGeometryColumn('geotools', 'empty', 'geom_polygon')");
-         run("CALL DropGeometryColumn('geotools', 'empty', 'geom_multipoint')");
-         run("CALL DropGeometryColumn('geotools', 'empty', 'geom_multilinestring')");
-         run("CALL DropGeometryColumn('geotools', 'empty', 'geom_multipolygon')");
+	     run("DELETE FROM geometry_columns WHERE f_table_name = 'empty'");
 		 run( "DROP TABLE \"geotools\".\"empty\"");
-		
 	}
     
 

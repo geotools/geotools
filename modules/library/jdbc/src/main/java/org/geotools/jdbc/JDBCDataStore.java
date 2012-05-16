@@ -4369,6 +4369,7 @@ public final class JDBCDataStore extends ContentDataStore
     protected void encodeGeometryColumn(GeometryDescriptor gatt, StringBuffer sql,Hints hints) {
         encodeGeometryColumn(gatt, null, sql, hints);
     }
+
     protected void encodeGeometryColumn(GeometryDescriptor gatt, String prefix, StringBuffer sql,Hints hints) {
     	
     	int srid = getDescriptorSRID(gatt);
@@ -4384,7 +4385,7 @@ public final class JDBCDataStore extends ContentDataStore
     		return;    		
     	}
 
-        dialect.encodeGeometryColumn(gatt,prefix,srid, sql);
+        dialect.encodeGeometryColumn(gatt,prefix,srid, hints, sql);
     }
     
     /**

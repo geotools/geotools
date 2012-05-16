@@ -110,6 +110,12 @@ public class DB2SQLDialectBasic extends BasicSQLDialect {
         delegate.encodeGeometryColumn(gatt, prefix, srid, sql);
     }
 
+    @Override
+    public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix,
+        int srid, Hints hints, StringBuffer sql) {
+        delegate.encodeGeometryColumn(gatt, prefix, srid, hints, sql);
+    }
+
     @Override    
     public void encodeGeometryEnvelope(String tableName,String geometryColumn, StringBuffer sql) {
     	delegate.encodeGeometryEnvelope(tableName, geometryColumn, sql);

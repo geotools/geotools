@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.geotools.data.jdbc.FilterToSQL;
+import org.geotools.factory.Hints;
 import org.geotools.factory.Hints.Key;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedFilterToSQL;
@@ -110,6 +111,12 @@ public class DB2SQLDialectPrepared extends PreparedStatementSQLDialect {
     public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix, int srid,
         StringBuffer sql) {
         delegate.encodeGeometryColumn(gatt, prefix, srid, sql);
+    }
+
+    @Override
+    public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix,
+        int srid, Hints hints, StringBuffer sql) {
+        delegate.encodeGeometryColumn(gatt, prefix, srid, hints, sql);
     }
 
 	@Override

@@ -24,6 +24,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Map;
 
+import org.geotools.factory.Hints;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -95,6 +96,13 @@ public class MySQLDialectPrepared extends PreparedStatementSQLDialect {
             StringBuffer sql) {
         delegate.encodeGeometryColumn(gatt, prefix, srid, sql);
     }
+
+    @Override
+    public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix,
+            int srid, Hints hints, StringBuffer sql) {
+        delegate.encodeGeometryColumn(gatt, prefix, srid, hints, sql);
+    }
+    
 
     @Override
     public void registerClassToSqlMappings(Map<Class<?>, Integer> mappings) {

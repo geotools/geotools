@@ -245,11 +245,11 @@ public class DB2SQLDialect extends SQLDialect  {
     }
 
     @Override
-    public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix, int srid,
-        StringBuffer sql) {
+    public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix,
+        int srid, Hints hints, StringBuffer sql) {
         encodeGeometryColumn(gatt, prefix, sql);
     }
-    
+
     public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix, StringBuffer sql) {
         sql.append("db2gse.ST_AsBinary(");
         encodeColumnName(prefix, gatt.getLocalName(), sql);

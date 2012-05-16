@@ -33,6 +33,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 import org.geotools.data.jdbc.FilterToSQL;
+import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.BasicSQLDialect;
 import org.geotools.jdbc.ColumnMetadata;
@@ -191,20 +192,35 @@ public class PostGISDialect extends BasicSQLDialect {
     @Override
     public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix, int srid,
             StringBuffer sql) {
-        
-        boolean geography = "geography".equals(gatt.getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME));
-        
-        sql.append("encode(");
-        sql.append("ST_AsBinary(");
-        if (!geography) {
-            sql.append("ST_Force_2D(");
+        encodeGeometryColumn(gatt, prefix, srid, null, sql);
+    }
+
+    @Override
+    public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix, int srid, Hints hints, 
+        StringBuffer sql) {
+    
+        boolean geography = "geography".equals(gatt.getUserData().get(
+                JDBCDataStore.JDBC_NATIVE_TYPENAME));
+    
+        if (geography) {
+            sql.append("encode(ST_AsBinary(");
+            encodeColumnName(prefix, gatt.getLocalName(), sql);
+            sql.append("),'base64')");
         }
-        
-        encodeColumnName(prefix, gatt.getLocalName(), sql);
-        if (!geography) {
-            sql.append(")");
+        else {
+            boolean force2D = hints != null && hints.containsKey(Hints.FEATURE_2D) && 
+                Boolean.TRUE.equals(hints.get(Hints.FEATURE_2D));
+
+            if (force2D) {
+                sql.append("encode(ST_AsBinary(ST_Force_2D(");
+                encodeColumnName(prefix, gatt.getLocalName(), sql);
+                sql.append(")),'base64')");
+            } else {
+                sql.append("encode(ST_AsEWKB(");
+                encodeColumnName(prefix, gatt.getLocalName(), sql);
+                sql.append("),'base64')");
+            }
         }
-        sql.append("),'base64')");
     }
 
     @Override

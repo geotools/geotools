@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.geotools.data.jdbc.FilterToSQL;
+import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.BasicSQLDialect;
 import org.geotools.jdbc.JDBCDataStore;
@@ -184,13 +185,14 @@ public class SQLServerDialect extends BasicSQLDialect {
             dataStore.closeSafe( st );
         }
     }
-    
+
     @Override
-    public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix, int srid, StringBuffer sql) {
+    public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix,
+            int srid, Hints hints, StringBuffer sql) {
         encodeColumnName( prefix, gatt.getLocalName(), sql );
         sql.append( ".STAsBinary()");
     }
-    
+
     @Override
     public void encodeGeometryValue(Geometry value, int srid, StringBuffer sql)
             throws IOException {

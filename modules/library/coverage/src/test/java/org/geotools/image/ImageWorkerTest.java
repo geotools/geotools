@@ -18,6 +18,8 @@ package org.geotools.image;
 
 import static org.junit.Assert.*;
 
+import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
+
 import java.awt.Color;
 import java.awt.Transparency;
 import java.awt.color.ColorSpace;
@@ -41,6 +43,8 @@ import java.util.Random;
 import java.util.zip.GZIPInputStream;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.RasterFactory;
@@ -56,7 +60,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.sun.media.imageioimpl.common.PackageUtil;
-
+import com.sun.media.imageioimpl.plugins.tiff.TIFFImageReader;
 
 /**
  * Tests the {@link ImageWorker} implementation.
@@ -401,7 +405,13 @@ public final class ImageWorkerTest {
         InputStream gzippedStream = ImageWorkerTest.class.getResource("test-data/sf-sfdem.tif.gz").openStream();
         GZIPInputStream is = new GZIPInputStream(gzippedStream);
         try {
-            BufferedImage bi = ImageIO.read(is);
+    // BufferedImage bi = ImageIO.read(is);
+            
+            ImageInputStream iis = ImageIO.createImageInputStream(is);
+            ImageReader reader = new TIFFImageReaderSpi().createReaderInstance(iis);
+            reader.setInput(iis);
+            BufferedImage bi = reader.read(0);
+            
             IndexColorModel icm = (IndexColorModel) bi.getColorModel();
             assertEquals(65536, icm.getMapSize());
             

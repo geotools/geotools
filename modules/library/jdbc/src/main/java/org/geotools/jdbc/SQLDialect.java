@@ -649,11 +649,49 @@ public abstract class SQLDialect {
      * This default implementation simply uses the column name without any
      * wrapping function, subclasses must override.
      * </p>
+     * @deprecated use {@link #encodeGeometryColumn(GeometryDescriptor, String, int, Hints, StringBuffer)}
      */
     public void encodeGeometryColumn(GeometryDescriptor gatt, int srid, StringBuffer sql) {
         encodeColumnName(gatt.getLocalName(), sql);
     }
-    
+
+    /**
+     * Encodes the name of a geometry column in a SELECT statement.
+     * <p>
+     * This method should wrap the column name in any functions that are used to
+     * retrieve its value. For instance, often it is necessary to use the function
+     * <code>asText</code>, or <code>asWKB</code> when fetching a geometry.
+     * </p>
+     * <p>
+     * This method must also be sure to properly encode the name of the column with
+     * the {@link #encodeColumnName(String, String, StringBuffer)} function.
+     * </p>
+     * <p>
+     * Example:
+     * </p>
+     * 
+     * <pre>
+     *   <code>
+     *   sql.append( "asText(" );
+     *   column( gatt.getLocalName(), sql );
+     *   sql.append( ")" );
+     *   </code>
+     * </pre>
+     * 
+     * </p>
+     * <p>
+     * This default implementation calls the deprecated 
+     * {@link #encodeGeometryColumn(GeometryDescriptor, int, StringBuffer)} version of 
+     * this method for backward compatibility reasons.
+     * </p>
+     * 
+     */
+    public void encodeGeometryColumn(GeometryDescriptor gatt, int srid, Hints hints, StringBuffer sql) {
+
+        //call previously deprecated
+        encodeGeometryColumn(gatt, srid, sql);
+    }
+
     /**
      * Encodes a generalized geometry using a DB provided SQL function if available
      * If not supported, subclasses should not implement

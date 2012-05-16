@@ -33,6 +33,7 @@ import java.sql.Types;
 import java.util.Map;
 
 import org.geotools.data.jdbc.FilterToSQL;
+import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.jdbc.BasicSQLDialect;
 import org.geotools.jdbc.JDBCDataStore;
@@ -196,14 +197,14 @@ public class SpatiaLiteDialect extends BasicSQLDialect {
         
         return super.getGeometrySRID(schemaName, tableName, columnName, cx);
     }
-    
+
     @Override
     public void encodeGeometryColumn(GeometryDescriptor gatt, int srid, StringBuffer sql) {
         sql.append( "AsText(");
         encodeColumnName( gatt.getLocalName(), sql);
         sql.append( ")||';").append(srid).append("'");
     }
-    
+
     @Override
     public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, int column,
             GeometryFactory factory, Connection cx) throws IOException, SQLException {

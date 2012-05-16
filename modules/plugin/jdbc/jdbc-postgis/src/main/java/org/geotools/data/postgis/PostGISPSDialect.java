@@ -24,6 +24,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Map;
 
+import org.geotools.factory.Hints;
 import org.geotools.jdbc.ColumnMetadata;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedFilterToSQL;
@@ -79,6 +80,10 @@ public class PostGISPSDialect extends PreparedStatementSQLDialect {
         delegate.encodeGeometryColumn(gatt, srid, sql);
     }
 
+    @Override
+    public void encodeGeometryColumn(GeometryDescriptor gatt, int srid, Hints hints, StringBuffer sql) {
+        delegate.encodeGeometryColumn(gatt, srid, hints, sql);
+    }
 
     public void encodeGeometryEnvelope(String tableName, String geometryColumn,
             StringBuffer sql) {

@@ -26,6 +26,7 @@ import java.sql.Types;
 import java.util.Map;
 import java.util.logging.Level;
 
+import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.SQLDialect;
@@ -212,6 +213,7 @@ public class MySQLDialect extends SQLDialect {
     }
 
     public void encodeGeometryColumn(GeometryDescriptor gatt, int srid, StringBuffer sql) {
+    
         sql.append("asWKB(");
         encodeColumnName(gatt.getLocalName(), sql);
         sql.append(")");

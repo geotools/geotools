@@ -4193,7 +4193,6 @@ public final class JDBCDataStore extends ContentDataStore
      * @param hints , may be null 
      */
     protected void encodeGeometryColumn(GeometryDescriptor gatt, StringBuffer sql,Hints hints) {
-    	
     	int srid = getDescriptorSRID(gatt);
     	if (isGeneralizationRequired(hints, gatt)==true) {
     		Double distance = (Double) hints.get(Hints.GEOMETRY_GENERALIZATION);
@@ -4206,8 +4205,9 @@ public final class JDBCDataStore extends ContentDataStore
     		dialect.encodeGeometryColumnSimplified(gatt,srid, sql,distance);
     		return;    		
     	}
-    	   	    	
-    	dialect.encodeGeometryColumn(gatt,srid, sql);        
+
+    	dialect.encodeGeometryColumn(gatt,srid,hints,sql);
+
     }
     
     /**

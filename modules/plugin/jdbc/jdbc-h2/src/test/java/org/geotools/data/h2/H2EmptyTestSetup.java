@@ -39,6 +39,7 @@ public class H2EmptyTestSetup extends JDBCEmptyTestSetup {
     
     @Override
     protected void createEmptyTable() throws Exception {
+        run("DELETE FROM geometry_columns WHERE f_table_name = 'empty'");
         run( "CREATE TABLE \"empty\" (id int,geom blob)");
         
     }

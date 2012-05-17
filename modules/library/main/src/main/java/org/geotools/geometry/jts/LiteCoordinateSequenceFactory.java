@@ -42,6 +42,12 @@ public class LiteCoordinateSequenceFactory implements CoordinateSequenceFactory 
 	 * @see com.vividsolutions.jts.geom.CoordinateSequenceFactory#create(com.vividsolutions.jts.geom.CoordinateSequence)
 	 */
 	public CoordinateSequence create(CoordinateSequence coordSeq) {
+	    /**
+	     * If copying a LiteCoordinateSequence, use the copy constructor
+	     * to preserve dimensionality information.
+	     */
+		if (coordSeq instanceof LiteCoordinateSequence)
+			return new LiteCoordinateSequence((LiteCoordinateSequence) coordSeq);
 		return new LiteCoordinateSequence(coordSeq.toCoordinateArray());
 	}
 

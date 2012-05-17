@@ -54,7 +54,8 @@ public class OracleTestSetup extends JDBCTestSetup {
         fixture.put("host", "192.168.1.200");
         fixture.put("port", "1521");
         fixture.put("database", "xe");
-        fixture.put("username", "geoserver");
+        fixture.put("usernamegit ", "geoserver");
+        fixture.put("user", "geoserver");
         fixture.put("password", "postgis");
         fixture.put("dbtype", "Oracle" );
         return fixture;

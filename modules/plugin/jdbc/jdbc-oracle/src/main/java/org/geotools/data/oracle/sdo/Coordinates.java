@@ -26,6 +26,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateList;
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
+import com.vividsolutions.jts.geom.CoordinateSequences;
 import com.vividsolutions.jts.geom.PrecisionModel;
 
 
@@ -172,14 +173,12 @@ public class Coordinates {
             return c;
         }
 
-        Coordinate[] array = new Coordinate[toIndex - fromIndex];
-        int index = 0;
-        for(int i = fromIndex; i < toIndex; i++, index++) {
-            array[index] = sequence.getCoordinate(i);
-        }
-
-        return factory.create(array);
-    }
+        // handle coordinate sequence dimension correctly
+        int size = toIndex - fromIndex;
+        CoordinateSequence newSeq = factory.create(size, sequence.getDimension());
+        CoordinateSequences.copy(sequence, fromIndex, newSeq, 0, size);
+        return newSeq;
+     }
 
     /**
      * DOCUMENT ME!
@@ -213,11 +212,11 @@ public class Coordinates {
 
             return c;
         } else // else CoordinateSequence
-         {
-            CoordinateList list = new CoordinateList(sequence.toCoordinateArray());
-            Collections.reverse(list);
-
-            return factory.create(list.toCoordinateArray());
+        {
+            // handle coordinate sequence dimension correctly
+            CoordinateSequence revSeq = factory.create(sequence);
+            CoordinateSequences.reverse(revSeq);
+            return revSeq;
         }
     }
 

@@ -20,7 +20,6 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCEmptyTestSetup;
 
 /**
- * 
  *
  * @source $URL$
  */
@@ -33,20 +32,16 @@ public class H2EmptyTestSetup extends JDBCEmptyTestSetup {
     @Override
     protected void setUpDataStore(JDBCDataStore dataStore) {
         super.setUpDataStore(dataStore);
-        
-        dataStore.setDatabaseSchema( null );
     }
-    
+
     @Override
     protected void createEmptyTable() throws Exception {
-        run("DELETE FROM geometry_columns WHERE f_table_name = 'empty'");
-        run( "CREATE TABLE \"empty\" (id int,geom blob)");
-        
+        run( "CREATE TABLE \"geotools\".\"empty\" (id int, geom blob)");
     }
 
     @Override
     protected void dropEmptyTable() throws Exception {
-        runSafe( "DROP TABLE \"empty\"" );
+        runSafe( "DELETE FROM geometry_columns WHERE f_table_name = 'empty'" );
+        runSafe( "DROP TABLE \"geotools\".\"empty\"" );
     }
-
 }

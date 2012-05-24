@@ -240,7 +240,7 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
      * @generated
      * @ordered
      */
-    protected static final BigInteger START_INDEX_EDEFAULT = new BigInteger("0");
+    protected static final BigInteger START_INDEX_EDEFAULT = null;
 
     /**
      * The cached value of the '{@link #getStartIndex() <em>Start Index</em>}' attribute.

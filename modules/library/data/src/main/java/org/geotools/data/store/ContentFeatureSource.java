@@ -547,10 +547,10 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         query = resolvePropertyNames(query);
         
         // see if we need to enable native sorting in order to support stable paging
-        final int offset = query.getStartIndex() != null ? query.getStartIndex() : 0;
-        if(offset > 0 & query.getSortBy() == null) {
+        if (query.getStartIndex() != null
+                && (query.getSortBy() == null || query.getSortBy().length == 0)) {
             Query dq = new Query(query);
-            dq.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
+            dq.setSortBy(new SortBy[] { SortBy.NATURAL_ORDER });
             query = dq;
         }
 
@@ -601,6 +601,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
 
         
         // offset
+        int offset = query.getStartIndex() != null ? query.getStartIndex() : 0;
         if( !canOffset() && offset > 0 ) {
             // skip the first n records
             for(int i = 0; i < offset && reader.hasNext(); i++) {

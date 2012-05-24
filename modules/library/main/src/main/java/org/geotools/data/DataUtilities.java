@@ -139,12 +139,13 @@ import org.geotools.data.view.DefaultView;
  *         data/DataUtilities.java $
  */
 public class DataUtilities {
-
+    /** Typemap used by {@link #createType(String, String)} methods */
     static Map<String, Class> typeMap = new HashMap<String, Class>();
-
+    
+    /** Reverse type map used by {@link #encodeType(FeatureType)} */
     static Map<Class, String> typeEncode = new HashMap<Class, String>();
 
-    static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 
     static {
         typeEncode.put(String.class, "String");
@@ -202,7 +203,7 @@ public class DataUtilities {
         typeEncode.put(Date.class, "Date");
         typeMap.put("Date", Date.class);
     }
-
+    
     /**
      * Retrieve the attributeNames defined by the featureType
      * 
@@ -622,6 +623,15 @@ public class DataUtilities {
 
     /**
      * Performs a deep copy of the provided object.
+     * <p>
+     * A number of tricks are used to make this as fast as possible:
+     * <ul>
+     * <li>Simple or Immutable types are copied as is (String, Integer, Float, URL, etc..)</li>
+     * <li>JTS Geometry objects are cloned</li>
+     * <li>Arrays and the Collection classes are duplicated element by element</li>
+     * </ul>
+     * This function is used recusively for (in order to handle complext features) no attempt
+     * is made to detect cycles at this time so your milage may vary.
      * 
      * @param src
      *            Source object
@@ -747,9 +757,6 @@ public class DataUtilities {
      *            Type of feature we wish to create
      * 
      * @return A new Feature of type featureType
-     * 
-     * @throws IllegalAttributeException
-     *             if we could not create featureType instance with acceptable default values
      */
     public static SimpleFeature template(SimpleFeatureType featureType)
             throws IllegalAttributeException {
@@ -757,20 +764,16 @@ public class DataUtilities {
     }
 
     /**
-     * DOCUMENT ME!
+     * Use the provided featureType to create an empty feature.
+     * <p>
+     * The {@link #defaultValues(SimpleFeatureType)} method is used to generate
+     * the intial values (making use of {@link AttributeDescriptor#getDefaultValue()} as required.
      * 
      * @param featureType
-     *            DOCUMENT ME!
      * @param featureID
-     *            DOCUMENT ME!
-     * 
-     * @return DOCUMENT ME!
-     * 
-     * @throws IllegalAttributeException
-     *             DOCUMENT ME!
+     * @return Craeted feature
      */
-    public static SimpleFeature template(SimpleFeatureType featureType, String featureID)
-            throws IllegalAttributeException {
+    public static SimpleFeature template(SimpleFeatureType featureType, String featureID) {
         return SimpleFeatureBuilder.build(featureType, defaultValues(featureType), featureID);
     }
 
@@ -779,11 +782,8 @@ public class DataUtilities {
      * 
      * @param featureType
      * @return Array of values, that are good starting point for data entry
-     * 
-     * @throws IllegalAttributeException
      */
-    public static Object[] defaultValues(SimpleFeatureType featureType)
-            throws IllegalAttributeException {
+    public static Object[] defaultValues(SimpleFeatureType featureType) {
         return defaultValues(featureType, null);
     }
 
@@ -792,16 +792,12 @@ public class DataUtilities {
      * provided.
      * 
      * @param featureType
-     * @param atts
-     *            provided attributes
-     * 
+     * @param providedValues
      * @return newly created feature
-     * 
-     * @throws IllegalAttributeException
+     * @throws ArrayIndexOutOfBoundsException  If the number of provided values does not match the featureType
      */
-    public static SimpleFeature template(SimpleFeatureType featureType, Object[] atts)
-            throws IllegalAttributeException {
-        return SimpleFeatureBuilder.build(featureType, defaultValues(featureType, atts), null);
+    public static SimpleFeature template(SimpleFeatureType featureType, Object[] providedValues) {
+        return SimpleFeatureBuilder.build(featureType, defaultValues(featureType, providedValues), null);
     }
 
     /**
@@ -810,16 +806,15 @@ public class DataUtilities {
      * 
      * @param featureType
      * @param featureID
-     * @param atts
-     *            provided attributes
+     * @param providedValues provided attributes
      * 
      * @return newly created feature
      * 
-     * @throws IllegalAttributeException
+     * @throws ArrayIndexOutOfBoundsException  If the number of provided values does not match the featureType
      */
     public static SimpleFeature template(SimpleFeatureType featureType, String featureID,
-            Object[] atts) throws IllegalAttributeException {
-        return SimpleFeatureBuilder.build(featureType, defaultValues(featureType, atts), featureID);
+            Object[] providedValues) {
+        return SimpleFeatureBuilder.build(featureType, defaultValues(featureType, providedValues), featureID);
     }
 
     /**
@@ -829,12 +824,9 @@ public class DataUtilities {
      * @param values
      * 
      * @return set of default values
-     * 
-     * @throws IllegalAttributeException
-     * @throws ArrayIndexOutOfBoundsException
+     * @throws ArrayIndexOutOfBoundsException  If the number of provided values does not match the featureType
      */
-    public static Object[] defaultValues(SimpleFeatureType featureType, Object[] values)
-            throws IllegalAttributeException {
+    public static Object[] defaultValues(SimpleFeatureType featureType, Object[] values) {
         if (values == null) {
             values = new Object[featureType.getAttributeCount()];
         } else if (values.length != featureType.getAttributeCount()) {
@@ -842,7 +834,8 @@ public class DataUtilities {
         }
 
         for (int i = 0; i < featureType.getAttributeCount(); i++) {
-            values[i] = defaultValue(featureType.getDescriptor(i));
+            AttributeDescriptor descriptor = featureType.getDescriptor(i);
+            values[i] = descriptor.getDefaultValue();
         }
 
         return values;
@@ -850,18 +843,14 @@ public class DataUtilities {
 
     /**
      * Provides a defautlValue for attributeType.
-     * 
      * <p>
      * Will return null if attributeType isNillable(), or attempt to use Reflection, or
      * attributeType.parse( null )
      * </p>
      * 
      * @param attributeType
-     * 
      * @return null for nillable attributeType, attempt at reflection
-     * 
-     * @throws IllegalAttributeException
-     *             If value cannot be constructed for attribtueType
+     * @deprecated Please {@link AttributeDescriptor#getDefaultValue()}
      */
     public static Object defaultValue(AttributeDescriptor attributeType)
             throws IllegalAttributeException {
@@ -869,7 +858,6 @@ public class DataUtilities {
 
         if (value == null && !attributeType.isNillable()) {
             return null; // sometimes there is no valid default value :-(
-            // throw new IllegalAttributeException("Got null default value for non-null type.");
         }
         return value;
     }
@@ -1057,15 +1045,13 @@ public class DataUtilities {
     /**
      * Wraps up the provided feature collection in as a SimpleFeatureSource.
      * <p>
-     * This is usually done for use by the renderer; allowing it to query the feature collection as
-     * required.
+     * This is usually done for use by the renderer; allowing it to query the feature collection as required.
      * 
-     * @param collection
-     *            Feature collection providing content
+     * @param collection Feature collection providing content
      * @return FeatureSource used to wrap the content
      * 
-     * @throws NullPointerException
-     * @throws RuntimeException
+     * @throws NullPointerException if any of the features are null
+     * @throws IllegalArgumentException If the provided collection is inconsistent (perhaps containing mixed feature types)
      */
     public static SimpleFeatureSource source(
             final FeatureCollection<SimpleFeatureType, SimpleFeature> collection) {
@@ -1098,11 +1084,12 @@ public class DataUtilities {
         // }
 
         CollectionDataStore store = new CollectionDataStore(collection);
+        String typeName = store.getTypeNames()[0];
         try {
-            return store.getFeatureSource(store.getTypeNames()[0]);
+            return store.getFeatureSource(typeName);
         } catch (IOException e) {
-            throw new RuntimeException("Something is wrong with the geotools code, "
-                    + "this exception should not happen", e);
+            throw new IllegalArgumentException("CollectionDataStore inconsistent, "
+                    + " ensure type name "+typeName+" is the same for all features", e);
         }
     }
 
@@ -1125,20 +1112,26 @@ public class DataUtilities {
             throws IOException, SchemaException {
         return new DefaultView(store.getFeatureSource(query.getTypeName()), query);
     }
-
+    /**
+     * Returns collection from the provided feature array
+     * 
+     * @param featureArray 
+     * @return array contents as a SimpleFeatureCollection
+     * @deprecated Please use {@link #collection(SimpleFeature[])} and check {@link SimpleFeatureCollection#size()} to ensure contents are not empty
+     */
     public static SimpleFeatureCollection results(SimpleFeature[] featureArray) {
         return results(collection(featureArray));
     }
 
     /**
      * Returns collection if non empty.
+     * <p>
+     * Previous implementation would throw an IOException if the collection was empty; method
+     * is now duplicated as it does not servce a function.
      * 
      * @param collection
-     * 
      * @return provided collection
-     * 
-     * @throws IOException
-     *             Raised if collection was empty
+     * @deprecated Please check collection.size() directly to ensure your collection contains content
      */
     public static SimpleFeatureCollection results(final SimpleFeatureCollection collection) {
         if (collection.size() == 0) {
@@ -1222,7 +1215,9 @@ public class DataUtilities {
             FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection) {
         return new DefaultFeatureCollection(featureCollection);
     }
-
+    //
+    // Conversion (or casting) from general feature model to simple feature model
+    //
     /**
      * A safe cast to SimpleFeatureCollection; that will introduce a wrapper if it has to.
      * <p>
@@ -1326,7 +1321,7 @@ public class DataUtilities {
         if (featureType == null) {
             return null;
         }
-        // go through the attributes and strip out compicated contents
+        // go through the attributes and strip out complicated contents
         //
         List<PropertyDescriptor> attributes;
         Collection<PropertyDescriptor> descriptors = featureType.getDescriptors();
@@ -1414,7 +1409,9 @@ public class DataUtilities {
         throw new IllegalArgumentException(
                 "The provided feature store contains complex features, cannot be bridged to a simple one");
     }
-
+    //
+    // FeatureCollection Utility Methods
+    //
     /**
      * Copies the provided fetaures into a List.
      * 
@@ -1455,7 +1452,9 @@ public class DataUtilities {
         }
         return fids;
     }
-
+    //
+    // Conversion to FeatureCollection
+    //
     /**
      * Copies the provided features into a FeatureCollection.
      * <p>
@@ -1555,7 +1554,9 @@ public class DataUtilities {
         }
         return collection;
     }
-
+    //
+    // Attribute Value Utility Methods
+    //
     /**
      * Used to compare if two values are equal.
      * <p>
@@ -1566,7 +1567,7 @@ public class DataUtilities {
      * 
      * <ul>
      * <li>Object.equals( Object )</li>
-     * <li>Geometry.equals( Geometry )</li>
+     * <li>Geometry.equals( Geometry ) - similar to {@link Geometry#equalsExact(Geometry)}</li>
      * </ul>
      * 
      * @param att
@@ -1591,7 +1592,10 @@ public class DataUtilities {
 
         return true;
     }
-
+    
+    //
+    // TypeConversion methods used by FeatureReaders
+    //
     /**
      * Create a derived FeatureType
      * 
@@ -1723,7 +1727,9 @@ public class DataUtilities {
         }
         return tb.buildFeatureType();
     }
-
+    //
+    // Decoding (ie Parsing) support for PropertyAttributeReader and tutorials
+    //
     /**
      * Utility method for FeatureType construction.
      * <p>
@@ -1822,8 +1828,10 @@ public class DataUtilities {
         return builder.buildFeatureType();
     }
 
+
+    
     /**
-     * Uses Converers to parse the provided text into the correct values to create a feature.
+     * Uses {@link Converters} to parse the provided text into the correct values to create a feature.
      * 
      * @param type
      *            FeatureType
@@ -1833,7 +1841,6 @@ public class DataUtilities {
      *            Text representation of values
      * 
      * @return newly created feature
-     * 
      * @throws IllegalAttributeException
      */
     public static SimpleFeature parse(SimpleFeatureType type, String fid, String[] text)
@@ -1847,7 +1854,25 @@ public class DataUtilities {
 
         return SimpleFeatureBuilder.build(type, attributes, fid);
     }
-
+    //
+    // Encoding support for PropertyFeatureWriter
+    //
+    /**
+     * Encode the provided featureType as a String suitable for use with {@link #createType}.
+     * <p>
+     * The format of this string acts as the "header" information for the PropertyDataStore
+     * implementations. 
+     * 
+     * Example:<pre><code>String header = "_="+DataUtilities.encodeType(schema);</code></pre>
+     * <p>
+     * For more information please review the PropertyDataStore tutorials.
+     * 
+     * @param featureType
+     * @return String representation of featureType suitable for use with {@link #createType}
+     */
+    public static String encodeType( FeatureType featureType ){
+        return spec(featureType);
+    }
     /**
      * A "quick" String representation of a FeatureType.
      * <p>
@@ -1890,16 +1915,21 @@ public class DataUtilities {
 
         return buf.toString();
     }
-
-    static Class type(String typeName) throws ClassNotFoundException {
+    /**
+     * Internal method to access java binding using readable typename.
+     * @see #createType(String, String)
+     */
+    static Class<?> type(String typeName) throws ClassNotFoundException {
         if (typeMap.containsKey(typeName)) {
             return typeMap.get(typeName);
         }
-
         return Class.forName(typeName);
     }
-
-    static String typeMap(Class type) {
+    /**
+     * Internal method to access the readable typename for the provided class.
+     * @see #createType(String, String)
+     */
+    static String typeMap(Class<?> type) {
         if (typeEncode.containsKey(type)) {
             return typeEncode.get(type);
         }
@@ -1912,7 +1942,7 @@ public class DataUtilities {
          */
         return type.getName();
     }
-
+    
     /**
      * Factory method to produce Comparator based on provided Query SortBy information.
      * <p>

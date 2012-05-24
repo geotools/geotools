@@ -413,10 +413,9 @@ public class DataUtilities {
     }
 
     /**
-     * Compare operation for FeatureType.
-     * 
+     * Compare attribute coverage between two feature types (allowing the identification of subTypes).
      * <p>
-     * Results in:
+     * The comparison results in a number with the following meaning:
      * </p>
      * 
      * <ul>
@@ -429,20 +428,20 @@ public class DataUtilities {
      * </ul>
      * 
      * <p>
-     * Comparison is based on AttributeTypes, an IOException is thrown if the AttributeTypes are not
-     * compatiable.
+     * Comparison is based on {@link AttributeDescriptor} - the {@link #isMatch(AttributeDescriptor, AttributeDescriptor)}
+     * method is used to quickly confirm that the local name and java binding are compatible.
      * </p>
      * 
      * <p>
      * Namespace is not considered in this opperations. You may still need to reType to get the
      * correct namesapce, or reorder.
      * </p>
+     * <p>
+     * Please note this method will not result in a stable sort if used in a {@link Comparator}
+     * as -1 is used to indicate incompatiblity (rather than simply "before").
      * 
-     * @param typeA
-     *            FeatureType beind compared
-     * @param typeB
-     *            FeatureType being compared against
-     * 
+     * @param typeA  FeatureType beind compared
+     * @param typeB FeatureType being compared against
      */
     public static int compare(SimpleFeatureType typeA, SimpleFeatureType typeB) {
         if (typeA == typeB) {
@@ -464,12 +463,8 @@ public class DataUtilities {
             return -1;
         }
 
-        // may still be the same featureType
-        // (Perhaps they differ on namespace?)
+        // may still be the same featureType (Perhaps they differ on namespace?)
         AttributeDescriptor a;
-
-        // may still be the same featureType
-        // (Perhaps they differ on namespace?)
         int match = 0;
 
         for (int i = 0; i < countA; i++) {
@@ -488,17 +483,6 @@ public class DataUtilities {
         if ((countA == countB) && (match == countA)) {
             // all attributes in typeA agreed with typeB
             // (same order and type)
-            // if (typeA.getNamespace() == null) {
-            // if(typeB.getNamespace() == null) {
-            // return 0;
-            // } else {
-            // return 1;
-            // }
-            // } else if(typeA.getNamespace().equals(typeB.getNamespace())) {
-            // return 0;
-            // } else {
-            // return 1;
-            // }
             return 0;
         }
 

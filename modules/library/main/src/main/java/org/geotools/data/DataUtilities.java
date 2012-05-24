@@ -108,6 +108,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
+import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -2319,21 +2320,29 @@ public class DataUtilities {
      * @param collection
      * @return
      */
-    public static Envelope bounds(
+    public static ReferencedEnvelope bounds(
             FeatureCollection<? extends FeatureType, ? extends Feature> collection) {
         FeatureIterator<? extends Feature> i = collection.features();
         try {
-            ReferencedEnvelope bounds = new ReferencedEnvelope(collection.getSchema()
-                    .getCoordinateReferenceSystem());
-            if (!i.hasNext()) {
-                bounds.setToNull();
-                return bounds;
-            }
+            // Implementation taken from DefaultFeatureCollection implementation - thanks IanS
+            CoordinateReferenceSystem crs = collection.getSchema().getCoordinateReferenceSystem();
+            ReferencedEnvelope bounds = new ReferencedEnvelope(crs);
 
-            bounds.init(((SimpleFeature) i.next()).getBounds());
+            while (i.hasNext()) {
+                BoundingBox geomBounds = ((SimpleFeature) i.next()).getBounds();
+                // IanS - as of 1.3, JTS expandToInclude ignores "null" Envelope
+                // and simply adds the new bounds...
+                // This check ensures this behavior does not occur.
+                if ( ! geomBounds.isEmpty() ) {
+                    bounds.include(geomBounds);
+                }
+            }
             return bounds;
-        } finally {
-            i.close();
+        }
+        finally {
+            if( i != null ){
+                i.close();
+            }
         }
     }
 

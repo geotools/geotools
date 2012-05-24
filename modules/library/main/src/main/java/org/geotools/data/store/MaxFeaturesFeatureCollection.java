@@ -144,6 +144,6 @@ public class MaxFeaturesFeatureCollection<T extends FeatureType, F extends Featu
 
 	public ReferencedEnvelope getBounds() {
 		//calculate manually
-		return ReferencedEnvelope.reference( DataUtilities.bounds( this ) );
+		return DataUtilities.bounds( this );
 	}
 }

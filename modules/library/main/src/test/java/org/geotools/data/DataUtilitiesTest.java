@@ -43,6 +43,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.AttributeTypeImpl;
 import org.geotools.filter.IllegalFilterException;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
@@ -65,6 +66,7 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.data.memory.MemoryDataStore;
 
@@ -486,6 +488,15 @@ public class DataUtilitiesTest extends DataTestCase {
         assertEquals(roadFeatures.length, collection.size());
     }
 
+    public void testBounds() {
+        SimpleFeatureCollection collection = DataUtilities
+                .collection(roadFeatures);
+        
+        ReferencedEnvelope expected = collection.getBounds();
+        ReferencedEnvelope actual = DataUtilities.bounds( collection );
+        assertEquals( expected, actual );
+    }
+    
     public void testCollectionList() {
         SimpleFeatureCollection collection = DataUtilities
                 .collection(Arrays.asList(roadFeatures));

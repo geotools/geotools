@@ -168,7 +168,7 @@ public class FilteringSimpleFeatureCollection extends DecoratingSimpleFeatureCol
 
 	public ReferencedEnvelope getBounds() {
 		//calculate manually
-		return ReferencedEnvelope.reference( DataUtilities.bounds( this ) );
+		return DataUtilities.bounds( this );
 	}
 
 }

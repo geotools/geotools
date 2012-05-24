@@ -163,7 +163,7 @@ public class FilteringFeatureCollection<T extends FeatureType, F extends Feature
 
 	public ReferencedEnvelope getBounds() {
 		//calculate manually
-		return ReferencedEnvelope.reference( DataUtilities.bounds( this ) );
+		return DataUtilities.bounds( this );
 	}
 
 }

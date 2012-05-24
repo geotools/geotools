@@ -565,9 +565,18 @@ Test the src release
 
 If you like you can ask on the developer list for a volunteer to perform these steps.
 
-1. Unzip the geotools-2.6-M4-bin.zip archive to a clean directory.
+1. Unzip the geotools-8.0-RC1-project.zip archive to a clean directory. I just unzip
+   in our target directory:
+      
+      cd target
+      unzip geotools-8.0-RC1-project.zip
+      cd geotools-8.0-RC1
+      
 
-2. Move or rename your ``.m2/repository`` directory.
+2. Rather then move you maven repository we will change our settings::
+       
+     <settings>
+       <localRepository>~\releaseRepository\</localRepository>
    
    * We do this in case a required module was accidentally excluded from the list of modules to
      be included in the release. You would see no error during the release process but the
@@ -576,6 +585,9 @@ If you like you can ask on the developer list for a volunteer to perform these s
 3. Run maven from the root of the directory you unzipped to::
       
       mvn install
+
+4. Remember clean up your releaseReository and change settings.xml back
+
 
 Update JIRA and create a changelog
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

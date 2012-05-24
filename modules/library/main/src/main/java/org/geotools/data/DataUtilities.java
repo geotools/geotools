@@ -17,6 +17,7 @@
 package org.geotools.data;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -127,17 +128,60 @@ import com.vividsolutions.jts.geom.Polygon;
 import org.geotools.data.view.DefaultView;
 
 /**
- * Utility functions for use when implementing working with data classes.
+ * Utility functions for use with GeoTools with data classes.
  * <p>
- * TODO: Move FeatureType manipulation to feature package
+ * These methods fall into several categories:
+ * <p>
+ * Conversion between common data structures.
+ * <ul>
+ * <li>{@link #collection} methods: creating/converting a {@link SimpleFeatureCollection} from a range of input.</li>
+ * <li>{@link #simple} methods: adapting from generic Feature use to SimpleFeature. Used to convert to SimpleFeature,
+ * SimpleFeatureCollection,SimpleFeatureSource</li>
+ * <li>{@link #list} to quickly copy features into a memory based list</li>
+ * <li>{@link #reader} methods to convert to FeatureReader</li>
+ * <li>{@link #source} setup a FeatureSource wrapper around the provided data</li>
+ * </ul>
  * </p>
+ * <p>
+ * SimpleFeatureType and SimpleFeature encoding/decoding from String as used by the PropertyDataStore tutorials.
+ * <ul>
+ * <li>{@link #createType} methods: to create a SimpleFeatureType from a one line text string</li>
+ * <li>{@link #encodeType}: text string representation of a SimpleFeaturerType</li>
+ * <li>{@link #createFeature}: create a SimpleFeature from a one line text String</li>
+ * <li>{@link #encodeFeature}: encode a feature as a single line text string</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Working with SimpleFeatureType (this class is immutable so we always have to make a modified copy):
+ * <ul>
+ * <li>{@link #createSubType(SimpleFeatureType, String[])} methods return a modified copy of an origional feature type. Used to cut down an exsiting
+ * feature type to reflect only the attributes requested when using {@link SimpleFeatureSource#getFeatures(Filter)}.</li>
+ * <li>{@link #compare} and {@link #isMatch(AttributeDescriptor, AttributeDescriptor)} are used to check for types compatible with
+ * {@link #createSubType} used to verify that feature values can be copied across</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Manipulating individual features and data values:
+ * <ul>
+ * <li>{@link #reType} generates a cut down version of an original feature in the same manners as {@link #createSubType}</li>
+ * <li>{@link #template} and {@link #defaultValue} methods which uses {@link AttributeDescriptor#getDefaultValue()} when creating new empty features</li>
+ * <li>{@link #duplicate(Object)} used for deep copy of feature data</li>
+ * <li>
+ * </ul>
+ * </p>
+ * And a grab bag of helpful utility methods for those implementing a DataStore:
+ * <ul>
+ * <li>{@link #urlToFile(URL)} and {@link #fileToURL(File)} and {@link #getParentUrl(URL)} used to work with files across platforms</li>
+ * <li>{@link #includeFilters} and {@link #excludeFilters} work as a compound {@link FileFilter} making {@link File#listFiles} easier to use</li>
+ * <li>{@link #propertyNames}, {@link #fidSet}, {@link #attributeNames} methods are used to double check a provided query and ensure
+ * it can be correctly handed.</li>
+ * </li>{@link #sortComparator}, {@link #resolvePropertyNames} and {@link #mixQueries} are used to prep a {@link Query} prior to use</li>
+ * </ul>
  * 
  * @author Jody Garnett, Refractions Research
- *
- *
- * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/
- *         data/DataUtilities.java $
+ * 
+ * 
+ * @source $URL$ http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/ data/DataUtilities.java $
  */
 public class DataUtilities {
     /** Typemap used by {@link #createType(String, String)} methods */

@@ -184,8 +184,13 @@ public class DataUtilitiesTest extends DataTestCase {
             handleFile("C:\\one\\two");
             handleFile("C:\\one\\two\\and three");
             handleFile("D:\\");
-            if (TestData.isExtensiveTest())
+            if (TestData.isExtensiveTest()){
                 handleFile("\\\\host\\share\\file");
+                // from GEOT-3300 DataUtilities.urlToFile doesn't handle network paths correctly
+                URL url = new URL("file", "////oehhwsfs09", "/some/path/on/the/server/filename.nds");
+                File windowsShareFile = DataUtilities.urlToFile( url );
+                assertNotNull(windowsShareFile);
+            }
         } else {
             handleFile("/one");
             handleFile("one");
@@ -202,6 +207,11 @@ public class DataUtilitiesTest extends DataTestCase {
         File file = File.createTempFile("hello", "world");
         handleFile(file.getAbsolutePath());
         handleFile(file.getPath());
+        
+        // from GEOT-3300 DataUtilities.urlToFile doesn't handle network paths correctly
+        URL url = new URL("file", "////oehhwsfs09", "/some/path/on/the/server/filename.nds");
+        File windowsShareFile = DataUtilities.urlToFile( url );
+        assertNotNull(windowsShareFile);
     }
 
     private String replaceSlashes(String string) {

@@ -447,7 +447,39 @@ public class DataUtilitiesTest extends DataTestCase {
         assertEquals(rv1.getAttribute("flow"), rv3.getAttribute("flow"));
         assertNull(rv3.getDefaultGeometry());
     }
+    /**
+     * Test createType and createFeature methods as per GEOT-4150
+     */
+    public void testCreate() throws Exception {
+        SimpleFeatureType featureType = DataUtilities.createType("Contact","id:Integer,party:String,geom:Geometry:srid=4326");
+        SimpleFeature feature1 =  DataUtilities.createFeature( featureType, "fid1=1|Jody Garnett\\nSteering Committee|POINT(1 2)" );
+        SimpleFeature feature2 =  DataUtilities.createFeature( featureType, "2|John Hudson\\|Hapless Victim|POINT(6 2)" );
 
+        assertNotNull( featureType.getCoordinateReferenceSystem() );
+        
+        Geometry geometry = (Geometry)feature1.getAttribute("geom");
+        assertEquals( "geom", 2.0, geometry.getCoordinate().y );
+        assertEquals( "fid preservation", "fid1", feature1.getID() );
+        
+        // test escape handling
+        assertEquals( "newline decode check", "Jody Garnett\nSteering Committee", feature1.getAttribute("party") );
+        assertEquals( "escape check", "John Hudson|Hapless Victim", feature2.getAttribute("party") );
+    }
+    /**
+     * Test createType and createFeature methods as per GEOT-4150
+     */
+
+    public void testEncode() throws Exception {
+        SimpleFeatureType featureType = DataUtilities.createType("Contact","id:Integer,party:String,geom:Geometry:srid=4326");
+        SimpleFeature feature1 =  DataUtilities.createFeature( featureType, "fid1=1|Jody Garnett\\nSteering Committee|POINT (1 2)" );
+        SimpleFeature feature2 =  DataUtilities.createFeature( featureType, "2|John Hudson\\|Hapless Victim|POINT (6 2)" );
+        
+        String spec = DataUtilities.encodeType(featureType);
+        assertEquals("id:Integer,party:String,geom:Geometry:srid=4326", spec );
+
+        String text = DataUtilities.encodeFeature(feature1);
+        assertEquals( "fid1=1|Jody Garnett\\nSteering Committee|POINT (1 2)", text );
+    }
     /*
      * Test for Feature template(FeatureType)
      */

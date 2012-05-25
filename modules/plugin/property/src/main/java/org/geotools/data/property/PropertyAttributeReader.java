@@ -184,6 +184,13 @@ public class PropertyAttributeReader implements AttributeReader {
         next = readLine();
         return next != null;
     }
+    /**
+     * Read the next line of content, paying careful attention to skip comments and for correct
+     * handling of lines that end with escaped line-feeds to span multi lines in the text file.
+     * 
+     * @return
+     * @throws IOException
+     */
     String readLine() throws IOException {
         StringBuilder buffer = new StringBuilder();
         while( true ){
@@ -213,8 +220,6 @@ public class PropertyAttributeReader implements AttributeReader {
             return null; // there is no line
         }
         String raw = buffer.toString();
-//        String line = decodeString(raw);
-//        return line;
         return raw;
     }
     /**
@@ -301,9 +306,9 @@ public class PropertyAttributeReader implements AttributeReader {
         for (String str : data.split("\\|",-1)) {
             if (i == type.getAttributeCount()) {
                 // limit reached
-                throw new DataSourceException("format error: expected " + text.length
-                        + " attributes, stopped after finding " + i + ". [" + line
-                        + "] split into " + Arrays.asList(text));
+                throw new DataSourceException("format error: expected " + split.length
+                        + " attributes, stopped after finding " + i + ". [" + data
+                        + "] split into " + Arrays.asList(split));
             }
             if (str.endsWith("\\")) {
 //                String shorter = str.substring(0, str.length() - 1);
@@ -320,8 +325,8 @@ public class PropertyAttributeReader implements AttributeReader {
         }
         if (i < type.getAttributeCount()) {
             throw new DataSourceException("format error: expected " + type.getAttributeCount()
-                    + " attributes, but only found " + i + ". [" + line + "] split into "
-                    + Arrays.asList(text));
+                    + " attributes, but only found " + i + ". [" + data + "] split into "
+                    + Arrays.asList(split));
         }
         return split;
     }

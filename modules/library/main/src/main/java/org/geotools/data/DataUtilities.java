@@ -83,6 +83,7 @@ import org.geotools.feature.type.GeometryTypeImpl;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.visitor.PropertyNameResolvingVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.resources.i18n.ErrorKeys;
@@ -110,6 +111,8 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.geometry.BoundingBox;
+import org.opengis.metadata.citation.Citation;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -1857,32 +1860,6 @@ public class DataUtilities {
         return builder.buildFeatureType();
     }
 
-
-    
-    /**
-     * Uses {@link Converters} to parse the provided text into the correct values to create a feature.
-     * 
-     * @param type
-     *            FeatureType
-     * @param fid
-     *            Feature ID for new feature
-     * @param text
-     *            Text representation of values
-     * 
-     * @return newly created feature
-     * @throws IllegalAttributeException
-     */
-    public static SimpleFeature parse(SimpleFeatureType type, String fid, String[] text)
-            throws IllegalAttributeException {
-        Object[] attributes = new Object[text.length];
-
-        for (int i = 0; i < text.length; i++) {
-            AttributeType attType = type.getDescriptor(i).getType();
-            attributes[i] = Converters.convert(text[i], attType.getBinding());
-        }
-
-        return SimpleFeatureBuilder.build(type, attributes, fid);
-    }
     //
     // Encoding support for PropertyFeatureWriter
     //
@@ -1899,9 +1876,54 @@ public class DataUtilities {
      * @param featureType
      * @return String representation of featureType suitable for use with {@link #createType}
      */
-    public static String encodeType( FeatureType featureType ){
-        return spec(featureType);
+    public static String encodeType(SimpleFeatureType featureType) {
+        Collection<PropertyDescriptor> types = featureType.getDescriptors();
+        StringBuffer buf = new StringBuffer();
+
+        for (PropertyDescriptor type : types) {
+            buf.append(type.getName().getLocalPart());
+            buf.append(":");
+            buf.append(typeMap(type.getType().getBinding()));
+            if (type instanceof GeometryDescriptor) {
+                GeometryDescriptor gd = (GeometryDescriptor) type;
+                int srid = toSRID( gd.getCoordinateReferenceSystem() );
+                if( srid != -1 ){
+                    buf.append(":srid=" + srid);
+                }
+            }
+            buf.append(",");
+        }
+        buf.delete(buf.length() - 1, buf.length()); // remove last ","
+        return buf.toString();
     }
+    /**
+     * Quickly review provided crs checking for an "EPSG:SRID" reference identifier.
+     * <p>
+     * @see CRS#lookupEpsgCode(CoordinateReferenceSystem, boolean) for full search
+     * @param crs
+     * @return srid or -1 if not found
+     */
+    private static int toSRID( CoordinateReferenceSystem crs ){
+        if (crs == null || crs.getIdentifiers() == null) {
+            return -1; // not found
+        }
+        for (Iterator<ReferenceIdentifier> it = crs.getIdentifiers().iterator(); it
+                .hasNext();) {
+            ReferenceIdentifier id = it.next();
+            Citation authority = id.getAuthority();
+            if (authority != null
+                    && authority.getTitle().equals(Citations.EPSG.getTitle())) {
+                try {
+                    return Integer.parseInt( id.getCode() );
+                }
+                catch (NumberFormatException nanException ){
+                    continue;
+                }
+            }
+        }
+        return -1;
+    }
+    
     /**
      * A "quick" String representation of a FeatureType.
      * <p>
@@ -1912,6 +1934,7 @@ public class DataUtilities {
      *            FeatureType to represent
      * 
      * @return The string "specification" for the featureType
+     * @deprecated Renamed to {@link #encodeType} for concistency with {@link #createType}
      */
     public static String spec(FeatureType featureType) {
         Collection<PropertyDescriptor> types = featureType.getDescriptors();
@@ -1941,8 +1964,265 @@ public class DataUtilities {
             buf.append(",");
         }
         buf.delete(buf.length() - 1, buf.length()); // remove last ","
-
         return buf.toString();
+    }
+    /**
+     * Reads in SimpleFeature that has been encoded into a line of text.
+     * <p>
+     * Example:<pre>
+     * SimpleFeatureType featureType =
+     *    DataUtilities.createType("FLAG","id:Integer|name:String|geom:Geometry:4326");
+     *    
+     * SimpleFeature feature = 
+     *    DataUtilities.createFeature( featureType, "fid1=1|Jody Garnett\\nSteering Committee|POINT(1,2)" );
+     * </pre>
+     * This format is used by the PropertyDataStore tutorials. It amounts to:
+     * <ul>
+     * <li>
+     * <li>Encoding of <i>FeatureId</i> followed by the attributes</li>
+     * <li>Attributes are seperated using the bar character</li>
+     * <li>Geometry is handled using {@link WKTReader2}</li>
+     * <li>Support for common escaped characters</li>
+     * <li>Multi-line support using escaped line-feed characters</li>
+     * <ul>
+     * @param featureType
+     * @param line
+     * @return SimpleFeature defined by the provided line of text
+     */
+    public static SimpleFeature createFeature( SimpleFeatureType featureType, String line ){
+        String fid;
+        
+        int fidSplit = line.indexOf('=');
+        int barSplit = line.indexOf('|');
+        if( fidSplit == -1 || (barSplit != -1 && barSplit < fidSplit) ){
+            fid = null; // we need to generate a feature id
+        }
+        else {
+            fid = line.substring(0, fidSplit);
+        }
+        String data = line.substring(fidSplit+1);
+        String text[] = splitIntoText(data, featureType );
+        Object[] values = new Object[ text.length ];
+        for( int i=0; i<text.length;i++){
+            AttributeDescriptor descriptor = featureType.getDescriptor(i);
+            Object value = createValue( descriptor, text[i] );
+            values[i] = value;
+        }
+        SimpleFeature feature = SimpleFeatureBuilder.build( featureType, values, fid );
+        
+        return feature;
+    }
+    
+    /**
+     * Split the provided text using | charater as a seperator.
+     * <p>
+     * This method respects the used of \ to "escape" a | character allowing
+     * representations such as the following:<pre>
+     * String example="text|example of escaped \\| character|text";
+     * 
+     * // represents: "text|example of escaped \| character|text"
+     * String split=splitIntoText( example );</pre>
+     * 
+     * @param data Origional raw text as stored
+     * @return data split using | as seperator
+     * @throws DataSourceException if the information stored is inconsistent with the headered provided
+     */
+    private static String[] splitIntoText(String data,SimpleFeatureType type) {
+        // return data.split("|", -1); // use -1 as a limit to include empty trailing spaces
+        // return data.split("[.-^\\\\]\\|",-1); //use -1 as limit to include empty trailing spaces
+
+        String text[] = new String[type.getAttributeCount()];
+        int i = 0;
+        StringBuilder item = new StringBuilder();
+        for (String str : data.split("\\|",-1)) {
+            if (i == type.getAttributeCount()) {
+                // limit reached
+                throw new IllegalArgumentException("format error: expected " + text.length
+                        + " attributes, stopped after finding " + i + ". [" + data
+                        + "] split into " + Arrays.asList(text));
+            }
+            if (str.endsWith("\\")) {
+                item.append(str);
+                item.append("|");
+            } else {
+                item.append(str);
+                text[i] = item.toString();
+                i++;
+                item = new StringBuilder();
+            }
+        }
+        if (i < type.getAttributeCount()) {
+            throw new IllegalArgumentException("createFeature format error: expected " + type.getAttributeCount()
+                    + " attributes, but only found " + i + ". [" + data + "] split into "
+                    + Arrays.asList(text));
+        }
+        return text;
+    }
+    /**
+     * Reads an attribute value out of the raw text supplied to {@link #createFeature}.
+     * <p>
+     * This method is responsible for:
+     * <ul>
+     * <li>Handling: <code>"<null>"</code> as an explicit marker flag for a null value</li>
+     * <li>Using {@link #decodeEscapedCharacters(String)} to unpack the raw text</li>
+     * <li>Using {@link Converters} to convert the text to the requested value</li>
+     * @param descriptor
+     * @param rawText
+     * @return
+     */
+    private static Object createValue(AttributeDescriptor descriptor, String rawText) {
+        String stringValue = null;
+        try {
+            // read the value and decode any interesting characters
+            stringValue = decodeEscapedCharacters(rawText);
+        } catch (RuntimeException huh) {
+            huh.printStackTrace();
+            stringValue = null;
+        }
+        // check for special <null> flag
+        if ("<null>".equals(stringValue)) {
+            stringValue = null;
+        }
+        if (stringValue == null) {
+            if (descriptor.isNillable()) {
+                return null; // it was an explicit "<null>"
+            }
+        }
+        // Use of Converters to convert from String to requested java binding
+        Object value = Converters.convert(stringValue, descriptor.getType().getBinding());
+
+        if (descriptor.getType() instanceof GeometryType) {
+            // this is to be passed on in the geometry objects so the srs name gets encoded
+            CoordinateReferenceSystem crs = ((GeometryType) descriptor.getType())
+                    .getCoordinateReferenceSystem();
+            if (crs != null) {
+                // must be geometry, but check anyway
+                if (value != null && value instanceof Geometry) {
+                    ((Geometry) value).setUserData(crs);
+                }
+            }
+        }
+        return value;
+    }
+    /**
+     * Produce a String encoding of SimpleFeature for use with {@link #createFeature}.
+     * <p>
+     * This method inlcudes the full featureId information.
+     * @param feature feature to encode, only SimpleFeature is supported at this time
+     * @return text encoding for use with {@link #createFeature}
+     */
+    public static String encodeFeature(SimpleFeature feature){
+        return encodeFeature(feature, true );
+    }
+    /**
+     * Produce a String encoding of SimpleFeature for use with {@link #createFeature}.
+     * <p>
+     * This method inlcudes the full featureId information.
+     * @param feature feature to encode, only SimpleFeature is supported at this time
+     * @param includeFid true to include the optional feature id
+     * @return text encoding for use with {@link #createFeature}
+     */
+    public static String encodeFeature(SimpleFeature feature,boolean includeFid ){
+        StringBuilder build = new StringBuilder();
+        if( includeFid ){
+            String fid = feature.getID();
+            if( feature.getUserData().containsKey(Hints.PROVIDED_FID)){
+                fid = (String) feature.getUserData().get(Hints.PROVIDED_FID);
+            }
+            build.append(fid);
+            build.append("=");
+        }
+        for (int i = 0; i < feature.getAttributeCount(); i++) {
+            Object attribute = feature.getAttribute(i);
+            if( i != 0 ){
+                build.append("|"); // seperator character
+            }
+            if (attribute == null) {
+                build.append("<null>"); // nothing!
+            } else if( attribute instanceof String){
+                String txt = encodeString((String) attribute);
+                build.append( txt );
+            } else if (attribute instanceof Geometry) {
+                Geometry geometry = (Geometry) attribute;
+                String txt = geometry.toText();
+                
+                txt = encodeString( txt );
+                build.append( txt );
+            } else {
+                String txt = Converters.convert( attribute, String.class );
+                if( txt == null ){ // could not convert?
+                    txt = attribute.toString();
+                }
+                txt = encodeString( txt );
+                build.append( txt );
+            }
+        }
+        return build.toString();
+    }
+
+    /**
+     * Uses {@link Converters} to parse the provided text into the correct values to create a feature.
+     * 
+     * @param type
+     *            FeatureType
+     * @param fid
+     *            Feature ID for new feature
+     * @param text
+     *            Text representation of values
+     * 
+     * @return newly created feature
+     * @throws IllegalAttributeException
+     */
+    public static SimpleFeature parse(SimpleFeatureType type, String fid, String[] text)
+            throws IllegalAttributeException {
+        Object[] attributes = new Object[text.length];
+
+        for (int i = 0; i < text.length; i++) {
+            AttributeType attType = type.getDescriptor(i).getType();
+            attributes[i] = Converters.convert(text[i], attType.getBinding());
+        }
+        return SimpleFeatureBuilder.build(type, attributes, fid);
+    }
+
+    //
+    // Internal utility methods to support PropertyDataStore feature encoding / decoding
+    //
+    /**
+     * Used to decode common whitespace chracters and escaped | characters.
+     * 
+     * @param txt Origional raw text as stored
+     * @return decoded text as provided for storage
+     * @see PropertyAttributeWriter#encodeString(String)
+     */
+    private static String decodeEscapedCharacters( String txt ){
+        // unpack whitespace constants
+        txt = txt.replace( "\\n", "\n");
+        txt = txt.replaceAll("\\r", "\r" );
+
+        // unpack our our escaped characters
+        txt = txt.replace("\\|", "|" );
+        // txt = txt.replace("\\\\", "\\" );
+        
+        return txt;
+    }
+    
+    /**
+     * Used to encode common whitespace characters and | character for safe transport.
+     * 
+     * @param txt
+     * @return txt encoded for storage
+     * @see PropertyAttributeReader#decodeString(String)
+     */
+    private static String encodeString( String txt ){
+        // encode our escaped characters
+        // txt = txt.replace("\\", "\\\\");
+        txt = txt.replace("|","\\|");
+
+        // encode whitespace constants
+        txt = txt.replace("\n", "\\n");
+        txt = txt.replace("\r", "\\r");
+
+        return txt;
     }
     /**
      * Internal method to access java binding using readable typename.
@@ -1962,16 +2242,11 @@ public class DataUtilities {
         if (typeEncode.containsKey(type)) {
             return typeEncode.get(type);
         }
-        /*
-         * SortedSet<String> choose = new TreeSet<String>(); for (Iterator i =
-         * typeMap.entrySet().iterator(); i.hasNext();) { Map.Entry entry = (Entry) i.next();
-         * 
-         * if (entry.getValue().equals(type)) { choose.add( (String) entry.getKey() ); } } if(
-         * !choose.isEmpty() ){ return choose.last(); }
-         */
         return type.getName();
     }
-    
+    //
+    // Query Support Methods for DataStore implementators
+    // 
     /**
      * Factory method to produce Comparator based on provided Query SortBy information.
      * <p>

@@ -1034,7 +1034,7 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
             if (!Citations.identifierMatches(factory.getAuthority(), authority)) {
                 continue;
             }
-            if (!(factory instanceof AbstractAuthorityFactory)) {
+            if (factory == null || !(factory instanceof AbstractAuthorityFactory)) {
                 continue;
             }
             final AbstractAuthorityFactory f = (AbstractAuthorityFactory) factory;

@@ -1,4 +1,4 @@
-﻿Subversion Install
+Subversion Install
 ------------------
 
 Subversion is an advanced version management tool with the same command line syntax as CVS.
@@ -19,7 +19,7 @@ Subversion Config
 
 Please note that whatever client you use; we need to ask you to configure subversion correctly to work with our repository.
 
-1. Copy :download:`config<../../../../../build/subversion/config>`
+1. Copy :download:`config</../../build/subversion/config>`
 2. Into the following location
    
    ============= ===========================================================================

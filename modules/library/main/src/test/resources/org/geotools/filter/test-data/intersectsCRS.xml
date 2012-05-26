@@ -1,0 +1,16 @@
+<Filter>
+  <Intersects>
+    <PropertyName>geom</PropertyName>
+    <gml:Polygon xmlns:gml="http://www.opengis.net/gml"
+      srsName="EPSG:32631">
+      <gml:outerBoundaryIs>
+        <gml:LinearRing>
+          <gml:coordinates decimal="." cs="," ts=" ">278246.6541,552664.2969
+            500000,552664.2969 500000,774218.9664
+            278246.6541,774218.9664 278246.6541,552664.2969
+          </gml:coordinates>
+        </gml:LinearRing>
+      </gml:outerBoundaryIs>
+    </gml:Polygon>
+  </Intersects>
+</Filter>

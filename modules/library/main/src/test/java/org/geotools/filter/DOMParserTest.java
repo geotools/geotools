@@ -28,6 +28,7 @@ import junit.framework.TestSuite;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;
 import org.opengis.filter.Filter;
 import org.opengis.filter.PropertyIsNotEqualTo;
@@ -36,6 +37,8 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.Beyond;
 import org.opengis.filter.spatial.Crosses;
 import org.opengis.filter.spatial.DWithin;
+import org.opengis.filter.spatial.Intersects;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -45,6 +48,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * Tests for the DOM parser.
@@ -246,6 +250,17 @@ public class DOMParserTest extends FilterTestSupport {
         assertEquals("the_geom", ((PropertyName) cr.getExpression1()).getPropertyName());
         assertTrue(((Literal) cr.getExpression2()).getValue() instanceof LineString);
         LOGGER.fine("parsed filter is " + test);
+    }
+    
+    public void testIntersectsCRS() throws Exception {
+        Filter test = parseDocument("intersectsCRS.xml");
+        assertTrue(test instanceof Intersects);
+        Intersects cr = (Intersects) test;
+        assertEquals("geom", ((PropertyName) cr.getExpression1()).getPropertyName());
+        Polygon p = (Polygon) ((Literal) cr.getExpression2()).getValue();
+        assertTrue(p.getUserData() instanceof CoordinateReferenceSystem);
+        int epsg = CRS.lookupEpsgCode((CoordinateReferenceSystem) p.getUserData(), false);
+        assertEquals(32631, epsg);
     }
 
     public void test28() throws Exception {

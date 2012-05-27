@@ -22,6 +22,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import javax.sql.DataSource;
 
 // Geotools dependencies
 import org.geotools.factory.Hints;
@@ -53,7 +54,11 @@ final class FactoryUsingHSQL extends FactoryUsingAnsiSQL {
     public FactoryUsingHSQL(final Hints hints, final Connection connection) {
         super(hints, connection);
     }
-
+    
+    public FactoryUsingHSQL(final Hints hints, final DataSource dataSource) {
+        super(hints, dataSource);
+    }
+    
     /**
      * If the query contains a "FROM (" expression, remove the parenthesis.
      */

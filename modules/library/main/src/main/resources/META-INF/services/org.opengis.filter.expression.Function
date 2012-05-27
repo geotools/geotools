@@ -23,6 +23,7 @@ org.geotools.filter.function.FilterFunction_parseLong
 org.geotools.filter.function.FilterFunction_intersects
 org.geotools.filter.function.FilterFunction_isClosed
 org.geotools.filter.function.FilterFunction_geomFromWKT
+org.geotools.filter.function.FilterFunction_setCRS
 org.geotools.filter.function.FilterFunction_toWKT
 org.geotools.filter.function.FilterFunction_geomLength
 org.geotools.filter.function.FilterFunction_isValid

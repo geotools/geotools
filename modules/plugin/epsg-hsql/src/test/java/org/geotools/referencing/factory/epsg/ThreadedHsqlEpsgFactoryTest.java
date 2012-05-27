@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.factory.epsg;
 
+import java.lang.reflect.Method;
 import static org.junit.Assert.*;
 
 import java.util.Set;
@@ -63,6 +64,31 @@ public class ThreadedHsqlEpsgFactoryTest {
         if( finder == null ){
             finder = factory.getIdentifiedObjectFinder(CoordinateReferenceSystem.class);
         }
+        corruptConnection();
+    }
+    
+    @Test
+    public void testConnectionCorruption() throws Exception {
+        corruptConnection();
+        CRS.decode("EPSG:4326");
+    }
+    
+    @Test
+    public void testConnectionCorruptionListAll() throws Exception {
+        Set<String> original = CRS.getSupportedCodes("EPSG");
+        assertTrue(original.size() > 4000);
+        corruptConnection();
+        Set<String> afterCorruption = CRS.getSupportedCodes("EPSG");
+        assertEquals(original, afterCorruption);
+    }
+    
+    private void corruptConnection() throws Exception {
+        java.lang.reflect.Field field = org.geotools.referencing.factory.BufferedAuthorityFactory.class.getDeclaredField("backingStore");
+        field.setAccessible(true);
+        Object def = field.get(factory);
+        Method getConnection = DirectEpsgFactory.class.getDeclaredMethod("getConnection");
+        java.sql.Connection conn = (java.sql.Connection) getConnection.invoke( def );
+        conn.close();
     }
 
     @Test

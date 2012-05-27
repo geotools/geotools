@@ -108,12 +108,6 @@ final class AuthorityCodes extends AbstractSet<String> implements Serializable {
     private transient PreparedStatement querySingle;
 
     /**
-     * The connection to the underlying database.
-     */
-    private Connection connection;
-    
-
-    /**
      * The collection's size, or a negative value if not yet computed. The records will be counted
      * only when first needed. The special value -2 if set by {@link #isEmpty} if the size has not
      * yet been computed, but we know that the set is not empty.
@@ -164,30 +158,48 @@ final class AuthorityCodes extends AbstractSet<String> implements Serializable {
         buffer.append(hasWhere ? " AND " : " WHERE ").append(table.codeColumn).append(" = ?");
         sqlSingle = factory.adaptSQL(buffer.toString());
     }
+    
+    protected PreparedStatement validateStatement(PreparedStatement stmt, String sql) throws SQLException {
+        Connection conn = null;
+        if (stmt != null) {
+            try {
+                conn = stmt.getConnection();
+            } catch (SQLException sqle) {
+                // mark this invalid
+                stmt = null;
+            }
+        }
+        if(conn != null && !factory.isConnectionValid(conn)) {
+            stmt = null;
+        }
+        if (stmt == null) {
+            stmt = factory.getConnection().prepareStatement(sql);
+        } 
+        return stmt;
+    }
 
     /**
      * Returns all codes.
      */
     private ResultSet getAll() throws SQLException {
         assert Thread.holdsLock(this);
-        if (queryAll != null && factory.isConnectionValid(queryAll.getConnection())) {
-            try {
-                return queryAll.executeQuery();
-            } catch (SQLException ignore) {
-                /*
-                 * Failed to reuse an existing statement. This problem occurs in some occasions
-                 * with the JDBC-ODBC bridge in Java 6 (the error message is "Invalid handle").
-                 * I'm not sure where the bug come from (didn't noticed it when using HSQL). We
-                 * will try again with a new statement created in the code after this 'catch'
-                 * clause. Note that we set 'queryAll' to null first in case of failure during
-                 * the 'prepareStatement(...)' execution.
-                 */
-                queryAll.close();
-                queryAll = null;
-                recoverableException("getAll", ignore);
-            }
+        queryAll = validateStatement(queryAll, sqlAll);
+        try {
+            return queryAll.executeQuery();
+        } catch (SQLException ignore) {
+            /*
+             * Failed to reuse an existing statement. This problem occurs in some occasions
+             * with the JDBC-ODBC bridge in Java 6 (the error message is "Invalid handle").
+             * I'm not sure where the bug come from (didn't noticed it when using HSQL). We
+             * will try again with a new statement created in the code after this 'catch'
+             * clause. Note that we set 'queryAll' to null first in case of failure during
+             * the 'prepareStatement(...)' execution.
+             */
+            queryAll.close();
+            queryAll = null;
+            recoverableException("getAll", ignore);
         }
-        queryAll = factory.getConnection().prepareStatement(sqlAll);
+        queryAll = validateStatement(queryAll, sqlAll);
         return queryAll.executeQuery();
     }
 
@@ -196,9 +208,7 @@ final class AuthorityCodes extends AbstractSet<String> implements Serializable {
      */
     private ResultSet getSingle(final Object code) throws SQLException {
         assert Thread.holdsLock(this);
-        if (querySingle == null || !factory.isConnectionValid(querySingle.getConnection())) {
-            querySingle = factory.getConnection().prepareStatement(sqlSingle);
-        }
+        querySingle = validateStatement(querySingle, sqlSingle);
         querySingle.setString(1, code.toString());
         return querySingle.executeQuery();
     }

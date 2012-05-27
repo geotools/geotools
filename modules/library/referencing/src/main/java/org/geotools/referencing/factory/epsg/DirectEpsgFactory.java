@@ -711,14 +711,21 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
     {
         assert Thread.holdsLock(this);
         PreparedStatement stmt = statements.get(key);
-        if(stmt != null && !isConnectionValid(stmt.getConnection()))
+        Connection conn = null;
+        if (stmt != null) {
+            try {
+                conn = stmt.getConnection();
+            } catch (SQLException sqle) {
+                // mark this invalid
+                stmt = null;
+            }
+        }
+        if(conn != null && !isConnectionValid(conn))
             stmt = null;
         if (stmt == null) {
             stmt = getConnection().prepareStatement(adaptSQL(sql));
             statements.put(key, stmt);
-        } else {
-            
-        }
+        } 
         return stmt;
     }
 
@@ -3188,7 +3195,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
         if (connection == null) {
             connection = dataSource.getConnection();
         } else {
-            if(!isConnectionValid(connection)) {
+            if(connection.isClosed() || !isConnectionValid(connection)) {
                 statements.clear();
                 try {
                     // we need to send back the connection to the eventual

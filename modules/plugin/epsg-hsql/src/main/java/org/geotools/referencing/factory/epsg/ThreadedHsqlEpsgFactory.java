@@ -326,7 +326,7 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
             }
             
         }
-        FactoryUsingHSQL factory = new FactoryUsingHSQL(hints, getDataSource().getConnection());
+        FactoryUsingHSQL factory = new FactoryUsingHSQL(hints, getDataSource());
         factory.setValidationQuery("CALL NOW()");
         return factory;
     }

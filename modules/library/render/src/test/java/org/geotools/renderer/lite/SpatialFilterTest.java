@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.geotools.data.DefaultQuery;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
@@ -22,7 +23,6 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.Rule;
-import org.geotools.styling.SLDTransformer;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.Symbolizer;
@@ -35,13 +35,14 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Polygon;
 
 public class SpatialFilterTest {
 
     private static final long TIME = 2000;
 
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
     SimpleFeatureSource squareFS;
 
@@ -196,12 +197,9 @@ public class SpatialFilterTest {
         polygon.setUserData(utm31n);
         rule.setFilter(ff.intersects(ff.property("geom"), ff.literal(polygon)));
         
-        // force EPSG axis order interpretation
-        renderer.setRendererHints(Collections.singletonMap(StreamingRenderer.FORCE_EPSG_AXIS_ORDER_KEY, true));
-
         content.addLayer(new FeatureLayer(pointFS, style));
 
-        RendererBaseTest.showRender("Spatial in EPSG order", renderer, TIME, bounds);
+        RendererBaseTest.showRender("Reprojected polygon", renderer, TIME, bounds);
         assertEquals(1, renderedIds.size());
         assertEquals("point.4", renderedIds.iterator().next());
     }
@@ -211,17 +209,38 @@ public class SpatialFilterTest {
         // same as above, but with the style in SLD form
         Style style = RendererBaseTest.loadStyle(this, "spatialFilter.sld");
         
-        // force EPSG axis order interpretation
-        renderer.setRendererHints(Collections.singletonMap(StreamingRenderer.FORCE_EPSG_AXIS_ORDER_KEY, true));
-
         content.addLayer(new FeatureLayer(pointFS, style));
 
-        RendererBaseTest.showRender("Spatial in EPSG order", renderer, TIME, bounds);
+        RendererBaseTest.showRender("Reprojected polygon from SLD", renderer, TIME, bounds);
         assertEquals(1, renderedIds.size());
         assertEquals("point.4", renderedIds.iterator().next());
     }
     
-    
+    @Test
+    public void testReprojectedPolygonFromDefinitionQuery() throws Exception {
+        // a spatial filter in a different SRS
+        CoordinateReferenceSystem utm31n = CRS.decode("EPSG:32631");
+        CoordinateReferenceSystem wgs84 = CRS.decode("EPSG:4326");
+        ReferencedEnvelope envWgs84 = new ReferencedEnvelope(1, 3, 5, 7, wgs84);
+        ReferencedEnvelope envUTM31N = envWgs84.transform(utm31n, true);
+        
+        // build the style
+        StyleBuilder sb = new StyleBuilder();
+        Symbolizer ps = sb.createPointSymbolizer();
+        Style style = sb.createStyle(ps);
+        
+        // build a filter for the layer own definition query
+        FeatureLayer layer = new FeatureLayer(pointFS, style);
+        Polygon polygon = JTS.toGeometry((Envelope) envUTM31N);
+        polygon.setUserData(utm31n);
+        layer.setQuery(new DefaultQuery(null, ff.intersects(ff.property("geom"), ff.literal(polygon))));
+        
+        content.addLayer(layer);
+
+        RendererBaseTest.showRender("Reprojected polygon as a definition query", renderer, TIME, bounds);
+        assertEquals(1, renderedIds.size());
+        assertEquals("point.4", renderedIds.iterator().next());
+    }
     
     
 }

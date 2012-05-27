@@ -68,7 +68,10 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.function.GeometryTransformationVisitor;
+import org.geotools.filter.spatial.DefaultCRSFilterVisitor;
+import org.geotools.filter.spatial.ReprojectingFilterVisitor;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
+import org.geotools.filter.visitor.SpatialFilterVisitor;
 import org.geotools.geometry.jts.Decimator;
 import org.geotools.geometry.jts.GeometryClipper;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
@@ -97,6 +100,7 @@ import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Rule;
+import org.geotools.styling.RuleImpl;
 import org.geotools.styling.StyleAttributeExtractor;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
@@ -112,7 +116,7 @@ import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.parameter.GeneralParameterValue;
@@ -187,7 +191,7 @@ public final class StreamingRenderer implements GTRenderer {
     int error = 0;
 
     /** Filter factory for creating bounding box filters */
-    private final static FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
+    private final static FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2(null);
 
     private final static PropertyName gridPropertyName = filterFactory.property("grid");
 
@@ -343,6 +347,7 @@ public final class StreamingRenderer implements GTRenderer {
     private static boolean VECTOR_RENDERING_ENABLED_DEFAULT = false;
 
     public static final String LABEL_CACHE_KEY = "labelCache";
+    public static final String FORCE_EPSG_AXIS_ORDER_KEY = "ForceEPSGAxisOrder";
     public static final String DPI_KEY = "dpi";
     public static final String DECLARED_SCALE_DENOM_KEY = "declaredScaleDenominator";
     public static final String OPTIMIZED_DATA_LOADING_KEY = "optimizedDataLoadingEnabled";
@@ -357,7 +362,10 @@ public final class StreamingRenderer implements GTRenderer {
      *                                          and the displayed area of the map.
      *  "dpi"                        - Integer  number of dots per inch of the display 90 DPI is the default (as declared by OGC)      
      *  "forceCRS"                   - CoordinateReferenceSystem declares to the renderer that all layers are of the CRS declared in this hint                               
-     *  "labelCache"                 - Declares the label cache that will be used by the renderer.                               
+     *  "labelCache"                 - Declares the label cache that will be used by the renderer.
+     *  "forceEPSGAxisOrder"         - When doing spatial filter reprojection (from the SLD towards the native CRS) assume the geometries 
+     *                                 are expressed with the axis order suggested by the official EPSG database, regardless of how the 
+     *                                 CRS system might be configured                               
      */
     private Map rendererHints = null;
 
@@ -1328,6 +1336,22 @@ public final class StreamingRenderer implements GTRenderer {
             return false;
         return Boolean.TRUE.equals(result);
     }
+    
+    /**
+     * Checks if the geometries in spatial filters in the SLD must be assumed to be expressed
+     * in the official EPSG axis order, regardless of how the referencing subsystem is configured
+     * (this is required to support filter reprojection in WMS 1.3+)
+     * @return
+     */
+    private boolean isEPSGAxisOrderForced() {
+        if (rendererHints == null)
+            return false;
+        Object result = rendererHints.get(FORCE_EPSG_AXIS_ORDER_KEY);
+        if (result == null)
+            return false;
+        return Boolean.TRUE.equals(result);
+    }
+
 
     /**
      * Checks if vector rendering is enabled or not.
@@ -1866,7 +1890,7 @@ public final class StreamingRenderer implements GTRenderer {
     final private void processStylers(final Graphics2D graphics,
             MapLayer currLayer, AffineTransform at,
             CoordinateReferenceSystem destinationCrs, Envelope mapArea,
-            Rectangle screenSize, String layerId) throws IllegalFilterException, IOException {
+            Rectangle screenSize, String layerId) throws IllegalFilterException, IOException, FactoryException {
 
         /*
          * DJB: changed this a wee bit so that it now does the layer query AFTER
@@ -1906,6 +1930,10 @@ public final class StreamingRenderer implements GTRenderer {
             if(lfts.size() == 0)
                 return;
             
+            // make sure all spatial filters in the feature source native SRS 
+            reprojectSpatialFilters(lfts, featureSource);
+            
+            // apply the uom and dpi rescale
             applyUnitRescale(lfts);
 
             LiteFeatureTypeStyle[] featureTypeStyleArray = (LiteFeatureTypeStyle[]) lfts.toArray(new LiteFeatureTypeStyle[lfts.size()]);
@@ -1971,6 +1999,76 @@ public final class StreamingRenderer implements GTRenderer {
         }
     }
     
+    /**
+     * Reprojects the spatial filters in each {@link LiteFeatureTypeStyle} so that they match
+     * the feature source native coordinate system
+     * @param lfts
+     * @param fs 
+     * @throws FactoryException 
+     */
+    void reprojectSpatialFilters(final ArrayList<LiteFeatureTypeStyle> lfts, FeatureSource fs) throws FactoryException {
+        // compute the default SRS of the feature source
+        FeatureType schema = fs.getSchema();
+        CoordinateReferenceSystem declaredCRS = schema.getCoordinateReferenceSystem();
+        if(isEPSGAxisOrderForced()) {
+            Integer code = CRS.lookupEpsgCode(declaredCRS, false);
+            if(code != null) {
+                declaredCRS = CRS.decode("urn:ogc:def:crs:EPSG::" + code);
+            }
+        }
+
+        // reproject spatial filters in each fts
+        for (LiteFeatureTypeStyle fts : lfts) {
+            reprojectSpatialFilters(fts, declaredCRS, schema);
+        }
+    }
+    
+    /**
+     * Reprojects spatial filters so that they match the feature source native CRS, and assuming all literal
+     * geometries are specified in the specified declaredCRS
+     */
+    void reprojectSpatialFilters(LiteFeatureTypeStyle fts, CoordinateReferenceSystem declaredCRS, FeatureType schema) {
+        for (int i = 0; i < fts.ruleList.length; i++) {
+            fts.ruleList[i] = reprojectSpatialFilters(fts.ruleList[i], declaredCRS, schema);
+        }
+        if(fts.elseRules != null) {
+            for (int i = 0; i < fts.elseRules.length; i++) {
+                fts.elseRules[i] = reprojectSpatialFilters(fts.elseRules[i], declaredCRS, schema);
+            }
+        }        
+    }
+
+    /**
+     * Reprojects spatial filters so that they match the feature source native CRS, and assuming all literal
+     * geometries are specified in the specified declaredCRS
+     */
+    private Rule reprojectSpatialFilters(Rule rule, CoordinateReferenceSystem declaredCRS, FeatureType schema) {
+        // NPE avoidance
+        Filter filter = rule.getFilter();
+        if(filter == null) {
+            return rule;
+        }
+        
+        // do we have any spatial filter?
+        SpatialFilterVisitor sfv = new SpatialFilterVisitor();
+        filter.accept(sfv, null);
+        if(!sfv.hasSpatialFilter()) {
+            return rule;
+        }
+        
+        // all right, we need to default the literals to the declaredCRS and then reproject to
+        // the native one
+        DefaultCRSFilterVisitor defaulter = new DefaultCRSFilterVisitor(filterFactory, declaredCRS);
+        Filter defaulted = (Filter) filter.accept(defaulter, null);
+        ReprojectingFilterVisitor reprojector = new ReprojectingFilterVisitor(filterFactory, schema);
+        Filter reprojected = (Filter) defaulted.accept(reprojector, null);
+        
+        // clone the rule (the style can be reused over and over, we cannot alter it) and set the new filter
+        Rule rr = new RuleImpl(rule);
+        rr.setFilter(reprojected);
+        return rr;
+    }
+
     /**
      * Utility method to apply the two rescale visitors without duplicating code
      * @param fts

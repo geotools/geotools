@@ -39,6 +39,7 @@ import org.opengis.referencing.operation.MathTransform;
 import org.geotools.factory.Hints;
 import org.geotools.factory.GeoTools;
 import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.factory.OrderedAxisAuthorityFactory;
 
@@ -411,6 +412,18 @@ public class CRSTest extends TestCase {
             assertEquals("EPSG:4326", CRS.toSRS(crs));
             Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
             assertEquals("urn:ogc:def:crs:EPSG::4326", CRS.toSRS(crs));
+        } finally {
+            Hints.removeSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
+        }
+    }
+    
+    public void testSRSAxisOrder2() throws Exception {
+        try {
+            Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
+            CoordinateReferenceSystem crsEN = CRS.decode("EPSG:4326");
+            assertEquals(AxisOrder.EAST_NORTH, CRS.getAxisOrder(crsEN));
+            CoordinateReferenceSystem crsNE = CRS.decode("urn:ogc:def:crs:EPSG::4326");
+            assertEquals(AxisOrder.NORTH_EAST, CRS.getAxisOrder(crsNE));
         } finally {
             Hints.removeSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
         }

@@ -22,7 +22,13 @@
  */
 package org.geotools.gml.producer;
 
+import java.util.logging.Logger;
+
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.CRS.AxisOrder;
+import org.geotools.util.logging.Logging;
 import org.geotools.xml.transform.TransformerBase;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
@@ -50,6 +56,8 @@ import com.vividsolutions.jts.geom.impl.PackedCoordinateSequence;
  * @source $URL$
  */
 public class GeometryTransformer extends TransformerBase {
+    
+    static final Logger LOGGER = Logging.getLogger(GeometryTransformer.class);
     
     protected boolean useDummyZ = false;
     
@@ -214,7 +222,24 @@ public class GeometryTransformer extends TransformerBase {
          * Encodes the given geometry with no srsName attribute and forcing 2D
          */
         public void encode(Geometry geometry) {
-            encode(geometry, null);
+            String srsName = null;
+            // see if we have a EPSG CRS attached to the geometry
+            if(geometry.getUserData() instanceof CoordinateReferenceSystem) {
+                try {
+                    CoordinateReferenceSystem crs = (CoordinateReferenceSystem) geometry.getUserData();
+                    Integer code = CRS.lookupEpsgCode(crs, false);
+                    if(code != null) {
+                        if(AxisOrder.NORTH_EAST.equals(CRS.getAxisOrder(crs))) {
+                            srsName = "urn:ogc:def:crs:EPSG::" + code;
+                        } else {
+                            srsName = "EPSG:" + code;
+                        }
+                    }
+                } catch(Exception e) {
+                    LOGGER.fine("Failed to encode the CoordinateReferenceSystem into a srsName");
+                }
+            }
+            encode(geometry, srsName);
         }
         
         /**

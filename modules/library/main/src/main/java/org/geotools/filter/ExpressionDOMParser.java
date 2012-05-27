@@ -24,9 +24,11 @@ import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.referencing.CRS;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -434,13 +436,39 @@ public final class ExpressionDOMParser {
     	ExpressionDOMParser parser = new ExpressionDOMParser();
     	return parser.gml( root );
     }
+    
+    
+    public Geometry gml(Node root) {
+        // look for the SRS name, if available
+        Node srsNameNode = root.getAttributes().getNamedItem("srsName");
+        CoordinateReferenceSystem crs = null;
+        if(srsNameNode != null) {
+            String srs = srsNameNode.getTextContent();
+            try {
+                crs = CRS.decode(srs);
+            } catch(Exception e) {
+                LOGGER.warning("Failed to parse the specified SRS " + srs);
+            }
+        }
+        
+        // parse the geometry
+        Geometry g = _gml(root);
+        
+        // force the crs if necessary
+        if(crs != null) {
+            g.setUserData(crs);
+        }
+        
+        return g;
+    }
+    
     /**
      * Parses the gml of this node to jts.
      *
      * @param root the parent node of the gml to parse.
      * @return the java representation of the geometry contained in root.
      */
-    public Geometry gml(Node root) {
+    private Geometry _gml(Node root) {
     	LOGGER.finer("processing gml " + root);
 
         List coordList;
@@ -453,15 +481,15 @@ public final class ExpressionDOMParser {
         //SLDparser.  I really would like that class redone, so we don't have
         //to use this crappy DOM GML parser.
         String childName = child.getNodeName();
-            if(childName == null)
-            {
-                childName = child.getLocalName();
-            }
-     		if(!childName.startsWith("gml:"))
-     		{
-                    childName = "gml:" + childName;
-            }
-
+        if(childName == null)
+        {
+            childName = child.getLocalName();
+        }
+ 		if(!childName.startsWith("gml:"))
+ 		{
+                childName = "gml:" + childName;
+        }
+ 		
         if (childName.equalsIgnoreCase("gml:box")) {
             type = GML_BOX;
             coordList = parseCoords(child);

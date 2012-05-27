@@ -121,6 +121,7 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
@@ -932,7 +933,7 @@ public final class StreamingRenderer implements GTRenderer {
             CoordinateReferenceSystem featCrs, Rectangle screenSize,
             GeometryDescriptor geometryAttribute,
             AffineTransform worldToScreenTransform)
-            throws IllegalFilterException, IOException {
+            throws IllegalFilterException, IOException, FactoryException {
         FeatureCollection<FeatureType, Feature> results = null;
         Query query = new Query(Query.ALL);
         Query definitionQuery;
@@ -1025,7 +1026,7 @@ public final class StreamingRenderer implements GTRenderer {
         // sure to respect it by combining it with the bounding box one.
         // Currently this definition query is being set dynamically in geoserver
         // as per the user's filter, maxFeatures and startIndex WMS GetMap custom parameters
-        definitionQuery = currLayer.getQuery();
+        definitionQuery = reprojectQuery(currLayer.getQuery(), source);
 
         if (definitionQuery != Query.ALL) {
             if (query == Query.ALL) {
@@ -1098,7 +1099,6 @@ public final class StreamingRenderer implements GTRenderer {
 
         return source.getFeatures(query);
     }
-
 
     /**
      * Takes care of eventual geometric transformations
@@ -2007,8 +2007,24 @@ public final class StreamingRenderer implements GTRenderer {
      * @throws FactoryException 
      */
     void reprojectSpatialFilters(final ArrayList<LiteFeatureTypeStyle> lfts, FeatureSource fs) throws FactoryException {
-        // compute the default SRS of the feature source
         FeatureType schema = fs.getSchema();
+        CoordinateReferenceSystem declaredCRS = getDeclaredSRS(schema);
+
+        // reproject spatial filters in each fts
+        for (LiteFeatureTypeStyle fts : lfts) {
+            reprojectSpatialFilters(fts, declaredCRS, schema);
+        }
+    }
+
+    /**
+     * Computes the declared SRS of a layer based on the layer schema and the EPSG forcing flag 
+     * @param schema
+     * @return
+     * @throws FactoryException
+     * @throws NoSuchAuthorityCodeException
+     */
+    private CoordinateReferenceSystem getDeclaredSRS(FeatureType schema) throws FactoryException {
+        // compute the default SRS of the feature source
         CoordinateReferenceSystem declaredCRS = schema.getCoordinateReferenceSystem();
         if(isEPSGAxisOrderForced()) {
             Integer code = CRS.lookupEpsgCode(declaredCRS, false);
@@ -2016,10 +2032,33 @@ public final class StreamingRenderer implements GTRenderer {
                 declaredCRS = CRS.decode("urn:ogc:def:crs:EPSG::" + code);
             }
         }
-
-        // reproject spatial filters in each fts
-        for (LiteFeatureTypeStyle fts : lfts) {
-            reprojectSpatialFilters(fts, declaredCRS, schema);
+        return declaredCRS;
+    }
+    
+    /**
+     * Reprojects all spatial filters in the specified Query so that they match the native srs of the 
+     * specified feature source 
+     * 
+     * @param query
+     * @param source
+     * @return
+     * @throws FactoryException
+     */
+    private Query reprojectQuery(Query query, FeatureSource<FeatureType, Feature> source) throws FactoryException {
+        if(query == null || query.getFilter() == null) {
+            return query;
+        }
+        
+        // compute the declared CRS
+        Filter original = query.getFilter();
+        CoordinateReferenceSystem declaredCRS = getDeclaredSRS(source.getSchema());
+        Filter reprojected = reprojectSpatialFilter(declaredCRS, source.getSchema(), original);
+        if(reprojected == original) {
+            return query;
+        } else {
+            Query rq = new Query(query);
+            rq.setFilter(reprojected);
+            return rq;
         }
     }
     
@@ -2048,12 +2087,35 @@ public final class StreamingRenderer implements GTRenderer {
         if(filter == null) {
             return rule;
         }
+
+        // try to reproject the filter
+        Filter reprojected = reprojectSpatialFilter(declaredCRS, schema, filter);
+        if(reprojected == filter) {
+            return rule;
+        }
+        
+        // clone the rule (the style can be reused over and over, we cannot alter it) and set the new filter
+        Rule rr = new RuleImpl(rule);
+        rr.setFilter(reprojected);
+        return rr;
+    }
+
+    /**
+     * Reprojects spatial filters so that they match the feature source native CRS, and assuming all literal
+     * geometries are specified in the specified declaredCRS
+     */
+    private Filter reprojectSpatialFilter(CoordinateReferenceSystem declaredCRS,
+            FeatureType schema, Filter filter) {
+        // NPE avoidance
+        if(filter == null) {
+            return null;
+        }
         
         // do we have any spatial filter?
         SpatialFilterVisitor sfv = new SpatialFilterVisitor();
         filter.accept(sfv, null);
         if(!sfv.hasSpatialFilter()) {
-            return rule;
+            return filter;
         }
         
         // all right, we need to default the literals to the declaredCRS and then reproject to
@@ -2062,11 +2124,7 @@ public final class StreamingRenderer implements GTRenderer {
         Filter defaulted = (Filter) filter.accept(defaulter, null);
         ReprojectingFilterVisitor reprojector = new ReprojectingFilterVisitor(filterFactory, schema);
         Filter reprojected = (Filter) defaulted.accept(reprojector, null);
-        
-        // clone the rule (the style can be reused over and over, we cannot alter it) and set the new filter
-        Rule rr = new RuleImpl(rule);
-        rr.setFilter(reprojected);
-        return rr;
+        return reprojected;
     }
 
     /**

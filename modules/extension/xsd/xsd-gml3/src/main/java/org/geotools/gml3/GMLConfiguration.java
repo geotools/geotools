@@ -116,6 +116,12 @@ public class GMLConfiguration extends Configuration {
     public static final QName ENCODE_FEATURE_MEMBER = org.geotools.gml2.GMLConfiguration.ENCODE_FEATURE_MEMBER;
 
     /**
+     * Boolean property which controls whether geometry and envelope objects are encoded with an 
+     * srs dimension attribute.
+     */
+    public static final QName NO_SRS_DIMENSION = new QName( "org.geotools.gml", "noSrsDimension" );
+
+    /**
      * extended support for arcs and surface flag
      */
     boolean extArcSurfaceSupport = false;

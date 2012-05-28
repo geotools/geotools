@@ -20,7 +20,9 @@ import javax.xml.namespace.QName;
 
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.geotools.gml3.GML;
+import org.geotools.gml3.GMLConfiguration;
 import org.geotools.xml.AbstractComplexBinding;
+import org.geotools.xml.Configuration;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -67,6 +69,16 @@ import com.vividsolutions.jts.geom.Geometry;
  * @source $URL$
  */
 public class AbstractGeometryTypeBinding extends AbstractComplexBinding {
+    Configuration config;
+
+    public AbstractGeometryTypeBinding(Configuration config) {
+        this.config = config;
+    }
+
+    public void setConfiguration(Configuration config) {
+        this.config = config;
+    }
+
     /**
      * @generated
      */
@@ -117,6 +129,11 @@ public class AbstractGeometryTypeBinding extends AbstractComplexBinding {
         }
 
         if ("srsDimension".equals(name.getLocalPart())) {
+            //check if srsDimension is turned off
+            if (config.hasProperty(GMLConfiguration.NO_SRS_DIMENSION)) {
+                return null;
+            }
+
             /**
              * For the dimension, use the actual dimension of the geometry. Using
              * the dimension of the CRS is not sufficient, since currently CRSes

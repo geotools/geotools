@@ -16,6 +16,8 @@
  */
 package org.geotools.gml3.v3_2;
 
+import javax.xml.namespace.QName;
+
 import org.geotools.gml2.bindings.GMLCoordinatesTypeBinding;
 import org.geotools.gml3.bindings.AbstractFeatureCollectionTypeBinding;
 import org.geotools.gml3.bindings.AbstractFeatureTypeBinding;
@@ -82,6 +84,12 @@ import org.picocontainer.MutablePicoContainer;
  * @source $URL$
  */
 public class GMLConfiguration extends Configuration {
+
+    /**
+     * Boolean property which controls whether geometry and envelope objects are encoded with an 
+     * srs dimension attribute.
+     */
+    public static final QName NO_SRS_DIMENSION = org.geotools.gml3.GMLConfiguration.NO_SRS_DIMENSION;
 
     /**
      * Creates a new configuration.

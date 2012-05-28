@@ -193,4 +193,14 @@ public class GML3EncodingTest extends TestCase {
         
         assertEquals( 0, dom.getElementsByTagName("gml:boundedBy").getLength());
     }
+
+    public void testEncodeWithNoSrsDimension() throws Exception {
+        GMLConfiguration gml = new GMLConfiguration();
+        Document dom = new Encoder(gml).encodeAsDOM(GML3MockData.point(), GML.Point);
+        assertTrue(dom.getDocumentElement().hasAttribute("srsDimension"));
+
+        gml.getProperties().add(GMLConfiguration.NO_SRS_DIMENSION);
+        dom = new Encoder(gml).encodeAsDOM(GML3MockData.point(), GML.Point);
+        assertFalse(dom.getDocumentElement().hasAttribute("srsDimension"));
+    }
 }

@@ -23,7 +23,9 @@ import javax.xml.namespace.QName;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml3.GML;
+import org.geotools.gml3.GMLConfiguration;
 import org.geotools.xml.AbstractComplexBinding;
+import org.geotools.xml.Configuration;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 import org.opengis.geometry.DirectPosition;
@@ -86,6 +88,12 @@ import com.vividsolutions.jts.geom.Envelope;
  * @source $URL$
  */
 public class EnvelopeTypeBinding extends AbstractComplexBinding {
+    Configuration config;
+    
+    public EnvelopeTypeBinding(Configuration config) {
+        this.config = config;
+    }
+
     /**
      * @generated
      */
@@ -179,6 +187,11 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
                 return GML3EncodingUtils.toURI(((ReferencedEnvelope) envelope)
                         .getCoordinateReferenceSystem());
             } else if (localName.equals("srsDimension")) {
+                //check if srsDimension is turned off
+                if (config.hasProperty(GMLConfiguration.NO_SRS_DIMENSION)) {
+                    return null;
+                }
+
                 CoordinateReferenceSystem crs = ((ReferencedEnvelope) envelope)
                         .getCoordinateReferenceSystem();
                 if (crs != null) {

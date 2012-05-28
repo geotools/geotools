@@ -32,7 +32,7 @@ You do not need any special permission to have read-only access to the source co
 
 1. Our Subversion Install page contains detailed instructions for setting up subversion
    on different platforms.
-2. Copy :download:`config</artifacts/config>` into the following location
+2. Copy :download:`config</../../build/subversion/config>` into the following location
    
    ============= ===========================================================================
    Plartform     Config File Location

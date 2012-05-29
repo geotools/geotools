@@ -43,6 +43,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.AttributeTypeImpl;
 import org.geotools.filter.IllegalFilterException;
+import org.geotools.geometry.jts.GeometryBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -464,6 +465,17 @@ public class DataUtilitiesTest extends DataTestCase {
         // test escape handling
         assertEquals( "newline decode check", "Jody Garnett\nSteering Committee", feature1.getAttribute("party") );
         assertEquals( "escape check", "John Hudson|Hapless Victim", feature2.getAttribute("party") );
+        
+        // test feature id handling
+        assertEquals( "fid1", feature1.getID() );
+        assertNotNull( feature2.getID() );
+        assertEquals( feature2.getID(), feature2.getIdentifier().getID() );
+
+        // test geometry handling
+        GeometryBuilder geomBuilder = new GeometryBuilder();
+        assertEquals( geomBuilder.point(6,2), feature2.getDefaultGeometry() );
+        assertEquals( geomBuilder.point(6,2), feature2.getAttribute("geom") );
+
     }
     /**
      * Test createType and createFeature methods as per GEOT-4150
@@ -676,7 +688,7 @@ public class DataUtilitiesTest extends DataTestCase {
     public void testSpecNoCRS() throws Exception {
         String spec = "id:String,polygonProperty:Polygon";
         SimpleFeatureType ft = DataUtilities.createType("testType", spec);
-        String spec2 = DataUtilities.spec(ft);
+        String spec2 = DataUtilities.encodeType(ft);
         // System.out.println("BEFORE:"+spec);
         // System.out.println(" AFTER:"+spec2);
         assertEquals(spec, spec2);
@@ -685,7 +697,7 @@ public class DataUtilitiesTest extends DataTestCase {
     public void testSpecCRS() throws Exception {
         String spec = "id:String,polygonProperty:Polygon:srid=32615";
         SimpleFeatureType ft = DataUtilities.createType("testType", spec);
-        String spec2 = DataUtilities.spec(ft);
+        String spec2 = DataUtilities.encodeType(ft);
         // System.out.println("BEFORE:"+spec);
         // System.out.println(" AFTER:"+spec2);
         assertEquals(spec, spec2);
@@ -700,7 +712,7 @@ public class DataUtilitiesTest extends DataTestCase {
 
         // since we cannot go back to a code with do a best effort encoding
         String expected = "id:String,polygonProperty:Polygon";
-        String spec2 = DataUtilities.spec(transformedFt);
+        String spec2 = DataUtilities.encodeType(transformedFt);
         // System.out.println("  BEFORE:"+spec);
         // System.out.println("EXPECTED:"+expected);
         // System.out.println("  AFTER:"+spec2);

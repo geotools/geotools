@@ -1769,74 +1769,70 @@ public class DataUtilities {
      * </p>
      * 
      * <p>
-     * Where <i>Type</i> is defined by createAttribute.
-     * </p>
-     * 
-     * <p>
-     * You may indicate the default Geometry with an astrix: "*geom:Geometry". You may also indicate
-     * the srid (used to look up a EPSG code).
+     * Where <i>Type</i> is defined by {@link createAttribute}:
+     * <ul>
+     * <li>Each attribute descriptor is defined using the form: <i>"name:Type:hint"</i> </li>
+     * <li>Where <i>Type</i> is:
+     *   <ul>
+     *     <li>0,Interger,int: represents Interger</li>
+     *     <li>0.0, Double, double: represents Double</li>
+     *     <li>"",String,string: represents String</li>
+     *     <li>Geometry: represents Geometry, additional common geometry types supported including
+     *         Point,LineString,Polygon,MultiLineString,MultiPolygon,MultiPoint,GeometryCollection</ul>
+     *     <li>UUID</li>
+     *     <li>Date</li>
+     *     <li><i>full.class.path</i>: represents java type</li>
+     *   </ul>
+     * </li>
+     * <li>Where <i>hint</i> is "hint1;hint2;...;hintN", in which "hintN" is one of:
+     *   <ul>
+     *   <li><code>nillable</code></li>
+     *   <li><code>srid=<#></code></li>
+     *   </ul>
+     * </li>
+     * <li>You may indicate the default Geometry with an astrix: "*geom:Geometry".</li>
+     * <li>You may also indicate the srid (used to look up a EPSG code): "*point:Point:3226</li>
      * </p>
      * 
      * <p>
      * Examples:
      * <ul>
-     * <li><code>name:"",age:0,geom:Geometry,centroid:Point,url:java.io.URL"</code>
-     * <li><code>id:String,polygonProperty:Polygon:srid=32615</code>
+     * <li><code>name:"",age:0,geom:Geometry,centroid:Point,url:java.io.URL"</code></li>
+     * <li><code>id:String,polygonProperty:Polygon:srid=32615</code></li>
+     * <li><code>identifier:UUID,location:Point,*area:MultiPolygon,created:Date</code></li>
+     * <li><code>uuid:UUID,name:String,description:String,time:java.sql.Timestamp</code></li>
      * </ul>
      * </p>
      * 
-     * @param identification
+     * @param typeName
      *            identification of FeatureType: (<i>namesapce</i>).<i>typeName</i>
      * @param typeSpec
-     *            Specification for FeatureType
+     *            Specification of FeatureType attributes "name:Type,name2:Type2,..."
      * 
      * 
      * @throws SchemaException
      */
-    public static SimpleFeatureType createType(String identification, String typeSpec)
+    public static SimpleFeatureType createType(String typeName, String typeSpec)
             throws SchemaException {
-        int split = identification.lastIndexOf('.');
-        String namespace = (split == -1) ? null : identification.substring(0, split);
-        String typeName = (split == -1) ? identification : identification.substring(split + 1);
+        int split = typeName.lastIndexOf('.');
+        String namespace = (split == -1) ? null : typeName.substring(0, split);
+        String name = (split == -1) ? typeName : typeName.substring(split + 1);
 
-        return createType(namespace, typeName, typeSpec);
+        return createType(namespace, name, typeSpec);
     }
 
     /**
      * Utility method for FeatureType construction.
      * <p>
-     * Will parse a String of the form: <i>"name:Type,name2:Type2,..."</i>
-     * </p>
-     * 
-     * <p>
-     * Where <i>Type</i> is defined by createAttribute.
-     * </p>
-     * 
-     * <p>
-     * You may indicate the default Geometry with an astrix: "*geom:Geometry". You may also indicate
-     * the srid (used to look up a EPSG code).
-     * </p>
-     * 
-     * <p>
-     * Examples:
-     * <ul>
-     * <li><code>name:"",age:0,geom:Geometry,centroid:Point,url:java.io.URL"</code>
-     * <li><code>id:String,polygonProperty:Polygon:srid=32615</code>
-     * </ul>
-     * </p>
-     * 
-     * @param identification
-     *            identification of FeatureType: (<i>namesapce</i>).<i>typeName</i>
-     * @param typeSpec
-     *            Specification for FeatureType
-     * 
-     * 
+     * @param namespace Typename namespace used to qualify the provided name
+     * @param name Typename name, as qualified by namespace
+     * @param typeSpec Definition of attributes, for details see {@link #createType(String, String)}
      * @throws SchemaException
      */
-    public static SimpleFeatureType createType(String namespace, String typeName, String typeSpec)
+    public static SimpleFeatureType createType(String namespace, String name, String typeSpec)
             throws SchemaException {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
-        builder.setName(typeName);
+        builder.setName(name);
         builder.setNamespaceURI(namespace);
 
         String[] types = typeSpec.split(",");
@@ -2512,39 +2508,13 @@ public class DataUtilities {
     }
 
     /**
-     * Returns AttributeType based on String specification (based on UML).
-     * 
+     * Generate AttributeDescriptor based on String type specification (based on UML).
      * <p>
-     * Will parse a String of the form: <i>"name:Type:hint"</i>
-     * </p>
-     * 
-     * <p>
-     * Where <i>Type</i> is:
-     * </p>
-     * 
-     * <ul>
-     * <li>
-     * 0,Interger,int: represents Interger</li>
-     * <li>
-     * 0.0, Double, double: represents Double</li>
-     * <li>
-     * "",String,string: represents String</li>
-     * <li>
-     * Geometry: represents Geometry</li>
-     * <li>
-     * <i>full.class.path</i>: represents java type</li>
-     * </ul>
-     * 
-     * <p>
-     * Where <i>hint</i> is "hint1;hint2;...;hintN", in which "hintN" is one of:
-     * <ul>
-     * <li><code>nillable</code></li>
-     * <li><code>srid=<#></code></li>
-     * </ul>
+     * Will parse a String of the form: <i>"name:Type:hint" as described in {@link #createType}</i>
      * </p>
      * 
      * @param typeSpec
-     * 
+     * @see #createType
      * 
      * @throws SchemaException
      *             If typeSpect could not be interpreted

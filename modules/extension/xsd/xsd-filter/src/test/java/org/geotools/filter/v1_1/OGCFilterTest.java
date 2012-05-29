@@ -26,6 +26,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.StringReader;
+import java.util.List;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
@@ -34,7 +37,7 @@ import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.DWithin;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.v1_0.OGCConfiguration;
+
 import org.geotools.xml.Encoder;
 import org.geotools.xml.Parser;
 import org.geotools.xml.Parser.Properties;
@@ -141,4 +144,21 @@ public class OGCFilterTest extends TestCase {
         String unit = filter.getDistanceUnits();
         assertEquals("km", unit);
      }
+
+    public void testBBOXValidateWithoutPropertyName() throws Exception {
+        String xml = 
+              "<ogc:Filter xmlns:ogc='http://www.opengis.net/ogc'>" +
+                "<ogc:BBOX>" +
+                  "<gml:Envelope xmlns:gml='http://www.opengis.net/gml'>" +  
+                     "<gml:lowerCorner>36.986771000000005 -91.516129</gml:lowerCorner>" + 
+                     "<gml:upperCorner>42.50936100000001 -87.507889</gml:upperCorner>" +  
+                   "</gml:Envelope>" +
+                 "</ogc:BBOX>" +
+               "</ogc:Filter>";
+
+        Parser p = new Parser(new OGCConfiguration());
+        p.validate(new StringReader(xml));
+
+        assertTrue(p.getValidationErrors().isEmpty());
+    }
 }

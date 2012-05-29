@@ -194,7 +194,7 @@
       <xsd:complexContent>
          <xsd:extension base="ogc:SpatialOpsType">
             <xsd:sequence>
-               <xsd:element ref="ogc:PropertyName"/>
+               <xsd:element ref="ogc:PropertyName" minOccurs="0"/>
                <xsd:element ref="gml:Envelope"/>
             </xsd:sequence>
          </xsd:extension>

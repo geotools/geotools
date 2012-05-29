@@ -143,7 +143,7 @@ public class DB2Util {
     static public void encodeGeometryValue(Geometry value, int srid, StringBuffer sql)
     throws IOException {
     	
-		if (value ==null) {
+		if (value ==null || value.isEmpty()) {
 			sql.append("null");
 			return;
 		}

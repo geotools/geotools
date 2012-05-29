@@ -9,7 +9,7 @@
     <replace dir="..">
       <include name="**/pom.xml"/>
       <replacefilter token="&lt;version&gt;8-SNAPSHOT&lt;/version&gt;"
-                     value="&lt;version&gt;8.0-M5&lt;/version&gt;"/>
+                     value="&lt;version&gt;8.0-RC2&lt;/version&gt;"/>
     </replace>
     
     <replace dir="../modules/library/metadata/src/main/java/org/geotools/factory">
@@ -22,13 +22,14 @@
   <target name="doc">
     <replace dir="../docs/user/tutorial/">
       <include name="**/pom.xml"/>
-      <replacefilter token="&lt;geotools.version&gt;8-SNAPSHOT&lt;/geotools.version&gt;"
-                     value="&lt;geotools.version&gt;8.0-M5&lt;/geotools.version&gt;"/>
+      <replacefilter token="&lt;geotools.version&gt;8.0-RC1&lt;/geotools.version&gt;"
+                     value="&lt;geotools.version&gt;8.0-RC2&lt;/geotools.version&gt;"/>
     </replace>
+    
     <replace dir="../docs/">
-      <include name="pom.xml"/>
-      <replacefilter token="8-SNAPSHOT"
-                     value="8.0-M5"/>
+      <include name="common.py"/>
+      <replacefilter token="8.0-RC1"
+                     value="8.0-RC2"/>
     </replace>
   </target>
   

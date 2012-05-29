@@ -21,6 +21,7 @@ import java.io.IOException;
 import org.geogit.repository.Repository;
 import org.geotools.data.DataStore;
 import org.geotools.data.FeatureReader;
+import org.geotools.data.FeatureSource;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.LockingManager;
 import org.geotools.data.Query;
@@ -43,8 +44,10 @@ public class DataStoreDecorator extends
     @Override
     public SimpleFeatureSource getFeatureSource(Name typeName)
             throws IOException {
-        return (SimpleFeatureSource) VersioningAdapterFactory.create(
-                unversioned.getFeatureSource(typeName), repository);
+        Repository repo = getRepository(typeName);
+        
+        FeatureSource<SimpleFeatureType, SimpleFeature> source = unversioned.getFeatureSource(typeName);
+        return (SimpleFeatureSource) VersioningAdapterFactory.create(source, repo);
     }
 
     @Override
@@ -66,9 +69,9 @@ public class DataStoreDecorator extends
     @Override
     public SimpleFeatureSource getFeatureSource(String typeName)
             throws IOException {
-        return (SimpleFeatureSource) VersioningAdapterFactory.create(
-                ((DataStore) unversioned).getFeatureSource(typeName),
-                repository);
+        SimpleFeatureSource source = ((DataStore) unversioned).getFeatureSource(typeName);
+        Repository repo = getRepository( source.getName() );
+        return (SimpleFeatureSource) VersioningAdapterFactory.create(source,repo);
     }
 
     @Override

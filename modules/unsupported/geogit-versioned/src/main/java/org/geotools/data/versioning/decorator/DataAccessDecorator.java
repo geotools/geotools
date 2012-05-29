@@ -46,7 +46,7 @@ import com.google.common.base.Throwables;
 
 /**
  * Decorator around an unversioned DataAccess allowing it to be used in conjunction
- * with a GeoGit repository (for revision information).
+ * with a GeoGit {@link Repository} for revision information.
  *
  * @param <T> FeatureType
  * @param <F> Feature
@@ -54,10 +54,18 @@ import com.google.common.base.Throwables;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class DataAccessDecorator<T extends FeatureType, F extends Feature>
         implements VersioningDataAccess<T, F> {
-
+    
+    /** Checkout database used to reflect unversioned "live" data */
     protected DataAccess<T, F> unversioned;
-
-    protected Repository repository;
+    
+    /**
+     * Default GeoGit repository to use for storing revision history.
+     * <p>
+     * Subclasses can use {@link #getRepository(Name)} to access while still allowing support
+     * for multiple repositories if needed.
+     */
+    private Repository repository;
+    
 
     public DataAccessDecorator(DataAccess unversioned, Repository versioningRepo) {
         Assert.notNull(unversioned);
@@ -129,6 +137,7 @@ public class DataAccessDecorator<T extends FeatureType, F extends Feature>
     @Override
     public void updateSchema(Name typeName, T featureType) throws IOException {
         unversioned.updateSchema(typeName, featureType);
+        // Is any effort needed to track the schema change in the geogit repository
     }
 
     /**
@@ -148,13 +157,16 @@ public class DataAccessDecorator<T extends FeatureType, F extends Feature>
     }
 
     /**
+     * Used to retreive past revisions from GeoGit repository; the revision history range
+     * is provided by versionFilter (which is required tocontain a {@link ResourceId}.
+     * 
      * @precondition {@code typeName != null && versioningFilter != null}
      * @precondition {@code versioningFilter.getIdentifiers().size() > 0}
      * @postcondition {@code $return != null}
      * @param typeName
-     * @param versioningFilter
+     * @param versioningFilter Id Filter providing revision history range
      * @param extraQuery
-     * @return
+     * @return features
      * @throws IOException
      */
     public FeatureCollection getFeatures(final Name typeName,
@@ -178,28 +190,65 @@ public class DataAccessDecorator<T extends FeatureType, F extends Feature>
         }
 
         final FeatureType featureType = this.getSchema(typeName);
-        ResourceIdFeatureCollector versionQuery;
-        versionQuery = new ResourceIdFeatureCollector(repository, featureType,
+        ResourceIdFeatureCollector versionCollector;
+        versionCollector = new ResourceIdFeatureCollector(repository, featureType,
                 resourceIds);
 
         DefaultFeatureCollection features = new DefaultFeatureCollection(null,
                 (SimpleFeatureType) featureType);
-        for (Feature f : versionQuery) {
+        
+        for (Feature f : versionCollector) {
             features.add((SimpleFeature) f);
         }
         return features;
     }
-
+    
+    /**
+     * Lookup appropriate repository for provided typeName.
+     * <b>
+     * By default there is a single GeoGit repository associated with the {@link #unversioned}
+     * DataStore. When making use of more than one Repository you can override this method to
+     * perform the mapping.
+     * 
+     * @param typeName
+     * @return Repository for use with the provided typeName
+     */
+    protected Repository getRepository( Name typeName ){
+        return repository;
+    }
+    /**
+     * Return a {@link FeatureSourceDecorator} using the repository provided
+     * by {@link #getRepository(Name)}.
+     * 
+     * @param source 
+     * @return FeatureSource allowing access to source and repository data
+     */
     protected FeatureSource<T, F> createFeatureSource(FeatureSource<T, F> source) {
-        return new FeatureSourceDecorator(source, repository);
+        Repository repo = getRepository( source.getName() );
+        return new FeatureSourceDecorator(source, repo);
     }
-
+    /**
+     * Return a {@link FeatureStoreDecorator} using the repository provided
+     * by {@link #getRepository(Name)}.
+     * 
+     * @param store 
+     * @return FeatureSource allowing access to source and repository data
+     */
     protected FeatureStore<T, F> createFeatureStore(FeatureStore<T, F> store) {
-        return new FeatureStoreDecorator(store, repository);
+        Repository repo = getRepository( store.getName() );
+        return new FeatureStoreDecorator(store, repo);
     }
 
+    /**
+     * Return a {@link FeatureLockingDecorator} using the repository provided
+     * by {@link #getRepository(Name)}.
+     * 
+     * @param locking 
+     * @return FeatureSource allowing access to source and repository data
+     */
     protected FeatureLocking<T, F> createFeatureLocking(
             FeatureLocking<T, F> locking) {
-        return new FeatureLockingDecorator(locking, repository);
+        Repository repo = getRepository( locking.getName() );
+        return new FeatureLockingDecorator(locking, repo);
     }
 }

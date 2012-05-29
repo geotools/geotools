@@ -102,16 +102,22 @@ public class VersioningTransactionState implements Transaction.State {
     public void setTransaction(final Transaction transaction) {
         if (transaction != null) {
             // configure
-            this.transaction = transaction;
+            if( this.transaction == null ){
+                this.transaction = transaction;
+            }
+            else {
+                LOGGER.fine("Transaction being hot replaced!");
+                this.transaction = transaction;
+            }
         } else {
+            // Any thing to close() or cleanup?
             this.transaction = null;
-            // TODO: is there some cleanup to do here?
         }
     }
 
     @Override
     public void addAuthorization(String AuthID) throws IOException {
-        // TODO Auto-generated method stub
+        // no security hooks provided for transaction state locking
     }
 
     @Override

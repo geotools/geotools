@@ -256,7 +256,7 @@ public class GML3EncodingUtils {
             }
             encoding.setAttributeNS(gml.getNamespaceURI(), "id", id);
         }
-        encodeClientProperties(feature, value);
+        encodeClientProperties(feature, encoding);
 
         return encoding;
     }

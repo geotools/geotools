@@ -41,7 +41,6 @@ import org.eclipse.xsd.XSDTypeDefinition;
 import org.geotools.feature.Types;
 import org.geotools.feature.type.ComplexFeatureTypeFactoryImpl;
 import org.geotools.feature.type.GeometryTypeImpl;
-import org.geotools.gml3.GML;
 import org.geotools.gml3.GMLConfiguration;
 import org.geotools.gml3.GMLSchema;
 import org.geotools.gml3.smil.SMIL20LANGSchema;
@@ -127,6 +126,7 @@ public class FeatureTypeRegistry {
 
     private FeatureTypeFactory typeFactory;
 
+    private GMLHandler GML;
     /**
      * stack of currently being built type names, used by
      * {@link #createType(Name, XSDTypeDefinition)} to prevent recursive type definitions by
@@ -140,6 +140,12 @@ public class FeatureTypeRegistry {
     }
 
     public FeatureTypeRegistry(NamespaceSupport namespaces) {
+        if (namespaces != null) {
+            GML = new GMLHandler(namespaces.getURI("gml"));
+        } else {
+            GML = new GMLHandler(null);
+        }
+
         schemas = new ArrayList<SchemaIndex>();
         typeFactory = new ComplexFeatureTypeFactoryImpl();
         descriptorRegistry = new HashMap<Name, AttributeDescriptor>();
@@ -463,14 +469,14 @@ public class FeatureTypeRegistry {
         AttributeType type;
         if (null == typeDefinition.getSimpleType()
                 && typeDefinition instanceof XSDComplexTypeDefinition) {
-            boolean isFeatureType = isDerivedFrom(typeDefinition, GML.AbstractFeatureType);
+            boolean isFeatureType = isDerivedFrom(typeDefinition, GML.getAbstractFeatureType());
             if (isFeatureType) {
                 type = new FeatureTypeProxy(assignedName, typeRegistry);
             } else {
                 type = new ComplexTypeProxy(assignedName, typeRegistry);
             }
         } else {
-            boolean isGeometryType = isDerivedFrom(typeDefinition, GML.AbstractGeometryType);
+            boolean isGeometryType = isDerivedFrom(typeDefinition, GML.getAbstractGeometryType());
             if (isGeometryType) {
                 type = new GeometryTypeProxy(assignedName, typeRegistry);
             } else {
@@ -616,7 +622,7 @@ public class FeatureTypeRegistry {
             final Collection<PropertyDescriptor> schema,
             final XSDComplexTypeDefinition typeDefinition, final AttributeType superType) {
 
-        AttributeType abstractFType = getType(GML.NAMESPACE, GML.AbstractFeatureType.getLocalPart());
+        AttributeType abstractFType = getType(GML.getNameSpace(), GML.getAbstractFeatureType().getLocalPart());
         assert abstractFType != null;
 
         boolean isFeatureType = isDerivedFrom(typeDefinition, abstractFType.getName());
@@ -648,7 +654,7 @@ public class FeatureTypeRegistry {
     private boolean isIdentifiable(XSDComplexTypeDefinition typeDefinition) {
         List attributeUses = typeDefinition.getAttributeUses();
 
-        final String idAttName = GML.id.getLocalPart();
+        final String idAttName = GML.getId().getLocalPart();
 
         for (Iterator it = attributeUses.iterator(); it.hasNext();) {
             XSDAttributeUse use = (XSDAttributeUse) it.next();
@@ -658,7 +664,7 @@ public class FeatureTypeRegistry {
 
             String targetNamespace = idAtt.getTargetNamespace();
             String name = idAtt.getName();
-            if (GML.NAMESPACE.equals(targetNamespace) && idAttName.equals(name)) {
+            if (GML.getNameSpace().equals(targetNamespace) && idAttName.equals(name)) {
                 if (XSDAttributeUseCategory.REQUIRED_LITERAL.equals(useCategory)) {
                     return true;
                 }
@@ -778,5 +784,58 @@ public class FeatureTypeRegistry {
         }
         LOGGER.fine("Schema " + schema.getURI() + " imported successfully");
     }
-        
+    
+    /**
+     * Private inner glass for handling any request made to GML. Depending on the schema type
+     * different version of GML class may be called upon. eg {@link org.geotools.gml3.v3_2.GML} or
+     * {@link org.geotools.gml3.GML}
+     * 
+     * @author Victor Tey, CSIRO Exploration and Mining
+     *
+     */
+
+    private class GMLHandler {
+        String namespace;
+
+        public GMLHandler(String uri) {
+            if (uri != null) {
+                namespace = uri;
+            } else {
+                namespace = "";
+            }
+        }
+
+        public QName getAbstractFeatureType() {
+            if (namespace.equals(org.geotools.gml3.v3_2.GML.NAMESPACE)) {
+                return org.geotools.gml3.v3_2.GML.AbstractFeatureType;
+            } else {
+                return org.geotools.gml3.GML.AbstractFeatureType;
+            }
+        }
+
+        public QName getAbstractGeometryType() {
+            if (namespace.equals(org.geotools.gml3.v3_2.GML.NAMESPACE)) {
+                return org.geotools.gml3.v3_2.GML.AbstractGeometryType;
+            } else {
+                return org.geotools.gml3.GML.AbstractGeometryType;
+            }
+        }
+
+        public String getNameSpace() {
+            if (namespace.equals(org.geotools.gml3.v3_2.GML.NAMESPACE)) {
+                return org.geotools.gml3.v3_2.GML.NAMESPACE;
+            } else {
+                return org.geotools.gml3.GML.NAMESPACE;
+            }
+        }
+
+        public QName getId() {
+            if (namespace.equals(org.geotools.gml3.v3_2.GML.NAMESPACE)) {
+                return org.geotools.gml3.v3_2.GML.id;
+            } else {
+                return org.geotools.gml3.GML.id;
+            }
+        }
+    }
+
 }

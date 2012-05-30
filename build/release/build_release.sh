@@ -2,7 +2,6 @@
 
 # error out if any statements fail
 set -e
-set -x
 
 function usage() {
   echo "$0 [options] <tag>"
@@ -13,6 +12,8 @@ function usage() {
   echo " -h          : Print usage"
   echo " -b <branch> : Branch to release from (eg: trunk, 2.1.x, ...)"
   echo " -r <rev>    : Revision to release (eg: 12345)"
+  echo " -u <user>   : Subversion username"
+  echo " -p <passwd> : Subversion password"
   echo
   echo "Environment variables:"
   echo " BUILD_FROM_BRANCH : Builds release from branch rather than tag"
@@ -21,7 +22,7 @@ function usage() {
 }
 
 # parse options
-while getopts "hb:r:" opt; do
+while getopts "hb:r:u:p:" opt; do
   case $opt in
     h)
       usage
@@ -32,6 +33,12 @@ while getopts "hb:r:" opt; do
       ;;
     r)
       rev=$OPTARG
+      ;;
+    u)
+      svn_user=$OPTARG
+      ;;
+    p)
+      svn_passwd=$OPTARG
       ;;
     \?)
       usage
@@ -65,6 +72,8 @@ echo "  tag = $tag"
 
 mvn -version
 
+svn_opts="--username $svn_user --password $svn_passwd --non-interactive --trust-server-cert"
+
 if [ ! -z $BUILD_FROM_BRANCH ]; then
   if [ ! -e tags/$tag ]; then
     if [ "$branch" == "trunk" ]; then
@@ -74,17 +83,18 @@ if [ ! -z $BUILD_FROM_BRANCH ]; then
     fi
     
     echo "checking out $svn_url"
-    svn co $svn_url tags/$tag  
+    svn co $svn_opts $svn_url tags/$tag  
   fi
 else
   # check if the svn tag already exists
   if [ -z $SKIP_SVN_TAG ]; then
-    set +e && svn ls $SVN_ROOT/tags/$tag >& /dev/null && set -e
+    svn_tag_url=$SVN_ROOT/tags/$tag
+    set +e && svn ls $svn_opts $svn_tag_url >& /dev/null && set -e
     if [ $? == 0 ]; then
       # tag already exists
-      # TODO: delete it automatically... 
-      echo "svn tag $tag already exists, delete before proceeding"
-      exit 1
+      # tag already exists
+      echo "svn tag $tag already exists, deleteing"
+      svn $svn_opts rm -m "removing $tag tag" $svn_tag_url
     fi
   
     # create svn tag
@@ -93,7 +103,8 @@ else
       revopt=""
     fi
   
-    echo "svn cp -m "tagging $tag" $revopt $SVN_ROOT/$branch $SVN_ROOT/tags/$tag"
+    echo "Creating $tag tag from $branch ($rev) at $svn_tag_url"
+    svn cp $svn_opts -m "tagging $tag" $revopt $SVN_ROOT/$branch $svn_tag_url
 
     # checkout newly created tag
     if [ -e tags/$tag ]; then
@@ -102,7 +113,7 @@ else
     fi
 
     echo "checking out tag $tag"
-    svn co $SVN_ROOT/tags/$tag tags/$tag
+    svn $svn_opts co $svn_tag_url tags/$tag
   fi
 fi
 
@@ -179,6 +190,13 @@ echo "copying artifacts to $dist"
 cp $target/*.zip $dist
 
 popd > /dev/null
+
+# svn commit changes on the tag
+if [ -z $SKIP_SVN_TAG ]; then
+  pushd tags/$tag > /dev/null
+  svn commit $svn_opts -m "updating version numbers for $tag" .
+  popd > /dev/null
+fi
 
 echo "build complete, artifacts available at $DIST_URL/$tag"
 exit 0

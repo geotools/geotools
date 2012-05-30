@@ -22,4 +22,7 @@ if [ ! -z $SVN_PASSWD ]; then
   OPTS="$OPTS -p $SVN_PASSWD"
 fi
 
+if [ ! -z $JAVA_HOME ]; then
+  export PATH=$JAVA_HOME/bin:$PATH
+fi
 ./build_release.sh $OPTS $VERSION

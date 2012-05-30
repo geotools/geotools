@@ -22,6 +22,12 @@ tag=$1
 . "$( cd "$( dirname "$0" )" && pwd )"/properties
 . "$( cd "$( dirname "$0" )" && pwd )"/functions
 
+# deploy the release to maven repo
+pushd tags/$tag/src > /dev/null
+mvn deploy -DskipTests
+mvn -P deploy.opengeo deploy -DskipTests
+popd > /dev/null
+
 # get <major.minor> for sf release dir
 if [ "$( echo $str | egrep "[0-9]+\.[0-9]+((\.|-).*)?" )" != "$str" ]; then
   echo "$tag is not a valid release version number"

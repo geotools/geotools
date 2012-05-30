@@ -144,6 +144,7 @@ if [ -z $SKIP_BUILD ]; then
   echo "building release"
   #mvn $MAVEN_FLAGS -Dall clean
   mvn $MAVEN_FLAGS -DskipTests clean install
+  mvn $MAVEN_FLAGS -DskipTests assembly:assembly
 fi
   
 pushd target > /dev/null

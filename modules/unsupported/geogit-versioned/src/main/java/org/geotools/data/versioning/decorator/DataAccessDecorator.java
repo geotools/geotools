@@ -202,7 +202,14 @@ public class DataAccessDecorator<T extends FeatureType, F extends Feature>
         }
         return features;
     }
-    
+    /**
+     * Access the default repository (as provided to the constructor).
+     * 
+     * @return Default repository (provided to the constructor)
+     */
+    protected Repository getRepository(){
+        return repository;
+    }
     /**
      * Lookup appropriate repository for provided typeName.
      * <b>
@@ -225,6 +232,9 @@ public class DataAccessDecorator<T extends FeatureType, F extends Feature>
      */
     protected FeatureSource<T, F> createFeatureSource(FeatureSource<T, F> source) {
         Repository repo = getRepository( source.getName() );
+        if( repo == null ){
+            repo = getRepository();
+        }
         return new FeatureSourceDecorator(source, repo);
     }
     /**
@@ -236,6 +246,9 @@ public class DataAccessDecorator<T extends FeatureType, F extends Feature>
      */
     protected FeatureStore<T, F> createFeatureStore(FeatureStore<T, F> store) {
         Repository repo = getRepository( store.getName() );
+        if( repo == null ){
+            repo = getRepository();
+        }
         return new FeatureStoreDecorator(store, repo);
     }
 

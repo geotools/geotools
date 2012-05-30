@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project name="Rename" default="rename">
   <target name="rename">
-    <replace dir=".">
+    <replace dir="..">
       <include name="**/pom.xml"/>
      <replacefilter token="&lt;version&gt;2.7-SNAPSHOT&lt;/version&gt;"
                      value="&lt;version&gt;@VERSION@&lt;/version&gt;"/>

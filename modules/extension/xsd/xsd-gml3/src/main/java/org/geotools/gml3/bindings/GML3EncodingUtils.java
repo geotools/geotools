@@ -28,6 +28,7 @@ import javax.xml.namespace.QName;
 
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.feature.NameImpl;
+import org.geotools.gml2.SrsSyntax;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.gml2.bindings.GMLEncodingUtils;
 import org.geotools.gml3.GML;
@@ -87,13 +88,13 @@ public class GML3EncodingUtils {
         return line.getCoordinateSequence();
     }
 
-    static URI toURI(CoordinateReferenceSystem crs) {
+    static URI toURI(CoordinateReferenceSystem crs, SrsSyntax srsSyntax) {
         if (crs == null) {
             return null;
         }
 
         try {
-            String crsCode = GML2EncodingUtils.crs(crs);
+            String crsCode = GML2EncodingUtils.toURI(crs, srsSyntax);
 
             if (crsCode != null) {
                 return new URI(crsCode);
@@ -103,13 +104,6 @@ public class GML3EncodingUtils {
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * @deprecated use {@link #toURI(CoordinateReferenceSystem)}.
-     */
-    static URI crs(CoordinateReferenceSystem crs) {
-        return toURI(crs);
     }
 
     static CoordinateReferenceSystem getCRS(Geometry g) {

@@ -19,6 +19,7 @@ package org.geotools.gml3.bindings;
 import javax.xml.namespace.QName;
 
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
+import org.geotools.gml2.SrsSyntax;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GMLConfiguration;
 import org.geotools.xml.AbstractComplexBinding;
@@ -70,13 +71,19 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class AbstractGeometryTypeBinding extends AbstractComplexBinding {
     Configuration config;
+    SrsSyntax srsSyntax;
 
-    public AbstractGeometryTypeBinding(Configuration config) {
+    public AbstractGeometryTypeBinding(Configuration config, SrsSyntax srsSyntax) {
         this.config = config;
+        this.srsSyntax = srsSyntax;
     }
 
     public void setConfiguration(Configuration config) {
         this.config = config;
+    }
+
+    public void setSrsSyntax(SrsSyntax srsSyntax) {
+        this.srsSyntax = srsSyntax;
     }
 
     /**
@@ -124,7 +131,7 @@ public class AbstractGeometryTypeBinding extends AbstractComplexBinding {
         if ("srsName".equals(name.getLocalPart())) {
             CoordinateReferenceSystem crs = GML3EncodingUtils.getCRS(geometry);
             if (crs != null) {
-                return GML3EncodingUtils.toURI(crs);
+                return GML3EncodingUtils.toURI(crs, srsSyntax);
             }
         }
 

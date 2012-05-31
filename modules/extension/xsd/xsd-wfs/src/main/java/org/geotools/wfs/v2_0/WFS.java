@@ -4,7 +4,6 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.geotools.filter.v2_0.FES;
-import org.geotools.gml3.v3_2.GML;
 import org.geotools.ows.v1_1.OWS;
 import org.geotools.xml.XSD;
 
@@ -38,7 +37,6 @@ public final class WFS extends XSD {
     protected void addDependencies(Set dependencies) {
         dependencies.add(OWS.getInstance());
         dependencies.add(FES.getInstance());
-        dependencies.add(GML.getInstance());
     }
     
     /**

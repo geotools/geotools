@@ -48,7 +48,6 @@ public class PointTypeBindingTest extends GML32TestSupport {
 
         assertEquals(1,
             dom.getElementsByTagNameNS(GML.NAMESPACE, GML.pos.getLocalPart()).getLength());
-        //assertEquals("urn:x-ogc:def:crs:EPSG:6.11.2:4326",
-        assertEquals("urn:x-ogc:def:crs:EPSG:4326", dom.getDocumentElement().getAttribute("srsName"));
+        assertEquals("urn:ogc:def:crs:EPSG::4326", dom.getDocumentElement().getAttribute("srsName"));
     }
 }

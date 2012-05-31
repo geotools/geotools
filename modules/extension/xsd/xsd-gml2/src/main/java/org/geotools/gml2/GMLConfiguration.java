@@ -84,6 +84,11 @@ public class GMLConfiguration extends Configuration {
     public static final QName ENCODE_FEATURE_MEMBER = new QName( "org.geotools.gml", "encodeFeatureMember" );
 
     /**
+     * Srs name style to encode srsName URI's with
+     */
+    protected SrsSyntax srsSyntax = SrsSyntax.OGC_HTTP_URL;
+
+    /**
      * Creates the new gml configuration, with a depenendency
      * on {@link XLINKConfiguration}
      */
@@ -97,6 +102,23 @@ public class GMLConfiguration extends Configuration {
         // the "fid" attribute
         getProperties().add(Parser.Properties.PARSE_UNKNOWN_ELEMENTS);
         getProperties().add(Parser.Properties.PARSE_UNKNOWN_ATTRIBUTES);
+    }
+
+    /**
+     * Sets the syntax to use for encoding srs uris.
+     * <p>
+     * If this method is not explicitly called {@link SrsSyntax#LEGACY} is used as the default.
+     * </p>
+     */
+    public void setSrsSyntax(SrsSyntax srsSyntax) {
+        this.srsSyntax = srsSyntax;
+    }
+
+    /**
+     * Returns the syntax to use for encoding srs uris.
+     */
+    public SrsSyntax getSrsSyntax() {
+        return srsSyntax;
     }
 
     public void registerBindings(MutablePicoContainer container) {
@@ -182,5 +204,7 @@ public class GMLConfiguration extends Configuration {
             CoordinateArraySequenceFactory.instance());
         container.registerComponentImplementation(GeometryFactory.class);
         container.registerComponentImplementation(DefaultFeatureCollections.class);
+
+        container.registerComponentInstance(srsSyntax);
     }
 }

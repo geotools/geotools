@@ -27,6 +27,7 @@ import javax.xml.namespace.QName;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.geotools.gml2.GML;
+import org.geotools.gml2.SrsSyntax;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.CRS.AxisOrder;
@@ -91,7 +92,7 @@ public class GML2EncodingUtils {
     public static String toURI(CoordinateReferenceSystem crs) {
         return toURI(crs,false);
     }
-    
+
     /**
      * Encodes the crs object as a uri.
      * <p>
@@ -99,17 +100,30 @@ public class GML2EncodingUtils {
      * </p>
      */
     public static String toURI(CoordinateReferenceSystem crs, boolean forceOldStyle) {
+        return toURI(crs, forceOldStyle ? SrsSyntax.OGC_HTTP_URL : SrsSyntax.OGC_URN_EXPERIMENTAL);
+    }
+
+    /**
+     * Encodes the crs object as a uri using the specified syntax.
+     * <p>
+     * The axis order of the crs is taken into account. In cases where 
+     * </p>
+     */
+    public static String toURI(CoordinateReferenceSystem crs, SrsSyntax srsSyntax) {
         String code = epsgCode(crs);
         AxisOrder axisOrder = CRS.getAxisOrder(crs, true);
 
         if (code != null) {
-            if (forceOldStyle ||( (axisOrder == AxisOrder.EAST_NORTH) || 
-                    (axisOrder == AxisOrder.INAPPLICABLE)) ) {
-                return "http://www.opengis.net/gml/srs/epsg.xml#" + code;
-            } else {
-                //return "urn:x-ogc:def:crs:EPSG:6.11.2:" + code;
-                return "urn:x-ogc:def:crs:EPSG:" + code;
+            //do an axis order check, if axisOrder is east/north or inapplicable force the legacy
+            // syntax since the newer syntaxes define a different axis ordering
+            //JD: TODO: perhaps we don't want to do this override and just want to use the specified
+            // syntax verbatim, maintaining this check for to maintain the excision behavior of this
+            // method
+            if (axisOrder == AxisOrder.EAST_NORTH || axisOrder == AxisOrder.INAPPLICABLE) {
+                srsSyntax = SrsSyntax.OGC_HTTP_URL;
             }
+
+            return srsSyntax.getPrefix() + code;
         }
 
         return null;

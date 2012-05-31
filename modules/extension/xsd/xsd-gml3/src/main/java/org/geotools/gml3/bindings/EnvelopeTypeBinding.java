@@ -22,6 +22,7 @@ import javax.xml.namespace.QName;
 
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.gml2.SrsSyntax;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GMLConfiguration;
 import org.geotools.xml.AbstractComplexBinding;
@@ -89,9 +90,11 @@ import com.vividsolutions.jts.geom.Envelope;
  */
 public class EnvelopeTypeBinding extends AbstractComplexBinding {
     Configuration config;
-    
-    public EnvelopeTypeBinding(Configuration config) {
+    SrsSyntax srsSyntax;
+
+    public EnvelopeTypeBinding(Configuration config, SrsSyntax srsSyntax) {
         this.config = config;
+        this.srsSyntax = srsSyntax;
     }
 
     /**
@@ -185,7 +188,7 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
             String localName = name.getLocalPart();
             if (localName.equals("srsName")) {
                 return GML3EncodingUtils.toURI(((ReferencedEnvelope) envelope)
-                        .getCoordinateReferenceSystem());
+                        .getCoordinateReferenceSystem(), srsSyntax);
             } else if (localName.equals("srsDimension")) {
                 //check if srsDimension is turned off
                 if (config.hasProperty(GMLConfiguration.NO_SRS_DIMENSION)) {

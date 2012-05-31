@@ -18,13 +18,14 @@ package org.geotools.gml3.v3_2.bindings;
 
 import javax.xml.namespace.QName;
 
+import org.geotools.gml2.SrsSyntax;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.xml.Configuration;
 
 public class EnvelopeTypeBinding extends org.geotools.gml3.bindings.EnvelopeTypeBinding {
 
-    public EnvelopeTypeBinding(Configuration config) {
-        super(config);
+    public EnvelopeTypeBinding(Configuration config, SrsSyntax srsSyntax) {
+        super(config, srsSyntax);
     }
 
     @Override

@@ -375,6 +375,26 @@ public abstract class Configuration {
     }
 
     /**
+     * Returns the first dependency of this configuration of the specified type.
+     * @since 8.0
+     */
+    public <C extends Configuration> C getDependency(Class<C> clazz) {
+        //first try straight dependencies
+        for (Configuration dep : (List<Configuration>)getDependencies()) {
+            if (clazz.isInstance(dep)) {
+                return (C) dep;
+            }
+        }
+        //fall back to all
+        for (Configuration dep : (List<Configuration>)allDependencies()) {
+            if (clazz.isInstance(dep)) {
+                return (C) dep;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Adds a dependent configuration.
      * <p>
      * This method should only be called from the constructor.

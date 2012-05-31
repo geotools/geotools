@@ -9,15 +9,11 @@ import net.opengis.wfs20.AllSomeType;
 import net.opengis.wfs20.DropStoredQueryType;
 import net.opengis.wfs20.ResolveValueType;
 import net.opengis.wfs20.ResultTypeType;
-import net.opengis.wfs20.StoredQueryDescriptionType;
 import net.opengis.wfs20.UpdateActionType;
-import net.opengis.wfs20.ValueReferenceType;
 import net.opengis.wfs20.Wfs20Factory;
 
 import org.geotools.filter.v2_0.FESConfiguration;
 import org.geotools.gml3.XSDIdRegistry;
-import org.geotools.gml3.v3_2.GML;
-import org.geotools.gml3.v3_2.GMLConfiguration;
 import org.geotools.ows.v1_1.OWSConfiguration;
 import org.geotools.wfs.v2_0.bindings.EnvelopePropertyTypeBinding;
 import org.geotools.wfs.v2_0.bindings.ParameterParserDelegate;
@@ -57,7 +53,6 @@ public class WFSConfiguration extends Configuration {
        
        addDependency(new OWSConfiguration());
        addDependency(new FESConfiguration());
-       addDependency(new GMLConfiguration());
     }
     
     @Override

@@ -23,7 +23,7 @@ tag=$1
 . "$( cd "$( dirname "$0" )" && pwd )"/functions
 
 # deploy the release to maven repo
-pushd tags/$tag/src > /dev/null
+pushd tags/$tag > /dev/null
 mvn deploy -DskipTests
 mvn -P deploy.opengeo deploy -DskipTests
 popd > /dev/null

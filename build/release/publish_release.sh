@@ -25,7 +25,7 @@ tag=$1
 # deploy the release to maven repo
 pushd tags/$tag > /dev/null
 mvn deploy -DskipTests
-mvn -P deploy.opengeo deploy -DskipTests
+mvn -P deploy.opengeo deploy -DskipTests -Dall
 popd > /dev/null
 
 # get <major.minor> for sf release dir

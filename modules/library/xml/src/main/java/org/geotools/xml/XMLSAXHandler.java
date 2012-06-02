@@ -485,8 +485,10 @@ public class XMLSAXHandler extends DefaultHandler {
     public void fatalError(SAXParseException exception)
         throws SAXException {
         logger.severe("FATAL " + exception.getMessage());
-        logger.severe("col " + locator.getColumnNumber() + ", line "
-            + locator.getLineNumber());
+        if(locator != null) {
+            logger.severe("col " + locator.getColumnNumber() + ", line "
+                + locator.getLineNumber());
+        }
         throw exception;
     }
 

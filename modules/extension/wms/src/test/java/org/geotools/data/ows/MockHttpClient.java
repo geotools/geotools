@@ -22,6 +22,8 @@ public abstract class MockHttpClient implements HTTPClient {
 
     protected int readTimeout;
 
+    protected boolean tryGzip;
+    
     public HTTPResponse post(URL url, InputStream postContent, String postContentType)
             throws IOException {
         throw new UnsupportedOperationException(
@@ -71,4 +73,21 @@ public abstract class MockHttpClient implements HTTPClient {
         this.readTimeout = readTimeout;
     }
 
+    /**
+     * @param tryGZIP
+     * @see org.geotools.data.ows.HTTPClient#setTryGzip(boolean)
+     */
+    @Override
+    public void setTryGzip(boolean tryGZIP) {
+        this.tryGzip = tryGZIP;
+    }
+
+    /**
+     * @return
+     * @see org.geotools.data.ows.HTTPClient#isTryGzip()
+     */
+    @Override
+    public boolean isTryGzip() {
+        return tryGzip;
+    }
 }

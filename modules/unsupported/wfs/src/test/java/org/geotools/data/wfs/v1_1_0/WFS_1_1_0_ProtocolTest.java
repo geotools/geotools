@@ -1,5 +1,6 @@
 package org.geotools.data.wfs.v1_1_0;
 
+import static org.geotools.data.wfs.protocol.http.HttpUtil.requestKvp;
 import static org.geotools.data.wfs.protocol.wfs.WFSOperationType.DESCRIBE_FEATURETYPE;
 import static org.geotools.data.wfs.v1_1_0.DataTestSupport.CUBEWERX_GOVUNITCE;
 import static org.geotools.data.wfs.v1_1_0.DataTestSupport.CUBEWERX_ROADSEG;
@@ -39,13 +40,13 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.geotools.data.Query;
-import org.geotools.data.wfs.protocol.http.DefaultHTTPProtocol;
-import org.geotools.data.wfs.protocol.http.HTTPProtocol;
-import org.geotools.data.wfs.protocol.http.HTTPResponse;
+import org.geotools.data.ows.HTTPClient;
+import org.geotools.data.ows.HTTPResponse;
+import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.data.wfs.protocol.wfs.GetFeature;
+import org.geotools.data.wfs.protocol.wfs.GetFeature.ResultType;
 import org.geotools.data.wfs.protocol.wfs.Version;
 import org.geotools.data.wfs.protocol.wfs.WFSResponse;
-import org.geotools.data.wfs.protocol.wfs.GetFeature.ResultType;
 import org.geotools.data.wfs.v1_1_0.DataTestSupport.TestHttpProtocol;
 import org.geotools.data.wfs.v1_1_0.DataTestSupport.TestHttpResponse;
 import org.geotools.factory.CommonFactoryFinder;
@@ -123,7 +124,7 @@ public class WFS_1_1_0_ProtocolTest {
         }
         try {
             InputStream badData = new ByteArrayInputStream(new byte[1024]);
-            HTTPProtocol connFac = new DefaultHTTPProtocol();
+            HTTPClient connFac = new SimpleHttpClient();
             new WFS_1_1_0_Protocol(badData, connFac, null);
             fail("Excpected IOException as a capabilities document was not provided");
         } catch (IOException e) {
@@ -735,10 +736,9 @@ public class WFS_1_1_0_ProtocolTest {
         assertEquals(Charset.forName("UTF-16"), response.getCharacterEncoding());
 
         URL baseUrl = mockHttp.targetUrl;
-        Map<String, String> kvp = mockHttp.issueGetKvp;
         assertNotNull(baseUrl);
-        assertNotNull(kvp);
-        assertEquals("http://localhost:8080/geoserver/wfs?", baseUrl.toExternalForm());
+        Map<String, String> kvp = requestKvp(baseUrl);
+        assertTrue(baseUrl.toExternalForm().startsWith("http://localhost:8080/geoserver/wfs?"));
         assertEquals("WFS", kvp.get("SERVICE"));
         assertEquals("1.1.0", kvp.get("VERSION"));
         assertEquals("GetFeature", kvp.get("REQUEST"));
@@ -784,8 +784,8 @@ public class WFS_1_1_0_ProtocolTest {
         response = wfs.issueGetFeatureGET(getFeature);
 
         assertNotNull(response);
-
-        Map<String, String> kvp = mockHttp.issueGetKvp;
+        
+        Map<String, String> kvp = requestKvp(mockHttp.targetUrl);
         assertEquals("1000", kvp.get("MAXFEATURES"));
 
         String propertyName = kvp.get("PROPERTYNAME");
@@ -807,7 +807,7 @@ public class WFS_1_1_0_ProtocolTest {
                 ResultType.RESULTS);
 
         response = wfs.issueGetFeatureGET(getFeature);
-        kvp = mockHttp.issueGetKvp;
+        kvp = requestKvp(mockHttp.targetUrl);
 
         assertNull("FEATUREID and FILTER are mutually exclusive", kvp.get("FEATUREID"));
 
@@ -853,7 +853,6 @@ public class WFS_1_1_0_ProtocolTest {
         assertNotNull(response.getInputStream());
         assertEquals(Charset.forName("UTF-16"), response.getCharacterEncoding());
 
-        assertEquals(-1, mockHttp.postCallbackContentLength);
         assertEquals("text/xml", mockHttp.postCallbackContentType);
 
         Document dom;

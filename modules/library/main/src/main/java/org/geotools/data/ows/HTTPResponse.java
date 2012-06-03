@@ -59,4 +59,10 @@ public interface HTTPResponse {
      */
     public InputStream getResponseStream() throws IOException;
 
+    /**
+     * @return the response charset parsed out of the content type response header, if any, or
+     *         {@code null} otherwise.
+     */
+    public String getResponseCharset();
+
 }

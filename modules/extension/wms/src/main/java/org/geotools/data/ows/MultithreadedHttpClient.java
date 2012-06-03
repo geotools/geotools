@@ -26,6 +26,7 @@ import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.HttpMethodBase;
 import org.apache.commons.httpclient.HttpState;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
@@ -61,6 +62,8 @@ public class MultithreadedHttpClient implements HTTPClient {
     private String user;
 
     private String password;
+    
+    private boolean tryGzip = true;
 
     public MultithreadedHttpClient() {
         connectionManager = new MultiThreadedHttpConnectionManager();
@@ -117,6 +120,9 @@ public class MultithreadedHttpClient implements HTTPClient {
 
         PostMethod postMethod = new PostMethod(url.toExternalForm());
         postMethod.setDoAuthentication(user != null && password != null);
+        if (tryGzip) {
+            postMethod.setRequestHeader("Accept-Encoding", "gzip");
+        }
         if (postContentType != null) {
             postMethod.setRequestHeader("Content-type", postContentType);
         }
@@ -138,7 +144,9 @@ public class MultithreadedHttpClient implements HTTPClient {
 
         GetMethod getMethod = new GetMethod(url.toExternalForm());
         getMethod.setDoAuthentication(user != null && password != null);
-
+        if (tryGzip) {
+            getMethod.setRequestHeader("Accept-Encoding", "gzip");
+        }
         int responseCode = client.executeMethod(getMethod);
         if (200 != responseCode) {
             getMethod.releaseConnection();
@@ -256,5 +264,36 @@ public class MultithreadedHttpClient implements HTTPClient {
             return responseBodyAsStream;
         }
 
+        /**
+         * @return
+         * @see org.geotools.data.ows.HTTPResponse#getResponseCharset()
+         */
+        @Override
+        public String getResponseCharset() {
+            String responseCharSet = null;
+            if (methodResponse instanceof HttpMethodBase) {
+                responseCharSet = ((HttpMethodBase) methodResponse).getResponseCharSet();
+            }
+            return responseCharSet;
+        }
+
+    }
+
+    /**
+     * @param tryGZIP
+     * @see org.geotools.data.ows.HTTPClient#setTryGzip(boolean)
+     */
+    @Override
+    public void setTryGzip(boolean tryGZIP) {
+        this.tryGzip = tryGZIP;
+    }
+
+    /**
+     * @return
+     * @see org.geotools.data.ows.HTTPClient#isTryGzip()
+     */
+    @Override
+    public boolean isTryGzip() {
+        return tryGzip;
     }
 }

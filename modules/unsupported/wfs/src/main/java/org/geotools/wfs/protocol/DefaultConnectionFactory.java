@@ -30,7 +30,6 @@ import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.codec.binary.Base64;
-import org.geotools.data.wfs.protocol.http.DefaultHTTPProtocol;
 import org.geotools.data.wfs.protocol.http.HttpMethod;
 import org.geotools.util.logging.Logging;
 

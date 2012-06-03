@@ -16,6 +16,7 @@
  */
 package org.geotools.data.wfs;
 
+import static org.geotools.data.wfs.protocol.http.HttpUtil.*;
 import static org.geotools.data.wfs.protocol.http.HttpMethod.GET;
 import static org.geotools.data.wfs.protocol.http.HttpMethod.POST;
 
@@ -46,10 +47,10 @@ import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.Parameter;
-import org.geotools.data.wfs.protocol.http.HTTPProtocol;
-import org.geotools.data.wfs.protocol.http.HTTPResponse;
+import org.geotools.data.ows.HTTPClient;
+import org.geotools.data.ows.HTTPResponse;
+import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.data.wfs.protocol.http.HttpMethod;
-import org.geotools.data.wfs.protocol.http.SimpleHttpProtocol;
 import org.geotools.data.wfs.protocol.wfs.Version;
 import org.geotools.data.wfs.protocol.wfs.WFSProtocol;
 import org.geotools.data.wfs.v1_0_0.WFS100ProtocolHandler;
@@ -404,11 +405,13 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
 
         final WFSDataStore dataStore;
 
-        final HTTPProtocol http = new SimpleHttpProtocol();
+        final HTTPClient http = new SimpleHttpClient();
         http.setTryGzip(tryGZIP);
-        http.setAuth(user, pass);
-        http.setTimeoutMillis(timeoutMillis);
-
+        http.setUser(user);
+        http.setPassword(pass);
+        http.setConnectTimeout(timeoutMillis / 1000);
+        http.setReadTimeout(timeoutMillis / 1000);
+        
         final byte[] wfsCapabilitiesRawData = loadCapabilities(getCapabilitiesRequest, http);
         final Document capsDoc = parseCapabilities(wfsCapabilitiesRawData);
         final Element rootElement = capsDoc.getDocumentElement();
@@ -684,14 +687,14 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
         if (version == null) {
             throw new NullPointerException("version");
         }
-        HTTPProtocol httpUtils = new SimpleHttpProtocol();
+        HTTPClient httpUtils = new SimpleHttpClient();
         Map<String, String> getCapsKvp = new HashMap<String, String>();
         getCapsKvp.put("SERVICE", "WFS");
         getCapsKvp.put("REQUEST", "GetCapabilities");
         getCapsKvp.put("VERSION", version.toString());
         URL getcapsUrl;
         try {
-            getcapsUrl = httpUtils.createUrl(host, getCapsKvp);
+            getcapsUrl = createUrl(host, getCapsKvp);
         } catch (MalformedURLException e) {
             logger.log(Level.WARNING, "Can't create GetCapabilities request from " + host, e);
             throw new RuntimeException(e);
@@ -772,10 +775,10 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
      * @return
      * @throws IOException
      */
-    byte[] loadCapabilities(final URL capabilitiesUrl, HTTPProtocol http) throws IOException {
+    byte[] loadCapabilities(final URL capabilitiesUrl, HTTPClient http) throws IOException {
         byte[] wfsCapabilitiesRawData;
 
-        HTTPResponse httpResponse = http.issueGet(capabilitiesUrl, Collections.EMPTY_MAP);
+        HTTPResponse httpResponse = http.get(capabilitiesUrl);
         InputStream inputStream = httpResponse.getResponseStream();
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();

@@ -467,6 +467,10 @@ public abstract class TransformerBase {
             public void commit() {
                 _start(element, attributes);
             }
+
+            public String toString() {
+                return "Start(" + element + ", " + attributes + ")";
+            }
         }
 
         /**
@@ -482,6 +486,10 @@ public abstract class TransformerBase {
 
             public void commit() {
                 _chars(text);
+            }
+
+            public String toString() {
+                return "Chars(" + text + ")";
             }
         }
 
@@ -499,6 +507,10 @@ public abstract class TransformerBase {
             public void commit() {
                 _cdata(text);
             }
+
+            public String toString() {
+                return "CData(" + text + ")";
+            }
         }
 
         /**
@@ -514,6 +526,10 @@ public abstract class TransformerBase {
 
             public void commit() {
                 _end(element);
+            }
+            
+            public String toString() {
+                return "End(" + element + ")";
             }
         }
 
@@ -532,18 +548,33 @@ public abstract class TransformerBase {
          */
         private class BufferedBackend implements Backend {
             public void start(String element, Attributes attributes) {
+                if (element == null) {
+                    throw new NullPointerException("Attempted to start XML tag with null element");
+                }
+                if (attributes == null) {
+                    throw new NullPointerException("Attempted to start XML tag with null attributes");
+                }
                 pending.add(new Start(element, attributes));
             }
 
             public void chars(String text) {
+                if (text == null) {
+                    throw new NullPointerException("Attempted to start text block with null text");
+                }
                 pending.add(new Chars(text));
             }
             
             public void cdata(String text) {
+                if (text == null) {
+                    throw new NullPointerException("Attempted to start CDATA block with null text");
+                }
                 pending.add(new CData(text));
             }
             
             public void end(String element) {
+                if (element == null) {
+                    throw new NullPointerException("Attempted to close tag with null element");
+                }
                 pending.add(new End(element));
             }
         }
@@ -661,7 +692,13 @@ public abstract class TransformerBase {
         protected void commit() {
             if (backend != bufferedBackend) throw new IllegalStateException("Can't commit without a mark");
             for (Action a : pending) {
-                a.commit();
+                try {
+                    a.commit();
+                } catch (Exception e) {
+                    String message =
+                        "Error while committing XML elements; specific element was: " + a;
+                    throw new RuntimeException(message, e);
+                }
             }
             pending.clear();
             backend = directBackend;

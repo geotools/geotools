@@ -82,4 +82,15 @@ public class TransformerBaseTest extends TestCase {
         String actual = tx.transform(10);
         assertEquals(expected, actual);
     }
+
+    public void testPassingInNull() throws FileNotFoundException, TransformerException {
+        ExampleTransformer tx = new ExampleTransformer(0, 0, true);
+        try {
+            tx.transform(null);
+            fail("Expected NullPointerException but none was thrown.");
+        } catch (TransformerException e) {
+            // Swallow exception IFF it was due to a NullPointerException; otherwise rethrow
+            if (!(e.getCause() instanceof NullPointerException)) throw e;
+        }
+    }
 }

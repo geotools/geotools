@@ -1646,6 +1646,9 @@ public final class JDBCDataStore extends ContentDataStore
     protected final Connection createConnection() {
         try {
             LOGGER.fine( "CREATE CONNECTION");
+            if( getDataSource() == null ){
+                throw new NullPointerException("JDBC DataSource not available after dispose() has been called");
+            }
             Connection cx = getDataSource().getConnection();
             // isolation level is not set in the datastore, see 
             // http://jira.codehaus.org/browse/GEOT-2021 

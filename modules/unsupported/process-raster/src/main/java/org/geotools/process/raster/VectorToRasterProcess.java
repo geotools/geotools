@@ -46,6 +46,10 @@ import java.util.logging.Logger;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.TiledImage;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+
 import org.geotools.coverage.grid.GridCoordinates2D;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -57,24 +61,22 @@ import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.Geometries;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.process.feature.AbstractFeatureCollectionProcess;
 import org.geotools.process.feature.AbstractFeatureCollectionProcessFactory;
 import org.geotools.referencing.CRS;
 import org.geotools.util.NullProgressListener;
 import org.geotools.util.SimpleInternationalString;
-
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.expression.Expression;
 import org.opengis.geometry.Envelope;
+import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 import org.opengis.util.ProgressListener;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
  * A Process to rasterize vector features in an input FeatureCollection.
@@ -115,9 +117,11 @@ public class VectorToRasterProcess extends AbstractFeatureCollectionProcess {
     private float nodataValue;
 
     private ReferencedEnvelope extent;
+    private Geometry extentGeometry;
     private GridGeometry2D gridGeom;
     
-    private Geometry extentGeometry;
+    private boolean transformFeatures;
+    private MathTransform featureToRasterTransform;
 
     private int[] coordGridX = new int[COORD_GRID_CHUNK_SIZE];
     private int[] coordGridY = new int[COORD_GRID_CHUNK_SIZE];
@@ -439,7 +443,12 @@ public class VectorToRasterProcess extends AbstractFeatureCollectionProcess {
 
         minAttValue = maxAttValue = null;
 
-        setBounds( features, bounds, gridDim );
+        try {
+            setBounds(features, bounds);
+        } catch (TransformException ex) {
+            throw new VectorToRasterException(ex);
+        }
+        
         createImage( gridDim );
         
         gridGeom = new GridGeometry2D(
@@ -448,54 +457,48 @@ public class VectorToRasterProcess extends AbstractFeatureCollectionProcess {
     }
 
     /**
+     * Sets the output coverage bounds and checks whether features need to be 
+     * transformed into the output CRS. 
      *
-     * @param env
+     * @param 
      * @throws org.geotools.process.raster.VectorToRasterException
      */
-    private void setBounds( SimpleFeatureCollection features,
-            Envelope bounds, Dimension gridDim ) throws VectorToRasterException {
+    private void setBounds( SimpleFeatureCollection features, Envelope bounds) 
+            throws TransformException {
 
         ReferencedEnvelope featureBounds = features.getBounds();
 
-        if (bounds != null) {
-            ReferencedEnvelope inputBounds = new ReferencedEnvelope(bounds);
-            CoordinateReferenceSystem featuresCRS = featureBounds.getCoordinateReferenceSystem();
-            CoordinateReferenceSystem envCRS = bounds.getCoordinateReferenceSystem();
-
-            ReferencedEnvelope trEnv;
-            if (!CRS.equalsIgnoreMetadata(envCRS, featuresCRS)) {
-                try {
-                    trEnv = inputBounds.transform(featuresCRS, true);
-                } catch (Exception tex) {
-                    throw new VectorToRasterException(tex);
-                }
-
-            } else {
-                trEnv = inputBounds;
-            }
-
-            // If the provided bounds cover the feature bounds, use them
-            if (trEnv.covers(features.getBounds())) {
-                extent = trEnv;
-                
-            } else {
-                // If the provided bounds partially overlap the feature bounds
-                // use the intersection
-                com.vividsolutions.jts.geom.Envelope common = trEnv.intersection(features.getBounds());
-                if (common == null || common.isNull()) {
-                    throw new VectorToRasterException(
-                            "Features do not lie within the requested rasterizing bounds");
-                }
-                extent = new ReferencedEnvelope(common, featuresCRS);
-            }
-
-        } else {
-            // No bounds provided - use feature bounds
+        if (bounds == null) {
             extent = featureBounds;
+            
+        } else {
+            extent = new ReferencedEnvelope(bounds);
         }
+        
+        extentGeometry = (new GeometryFactory()).toGeometry(extent);
+        
+        // Compare the CRS of faetures and requested output bounds. If they 
+        // are different (and both non-null) flag that we need to transform
+        // features to the output CRS prior to rasterizing them.
 
-        GeometryFactory gf = new GeometryFactory();
-        extentGeometry = gf.toGeometry(extent);
+        CoordinateReferenceSystem featuresCRS = featureBounds.getCoordinateReferenceSystem();
+        CoordinateReferenceSystem boundsCRS = bounds.getCoordinateReferenceSystem();
+
+        transformFeatures = false;
+        if (featuresCRS != null 
+                && boundsCRS != null 
+                && !CRS.equalsIgnoreMetadata(boundsCRS, featuresCRS)) {
+            
+            try {
+                featureToRasterTransform = CRS.findMathTransform(featuresCRS, boundsCRS, true);
+                
+            } catch (Exception ex) {
+                throw new TransformException(
+                        "Unable to transform features into output coordinate reference system", ex);
+            }
+            
+            transformFeatures = true;
+        }
     }
 
     /**
@@ -603,8 +606,21 @@ public class VectorToRasterProcess extends AbstractFeatureCollectionProcess {
         image = destImage;
     }
 
-    private void drawGeometry(Geometries geomType, Geometry geometry) {
-
+    private void drawGeometry(Geometries geomType, Geometry geometry) throws TransformException {
+        Geometry workingGeometry;
+        if (transformFeatures) {
+            try {
+                workingGeometry = JTS.transform(geometry, featureToRasterTransform);
+            } catch (TransformException ex) {
+                throw ex;
+            } catch (MismatchedDimensionException ex) {
+                throw new RuntimeException(ex);
+            }
+            
+        } else {
+            workingGeometry = geometry;
+        }
+        
         Coordinate[] coords = geometry.getCoordinates();
 
         // enlarge if needed
@@ -616,16 +632,11 @@ public class VectorToRasterProcess extends AbstractFeatureCollectionProcess {
 
         // Go through coordinate array in order received
         DirectPosition2D worldPos = new DirectPosition2D();
-        try {
-            for (int n = 0; n < coords.length; n++) {
-                worldPos.setLocation(coords[n].x, coords[n].y);
-                GridCoordinates2D gridPos = gridGeom.worldToGrid(worldPos);
-                coordGridX[n] = gridPos.x;
-                coordGridY[n] = gridPos.y;
-            }
-            
-        } catch (TransformException ex) {
-            throw new RuntimeException(ex);
+        for (int n = 0; n < coords.length; n++) {
+            worldPos.setLocation(coords[n].x, coords[n].y);
+            GridCoordinates2D gridPos = gridGeom.worldToGrid(worldPos);
+            coordGridX[n] = gridPos.x;
+            coordGridY[n] = gridPos.y;
         }
 
         switch (geomType) {

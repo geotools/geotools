@@ -160,12 +160,25 @@ public class MappingFeatureIteratorFactory {
                     maxFeatures = query.getMaxFeatures();
                     query.setMaxFeatures(Query.DEFAULT_MAX);
                 }
+                if (isJoining && isListFilter != null) {
+                    // pass it on in JoiningQuery so it can be handled when the SQL is prepared
+                    // in JoiningJDBCSource
+                    ((JoiningQuery) query).setSubset(true);
+                    // also reset isListFilter to null so it doesn't perform the filtering in
+                    // DataAccessMappingFeatureIterator except when post filtering is involved
+                    // i.e. feature chaining is involved
+                    if (filter == null || filter.equals(Filter.INCLUDE)) {
+                        isListFilter = null;
+                    }
+                }
                 // need to flag if this is non joining and has pre filter because it needs
                 // to find denormalised rows that match the id (but doesn't match pre filter)
                 boolean isFiltered = !isJoining && preFilter != null && preFilter != Filter.INCLUDE;
                 iterator = new DataAccessMappingFeatureIterator(store, mapping, query, isFiltered);
                 // HACK HACK HACK
                 // experimental/temporary solution for isList subsetting by filtering
+                // Because subsetting should be done before the feature is built.. so we're not 
+                // using PostFilteringMappingFeatureIterator
                 if (isListFilter == null) {
                 // END OF HACK
                     if (filter != null && filter != Filter.INCLUDE) {

@@ -447,11 +447,17 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         if (filter != null && !Filter.INCLUDE.equals(filter)) {
             //encode filter
             try {
-                // grab the full feature type, as we might be encoding a filter
-                // that uses attributes that aren't returned in the results
-                SortBy[] lastSortBy = query.getQueryJoins() == null || query.getQueryJoins().size()== 0 ? query.getSortBy() :
-                                      query.getQueryJoins().get(query.getQueryJoins().size()-1).getSortBy();
-                
+                SortBy[] lastSortBy = null;
+                // leave it as null if it's asking for a subset, since we don't want to join to get
+                // other rows of same id
+                // since we don't want a full feature, but a subset only
+                if (!query.isSubset()) {
+                    // grab the full feature type, as we might be encoding a filter
+                    // that uses attributes that aren't returned in the results
+                    lastSortBy = query.getQueryJoins() == null || query.getQueryJoins().size() == 0 ? query
+                            .getSortBy() : query.getQueryJoins()
+                            .get(query.getQueryJoins().size() - 1).getSortBy();
+                }
                 String lastTableName = query.getQueryJoins() == null || query.getQueryJoins().size()== 0 ? query.getTypeName() :
                     query.getQueryJoins().get(query.getQueryJoins().size()-1).getJoiningTypeName();
                 

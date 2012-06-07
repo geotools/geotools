@@ -74,10 +74,17 @@ public class JoiningQuery extends Query {
     
     protected List<QueryJoin> queryJoins;
     
+    /*
+     * True if the query shouldn't join to the table to find other rows with same id. This is in
+     * case of there's a filter for multi-valued properties for timeseries. This is a requirement
+     * for timeseries to return a subset instead of full features.
+     */
+    private boolean isSubset;
     
     public JoiningQuery(JoiningQuery query) {
         super(query);
         setQueryJoins(query.getQueryJoins());
+        setSubset(query.isSubset);
     }
     
     public JoiningQuery(Query query){
@@ -93,6 +100,14 @@ public class JoiningQuery extends Query {
     
     public List<QueryJoin> getQueryJoins(){
         return queryJoins;
+    }
+    
+    public void setSubset(boolean isSubset) {
+        this.isSubset = isSubset;
+    }
+    
+    public boolean isSubset() {
+        return isSubset;
     }
 
 }

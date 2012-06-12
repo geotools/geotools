@@ -40,6 +40,7 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.expression.Subtract;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.opengis.filter.spatial.BBOX;
@@ -473,7 +474,18 @@ public abstract class JDBCFeatureSourceTest extends JDBCTestSupport {
         assertSame(gf2, ((Geometry) f2.getDefaultGeometry()).getFactory());
 
     }
-    
+
+    public void testGetFeaturesWithArithmeticOpFilter() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+
+        Subtract sub = ff.subtract(ff.property(aname("doubleProperty")), ff.literal(0.1));
+        PropertyIsEqualTo filter = ff.equals(ff.property(aname("intProperty")), sub);
+
+        //this test is very dependant on the specific database, some db's will round, some won't
+        // so just assert that something is returned
+        assertTrue(featureSource.getCount(new DefaultQuery(null, filter)) > 0);
+    }
+
     SimpleFeature getFirstFeature(SimpleFeatureCollection fc) {
         SimpleFeatureIterator fi = null;
         try {

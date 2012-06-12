@@ -110,7 +110,7 @@ public class OracleFilterToSqlTest extends TestCase {
         Coordinate coordinate = new Coordinate();
 		DWithin dwithin = ff.dwithin(ff.property("GEOM"), ff.literal(gf.createPoint(coordinate)), 10.0, "kilometers");
         String encoded = encoder.encodeToString(dwithin);
-        assertEquals("WHERE SDO_WITHIN_DISTANCE(\"GEOM\",?,'distance=10.0 unit=kilometers') = 'TRUE' ", encoded);
+        assertEquals("WHERE SDO_WITHIN_DISTANCE(\"GEOM\",?,'distance=10.0 unit=km') = 'TRUE' ", encoded);
     }
     
     public void testDWithinFilterWithoutUnit() throws Exception {

@@ -16,6 +16,8 @@
  */
 package org.geotools.data.jdbc;
 
+import static org.geotools.filter.capability.FunctionNameImpl.*;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -33,6 +35,7 @@ import org.geotools.factory.Hints;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.LikeFilterImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JoinPropertyName;
 import org.geotools.jdbc.PrimaryKey;
@@ -62,6 +65,7 @@ import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.PropertyIsNil;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.PropertyIsNull;
+import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.BinaryExpression;
 import org.opengis.filter.expression.Divide;
@@ -709,11 +713,24 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                 rightContext = attType.getType().getBinding();
             }
         }
+        else if (left instanceof Function) {
+            //check for a function return type
+            Class ret = getFunctionReturnType((Function)left);
+            if (ret != null) {
+                rightContext = ret;
+            }
+        }
         
         if (right instanceof PropertyName) {
             AttributeDescriptor attType = (AttributeDescriptor)right.evaluate(featureType);
             if (attType != null) {
                 leftContext = attType.getType().getBinding();
+            }
+        }
+        else if (right instanceof Function){
+            Class ret = getFunctionReturnType((Function)right);
+            if (ret != null) {
+                leftContext = ret;
             }
         }
 
@@ -735,14 +752,32 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
 
         try {
             if ( matchCase ) {
-                left.accept(this, leftContext);
+                if (leftContext != null && isBinaryExpression(left)) {
+                    writeBinaryExpression(left, leftContext);
+                }
+                else {
+                    left.accept(this, leftContext);
+                }
+                
                 out.write(" " + type + " ");
-                right.accept(this, rightContext);
+
+                if (rightContext != null && isBinaryExpression(right)) {
+                    writeBinaryExpression(right, rightContext);
+                }
+                else {
+                    right.accept(this, rightContext);
+                }
             }
             else {
-                //wrap both sides in "lower"
-                FunctionImpl f = new FunctionImpl(); 
-                f.setName( "lower" );
+                // wrap both sides in "lower"
+                FunctionImpl f = new FunctionImpl() {
+                    {
+                        functionName = new FunctionNameImpl("lower",
+                                parameter("lowercase", String.class),
+                                parameter("string", String.class));
+                    }
+                };
+                f.setName("lower");
                 
                 f.setParameters(Arrays.asList(left));
                 f.accept(this, Arrays.asList(leftContext));
@@ -756,6 +791,47 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         } catch (java.io.IOException ioe) {
             throw new RuntimeException(IO_ERROR, ioe);
         }
+    }
+
+    /*
+     * write out the binary expression and cast only the end result, not passing any context into
+     * encoding the individual parts
+     */
+    void writeBinaryExpression(Expression e, Class context) throws IOException {
+        Writer tmp = out;
+        try {
+            out = new StringWriter();
+            out.write("(");
+            e.accept(this, null);
+            out.write(")");
+            tmp.write(cast(out.toString(), context));
+        
+        }
+        finally {
+            out = tmp;
+        }
+    }
+
+    /*
+     * returns the return type of the function, or null if it could not be determined or is simply
+     * of return type Object.class
+     */
+    Class getFunctionReturnType(Function f) {
+        Class clazz = Object.class;
+        if (f.getFunctionName() != null && f.getFunctionName().getReturn() != null) {
+            clazz = f.getFunctionName().getReturn().getType();
+        }
+        if (clazz == Object.class) {
+            clazz = null;
+        }
+        return clazz;
+    }
+
+    /*
+     * determines if the function is a binary expression
+     */
+    boolean isBinaryExpression(Expression e) {
+        return e instanceof BinaryExpression;
     }
 
     /**
@@ -1261,13 +1337,23 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         if(target != null) {
             // use the target type
             if (Number.class.isAssignableFrom(target)) {
-                literal = Converters.convert(expression.evaluate(null), target, 
-                        new Hints(ConverterFactory.SAFE_CONVERSION, true));    
+                literal = safeConvertToNumber(expression, target);
             }
             else {
                 literal = expression.evaluate(null, target);
             }
         }
+        
+        //check for conversion to number
+        if (target == null) {
+            // we don't know the target type, check for a conversion to a number
+            
+            Number number = safeConvertToNumber(expression, Number.class);
+            if (number != null) {
+                literal = number;
+            }
+        }
+        
         // if the target was not known, of the conversion failed, try the
         // type guessing dance literal expression does only for the following
         // method call
@@ -1279,6 +1365,14 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             literal = expression.getValue();
         
         return literal;
+    }
+
+    /*
+     * helper to do a safe convesion of expression to a number
+     */
+    Number safeConvertToNumber(Expression expression, Class target) {
+        return (Number) Converters.convert(expression.evaluate(null), target, 
+                new Hints(ConverterFactory.SAFE_CONVERSION, true));
     }
 
     /**
@@ -1295,7 +1389,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         } else if(literal instanceof Number || literal instanceof Boolean) {
             out.write(String.valueOf(literal));
         } else {
-            // we don't know what this is, let's convert back to a string
+            // we don't know the type...just convert back to a string
             String encoding = (String) Converters.convert(literal,
                     String.class, null);
             if (encoding == null) {

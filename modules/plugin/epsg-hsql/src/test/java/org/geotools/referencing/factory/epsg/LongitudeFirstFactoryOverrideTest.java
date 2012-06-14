@@ -16,11 +16,12 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Properties;
 
 import org.geotools.factory.AbstractFactory;
+import org.geotools.factory.Hints;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.junit.After;
@@ -74,6 +75,7 @@ public class LongitudeFirstFactoryOverrideTest {
     public void tearDown() {
         // unset axis ordering hint
         System.clearProperty("org.geotools.referencing.forceXY");
+        Hints.removeSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
         
         CRS.reset("all");
     }

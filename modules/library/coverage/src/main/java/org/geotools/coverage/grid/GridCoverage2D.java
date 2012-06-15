@@ -1066,14 +1066,6 @@ public class GridCoverage2D extends AbstractGridCoverage implements RenderedCove
             buffer.append('"').append(((OperationNode) image).getOperationName()).append('"');
         }
         buffer.append(']');
-        if (views == null || !Thread.holdsLock(views)) {
-            /*
-             * We use Thread.holdsLock(views) as a semaphore for avoiding never-ending loop if
-             * toString() is invoked from ViewsManager (either by IDE debugger or by 'println'
-             * statement). Because ViewsManager is not public, this trick doesn't impact users.
-             */
-            buffer.append(" as views ").append(getViewTypes());
-        }
         return buffer.append(lineSeparator).toString();
     }
 }

@@ -47,6 +47,8 @@ public class AttributeMapping {
 
     private boolean isMultiValued;
     
+    private boolean encodeIfEmpty;
+    
     private boolean isList;
 
     /**
@@ -97,6 +99,10 @@ public class AttributeMapping {
 
     public boolean isMultiValued() {
         return isMultiValued;
+    }
+    
+    public boolean encodeIfEmpty() {
+        return encodeIfEmpty;
     }
     
     public boolean isList() {
@@ -153,6 +159,10 @@ public class AttributeMapping {
     
     public void setInstanceXpath(String instancePath) {
         this.instancePath = instancePath;
+    }
+    
+    public void setEncodeIfEmpty(boolean encodeIfEmpty) {
+        this.encodeIfEmpty = encodeIfEmpty;
     }
     
     public void setList(boolean isList) {

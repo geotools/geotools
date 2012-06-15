@@ -130,6 +130,13 @@ public class AttributeMapping implements Serializable {
      */
     private boolean isMultiple;
     
+    
+    /**
+     * If <code>true</code>, indicates that one this attribute should be encode if it contains null
+     * or empty value.
+     */
+    private boolean encodeIfEmpty;
+    
     /**
      * If <code>true</code>, indicates that this attribute corresponds to a list of values.
      * This is similar to isMultiple, except the values are concatenated as a big String inside 
@@ -360,6 +367,35 @@ public class AttributeMapping implements Serializable {
     public void setMultiple(boolean isMultiple) {
         this.isMultiple = isMultiple;
     }
+    
+    /**
+     * Returns whether this attribute should encode when empty;
+     * 
+     * @return <code>true</code> encode when the value is empty, <code>false</code> otherwise.
+     */
+    public boolean encodeIfEmpty() {
+        return encodeIfEmpty;
+    }
+
+    /**
+     * Returns whether this attribute should encode when empty;
+     * 
+     * @param encodeIfEmpty
+     *            <code>true</code> encode when the value is empty, <code>false</code> otherwise.
+     */
+    public void setEncodeIfEmpty(boolean encodeIfEmpty) {
+        this.encodeIfEmpty = encodeIfEmpty;
+    }
+
+    /**
+     * Returns whether this attribute should encode when empty;
+     * 
+     * @param encodeIfEmpty
+     *            <code>true</code> encode when the value is empty, <code>false</code> otherwise.
+     */
+    public void setEncodeIfEmpty(String encodeIfEmpty) {
+        this.encodeIfEmpty = Boolean.valueOf(encodeIfEmpty).booleanValue();
+    }
 
     /**
      * Sets whether this attribute should be treated as a list valued property.
@@ -419,6 +455,8 @@ public class AttributeMapping implements Serializable {
                 + targetAttributePath
                 + ", isMultiple: "
                 + isMultiple
+                + ", encodeIfEmpty: "
+                + encodeIfEmpty
                 + ((targetAttributeSchemaElement == null) ? ""
                         : (", target node: " + targetAttributeSchemaElement))
                 + ((linkElement == null) ? "" : (", linkElement: " + linkElement))

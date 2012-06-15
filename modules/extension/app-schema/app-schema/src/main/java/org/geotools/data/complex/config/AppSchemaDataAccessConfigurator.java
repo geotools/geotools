@@ -406,6 +406,10 @@ public class AppSchemaDataAccessConfigurator {
             if (attDto.isList()) {
                 attMapping.setList(true);
             }
+            
+            if (attDto.encodeIfEmpty()) {
+                attMapping.setEncodeIfEmpty(true);
+            }
 
             /**
              * Label and parent label are specific for web service backend

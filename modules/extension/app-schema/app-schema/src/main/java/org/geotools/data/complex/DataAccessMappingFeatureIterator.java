@@ -600,6 +600,9 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                     targetNodeType, false, sourceExpression);
             setClientProperties(instance, source, clientPropsMappings);
 
+        } 
+        if (instance != null && attMapping.encodeIfEmpty()) {
+            instance.getDescriptor().getUserData().put("encodeIfEmpty", attMapping.encodeIfEmpty());
         }
         return instance;
     }
@@ -1022,7 +1025,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             ArrayList values = new ArrayList<Property>();
             for (Iterator i = target.getValue().iterator(); i.hasNext();) {
                 Property p = (Property) i.next();
-                if (hasChild(p) || p.getDescriptor().getMinOccurs() > 0) {
+                if (hasChild(p) || p.getDescriptor().getMinOccurs() > 0 || getEncodeIfEmpty(p)) {
                     values.add(p);
                 }
             }
@@ -1046,6 +1049,9 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             for (Object o : c) {
                 if (o instanceof Property) {
                     if (hasChild((Property) o)) {
+                        values.add(o);
+                        result = true;
+                    } else if (getEncodeIfEmpty((Property) o)) {
                         values.add(o);
                         result = true;
                     } else if (((Property) o).getDescriptor().getMinOccurs() > 0) {
@@ -1217,4 +1223,13 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     public void setListFilter(Filter filter) {
         listFilter = filter;
     } 
+    
+    
+    private boolean getEncodeIfEmpty(Property p) {
+        Object o = ((p.getDescriptor()).getUserData().get("encodeIfEmpty"));
+        if (o == null) {
+            return false;
+        }
+        return (Boolean) o;
+    }
 }

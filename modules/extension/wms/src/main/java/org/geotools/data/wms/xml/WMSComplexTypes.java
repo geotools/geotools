@@ -4143,6 +4143,7 @@ public class WMSComplexTypes {
 				Attributes attrs, Map hints) throws SAXException,
 				OperationNotSupportedException {
 			StyleImpl style = new StyleImpl();
+			List legendURLS = new ArrayList();
 			
 			for (int i = 0; i < value.length; i++) {
 				
@@ -4162,7 +4163,7 @@ public class WMSComplexTypes {
 				}
 				
 				if (sameName(elems[3], value[i])) {
-					//TODO Implement LegendURL
+					legendURLS.add((String)value[2].getValue());
 				}
 				
 				if (sameName(elems[4], value[i])) {
@@ -4173,7 +4174,7 @@ public class WMSComplexTypes {
 					//TODO implement StyleURL
 				}
 			}
-			
+			style.setLegendURLs(legendURLS);
 			return style;
 		}
 
@@ -4274,7 +4275,9 @@ public class WMSComplexTypes {
 		public Object getValue(Element element, ElementValue[] value,
 				Attributes attrs, Map hints) throws SAXException,
 				OperationNotSupportedException {
-			return null;
+                    
+                    String legendURL = value[1].getValue().toString();
+                    return legendURL;
 			// throw new OperationNotSupportedException();
 		}
 

@@ -116,6 +116,7 @@ public class WMSSchemaTest extends TestCase {
 		assertTrue(layer.isQueryable());
 		assertEquals(layer.getName(), "Bathymetry");
 		assertEquals(layer.getTitle(), "Bathymetry");
+		assertEquals(layer.getStyles().get(0).getLegendURLs().get(0), "http://www.osgeo.org/sites/all/themes/osgeo/logo.png");
 		
 		// Added test to verify inheritance, should be same as previous llbbox
 		llbbox = layer.getLatLonBoundingBox();

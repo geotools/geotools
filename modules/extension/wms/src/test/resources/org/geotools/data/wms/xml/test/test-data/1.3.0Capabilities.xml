@@ -100,7 +100,15 @@
 			<Layer queryable="1" opaque="1">
 				<Name>Bathymetry</Name>
 				<Title>Bathymetry</Title>
-				<BoundingBox CRS="CRS:84" minx="-180" miny="-90" maxx="180" maxy="90"/>
+				<BoundingBox CRS="CRS:84" minx="-180" miny="-90" maxx="180" maxy="90"/>				
+				<Style>
+					<Name>default</Name>
+					<Title>default</Title>
+					<LegendURL width="99" height="25">
+						<Format>image/png</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://www.osgeo.org/sites/all/themes/osgeo/logo.png"/>
+					</LegendURL>
+				</Style>
 			</Layer>
 			<Layer queryable="1" opaque="0">
 				<Name>Countries</Name>

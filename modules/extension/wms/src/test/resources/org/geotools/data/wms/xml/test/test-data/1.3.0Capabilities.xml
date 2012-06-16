@@ -101,6 +101,10 @@
 				<Name>Bathymetry</Name>
 				<Title>Bathymetry</Title>
 				<BoundingBox CRS="CRS:84" minx="-180" miny="-90" maxx="180" maxy="90"/>				
+				<MetadataURL type="FGDC">
+					<Format>text/html</Format>
+					<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://www.example.com/?"/>
+				</MetadataURL>
 				<Style>
 					<Name>default</Name>
 					<Title>default</Title>

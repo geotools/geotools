@@ -30,6 +30,7 @@ import java.util.WeakHashMap;
 
 import org.geotools.data.wms.xml.Dimension;
 import org.geotools.data.wms.xml.Extent;
+import org.geotools.data.wms.xml.MetadataURL;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -155,6 +156,8 @@ public class Layer implements Comparable<Layer> {
      */
     private Map<CoordinateReferenceSystem, Envelope> envelopeCache = Collections
             .synchronizedMap(new WeakHashMap<CoordinateReferenceSystem, Envelope>());
+    
+    private List<MetadataURL> metadataURL;
 
     /**
      * Called to clear the internal cache of this layer; and any children.
@@ -932,6 +935,15 @@ public class Layer implements Comparable<Layer> {
     public void setCascaded(int cascadedValue) {
         this.cascaded = cascadedValue;
     }
+
+    public List<MetadataURL> getMetadataURL() {
+        return metadataURL;
+    }
+
+    public void setMetadataURL(List<MetadataURL> metadataURL) {
+        this.metadataURL = metadataURL;
+    }
+
     
     @Override
     public String toString() {

@@ -34,6 +34,7 @@ import org.geotools.xml.Parser;
  * @source $URL$
  */
 public class SLDTest extends TestCase {
+    
     public void test() throws Exception {
         Parser parser = new Parser(new SLDConfiguration());
 
@@ -65,5 +66,12 @@ public class SLDTest extends TestCase {
         assertEquals(Integer.parseInt("96", 16), color.getRed());
         assertEquals(Integer.parseInt("C3", 16), color.getGreen());
         assertEquals(Integer.parseInt("F5", 16), color.getBlue());
+    }
+    
+    public void testValidateTransformation() throws Exception {
+        Parser parser = new Parser(new SLDConfiguration());
+
+        // if a validato error occurs it will blow up with an exception
+        parser.validate(getClass().getResourceAsStream("gcontours.sld"));
     }
 }

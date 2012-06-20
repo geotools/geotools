@@ -19,6 +19,7 @@ package org.geotools.data.versioning.decorator;
 import static org.geotools.data.Transaction.AUTO_COMMIT;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,6 +30,7 @@ import org.geogit.api.RevTree;
 import org.geogit.repository.Repository;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureStore;
+import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.geogit.VersioningTransactionState;
 import org.geotools.data.versioning.VersioningFeatureStore;
@@ -98,27 +100,52 @@ public class FeatureStoreDecorator<T extends FeatureType, F extends Feature>
     @Override
     public List<FeatureId> addFeatures(FeatureCollection<T, F> collection)
             throws IOException {
-        if (isVersioned()) {
+        boolean versioned = isVersioned();
+        
+        if (versioned) {
             checkTransaction();
         }
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 
         final FeatureStore<T, F> unversioned = getUnversionedStore();
+        
+        // Optimisation: special case the first load (this is often when we have lots of feaures)
+        int initialCount = -1;
+        if( versioned ){
+            initialCount = unversioned.getCount(Query.ALL);
+        }
+        // step 1: add features to unversioned 
         List<FeatureId> unversionedIds = unversioned.addFeatures(collection);
-
-        if (isVersioned()) {
+        
+        // step 2: add features to versioned databse
+        if (versioned) {
             try {
                 final Name typeName = getSchema().getName();
                 VersioningTransactionState versioningState = getVersioningState();
-
-                FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
-
-                Id id = ff.id(new HashSet<Identifier>(unversionedIds));
-                FeatureCollection<T, F> inserted = unversioned.getFeatures(id);
-                List<FeatureId> versionedIds;
-                versionedIds = versioningState.stageInsert(typeName, inserted,
-                        true);
+                
+                List<Filter> block = new ArrayList<Filter>();
+                
+                if( initialCount == 0 ){
+                    // Optimisation: grab everything for the first load
+                    block.add( Filter.INCLUDE );
+                }
+                else {
+                    // Stage inserts in blocks of 3000 to avoid limitations of SQL generation
+                    final int PAGE = 1000;
+                    int SIZE = unversionedIds.size();
+                    for( int i=0; i < SIZE; i+=PAGE){
+                        List<FeatureId> list = unversionedIds.subList(i, Math.min( SIZE, i+PAGE));
+                        Id id = ff.id(new HashSet<Identifier>(list));
+                        block.add( id );
+                    }
+                }
+                List<FeatureId> versionedIds = new ArrayList<FeatureId>();
+                for( Filter filter : block ){
+                    FeatureCollection<T, F> inserted = unversioned.getFeatures( filter );
+                    List<FeatureId> staged = versioningState.stageInsert(typeName, inserted, true);
+                    versionedIds.addAll( staged );
+                }
                 return versionedIds;
-
             } catch (Exception e) {
                 Throwables.propagate(e);
             }

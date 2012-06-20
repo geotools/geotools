@@ -38,7 +38,9 @@ import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDTypeDefinition;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.Types;
+import org.geotools.feature.type.AbstractLazyComplexTypeImpl;
 import org.geotools.feature.type.ComplexFeatureTypeFactoryImpl;
 import org.geotools.feature.type.GeometryTypeImpl;
 import org.geotools.gml3.GMLConfiguration;
@@ -158,24 +160,7 @@ public class FeatureTypeRegistry {
         }
 
         typeRegistry.putAll(FOUNDATION_TYPES);
-        
-        // set substitution group for basic types
-        // since the current solution only works for created types (for non basic types)
-        for (AttributeType type : typeRegistry.values()) {
-            if (type instanceof ComplexType) {
-                XSDTypeDefinition typeDef = null;
-                try {
-                    typeDef = getTypeDefinition(type.getName());
-                    if (typeDef instanceof XSDComplexTypeDefinition) {
-                        setSubstitutionGroup((ComplexType) type,
-                                (XSDComplexTypeDefinition) typeDef, null, null);
-                    }
-                } catch (IllegalArgumentException e) {
-                    LOGGER.log(Level.WARNING,
-                            "Unable to set substitution group, caused by: " + e.getMessage());
-                }
-            }
-        }
+
         descriptorRegistry.putAll(FOUNDATION_DESCRIPTORS);
 
     }
@@ -196,23 +181,30 @@ public class FeatureTypeRegistry {
     }
 
     public AttributeDescriptor getDescriptor(final Name descriptorName,
-            CoordinateReferenceSystem crs, List<AttributeMapping> attMappings) {
+            XSDComplexTypeDefinition typeDef, XSDElementDeclaration elemDecl,
+            CoordinateReferenceSystem crs) {
         AttributeDescriptor descriptor = descriptorRegistry.get(descriptorName);
         if (descriptor == null) {
             try {
-                XSDElementDeclaration elemDecl = getElementDeclaration(descriptorName);
-                descriptor = createAttributeDescriptor(null, elemDecl, crs, attMappings);
-                LOGGER.finest("Registering attribute descriptor " + descriptor.getName());
-                register(descriptor);
+                if (elemDecl == null) {
+                    elemDecl = getElementDeclaration(descriptorName);
+                }
             } catch (NoSuchElementException e) {
-                LOGGER.log(Level.WARNING, e.getMessage());
+                String msg = "Type not found for "
+                        + descriptorName
+                        + " at type container "
+                        + (typeDef == null ? null : typeDef.getTargetNamespace() + "#"
+                                + typeDef.getName() + " at "
+                                + typeDef.getSchema().getSchemaLocation());
+                NoSuchElementException nse = new NoSuchElementException(msg);
+                nse.initCause(e);
+                throw nse;
             }
+            descriptor = createAttributeDescriptor(typeDef, elemDecl, crs);
+            LOGGER.finest("Registering attribute descriptor " + descriptor.getName());
+            register(descriptor);
         }
         return descriptor;
-    }
-
-    public AttributeDescriptor getDescriptor(final Name descriptorName) {
-        return getDescriptor(descriptorName, null, null);
     }
 
     private XSDElementDeclaration getElementDeclaration(final Name descriptorName) {
@@ -226,79 +218,114 @@ public class FeatureTypeRegistry {
             }
         }
         if (elemDecl == null) {
-            throw new NoSuchElementException("No top level element found in schemas: " + qname);
+            String msg = "No top level element found in schemas: " + qname;
+            LOGGER.log(Level.WARNING, msg);
+            throw new NoSuchElementException(msg);
         }
         return elemDecl;
     }
-
+    
     public AttributeType getAttributeType(final Name typeName) {
         return getAttributeType(typeName, null, null);
     }
 
-    public AttributeType getAttributeType(final Name typeName, CoordinateReferenceSystem crs,
-            List<AttributeMapping> attMappings) {
+    public AttributeType getAttributeType(final Name typeName, XSDTypeDefinition xsdType,
+            CoordinateReferenceSystem crs) {
         AttributeType type = (AttributeType) typeRegistry.get(typeName);
-        if (type == null) {
-            XSDTypeDefinition typeDef = getTypeDefinition(typeName);
 
-            LOGGER.finest("Creating attribute type " + typeDef.getQName());
-            type = createType(typeDef, crs, attMappings);
-            LOGGER.finest("Registering attribute type " + type.getName());
-        }
+        if (type == null || type instanceof AbstractLazyComplexTypeImpl) {
+            // recreate lazy types too
+            if (xsdType == null) {
+                xsdType = getTypeDefinition(typeName);
+            }
+            LOGGER.finest("Creating attribute type " + typeName);
+            type = createType(typeName, xsdType, crs, false);
+            LOGGER.finest("Registering attribute type " + typeName);
+        } 
         return type;
     }
     
-    private void setSubstitutionGroup(ComplexType complexType, XSDComplexTypeDefinition typeDef,
-            CoordinateReferenceSystem crs, List attMappings) {
-        List children = Schemas.getChildElementParticles(typeDef, true);
+    private void setSubstitutionGroup(XSDComplexTypeDefinition container,
+            XSDElementDeclaration elemDecl, PropertyDescriptor descriptor,
+            CoordinateReferenceSystem crs) {
 
-        final Collection<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>(
-                children.size());
+        if (descriptor.getUserData().get("substitutionGroup") != null) {
+            // this has been done before
+            return;
+        }
 
-        XSDElementDeclaration childDecl;
-        Name typeName;
-        for (Iterator it = children.iterator(); it.hasNext();) {
-            childDecl = (XSDElementDeclaration) ((XSDParticle) it.next()).getContent();
-            if (childDecl.isElementDeclarationReference()) {
-                childDecl = childDecl.getResolvedElementDeclaration();
+        List<AttributeDescriptor> substitutionGroup = new ArrayList<AttributeDescriptor>();
+        descriptor.getUserData().put("substitutionGroup", substitutionGroup);
+
+        int minOccurs = Schemas.getMinOccurs(container, elemDecl);
+        int maxOccurs = Schemas.getMaxOccurs(container, elemDecl);
+        boolean nillable = elemDecl.isNillable();
+
+        Iterator substitutions = elemDecl.getSubstitutionGroup().iterator();
+        XSDElementDeclaration sub;
+        while (substitutions.hasNext()) {
+            sub = (XSDElementDeclaration) substitutions.next();
+            if (!(sub.getName().equals(elemDecl.getName()))
+                    || !(sub.getTargetNamespace().equals(elemDecl.getTargetNamespace()))) {
+                Name elemName = Types.typeName(sub.getTargetNamespace(), sub.getName());
+                AttributeType type = getTypeOf(sub, crs);
+                if (type != null) {
+                    substitutionGroup.add(createAttributeDescriptor(type, crs, elemName, minOccurs,
+                            maxOccurs, nillable, null));
+                }
             }
-            typeName = Types.typeName(childDecl.getTargetNamespace(), childDecl.getName());
-            try {
-                PropertyDescriptor descriptor = complexType.getDescriptor(typeName);
-                if (descriptor != null) {
-                    if (!descriptor.getUserData().containsValue("substitutionGroup")) {
-                        List<AttributeDescriptor> substitutionGroup = new ArrayList<AttributeDescriptor>();
-                        descriptor.getUserData().put("substitutionGroup", substitutionGroup);
-                        Iterator subIt = childDecl.getSubstitutionGroup().iterator();
-                        while (subIt.hasNext()) {
-                            XSDElementDeclaration sub = (XSDElementDeclaration) subIt.next();
-                            if (!sub.getName().equals(childDecl.getName())) {
-                                Name elemName = Types.typeName(sub.getTargetNamespace(),
-                                        sub.getName());
-                                XSDTypeDefinition subType = sub.getTypeDefinition();
-                                Name name = subType.getName() == null ? elemName : Types.typeName(
-                                        subType.getTargetNamespace(), subType.getName());
-                                AttributeType type = typeRegistry.get(name);
-                                if (type != null) {
-                                    int minOccurs = Schemas.getMinOccurs(typeDef, childDecl);
-                                    int maxOccurs = Schemas.getMaxOccurs(typeDef, childDecl);
-                                    boolean nillable = childDecl.isNillable();
-                                    AttributeDescriptor subDescriptor = createAttributeDescriptor(
-                                            type, crs, elemName, minOccurs, maxOccurs, nillable,
-                                            null);
-                                    substitutionGroup.add(subDescriptor);
-                                }
+        }
+
+        XSDTypeDefinition typeDef = elemDecl.getType();
+
+        if (typeDef instanceof XSDComplexTypeDefinition) {
+            Name typeName = Types.typeName(typeDef.getTargetNamespace(), typeDef.getName());
+            AttributeType attType = typeRegistry.get(typeName);
+
+            if (!processingTypes.contains(typeName)) {
+                // ignore processingTypes to avoid endless recursion
+                if (attType == null || attType instanceof AbstractLazyComplexTypeImpl) {
+                    // type is not yet registered or it's a lazy type from foundation types
+                    // recreate lazy type to ensure everything is loaded
+                    // it will eventually call this method so substitution groups will be set then
+                    LOGGER.finest("Creating attribute type " + typeName);
+                    createType(typeName, typeDef, crs, false);
+                    LOGGER.finest("Registering attribute type " + typeName);
+                } else if (attType instanceof ComplexType) {
+                    // ensure substitution groups are set for children including non lazy foundation
+                    // types
+                    ComplexType complexType = (ComplexType) attType;
+                    Collection<PropertyDescriptor> children = complexType.getDescriptors();
+
+                    List<XSDParticle> childParticles = Schemas.getChildElementParticles(typeDef,
+                            true);
+
+                    for (XSDParticle particle : childParticles) {
+                        XSDElementDeclaration element = (XSDElementDeclaration) particle
+                                .getContent();
+
+                        if (element.isElementDeclarationReference()) {
+                            element = element.getResolvedElementDeclaration();
+                        }
+                        PropertyDescriptor childDesc = null;
+                        for (PropertyDescriptor desc : children) {
+                            if (desc.getName().getLocalPart().equals(element.getName())
+                                    && desc.getName().getNamespaceURI()
+                                            .equals(element.getTargetNamespace())) {
+                                childDesc = desc;
+                                break;
                             }
+                        }
+                        if (childDesc != null) {
+                            setSubstitutionGroup((XSDComplexTypeDefinition) typeDef, element,
+                                    childDesc, crs);
                         }
                     }
                 }
-            } catch (Exception e) {
-                LOGGER.log(Level.WARNING,
-                        "Could not create substitution descriptor: " + e.getMessage());
             }
         }
     }
-
+    
     private XSDTypeDefinition getTypeDefinition(Name typeName) {
         QName qName = Types.toQName(typeName);
         XSDTypeDefinition typeDefinition = null;
@@ -333,12 +360,11 @@ public class FeatureTypeRegistry {
     }
 
     private AttributeDescriptor createAttributeDescriptor(final XSDComplexTypeDefinition container,
-            final XSDElementDeclaration elemDecl, CoordinateReferenceSystem crs,
-            List<AttributeMapping> attMappings) {
+            final XSDElementDeclaration elemDecl, CoordinateReferenceSystem crs) {
         int minOccurs = container == null ? 0 : Schemas.getMinOccurs(container, elemDecl);
         int maxOccurs = container == null ? Integer.MAX_VALUE : Schemas.getMaxOccurs(container, elemDecl);
                 
-        return createAttributeDescriptor( container, elemDecl, minOccurs, maxOccurs, crs, attMappings, true);
+        return createAttributeDescriptor(elemDecl, minOccurs, maxOccurs, crs);
         
     }
 
@@ -346,72 +372,37 @@ public class FeatureTypeRegistry {
             CoordinateReferenceSystem crs, Name elemName, int minOccurs, int maxOccurs,
             boolean nillable, Object defaultValue) {
         AttributeDescriptor descriptor = null;
-        try {
-            if (!(type instanceof AttributeTypeProxy)
-                    && Geometry.class.isAssignableFrom(type.getBinding())) {
-                // create geometry descriptor with the simple feature type CRS
-                GeometryType geomType = new GeometryTypeImpl(type.getName(), type.getBinding(),
-                        crs, type.isIdentified(), type.isAbstract(), type.getRestrictions(),
-                        type.getSuper(), type.getDescription());
-                descriptor = typeFactory.createGeometryDescriptor(geomType, elemName, minOccurs,
-                        maxOccurs, nillable, defaultValue);
-            } else {
-                descriptor = typeFactory.createAttributeDescriptor(type, elemName, minOccurs,
-                        maxOccurs, nillable, defaultValue);
-            }
-        } catch (Exception e) {
-            LOGGER.log(Level.WARNING, "Could not create substitution descriptor: " + e.getMessage());
-        }
-        return descriptor;
-    }
-
-    private AttributeDescriptor createAttributeDescriptor(final XSDComplexTypeDefinition container,
-            final XSDElementDeclaration elemDecl, int minOccurs, int maxOccurs, CoordinateReferenceSystem crs,
-            List<AttributeMapping> attMappings, boolean useSubstitutionGroups) {
-        String targetNamespace = elemDecl.getTargetNamespace();
-        String name = elemDecl.getName();
-        Name elemName = Types.typeName(targetNamespace, name);
-
-        AttributeType type;
-        try {
-            type = getTypeOf(elemDecl, crs, attMappings);
-        } catch (NoSuchElementException e) {
-            String msg = "Type not found for " + elemName + " at type container "
-                    + (container == null ? null : container.getTargetNamespace() + "#" + container.getName() + " at "
-                    + container.getSchema().getSchemaLocation());
-            NoSuchElementException nse = new NoSuchElementException(msg);
-            nse.initCause(e);
-            throw nse;
-        }
-        boolean nillable = elemDecl.isNillable();
-
         if (maxOccurs == -1) {
             // this happens when maxOccurs is set to "unbounded"
             maxOccurs = Integer.MAX_VALUE;
         }
+
+        if (!(type instanceof AttributeTypeProxy)
+                && Geometry.class.isAssignableFrom(type.getBinding())) {
+            // create geometry descriptor with the simple feature type CRS
+            GeometryType geomType = new GeometryTypeImpl(type.getName(), type.getBinding(), crs,
+                    type.isIdentified(), type.isAbstract(), type.getRestrictions(),
+                    type.getSuper(), type.getDescription());
+            descriptor = typeFactory.createGeometryDescriptor(geomType, elemName, minOccurs,
+                    maxOccurs, nillable, defaultValue);
+        } else {
+            descriptor = typeFactory.createAttributeDescriptor(type, elemName, minOccurs,
+                    maxOccurs, nillable, defaultValue);
+        }
+        return descriptor;
+    }
+
+    private AttributeDescriptor createAttributeDescriptor(
+            final XSDElementDeclaration elemDecl, int minOccurs, int maxOccurs, CoordinateReferenceSystem crs) {
+        String targetNamespace = elemDecl.getTargetNamespace();
+        String name = elemDecl.getName();
+        Name elemName = Types.typeName(targetNamespace, name);
+        AttributeType type = getTypeOf(elemDecl, crs);
+        boolean nillable = elemDecl.isNillable();
         Object defaultValue = null;
         AttributeDescriptor descriptor = createAttributeDescriptor(type, crs, elemName, minOccurs,
                 maxOccurs, nillable, defaultValue);
         descriptor.getUserData().put(XSDElementDeclaration.class, elemDecl);
-        
-        //NC - substitution groups
-        if (useSubstitutionGroups) {
-            List<AttributeDescriptor> substitutionGroup = new ArrayList<AttributeDescriptor>();
-            Iterator it = elemDecl.getSubstitutionGroup().iterator();
-            while ( it.hasNext()){
-                XSDElementDeclaration sub =  (XSDElementDeclaration)it.next();
-                if (!sub.getName().equals (elemDecl.getName())) {
-                   try {
-                       substitutionGroup.add( createAttributeDescriptor ( container , sub, minOccurs, maxOccurs, crs, attMappings, false)) ;
-                   } catch (Exception e) {
-                        LOGGER.log(Level.WARNING, "Could not create substitution descriptor: " + e.getMessage());
-                   }
-                }
-            }
-    
-            descriptor.getUserData().put("substitutionGroup", substitutionGroup);
-        }
-        //NC - end.
         
         return descriptor;
     }
@@ -424,9 +415,7 @@ public class FeatureTypeRegistry {
      * @param elemDecl
      * @return
      */
-    private AttributeType getTypeOf(XSDElementDeclaration elemDecl, CoordinateReferenceSystem crs,
-            List<AttributeMapping> attMappings) {
-        boolean hasToBeRegistered = false;
+    private AttributeType getTypeOf(XSDElementDeclaration elemDecl, CoordinateReferenceSystem crs) {
         XSDTypeDefinition typeDefinition;
 
         // TODO REVISIT, I'm not sure this is the way to find out if the
@@ -437,31 +426,44 @@ public class FeatureTypeRegistry {
         }
         typeDefinition = elemDecl.getAnonymousTypeDefinition();
         if (typeDefinition == null) {
-            hasToBeRegistered = true;
             typeDefinition = elemDecl.getTypeDefinition();
+        }
+        
+        if (typeDefinition == null) {
+            // last resort.. look in the lazy schemas
+            QName qname = Types.toQName(Types.typeName(elemDecl.getTargetNamespace(),
+                    elemDecl.getName()));
+            for (SchemaIndex schemaIndex : schemas) {
+                elemDecl = schemaIndex.getElementDeclaration(qname);
+                if (elemDecl != null) {
+                    break;
+                }
+            }
+            if (elemDecl != null) {
+                if (elemDecl.isElementDeclarationReference()) {
+                    elemDecl = elemDecl.getResolvedElementDeclaration();
+                }
+                typeDefinition = elemDecl.getAnonymousTypeDefinition();
+                if (typeDefinition == null) {
+                    typeDefinition = elemDecl.getTypeDefinition();
+                }
+            }
         }
 
         if (typeDefinition == null) {
-            throw new NoSuchElementException("The element declaration "
+            String msg = "The element declaration "
                     + elemDecl.getTargetNamespace() + "#" + elemDecl.getName()
-                    + " has a null type definition, can't continue, fix it on the schema");
+                    + " has a null type definition, can't continue, fix it on the schema";
+            LOGGER.warning(msg);
+            throw new NoSuchElementException(msg);
         }
-        AttributeType type;
-        if (hasToBeRegistered) {
-            String targetNamespace = typeDefinition.getTargetNamespace();
-            String name = typeDefinition.getName();
-            Name typeName = Types.typeName(targetNamespace, name);
-            type = getAttributeType(typeName, crs, attMappings);
-            if (type == null) {
-                type = createType(typeName, typeDefinition, crs, attMappings, false);
-            }
-        } else {
-            String name = elemDecl.getName();
-            String targetNamespace = elemDecl.getTargetNamespace();
-            Name overrideName = Types.typeName(targetNamespace, name);
-            type = createType(overrideName, typeDefinition, crs, attMappings, true);
-        }
-        return type;
+
+        String targetNamespace = typeDefinition.getTargetNamespace();
+        String name = typeDefinition.getName();
+        Name typeName = Types.typeName(targetNamespace, name);
+     
+        return getAttributeType(typeName, typeDefinition, crs);
+        
     }
 
     private AttributeType createProxiedType(final Name assignedName,
@@ -502,14 +504,6 @@ public class FeatureTypeRegistry {
         return isDerivedFrom(typeDefinition, typeName);
     }
 
-    private AttributeType createType(XSDTypeDefinition typeDefinition,
-            CoordinateReferenceSystem crs, List<AttributeMapping> attMappings) {
-        String targetNamespace = typeDefinition.getTargetNamespace();
-        String name = typeDefinition.getName();
-        Name typeName = Types.typeName(targetNamespace, name);
-        return createType(typeName, typeDefinition, crs, attMappings, false);
-    }
-
     /**
      * Creates an {@link AttributeType} that matches the xsd type definition as much as possible.
      * <p>
@@ -529,7 +523,7 @@ public class FeatureTypeRegistry {
      */
     private AttributeType createType(final Name assignedName,
             final XSDTypeDefinition typeDefinition, CoordinateReferenceSystem crs,
-            List<AttributeMapping> attMappings, boolean anonymous) {
+            boolean anonymous) {
 
         AttributeType attType;
         // /////////
@@ -551,10 +545,8 @@ public class FeatureTypeRegistry {
             String targetNamespace = baseType.getTargetNamespace();
             String name = baseType.getName();
             if (name != null) {
-                superType = getType(targetNamespace, name);
-            }
-            if (superType == null) {
-                superType = createType(baseType, crs, attMappings);
+                Name baseTypeName = new NameImpl(targetNamespace, name);
+                superType = getAttributeType(baseTypeName, baseType, crs);
             }
         } else {
             LOGGER.warning(assignedName + " has no super type");
@@ -564,7 +556,7 @@ public class FeatureTypeRegistry {
             XSDComplexTypeDefinition complexTypeDef;
             complexTypeDef = (XSDComplexTypeDefinition) typeDefinition;
             boolean includeParents = true;
-            List children = Schemas.getChildElementDeclarations(typeDefinition, includeParents);
+            List<XSDElementDeclaration> children = Schemas.getChildElementDeclarations(typeDefinition, includeParents);
 
             final Collection<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>(
                     children.size());
@@ -574,15 +566,35 @@ public class FeatureTypeRegistry {
             for (Iterator it = children.iterator(); it.hasNext();) {
                 childDecl = (XSDElementDeclaration) it.next();
                 try {
-                    descriptor = createAttributeDescriptor(complexTypeDef, childDecl, crs,
-                            attMappings);
-                    schema.add(descriptor);
+                    descriptor = createAttributeDescriptor(complexTypeDef, childDecl, crs);                
                 } catch (NoSuchElementException e) {
-                    LOGGER.log(Level.WARNING, e.getMessage());
-                    throw e;
+                    String msg = "Failed to create descriptor for '"
+                            + childDecl.getTargetNamespace() + "#" + childDecl.getName() 
+                            + " from container '" + typeDefinition.getTargetNamespace() + "#" + typeDefinition.getName()
+                            + "'";
+                    NoSuchElementException nse = new NoSuchElementException(msg);
+                    nse.initCause(e);
+                    throw nse;
                 }
+                schema.add(descriptor);
             }
-
+                        
+            // set substitution group for descriptors here
+            for (XSDElementDeclaration elemDecl : children) {
+                if (elemDecl.isElementDeclarationReference()) {
+                    elemDecl = elemDecl.getResolvedElementDeclaration();
+                }
+                PropertyDescriptor att = null;
+                for (PropertyDescriptor desc : schema) {
+                    if (desc.getName().getLocalPart().equals(elemDecl.getName())
+                            && desc.getName().getNamespaceURI()
+                                    .equals(elemDecl.getTargetNamespace())) {
+                        att = desc;
+                        break;
+                    }
+                }
+                setSubstitutionGroup(complexTypeDef, elemDecl, att, crs);
+            }
             attType = createComplexAttributeType(assignedName, schema, complexTypeDef, superType);
         } else {
             Class<?> binding = String.class;
@@ -705,7 +717,7 @@ public class FeatureTypeRegistry {
 
     private AttributeType getType(String namespace, String name) {
         Name typeName = Types.typeName(namespace, name);
-        return getAttributeType(typeName, null, null);
+        return getAttributeType(typeName);
     }
 
     private void createFoundationTypes() {

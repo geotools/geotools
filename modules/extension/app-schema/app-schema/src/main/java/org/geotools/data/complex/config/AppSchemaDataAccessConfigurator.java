@@ -201,6 +201,7 @@ public class AppSchemaDataAccessConfigurator {
         } finally {
             if (typeRegistry != null) {
                 typeRegistry.disposeSchemaIndexes();
+                typeRegistry = null;
             }
         }
     }
@@ -260,7 +261,7 @@ public class AppSchemaDataAccessConfigurator {
                 target.getType().getUserData().put("schemaURI", schemaURIs);
 
                 List attMappings = getAttributeMappings(target, dto.getAttributeMappings(), dto
-                        .getItemXpath());
+                        .getItemXpath(), crs);
 
                 FeatureTypeMapping mapping;
 
@@ -273,12 +274,10 @@ public class AppSchemaDataAccessConfigurator {
                 }
                 featureTypeMappings.add(mapping);
             } catch (Exception e) {
-                LOGGER
-                        .warning("Error creating app-schema data store for '"
-                                + dto.getMappingName() != null ? dto.getMappingName() : dto
-                                .getTargetElementName()
-                                + "', caused by: " + e.getMessage());
-                throw new IOException(e.getMessage());
+                LOGGER.warning("Error creating app-schema data store for '"
+                        + (dto.getMappingName() != null ? dto.getMappingName() : dto
+                                .getTargetElementName()) + "', caused by: " + e.getMessage());
+                throw new IOException(e);
             }
         }
         return featureTypeMappings;
@@ -289,8 +288,7 @@ public class AppSchemaDataAccessConfigurator {
         String prefixedTargetName = dto.getTargetElementName();
         Name targetNodeName = Types.degloseName(prefixedTargetName, namespaces);
 
-        AttributeDescriptor targetDescriptor = typeRegistry.getDescriptor(targetNodeName, crs, dto
-                .getAttributeMappings());
+        AttributeDescriptor targetDescriptor = typeRegistry.getDescriptor(targetNodeName, null, null, crs);
         if (targetDescriptor == null) {
             throw new NoSuchElementException("descriptor " + targetNodeName
                     + " not found in parsed schema");
@@ -308,7 +306,7 @@ public class AppSchemaDataAccessConfigurator {
      * @return
      */
     private List getAttributeMappings(final AttributeDescriptor root, final List attDtos,
-            String itemXpath) throws IOException {
+            String itemXpath, CoordinateReferenceSystem crs) throws IOException {
         List attMappings = new LinkedList();
 
         for (Iterator it = attDtos.iterator(); it.hasNext();) {
@@ -363,8 +361,7 @@ public class AppSchemaDataAccessConfigurator {
 
             if (expectedInstanceTypeName != null) {
                 Name expectedNodeTypeName = Types.degloseName(expectedInstanceTypeName, namespaces);
-                expectedInstanceOf = typeRegistry
-                        .getAttributeType(expectedNodeTypeName, null, null);
+                expectedInstanceOf = typeRegistry.getAttributeType(expectedNodeTypeName, null, crs);
                 if (expectedInstanceOf == null) {
                     String msg = "mapping expects and instance of " + expectedNodeTypeName
                             + " for attribute " + targetXPath

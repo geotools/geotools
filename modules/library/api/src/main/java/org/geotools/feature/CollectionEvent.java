@@ -28,8 +28,8 @@ import org.opengis.feature.type.FeatureType;
  * A simple event object to represent all events triggered by FeatureCollection
  * instances (typically change events).
  *
- *
  * @source $URL$
+ * @deprecated Use {@link FeatureEvent}
  */
 public class CollectionEvent extends EventObject {
     private static final long serialVersionUID = -1864190177730929948L;

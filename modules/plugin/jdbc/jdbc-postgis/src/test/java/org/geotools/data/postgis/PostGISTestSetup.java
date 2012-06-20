@@ -16,11 +16,15 @@
  */
 package org.geotools.data.postgis;
 
+import java.sql.Connection;
 import java.util.Properties;
+
+import javax.sql.DataSource;
 
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCTestSetup;
+import org.geotools.util.Version;
 
 /**
  * 
@@ -28,6 +32,24 @@ import org.geotools.jdbc.JDBCTestSetup;
  * @source $URL$
  */
 public class PostGISTestSetup extends JDBCTestSetup {
+
+    protected Version postgisVersion;
+
+    @Override
+    protected void initializeDatabase() throws Exception {
+        DataSource dataSource = getDataSource();
+        Connection cx = dataSource.getConnection();
+        try {
+            postgisVersion = new PostGISDialect(new JDBCDataStore()).getVersion(cx);
+        }
+        finally {
+            cx.close();
+        }
+    }
+
+    public boolean isVersion2() {
+        return postgisVersion != null && postgisVersion.compareTo(PostGISDialect.V_2_0_0) >= 0;
+    }
 
     @Override
     protected void setUpDataStore(JDBCDataStore dataStore) {
@@ -69,11 +91,14 @@ public class PostGISTestSetup extends JDBCTestSetup {
                 + "\"doubleProperty\" double precision, " // 
                 + "\"stringProperty\" varchar)");
         run("INSERT INTO GEOMETRY_COLUMNS VALUES('', 'public', 'ft1', 'geometry', 2, '4326', 'POINT')");
+        if (isVersion2()) {
+            run("ALTER TABLE \"ft1\" ALTER COLUMN  \"geometry\" TYPE geometry(Point,4326);");
+        }
         run("CREATE INDEX FT1_GEOMETRY_INDEX ON \"ft1\" USING GIST (\"geometry\") ");
         
-        run("INSERT INTO \"ft1\" VALUES(0, GeometryFromText('POINT(0 0)', 4326), 0, 0.0, 'zero')"); 
-        run("INSERT INTO \"ft1\" VALUES(1, GeometryFromText('POINT(1 1)', 4326), 1, 1.1, 'one')");
-        run("INSERT INTO \"ft1\" VALUES(2, GeometryFromText('POINT(2 2)', 4326), 2, 2.2, 'two')");
+        run("INSERT INTO \"ft1\" VALUES(0, ST_GeometryFromText('POINT(0 0)', 4326), 0, 0.0, 'zero')"); 
+        run("INSERT INTO \"ft1\" VALUES(1, ST_GeometryFromText('POINT(1 1)', 4326), 1, 1.1, 'one')");
+        run("INSERT INTO \"ft1\" VALUES(2, ST_GeometryFromText('POINT(2 2)', 4326), 2, 2.2, 'two')");
                 // advance the sequence to 2
         run("SELECT nextval(pg_get_serial_sequence('ft1','id'))");
         run("SELECT nextval(pg_get_serial_sequence('ft1','id'))");

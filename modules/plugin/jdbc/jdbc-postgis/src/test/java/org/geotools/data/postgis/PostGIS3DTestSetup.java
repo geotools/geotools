@@ -40,10 +40,10 @@ public class PostGIS3DTestSetup extends JDBC3DTestSetup {
     
         // insert data
         run("INSERT INTO \"line3d\" (\"id\",\"geom\",\"name\") VALUES (0,"
-                + "GeomFromText('LINESTRING(1 1 0, 2 2 0, 4 2 1, 5 1 1)', 4326),"
+                + "ST_GeomFromText('LINESTRING(1 1 0, 2 2 0, 4 2 1, 5 1 1)', 4326),"
                 + "'l1')");
         run("INSERT INTO \"line3d\" (\"id\",\"geom\",\"name\") VALUES (1,"
-                + "GeomFromText('LINESTRING(3 0 1, 3 2 2, 3 3 3, 3 4 5)', 4326),"
+                + "ST_GeomFromText('LINESTRING(3 0 1, 3 2 2, 3 3 3, 3 4 5)', 4326),"
                 + "'l2')");
     }
 
@@ -57,9 +57,9 @@ public class PostGIS3DTestSetup extends JDBC3DTestSetup {
     
         // insert data
         run("INSERT INTO \"point3d\" (\"id\",\"geom\",\"name\") VALUES (0,"
-                + "GeomFromText('POINT(1 1 1)', 4326)," + "'p1')");
+                + "ST_GeomFromText('POINT(1 1 1)', 4326)," + "'p1')");
         run("INSERT INTO \"point3d\" (\"id\",\"geom\",\"name\") VALUES (1,"
-                + "GeomFromText('POINT(3 0 1)', 4326)," + "'p2')");
+                + "ST_GeomFromText('POINT(3 0 1)', 4326)," + "'p2')");
     }
 
     @Override

@@ -104,6 +104,8 @@ public class PostGISDialect extends BasicSQLDialect {
     
     static final Version V_1_5_0 = new Version("1.5.0");
 
+    static final Version V_2_0_0 = new Version("2.0.0");
+
     public PostGISDialect(JDBCDataStore dataStore) {
         super(dataStore);
     }
@@ -253,7 +255,7 @@ public class PostGISDialect extends BasicSQLDialect {
                 if (att instanceof GeometryDescriptor) {
                     // use estimated extent (optimizer statistics)
                     StringBuffer sql = new StringBuffer();
-                    sql.append("select AsText(force_2d(Envelope(ST_Estimated_Extent('");
+                    sql.append("select ST_AsText(ST_force_2d(ST_Envelope(ST_Estimated_Extent('");
                     if(schema != null) {
                         sql.append(schema);
                         sql.append("', '");
@@ -467,8 +469,12 @@ public class PostGISDialect extends BasicSQLDialect {
             
             // fall back on inspection of the first geometry, assuming uniform srid (fair assumption
             // an unpredictable srid makes the table un-queriable)
-            if(srid == null) {
-                String sqlStatement = "SELECT SRID(\"" + columnName + "\") " +
+            //JD: In postgis 2.0 forward there is no way to leave a geometry srid unset since 
+            // geometry_columns is a view populated from system tables, so we check for 0 and take
+            // that to mean unset
+      
+            if(srid == null || (getVersion(cx).compareTo(V_2_0_0) >= 0 && srid == 0)) {
+                String sqlStatement = "SELECT ST_SRID(\"" + columnName + "\") " +
                                "FROM \"" + schemaName + "\".\"" + tableName + "\" " +
                                "WHERE " + columnName + " IS NOT NULL " +
                                "LIMIT 1";
@@ -662,27 +668,42 @@ public class PostGISDialect extends BasicSQLDialect {
                     if (geomType == null)
                         geomType = "GEOMETRY";
 
-                    // register the geometry type, first remove and eventual
-                    // leftover, then write out the real one
-                    String sql = 
-                    "DELETE FROM GEOMETRY_COLUMNS"
-                            + " WHERE f_table_catalog=''" //
-                            + " AND f_table_schema = '" + schemaName + "'" //
-                            + " AND f_table_name = '" + tableName + "'" // 
-                            + " AND f_geometry_column = '" + gd.getLocalName() + "'";
-                    
-                    LOGGER.fine( sql );
-                    st.execute( sql );
-                    
-                    sql = "INSERT INTO GEOMETRY_COLUMNS VALUES (''," //
-                            + "'" + schemaName + "'," //
-                            + "'" + tableName + "'," //
-                            + "'" + gd.getLocalName() + "'," //
-                            + dimensions + "," //
-                            + srid + "," //
-                            + "'" + geomType + "')";
-                    LOGGER.fine( sql );
-                    st.execute( sql );
+                    String sql = null;
+                    if (getVersion(cx).compareTo(V_2_0_0) >= 0) {
+                        // postgis 2 and up we don't muck with geometry_columns, we just alter the
+                        // type directly to set the geometry type and srid
+                        //setup the geometry type
+                        sql = 
+                            "ALTER TABLE \"" + schemaName + "\".\"" + tableName + "\" " + 
+                             "ALTER COLUMN \"" + gd.getLocalName() + "\" " + 
+                             "TYPE geometry (" + geomType + ", " + srid + ");";
+                        
+                        LOGGER.fine( sql );
+                        st.execute( sql );
+                    }
+                    else {
+                        // register the geometry type, first remove and eventual
+                        // leftover, then write out the real one
+                        sql = 
+                        "DELETE FROM GEOMETRY_COLUMNS"
+                                + " WHERE f_table_catalog=''" //
+                                + " AND f_table_schema = '" + schemaName + "'" //
+                                + " AND f_table_name = '" + tableName + "'" // 
+                                + " AND f_geometry_column = '" + gd.getLocalName() + "'";
+                        
+                        LOGGER.fine( sql );
+                        st.execute( sql );
+                        
+                        sql = "INSERT INTO GEOMETRY_COLUMNS VALUES (''," //
+                                + "'" + schemaName + "'," //
+                                + "'" + tableName + "'," //
+                                + "'" + gd.getLocalName() + "'," //
+                                + dimensions + "," //
+                                + srid + "," //
+                                + "'" + geomType + "')";
+                        LOGGER.fine( sql );
+                        st.execute( sql );
+                    }
 
                     // add srid checks
                     if (srid > -1) {
@@ -692,7 +713,7 @@ public class PostGISDialect extends BasicSQLDialect {
                                 + "\"" + tableName + "\"" //
                                 + " ADD CONSTRAINT \"enforce_srid_" // 
                                 + gd.getLocalName() + "\""// 
-                                + " CHECK (SRID(" //
+                                + " CHECK (ST_SRID(" //
                                 + "\"" + gd.getLocalName() + "\"" //
                                 + ") = " + srid + ")";
                         LOGGER.fine( sql );
@@ -743,8 +764,10 @@ public class PostGISDialect extends BasicSQLDialect {
                     st.execute(sql);
                 }
             }
-            cx.commit();
-        } finally {
+            if (!cx.getAutoCommit()) {
+                cx.commit();
+            }
+         } finally {
             dataStore.closeSafe(st);
         }
     }
@@ -760,7 +783,7 @@ public class PostGISDialect extends BasicSQLDialect {
                 value = value.getFactory().createLineString(((LinearRing) value).getCoordinateSequence());
             }
             
-            sql.append("GeomFromText('" + value.toText() + "', " + srid + ")");
+            sql.append("ST_GeomFromText('" + value.toText() + "', " + srid + ")");
         }
     }
 

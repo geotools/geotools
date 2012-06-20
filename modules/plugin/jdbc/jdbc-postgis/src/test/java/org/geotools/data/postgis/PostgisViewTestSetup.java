@@ -26,7 +26,7 @@ public class PostgisViewTestSetup extends JDBCViewTestSetup {
         run("INSERT INTO \"lakes_null\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (-1, -1,"
                 + "null, 'empty')");
         run("INSERT INTO \"lakes_null\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (0, 0,"
-                + "GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
+                + "ST_GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
                 + "'muddy')");
         run("CREATE VIEW \"lakes_null_view\" AS SELECT * FROM \"lakes_null\"");
     }
@@ -38,8 +38,11 @@ public class PostgisViewTestSetup extends JDBCViewTestSetup {
         run("INSERT INTO GEOMETRY_COLUMNS VALUES('', 'public', 'lakes', 'geom', 2, '4326', 'POLYGON')");
         run("CREATE INDEX LAKES_GEOM_INDEX ON \"lakes\" USING GIST (\"geom\") ");
         
+        if (((PostGISTestSetup)delegate).isVersion2()) {
+            run("ALTER TABLE \"lakes\" ALTER COLUMN  \"geom\" TYPE geometry(Polygon,4326);");
+        }
         run("INSERT INTO \"lakes\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (0, 0,"
-                + "GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
+                + "ST_GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
                 + "'muddy')");
     }
 

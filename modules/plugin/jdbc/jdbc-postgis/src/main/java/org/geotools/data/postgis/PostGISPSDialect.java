@@ -191,7 +191,7 @@ public class PostGISPSDialect extends PreparedStatementSQLDialect {
     public void prepareGeometryValue(Geometry g, int srid, Class binding,
             StringBuffer sql) {
         if (g != null) {
-            sql.append("GeomFromWKB(?, " + srid + ")");
+            sql.append("ST_GeomFromWKB(?, " + srid + ")");
         } else {
             sql.append("?");
         }

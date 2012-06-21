@@ -157,25 +157,12 @@ some data types like WFS only allow you to edit when you have a Transaction.::
 Adding Data
 '''''''''''
 
-Adding features can be done in the following manner.::
-  
-  Transaction transaction = new Transaction("Example1");
-  SimpleFeatureStore store = (SimpleFeatureStore) dataStore.getFeatureSource( typeName );
-  store.setTransaction( transaction );
-  
-  SimpleFeatureType featureType = store.getFeatureType();
-  
-  SimpleFeatureCollection collection = FeatureCollections.newInstance();
-  collection.add( featureType.create( new Object[]{ geom1, "hello" } ) );
-  collection.add( featureType.create( new Object[]{ geom2, "hello" } ) );
-  
-  try {
-      store.addFeatures( collection );
-      transaction.commit(); // actually writes out the features in one go
-  }
-  catch( Exception eek){
-      transaction.rollback();
-  }
+Adding features can be done in the following manner.:
+
+.. literalinclude:: /../src/main/java/org/geotools/data/SimpleFeatureStoreExamples.java
+   :language: java
+   :start-after: // addExample start
+   :end-before: // addExample end
 
 Hints:
 
@@ -201,8 +188,8 @@ Hints:
   
   .. literalinclude:: /../src/main/java/org/geotools/data/SimpleFeatureStoreExamples.java
      :language: java
-     :start-after: // addExample start
-     :end-before: // addExample end
+     :start-after: // addFeatureIdExample start
+     :end-before: // addFeatureIdExample end
   
   FeatureID are assigned during the commit process. While we make an attempt to determine an
   appropriate ID prior to commit we ask that you wait until commit() is finished before

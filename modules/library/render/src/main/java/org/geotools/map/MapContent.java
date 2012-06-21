@@ -671,8 +671,7 @@ public class MapContent {
     }
 
     /**
-     * Sets the viewport for this map content and returns the previously
-     * set one (which may be {@code null}). The {@code viewport} argument may
+     * Sets the viewport for this map content. The {@code viewport} argument may
      * be {@code null}, in which case a subsequent to {@linkplain #getViewport()}
      * will return a new instance with default settings.
      * 

@@ -197,30 +197,30 @@ Hints:
   
   Each feature has an identifier that is intended to be unique in agreement with the WFS specification.
   For most implementations the FeatureID is assigned when the feature is added
-  (and even more interestingly when it is committed!)::
-    
-    try {
-        Set<FeatureId> added = store.addFeatures( collection );
-        System.out.println( added ); // prints out the temporary feature ids
-        
-        transaction.commit();
-        System.out.println( added ); // prints out the final feature ids
-    }
-    catch( Exception eek){
-        transaction.rollback();
-    }
-    FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-    Filter selected = ff.id( added ); // filter selecting all the features just added
+  (and even more interestingly when it is committed!):
   
-  Please be careful; if you write down a FeatureID when you created in memory the feature you will lose
-  track of it (since the ID not actually assigned until the feature is stored for safekeeping).
-  You need to update any filters you have to use the real FeatureID after the commit has happened.
+  .. literalinclude:: /../src/main/java/org/geotools/data/SimpleFeatureStoreExamples.java
+     :language: java
+     :start-after: // addExample start
+     :end-before: // addExample end
   
-  To help you with this:
+  FeatureID are assigned during the commit process. While we make an attempt to determine an
+  appropriate ID prior to commit we ask that you wait until commit() is finished before
+  writing down the identifiers of the added content.
   
-  * The commit feature event has the final set of identifiers
-  * Any FeatureID instances in memory can get their internal value updated to reflect the final official value
-
+  The FeatureID instances returned by addFeatures are updated to reflect the final value
+  provided during commit. If you need to perform this step yourself you can listen for a
+  BatchFeatureEvent as shown below.
+  
+* FeatureEvents are sent out when adding:
+  
+  .. literalinclude:: /../src/main/java/org/geotools/data/SimpleFeatureStoreExamples.java
+     :language: java
+     :start-after: // addEvents start
+     :end-before: // addEvents end
+  
+  The BatchFeatureEvent sent out during commit contains the final set of identifiers
+  
 * Handling of FeatureID Yourself
   
   Recentlyy a few datastore implementations (JDBCNG and Property) added support for a "Hint" allowing

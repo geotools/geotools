@@ -833,17 +833,12 @@ public class XPath {
             if (isLastStep) {
                 // reached the leaf
                 if (currStepDescriptor == null) {
-                    throw new IllegalArgumentException(currStep + " is not a valid location path for type "
-                            + _parentType.getName());
+                    throw new IllegalArgumentException(currStep
+                            + " is not a valid location path for type " + _parentType.getName());
                 }
-                if (value == null && !currStepDescriptor.isNillable() && sourceExpression != null
-                        && !sourceExpression.equals(Expression.NIL)) {
-                    if (currStepDescriptor.getMinOccurs() == 0) {
-                        return null;
-                    }
-                }
-                return setLeafAttribute(currStepDescriptor, currStep, id, value,
-                        parent, targetNodeType, isXlinkRef);
+
+                return setLeafAttribute(currStepDescriptor, currStep, id, value, parent,
+                        targetNodeType, isXlinkRef);
             } else {
                 // parent = appendComplexProperty(parent, currStep,
                 // currStepDescriptor);

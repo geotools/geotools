@@ -155,8 +155,15 @@ public class PostGISDialect extends BasicSQLDialect {
             return false;
         } else if (tableName.equals("geography_columns")) {
             return false;
+        } else if (tableName.equals("raster_columns")) {
+            return false;
+        } else if (tableName.equals("raster_overviews")) {
+            return false;
         }
 
+        if (schemaName != null && schemaName.equals("topology")) {
+            return false;
+        }
         // others?
         return true;
     }

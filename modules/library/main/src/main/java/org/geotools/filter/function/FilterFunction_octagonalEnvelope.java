@@ -16,6 +16,8 @@ package org.geotools.filter.function;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+import static org.geotools.filter.capability.FunctionNameImpl.*;
+
 import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
@@ -29,25 +31,14 @@ import org.opengis.filter.capability.FunctionName;
  */
 public class FilterFunction_octagonalEnvelope extends FunctionExpressionImpl {
     
-    /**
-     * The FunctionName
-     */
-    public static FunctionName NAME = new FunctionNameImpl("octagonalenvelope","geometry");
+    public static FunctionName NAME = new FunctionNameImpl("octagonalenvelope", Geometry.class,
+            parameter("geometry", Geometry.class));
 
     /**
      * Create a new FilterFunction_octagonalEnvelope instance
      */
     public FilterFunction_octagonalEnvelope() {
         super(NAME);
-    }
-
-    /**
-     * Get the number of arguments
-     * @return The number of arguments
-     */
-    @Override
-    public int getArgCount() {
-        return 1;
     }
 
     /**

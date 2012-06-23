@@ -16,8 +16,12 @@ package org.geotools.filter.function;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+import static org.geotools.filter.capability.FunctionNameImpl.*;
+
 import org.geotools.filter.FunctionExpression;
 import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
+import org.opengis.filter.capability.FunctionName;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -29,18 +33,16 @@ public class FilterFunction_minimumRectangle extends FunctionExpressionImpl impl
         FunctionExpression {
 
     /**
+     * The FunctionName
+     */
+    public static FunctionName NAME = new FunctionNameImpl("minrectangle", Geometry.class,
+            parameter("geometry", Geometry.class));
+    
+    /**
      * Create a new FilterFunction_minimumRectangle instance
      */
     public FilterFunction_minimumRectangle() {
-        super("minrectangle");
-    }
-
-    /**
-     * Get the number of arguments
-     * @return The number of arguments
-     */
-    public int getArgCount() {
-        return 1;
+        super(NAME);
     }
 
     /**

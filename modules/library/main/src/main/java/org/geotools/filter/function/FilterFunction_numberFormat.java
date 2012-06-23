@@ -17,6 +17,8 @@
 package org.geotools.filter.function;
 
 
+import static org.geotools.filter.capability.FunctionNameImpl.*;
+
 import java.text.DecimalFormat;
 
 import org.geotools.filter.FunctionExpressionImpl;
@@ -34,16 +36,13 @@ import org.opengis.filter.capability.FunctionName;
  * @source $URL$
  */
 public class FilterFunction_numberFormat extends FunctionExpressionImpl {
-    public static FunctionName NAME = new FunctionNameImpl("numberFormat","string","number");
+    
+    public static FunctionName NAME = new FunctionNameImpl("numberFormat", String.class,
+            parameter("format", String.class),
+            parameter("number", Number.class));
     
     public FilterFunction_numberFormat() {
-        super("numberFormat");
-        functionName = NAME;
-    }
-
-    @Override
-    public int getArgCount() {
-        return 2;
+        super(NAME);
     }
 
     public Object evaluate(Object feature) {

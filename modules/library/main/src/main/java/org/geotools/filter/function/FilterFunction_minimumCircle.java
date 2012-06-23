@@ -16,8 +16,12 @@ package org.geotools.filter.function;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+import static org.geotools.filter.capability.FunctionNameImpl.*;
+
 import org.geotools.filter.FunctionExpression;
 import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
+import org.opengis.filter.capability.FunctionName;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -27,20 +31,15 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class FilterFunction_minimumCircle extends FunctionExpressionImpl implements
         FunctionExpression {
+    
+    public static FunctionName NAME = new FunctionNameImpl("mincircle", Geometry.class,
+            parameter("geometry", Geometry.class));
 
     /**
      * Create a new FilterFunction_minimumCircle instance
      */
     public FilterFunction_minimumCircle() {
-        super("mincircle");
-    }
-
-    /**
-     * Get the number of arguments
-     * @return The number of arguments
-     */
-    public int getArgCount() {
-        return 1;
+        super(NAME);
     }
 
     /**

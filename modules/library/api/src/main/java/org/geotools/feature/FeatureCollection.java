@@ -190,6 +190,7 @@ public interface FeatureCollection<T extends FeatureType, F extends Feature> {
      *
      * @param listener The listener to add
      * @throws NullPointerException If the listener is null.
+     * @deprecated Use {@link FeatureSource#addFeatureListener} to monitor change
      */
     void addListener(CollectionListener listener) throws NullPointerException;
 
@@ -198,6 +199,7 @@ public interface FeatureCollection<T extends FeatureType, F extends Feature> {
      *
      * @param listener The listener to remove
      * @throws NullPointerException If the listener is null.
+     * @deprecated Use {@link FeatureSource#removeFeatureListener} to monitor change
      */
     void removeListener(CollectionListener listener) throws NullPointerException;
 

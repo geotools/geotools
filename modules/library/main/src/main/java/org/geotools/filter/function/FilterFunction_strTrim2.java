@@ -45,7 +45,6 @@ import org.opengis.filter.capability.FunctionName;
  */
 public class FilterFunction_strTrim2 extends FunctionExpressionImpl {
 
-    //public static FunctionName NAME = new FunctionNameImpl("strTrim2","string","leading/trailing/both","character");
     public static FunctionName NAME;
     static {
         Parameter<String> method = new Parameter<String>(

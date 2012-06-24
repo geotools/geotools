@@ -53,9 +53,8 @@ public class Collection_UniqueFunction extends FunctionExpressionImpl {
     SimpleFeatureCollection previousFeatureCollection = null;
     Object unique = null;
 
-    //public static FunctionName NAME = new FunctionNameImpl("Collection_Unique","expression");
     public static FunctionName NAME = new FunctionNameImpl("Collection_Unique",
-            parameter("unqiue", Object.class),
+            parameter("unique", Object.class),
             parameter("expression", Object.class));
     
     /**

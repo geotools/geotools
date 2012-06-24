@@ -31,7 +31,6 @@ import org.opengis.filter.capability.FunctionName;
  */
 public class FilterFunction_roundDouble extends FunctionExpressionImpl {
     
-    //public static FunctionName NAME = new FunctionNameImpl("roundDouble", "number");
     public static FunctionName NAME = new FunctionNameImpl("roundDouble",
             parameter("rounded", Double.class),
             parameter("number", Number.class));

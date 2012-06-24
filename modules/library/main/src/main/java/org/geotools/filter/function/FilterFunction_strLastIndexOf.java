@@ -30,7 +30,6 @@ import org.opengis.filter.capability.FunctionName;
  * @source $URL$
  */
 public class FilterFunction_strLastIndexOf extends FunctionExpressionImpl{
-    //public static FunctionName NAME = new FunctionNameImpl("strLastIndexOf","string","string");
     public static FunctionName NAME = new FunctionNameImpl("strLastIndexOf",
             parameter("index", Integer.class),
             parameter("String", String.class),

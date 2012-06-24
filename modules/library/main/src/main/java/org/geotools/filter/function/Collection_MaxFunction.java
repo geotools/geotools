@@ -56,8 +56,8 @@ public class Collection_MaxFunction extends FunctionExpressionImpl {
     
     //public static FunctionName NAME = new FunctionNameImpl("Collection_Max","value");
     public static FunctionName NAME = new FunctionNameImpl("Collection_Max",
-            parameter("max", Object.class),
-            parameter("expression", Object.class));
+            parameter("max", Comparable.class),
+            parameter("expression", Comparable.class));
 
     /**
      * Creates a new instance of Collection_MaxFunction

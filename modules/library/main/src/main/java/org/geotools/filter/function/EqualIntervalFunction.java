@@ -17,6 +17,8 @@
  */
 package org.geotools.filter.function;
 
+import static org.geotools.filter.capability.FunctionNameImpl.*;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -28,7 +30,9 @@ import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.feature.visitor.MinVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.IllegalFilterException;
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.util.NullProgressListener;
+import org.opengis.filter.capability.FunctionName;
 
 
 /**
@@ -42,9 +46,14 @@ import org.geotools.util.NullProgressListener;
  * @source $URL$
  */
 public class EqualIntervalFunction extends ClassificationFunction {
+    
+    public static FunctionName NAME = new FunctionNameImpl("EqualInterval",
+            RangedClassifier.class,
+            parameter("value", Double.class),
+            parameter("classes", Integer.class));
 	
     public EqualIntervalFunction() {
-        setName("EqualInterval");
+        super(NAME);
     }
 
     private RangedClassifier calculate(SimpleFeatureCollection featureCollection) {

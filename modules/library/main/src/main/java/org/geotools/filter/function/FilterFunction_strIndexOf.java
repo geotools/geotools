@@ -31,7 +31,6 @@ import org.opengis.filter.capability.FunctionName;
  */
 public class FilterFunction_strIndexOf extends FunctionExpressionImpl {
 
-    //public static FunctionName NAME = new FunctionNameImpl("strIndexOf","string","string");
     public static FunctionName NAME = new FunctionNameImpl("strIndexOf",
             parameter("index", Integer.class),
             parameter("String", String.class),

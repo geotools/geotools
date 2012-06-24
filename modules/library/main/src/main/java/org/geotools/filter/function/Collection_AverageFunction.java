@@ -56,10 +56,9 @@ public class Collection_AverageFunction extends FunctionExpressionImpl {
     Object average = null;
     Expression expr;
 
-    //public static FunctionName NAME = new FunctionNameImpl("Collection_Average","expression");
     public static FunctionName NAME = new FunctionNameImpl("Collection_Average",
-            parameter("average",Object.class),
-            parameter("expression",Object.class));
+            parameter("average", Number.class),
+            parameter("expression", Number.class));
     
     /**
      * Creates a new instance of Collection_AverageFunction

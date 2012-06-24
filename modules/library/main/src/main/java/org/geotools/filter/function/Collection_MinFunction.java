@@ -54,8 +54,8 @@ public class Collection_MinFunction extends FunctionExpressionImpl {
 
     //public static FunctionName NAME = new FunctionNameImpl("Collection_Min","expression");
     public static FunctionName NAME = new FunctionNameImpl("Collection_Min",
-            parameter("min", Object.class),
-            parameter("expression", Object.class));
+            parameter("min", Comparable.class),
+            parameter("expression", Comparable.class));
 
     /**
      * Creates a new instance of Collection_MinFunction

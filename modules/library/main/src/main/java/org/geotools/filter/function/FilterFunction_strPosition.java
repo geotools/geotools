@@ -45,7 +45,6 @@ import org.opengis.filter.capability.FunctionName;
  */
 public class FilterFunction_strPosition extends FunctionExpressionImpl {
 
-    //public static FunctionName NAME = new FunctionNameImpl("strPosition","string","lookup","forward/backToFront");
     public static FunctionName NAME;
     static {
         Parameter<String> method = new Parameter<String>(

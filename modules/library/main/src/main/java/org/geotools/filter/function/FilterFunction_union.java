@@ -35,7 +35,6 @@ import com.vividsolutions.jts.geom.Geometry;
 public class FilterFunction_union extends FunctionExpressionImpl implements
         FunctionExpression {
 
-    //public static FunctionName NAME = new FunctionNameImpl("union","geometry","geometry");
     public static FunctionName NAME = new FunctionNameImpl("union",
             parameter("union", Geometry.class),
             parameter("geometry", Geometry.class),

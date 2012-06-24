@@ -22,7 +22,6 @@ import com.vividsolutions.jts.geom.MultiPoint;
  */
 public class FilterFunction_vertices extends FunctionExpressionImpl {
 
-    //public static FunctionName NAME = new FunctionNameImpl("vertices","geometry");
     public static FunctionName NAME = new FunctionNameImpl("vertices",
             parameter("vertices", MultiPoint.class),
             parameter("geometry", Geometry.class));

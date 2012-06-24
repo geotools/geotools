@@ -19,12 +19,14 @@ package org.geotools.filter.function;
 import java.io.IOException;
 import java.util.logging.Level;
 
+import static org.geotools.filter.capability.FunctionNameImpl.*;
+
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.visitor.AverageVisitor;
 import org.geotools.feature.visitor.CalcResult;
 import org.geotools.feature.visitor.StandardDeviationVisitor;
-import org.geotools.util.NullProgressListener;
+import org.geotools.filter.capability.FunctionNameImpl;
+import org.opengis.filter.capability.FunctionName;
 
 /**
  * Breaks a SimpleFeatureCollection into classes using the standard deviation classification method.
@@ -36,14 +38,15 @@ import org.geotools.util.NullProgressListener;
  */
 public class StandardDeviationFunction extends ClassificationFunction {
 
-    public int getArgCount() {
-        return 2;
+    public static FunctionName NAME = new FunctionNameImpl("StandardDeviation",
+            RangedClassifier.class,
+            parameter("value", Double.class),
+            parameter("classes", Integer.class));
+    
+    public StandardDeviationFunction() {
+        super(NAME);
     }
     
-	public StandardDeviationFunction() {
-        setName("StandardDeviation");
-	}
-
 	private Object calculate(SimpleFeatureCollection featureCollection) {
         try {
             int classNum = getClasses();

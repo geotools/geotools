@@ -31,11 +31,10 @@ import org.opengis.filter.capability.FunctionName;
  */
 public class FilterFunction_strConcat extends FunctionExpressionImpl {
 
-    //public static FunctionName NAME = new FunctionNameImpl("strConcat","string","string");
     public static FunctionName NAME = new FunctionNameImpl("strConcat",
-            parameter("string", String.class),
-            parameter("string", String.class),
-            parameter("string", String.class));
+            parameter("strConcat", String.class),
+            parameter("string1", String.class),
+            parameter("string2", String.class));
 
     public FilterFunction_strConcat() {
         super(NAME);

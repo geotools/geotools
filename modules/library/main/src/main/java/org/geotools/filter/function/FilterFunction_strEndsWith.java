@@ -31,7 +31,6 @@ import org.opengis.filter.capability.FunctionName;
  */
 public class FilterFunction_strEndsWith extends FunctionExpressionImpl {
 
-    //public static FunctionName NAME = new FunctionNameImpl("strEndsWith","string","postfix");
     public static FunctionName NAME = new FunctionNameImpl("strEndsWith",
             parameter("endsWith", Boolean.class),
             parameter("String", String.class),

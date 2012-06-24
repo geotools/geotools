@@ -31,7 +31,6 @@ import org.opengis.filter.capability.FunctionName;
  */
 public class FilterFunction_strMatches extends FunctionExpressionImpl {
 
-    //public static FunctionName NAME = new FunctionNameImpl("strMatches","string","regex");
     public static FunctionName NAME = new FunctionNameImpl("strMatches",
             parameter("match", Boolean.class),
             parameter("string", String.class),

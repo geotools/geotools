@@ -16,6 +16,8 @@
  */
 package org.geotools.filter.function;
 
+import static org.geotools.filter.capability.FunctionNameImpl.*;
+
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -27,7 +29,9 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.visitor.CalcResult;
 import org.geotools.feature.visitor.QuantileListVisitor;
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.util.NullProgressListener;
+import org.opengis.filter.capability.FunctionName;
 
 /**
  * Breaks a SimpleFeatureCollection into classes with an equal number of items in each.
@@ -38,14 +42,15 @@ import org.geotools.util.NullProgressListener;
  * @source $URL$
  */
 public class QuantileFunction extends ClassificationFunction {
+    
+    public static FunctionName NAME = new FunctionNameImpl("Quantile",
+            RangedClassifier.class,
+            parameter("value", Double.class),
+            parameter("classes", Integer.class));
 
 	public QuantileFunction() {
-        setName("Quantile");
+        super(NAME);
 	}
-
-    public int getArgCount() {
-        return 2;
-    }
     
 	private Object calculate(SimpleFeatureCollection featureCollection) {
 		// use a visitor to find the values in each bin

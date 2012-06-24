@@ -33,7 +33,6 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class FilterFunction_within extends FunctionExpressionImpl {
 
-    //public static FunctionName NAME = new FunctionNameImpl("within","geometry","geometry");
     public static FunctionName NAME = new FunctionNameImpl("within",
             parameter("within",Boolean.class),
             parameter("geometry", Geometry.class),

@@ -49,8 +49,7 @@ public abstract class ClassificationFunction extends DefaultExpression implement
 
     protected static final java.util.logging.Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.filter.function");
 
-    /** function name **/
-    String name;
+    FunctionName name;
     
     /** function params **/
     List params = new ArrayList(2);
@@ -59,15 +58,14 @@ public abstract class ClassificationFunction extends DefaultExpression implement
     
     ProgressListener progress;
     
-    /** Creates a new instance of ClassificationFunction.  Subclasses should call setName */
-    public ClassificationFunction() {
-        setName("ClassificationFunction");
-        params.add(0, null);
-        params.add(1, null);
+    public ClassificationFunction(FunctionName name) {
+        this.name = name;
         this.expressionType = ExpressionType.FUNCTION;
     }
     
-    public abstract int getArgCount();
+    public int getArgCount() {
+        return name.getArgumentNames().size();
+    }
     
     /**
      * @see org.opengis.filter.expression.Expression#accept(ExpressionVisitor, Object)
@@ -116,16 +114,11 @@ public abstract class ClassificationFunction extends DefaultExpression implement
      * 
      */
     public String getName() {
-        return name;
+        return name.getName();
     }
+    
     public FunctionName getFunctionName() {
-        return new FunctionNameImpl( getName(), getArgCount() );
-    }
-    /**
-     * Sets the name of the function.
-     */
-    public void setName(String name) {
-        this.name = name;
+        return name;
     }
     
     /**

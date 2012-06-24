@@ -33,7 +33,6 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class FilterFunction_toWKT extends FunctionExpressionImpl {
 
-    //public static FunctionName NAME = new FunctionNameImpl("toWKT","geometry");
     public static FunctionName NAME = new FunctionNameImpl("toWKT",
             parameter("wkt", String.class),
             parameter("geometry", Geometry.class));

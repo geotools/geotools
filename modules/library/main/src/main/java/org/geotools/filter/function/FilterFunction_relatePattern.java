@@ -32,7 +32,6 @@ import com.vividsolutions.jts.geom.Geometry;
  * @source $URL$
  */
 public class FilterFunction_relatePattern extends FunctionExpressionImpl {
-    //public static FunctionName NAME = new FunctionNameImpl("relatePattern", "geometry","geometry","pattern");
     public static FunctionName NAME = new FunctionNameImpl("relatePattern",
             parameter("related", Boolean.class),
             parameter("geometry", Geometry.class),

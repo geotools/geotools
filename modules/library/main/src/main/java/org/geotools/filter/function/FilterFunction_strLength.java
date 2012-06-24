@@ -30,7 +30,7 @@ import org.opengis.filter.capability.FunctionName;
  * @source $URL$
  */
 public class FilterFunction_strLength extends FunctionExpressionImpl {
-    //public static FunctionName NAME = new FunctionNameImpl("strLength","string");
+
     public static FunctionName NAME = new FunctionNameImpl("strLength",
             parameter("length", Integer.class),
             parameter("string", String.class));

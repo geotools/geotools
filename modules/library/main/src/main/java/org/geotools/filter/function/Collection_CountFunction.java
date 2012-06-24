@@ -18,10 +18,9 @@
  */
 package org.geotools.filter.function;
 
-import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+import static org.geotools.filter.capability.FunctionNameImpl.*;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -51,20 +50,14 @@ public class Collection_CountFunction extends FunctionExpressionImpl{
 
 	Object count = null;
 
-    // public static FunctionName NAME = new FunctionNameImpl("Collection_Count","expression");
     public static FunctionName NAME = new FunctionNameImpl("Collection_Count",
-            parameter( "count", Object.class),
-            parameter("expression", Object.class));
+            parameter("count", Object.class));
 	
 	/**
 	 * Creates a new instance of Collection_CountFunction
 	 */
 	public Collection_CountFunction() {
 	    super(NAME);
-	}
-
-	public int getArgCount() {
-		return 1;
 	}
 
 	/**
@@ -84,33 +77,6 @@ public class Collection_CountFunction extends FunctionExpressionImpl{
 		collection.accepts(countVisitor, null);
 		return countVisitor.getResult();
 	}
-
-	/**
-	 * The provided arguments are evaulated with respect to the
-	 * FeatureCollection.
-	 * 
-	 * <p>
-	 * For an aggregate function (like count) please use the WFS mandated XPath
-	 * syntax to refer to featureMember content.
-	 * </p>
-	 * 
-	 * <p>
-	 * To refer to all 'X': <code>featureMember/asterisk/X</code>
-	 * </p>
-	 * 
-	 * @param args
-	 *            DOCUMENT ME!
-	 * 
-	 * @throws IllegalArgumentException
-	 *             DOCUMENT ME!
-	 */
-    public void setParameters(List args) {
-        // if we see "featureMembers/*/ATTRIBUTE" change to "ATTRIBUTE"
-        org.opengis.filter.expression.Expression expr = (org.opengis.filter.expression.Expression) args.get(0);
-        expr = (org.opengis.filter.expression.Expression) expr.accept(new CollectionFeatureMemberFilterVisitor(),null);
-        args.set(0, expr );
-        super.setParameters(args);
-    }
 
 	public Object evaluate(Object feature) {
 		if (feature == null) {

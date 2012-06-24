@@ -33,7 +33,6 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class FilterFunction_symDifference extends FunctionExpressionImpl {
 
-    //public static FunctionName NAME = new FunctionNameImpl("symDifference","geometry","geometry");
     public static FunctionName NAME = new FunctionNameImpl("symDifference",
             parameter("symetric difference", Geometry.class),
             parameter("geometry", Geometry.class),

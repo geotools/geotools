@@ -31,7 +31,6 @@ import org.opengis.filter.capability.FunctionName;
  */
 public class FilterFunction_strTrim extends FunctionExpressionImpl {
 
-    //public static FunctionName NAME = new FunctionNameImpl("strTrim","string");
     public static FunctionName NAME = new FunctionNameImpl("strTrim",
             parameter("trim", String.class),
             parameter("string", String.class));

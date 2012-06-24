@@ -33,7 +33,6 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class FilterFunction_touches extends FunctionExpressionImpl {
 
-    //public static FunctionName NAME = new FunctionNameImpl("touches","geometry","geometry");
     public static FunctionName NAME = new FunctionNameImpl("touches",
             parameter("touches", Boolean.class),
             parameter("geometry", Geometry.class),

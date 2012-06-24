@@ -17,9 +17,13 @@
  */
 package org.geotools.filter.function;
 
+import static org.geotools.filter.capability.FunctionNameImpl.*;
+
 import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.filter.capability.FunctionName;
 
 /**
  * Allow access to the value of Feature.getID() as an expression
@@ -33,6 +37,9 @@ import org.opengis.feature.simple.SimpleFeature;
  */
 public class IDFunction extends FunctionExpressionImpl {
 
+    public static FunctionName NAME = new FunctionNameImpl("id",
+            String.class);
+    
 	public IDFunction() {
 	    super("id");
 	}

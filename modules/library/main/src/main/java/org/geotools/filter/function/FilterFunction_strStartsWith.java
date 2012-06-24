@@ -31,7 +31,6 @@ import org.opengis.filter.capability.FunctionName;
  */
 public class FilterFunction_strStartsWith extends FunctionExpressionImpl {
 
-    //public static FunctionName NAME = new FunctionNameImpl("strStartsWith","string","prefix");
     public static FunctionName NAME = new FunctionNameImpl("strStartsWith",
             parameter("starts with", Boolean.class),
             parameter("string", String.class),

@@ -31,7 +31,6 @@ import org.opengis.filter.capability.FunctionName;
  */
 public class FilterFunction_strCapitalize extends FunctionExpressionImpl {
 
-    //public static FunctionName NAME = new FunctionNameImpl("strCapitalize","string");
     public static FunctionName NAME = new FunctionNameImpl("strCapitalize",
             parameter("string", String.class),
             parameter("string", String.class));

@@ -166,9 +166,6 @@ public class InterpolateFunction implements Function {
      * Make the instance of FunctionName available in
      * a consistent spot.
      */
-//    public static final FunctionName NAME = new FunctionNameImpl("Interpolate", "LookupValue",
-//            "Data 1", "Value 1", "Data 2", "Value 2", "linear, cosine or cubic", "numeric or color");
-    
     public static final FunctionName NAME;
     static {
         Parameter<Object> lookup = new Parameter<Object>("lookup",Object.class,1,1);

@@ -33,12 +33,7 @@ public class FilterFunction_setCRS extends FunctionExpressionImpl {
             parameter("geometry", Geometry.class), parameter("CRS", String.class));
 
     public FilterFunction_setCRS() {
-        super("setSRS");
-        functionName = NAME;
-    }
-
-    public int getArgCount() {
-        return 2;
+        super(NAME);
     }
 
     public Object evaluate(Object feature) {

@@ -16,6 +16,8 @@
  */
 package org.geotools.filter.function;
 
+import static org.geotools.filter.capability.FunctionNameImpl.*;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
@@ -28,7 +30,9 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.visitor.CalcResult;
 import org.geotools.feature.visitor.UniqueVisitor;
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.util.NullProgressListener;
+import org.opengis.filter.capability.FunctionName;
 
 
 /**
@@ -41,8 +45,13 @@ import org.geotools.util.NullProgressListener;
  */
 public class UniqueIntervalFunction extends ClassificationFunction {
     
+    public static FunctionName NAME = new FunctionNameImpl("UniqueInterval",
+            RangedClassifier.class,
+            parameter("value", Double.class),
+            parameter("classes", Integer.class));
+    
     public UniqueIntervalFunction() {
-        setName("UniqueInterval");
+        super(NAME);
     }
 
     private Object calculate(SimpleFeatureCollection featureCollection) {

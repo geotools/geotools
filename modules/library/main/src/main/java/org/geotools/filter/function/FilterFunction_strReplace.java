@@ -31,7 +31,6 @@ import org.opengis.filter.capability.FunctionName;
  */
 public class FilterFunction_strReplace extends FunctionExpressionImpl {
 
-    //public static FunctionName NAME = new FunctionNameImpl("strReplace","string","search","replace","all");
     public static FunctionName NAME = new FunctionNameImpl("strReplace",
             parameter("string", String.class),
             parameter("string", String.class),

@@ -58,17 +58,13 @@ public class Collection_MedianFunction extends FunctionExpressionImpl {
 
     //public static FunctionName NAME = new FunctionNameImpl("Collection_Median","value");
     public static FunctionName NAME = new FunctionNameImpl("Collection_Median",
-            parameter("median", Object.class),
-            parameter("expression", Object.class));
+            parameter("median", Comparable.class),
+            parameter("expression", Comparable.class));
     /**
      * Creates a new instance of Collection_MedianFunction
      */
     public Collection_MedianFunction() {
         super(NAME);
-    }
-
-    public int getArgCount() {
-        return 1;
     }
 
     /**

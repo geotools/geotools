@@ -23,6 +23,7 @@ import java.util.Iterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
+import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.sort.SortBy;
@@ -269,7 +270,21 @@ public interface FeatureCollection<T extends FeatureType, F extends Feature> {
      */
     T getSchema();
 
-    /** ID used when serializing to GML */
+    /**
+     * The type for feature members of this FeatureCollection.
+     */
+ // T getType();
+    
+    /**
+     * The feature member AttributeDescriptor.
+     * 
+     * @return
+     */
+ // AttributeDescriptor getDescriptor();
+    
+    /**
+     * ID used when serializing to GML
+     */
     String getID();
     
     /**
@@ -320,9 +335,12 @@ public interface FeatureCollection<T extends FeatureType, F extends Feature> {
     public FeatureCollection<T, F> subCollection(Filter filter);
 
     /**
-     * collection.subCollection( myFilter ).sort( {"foo","bar"} );
-     * collection.subCollection( myFilter ).sort( "bar" ).sort("foo")
-     * @param order
+     * Obtained sorted contents.
+     * <p>
+     * This method may not be supported by all implementations, consider
+     * the use of FeatureSource.features( Query ).
+     * 
+     * @param order Sort order
      * @return FeatureCollection sorted in the indicated order
      */
     public FeatureCollection<T, F> sort(SortBy order);
@@ -364,7 +382,7 @@ public interface FeatureCollection<T extends FeatureType, F extends Feature> {
      * </code></pre>
      * </p>
      * @return Iterator
-     * @deprecated Please use features() to obtain a FeatureIterator
+     * @deprecated Please use features() to obtain a closable FeatureIterator
      */
     public Iterator<F> iterator();
 
@@ -391,6 +409,7 @@ public interface FeatureCollection<T extends FeatureType, F extends Feature> {
      * 
      * @return true of the element was added
      * @see java.util.Collection#add(Object)
+     * @deprecated Assumes modification Collection in memory - use FeatureSource
      */
     boolean add(F obj);
     
@@ -399,13 +418,20 @@ public interface FeatureCollection<T extends FeatureType, F extends Feature> {
      * <p>
      * This method is often not implemented for collections produced as the results of a query.
      * @see java.util.Collection#addAll(Collection)
+     * @deprecated Assumes modification Collection in memory - use FeatureSource
      */
     boolean addAll(Collection<? extends F> collection);
 
-    /** @see #addAll(Collection) */
+    /**
+     * @see #addAll(Collection)
+     * @deprecated Assume modification Collection in memory - use FeatureSource
+     */
     boolean addAll(FeatureCollection<? extends T,? extends F> resource);
     
-    /** @see java.util.Collection#clear() */
+    /**
+     * @see java.util.Collection#clear()
+     * @deprecated Assumes modification Collection in memory - use FeatureSource
+     */
     void clear();
     
     /**
@@ -421,16 +447,27 @@ public interface FeatureCollection<T extends FeatureType, F extends Feature> {
     /** @see java.util.Collection#isEmpty() */
     boolean isEmpty();
     
-    /** @see java.util.Collection#remove(Object) */
+    /**
+     * @see java.util.Collection#remove(Object)
+     * @deprecated Assumes modification Collection in memory - use FeatureSource
+     */
     boolean remove(Object o);
     
-    /** @see java.util.Collection#removeAll(Collection) */
+    /**
+     * @see java.util.Collection#removeAll(Collection)
+     * @deprecated Assumes modification Collection in memory - use FeatureSource
+     */
     public boolean removeAll(Collection<?> c);
     
-    /** @see java.util.Collection#retainAll(Collection) */   
-    public boolean retainAll(Collection<?> c);
-      
     /**
+     * @see java.util.Collection#retainAll(Collection)
+     * @deprecated Assumes modification Collection in memory - use FeatureSource
+     */
+    public boolean retainAll(Collection<?> c);
+    
+    /**
+     * Please note this operation may be expensive when working with remote content.
+     * 
      * @see java.util.Collection#size()
      */
     int size();

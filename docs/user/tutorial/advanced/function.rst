@@ -55,8 +55,8 @@ Things to Try
 ^^^^^^^^^^^^^
 
 * Create a quick test case to show that the above function is available using::
-    
-    FunctionFactory ff = CommonFactoryFinder.getFactoryFinder( null );
+  
+    FunctionFactory ff = CommonFactoryFinder.getFactoryFinder();
     Expression expr = ff.function( "snap", ff.property("the_geom"), ff.literal( lines ) );
 
 * The function should be very slow as written (when called to snap thousands of points).
@@ -71,6 +71,47 @@ Things to Try
   GeoTools does provide a couple Abstract classes you can extend when defining your own functions.
   Have a look **FunctionImpl** and see if you find it easier then just starting from scratch.
 
+* Functions are used to process their parameters and produce an answer::
+        
+          public Object evaluate(Object feature) {
+              Expression geomExpression = parameters.get(0);
+              Geometry geom = geomExpression.evaulate( feature, Geometry.class );
+              
+              return geom.centroid();
+          }
+  
+  When a function is used as part of a Style users often want to calculate a value based
+  on the attributes of the Feature being drawn.  The Expression PropertyName is used in this
+  fashion to extract values out of a Feature and pass them into the function for evaluation
+  
+  **IMPORTANT**: When using your function with a Style we try and be efficient. If the style
+  calls your function without any reference to PropertyName it will only be called once.
+  The assumption is that the function will produce the same value each time it is called, and
+  thus will produce the same value for all features. By only calling the function once (and
+  remembering the result) the rendering engine is able to perform much faster.
+  
+  If this is not the functionality you are after please implement **VolatileFunction**::
+  
+    public class MagicFunction extends FunctionExpressionImpl implements VolatileFunction {
+        Random random;
+        public MagicFunction() {
+            super("magic");
+            random = new Random();
+        }
+        public int getArgCount() {
+            return 0; // no arguments!
+        }
+        public Object evaluate(Object feature) {
+            float r = rand.nextFloat();
+            float g = rand.nextFloat();
+            float b = rand.nextFloat();
+            
+            Color color = new Color(r, g, b);
+            
+            return color;
+        }
+    }
+  
 Function
 ^^^^^^^^
 

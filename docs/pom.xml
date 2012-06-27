@@ -240,7 +240,7 @@
                 <ant antfile="build.xml" dir="${basedir}" target="${target}">
                   <property name="build.directory" value="${build.directory}"/>
                   <!-- may be ${project.version} when tagged -->
-                  <property name="project.version" value="8.0-RC1"/>
+                  <property name="project.version" value="${project.version}"/>
                 </ant>
               </tasks>
             </configuration>

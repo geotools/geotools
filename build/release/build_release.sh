@@ -136,6 +136,7 @@ pushd tags/$tag > /dev/null
 # update versions
 pushd build > /dev/null
 sed -i 's/@VERSION@/'$tag'/g' rename.xml 
+sed -i "s/@RELEASE_DATE@/`date "+%b %d, %Y"`/g" rename.xml 
 ant -f rename.xml
 popd > /dev/null
 

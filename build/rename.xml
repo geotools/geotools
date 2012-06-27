@@ -1,21 +1,16 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project name="Rename" default="rename">
   
-  <target name="rename" depends="code,doc,readme"
-          description="Update the version references in code, doc and readme"
+  <target name="rename" depends="code, readme"
+          description="Update the version references in code and readme"
    />
   
   <target name="code">
     <replace dir="..">
       <include name="**/pom.xml"/>
       <include name="**/GeoTools.java"/>
+      <include name="**/common.py"/>
       <replacefilter token="8-SNAPSHOT" value="@VERSION@"/>
-    </replace>
-  </target>
-  
-  <target name="doc">
-    <replace file="../docs/common.py">
-      <replacefilter token="@RELEASE@" value="@VERSION@"/>
     </replace>
   </target>
   

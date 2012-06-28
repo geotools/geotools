@@ -42,7 +42,7 @@ exclude_patterns = ['**/.svn']
 
 # General information about the project.
 project = u'GeoTools'
-copyright = u'2011, GeoTools'
+copyright = u'2012, GeoTools'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

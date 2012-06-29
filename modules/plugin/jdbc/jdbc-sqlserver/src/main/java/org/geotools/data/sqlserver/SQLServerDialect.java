@@ -38,6 +38,7 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.CoordinateSystem;
+import org.opengis.referencing.cs.CoordinateSystemAxis;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -57,6 +58,9 @@ import com.vividsolutions.jts.io.WKTReader;
  * @source $URL$
  */
 public class SQLServerDialect extends BasicSQLDialect {
+
+    private static final int DEFAULT_AXIS_MAX = 10000000;
+    private static final int DEFAULT_AXIS_MIN = -10000000;
 
     public SQLServerDialect(JDBCDataStore dataStore) {
         super(dataStore);
@@ -120,9 +124,19 @@ public class SQLServerDialect extends BasicSQLDialect {
                         CoordinateReferenceSystem crs = gd.getCoordinateReferenceSystem();
                         CoordinateSystem cs = crs.getCoordinateSystem();
                         if (cs.getDimension() == 2) {
-                            bbox = "("+cs.getAxis(0).getMinimumValue()+", "+cs.getAxis(1).getMinimumValue();
-                            bbox += ", "+cs.getAxis(0).getMaximumValue()+", "+cs.getAxis(1).getMaximumValue()+")";
-                            
+                            CoordinateSystemAxis a0 = cs.getAxis(0);
+                            CoordinateSystemAxis a1 = cs.getAxis(1);
+                            bbox = "(";
+                            bbox += (Double.isInfinite(a0.getMinimumValue()) ? 
+                                DEFAULT_AXIS_MIN : a0.getMinimumValue()) + ", ";
+                            bbox += (Double.isInfinite(a1.getMinimumValue()) ?
+                                DEFAULT_AXIS_MIN : a1.getMinimumValue()) + ", ";
+
+                            bbox += (Double.isInfinite(a0.getMaximumValue()) ? 
+                                DEFAULT_AXIS_MAX : a0.getMaximumValue()) + ", ";
+                            bbox += Double.isInfinite(a1.getMaximumValue()) ?
+                                DEFAULT_AXIS_MAX : a1.getMaximumValue();
+                            bbox += ")";
                         }
                     }
                     

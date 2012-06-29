@@ -80,7 +80,7 @@ import com.vividsolutions.jts.geom.Polygon;
  */
 public class OracleDialect extends PreparedStatementSQLDialect {
     
-    private static final int DEFAULT_AXIS_MAX = 1000000;
+    private static final int DEFAULT_AXIS_MAX = 10000000;
 
     private static final int DEFAULT_AXIS_MIN = -10000000;
     

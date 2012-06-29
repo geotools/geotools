@@ -28,6 +28,7 @@ import java.util.HashSet;
 import org.geotools.data.*;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeature;
@@ -41,6 +42,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.io.WKTReader;
 
 
 /**
@@ -164,6 +166,43 @@ public abstract class JDBCDataStoreTest extends JDBCTestSupport {
         }
         
         w.close();
+    }
+
+    public void testCreateSchemaUTMCRS() throws Exception {
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName(tname("ft2"));
+        builder.setNamespaceURI(dataStore.getNamespaceURI());
+        builder.setCRS(CRS.decode("EPSG:26713"));
+        builder.add(aname("geometry"), Point.class);
+        builder.add(aname("intProperty"), Integer.class);
+        builder.add(aname("stringProperty"), String.class);
+        
+        SimpleFeatureType featureType = builder.buildFeatureType();
+        dataStore.createSchema(featureType);
+        
+        SimpleFeatureType ft2 = dataStore.getSchema(tname("ft2"));
+        assertNotNull(ft2);
+
+        FeatureWriter w = dataStore.getFeatureWriter( tname("ft2"),Transaction.AUTO_COMMIT);
+        w.hasNext();
+
+        //write out a feature with a geomety in teh srs, basically accomodate databases that have 
+        // to query the first feature in order to get the srs for the feature type
+        SimpleFeature f = (SimpleFeature) w.next();
+
+        Geometry g = new WKTReader().read("POINT(593493 4914730)");
+        g.setSRID(26713);
+        
+        f.setAttribute(0, g);
+        f.setAttribute( 1, new Integer(0));
+        f.setAttribute( 2, "hello");
+        w.write();
+        w.close();
+
+        //clear out the feature type cache
+        dataStore.getEntry(new NameImpl(dataStore.getNamespaceURI(), tname("ft2"))).dispose();
+        ft2 = dataStore.getSchema(tname("ft2"));
+        assertTrue(CRS.equalsIgnoreMetadata(CRS.decode("EPSG:26713"), ft2.getCoordinateReferenceSystem()));
     }
 
     void assertEqualsLax( SimpleFeatureType e, SimpleFeatureType a ) {

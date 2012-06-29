@@ -16,15 +16,14 @@
  */
 package org.geotools.graph.build.line;
 
+import com.vividsolutions.jts.geom.*;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineSegment;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Builds a graph representing a line network in which edges in the network are
@@ -39,21 +38,29 @@ import com.vividsolutions.jts.geom.MultiLineString;
  * @see com.vividsolutions.jts.geom.Point
  * 
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- *
- *
+ * @author Anders Bakkevold, Bouvet AS, bakkedev@gmail.com
  *
  * @source $URL$
  */
 public class LineStringGraphGenerator extends BasicLineGraphGenerator {
 
   private static GeometryFactory gf = new GeometryFactory();
-  
+
+  public LineStringGraphGenerator(double tolerance) {
+      super(tolerance);
+  }
+
+  public LineStringGraphGenerator() {
+  }
+
   public Graphable add(Object obj) {
-  	LineString ls = null;
-  	if (obj instanceof MultiLineString)
-  		ls = (LineString) ((MultiLineString)obj).getGeometryN(0);
-  	else
-  		ls = (LineString)obj;
+    LineString ls = null;
+    if (obj instanceof MultiLineString) {
+        ls = (LineString) ((MultiLineString) obj).getGeometryN(0);
+    }
+    else {
+        ls = (LineString) obj;
+    }
     
     //parent class expects a line segment
     Edge e = (Edge)super.add(
@@ -61,10 +68,33 @@ public class LineStringGraphGenerator extends BasicLineGraphGenerator {
         ls.getCoordinateN(0), ls.getCoordinateN(ls.getNumPoints()-1)
       )
     );
-    
+    //check if the LineSegment has been changed
+    if (useTolerance()) {
+      LineSegment lineSegment = (LineSegment) e.getObject();
+      Coordinate[] coordinates = ls.getCoordinates();
+      List<Coordinate> coordinateList = Arrays.asList(coordinates);
+      // list from asList does not support add(index,object), must make an arraylist
+      List<Coordinate> nCoordinateList = new ArrayList<Coordinate>(coordinateList);
+      if (!ls.getCoordinateN(0).equals(lineSegment.p0)) {
+        nCoordinateList.add(0, lineSegment.p0);
+      } else if (!ls.getCoordinateN(ls.getNumPoints()-1).equals(lineSegment.p1)){
+        nCoordinateList.add(lineSegment.p1);
+      }
+      Coordinate[] newCoordinates = nCoordinateList.toArray(new Coordinate[nCoordinateList.size()]);
+      ls = gf.createLineString(newCoordinates);
+    }
     //over write object to be the linestring
     e.setObject(ls);
     return(e);
+  }
+
+  protected LineSegment alterLine(LineSegment line, Node n1, Node n2) {
+    Point c1added = ((Point) n1.getObject());
+    Point c2added = ((Point) n2.getObject());
+    if (!c1added.getCoordinate().equals(line.p0) || c2added.getCoordinate().equals(line.p1)) {
+      line = new LineSegment(c1added.getCoordinate(), c2added.getCoordinate());
+    }
+    return line;
   }
 
   public Graphable remove(Object obj) {
@@ -93,133 +123,9 @@ public class LineStringGraphGenerator extends BasicLineGraphGenerator {
     );
   }
 
-
   protected void setObject(Node n, Object obj) {
     //set underlying object to be point instead of coordinate
     Coordinate c = (Coordinate)obj;
     n.setObject(gf.createPoint(c));
   }
-
-//  /** underlying line graph generator **/
-//  private LineGraphGenerator m_generator;
-//  
-//  /**
-//   * Constructs a new LineStringGraphGenerator.
-//   *
-//   */
-//  public LineStringGraphGenerator() {
-//    this(new BasicLineGraphGenerator());	
-//  }
-//  
-//  /**
-//   * Constructs a new LineStringGraphGenerator.
-//   * 
-//   * @param generator Underlying generator.
-//   */
-//  public LineStringGraphGenerator(LineGraphGenerator generator) {
-//    m_generator = generator;  
-//  }
-//  
-//  /**
-//   * Adds a LineString object to the graph. An edge is created to represent the 
-//   * LineString and its underlying object is set to the LineString.
-//   * 
-//   * @param obj A LineString.
-//   * 
-//   * @see GraphGenerator#add(Object)
-//   */
-//  public Graphable add(Object obj) {
-//    LineString line = (LineString)obj;
-//    Coordinate[] c = line.getCoordinates();
-//    
-//    //instruct the underlying line graph generate and edge represented by 
-//    // the endpoints of the linestring, set the underlying object to be the
-//    //linstring itself
-//    Edge e = (Edge)m_generator.add(
-//      new LineSegment(c[0], c[c.length-1])
-//    );  
-//    e.setObject(line);
-//    
-//    //check nodes of edge, if not visited, set object to point
-//    if (!e.getNodeA().isVisited()) {
-//      e.getNodeA().setVisited(true);
-//      e.getNodeA().setObject(line.getPointN(0));
-//    }
-//    
-//    if (!e.getNodeB().isVisited()) {
-//      e.getNodeB().setVisited(true);
-//      e.getNodeB().setObject(line.getPointN(c.length-1));  
-//    }
-//    
-//    return(e);
-//  }
-//
-//  /**
-//   * Returns the edge created to represent a LineString object.
-//   * 
-//   * @param obj A LineString.
-//   * 
-//   * @see GraphGenerator#get(Object)
-//   */
-//  public Graphable get(Object obj) {
-//    LineString line = (LineString)obj;
-//    Coordinate[] c = line.getCoordinates();
-//    
-//    Edge e = (Edge)m_generator.get(
-//      new LineSegment(c[0], c[c.length-1])
-//    );
-//    
-//    return(e);
-//  }
-//
-//  /**
-//   * Removes an edge from the graph which represents a LineString object.
-//   * 
-//   * @param A LineString.
-//   * 
-//   * @see GraphGenerator#remove(Object)
-//   */
-//  public Graphable remove(Object obj) {
-//    LineString line = (LineString)obj;
-//    Coordinate[] c = line.getCoordinates();
-//    
-//    Edge e = (Edge)m_generator.remove(
-//      new LineSegment(c[0], c[c.length-1])
-//    );
-//    
-//    return(e);
-//  }
-//
-//  /**
-//   * Sets the underlying builder of the underlying generator.
-//   * 
-//   * @see GraphGenerator#setGraphBuilder(GraphBuilder)
-//   */
-//  public void setGraphBuilder(GraphBuilder builder) {
-//    m_generator.setGraphBuilder(builder);  
-//  }
-//
-//  /**
-//   * Returns the underlying builder of the underlying generator.
-//   * 
-//   * @see GraphGenerator#getGraphBuilder()
-//   */
-//  public GraphBuilder getGraphBuilder() {
-//    return(m_generator.getGraphBuilder());
-//  }
-//
-//  /**
-//   * @see GraphGenerator#getGraph()
-//   */
-//  public Graph getGraph() {
-//    return(m_generator.getGraph());
-//  }
-//
-//  public Node getNode(Coordinate c) {
-//    return(m_generator.getNode(c)); 
-//  }
-//
-//  public Edge getEdge(Coordinate c1, Coordinate c2) {
-//    return(m_generator.getEdge(c1,c2));
-//  }
 }

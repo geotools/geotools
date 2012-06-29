@@ -16,6 +16,7 @@
  */
 package org.geotools.graph.build.feature;
 
+import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.graph.build.GraphBuilder;
 import org.geotools.graph.build.GraphGenerator;
 import org.geotools.graph.build.basic.BasicGraphGenerator;
@@ -30,9 +31,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * builds a graph from geometries. 
  * </p>
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- *
- *
- *
+ * @author Anders Bakkevold, Bouvet AS, bakkedev@gmail.com
  *
  * @source $URL$
  */
@@ -58,8 +57,10 @@ public class FeatureGraphGenerator extends BasicGraphGenerator {
 	public Graphable add( Object obj ) {
 		SimpleFeature feature = (SimpleFeature) obj;
 		Graphable g = decorated.add( feature.getDefaultGeometry() );
-		g.setObject( feature );
-	
+        Geometry geom = (Geometry) g.getObject();
+        //Preserve geometry from Graphable, as it may be changed.
+        feature.setDefaultGeometry(geom);
+        g.setObject( feature );
 		return g;
 	}
 	

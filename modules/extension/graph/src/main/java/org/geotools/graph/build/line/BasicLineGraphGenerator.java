@@ -17,8 +17,11 @@
 package org.geotools.graph.build.line;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.vividsolutions.jts.index.bintree.Bintree;
+import com.vividsolutions.jts.index.bintree.Interval;
 import org.geotools.graph.build.GraphBuilder;
 import org.geotools.graph.build.GraphGenerator;
 import org.geotools.graph.build.basic.BasicGraphBuilder;
@@ -39,6 +42,9 @@ import com.vividsolutions.jts.geom.LineSegment;
  * records the end coordinates of each line added, and maintains a map of 
  * coordinates to nodes, creating nodes when neccessary.<BR>
  * <BR>
+ * If a tolerance distance is set, the end coordinates matched to nodes with
+ * a tolerance distance (using a spatial index). <BR>
+ * <BR>
  * Edges created by the generator are of type BasicEdge and contain an object
  * of type LineSegment.<BR>
  * Nodes created by the generator are of type BasicXYNode and contain an object
@@ -50,27 +56,51 @@ import com.vividsolutions.jts.geom.LineSegment;
  * @see com.vividsolutions.jts.geom.Coordinate
  * 
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- *
- *
+ * @author Anders Bakkevold, Bouvet AS, bakkedev@gmail.com
  *
  * @source $URL$
  */
 public class BasicLineGraphGenerator implements LineGraphGenerator {
 
   /** coordinate to node map **/
-  private HashMap m_coord2node;
+  private HashMap<Coordinate,Node> m_coord2node;
   
   /** underlying builder **/
   private GraphBuilder m_builder;
-  
+
+  /** tolerance distance  **/
+  private double tolerance = 0.0;
+
+  /** used when tolerance is greater than 0.0 */
+  private Bintree spatialIndex;
+
   /**
    * Constructs a new BasicLineGraphGenerator.
+   * <p>
+   * Tolerance is 0.0 as default, meaning coordinates must be equal for lines to connect
+   * at a node.
+   * </p>
    */
   public BasicLineGraphGenerator () {
-    m_coord2node = new HashMap();
+    m_coord2node = new HashMap<Coordinate, Node>();
     setGraphBuilder(new BasicGraphBuilder());  
   }
-  
+
+  /**
+    * Constructs a new BasicLineGraphGenerator.
+    * <p>
+    * If two coordinates are considered equal (and should be snapped to the same Node),
+    * the distance between them must be less than the tolerance value.
+    * </p>
+    * @param tolerance threshold distance value for coordinates to be considered equal
+    */
+   public BasicLineGraphGenerator (double tolerance) {
+     this.tolerance = tolerance;
+     spatialIndex = new Bintree();
+     m_coord2node = new HashMap<Coordinate,Node>();
+     setGraphBuilder(new BasicGraphBuilder());
+   }
+
   /**
    * Adds a line to the graph. 
    * 
@@ -83,46 +113,45 @@ public class BasicLineGraphGenerator implements LineGraphGenerator {
    */
   public Graphable add(Object obj) {
     LineSegment line = (LineSegment)obj;
-    Coordinate c; 
+    Coordinate first,last;
     Node n1, n2;
     
     //check first coordinate
-    c = line.p0;
-    if ((n1 = (Node)m_coord2node.get(c)) == null) {
-      //first time coordinate seen, create node for it
-      n1 = getGraphBuilder().buildNode();
-      
-      //set underlying object to coordinate 
-      //n1.setObject(c);
-      setObject(n1, c);
-      
-      getGraphBuilder().addNode(n1);
-      m_coord2node.put(c,n1);
+    first = line.p0;
+    n1 = retrieveNode(first);
+    if (n1 == null) {
+      n1 = createNode(first);
     }
-    
+
     //check second coordinate
-    c = line.p1;
-    if ((n2 = (Node)m_coord2node.get(c)) == null) {
-      //first time coordinate seen, create node for it
-      n2 = getGraphBuilder().buildNode();
-      
-      //set underlying object to coordiante 
-      //n2.setObject(c);
-      setObject(n2,c);
-      
-      getGraphBuilder().addNode(n2);
-      m_coord2node.put(c,n2); 
+    last = line.p1;
+    n2 = retrieveNode(last);
+    if (n2 == null) {
+      n2 = createNode(last);
     }
-    
+
     //build the edge setting underlying object to line
     Edge e = getGraphBuilder().buildEdge(n1,n2);
-    //e.setObject(line);
-    setObject(e, line);
-    
+
     getGraphBuilder().addEdge(e);
-    
+
+    if (useTolerance()) {
+      line = alterLine(line, n1, n2);
+    }
+
+    setObject(e, line);
+
     //return the created edge
     return(e);  
+  }
+
+  protected LineSegment alterLine(LineSegment line, Node n1, Node n2) {
+    Coordinate c1added = ((Coordinate) n1.getObject());
+    Coordinate c2added = ((Coordinate) n2.getObject());
+      if (!c1added.equals2D(line.p0) || c2added.equals2D(line.p1)) {
+        return new LineSegment(c1added,c2added);
+      }
+      return line;
   }
 
   /**
@@ -140,8 +169,8 @@ public class BasicLineGraphGenerator implements LineGraphGenerator {
     LineSegment line = (LineSegment)obj;
     
     //get nodes representing coordinate
-    Node n1 = (Node)m_coord2node.get(line.p0);
-    Node n2 = (Node)m_coord2node.get(line.p1);
+    Node n1 = retrieveNode(line.p0);
+    Node n2 = retrieveNode(line.p1);
     
     if (n1 == null || n2 == null) return(null);
     
@@ -161,12 +190,12 @@ public class BasicLineGraphGenerator implements LineGraphGenerator {
    */ 
   public Graphable remove(Object obj) {
     LineSegment line = (LineSegment)obj;
-    Node n1 = (Node)m_coord2node.get(line.p0);
-    Node n2 = (Node)m_coord2node.get(line.p1);
+    Node n1 = retrieveNode(line.p0);
+    Node n2 = retrieveNode(line.p1);
     
     if (n1 == null || n2 == null) return(null);
     
-    Edge e = (Edge)n1.getEdge(n2);
+    Edge e = n1.getEdge(n2);
     getGraphBuilder().removeEdge(e);
     
     return(e);
@@ -197,7 +226,7 @@ public class BasicLineGraphGenerator implements LineGraphGenerator {
    * Returns the coordinate to node map used to build nodes representing line
    * endpoint coordinates.
    * 
-   * @return coordinate to ndoe map.
+   * @return coordinate to node map.
    */
   public Map getNodeMap() {
     return(m_coord2node);  
@@ -205,12 +234,12 @@ public class BasicLineGraphGenerator implements LineGraphGenerator {
 
   //TODO COMMENT ME!
   public Node getNode(Coordinate c) {
-    return((Node)m_coord2node.get(c));  
+    return retrieveNode(c);
   }
 
   public Edge getEdge(Coordinate c1, Coordinate c2) {
-    Node n1 = (Node)m_coord2node.get(c1);
-    Node n2 = (Node)m_coord2node.get(c2);
+    Node n1 = retrieveNode(c1);
+    Node n2 = retrieveNode(c2);
     
     return(n1.getEdge(n2));  
   }
@@ -221,5 +250,47 @@ public class BasicLineGraphGenerator implements LineGraphGenerator {
   
   protected void setObject(Node n, Object obj) {
     n.setObject(obj);
-  }  
+  }
+
+  private Node createNode(Coordinate c) {
+    Node node;
+    node = getGraphBuilder().buildNode();
+    setObject(node, c);
+    getGraphBuilder().addNode(node);
+    m_coord2node.put(c, node);
+    if (useTolerance()) {
+      spatialIndex.insert(new Interval(c.y, c.y), c);
+    }
+    return node;
+  }
+
+  private Node retrieveNode(Coordinate c) {
+    Node node = m_coord2node.get(c);
+    if (node == null && useTolerance()) {
+      node = findClosestNodeWithinTolerance(c);
+    }
+    return node;
+  }
+
+  protected boolean useTolerance() {
+    return tolerance > 0.0;
+  }
+
+  // spatial search with tolerance
+  private Node findClosestNodeWithinTolerance(Coordinate inCoord) {
+    double closestDistance = Double.MAX_VALUE;
+    Coordinate closestCoordinate = null;
+    List<Coordinate> list = spatialIndex.query(new Interval(inCoord.y - tolerance, inCoord.y + tolerance));
+    for (Coordinate c : list) {
+      double distance = inCoord.distance(c);
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestCoordinate = c;
+      }
+    }
+    if (closestCoordinate != null && closestCoordinate.distance(inCoord) < tolerance) {
+      return m_coord2node.get(closestCoordinate);
+    }
+    return null;
+  }
 }

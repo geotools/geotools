@@ -43,7 +43,10 @@ public interface ClientTransactionAccessor {
 	 * Returns all the filters of updates that affect the attribute in the expression ORed together.
 	 * 
 	 * @param attributePath the xpath identifier of the attribute.
-	 * @return all the filters of updates that affect the attribute in the expression ORed together.
+	 * @return all the filters of updates that affect the attribute in the expression ORed together, 
+	 * {@link Filter#EXCLUDE} if the attribute path is not supported/encodable to the backend 
+	 * (and hence any filter including it shall only be evaluated at runtime), or {@code null} if no behavior
+	 * change is to be applied.
 	 */
 	Filter getUpdateFilter(String attributePath);
 

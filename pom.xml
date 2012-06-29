@@ -1232,7 +1232,6 @@
             </manifest>
             <manifestEntries>
               <Project-Version>${project.version}</Project-Version>
-              <Svn-Revision>${build.revision}</Svn-Revision>
               <Build-Timestamp>${build.timestamp}</Build-Timestamp>
             </manifestEntries>
           </archive>
@@ -1263,27 +1262,9 @@
 
 
       <!-- ======================================================= -->
-      <!--     Svn revision info.                                  -->
+      <!--     Git revision info.                                  -->
       <!-- ======================================================= -->
-      <plugin>
-         <groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
-         <artifactId>svn-revision-number-maven-plugin</artifactId>
-         <version>1.8-SVN7</version>
-         <executions>
-            <execution>
-               <goals>
-                  <goal>revision</goal>
-               </goals>
-            </execution>
-         </executions>
-         <configuration>
-            <entries>
-               <entry>
-                 <prefix>build</prefix>
-               </entry>
-            </entries>
-         </configuration>
-      </plugin>
+      <!-- TODO -->
       
     </plugins>
   </build>
@@ -1460,16 +1441,6 @@
      <snapshots>
        <enabled>false</enabled>
      </snapshots>
-    </pluginRepository>
-    <pluginRepository>
-      <id>maven-svn-revision-number-plugin.googlecode.com</id>
-      <url>http://maven-svn-revision-number-plugin.googlecode.com/svn/m2/releases</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
     </pluginRepository>
   </pluginRepositories>
 

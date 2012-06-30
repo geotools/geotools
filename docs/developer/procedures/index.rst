@@ -15,3 +15,4 @@ Project Procedures
    release
    supported
    stable
+   git

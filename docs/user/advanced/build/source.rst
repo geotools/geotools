@@ -1,7 +1,7 @@
 Source Code
 ============
 
-The GeoTools source code is organised into the following structure:
+The GeoTools source code is organized into the following structure:
 
 ======================== =========================================================================
 ``build/``               java projects that help with our build process
@@ -23,49 +23,55 @@ Source code releases are made available on a monthly basis and are available on 
 
 Source code encoding is UTF-8.
 
-Subversion Checkout of Source Code
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Git Checkout of Source Code
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-GeoTools makes use of the Subversion revision control system (as mentioned in downloads above). It is an advanced version management tool with the same command line syntax as CVS.
+GeoTools makes use of the Git revision control system (as mentioned in downloads above). 
+It is an advanced version management tool with a different workflow than Subversion or
+CVS.
 
-You do not need any special permission to have read-only access to the source code. Please just check out the code and have fun. If you are interested in getting commit permission later you can look into Developers Guide Roles and Responsibilities.
+You do not need any special permission to have read-only access to the source code which
+is located on `github <https://github.com/geotools/geotools/>`. You are encouraged to 
+clone the repository or fork it into your own account and issue pull requests.
 
-1. Our Subversion Install page contains detailed instructions for setting up subversion
+Please just check out the code and have fun. If you are interested in getting commit permission later you can look into Developers Guide Roles and Responsibilities.
+
+#. Our Git Install page contains detailed instructions for setting up git
    on different platforms.
-2. Copy :download:`config</../../build/subversion/config>` into the following location
    
-   ============= ===========================================================================
-   Plartform     Config File Location
-   ============= ===========================================================================
-   Windows XP:   ``C:\Documents and Settings\ %USERID% \Application Data\Subversion\config``
-   Vista:        ``C:\Users\ %USERID% \App Data\Roaming\Subversion\config``
-   Windows7:     ``C:\Users\ %USERID% \App Data\Roaming\Subversion\config``
-   Linux:        ``~/.subversion/config``
-   Mac:          ``~/.subversion/config``
-   ============= ===========================================================================
-   
-3. Danger - please set up the config file - If you do not do this binary and xml files may get messed up
-   (subversion uses this config file to tell when to change linefeeds between windows and linux)
+#. Ensure your git configuration is a friendly one to cross platform projects::
 
-4. Navigate to where you want the checkout with the command line::
+     git config --global core.autocrlf input
+   
+   This option may also be set on a repository by repository basis if for some reason 
+   you require a different global default. You can verify your git configuration with::
+   
+     git config --list
+   
+#. Navigate to where you want the checkout with the command line::
      
      C:\java>
 
-5. Checkout geotools using svn (a new directory "trunk" will be created)::
+#. Checkout geotools using git (a new directory "geotools" will be created)::
      
-     C:\java>svn co http://svn.osgeo.org/geotools/trunk trunk
-     
-6. This will create a trunk directory that contains the source code for this project
+     C:\java> git clone git://github.com/geotools/geotools.git
+
+#. This will create a geotools directory that contains the source code for this project
 
 Notes:
 
-* You may also use subversion to checkout a stable version of geotools::
-    
-    C:\java>svn co http://svn.osgeo.org/geotools/branches/2.7.x stable
-    
-* Take the time to read the subversion book before diving into subversion:
-  http://svnbook.red-bean.com/svnbook/index.html 
-* Although links to various IDE interfaces will be made available, no GUI will substitute for an understanding of the underlying subversion versioning model, and how the system is actually doing work.
-* If you are interested you can also use https::
-    
-    C:\java> svn co https://svn.osgeo.org/geotools/trunk
+* You can switch between the master and stable branches easily::
+
+     C:\java\geotools> git checkout master
+     C:\java\geotools> git checkout 8.x 
+     C:\java\geotools> git checkout 2.7.x
+
+* Take the time to read the git book before diving into git:
+
+    http://git-scm.com/book/
+
+  Also an excellent introduction to git:
+  
+    http://www.sbf5.com/~cduan/technical/git/
+
+* Although links to various IDE interfaces will be made available, no GUI will substitute for an understanding of the underlying git versioning model, and how the system is actually doing work.

@@ -1,7 +1,7 @@
 Working on a stable branch
 ==========================
 
-Working on a stable branch like 2.7.x or 2.6.x is a bit different working on trunk.
+Working on a stable branch like 2.7.x or 8.x is a bit different than working on trunk.
 For one we are not adding new features, and we need to back out changes that fail.
 
 Let us start with what is restricted:
@@ -22,76 +22,95 @@ Applying a Fix to the Stable Branch
 
 Do you have a Jira issue? Chances are any change worth doing on the branch has a jira issue
 
-1. Update - and mark down the resulting revision as BEFORE
-2. Do the full maven cycle of maven build, maven createRelease
-3. Commit your change
+#. Pull from the canonical repository
+#. Do the full maven cycle of maven build, maven createRelease
+#. Commit and push your change
    
    You did clear it with the module maintainer first?
 
-4. Mark down the revision AFTER (your commit told you this)
-5. Remember: Mark the issue as CLOSED in Jira and be sure to include:
+#. Mark down the commit revision(s) (git log will easily tell you this)
+#. Remember: Mark the issue as RESOLVED in Jira and be sure to include:
    
-   * Resolved in 2.1.RC1 (you can be more specific)
-   * BEFORE: 13926
-   * AFTER: 13927
+   * The Fix Version (8.0-RC1, 8.1, etc...)
+   * Commit: 9e6b6fca (Usually the first 7-8 characters of a git revision are sufficient)
    
-   This will help when applying your change to trunk....
+   This will help when applying your change to master....
 
-Applying your Change to trunk
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Applying your Change to master
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 It is nice to do this after every fix, or you may want to save up a couple.
 Please try to apply your fixes to trunk before the next trunk Milestone release (we like to release the best code we can - and that includes your fixes).
 
-1. Grabs the url: like http://svn.geotools.org/geotools/branches/2.1.x and revision numbers
-2. From your trunk check out apply the patch::
+#. Grab the commit id's
+#. From your master check out apply the patch::
      
-     svn merge -r 13926:13927 http://svn.geotools.org/geotools/branches/2.1.x
-
-3. Do the complete maven cycle of: clean, build, createRelease
-4. If the change works all is well commit::
+     git cherry-pick 9e6b6fca
      
-     svn commit -m &quot;Applied fix for GEOT-538 from 2.1.x&quot;
+   If cherry picking multiple commits be sure to pick them in the same order as they were
+   applied on the stable branch.
 
-5. If not back out the change ... and open a jira bug on the matter.::
+#. Do the complete maven cycle of: clean, build, createRelease
+#. If the change works all is well commit::
      
-     svn revert -r .
+     git pull --rebase geotools master
+     git push geotools master
+     
+#. If not back out the change ... and open a jira bug on the matter.::
+     
+     git reset --hard HEAD
 
-Applying a fix from trunk
-^^^^^^^^^^^^^^^^^^^^^^^^^
+   Note: this will essentially remove all local commits.
+
+Applying a fix from master
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 To merge in a change you will need:
 
-* url: url where the fix is located (although knowing that it is in plugins/wms will help)
-* before: revision when the fix was started
-* after: revision when the fix was complete
+* The commit(s) for the changes to merge
 
-1. Grabs the url: like http://svn.geotools.org/geotools/trunk/gt/plugins/wms
-2. From your 2.1.x checkout::
+#. Update the 8.x branch::
+
+      git checkout 8.x
+      git pull geotools 8.x
       
-      svn merge -r 13926:13927 http://svn.geotools.org/geotools/trunk/gt/plugins/wms
+#. Cherry-pick the commits from master::
+      
+      git cherry-pick <commit>
+      ...
+      
+   If cherry picking multiple commits be sure to pick them in the same order as they were
+   applied on the master branch.
 
-3. Do the complete maven cycle of: clean, build, createRelease
-4. If the change works all is well commit::
+#. Do the complete maven cycle of: clean, build, createRelease
+#. If the change works all is well push changes::
      
-     svn commit -m "Applied fix for GEOT-538 from trunk"
+      git push geotools 8.x
 
-5. If not back out the change ... and (re)open a Jira bug about it.::
+#. If not back out the change ... and (re)open a Jira bug about it.::
       
-      svn revert -r .
+      git reset --hard HEAD
 
-6. Remember: please update any Jira bug to indicate that the issue is fixed on 2.1.x as well.
+   Note: This will back out *all* of your local changes.
+   
+#. Remember: please update any Jira bug to indicate that the issue is fixed on 8.x as well.
 
 Backing out a Change
 ^^^^^^^^^^^^^^^^^^^^
 
 If you find out later that a change is bad sometime after your commit, all is not lost.
 
-1. Merge the change in reverse::
+#. Revert the commit::
      
-     svn merge -r 13927:13926 http://svn.geotools.org/geotools/trunk 
+     git revert <commit>
 
-2. And commit::
+   Or revert a range of commits::
+   
+     git revert <commit1>..<commitN>
+
+#. Push changes::
+
+     git pull --rebase geotools master
+     git push  geotools master
      
-     svn commit -m "Reopened GEOT-538 Javadoc @url was broken"
-
-3. Remember to (re)open any associated Jira issue.
+#. Remember to (re)open any associated Jira issue.

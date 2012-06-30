@@ -9,7 +9,7 @@ Covers the development environment and building instructions for working on the 
    
    install/index
    source
-   subversion
+   git
    maven/index
 
 Frequently Asked Questions:

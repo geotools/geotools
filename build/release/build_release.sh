@@ -10,19 +10,15 @@ function usage() {
   echo
   echo "Options:"
   echo " -h          : Print usage"
-  echo " -b <branch> : Branch to release from (eg: trunk, 2.1.x, ...)"
-  echo " -r <rev>    : Revision to release (eg: 12345)"
-  echo " -u <user>   : Subversion username"
-  echo " -p <passwd> : Subversion password"
+  echo " -b <branch> : Branch to release from (eg: master, 8.x, ...)"
+  echo " -r <rev>    : Revision to release (eg: a1b2kc4...)"
+  echo " -u <user>   : git user"
+  echo " -e <passwd> : git email"
   echo
-  echo "Environment variables:"
-  echo " BUILD_FROM_BRANCH : Builds release from branch rather than tag"
-  echo " SKIP_SVN_TAG : Skips creation of svn tag"
-  echo " SKIP_BUILD : Skips main release build"
 }
 
 # parse options
-while getopts "hb:r:u:p:" opt; do
+while getopts "hb:r:u:e:" opt; do
   case $opt in
     h)
       usage
@@ -35,10 +31,10 @@ while getopts "hb:r:u:p:" opt; do
       rev=$OPTARG
       ;;
     u)
-      svn_user=$OPTARG
+      git_user=$OPTARG
       ;;
-    p)
-      svn_passwd=$OPTARG
+    e)
+      git_email=$OPTARG
       ;;
     \?)
       usage
@@ -60,6 +56,14 @@ if [ -z $tag ] || [ ! -z $2 ]; then
   usage
   exit 1
 fi
+if [ `is_version_num $tag` == "0" ]; then  
+  echo "$tag is a not a valid release tag"
+  exit 1
+fi
+if [ `is_primary_branch_num $tag` == "1" ]; then  
+  echo "$tag is a not a valid release tag, can't be same as primary branch name"
+  exit 1
+fi
 
 # load properties + functions
 . "$( cd "$( dirname "$0" )" && pwd )"/properties
@@ -72,66 +76,37 @@ echo "  tag = $tag"
 
 mvn -version
 
-svn_opts="--username $svn_user --password $svn_passwd --non-interactive --trust-server-cert"
-
-if [ "$branch" == "trunk" ]; then
-  svn_url=$SVN_ROOT/trunk
-else
-  svn_url=$SVN_ROOT/branches/$branch
-fi
-
-if [ ! -z $BUILD_FROM_BRANCH ]; then
-  if [ ! -e tags/$tag ]; then
-    echo "checking out $svn_url"
-    svn co $svn_opts $svn_url tags/$tag  
-  fi
-else
-  # check if the svn tag already exists
-  if [ -z $SKIP_SVN_TAG ]; then
-    svn_tag_url=$SVN_ROOT/tags/$tag
-    set +e && svn ls $svn_opts $svn_tag_url >& /dev/null && set -e
-    if [ $? == 0 ]; then
-      # tag already exists
-      # tag already exists
-      echo "svn tag $tag already exists, deleteing"
-      svn $svn_opts rm -m "removing $tag tag" $svn_tag_url
-    fi
-  
-    # create svn tag
-    revopt="-r $rev"
-    if [ "$rev" == "latest" ]; then
-      revopt=""
-    fi
-  
-    echo "Creating $tag tag from $branch ($rev) at $svn_tag_url"
-    svn cp $svn_opts -m "tagging $tag" $revopt $svn_url $svn_tag_url
-
-    # checkout newly created tag
-    if [ -e tags/$tag ]; then
-      # remove old checkout
-      rm -rf tags/$tag
-    fi
-
-    echo "checking out tag $tag"
-    svn $svn_opts co $svn_tag_url tags/$tag
-  fi
-fi
-
-if [ ! -z $SKIP_SVN_TAG ] || [ ! -z $BUILD_FROM_BRANCH ]; then
-  echo "updating tag $tag"
-  svn revert --recursive tags/$tag
-  svn up tags/$tag 
-fi
-
-# update the rename script
-# generate release notes
+# ensure there is a jira release
 jira_id=`get_jira_id $tag`
 if [ -z $jira_id ]; then
   echo "Could not locate release $tag in JIRA"
   exit -1
 fi
 
-pushd tags/$tag > /dev/null
+if [ ! -z $git_user ] && [ ! -z $git_email ]; then
+  git_opts="--author $git_user <$git_email>"
+fi
+
+# move to root of repo
+pushd ../../ > /dev/null
+
+# clear out any changes
+git reset --hard HEAD
+
+# change to release branch
+git checkout rel_$branch
+
+# check to see if a release branch already exists
+set +e && git checkout rel_$tag && set -e
+if [ $? == 0 ]; then
+  # release branch already exists, kill it
+  echo "branch rel_$tag exists, deleting it"
+  git checkout rel_$branch
+  git branch -D rel_$tag
+fi
+
+# create a release branch
+git checkout -b rel_$tag $rev
 
 # update versions
 pushd build > /dev/null
@@ -143,11 +118,12 @@ popd > /dev/null
 # build the release
 if [ -z $SKIP_BUILD ]; then
   echo "building release"
-  #mvn $MAVEN_FLAGS -Dall clean
+  mvn $MAVEN_FLAGS -Dall clean
   mvn $MAVEN_FLAGS -DskipTests -P process clean install
   mvn $MAVEN_FLAGS -DskipTests assembly:assembly
 fi
-  
+
+# sanitize the bin artifact
 pushd target > /dev/null
 bin=geotools-$tag-bin.zip
 unzip $bin
@@ -191,14 +167,13 @@ mkdir $dist
 echo "copying artifacts to $dist"
 cp $target/*.zip $dist
 
+# commit changes 
+git add .
+git commit $git_opts -m "updating version numbers and README for $tag"
+
 popd > /dev/null
 
-# svn commit changes on the tag
-if [ -z $SKIP_SVN_TAG ]; then
-  pushd tags/$tag > /dev/null
-  svn commit $svn_opts -m "updating version numbers for $tag" .
-  popd > /dev/null
-fi
+# TODO: generate release notes
 
 echo "build complete, artifacts available at $DIST_URL/$tag"
 exit 0

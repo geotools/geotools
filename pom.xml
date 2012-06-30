@@ -1129,7 +1129,6 @@
             </manifest>
             <manifestEntries>
               <Project-Version>${project.version}</Project-Version>
-              <Svn-Revision>${build.revision}</Svn-Revision>
               <Build-Timestamp>${build.timestamp}</Build-Timestamp>
             </manifestEntries>
           </archive>
@@ -1160,27 +1159,9 @@
 
 
       <!-- ======================================================= -->
-      <!--     Svn revision info.                                  -->
+      <!--     Git revision info.                                  -->
       <!-- ======================================================= -->
-      <plugin>
-         <groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
-         <artifactId>maven-svn-revision-number-plugin</artifactId>
-         <version>1.5</version>
-         <executions>
-            <execution>
-               <goals>
-                  <goal>revision</goal>
-               </goals>
-            </execution>
-         </executions>
-         <configuration>
-            <entries>
-               <entry>
-                 <prefix>build</prefix>
-               </entry>
-            </entries>
-         </configuration>
-      </plugin>
+      <!-- TODO -->
       
     </plugins>
   </build>

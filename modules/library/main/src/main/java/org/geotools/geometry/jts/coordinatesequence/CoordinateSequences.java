@@ -172,6 +172,8 @@ public class CoordinateSequences extends com.vividsolutions.jts.geom.CoordinateS
     */
     public static int coordinateDimension(CoordinateSequence seq)
     {
+        if (seq == null) return 3;
+        
         int dim = seq.getDimension();
         if (dim != 3)
             return dim;
@@ -198,6 +200,12 @@ public class CoordinateSequences extends com.vividsolutions.jts.geom.CoordinateS
         
         private CoordinateSequence firstSeqFound = null;
         
+        /**
+         * Gets the coordinate sequence found (if any).
+         * 
+         * @return the sequence found
+         * @return null if no sequence could be found
+         */
         public CoordinateSequence getSeq() {
             return firstSeqFound;
         }

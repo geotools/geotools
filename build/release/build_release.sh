@@ -93,24 +93,23 @@ pushd ../../ > /dev/null
 # clear out any changes
 git reset --hard HEAD
 
-# change to primary branch
+# checkout and update primary / release branches
+git checkout rel_$branch
+git pull origin rel_$branch
 git checkout $branch
+git pull origin $branch
 
 # check to see if a release branch already exists
 set +e && git checkout rel_$tag && set -e
 if [ $? == 0 ]; then
   # release branch already exists, kill it
   echo "branch rel_$tag exists, deleting it"
-  git checkout rel_$branch
   git branch -D rel_$tag
 fi
 
-# create a release branch
-if [ -z $rev ]; then
-  # no revision means latest on the primary branch
-  rev=$branch
-fi
+git checkout $branch
 
+# create a release branch
 git checkout -b rel_$tag $rev
 
 # update versions

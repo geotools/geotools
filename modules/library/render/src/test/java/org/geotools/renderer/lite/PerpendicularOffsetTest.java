@@ -28,7 +28,7 @@ public class PerpendicularOffsetTest {
         renderer = new StreamingRenderer();
         bounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
         
-        System.setProperty("org.geotools.test.interactive", "true");
+        //System.setProperty("org.geotools.test.interactive", "true");
     }
     
     SimpleFeatureSource getData(String name) throws IOException, URISyntaxException {
@@ -63,6 +63,10 @@ public class PerpendicularOffsetTest {
         RendererBaseTest.showRender("Curved line PerpendicularOffset", renderer, TIME, bounds);
     }
     
+    /**
+     * TODO: This test shows a case where the current PerpendicularOffset implementation does not produce a
+     * valid result.
+     */
     @Test
     public void testNarrowCurvedPerpendicularOffset() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "linePerpendicularOffsetWide.sld");

@@ -4,10 +4,12 @@
 
 # sanity check parameters
 [ -z $BRANCH ] && echo "BRANCH variable mandatory" && exit 1
-[ -z $REV ] && echo "REV variable mandatory" && exit 1
 [ -z $VERSION ] && echo "VERSION variable mandatory" && exit 1
 
-OPTS="-b $BRANCH -r $REV"
+OPTS="-b $BRANCH"
+if [ ! -z $REV ]; then
+  OPTS="$OPTS -r $REV"
+fi
 if [ ! -z $GIT_USER ]; then
   OPTS="$OPTS -u $GIT_USER"
 fi

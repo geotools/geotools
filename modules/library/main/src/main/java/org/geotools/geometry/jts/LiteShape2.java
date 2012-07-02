@@ -222,6 +222,12 @@ public final class LiteShape2 implements Shape, Cloneable {
 			transformGeometry(geometry);
 		}
 	}
+	
+	public void setGeometry2(Geometry g){
+		if (g != null) {
+			this.geometry = g;
+		}
+	}
 
 	/**
 	 * Tests if the interior of the <code>Shape</code> entirely contains the

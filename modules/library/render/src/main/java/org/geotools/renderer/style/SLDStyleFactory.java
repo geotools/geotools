@@ -462,6 +462,7 @@ public class SLDStyleFactory {
 		LineStyle2D style = new LineStyle2D();
 		setScaleRange(style, scaleRange);
 		style.setStroke(getStroke(symbolizer.getStroke(), feature));
+		style.setPerpendicularOffset(evalToDouble(symbolizer.getPerpendicularOffset(), feature, 0));
 		style.setGraphicStroke(getGraphicStroke(symbolizer.getStroke(),
 				feature, scaleRange));
 		style.setContour(getStrokePaint(symbolizer.getStroke(), feature));

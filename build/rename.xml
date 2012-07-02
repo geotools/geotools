@@ -10,7 +10,7 @@
       <include name="**/pom.xml"/>
       <include name="**/GeoTools.java"/>
       <include name="**/common.py"/>
-      <replacefilter token="8-SNAPSHOT" value="@VERSION@"/>
+      <replacefilter token="9-SNAPSHOT" value="@VERSION@"/>
     </replace>
   </target>
   

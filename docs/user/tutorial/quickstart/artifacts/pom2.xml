@@ -12,7 +12,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- use the latest snapshot -->
-        <geotools.version>8-SNAPSHOT</geotools.version>
+        <geotools.version>9-SNAPSHOT</geotools.version>
     </properties>
     <dependencies>
         <dependency>

@@ -32,7 +32,7 @@
         <dependency>
            <groupId>org.geotools.xsd</groupId>
            <artifactId>gt-xsd-core</artifactId>
-           <version>8-SNAPSHOT</version>
+           <version>9-SNAPSHOT</version>
         </dependency>    
     </dependencies>
 
@@ -76,7 +76,7 @@
             <plugin>
                 <groupId>org.geotools.maven</groupId>
                 <artifactId>xmlcodegen</artifactId>
-                <version>8-SNAPSHOT</version>
+                <version>9-SNAPSHOT</version>
                 <configuration>
                     <schemaLocation>po.xsd</schemaLocation>
                     <schemaSourceDirectory>${basedir}/src/main/resources</schemaSourceDirectory>

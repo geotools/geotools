@@ -71,8 +71,8 @@ if __name__ == "__main__":
   p = optparse.OptionParser('Usage: %prog [options] version next_version')
   p.add_option('-j', '--host', dest='host', default='http://jira.codehaus.org', 
     help='JIRA host, default is codehaus') 
-  p.add_option('-k', '--key', dest='key', default='GEOS',
-    help='JIRA project key, default is GEOS') 
+  p.add_option('-k', '--key', dest='key', default='GEOT',
+    help='JIRA project key, default is GEOT') 
   p.add_option('-u', '--user', dest='user', default=getpass.getuser(), 
     help='JIRA user, default is current OS user')
   p.add_option('-p', '--passwd', dest='passwd', 

@@ -84,7 +84,7 @@ if [ -z $jira_id ]; then
 fi
 
 if [ ! -z $git_user ] && [ ! -z $git_email ]; then
-  git_opts="--author $git_user <$git_email>"
+  git_opts="--author '$git_user <$git_email>'"
 fi
 
 # move to root of repo

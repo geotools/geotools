@@ -56,6 +56,11 @@ if [ -z $tag ] || [ ! -z $2 ]; then
   usage
   exit 1
 fi
+
+# load properties + functions
+. "$( cd "$( dirname "$0" )" && pwd )"/properties
+. "$( cd "$( dirname "$0" )" && pwd )"/functions
+
 if [ `is_version_num $tag` == "0" ]; then  
   echo "$tag is a not a valid release tag"
   exit 1
@@ -64,10 +69,6 @@ if [ `is_primary_branch_num $tag` == "1" ]; then
   echo "$tag is a not a valid release tag, can't be same as primary branch name"
   exit 1
 fi
-
-# load properties + functions
-. "$( cd "$( dirname "$0" )" && pwd )"/properties
-. "$( cd "$( dirname "$0" )" && pwd )"/functions
 
 echo "Building release with following parameters:"
 echo "  branch = $branch"

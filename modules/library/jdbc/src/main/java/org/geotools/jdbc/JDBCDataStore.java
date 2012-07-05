@@ -1668,12 +1668,12 @@ public final class JDBCDataStore extends ContentDataStore
     }
     
     /**
-     * Releases an existing connection.
+     * Releases an existing connection (paying special attention to {@link Transaction#AUTO_COMMIT}.
+     * <p>
+     * If the state is based off the AUTO_COMMIT transaction - close using {@link #closeSafe(Connection)}.
+     * Otherwise wait until the transaction itself is closed to close the connection.
      */
     protected final void releaseConnection( Connection cx, JDBCState state ) {
-        //if the state is based off the AUTO_COMMIT transaction, close the 
-        // connection, otherwise wait until the transaction itself is closed to 
-        // close the connection
         if ( state.getTransaction() == Transaction.AUTO_COMMIT ) {
             closeSafe( cx );
         }

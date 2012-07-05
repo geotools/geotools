@@ -16,12 +16,15 @@
  */
 package org.geotools.jdbc;
 
+import java.sql.Connection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.geotools.data.DefaultQuery;
+import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
+import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureSource;
@@ -32,6 +35,8 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.opengis.feature.Feature;
+import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.And;
@@ -501,4 +506,38 @@ public abstract class JDBCFeatureSourceTest extends JDBCTestSupport {
             }
         }
     }
+    
+    public void testAcceptsVisitor() throws Exception {
+    	class TotalVisitor implements FeatureVisitor {
+    		int total=0;
+	    	public void visit(Feature feature) {
+	    		total++;
+	    	}
+    	}
+    	TotalVisitor visitor = new TotalVisitor();
+    	
+    	// initial test on Transaction.AUTO_COMMIT
+    	int count = featureSource.getCount(Query.ALL);
+    	featureSource.accepts( Query.ALL, visitor, null );
+    	assertEquals( count, visitor.total );
+    	visitor.total = 0; // reset
+
+    	// test on a transaction
+    	JDBCFeatureStore ft1 = (JDBCFeatureStore) dataStore.getFeatureSource(tname("ft1"));
+    	Transaction transaction = new DefaultTransaction();
+    	try {
+    		ft1.setTransaction( transaction );
+    		Connection connection = ft1.getDataStore().getConnection( ft1.getState() );
+    		assertFalse( "connection established", connection.isClosed() );
+    		
+    		ft1.accepts( Query.ALL,  visitor, null );
+    		
+    		assertFalse( "connection maintained", connection.isClosed() );
+    	}
+    	finally {
+    		if( transaction != null ){
+    			transaction.close();
+    		}
+    	}
+     }
 }

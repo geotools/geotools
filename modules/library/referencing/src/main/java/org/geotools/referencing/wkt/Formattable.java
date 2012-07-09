@@ -126,6 +126,30 @@ public class Formattable {
     /**
      * Returns a
      * <A HREF="http://geoapi.sourceforge.net/snapshot/javadoc/org/opengis/referencing/doc-files/WKT.html"><cite>Well
+     * Known Text</cite> (WKT)</A> for this object using the specified indentation.
+     * </p>
+     * The <tt>strict</tt> parameter is used to control whether the resulting WKT is tested for 
+     * validity. When set to <code>false</code> the check is not performed. When <code>true</code>
+     * and the WKT is found to be invalid a {@link UnformattableObjectException} is thrown.
+     * <p>
+     *
+     * @param  indentation The amount of spaces to use in indentation for WKT formatting,
+     *         or {@link #SINGLE_LINE} for formatting the whole WKT on a single line.
+     * @param  strict Controls the check for validity.
+     * @return The Well Know Text for this object.
+     * @throws UnformattableObjectException If this object can't be formatted as WKT.
+     *         A formatting may fails because an object is too complex for the WKT format capability
+     *         (for example an {@linkplain org.geotools.referencing.crs.DefaultEngineeringCRS
+     *         engineering CRS} with different unit for each axis), or because only some specific
+     *         implementations can be formatted as WKT.
+     */
+    public String toWKT(final int indentation, boolean strict) throws UnformattableObjectException {
+        return toWKT(Citations.OGC, indentation, strict);
+    }
+
+    /**
+     * Returns a
+     * <A HREF="http://geoapi.sourceforge.net/snapshot/javadoc/org/opengis/referencing/doc-files/WKT.html"><cite>Well
      * Known Text</cite> (WKT)</A> for this object using the specified indentation and authority.
      *
      * @param  authority The authority to prefer when choosing WKT entities names.

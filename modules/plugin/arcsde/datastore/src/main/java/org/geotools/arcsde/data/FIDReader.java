@@ -180,7 +180,7 @@ public abstract class FIDReader {
             } else {
                 // may have been returned 0, meaning there is no registered
                 // column id
-                throw new IllegalStateException("Unkown ArcSDE row ID registration type: "
+                throw new IllegalStateException("Unknown ArcSDE row ID registration type: "
                         + rowIdColumnType + " for layer " + tableName);
             }
             fidReader.setColumnIndex(rowIdColumnIndex);

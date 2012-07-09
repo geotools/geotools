@@ -44,7 +44,7 @@ public class UnknownFormat extends AbstractGridFormat implements Format {
 	 */
 	public UnknownFormat() {
 		mInfo = new HashMap<String,String>();
-		mInfo.put("name", "Unkown Format");
+		mInfo.put("name", "Unknown Format");
 		mInfo.put("description", "This format describes all unknown formats");
 		mInfo.put("vendor", null);
 		mInfo.put("docURL", null);

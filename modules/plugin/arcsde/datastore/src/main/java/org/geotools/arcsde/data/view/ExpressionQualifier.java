@@ -203,7 +203,7 @@ class ExpressionQualifier implements ExpressionVisitor {
         else if (exp instanceof NotEqualsTo)
             qualified = new NotEqualsTo();
         else
-            throw new IllegalArgumentException("Unkown binary expression: " + exp);
+            throw new IllegalArgumentException("Unknown binary expression: " + exp);
 
         qualified.setLeftExpression(left);
         qualified.setRightExpression(right);

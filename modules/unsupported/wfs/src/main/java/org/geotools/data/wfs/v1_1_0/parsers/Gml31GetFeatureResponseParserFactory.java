@@ -144,7 +144,7 @@ public class Gml31GetFeatureResponseParserFactory implements WFSResponseParserFa
             } else if (head.contains("ExceptionReport")) {
                 parser = new ExceptionReportParser();
             } else {
-                throw new IllegalStateException("Unkown server response: " + head);
+                throw new IllegalStateException("Unknown server response: " + head);
             }
         }
         return parser;

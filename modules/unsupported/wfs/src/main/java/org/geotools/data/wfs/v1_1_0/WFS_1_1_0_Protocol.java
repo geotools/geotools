@@ -748,7 +748,7 @@ public class WFS_1_1_0_Protocol implements WFSProtocol {
         } else if (originatingRequest instanceof TransactionType) {
             encodeElementName = WFS.Transaction;
         } else {
-            throw new IllegalArgumentException("Unkown xml element name for " + originatingRequest);
+            throw new IllegalArgumentException("Unknown xml element name for " + originatingRequest);
         }
         return encodeElementName;
     }

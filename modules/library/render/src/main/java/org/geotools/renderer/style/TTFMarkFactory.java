@@ -81,7 +81,7 @@ public class TTFMarkFactory implements MarkFactory {
         // look up the font
         Font font = FontCache.getDefaultInsance().getFont(fontElements[0]);
         if (font == null) {
-            throw new IllegalArgumentException("Unkown font " + fontElements[0]);
+            throw new IllegalArgumentException("Unknown font " + fontElements[0]);
         }
 
         // get the symbol number

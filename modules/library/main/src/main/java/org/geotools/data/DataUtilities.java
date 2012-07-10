@@ -142,7 +142,7 @@ import org.geotools.data.view.DefaultView;
  * SimpleFeatureCollection,SimpleFeatureSource</li>
  * <li>{@link #list} to quickly copy features into a memory based list</li>
  * <li>{@link #reader} methods to convert to FeatureReader</li>
- * <li>{@link #source} setup a FeatureSource wrapper around the provided data</li>
+ * <li>{@link #expression} setup a FeatureSource wrapper around the provided data</li>
  * </ul>
  * </p>
  * <p>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ======================================================================= 
+  Maven Project Configuration File The Geotools Project http://www.geotools.org/ 
+  Version: $Id$ ======================================================================= -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>unsupported</artifactId>
+    <version>9-SNAPSHOT</version>
+  </parent>
+
+
+  <!-- =========================================================== -->
+  <!-- Module Description -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools</groupId>
+  <artifactId>gt-transform</artifactId>
+  <packaging>jar</packaging>
+  <name>Feature transforming feature source wrapper</name>
+
+
+  <scm>
+    <connection>
+      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/transform/
+    </connection>
+    <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/transform/</url>
+  </scm>
+
+  <description>
+    A FeatureSource/FeatureStore wrapper that can rename attributes, hide others, and create new ones by applying expressions on the wrapped ones
+  </description>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+
+  <!-- =========================================================== -->
+  <!-- Developers and Contributors -->
+  <!-- =========================================================== -->
+  <developers>
+    <developer>
+      <name>Andrea Aime</name>
+      <id>aaime</id>
+      <email>aaime@users.sourceforge.net</email>
+      <organization>GeoSolutions</organization>
+      <roles>
+        <role>Module Maintainer</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+
+  <!-- =========================================================== -->
+  <!-- Dependency Management -->
+  <!-- =========================================================== -->
+  <dependencies>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-main</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-property</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-cql</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-sample-data</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-epsg-hsql</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.easymock</groupId>
+      <artifactId>easymock</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+</project>

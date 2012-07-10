@@ -101,13 +101,17 @@ public class PropertyFeatureStore extends AbstractFeatureLocking {
     // getCount start
     public int getCount(Query query) throws IOException {
         if( Filter.INCLUDE == query.getFilter() && getTransaction() == Transaction.AUTO_COMMIT ){
-            File file = new File( store.directory, typeName+".properties" );            
-            if( cacheCount != -1 && file.lastModified() == cacheTimestamp){
+            File file = new File( store.directory, typeName+".properties" );
+            if(!(cacheCount != -1 && file.lastModified() == cacheTimestamp)) {
+                cacheCount = PropertyDataStore.countFile(file);
+                cacheTimestamp = file.lastModified();
+            }
+            
+            if(query.getMaxFeatures() >= 0) {
+                return Math.min(cacheCount, query.getMaxFeatures());
+            } else {
                 return cacheCount;
             }
-            cacheCount = PropertyDataStore.countFile(file);
-            cacheTimestamp = file.lastModified();
-            return cacheCount;
         }
         return -1;
         // return super.getCount(query); // super class checks transaction state diff

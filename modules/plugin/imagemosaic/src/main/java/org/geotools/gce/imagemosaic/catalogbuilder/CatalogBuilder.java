@@ -693,14 +693,8 @@ public class CatalogBuilder implements Runnable {
                         } finally {
                             transaction.close();
                             
-                            try{
-                                indexingPostamble(!canceled);
-                            } catch (Exception e) {
-                                // eat me
-                            }
+                            indexingPostamble(!canceled);
                         }
-                        
-			
 		}
 
 		public int getNumberOfProcessedFiles() {

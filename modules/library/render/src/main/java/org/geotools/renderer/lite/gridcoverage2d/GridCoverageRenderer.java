@@ -47,6 +47,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.coverage.grid.ViewType;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.operation.Crop;
 import org.geotools.coverage.processing.operation.Resample;
@@ -61,7 +62,6 @@ import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.image.ImageUtilities;
 import org.geotools.styling.RasterSymbolizer;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.filter.expression.Expression;
@@ -365,8 +365,7 @@ public final class GridCoverageRenderer {
             this.hints.add(hints);
         // this prevents users from overriding lenient hint
         this.hints.put(Hints.LENIENT_DATUM_SHIFT, Boolean.TRUE);
-        this.hints.add(ImageUtilities.DONT_REPLACE_INDEX_COLOR_MODEL);
-
+        this.hints.put(Hints.COVERAGE_PROCESSING_VIEW, ViewType.SAME);
     }
 
     /**
@@ -614,6 +613,11 @@ public final class GridCoverageRenderer {
         final Interpolation interpolation = (Interpolation) hints.get(JAI.KEY_INTERPOLATION);
         if (LOGGER.isLoggable(Level.FINE))
             LOGGER.fine("Using interpolation "+interpolation);
+        final Hints localHints = this.hints.clone();
+        if(interpolation instanceof InterpolationNearest){
+            localHints.add(new RenderingHints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE));
+            localHints.add(new RenderingHints(JAI.KEY_TRANSFORM_ON_COLORMAP, Boolean.TRUE));
+        }
 
 
         // /////////////////////////////////////////////////////////////////////
@@ -623,7 +627,7 @@ public final class GridCoverageRenderer {
         // /////////////////////////////////////////////////////////////////////
         GridCoverage2D preResample=gridCoverage;
     	try{
-		    preResample = getCroppedCoverage(gridCoverage, intersectionEnvelope, sourceCoverageCRS,this.hints);
+		    preResample = getCroppedCoverage(gridCoverage, intersectionEnvelope, sourceCoverageCRS,localHints);
 		    if (preResample == null) {
 		        // nothing to render, the AOI does not overlap
 		        if (LOGGER.isLoggable(Level.FINE))
@@ -653,7 +657,7 @@ public final class GridCoverageRenderer {
         // /////////////////////////////////////////////////////////////////////
         GridCoverage2D preSymbolizer;
         if (doReprojection) {
-            preSymbolizer = resample(preResample, destinationCRS,interpolation == null ? new InterpolationNearest(): interpolation, destinationEnvelope,this.hints);
+            preSymbolizer = resample(preResample, destinationCRS,interpolation == null ? new InterpolationNearest(): interpolation, destinationEnvelope,localHints);
             if (LOGGER.isLoggable(Level.FINE))
                 LOGGER.fine("Reprojecting to crs "+ destinationCRS.toWKT());
         } else
@@ -802,10 +806,12 @@ public final class GridCoverageRenderer {
         final ImageLayout layout = new ImageLayout(finalImage);
         layout.setTileGridXOffset(0).setTileGridYOffset(0).setTileHeight(tileSizeY).setTileWidth(tileSizeX);
         final RenderingHints localHints = this.hints.clone(); 
-            localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
-        //add hints to preserve IndexColorModel
-        if(interpolation instanceof InterpolationNearest)
+        localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+        if (interpolation instanceof InterpolationNearest) {
             localHints.add(new RenderingHints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE));
+            localHints.add(new RenderingHints(JAI.KEY_TRANSFORM_ON_COLORMAP, Boolean.TRUE));
+        }
+
         //SG add hints for the border extender
         localHints.add(new RenderingHints(JAI.KEY_BORDER_EXTENDER,BorderExtender.createInstance(BorderExtender.BORDER_COPY)));
     	RenderedImage im=null;

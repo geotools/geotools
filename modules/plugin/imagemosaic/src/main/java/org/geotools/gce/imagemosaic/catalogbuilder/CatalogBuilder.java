@@ -691,12 +691,26 @@ public class CatalogBuilder implements Runnable {
                             LOGGER.log(Level.WARNING, "Failure occurred while collecting the granules", e);
                             transaction.rollback();
                         } finally {
-                            transaction.close();
-                            
-                            try{
+                            try {
+                                transaction.close();
+                            } catch (Exception e) {
+                                final String message = "Unable to close indexing" + e.getLocalizedMessage();
+                                if (LOGGER.isLoggable(Level.WARNING)) {
+                                    LOGGER.log(Level.WARNING, message, e);
+                                }
+                                // notify listeners
+                                fireException(e);
+                            }
+                    
+                            try {
                                 indexingPostamble(!canceled);
                             } catch (Exception e) {
-                                // eat me
+                                final String message = "Unable to close indexing" + e.getLocalizedMessage();
+                                if (LOGGER.isLoggable(Level.WARNING)) {
+                                    LOGGER.log(Level.WARNING, message, e);
+                                }
+                                // notify listeners
+                                fireException(e);
                             }
                         }
                         

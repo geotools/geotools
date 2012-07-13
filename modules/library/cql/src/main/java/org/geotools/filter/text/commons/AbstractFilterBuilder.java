@@ -458,7 +458,7 @@ public abstract class AbstractFilterBuilder {
 		assert dateTime.length >= 2 : "date and time is required by the sintax rule";
 		
 		// splits the time and time zone 
-		String[] time = dateTime[1].split("[+|-|Z]");
+		String[] time = dateTime[1].split("[-+Z]");
 		
 		return time[0]; // the time
 	}

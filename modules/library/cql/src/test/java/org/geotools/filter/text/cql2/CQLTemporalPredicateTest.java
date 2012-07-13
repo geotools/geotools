@@ -243,7 +243,24 @@ public class CQLTemporalPredicateTest {
 		Date actualDate =  (Date) literalDate.getValue();
         
         Assert.assertEquals(expectedDate, actualDate);
+
+        expectedTime = "2008-09-09T17:00:00-01:00";
+
+        resultFilter = CompilerUtil.parseFilter(this.language, "ZONE_VALID_FROM BEFORE " + expectedTime);
+
+        comparation = (Before) resultFilter;
+
+        // date test 
+        expr2 = comparation.getExpression2();
+        literalDate = (Literal)expr2;
+        
+		expectedDate = dateFormatter.parse("2008-09-09T17:00:00-0100");
+
+		actualDate =  (Date) literalDate.getValue();
+        
+        Assert.assertEquals(expectedDate, actualDate);
     }
+
     /**
      * before with compound attribute
      * 

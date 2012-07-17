@@ -47,6 +47,7 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKBReader;
 import com.vividsolutions.jts.io.WKTReader;
 import com.vividsolutions.jts.io.WKTWriter;
 
@@ -100,14 +101,29 @@ public class SpatiaLiteDialect extends BasicSQLDialect {
             
             if ( loadSpatialRefSys ) {
                 try {
-                    BufferedReader in = new BufferedReader( new InputStreamReader( 
-                        getClass().getResourceAsStream( "init_spatialite-2.3.sql") ) );
-                    String line = null;
-                    while( (line = in.readLine() ) != null ) {
-                        st.execute( line );
-                    }
+                    //initializing statements invovles a lot of inserts, optimize by turning off
+                    // auto commit and batching them up
+                    st.close();
                     
-                    in.close();
+                    boolean isAutoCommit = cx.getAutoCommit();
+                    cx.setAutoCommit(false);
+                    st = cx.createStatement();
+
+                    try {
+                        BufferedReader in = new BufferedReader( new InputStreamReader( 
+                            getClass().getResourceAsStream( "init_spatialite-2.3.sql") ) );
+                        String line = null;
+                        while( (line = in.readLine() ) != null ) {
+                            st.addBatch( line );
+                        }
+                        in.close();
+                        st.executeBatch();
+                        cx.commit();
+                    }
+                    finally {
+                        cx.setAutoCommit(isAutoCommit);
+                    }
+
                 }
                 catch( IOException e ) {
                     throw new RuntimeException( "Error reading spatial ref sys file", e );
@@ -118,7 +134,30 @@ public class SpatiaLiteDialect extends BasicSQLDialect {
             dataStore.closeSafe( st );
         }
     }
-    
+
+    @Override
+    public boolean includeTable(String schemaName, String tableName, Connection cx) throws SQLException {
+        if ("spatial_ref_sys".equalsIgnoreCase(tableName)) {
+            return false;
+        }
+        if ("geometry_columns".equalsIgnoreCase(tableName)) {
+            return false;
+        }
+        if ("geom_cols_ref_sys".equalsIgnoreCase(tableName)) {
+            return false;
+        }
+        if ("views_geometry_columns".equalsIgnoreCase(tableName)) {
+            return false;
+        }
+        if ("virts_geometry_columns".equalsIgnoreCase(tableName)) {
+            return false;
+        }
+        if ("geometry_columns_auth".equalsIgnoreCase(tableName)) {
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public Class<?> getMapping(ResultSet columnMetaData, Connection cx) throws SQLException {
         //the sqlite jdbc driver maps geometry type to varchar, so do a lookup
@@ -202,23 +241,20 @@ public class SpatiaLiteDialect extends BasicSQLDialect {
     @Override
     public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix,
             int srid, Hints hints, StringBuffer sql) {
-        sql.append( "AsText(");
+        sql.append( "AsBinary(");
         encodeColumnName( prefix, gatt.getLocalName(), sql);
-        sql.append( ")||';").append(srid).append("'");
+        sql.append( ")");
     }
 
     @Override
     public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, int column,
             GeometryFactory factory, Connection cx) throws IOException, SQLException {
-        String string = rs.getString( column );
-        if ( string == null || "".equals( string.trim() ) ) {
+        byte[] wkb = rs.getBytes(column);
+        if (wkb == null) {
             return null;
         }
-        
-        String[] split = string.split( ";" );
-        String wkt = split[0];
         try {
-            return new WKTReader(factory).read( wkt );
+            return new WKBReader(factory).read( wkb );
         }
         catch( ParseException e ) {
             throw (IOException) new IOException().initCause( e );

@@ -17,9 +17,11 @@
 
 package org.geotools.xml;
 
+import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -44,9 +46,7 @@ import java.util.logging.Logger;
  * </ol>
  * 
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- *
- *
- *
+ * 
  * @source $URL$
  */
 public class AppSchemaResolver {
@@ -82,7 +82,8 @@ public class AppSchemaResolver {
      * Constructor.
      * 
      * @param catalog
-     * @param classpath whether schemas can be located on the classpath
+     * @param classpath
+     *            whether schemas can be located on the classpath
      * @param cache
      */
     public AppSchemaResolver(AppSchemaCatalog catalog, boolean classpath, AppSchemaCache cache) {
@@ -209,7 +210,8 @@ public class AppSchemaResolver {
     }
 
     /**
-     * Return the Simple HTTP Resource Path for an absolute http/https URL.
+     * Return the Simple HTTP Resource Path for an absolute http/https URL. Does not include query
+     * components in the path.
      * 
      * @param location
      *            not null
@@ -217,13 +219,29 @@ public class AppSchemaResolver {
      * @see #getSimpleHttpResourcePath(URI)
      */
     public static String getSimpleHttpResourcePath(String location) {
+        return getSimpleHttpResourcePath(location, false);
+    }
+
+    /**
+     * Return the Simple HTTP Resource Path for an absolute http/https URL.
+     * 
+     * @param location
+     *            not null
+     * @param keepQuery
+     *            indicates whether or not the query components should be included in the path. If
+     *            this is set to true then the query portion is converted to an MD5 message digest
+     *            and that string is used to identify the file in the cache.
+     * @return the resource path with a leading slash
+     * @see #getSimpleHttpResourcePath(URI, boolean)
+     */
+    public static String getSimpleHttpResourcePath(String location, boolean keepQuery) {
         URI locationUri;
         try {
             locationUri = new URI(location);
         } catch (URISyntaxException e) {
             return null;
         }
-        return getSimpleHttpResourcePath(locationUri);
+        return getSimpleHttpResourcePath(locationUri, keepQuery);
     }
 
     /**
@@ -246,7 +264,8 @@ public class AppSchemaResolver {
      * 
      * <p>
      * 
-     * The Simple HTTP Resource Path always starts with a forward slash (if not null).
+     * The Simple HTTP Resource Path always starts with a forward slash (if not null). Does not
+     * include query components in the path.
      * 
      * @param location
      *            not null
@@ -254,6 +273,42 @@ public class AppSchemaResolver {
      *         HTTP/HTTPS URL.
      */
     public static String getSimpleHttpResourcePath(URI location) {
+        return getSimpleHttpResourcePath(location, false);
+    }
+
+    /**
+     * Return the Simple HTTP Resource Path for an absolute http/https URL.
+     * 
+     * <p>
+     * 
+     * The Simple HTTP Resource Path maps an HTTP or HTTPS URL to a path on the classpath or
+     * relative to some other root. To form the Simple HTTP Resource Path from an http/https URL:
+     * 
+     * <ol>
+     * <li>Protocol, port, fragment, and query are ignored.</li>
+     * <li>Take the host name, split it into its components, reverse their order, prepend a forward
+     * slash to each, and concatenate them.</li>
+     * <li>Append the path component of the URL.</li>
+     * </ol>
+     * 
+     * For example <code>http://schemas.example.org/exampleml/exml.xsd</code> becomes
+     * <code>/org/example/schemas/exampleml/exml.xsd</code> .
+     * 
+     * <p>
+     * 
+     * The Simple HTTP Resource Path always starts with a forward slash (if not null). Does not
+     * include query components in the path.
+     * 
+     * @param location
+     *            not null
+     * @param keepQuery
+     *            indicates whether or not the query components should be included in the path. If
+     *            this is set to true then the query portion is converted to an MD5 message digest
+     *            and that string is used to identify the file in the cache.
+     * @return the Simple HTTP Resource Path as a string, or null if the URI is not an absolute
+     *         HTTP/HTTPS URL.
+     */
+    public static String getSimpleHttpResourcePath(URI location, boolean keepQuery) {
         String scheme = location.getScheme();
         if (scheme == null || !(scheme.equals("http") || scheme.equals("https"))) {
             return null;
@@ -261,13 +316,19 @@ public class AppSchemaResolver {
             String host = location.getHost();
             String path = location.getPath();
             String[] hostParts = host.split("\\.");
-            StringBuffer buffer = new StringBuffer();
+            StringBuilder builder = new StringBuilder();
             for (int i = hostParts.length - 1; i >= 0; i--) {
-                buffer.append("/");
-                buffer.append(hostParts[i]);
+                builder.append("/");
+                builder.append(hostParts[i]);
             }
-            buffer.append(path);
-            return buffer.toString();
+            builder.append(path);
+            String query = location.getQuery();
+            if (keepQuery && query != null) {
+                builder.append(".");
+                builder.append(stringToMD5String(query));
+                builder.append(".xsd");
+            }
+            return builder.toString();
         }
     }
 
@@ -303,6 +364,27 @@ public class AppSchemaResolver {
         } else {
             return getClasspathResourceUrl(location).toExternalForm();
         }
+    }
+
+    /**
+     * Convert a string into an MD5 digest.
+     * 
+     * @param message
+     *            The string whose MD5 digest you want to generate.
+     * 
+     * @return An MD5 digest generated from message, this string is always 32 characters long. Or
+     *         returns null if there was an error.
+     */
+    private static String stringToMD5String(String message) {
+        byte[] bytesOfMessage = null;
+        MessageDigest md = null;
+        try {
+            bytesOfMessage = message.getBytes("UTF-8");
+            md = MessageDigest.getInstance("MD5");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return String.format("%032x", new BigInteger(1, md.digest(bytesOfMessage)));
     }
 
 }

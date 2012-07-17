@@ -25,9 +25,7 @@ import org.junit.Test;
  * Tests for {@link AppSchemaResolver}.
  * 
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- *
- *
- *
+ * 
  * @source $URL$
  */
 public class AppSchemaResolverTest {
@@ -78,13 +76,25 @@ public class AppSchemaResolverTest {
     }
 
     /**
-     * Test that a query is ignored
+     * Test that a query is ignored.
      */
     @Test
     public void queryIgnored() {
         String path = AppSchemaResolver
                 .getSimpleHttpResourcePath("http://schemas.example.org/exampleml/exml.xsd?q=ignored");
         Assert.assertEquals("/org/example/schemas/exampleml/exml.xsd", path);
+    }
+
+    /**
+     * Test that a query is converted to an MD5 hash where kept.
+     */
+    @Test
+    public void getSimpleHttpResourcePath_KeepQueryTrue_ReturnPathHasQueryComponent() {
+        String path = AppSchemaResolver
+                .getSimpleHttpResourcePath(
+                        "http://schemas.example.org/wfs?request=GetFeature&typename=sa:LocatedSpecimen&featureid=sa_LocatedSpecimen.2110193",
+                        true);
+        Assert.assertEquals("/org/example/schemas/wfs.0dd5330a4f06ea193985897a2cfd65d3.xsd", path);
     }
 
     /**
@@ -101,8 +111,8 @@ public class AppSchemaResolverTest {
      */
     @Test
     public void jarReturnsNull() {
-        Assert.assertNull(AppSchemaResolver.getSimpleHttpResourcePath("jar:file:example.jar"
-                + "!/org/example/schemas/exampleml/exml.xsd"));
+        Assert.assertNull(AppSchemaResolver
+                .getSimpleHttpResourcePath("jar:file:example.jar!/org/example/schemas/exampleml/exml.xsd"));
     }
 
     /**
@@ -110,8 +120,8 @@ public class AppSchemaResolverTest {
      */
     @Test
     public void badlyFormattedUrlReturnsNull() {
-        Assert.assertNull(AppSchemaResolver.getSimpleHttpResourcePath("http://schemas.example.org/"
-                + "exampleml/with spaces/exml.xsd"));
+        Assert.assertNull(AppSchemaResolver
+                .getSimpleHttpResourcePath("http://schemas.example.org/exampleml/with spaces/exml.xsd"));
     }
 
 }

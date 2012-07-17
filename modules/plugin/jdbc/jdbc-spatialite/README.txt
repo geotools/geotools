@@ -35,6 +35,7 @@ To run the unit tests in this module you must first have the proj and geos libs
 installed on the system. If you don't already have them compiled or have an 
 incompatible version built you can download pre-compiled binaries as described here:
 
+  http://docs.geotools.org/latest/userguide/library/jdbc/spatiallite.html#native-libraries
 
 Then create a test fixture file at ``%HOME%/.geotools/spatialite.properties`` with the 
 following contents::

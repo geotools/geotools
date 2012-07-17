@@ -3,10 +3,18 @@ project:
 
   http://www.xerial.org/trac/Xerial/wiki/SQLiteJDBC
 
-However we use a slighty modified version of it in which SpatiaLite is compiled
-directly into the jdbc driver. The reason being that sqlitejdbc used its own 
-copy of sqlite. And spatialite does the same so this results in problems when 
-the two are used together. 
+However to support SpatiaLite a slightly modified version of the driver is used.
+The modified sources are avialable here:
 
-The sqlitejdbc.patch file is used to modify the sqlitejdbc sources in order to 
-add support for spatialite.
+  https://bitbucket.org/jdeolive/sqlite-jdbc/
+
+The resulting sqlitejdbc driver contains its own embedded copy of both sqlite 
+spatialite. The version of spatialite is compiled against the proj and geos 
+libraries.
+
+Current library versions are as follows:
+
+ * SQLite 3.7.2
+ * SpatiaLite 2.4.0
+ * GEOS 3.3.3 (3.1.1 on Windows)
+ * PROJ 4.8 (4.6.1 on Windows)

@@ -101,14 +101,29 @@ public class SpatiaLiteDialect extends BasicSQLDialect {
             
             if ( loadSpatialRefSys ) {
                 try {
-                    BufferedReader in = new BufferedReader( new InputStreamReader( 
-                        getClass().getResourceAsStream( "init_spatialite-2.3.sql") ) );
-                    String line = null;
-                    while( (line = in.readLine() ) != null ) {
-                        st.execute( line );
-                    }
+                    //initializing statements invovles a lot of inserts, optimize by turning off
+                    // auto commit and batching them up
+                    st.close();
                     
-                    in.close();
+                    boolean isAutoCommit = cx.getAutoCommit();
+                    cx.setAutoCommit(false);
+                    st = cx.createStatement();
+
+                    try {
+                        BufferedReader in = new BufferedReader( new InputStreamReader( 
+                            getClass().getResourceAsStream( "init_spatialite-2.3.sql") ) );
+                        String line = null;
+                        while( (line = in.readLine() ) != null ) {
+                            st.addBatch( line );
+                        }
+                        in.close();
+                        st.executeBatch();
+                        cx.commit();
+                    }
+                    finally {
+                        cx.setAutoCommit(isAutoCommit);
+                    }
+
                 }
                 catch( IOException e ) {
                     throw new RuntimeException( "Error reading spatial ref sys file", e );

@@ -1465,6 +1465,9 @@ public final class StreamingRenderer implements GTRenderer {
             }
         }
 
+        if(sae.isUsingDynamincProperties()) {
+            return null;
+        }
         Set<PropertyName> attributes = sae.getAttributes();
         Set<String> attributeNames = sae.getAttributeNameSet();
 
@@ -2850,9 +2853,7 @@ public final class StreamingRenderer implements GTRenderer {
                     }
                 }
             }
-
-
-        } else if ( currLayer.getSource() != null ) {
+        } if ( currLayer.getSource() != null ) {
             return currLayer.getSource().getCRS();
         }
 

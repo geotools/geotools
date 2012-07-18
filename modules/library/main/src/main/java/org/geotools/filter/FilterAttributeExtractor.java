@@ -20,9 +20,11 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.geotools.filter.function.FilterFunction_property;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.VolatileFunction;
 
@@ -55,6 +57,7 @@ public class FilterAttributeExtractor extends DefaultFilterVisitor {
     protected Set<String> attributeNames = new HashSet<String>();
     protected Set<PropertyName> propertyNames = new HashSet<PropertyName>();
     protected boolean usingVolatileFunctions;
+    protected boolean usingDynamicProperties;
 
     /** feature type to evaluate against */
     protected SimpleFeatureType featureType;
@@ -139,6 +142,27 @@ public class FilterAttributeExtractor extends DefaultFilterVisitor {
         if (expression instanceof VolatileFunction) {
             usingVolatileFunctions = true;
         }
+        if(expression instanceof FilterFunction_property) {
+            boolean foundLiteral = false;
+            // dynamic property usage
+            if(expression.getParameters() != null && expression.getParameters().size() > 0) {
+                org.opengis.filter.expression.Expression firstParam = expression.getParameters().get(0);
+                
+                FilterAttributeExtractor secondary = new FilterAttributeExtractor();
+                firstParam.accept(secondary, null);
+                if (secondary.isConstantExpression()) {
+                    String name = firstParam.evaluate(null, String.class);
+                    if(name != null) {
+                        attributeNames.add(name);
+                        foundLiteral = true;
+                    }
+                }
+            }
+            
+            if(!foundLiteral) {
+                usingDynamicProperties = true;
+            }
+        }
         return super.visit(expression, data);
     };
     
@@ -149,6 +173,16 @@ public class FilterAttributeExtractor extends DefaultFilterVisitor {
      * @return
      */
     public boolean isConstantExpression() {
-        return !usingVolatileFunctions && getAttributeNameSet().isEmpty();
+        return !usingVolatileFunctions && !usingDynamicProperties && getAttributeNameSet().isEmpty();
+    }
+    
+    /**
+     * Returns true if the expression is using dynamic property names, so a
+     * static analysis of the expression won't be able to return all the properties in use
+     * 
+     * @return
+     */
+    public boolean isUsingDynamincProperties() {
+        return usingDynamicProperties;
     }
 }

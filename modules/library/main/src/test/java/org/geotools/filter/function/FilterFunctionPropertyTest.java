@@ -73,7 +73,6 @@ public class FilterFunctionPropertyTest extends DataTestCase {
         final Function f = FF.function("property", FF.function("env", FF.literal("pname")));
         Callable<Void> nameEvaluator = new Callable<Void>() {
 
-            @Override
             public Void call() throws Exception {
                 try {
                     EnvFunction.setLocalValue("pname", "name");
@@ -93,7 +92,6 @@ public class FilterFunctionPropertyTest extends DataTestCase {
         
         Callable<Void> geomEvaluator = new Callable<Void>() {
 
-            @Override
             public Void call() throws Exception {
                 try {
                     EnvFunction.setLocalValue("pname", "geom");

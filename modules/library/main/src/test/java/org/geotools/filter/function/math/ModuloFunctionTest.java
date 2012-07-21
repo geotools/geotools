@@ -35,14 +35,37 @@ public class ModuloFunctionTest extends TestCase {
         functionName = ModuloFunction.NAME.getName();
     }
 
-    public void testModuloInvalidInit() {
+    public void testModuloInvalidInitNoArgs() {
         try {
-            ff.function(functionName, ff.literal(13));
-        } catch (IllegalArgumentException e) {
+            ff.function(functionName);
+        } catch (RuntimeException e) {
+            assertEquals("Unable to find function " + functionName, e.getMessage());
             return;
         }
 
-        fail("IllegalArgumentException not thrown");
+        fail("Exception not thrown");
+    }
+
+    public void testModuloInvalidInitOneArg() {
+        try {
+            ff.function(functionName, ff.literal(13));
+        } catch (RuntimeException e) {
+            assertEquals("Unable to find function " + functionName, e.getMessage());
+            return;
+        }
+
+        fail("Exception not thrown");
+    }
+
+    public void testModuloInvalidInitThreeArgs() {
+        try {
+            ff.function(functionName, ff.literal(13), ff.literal(14), ff.literal(15));
+        } catch (RuntimeException e) {
+            assertEquals("Unable to find function " + functionName, e.getMessage());
+            return;
+        }
+
+        fail("Exception not thrown");
     }
 
     public void testModulo() {

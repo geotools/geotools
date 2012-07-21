@@ -47,6 +47,12 @@ public class ModuloFunction implements Function {
 
     private final Literal fallback;
 
+    public ModuloFunction() {
+        this.functionName = NAME;
+        this.parameters = Collections.emptyList();
+        this.fallback = null;
+    }
+
     public ModuloFunction(List<Expression> parameters, Literal fallback) {
         if (parameters == null) {
             throw new NullPointerException("parameters must be provided");

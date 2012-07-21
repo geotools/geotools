@@ -15,7 +15,7 @@ doing its job, as a result you are not responsible for many of the usual DataSto
 
 There is a tutorial showing how to read a simple comma separated value file:
 
-* :doc:`/tutorial/advanced/contentdatastore` (tutorial)
+* :doc:`/tutorial/contentdatastore` (tutorial)
 * :download:`CSVDataStore.java </../src/main/java/org/geotools/tutorial/datastore/CSVDataStore.java>`
 * :download:`CSVFeatureReader.java </../src/main/java/org/geotools/tutorial/datastore/CSVFeatureReader.java>`
 * :download:`CSVFeatureSource.java </../src/main/java/org/geotools/tutorial/datastore/CSVFeatureSource.java>`

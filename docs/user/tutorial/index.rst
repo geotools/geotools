@@ -21,10 +21,9 @@ to GIS workshop making use of examples from GeoTools and other Java libraries.
    filter/query
    raster/image
    map/style
-
-The following is more advanced material:
-
-.. toctree::
-   :maxdepth: 1
-   
-   advanced/index
+   affinetransform
+   factory
+   function
+   process
+   abstractdatastore
+   contentdatastore

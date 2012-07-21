@@ -8,7 +8,7 @@ of **ContentDataStore**.
 
 **Tutorial**
 
-* :doc:`/tutorial/advanced/contentdatastore`
+* :doc:`/tutorial/contentdatastore`
 
 **Maven**::
    

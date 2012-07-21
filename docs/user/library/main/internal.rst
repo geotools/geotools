@@ -46,7 +46,7 @@ The following classes are related:
 
 References:
 
-* :doc:`/tutorial/advanced/abstractdatastore` (tutorial)
+* :doc:`/tutorial/abstractdatastore` (tutorial)
   
 DataStore
 ^^^^^^^^^

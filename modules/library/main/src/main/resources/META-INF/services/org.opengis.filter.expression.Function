@@ -158,6 +158,7 @@ org.geotools.filter.function.math.FilterFunction_sqrt
 org.geotools.filter.function.math.FilterFunction_tan
 org.geotools.filter.function.math.FilterFunction_toDegrees
 org.geotools.filter.function.math.FilterFunction_toRadians
+org.geotools.filter.function.math.ModuloFunction
 org.geotools.filter.function.math.PiFunction
 org.geotools.filter.function.string.ConcatenateFunction
 org.geotools.filter.function.JenksNaturalBreaksFunction

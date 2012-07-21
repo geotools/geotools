@@ -27,7 +27,8 @@ Research and Development:
    swing/index
    swt/index
    wps
-
+   sample
+   
 Modules under active development:
 
 * :doc:`process/index` - API for working with GeoSpatial processes and annotations to make defining additional processes easy

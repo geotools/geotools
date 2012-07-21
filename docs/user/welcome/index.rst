@@ -14,6 +14,7 @@ Welcome to the Geotools Users Guide. This space serves as a reference to the Geo
    use
    standards
    upgrade
+   integration
 
 Frequently Asked Questions:
 
@@ -39,4 +40,5 @@ Welcome Developers:
    geoserver
    geomajas
    udig
+   javaEE
 

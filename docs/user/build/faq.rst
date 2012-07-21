@@ -16,7 +16,7 @@ How do I build from source code?
 
 Complete build instructions are provided in the user guide:
 
-* :doc:`/advanced/build/index`
+* :doc:`/build/index`
 
 GeoTools makes use of the maven build system (in part to help us reused code from
 a number of other java projects).

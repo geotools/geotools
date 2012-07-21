@@ -37,7 +37,8 @@ The gt-metadata module is responsible for:
       
       faq
       internal/index
-
+      pool
+      
 .. toctree::
    :maxdepth: 1
    

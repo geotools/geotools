@@ -31,16 +31,12 @@ and :doc:`extension </extension/index>`.
    geotools
    welcome/index
    faq
+   
+.. toctree::
+   :maxdepth: 2
+
    build/index
-   
-.. toctree::
-   :maxdepth: 2
-
    tutorial/index
-
-.. toctree::
-   :maxdepth: 2
-   
    library/index
    extension/index
    unsupported/index

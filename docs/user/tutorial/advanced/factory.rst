@@ -2,8 +2,8 @@
 :Version: |release|
 :License: Creative Commons with attribution
 
-Factory Introduction
---------------------
+Factory Tutorial
+----------------
 
 We are going to use FunctionFactory as an introduction to the GeoTools plug-in system.
    

@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,7 +31,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.TimeZone;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -42,7 +40,6 @@ import java.util.logging.Logger;
 
 import javax.imageio.spi.ImageReaderSpi;
 
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -58,22 +55,17 @@ import org.geotools.feature.visitor.FeatureCalc;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.feature.visitor.MinVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
-import org.geotools.filter.SortByImpl;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogFactory;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
-import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.util.Utilities;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.coverage.grid.GridCoverageWriter;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.filter.sort.SortBy;
-import org.opengis.filter.sort.SortOrder;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
@@ -145,11 +137,8 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 	boolean imposedBBox;
 	
 	boolean heterogeneousGranules;
-	
-	/**
-	 * UTC timezone to serve as reference
-	 */
-	static final TimeZone UTC_TZ = TimeZone.getTimeZone("UTC");
+
+	String typeName;
 	
 	/**
 	 * Constructor.
@@ -162,6 +151,10 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 	 */
 	public ImageMosaicReader(Object source, Hints uHints) throws IOException {
 	    super(source,uHints);
+	    
+	    //
+	    // try to extract a multithreaded loader if available
+	    //
 	    if (this.hints.containsKey(Hints.EXECUTOR_SERVICE)) {
 	      final Object executor = uHints.get(Hints.EXECUTOR_SERVICE);
 	      if (executor != null && executor instanceof ExecutorService){
@@ -180,12 +173,9 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 		if(this.hints.containsKey(Hints.MAX_ALLOWED_TILES))
 			this.maxAllowedTiles= ((Integer)this.hints.get(Hints.MAX_ALLOWED_TILES));		
 
-
-		// /////////////////////////////////////////////////////////////////////
 		//
 		// Check source
 		//
-		// /////////////////////////////////////////////////////////////////////
 		if (source instanceof ImageMosaicDescriptor) {
 		    initReaderFromDescriptor((ImageMosaicDescriptor) source, uHints);
 		} else {
@@ -232,9 +222,38 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 		//
 		// Load properties file with information about levels and envelope
 		//
-		final MosaicConfigurationBean configuration = loadMosaicProperties();
+		MosaicConfigurationBean configuration = Utils.loadMosaicProperties(sourceURL,this.locationAttributeName);
+		if(configuration==null){
+			//
+			// do we have a datastore properties file? It will preempt on the shapefile
+			//
+        	final File parent=DataUtilities.urlToFile(sourceURL).getParentFile();
+			
+			// this can be used to look for properties files that do NOT define a datastore
+			final File[] properties = parent.listFiles(
+					(FilenameFilter)
+					FileFilterUtils.and(
+							FileFilterUtils.notFileFilter(FileFilterUtils.nameFileFilter("indexer.properties")),
+						FileFilterUtils.and(
+								FileFilterUtils.notFileFilter(FileFilterUtils.nameFileFilter("datastore.properties")),
+								FileFilterUtils.makeFileOnly(FileFilterUtils.suffixFileFilter(".properties")
+						)
+					)
+			));
+			
+			// do we have a valid datastore + mosaic properties pair?
+			for(File propFile:properties)
+				if(Utils.checkFileReadable(propFile)&&
+						Utils.loadMosaicProperties(DataUtilities.fileToURL(propFile), "")!=null){
+					configuration = Utils.loadMosaicProperties(DataUtilities.fileToURL(propFile),this.locationAttributeName);
+				}               	
+			
+		}
+				
 		if(configuration==null)
 			throw new DataSourceException("Unable to create reader for this mosaic since we could not parse the configuration.");
+		extractProperties(configuration);
+		
 		//location attribute override
 		if(this.hints.containsKey(Hints.MOSAIC_LOCATION_ATTRIBUTE))
 			this.locationAttributeName=((String)this.hints.get(Hints.MOSAIC_LOCATION_ATTRIBUTE));	
@@ -279,47 +298,27 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
                 } else
                     crs = tempcrs;
             }
-			
+						
 			//
-			// location attribute field checks
-			//	
-			if(this.locationAttributeName==null)
-			{
-				//get the first string
-				for(AttributeDescriptor attribute: type.getAttributeDescriptors()){
-					if(attribute.getType().getBinding().equals(String.class))
-						this.locationAttributeName=attribute.getName().toString();
-				}
+			// perform checks on location attribute name
+			//
+			if(this.locationAttributeName==null) {
+			    throw new DataSourceException("The provided name for the location attribute is invalid.");
+			} else {
+			    if(type.getDescriptor(this.locationAttributeName)==null){
+			        // ORACLE fix
+			        this.locationAttributeName=this.locationAttributeName.toUpperCase();
+			        
+			        // try again with uppercase
+			        if(type.getDescriptor(this.locationAttributeName)==null){
+			            throw new DataSourceException("The provided name for the location attribute is invalid.");
+			        }
+			    }
 			}
-			if(type.getDescriptor(this.locationAttributeName)==null)
-				throw new DataSourceException("The provided name for the location attribute is invalid.");
 			
 			//
 			// time attribute field checks
 			//
-			//time attribute override
-			if(this.timeAttribute==null)
-			{
-				//get the first attribute that can be use as date
-				for(AttributeDescriptor attribute: type.getAttributeDescriptors()){
-					// TODO improve this code
-					if(attribute.getType().getBinding().equals(Date.class))
-					{
-						this.timeAttribute=attribute.getName().toString();
-						break;
-					}
-					if(attribute.getType().getBinding().equals(Timestamp.class))
-					{
-						this.timeAttribute=attribute.getName().toString();
-						break;
-					}
-					if(attribute.getType().getBinding().equals(java.sql.Date.class))
-					{
-						this.timeAttribute=attribute.getName().toString();
-						break;
-					}						
-				}
-			}
 			if(this.timeAttribute!=null&&this.timeAttribute.length()>0&&type.getDescriptor(this.timeAttribute)==null)
 				throw new DataSourceException("The provided name for the timeAttribute attribute is invalid.");			
 			
@@ -396,58 +395,6 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 	private void setGridGeometry () {
 	    setGridGeometry(null)                ; 
     }
-
-        /**
-	 * Loads the properties file that contains useful information about this
-	 * coverage.
-	 * 
-	 * @throws UnsupportedEncodingException
-	 * @throws IOException
-	 */
-	private MosaicConfigurationBean loadMosaicProperties(){
-		// discern if we have a shapefile based index or a datastore based index
-		final File sourceFile=DataUtilities.urlToFile(sourceURL);
-		final String extension= FilenameUtils.getExtension(sourceFile.getAbsolutePath());
-		MosaicConfigurationBean configuration=null;
-		if(extension.equalsIgnoreCase("shp"))
-		{
-			// shapefile
-			configuration=Utils.loadMosaicProperties(DataUtilities.changeUrlExt(sourceURL, "properties"),this.locationAttributeName);
-		}
-		else
-		{
-			// we need to look for properties files that do NOT define a datastore
-			final File[] properties = sourceFile.getParentFile().listFiles(
-					(FilenameFilter)
-					FileFilterUtils.andFileFilter(
-							FileFilterUtils.notFileFilter(FileFilterUtils.nameFileFilter("indexer.properties")),
-						FileFilterUtils.andFileFilter(
-								FileFilterUtils.notFileFilter(FileFilterUtils.nameFileFilter("datastore.properties")),
-								FileFilterUtils.makeFileOnly(FileFilterUtils.suffixFileFilter(".properties")
-						)
-					)
-			));
-			
-			
-			// check the valid mosaic properties files
-			for(File propFile:properties)
-				if(Utils.checkFileReadable(propFile))
-				{
-					// try to load the config
-					configuration=Utils.loadMosaicProperties(DataUtilities.fileToURL(propFile), this.locationAttributeName);
-					if(configuration!=null)
-						break;
-					
-					// proceed with next prop file
-				}		
-							
-		}
-		// we did not find any good candidate for mosaic.properties file, this will signal it		
-		if(configuration!=null)
-			return extractProperties(configuration);
-		return configuration;
-	}
-
 	private MosaicConfigurationBean extractProperties(final MosaicConfigurationBean configuration) {
 
 		// resolutions levels
@@ -477,8 +424,8 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 		// we do not find it.
 		expandMe = configuration.isExpandToRGB();
 		
+		// do we have heterogenous granules
 		heterogeneousGranules = configuration.isHeterogeneous();
-
 
 		// absolute or relative path
 		pathType = configuration.isAbsolutePath()?PathType.ABSOLUTE:PathType.RELATIVE;
@@ -529,6 +476,9 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 		
 		// imposed BBOX?
 		this.imposedBBox=true;
+		
+		// typeName to be used for reading the mosaic
+		this.typeName=configuration.getTypeName();
 		
 		return configuration;
 	}
@@ -807,9 +757,9 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
             
             // check result
             final Date result=(Date) visitor.getResult().getValue();
-            final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-            df.setTimeZone(UTC_TZ);
-            return df.format(result)+"Z";//ZULU
+            final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            df.setTimeZone(Utils.UTC_TIME_ZONE);
+            return df.format(result);//ZULU
         } catch (IOException e) {
             if(LOGGER.isLoggable(Level.WARNING))
                     LOGGER.log(Level.WARNING,"Unable to compute extrema for TIME_DOMAIN",e);
@@ -908,26 +858,25 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
             throws IOException {
 
         final QueryCapabilities queryCapabilities = rasterManager.granuleCatalog.getQueryCapabilities();
-        boolean manualSort=false;        
+//        boolean manualSort=false;        
         Query query = new Query(rasterManager.granuleCatalog.getType().getTypeName());
         query.setPropertyNames(Arrays.asList(attribute));
-        final SortBy[] sortBy=new SortBy[]{
-                	new SortByImpl(
-                			FeatureUtilities.DEFAULT_FILTER_FACTORY.property(attribute),
-                			SortOrder.ASCENDING
-                	)};
-        if(queryCapabilities.supportsSorting(sortBy))
-                query.setSortBy(sortBy);
-        else
-                manualSort=true;				
+//        final SortBy[] sortBy=new SortBy[]{
+//                	new SortByImpl(
+//                			FeatureUtilities.DEFAULT_FILTER_FACTORY.property(attribute),
+//                			SortOrder.ASCENDING
+//                	)};
+//        if(queryCapabilities.supportsSorting(sortBy))
+//                query.setSortBy(sortBy);
+//        else
+//                manualSort=true;				
         final UniqueVisitor visitor= new UniqueVisitor(attribute);
         rasterManager.granuleCatalog.computeAggregateFunction(query, visitor);
         
         // check result
-        final Set result = manualSort?
-                new TreeSet(visitor.getUnique()):
-                visitor.getUnique();
-        return result;
+//        final Set result =manualSort? new TreeSet(visitor.getUnique()):visitor.getUnique();
+        // 17052012 SG MANUAL ORDERING as there is not guarantee that the ordering with an aggregation would work
+        return new TreeSet(visitor.getUnique());
     }
 
     /**
@@ -948,10 +897,10 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
                     return "";	
                     
             final StringBuilder buff= new StringBuilder();
-            final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-            df.setTimeZone(UTC_TZ);
+            final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            df.setTimeZone(Utils.UTC_TIME_ZONE); // we DO work only with UTC times
             for(Date date:result){
-                    buff.append(df.format(date)).append("Z");//ZULU
+                    buff.append(df.format(date));//ZULU
                     buff.append(",");
             }
             return buff.substring(0,buff.length()-1).toString();

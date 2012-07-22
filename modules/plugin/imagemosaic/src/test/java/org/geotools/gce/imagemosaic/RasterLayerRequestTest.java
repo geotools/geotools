@@ -1,10 +1,8 @@
 package org.geotools.gce.imagemosaic;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
-import java.awt.Rectangle;
 import java.io.File;
-import java.util.Arrays;
 
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;

@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -240,7 +239,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
      * @param source
      * @return 
      */
-    private boolean checkDescriptor(final ImageMosaicDescriptor source) {
+    private static boolean checkDescriptor(final ImageMosaicDescriptor source) {
         //TODO: improve checks
         final GranuleCatalog catalog = source.getCatalog();
         final MosaicConfigurationBean configuration = source.getConfiguration();
@@ -267,7 +266,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
     }
 
     @SuppressWarnings("unchecked")
-    private boolean checkForUrl( Object source, Hints hints){
+    private static boolean checkForUrl( Object source, Hints hints){
          try {
             
             URL sourceURL = Utils.checkSource(source, hints);
@@ -337,27 +336,9 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
             	    }
                     
             	    ShapefileDataStore store = new ShapefileDataStore(sourceURL);
-            	    store.setDbftimeZone(TimeZone.getTimeZone("UTC"));
+            	    store.setDbftimeZone(Utils.UTC_TIME_ZONE);
             	    tileIndexStore = store;
             	}
-                final String[] typeNames = tileIndexStore.getTypeNames();
-                if (typeNames.length <= 0)
-                    return false;
-                final String typeName = typeNames[0];
-                if(typeName==null)
-    				return false;
-                
-                final SimpleFeatureSource featureSource = tileIndexStore.getFeatureSource(typeName);
-                if(featureSource==null)
-    				return false;
-                
-                final SimpleFeatureType schema = featureSource.getSchema();
-                if(schema==null)
-    				return false;
-                
-                crs = featureSource.getSchema().getGeometryDescriptor().getCoordinateReferenceSystem();
-                if(crs==null)
-    				return false;
    
                 //
                 // Now look for the properties file and try to parse relevant fields
@@ -375,9 +356,9 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
 					// this can be used to look for properties files that do NOT define a datastore
 					final File[] properties = parent.listFiles(
 							(FilenameFilter)
-							FileFilterUtils.andFileFilter(
+							FileFilterUtils.and(
 									FileFilterUtils.notFileFilter(FileFilterUtils.nameFileFilter("indexer.properties")),
-								FileFilterUtils.andFileFilter(
+								FileFilterUtils.and(
 										FileFilterUtils.notFileFilter(FileFilterUtils.nameFileFilter("datastore.properties")),
 										FileFilterUtils.makeFileOnly(FileFilterUtils.suffixFileFilter(".properties")
 								)
@@ -395,13 +376,43 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                 }
 	            
 	            //get the properties file
-	            final MosaicConfigurationBean props = Utils.loadMosaicProperties(propsUrl, "location");
-	            if(props==null)
+	            final MosaicConfigurationBean configuration = Utils.loadMosaicProperties(propsUrl, "location");
+	            if(configuration==null)
 	            	return false;
-	            
+
+            	// we need the type name with a DB to pick up the right table
+            	// for shapefiles this can be null so taht we select the first and ony one
+            	String typeName = configuration.getTypeName();            	
+            	if(typeName==null){
+                    final String[] typeNames = tileIndexStore.getTypeNames();
+                    if (typeNames.length <= 0)
+                        return false;
+                    typeName= typeNames[0];            		
+            	}
+                if(typeName==null)
+    				return false;
+
+            	// now try to connect to the index
+                SimpleFeatureSource featureSource = null;
+                try{
+                	featureSource=tileIndexStore.getFeatureSource(typeName);             	
+                }catch (Exception e) {
+                	featureSource = tileIndexStore.getFeatureSource(typeName.toUpperCase());
+				}
+                if(featureSource==null){
+                	return false;
+                }
+                
+                final SimpleFeatureType schema = featureSource.getSchema();
+                if(schema==null)
+    				return false;
+                
+                crs = featureSource.getSchema().getGeometryDescriptor().getCoordinateReferenceSystem();
+                if(crs==null)
+    				return false;	            
                 // looking for the location attribute
-	            final String locationAttributeName=props.getLocationAttribute();
-                if (schema.getDescriptor(locationAttributeName) == null)
+	            final String locationAttributeName=configuration.getLocationAttribute();
+                if (schema.getDescriptor(locationAttributeName) == null&&schema.getDescriptor(locationAttributeName.toUpperCase()) == null)
                     return false;   
                 
 	    		return true;
@@ -434,7 +445,6 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
         try {
 
             final ImageMosaicReader reader = new ImageMosaicReader(source, hints);
-//            reader.multiThreadedLoader = mtLoader;
             return reader;
         } catch (MalformedURLException e) {
             if (LOGGER.isLoggable(Level.WARNING))

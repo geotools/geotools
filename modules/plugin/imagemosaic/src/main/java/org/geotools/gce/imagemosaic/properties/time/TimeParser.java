@@ -171,7 +171,9 @@ class TimeParser {
         for (int i=0; i<PATTERNS.length; i++) {
             // rebuild formats at each parse, date formats are not thread safe
             SimpleDateFormat format = new SimpleDateFormat(PATTERNS[i]);
-            format.setTimeZone(UTC_TZ);
+            format.setLenient(true);
+            format.setTimeZone(TimeZone.getTimeZone("Zulu"));
+
             
             /* We do not use the standard method DateFormat.parse(String), because if the parsing
              * stops before the end of the string, the remaining characters are just ignored and

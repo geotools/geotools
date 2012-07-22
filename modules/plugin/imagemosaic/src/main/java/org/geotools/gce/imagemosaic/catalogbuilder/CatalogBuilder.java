@@ -1287,7 +1287,7 @@ public class CatalogBuilder implements Runnable {
 			// read the properties file
 			Properties properties = Utils.loadPropertiesFromURL(DataUtilities.fileToURL(datastoreProperties));
 			if (properties == null)
-				throw new IOException();
+				throw new IOException("Unable to load properties from:"+datastoreProperties.getAbsolutePath());
 
 			// SPI
 			final String SPIClass = properties.getProperty("SPI");
@@ -1295,6 +1295,10 @@ public class CatalogBuilder implements Runnable {
 				// create a datastore as instructed
 				final DataStoreFactorySpi spi = (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
 				final Map<String, Serializable> params = Utils.createDataStoreParamsFromPropertiesFile(properties,spi);
+
+				// set ParentLocation parameter since for embedded database like H2 we must change the database
+				// to incorporate the path where to write the db 
+				params.put("ParentLocation", parent.getAbsolutePath());
 				catalog=GranuleCatalogFactory.createGranuleCatalog(params,false,true, spi);
 			} catch (ClassNotFoundException e) {
 				final IOException ioe = new IOException();

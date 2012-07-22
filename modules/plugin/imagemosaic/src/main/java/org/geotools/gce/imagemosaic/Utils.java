@@ -50,6 +50,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Queue;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -136,7 +137,7 @@ public class Utils {
         public final static String HETEROGENEOUS = "Heterogeneous";
         public static final String TIME_ATTRIBUTE = "TimeAttribute";
         public static final String ELEVATION_ATTRIBUTE = "ElevationAttribute";
-        public final static String CACHING= "Caching";
+        public final static String TYPENAME= "TypeName";
         
         //Indexer Properties specific properties
         public  static final String RECURSIVE = "Recursive";
@@ -144,6 +145,7 @@ public class Utils {
         public static final String SCHEMA = "Schema";
         public static final String RESOLUTION_LEVELS = "ResolutionLevels";
         public static final String PROPERTY_COLLECTORS = "PropertyCollectors";
+        public final static String CACHING= "Caching";        
     }
         /**
 	 * Logger.
@@ -262,6 +264,11 @@ public class Utils {
 	        final URL sourceURL,
 		final String defaultLocationAttribute, 
 		final Set<String> ignorePropertiesSet) {
+		
+		if(LOGGER.isLoggable(Level.FINE)){
+			LOGGER.log(Level.FINE,"Trying to load properties file from URL:"+sourceURL);
+		}
+		
 		// ret value
 		final MosaicConfigurationBean retValue = new MosaicConfigurationBean();
 		final boolean ignoreSome = ignorePropertiesSet != null && !ignorePropertiesSet.isEmpty();
@@ -308,8 +315,7 @@ public class Utils {
 		// resolutions levels
 		//              
 		if (!ignoreSome || !ignorePropertiesSet.contains(Prop.LEVELS)) {
-			int levelsNumber = Integer.parseInt(properties.getProperty(
-					Prop.LEVELS_NUM, "1").trim());
+			int levelsNumber = Integer.parseInt(properties.getProperty(Prop.LEVELS_NUM, "1").trim());
 			retValue.setLevelsNum(levelsNumber);
 			if (!properties.containsKey(Prop.LEVELS)) {
 				if (LOGGER.isLoggable(Level.INFO))
@@ -320,8 +326,7 @@ public class Utils {
 			pairs = levels.split(" ");
 			if (pairs == null || pairs.length != levelsNumber) {
 				if (LOGGER.isLoggable(Level.INFO))
-					LOGGER
-							.info("Levels number is different from the provided number of levels resoltion.");
+					LOGGER.info("Levels number is different from the provided number of levels resoltion.");
 				return null;
 			}
 			final double[][] resolutions = new double[levelsNumber][2];
@@ -329,14 +334,21 @@ public class Utils {
 				pair = pairs[i].split(",");
 				if (pair == null || pair.length != 2) {
 					if (LOGGER.isLoggable(Level.INFO))
-						LOGGER
-								.info("OverviewLevel number is different from the provided number of levels resoltion.");
+						LOGGER.info("OverviewLevel number is different from the provided number of levels resoltion.");
 					return null;
 				}
 				resolutions[i][0] = Double.parseDouble(pair[0]);
 				resolutions[i][1] = Double.parseDouble(pair[1]);
 			}
 			retValue.setLevels(resolutions);
+		}
+
+		//
+		// typename, is mandatory when we don't use shapeiles
+		//              
+		if (!ignoreSome || !ignorePropertiesSet.contains(Prop.TYPENAME)) {
+			String typeName = properties.getProperty(Prop.TYPENAME, null);
+			retValue.setTypeName(typeName);
 		}
 
 		//
@@ -386,7 +398,7 @@ public class Utils {
                     if(!properties.containsKey(Prop.NAME)) {
                             if(LOGGER.isLoggable(Level.SEVERE))
                                     LOGGER.severe("Required key Name not found.");          
-                            return  null;
+                            return null;
                     }                       
                     String coverageName = properties.getProperty(Prop.NAME).trim();
                     retValue.setName(coverageName);
@@ -437,8 +449,7 @@ public class Utils {
 		if (!ignoreSome
 				|| !ignorePropertiesSet.contains(Prop.LOCATION_ATTRIBUTE)) {
 			retValue.setLocationAttribute(properties.getProperty(
-					Prop.LOCATION_ATTRIBUTE, Utils.DEFAULT_LOCATION_ATTRIBUTE)
-					.trim());
+					Prop.LOCATION_ATTRIBUTE, Utils.DEFAULT_LOCATION_ATTRIBUTE).trim());
 		}
 
 		// return value
@@ -504,7 +515,7 @@ public class Utils {
 			IOFileFilter... filters) {
 		IOFileFilter retFilter = inputFilter;
 		for (IOFileFilter filter : filters) {
-			retFilter = FileFilterUtils.andFileFilter(retFilter,
+			retFilter = FileFilterUtils.and(retFilter,
 					FileFilterUtils.notFileFilter(filter));
 		}
 		return retFilter;
@@ -935,7 +946,7 @@ public class Utils {
                         // define a datastore
                         final File[] properties = sourceFile
                                         .listFiles((FilenameFilter) FileFilterUtils
-                                                        .andFileFilter(
+                                                        .and(
                                                                         FileFilterUtils
                                                                                         .notFileFilter(FileFilterUtils
                                                                                                         .nameFileFilter("datastore.properties")),
@@ -1073,6 +1084,8 @@ public class Utils {
     static final double AFFINE_IDENTITY_EPS = 1E-6;
 
     public static final boolean DEFAULT_COLOR_EXPANSION_BEHAVIOR = false;
+
+    public static final TimeZone UTC_TIME_ZONE = TimeZone.getTimeZone("UTC");
     
     /**
      * Private constructor to initialize the ehCache instance.

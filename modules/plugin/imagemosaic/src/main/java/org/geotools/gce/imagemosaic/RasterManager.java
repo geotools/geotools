@@ -346,13 +346,15 @@ class RasterManager {
 	}
 	
 	public void dispose() {
-	    try{
-	        if(granuleCatalog!=null)
-	            this.granuleCatalog.dispose();
-	    } catch (Exception e) {
-                if(LOGGER.isLoggable(Level.FINE))
-                    LOGGER.log(Level.FINE,e.getLocalizedMessage(),e);
-            } 
+	    synchronized (this) {
+                try {
+                    if (granuleCatalog != null)
+                        this.granuleCatalog.dispose();
+                } catch (Exception e) {
+                    if (LOGGER.isLoggable(Level.FINE))
+                        LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
+                }                
+            }
 	}
 
 	/**

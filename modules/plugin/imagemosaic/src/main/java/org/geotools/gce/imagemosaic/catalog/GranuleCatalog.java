@@ -30,10 +30,10 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.geometry.BoundingBox;
 /**
+ * The {@link GranuleCatalog} interface provides the basuc capabilities for the class 
+ * that is as an index for the granules.
  * 
  * @author Simone Giannecchini, GeoSolutions SAS
- *
- *
  *
  * @source $URL$
  */

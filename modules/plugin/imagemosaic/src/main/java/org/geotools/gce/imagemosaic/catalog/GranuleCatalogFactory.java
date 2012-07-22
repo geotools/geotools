@@ -43,8 +43,6 @@ import org.geotools.util.logging.Logging;
  * 
  * @author Simone Giannecchini, GeoSolutions SAS
  *
- *
- *
  * @source $URL$
  */
 public abstract class GranuleCatalogFactory {	
@@ -74,7 +72,9 @@ public abstract class GranuleCatalogFactory {
 		final String extension= FilenameUtils.getExtension(sourceFile.getAbsolutePath());
 		if(extension.equalsIgnoreCase("shp"))
 		{
-			// shapefile, caching is always true by default
+			//
+			// SHAPEFILE
+			//
 			final Map<String, Serializable> params = new HashMap<String, Serializable>();
 			params.put(ShapefileDataStoreFactory.URLP.key, sourceURL);
 			if (sourceURL.getProtocol().equalsIgnoreCase("file"))
@@ -102,7 +102,7 @@ public abstract class GranuleCatalogFactory {
 			if (properties == null)
 				return null;
 
-			// SPI
+			// SPI for datastore
 			final String SPIClass = properties.getProperty("SPI");
 			try {
 				// create a datastore as instructed
@@ -131,6 +131,12 @@ public abstract class GranuleCatalogFactory {
 				}
 				else
 					params.put("ParentLocation", null);
+				
+				// add typename
+				String typeName=configuration.getTypeName();
+				if(typeName!=null){
+					params.put("TypeName", configuration.getTypeName());
+				}
 				return configuration.isCaching()?new STRTreeGranuleCatalog(params,spi):new GTDataStoreGranuleCatalog(params,false,spi);
 			} catch (ClassNotFoundException e) {
 				if(LOGGER.isLoggable(Level.WARNING))

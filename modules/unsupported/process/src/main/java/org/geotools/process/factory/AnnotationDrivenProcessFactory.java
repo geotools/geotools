@@ -147,7 +147,7 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
     public InternationalString getTitle(Name name) {
         DescribeProcess info = getProcessDescription(name);
         if (info != null) {
-            return new SimpleInternationalString(info.description());
+            return new SimpleInternationalString(info.title());
         } else {
             return null;
         }

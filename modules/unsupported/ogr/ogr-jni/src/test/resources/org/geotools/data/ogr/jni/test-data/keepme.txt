@@ -1,0 +1,1 @@
+This directory is necessary to make the gt-sample-data copying machinery to work

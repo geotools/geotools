@@ -210,10 +210,17 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
             return true;
         }
 
-        Object driver = ogr.GetDriverByName(driverName);
-
-        if (driver != null) {
-            return true;
+        if (driverName != null) {
+            try {
+                Object driver = ogr.GetDriverByName(driverName);
+        
+                if (driver != null) {
+                    return true;
+                }
+            }
+            catch(Exception e) {
+                LOGGER.log(Level.FINE, "Error loading driver", e);
+            }
         }
 
         return false;

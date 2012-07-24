@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.geotools.data.DataSourceException;
 import org.geotools.data.Query;
@@ -84,6 +85,7 @@ public class OGRDataStore extends ContentDataStore {
             }
             return result;
         } catch (IOException e) {
+            LOGGER.log(Level.FINE, "Error looking up type names", e);
             return Collections.emptyList();
         } finally {
             ogr.DataSourceRelease(dataSource);

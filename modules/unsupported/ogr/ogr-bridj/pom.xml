@@ -15,7 +15,7 @@
 
   <parent>
     <groupId>org.geotools</groupId>
-    <artifactId>unsupported</artifactId>
+    <artifactId>gt-ogr</artifactId>
     <version>9-SNAPSHOT</version>
   </parent>
 
@@ -24,20 +24,16 @@
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
   <groupId>org.geotools</groupId>
-  <artifactId>gt-ogr</artifactId>
-  <packaging>pom</packaging>
-  <name>OGR DataStore Module</name>
+  <artifactId>gt-ogr-bridj</artifactId>
+  <packaging>jar</packaging>
+  <name>Bridj OGR DataStore Module</name>
   
   <scm>
     <connection>
-      scm:svn:http://svn.geotools.org/trunk/modules/unsupported/ogr/
+      scm:svn:http://svn.geotools.org/trunk/modules/unsupported/ogr/ogr-bridj
     </connection>
-    <url>http://svn.geotools.org/trunk/modules/unsupported/ogr/</url>
+    <url>http://svn.geotools.org/trunk/modules/unsupported/ogr/ogr-bridj</url>
   </scm>
-
-  <description>
-    A datastore levearing OGR for reading/writing a slew of data formats
-  </description>
 
   <licenses>
     <license>
@@ -47,6 +43,15 @@
     </license>
   </licenses>
   
+  <repositories>
+    <repository>
+      <id>nativelibs4java-repo</id>
+      <name>NativeLibs4Java Maven Repository</name>
+      <url>http://nativelibs4java.sourceforge.net/maven</url>
+    </repository>
+  </repositories>
+
+
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
@@ -70,51 +75,28 @@
   <dependencies>
     <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-data</artifactId>
+      <artifactId>gt-ogr-core</artifactId>
       <version>${project.version}</version>
     </dependency>
-
-    <!-- Test dependencies -->
     <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-sample-data</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-epsg-hsql</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
+      <groupId>com.nativelibs4java</groupId>
+      <artifactId>bridj</artifactId>
+      <classifier>c-only</classifier>
+      <version>0.6</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.nativelibs4java.thirdparty.com.google.android</groupId>
+          <artifactId>dx</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-shapefile</artifactId>
+      <artifactId>gt-ogr-core</artifactId>
       <version>${project.version}</version>
+      <classifier>tests</classifier>
       <scope>test</scope>
-    </dependency>  
+    </dependency>
   </dependencies>
   
-  <build>
-    <plugins>
-	    <plugin>
-	        <groupId>org.apache.maven.plugins</groupId>
-	        <artifactId>maven-surefire-plugin</artifactId>
-	        <configuration>
-	          <systemProperties>
-	            <property>
-	              <name>java.library.path</name>
-	              <value>${java.library.path}</value>
-	            </property>
-	          </systemProperties>
-	        </configuration>
-	      </plugin>
-      </plugins>
-  </build>
-
-  <modules>
-    <module>ogr-core</module>
-    <module>ogr-bridj</module>
-    <module>ogr-jni</module>
-  </modules>
 </project>

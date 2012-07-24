@@ -134,7 +134,7 @@ public abstract class TestCaseSupport extends TestCase {
     @Override
     protected void setUp() throws Exception {
         dataStoreFactory = createDataStoreFactory();
-        ogr = dataStoreFactory.getOGR();
+        ogr = dataStoreFactory.createOGR();
     }
 
     /**

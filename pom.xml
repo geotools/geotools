@@ -90,6 +90,7 @@
     <stress.skip.pattern>**/*StressTest.java</stress.skip.pattern>
     <test.exclude.pattern>disabled</test.exclude.pattern>
     <test.maxHeapSize>512M</test.maxHeapSize>
+    <test.forkMode>once</test.forkMode>
     <src.output>${basedir}/target</src.output>
     <imageio.ext.version>1.1.4</imageio.ext.version>
     <jt.version>1.2.0</jt.version>
@@ -1200,7 +1201,7 @@
             <exclude>${stress.skip.pattern}</exclude>
             <exclude>${test.exclude.pattern}</exclude>
           </excludes>
-          <argLine>-Xmx${test.maxHeapSize} ${jvm.opts} -Dorg.geotools.test.extensive=${extensive.tests} -Dorg.geotools.test.interactive=${interactive.tests} -Dorg.geotools.image.test.enabled=${image.tests} -Dorg.geotools.image.test.interactive=${interactive.image} -Djava.awt.headless=${java.awt.headless} -Djava.io.tmpdir=${java.io.tmpdir}</argLine>
+          <argLine>-Xmx${test.maxHeapSize} ${jvm.opts} -Dorg.geotools.test.extensive=${extensive.tests} -Dorg.geotools.test.interactive=${interactive.tests} -Dorg.geotools.image.test.enabled=${image.tests} -Dorg.geotools.image.test.interactive=${interactive.image} -Djava.awt.headless=${java.awt.headless} -Djava.io.tmpdir=${java.io.tmpdir} -Djava.library.path=${java.library.path}</argLine>
           <!-- Ignores test failure only if we are generating a       -->
           <!-- report for publication on the web site. See the        -->
           <!-- profiles section at the begining of this pom.xml file. -->
@@ -1216,6 +1217,7 @@
           <printSummary>true</printSummary>
           <!-- Redirect the unit test standard output to a file. -->
           <redirectTestOutputToFile>false</redirectTestOutputToFile>
+          <forkMode>${test.forkMode}</forkMode>
         </configuration>
       </plugin>
 

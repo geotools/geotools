@@ -60,22 +60,12 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
     public static final Param NAMESPACEP = new Param("namespace", URI.class,
             "uri to a the namespace", false); // not required
 
-    private OGR ogr;
-
     /**
      * Caches opened data stores. TODO: is this beneficial or problematic? It's a static cache, so
      * opening a lot of datastore (thousands, hundreds of thousands...) may become a memory problem.
      * Plus OGR is not designed to be thread safe.
      */
     private Map liveStores = new HashMap();
-
-    public OGRDataStoreFactory() {
-        ogr = createOGR();
-    }
-
-    public OGR getOGR() {
-        return ogr;
-    }
 
     protected abstract OGR createOGR();
 
@@ -131,7 +121,7 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
         String ogrName = (String) OGR_NAME.lookUp(params);
         String ogrDriver = (String) OGR_DRIVER_NAME.lookUp(params);
         URI namespace = (URI) NAMESPACEP.lookUp(params);
-        ds = new OGRDataStore(ogrName, ogrDriver, namespace, ogr);
+        ds = new OGRDataStore(ogrName, ogrDriver, namespace, createOGR());
 
         return ds;
     }
@@ -211,6 +201,7 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
      * @return
      */
     public boolean canProcess(String ogrName, String driverName) {
+        OGR ogr = createOGR();
         Object dataset = ogr.OpenShared(ogrName, 0);
 
         if (dataset != null) {
@@ -230,6 +221,8 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
     }
     
     public Set<String> getAvailableDrivers() {
+        OGR ogr = createOGR();
+
         int count = ogr.GetDriverCount();
         Set<String> result = new HashSet<String>();
         for (int i = 0; i < count; i++) {

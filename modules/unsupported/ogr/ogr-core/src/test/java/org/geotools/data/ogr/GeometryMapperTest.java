@@ -30,15 +30,15 @@ public abstract class GeometryMapperTest extends TestCaseSupport {
     }
     
     void checkRoundTrip(String geometryWkt) throws Exception {
-        checkRoundTrip(geometryWkt, new GeometryMapper.WKB(gf, dataStoreFactory.getOGR()));
-        checkRoundTrip(geometryWkt, new GeometryMapper.WKT(gf, dataStoreFactory.getOGR()));
+        checkRoundTrip(geometryWkt, new GeometryMapper.WKB(gf, dataStoreFactory.createOGR()));
+        checkRoundTrip(geometryWkt, new GeometryMapper.WKT(gf, dataStoreFactory.createOGR()));
     }
 
     void checkRoundTrip(String geometryWkt, GeometryMapper mapper) throws Exception {
         Geometry geometry = new WKTReader().read(geometryWkt);
 
         // to ogr and back
-        OGR ogr = dataStoreFactory.getOGR();
+        OGR ogr = dataStoreFactory.createOGR();
         
         Object ogrGeometry = mapper.parseGTGeometry(geometry);
         Geometry remapped = mapper.parseOgrGeometry(ogrGeometry);

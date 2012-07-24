@@ -90,8 +90,8 @@ public class MosaicConfigurationBean {
 	/** The typename to use for the mosaic index*/
 	private String typeName;
 	
-        public String getTypeName() {
-		return typeName;
+    public String getTypeName() {
+    	return typeName;
 	}
 
 	public void setTypeName(String typeName) {

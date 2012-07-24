@@ -108,8 +108,6 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  * 
  * @author Simone Giannecchini, GeoSolutions
  * 
- *
- *
  * @source $URL$
  */
 @SuppressWarnings("rawtypes")
@@ -1505,41 +1503,42 @@ public class CatalogBuilder implements Runnable {
 	
 		// envelope
 		final Properties properties = new Properties();
-		properties.setProperty("AbsolutePath", Boolean.toString(mosaicConfiguration.isAbsolutePath()));
-		properties.setProperty("LocationAttribute", mosaicConfiguration.getLocationAttribute());
+		properties.setProperty(Utils.Prop.ABSOLUTE_PATH, Boolean.toString(mosaicConfiguration.isAbsolutePath()));
+		properties.setProperty(Utils.Prop.LOCATION_ATTRIBUTE, mosaicConfiguration.getLocationAttribute());
 		final String timeAttribute=mosaicConfiguration.getTimeAttribute();
 		if (timeAttribute != null) {
-			properties.setProperty("TimeAttribute", mosaicConfiguration.getTimeAttribute());
+			properties.setProperty(Utils.Prop.TIME_ATTRIBUTE, mosaicConfiguration.getTimeAttribute());
 		}
 		final String elevationAttribute=mosaicConfiguration.getElevationAttribute();
 		if (elevationAttribute != null) {
-			properties.setProperty("ElevationAttribute", mosaicConfiguration.getElevationAttribute());
+			properties.setProperty(Utils.Prop.ELEVATION_ATTRIBUTE, mosaicConfiguration.getElevationAttribute());
 		}
 		
 		final int numberOfLevels=mosaicConfiguration.getLevelsNum();
 		final double[][] resolutionLevels=mosaicConfiguration.getLevels();
-		properties.setProperty("LevelsNum", Integer.toString(numberOfLevels));
+		properties.setProperty(Utils.Prop.LEVELS_NUM, Integer.toString(numberOfLevels));
 		final StringBuilder levels = new StringBuilder();
 		for (int k = 0; k < numberOfLevels; k++) {
 			levels.append(Double.toString(resolutionLevels[0][k])).append(",").append(Double.toString(resolutionLevels[1][k]));
 			if (k < numberOfLevels - 1)
 				levels.append(" ");
 		}
-		properties.setProperty("Levels", levels.toString());
-		properties.setProperty("Name", runConfiguration.getIndexName());
-		properties.setProperty("ExpandToRGB", Boolean.toString(mustConvertToRGB));
-		properties.setProperty("Heterogeneous", Boolean.toString(mosaicConfiguration.isHeterogeneous()));
+		properties.setProperty(Utils.Prop.LEVELS, levels.toString());
+		properties.setProperty(Utils.Prop.NAME, mosaicConfiguration.getName());
+		properties.setProperty(Utils.Prop.TYPENAME, mosaicConfiguration.getName());
+		properties.setProperty(Utils.Prop.EXP_RGB, Boolean.toString(mustConvertToRGB));
+		properties.setProperty(Utils.Prop.HETEROGENEOUS, Boolean.toString(mosaicConfiguration.isHeterogeneous()));
 		
 		if (cachedReaderSPI != null){
 			// suggested spi
-			properties.setProperty("SuggestedSPI", cachedReaderSPI.getClass().getName());
+			properties.setProperty(Utils.Prop.SUGGESTED_SPI, cachedReaderSPI.getClass().getName());
 		}
 
 		// write down imposed bbox
 		if (imposedBBox != null){
-			properties.setProperty("Envelope2D", imposedBBox.getMinX()+","+imposedBBox.getMinY()+" "+imposedBBox.getMaxX()+","+imposedBBox.getMaxY());
+			properties.setProperty(Utils.Prop.ENVELOPE2D, imposedBBox.getMinX()+","+imposedBBox.getMinY()+" "+imposedBBox.getMaxX()+","+imposedBBox.getMaxY());
 		}
-		properties.setProperty("Caching", Boolean.toString(mosaicConfiguration.isCaching()));
+		properties.setProperty(Utils.Prop.CACHING, Boolean.toString(mosaicConfiguration.isCaching()));
 		OutputStream outStream=null;
 		try {
 			outStream = new BufferedOutputStream(new FileOutputStream(runConfiguration.getRootMosaicDirectory() + "/" + runConfiguration.getIndexName() + ".properties"));

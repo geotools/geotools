@@ -43,6 +43,8 @@ import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.h2.H2DataStoreFactory;
+import org.geotools.data.h2.H2JNDIDataStoreFactory;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.Hints;
@@ -307,7 +309,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
         		    final String SPIClass=properties.getProperty("SPI");
     		    	// create a datastore as instructed
     				final DataStoreFactorySpi spi= (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
-    				
+ 				
     				// get the params
     				final Map<String, Serializable> params = new HashMap<String, Serializable>();	
     				final Param[] paramsInfo = spi.getParametersInfo();
@@ -323,6 +325,14 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
     							return false;
     						}
     				}						
+    				// H2 workadound
+    				if(spi instanceof H2DataStoreFactory || spi instanceof H2JNDIDataStoreFactory){
+    					if(params.containsKey(H2DataStoreFactory.DATABASE.key)){
+    						String dbname = (String) params.get(H2DataStoreFactory.DATABASE.key);
+    						params.put(H2DataStoreFactory.DATABASE.key,( sourceF.getParent()+"/"+dbname));
+    					}
+    				}   
+    				
     				tileIndexStore=spi.createDataStore(params);
         			if(tileIndexStore==null)
         				return false;
@@ -376,7 +386,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                 }
 	            
 	            //get the properties file
-	            final MosaicConfigurationBean configuration = Utils.loadMosaicProperties(propsUrl, "location");
+	            final MosaicConfigurationBean configuration = Utils.loadMosaicProperties(propsUrl, Utils.DEFAULT_LOCATION_ATTRIBUTE);
 	            if(configuration==null)
 	            	return false;
 

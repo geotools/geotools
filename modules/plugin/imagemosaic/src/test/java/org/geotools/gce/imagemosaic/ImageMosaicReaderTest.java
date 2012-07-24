@@ -24,6 +24,8 @@ import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
@@ -44,6 +46,7 @@ import javax.swing.SwingUtilities;
 import junit.framework.JUnit4TestAdapter;
 import junit.textui.TestRunner;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -267,21 +270,36 @@ public class ImageMosaicReaderTest extends Assert{
 		checkCoverage(reader, new GeneralParameterValue[] {gg,useJai ,tileSize}, "overviews test");
 	}	
 	
-	/**
-	 * 
-	 * @throws IOException
-	 * @throws ParseException 
-	 * @throws FactoryException 
-	 * @throws NoSuchAuthorityCodeException 
-	 * @throws MismatchedDimensionException
-	 * @throws NoSuchAuthorityCodeException
-	 */
 	@Test
-        @Ignore	
-	public void timeElevation() throws IOException, ParseException, NoSuchAuthorityCodeException, FactoryException {
-	        TestData.unzipFile(this, "ensmean.zip");
-	        final URL timeElevURL = TestData.url(this, "ensmean");
-	        System.setProperty("org.geotools.shapefile.datetime", "true");
+	public void timeElevationH2() throws IOException, ParseException, NoSuchAuthorityCodeException, FactoryException {
+	    TestData.unzipFile(this, "ensmean.zip");
+	    final URL timeElevURL = TestData.url(this, "ensmean");
+	    System.setProperty("org.geotools.shapefile.datetime", "true");
+	    
+	    //place H2 file in the dir
+	    FileWriter out=null;
+	    try{
+	    	out = new FileWriter(new File(TestData.file(this, "."),"/ensmean/datastore.properties"));
+	    	out.write("SPI=org.geotools.data.h2.H2DataStoreFactory\n");
+	    	out.write("database=imagemosaic\n");
+	    	out.write("dbtype=h2\n");
+	    	out.write("Loose\\ bbox=true #important for performances\n");
+	    	out.write("Estimated\\ extends=false #important for performances\n");
+	    	out.write("user=geosolutions\n");
+	    	out.write("passwd=fucktheworld\n");
+	    	out.write("validate \\connections=true #important for avoiding errors\n");
+	    	out.write("Connection\\ timeout=3600\n");
+	    	out.write("max \\connections=10 #important for performances, internal pooling\n");
+	    	out.write("min \\connections=5  #important for performances, internal pooling\n");
+	    	out.flush();
+	    } finally {
+	    	if(out!=null){
+	    		IOUtils.closeQuietly(out);
+	    	}
+	    }
+	    
+	    
+	    // now start the test
 		final AbstractGridFormat format = getFormat(timeElevURL);
 		assertNotNull(format);
 		ImageMosaicReader reader = getReader(timeElevURL, format);
@@ -342,6 +360,74 @@ public class ImageMosaicReaderTest extends Assert{
                 checkCoverage(reader, new GeneralParameterValue[] { gg, time, bkg, elevation },
                         "Time-Elevation Test");
 	}	
+
+	@Test
+    @Ignore	
+	public void timeElevation() throws IOException, ParseException, NoSuchAuthorityCodeException, FactoryException {
+	    TestData.unzipFile(this, "ensmean.zip");
+	    final URL timeElevURL = TestData.url(this, "ensmean");
+	    System.setProperty("org.geotools.shapefile.datetime", "true");
+		final AbstractGridFormat format = getFormat(timeElevURL);
+		assertNotNull(format);
+		ImageMosaicReader reader = getReader(timeElevURL, format);
+		assertNotNull(format);
+		
+		final String[] metadataNames = reader.getMetadataNames();
+		assertNotNull(metadataNames);
+		assertEquals(metadataNames.length,10);
+		
+		assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
+		final String timeMetadata = reader.getMetadataValue("TIME_DOMAIN");
+		assertNotNull(timeMetadata);
+		assertEquals(16,timeMetadata.split(",").length);
+		assertEquals(timeMetadata.split(",")[0],reader.getMetadataValue("TIME_DOMAIN_MINIMUM"));
+		assertEquals(timeMetadata.split(",")[15],reader.getMetadataValue("TIME_DOMAIN_MAXIMUM"));
+		
+		assertEquals("true", reader.getMetadataValue("HAS_ELEVATION_DOMAIN"));
+		final String elevationMetadata = reader.getMetadataValue("ELEVATION_DOMAIN");
+		assertNotNull(elevationMetadata);
+		assertEquals(2,elevationMetadata.split(",").length);
+	        assertEquals(elevationMetadata.split(",")[0],reader.getMetadataValue("ELEVATION_DOMAIN_MINIMUM"));
+	        assertEquals(elevationMetadata.split(",")[1],reader.getMetadataValue("ELEVATION_DOMAIN_MAXIMUM"));
+		
+		
+		// limit yourself to reading just a bit of it
+		final ParameterValue<GridGeometry2D> gg =  AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+		final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+		final Dimension dim= new Dimension();
+		dim.setSize(reader.getOriginalGridRange().getSpan(0)/2.0, reader.getOriginalGridRange().getSpan(1)/2.0);
+		final Rectangle rasterArea=(( GridEnvelope2D)reader.getOriginalGridRange());
+		rasterArea.setSize(dim);
+		final GridEnvelope2D range= new GridEnvelope2D(rasterArea);
+		gg.setValue(new GridGeometry2D(range,envelope));
+		
+		
+		// use imageio with defined tiles
+		final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
+		final List<Date> timeValues= new ArrayList<Date>();
+		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
+		sdf.setTimeZone(TimeZone.getTimeZone("GMT+0"));
+		Date date = sdf.parse("2008-10-20T14:00:00.000Z");
+		timeValues.add(date);
+		time.setValue(timeValues);
+		
+		final ParameterValue<double[]> bkg = ImageMosaicFormat.BACKGROUND_VALUES.createValue();
+		bkg.setValue(new double[]{-9999.0});
+		
+		final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
+		elevation.setValue(Arrays.asList(10.0));
+	                
+		// Test the output coverage
+		checkCoverage(reader, new GeneralParameterValue[] {gg,time,bkg ,elevation}, "Time-Elevation Test");
+		
+		reader= getReader(timeElevURL, format);
+                elevation.setValue(Arrays.asList(NumberRange.create(0.0,10.0)));
+        
+                // Test the output coverage
+                checkCoverage(reader, new GeneralParameterValue[] { gg, time, bkg, elevation },
+                        "Time-Elevation Test");
+	}	
+
 	
 	/**
          * 
@@ -384,7 +470,7 @@ public class ImageMosaicReaderTest extends Assert{
         }
 	
 	@Test
-        @Ignore	
+    @Ignore	
 	public void imposedBBox() throws IOException, NoSuchAuthorityCodeException, FactoryException {
 		final AbstractGridFormat format = getFormat(imposedEnvelopeURL);
 		final ImageMosaicReader reader = getReader(imposedEnvelopeURL, format);
@@ -427,9 +513,10 @@ public class ImageMosaicReaderTest extends Assert{
 	 * @throws ParseException 
 	 */
 	@Test
-        @Ignore	
+	@Ignore
 	public void time() throws IOException, NoSuchAuthorityCodeException, FactoryException, ParseException {
-	        System.setProperty("org.geotools.shapefile.datetime", "true");
+	       
+		System.setProperty("org.geotools.shapefile.datetime", "true");
 		final AbstractGridFormat format = getFormat(timeURL);
 		ImageMosaicReader reader = getReader(timeURL, format);
 		
@@ -550,7 +637,7 @@ public class ImageMosaicReaderTest extends Assert{
 	 * @throws FactoryException 
 	 */
 	@Test
-//        @Ignore	
+//  @Ignore	
 	public void defaultParameterValue() throws IOException,	
 			MismatchedDimensionException, FactoryException {
 
@@ -573,7 +660,7 @@ public class ImageMosaicReaderTest extends Assert{
 	
 	
 	@Test
-        @Ignore	
+    @Ignore	
 	public void errors() throws NoSuchAuthorityCodeException, FactoryException {
 		final Hints hints= new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
 		

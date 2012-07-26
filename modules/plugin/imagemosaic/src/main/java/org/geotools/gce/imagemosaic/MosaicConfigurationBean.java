@@ -31,7 +31,6 @@ import org.geotools.util.Utilities;
  * @author Simone Giannecchini, GeoSolutions S.A.S.
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for jar:file:foo.jar/bar.properties URLs
  *
- *
  * @source $URL$
  */
 public class MosaicConfigurationBean {
@@ -200,32 +199,34 @@ public class MosaicConfigurationBean {
 		this.caching = caching;
 	}
 
-        public void setFootprintManagement(final boolean footprintManagement) {
-                this.footprintManagement = footprintManagement;
-        }
+    public void setFootprintManagement(final boolean footprintManagement) {
+            this.footprintManagement = footprintManagement;
+    }
 
-        public boolean isFootprintManagement() {
-            return footprintManagement;
-        }
+    public boolean isFootprintManagement() {
+        return footprintManagement;
+    }
 
-        public boolean isHeterogeneous() {
-            return heterogeneous;
-        }
+    public boolean isHeterogeneous() {
+        return heterogeneous;
+    }
 
-        public void setHeterogeneous(boolean heterogeneous) {
-            this.heterogeneous = heterogeneous;
-        }
-        @Override
-    	public String toString() {
-    		return "MosaicConfigurationBean [absolutePath=" + absolutePath
-    				+ ", expandToRGB=" + expandToRGB + ", levels="
-    				+ Arrays.toString(levels) + ", name=" + name + ", levelsNum="
-    				+ levelsNum + ", locationAttribute=" + locationAttribute
-    				+ ", suggestedSPI=" + suggestedSPI + ", timeAttribute="
-    				+ timeAttribute + ", elevationAttribute=" + elevationAttribute
-    				+ ", typeName=" + typeName + ", sampleModel=" + sampleModel
-    				+ ", envelope=" + envelope + ", heterogeneous=" + heterogeneous
-    				+ ", caching=" + caching + ", footprintManagement="
-    				+ footprintManagement + "]";
-    	}    
+    public void setHeterogeneous(boolean heterogeneous) {
+        this.heterogeneous = heterogeneous;
+    }
+
+	@Override
+	public String toString() {
+		return "MosaicConfigurationBean [absolutePath=" + absolutePath
+				+ ", expandToRGB=" + expandToRGB + ", levels="
+				+ Arrays.toString(levels) + ", name=" + name
+				+ ", levelsNum=" + levelsNum + ", locationAttribute="
+				+ locationAttribute + ", suggestedSPI=" + suggestedSPI
+				+ ", timeAttribute=" + timeAttribute
+				+ ", elevationAttribute=" + elevationAttribute
+				+ ", typeName=" + typeName + ", sampleModel=" + sampleModel
+				+ ", envelope=" + envelope + ", heterogeneous="
+				+ heterogeneous + ", caching=" + caching
+				+ ", footprintManagement=" + footprintManagement + "]";
+		}
 }

@@ -84,7 +84,7 @@ public class PropertiesCollectorTest extends Assert {
                     spi = iterator.next();
                     if (spi instanceof StringFileNameExtractorSPI){
                         final PropertiesCollector pc = spi.create(testUrl, Arrays.asList("string_attr"));
-                        pc.collect(TestData.file(this,"time_geotiff/world.200401.3x5400x2700.tiff"));
+                        pc.collect(TestData.file(this,"time_geotiff/world.200402.3x5400x2700.tiff"));
                         return;
                     }
                 }
@@ -108,7 +108,7 @@ public class PropertiesCollectorTest extends Assert {
 		    spi = iterator.next();
 		    if (spi instanceof TimestampFileNameExtractorSPI){
 		        final PropertiesCollector pc = spi.create(testUrl, Arrays.asList("time_attr"));
-	                pc.collect(TestData.file(this,"time_geotiff/world.200401.3x5400x2700.tiff"));
+	                pc.collect(TestData.file(this,"time_geotiff/world.200403.3x5400x2700.tiff"));
 	                return;
 		    }
 		}

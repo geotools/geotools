@@ -39,7 +39,7 @@ import org.geotools.util.Converters;
 import org.geotools.util.logging.Logging;
 
 /**
- * Simple Factory class for creating {@link GranuleCatalog} elements for this mosaic.
+ * Simple Factory class for creating {@link GranuleCatalog} instance to handle the catalog of granules for this mosaic.
  * 
  * @author Simone Giannecchini, GeoSolutions SAS
  *
@@ -69,31 +69,42 @@ public abstract class GranuleCatalogFactory {
 			final URL sourceURL,
 			final MosaicConfigurationBean configuration){
 		final File sourceFile=DataUtilities.urlToFile(sourceURL);
-		final String extension= FilenameUtils.getExtension(sourceFile.getAbsolutePath());
+		final String extension= FilenameUtils.getExtension(sourceFile.getAbsolutePath());	
+		
+		// STANDARD PARAMS
+		final Map<String, Serializable> params = new HashMap<String, Serializable>();
+		params.put(Utils.Prop.PATH_TYPE,configuration.isAbsolutePath()?PathType.ABSOLUTE:PathType.RELATIVE);
+		params.put(Utils.Prop.LOCATION_ATTRIBUTE,configuration.getLocationAttribute());
+		params.put(Utils.Prop.SUGGESTED_SPI,configuration.getSuggestedSPI());
+		params.put(Utils.Prop.HETEROGENEOUS, configuration.isHeterogeneous());
+		if(sourceURL!=null){
+			File parentDirectory=DataUtilities.urlToFile(sourceURL);
+			if(parentDirectory.isFile())
+				parentDirectory=parentDirectory.getParentFile();
+			params.put(Utils.Prop.PARENT_LOCATION, DataUtilities.fileToURL(parentDirectory).toString());
+		}
+		else
+			params.put(Utils.Prop.PARENT_LOCATION, null);
+		// add typename
+		String typeName=configuration.getTypeName();
+		if(typeName!=null){
+			params.put(Utils.Prop.TYPENAME, configuration.getTypeName());
+		}		
+		// SPI
+		DataStoreFactorySpi spi=null;
+		
+		// Now format specific code
 		if(extension.equalsIgnoreCase("shp"))
 		{
 			//
 			// SHAPEFILE
 			//
-			final Map<String, Serializable> params = new HashMap<String, Serializable>();
 			params.put(ShapefileDataStoreFactory.URLP.key, sourceURL);
-			if (sourceURL.getProtocol().equalsIgnoreCase("file"))
-				params.put(ShapefileDataStoreFactory.CREATE_SPATIAL_INDEX.key,Boolean.TRUE);
+			params.put(ShapefileDataStoreFactory.CREATE_SPATIAL_INDEX.key,Boolean.TRUE);
 			params.put(ShapefileDataStoreFactory.MEMORY_MAPPED.key, Boolean.TRUE);
 			params.put(ShapefileDataStoreFactory.CACHE_MEMORY_MAPS.key, Boolean.TRUE);
 			params.put(ShapefileDataStoreFactory.DBFTIMEZONE.key, TimeZone.getTimeZone("UTC"));
-			
-			// add other standard params
-			params.put("PathType",configuration.isAbsolutePath()?PathType.ABSOLUTE:PathType.RELATIVE);
-			params.put("LocationAttribute",configuration.getLocationAttribute());
-			params.put("SuggestedSPI",configuration.getSuggestedSPI());
-			params.put("Heterogeneous", configuration.isHeterogeneous());
-			File parentDirectory=DataUtilities.urlToFile(sourceURL);
-			if(parentDirectory.isFile())
-				parentDirectory=parentDirectory.getParentFile();
-			params.put("ParentLocation", DataUtilities.fileToURL(parentDirectory).toString());
-			
-			return configuration.isCaching()?new STRTreeGranuleCatalog(params,Utils.SHAPE_SPI):new GTDataStoreGranuleCatalog(params,false,Utils.SHAPE_SPI);
+			spi=Utils.SHAPE_SPI;			
 		}
 		else
 		{
@@ -106,10 +117,9 @@ public abstract class GranuleCatalogFactory {
 			final String SPIClass = properties.getProperty("SPI");
 			try {
 				// create a datastore as instructed
-				final DataStoreFactorySpi spi = (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
+				spi = (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
 
 				// get the params
-				final Map<String, Serializable> params = new HashMap<String, Serializable>();
 				final Param[] paramsInfo = spi.getParametersInfo();
 				for (Param p : paramsInfo) {
 					// search for this param and set the value if found
@@ -118,44 +128,15 @@ public abstract class GranuleCatalogFactory {
 					else if (p.required && p.sample == null)
 						throw new IOException("Required parameter missing: "+ p.toString());
 				}
-				// add other standard params
-				params.put("PathType",configuration.isAbsolutePath()?PathType.ABSOLUTE:PathType.RELATIVE);
-				params.put("LocationAttribute",configuration.getLocationAttribute());
-				params.put("SuggestedSPI",configuration.getSuggestedSPI());
-				params.put("Heterogeneous", configuration.isHeterogeneous());
-				if(sourceURL!=null){
-					File parentDirectory=DataUtilities.urlToFile(sourceURL);
-					if(parentDirectory.isFile())
-						parentDirectory=parentDirectory.getParentFile();
-					params.put("ParentLocation", DataUtilities.fileToURL(parentDirectory).toString());
-				}
-				else
-					params.put("ParentLocation", null);
-				
-				// add typename
-				String typeName=configuration.getTypeName();
-				if(typeName!=null){
-					params.put("TypeName", configuration.getTypeName());
-				}
-				return configuration.isCaching()?new STRTreeGranuleCatalog(params,spi):new GTDataStoreGranuleCatalog(params,false,spi);
-			} catch (ClassNotFoundException e) {
-				if(LOGGER.isLoggable(Level.WARNING))
-					LOGGER.log(Level.WARNING,e.getLocalizedMessage(),e);
-				return null;
-			} catch (InstantiationException e) {
-				if(LOGGER.isLoggable(Level.WARNING))
-					LOGGER.log(Level.WARNING,e.getLocalizedMessage(),e);
-				return null;
-			} catch (IllegalAccessException e) {
-				if(LOGGER.isLoggable(Level.WARNING))
-					LOGGER.log(Level.WARNING,e.getLocalizedMessage(),e);
-				return null;
-			} catch (IOException e) {
+
+			} catch (Exception e) {
 				if(LOGGER.isLoggable(Level.WARNING))
 					LOGGER.log(Level.WARNING,e.getLocalizedMessage(),e);
 				return null;
 			}
-		}
+		}		
+		// istantiate
+		return configuration.isCaching()?new STRTreeGranuleCatalog(params,spi):new GTDataStoreGranuleCatalog(params,false,spi);
 	}
 
 }

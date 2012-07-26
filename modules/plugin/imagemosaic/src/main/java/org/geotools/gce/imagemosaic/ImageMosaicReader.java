@@ -62,9 +62,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.util.Utilities;
 import org.opengis.coverage.grid.Format;
-import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridCoverageReader;
-import org.opengis.coverage.grid.GridCoverageWriter;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.parameter.GeneralParameterValue;
@@ -100,7 +98,7 @@ import org.opengis.referencing.operation.MathTransform;
  *
  * @source $URL$
  */
-public final class ImageMosaicReader extends AbstractGridCoverage2DReader implements GridCoverageReader, GridCoverageWriter {
+public final class ImageMosaicReader extends AbstractGridCoverage2DReader implements GridCoverageReader {
 
 		/** Logger. */
 	private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ImageMosaicReader.class);
@@ -249,21 +247,20 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 				}               	
 			
 		}
-				
 		if(configuration==null)
 			throw new DataSourceException("Unable to create reader for this mosaic since we could not parse the configuration.");
+		
+		// now load the configuration and extract properties from there
 		extractProperties(configuration);
 		
 		//location attribute override
 		if(this.hints.containsKey(Hints.MOSAIC_LOCATION_ATTRIBUTE))
 			this.locationAttributeName=((String)this.hints.get(Hints.MOSAIC_LOCATION_ATTRIBUTE));	
 		
-		// 
 		//
 		// Load tiles informations, especially the bounds, which will be
 		// reused
 		//
-		// 
 		try {
 			// create the index
 			catalog= GranuleCatalogFactory.createGranuleCatalog(sourceURL, configuration);
@@ -393,7 +390,7 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 	}
 
 	private void setGridGeometry () {
-	    setGridGeometry(null)                ; 
+	    setGridGeometry(null); 
     }
 	private MosaicConfigurationBean extractProperties(final MosaicConfigurationBean configuration) {
 
@@ -474,8 +471,13 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 		// caching for the index
 		cachingIndex = configuration.isCaching();
 		
-		// imposed BBOX?
-		this.imposedBBox=true;
+		// imposed BBOX
+        if(configuration.getEnvelope()!=null){
+    		this.imposedBBox=true;
+    		// we set the BBOX later to retain also the CRS
+        } else {
+        	this.imposedBBox=false;
+        }
 		
 		// typeName to be used for reading the mosaic
 		this.typeName=configuration.getTypeName();
@@ -559,12 +561,9 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 				
 		}
 		
-		// /////////////////////////////////////////////////////////////////////
 		//
 		// Loading tiles trying to optimize as much as possible
 		//
-		// /////////////////////////////////////////////////////////////////////
-		
 		final Collection<GridCoverage2D> response = rasterManager.read(params);
 		if (response.isEmpty()) {
 		    if (LOGGER.isLoggable(Level.FINE)){
@@ -626,26 +625,6 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 		return super.coverageName;
 	}
 
-	public Object getDestination() {
-		return null;
-	}
-
-	public void setCurrentSubname(String arg0) throws IOException {
-		throw new UnsupportedOperationException("Unsupported method");
-		
-	}
-
-	public void setMetadataValue(String arg0, String arg1) throws IOException {
-		throw new UnsupportedOperationException("Unsupported method");
-		
-	}
-
-	public void write(GridCoverage arg0, GeneralParameterValue[] arg1)throws IllegalArgumentException, IOException {
-		throw new UnsupportedOperationException("Unsupported method");
-		
-	}
-	
-	
 	/**
 	 * Number of coverages for this reader is 1
 	 * 
@@ -832,10 +811,9 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
             
             final StringBuilder buff= new StringBuilder();
             for(Iterator<Number> it= result.iterator(); it.hasNext();){
-                    final double value= ((Number) it.next()).doubleValue();
-                    buff.append(value);
-                    if(it.hasNext())
-                    	buff.append(",");
+            	buff.append(((Number) it.next()).toString());
+                if(it.hasNext())
+                   buff.append(",");
             }
             return buff.toString();
         } catch (IOException e) {

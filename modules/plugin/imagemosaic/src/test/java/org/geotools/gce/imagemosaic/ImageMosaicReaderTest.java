@@ -65,8 +65,11 @@ import org.geotools.test.TestData;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -130,23 +133,18 @@ public class ImageMosaicReaderTest extends Assert{
 	public void crop() throws MismatchedDimensionException, IOException,
 			FactoryException {
 		imageMosaicCropTest(rgbURL, "crop-rgbURL");
-//		imageMosaicCropTest(rgbJarURL, "crop-rgbJarURL");
 		
 		imageMosaicCropTest(indexURL, "crop-indexURL");
-//		imageMosaicCropTest(indexJarURL, "crop-indexJarURL");
 		
 		imageMosaicCropTest(grayURL, "crop-grayURL");
-//		imageMosaicCropTest(grayJarURL, "crop-grayJarURL");
 		
 		imageMosaicCropTest(overviewURL, "crop-overviewURL");
 		
 		imageMosaicCropTest(indexAlphaURL, "crop-indexAlphaURL");
-//		imageMosaicCropTest(indexAlphaJarURL, "crop-indexAlphaJarURL");
 		
 		imageMosaicCropTest(rgbAURL, "crop-rgbAURL");
 		
 		imageMosaicCropTest(index_unique_paletteAlphaURL,"crop-index_unique_paletteAlphaURL");
-//		imageMosaicCropTest(index_unique_paletteAlphaJarURL,"crop-index_unique_paletteAlphaJarURL");
 
 	}
 
@@ -159,7 +157,7 @@ public class ImageMosaicReaderTest extends Assert{
 	 * @throws FactoryException 
 	 */
 	@Test
-//        @Ignore	
+        @Ignore	
 	public void alpha() throws IOException,
 			MismatchedDimensionException, FactoryException {
 		
@@ -261,13 +259,17 @@ public class ImageMosaicReaderTest extends Assert{
 	
 	@Test
 	public void timeElevationH2() throws Exception {
-	    TestData.unzipFile(this, "watertemp.zip");
-	    final URL timeElevURL = TestData.url(this, "watertemp");
+	    
+    	final File workDir=new File(TestData.file(this, "."),"watertemp3");
+    	assertTrue(workDir.mkdir());
+    	FileUtils.copyFile(TestData.file(this, "watertemp.zip"), new File(workDir,"watertemp.zip"));
+    	TestData.unzipFile(this, "watertemp3/watertemp.zip");
+	    final URL timeElevURL = TestData.url(this, "watertemp3");
 	    
 	    //place H2 file in the dir
 	    FileWriter out=null;
 	    try{
-	    	out = new FileWriter(new File(TestData.file(this, "."),"/watertemp/datastore.properties"));
+	    	out = new FileWriter(new File(TestData.file(this, "."),"/watertemp3/datastore.properties"));
 	    	out.write("SPI=org.geotools.data.h2.H2DataStoreFactory\n");
 	    	out.write("database=imagemosaic\n");
 	    	out.write("dbtype=h2\n");
@@ -354,14 +356,19 @@ public class ImageMosaicReaderTest extends Assert{
                 
          // clean up
          if (!interactive){        	
-         	FileUtils.deleteDirectory( TestData.file(this, "watertemp"));
+         	FileUtils.deleteDirectory( TestData.file(this, "watertemp3"));
          }
 	}	
 
 	@Test
+//	@Ignore
 	public void timeElevation() throws IOException, ParseException, NoSuchAuthorityCodeException, FactoryException {
-	    TestData.unzipFile(this, "watertemp.zip");
-	    final URL timeElevURL = TestData.url(this, "watertemp");
+    	final File workDir=new File(TestData.file(this, "."),"watertemp2");
+    	assertTrue(workDir.mkdir());
+    	FileUtils.copyFile(TestData.file(this, "watertemp.zip"), new File(workDir,"watertemp.zip"));
+    	TestData.unzipFile(this, "watertemp2/watertemp.zip");
+    	
+	    final URL timeElevURL = TestData.url(this, "watertemp2");
 	    
 		final AbstractGridFormat format = getFormat(timeElevURL);
 		assertNotNull(format);
@@ -429,7 +436,7 @@ public class ImageMosaicReaderTest extends Assert{
                 
         // clean up
                 if (!interactive){
-                 	FileUtils.deleteDirectory( TestData.file(this, "watertemp"));
+                 	FileUtils.deleteDirectory( TestData.file(this, "watertemp2"));
                  }
 	}	
 
@@ -444,14 +451,19 @@ public class ImageMosaicReaderTest extends Assert{
          * @throws NoSuchAuthorityCodeException
          */
         @Test
+//        @Ignore
         public void timeDoubleElevation() throws IOException, ParseException, NoSuchAuthorityCodeException, FactoryException {
                 // Check we can have an integer elevation too 
-                TestData.unzipFile(this, "watertemp.zip");
-                final URL timeElevURL = TestData.url(this, "watertemp");
+        	final File workDir=new File(TestData.file(this, "."),"watertemp1");
+        	assertTrue(workDir.mkdir());
+        	FileUtils.copyFile(TestData.file(this, "watertemp.zip"), new File(workDir,"watertemp.zip"));
+        		
+                TestData.unzipFile(this, "watertemp1/watertemp.zip");
+                final URL timeElevURL = TestData.url(this, "watertemp1");
         	    //place H2 file in the dir
         	    FileWriter out=null;
         	    try{
-        	    	out = new FileWriter(new File(TestData.file(this, "."),"/watertemp/indexer.properties"));
+        	    	out = new FileWriter(new File(TestData.file(this, "."),"/watertemp1/indexer.properties"));
         	    	out.write("TimeAttribute=ingestion\n");
         	    	out.write("ElevationAttribute=elevation\n");
         	    	out.write("Schema=*the_geom:Polygon,location:String,ingestion:java.util.Date,elevation:Double\n");
@@ -492,7 +504,7 @@ public class ImageMosaicReaderTest extends Assert{
                 // clean up
                 reader.dispose();
                 if (!interactive){
-                 	FileUtils.deleteDirectory( TestData.file(this, "watertemp"));
+                 	FileUtils.deleteDirectory( TestData.file(this, "watertemp1"));
                 }
         }
 	
@@ -901,8 +913,8 @@ public class ImageMosaicReaderTest extends Assert{
 	private ImageMosaicReader getReader(URL testURL,
 			final AbstractGridFormat format) throws NoSuchAuthorityCodeException, FactoryException {
 
-		final Hints hints= new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
-		return getReader(testURL, format, hints);
+//		final Hints hints= new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
+		return getReader(testURL, format, null);
 
 	}
 
@@ -1056,6 +1068,15 @@ public class ImageMosaicReaderTest extends Assert{
 		TestRunner.run(ImageMosaicReaderTest.suite());
 
 	}
+	
+	@BeforeClass
+	public static void init(){
+		
+		//make sure CRS ordering is correct
+		System.setProperty("org.geotools.referencing.forceXY", "true");
+	    System.setProperty("user.timezone", "GMT");
+		System.setProperty("org.geotools.shapefile.datetime", "true");
+	}
 
 	@Before
 	public void setUp() throws Exception {
@@ -1081,11 +1102,7 @@ public class ImageMosaicReaderTest extends Assert{
 		imposedEnvelopeURL=TestData.url(this,"env");
 		
 		interactive = TestData.isInteractiveTest();
-		
-		//make sure CRS ordering is correct
-		System.setProperty("org.geotools.referencing.forceXY", "true");
-	    System.setProperty("user.timezone", "GMT");
-		System.setProperty("org.geotools.shapefile.datetime", "true");
+	
 		
 	
 	}
@@ -1102,8 +1119,8 @@ public class ImageMosaicReaderTest extends Assert{
 			File dir=TestData.file(this, "overview/");
 			File[] files = dir.listFiles(
 					(FilenameFilter)FileFilterUtils.notFileFilter(
-							FileFilterUtils.orFileFilter(
-									FileFilterUtils.orFileFilter(
+							FileFilterUtils.or(
+									FileFilterUtils.or(
 											FileFilterUtils.suffixFileFilter("tif"),
 											FileFilterUtils.suffixFileFilter("aux")
 									),
@@ -1117,7 +1134,7 @@ public class ImageMosaicReaderTest extends Assert{
 			
 			dir=TestData.file(this, "rgba/");
 			files = dir.listFiles((FilenameFilter)FileFilterUtils.notFileFilter(
-					FileFilterUtils.orFileFilter(
+					FileFilterUtils.or(
 							FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter("png")),
 							FileFilterUtils.notFileFilter(FileFilterUtils.suffixFileFilter("wld"))
 					)));
@@ -1129,6 +1146,11 @@ public class ImageMosaicReaderTest extends Assert{
 	@After
 	public void tearDown() throws FileNotFoundException, IOException{
 		cleanUp();
+
+	}
+	
+	@AfterClass
+	public static void close(){
 		System.clearProperty("org.geotools.referencing.forceXY");
 	}
 

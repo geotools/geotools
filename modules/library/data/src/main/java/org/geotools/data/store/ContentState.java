@@ -16,7 +16,6 @@
  */
 package org.geotools.data.store;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -31,7 +30,6 @@ import org.geotools.data.FeatureEvent.Type;
 import org.geotools.data.FeatureListener;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Transaction;
-import org.geotools.data.Transaction.State;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -158,14 +156,7 @@ public class ContentState {
      * on the transaction.
      */
     protected DiffTransactionState transactionState = new DiffTransactionState(this);
-    
-    /**
-     * In memory Diff used to collect modifications made on this transaction.
-     * 
-     * @see ContentFeatureSource#canTransaction
-     */
-    Diff diff;
-    
+        
     /**
      * Creates a new state.
      *

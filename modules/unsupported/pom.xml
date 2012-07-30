@@ -163,6 +163,12 @@
          <module>geogit-versioned</module>
        </modules>
      </profile>
+     <profile>
+       <id>wfs-ng</id>
+       <modules>
+         <module>wfs-ng</module>
+       </modules>
+     </profile>
 
      <profile>
        <id>unsupported</id>
@@ -182,6 +188,7 @@
          <module>mongodb</module>
          <module>property-ng</module>
          <module>shapefile-ng</module>
+         <module>wfs-ng</module>
        </modules>
      </profile>
   </profiles>

@@ -1,0 +1,167 @@
+<?xml version='1.0' encoding='utf-8' ?>
+  <WFS_Capabilities version="1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wfs http://webservices.ionicsoft.com/ionicweb/wfs/BOSTON_ORA/REQUEST/get/DATA/LPR/wfs/capabilities.xsd" xmlns="http://www.opengis.net/wfs" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ogc="http://www.opengis.net/ogc" xmlns:ogcwfs="http://www.opengis.net/wfs" xmlns:ionic="http://www.ionicsoft.com/versions/4">
+    <Service>
+      <Name>WFS Feature Server</Name>
+      <Title>Boston on Oracle</Title>
+      <Abstract>
+      Vector Service over Shape files on Boston, maintained by IONIC Software
+      </Abstract>
+      <OnlineResource>http://webservices.ionicsoft.com/ionicweb/wfs/BOSTON_ORA?</OnlineResource>
+    </Service>
+    <Capability>
+      <Request>
+        <GetCapabilities>
+          <DCPType>
+            <HTTP>
+              <Get onlineResource="http://webservices.ionicsoft.com/ionicweb/wfs/BOSTON_ORA?"/>
+              <Post onlineResource="http://webservices.ionicsoft.com/ionicweb/wfs/BOSTON_ORA"/>
+            </HTTP>
+          </DCPType>
+        </GetCapabilities>
+        <DescribeFeatureType>
+          <SchemaDescriptionLanguage>
+            <XMLSCHEMA/>
+          </SchemaDescriptionLanguage>
+          <DCPType>
+            <HTTP>
+              <Get onlineResource="http://webservices.ionicsoft.com/ionicweb/wfs/BOSTON_ORA?"/>
+              <Post onlineResource="http://webservices.ionicsoft.com/ionicweb/wfs/BOSTON_ORA"/>
+            </HTTP>
+          </DCPType>
+        </DescribeFeatureType>
+        <GetFeature>
+          <ResultFormat>
+            <GML2/>
+          </ResultFormat>
+          <DCPType>
+            <HTTP>
+              <Get onlineResource="http://webservices.ionicsoft.com/ionicweb/wfs/BOSTON_ORA?"/>
+              <Post onlineResource="http://webservices.ionicsoft.com/ionicweb/wfs/BOSTON_ORA"/>
+            </HTTP>
+          </DCPType>
+        </GetFeature>
+        <LockFeature>
+          <DCPType>
+            <HTTP>
+              <Get onlineResource="http://webservices.ionicsoft.com/ionicweb/wfs/BOSTON_ORA?"/>
+              <Post onlineResource="http://webservices.ionicsoft.com/ionicweb/wfs/BOSTON_ORA"/>
+            </HTTP>
+          </DCPType>
+        </LockFeature>
+        <Transaction>
+          <DCPType>
+            <HTTP>
+              <Get onlineResource="http://webservices.ionicsoft.com/ionicweb/wfs/BOSTON_ORA?"/>
+              <Post onlineResource="http://webservices.ionicsoft.com/ionicweb/wfs/BOSTON_ORA"/>
+            </HTTP>
+          </DCPType>
+        </Transaction>
+      </Request>
+    </Capability>
+    <FeatureTypeList>
+      <Operations>
+        <Query/>
+        <Insert/>
+        <Delete/>
+        <Update/>
+        <Lock/>
+      </Operations>
+      <FeatureType xmlns:wfs="http://www.ionicsoft.com/wfs">
+        <Name>wfs:BUSINESS</Name>
+        <SRS>EPSG:26986</SRS>
+        <LatLongBoundingBox minx="-71.16892567638163" miny="42.259043398359985" maxx="-71.03057571317115" maxy="42.36172245656496"/>
+      </FeatureType>
+      <FeatureType xmlns:wfs="http://www.ionicsoft.com/wfs">
+        <Name>wfs:highways</Name>
+        <SRS>EPSG:26986</SRS>
+        <Operations>
+          <Query/>
+          <Insert/>
+        </Operations>
+        <LatLongBoundingBox minx="-71.16892105870409" miny="42.25904577421885" maxx="-71.03058431983015" maxy="42.3617240637527"/>
+      </FeatureType>
+      <FeatureType xmlns:wfs="http://www.ionicsoft.com/wfs">
+        <Name>wfs:hydro</Name>
+        <SRS>EPSG:26986</SRS>
+        <Operations>
+          <Query/>
+          <Insert/>
+        </Operations>
+        <LatLongBoundingBox minx="-71.16892105870409" miny="42.25904577421885" maxx="-71.03058431983015" maxy="42.3617240637527"/>
+        <MetadataURL type="TC211" format="XML">http://webservices.ionicsoft.com/ionicweb/wfs/BOSTON_ORA/REQUEST/getdir/DIR/metadata/DATA/LPR/BOSTON_ORA/hydro.xml</MetadataURL>
+      </FeatureType>
+      <FeatureType xmlns:wfs="http://www.ionicsoft.com/wfs">
+        <Name>wfs:land_use</Name>
+        <SRS>EPSG:26986</SRS>
+        <Operations>
+          <Query/>
+          <Insert/>
+        </Operations>
+        <LatLongBoundingBox minx="-71.16892105870409" miny="42.25904577421885" maxx="-71.03058431983015" maxy="42.3617240637527"/>
+      </FeatureType>
+      <FeatureType xmlns:wfs="http://www.ionicsoft.com/wfs">
+        <Name>wfs:place_names</Name>
+        <SRS>EPSG:26986</SRS>
+        <Operations>
+          <Query/>
+          <Insert/>
+        </Operations>
+        <LatLongBoundingBox minx="-71.16892105870409" miny="42.25904577421885" maxx="-71.03058431983015" maxy="42.3617240637527"/>
+      </FeatureType>
+      <FeatureType xmlns:wfs="http://www.ionicsoft.com/wfs">
+        <Name>wfs:protectedareas</Name>
+        <SRS>EPSG:26986</SRS>
+        <Operations>
+          <Query/>
+          <Insert/>
+        </Operations>
+        <LatLongBoundingBox minx="-71.16892105870409" miny="42.25904577421885" maxx="-71.03058431983015" maxy="42.3617240637527"/>
+      </FeatureType>
+      <FeatureType xmlns:wfs="http://www.ionicsoft.com/wfs">
+        <Name>wfs:roads</Name>
+        <SRS>EPSG:26986</SRS>
+        <Operations>
+          <Query/>
+          <Insert/>
+        </Operations>
+        <LatLongBoundingBox minx="-71.16892105870409" miny="42.25904577421885" maxx="-71.03058431983015" maxy="42.3617240637527"/>
+      </FeatureType>
+    </FeatureTypeList>
+    <Filter_Capabilities xmlns="http://www.opengis.net/ogc">
+      <Spatial_Capabilities>
+        <Spatial_Operators>
+          <BBOX/>
+          <Equals/>
+          <Disjoint/>
+          <Intersect/>
+          <Touches/>
+          <Crosses/>
+          <Within/>
+          <Contains/>
+          <Overlaps/>
+          <Beyond/>
+          <DWithin/>
+        </Spatial_Operators>
+      </Spatial_Capabilities>
+      <Scalar_Capabilities>
+        <Logical_Operators/>
+        <Comparison_Operators>
+          <Simple_Comparisons/>
+          <Like/>
+          <Between/>
+          <NullCheck/>
+        </Comparison_Operators>
+        <Arithmetic_Operators>
+          <Simple_Arithmetic/>
+          <Functions>
+            <Function_Names>
+              <Function_Name nArgs="1">Upper</Function_Name>
+              <Function_Name nArgs="1">Lower</Function_Name>
+              <Function_Name nArgs="3">Distance</Function_Name>
+              <Function_Name nArgs="1">Score</Function_Name>
+            </Function_Names>
+          </Functions>
+        </Arithmetic_Operators>
+      </Scalar_Capabilities>
+    </Filter_Capabilities>
+  </WFS_Capabilities>

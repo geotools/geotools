@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wfs:FeatureCollection numberOfFeatures="2" 
+  timeStamp="2008-10-23T18:29:30.899-03:00"
+  xsi:schemaLocation="http://www.openplans.org/spearfish DescribeFeatureType_sf_river.xsd
+    http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd"
+  xmlns:ogc="http://www.opengis.net/ogc" 
+  xmlns:tiger="http://www.census.gov" 
+  xmlns:wfs="http://www.opengis.net/wfs" 
+  xmlns:topp="http://www.openplans.org/topp"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xmlns:sf="http://www.openplans.org/spearfish" 
+  xmlns:ows="http://www.opengis.net/ows"
+  xmlns:gml="http://www.opengis.net/gml" 
+  xmlns:xlink="http://www.w3.org/1999/xlink">
+  <gml:featureMembers>
+    <sf:river gml:id="sf_river.1">
+      <sf:id>1</sf:id>
+      <sf:geom>
+        <!-- 
+        { 5, 5, 7, 4 },
+        { 7, 5, 9, 7, 13, 7 },
+        { 7, 5, 9, 3, 11, 3 }
+         -->
+        <gml:MultiLineString srsName="urn:x-ogc:def:crs:EPSG:4326">
+          <gml:lineStringMember><gml:LineString><gml:posList>5 5 7 4</gml:posList></gml:LineString></gml:lineStringMember>
+          <gml:lineStringMember><gml:LineString><gml:posList>7 5 9 7 13 7</gml:posList></gml:LineString></gml:lineStringMember>
+          <gml:lineStringMember><gml:LineString><gml:posList>7 5 9 3 11 3</gml:posList></gml:LineString></gml:lineStringMember>
+        </gml:MultiLineString>
+      </sf:geom>
+      <sf:river>rv1</sf:river>
+      <sf:flow>4.5</sf:flow>
+    </sf:river>
+    <sf:river gml:id="sf_river.2">
+      <sf:id>2</sf:id>
+      <sf:geom>
+        <!-- 
+         { 4, 6, 4, 8, 6, 10 }
+         -->
+        <gml:MultiLineString srsName="urn:x-ogc:def:crs:EPSG:4326">
+          <gml:lineStringMember><gml:LineString><gml:posList>4 6 4 8 6 10</gml:posList></gml:LineString></gml:lineStringMember>
+        </gml:MultiLineString>
+      </sf:geom>
+      <sf:river>rv2</sf:river>
+      <sf:flow>3.0</sf:flow>
+    </sf:river>
+  </gml:featureMembers>
+</wfs:FeatureCollection>

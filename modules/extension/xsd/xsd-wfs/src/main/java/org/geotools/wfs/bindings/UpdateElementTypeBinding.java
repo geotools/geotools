@@ -16,14 +16,19 @@
  */
 package org.geotools.wfs.bindings;
 
+import java.net.URI;
+
 import javax.xml.namespace.QName;
 
+import net.opengis.wfs.PropertyType;
+import net.opengis.wfs.UpdateElementType;
 import net.opengis.wfs.WfsFactory;
 
 import org.geotools.wfs.WFS;
 import org.geotools.xml.AbstractComplexEMFBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.opengis.filter.Filter;
 
 
 /**
@@ -125,8 +130,10 @@ import org.geotools.xml.Node;
  * @source $URL$
  */
 public class UpdateElementTypeBinding extends AbstractComplexEMFBinding {
-    public UpdateElementTypeBinding(WfsFactory factory) {
-        super(factory);
+    WfsFactory wfsfactory;
+
+    public UpdateElementTypeBinding(WfsFactory wfsfactory) {
+        this.wfsfactory = wfsfactory;
     }
 
     /**
@@ -154,7 +161,42 @@ public class UpdateElementTypeBinding extends AbstractComplexEMFBinding {
      */
     public Object parse(ElementInstance instance, Node node, Object value)
         throws Exception {
-        //TODO: implement and remove call to super
-        return super.parse(instance, node, value);
+        UpdateElementType updateElement = wfsfactory.createUpdateElementType();
+
+        //&lt;xsd:element maxOccurs="unbounded" ref="wfs:Property"&gt;
+        updateElement.getProperty().addAll(node.getChildValues(PropertyType.class));
+
+        //&lt;xsd:element maxOccurs="1" minOccurs="0" ref="ogc:Filter"&gt;
+        updateElement.setFilter((Filter) node.getChildValue(Filter.class));
+
+        //&lt;xsd:attribute name="handle" type="xsd:string" use="optional"&gt;
+        if (node.hasAttribute("handle")) {
+            updateElement.setHandle((String) node.getAttributeValue("handle"));
+        }
+
+        //&lt;xsd:attribute name="typeName" type="xsd:QName" use="required"&gt;
+        updateElement.setTypeName((QName) node.getAttributeValue("typeName"));
+
+        //&lt;xsd:attribute default="x-application/gml:3" name="inputFormat"
+        //      type="xsd:string" use="optional"&gt;
+        if (node.hasAttribute("inputFormat")) {
+            updateElement.setInputFormat((String) node.getAttributeValue("inputFormat"));
+        }
+
+        //&lt;xsd:attribute name="srsName" type="xsd:anyURI" use="optional"&gt;
+        if (node.hasAttribute("srsName")) {
+            updateElement.setSrsName((URI) node.getAttributeValue("srsName"));
+        }
+
+        return updateElement;
+    }
+
+    public Object getProperty(Object arg0, QName arg1)
+        throws Exception {
+        Object result = super.getProperty(arg0, arg1);
+
+        //System.out.println("Being asked for " + arg1);
+        //System.out.println("Returning " + result);
+        return result;
     }
 }

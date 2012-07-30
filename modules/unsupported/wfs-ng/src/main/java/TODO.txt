@@ -1,0 +1,4 @@
+- Restore the tryGzip flag in WFSDataStoreFactory by making geotools HTTPClient gzip encoding optional
+- Push at gs-devel to include some indication in the capabilities that this is a geoserver instance, and
+  make it so the GeoSevrerPre200Strategy is not needed if GeoServer version found >= 2.2.x or 2.1.x is we get this response
+  hint in the 2.1.x branch. UPDATE: the heuristics can use the list of function names.

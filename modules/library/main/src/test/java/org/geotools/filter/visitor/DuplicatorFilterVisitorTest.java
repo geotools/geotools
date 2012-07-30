@@ -23,10 +23,14 @@ import junit.framework.TestCase;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
+import org.geotools.filter.expression.InternalVolatileFunction;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.PropertyIsNull;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.InternalFunction;
 
 
 /**
@@ -66,4 +70,30 @@ public class DuplicatorFilterVisitorTest extends TestCase {
     	//TODO: a decent comparison
     }
     
+    public void testDuplicateInternalFunction() throws IllegalFilterException {
+        class TestInternalFunction extends InternalVolatileFunction {
+
+            @Override
+            public Object evaluate(Object object) {
+                return null;
+            }
+            @Override
+            public InternalFunction duplicate(Expression... parameters) {
+                return new TestInternalFunction();
+            }
+
+        }
+        
+        Expression internalFunction = new TestInternalFunction();
+        Filter filter = fac.isNull(internalFunction);
+
+        DuplicatingFilterVisitor visitor = new DuplicatingFilterVisitor((FilterFactory2) fac);
+        Filter newFilter = (Filter) filter.accept(visitor, null);
+        
+        assertTrue(newFilter instanceof PropertyIsNull);
+        Expression newExpression = ((PropertyIsNull)newFilter).getExpression();
+        assertNotNull(newExpression);
+        assertTrue(newExpression instanceof TestInternalFunction);
+        assertNotSame(internalFunction, newExpression);
+    }
 }

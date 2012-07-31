@@ -33,7 +33,7 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class FilterFunction_numPoints extends FunctionExpressionImpl {
     
-    public static FunctionName NAME = new FunctionNameImpl("numInteriorRing", Integer.class,
+    public static FunctionName NAME = new FunctionNameImpl("numPoints", Integer.class,
             parameter("geometry", Geometry.class));
 
     public FilterFunction_numPoints() {

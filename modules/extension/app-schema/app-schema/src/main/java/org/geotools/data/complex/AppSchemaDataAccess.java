@@ -50,7 +50,6 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
-import org.opengis.feature.type.ComplexType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
@@ -115,7 +114,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
                 AttributeType type = mapping.getTargetFeature().getType();
                 if (!(type instanceof FeatureType)) {
                     // nasty side-effect: constructor edits mapping to use this type proxy
-                    new NonFeatureTypeProxy((ComplexType) type, mapping);
+                    new NonFeatureTypeProxy(type, mapping);
                 }
             }
         } catch (RuntimeException e) {

@@ -288,7 +288,7 @@ public class AppSchemaDataAccessConfigurator {
         String prefixedTargetName = dto.getTargetElementName();
         Name targetNodeName = Types.degloseName(prefixedTargetName, namespaces);
 
-        AttributeDescriptor targetDescriptor = typeRegistry.getDescriptor(targetNodeName, null, null, crs);
+        AttributeDescriptor targetDescriptor = typeRegistry.getDescriptor(targetNodeName, crs);
         if (targetDescriptor == null) {
             throw new NoSuchElementException("descriptor " + targetNodeName
                     + " not found in parsed schema");

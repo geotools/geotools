@@ -104,6 +104,7 @@ git pull origin $branch
 set +e && git checkout rel_$tag && set -e
 if [ $? == 0 ]; then
   # release branch already exists, kill it
+  git checkout $branch
   echo "branch rel_$tag exists, deleting it"
   git branch -D rel_$tag
 fi

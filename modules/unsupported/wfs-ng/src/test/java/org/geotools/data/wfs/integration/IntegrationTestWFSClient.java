@@ -75,10 +75,13 @@ public class IntegrationTestWFSClient extends WFSClient {
 
     private static URL url(String resource) {
 
-        String absoluteResouce = "/org/geotools/data/wfs/integration/test-data/" + resource;
+        String absoluteResouce = "/org/geotools/data/wfs/impl/test-data/" + resource;
 
         URL url = IntegrationTestWFSClient.class.getResource(absoluteResouce);
 
+        if(null == url){
+            throw new IllegalArgumentException("Resource not found: " + absoluteResouce);
+        }
         return url;
     }
 

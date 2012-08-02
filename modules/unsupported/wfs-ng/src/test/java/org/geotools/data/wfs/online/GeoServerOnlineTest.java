@@ -49,8 +49,6 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.data.wfs.impl.WFSContentDataStore;
 import org.geotools.data.wfs.impl.WFSDataStoreFactory;
-import org.geotools.data.wfs.internal.v1_0.legacy.WFSDataStoreReadTest;
-import org.geotools.data.wfs.internal.v1_0.legacy.WFSDataStoreWriteOnlineTest;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
 import org.geotools.feature.IllegalAttributeException;
@@ -249,37 +247,37 @@ public class GeoServerOnlineTest {
         features.close(iterator);
     }
 
-    public void XtestFeatureType() throws NoSuchElementException, IOException, SAXException {
-        WFSDataStoreReadTest.doFeatureType(url_100, true, true, 0);
-    }
-
-    @Test
-    public void testFeatureReader() throws NoSuchElementException, IOException,
-            IllegalAttributeException, SAXException {
-        WFSDataStoreReadTest.doFeatureReader(url_100, true, true, 0);
-    }
-
-    @Test
-    public void testFeatureReaderWithFilter() throws NoSuchElementException,
-            IllegalAttributeException, IOException, SAXException {
-        WFSDataStoreReadTest.doFeatureReaderWithQuery(url_100, true, true, 0);
-    }
-
-    @Test
-    public void testFeatureReaderWithFilterGET() throws NoSuchElementException,
-            IllegalAttributeException, IOException, SAXException {
-        WFSDataStoreReadTest.doFeatureReaderWithQuery(url_100, true, false, 0);
-    }
-
-    @Test
-    public void testSupportsPlainBBOXInterface_100() throws Exception {
-        testDataStoreSupportsPlainBBOXInterface(wfs100);
-    }
-
-    @Test
-    public void testSupportsPlainBBOXInterface_110() throws Exception {
-        testDataStoreSupportsPlainBBOXInterface(wfs110);
-    }
+//    public void XtestFeatureType() throws NoSuchElementException, IOException, SAXException {
+//        WFSDataStoreReadTest.doFeatureType(url_100, true, true, 0);
+//    }
+//
+//    @Test
+//    public void testFeatureReader() throws NoSuchElementException, IOException,
+//            IllegalAttributeException, SAXException {
+//        WFSDataStoreReadTest.doFeatureReader(url_100, true, true, 0);
+//    }
+//
+//    @Test
+//    public void testFeatureReaderWithFilter() throws NoSuchElementException,
+//            IllegalAttributeException, IOException, SAXException {
+//        WFSDataStoreReadTest.doFeatureReaderWithQuery(url_100, true, true, 0);
+//    }
+//
+//    @Test
+//    public void testFeatureReaderWithFilterGET() throws NoSuchElementException,
+//            IllegalAttributeException, IOException, SAXException {
+//        WFSDataStoreReadTest.doFeatureReaderWithQuery(url_100, true, false, 0);
+//    }
+//
+//    @Test
+//    public void testSupportsPlainBBOXInterface_100() throws Exception {
+//        testDataStoreSupportsPlainBBOXInterface(wfs100);
+//    }
+//
+//    @Test
+//    public void testSupportsPlainBBOXInterface_110() throws Exception {
+//        testDataStoreSupportsPlainBBOXInterface(wfs110);
+//    }
 
     /**
      * {@link BBOX} support?
@@ -433,176 +431,176 @@ public class GeoServerOnlineTest {
         }
     }
 
-    @Test
-    public void testFeatureReaderWithFilterPOST() throws Exception {
-        WFSDataStoreReadTest.doFeatureReaderWithQuery(url_100, false, true, 0);
-    }
+//    @Test
+//    public void testFeatureReaderWithFilterPOST() throws Exception {
+//        WFSDataStoreReadTest.doFeatureReaderWithQuery(url_100, false, true, 0);
+//    }
 
-    @Test
-    public void testFeatureReaderWithFilterBBoxGET() throws Exception {
-        // minx,miny,maxx,maxy
-        if (url_100 == null)
-            return;
+//    @Test
+//    public void testFeatureReaderWithFilterBBoxGET() throws Exception {
+//        // minx,miny,maxx,maxy
+//        if (url_100 == null)
+//            return;
+//
+//        Map<String, Serializable> m = new HashMap<String, Serializable>();
+//        m.put(WFSDataStoreFactory.URL.key, url_100);
+//        m.put(WFSDataStoreFactory.TIMEOUT.key, new Integer(100000));
+//        m.put(WFSDataStoreFactory.PROTOCOL.key, Boolean.FALSE);// favor GET over POST
+//
+//        DataStore get = new WFSDataStoreFactory().createDataStore(m);
+//
+//        String typeName = get.getTypeNames()[0];
+//
+//        Envelope bbox = get.getFeatureSource(typeName).getBounds();
+//        WFSDataStoreReadTest.doFeatureReaderWithBBox(url_100, true, false, 0, bbox);
+//    }
 
-        Map<String, Serializable> m = new HashMap<String, Serializable>();
-        m.put(WFSDataStoreFactory.URL.key, url_100);
-        m.put(WFSDataStoreFactory.TIMEOUT.key, new Integer(100000));
-        m.put(WFSDataStoreFactory.PROTOCOL.key, Boolean.FALSE);// favor GET over POST
+//    @Test
+//    public void testFeatureReaderWithFilterBBoxPOST() throws Exception {
+//        if (url_100 == null)
+//            return;
+//
+//        Map m = new HashMap();
+//        m.put(WFSDataStoreFactory.URL.key, url_100);
+//        m.put(WFSDataStoreFactory.TIMEOUT.key, new Integer(100000));
+//        DataStore post = new WFSDataStoreFactory().createDataStore(m);
+//
+//        String typeName = post.getTypeNames()[0];
+//        Envelope bbox = post.getFeatureSource(typeName).getBounds();
+//
+//        WFSDataStoreReadTest.doFeatureReaderWithBBox(url_100, true, false, 0, bbox);
+//    }
 
-        DataStore get = new WFSDataStoreFactory().createDataStore(m);
+//    /**
+//     * Tests case where filter is makes use of 2 different attributes but Query object only requests
+//     * 1 of the two attributes. This is a fix for a bug that has occurred.
+//     */
+//    @Test
+//    public void testFeatureReaderWithQuery() throws Exception {
+//        if (url_100 == null)
+//            return;
+//        Map m = new HashMap();
+//        m.put(WFSDataStoreFactory.URL.key, url_100);
+//        m.put(WFSDataStoreFactory.TIMEOUT.key, new Integer(100000));
+//        WFS_1_0_0_DataStore wfs = (WFS_1_0_0_DataStore) (new WFSDataStoreFactory())
+//                .createDataStore(m);
+//
+//        Filter filter = FF.equals(FF.property("NAME"), FF.literal("E 58th St"));
+//
+//        Query query = new Query("tiger_tiger_roads", filter);
+//        FeatureReader<SimpleFeatureType, SimpleFeature> reader = wfs.getFeatureReader(query,
+//                new DefaultTransaction());
+//        int expected = 0;
+//        while (reader.hasNext()) {
+//            expected++;
+//            reader.next();
+//        }
+//        query = new Query("tiger_tiger_roads", filter, 100, new String[] { "CFCC" }, "");
+//        reader = wfs.getFeatureReader(query, new DefaultTransaction());
+//        int count = 0;
+//        while (reader.hasNext()) {
+//            count++;
+//            reader.next();
+//        }
+//
+//        assertEquals(expected, count);
+//    }
 
-        String typeName = get.getTypeNames()[0];
-
-        Envelope bbox = get.getFeatureSource(typeName).getBounds();
-        WFSDataStoreReadTest.doFeatureReaderWithBBox(url_100, true, false, 0, bbox);
-    }
-
-    @Test
-    public void testFeatureReaderWithFilterBBoxPOST() throws Exception {
-        if (url_100 == null)
-            return;
-
-        Map m = new HashMap();
-        m.put(WFSDataStoreFactory.URL.key, url_100);
-        m.put(WFSDataStoreFactory.TIMEOUT.key, new Integer(100000));
-        DataStore post = (WFS_1_0_0_DataStore) (new WFSDataStoreFactory()).createDataStore(m);
-
-        String typeName = post.getTypeNames()[0];
-        Envelope bbox = post.getFeatureSource(typeName).getBounds();
-
-        WFSDataStoreReadTest.doFeatureReaderWithBBox(url_100, true, false, 0, bbox);
-    }
-
-    /**
-     * Tests case where filter is makes use of 2 different attributes but Query object only requests
-     * 1 of the two attributes. This is a fix for a bug that has occurred.
-     */
-    @Test
-    public void testFeatureReaderWithQuery() throws Exception {
-        if (url_100 == null)
-            return;
-        Map m = new HashMap();
-        m.put(WFSDataStoreFactory.URL.key, url_100);
-        m.put(WFSDataStoreFactory.TIMEOUT.key, new Integer(100000));
-        WFS_1_0_0_DataStore wfs = (WFS_1_0_0_DataStore) (new WFSDataStoreFactory())
-                .createDataStore(m);
-
-        Filter filter = FF.equals(FF.property("NAME"), FF.literal("E 58th St"));
-
-        Query query = new Query("tiger_tiger_roads", filter);
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = wfs.getFeatureReader(query,
-                new DefaultTransaction());
-        int expected = 0;
-        while (reader.hasNext()) {
-            expected++;
-            reader.next();
-        }
-        query = new Query("tiger_tiger_roads", filter, 100, new String[] { "CFCC" }, "");
-        reader = wfs.getFeatureReader(query, new DefaultTransaction());
-        int count = 0;
-        while (reader.hasNext()) {
-            count++;
-            reader.next();
-        }
-
-        assertEquals(expected, count);
-    }
-
-    /**
-     * Writing test that only engages against a remote geoserver.
-     * <p>
-     * Makes reference to the standard featureTypes that geoserver ships with.
-     * </p>
-     * NOTE: Ignoring this test for now because it edits topp:states and GeoServer doesn't return
-     * the correct Feature IDs on transactions against shapefiles
-     */
-    @Test
-    @Ignore
-    public void testWrite() throws NoSuchElementException, IllegalFilterException, IOException,
-            IllegalAttributeException {
-        if (url_100 == null)
-            return;
-
-        Map m = new HashMap();
-        m.put(WFSDataStoreFactory.URL.key, url_100);
-        m.put(WFSDataStoreFactory.TIMEOUT.key, new Integer(10000000));
-        DataStore post = (WFS_1_0_0_DataStore) (new WFSDataStoreFactory()).createDataStore(m);
-        String typename = TO_EDIT_TYPE;
-        SimpleFeatureType ft = post.getSchema(typename);
-        SimpleFeatureSource fs = post.getFeatureSource(typename);
-        class Watcher implements FeatureListener {
-            public int count = 0;
-
-            public void changed(FeatureEvent featureEvent) {
-                System.out.println("Event " + featureEvent);
-                count++;
-            }
-        }
-        Watcher watcher = new Watcher();
-        fs.addFeatureListener(watcher);
-
-        Id startingFeatures = createFidFilter(fs);
-        FilterFactory2 filterFac = CommonFactoryFinder
-                .getFilterFactory2(GeoTools.getDefaultHints());
-        try {
-            GeometryFactory gf = new GeometryFactory();
-            MultiPolygon mp = gf.createMultiPolygon(new Polygon[] { gf.createPolygon(
-                    gf.createLinearRing(new Coordinate[] { new Coordinate(-88.071564, 37.51099),
-                            new Coordinate(-88.467644, 37.400757),
-                            new Coordinate(-90.638329, 42.509361),
-                            new Coordinate(-89.834618, 42.50346),
-                            new Coordinate(-88.071564, 37.51099) }), new LinearRing[] {}) });
-            mp.setUserData("http://www.opengis.net/gml/srs/epsg.xml#" + EPSG_CODE);
-
-            PropertyName geometryAttributeExpression = filterFac.property(ft
-                    .getGeometryDescriptor().getLocalName());
-            PropertyIsNull geomNullCheck = filterFac.isNull(geometryAttributeExpression);
-            Query query = new Query(typename, filterFac.not(geomNullCheck), 1, Query.ALL_NAMES,
-                    null);
-            SimpleFeatureIterator inStore = fs.getFeatures(query).features();
-
-            SimpleFeature f, f2;
-            try {
-                SimpleFeature feature = inStore.next();
-
-                SimpleFeature copy = SimpleFeatureBuilder.deep(feature);
-                SimpleFeature copy2 = SimpleFeatureBuilder.deep(feature);
-
-                f = SimpleFeatureBuilder.build(ft, copy.getAttributes(), null);
-                f2 = SimpleFeatureBuilder.build(ft, copy2.getAttributes(), null);
-                assertFalse("Max Feature failed", inStore.hasNext());
-            } finally {
-                inStore.close();
-            }
-
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.wfs").setLevel(
-                    Level.FINE);
-            SimpleFeatureCollection inserts = DataUtilities
-                    .collection(new SimpleFeature[] { f, f2 });
-            Id fp = WFSDataStoreWriteOnlineTest.doInsert(post, ft, inserts);
-
-            // / okay now count ...
-            FeatureReader<SimpleFeatureType, SimpleFeature> count = post.getFeatureReader(
-                    new Query(ft.getTypeName()), Transaction.AUTO_COMMIT);
-            int i = 0;
-            while (count.hasNext() && i < 3) {
-                f = count.next();
-                i++;
-            }
-            count.close();
-
-            WFSDataStoreWriteOnlineTest.doDelete(post, ft, fp);
-            WFSDataStoreWriteOnlineTest.doUpdate(post, ft, ATTRIBUTE_TO_EDIT, NEW_EDIT_VALUE);
-            // assertFalse("events not fired", watcher.count == 0);
-        } finally {
-            try {
-                ((SimpleFeatureStore) fs).removeFeatures(filterFac.not(startingFeatures));
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-        }
-    }
-
+//    /**
+//     * Writing test that only engages against a remote geoserver.
+//     * <p>
+//     * Makes reference to the standard featureTypes that geoserver ships with.
+//     * </p>
+//     * NOTE: Ignoring this test for now because it edits topp:states and GeoServer doesn't return
+//     * the correct Feature IDs on transactions against shapefiles
+//     */
+//    @Test
+//    @Ignore
+//    public void testWrite() throws NoSuchElementException, IllegalFilterException, IOException,
+//            IllegalAttributeException {
+//        if (url_100 == null)
+//            return;
+//
+//        Map m = new HashMap();
+//        m.put(WFSDataStoreFactory.URL.key, url_100);
+//        m.put(WFSDataStoreFactory.TIMEOUT.key, new Integer(10000000));
+//        DataStore post = (WFS_1_0_0_DataStore) (new WFSDataStoreFactory()).createDataStore(m);
+//        String typename = TO_EDIT_TYPE;
+//        SimpleFeatureType ft = post.getSchema(typename);
+//        SimpleFeatureSource fs = post.getFeatureSource(typename);
+//        class Watcher implements FeatureListener {
+//            public int count = 0;
+//
+//            public void changed(FeatureEvent featureEvent) {
+//                System.out.println("Event " + featureEvent);
+//                count++;
+//            }
+//        }
+//        Watcher watcher = new Watcher();
+//        fs.addFeatureListener(watcher);
+//
+//        Id startingFeatures = createFidFilter(fs);
+//        FilterFactory2 filterFac = CommonFactoryFinder
+//                .getFilterFactory2(GeoTools.getDefaultHints());
+//        try {
+//            GeometryFactory gf = new GeometryFactory();
+//            MultiPolygon mp = gf.createMultiPolygon(new Polygon[] { gf.createPolygon(
+//                    gf.createLinearRing(new Coordinate[] { new Coordinate(-88.071564, 37.51099),
+//                            new Coordinate(-88.467644, 37.400757),
+//                            new Coordinate(-90.638329, 42.509361),
+//                            new Coordinate(-89.834618, 42.50346),
+//                            new Coordinate(-88.071564, 37.51099) }), new LinearRing[] {}) });
+//            mp.setUserData("http://www.opengis.net/gml/srs/epsg.xml#" + EPSG_CODE);
+//
+//            PropertyName geometryAttributeExpression = filterFac.property(ft
+//                    .getGeometryDescriptor().getLocalName());
+//            PropertyIsNull geomNullCheck = filterFac.isNull(geometryAttributeExpression);
+//            Query query = new Query(typename, filterFac.not(geomNullCheck), 1, Query.ALL_NAMES,
+//                    null);
+//            SimpleFeatureIterator inStore = fs.getFeatures(query).features();
+//
+//            SimpleFeature f, f2;
+//            try {
+//                SimpleFeature feature = inStore.next();
+//
+//                SimpleFeature copy = SimpleFeatureBuilder.deep(feature);
+//                SimpleFeature copy2 = SimpleFeatureBuilder.deep(feature);
+//
+//                f = SimpleFeatureBuilder.build(ft, copy.getAttributes(), null);
+//                f2 = SimpleFeatureBuilder.build(ft, copy2.getAttributes(), null);
+//                assertFalse("Max Feature failed", inStore.hasNext());
+//            } finally {
+//                inStore.close();
+//            }
+//
+//            org.geotools.util.logging.Logging.getLogger("org.geotools.data.wfs").setLevel(
+//                    Level.FINE);
+//            SimpleFeatureCollection inserts = DataUtilities
+//                    .collection(new SimpleFeature[] { f, f2 });
+//            Id fp = WFSDataStoreWriteOnlineTest.doInsert(post, ft, inserts);
+//
+//            // / okay now count ...
+//            FeatureReader<SimpleFeatureType, SimpleFeature> count = post.getFeatureReader(
+//                    new Query(ft.getTypeName()), Transaction.AUTO_COMMIT);
+//            int i = 0;
+//            while (count.hasNext() && i < 3) {
+//                f = count.next();
+//                i++;
+//            }
+//            count.close();
+//
+//            WFSDataStoreWriteOnlineTest.doDelete(post, ft, fp);
+//            WFSDataStoreWriteOnlineTest.doUpdate(post, ft, ATTRIBUTE_TO_EDIT, NEW_EDIT_VALUE);
+//            // assertFalse("events not fired", watcher.count == 0);
+//        } finally {
+//            try {
+//                ((SimpleFeatureStore) fs).removeFeatures(filterFac.not(startingFeatures));
+//            } catch (Exception e) {
+//                System.out.println(e);
+//            }
+//        }
+//    }
+//
     private Id createFidFilter(SimpleFeatureSource fs) throws IOException {
         SimpleFeatureIterator iter = fs.getFeatures().features();
         FilterFactory2 ffac = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());

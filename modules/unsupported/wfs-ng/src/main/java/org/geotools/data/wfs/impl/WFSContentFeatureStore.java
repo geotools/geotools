@@ -232,7 +232,8 @@ class WFSContentFeatureStore extends ContentFeatureStore {
             WFSLocalTransactionState localState = new WFSLocalTransactionState(getState());
             WFSRemoteTransactionState committingState = new WFSRemoteTransactionState(
                     getDataStore());
-            committingState.watch(localState);
+            //TODO: revisit
+            //committingState.watch(localState);
 
             WFSDiff diff = localState.getDiff();
 

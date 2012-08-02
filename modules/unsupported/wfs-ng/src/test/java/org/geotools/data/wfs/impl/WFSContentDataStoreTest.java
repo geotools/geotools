@@ -153,11 +153,11 @@ public class WFSContentDataStoreTest {
 
         source = dataStore.getFeatureSource(simpleTypeName1);
         assertNotNull(source);
-        assertTrue(source instanceof WFSContentFeatureStore);
+        assertTrue(source instanceof WFSContentFeatureSource);
 
         source = dataStore.getFeatureSource(simpleTypeName2);
         assertNotNull(source);
         assertTrue(source instanceof WFSContentFeatureSource);
-        assertFalse(source instanceof WFSContentFeatureStore);
+        //assertFalse(source instanceof WFSContentFeatureStore);
     }
 }

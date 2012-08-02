@@ -77,7 +77,7 @@ public abstract class AbstractWfsDataStoreOnlineTest {
     /**
      * The DataStore under test, static so we create it only once
      */
-    protected static WFSDataStore wfs = null;
+    protected static WFSContentDataStore wfs = null;
 
     protected final WFSTestData.TestDataType testType;
 

@@ -25,7 +25,8 @@ public class WFSFeatureWriter extends DiffContentFeatureWriter {
         if (autoCommit) {
             WFSContentDataStore dataStore = (WFSContentDataStore) store.getDataStore();
             autoCommitState = new WFSRemoteTransactionState(dataStore);
-            autoCommitState.watch(localSate);
+            // TODO: revisit
+            // autoCommitState.watch(localSate);
         } else {
             autoCommitState = null;
         }
@@ -57,20 +58,21 @@ public class WFSFeatureWriter extends DiffContentFeatureWriter {
 
     @Override
     public synchronized SimpleFeature next() throws IOException {
-        checkClosed();
-        SimpleFeatureType type = getFeatureType();
-        if (hasNext()) {
-            return super.next();
-        } else {
-            // Create new content with mutable fid
-            live = null;
-            next = null;
-            featureBuilder.reset();
-            String id = "new" + diff.nextFID;
-            current = featureBuilder.buildFeature(id, new Object[type.getAttributeCount()]);
-            diff.nextFID++;
-            return current;
-        }
+        throw new UnsupportedOperationException("implementation needs to be revisited");
+        // checkClosed();
+        // SimpleFeatureType type = getFeatureType();
+        // if (hasNext()) {
+        // return super.next();
+        // } else {
+        // // Create new content with mutable fid
+        // live = null;
+        // next = null;
+        // featureBuilder.reset();
+        // String id = "new" + diff.nextFID;
+        // current = featureBuilder.buildFeature(id, new Object[type.getAttributeCount()]);
+        // diff.nextFID++;
+        // return current;
+        // }
     }
 
     private void checkClosed() throws IOException {

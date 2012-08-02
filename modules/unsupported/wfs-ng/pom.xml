@@ -163,7 +163,6 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <excludes>
-            <exclude>**/StreamingParserFeatureReaderTest.java</exclude>
             <!-- The following tests are skipped because they do not extend OnlineTestCase -->
             <exclude>**/*OnlineTest.java</exclude>
           </excludes>

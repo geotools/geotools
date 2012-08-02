@@ -158,7 +158,8 @@ class WFSRemoteTransactionState implements State {
                     continue;
                 }
                 SimpleFeature localFeature = added.get(fid);
-                localState.fireFeatureAdded(source, feature);
+                //TODO: revisit
+                //localState.fireFeatureAdded(source, feature);
                 MutableFeatureId addedFid = (MutableFeatureId) localFeature.getIdentifier();
                 addedFeatureIds.add(addedFid);
 

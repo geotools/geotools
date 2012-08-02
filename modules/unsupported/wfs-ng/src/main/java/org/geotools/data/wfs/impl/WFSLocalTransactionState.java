@@ -38,7 +38,9 @@ class WFSLocalTransactionState extends DiffTransactionState {
      *            ContentState for the transaction
      */
     public WFSLocalTransactionState(WFSContentState state) {
-        super(state, new WFSDiff());
+        super(state);
+        //TODO: revisit
+        //super(state, new WFSDiff());
         this.state = state;
     }
 

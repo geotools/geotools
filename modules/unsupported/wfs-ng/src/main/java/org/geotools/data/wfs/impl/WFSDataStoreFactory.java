@@ -351,7 +351,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
         int timeoutMillis = config.getTimeoutMillis();
         http.setConnectTimeout(timeoutMillis / 1000);
 
-        final URL capabilitiesURL = URL.lookUp(params);
+        final URL capabilitiesURL = (URL) URL.lookUp(params);
 
         // WFSClient performs version negotiation and selects the correct strategy
         WFSClient wfsClient;

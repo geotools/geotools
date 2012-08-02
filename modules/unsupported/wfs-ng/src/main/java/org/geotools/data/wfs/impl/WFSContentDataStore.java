@@ -95,10 +95,11 @@ public class WFSContentDataStore extends ContentDataStore {
         source = new WFSContentFeatureSource(entry, client);
 
         final QName remoteTypeName = getRemoteTypeName(entry.getName());
-
-        if (client.supportsTransaction(remoteTypeName)) {
-            source = new WFSContentFeatureStore((WFSContentFeatureSource) source);
-        }
+        // TODO: revisit. Transactions disabled by now until resolving the strategy to use as much
+        // from ContentDataStore and related classes as possible
+        // if (client.supportsTransaction(remoteTypeName)) {
+        // source = new WFSContentFeatureStore((WFSContentFeatureSource) source);
+        // }
 
         return source;
     }

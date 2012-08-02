@@ -4,21 +4,21 @@
 set -e
 
 function usage() {
-  echo "$0 [options] <tag>"
+  echo "$0 [options] <tag> <user> <email>"
   echo
-  echo " tag : Release tag (eg: 2.7.5, 8.0-RC1, ...)"
+  echo " tag :  Release tag (eg: 2.7.5, 8.0-RC1, ...)"
+  echo " user:  Git username"
+  echo " email: Git email"
   echo
   echo "Options:"
   echo " -h          : Print usage"
   echo " -b <branch> : Branch to release from (eg: master, 8.x, ...)"
   echo " -r <rev>    : Revision to release (eg: a1b2kc4...)"
-  echo " -u <user>   : git user"
-  echo " -e <passwd> : git email"
   echo
 }
 
 # parse options
-while getopts "hb:r:u:e:" opt; do
+while getopts "hb:r:" opt; do
   case $opt in
     h)
       usage
@@ -29,12 +29,6 @@ while getopts "hb:r:u:e:" opt; do
       ;;
     r)
       rev=$OPTARG
-      ;;
-    u)
-      git_user=$OPTARG
-      ;;
-    e)
-      git_email=$OPTARG
       ;;
     \?)
       usage
@@ -50,9 +44,11 @@ done
 # clear options to parse main arguments
 shift $(( OPTIND -1 ))
 tag=$1
+git_user=$2
+git_email=$3
 
 # sanity check
-if [ -z $tag ] || [ ! -z $2 ]; then
+if [ -z $tag ] || [ -z $git_user ] || [ -z $git_email ] || [ ! -z $4 ]; then
   usage
   exit 1
 fi
@@ -82,10 +78,6 @@ jira_id=`get_jira_id $tag`
 if [ -z $jira_id ]; then
   echo "Could not locate release $tag in JIRA"
   exit -1
-fi
-
-if [ ! -z $git_user ] && [ ! -z $git_email ]; then
-  git_opts="--author '$git_user <$git_email>'"
 fi
 
 # move to root of repo
@@ -173,9 +165,11 @@ mkdir $dist
 echo "copying artifacts to $dist"
 cp $target/*.zip $dist
 
+init_git $git_user $git_email
+
 # commit changes 
 git add .
-git commit $git_opts -m "updating version numbers and README for $tag"
+git commit -m "updating version numbers and README for $tag"
 
 popd > /dev/null
 

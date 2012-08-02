@@ -70,7 +70,7 @@ popd > /dev/null
 
 # merge the tag release branch into main release branch and tag it
 git checkout rel_$branch
-git merge -m "Merging rel_$tag into rel_$branch" rel_$tag
+git merge -Xtheirs -m "Merging rel_$tag into rel_$branch" rel_$tag
 git tag $tag
 
 # push them up

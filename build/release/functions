@@ -112,8 +112,6 @@ function get_jira_id() {
 function init_git() {
   # setup the author, for some reason I can;t for the life of me get to this
   # to work properly from a script using the --author option to git commit
-  git config --unset user.name
-  git config --unset user.email
   git config user.name $1
   git config user.email $2
 }

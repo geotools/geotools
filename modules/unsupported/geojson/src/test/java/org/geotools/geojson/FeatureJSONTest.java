@@ -437,7 +437,25 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
             assertNotNull(it.next().getType().getCoordinateReferenceSystem());
         }
     }
-    
+
+    public void testFeatureCollectionWithTypePostFeaturesRead() throws Exception {
+        String json = strip("{ " +
+            "  'features' : [{ " +"     'geometry' : { 'coordinates' : [ 17.633333, 59.85 ], 'type' : 'Point' }," +     
+            "     'type' : 'Feature'," +  
+            "     'properties' : { 'name' : 'Station' }" +
+            "  }]," + 
+            "  'type' : 'FeatureCollection'" +
+            "}");
+        FeatureCollection fcol = fjson.readFeatureCollection(json);
+        FeatureIterator it = fcol.features();
+        assertTrue(it.hasNext());
+
+        SimpleFeature f = (SimpleFeature) it.next();
+        assertTrue(new WKTReader().read("POINT (17.633333 59.85)").equals((Geometry)f.getDefaultGeometry()));
+        assertEquals("Station", f.getAttribute("name"));
+        it.close();
+    }
+
     public void testCRSWrite() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("EPSG:4326");
         StringWriter writer = new StringWriter();

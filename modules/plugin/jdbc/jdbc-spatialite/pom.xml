@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools.jdbc</groupId>
     <artifactId>gt-jdbc</artifactId>
-    <version>8.0-RC2</version>
+    <version>8.0</version>
   </parent>
 
 
@@ -67,7 +67,7 @@
     <dependency>
       <groupId>org.xerial</groupId>
       <artifactId>sqlite-jdbc-spatialite</artifactId>
-      <version>3.7.2-1</version>
+      <version>3.7.2-2.4</version>
     </dependency>
   </dependencies>
 

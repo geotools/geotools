@@ -123,6 +123,7 @@ org.geotools.filter.function.FilterFunction_Convert
 org.geotools.filter.function.FilterFunction_vertices
 org.geotools.filter.function.FilterFunction_offset
 org.geotools.filter.function.FilterFunction_isometric
+org.geotools.filter.function.FilterFunction_property
 org.geotools.filter.function.IDFunction
 org.geotools.filter.function.InterpolateFunction
 org.geotools.filter.function.RecodeFunction
@@ -158,6 +159,7 @@ org.geotools.filter.function.math.FilterFunction_sqrt
 org.geotools.filter.function.math.FilterFunction_tan
 org.geotools.filter.function.math.FilterFunction_toDegrees
 org.geotools.filter.function.math.FilterFunction_toRadians
+org.geotools.filter.function.math.ModuloFunction
 org.geotools.filter.function.math.PiFunction
 org.geotools.filter.function.string.ConcatenateFunction
 org.geotools.filter.function.JenksNaturalBreaksFunction

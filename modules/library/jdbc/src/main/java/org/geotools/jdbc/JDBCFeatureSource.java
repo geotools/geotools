@@ -655,14 +655,15 @@ public class JDBCFeatureSource extends ContentFeatureSource {
 
     @Override
     protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
-        //grab connection
+        // grab connection using the current transaction
         Connection cx = getDataStore().getConnection(getState());
         try {
             Object result = getDataStore().getAggregateValue(visitor, getSchema(), query, cx);
             return result != null;
         }
         finally {
-            getDataStore().closeSafe( cx );
+        	// release the connection - behaviour depends on Transaction.AUTO_COMMIT
+        	getDataStore().releaseConnection(cx, getState());
         }
     }
     

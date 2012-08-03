@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>unsupported</artifactId>
-    <version>8.0-RC2</version>
+    <version>8.0</version>
   </parent>
 
 
@@ -25,10 +25,9 @@
   <!-- =========================================================== -->
   <groupId>org.geotools</groupId>
   <artifactId>gt-ogr</artifactId>
-  <packaging>jar</packaging>
-  <name>OGR datastore module</name>
+  <packaging>pom</packaging>
+  <name>OGR DataStore Module</name>
   
-
   <scm>
     <connection>
       scm:svn:http://svn.geotools.org/trunk/modules/unsupported/ogr/
@@ -48,15 +47,6 @@
     </license>
   </licenses>
   
-  <repositories>
-    <repository>
-      <id>nativelibs4java-repo</id>
-      <name>NativeLibs4Java Maven Repository</name>
-      <url>http://nativelibs4java.sourceforge.net/maven</url>
-    </repository>
-  </repositories>
-
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
@@ -82,19 +72,6 @@
       <groupId>org.geotools</groupId>
       <artifactId>gt-data</artifactId>
       <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.nativelibs4java</groupId>
-      <artifactId>bridj</artifactId>
-      <classifier>c-only</classifier>
-      <version>0.6</version>
-
-      <exclusions>
-        <exclusion>
-          <groupId>com.nativelibs4java.thirdparty.com.google.android</groupId>
-          <artifactId>dx</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
 
     <!-- Test dependencies -->
@@ -135,4 +112,9 @@
       </plugins>
   </build>
 
+  <modules>
+    <module>ogr-core</module>
+    <module>ogr-bridj</module>
+    <module>ogr-jni</module>
+  </modules>
 </project>

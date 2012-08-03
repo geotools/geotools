@@ -30,10 +30,12 @@ import net.opengis.ows11.Ows11Factory;
 import net.opengis.wps10.DataInputsType1;
 import net.opengis.wps10.DataType;
 import net.opengis.wps10.ExecuteType;
+import net.opengis.wps10.InputReferenceType;
 import net.opengis.wps10.InputType;
 import net.opengis.wps10.ResponseFormType;
 import net.opengis.wps10.Wps10Factory;
 
+import org.eclipse.emf.ecore.EObject;
 import org.geotools.wps.WPS;
 import org.geotools.wps.WPSConfiguration;
 import org.geotools.xml.Configuration;
@@ -147,13 +149,26 @@ public abstract class AbstractExecuteProcessRequest extends AbstractWPSRequest i
                 while (iterator2.hasNext())
                 {
                     // identifier
-                    DataType dt = (DataType) iterator2.next();
-                    InputType input = Wps10Factory.eINSTANCE.createInputType();
-                    CodeType ct = Ows11Factory.eINSTANCE.createCodeType();
-                    ct.setValue((String) key);
-                    input.setIdentifier(ct);
-                    input.setData((DataType) dt);
-                    inputtypes.getInput().add(input);
+                    EObject oInput = iterator2.next();
+                    if (oInput instanceof DataType) {
+                    	DataType dt = (DataType) oInput;
+                    	InputType input = Wps10Factory.eINSTANCE.createInputType();
+                    	CodeType ct = Ows11Factory.eINSTANCE.createCodeType();
+                    	ct.setValue((String) key);
+                    	input.setIdentifier(ct);
+                    	input.setData((DataType) dt);
+                    	inputtypes.getInput().add(input);
+                    } else if (oInput instanceof InputReferenceType) {
+                    	InputReferenceType rt = (InputReferenceType) oInput;
+                    	InputType input = Wps10Factory.eINSTANCE.createInputType();
+                    	CodeType ct = Ows11Factory.eINSTANCE.createCodeType();
+                    	ct.setValue((String) key);
+                    	input.setIdentifier(ct);
+                    	input.setReference(rt);
+                    	inputtypes.getInput().add(input);
+                    } else {
+                        throw new IllegalStateException("The input for key " + key + " contain an unsupported object of type " + oInput.getClass());
+                    }
                 }
             }
 
@@ -175,7 +190,7 @@ public abstract class AbstractExecuteProcessRequest extends AbstractWPSRequest i
      * @param name input name
      * @param value the list of datatype input objects
      */
-    public void addInput(String name, List<DataType> value)
+    public void addInput(String name, List<EObject> value)
     {
         if (value == null)
         {
@@ -183,7 +198,14 @@ public abstract class AbstractExecuteProcessRequest extends AbstractWPSRequest i
         }
         else
         {
-
+            // check input for validity
+            for (EObject o : value) {
+                if(!(o instanceof DataType) && !(o instanceof InputReferenceType)) {
+                    throw new IllegalArgumentException("The values can be either of type net.opengis.wps10.DataType " +
+                    		"or of type net.opengis.wps10.InputReferenceType");
+                }
+            }
+            // all right, let's roll
             inputs.put(name, value);
         }
     }

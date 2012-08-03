@@ -31,6 +31,7 @@ import net.opengis.wps10.InputDescriptionType;
 import net.opengis.wps10.ProcessDescriptionType;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.geotools.data.wps.request.ExecuteProcessRequest;
 import org.geotools.data.wps.response.ExecuteProcessResponse;
 import org.geotools.ows.ServiceException;
@@ -103,7 +104,7 @@ public class WPSProcess extends AbstractProcess {
 			if (inputValue != null) {
 				// if our value is some sort of collection, then created multiple
 				// dataTypes for this inputdescriptiontype.
-				List<DataType> list = new ArrayList<DataType>();
+				List<EObject> list = new ArrayList<EObject>();
 				if (inputValue instanceof Map) {
 					for (Object inVal : ((Map)inputValue).values()) {
 						DataType createdInput = WPSUtils.createInputDataType(inVal, idt);

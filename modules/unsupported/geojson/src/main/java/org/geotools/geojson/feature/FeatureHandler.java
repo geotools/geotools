@@ -50,7 +50,11 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
     AttributeIO attio;
     
     SimpleFeature feature;
-    
+
+    public FeatureHandler() {
+        this(null, new DefaultAttributeIO());
+    }
+
     public FeatureHandler(SimpleFeatureBuilder builder, AttributeIO attio) {
         this.builder = builder;
         this.attio = attio;

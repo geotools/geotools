@@ -23,6 +23,7 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
+import org.geotools.data.jdbc.datasource.DBCPDataSource;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;
@@ -164,7 +165,7 @@ public class H2DataStoreFactory extends JDBCDataStoreFactory {
         dataSource.setDriverClassName("org.h2.Driver");
         dataSource.setPoolPreparedStatements(false);
 
-        return dataSource;
+        return new DBCPDataSource(dataSource);
     }
 
     protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map params)

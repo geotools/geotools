@@ -16,7 +16,6 @@
  */
 package org.geotools.feature.simple;
 
-import java.rmi.server.UID;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -25,9 +24,8 @@ import java.util.logging.Logger;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.FeatureBuilder;
 import org.geotools.feature.type.Types;
-import org.geotools.filter.identity.FeatureIdImpl;
-import org.geotools.util.Converters;
 import org.opengis.feature.FeatureFactory;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.Property;
@@ -45,7 +43,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * <code>
  *  <pre>
  *  //type of features we would like to build ( assume schema = (geom:Point,name:String) )
- *  SimpleFeatureType featureType = ...  
+ *  SimpleFeatureType featureType = ...
  * 
  *   //create the builder
  *  SimpleFeatureBuilder builder = new SimpleFeatureBuilder();
@@ -109,7 +107,7 @@ import com.vividsolutions.jts.geom.Geometry;
  *   ...
  *   
  *   SimpleFeature original = ...;
- *   
+ *
  *   //copy the feature
  *   SimpleFeature feature = SimpleFeatureBuilder.copy( original );
  *   </pre>
@@ -127,18 +125,12 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  * @source $URL$
  */
-public class SimpleFeatureBuilder {
+public class SimpleFeatureBuilder extends FeatureBuilder<SimpleFeatureType, SimpleFeature> { 
     /**
      * logger
      */
     static Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.feature");
-    
-    /** the feature type */
-    SimpleFeatureType featureType;
-    
-    /** the feature factory */
-    FeatureFactory factory;
-    
+
     /** the attribute name to index index */
     Map<String, Integer> index;
 
@@ -148,42 +140,52 @@ public class SimpleFeatureBuilder {
     
     /** pointer for next attribute */
     int next;
-    
+
     Map<Object, Object>[] userData;
-    
+
     Map<Object, Object> featureUserData;
-    
+
     boolean validating;
+    
+    private Object convert(Object value, AttributeDescriptor descriptor) {
+        // make sure the type of the value and the binding of the type match up
+    	super.convert(value, descriptor);
+    	
+        if ( value == null ) {
+            // if the content is null and the descriptor says isNillable is false then set the default value:
+            if (!descriptor.isNillable()) {
+                value = descriptor.getDefaultValue();
+                if ( value == null ) {
+                    //no default value, try to generate one
+                    value = DataUtilities.defaultValue(descriptor.getType().getBinding());
+                }
+            }
+        }
+        
+        return value;
+    }
     
     public SimpleFeatureBuilder(SimpleFeatureType featureType) {
         this(featureType, CommonFactoryFinder.getFeatureFactory(null));
     }
-    
+
     public SimpleFeatureBuilder(SimpleFeatureType featureType, FeatureFactory factory) {
-        this.featureType = featureType;
-        this.factory = factory;
+    	super(featureType, factory);
 
         if(featureType instanceof SimpleFeatureTypeImpl) {
             index = ((SimpleFeatureTypeImpl) featureType).index;
         } else {
             this.index = SimpleFeatureTypeImpl.buildIndex(featureType);
         }
+
         reset();
     }
-    
+
     public void reset() {
         values = new Object[featureType.getAttributeCount()];
         next = 0;
         userData = null;
         featureUserData = null;
-    }
-    
-    /**
-     * Returns the simple feature type used by this builder as a feature template
-     * @return
-     */
-    public SimpleFeatureType getFeatureType() {
-        return featureType;
     }
     
     /**
@@ -193,11 +195,11 @@ public class SimpleFeatureBuilder {
      * useful when copying a feature. 
      * </p>
      */
-    public void init( SimpleFeature feature ) {
+    public void init(SimpleFeature feature) {
         reset();
-        
+
         // optimize the case in which we just build
-        if(feature instanceof SimpleFeatureImpl) {
+        if (feature instanceof SimpleFeatureImpl) {
             SimpleFeatureImpl impl = (SimpleFeatureImpl) feature;
             System.arraycopy(impl.values, 0, values, 0, impl.values.length);
 
@@ -216,8 +218,6 @@ public class SimpleFeatureBuilder {
 
     }
     
-    
-
     /**
      * Adds an attribute.
      * <p>
@@ -258,7 +258,7 @@ public class SimpleFeatureBuilder {
      *            The value of the attribute.
      * 
      * @throws IllegalArgumentException
-     *             If no such attribute with teh specified name exists.
+     *             If no such attribute with the specified name exists.
      */
     public void set(Name name, Object value) {
         set(name.getLocalPart(), value);
@@ -276,13 +276,14 @@ public class SimpleFeatureBuilder {
      *            The value of the attribute.
      * 
      * @throws IllegalArgumentException
-     *             If no such attribute with teh specified name exists.
+     *             If no such attribute with the specified name exists.
      */
     public void set(String name, Object value) {
         int index = featureType.indexOf(name);
         if (index == -1) {
             throw new IllegalArgumentException("No such attribute:" + name);
         }
+        
         set(index, value);
     }
 
@@ -308,27 +309,6 @@ public class SimpleFeatureBuilder {
             Types.validate(descriptor, values[index]);
     }
 
-    private Object convert(Object value, AttributeDescriptor descriptor) {
-        //make sure the type of the value and the binding of the type match up
-        if ( value != null ) {
-            Class<?> target = descriptor.getType().getBinding(); 
-            Object converted = Converters.convert(value, target);
-            if(converted != null)
-                value = converted;
-        } else {
-            //if the content is null and the descriptor says isNillable is false, 
-            // then set the default value
-            if (!descriptor.isNillable()) {
-                value = descriptor.getDefaultValue();
-                if ( value == null ) {
-                    //no default value, try to generate one
-                    value = DataUtilities.defaultValue(descriptor.getType().getBinding());
-                }
-            }
-        }
-        return value;
-    }
-
     /**
      * Builds the feature.
      * <p>
@@ -344,10 +324,11 @@ public class SimpleFeatureBuilder {
      * 
      * @return The new feature.
      */
+    @Override
     public SimpleFeature buildFeature(String id) {
         // ensure id
         if (id == null) {
-            id = SimpleFeatureBuilder.createDefaultFeatureId();
+            id = FeatureBuilder.createDefaultFeatureId();
         }
 
         Object[] values = this.values;
@@ -355,7 +336,7 @@ public class SimpleFeatureBuilder {
         Map<Object,Object> featureUserData = this.featureUserData;
         reset();
         SimpleFeature sf = factory.createSimpleFeature(values, featureType, id);
-        
+
         // handle the per attribute user data
         if(userData != null) {
             for (int i = 0; i < userData.length; i++) {
@@ -366,10 +347,10 @@ public class SimpleFeatureBuilder {
         }
         
         // handle the feature wide user data
-        if(featureUserData != null) {
+        if (featureUserData != null) {
             sf.getUserData().putAll(featureUserData);
         }
-        
+
         return sf;
     }
     
@@ -382,35 +363,6 @@ public class SimpleFeatureBuilder {
     public SimpleFeature buildFeature(String id, Object[] values ) {
         addAll( values );
         return buildFeature( id );
-    }
-    
-    
-    /**
-     * Internal method for creating feature id's when none is specified.
-     */
-    public static String createDefaultFeatureId() {
-          // According to GML and XML schema standards, FID is a XML ID
-        // (http://www.w3.org/TR/xmlschema-2/#ID), whose acceptable values are those that match an
-        // NCNAME production (http://www.w3.org/TR/1999/REC-xml-names-19990114/#NT-NCName):
-        // NCName ::= (Letter | '_') (NCNameChar)* /* An XML Name, minus the ":" */
-        // NCNameChar ::= Letter | Digit | '.' | '-' | '_' | CombiningChar | Extender
-        // We have to fix the generated UID replacing all non word chars with an _ (it seems
-        // they area all ":")
-        //return "fid-" + NON_WORD_PATTERN.matcher(new UID().toString()).replaceAll("_");
-        // optimization, since the UID toString uses only ":" and converts long and integers
-        // to strings for the rest, so the only non word character is really ":"
-        return "fid-" + new UID().toString().replace(':', '_');
-    }
-    /**
-     * Internal method for a temporary FeatureId that can be assigned
-     * a real value after a commit.
-     * @param suggestedId suggsted id
-     */
-    public static FeatureIdImpl createDefaultFeatureIdentifier( String suggestedId ) {
-    	if( suggestedId != null ){
-    		return new FeatureIdImpl( suggestedId );	
-    	}
-    	return new FeatureIdImpl( createDefaultFeatureId() );
     }
     
     
@@ -468,7 +420,7 @@ public class SimpleFeatureBuilder {
     }
     
     /**
-     * Perform a "deep copy" an existing feature resuling in a duplicate of any geometry
+     * Perform a "deep copy" an existing feature resulting in a duplicate of any geometry
      * attributes.
      * <p>
      * This method is scary, expensive and will result in a deep copy of
@@ -512,7 +464,7 @@ public class SimpleFeatureBuilder {
         }
         return builder.buildFeature(featureId);
     }
-        
+
     /**
      * Copies an existing feature, retyping it in the process. 
      * <p> Be warned, this method will
@@ -536,6 +488,7 @@ public class SimpleFeatureBuilder {
             Object value = feature.getAttribute( att.getName() );
             builder.set(att.getName(), value);
         }
+        
         return builder.buildFeature(feature.getID());
     }
     
@@ -548,7 +501,7 @@ public class SimpleFeatureBuilder {
      * </p>
      * @param feature The original feature.
      * @param SimpleFeatureBuilder A builder for the target feature type
-     *  
+     *
      * @return The copied feature, with a new type.
      * @since 2.5.3
      */
@@ -569,7 +522,7 @@ public class SimpleFeatureBuilder {
      * @param key The key of the user data
      * @param value The value of the user data.
     */
-    public SimpleFeatureBuilder userData( Object key, Object value ) {
+    public SimpleFeatureBuilder userData(Object key, Object value) {
         return setUserData(next, key, value);
     }
     
@@ -596,6 +549,7 @@ public class SimpleFeatureBuilder {
         if(featureUserData == null) {
             featureUserData = new HashMap<Object, Object>();
         }
+        
         featureUserData.put(key, value);
         return this;
     }

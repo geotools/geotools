@@ -150,7 +150,7 @@ public final class ContentEntry {
     void notifiyFeatureEvent( ContentState source, FeatureEvent notification){
         for(ContentState entry : state.values() ){
            if( entry == source ) {
-               continue;  // no notificaiton required               
+               continue;  // no notification required               
            }
            for( FeatureListener listener : source.listeners ){
                try {

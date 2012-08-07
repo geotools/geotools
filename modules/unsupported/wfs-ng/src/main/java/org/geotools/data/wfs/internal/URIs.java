@@ -77,7 +77,7 @@ public class URIs {
             contextPath = contextPath.substring(1);
         }
 
-        return url + "/" + contextPath;
+        return url + (contextPath.isEmpty() ? "" : "/" + contextPath);
     }
 
     /**

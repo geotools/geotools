@@ -991,8 +991,8 @@
       <!-- GeoGIT -->
       <dependency>
         <groupId>org.geogit</groupId>
-        <artifactId>geogit</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <artifactId>geogit-core</artifactId>
+        <version>0.1-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>com.sleepycat</groupId>

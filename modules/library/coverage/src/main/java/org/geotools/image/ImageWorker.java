@@ -19,6 +19,7 @@ package org.geotools.image;
 import java.awt.Color;
 import java.awt.HeadlessException;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.color.ColorSpace;
@@ -70,6 +71,9 @@ import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.TileCache;
+import javax.media.jai.Warp;
+import javax.media.jai.WarpAffine;
+import javax.media.jai.WarpGrid;
 import javax.media.jai.operator.AddConstDescriptor;
 import javax.media.jai.operator.AddDescriptor;
 import javax.media.jai.operator.AffineDescriptor;
@@ -97,12 +101,17 @@ import javax.media.jai.registry.RenderedRegistryMode;
 import org.geotools.factory.Hints;
 import org.geotools.image.crop.GTCropDescriptor;
 import org.geotools.image.io.ImageIOExt;
+import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.referencing.operation.transform.WarpBuilder;
 import org.geotools.resources.Arguments;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.image.ColorUtilities;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.logging.Logging;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.MathTransform2D;
+import org.opengis.referencing.operation.MathTransformFactory;
 
 import com.sun.imageio.plugins.png.PNGImageWriter;
 import com.sun.media.imageioimpl.common.BogusColorSpace;
@@ -138,6 +147,13 @@ public class ImageWorker {
     static final float RS_EPS = 1E-02f;
     
     /**
+     * Controls the warp-affine reduction
+     */
+    public static final String WARP_REDUCTION_ENABLED_KEY = "org.geotools.image.reduceWarpAffine";
+    static boolean WARP_REDUCTION_ENABLED = Boolean.parseBoolean(System.getProperty(WARP_REDUCTION_ENABLED_KEY, "TRUE"));
+
+    
+    /**
      * Workaround class for compressing PNG using the default
      * PNGImageEncoder shipped with the JDK.
      * <p>
@@ -161,7 +177,6 @@ public class ImageWorker {
             this.locale = Locale.getDefault();
         }
     }
-    
 
     /**
      * The logger to use for this class.
@@ -188,6 +203,11 @@ public class ImageWorker {
      */
     static {
         GTCropDescriptor.register();
+        
+        if (WARP_REDUCTION_ENABLED) {
+            GTWarpPropertyGenerator.register(false);
+        }
+        LOGGER.log(Level.INFO, "Warp/affine reduction enabled: " + WARP_REDUCTION_ENABLED);
     }
 
     /**
@@ -2827,7 +2847,96 @@ public class ImageWorker {
         RenderedImage source = image;
         if(image instanceof RenderedOp) {
             RenderedOp op = (RenderedOp) image;
-            if("Affine".equals(op.getOperationName())) {
+            
+            Object mtProperty = op.getProperty("MathTransform");
+            Object sourceBoundsProperty = op.getProperty("SourceBoundingBox");
+            String opName = op.getOperationName();
+            
+            // check if we can do a warp-affine reduction
+            if (WARP_REDUCTION_ENABLED && "Warp".equals(opName) && mtProperty instanceof MathTransform2D 
+                    && sourceBoundsProperty instanceof Rectangle) {
+                try {
+                    // we can merge the affine into the warp
+                    MathTransform2D originalTransform = (MathTransform2D) mtProperty;
+                    MathTransformFactory factory = ReferencingFactoryFinder
+                            .getMathTransformFactory(null);
+                    MathTransform affineMT = factory
+                            .createAffineTransform(new org.geotools.referencing.operation.matrix.AffineTransform2D(
+                                    tx));
+                    MathTransform2D chained = (MathTransform2D) factory
+                            .createConcatenatedTransform(affineMT.inverse(), originalTransform);
+                    
+                    // setup the warp builder
+                    Double tolerance = (Double) getRenderingHint(Hints.RESAMPLE_TOLERANCE);
+                    if (tolerance == null) {
+                        tolerance = (Double) Hints.getSystemDefault(Hints.RESAMPLE_TOLERANCE);
+                    }
+                    if (tolerance == null) {
+                        tolerance = 0.333;
+                    }
+            
+                    // setup a warp builder that is not gong to use too much memory
+                    WarpBuilder wb = new WarpBuilder(tolerance);
+                    wb.setMaxPositions(4 * 1024 * 1024);
+            
+                    // compute the target bbox the same way the affine would have to have a 1-1 match
+                    RenderedOp at = AffineDescriptor.create(source, tx, interpolation, bgValues, commonHints);
+                    Rectangle targetBB = at.getBounds();
+                    at.dispose();
+                    Rectangle sourceBB = (Rectangle) sourceBoundsProperty;
+                    
+                    // warp 
+                    Rectangle mappingBB; 
+                    if(source.getProperty("ROI") instanceof ROI) {
+                       // Due to a limitation in JAI we need to make sure the 
+                        // mapping bounding box covers both source and target bounding box
+                       // otherwise the warped roi image layout won't be computed properly
+                       mappingBB = sourceBB.union(targetBB);
+                    } else {
+                       mappingBB = targetBB;
+                    }
+                    Warp warp = wb.buildWarp(chained, mappingBB);
+                    
+                    // do the switch only if we get a warp that is as fast as the original one
+                    Warp sourceWarp = (Warp) op.getParameterBlock().getObjectParameter(0);
+                    if(warp instanceof WarpGrid || warp instanceof WarpAffine 
+                           || !(sourceWarp instanceof WarpGrid || sourceWarp instanceof WarpAffine))  {
+                       // and then the JAI Operation
+                       PlanarImage sourceImage = op.getSourceImage(0);
+                       final ParameterBlock paramBlk = new ParameterBlock().addSource(sourceImage);
+                       Object property = sourceImage.getProperty("ROI");
+                       if ((property == null) || property.equals(java.awt.Image.UndefinedProperty)
+                               || !(property instanceof ROI)) {
+                           paramBlk.add(warp).add(interpolation).add(bgValues);
+                       } else {
+                           paramBlk.add(warp).add(interpolation).add(bgValues).add((ROI) property);
+                       }
+            
+                       // force in the image layout, this way we get exactly the same
+                       // as the affine we're eliminating
+                       Hints localHints = new Hints(commonHints);
+                       localHints.remove(JAI.KEY_IMAGE_LAYOUT);
+                       ImageLayout il = new ImageLayout();
+                       il.setMinX(targetBB.x);
+                       il.setMinY(targetBB.y);
+                       il.setWidth(targetBB.width);
+                       il.setHeight(targetBB.height);
+                       localHints.put(JAI.KEY_IMAGE_LAYOUT, il);
+            
+                       RenderedOp result = JAI.create("Warp", paramBlk, localHints);
+                       result.setProperty("MathTransform", chained);
+                       image = result;
+            
+                       return this;
+                    }
+                } catch(Exception e) {
+                    LOGGER.log(Level.WARNING, "Failed to squash warp and affine into a single operation, chaining them instead", e);
+                    // move on
+                }
+            }
+            
+            // see if we can merge affine with other affine types then
+            if("Affine".equals(opName)) {
                 ParameterBlock paramBlock = op.getParameterBlock();
                 RenderedImage sSource = paramBlock.getRenderedSource(0);
 
@@ -2842,7 +2951,7 @@ public class ImageWorker {
                     tx = concat;
                     source = sSource;
                 }
-            } else if("Scale".equals(op.getOperationName())) {
+            } else if("Scale".equals(opName)) {
                 ParameterBlock paramBlock = op.getParameterBlock();
                 RenderedImage sSource = paramBlock.getRenderedSource(0);
 

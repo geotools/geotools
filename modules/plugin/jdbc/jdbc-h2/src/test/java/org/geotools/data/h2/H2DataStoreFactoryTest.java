@@ -22,6 +22,7 @@ import java.util.HashMap;
 import junit.framework.TestCase;
 
 import org.geotools.data.DataStore;
+import org.geotools.data.jdbc.datasource.ManageableDataSource;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.h2.tools.Server;
@@ -47,6 +48,7 @@ public class H2DataStoreFactoryTest extends TestCase {
     public void testCreateDataStore() throws Exception {
         JDBCDataStore ds = factory.createDataStore( params );
         assertNotNull( ds );
+        assertTrue(ds.getDataSource() instanceof ManageableDataSource);
     }
     
     public void testTCP() throws Exception {

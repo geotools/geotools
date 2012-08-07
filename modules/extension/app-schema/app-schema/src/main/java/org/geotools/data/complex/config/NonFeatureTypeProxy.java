@@ -19,6 +19,7 @@ package org.geotools.data.complex.config;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import org.geotools.data.complex.ComplexFeatureConstants;
 import org.geotools.data.complex.FeatureTypeMapping;
@@ -56,7 +57,7 @@ public class NonFeatureTypeProxy extends ComplexTypeProxy implements FeatureType
     /**
      * The real type
      */
-    private final ComplexType subject;
+    private final AttributeType subject;
 
     /**
      * Sole constructor
@@ -64,7 +65,7 @@ public class NonFeatureTypeProxy extends ComplexTypeProxy implements FeatureType
      * @param type
      *            The underlying non feature type
      */
-    public NonFeatureTypeProxy(final ComplexType type, final FeatureTypeMapping mapping) {
+    public NonFeatureTypeProxy(final AttributeType type, final FeatureTypeMapping mapping) {
         super(type.getName(), null);
 
         subject = type;
@@ -83,14 +84,17 @@ public class NonFeatureTypeProxy extends ComplexTypeProxy implements FeatureType
         descriptor.getUserData().putAll(originalTarget.getUserData());
         mapping.setTargetFeature(descriptor);
         // smuggle FEATURE_LINK descriptor
-        descriptors = new ArrayList<PropertyDescriptor>(subject.getDescriptors()) {
+        descriptors = new ArrayList<PropertyDescriptor>() {
             {
                 add(ComplexFeatureConstants.FEATURE_CHAINING_LINK);
             }
         };
+        if (subject instanceof ComplexType) {
+            descriptors.addAll(((ComplexType) subject).getDescriptors());
+        } 
     }
 
-    public NonFeatureTypeProxy(final ComplexType type, final FeatureTypeMapping mapping,
+    public NonFeatureTypeProxy(final AttributeType type, final FeatureTypeMapping mapping,
             Collection<PropertyDescriptor> schema) {
         super(type.getName(), null);
 
@@ -109,6 +113,8 @@ public class NonFeatureTypeProxy extends ComplexTypeProxy implements FeatureType
                 minOccurs, maxOccurs, nillable, defaultValue);
         descriptor.getUserData().putAll(originalTarget.getUserData());
         mapping.setTargetFeature(descriptor);
+        // smuggle FEATURE_LINK descriptor
+        schema.add(ComplexFeatureConstants.FEATURE_CHAINING_LINK);
         this.descriptors = schema;
     }
 
@@ -139,7 +145,11 @@ public class NonFeatureTypeProxy extends ComplexTypeProxy implements FeatureType
      * @return
      */
     public Collection<PropertyDescriptor> getTypeDescriptors() {
-        return subject.getDescriptors();
+        if (subject instanceof ComplexType) {
+            return ((ComplexType) subject).getDescriptors();
+        } else {
+            return Collections.EMPTY_LIST;
+        }
     }
 
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {

@@ -16,10 +16,7 @@
  */
 package org.geotools.data.wps;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -33,13 +30,13 @@ import net.opengis.ows11.DCPType;
 import net.opengis.ows11.HTTPType;
 import net.opengis.ows11.OperationType;
 import net.opengis.ows11.RequestMethodType;
-import net.opengis.wps10.DataType;
 import net.opengis.wps10.OutputDefinitionType;
 import net.opengis.wps10.ProcessOfferingsType;
 import net.opengis.wps10.ResponseDocumentType;
 import net.opengis.wps10.ResponseFormType;
 import net.opengis.wps10.WPSCapabilitiesType;
 
+import org.eclipse.emf.ecore.EObject;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.ows.AbstractWPS;
@@ -47,7 +44,6 @@ import org.geotools.data.ows.AbstractWPSGetCapabilitiesResponse;
 import org.geotools.data.ows.GetCapabilitiesRequest;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.HTTPResponse;
-import org.geotools.data.ows.Response;
 import org.geotools.data.ows.Specification;
 import org.geotools.data.wps.request.DescribeProcessRequest;
 import org.geotools.data.wps.request.ExecuteProcessRequest;
@@ -297,12 +293,12 @@ public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Objec
         return (WPSSpecification) specification;
     }
 
-    public DataType createLiteralInputValue(String literalValue)
+    public EObject createLiteralInputValue(String literalValue)
     {
         return getSpecification().createLiteralInputValue(literalValue);
     }
 
-    public DataType createBoundingBoxInputValue(String crs, int dimensions, List<Double> lowerCorner,
+    public EObject createBoundingBoxInputValue(String crs, int dimensions, List<Double> lowerCorner,
         List<Double> upperCorner)
     {
         return getSpecification().createBoundingBoxInputValue(crs, dimensions, lowerCorner, upperCorner);

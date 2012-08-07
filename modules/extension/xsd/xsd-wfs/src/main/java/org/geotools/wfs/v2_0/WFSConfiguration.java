@@ -25,6 +25,7 @@ import org.geotools.wfs.v2_0.bindings.TransactionTypeBinding;
 import org.geotools.wfs.v2_0.bindings.TupleTypeBinding;
 import org.geotools.wfs.v2_0.bindings.ValueCollectionTypeBinding;
 import org.geotools.wfs.v2_0.bindings.ValueReferenceTypeBinding;
+//import org.geotools.wfs.v2_0.bindings.WFS_CapabilitiesTypeBinding;
 import org.geotools.xml.ComplexEMFBinding;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.EnumSimpleBinding;
@@ -129,7 +130,7 @@ public class WFSConfiguration extends Configuration {
         binding(bindings, WFS.UpdateType);
         bindings.put(WFS.ValueCollectionType, ValueCollectionTypeBinding.class);
 //        container.registerComponentImplementation(WFS.ValueListType,ValueListTypeBinding.class);
-//        container.registerComponentImplementation(WFS.WFS_CapabilitiesType,WFS_CapabilitiesTypeBinding.class);
+//        bindings.put(WFS.WFS_CapabilitiesType, WFS_CapabilitiesTypeBinding.class);
 //        container.registerComponentImplementation(WFS._Abstract,_AbstractBinding.class);
 //        container.registerComponentImplementation(WFS._additionalObjects,_additionalObjectsBinding.class);
 //        container.registerComponentImplementation(WFS._additionalValues,_additionalValuesBinding.class);

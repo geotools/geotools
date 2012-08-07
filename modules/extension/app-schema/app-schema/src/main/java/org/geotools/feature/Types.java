@@ -30,6 +30,7 @@ import javax.xml.namespace.QName;
 import org.opengis.feature.IllegalAttributeException;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
+import org.geotools.data.complex.config.NonFeatureTypeProxy;
 import org.geotools.data.complex.filter.XPath.Step;
 import org.geotools.data.complex.filter.XPath.StepList;
 import org.geotools.feature.type.AttributeTypeImpl;
@@ -39,6 +40,7 @@ import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.ComplexType;
+import org.opengis.feature.type.GeometryType;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.feature.type.PropertyType;
@@ -761,5 +763,17 @@ public class Types extends org.geotools.feature.type.Types {
         } else {
             return isSimpleContentType(superType);
         }
+    }
+
+    public static boolean isGeometryType(AttributeType type) {
+        if (type instanceof GeometryType) {
+            return true;
+        }
+        if (type instanceof NonFeatureTypeProxy) {
+            if (((NonFeatureTypeProxy) type).getSubject() instanceof GeometryType) {
+                return true;
+            }
+        }
+        return false;
     }
 }

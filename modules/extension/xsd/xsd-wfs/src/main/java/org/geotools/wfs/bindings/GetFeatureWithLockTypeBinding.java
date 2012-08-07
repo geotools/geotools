@@ -16,8 +16,12 @@
  */
 package org.geotools.wfs.bindings;
 
+import java.math.BigInteger;
+
 import javax.xml.namespace.QName;
 
+import net.opengis.wfs.GetFeatureWithLockType;
+import net.opengis.wfs.QueryType;
 import net.opengis.wfs.WfsFactory;
 
 import org.geotools.wfs.WFS;
@@ -116,8 +120,10 @@ import org.geotools.xml.Node;
  * @source $URL$
  */
 public class GetFeatureWithLockTypeBinding extends AbstractComplexEMFBinding {
-    public GetFeatureWithLockTypeBinding(WfsFactory factory) {
-        super(factory);
+    WfsFactory wfsfactory;
+
+    public GetFeatureWithLockTypeBinding(WfsFactory wfsfactory) {
+        this.wfsfactory = wfsfactory;
     }
 
     /**
@@ -134,7 +140,7 @@ public class GetFeatureWithLockTypeBinding extends AbstractComplexEMFBinding {
      * @generated modifiable
      */
     public Class getType() {
-        return null;
+        return GetFeatureWithLockType.class;
     }
 
     /**
@@ -145,7 +151,35 @@ public class GetFeatureWithLockTypeBinding extends AbstractComplexEMFBinding {
      */
     public Object parse(ElementInstance instance, Node node, Object value)
         throws Exception {
-        //TODO: implement and remove call to super
-        return super.parse(instance, node, value);
+        GetFeatureWithLockType getFeatureWithLock = wfsfactory
+                .createGetFeatureWithLockType();
+
+            WFSBindingUtils.service(getFeatureWithLock, node);
+            WFSBindingUtils.version(getFeatureWithLock, node);
+            WFSBindingUtils.outputFormat(getFeatureWithLock, node, "GML2");
+
+            if (node.getAttributeValue("handle") != null) {
+                getFeatureWithLock.setHandle((String) node.getAttributeValue("handle"));
+            }
+
+            //get the max features
+            BigInteger maxFeatures = WFSBindingUtils.asBigInteger((Number) node.getAttributeValue(
+                        "maxFeatures"));
+
+            if (maxFeatures != null) {
+                getFeatureWithLock.setMaxFeatures(maxFeatures);
+            }
+
+            //get the lock expiry
+            BigInteger expiry = WFSBindingUtils.asBigInteger((Number) node.getAttributeValue("expiry"));
+
+            if (expiry != null) {
+                getFeatureWithLock.setExpiry(expiry);
+            }
+
+            //queries
+            getFeatureWithLock.getQuery().addAll(node.getChildValues(QueryType.class));
+
+            return getFeatureWithLock;
     }
 }

@@ -1,0 +1,607 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This Web Feature Server is a component of CubeWerx Suite 5.6.3. -->
+<WFS_Capabilities version="1.1.0" xmlns="http://www.opengis.net/wfs" xmlns:gml="http://www.opengis.net/gml"
+  xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ows="http://www.opengis.net/ows"
+  xmlns:cw="http://cubewerx.com/ns/null" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.cubewerx.com/schemas/wfs/1.1.0/wfs.xsd http://www.opengis.net/ows http://schemas.cubewerx.com/schemas/ows/1.0.0/owsAll.xsd">
+  <ServiceIdentification xmlns="http://www.opengis.net/ows">
+    <Title>CubeSERV WFS</Title>
+    <Abstract>WFS-compliant web feature server by CubeWerx Inc.</Abstract>
+    <ServiceType>WFS</ServiceType>
+    <ServiceTypeVersion>1.1.0</ServiceTypeVersion>
+    <ServiceTypeVersion>1.0.0</ServiceTypeVersion>
+    <Fees>none</Fees>
+    <AccessConstraints>none</AccessConstraints>
+  </ServiceIdentification>
+  <ows:ServiceProvider>
+    <ows:ProviderName>CubeWerx Inc.</ows:ProviderName>
+    <ows:ProviderSite xlink:href="http://www.cubewerx.com/" />
+    <ows:ServiceContact>
+      <ows:IndividualName>Mike ....</ows:IndividualName>
+      <ows:PositionName>Technical Support</ows:PositionName>
+      <ows:ContactInfo>
+        <ows:Phone>
+          <ows:Voice>(819) 771-....</ows:Voice>
+          <ows:Facsimile>(819) 771-....</ows:Facsimile>
+        </ows:Phone>
+        <ows:Address>
+          <ows:DeliveryPoint>... rue Gamelin, ...</ows:DeliveryPoint>
+          <ows:City>Gatineau</ows:City>
+          <ows:AdministrativeArea>Québec</ows:AdministrativeArea>
+          <ows:PostalCode>J8Y ...</ows:PostalCode>
+          <ows:Country>Canada</ows:Country>
+          <ows:ElectronicMailAddress>support@example.com</ows:ElectronicMailAddress>
+        </ows:Address>
+      </ows:ContactInfo>
+    </ows:ServiceContact>
+  </ows:ServiceProvider>
+  <ows:OperationsMetadata>
+    <ows:Operation name="GetCapabilities">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://demo.cubewerx.com/demo/cubeserv/cubeserv.cgi?DATASTORE=Foundation&amp;" />
+          <ows:Post xlink:href="http://demo.cubewerx.com/demo/cubeserv/cubeserv.cgi?DATASTORE=Foundation" />
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="AcceptVersions">
+        <ows:Value>1.1.0</ows:Value>
+        <ows:Value>1.0.0</ows:Value>
+      </ows:Parameter>
+      <ows:Parameter name="AcceptFormats">
+        <ows:Value>text/xml</ows:Value>
+      </ows:Parameter>
+      <ows:Parameter name="Sections">
+        <ows:Value>ServiceIdentification</ows:Value>
+        <ows:Value>ServiceProvider</ows:Value>
+        <ows:Value>OperationsMetadata</ows:Value>
+        <ows:Value>FeatureTypeList</ows:Value>
+        <ows:Value>SupportsGMLObjectTypeList</ows:Value>
+        <ows:Value>Filter_Capabilities</ows:Value>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="DescribeFeatureType">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://demo.cubewerx.com/demo/cubeserv/cubeserv.cgi?DATASTORE=Foundation&amp;" />
+          <ows:Post xlink:href="http://demo.cubewerx.com/demo/cubeserv/cubeserv.cgi?DATASTORE=Foundation" />
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="TypeName">
+        <ows:Value>cw:aerofacp_1m</ows:Value>
+        <ows:Value>cw:aquecanl_1m</ows:Value>
+        <ows:Value>cw:barrierl_1m</ows:Value>
+        <ows:Value>cw:bndtxt_1m</ows:Value>
+        <ows:Value>cw:builtupa_1m</ows:Value>
+      </ows:Parameter>
+      <ows:Parameter name="outputFormat">
+        <ows:Value>application/gml+xml; version=2.1.2</ows:Value>
+        <ows:Value>application/gml+xml; version=3.1.1</ows:Value>
+        <ows:Value>application/gml+xml; version=3.2</ows:Value>
+        <ows:Value>application/gml+xml; subtype=gml/2.1.2</ows:Value>
+        <ows:Value>application/gml+xml; subtype=gml/3.1.1</ows:Value>
+        <ows:Value>application/gml+xml; subtype=gml/3.2</ows:Value>
+        <ows:Value>text/xml; subtype=gml/2.1.2</ows:Value>
+        <ows:Value>text/xml; subtype=gml/3.1.1</ows:Value>
+        <ows:Value>text/xml; subtype=gml/3.2</ows:Value>
+        <ows:Value>application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/0</ows:Value>
+        <ows:Value>application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/1</ows:Value>
+        <ows:Value>application/gml+xml; subtype=gml/3.2/profiles/gmlsf/0</ows:Value>
+        <ows:Value>application/gml+xml; subtype=gml/3.2/profiles/gmlsf/1</ows:Value>
+        <ows:Value>text/xml; subtype=gml/3.1.1/profiles/gmlsf/0</ows:Value>
+        <ows:Value>text/xml; subtype=gml/3.1.1/profiles/gmlsf/1</ows:Value>
+        <ows:Value>text/xml; subtype=gml/3.2/profiles/gmlsf/0</ows:Value>
+        <ows:Value>text/xml; subtype=gml/3.2/profiles/gmlsf/1</ows:Value>
+        <ows:Value>text/xml; subtype=bxfs/0.0.3</ows:Value>
+        <ows:Value>BXFS</ows:Value>
+        <ows:Value>GML0</ows:Value>
+        <ows:Value>XMLSCHEMA</ows:Value>
+        <ows:Value>GML2</ows:Value>
+        <ows:Value>GML3</ows:Value>
+        <ows:Value>GML3L0</ows:Value>
+        <ows:Value>GML3L1</ows:Value>
+        <ows:Value>GML32</ows:Value>
+        <ows:Value>GML32L0</ows:Value>
+        <ows:Value>GML32L1</ows:Value>
+        <ows:Value>SXSDL</ows:Value>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="GetFeature">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://demo.cubewerx.com/demo/cubeserv/cubeserv.cgi?DATASTORE=Foundation&amp;" />
+          <ows:Post xlink:href="http://demo.cubewerx.com/demo/cubeserv/cubeserv.cgi?DATASTORE=Foundation" />
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="outputFormat">
+        <ows:Value>application/gml+xml; version=2.1.2</ows:Value>
+        <ows:Value>application/gml+xml; version=3.1.1</ows:Value>
+        <ows:Value>application/gml+xml; version=3.2</ows:Value>
+        <ows:Value>application/gml+xml; subtype=gml/2.1.2</ows:Value>
+        <ows:Value>application/gml+xml; subtype=gml/3.1.1</ows:Value>
+        <ows:Value>application/gml+xml; subtype=gml/3.2</ows:Value>
+        <ows:Value>text/xml; subtype=gml/2.1.2</ows:Value>
+        <ows:Value>text/xml; subtype=gml/3.1.1</ows:Value>
+        <ows:Value>text/xml; subtype=gml/3.2</ows:Value>
+        <ows:Value>application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/0</ows:Value>
+        <ows:Value>application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/1</ows:Value>
+        <ows:Value>application/gml+xml; subtype=gml/3.2.1/profiles/gmlsf/0</ows:Value>
+        <ows:Value>application/gml+xml; subtype=gml/3.2.1/profiles/gmlsf/1</ows:Value>
+        <ows:Value>text/xml; subtype=gml/3.1.1/profiles/gmlsf/0</ows:Value>
+        <ows:Value>text/xml; subtype=gml/3.1.1/profiles/gmlsf/1</ows:Value>
+        <ows:Value>text/xml; subtype=gml/3.2.1/profiles/gmlsf/0</ows:Value>
+        <ows:Value>text/xml; subtype=gml/3.2.1/profiles/gmlsf/1</ows:Value>
+        <ows:Value>text/xml; subtype="bxfs/0.0.3"</ows:Value>
+        <ows:Value>GML0</ows:Value>
+        <ows:Value>GML1</ows:Value>
+        <ows:Value>GML.1</ows:Value>
+        <ows:Value>GML2</ows:Value>
+        <ows:Value>GML3</ows:Value>
+        <ows:Value>GML32</ows:Value>
+        <ows:Value>GML3L0</ows:Value>
+        <ows:Value>GML3L1</ows:Value>
+        <ows:Value>GML32L0</ows:Value>
+        <ows:Value>GML32L1</ows:Value>
+        <ows:Value>BXFS</ows:Value>
+        <ows:Value>RSS</ows:Value>
+        <ows:Value>application/rss+xml</ows:Value>
+        <ows:Value>KML</ows:Value>
+        <ows:Value>application/vnd.google-earth.kml+xml</ows:Value>
+        <ows:Value>ATOM</ows:Value>
+        <ows:Value>application/atom+xml</ows:Value>
+        <ows:Value>HTML</ows:Value>
+        <ows:Value>HTMLTAB</ows:Value>
+        <ows:Value>HTMLETAB</ows:Value>
+        <ows:Value>HTMLDIV</ows:Value>
+        <ows:Value>HTMLEDIV</ows:Value>
+        <ows:Value>text/html</ows:Value>
+        <ows:Value>JSON</ows:Value>
+        <ows:Value>SHAPE</ows:Value>
+      </ows:Parameter>
+      <ows:Parameter name="resultType">
+        <ows:Value>results</ows:Value>
+        <ows:Value>hits</ows:Value>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Parameter name="service">
+      <ows:Value>WFS</ows:Value>
+    </ows:Parameter>
+    <ows:Parameter name="version">
+      <ows:Value>1.1.0</ows:Value>
+      <ows:Value>1.0.0</ows:Value>
+    </ows:Parameter>
+    <ows:Parameter name="srsName">
+      <ows:Value>urn:ogc:def:crs:EPSG::4326</ows:Value>
+      <ows:Value>urn:ogc:def:crs:OGC::84</ows:Value>
+      <ows:Value>urn:ogc:def:crs:EPSG::3857</ows:Value>
+      <ows:Value>urn:ogc:def:crs:OGC::AUTO42001</ows:Value>
+      <ows:Value>urn:ogc:def:crs:OGC::AUTO42002</ows:Value>
+      <ows:Value>urn:ogc:def:crs:OGC::AUTO42003</ows:Value>
+      <ows:Value>urn:ogc:def:crs:OGC::AUTO42004</ows:Value>
+      <ows:Value>urn:ogc:def:crs:EPSG::4267</ows:Value>
+      <ows:Value>urn:ogc:def:crs:OGC::27</ows:Value>
+      <ows:Value>urn:ogc:def:crs:EPSG::4269</ows:Value>
+      <ows:Value>urn:ogc:def:crs:OGC::83</ows:Value>
+      <ows:Value>urn:ogc:def:crs:EPSG::26703</ows:Value>
+      <ows:Value>urn:ogc:def:crs:EPSG::26704</ows:Value>
+      <ows:Value>EPSG:4326</ows:Value>
+      <ows:Value>CRS:84</ows:Value>
+      <ows:Value>EPSG:3857</ows:Value>
+      <ows:Value>AUTO:42001</ows:Value>
+      <ows:Value>AUTO:42002</ows:Value>
+      <ows:Value>AUTO:42003</ows:Value>
+      <ows:Value>AUTO:42004</ows:Value>
+      <ows:Value>EPSG:4267</ows:Value>
+      <ows:Value>CRS:27</ows:Value>
+      <ows:Value>EPSG:4269</ows:Value>
+      <ows:Value>CRS:83</ows:Value>
+      <ows:Value>EPSG:26703</ows:Value>
+      <ows:Value>EPSG:26704</ows:Value>
+    </ows:Parameter>
+    <ows:Constraint name="CubeSERV Version">
+      <ows:Value>5.6.3</ows:Value>
+    </ows:Constraint>
+    <ows:Constraint name="SupportsSOAP">
+      <ows:Value>TRUE</ows:Value>
+    </ows:Constraint>
+    <ows:Constraint name="DefaultMaxFeatures">
+      <ows:Value>1000</ows:Value>
+    </ows:Constraint>
+  </ows:OperationsMetadata>
+  <FeatureTypeList>
+    <Operations>
+      <Operation>Query</Operation>
+    </Operations>
+    <FeatureType>
+      <Name>cw:aerofacp_1m</Name>
+      <Title>Airport Facilities Points</Title>
+      <Abstract>VPF Narrative Table for "Airport Facilities Points":
+
+Information on airports/airfields (GB005) was derived from the DAFIF (Digital
+Aeronautical Flight Information File) and TINT (Target Intelligence) in areas
+where such data was available.  Each airfield's DAFIF reference number was
+placed in the 'na3' (classification name) attribute field.  Only airfields
+which had at least one hard surface runway longer that 3,000 feet (910 meters)
+were collected.
+</Abstract>
+      <DefaultSRS>EPSG:4269</DefaultSRS>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>-179.878326416016 -54.9311103820801</ows:LowerCorner>
+        <ows:UpperCorner>179.339859008789 79.52944183349609</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+    <FeatureType>
+      <Name>cw:aquecanl_1m</Name>
+      <Title>Aqueducts/Canals/Flumes/Penstocks</Title>
+      <DefaultSRS>EPSG:4269</DefaultSRS>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>-122.004005432129 -45.6619415283203</ows:LowerCorner>
+        <ows:UpperCorner>177.989562988281 58.5494728088379</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+    <FeatureType>
+      <Name>cw:barrierl_1m</Name>
+      <Title>Barrier Line Features</Title>
+      <DefaultSRS>EPSG:4269</DefaultSRS>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>9.54319477081299 32.2058334350586</ows:LowerCorner>
+        <ows:UpperCorner>119.997001647949 52.90283203125</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+    <FeatureType>
+      <Name>cw:bndtxt_1m</Name>
+      <Title>Boundaries Coverage Text</Title>
+      <Abstract>VPF Narrative Table for "Boundaries Coverage Text":
+
+Text features were used to convey information which could not be expressed
+as a more specific boundaries coverage feature or as an attribute of a
+boundaries coverage feature.
+</Abstract>
+      <DefaultSRS>EPSG:4269</DefaultSRS>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>-179.909469604492 -82.9724044799805</ows:LowerCorner>
+        <ows:UpperCorner>179.91194152832 83.61899566650389</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+    <FeatureType>
+      <Name>cw:builtupa_1m</Name>
+      <Title>Built-Up Areas</Title>
+      <DefaultSRS>EPSG:4269</DefaultSRS>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>-179.129608154297 -53.167423248291</ows:LowerCorner>
+        <ows:UpperCorner>178.443252563477 70.9927215576172</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+  </FeatureTypeList>
+  <SupportsGMLObjectTypeList>
+    <GMLObjectType>
+      <Name>gml:AbstractFeatureType</Name>
+      <OutputFormats>
+        <Format>application/gml+xml; version=2.1.2</Format>
+        <Format>application/gml+xml; version=3.1.1</Format>
+        <Format>application/gml+xml; version=3.2</Format>
+        <Format>application/gml+xml; subtype=gml/2.1.2</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1</Format>
+        <Format>application/gml+xml; subtype=gml/3.2</Format>
+        <Format>text/xml; subtype=gml/2.1.2</Format>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+        <Format>text/xml; subtype=gml/3.2</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>application/gml+xml; subtype=gml/3.2.1/profiles/gmlsf/0</Format>
+        <Format>application/gml+xml; subtype=gml/3.2.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.2.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.2.1/profiles/gmlsf/1</Format>
+        <Format>GML2</Format>
+        <Format>GML3</Format>
+        <Format>GML32</Format>
+        <Format>GML3L0</Format>
+        <Format>GML3L1</Format>
+        <Format>GML32L0</Format>
+        <Format>GML32L1</Format>
+      </OutputFormats>
+    </GMLObjectType>
+    <GMLObjectType>
+      <Name>gml:PointPropertyType</Name>
+      <OutputFormats>
+        <Format>application/gml+xml; version=2.1.2</Format>
+        <Format>application/gml+xml; version=3.1.1</Format>
+        <Format>application/gml+xml; version=3.2</Format>
+        <Format>application/gml+xml; subtype=gml/2.1.2</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1</Format>
+        <Format>application/gml+xml; subtype=gml/3.2</Format>
+        <Format>text/xml; subtype=gml/2.1.2</Format>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+        <Format>text/xml; subtype=gml/3.2</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>application/gml+xml; subtype=gml/3.2.1/profiles/gmlsf/0</Format>
+        <Format>application/gml+xml; subtype=gml/3.2.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.2.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.2.1/profiles/gmlsf/1</Format>
+        <Format>GML2</Format>
+        <Format>GML3</Format>
+        <Format>GML32</Format>
+        <Format>GML3L0</Format>
+        <Format>GML3L1</Format>
+        <Format>GML32L0</Format>
+        <Format>GML32L1</Format>
+      </OutputFormats>
+    </GMLObjectType>
+    <GMLObjectType>
+      <Name>gml:MultiPointPropertyType</Name>
+      <OutputFormats>
+        <Format>application/gml+xml; version=2.1.2</Format>
+        <Format>application/gml+xml; version=3.1.1</Format>
+        <Format>application/gml+xml; version=3.2</Format>
+        <Format>application/gml+xml; subtype=gml/2.1.2</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1</Format>
+        <Format>application/gml+xml; subtype=gml/3.2</Format>
+        <Format>text/xml; subtype=gml/2.1.2</Format>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+        <Format>text/xml; subtype=gml/3.2</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>application/gml+xml; subtype=gml/3.2.1/profiles/gmlsf/0</Format>
+        <Format>application/gml+xml; subtype=gml/3.2.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.2.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.2.1/profiles/gmlsf/1</Format>
+        <Format>GML2</Format>
+        <Format>GML3</Format>
+        <Format>GML32</Format>
+        <Format>GML3L0</Format>
+        <Format>GML3L1</Format>
+        <Format>GML32L0</Format>
+        <Format>GML32L1</Format>
+      </OutputFormats>
+    </GMLObjectType>
+    <GMLObjectType>
+      <Name>gml:CurvePropertyType</Name>
+      <OutputFormats>
+        <Format>application/gml+xml; version=2.1.2</Format>
+        <Format>application/gml+xml; version=3.1.1</Format>
+        <Format>application/gml+xml; version=3.2</Format>
+        <Format>application/gml+xml; subtype=gml/2.1.2</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1</Format>
+        <Format>application/gml+xml; subtype=gml/3.2</Format>
+        <Format>text/xml; subtype=gml/2.1.2</Format>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+        <Format>text/xml; subtype=gml/3.2</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>application/gml+xml; subtype=gml/3.2.1/profiles/gmlsf/0</Format>
+        <Format>application/gml+xml; subtype=gml/3.2.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.2.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.2.1/profiles/gmlsf/1</Format>
+        <Format>GML2</Format>
+        <Format>GML3</Format>
+        <Format>GML32</Format>
+        <Format>GML3L0</Format>
+        <Format>GML3L1</Format>
+        <Format>GML32L0</Format>
+        <Format>GML32L1</Format>
+      </OutputFormats>
+    </GMLObjectType>
+    <GMLObjectType>
+      <Name>gml:MultiCurvePropertyType</Name>
+      <OutputFormats>
+        <Format>application/gml+xml; version=2.1.2</Format>
+        <Format>application/gml+xml; version=3.1.1</Format>
+        <Format>application/gml+xml; version=3.2</Format>
+        <Format>application/gml+xml; subtype=gml/2.1.2</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1</Format>
+        <Format>application/gml+xml; subtype=gml/3.2</Format>
+        <Format>text/xml; subtype=gml/2.1.2</Format>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+        <Format>text/xml; subtype=gml/3.2</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>application/gml+xml; subtype=gml/3.2.1/profiles/gmlsf/0</Format>
+        <Format>application/gml+xml; subtype=gml/3.2.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.2.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.2.1/profiles/gmlsf/1</Format>
+        <Format>GML2</Format>
+        <Format>GML3</Format>
+        <Format>GML32</Format>
+        <Format>GML3L0</Format>
+        <Format>GML3L1</Format>
+        <Format>GML32L0</Format>
+        <Format>GML32L1</Format>
+      </OutputFormats>
+    </GMLObjectType>
+    <GMLObjectType>
+      <Name>gml:SurfacePropertyType</Name>
+      <OutputFormats>
+        <Format>application/gml+xml; version=2.1.2</Format>
+        <Format>application/gml+xml; version=3.1.1</Format>
+        <Format>application/gml+xml; version=3.2</Format>
+        <Format>application/gml+xml; subtype=gml/2.1.2</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1</Format>
+        <Format>application/gml+xml; subtype=gml/3.2</Format>
+        <Format>text/xml; subtype=gml/2.1.2</Format>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+        <Format>text/xml; subtype=gml/3.2</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>application/gml+xml; subtype=gml/3.2.1/profiles/gmlsf/0</Format>
+        <Format>application/gml+xml; subtype=gml/3.2.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.2.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.2.1/profiles/gmlsf/1</Format>
+        <Format>GML2</Format>
+        <Format>GML3</Format>
+        <Format>GML32</Format>
+        <Format>GML3L0</Format>
+        <Format>GML3L1</Format>
+        <Format>GML32L0</Format>
+        <Format>GML32L1</Format>
+      </OutputFormats>
+    </GMLObjectType>
+    <GMLObjectType>
+      <Name>gml:MultiSurfacePropertyType</Name>
+      <OutputFormats>
+        <Format>application/gml+xml; version=2.1.2</Format>
+        <Format>application/gml+xml; version=3.1.1</Format>
+        <Format>application/gml+xml; version=3.2</Format>
+        <Format>application/gml+xml; subtype=gml/2.1.2</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1</Format>
+        <Format>application/gml+xml; subtype=gml/3.2</Format>
+        <Format>text/xml; subtype=gml/2.1.2</Format>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+        <Format>text/xml; subtype=gml/3.2</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>application/gml+xml; subtype=gml/3.2.1/profiles/gmlsf/0</Format>
+        <Format>application/gml+xml; subtype=gml/3.2.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.2.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.2.1/profiles/gmlsf/1</Format>
+        <Format>GML2</Format>
+        <Format>GML3</Format>
+        <Format>GML32</Format>
+        <Format>GML3L0</Format>
+        <Format>GML3L1</Format>
+        <Format>GML32L0</Format>
+        <Format>GML32L1</Format>
+      </OutputFormats>
+    </GMLObjectType>
+    <GMLObjectType>
+      <Name>gml:GeometryPropertyType</Name>
+      <OutputFormats>
+        <Format>application/gml+xml; version=2.1.2</Format>
+        <Format>application/gml+xml; version=3.1.1</Format>
+        <Format>application/gml+xml; version=3.2</Format>
+        <Format>application/gml+xml; subtype=gml/2.1.2</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1</Format>
+        <Format>application/gml+xml; subtype=gml/3.2</Format>
+        <Format>text/xml; subtype=gml/2.1.2</Format>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+        <Format>text/xml; subtype=gml/3.2</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>application/gml+xml; subtype=gml/3.2.1/profiles/gmlsf/0</Format>
+        <Format>application/gml+xml; subtype=gml/3.2.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.2.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.2.1/profiles/gmlsf/1</Format>
+        <Format>GML2</Format>
+        <Format>GML3</Format>
+        <Format>GML32</Format>
+        <Format>GML3L0</Format>
+        <Format>GML3L1</Format>
+        <Format>GML32L0</Format>
+        <Format>GML32L1</Format>
+      </OutputFormats>
+    </GMLObjectType>
+    <GMLObjectType>
+      <Name>gml:MultiGeometryPropertyType</Name>
+      <OutputFormats>
+        <Format>application/gml+xml; version=2.1.2</Format>
+        <Format>application/gml+xml; version=3.1.1</Format>
+        <Format>application/gml+xml; version=3.2</Format>
+        <Format>application/gml+xml; subtype=gml/2.1.2</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1</Format>
+        <Format>application/gml+xml; subtype=gml/3.2</Format>
+        <Format>text/xml; subtype=gml/2.1.2</Format>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+        <Format>text/xml; subtype=gml/3.2</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>application/gml+xml; subtype=gml/3.2.1/profiles/gmlsf/0</Format>
+        <Format>application/gml+xml; subtype=gml/3.2.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.2.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.2.1/profiles/gmlsf/1</Format>
+        <Format>GML2</Format>
+        <Format>GML3</Format>
+        <Format>GML32</Format>
+        <Format>GML3L0</Format>
+        <Format>GML3L1</Format>
+        <Format>GML32L0</Format>
+        <Format>GML32L1</Format>
+      </OutputFormats>
+    </GMLObjectType>
+    <GMLObjectType>
+      <Name>gml:EnvelopeType</Name>
+      <OutputFormats>
+        <Format>application/gml+xml; version=2.1.2</Format>
+        <Format>application/gml+xml; version=3.1.1</Format>
+        <Format>application/gml+xml; version=3.2</Format>
+        <Format>application/gml+xml; subtype=gml/2.1.2</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1</Format>
+        <Format>application/gml+xml; subtype=gml/3.2</Format>
+        <Format>text/xml; subtype=gml/2.1.2</Format>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+        <Format>text/xml; subtype=gml/3.2</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>application/gml+xml; subtype=gml/3.2.1/profiles/gmlsf/0</Format>
+        <Format>application/gml+xml; subtype=gml/3.2.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.2.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.2.1/profiles/gmlsf/1</Format>
+        <Format>GML2</Format>
+        <Format>GML3</Format>
+        <Format>GML32</Format>
+        <Format>GML3L0</Format>
+        <Format>GML3L1</Format>
+        <Format>GML32L0</Format>
+        <Format>GML32L1</Format>
+      </OutputFormats>
+    </GMLObjectType>
+  </SupportsGMLObjectTypeList>
+  <Filter_Capabilities xmlns="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/ogc http://schemas.cubewerx.com/schemas/filter/1.1.0/filterCapabilities.xsd">
+    <ogc:Spatial_Capabilities>
+      <ogc:GeometryOperands>
+        <ogc:GeometryOperand>gml:Point</ogc:GeometryOperand>
+        <ogc:GeometryOperand>gml:LineString</ogc:GeometryOperand>
+        <ogc:GeometryOperand>gml:CircleByCenterPoint</ogc:GeometryOperand>
+        <ogc:GeometryOperand>gml:Polygon</ogc:GeometryOperand>
+        <ogc:GeometryOperand>gml:Envelope</ogc:GeometryOperand>
+      </ogc:GeometryOperands>
+      <ogc:SpatialOperators>
+        <ogc:SpatialOperator name="BBOX" />
+        <ogc:SpatialOperator name="Equals" />
+        <ogc:SpatialOperator name="Disjoint" />
+        <ogc:SpatialOperator name="Intersects" />
+        <ogc:SpatialOperator name="Touches" />
+        <ogc:SpatialOperator name="Crosses" />
+        <ogc:SpatialOperator name="Within" />
+        <ogc:SpatialOperator name="Contains" />
+        <ogc:SpatialOperator name="Overlaps" />
+      </ogc:SpatialOperators>
+    </ogc:Spatial_Capabilities>
+    <ogc:Scalar_Capabilities>
+      <ogc:LogicalOperators />
+      <ogc:ComparisonOperators>
+        <ComparisonOperator>LessThan</ComparisonOperator>
+        <ComparisonOperator>GreaterThan</ComparisonOperator>
+        <ComparisonOperator>LessThanEqualTo</ComparisonOperator>
+        <ComparisonOperator>GreaterThanEqualTo</ComparisonOperator>
+        <ComparisonOperator>EqualTo</ComparisonOperator>
+        <ComparisonOperator>NotEqualTo</ComparisonOperator>
+        <ComparisonOperator>Like</ComparisonOperator>
+        <ComparisonOperator>Between</ComparisonOperator>
+        <ComparisonOperator>NullCheck</ComparisonOperator>
+      </ogc:ComparisonOperators>
+    </ogc:Scalar_Capabilities>
+    <ogc:Id_Capabilities>
+      <ogc:FID />
+    </ogc:Id_Capabilities>
+  </Filter_Capabilities>
+</WFS_Capabilities>

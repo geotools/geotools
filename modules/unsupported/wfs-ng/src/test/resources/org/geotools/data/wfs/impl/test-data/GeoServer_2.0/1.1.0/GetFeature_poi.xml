@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wfs:FeatureCollection numberOfFeatures="1"
+	timeStamp="2008-07-06T12:48:03.986+02:00"
+	xsi:schemaLocation="http://www.census.gov DescribeFeatureType_poi.xsd http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd"
+	xmlns:ogc="http://www.opengis.net/ogc"
+	xmlns:tiger="http://www.census.gov"
+	xmlns:wfs="http://www.opengis.net/wfs"
+	xmlns:topp="http://www.openplans.org/topp"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:sf="http://www.openplans.org/spearfish"
+	xmlns:ows="http://www.opengis.net/ows"
+	xmlns:gml="http://www.opengis.net/gml"
+	xmlns:xlink="http://www.w3.org/1999/xlink">
+	<gml:featureMembers>
+		<tiger:poi gml:id="poi.1">
+			<gml:boundedBy>
+				<gml:Envelope
+					srsName="urn:x-ogc:def:crs:EPSG:6.11.2:4326">
+					<gml:lowerCorner>40 -74</gml:lowerCorner>
+					<gml:upperCorner>40 -74</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<tiger:the_geom>
+				<gml:Point
+					srsName="urn:x-ogc:def:crs:EPSG:6.11.2:4326">
+					<gml:pos>40 -74</gml:pos>
+				</gml:Point>
+			</tiger:the_geom>
+			<tiger:NAME>museam</tiger:NAME>
+			<tiger:THUMBNAIL>pics/22037827-Ti.jpg</tiger:THUMBNAIL>
+			<tiger:MAINPAGE>pics/22037827-L.jpg</tiger:MAINPAGE>
+		</tiger:poi>
+	</gml:featureMembers>
+</wfs:FeatureCollection>

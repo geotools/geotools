@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.zip.GZIPInputStream;
 
 import org.geotools.data.Base64;
@@ -89,8 +90,10 @@ public class SimpleHttpClient implements HTTPClient {
      */
     public HTTPResponse get(final URL url) throws IOException {
 
-        HttpURLConnection connection = openConnection(url);
-        connection.setRequestMethod("GET");
+        URLConnection connection = openConnection(url);
+        if(connection instanceof HttpURLConnection){
+            ((HttpURLConnection) connection).setRequestMethod("GET");
+        }
 
         connection.connect();
 
@@ -104,8 +107,10 @@ public class SimpleHttpClient implements HTTPClient {
     public HTTPResponse post(final URL url, final InputStream postContent,
             final String postContentType) throws IOException {
 
-        HttpURLConnection connection = openConnection(url);
-        connection.setRequestMethod("POST");
+        URLConnection connection = openConnection(url);
+        if (connection instanceof HttpURLConnection) {
+            ((HttpURLConnection) connection).setRequestMethod("POST");
+        }
         connection.setDoOutput(true);
         if (postContentType != null) {
             connection.setRequestProperty("Content-type", postContentType);
@@ -128,8 +133,8 @@ public class SimpleHttpClient implements HTTPClient {
         return new SimpleHTTPResponse(connection);
     }
 
-    private HttpURLConnection openConnection(URL finalURL) throws IOException {
-        HttpURLConnection connection = (HttpURLConnection) finalURL.openConnection();
+    private URLConnection openConnection(URL finalURL) throws IOException {
+        URLConnection connection = finalURL.openConnection();
         connection.addRequestProperty("Accept-Encoding", "gzip");
         // mind, connect timeout is in seconds
         connection.setConnectTimeout(1000 * getConnectTimeout());
@@ -148,12 +153,20 @@ public class SimpleHttpClient implements HTTPClient {
 
     public static class SimpleHTTPResponse implements HTTPResponse {
 
-        private HttpURLConnection connection;
+        private URLConnection connection;
 
         private InputStream responseStream;
 
-        public SimpleHTTPResponse(final HttpURLConnection connection) {
+        public SimpleHTTPResponse(final URLConnection connection) throws IOException {
             this.connection = connection;
+            InputStream inputStream = connection.getInputStream();
+
+            final String contentEncoding = connection.getContentEncoding();
+
+            if (contentEncoding != null && connection.getContentEncoding().indexOf("gzip") != -1) {
+                inputStream = new GZIPInputStream(inputStream);
+            }
+            responseStream = inputStream;
         }
 
         /**
@@ -169,7 +182,9 @@ public class SimpleHttpClient implements HTTPClient {
                 responseStream = null;
             }
             if (connection != null) {
-                connection.disconnect();
+                if (connection instanceof HttpURLConnection) {
+                    ((HttpURLConnection) connection).disconnect();
+                }
                 connection = null;
             }
         }
@@ -192,19 +207,6 @@ public class SimpleHttpClient implements HTTPClient {
          * @see org.geotools.data.ows.HTTPResponse#getResponseStream()
          */
         public InputStream getResponseStream() throws IOException {
-
-            if (responseStream == null) {
-                InputStream inputStream = connection.getInputStream();
-
-                final String contentEncoding = connection.getContentEncoding();
-
-                if (contentEncoding != null
-                        && connection.getContentEncoding().indexOf("gzip") != -1) {
-                    inputStream = new GZIPInputStream(inputStream);
-                }
-                responseStream = inputStream;
-            }
-
             return responseStream;
         }
     }

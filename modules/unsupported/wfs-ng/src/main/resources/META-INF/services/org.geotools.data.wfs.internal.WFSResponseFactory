@@ -1,0 +1,3 @@
+org.geotools.data.wfs.internal.parsers.DescribeFeatureTypeResponseFactory
+org.geotools.data.wfs.internal.parsers.GmlGetFeatureResponseParserFactory
+org.geotools.data.wfs.internal.parsers.WFS_1_1_TransactionResponseFactory

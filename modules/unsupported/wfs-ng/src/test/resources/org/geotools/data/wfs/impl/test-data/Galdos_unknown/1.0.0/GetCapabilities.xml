@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WFS_Capabilities updateSequence="0" version="1.0.0"
+    xmlns="http://www.opengis.net/wfs" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <Service>
+        <Name>WFS</Name>
+        <Title>Galdos Systems Inc. Cartalinea</Title>
+        <OnlineResource>http://vega.galdosinc.com:8680/wfs/http</OnlineResource>
+    </Service>
+    <Capability>
+        <Request>
+            <GetCapabilities>
+                <DCPType>
+                    <HTTP>
+                        <Get onlineResource="http://vega.galdosinc.com:8680/wfs/http"/>
+                        <Post onlineResource="http://vega.galdosinc.com:8680/wfs/http"/>
+                    </HTTP>
+                </DCPType>
+            </GetCapabilities>
+            <DescribeFeatureType>
+                <SchemaDescriptionLanguage>
+                    <XMLSCHEMA/>
+                </SchemaDescriptionLanguage>
+                <DCPType>
+                    <HTTP>
+                        <Post onlineResource="http://vega.galdosinc.com:8680/wfs/http"/>
+                    </HTTP>
+                </DCPType>
+            </DescribeFeatureType>
+            <GetFeature>
+                <ResultFormat>
+                    <GML2/>
+                    <GML2-ZIP/>
+                </ResultFormat>
+                <DCPType>
+                    <HTTP>
+                        <Post onlineResource="http://vega.galdosinc.com:8680/wfs/http"/>
+                    </HTTP>
+                </DCPType>
+            </GetFeature>
+            <Transaction>
+                <DCPType>
+                    <HTTP>
+                        <Post onlineResource="http://vega.galdosinc.com:8680/wfs/http"/>
+                    </HTTP>
+                </DCPType>
+            </Transaction>
+            <GetFeatureWithLock>
+                <ResultFormat>
+                    <GML2/>
+                    <GML2-ZIP/>
+                </ResultFormat>
+                <DCPType>
+                    <HTTP>
+                        <Post onlineResource="http://vega.galdosinc.com:8680/wfs/http"/>
+                    </HTTP>
+                </DCPType>
+            </GetFeatureWithLock>
+            <LockFeature>
+                <DCPType>
+                    <HTTP>
+                        <Post onlineResource="http://vega.galdosinc.com:8680/wfs/http"/>
+                    </HTTP>
+                </DCPType>
+            </LockFeature>
+        </Request>
+    </Capability>
+    <FeatureTypeList>
+        <Operations>
+            <Query/>
+            <Update/>
+            <Insert/>
+            <Delete/>
+            <Lock/>
+        </Operations>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:FeatureCollection</Name>
+            <Title>FeatureCollection</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:Airport</Name>
+            <Title>Airport</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:Buildup</Name>
+            <Title>Buildup</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:Ocean</Name>
+            <Title>Ocean</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:Lake</Name>
+            <Title>Lake</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:Reservoir</Name>
+            <Title>Reservoir</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:TailingPond</Name>
+            <Title>TailingPond</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:UnspecifiedBuilding</Name>
+            <Title>UnspecifiedBuilding</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:Church</Name>
+            <Title>Church</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:CityHall</Name>
+            <Title>CityHall</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:College</Name>
+            <Title>College</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:Communications</Name>
+            <Title>Communications</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:CourtHouse</Name>
+            <Title>CourtHouse</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:FerryTerminal</Name>
+            <Title>FerryTerminal</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:FireStation</Name>
+            <Title>FireStation</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:Greenhouse</Name>
+            <Title>Greenhouse</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:Hospital</Name>
+            <Title>Hospital</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:PoliceStation</Name>
+            <Title>PoliceStation</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:PostOffice</Name>
+            <Title>PostOffice</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:School</Name>
+            <Title>School</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:University</Name>
+            <Title>University</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:Trestle</Name>
+            <Title>Trestle</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:Bridge</Name>
+            <Title>Bridge</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:Tunnel</Name>
+            <Title>Tunnel</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:SingleTrack</Name>
+            <Title>SingleTrack</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:DoubleTrack</Name>
+            <Title>DoubleTrack</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:MultipleTrack</Name>
+            <Title>MultipleTrack</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:AbandonedTrack</Name>
+            <Title>AbandonedTrack</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:LightRailTransit</Name>
+            <Title>LightRailTransit</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:Spur</Name>
+            <Title>Spur</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:Pipeline</Name>
+            <Title>Pipeline</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:TransmissionLine</Name>
+            <Title>TransmissionLine</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:TransmissionTower</Name>
+            <Title>TransmissionTower</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:Riverb</Name>
+            <Title>Riverb</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:CutEarthwork</Name>
+            <Title>CutEarthwork</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:FerryRoute</Name>
+            <Title>FerryRoute</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:FillEmbankment</Name>
+            <Title>FillEmbankment</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:Footbridge</Name>
+            <Title>Footbridge</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:RetainingWall</Name>
+            <Title>RetainingWall</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:RL1U</Name>
+            <Title>RL1U</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:RL2U</Name>
+            <Title>RL2U</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:RP2U</Name>
+            <Title>RP2U</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:RP2U1W</Name>
+            <Title>RP2U1W</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:RP3U</Name>
+            <Title>RP3U</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:RP4D</Name>
+            <Title>RP4D</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:RP4U</Name>
+            <Title>RP4U</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:RP6U</Name>
+            <Title>RP6U</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+        <FeatureType xmlns:van="http://www.galdosinc.com/vancouver">
+            <Name>van:RROUGH</Name>
+            <Title>RROUGH</Title>
+            <SRS>EPSG:32610</SRS>
+            <LatLongBoundingBox maxx="-120" maxy="51" minx="-125" miny="48"/>
+        </FeatureType>
+    </FeatureTypeList>
+    <!-- ADDITIONAL CAPABILITIES -->
+    <ogc:Filter_Capabilities>
+        <ogc:Spatial_Capabilities>
+            <ogc:Spatial_Operators>
+                <ogc:Intersect/>
+                <ogc:BBOX/>
+                <ogc:Contains/>
+                <ogc:Crosses/>
+                <ogc:Disjoint/>
+                <ogc:Equals/>
+                <ogc:Overlaps/>
+                <ogc:Touches/>
+            </ogc:Spatial_Operators>
+        </ogc:Spatial_Capabilities>
+        <ogc:Scalar_Capabilities>
+            <ogc:Logical_Operators/>
+            <ogc:Comparison_Operators>
+                <ogc:Simple_Comparisons/>
+                <ogc:Like/>
+                <ogc:NullCheck/>
+                <ogc:Between/>
+            </ogc:Comparison_Operators>
+            <ogc:Arithmetic_Operators>
+                <ogc:Simple_Arithmetic/>
+            </ogc:Arithmetic_Operators>
+        </ogc:Scalar_Capabilities>
+    </ogc:Filter_Capabilities>
+</WFS_Capabilities>

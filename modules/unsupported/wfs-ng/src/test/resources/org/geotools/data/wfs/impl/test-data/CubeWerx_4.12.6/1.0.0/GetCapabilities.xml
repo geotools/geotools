@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This Web Feature Server is a component of CubeWerx Suite 4.12.6. -->
+
+<WFS_Capabilities version="1.0.0" xmlns="http://www.opengis.net/wfs"
+  xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:gubs="http://www.fgdc.gov/framework/073004/gubs"
+  xmlns:hyd="http://www.fgdc.gov/framework/073004/hydro"
+  xmlns:trans="http://www.fgdc.gov/framework/073004/transportation"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.0.0/WFS-capabilities.xsd">
+  <Service>
+    <Name>wfs</Name>
+    <Title>USGS Framework Layer WFS</Title>
+    <Abstract>A WFS serving USGS framework layers.</Abstract>
+    <Keywords>WFS HTTP data feature spatial USGS framework hydrography governmental units roads gazetteer</Keywords>
+    <OnlineResource>http://www.cubewerx.com</OnlineResource>
+  </Service>
+  <Capability>
+    <Request>
+      <GetCapabilities>
+        <DCPType>
+          <HTTP>
+            <Get
+              onlineResource="http://frameworkwfs.usgs.gov/framework/wfs/wfs.cgi?DATASTORE=Framework&amp;"/>
+            <Post
+              onlineResource="http://frameworkwfs.usgs.gov/framework/wfs/wfs.cgi?DATASTORE=Framework"/>
+          </HTTP>
+        </DCPType>
+      </GetCapabilities>
+      <DescribeFeatureType>
+        <SchemaDescriptionLanguage>
+          <XMLSCHEMA/>
+        </SchemaDescriptionLanguage>
+        <DCPType>
+          <HTTP>
+            <Get
+              onlineResource="http://frameworkwfs.usgs.gov/framework/wfs/wfs.cgi?DATASTORE=Framework&amp;"/>
+            <Post
+              onlineResource="http://frameworkwfs.usgs.gov/framework/wfs/wfs.cgi?DATASTORE=Framework"/>
+          </HTTP>
+        </DCPType>
+      </DescribeFeatureType>
+      <GetFeature>
+        <ResultFormat>
+          <GML2/>
+        </ResultFormat>
+        <DCPType>
+          <HTTP>
+            <Get
+              onlineResource="http://frameworkwfs.usgs.gov/framework/wfs/wfs.cgi?DATASTORE=Framework&amp;"/>
+            <Post
+              onlineResource="http://frameworkwfs.usgs.gov/framework/wfs/wfs.cgi?DATASTORE=Framework"/>
+          </HTTP>
+        </DCPType>
+      </GetFeature>
+    </Request>
+    <VendorSpecificCapabilities/>
+  </Capability>
+  <FeatureTypeList>
+    <Operations>
+      <Query/>
+    </Operations>
+    <FeatureType>
+      <Name>gubs:GovernmentalUnitCE</Name>
+      <Title>Governmental Unit (County or Equivalent)</Title>
+      <SRS>EPSG:4269</SRS>
+      <LatLongBoundingBox minx="-179.14221197" miny="18.9108417"
+        maxx="-66.94983061" maxy="71.35256069"/>
+    </FeatureType>
+    <FeatureType>
+      <Name>gubs:GovernmentalUnitMCD</Name>
+      <Title>Governmental Unit (Minor Civil Divisions)</Title>
+      <SRS>EPSG:4269</SRS>
+      <LatLongBoundingBox minx="-179.14221197" miny="18.9108417"
+        maxx="-66.94982987" maxy="71.38990002"/>
+    </FeatureType>
+    <FeatureType>
+      <Name>gubs:GovernmentalUnitRE</Name>
+      <SRS>EPSG:4269</SRS>
+      <LatLongBoundingBox minx="-179.14796903" miny="17.67376024"
+        maxx="-64.60527854" maxy="71.21464396"/>
+    </FeatureType>
+    <FeatureType>
+      <Name>gubs:GovernmentalUnitST</Name>
+      <Title>Governmental Unit (State or Territory)</Title>
+      <SRS>EPSG:4269</SRS>
+      <LatLongBoundingBox minx="-179.14221197" miny="18.9108417"
+        maxx="-66.94983061" maxy="71.35256069"/>
+    </FeatureType>
+    <FeatureType>
+      <Name>hyd:HydroElementARHI</Name>
+      <Title>Hydro Element (Areas - Hi Res)</Title>
+      <SRS>EPSG:4269</SRS>
+      <LatLongBoundingBox minx="-173.78443904" miny="17.67302957"
+        maxx="-64.54957828" maxy="71.49960662"/>
+    </FeatureType>
+    <FeatureType>
+      <Name>hyd:HydroElementARMD</Name>
+      <Title>Hydro Element (Areas - Med Res)</Title>
+      <SRS>EPSG:4269</SRS>
+      <LatLongBoundingBox minx="-160.99724839" miny="18.4977261"
+        maxx="-66.88508041" maxy="49.37656952"/>
+    </FeatureType>
+    <FeatureType>
+      <Name>hyd:HydroElementFLHI</Name>
+      <Title>Hydro Element (Flow Lines - Hi Res)</Title>
+      <SRS>EPSG:4269</SRS>
+      <LatLongBoundingBox minx="-173.11631824" miny="17.67373571"
+        maxx="-64.56519181" maxy="71.39038002"/>
+    </FeatureType>
+    <FeatureType>
+      <Name>hyd:HydroElementFLMD</Name>
+      <Title>Hydro Element (Flow Lines - Med Res)</Title>
+      <SRS>EPSG:4269</SRS>
+      <LatLongBoundingBox minx="-160.2465274" miny="17.69005417"
+        maxx="-64.72332421" maxy="49.37661312"/>
+    </FeatureType>
+    <FeatureType>
+      <Name>hyd:HydroElementLIHI</Name>
+      <Title>Hydro Element (Lines - Hi Res)</Title>
+      <SRS>EPSG:4269</SRS>
+      <LatLongBoundingBox minx="-167.66666658" miny="17.67436911"
+        maxx="-64.56577261" maxy="71.27072782"/>
+    </FeatureType>
+    <FeatureType>
+      <Name>hyd:HydroElementLIMD</Name>
+      <Title>Hydro Element (Lines - Med Res)</Title>
+      <SRS>EPSG:4269</SRS>
+      <LatLongBoundingBox minx="-159.7875304" miny="19.6195583"
+        maxx="-67.42844201" maxy="48.98378032"/>
+    </FeatureType>
+    <FeatureType>
+      <Name>hyd:HydroElementPTHI</Name>
+      <Title>Hydro Element (Points - Hi Res)</Title>
+      <SRS>EPSG:4269</SRS>
+      <LatLongBoundingBox minx="-167.37851578" miny="17.67697157"
+        maxx="-64.57822901" maxy="70.68186002"/>
+    </FeatureType>
+    <FeatureType>
+      <Name>hyd:HydroElementPTMD</Name>
+      <Title>Hydro Element (Points - Med Res)</Title>
+      <SRS>EPSG:4269</SRS>
+      <LatLongBoundingBox minx="-159.76387233" miny="19.08765677"
+        maxx="-67.73994341" maxy="48.99950219"/>
+    </FeatureType>
+    <FeatureType>
+      <Name>hyd:HydroElementWBHI</Name>
+      <Title>Hydro Element (Water Bodies - Hi Res)</Title>
+      <SRS>EPSG:4269</SRS>
+      <LatLongBoundingBox minx="-168.11872378" miny="17.67955811"
+        maxx="-64.59388448" maxy="71.38890569"/>
+    </FeatureType>
+    <FeatureType>
+      <Name>hyd:HydroElementWBMD</Name>
+      <Title>Hydro Element (Water Bodies - Med Res)</Title>
+      <SRS>EPSG:4269</SRS>
+      <LatLongBoundingBox minx="-160.2311072" miny="19.20399837"
+        maxx="-66.99786661" maxy="49.38433299"/>
+    </FeatureType>
+    <FeatureType>
+      <Name>trans:RoadSeg</Name>
+      <Title>Road Segments</Title>
+      <SRS>EPSG:4269</SRS>
+      <LatLongBoundingBox minx="-176.95890897" miny="17.67427197"
+        maxx="-64.56738401" maxy="71.34896802"/>
+    </FeatureType>
+  </FeatureTypeList>
+  <Filter_Capabilities xmlns="http://www.opengis.net/ogc"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.opengis.net/ogc http://schemas.opengis.net/filter/1.0.0/filterCapabilities.xsd">
+    <Spatial_Capabilities>
+      <Spatial_Operators>
+        <BBOX/>
+        <Equals/>
+        <Disjoint/>
+        <Intersect/>
+        <Touches/>
+        <Crosses/>
+        <Contains/>
+        <Overlaps/>
+      </Spatial_Operators>
+    </Spatial_Capabilities>
+    <Scalar_Capabilities>
+      <Logical_Operators/>
+      <Comparison_Operators>
+        <Simple_Comparisons/>
+        <Like/>
+        <Between/>
+        <NullCheck/>
+      </Comparison_Operators>
+      <Arithmetic_Operators>
+        <Simple_Arithmetic/>
+        <Functions>
+          <Function_Names>
+            <Function_Name nArgs="1">COUNT</Function_Name>
+            <Function_Name nArgs="1">DISTINCT</Function_Name>
+            <Function_Name nArgs="1">MIN</Function_Name>
+            <Function_Name nArgs="1">MAX</Function_Name>
+            <Function_Name nArgs="1">UPPER</Function_Name>
+          </Function_Names>
+        </Functions>
+      </Arithmetic_Operators>
+    </Scalar_Capabilities>
+  </Filter_Capabilities>
+</WFS_Capabilities>

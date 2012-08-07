@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wfs:FeatureCollection numberOfFeatures="3" timeStamp="2008-07-06T12:50:28.801+02:00"
+  xsi:schemaLocation="http://www.openplans.org/topp DescribeFeatureType_topp_road.xsd http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd"
+  xmlns:ogc="http://www.opengis.net/ogc" xmlns:tiger="http://www.census.gov" xmlns:wfs="http://www.opengis.net/wfs" xmlns:topp="http://www.openplans.org/topp"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sf="http://www.openplans.org/spearfish" xmlns:ows="http://www.opengis.net/ows"
+  xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <gml:featureMembers>
+    <topp:road gml:id="road.1">
+      <topp:id>1</topp:id>
+      <topp:geom>
+        <gml:LineString srsName="urn:x-ogc:def:crs:EPSG:6.11.2:4326">
+          <gml:posList>1 1 2 2 4 2 5 1</gml:posList>
+        </gml:LineString>
+      </topp:geom>
+      <topp:name>r1</topp:name>
+    </topp:road>
+    <topp:road gml:id="road.2">
+      <topp:id>2</topp:id>
+      <topp:geom>
+        <gml:LineString srsName="urn:x-ogc:def:crs:EPSG:6.11.2:4326">
+          <gml:posList> 3 0 3 2 3 3 3 4</gml:posList>
+        </gml:LineString>
+      </topp:geom>
+      <topp:name>r2</topp:name>
+    </topp:road>
+    <topp:road gml:id="road.3">
+      <topp:id>3</topp:id>
+      <topp:geom>
+        <gml:LineString srsName="urn:x-ogc:def:crs:EPSG:6.11.2:4326">
+          <gml:posList>3 2 4 2 5 3</gml:posList>
+        </gml:LineString>
+      </topp:geom>
+      <topp:name>r3</topp:name>
+    </topp:road>
+  </gml:featureMembers>
+</wfs:FeatureCollection>

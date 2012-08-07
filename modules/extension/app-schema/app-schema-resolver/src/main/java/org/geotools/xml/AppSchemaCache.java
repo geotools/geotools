@@ -38,8 +38,7 @@ import org.geotools.data.DataUtilities;
  * 
  * <p>
  * 
- * If configured to permit downloading, schemas not present in the cache are downloaded from the
- * network.
+ * If configured to permit downloading, schemas not present in the cache are downloaded from the network.
  * 
  * <p>
  * 
@@ -47,8 +46,7 @@ import org.geotools.data.DataUtilities;
  * 
  * <p>
  * 
- * Files are stored according to the Simple HTTP Resource Path (see
- * {@link AppSchemaResolver#getSimpleHttpResourcePath(URI))}.
+ * Files are stored according to the Simple HTTP Resource Path (see {@link AppSchemaResolver#getSimpleHttpResourcePath(URI))}.
  * 
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * 
@@ -67,27 +65,30 @@ public class AppSchemaCache {
     private static final int DEFAULT_DOWNLOAD_BLOCK_SIZE = 4096;
 
     /**
+     * This is the default value of the keep query flag used when building an automatically configured AppSchemaCache.
+     */
+    private static final boolean DEFAULT_KEEP_QUERY = true;
+
+    /**
      * Filenames used to recognise a GeoServer data directory if automatic configuration is enabled.
      */
     private static final String[] GEOSERVER_DATA_DIRECTORY_FILENAMES = { "global.xml", "wcs.xml",
             "wfs.xml", "wms.xml" };
 
     /**
-     * Subdirectories used to recognise a GeoServer data directory if automatic configuration is
-     * enabled.
+     * Subdirectories used to recognise a GeoServer data directory if automatic configuration is enabled.
      */
     private static final String[] GEOSERVER_DATA_DIRECTORY_SUBDIRECTORIES = { "styles",
             "workspaces" };
 
     /**
-     * Name of the subdirectory of a GeoServer data directory (or other directory) used for the
-     * cache if automatic configuration is enabled.
+     * Name of the subdirectory of a GeoServer data directory (or other directory) used for the cache if automatic configuration is enabled.
      */
     private static final String CACHE_DIRECTORY_NAME = "app-schema-cache";
 
     /**
-     * Is support for automatic detection of GeoServer data directories or existing cache
-     * directories enabled? It is useful to disable this in tests, to prevent downloading.
+     * Is support for automatic detection of GeoServer data directories or existing cache directories enabled? It is useful to disable this in tests,
+     * to prevent downloading.
      */
     private static boolean automaticConfigurationEnabled = true;
 
@@ -102,18 +103,32 @@ public class AppSchemaCache {
     private final boolean download;
 
     /**
-     * A cache of application schemas (or other file types) rooted in the given directory, with
-     * optional downloading.
+     * True if query string components should be part of the discriminator for
+     */
+    private final boolean keepQuery;
+
+    /**
+     * A cache of application schemas (or other file types) rooted in the given directory, with optional downloading.
      * 
-     * @param directory
-     *            the directory in which downloaded schemas are stored
-     * @param download
-     *            is downloading of schemas permitted. If false, only schemas already present in the
-     *            cache will be resolved.
+     * @param directory the directory in which downloaded schemas are stored
+     * @param download is downloading of schemas permitted. If false, only schemas already present in the cache will be resolved.
      */
     public AppSchemaCache(File directory, boolean download) {
+        this(directory, download, false);
+    }
+
+    /**
+     * A cache of application schemas (or other file types) rooted in the given directory, with optional downloading.
+     * 
+     * @param directory the directory in which downloaded schemas are stored
+     * @param download is downloading of schemas permitted. If false, only schemas already present in the cache will be resolved.
+     * @param keepQuery indicates whether or not the query components should be included in the path. If this is set to true then the query portion is
+     *        converted to an MD5 message digest and that string is used to identify the file in the cache.
+     */
+    public AppSchemaCache(File directory, boolean download, boolean keepQuery) {
         this.directory = directory;
         this.download = download;
+        this.keepQuery = keepQuery;
     }
 
     /**
@@ -174,8 +189,7 @@ public class AppSchemaCache {
     /**
      * Retrieve the contents of a remote URL.
      * 
-     * @param location
-     *            and absolute http/https URL.
+     * @param location and absolute http/https URL.
      * @return the bytes contained by the resource, or null if it could not be downloaded
      */
     static byte[] download(String location) {
@@ -191,8 +205,7 @@ public class AppSchemaCache {
     /**
      * Retrieve the contents of a remote URL.
      * 
-     * @param location
-     *            and absolute http/https URL.
+     * @param location and absolute http/https URL.
      * @return the bytes contained by the resource, or null if it could not be downloaded
      */
     static byte[] download(URI location) {
@@ -202,10 +215,8 @@ public class AppSchemaCache {
     /**
      * Retrieve the contents of a remote URL.
      * 
-     * @param location
-     *            and absolute http/https URL.
-     * @param blockSize
-     *            download block size
+     * @param location and absolute http/https URL.
+     * @param blockSize download block size
      * @return the bytes contained by the resource, or null if it could not be downloaded
      */
     static byte[] download(URI location, int blockSize) {
@@ -270,18 +281,16 @@ public class AppSchemaCache {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 
     /**
      * Return the local file URL of a schema, downloading it if not found in the cache.
      * 
-     * @param location
-     *            the absolute http/https URL of the schema
+     * @param location the absolute http/https URL of the schema
      * @return the canonical local file URL of the schema, or null if not found
      */
     public String resolveLocation(String location) {
-        String path = AppSchemaResolver.getSimpleHttpResourcePath(location);
+        String path = AppSchemaResolver.getSimpleHttpResourcePath(location, this.keepQuery);
         if (path == null) {
             return null;
         }
@@ -308,14 +317,11 @@ public class AppSchemaCache {
     }
 
     /**
-     * If automatic configuration is enabled, recursively search parent directories of file url for
-     * a GeoServer data directory or directory containing an existing cache. If found, use it to
-     * create a cache in the "app-schema-cache" subdirectory with downloading enabled.
+     * If automatic configuration is enabled, recursively search parent directories of file url for a GeoServer data directory or directory containing
+     * an existing cache. If found, use it to create a cache in the "app-schema-cache" subdirectory with downloading enabled.
      * 
-     * @param url
-     *            a URL for a file in a GeoServer data directory.
-     * @return a cache in the "app-schema-cache" subdirectory or null if not found or automatic
-     *         configuration disabled.
+     * @param url a URL for a file in a GeoServer data directory.
+     * @return a cache in the "app-schema-cache" subdirectory or null if not found or automatic configuration disabled.
      */
     public static AppSchemaCache buildAutomaticallyConfiguredUsingFileUrl(URL url) {
         if (!automaticConfigurationEnabled) {
@@ -327,24 +333,23 @@ public class AppSchemaCache {
                 return null;
             }
             if (isSuitableDirectoryToContainCache(file)) {
-                return new AppSchemaCache(new File(file, CACHE_DIRECTORY_NAME), true);
+                return new AppSchemaCache(new File(file, CACHE_DIRECTORY_NAME), true,
+                        DEFAULT_KEEP_QUERY);
             }
             file = file.getParentFile();
         }
     }
 
     /**
-     * Turn off support for automatic configuration of a cache in GeoServer data directory or
-     * detection of an existing cache. Intended for testing. Automatic configuration is enabled by
-     * default.
+     * Turn off support for automatic configuration of a cache in GeoServer data directory or detection of an existing cache. Intended for testing.
+     * Automatic configuration is enabled by default.
      */
     public static void disableAutomaticConfiguration() {
         automaticConfigurationEnabled = false;
     }
 
     /**
-     * The opposite of {@link #disableAutomaticConfiguration()}. Automatic configuration is enabled
-     * by default.
+     * The opposite of {@link #disableAutomaticConfiguration()}. Automatic configuration is enabled by default.
      */
     public static void enableAutomaticConfiguration() {
         automaticConfigurationEnabled = true;
@@ -360,13 +365,11 @@ public class AppSchemaCache {
     }
 
     /**
-     * Guess whether a file is a GeoServer data directory or contains an existing app-schema-cache
-     * subdirectory.
+     * Guess whether a file is a GeoServer data directory or contains an existing app-schema-cache subdirectory.
      * 
-     * @param directory
-     *            the candidate file
-     * @return true if it has the files and subdirectories expected of a GeoServer data directory,
-     *         or contains an existing app-schema-cache subdirectory
+     * @param directory the candidate file
+     * @return true if it has the files and subdirectories expected of a GeoServer data directory, or contains an existing app-schema-cache
+     *         subdirectory
      */
     static boolean isSuitableDirectoryToContainCache(File directory) {
         if (directory.isDirectory() == false) {

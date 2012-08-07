@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wfs:FeatureCollection xmlns="http://www.opengis.net/wfs" xmlns:wfs="http://www.opengis.net/wfs" xmlns:gml="http://www.opengis.net/gml"
+  xmlns:sf="http://www.openplans.org/spearfish" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.openplans.org/spearfish http://localhost:8090/1.7.7/wfs?service=WFS&amp;version=1.0.0&amp;request=DescribeFeatureType&amp;typeName=sf:roads http://www.opengis.net/wfs http://localhost:8090/1.7.7/schemas/wfs/1.0.0/WFS-basic.xsd">
+  <gml:boundedBy>
+    <gml:null>unknown</gml:null>
+  </gml:boundedBy>
+  <gml:featureMember>
+    <sf:roads fid="roads.1">
+      <sf:the_geom>
+        <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#26713">
+          <gml:lineStringMember>
+            <gml:LineString>
+              <gml:coordinates xmlns:gml="http://www.opengis.net/gml" decimal="." cs="," ts=" ">598566.26906782,4914058.52150682 598557.69477679,4914085.33977038 598494.67747205,4914254.76475676 598513.91541973,4914348.11723536 598593.95441378,4914440.37147034 598656.43584271,4914500.87603708 598659.42742456,4914521.61846645 598652.10605456,4914532.58195028 598648.43115534,4914544.16261933 598635.63083991,4914558.16462797 598554.58586588,4914636.67913744 598498.3814486,4914752.4469346 598489.81000042,4914778.04541272 598421.49284933,4914873.66244196 598409.19817361,4914931.57794141 598404.90249957,4914948.64642947</gml:coordinates>
+            </gml:LineString>
+          </gml:lineStringMember>
+          <gml:lineStringMember>
+            <gml:LineString>
+              <gml:coordinates xmlns:gml="http://www.opengis.net/gml" decimal="." cs="," ts=" ">598340.17638384,4915068.66645978 598342.49317686,4915118.07263127 598346.0824185,4915117.02463364</gml:coordinates>
+            </gml:LineString>
+          </gml:lineStringMember>
+        </gml:MultiLineString>
+      </sf:the_geom>
+      <sf:cat>5</sf:cat>
+      <sf:label>unimproved road</sf:label>
+    </sf:roads>
+  </gml:featureMember>
+  <gml:featureMember>
+    <sf:roads fid="roads.2">
+      <sf:the_geom>
+        <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#26713">
+          <gml:lineStringMember>
+            <gml:LineString>
+              <gml:coord>
+                <gml:X>598576.84589417</gml:X>
+                <gml:Y>4915259.42699958</gml:Y>
+              </gml:coord>
+              <gml:coord>
+                <gml:X>598570.11829199</gml:X>
+                <gml:Y>4915276.49062597</gml:Y>
+              </gml:coord>
+              <gml:coord>
+                <gml:X>598529.91614234</gml:X>
+                <gml:Y>4915308.7347222</gml:Y>
+              </gml:coord>
+            </gml:LineString>
+          </gml:lineStringMember>
+        </gml:MultiLineString>
+      </sf:the_geom>
+      <sf:cat>5</sf:cat>
+      <sf:label>unimproved road</sf:label>
+    </sf:roads>
+  </gml:featureMember>
+</wfs:FeatureCollection>

@@ -53,7 +53,11 @@ public class FeatureGraphGenerator extends BasicGraphGenerator {
 	public GraphBuilder getGraphBuilder() {
 		return decorated.getGraphBuilder();
 	}
-	
+
+	public GraphGenerator getDecorated() {
+            return decorated;
+        }
+
 	public Graphable add( Object obj ) {
 		SimpleFeature feature = (SimpleFeature) obj;
 		Graphable g = decorated.add( feature.getDefaultGeometry() );

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+  xmlns:gml="http://www.opengis.net/gml" 
+  xmlns:topp="http://www.openplans.org/topp"
+  elementFormDefault="qualified" 
+  targetNamespace="http://www.openplans.org/topp">
+  
+  <xsd:import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd" />
+  
+  <xsd:complexType name="roadType">
+    <xsd:complexContent>
+      <xsd:extension base="gml:AbstractFeatureType">
+        <xsd:sequence>
+          <xsd:element maxOccurs="1" minOccurs="0" name="id" nillable="true" type="xsd:int" />
+          <xsd:element maxOccurs="1" minOccurs="0" name="geom" nillable="true" type="gml:LineStringPropertyType" />
+          <xsd:element maxOccurs="1" minOccurs="0" name="name" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="road" substitutionGroup="gml:_Feature" type="topp:roadType" />
+</xsd:schema>

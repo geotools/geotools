@@ -181,28 +181,16 @@ public class FeatureTypeRegistry {
     }
 
     public AttributeDescriptor getDescriptor(final Name descriptorName,
-            XSDComplexTypeDefinition typeDef, XSDElementDeclaration elemDecl,
             CoordinateReferenceSystem crs) {
         AttributeDescriptor descriptor = descriptorRegistry.get(descriptorName);
+
         if (descriptor == null) {
-            try {
-                if (elemDecl == null) {
-                    elemDecl = getElementDeclaration(descriptorName);
-                }
-            } catch (NoSuchElementException e) {
-                String msg = "Type not found for "
-                        + descriptorName
-                        + " at type container "
-                        + (typeDef == null ? null : typeDef.getTargetNamespace() + "#"
-                                + typeDef.getName() + " at "
-                                + typeDef.getSchema().getSchemaLocation());
-                NoSuchElementException nse = new NoSuchElementException(msg);
-                nse.initCause(e);
-                throw nse;
-            }
-            descriptor = createAttributeDescriptor(typeDef, elemDecl, crs);
+            // top level elements
+            XSDElementDeclaration elemDecl = getElementDeclaration(descriptorName);
+            descriptor = createAttributeDescriptor(null, elemDecl, crs);
             LOGGER.finest("Registering attribute descriptor " + descriptor.getName());
             register(descriptor);
+
         }
         return descriptor;
     }

@@ -30,12 +30,16 @@ import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import org.geotools.data.complex.ComplexFeatureConstants;
+import org.geotools.data.complex.config.NonFeatureTypeProxy;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.AttributeBuilder;
 import org.geotools.feature.AttributeImpl;
+import org.geotools.feature.ComplexAttributeImpl;
+import org.geotools.feature.GeometryAttributeImpl;
 import org.geotools.feature.Types;
 import org.geotools.feature.ValidatingFeatureFactoryImpl;
 import org.geotools.feature.type.AttributeDescriptorImpl;
+import org.geotools.feature.type.ComplexFeatureTypeFactoryImpl;
 import org.geotools.feature.type.GeometryTypeImpl;
 import org.geotools.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.geotools.gml3.GML;
@@ -54,6 +58,7 @@ import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.GeometryType;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
+import org.opengis.feature.type.PropertyType;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
@@ -728,7 +733,30 @@ public class XPath {
                 } else {
                     // except when the xpath is the root itself 
                     // where it is done for feature chaining for simple content
-                    return setSimpleContentValue(parent, value);
+					if (Types.isSimpleContentType(parent.getType())) {
+						return setSimpleContentValue(parent, value);
+					} else if (Types.isGeometryType(parent.getType())) {
+						ComplexFeatureTypeFactoryImpl typeFactory = new ComplexFeatureTypeFactoryImpl();
+						GeometryType geomType;
+						if (parent.getType() instanceof GeometryType) {
+							geomType = (GeometryType) parent.getType();
+						} else {
+							geomType = (GeometryType) ((NonFeatureTypeProxy) parent
+									.getType()).getSubject();
+						}
+						GeometryDescriptor geomDescriptor = typeFactory
+								.createGeometryDescriptor(geomType, rootName,
+										parentDescriptor.getMinOccurs(),
+										parentDescriptor.getMaxOccurs(),
+										parentDescriptor.isNillable(),
+										parentDescriptor.getDefaultValue());
+						GeometryAttributeImpl geom = new GeometryAttributeImpl(
+								value, geomDescriptor, null);
+						ArrayList<Property> geomAtts = new ArrayList<Property>();
+						geomAtts.add(geom);
+						parent.setValue(geomAtts);
+						return geom;
+                    }
                 }
             }
         }
@@ -860,11 +888,28 @@ public class XPath {
      * @return The attribute with simple content type.
      */
     private Attribute setSimpleContentValue(Attribute attribute, Object value) {
-        ArrayList<Attribute> contents = new ArrayList<Attribute>();
-        Attribute simpleContent = buildSimpleContent(attribute.getType(), value);
-        contents.add(simpleContent);
-        attribute.setValue(contents);
-        return simpleContent;
+        Property simpleContent = null;
+        if (attribute instanceof ComplexAttribute) {
+        	simpleContent = ((ComplexAttribute)attribute).getProperty(ComplexFeatureConstants.SIMPLE_CONTENT);
+        }
+        if (simpleContent == null) {
+            Collection<Property> contents = new ArrayList<Property>();
+        	simpleContent = buildSimpleContent(attribute.getType(), value);
+            contents.add(simpleContent);
+            ArrayList<Attribute> nestedAttContents = new ArrayList<Attribute>();
+            Attribute nestedAtt = new ComplexAttributeImpl(contents, attribute.getDescriptor(),
+                    attribute.getIdentifier());
+            nestedAttContents.add(nestedAtt);
+            attribute.setValue(nestedAttContents);
+            
+            return nestedAtt;
+        } else {
+        	PropertyType simpleContentType = getSimpleContentType((AttributeType) simpleContent.getType());
+            Object convertedValue = FF.literal(value).evaluate(value,
+                    simpleContentType.getBinding());
+        	simpleContent.setValue(convertedValue);
+        	return attribute;
+        }        
     }
     
     private Attribute setLeafAttribute(AttributeDescriptor currStepDescriptor,
@@ -881,16 +926,19 @@ public class XPath {
             final Object value, final int index, final Attribute parent,
             final AttributeType targetNodeType, boolean isXlinkRef) {
         
-        Object convertedValue;
+        Object convertedValue = null;
         Map <Object, Object> simpleContentProperties = null;
-        if (isFeatureChainedSimpleContent(descriptor, value)) {   
-            // get the simple content attribute from the value
-            Collection<Property> simpleContentList = extractSimpleContent(value);
-            convertedValue = simpleContentList;
-            // and also get the client properties from the feature that wraps the simple content
-            // and it will be merged with the created attribute's client properties later
-            if (!simpleContentList.isEmpty()) {
-                simpleContentProperties = simpleContentList.iterator().next().getUserData();    
+        if (isFeatureChainedSimpleContent(descriptor, value)) {
+            List<Property> nestedPropList = getSimpleContentList(value);
+            if (!nestedPropList.isEmpty()) {
+            	Property nestedProp = nestedPropList.iterator().next();
+            	if (Types.isGeometryType(descriptor.getType())
+            			|| nestedProp.getName().equals(descriptor.getName())) {
+            		convertedValue = nestedProp.getValue();
+            	} else {
+                    convertedValue = nestedPropList;
+            	}
+                simpleContentProperties = nestedProp.getUserData();
             }
         } else {
             // adapt value to context
@@ -1020,7 +1068,7 @@ public class XPath {
      * @return   The attribute with simple content
      */
     @SuppressWarnings("unchecked")
-    private Collection<Property> extractSimpleContent(Object value) {
+    private List<Property> getSimpleContentList(Object value) {
        if (value == null || !(value instanceof Collection)) {
            return null;
        }
@@ -1038,7 +1086,13 @@ public class XPath {
            throw new IllegalArgumentException("Expecting a feature!");
        }
        Feature feature = (Feature) f;
-       return feature.getProperties(ComplexFeatureConstants.SIMPLE_CONTENT);
+       ArrayList<Property> properties = new ArrayList<Property>();
+       for (Property prop : feature.getProperties()) {
+           if (!ComplexFeatureConstants.FEATURE_CHAINING_LINK_NAME.equals(prop.getName())) {
+               properties.add(prop);
+           }
+       }
+       return properties;
     }
 
     /**
@@ -1099,7 +1153,7 @@ public class XPath {
                     Object f = list.iterator().next();
                     if (f instanceof Feature) {
                         Name featureName = ((Feature) f).getDescriptor().getName();
-                        if (descriptor.getName().equals(featureName)) {
+                        if (((Feature) f).getProperty(featureName) != null) {
                             isFeatureChainedSimpleContent = true;
                         }
                     }

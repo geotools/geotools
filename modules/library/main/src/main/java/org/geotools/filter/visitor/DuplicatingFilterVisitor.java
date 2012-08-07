@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
-import org.geotools.filter.AttributeExpressionImpl;
 import org.opengis.filter.And;
 import org.opengis.filter.ExcludeFilter;
 import org.opengis.filter.Filter;
@@ -47,12 +46,12 @@ import org.opengis.filter.expression.Divide;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Function;
+import org.opengis.filter.expression.InternalFunction;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.Multiply;
 import org.opengis.filter.expression.NilExpression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.Subtract;
-import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.Beyond;
 import org.opengis.filter.spatial.Contains;
@@ -333,7 +332,13 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
 			Expression exp = (Expression) iter.next();
 			args[i]= visit(exp, extraData);
 		}
-		return getFactory(extraData).function(expression.getName(), args);
+        Function duplicate;
+        if (expression instanceof InternalFunction) {
+            duplicate = ((InternalFunction) expression).duplicate(args);
+        } else {
+            duplicate = getFactory(extraData).function(expression.getName(), args);
+        }
+        return duplicate;
 	}
 
 	public Object visit(Literal expression, Object extraData) {

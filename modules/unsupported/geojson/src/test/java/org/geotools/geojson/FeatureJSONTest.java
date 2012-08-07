@@ -36,6 +36,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
@@ -104,7 +105,84 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         SimpleFeature f2 = fjson.readFeature(reader(strip(featureText(1)))); 
         assertEqualsLax(f1, f2);
     }
-    
+
+    public void testFeatureWithGeometryCollectionRead() throws Exception {
+        String json = strip("{" + 
+            "  'type':'Feature'," + 
+            "  'geometry': {" + 
+            "    'type':'GeometryCollection'," + 
+            "    'geometries':[{" + 
+            "        'type':'Point','coordinates':[4,6]" + 
+            "      },{" + 
+            "        'type':'LineString','coordinates':[[4,6],[7,10]]" + 
+            "      }" + 
+            "     ]" + 
+            "  }," + 
+            "  'properties':{" + 
+            "    'name':'Name123'," + 
+            "    'label':'Label321'," + 
+            "    'roles':'[1,2,3]'" + 
+            "  }," + 
+            "  'id':'fid-7205cfc1_138e7ce8900_-7ffe'" + 
+            "}");
+
+        SimpleFeature f1 = fjson.readFeature(json);
+        assertNotNull(f1.getDefaultGeometry());
+
+        GeometryCollection gc = (GeometryCollection) f1.getDefaultGeometry();
+        assertEquals(2, gc.getNumGeometries());
+
+        WKTReader wkt = new WKTReader();
+        assertTrue(wkt.read("POINT (4 6)").equals(gc.getGeometryN(0)));
+        assertTrue(wkt.read("LINESTRING (4 6, 7 10)").equals(gc.getGeometryN(1)));
+
+        assertEquals("fid-7205cfc1_138e7ce8900_-7ffe", f1.getID());
+        assertEquals("Name123", f1.getAttribute("name"));
+        assertEquals("Label321", f1.getAttribute("label"));
+        assertEquals("[1,2,3]", f1.getAttribute("roles"));
+    }
+
+    public void testFeatureWithGeometryCollectionRead2() throws Exception {
+        String json = strip("{"+
+            "   'type':'Feature',"+
+            "   'geometry':{"+
+            "      'type':'GeometryCollection',"+
+            "      'geometries':["+
+            "         {"+
+            "            'type':'Polygon',"+
+            "            'coordinates':[[[-28.1107, 142.998], [-28.1107, 148.623], [-30.2591, 148.623], [-30.2591, 142.998], [-28.1107, 142.998]]]"+
+            "         },"+
+            "         {"+
+            "            'type':'Polygon',"+
+            "            'coordinates':[[[-27.1765, 142.998], [-25.6811, 146.4258], [-27.1765, 148.5352], [-27.1765, 142.998]]]"+
+            "         }"+
+            "     ]"+
+            "   },"+
+            "   'properties':{"+
+            "      'name':'',"+
+            "      'caseSN':'x_2000a',"+
+            "      'siteNum':2"+
+            "   },"+
+            "   'id':'fid-397164b3_13880d348b9_-7a5c'"+
+            "}");
+        
+        SimpleFeature f1 = fjson.readFeature(json);
+        assertNotNull(f1.getDefaultGeometry());
+
+        GeometryCollection gc = (GeometryCollection) f1.getDefaultGeometry();
+        assertEquals(2, gc.getNumGeometries());
+
+        WKTReader wkt = new WKTReader();
+        assertTrue(wkt.read("POLYGON ((-28.1107 142.998, -28.1107 148.623, -30.2591 148.623, -30.2591 142.998, -28.1107 142.998))").equals(gc.getGeometryN(0)));
+        assertTrue(wkt.read("POLYGON((-27.1765 142.998, -25.6811 146.4258, -27.1765 148.5352, -27.1765 142.998))").equals(gc.getGeometryN(1)));
+
+        assertEquals("fid-397164b3_13880d348b9_-7a5c", f1.getID());
+        assertEquals("", f1.getAttribute("name"));
+        assertEquals("x_2000a", f1.getAttribute("caseSN"));
+        assertEquals(2l, f1.getAttribute("siteNum"));
+
+        
+    }
     public void testFeatureWithRegularGeometryAttributeRead() throws Exception {
         SimpleFeature f = fjson.readFeature(reader(strip("{" + 
         "   'type': 'Feature'," +
@@ -437,7 +515,25 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
             assertNotNull(it.next().getType().getCoordinateReferenceSystem());
         }
     }
-    
+
+    public void testFeatureCollectionWithTypePostFeaturesRead() throws Exception {
+        String json = strip("{ " +
+            "  'features' : [{ " +"     'geometry' : { 'coordinates' : [ 17.633333, 59.85 ], 'type' : 'Point' }," +     
+            "     'type' : 'Feature'," +  
+            "     'properties' : { 'name' : 'Station' }" +
+            "  }]," + 
+            "  'type' : 'FeatureCollection'" +
+            "}");
+        FeatureCollection fcol = fjson.readFeatureCollection(json);
+        FeatureIterator it = fcol.features();
+        assertTrue(it.hasNext());
+
+        SimpleFeature f = (SimpleFeature) it.next();
+        assertTrue(new WKTReader().read("POINT (17.633333 59.85)").equals((Geometry)f.getDefaultGeometry()));
+        assertEquals("Station", f.getAttribute("name"));
+        it.close();
+    }
+
     public void testCRSWrite() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("EPSG:4326");
         StringWriter writer = new StringWriter();

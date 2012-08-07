@@ -46,6 +46,8 @@ import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+import com.vividsolutions.jts.geom.Geometry;
+
 /**
  * Builder for attributes.
  * 
@@ -237,8 +239,16 @@ public class AttributeBuilder {
     /**
      * @return The coordinate reference system of the feature, or null if not set.
      */
-    public CoordinateReferenceSystem getCRS() {
-        return crs;
+    public CoordinateReferenceSystem getCRS(Object geom) {
+        if (crs != null) {
+            return crs;
+        } else if (geom != null && geom instanceof Geometry) {
+            Object userData = ((Geometry) geom).getUserData();
+            if (userData != null && userData instanceof CoordinateReferenceSystem) {
+                return (CoordinateReferenceSystem) userData;
+            }
+        }
+        return null;
     }
 
     /**
@@ -565,7 +575,7 @@ public class AttributeBuilder {
             return createComplexAttribute((Collection) value, (ComplexType) type, descriptor, id);
         } else if (type instanceof GeometryType) {
             return attributeFactory.createGeometryAttribute(value, (GeometryDescriptor) descriptor,
-                    id, getCRS());
+                    id, getCRS(value));
         } else {
             return attributeFactory.createAttribute(value, descriptor, id);
         }

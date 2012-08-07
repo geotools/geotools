@@ -166,7 +166,7 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
             Assert.assertEquals(8, ((ComplexFeatureTypeImpl) wq_plus_Type).getTypeDescriptors().size());
     
             Name name = Types.typeName(NS_URI, "wq_plus");
-            AttributeDescriptor wqPlusDescriptor = typeRegistry.getDescriptor(name, null, null, null);
+            AttributeDescriptor wqPlusDescriptor = typeRegistry.getDescriptor(name, null);
             Assert.assertNotNull(wqPlusDescriptor);
             Assert.assertEquals(name, wqPlusDescriptor.getName());
             Assert.assertSame(wq_plus_Type, wqPlusDescriptor.getType());

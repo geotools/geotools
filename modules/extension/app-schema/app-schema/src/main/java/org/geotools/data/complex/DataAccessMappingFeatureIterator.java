@@ -35,19 +35,18 @@ import org.geotools.data.DataAccess;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
+import org.geotools.data.complex.config.NonFeatureTypeProxy;
 import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.filter.XPath.Step;
 import org.geotools.data.complex.filter.XPath.StepList;
 import org.geotools.data.joining.JoiningNestedAttributeMapping;
 import org.geotools.data.joining.JoiningQuery;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.AttributeBuilder;
 import org.geotools.feature.ComplexAttributeImpl;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureImpl;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.Types;
-import org.geotools.feature.type.ComplexFeatureTypeFactoryImpl;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
@@ -62,7 +61,6 @@ import org.opengis.feature.Property;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.FeatureTypeFactory;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.GeometryType;
 import org.opengis.feature.type.Name;
@@ -680,7 +678,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                     type, false, attDescriptor, null);
             setClientProperties(instance, source, clientPropsMappings);
             for (AttributeMapping mapping : polymorphicMappings) {
-                if (skipTopElement(polymorphicTypeName, mapping.getTargetXPath(), type)) {
+                if (skipTopElement(polymorphicTypeName, mapping, type)) {
                     // if the top level mapping for the Feature itself, the attribute instance
                     // has already been created.. just need to set the client properties
                     setClientProperties(instance, source, mapping.getClientProperties());
@@ -903,8 +901,13 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     			schema.add(descr);
     		}
     	}
-    	
-    	FeatureType ft = ftf.createFeatureType(type.getName(), schema, reprojectGeometry(type.getGeometryDescriptor()), type.isAbstract(), type.getRestrictions(), type.getSuper(), type.getDescription());
+
+    	FeatureType ft;
+    	if (type instanceof NonFeatureTypeProxy) {
+    	    ft = new NonFeatureTypeProxy(((NonFeatureTypeProxy) type).getSubject(), mapping, schema);
+    	} else {
+    	    ft = ftf.createFeatureType(type.getName(), schema, reprojectGeometry(type.getGeometryDescriptor()), type.isAbstract(), type.getRestrictions(), type.getSuper(), type.getDescription());
+    	}
     	ft.getUserData().putAll(type.getUserData());
     	return ft;
     }
@@ -934,7 +937,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
         for (AttributeMapping attMapping : selectedMapping) {
             try {
-                if (skipTopElement(targetNodeName, attMapping.getTargetXPath(), targetFeature.getType())) {
+                if (skipTopElement(targetNodeName, attMapping, targetFeature.getType())) {
                     // ignore the top level mapping for the Feature itself
                     // as it was already set
                     continue;
@@ -1072,9 +1075,12 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         return result;
     }
 
-    protected boolean skipTopElement(Name topElement, StepList xpath, AttributeType type) {
-        // don't skip simple content e.g. when feature chaining gml:name
-        return Types.equals(topElement, xpath) && !Types.isSimpleContentType(type);
+    protected boolean skipTopElement(Name topElement, AttributeMapping attMapping,
+            AttributeType type) {
+        // don't skip if there's OCQL
+		return Types.equals(topElement, attMapping.getTargetXPath())
+				&& (attMapping.getSourceExpression() == null || Expression.NIL
+						.equals(attMapping.getSourceExpression()));
     }
 
     protected Feature populateFeatureData(String id) throws IOException {

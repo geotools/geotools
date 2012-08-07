@@ -100,9 +100,18 @@ function get_pom_version() {
 # gets the jira id for a version named <tag>
 function get_jira_id() {
   local tag=$1
-  local jira_id=`curl -s -G $JIRA_REST/project/$JIRA_PROJ/versions | tr "{" "\n" | grep $tag | tr "," "\n" | grep "\"id\"" | sed 's/"id": *"\([0-9]\+\).*/\1/g'`
+  local jira_id=`curl -s -G $JIRA_REST/project/$JIRA_PROJ/versions | tr "{" "\n" | grep "\"name\":\"$tag\"" | tr "," "\n" | grep "\"id\"" | sed 's/"id": *"\([0-9]\+\).*/\1/g'`
 
   if [ ! -z $jira_id ]; then
     echo $jira_id
   fi
+}
+
+# init_git <user> <emai>
+# sets up git config for user/email 
+function init_git() {
+  # setup the author, for some reason I can;t for the life of me get to this
+  # to work properly from a script using the --author option to git commit
+  git config user.name $1
+  git config user.email $2
 }

@@ -43,6 +43,10 @@ public class FeatureCollectionHandler extends DelegatingHandler<SimpleFeature>
     CoordinateReferenceSystem crs;
     List stack;
    
+    public FeatureCollectionHandler() {
+        this(null, null);
+    }
+
     public FeatureCollectionHandler(SimpleFeatureType featureType, AttributeIO attio) {
         if (featureType != null) {
             builder = new SimpleFeatureBuilder(featureType);

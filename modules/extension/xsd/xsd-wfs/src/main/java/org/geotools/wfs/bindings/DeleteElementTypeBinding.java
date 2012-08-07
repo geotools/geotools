@@ -23,6 +23,9 @@ import net.opengis.wfs.WfsFactory;
 
 import org.geotools.wfs.WFS;
 import org.geotools.xml.AbstractComplexEMFBinding;
+import org.geotools.xml.ElementInstance;
+import org.geotools.xml.Node;
+import org.opengis.filter.Filter;
 
 
 /**
@@ -89,8 +92,10 @@ import org.geotools.xml.AbstractComplexEMFBinding;
  * @source $URL$
  */
 public class DeleteElementTypeBinding extends AbstractComplexEMFBinding {
-    public DeleteElementTypeBinding(WfsFactory factory) {
-        super(factory);
+    WfsFactory wfsfactory;
+
+    public DeleteElementTypeBinding(WfsFactory wfsfactory) {
+        this.wfsfactory = wfsfactory;
     }
 
     /**
@@ -108,5 +113,29 @@ public class DeleteElementTypeBinding extends AbstractComplexEMFBinding {
      */
     public Class getType() {
         return DeleteElementType.class;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated modifiable
+     */
+    public Object parse(ElementInstance instance, Node node, Object value)
+        throws Exception {
+        DeleteElementType deleteElement = wfsfactory.createDeleteElementType();
+
+        //&lt;xsd:element maxOccurs="1" minOccurs="1" ref="ogc:Filter"&gt;
+        deleteElement.setFilter((Filter) node.getChildValue(Filter.class));
+
+        //&lt;xsd:attribute name="handle" type="xsd:string" use="optional"/&gt;
+        if (node.hasAttribute("handle")) {
+            deleteElement.setHandle((String) node.getAttributeValue("handle"));
+        }
+
+        //&lt;xsd:attribute name="typeName" type="xsd:QName" use="required"/&gt;
+        deleteElement.setTypeName((QName) node.getAttributeValue(QName.class));
+
+        return deleteElement;
     }
 }

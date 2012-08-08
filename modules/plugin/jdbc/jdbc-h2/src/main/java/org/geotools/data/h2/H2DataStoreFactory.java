@@ -23,7 +23,6 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
-import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.jdbc.datasource.DBCPDataSource;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
@@ -180,7 +179,7 @@ public class H2DataStoreFactory extends JDBCDataStoreFactory {
             dataStore.setAssociations(foreignKeys.booleanValue());
         }
 
-        return dataStore;o
+        return dataStore;
     }
 
     @Override

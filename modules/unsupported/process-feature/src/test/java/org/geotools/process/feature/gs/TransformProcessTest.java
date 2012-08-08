@@ -71,6 +71,54 @@ public class TransformProcessTest {
     }
 
     @Test
+    public void testDefinitionListLF() throws Exception {
+        String definition = "the_geom=the_geom\ncat=cat+1";
+        List<Definition> def = TransformProcess.toDefinition( definition );
+
+        assertEquals( 2, def.size() );
+        
+        assertEquals( "the_geom", def.get(0).name );
+        assertTrue( def.get(0).expression instanceof PropertyName );
+        assertEquals( "cat", def.get(1).name );
+    }
+
+    @Test
+    public void testDefinitionListDelimiter() throws Exception {
+        String definition = "the_geom=the_geom; cat=cat+1";
+        List<Definition> def = TransformProcess.toDefinition( definition );
+
+        assertEquals( 2, def.size() );
+        
+        assertEquals( "the_geom", def.get(0).name );
+        assertTrue( def.get(0).expression instanceof PropertyName );
+        assertEquals( "cat", def.get(1).name );
+    }
+
+    @Test
+    public void testDefinitionListDelimiterExtra() throws Exception {
+        String definition = "the_geom=the_geom; cat=cat+1;";
+        List<Definition> def = TransformProcess.toDefinition( definition );
+
+        assertEquals( 2, def.size() );
+        
+        assertEquals( "the_geom", def.get(0).name );
+        assertTrue( def.get(0).expression instanceof PropertyName );
+        assertEquals( "cat", def.get(1).name );
+    }
+
+    @Test
+    public void testDefinitionListDelimiterLF() throws Exception {
+        String definition = "the_geom=the_geom;\n cat=cat+1;";
+        List<Definition> def = TransformProcess.toDefinition( definition );
+
+        assertEquals( 2, def.size() );
+        
+        assertEquals( "the_geom", def.get(0).name );
+        assertTrue( def.get(0).expression instanceof PropertyName );
+        assertEquals( "cat", def.get(1).name );
+    }
+
+    @Test
     public void testSum() throws Exception {
         SimpleFeatureSource source = bugs.getFeatureSource("bugsites");
 

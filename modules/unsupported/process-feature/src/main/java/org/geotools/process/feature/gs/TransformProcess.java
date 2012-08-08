@@ -61,7 +61,8 @@ import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
  * name=name
  * area=area( the_geom )
  * </pre>
-
+ *
+ * Attribute definitions can be delimited by line breaks and/or by semicolons.
  * <p>
  * This is a very flexible process which can be used to:
  * <ul>
@@ -116,12 +117,14 @@ public class TransformProcess implements GSProcess {
         /** Name of the AttribtueDescriptor to generate */
         public String name;
 
-        /** Expression used to generate the target calue; most simply a PropertyName */
+        /** Expression used to generate the target value; most simply a PropertyName */
         public Expression expression;
 
         /** Class binding (if known) */
         public Class<?> binding;
     }
+    private static final String DEF_DELIMITER = ";";
+    
     @DescribeResult(name = "result", description = "transformed features")
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "features", description = "The feature collection to transform") SimpleFeatureCollection features,
@@ -163,23 +166,23 @@ public class TransformProcess implements GSProcess {
         HashSet<String> check = new HashSet<String>();
 
         // clean up cross platform differences of line feed
-        definition = definition.replaceAll("\r", "\n").replaceAll("[\n\r][\n\r]", "\n");
+        String[] defs = splitDefinitions(definition);
 
-        for (String line : definition.split("\n")) {
+        for (String line : defs) {
             int mark = line.indexOf("=");
             if (mark != -1) {
                 String name = line.substring(0, mark).trim();
                 String expressionDefinition = line.substring(mark + 1).trim();
 
                 if (check.contains(name)) {
-                    throw new IllegalArgumentException("ReShape definition " + name
-                            + " already in use");
+                    throw new IllegalArgumentException("Attribute " + name
+                            + " defined more than once");
                 }
                 Expression expression;
                 try {
                     expression = ECQL.toExpression(expressionDefinition);
                 } catch (CQLException e) {
-                    throw new IllegalArgumentException("Reshape unable to parse " + name + "="
+                    throw new IllegalArgumentException("Unable to parse expression " + name + "="
                             + expressionDefinition + " " + e, e);
                 }
                 Definition def = new Definition();
@@ -192,6 +195,24 @@ public class TransformProcess implements GSProcess {
         return list;
     }
 
+    /**
+     * Splits single-string definition list into a list of definitions.
+     * Either line breaks or ';' can be used as definition delimiters.
+     * 
+     * @param defList the definition list string
+     * @return the separate definitions
+     */
+    private static String[] splitDefinitions(String defList)
+    {
+        // clean up cross platform differences of linefeed
+        String defListLF = defList.replaceAll("\r", "\n").replaceAll("[\n\r][\n\r]", "\n");
+        // convert explicit delimiter to linefeed
+        defListLF = defList.replaceAll(";", "\n");
+        
+        // split on linefeed
+        return defListLF.split("\n");
+    }
+    
     public static SimpleFeatureType toReShapeFeatureType(SimpleFeatureCollection delegate,
             List<Definition> definitionList) {
         

@@ -17,6 +17,10 @@
  */
 package org.geotools.process.jts;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
@@ -24,10 +28,13 @@ import org.geotools.process.factory.DescribeResult;
 import com.vividsolutions.jts.densify.Densifier;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.util.LineStringExtracter;
 import com.vividsolutions.jts.operation.buffer.BufferParameters;
+import com.vividsolutions.jts.operation.polygonize.Polygonizer;
 import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
 
 /**
@@ -315,5 +322,40 @@ public class GeometryFunctions {
     static public Geometry densify(@DescribeParameter(name = "geom") Geometry geom,
             @DescribeParameter(name = "distance") double distance) {
         return Densifier.densify(geom, distance);
+    }
+    
+    @DescribeProcess(title = "Polygonize", description = "Polygonizes a set of linestrings.  The lines must be fully noded.")
+    @DescribeResult(description = "The collection of created polygons")
+    static public Geometry polygonize(
+            @DescribeParameter(name = "geom", description = "Linework to polygonize") Geometry geom) {
+        @SuppressWarnings("rawtypes")
+        List lines = LineStringExtracter.getLines(geom);
+        Polygonizer polygonizer = new Polygonizer();
+        polygonizer.add(lines);
+        @SuppressWarnings("rawtypes")
+        Collection polys = polygonizer.getPolygons();
+        Polygon[] polyArray = GeometryFactory.toPolygonArray(polys);
+        return geom.getFactory().createGeometryCollection(polyArray);
+    }
+
+    @DescribeProcess(title = "Split Polygon", description = "Splits a polygon by a linestring")
+    @DescribeResult(description = "The collection of split polygons")
+    static public Geometry splitPolygon(
+            @DescribeParameter(name = "polygon", description = "Polygon to split") Geometry polygon,
+            @DescribeParameter(name = "line", description = "Linestring to split by") LineString line) {
+        Geometry nodedLinework = polygon.getBoundary().union(line);
+        Geometry polys = polygonize(nodedLinework);
+
+        // Only keep polygons which are inside the input
+        List<Polygon> output = new ArrayList<Polygon>();
+        for (int i = 0; i < polys.getNumGeometries(); i++) {
+            Polygon candpoly = (Polygon) polys.getGeometryN(i);
+            // use interior point to test for inclusion in parent
+            if (polygon.contains(candpoly.getInteriorPoint())) {
+                output.add(candpoly);
+            }
+        }
+        return polygon.getFactory().createGeometryCollection(
+                GeometryFactory.toGeometryArray(output));
     }
 }

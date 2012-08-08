@@ -37,11 +37,6 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.logging.Logger;
 
-import javax.media.jai.PlanarImage;
-import javax.media.jai.widget.ScrollingImagePanel;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-
 import junit.framework.JUnit4TestAdapter;
 import junit.textui.TestRunner;
 
@@ -55,11 +50,9 @@ import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.OverviewPolicy;
-import org.geotools.coverage.grid.io.UnknownFormat;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
-import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;
 import org.geotools.util.DateRange;
@@ -115,7 +108,7 @@ public class ImageMosaicReaderTest extends Assert{
 
 	private URL overviewURL;
 
-	private boolean interactive;
+	static boolean INTERACTIVE;
 
 	private URL timeURL;
 
@@ -162,15 +155,15 @@ public class ImageMosaicReaderTest extends Assert{
 			MismatchedDimensionException, FactoryException {
 		
 		final String testName="alpha-";
-		if (interactive)
+		if (INTERACTIVE)
 			imageMosaicSimpleParamsTest(rgbURL, null, null,testName+rgbURL.getFile()+"-original", false);
 		imageMosaicSimpleParamsTest(rgbURL, Color.black,Color.black,testName+rgbURL.getFile(), false);
 
-//		if (interactive)
+//		if (INTERACTIVE)
 //			imageMosaicSimpleParamsTest(rgbJarURL, null, null,testName+rgbJarURL.getFile()+"-original", false);
 //		imageMosaicSimpleParamsTest(rgbJarURL, Color.black,Color.black,testName+rgbURL.getFile(), false);
 
-		if (interactive)
+		if (INTERACTIVE)
 			// the input images have transparency and they do overlap, we need
 			// to ask for blending mosaic.
 			imageMosaicSimpleParamsTest(rgbAURL, null, null,testName+rgbAURL.getFile()+"-original", true);
@@ -187,34 +180,34 @@ public class ImageMosaicReaderTest extends Assert{
 		// background will be transparent.
 		//
 		// //
-		if (interactive)
+		if (INTERACTIVE)
 			imageMosaicSimpleParamsTest(indexURL, null, null,testName+indexURL.getFile()+"-original", false);
 		imageMosaicSimpleParamsTest(indexURL, new Color(58, 49, 8),Color.black,testName+indexURL.getFile(), false);
 
-//		if (interactive)
+//		if (INTERACTIVE)
 //			imageMosaicSimpleParamsTest(indexJarURL, null, null,testName+indexJarURL.getFile()+"-original", false);
 //		imageMosaicSimpleParamsTest(indexJarURL, new Color(58, 49, 8),Color.black,testName+indexJarURL.getFile(), false);
 		
 		
-		if (interactive)
+		if (INTERACTIVE)
 			imageMosaicSimpleParamsTest(overviewURL, null, null,testName+overviewURL.getFile()+"-original", false);
 		imageMosaicSimpleParamsTest(overviewURL, new Color(58, 49, 8),Color.black,testName+overviewURL.getFile()+"-indexURL", false);		
 		
 		
-		if (interactive)
+		if (INTERACTIVE)
 			imageMosaicSimpleParamsTest(indexAlphaURL, null, null,testName+indexAlphaURL.getFile()+"-original", false);
 		imageMosaicSimpleParamsTest(indexAlphaURL, new Color(41,41, 33), Color.black,testName+indexAlphaURL.getFile(), false);
 
-//		if (interactive)
+//		if (INTERACTIVE)
 //			imageMosaicSimpleParamsTest(indexAlphaJarURL, null, null,testName+indexAlphaJarURL.getFile()+"-original", false);
 //		imageMosaicSimpleParamsTest(indexAlphaJarURL, new Color(41,41, 33), Color.black,testName+indexAlphaJarURL.getFile(), false);
 		
 		
-		if (interactive)
+		if (INTERACTIVE)
 			imageMosaicSimpleParamsTest(grayURL, null, null,testName+grayURL.getFile()+"-original", false);
 		imageMosaicSimpleParamsTest(grayURL, Color.black,Color.black, testName+grayURL.getFile(), false);
 		
-//		if (interactive)
+//		if (INTERACTIVE)
 //			imageMosaicSimpleParamsTest(grayJarURL, null, null,testName+grayJarURL.getFile()+"-original", false);
 //		imageMosaicSimpleParamsTest(grayJarURL, Color.black,Color.black, testName+grayJarURL.getFile(), false);
 
@@ -233,8 +226,8 @@ public class ImageMosaicReaderTest extends Assert{
 //	@Ignore
 	public void overviews() throws IOException,	
 			MismatchedDimensionException, FactoryException {
-		final AbstractGridFormat format = getFormat(overviewURL);
-		final ImageMosaicReader reader = getReader(overviewURL, format);
+		final AbstractGridFormat format = TestUtils.getFormat(overviewURL);
+		final ImageMosaicReader reader = TestUtils.getReader(overviewURL, format);
 
 		// limit yourself to reading just a bit of it
 		final ParameterValue<GridGeometry2D> gg =  AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
@@ -254,7 +247,7 @@ public class ImageMosaicReaderTest extends Assert{
 		tileSize.setValue("128,128");
 		
 		// Test the output coverage
-		checkCoverage(reader, new GeneralParameterValue[] {gg,useJai ,tileSize}, "overviews test");
+		TestUtils.checkCoverage(reader, new GeneralParameterValue[] {gg,useJai ,tileSize}, "overviews test");
 	}	
 	
 	@Test
@@ -290,9 +283,9 @@ public class ImageMosaicReaderTest extends Assert{
 	    
 	    
 	    // now start the test
-		final AbstractGridFormat format = getFormat(timeElevURL);
+		final AbstractGridFormat format = TestUtils.getFormat(timeElevURL);
 		assertNotNull(format);
-		ImageMosaicReader reader = getReader(timeElevURL, format);
+		ImageMosaicReader reader = TestUtils.getReader(timeElevURL, format);
 		assertNotNull(reader);
 		
 		final String[] metadataNames = reader.getMetadataNames();
@@ -345,17 +338,17 @@ public class ImageMosaicReaderTest extends Assert{
 		elevation.setValue(Arrays.asList(100.0));
 	                
 		// Test the output coverage
-		checkCoverage(reader, new GeneralParameterValue[] {gg,time,bkg ,elevation ,direct}, "Time-Elevation Test");
+		TestUtils.checkCoverage(reader, new GeneralParameterValue[] {gg,time,bkg ,elevation ,direct}, "Time-Elevation Test");
 		
-		reader= getReader(timeElevURL, format);
+		reader= TestUtils.getReader(timeElevURL, format);
                 elevation.setValue(Arrays.asList(NumberRange.create(0.0,10.0)));
         
                 // Test the output coverage
-                checkCoverage(reader, new GeneralParameterValue[] { gg, time, bkg, elevation,direct },
+                TestUtils.checkCoverage(reader, new GeneralParameterValue[] { gg, time, bkg, elevation,direct },
                         "Time-Elevation Test");
                 
          // clean up
-         if (!interactive){        	
+         if (!INTERACTIVE){        	
          	FileUtils.deleteDirectory( TestData.file(this, "watertemp3"));
          }
 	}	
@@ -370,9 +363,9 @@ public class ImageMosaicReaderTest extends Assert{
     	
 	    final URL timeElevURL = TestData.url(this, "watertemp2");
 	    
-		final AbstractGridFormat format = getFormat(timeElevURL);
+		final AbstractGridFormat format = TestUtils.getFormat(timeElevURL);
 		assertNotNull(format);
-		ImageMosaicReader reader = getReader(timeElevURL, format);
+		ImageMosaicReader reader = TestUtils.getReader(timeElevURL, format);
 		assertNotNull(format);
 		
 		final String[] metadataNames = reader.getMetadataNames();
@@ -424,18 +417,18 @@ public class ImageMosaicReaderTest extends Assert{
 		elevation.setValue(Arrays.asList(0.0));
 	                
 		// Test the output coverage
-		checkCoverage(reader, new GeneralParameterValue[] {gg,time,bkg ,elevation,direct}, "Time-Elevation Test");
+		TestUtils.checkCoverage(reader, new GeneralParameterValue[] {gg,time,bkg ,elevation,direct}, "Time-Elevation Test");
 		
 		
-		reader= getReader(timeElevURL, format);
+		reader= TestUtils.getReader(timeElevURL, format);
         elevation.setValue(Arrays.asList(NumberRange.create(0.0,10.0)));
         
                 // Test the output coverage
-                checkCoverage(reader, new GeneralParameterValue[] { gg, time, bkg, elevation,direct },
+        TestUtils.checkCoverage(reader, new GeneralParameterValue[] { gg, time, bkg, elevation,direct },
                         "Time-Elevation Test");
                 
         // clean up
-                if (!interactive){
+                if (!INTERACTIVE){
                  	FileUtils.deleteDirectory( TestData.file(this, "watertemp2"));
                  }
 	}	
@@ -476,9 +469,9 @@ public class ImageMosaicReaderTest extends Assert{
         	    }
         	    
         	    
-                final AbstractGridFormat format = getFormat(timeElevURL);
+                final AbstractGridFormat format = TestUtils.getFormat(timeElevURL);
                 assertNotNull(format);
-                ImageMosaicReader reader = getReader(timeElevURL, format);
+                ImageMosaicReader reader = TestUtils.getReader(timeElevURL, format);
                 assertNotNull(format);
                 
                 final String[] metadataNames = reader.getMetadataNames();
@@ -503,7 +496,7 @@ public class ImageMosaicReaderTest extends Assert{
                 
                 // clean up
                 reader.dispose();
-                if (!interactive){
+                if (!INTERACTIVE){
                  	FileUtils.deleteDirectory( TestData.file(this, "watertemp1"));
                 }
         }
@@ -511,8 +504,8 @@ public class ImageMosaicReaderTest extends Assert{
 	@Test
 //    @Ignore	
 	public void imposedBBox() throws IOException, NoSuchAuthorityCodeException, FactoryException {
-		final AbstractGridFormat format = getFormat(imposedEnvelopeURL);
-		final ImageMosaicReader reader = getReader(imposedEnvelopeURL, format);
+		final AbstractGridFormat format = TestUtils.getFormat(imposedEnvelopeURL);
+		final ImageMosaicReader reader = TestUtils.getReader(imposedEnvelopeURL, format);
 	
 		
 		//check envelope
@@ -539,7 +532,7 @@ public class ImageMosaicReaderTest extends Assert{
 		
 		
 		// Test the output coverage
-		checkCoverage(reader, new GeneralParameterValue[] {gg,useJai }, "Imposed BBox");
+		TestUtils.checkCoverage(reader, new GeneralParameterValue[] {gg,useJai }, "Imposed BBox");
 	}	
 	
 	/**
@@ -555,8 +548,8 @@ public class ImageMosaicReaderTest extends Assert{
 //	@Ignore
 	public void time() throws IOException, NoSuchAuthorityCodeException, FactoryException, ParseException {
 	       
-		final AbstractGridFormat format = getFormat(timeURL);
-		ImageMosaicReader reader = getReader(timeURL, format);
+		final AbstractGridFormat format = TestUtils.getFormat(timeURL);
+		ImageMosaicReader reader = TestUtils.getReader(timeURL, format);
 	    
 		final String[] metadataNames = reader.getMetadataNames();
 		assertNotNull(metadataNames);
@@ -591,17 +584,17 @@ public class ImageMosaicReaderTest extends Assert{
 		time.setValue(new ArrayList(){{add(timeD);}});
 		
 		// Test the output coverage
-		checkCoverage(reader, new GeneralParameterValue[] {gg,useJai ,tileSize,time}, "time test");
+		TestUtils.checkCoverage(reader, new GeneralParameterValue[] {gg,useJai ,tileSize,time}, "time test");
 		
 		// specify time range
 		// Test the output coverage
-		reader = getReader(timeURL, format);
+		reader = TestUtils.getReader(timeURL, format);
         time.setValue(
                 new ArrayList(){{
                     add(new DateRange(formatD.parse("2004-02-01T00:00:00.000Z"), formatD.parse("2004-03-01T00:00:00.000Z")));
                     }}
         );		
-        checkCoverage(reader, new GeneralParameterValue[] {gg,useJai ,tileSize,time}, "time test");
+        TestUtils.checkCoverage(reader, new GeneralParameterValue[] {gg,useJai ,tileSize,time}, "time test");
 		
 	}	
 	
@@ -623,8 +616,8 @@ public class ImageMosaicReaderTest extends Assert{
     public void testHeterogeneousGranules() throws IOException,
             MismatchedDimensionException, FactoryException {
 
-        final AbstractGridFormat format = getFormat(heterogeneousGranulesURL);
-        ImageMosaicReader reader = getReader(heterogeneousGranulesURL, format);
+        final AbstractGridFormat format = TestUtils.getFormat(heterogeneousGranulesURL);
+        ImageMosaicReader reader = TestUtils.getReader(heterogeneousGranulesURL, format);
 
         final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         final GeneralEnvelope envelope = reader.getOriginalEnvelope();
@@ -643,25 +636,25 @@ public class ImageMosaicReaderTest extends Assert{
 
         LOGGER.info("\nTesting with OverviewPolicy = QUALITY");
         op.setValue(OverviewPolicy.QUALITY);
-        checkCoverage(reader, new GeneralParameterValue[] { gg, useJai, op },
+        TestUtils.checkCoverage(reader, new GeneralParameterValue[] { gg, useJai, op },
                 "heterogeneous granules test: OverviewPolicy=QUALITY", rasterArea);
 
         LOGGER.info("\nTesting with OverviewPolicy = SPEED");
-        reader = getReader(heterogeneousGranulesURL, format);
+        reader = TestUtils.getReader(heterogeneousGranulesURL, format);
         op.setValue(OverviewPolicy.SPEED);
-        checkCoverage(reader, new GeneralParameterValue[] { gg, useJai, op },
+        TestUtils.checkCoverage(reader, new GeneralParameterValue[] { gg, useJai, op },
                 "heterogeneous granules test: OverviewPolicy=SPEED", rasterArea);
 
         LOGGER.info("\nTesting with OverviewPolicy = NEAREST");
-        reader = getReader(heterogeneousGranulesURL, format);
+        reader = TestUtils.getReader(heterogeneousGranulesURL, format);
         op.setValue(OverviewPolicy.NEAREST);
-        checkCoverage(reader, new GeneralParameterValue[] { gg, useJai, op },
+        TestUtils.checkCoverage(reader, new GeneralParameterValue[] { gg, useJai, op },
                 "heterogeneous granules test: OverviewPolicy=NEAREST", rasterArea);
 
         LOGGER.info("\nTesting with OverviewPolicy = IGNORE");
-        reader = getReader(heterogeneousGranulesURL, format);
+        reader = TestUtils.getReader(heterogeneousGranulesURL, format);
         op.setValue(OverviewPolicy.IGNORE);
-        checkCoverage(reader, new GeneralParameterValue[] { gg, useJai, op },
+        TestUtils.checkCoverage(reader, new GeneralParameterValue[] { gg, useJai, op },
                 "heterogeneous granules test: OverviewPolicy=IGNORE", rasterArea);
 
     }
@@ -790,8 +783,8 @@ public class ImageMosaicReaderTest extends Assert{
 
 		// Get the resources as needed.
 		Assert.assertNotNull(testURL);
-		final AbstractGridFormat format = getFormat(testURL);
-		final ImageMosaicReader reader = getReader(testURL, format);
+		final AbstractGridFormat format = TestUtils.getFormat(testURL);
+		final ImageMosaicReader reader = TestUtils.getReader(testURL, format);
 
 		// limit yourself to reading just a bit of it
 		final ParameterValue<Color> inTransp =  AbstractGridFormat.INPUT_TRANSPARENT_COLOR.createValue();
@@ -802,147 +795,7 @@ public class ImageMosaicReaderTest extends Assert{
 		blendPV.setValue(blend);
 
 		// Test the output coverage
-		checkCoverage(reader, new GeneralParameterValue[] { inTransp, blendPV, outTransp }, title);
-	}
-
-	/**
-	 * Tests the creation of a {@link GridCoverage2D} using the provided
-	 * {@link ImageMosaicReader} as well as the provided {@link ParameterValue}.
-	 * 
-	 * @param reader
-	 *            to use for creating a {@link GridCoverage2D}.
-	 * @param value
-	 *            that control the actions to take for creating a
-	 *            {@link GridCoverage2D}.
-	 * @param title
-	 *            to print out as the head of the frame in case we visualize it.
-	 * @return 
-	 * @throws IOException
-	 */
-	private void checkCoverage(final ImageMosaicReader reader,
-                GeneralParameterValue[] values, String title) throws IOException {
-	    checkCoverage(reader, values, title, null);
-	}
-	
-	private void checkCoverage(final ImageMosaicReader reader,
-			GeneralParameterValue[] values, String title, Rectangle rect) throws IOException {
-		// Test the coverage
-		final GridCoverage2D coverage = getCoverage(reader, values);
-		testCoverage(reader, values, title, coverage, rect);
-	}
-
-	
-	@SuppressWarnings("unchecked")
-	private void testCoverage(final ImageMosaicReader reader,
-			GeneralParameterValue[] values, String title,
-			final GridCoverage2D coverage, final Rectangle rect) {
-	    final RenderedImage image = coverage.getRenderedImage(); 
-		if (interactive)
-			show(image, title);
-		else
-			PlanarImage.wrapRenderedImage(image).getTiles();
-		
-		if(values!=null)	
-			for(GeneralParameterValue pv:values){
-				if(pv.getDescriptor().getName().equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName())){
-					
-					Parameter<GridGeometry2D> param= (Parameter<GridGeometry2D>) pv;
-					// check envelope if it has been requested
-					assertTrue(CRS.equalsIgnoreMetadata(
-							param.getValue().getEnvelope().getCoordinateReferenceSystem(), 
-							coverage.getCoordinateReferenceSystem()));
-	
-				}
-			}
-		if (rect != null){
-		    assertEquals(image.getWidth(), rect.width); 
-		    assertEquals(image.getHeight(), rect.height);
-		}
-		
-		if (!interactive){
-			// dispose stuff
-			coverage.dispose(true);
-			reader.dispose();
-		}
-	}
-
-	private GridCoverage2D getCoverage(final ImageMosaicReader reader,
-			GeneralParameterValue[] values) throws IOException {
-		final GridCoverage2D coverage = (GridCoverage2D) reader.read(values);
-		Assert.assertNotNull(coverage);
-		return coverage;
-	}
-
-	/**
-	 * Shows the provided {@link RenderedImage} ina {@link JFrame} using the
-	 * provided <code>title</code> as the frame's title.
-	 * 
-	 * @param image
-	 *            to show.
-	 * @param title
-	 *            to use.
-	 */
-	static void show(RenderedImage image, String title) {
-		final JFrame jf = new JFrame(title);
-		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		jf.getContentPane().add(new ScrollingImagePanel(image, 800, 800));
-		SwingUtilities.invokeLater(new Runnable() {
-
-			public void run() {
-				jf.pack();
-				jf.setVisible(true);
-
-			}
-		});
-
-	}
-
-	/**
-	 * returns an {@link AbstractGridCoverage2DReader} for the provided
-	 * {@link URL} and for the providede {@link AbstractGridFormat}.
-	 * 
-	 * @param testURL
-	 *            points to a valid object to create an
-	 *            {@link AbstractGridCoverage2DReader} for.
-	 * @param format
-	 *            to use for instantiating such a reader.
-	 * @return a suitable {@link ImageMosaicReader}.
-	 * @throws FactoryException 
-	 * @throws NoSuchAuthorityCodeException 
-	 */
-	private ImageMosaicReader getReader(URL testURL,
-			final AbstractGridFormat format) throws NoSuchAuthorityCodeException, FactoryException {
-
-//		final Hints hints= new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
-		return getReader(testURL, format, null);
-
-	}
-
-	private ImageMosaicReader getReader(URL testURL,
-			final AbstractGridFormat format, Hints hints) {
-//		Get a reader
-		final ImageMosaicReader reader = (ImageMosaicReader) format.getReader(testURL, hints);
-		Assert.assertNotNull(reader);
-		return reader;
-	}
-
-	/**
-	 * Tries to get an {@link AbstractGridFormat} for the provided URL.
-	 * 
-	 * @param testURL
-	 *            points to a shapefile that is the index of a certain mosaic.
-	 * @return a suitable {@link AbstractGridFormat}.
-	 * @throws FactoryException 
-	 * @throws NoSuchAuthorityCodeException 
-	 */
-	private AbstractGridFormat getFormat(URL testURL) throws NoSuchAuthorityCodeException, FactoryException {
-
-		final Hints hints= new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
-		// Get format
-		final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(testURL,hints);
-		Assert.assertNotNull(format);
-		Assert.assertFalse("UknownFormat", format instanceof UnknownFormat);
-		return format;
+		TestUtils.checkCoverage(reader, new GeneralParameterValue[] { inTransp, blendPV, outTransp }, title);
 	}
 
 	/**
@@ -961,8 +814,8 @@ public class ImageMosaicReaderTest extends Assert{
 
 		// Get the resources as needed.
 		Assert.assertNotNull(testURL);
-		final AbstractGridFormat format = getFormat(testURL);
-		final ImageMosaicReader reader = getReader(testURL, format);
+		final AbstractGridFormat format = TestUtils.getFormat(testURL);
+		final ImageMosaicReader reader = TestUtils.getReader(testURL, format);
 
 
 		// crop
@@ -982,15 +835,15 @@ public class ImageMosaicReaderTest extends Assert{
 
 
 		// test the coverage
-		checkCoverage(reader, new GeneralParameterValue[] { gg, outTransp },title);
+		TestUtils.checkCoverage(reader, new GeneralParameterValue[] { gg, outTransp },title);
 
 	}
 	
     @Test
 //    @Ignore
     public void testRequestInHole() throws Exception {
-        final AbstractGridFormat format = getFormat(rgbAURL);
-        final ImageMosaicReader reader = getReader(rgbAURL, format);
+        final AbstractGridFormat format = TestUtils.getFormat(rgbAURL);
+        final ImageMosaicReader reader = TestUtils.getReader(rgbAURL, format);
 
         assertNotNull(reader);
 
@@ -1023,8 +876,8 @@ public class ImageMosaicReaderTest extends Assert{
     @Test
 //    @Ignore
     public void testRequestInOut() throws Exception {
-        final AbstractGridFormat format = getFormat(rgbAURL);
-        final ImageMosaicReader reader = getReader(rgbAURL, format);
+        final AbstractGridFormat format = TestUtils.getFormat(rgbAURL);
+        final ImageMosaicReader reader = TestUtils.getReader(rgbAURL, format);
 
         assertNotNull(reader);
 
@@ -1076,6 +929,8 @@ public class ImageMosaicReaderTest extends Assert{
 		System.setProperty("org.geotools.referencing.forceXY", "true");
 	    System.setProperty("user.timezone", "GMT");
 		System.setProperty("org.geotools.shapefile.datetime", "true");
+
+		INTERACTIVE = TestData.isInteractiveTest();
 	}
 
 	@Before
@@ -1100,10 +955,6 @@ public class ImageMosaicReaderTest extends Assert{
 		index_unique_paletteAlphaURL = TestData.url(this,"index_alpha_unique_palette/");
 		
 		imposedEnvelopeURL=TestData.url(this,"env");
-		
-		interactive = TestData.isInteractiveTest();
-	
-		
 	
 	}
 
@@ -1114,7 +965,7 @@ public class ImageMosaicReaderTest extends Assert{
 	 * @throws IOException
 	 */
 	private void cleanUp() throws FileNotFoundException, IOException {
-			if(interactive)
+			if(INTERACTIVE)
 				return;
 			File dir=TestData.file(this, "overview/");
 			File[] files = dir.listFiles(

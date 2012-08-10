@@ -162,7 +162,16 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
             java.net.URL capabilitiesURL = super.serverURL;
             // guess server implementation from capabilities URI
             String uri = capabilitiesURL.toExternalForm();
-            if (uri.contains("geoserver")) {
+            /*
+             * TODO: the "file:" test is a workaround for GEOT-4223
+             * 
+             * Gabriel Roldán commented on GEOT-4223: sigh, yeah, that's probably that worse heuristic ever, but its inherited from the current wfs
+             * 1.0 module. We've briefly discussed a better approach on the list a while back (checking for the list of supported functions to figure
+             * out whether its a geoserver. Some key function names may even let you know which geoserver version it is). For the time being, please
+             * feel free to apply the patch if its a blocker for you, but don't close this issue. Just add a reminder that the heuristic for geoserver
+             * needs to be improved?
+             */
+            if (!uri.startsWith("file:") && uri.contains("geoserver")) {
                 strategy = new GeoServerPre200Strategy();
             } else if (uri.contains("/ArcGIS/services/")) {
                 strategy = new StrictWFS_1_x_Strategy(); // new ArcGISServerStrategy();

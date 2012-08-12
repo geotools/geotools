@@ -22,11 +22,13 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.StringTokenizer;
 
 import org.geotools.gce.imagemosaic.jdbc.AbstractTest;
 import org.geotools.gce.imagemosaic.jdbc.Config;
 import org.geotools.gce.imagemosaic.jdbc.DBDialect;
+
 
 import junit.framework.Assert;
 import junit.framework.Test;
@@ -173,9 +175,18 @@ public class PGRasterOnlineTest extends AbstractTest {
             ps.setString(2, "rtable3");
             ps.execute();
             
+            con.prepareStatement(
+                    "CREATE TABLE \"public\".\"rtable1\" (\"rid\" serial PRIMARY KEY,\"rast\" raster,\"filename\" text)").execute();
+            con.prepareStatement(
+                    "CREATE TABLE \"public\".\"rtable2\" (\"rid\" serial PRIMARY KEY,\"rast\" raster,\"filename\" text)").execute();
+            con.prepareStatement(
+                    "CREATE TABLE \"public\".\"rtable3\" (\"rid\" serial PRIMARY KEY,\"rast\" raster,\"filename\" text)").execute();
             
+
+/*            
             con.prepareStatement(
                     "CREATE TABLE \"public\".\"rtable1\" (rid serial PRIMARY KEY, \"filename\" text)").execute();
+ 
             
             con.prepareStatement(
                     "SELECT AddRasterColumn('public','rtable1','rast',4326, ARRAY['8BUI','8BUI','8BUI','8BUI'], "+outdb+
@@ -194,6 +205,7 @@ public class PGRasterOnlineTest extends AbstractTest {
             con.prepareStatement(
                     "SELECT AddRasterColumn('public','rtable3','rast',4326, ARRAY['8BUI','8BUI','8BUI','8BUI'], "+outdb+
                     ", false, null, 0.030188679245283, -0.020408163265306, null, null, null)").execute();
+*/                    
 
 //            con.prepareStatement("alter table raster1 drop constraint enforce_srid_rast").execute();
 //            con.prepareStatement("alter table raster2 drop constraint enforce_srid_rast").execute();
@@ -222,11 +234,25 @@ public class PGRasterOnlineTest extends AbstractTest {
             con.prepareStatement(
                     "CREATE INDEX \"rtable1_rast_gist_idx\" ON \"public\".\"rtable1\" USING GIST (st_convexhull(rast))").execute();
             con.prepareStatement(
-                    "CREATE INDEX \"rtable2_rast_gist_idx\" ON \"public\".\"rtable2\" USING GIST (st_convexhull(rast))").execute();            
+                    "ANALYZE \"public\".\"rtable1\"").execute();
             con.prepareStatement(
-                    "CREATE INDEX \"rtable3_rast_gist_idx\" ON \"public\".\"rtable3\" USING GIST (st_convexhull(rast))").execute();            
+                    "SELECT AddRasterConstraints('public','rtable1','rast',TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE)").execute();
+            
+            con.prepareStatement(
+                    "CREATE INDEX \"rtable2_rast_gist_idx\" ON \"public\".\"rtable2\" USING GIST (st_convexhull(rast))").execute();
+            con.prepareStatement(
+                    "ANALYZE \"public\".\"rtable2\"").execute();
+            con.prepareStatement(
+                    "SELECT AddRasterConstraints('public','rtable2','rast',TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE)").execute();
 
-
+            
+            con.prepareStatement(
+                    "CREATE INDEX \"rtable3_rast_gist_idx\" ON \"public\".\"rtable3\" USING GIST (st_convexhull(rast))").execute();
+            con.prepareStatement(
+                    "ANALYZE \"public\".\"rtable3\"").execute();
+            con.prepareStatement(
+                    "SELECT AddRasterConstraints('public','rtable3','rast',TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE)").execute();
+            
             con.commit();
             //con.close();
         } catch (Exception e) {                   
@@ -243,44 +269,19 @@ public class PGRasterOnlineTest extends AbstractTest {
         java.sql.Connection con = null;
         try {
             con = getDBDialect().getConnection();
+            con.prepareStatement("DROP TABLE if exists MOSAIC").execute();            
+            con.prepareStatement("DROP TABLE IF EXISTS \"public\".\"rtable1\"").execute();
+            con.prepareStatement("DROP TABLE IF EXISTS \"public\".\"rtable2\"").execute();
+            con.prepareStatement("DROP TABLE IF EXISTS \"public\".\"rtable3\"").execute();
+            con.commit();
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail(e.getMessage());            
-        }        
-        try {            
-            con.prepareStatement("DROP TABLE MOSAIC").execute();
-            con.commit();
-        } catch (Exception e) {}
-        try {
-            con.prepareStatement("SELECT DropRasterColumn ('public','rtable1','rast')").execute();
-            con.commit();
-        } catch (Exception e) {}
-        try {
-            con.prepareStatement("DROP TABLE rtable1").execute();
-            con.commit();
-        } catch (Exception e) {}
-        try {
-            con.prepareStatement("SELECT DropRasterColumn ('public','rtable2','rast')").execute();
-            con.commit();
-        } catch (Exception e) {}
-        
-        try {
-            con.prepareStatement("DROP TABLE rtable2").execute();
-            con.commit();
-        } catch (Exception e) {}
-        try {            
-            con.prepareStatement("SELECT DropRasterColumn ('public','rtable3','rast')").execute();
-            con.commit();
-        } catch (Exception e) {}               
-        try {            
-            con.prepareStatement("DROP TABLE rtable3").execute();
-            con.commit();
-        } catch (Exception e) {}       
-        
-        try {
-            con.close();            
-        } catch (Exception e) {}                            
+        } finally {
+            try { if (con!=null) con.close(); } catch (SQLException ex) {};
+        }
     }
+        
 
     protected String[] getTileTableNames() {
         return new String[] { "rtable1", "rtable2", "rtable3" };

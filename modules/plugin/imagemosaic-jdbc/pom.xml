@@ -145,7 +145,8 @@
     <dependency>
       <groupId>postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <!-- The version number is specified in the parent POM. -->
+      <!-- Overriding version number from parent POM. -->
+      <version>9.1-901-1.jdbc4</version>
       <scope>test</scope>      
     </dependency>
     

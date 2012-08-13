@@ -51,19 +51,15 @@ import com.vividsolutions.jts.geom.Polygon;
  * within a given distance from the central point The data layer must
  * be a point layer, the reference layer must be a polygonal one"
  */
-@DescribeProcess(title = "pointBuffers", description = "Generates a set of polygons, each representing the set of points " +
-		"within a given distance from the central point"
-        + "The data layer must be a point layer, the reference layer must be a polygonal one")
+@DescribeProcess(title = "Point Buffers", description = "Returns a collection of circular buffer polygons with specified radii centered on a given point")
 public class PointBuffers implements GSProcess {
 
-    @DescribeResult(name = "buffers", description = "The buffers. Each feature has a 'geom' attribute and a 'radius' attribute")
+    @DescribeResult(name = "buffers", description = "Features for the circular buffer polygons around the point, with attributes geom and radius")
     public SimpleFeatureCollection execute(
-            @DescribeParameter(name = "center", description = "The buffers center") Point center,
-            @DescribeParameter(name = "crs", description = "The coordinate reference system "
-                    + "in which the point expressed and the points will be generated", min = 0) CoordinateReferenceSystem crs,
-            @DescribeParameter(name = "distances", description = "The buffer distances, in meters") double[] distances,
-            @DescribeParameter(name = "quadrantSegments", description = "Number of segments per quadrant "
-                    + "in the generated buffers (8 by default)", min = 0) Integer quadrantSegments,
+            @DescribeParameter(name = "center", description = "Input point") Point center,
+            @DescribeParameter(name = "crs", description = "Coordinate reference system of the point and the generated buffer polygons", min = 0) CoordinateReferenceSystem crs,
+            @DescribeParameter(name = "distances", description = "Buffer radius distance, in meters") double[] distances,
+            @DescribeParameter(name = "quadrantSegments", description = "Number of line segments per quarter-circle to be generated.  Larger numbers produce smoother shapes but larger numbers of vertices. Default is 8", min = 0) Integer quadrantSegments,
             ProgressListener listener) {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.add("geom", Polygon.class, crs);

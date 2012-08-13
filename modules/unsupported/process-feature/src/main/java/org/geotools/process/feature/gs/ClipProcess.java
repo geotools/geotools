@@ -62,13 +62,13 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  * @source $URL$
  */
-@DescribeProcess(title = "rectangularClip", description = "Clips the features to the specified geometry")
+@DescribeProcess(title = "Clip", description = "Clips (crops) features to a given geometry")
 public class ClipProcess implements GSProcess {
 
-    @DescribeResult(name = "result", description = "The feature collection bounds")
+    @DescribeResult(name = "result", description = "Clipped feature collection")
     public SimpleFeatureCollection execute(
-            @DescribeParameter(name = "features", description = "The feature collection to be simplified") SimpleFeatureCollection features,
-            @DescribeParameter(name = "clip", description = "The clipping area (in the same SRS as the feature collection") Geometry clip)
+            @DescribeParameter(name = "features", description = "Input feature collection") SimpleFeatureCollection features,
+            @DescribeParameter(name = "clip", description = "Geometry to use for clipping (in same CRS as input features)") Geometry clip)
             throws ProcessException {
         // only get the geometries in the bbox of the clip
         Envelope box = clip.getEnvelopeInternal();

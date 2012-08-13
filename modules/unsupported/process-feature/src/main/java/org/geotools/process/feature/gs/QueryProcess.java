@@ -31,19 +31,18 @@ import org.geotools.process.ProcessException;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 
-@DescribeProcess(title = "Query", description = "Applies a filter and an attribute selection to the incoming feature collection. "
-        + "The process can be also used as a pure format converter when no filtering or attribute selection is performed")
+@DescribeProcess(title = "Query", description = "Queries a feature collection using an optional filter and an optional list of attributes to include.  Can also be used to convert feature collection format.")
 /**
  * 
  *
  * @source $URL$
  */
 public class QueryProcess implements GSProcess {
-    @DescribeResult(name = "result", description = "The filtered collection")
+    @DescribeResult(name = "result", description = "The filtered feature collection")
     public SimpleFeatureCollection execute(
-            @DescribeParameter(name = "features", description = "The feature collection to filter") SimpleFeatureCollection features,
-            @DescribeParameter(name = "attribute", description = "The attribute name(s)", collectionType = String.class, min = 0) List<String> attributes,
-            @DescribeParameter(name = "filter", min = 0, description = "Filters the input features") Filter filter)
+            @DescribeParameter(name = "features", description = "Input feature collection") SimpleFeatureCollection features,
+            @DescribeParameter(name = "attribute", description = "Attribute to include in output", collectionType = String.class, min = 0) List<String> attributes,
+            @DescribeParameter(name = "filter", min = 0, description = "The filter to apply") Filter filter)
             throws ProcessException {
         // apply filtering if necessary
         if (filter != null && !filter.equals(Filter.INCLUDE)) {

@@ -47,12 +47,12 @@ import com.vividsolutions.jts.geom.Point;
  *
  * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/process-feature/src/main/java/org/geotools/process/feature/gs/CentroidProcess.java $
  */
-@DescribeProcess(title = "centroid", description = "Returns centroids of the geometries in the feature collection")
+@DescribeProcess(title = "Centroid", description = "Computes the geometric centroids of features")
 public class CentroidProcess implements GSProcess {
 
-    @DescribeResult(name = "result", description = "The feature collection with centroids")
+    @DescribeResult(name = "result", description = "Centroids of input features")
     public SimpleFeatureCollection execute(
-            @DescribeParameter(name = "features", description = "The feature collection to get centroids for") SimpleFeatureCollection features)
+            @DescribeParameter(name = "features", description = "Input feature collection") SimpleFeatureCollection features)
             throws ProcessException {
         return DataUtilities.simple(new CentroidFeatureCollection(features));
     }

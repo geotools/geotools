@@ -34,13 +34,13 @@ import org.geotools.process.gs.GSProcess;
  *
  * @source $URL$
  */
-@DescribeProcess(title = "rectangularClip", description = "Clips the features to the specified bounding box")
+@DescribeProcess(title = "Rectangular Clip", description = "Clips (crops) features to the specified rectangular extent")
 public class RectangularClipProcess implements GSProcess {
 
-    @DescribeResult(name = "result", description = "The feature collection bounds")
+    @DescribeResult(name = "result", description = "Clipped feature collection")
     public SimpleFeatureCollection execute(
-            @DescribeParameter(name = "features", description = "The feature collection to be simplified") SimpleFeatureCollection features,
-            @DescribeParameter(name = "clip", description = "The clipping area") ReferencedEnvelope clip)
+            @DescribeParameter(name = "features", description = "Input feature collection") SimpleFeatureCollection features,
+            @DescribeParameter(name = "clip", description = "Bounds of clipping rectangle") ReferencedEnvelope clip)
             throws ProcessException {
         return new ClipProcess().execute(features, JTS.toGeometry(clip));
     }

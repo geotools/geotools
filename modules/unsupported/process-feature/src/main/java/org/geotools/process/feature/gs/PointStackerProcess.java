@@ -77,7 +77,7 @@ import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
  * @author mdavis
  *
  */
-@DescribeProcess(title = "PointStacker", description = "Aggregates a collection of points into a set of stacked points.")
+@DescribeProcess(title = "Point Stacker", description = "Aggregates a collection of points over a grid into one point per grid cell.")
 public class PointStackerProcess implements GSProcess {
 
     public static final String ATTR_GEOM = "geom";
@@ -93,19 +93,19 @@ public class PointStackerProcess implements GSProcess {
     
     // no process state is defined, since RenderingTransformation processes must be stateless
 
-    @DescribeResult(name = "result", description = "The collection of stacked points")
+    @DescribeResult(name = "result", description = "Aggregated feature collection")
     public SimpleFeatureCollection execute(
 
             // process data
-            @DescribeParameter(name = "data", description = "Features containing the data points") SimpleFeatureCollection data,
+            @DescribeParameter(name = "data", description = "Input feature collection") SimpleFeatureCollection data,
 
             // process parameters
-            @DescribeParameter(name = "cellSize", description = "Cell size for gridding, in pixels") Integer cellSize,
+            @DescribeParameter(name = "cellSize", description = "Grid cell size to aggregate to, in pixels") Integer cellSize,
 
             // output image parameters
-            @DescribeParameter(name = "outputBBOX", description = "Georeferenced bounding box of the output image") ReferencedEnvelope outputEnv,
-            @DescribeParameter(name = "outputWidth", description = "Width of the output image, in pixels") Integer outputWidth,
-            @DescribeParameter(name = "outputHeight", description = "Height of the output image, in pixels") Integer outputHeight,
+            @DescribeParameter(name = "outputBBOX", description = "Bounding box for target image extent") ReferencedEnvelope outputEnv,
+            @DescribeParameter(name = "outputWidth", description = "Target image width in pixels") Integer outputWidth,
+            @DescribeParameter(name = "outputHeight", description = "Target image height in pixels") Integer outputHeight,
 
             ProgressListener monitor) throws ProcessException, TransformException {
 

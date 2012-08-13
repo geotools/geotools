@@ -39,12 +39,12 @@ import com.vividsolutions.jts.geom.GeometryCollection;
  *
  * @source $URL$
  */
-@DescribeProcess(title = "collectGeometries", description = "Collects all the default geometries in the feature collection and returns them as a single geometry collection")
+@DescribeProcess(title = "Collect Geometries", description = "Collects the deafult geometries of the input features and combines them into a single geometry collection")
 public class CollectGeometries implements GSProcess {
 
-    @DescribeResult(name = "result", description = "The reprojected features")
+    @DescribeResult(name = "result", description = "Geometry collection of all input geometries")
     public GeometryCollection execute(
-            @DescribeParameter(name = "features", description = "The feature collection whose geometries will be collected") FeatureCollection features,
+            @DescribeParameter(name = "features", description = "Input feature collection") FeatureCollection features,
             ProgressListener progressListener) throws IOException {
         int count = features.size();
         float done = 0;

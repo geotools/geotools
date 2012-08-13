@@ -461,7 +461,8 @@ public abstract class JDBCJoinTest extends JDBCTestSupport {
             while(it.hasNext()) {
                 SimpleFeature f = it.next();
                 assertEquals(6, f.getAttributeCount());
-                Integer idx = (Integer) f.getAttribute(aname("join1intProperty"));
+                Number nmb = (Number) f.getAttribute(aname("join1intProperty"));
+                Integer idx = nmb.intValue(); 
                 assertTrue(idx < 3);
                 SimpleFeature g = (SimpleFeature) f.getAttribute(tname("ft1"));
                 assertNotNull(g);

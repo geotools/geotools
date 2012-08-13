@@ -81,7 +81,7 @@ public class JDBCJoiningFeatureReader extends JDBCFeatureReader {
                     // is claimed in the comment in the close() method below. See GEOT-4204.
                 }
             };
-        	joinReaders.add(joinReader);
+            joinReaders.add(joinReader);
             offset += ft.getAttributeCount() + joinReader.getPrimaryKey().getColumns().size();
         }
 

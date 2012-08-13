@@ -38,17 +38,27 @@ public abstract class JDBCJoinTestSetup extends JDBCDelegatingTestSetup {
     }
 
     /**
-     * Creates a table with the following schema:
+     * Creates two tables with the following schema:
      * <p>
-     * ftjoin( id:Integer; name:String; geom:POLYGON )
+     * ftjoin( id:Integer; name:String; geom:POLYGON; join1intProperty:Integer )
      * </p>
-     * <p>
      * The table should be populated with the following data:
-     * 0 | 'zero' | POLYGON ((-0.1 -0.1, -0.1 0.1, 0.1 0.1, 0.1 -0.1, -0.1 -0.1))
-     * 1 | 'one' | POLYGON ((-1.1 -1.1, -1.1 1.1, 1.1 1.1, 1.1 -1.1, -1.1 -1.1))
-     * 2 | 'two' | POLYGON ((-10 -10, -10 10, 10 10, 10 -10, -10 -10))
-     * 3 | 'three' | NULL
+     * <pre>
+     * 0 | 'zero' | POLYGON ((-0.1 -0.1, -0.1 0.1, 0.1 0.1, 0.1 -0.1, -0.1 -0.1)) | 0
+     * 1 | 'one' | POLYGON ((-1.1 -1.1, -1.1 1.1, 1.1 1.1, 1.1 -1.1, -1.1 -1.1)) | 1
+     * 2 | 'two' | POLYGON ((-10 -10, -10 10, 10 10, 10 -10, -10 -10)) | 2
+     * 3 | 'three' | NULL | 3
+     * </pre>
+     * <p>
+     * ftjoin2( id:Integer; join2intProperty:Integer; stringProperty2:String )
      * </p>
+     * The table should be populated with the following data:
+     * <pre>
+     * 0 | 0 | '2nd zero'
+     * 1 | 1 | '2nd one'
+     * 2 | 2 | '2nd two'
+     * 3 | 3 | '2nd three'
+     * </pre>
      */
     protected abstract void createJoinTable() throws Exception;
 

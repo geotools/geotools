@@ -19,8 +19,8 @@ public class PostgisPrimaryKeyFinderTest extends JDBCPrimaryKeyFinderTest {
     }
 
 	@Override
-	protected HashMap getDataStoreFactoryParams() throws Exception {
-		HashMap params = super.getDataStoreFactoryParams();
+	protected HashMap createDataStoreFactoryParams() throws Exception {
+		HashMap params = super.createDataStoreFactoryParams();
 		params.put(JDBCDataStoreFactory.PK_METADATA_TABLE.key, "gt_pk_metadata");
 		return params;
 	}

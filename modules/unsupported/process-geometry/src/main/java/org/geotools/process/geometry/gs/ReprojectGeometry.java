@@ -34,14 +34,14 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  * @source $URL$
  */
-@DescribeProcess(title = "reprojectGeometry", description = "Reprojects the specified geometry from the source CRS to the target one)")
+@DescribeProcess(title = "Reproject Geometry", description = "Reprojects a given geometry into a supplied coordinate reference system.")
 public class ReprojectGeometry implements GSProcess {
 
-    @DescribeResult(name = "result", description = "The reprojected geometry")
+    @DescribeResult(name = "result", description = "Reprojected geometry")
     public Geometry execute(
-            @DescribeParameter(name = "geometry", description = "The geometry to be reprojected") Geometry geometry,
-            @DescribeParameter(name = "sourceCRS", min = 0, description = "The source CRS") CoordinateReferenceSystem sourceCRS,
-            @DescribeParameter(name = "targetCRS", min = 0, description = "The target CRS") CoordinateReferenceSystem targetCRS)
+            @DescribeParameter(name = "geometry", description = "Input geometry") Geometry geometry,
+            @DescribeParameter(name = "sourceCRS", min = 0, description = "Coordinate reference system of input geometry") CoordinateReferenceSystem sourceCRS,
+            @DescribeParameter(name = "targetCRS", min = 0, description = "Target coordinate reference system to use for reprojection") CoordinateReferenceSystem targetCRS)
             throws Exception {
 
         return JTS.transform(geometry, CRS.findMathTransform(sourceCRS, targetCRS, true));

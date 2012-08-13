@@ -207,7 +207,7 @@ public abstract class JDBCDataStoreFactory extends AbstractDataStoreFactory {
                 tableFinder.setTableSchema(parts[0]);
                 tableFinder.setTableName(parts[1]);
             } else {
-                tableFinder.setTableSchema(metadataTable);
+                tableFinder.setTableName(metadataTable);
             }
             dataStore.setPrimaryKeyFinder(new CompositePrimaryKeyFinder(tableFinder, 
                     new HeuristicPrimaryKeyFinder()));

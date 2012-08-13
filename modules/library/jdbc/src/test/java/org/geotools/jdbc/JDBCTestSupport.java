@@ -132,10 +132,7 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
 
         //create the dataStore
         //TODO: replace this with call to datastore factory
-        HashMap params = new HashMap();
-        params.put( JDBCDataStoreFactory.NAMESPACE.key, "http://www.geotools.org/test" );
-        params.put( JDBCDataStoreFactory.SCHEMA.key, "geotools" );
-        params.put( JDBCDataStoreFactory.DATASOURCE.key, setup.getDataSource() );
+        HashMap params = getDataStoreFactoryParams();
         
         JDBCDataStoreFactory factory = setup.createDataStoreFactory();
         dataStore = factory.createDataStore( params );
@@ -145,6 +142,14 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
     }
 
     protected abstract JDBCTestSetup createTestSetup();
+
+    protected HashMap getDataStoreFactoryParams() throws Exception{
+	HashMap params = new HashMap();
+        params.put( JDBCDataStoreFactory.NAMESPACE.key, "http://www.geotools.org/test" );
+        params.put( JDBCDataStoreFactory.SCHEMA.key, "geotools" );
+        params.put( JDBCDataStoreFactory.DATASOURCE.key, setup.getDataSource() );
+        return params;
+    }
 
     protected void disconnect() throws Exception {
         setup.tearDown();

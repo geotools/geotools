@@ -41,7 +41,7 @@ import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.linearref.LengthIndexedLine;
 import com.vividsolutions.jts.operation.linemerge.LineMerger;
 
-@DescribeProcess(title = "LRSSegment", description = "Return a segment geometry for a LRM measure range")
+@DescribeProcess(title = "Extract Segment in LRS", description = "Extracts segment between a given start and end measure from LRS features")
 /**
  * 
  *
@@ -61,13 +61,13 @@ public class LRSSegmentProcess implements GSProcess {
      * @return the snapped to feature
      * @throws ProcessException error
      */
-    @DescribeResult(name = "result", description = "The segment geometry")
+    @DescribeResult(name = "result", description = "Output feature collection")
     public FeatureCollection execute(
-            @DescribeParameter(name = "features", description = "The features to search") FeatureCollection featureCollection,
-            @DescribeParameter(name = "from_measure_attb", description = "The feature attribue holding the features starting measure") String fromMeasureAttb,
-            @DescribeParameter(name = "to_measure_attb", description = "The feature attribue holding the features ending measure") String toMeasureAttb,
-            @DescribeParameter(name = "from_measure", description = "The from LRS measure") Double fromMeasure,
-            @DescribeParameter(name = "to_measure", description = "The to LRS measure") Double toMeasure)
+            @DescribeParameter(name = "features", description = "Input feature collection") FeatureCollection featureCollection,
+            @DescribeParameter(name = "from_measure_attb", description = "Attribute providing start measure of feature") String fromMeasureAttb,
+            @DescribeParameter(name = "to_measure_attb", description = "Attribute providing end measure of feature") String toMeasureAttb,
+            @DescribeParameter(name = "from_measure", description = "Measure for start of segment to extract") Double fromMeasure,
+            @DescribeParameter(name = "to_measure", description = "Measure for end of segment to extract") Double toMeasure)
             throws ProcessException {
         FeatureCollection results = FeatureCollections.newCollection();
         try {

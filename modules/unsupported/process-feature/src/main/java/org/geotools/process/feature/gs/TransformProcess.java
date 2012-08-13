@@ -104,7 +104,7 @@ import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
  * 
  * @source $URL$
  */
-@DescribeProcess(title = "transform", description = "Transform feature collection")
+@DescribeProcess(title = "Transform", description = "Computes a new feature collection from the input one by renaming, deleting, and computing new attributes.  Attribute values are specified as ECQL expressions in the form name=expression.")
 public class TransformProcess implements GSProcess {
     /**
      * Definition of an attribute used during transform
@@ -125,10 +125,10 @@ public class TransformProcess implements GSProcess {
     }
     private static final String DEF_DELIMITER = ";";
     
-    @DescribeResult(name = "result", description = "transformed features")
+    @DescribeResult(name = "result", description = "Transformed feature collection")
     public SimpleFeatureCollection execute(
-            @DescribeParameter(name = "features", description = "The feature collection to transform") SimpleFeatureCollection features,
-            @DescribeParameter(name = "transform", description = "Transform defined with one 'attribute=expr' pair per line") String transform)
+            @DescribeParameter(name = "features", description = "Input feature collection") SimpleFeatureCollection features,
+            @DescribeParameter(name = "transform", description = "The transform specification, as a list of specifiers of the form name=expression, delimited by newlines or semicolons.") String transform)
             throws ProcessException {
         if (transform == null) {
             return features; // no change
@@ -137,10 +137,10 @@ public class TransformProcess implements GSProcess {
         return executeList(features, list);
     }
 
-    @DescribeResult(name = "result", description = "transformed features")
+    @DescribeResult(name = "result", description = "Transformed feature collection")
     public SimpleFeatureCollection executeList(
-            @DescribeParameter(name = "features", description = "The feature collection to rehaped") SimpleFeatureCollection features,
-            @DescribeParameter(name = "transform", description = "List of Definitions for the output feature type") List<Definition> transform)
+            @DescribeParameter(name = "features", description = "Input feature collection") SimpleFeatureCollection features,
+            @DescribeParameter(name = "transform", description = "List of Definitions for the output feature attributes") List<Definition> transform)
             throws ProcessException {
         if (transform == null) {
             return features; // no change

@@ -52,7 +52,7 @@ import org.opengis.util.ProgressListener;
  *
  * @source $URL$
  */
-@DescribeProcess(title = "aggregateProcess", description = "Computes various attribute statistics over vector data sets")
+@DescribeProcess(title = "Aggregate", description = "Computes one or more aggregation functions on a feature attribute. Functions include Count, Average, Max, Median, Min, StdDev, and Sum.")
 public class AggregateProcess implements GSProcess {
     // the functions this process can handle
     public enum AggregationFunction {
@@ -72,12 +72,12 @@ public class AggregateProcess implements GSProcess {
         return process.execute(features, aggAttribute, functions, singlePass, progressListener);
     }
     
-    @DescribeResult(name = "result", description = "The aggregate value")
+    @DescribeResult(name = "result", description = "Aggregation results (one value for each function computed)")
     public Results execute(
-            @DescribeParameter(name = "features", description = "The feature collection that will be aggregate") SimpleFeatureCollection features,
-            @DescribeParameter(name = "aggregationAttribute", min = 0, description = "The attribute used for aggregation") String aggAttribute,
-            @DescribeParameter(name = "function", description = "The aggregation functions to be used", collectionType = AggregationFunction.class) Set<AggregationFunction> functions,
-            @DescribeParameter(name = "singlePass", description = "If all the results should be computed in a single pass (will break DBMS specific optimizations)", min = 0) Boolean singlePass,
+            @DescribeParameter(name = "features", description = "Input feature collection") SimpleFeatureCollection features,
+            @DescribeParameter(name = "aggregationAttribute", min = 0, description = "Attribute on which to perform aggregation") String aggAttribute,
+            @DescribeParameter(name = "function", description = "An aggregate function to compute. Functions include Count, Average, Max, Median, Min, StdDev, and Sum.", collectionType = AggregationFunction.class) Set<AggregationFunction> functions,
+            @DescribeParameter(name = "singlePass", description = "If True computes all aggregation values in a single pass (this will defeat DBMS-specific optimizations)", min = 0) Boolean singlePass,
             ProgressListener progressListener) throws ProcessException, IOException {
 
         int attIndex = -1;

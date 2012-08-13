@@ -46,14 +46,14 @@ import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
  *
  * @source $URL$
  */
-@DescribeProcess(title = "simplify", description = "Simplifies the geometry")
+@DescribeProcess(title = "Simplify", description = "Simplifies feature geometry by reducing vertices using Douglas-Peucker simplification.")
 public class SimplifyProcess implements GSProcess {
 
     @DescribeResult(name = "result", description = "The simplified feature collection")
     public SimpleFeatureCollection execute(
-            @DescribeParameter(name = "features", description = "The feature collection to be simplified") SimpleFeatureCollection features,
-            @DescribeParameter(name = "distance", description = "The simplification distance (should be positive)") double distance,
-            @DescribeParameter(name = "preserveTopology", description = "Wheter a topology preserving simplification should be used", min = 0) Boolean preserveTopology)
+            @DescribeParameter(name = "features", description = "Input feature collection") SimpleFeatureCollection features,
+            @DescribeParameter(name = "distance", description = "Simplification distance tolerance") double distance,
+            @DescribeParameter(name = "preserveTopology", description = "If True, ensures that simplified features are topologically valid", min = 0) Boolean preserveTopology)
             throws ProcessException {
         if (distance < 0) {
             throw new ProcessException("Invalid distance, it should be a positive number");

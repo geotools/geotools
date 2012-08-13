@@ -45,10 +45,9 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Andrea Di Nora - Sinergis
  * @author Pietro Arena - Sinergis
  */
-@DescribeProcess(title = "inclusion", description = "Provide a feature collection containing the features of "
-        + "the first input collection included in at least one feature of the the second feature collection")
+@DescribeProcess(title = "Inclusion of Feature Collections", description = "Returns a feature collection consisting of the features from the first collection which are spatially contained in at least one feature of the second collection.")
 public class InclusionFeatureCollection implements GSProcess {
-    @DescribeResult(description = "feature collection containg the features of the first collection included in the second collection")
+    @DescribeResult(description = "Output feature collection")
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "first feature collection", description = "First feature collection") SimpleFeatureCollection firstFeatures,
             @DescribeParameter(name = "second feature collection", description = "Second feature collection") SimpleFeatureCollection secondFeatures) {

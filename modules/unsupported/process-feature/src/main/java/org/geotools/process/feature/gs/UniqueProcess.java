@@ -40,17 +40,17 @@ import org.opengis.util.ProgressListener;
  *
  * @source $URL$
  */
-@DescribeProcess(title = "Unique values", description = "Returns the unique values of a certain attribute")
+@DescribeProcess(title = "Unique", description = "Returns the unique values of a given attribute in a feature collection.")
 public class UniqueProcess implements GSProcess {
     // the functions this process can handle
     public enum AggregationFunction {
         Average, Max, Median, Min, StdDev, Sum;
     }
 
-    @DescribeResult(name = "result", description = "The list of unique values extracted from the feature list")
+    @DescribeResult(name = "result", description = "Feature collection with an attribute containing the unique values")
     public SimpleFeatureCollection execute(
-            @DescribeParameter(name = "features", description = "The feature collection that will be inspected") SimpleFeatureCollection features,
-            @DescribeParameter(name = "attribute", description = "The attribute whose unique values will be returned") String attribute,
+            @DescribeParameter(name = "features", description = "Input feature collection") SimpleFeatureCollection features,
+            @DescribeParameter(name = "attribute", description = "Attribute whose unique values are extracted") String attribute,
             ProgressListener progressListener) throws Exception {
 
         int attIndex = -1;

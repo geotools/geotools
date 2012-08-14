@@ -60,7 +60,7 @@ public class GridProcess implements GSProcess {
             @DescribeParameter(name = "width", description = "Width of a cell (in units of the grid CRS)") double width,
             @DescribeParameter(name = "height", description = "Height of a cell (in units of the grid CRS).  Only for rectangular grid, defaults to equal width.", min = 0) Double height,
             @DescribeParameter(name = "vertexSpacing", description = "Distance between vertices along cell sides (in units of the grid CRS)", min = 0) Double vertexSpacing,
-            @DescribeParameter(name = "mode", description = "Type of grid to be generated.  Specifies shape of cells in grid.", min = 0) GridMode mode)
+            @DescribeParameter(name = "mode", description = "Type of grid to be generated.  Specifies shape of cells in grid.", defaultValue = "Rectangular") GridMode mode)
             throws ProcessException {
         final GridFeatureBuilder builder = new GridFeatureBuilderImpl(bounds
                 .getCoordinateReferenceSystem());

@@ -53,14 +53,13 @@ public class SimplifyProcess implements GSProcess {
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "features", description = "Input feature collection") SimpleFeatureCollection features,
             @DescribeParameter(name = "distance", description = "Simplification distance tolerance") double distance,
-            @DescribeParameter(name = "preserveTopology", description = "If True, ensures that simplified features are topologically valid", min = 0) Boolean preserveTopology)
+            @DescribeParameter(name = "preserveTopology", description = "If True, ensures that simplified features are topologically valid",  defaultValue = "false") boolean preserveTopology)
             throws ProcessException {
         if (distance < 0) {
             throw new ProcessException("Invalid distance, it should be a positive number");
         }
 
-        return new SimplifyingFeatureCollection(features, distance,
-                preserveTopology == null ? Boolean.FALSE : preserveTopology);
+        return new SimplifyingFeatureCollection(features, distance, preserveTopology);
     }
 
     static class SimplifyingFeatureCollection extends DecoratingSimpleFeatureCollection {

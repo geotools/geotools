@@ -77,7 +77,7 @@ public class AggregateProcess implements GSProcess {
             @DescribeParameter(name = "features", description = "Input feature collection") SimpleFeatureCollection features,
             @DescribeParameter(name = "aggregationAttribute", min = 0, description = "Attribute on which to perform aggregation") String aggAttribute,
             @DescribeParameter(name = "function", description = "An aggregate function to compute. Functions include Count, Average, Max, Median, Min, StdDev, and Sum.", collectionType = AggregationFunction.class) Set<AggregationFunction> functions,
-            @DescribeParameter(name = "singlePass", description = "If True computes all aggregation values in a single pass (this will defeat DBMS-specific optimizations)", min = 0) Boolean singlePass,
+            @DescribeParameter(name = "singlePass", description = "If True computes all aggregation values in a single pass (this will defeat DBMS-specific optimizations)", defaultValue = "false") boolean singlePass,
             ProgressListener progressListener) throws ProcessException, IOException {
 
         int attIndex = -1;
@@ -123,7 +123,7 @@ public class AggregateProcess implements GSProcess {
         }
 
         EnumMap<AggregationFunction, Number> results = new EnumMap<AggregationFunction, Number>(AggregationFunction.class);
-        if (singlePass != null && singlePass) {
+        if (singlePass) {
             AggregateFeatureCalc calc = new AggregateFeatureCalc(visitors);
             features.accepts(calc, new NullProgressListener());
             List<CalcResult> resultList = (List<CalcResult>) calc.getResult().getValue();

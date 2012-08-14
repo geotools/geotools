@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2012, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,7 @@ package org.geotools.gml3.v3_2;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.StringReader;
 import java.net.URL;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -33,8 +34,10 @@ import org.eclipse.xsd.XSDSchema;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
+import org.geotools.referencing.CRS;
 import org.geotools.xml.Parser;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.w3c.dom.Document;
 
 import com.vividsolutions.jts.geom.Point;
@@ -89,4 +92,63 @@ public class GMLParsingTest extends TestCase {
         }
         features.close( fi );
     }
+
+    /**
+     * Parse an srsName from a gml:Point.
+     * 
+     * @param srsName the srsName attribute on the gml:Point
+     * @return the parsed CoordinateReferenceSystem
+     */
+    private static CoordinateReferenceSystem parsePointSrsname(String srsName) {
+        Parser parser = new Parser(new GMLConfiguration());
+        String text = "<gml:Point " //
+                + "xmlns:gml=\"http://www.opengis.net/gml/3.2\" " //
+                + "srsName=\"" + srsName + "\">" //
+                + "<gml:pos>1 2</gml:pos>" //
+                + "</gml:Point>";
+        try {
+            Point point = (Point) parser.parse(new StringReader(text));
+            return (CoordinateReferenceSystem) point.getUserData();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Test parsing of an srsName in EPSG code format.
+     */
+    public void testParseEpsgSrsname() throws Exception {
+        assertEquals(CRS.decode("EPSG:4326"), parsePointSrsname("EPSG:4326"));
+    }
+
+    /**
+     * Test parsing of an srsName in OGC HTTP URL format.
+     */
+    public void testParseOgcHttpUrlSrsname() throws Exception {
+        assertEquals(CRS.decode("EPSG:4326"),
+                parsePointSrsname("http://www.opengis.net/gml/srs/epsg.xml#4326"));
+    }
+
+    /**
+     * Test parsing of an srsName in OGC URN Experimental format.
+     */
+    public void testParseOgcUrnExperimentalSrsname() throws Exception {
+        assertEquals(CRS.decode("EPSG:4326"), parsePointSrsname("urn:x-ogc:def:crs:EPSG::4326"));
+    }
+
+    /**
+     * Test parsing of an srsName in OGC URN format.
+     */
+    public void testParseOgcUrnSrsname() throws Exception {
+        assertEquals(CRS.decode("EPSG:4326"), parsePointSrsname("urn:ogc:def:crs:EPSG::4326"));
+    }
+
+    /**
+     * Test parsing of an srsName in OGC HTTP URI format.
+     */
+    public void testParseOgcHttpUriSrsname() throws Exception {
+        assertEquals(CRS.decode("EPSG:4326"),
+                parsePointSrsname("http://www.opengis.net/def/crs/EPSG/0/4326"));
+    }
+
 }

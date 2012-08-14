@@ -6,5 +6,6 @@ org.geotools.referencing.factory.wms.AutoCRSFactory
 org.geotools.referencing.factory.wms.WebCRSFactory
 org.geotools.referencing.factory.URN_AuthorityFactory
 org.geotools.referencing.factory.HTTP_AuthorityFactory
+org.geotools.referencing.factory.HTTP_URI_AuthorityFactory
 # pending review
 org.geotools.referencing.factory.epsg.LongitudeFirstEpsgDecorator

@@ -193,9 +193,9 @@ public final class LoggingKeys {
     public static final int MISMATCHED_COORDINATE_OPERATION_FACTORIES_$2 = 29;
 
     /**
-     * The type of the requested object doesn't match the "{0}" URN type.
+     * The type of the requested object doesn't match the "{0}" URI type.
      */
-    public static final int MISMATCHED_URN_TYPE_$1 = 30;
+    public static final int MISMATCHED_URI_TYPE_$1 = 30;
 
     /**
      * Native acceleration {1,choice,0#disabled|enabled} for "{0}" operation.

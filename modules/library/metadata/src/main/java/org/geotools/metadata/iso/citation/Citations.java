@@ -398,7 +398,7 @@ public final class Citations {
 
     /**
      * URL in the OGC namespace. This citation contains the
-     * {@code "http://www.opengis.net"} {@linkplain Citation#getIdentifiers identifiers}
+     * {@code "http://www.opengis.net/gml"} {@linkplain Citation#getIdentifiers identifiers}
      * for the "Authority name" {@linkplain Citation#getIdentifierTypes identifier type}.
      *
      * @since 2.4
@@ -406,11 +406,28 @@ public final class Citations {
     public static final Citation HTTP_OGC;
     static {
         final CitationImpl c = new CitationImpl("URL in OGC namespace");
-        c.addAuthority("http://www.opengis.net", false);
+        c.addAuthority("http://www.opengis.net/gml", false);
         c.getCitedResponsibleParties().add(ResponsiblePartyImpl.OGC);
         c.getPresentationForm().add(PresentationForm.DOCUMENT_DIGITAL);
         c.freeze();
         HTTP_OGC = c;
+    }
+
+    /**
+     * HTTP URI in the OGC namespace. This citation contains the
+     * {@code "http://www.opengis.net/def"} {@linkplain Citation#getIdentifiers identifiers}
+     * for the "Authority name" {@linkplain Citation#getIdentifierTypes identifier type}.
+     * 
+     * @since 9
+     */
+    public static final Citation HTTP_URI_OGC;
+    static {
+        final CitationImpl c = new CitationImpl("HTTP URI in OGC namespace");
+        c.addAuthority("http://www.opengis.net/def", false);
+        c.getCitedResponsibleParties().add(ResponsiblePartyImpl.OGC);
+        c.getPresentationForm().add(PresentationForm.DOCUMENT_DIGITAL);
+        c.freeze();
+        HTTP_URI_OGC = c;
     }
 
 

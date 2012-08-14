@@ -32,23 +32,13 @@ import static org.junit.Assert.*;
  * @author Martin Desruisseaux
  */
 public final class URN_ParserTest {
-    /**
-     * Tests the main types.
-     */
-    @Test
-    public void testMainTypes() {
-        assertEquals("crs",                 URN_Type.MAIN[0].name);
-        assertEquals("datum",               URN_Type.MAIN[1].name);
-        assertEquals("cs",                  URN_Type.MAIN[2].name);
-        assertEquals("coordinateOperation", URN_Type.MAIN[3].name);
-    }
 
     /**
      * Parses a valid URN.
      */
     @Test
     public void testParse() throws NoSuchAuthorityCodeException {
-        final URN_Parser parser = new URN_Parser("urn:ogc:def:CRS:EPSG:6.11.2:4326");
+        final URN_Parser parser = URN_Parser.buildParser("urn:ogc:def:CRS:EPSG:6.11.2:4326");
         assertEquals("crs",       parser.type.name);
         assertEquals("EPSG",      parser.authority);
         assertEquals("6.11.2",    parser.version.toString());
@@ -61,7 +51,7 @@ public final class URN_ParserTest {
      */
     @Test
     public void testParseWithoutVersion() throws NoSuchAuthorityCodeException {
-        final URN_Parser parser = new URN_Parser("urn:ogc:def:CRS:EPSG:4326");
+        final URN_Parser parser = URN_Parser.buildParser("urn:ogc:def:CRS:EPSG:4326");
         assertEquals("crs",       parser.type.name);
         assertEquals("EPSG",      parser.authority);
         assertNull  (             parser.version);
@@ -76,7 +66,7 @@ public final class URN_ParserTest {
     public void testInvalidParse() {
         final String urn = "urn:ogcx:def:CRS:EPSG:6.8:4326";
         try {
-            new URN_Parser(urn);
+            URN_Parser.buildParser(urn);
             fail();
         } catch (NoSuchAuthorityCodeException e) {
             // This is the expected exception.
@@ -91,7 +81,7 @@ public final class URN_ParserTest {
     public void testInvalidType() {
         final String urn = "urn:ogc:def:dummy:EPSG:6.8:4326";
         try {
-            new URN_Parser(urn);
+            URN_Parser.buildParser(urn);
             fail();
         } catch (NoSuchAuthorityCodeException e) {
             // This is the expected exception.

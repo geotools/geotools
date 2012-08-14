@@ -57,7 +57,8 @@ public final class CrsTest {
         assertTrue (withoutAlias.contains("CRS"));
         assertTrue (withoutAlias.contains("AUTO2"));
         assertTrue (withoutAlias.contains("urn:ogc:def"));
-        assertTrue (withoutAlias.contains("http://www.opengis.net"));
+        assertTrue (withoutAlias.contains("http://www.opengis.net/gml"));
+        assertTrue (withoutAlias.contains("http://www.opengis.net/def"));
         assertFalse(withoutAlias.contains("AUTO"));
         assertFalse(withoutAlias.contains("urn:x-ogc:def"));
 

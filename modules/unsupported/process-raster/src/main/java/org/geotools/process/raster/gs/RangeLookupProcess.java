@@ -62,7 +62,7 @@ import org.opengis.util.ProgressListener;
  *
  * @source $URL$
  */
-@DescribeProcess(title = "reclassify", description = "Reclassifies a continous coverage into a set of ranges identified by a number")
+@DescribeProcess(title = "Reclassify", description = "Reclassifies a continous raster into integer values defined by a set of ranges")
 public class RangeLookupProcess implements GSProcess {
 	
     private final static double DEFAULT_NODATA = 0d;
@@ -73,18 +73,14 @@ public class RangeLookupProcess implements GSProcess {
         Registry.registerRIF(JAI.getDefaultInstance(), new RangeLookupDescriptor(), new RangeLookupRIF(), Registry.JAI_TOOLS_PRODUCT);
     }
 
-    @DescribeResult(name = "reclassified", description = "The resulting reclassified coverage")
+    @DescribeResult(name = "reclassified", description = "The reclassified raster")
     public GridCoverage2D execute(
-            @DescribeParameter(name = "coverage", description = "The continuous coverage to be reclassified") GridCoverage2D coverage,
-            @DescribeParameter(name = "band", description = "The band to be used for classification "
-                    + "(defaults to 0)", min = 0) Integer classificationBand,
-            @DescribeParameter(name = "ranges", description = "The list of ranges to be applied. \n"
-                    + "Each range is expressed as 'OPEN START ; END CLOSE'\n"
-                    + "where 'OPEN:=(|[, CLOSE=)|]',\n "
-                    + "START is the low value, or nothing to imply -INF,\n"
-                    + "CLOSE is the biggest value, or nothing to imply +INF", collectionType=Range.class) List<Range> classificationRanges,
-            @DescribeParameter(name = "outputPixelValues", description = "The array of pixel values to be associated to the ranges", min = 0 ) int[] outputPixelValues,
-            @DescribeParameter(name = "noData", description = "The pixel value to be assigned to input pixels outside any range (defaults to 0)", min = 0 ) Double noData,
+            @DescribeParameter(name = "coverage", description = "Input raster") GridCoverage2D coverage,
+            @DescribeParameter(name = "band", description = "Source band to use for classification (default is 0)", min = 0) Integer classificationBand,
+            @DescribeParameter(name = "ranges", description = "Specifier for a value range in the format ( START ; END ).  START and END values are optional. [ and ] can also be used as brackets, to indicate inclusion of the relevant range endpoint.", 
+            collectionType=Range.class) List<Range> classificationRanges,
+            @DescribeParameter(name = "outputPixelValues", description = "Value to be assigned to corresponding range", min = 0 ) int[] outputPixelValues,
+            @DescribeParameter(name = "noData", description = "Value to be assigned to pixels outside any range (defaults to 0)", min = 0 ) Double noData,
             ProgressListener listener) throws ProcessException {
     	
     	//

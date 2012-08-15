@@ -43,16 +43,16 @@ import com.vividsolutions.jts.geom.GeometryCollection;
  *
  * @source $URL$
  */
-@DescribeProcess(title = "cropCoverage", description = "Collects all the default geometries in the feature collection and returns them as a single geometry collection")
+@DescribeProcess(title = "Crop Coverage", description = "Returns the portion of a raster bounded by a given geometry.")
 public class CropCoverage implements GSProcess {
 
     private static final CoverageProcessor PROCESSOR = CoverageProcessor.getInstance();
     private static final Operation CROP = PROCESSOR.getOperation("CoverageCrop");
 
-    @DescribeResult(name = "result", description = "The cropped raster")
+    @DescribeResult(name = "result", description = "Cropped raster")
     public GridCoverage2D execute(
-            @DescribeParameter(name = "coverage", description = "The raster to be cropped") GridCoverage2D coverage,
-            @DescribeParameter(name = "cropShape", description = "The geometry used to crop the raster (either single or a collection)") Geometry cropShape,
+            @DescribeParameter(name = "coverage", description = "Input raster") GridCoverage2D coverage,
+            @DescribeParameter(name = "cropShape", description = "Geometry used to crop the raster") Geometry cropShape,
             ProgressListener progressListener) throws IOException {
         // get the bounds
         CoordinateReferenceSystem crs;

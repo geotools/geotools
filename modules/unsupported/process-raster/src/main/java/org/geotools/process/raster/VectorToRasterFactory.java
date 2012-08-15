@@ -58,7 +58,7 @@ public class VectorToRasterFactory extends AbstractFeatureCollectionProcessFacto
             "rasterWidth",
             Integer.class,
             Text.text("Width"),
-            Text.text("Number of cells in a raster row"),
+            Text.text("Width of the output grid in pixels"),
             true, // this parameter is mandatory
             1, 1, null, null);
     
@@ -66,7 +66,7 @@ public class VectorToRasterFactory extends AbstractFeatureCollectionProcessFacto
             "rasterHeight",
             Integer.class,
             Text.text("Height"),
-            Text.text("Number of cells in a raster column"),
+            Text.text("Height of the output grid in pixels"),
             true, // this parameter is mandatory
             1, 1, null, null);
 
@@ -78,7 +78,7 @@ public class VectorToRasterFactory extends AbstractFeatureCollectionProcessFacto
             "title",
             String.class,
             Text.text("Title"),
-            Text.text("An optional title for the output grid"),
+            Text.text("Title to use for the output grid"),
             false, // this parameter is optional
             0, 1, "raster", null);
 
@@ -93,7 +93,7 @@ public class VectorToRasterFactory extends AbstractFeatureCollectionProcessFacto
             "attribute",
             String.class,
             Text.text("Attribute"),
-            Text.text("The feature attribute to use for raster cell values"),
+            Text.text("Attribute name to use for the raster cell values"),
             true, // this parameter is mandatory
             1, 1, null, null);
 
@@ -106,7 +106,7 @@ public class VectorToRasterFactory extends AbstractFeatureCollectionProcessFacto
             "bounds",
             Envelope.class,
             Text.text("Bounds"),
-            Text.text("Bounds of the area to rasterize"),
+            Text.text("Bounding box of the area to rasterize"),
             false, // this parameter is optional
             0, 1, null, null);
 
@@ -117,7 +117,7 @@ public class VectorToRasterFactory extends AbstractFeatureCollectionProcessFacto
      */
     static final Parameter<GridCoverage2D> RESULT = new Parameter<GridCoverage2D>(
             "result", GridCoverage2D.class, Text.text("Result"), Text
-                    .text("Rasterized features"));
+                    .text("Rasterized grid"));
 
     static final Map<String,Parameter<?>> resultInfo = new LinkedHashMap<String, Parameter<?>>();
     static {
@@ -134,11 +134,11 @@ public class VectorToRasterFactory extends AbstractFeatureCollectionProcessFacto
     }
 
     public InternationalString getTitle() {
-        return Text.text("Rasterize features");
+        return Text.text("Vector to Raster");
     }
 
     public InternationalString getDescription() {
-        return Text.text("Rasterize all or selected features in a FeatureCollection");
+        return Text.text("Converts some or all of a feature collection to a raster grid, using an attribute to specify cell values.");
     }
 
     public VectorToRasterProcess create() {

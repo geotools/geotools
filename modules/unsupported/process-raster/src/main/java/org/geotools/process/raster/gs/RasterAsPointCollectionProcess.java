@@ -66,12 +66,12 @@ import com.vividsolutions.jts.geom.Point;
  *
  * @source $URL$
  */
-@DescribeProcess(title = "RasterAsPointCollection", description = "Convert a Raster into a collections of points")
+@DescribeProcess(title = "Raster As Point Collection", description = "Returns a collection of point features for the pixels of a raster.  The band values are provided as attributes.")
 public class RasterAsPointCollectionProcess implements GSProcess {
 
-    @DescribeResult(name = "result", description = "The point feature collection")
+    @DescribeResult(name = "result", description = "Point features")
     public SimpleFeatureCollection execute(
-            @DescribeParameter(name = "data", description = "The raster to be converted into a point feature collection") GridCoverage2D gc2d)
+            @DescribeParameter(name = "data", description = "Input raster") GridCoverage2D gc2d)
             throws ProcessException {
         if (gc2d ==null) {
             throw new ProcessException("Invalid input, source grid coverage should be not null");

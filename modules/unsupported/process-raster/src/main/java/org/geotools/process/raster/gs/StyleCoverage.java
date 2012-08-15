@@ -38,13 +38,13 @@ import org.geotools.styling.Style;
  *
  * @source $URL$
  */
-@DescribeProcess(title = "styleCoverage", description = "Applies a raster symbolizer to the coverage")
+@DescribeProcess(title = "Style Coverage", description = "Styles a raster using a given SLD and raster symbolizer.")
 public class StyleCoverage implements GSProcess {
 
-    @DescribeResult(name = "result", description = "The styled raster")
+    @DescribeResult(name = "result", description = "Styled image")
     public GridCoverage2D execute(
-            @DescribeParameter(name = "coverage", description = "The raster to be styled") GridCoverage2D coverage,
-            @DescribeParameter(name = "style", description = "A SLD style containing a raster symbolizer") Style style)
+            @DescribeParameter(name = "coverage", description = "Input raster") GridCoverage2D coverage,
+            @DescribeParameter(name = "style", description = "Styled Layer Descriptor (SLD) style containing a raster symbolizer") Style style)
             throws IOException {
         // TODO: perform a lookup in the entire style?
         final RasterSymbolizer symbolizer = (RasterSymbolizer) style.featureTypeStyles().get(0)

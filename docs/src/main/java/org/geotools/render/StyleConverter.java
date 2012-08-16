@@ -12,8 +12,11 @@ package org.geotools.render;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -27,6 +30,7 @@ import javax.xml.transform.TransformerException;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.geotools.data.Parameter;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.FeatureTypeConstraint;
 import org.geotools.styling.SLDParser;
@@ -34,6 +38,9 @@ import org.geotools.styling.SLDTransformer;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.UserLayer;
+import org.geotools.swing.data.JParameterListWizard;
+import org.geotools.swing.wizard.JWizard;
+import org.geotools.util.KVP;
 import org.geotools.xml.Encoder;
 import org.opengis.style.Style;
 
@@ -60,7 +67,7 @@ public class StyleConverter extends JFrame {
 
 		public void actionPerformed(ActionEvent e) {
 			String command = e.getActionCommand();
-			if ( SLD_1_0.equals(command)) {
+			if (SLD_1_0.equals(command)) {
 				convertToSLD_1_0();
 			}
 			if (SLD_1_1.equals(command)) {
@@ -111,28 +118,27 @@ public class StyleConverter extends JFrame {
 
 		importSLD = new JButton("Import SLD");
 		importSLD.setActionCommand("importSLD");
-		export.addActionListener( new ActionListener() {
+		export.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if( style != null ){
+				if (style != null) {
 					importSLD();
 				}
 			}
 		});
-		
+
 		importSE = new JButton("Import SE");
 		importSE.setEnabled(false);
-		
+
 		export = new JButton("Export");
-		export.addActionListener( new ActionListener() {
+		export.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if( style != null ){
+				if (style != null) {
 					export();
 				}
 			}
 		});
-		
 
 		getContentPane().setLayout(
 				new MigLayout("", "[[]][][][grow][]", "[][][][][grow][]"));
@@ -143,7 +149,7 @@ public class StyleConverter extends JFrame {
 		getContentPane().add(sldButton1_0, "cell 1 0");
 		getContentPane().add(seButton_1_1, "cell 2 0");
 		getContentPane().add(sldButton_1_1, "cell 3 0");
-		
+
 		getContentPane().add(new JLabel("Style"),
 				"cell 0 1,alignx left,aligny top");
 
@@ -153,15 +159,34 @@ public class StyleConverter extends JFrame {
 		getContentPane().add(export, "cell 6 5");
 	}
 
+	private File importStyleWizard(String prompt, String ext, String format) {
+		List<Parameter<?>> list = new ArrayList<Parameter<?>>();
+		list.add(new Parameter<File>("import", File.class, ext, format,
+				new KVP(Parameter.EXT, "sld")));
+
+		JParameterListWizard wizard = new JParameterListWizard("Import Style",
+				prompt, list);
+		int finish = wizard.showModalDialog();
+
+		if (finish != JWizard.FINISH) {
+			return null; // no file selected
+		}
+		File file = (File) wizard.getConnectionParameters().get("import");
+		return file;
+	}
 
 	protected void importSLD() {
-		// TODO Auto-generated method stub
+		File file = importStyleWizard("Select style layer descriptor 1.0 document","sld","style layer descriptor");
+		if( file == null ) return; // cancel
 		
+		StyleFactory factory = CommonFactoryFinder.getStyleFactory();
+		SLDParser sldParser = new SLDParser(factory);
+
 	}
 
 	protected void export() {
 		String format = group.getSelection().getActionCommand();
-		
+
 	}
 
 	private void convertToSE_1_1() {
@@ -171,14 +196,14 @@ public class StyleConverter extends JFrame {
 		}
 		org.geotools.sld.v1_1.SLDConfiguration configuration = new org.geotools.sld.v1_1.SLDConfiguration();
 		Encoder encoder = new org.geotools.xml.Encoder(configuration);
-	
+
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		try {
 			encoder.encode(style,
 					org.geotools.sld.bindings.SLD.FEATURETYPESTYLE,
 					outputStream);
 			String document = outputStream.toString("UTF-8");
-			
+
 			text.setText(document);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -194,8 +219,8 @@ public class StyleConverter extends JFrame {
 		aTransformer.setIndentation(4);
 		try {
 			String document = aTransformer.transform(style);
-			
-			display( document, SLD_1_0 );
+
+			display(document, SLD_1_0);
 		} catch (TransformerException e) {
 			e.printStackTrace();
 			return;
@@ -220,43 +245,41 @@ public class StyleConverter extends JFrame {
 					org.geotools.sld.bindings.SLD.STYLEDLAYERDESCRIPTOR,
 					outputStream);
 			String document = outputStream.toString("UTF-8");
-			
-			display( document,  SLD_1_1);
+
+			display(document, SLD_1_1);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Update displayed text and format.
+	 * 
 	 * @param document
 	 * @param format
 	 */
-	public void display(String document, String format ){
-		if( document == null ){
+	public void display(String document, String format) {
+		if (document == null) {
 			text.setText("<!-- copy or import style document here -->");
 			seButton_1_1.setSelected(false);
 			sldButton1_0.setSelected(true);
 			sldButton_1_1.setSelected(false);
 			return;
 		}
-		text.setText( document );
-		if( SLD_1_0.equals( format ) ){
-			sldButton1_0.setSelected( true );
-		}
-		else if( SLD_1_1.equals( format ) ){
-			sldButton_1_1.setSelected( true );
-		}
-		else if( SE_1_1.equals( format ) ){
-			sldButton_1_1.setSelected( true );
-		}
-		else {
+		text.setText(document);
+		if (SLD_1_0.equals(format)) {
+			sldButton1_0.setSelected(true);
+		} else if (SLD_1_1.equals(format)) {
+			sldButton_1_1.setSelected(true);
+		} else if (SE_1_1.equals(format)) {
+			sldButton_1_1.setSelected(true);
+		} else {
 			seButton_1_1.setSelected(false);
 			sldButton1_0.setSelected(false);
-			sldButton_1_1.setSelected(false);			
+			sldButton_1_1.setSelected(false);
 		}
 	}
-	
+
 	private void readSLD_1_0() {
 		StyleFactory factory = CommonFactoryFinder.getStyleFactory();
 
@@ -268,19 +291,20 @@ public class StyleConverter extends JFrame {
 			style = parsed[0];
 		}
 	}
-	
+
 	public static StyledLayerDescriptor createDefaultSLD(Style style) {
 		StyleFactory factory = CommonFactoryFinder.getStyleFactory();
-		
-        StyledLayerDescriptor sld =factory.createStyledLayerDescriptor();
-        UserLayer layer = factory.createUserLayer();
-        
-        //FeatureTypeConstraint ftc = styleFactory.createFeatureTypeConstraint(null, Filter.INCLUDE, null);
-        layer.setLayerFeatureConstraints(new FeatureTypeConstraint[] {null});
-        sld.addStyledLayer(layer);
-        layer.addUserStyle((org.geotools.styling.Style) style);
-        
-        return sld;
-    }
-	
+
+		StyledLayerDescriptor sld = factory.createStyledLayerDescriptor();
+		UserLayer layer = factory.createUserLayer();
+
+		// FeatureTypeConstraint ftc =
+		// styleFactory.createFeatureTypeConstraint(null, Filter.INCLUDE, null);
+		layer.setLayerFeatureConstraints(new FeatureTypeConstraint[] { null });
+		sld.addStyledLayer(layer);
+		layer.addUserStyle((org.geotools.styling.Style) style);
+
+		return sld;
+	}
+
 }

@@ -64,7 +64,7 @@ import com.vividsolutions.jts.io.WKBWriter;
  * 
  * 
  * 
- *
+ * 
  * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/plugin/imagemosaic-jdbc/src/main/java/org
  *         /geotools/gce/imagemosaic/jdbc/custom/JDBCAccessPGRaster.java $
@@ -516,7 +516,7 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
                         + li.getTileTableName() + " where st_intersects("
                         + getConfig().getBlobAttributeNameInTileTable() + " ,ST_GeomFromWKB(?,?))"
                         : "SELECT st_asbinary(st_envelope ("
-                                + getConfig().getBlobAttributeNameInTileTable() + ")),st_aspng("
+                                + getConfig().getBlobAttributeNameInTileTable() + ")),st_astiff("
                                 + getConfig().getBlobAttributeNameInTileTable() + ") " + " from "
                                 + li.getTileTableName() + " where st_intersects("
                                 + getConfig().getBlobAttributeNameInTileTable()

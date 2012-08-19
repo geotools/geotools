@@ -19,6 +19,7 @@ package org.geotools.filter.spatial;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.BBoxExpressionImpl;
 import org.geotools.filter.FilterFactoryImpl;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.expression.Expression;
@@ -26,6 +27,9 @@ import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.geometry.BoundingBox;
+import org.opengis.geometry.MismatchedDimensionException;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -73,7 +77,7 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
 
     public BBOXImpl(FilterFactoryImpl factory, Expression name, double minx, double miny,
             double maxx, double maxy, String srs, MatchAction matchAction) {
-        this(factory, name, factory.createBBoxExpression(new Envelope(minx, maxx, miny, maxy)), matchAction);
+        this(factory, name, factory.createBBoxExpression(buildEnvelope(minx, maxx, miny, maxy, srs)), matchAction);
         this.srs = srs;
     }
 
@@ -104,6 +108,7 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
      */
     public void setSRS(String srs) {
         this.srs = srs;
+        updateExpression2();
     }
 
     public double getMinX() {
@@ -156,7 +161,7 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
 
     private void updateExpression2() {
         // this is temporary until set...XY are removed
-        setExpression2(new BBoxExpressionImpl(new Envelope(minx, maxx, miny, maxy)) {
+        setExpression2(new BBoxExpressionImpl(buildEnvelope(minx, maxx, miny, maxy, srs)) {
         });
     }
 
@@ -262,5 +267,36 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
             }
         }
     }
+    
+    private static ReferencedEnvelope buildEnvelope(double minx, double maxx, double miny, double maxy, String srs) {
+    	CoordinateReferenceSystem crs = null;
+		
+		if (srs != null && !("".equals(srs)))
+		try {
+			try {
+					crs = CRS.decode(srs);
+			} catch (MismatchedDimensionException e) {
+					throw new RuntimeException (e);
+			} catch (NoSuchAuthorityCodeException e) {
+				CRS.parseWKT(srs);
+			} 
+		} catch (FactoryException e) {
+			
+		}
+				
+		return new ReferencedEnvelope(minx, maxx, miny, maxy, crs);
+		
+    }
+    
+    @Override
+	public BoundingBox getBounds() {
+        Object value = ((Literal) getExpression2()).getValue();        
+		if (value instanceof BoundingBox) {
+			return (BoundingBox) value;
+		}		
+		else {		//create one
+			return buildEnvelope(minx, maxx, miny, maxy, srs);
+		}
+	}
 
 }

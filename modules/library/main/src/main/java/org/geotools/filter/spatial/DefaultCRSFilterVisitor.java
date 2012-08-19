@@ -39,16 +39,8 @@ public class DefaultCRSFilterVisitor extends DuplicatingFilterVisitor {
         if (srs != null && !"".equals(srs.trim()))
             return super.visit(filter, extraData);
 
-        try {
-            // grab the original envelope data
-            double minx = filter.getMinX();
-            double miny = filter.getMinY();
-            double maxx = filter.getMaxX();
-            double maxy = filter.getMaxY();
-            String propertyName = filter.getPropertyName();
-            String defaultSrs = CRS.toSRS(defaultCrs);
-
-            return getFactory(extraData).bbox(propertyName, minx, miny, maxx, maxy, defaultSrs);
+        try {  
+        	return getFactory(extraData).bbox(filter.getExpression1(), ReferencedEnvelope.reference(filter.getBounds(),defaultCrs));
         } catch (Exception e) {
             throw new RuntimeException("Could not decode srs '" + srs + "'", e);
         }

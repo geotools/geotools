@@ -60,6 +60,7 @@ import org.opengis.filter.expression.NilExpression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.Subtract;
 import org.opengis.filter.spatial.BBOX;
+import org.opengis.filter.spatial.BBOX3D;
 import org.opengis.filter.spatial.Beyond;
 import org.opengis.filter.spatial.BinarySpatialOperator;
 import org.opengis.filter.spatial.Contains;
@@ -468,11 +469,14 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
 	
 	    
         public Object visit(BBOX filter, Object notUsed) {
-            if (!fcs.supports(BBOX.class)) {
+        	if (filter instanceof BBOX3D && !fcs.supports(BBOX3D.class)) {
                 postStack.push(filter);
-            } else {
-                preStack.push(filter);
-            }
+        	} else if (!fcs.supports(BBOX.class)) {
+	            postStack.push(filter);
+	        } else {
+	            preStack.push(filter);
+	        }
+	            
             return null;
         }
         

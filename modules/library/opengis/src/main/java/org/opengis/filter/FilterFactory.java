@@ -45,6 +45,7 @@ import org.opengis.filter.identity.Version;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.opengis.filter.spatial.BBOX;
+import org.opengis.filter.spatial.BBOX3D;
 import org.opengis.filter.spatial.Beyond;
 import org.opengis.filter.spatial.Contains;
 import org.opengis.filter.spatial.Crosses;
@@ -69,6 +70,8 @@ import org.opengis.filter.temporal.OverlappedBy;
 import org.opengis.filter.temporal.TContains;
 import org.opengis.filter.temporal.TEquals;
 import org.opengis.filter.temporal.TOverlaps;
+import org.opengis.geometry.BoundingBox;
+import org.opengis.geometry.BoundingBox3D;
 import org.opengis.geometry.Geometry;
 
 
@@ -280,6 +283,10 @@ public interface FilterFactory {
      * @param srs Indicating the CoordianteReferenceSystem to use for a literal BoundingBox
      */
     BBOX        bbox(String propertyName, double minx, double miny, double maxx, double maxy, String srs);
+ 
+    BBOX3D        bbox(String propertyName, BoundingBox3D env);
+        
+    BBOX3D        bbox(String propertyName, BoundingBox3D env, MatchAction matchAction);
     
     /**
      * Checks if the bounding box of the feature's geometry overlaps the indicated bounds.
@@ -294,8 +301,8 @@ public interface FilterFactory {
      * @param maxy Maximum "y" value (for a literal BoundingBox)
      * @param srs Indicating the CoordianteReferenceSystem to use for a literal BoundingBox
      */
-    BBOX        bbox(String propertyName, double minx, double miny, double maxx, double maxy, String srs, MatchAction matchAction);
-
+    BBOX        bbox(String propertyName, double minx, double miny, double maxx, double maxy, String srs, MatchAction matchAction);  
+    
     /** Check if all of a feature's geometry is more distant than the given distance from this object's geometry. */
     Beyond      beyond(String propertyName, Geometry geometry, double distance, String units);
 

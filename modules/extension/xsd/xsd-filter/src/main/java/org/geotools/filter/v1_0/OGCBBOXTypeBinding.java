@@ -23,6 +23,7 @@ import org.w3c.dom.Element;
 import javax.xml.namespace.QName;
 import com.vividsolutions.jts.geom.Envelope;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
@@ -65,7 +66,7 @@ import org.geotools.xml.Node;
  * @source $URL$
  */
 public class OGCBBOXTypeBinding extends AbstractComplexBinding {
-    private FilterFactory factory;
+    private FilterFactory2 factory;
     private CoordinateReferenceSystem crs;
 
     public OGCBBOXTypeBinding() {
@@ -74,7 +75,7 @@ public class OGCBBOXTypeBinding extends AbstractComplexBinding {
         // And since we support setter injection of a crs we just fall back on 
         // common factory finder... since there is actually only one filter factory
         // impl not a huge deal, but it woul dbe nice to be consistent
-        factory = CommonFactoryFinder.getFilterFactory(null);
+        factory = CommonFactoryFinder.getFilterFactory2(null);
     }
 
     /**
@@ -116,26 +117,33 @@ public class OGCBBOXTypeBinding extends AbstractComplexBinding {
         //TODO: crs
         PropertyName propertyName = (PropertyName) node.getChildValue(PropertyName.class);
         Envelope box = (Envelope) node.getChildValue(Envelope.class);
-        Node srsNode = node.getChild(Envelope.class).getAttribute("srsName");
-        String srs = (srsNode != null) ? srsNode.getValue().toString() : null;
+        
+        if (box instanceof ReferencedEnvelope) {
+        	return factory.bbox(propertyName == null?  factory.property("") : propertyName, (ReferencedEnvelope) box);        	
+        }
+        else {
+        	String name = null;
+            if ( propertyName != null ) {
+                name = propertyName.getPropertyName();
+            }
+            //JD: this is a bit hackish, we know that "" means default geometry
+            // in SimpleFeaturePropertyAccessor, so instead of dying here set
+            // to empty string to mean defualt geometry
+            // TODO: come up with something a bit more concrete
+            if ( name == null ) {
+                name = "";
+            }
+            
+        	Node srsNode = node.getChild(Envelope.class).getAttribute("srsName");
+            String srs = (srsNode != null) ? srsNode.getValue().toString() : null;
 
-        if ((srs == null) && (crs != null)) {
-            srs = GML2EncodingUtils.crs(crs);
+            if ((srs == null) && (crs != null)) {
+                srs = GML2EncodingUtils.crs(crs);
+            }          
+            
+        	return factory.bbox(name, box.getMinX(), box.getMinY(),
+        			box.getMaxX(), box.getMaxY(), srs);
         }
-
-        String name = null;
-        if ( propertyName != null ) {
-            name = propertyName.getPropertyName();
-        }
-        //JD: this is a bit hackish, we know that "" means default geometry
-        // in SimpleFeaturePropertyAccessor, so instead of dying here set
-        // to empty string to mean defualt geometry
-        // TODO: come up with something a bit more concrete
-        if ( name == null ) {
-            name = "";
-        }
-        return factory.bbox(name, box.getMinX(), box.getMinY(),
-            box.getMaxX(), box.getMaxY(), srs);
     }
 
     public Object getProperty(Object object, QName name)

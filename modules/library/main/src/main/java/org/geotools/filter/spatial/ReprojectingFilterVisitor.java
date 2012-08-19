@@ -35,8 +35,11 @@ import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
+import org.opengis.geometry.BoundingBox;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.TransformException;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -78,51 +81,34 @@ public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
     }
 
     public Object visit(BBOX filter, Object extraData) {
+
+        // grab the original envelope data
+        BoundingBox boundaries = filter.getBounds();
+        // parse the srs, it might be a code or a WKT definition
+        CoordinateReferenceSystem crs = boundaries.getCoordinateReferenceSystem();
+        
         // if no srs is specified we can't transform anyways
-        String srs = filter.getSRS();
-        if (srs == null || "".equals(srs.trim()))
+        if (crs == null)
             return super.visit(filter, extraData);
 
-        try {
-            // grab the original envelope data
-            double minx = filter.getMinX();
-            double miny = filter.getMinY();
-            double maxx = filter.getMaxX();
-            double maxy = filter.getMaxY();
-            // parse the srs, it might be a code or a WKT definition
-            CoordinateReferenceSystem crs;
-            try {
-                crs = CRS.decode(srs);
-            } catch (NoSuchAuthorityCodeException e) {
-                crs = CRS.parseWKT(srs);
-            }
+        // grab the property data
+        PropertyName propertyName = ff.property(filter.getPropertyName());
+        CoordinateReferenceSystem targetCrs = findPropertyCRS(propertyName);
 
-            // grab the property data
-            String propertyName = filter.getPropertyName();
-            CoordinateReferenceSystem targetCrs = findPropertyCRS(ff.property(propertyName));
-
-            // if there is a mismatch, reproject and replace
-            if (crs != null && targetCrs != null && !CRS.equalsIgnoreMetadata(crs, targetCrs)) {
-                ReferencedEnvelope envelope = new ReferencedEnvelope(minx, maxx, miny, maxy, crs);
-                envelope = envelope.transform(targetCrs, true);
-                minx = envelope.getMinX();
-                miny = envelope.getMinY();
-                maxx = envelope.getMaxX();
-                maxy = envelope.getMaxY();
-
-                // set the srs. If we have a code we use it, otherwise we use a WKT definition
-                if (targetCrs.getIdentifiers().isEmpty()) {
-                    // fall back to WKT
-                    srs = targetCrs.toString();
-                } else {
-                    srs = targetCrs.getIdentifiers().iterator().next().toString();
-                }
-            }
-
-            return getFactory(extraData).bbox(propertyName, minx, miny, maxx, maxy, srs);
-        } catch (Exception e) {
-            throw new RuntimeException("Could not decode srs '" + srs + "'", e);
+        // if there is a mismatch, reproject and replace
+        if (crs != null && targetCrs != null && !CRS.equalsIgnoreMetadata(crs, targetCrs)) {
+             ReferencedEnvelope envelope = ReferencedEnvelope.reference(boundaries);
+             try {
+				envelope = envelope.transform(targetCrs, true);
+			} catch (TransformException e) {
+				throw new RuntimeException (e);
+			} catch (FactoryException e) {
+				throw new RuntimeException (e);
+			}
+             boundaries = envelope;                
         }
+
+        return getFactory(extraData).bbox(propertyName, boundaries);
 
     }
     

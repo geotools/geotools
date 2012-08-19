@@ -72,6 +72,7 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.spatial.BBOX;
+import org.opengis.geometry.BoundingBox;
 import org.xml.sax.SAXException;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -306,6 +307,10 @@ public class GeoServerOnlineTest {
             public MatchAction getMatchAction() {
                 return MatchAction.ANY;
             }
+
+			public BoundingBox getBounds() {
+				return bbox.getBounds();
+			}
         };
         
         final Query query = new Query(ft.getTypeName());

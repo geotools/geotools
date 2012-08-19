@@ -94,7 +94,7 @@ public class ReprojectFeatureReader implements DelegatingFeatureReader<SimpleFea
         MathTransform transform) {
         this.reader = reader;
         this.schema = schema;
-        transformer.setMathTransform((MathTransform2D)transform);
+        transformer.setMathTransform(transform);
     }
     /**
      * Constructor that will generate schema and mathTransform for the results.

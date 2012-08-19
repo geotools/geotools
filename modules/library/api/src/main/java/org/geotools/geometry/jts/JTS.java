@@ -176,7 +176,8 @@ public final class JTS {
         ensureNonNull("sourceEnvelope", sourceEnvelope);
         ensureNonNull("transform", transform);
 
-        if ((transform.getSourceDimensions() != 2) || (transform.getTargetDimensions() != 2)) {
+        if (transform.getSourceDimensions() != transform.getTargetDimensions() ||
+            transform.getSourceDimensions() < 2){
             throw new MismatchedDimensionException(Errors.format(ErrorKeys.BAD_TRANSFORM_$1,
                     Classes.getShortClassName(transform)));
         }
@@ -219,7 +220,7 @@ public final class JTS {
 
         return targetEnvelope;
     }
-
+    
     /**
      * Transforms the geometry using the default transformer.
      * 

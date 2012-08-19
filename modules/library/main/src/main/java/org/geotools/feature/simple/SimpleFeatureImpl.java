@@ -32,6 +32,7 @@ import org.geotools.feature.PropertyImpl;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.Types;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.util.Converters;
 import org.geotools.util.Utilities;
 import org.opengis.feature.GeometryAttribute;
@@ -47,6 +48,7 @@ import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.identity.Identifier;
 import org.opengis.geometry.BoundingBox;
 
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
@@ -270,8 +272,17 @@ public class SimpleFeatureImpl implements SimpleFeature {
 
     public BoundingBox getBounds() {
         //TODO: cache this value
-        ReferencedEnvelope bounds = new ReferencedEnvelope( featureType.getCoordinateReferenceSystem() );
-        for ( Object o : values ) {
+    	Envelope bounds;
+    	
+    	if (featureType.getCoordinateReferenceSystem()!= null && featureType.getCoordinateReferenceSystem().getCoordinateSystem().getDimension() == 3) {
+    		//supporting 3D envelopes for 3D geometries
+    		bounds = new ReferencedEnvelope3D( featureType.getCoordinateReferenceSystem() );	        
+    	}
+    	else {
+	        bounds = new ReferencedEnvelope( featureType.getCoordinateReferenceSystem() );	        
+    	}
+    	
+    	for ( Object o : values ) {
             if ( o instanceof Geometry ) {
                 Geometry g = (Geometry) o;
                 //TODO: check userData for crs... and ensure its of the same 
@@ -285,7 +296,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
             }
         }
         
-        return bounds;
+        return (BoundingBox) bounds;
     }
 
     public GeometryAttribute getDefaultGeometryProperty() {

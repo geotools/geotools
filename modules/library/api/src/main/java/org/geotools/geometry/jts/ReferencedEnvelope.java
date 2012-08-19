@@ -26,6 +26,7 @@ import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
 import org.opengis.geometry.BoundingBox;
+import org.opengis.geometry.BoundingBox3D;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.geometry.MismatchedReferenceSystemException;
@@ -138,7 +139,7 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
     /**
      * The coordinate reference system, or {@code null}.
      */
-    private CoordinateReferenceSystem crs;
+    protected CoordinateReferenceSystem crs;
 
     /**
      * Creates a null envelope with a null coordinate reference system.
@@ -235,7 +236,7 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
         this.crs = envelope.getCoordinateReferenceSystem();
         checkCoordinateReferenceSystemDimension();
     }
-
+    
     /**
      * Creates a new envelope from an existing JTS envelope.
      *
@@ -277,12 +278,12 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
      *
      * @throws IllegalArgumentException if the CRS dimension is not valid.
      */
-    private void checkCoordinateReferenceSystemDimension()
+    protected void checkCoordinateReferenceSystemDimension()
         throws MismatchedDimensionException {
         if (crs != null) {
             final int expected = getDimension();
             final int dimension = crs.getCoordinateSystem().getDimension();
-            if (dimension != expected) {
+            if (dimension > expected) {
                 throw new MismatchedDimensionException(Errors.format(
                         ErrorKeys.MISMATCHED_DIMENSION_$3, crs.getName().getCode(),
                         new Integer(dimension), new Integer(expected)));
@@ -296,7 +297,7 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
      * @param  bbox The other bounding box to test for compatibility.
      * @throws MismatchedReferenceSystemException if the CRS are incompatible.
      */
-    private void ensureCompatibleReferenceSystem(final BoundingBox bbox)
+    protected void ensureCompatibleReferenceSystem(final BoundingBox bbox)
         throws MismatchedReferenceSystemException {
         if (crs != null) {
             final CoordinateReferenceSystem other = bbox.getCoordinateReferenceSystem();
@@ -313,7 +314,7 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
      * @param location
      * @throws MismatchedReferenceSystemException if the CRS are incompatible.
      */
-    private void ensureCompatibleReferenceSystem(DirectPosition location) {
+    protected void ensureCompatibleReferenceSystem(DirectPosition location) {
         if (crs != null) {
             final CoordinateReferenceSystem other = location.getCoordinateReferenceSystem();
             if (other != null) {
@@ -761,6 +762,10 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
         if (e == null) {
             return null;
         } else {
+        	if (e instanceof ReferencedEnvelope3D) {
+                return (ReferencedEnvelope3D) e;
+            }
+        	
             if (e instanceof ReferencedEnvelope) {
                 return (ReferencedEnvelope) e;
             }
@@ -780,14 +785,55 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
      * @return
      */
     public static ReferencedEnvelope reference(BoundingBox e) {
-        if (e == null) {
+        return reference( (org.opengis.geometry.Envelope) e);
+    }
+    
+    /**
+     * Utility method to create a ReferencedEnvelope from an opengis Envelope class,
+     * supporting 2d as well as 3d envelopes (returning the right class).
+     * 
+     * @param env The opgenis Envelope object
+     * @return ReferencedEnvelope, ReferencedEnvelope3D if it is 3d
+     */
+    public static ReferencedEnvelope reference(org.opengis.geometry.Envelope env) {
+    	
+    	if (env == null) {
             return null;
         }
-
-        if (e instanceof ReferencedEnvelope) {
-            return (ReferencedEnvelope) e;
+    	
+    	if (env instanceof ReferencedEnvelope3D) {
+            return (ReferencedEnvelope3D) env;
         }
 
-        return new ReferencedEnvelope(e);
+        if (env instanceof ReferencedEnvelope) {
+            return (ReferencedEnvelope) env;
+        }    	
+    	
+    	if (env.getDimension() == 3) {
+    		return new ReferencedEnvelope3D(env);
+    	}
+    	
+    	return new ReferencedEnvelope(env);
     }
+    
+    /**
+     * Utility method to create a ReferencedEnvelope from an opengis Envelope class,
+     * supporting 2d as well as 3d envelopes (returning the right class).
+     * 
+     * @param env The opgenis Envelope object
+     * @return ReferencedEnvelope, ReferencedEnvelope3D if it is 3d
+     */
+    public static ReferencedEnvelope reference(org.opengis.geometry.Envelope env, CoordinateReferenceSystem crs) {
+    	
+    	if (env == null) {
+            return null;
+        }
+    	   	  	    	
+    	if (env.getDimension() > 2) {
+    		return new ReferencedEnvelope3D((ReferencedEnvelope3D) reference(env), crs);
+    	}
+    	
+    	return new ReferencedEnvelope(reference(env), crs);
+    }
+    
 }

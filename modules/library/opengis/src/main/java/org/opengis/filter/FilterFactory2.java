@@ -18,6 +18,7 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.spatial.BBOX;
+import org.opengis.filter.spatial.BBOX3D;
 import org.opengis.filter.spatial.Beyond;
 import org.opengis.filter.spatial.Contains;
 import org.opengis.filter.spatial.Crosses;
@@ -29,6 +30,7 @@ import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
 import org.opengis.geometry.BoundingBox;
+import org.opengis.geometry.BoundingBox3D;
 import org.opengis.parameter.Parameter;
 import org.opengis.util.InternationalString;
 import org.xml.sax.helpers.NamespaceSupport;
@@ -181,6 +183,13 @@ public interface FilterFactory2 extends FilterFactory {
     /** Checks if the geometry expression overlaps the specified bounding box. */
     BBOX        bbox( Expression geometry, double minx, double miny, double maxx, double maxy, String srs, MatchAction matchAction);
 
+    /** Checks if the geometry expression overlaps the specified bounding box. */
+    BBOX3D        bbox( Expression geometry, BoundingBox3D env);
+    
+    /** Checks if the geometry expression overlaps the specified bounding box. */
+    BBOX3D        bbox( Expression geometry, BoundingBox3D env, MatchAction matchAction);
+
+    
     /**
      * Checks if the bounding box of the feature's geometry overlaps the indicated bounds.
      * <p>

@@ -29,6 +29,7 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.BinarySpatialOperator;
+import org.opengis.geometry.BoundingBox;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
@@ -86,6 +87,10 @@ class FastBBOX implements BBOX, BinarySpatialOperator, BinaryComparisonOperator,
     
     public Envelope getEnvelope() {
         return envelope;
+    }
+    
+    public BoundingBox getBounds() {
+        return ReferencedEnvelope.reference(envelope);
     }
 
     public Expression getExpression1() {

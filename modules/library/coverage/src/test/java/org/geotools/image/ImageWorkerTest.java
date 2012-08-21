@@ -17,7 +17,6 @@
 package org.geotools.image;
 
 import static org.junit.Assert.*;
-
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 
 import java.awt.Color;
@@ -46,21 +45,24 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.ImageLayout;
+import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
 import javax.media.jai.RasterFactory;
+import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.BandMergeDescriptor;
 import javax.media.jai.operator.ConstantDescriptor;
 
 import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.Viewer;
+import org.geotools.coverage.processing.GridProcessingTestBase;
+import org.geotools.referencing.CRS;
 import org.geotools.resources.image.ComponentColorModelJAI;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.sun.media.imageioimpl.common.PackageUtil;
-import com.sun.media.imageioimpl.plugins.tiff.TIFFImageReader;
 
 
 /**
@@ -73,7 +75,31 @@ import com.sun.media.imageioimpl.plugins.tiff.TIFFImageReader;
  * @author Simone Giannecchini (GeoSolutions)
  * @author Martin Desruisseaux (Geomatys)
  */
-public final class ImageWorkerTest {
+public final class ImageWorkerTest extends GridProcessingTestBase {
+    
+    private final static String GOOGLE_MERCATOR_WKT="PROJCS[\"WGS 84 / Pseudo-Mercator\","+
+            "GEOGCS[\"Popular Visualisation CRS\","+
+                "DATUM[\"Popular_Visualisation_Datum\","+
+                    "SPHEROID[\"Popular Visualisation Sphere\",6378137,0,"+
+                        "AUTHORITY[\"EPSG\",\"7059\"]],"+
+                    "TOWGS84[0,0,0,0,0,0,0],"+
+                    "AUTHORITY[\"EPSG\",\"6055\"]],"+
+                "PRIMEM[\"Greenwich\",0,"+
+                    "AUTHORITY[\"EPSG\",\"8901\"]],"+
+                "UNIT[\"degree\",0.01745329251994328,"+
+                    "AUTHORITY[\"EPSG\",\"9122\"]],"+
+                "AUTHORITY[\"EPSG\",\"4055\"]],"+
+            "UNIT[\"metre\",1,"+
+                "AUTHORITY[\"EPSG\",\"9001\"]],"+
+            "PROJECTION[\"Mercator_1SP\"],"+
+            "PARAMETER[\"central_meridian\",0],"+
+            "PARAMETER[\"scale_factor\",1],"+
+            "PARAMETER[\"false_easting\",0],"+
+            "PARAMETER[\"false_northing\",0],"+
+            "AUTHORITY[\"EPSG\",\"3785\"],"+
+            "AXIS[\"X\",EAST],"+
+            "AXIS[\"Y\",NORTH]]";
+            
     /**
      * Image to use for testing purpose.
      */
@@ -890,4 +916,34 @@ public final class ImageWorkerTest {
         assertSame(bi, t2);
         
     }
+    
+    
+    
+    @Test
+    public void testOptimizedWarp() throws Exception {
+        // do it again, make sure the image does not turn black since 
+        GridCoverage2D ushortCoverage = EXAMPLES.get(5);
+       GridCoverage2D coverage = project(ushortCoverage,CRS.parseWKT(GOOGLE_MERCATOR_WKT), null,"nearest", null, true);
+       RenderedImage ri = coverage.getRenderedImage();
+       
+       
+       ImageWorker.WARP_REDUCTION_ENABLED = false;
+       AffineTransform at = new AffineTransform(0.4, 0, 0, 0.5, -200, -200);
+       RenderedOp fullChain = (RenderedOp) new ImageWorker(ri).affine(at, Interpolation.getInstance(Interpolation.INTERP_NEAREST), new double[] {0}).getRenderedImage();
+       assertEquals("Scale", fullChain.getOperationName());
+       fullChain.getTiles();
+       
+       ImageWorker.WARP_REDUCTION_ENABLED = true;
+       RenderedOp reduced = (RenderedOp) new ImageWorker(ri).affine(at, Interpolation.getInstance(Interpolation.INTERP_NEAREST), new double[] {0}).getRenderedImage();
+       // force computation, to make sure it does not throw exceptions
+       reduced.getTiles();
+       // check the chain has been reduced
+       assertEquals("Warp", reduced.getOperationName());
+       assertEquals(1, reduced.getSources().size());
+       assertSame(ushortCoverage.getRenderedImage(), reduced.getSourceImage(0));
+    
+       // check the bounds of the output image has not changed
+       assertEquals(fullChain.getBounds(), reduced.getBounds());
+    }
+    
 }

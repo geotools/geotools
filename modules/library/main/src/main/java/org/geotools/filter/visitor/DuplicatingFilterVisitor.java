@@ -53,6 +53,7 @@ import org.opengis.filter.expression.NilExpression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.Subtract;
 import org.opengis.filter.spatial.BBOX;
+import org.opengis.filter.spatial.BBOX3D;
 import org.opengis.filter.spatial.Beyond;
 import org.opengis.filter.spatial.Contains;
 import org.opengis.filter.spatial.Crosses;
@@ -232,12 +233,17 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
 	
 	public Object visit(BBOX filter, Object extraData) {
 	    Expression propertyName = visit(filter.getExpression1(), extraData);
-		double minx=filter.getMinX();
-		double miny=filter.getMinY();
-		double maxx=filter.getMaxX();
-		double maxy=filter.getMaxY();
-		String srs=filter.getSRS();
-		return getFactory(extraData).bbox(propertyName, minx, miny, maxx, maxy, srs);
+
+	    if (! (filter instanceof BBOX3D)) {
+	        double minx=filter.getMinX();
+	        double miny=filter.getMinY();
+	        double maxx=filter.getMaxX();
+	        double maxy=filter.getMaxY();
+	        String srs=filter.getSRS();
+	        return getFactory(extraData).bbox(propertyName, minx, miny, maxx, maxy, srs);
+	    }
+
+	    return getFactory(extraData).bbox(propertyName, filter.getBounds());	   
 	}
 
 	public Object visit(Beyond filter, Object extraData) {

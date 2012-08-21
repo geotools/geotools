@@ -71,6 +71,7 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.Subtract;
 import org.opengis.filter.identity.Identifier;
 import org.opengis.filter.spatial.BBOX;
+import org.opengis.filter.spatial.BBOX3D;
 import org.opengis.filter.spatial.Beyond;
 import org.opengis.filter.spatial.BinarySpatialOperator;
 import org.opengis.filter.spatial.Contains;
@@ -533,8 +534,10 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
 
         for (Iterator it = sourceNames.iterator(); it.hasNext();) {
             Expression sourceName = (Expression) it.next();
-            Filter unrolled = ff.bbox(sourceName, filter.getMinX(), filter.getMinY(), filter
-                    .getMaxX(), filter.getMaxY(), filter.getSRS(), filter.getMatchAction());
+            Filter unrolled;
+            
+            unrolled = ff.bbox(sourceName, filter.getBounds(), filter.getMatchAction());
+            
             combined.add(unrolled);
         }
 

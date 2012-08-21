@@ -20,6 +20,7 @@ import javax.xml.namespace.QName;
 
 import org.geotools.geometry.DirectPosition1D;
 import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.DirectPosition3D;
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
@@ -108,10 +109,15 @@ public class DirectPositionTypeBinding extends AbstractComplexBinding {
         if (position.length < 2) {
             dp = (crs != null) ? new DirectPosition1D(crs) : new DirectPosition1D();
             dp.setOrdinate(0, position[0].doubleValue());
-        } else {
+        } else if (position.length < 3 ){
             dp = (crs != null) ? new DirectPosition2D(crs) : new DirectPosition2D();
             dp.setOrdinate(0, position[0].doubleValue());
             dp.setOrdinate(1, position[1].doubleValue());
+        } else {
+        	dp = (crs != null) ? new DirectPosition3D(crs) : new DirectPosition3D();
+            dp.setOrdinate(0, position[0].doubleValue());
+            dp.setOrdinate(1, position[1].doubleValue());
+            dp.setOrdinate(2, position[2].doubleValue());
         }
 
         return dp;

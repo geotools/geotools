@@ -69,6 +69,12 @@ public class WarpBuilder {
      * The array used to perform all the reprojections
      */
     final double[] ordinates = new double[10];
+    
+        
+    /**
+     * The maximum number of positions in the warp grid, we don't want too large ones
+     */
+    int maxPositions = -1;
 
     /**
      * Creates a new warp builder
@@ -79,6 +85,16 @@ public class WarpBuilder {
         } else {
             maxDistanceSquared = 0;
         }
+    }
+    
+        
+    /**
+     * Sets the maximum number of positions in the optimized grid, in case we have more we'll
+     * fall back to the warp adapter. By default there is no limit
+     * @param maxPositions
+     */
+    public void setMaxPositions(int maxPositions) {
+       this.maxPositions = maxPositions;
     }
 
     /**
@@ -162,6 +178,14 @@ public class WarpBuilder {
             int rows = (int) (heigth / stepy);
             int cmax = (int) (minx + cols * stepx);
             int rmax = (int) (miny + rows * stepy);
+            
+            // in case we would end up generating a too large grid we fall back to the
+            // warp adapter
+            if (maxPositions > 0 && cols * rows > maxPositions) {
+                LOGGER.log(Level.FINE, "Bailing out to WarpAdapter, the number of rows and col " +
+                		"grew too much, rows: " + rows + " and cols: " + cols);
+                return new WarpAdapter(null, mt);
+            }
             
             // due to integer rounding we might not be covering the entire raster with the grid,
             // if so compensate by either adding a two/column or by adding a pixel to the step 

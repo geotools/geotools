@@ -31,12 +31,12 @@ import org.geotools.process.gs.GSProcess;
  *
  * @source $URL$
  */
-@DescribeProcess(title = "bounds", description = "Computes the overlall bounds of the input features")
+@DescribeProcess(title = "Bounds", description = "Computes the bounding box of the input features.")
 public class BoundsProcess implements GSProcess {
 
-    @DescribeResult(name = "bounds", description = "The feature collection bounds")
+    @DescribeResult(name = "bounds", description = "Bounding box of input features")
     public ReferencedEnvelope execute(
-            @DescribeParameter(name = "features", description = "The feature collection whose bounds will be computed") FeatureCollection features) {
+            @DescribeParameter(name = "features", description = "Input feature collection") FeatureCollection features) {
         return features.getBounds();
     }
 

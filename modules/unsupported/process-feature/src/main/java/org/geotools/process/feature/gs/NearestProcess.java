@@ -53,7 +53,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.operation.distance.DistanceOp;
 
-@DescribeProcess(title = "Nearest", description = "Get nearest feature")
+@DescribeProcess(title = "Nearest Feature", description = "Returns the feature in a given feature collection that has the smallest distance to a given point.")
 /**
  * 
  *
@@ -77,11 +77,11 @@ public class NearestProcess implements GSProcess {
      * @throws ProcessException
      *             error
      */
-    @DescribeResult(name = "result", description = "The nearest feature")
+    @DescribeResult(name = "result", description = "Nearest feature")
     public FeatureCollection execute(
-            @DescribeParameter(name = "features", description = "The features to search") FeatureCollection featureCollection,
-            @DescribeParameter(name = "point", description = "The point to search from") Point point,
-            @DescribeParameter(name = "crs", min = 0, description = "The coordinate reference system of the collection and point (will use the collection one if not provided") CoordinateReferenceSystem crs)
+            @DescribeParameter(name = "features", description = "Input feature collection") FeatureCollection featureCollection,
+            @DescribeParameter(name = "point", description = "Point from which to compute distance") Point point,
+            @DescribeParameter(name = "crs", min = 0, description = "Coordinate reference system of the collection and point (default is the input collection CRS)") CoordinateReferenceSystem crs)
             throws ProcessException {
         try {
             if (crs == null) {

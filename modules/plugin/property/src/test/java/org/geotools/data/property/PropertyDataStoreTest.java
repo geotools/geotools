@@ -427,6 +427,9 @@ public class PropertyDataStoreTest extends TestCase {
         }
         assertEquals("[fid1, fid2, fid3, fid4, fid5]", list.toString());
         assertEquals(5, road.getCount(Query.ALL));
+        Query q = new Query("road");
+        q.setMaxFeatures(2);
+        assertEquals(2, road.getCount(q));
         assertTrue(road.getBounds(Query.ALL).isNull());
         assertEquals(5, features.size());
         assertTrue(features.getBounds().isNull());

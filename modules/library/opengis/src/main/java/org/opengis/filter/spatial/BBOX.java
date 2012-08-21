@@ -11,6 +11,8 @@ package org.opengis.filter.spatial;
 
 // Annotations
 import org.opengis.annotation.XmlElement;
+import org.opengis.geometry.BoundingBox;
+import org.opengis.geometry.BoundingBox3D;
 
 
 /**
@@ -84,4 +86,11 @@ public interface BBOX extends BinarySpatialOperator {
      * @deprecated please use getExpression2(), to check for a literal BoundingBox.getMaximum(1)
      */
     double getMaxY();
+    
+    /**
+     * Return Bounding Box object representing the bounds of the filter
+     * 
+     * @Return Bounds of Filter
+     */
+    BoundingBox getBounds();
 }

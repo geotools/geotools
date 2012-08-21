@@ -76,6 +76,8 @@ import org.geotools.filter.temporal.OverlappedByImpl;
 import org.geotools.filter.temporal.TContainsImpl;
 import org.geotools.filter.temporal.TEqualsImpl;
 import org.geotools.filter.temporal.TOverlapsImpl;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -126,6 +128,7 @@ import org.opengis.filter.identity.Version;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.opengis.filter.spatial.BBOX;
+import org.opengis.filter.spatial.BBOX3D;
 import org.opengis.filter.spatial.Beyond;
 import org.opengis.filter.spatial.Contains;
 import org.opengis.filter.spatial.Crosses;
@@ -151,10 +154,12 @@ import org.opengis.filter.temporal.TContains;
 import org.opengis.filter.temporal.TEquals;
 import org.opengis.filter.temporal.TOverlaps;
 import org.opengis.geometry.BoundingBox;
+import org.opengis.geometry.BoundingBox3D;
 import org.opengis.geometry.Geometry;
 import org.opengis.parameter.Parameter;
 import org.opengis.util.InternationalString;
 import org.xml.sax.helpers.NamespaceSupport;
+import org.geotools.filter.spatial.BBOX3DImpl;
 
 import com.vividsolutions.jts.geom.Envelope;
 
@@ -404,13 +409,40 @@ public class FilterFactoryImpl implements FilterFactory {
     }
     
     public BBOX bbox( Expression geometry, BoundingBox bounds ) {
-        return bbox( geometry, bounds.getMinX(), bounds.getMinY(), bounds.getMaxX(), bounds.getMaxY(),
-                CRS.toSRS( bounds.getCoordinateReferenceSystem() ) );
+    	if (bounds instanceof BoundingBox3D) {
+    		return bbox(geometry, (BoundingBox3D) bounds);
+    	} else {
+	        return bbox2d( geometry, bounds, MatchAction.ANY );
+    	}
     }
     
     public BBOX bbox(Expression geometry, BoundingBox bounds, MatchAction matchAction) {
-        return bbox( geometry, bounds.getMinX(), bounds.getMinY(), bounds.getMaxX(), bounds.getMaxY(),
-                CRS.toSRS( bounds.getCoordinateReferenceSystem() ), matchAction );
+    	if (bounds instanceof BoundingBox3D) {
+    		return bbox(geometry, (BoundingBox3D) bounds);
+    	} else {
+    		return bbox2d( geometry, bounds, matchAction );
+    	}
+                
+    }
+    
+    private BBOXImpl bbox2d (Expression e, BoundingBox bounds, MatchAction matchAction) {    	       
+    	PropertyName name = null;
+        if ( e instanceof PropertyName ) {
+            name = (PropertyName) e;
+        }
+        else {
+            throw new IllegalArgumentException();
+        }
+        
+        Literal bbox = null;
+        try {
+            bbox = createBBoxExpression (ReferencedEnvelope.reference(bounds));
+        } 
+        catch (IllegalFilterException ife) {
+            new IllegalArgumentException().initCause(ife);
+        }
+        
+        return new BBOXImpl(this,name,bbox, matchAction);
     }
     
     public BBOX bbox(String propertyName, double minx, double miny, double maxx, double maxy,
@@ -419,13 +451,33 @@ public class FilterFactoryImpl implements FilterFactory {
         return bbox(name, minx, miny, maxx, maxy, srs, matchAction);
     }
     
-
     public BBOX bbox(Expression geometry, double minx, double miny, double maxx, double maxy, String srs) {
         return bbox(geometry, minx, miny, maxx, maxy, srs, MatchAction.ANY);
     }
     
+
     public BBOX bbox(Expression e, double minx, double miny, double maxx, double maxy, String srs, MatchAction matchAction) {
-        PropertyName name = null;
+    	
+    	BBOXImpl box = bbox2d (e, new ReferencedEnvelope(minx,maxx,miny,maxy,null), matchAction);        
+        box.setSRS(srs);
+        
+        return box;
+    }
+        
+    public BBOX3D bbox(String propertyName, BoundingBox3D env) {
+        return bbox(property(propertyName), env, MatchAction.ANY);
+    }
+    
+    public BBOX3D bbox(String propertyName, BoundingBox3D env, MatchAction matchAction) {
+    	return bbox(property(propertyName), env, matchAction);
+    }
+        
+    public BBOX3D bbox(Expression geometry, BoundingBox3D env) {
+        return bbox(geometry, env, MatchAction.ANY);
+    }
+           
+    public BBOX3D bbox(Expression e, BoundingBox3D env, MatchAction matchAction) {
+    	PropertyName name = null;
         if ( e instanceof PropertyName ) {
             name = (PropertyName) e;
         }
@@ -433,28 +485,7 @@ public class FilterFactoryImpl implements FilterFactory {
             throw new IllegalArgumentException();
         }
         
-        BBoxExpression bbox = null;
-        try {
-            bbox = createBBoxExpression(new Envelope(minx,maxx,miny,maxy));
-        } 
-        catch (IllegalFilterException ife) {
-            new IllegalArgumentException().initCause(ife);
-        }
-        
-        BBOXImpl box = new BBOXImpl(this,e,bbox, matchAction);
-        if (e == null) {
-            // otherwise this line is redundant. Also complex
-            // features with bbox request would fail as this would remove the
-            // namespace from the property name
-            box.setPropertyName(name.getPropertyName());
-        }
-        box.setSRS(srs);
-        box.setMinX(minx);
-        box.setMinY(miny);
-        box.setMaxX(maxx);
-        box.setMaxY(maxy);
-        
-        return box;
+        return new BBOX3DImpl(name, new ReferencedEnvelope3D(env), this);  
     }
     
     public Beyond beyond(String propertyName, Geometry geometry,
@@ -852,7 +883,7 @@ public class FilterFactoryImpl implements FilterFactory {
         throws IllegalFilterException {
         return new BBoxExpressionImpl(env);
     }
-
+    
     /**
      * Creates an empty Between Filter.
      *

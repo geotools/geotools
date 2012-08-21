@@ -54,7 +54,7 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.linearref.LengthIndexedLine;
 import com.vividsolutions.jts.operation.distance.DistanceOp;
 
-@DescribeProcess(title = "LRSGeocode", description = "Translate geocoded point to LRS measure")
+@DescribeProcess(title = "Measure point in LRS", description = "Computes the measure of a point along a feature (as feature with attribute lrs_measure). The point is measured along the nearest feature.")
 /**
  * 
  *
@@ -74,13 +74,13 @@ public class LRSMeasureProcess implements GSProcess {
      * @return the snapped to feature
      * @throws ProcessException error
      */
-    @DescribeResult(name = "result", description = "The LRS measure")
+    @DescribeResult(name = "result", description = "Output feature collection")
     public FeatureCollection execute(
-            @DescribeParameter(name = "features", description = "The features to search") FeatureCollection featureCollection,
-            @DescribeParameter(name = "from_measure_attb", description = "The feature attribue holding the features starting measure") String fromMeasureAttb,
-            @DescribeParameter(name = "to_measure_attb", description = "The feature attribue holding the features ending measure") String toMeasureAttb,
-            @DescribeParameter(name = "point", description = "The point to search from") Point point,
-            @DescribeParameter(name = "crs", min = 0, description = "The coordinate reference system of the collection and point (will use the collection one if not provided") CoordinateReferenceSystem crs)
+            @DescribeParameter(name = "features", description = "Input feature collection") FeatureCollection featureCollection,
+            @DescribeParameter(name = "from_measure_attb", description = "Attribute providing start measure of feature") String fromMeasureAttb,
+            @DescribeParameter(name = "to_measure_attb", description = "Attribute providing end measure of feature") String toMeasureAttb,
+            @DescribeParameter(name = "point", description = "Point whose location to measure") Point point,
+            @DescribeParameter(name = "crs", min = 0, description = "Coordinate reference system to use for input (default is the input collection CRS)") CoordinateReferenceSystem crs)
             throws ProcessException {
         FeatureCollection results = FeatureCollections.newCollection();
         try {

@@ -83,7 +83,7 @@ public final class HTTP_AuthorityFactoryTest {
      */
     @Test
     public void testCRS() throws FactoryException {
-        CRSAuthorityFactory factory = ReferencingFactoryFinder.getCRSAuthorityFactory("http://www.opengis.net", null);
+        CRSAuthorityFactory factory = ReferencingFactoryFinder.getCRSAuthorityFactory("http://www.opengis.net/gml", null);
         GeographicCRS crs;
         try {
             crs = factory.createGeographicCRS("CRS:84");

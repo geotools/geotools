@@ -24,6 +24,7 @@ import org.geotools.gml3.bindings.AbstractFeatureCollectionTypeBinding;
 import org.geotools.gml3.bindings.AbstractFeatureTypeBinding;
 import org.geotools.gml3.bindings.AbstractGeometryTypeBinding;
 import org.geotools.gml3.bindings.AbstractRingPropertyTypeBinding;
+import org.geotools.gml3.bindings.ArcStringTypeBinding;
 import org.geotools.gml3.bindings.ArcTypeBinding;
 import org.geotools.gml3.bindings.BoundingShapeTypeBinding;
 import org.geotools.gml3.bindings.CircleTypeBinding;
@@ -231,6 +232,8 @@ public class GMLConfiguration extends Configuration {
         
         //extended bindings for arc/surface support
         if (isExtendedArcSurfaceSupport()) {
+            container.registerComponentImplementation(GML.ArcStringType,
+                    ArcStringTypeBinding.class);
             container.registerComponentImplementation(GML.ArcType,
                     ArcTypeBinding.class);
             container.registerComponentImplementation(GML.CircleType,

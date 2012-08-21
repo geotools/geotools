@@ -55,7 +55,7 @@ public class GeometryProcessFactoryTest extends TestCase {
 		assertTrue(geom.required);
 		
 		Parameter<?> distance = params.get("distance");
-		assertEquals(double.class, distance.type);
+		assertEquals(Double.class, distance.type);
 		assertTrue(distance.required);
 		
 		Parameter<?> quadrants = params.get("quadrantSegments");

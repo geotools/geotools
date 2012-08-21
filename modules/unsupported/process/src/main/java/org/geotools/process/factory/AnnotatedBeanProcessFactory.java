@@ -148,7 +148,11 @@ public class AnnotatedBeanProcessFactory extends AnnotationDrivenProcessFactory 
      */
     protected Object createProcessBean(Name name) {
         try {
-            return classMap.get(name.getLocalPart()).newInstance();
+            Class<?> processClass = classMap.get(name.getLocalPart());
+            if(processClass == null) {
+                throw new IllegalArgumentException("Process " + name + " is unknown");
+            }
+            return processClass.newInstance();
         } catch (InstantiationException e) {
             throw new RuntimeException(e);
         } catch (IllegalAccessException e) {

@@ -117,24 +117,24 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Martin Davis - OpenGeo
  * 
  */
-@DescribeProcess(title = "Heatmap", description = "Computes a heatmap surface over a set of irregular data points as a GridCoverage.")
+@DescribeProcess(title = "Heatmap", description = "Computes a heatmap surface over a set of data points and outputs as a single-band raster.")
 public class HeatmapProcess implements GSProcess {
 
-    @DescribeResult(name = "result", description = "The heat map surface as a raster")
+    @DescribeResult(name = "result", description = "Output raster")
     public GridCoverage2D execute(
 
             // process data
-            @DescribeParameter(name = "data", description = "Features containing the data points") SimpleFeatureCollection obsFeatures,
+            @DescribeParameter(name = "data", description = "Input features") SimpleFeatureCollection obsFeatures,
 
             // process parameters
-            @DescribeParameter(name = "radiusPixels", description = "Radius to use for the kernel, in pixels") Integer argRadiusPixels,
-            @DescribeParameter(name = "weightAttr", description = "Featuretype attribute containing the point weight value", min = 0, max = 1) String valueAttr,
-            @DescribeParameter(name = "pixelsPerCell", description = "Number of pixels per grid cell (default = 1)", min = 0, max = 1) Integer argPixelsPerCell,
+            @DescribeParameter(name = "radiusPixels", description = "Radius of the density kernel in pixels") Integer argRadiusPixels,
+            @DescribeParameter(name = "weightAttr", description = "Name of the attribute to use for data point weight", min = 0, max = 1) String valueAttr,
+            @DescribeParameter(name = "pixelsPerCell", description = "Resolution at which to compute the heatmap (in pixels). Default = 1", min = 0, max = 1) Integer argPixelsPerCell,
 
             // output image parameters
-            @DescribeParameter(name = "outputBBOX", description = "Georeferenced bounding box of the output") ReferencedEnvelope argOutputEnv,
-            @DescribeParameter(name = "outputWidth", description = "Width of the output raster") Integer argOutputWidth,
-            @DescribeParameter(name = "outputHeight", description = "Height of the output raster") Integer argOutputHeight,
+            @DescribeParameter(name = "outputBBOX", description = "Bounding box of the output") ReferencedEnvelope argOutputEnv,
+            @DescribeParameter(name = "outputWidth", description = "Width of output raster in pixels") Integer argOutputWidth,
+            @DescribeParameter(name = "outputHeight", description = "Height of output raster in pixels") Integer argOutputHeight,
 
             ProgressListener monitor) throws ProcessException {
 

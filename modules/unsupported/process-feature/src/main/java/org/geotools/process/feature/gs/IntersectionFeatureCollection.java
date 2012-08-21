@@ -67,8 +67,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author Pietro Arena - Sinergis
  * @author Luca Paolino - GeoSolutions
  */
-@DescribeProcess(title = "intersection", description = "Returns the intersections between two feature "
-        + "collections adding the attributes from both of them")
+@DescribeProcess(title = "Intersection of Feature Collections", description = "Spatial intersection of two feature collections, incuding combining attributes from both.")
 public class IntersectionFeatureCollection implements GSProcess {
     private static final Logger logger = Logger
             .getLogger("org.geotools.process.feature.gs.IntersectionFeatureCollection");
@@ -78,16 +77,15 @@ public class IntersectionFeatureCollection implements GSProcess {
 
     static final String ECKERT_IV_WKT = "PROJCS[\"World_Eckert_IV\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Eckert_IV\"],PARAMETER[\"Central_Meridian\",0.0],UNIT[\"Meter\",1.0]]";
 
-    @DescribeResult(description = "feature collection containg the intersections between the two feature "
-            + "collections and the attributes from both of them")
+    @DescribeResult(description = "Output feature collection")
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "first feature collection", description = "First feature collection") SimpleFeatureCollection firstFeatures,
             @DescribeParameter(name = "second feature collection", description = "Second feature collection") SimpleFeatureCollection secondFeatures,
-            @DescribeParameter(name = "first attributes to retain", collectionType = String.class, min = 0, description = "List of the first feature collection attributes to output") List<String> firstAttributes,
-            @DescribeParameter(name = "second attributes to retain", collectionType = String.class, min = 0, description = "List of the second feature collection attributes to output") List<String> sndAttributes,
-            @DescribeParameter(name = "intersectionMode", min = 0, description = "The operations to perform: set INTERSECTION if the geometry is the intersection, FIRST if the geometry is extracted by firstFeatures, SECOND if it is extracted by secondFeatures (DEFAULT=INTERSECTION)") IntersectionMode intersectionMode,
-            @DescribeParameter(name = "percentagesEnabled", min = 0, description = "Set it true to get the intersection percentage parameters, false  otherwise (DEFAULT=false)") Boolean percentagesEnabled,
-            @DescribeParameter(name = "areasEnabled", min = 0, description = "Set it true to get the area attributes , false  otherwise (DEFAULT=false)") Boolean areasEnabled) {
+            @DescribeParameter(name = "first attributes to retain", collectionType = String.class, min = 0, description = "First feature collection attribute to include") List<String> firstAttributes,
+            @DescribeParameter(name = "second attributes to retain", collectionType = String.class, min = 0, description = "Second feature collection attribute to include") List<String> sndAttributes,
+            @DescribeParameter(name = "intersectionMode", min = 0, description = "Specifies geometry computed for intersecting features.  INTERSECTION (default) computes the spatial intersection of the inputs. FIRST copies geometry A.  SECOND copies geometry B.") IntersectionMode intersectionMode,
+            @DescribeParameter(name = "percentagesEnabled", min = 0, description = "Indicates whether to output feature area percentages (attributes percentageA and percentageB)") Boolean percentagesEnabled,
+            @DescribeParameter(name = "areasEnabled", min = 0, description = "Indicates whether to output feature areas (attributes areaA and areaB)") Boolean areasEnabled) {
         // assign defaults
         logger.fine("INTERSECTION FEATURE COLLECTION WPS STARTED");
        

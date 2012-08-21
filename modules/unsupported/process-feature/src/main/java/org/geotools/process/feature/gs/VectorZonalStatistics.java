@@ -53,21 +53,14 @@ import com.vividsolutions.jts.geom.Geometry;
  * Provides statistics for the distribution of a certain quantity in a set of reference areas.
  * The data layer must be a point layer, the reference layer must be a polygonal one
  */
-@DescribeProcess(title = "vectorZonalStatistics", description = "Provides statistics for the distribution "
-        + "of a certain quantity in a set of reference areas. "
-        + "The data layer must be a point layer, the reference layer must be a polygonal one")
+@DescribeProcess(title = "Vector Zonal Statistics", description = "Computes statistics for the distribution of a given attribute in a set of polygonal zones.  Input must be points.")
 public class VectorZonalStatistics implements GSProcess {
 
-    @DescribeResult(name = "statistics", description = "A feature collection with all the attributes "
-            + "of the zoning layer (prefixed by 'z_'), "
-            + "and the statistics fields count/min/max/sum/avg/stddev")
+    @DescribeResult(name = "statistics", description = "A feature collection with the attributes of the zone layer (prefixed by 'z_') and the statistics fields count,min,max,sum,avg,stddev")
     public SimpleFeatureCollection execute(
-            @DescribeParameter(name = "data", description = "The point layer containing "
-                    + "the data to be used in the statistics") SimpleFeatureCollection data,
-            @DescribeParameter(name = "dataAttribute", description = "The attribute to be used for "
-                    + "the computation of the statistics") String dataAttribute,
-            @DescribeParameter(name = "zones", description = "The various zones in which the statistics will be computed. "
-                    + "Must be a polygon layer, each polygon will be used to generate a separate statistic") SimpleFeatureCollection zones) {
+            @DescribeParameter(name = "data", description = "Input collection of point features") SimpleFeatureCollection data,
+            @DescribeParameter(name = "dataAttribute", description = "Attribute to use for computing statistics") String dataAttribute,
+            @DescribeParameter(name = "zones", description = "Zone polygon features for which to compute statistics") SimpleFeatureCollection zones) {
 
         AttributeDescriptor dataDescriptor = data.getSchema().getDescriptor(dataAttribute);
         if (dataDescriptor == null) {

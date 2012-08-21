@@ -346,6 +346,7 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
              *
              *     URN_AuthorityFactory           - excluded
              *     HTTP_AuthorityFactory          - excluded
+             *     HTTP_URI_AuthorityFactory      - excluded
              *     OrderedAxisAuthorityFactory    - make the test below
              *     FallbackAuthorityFactory       - make the test below
              *

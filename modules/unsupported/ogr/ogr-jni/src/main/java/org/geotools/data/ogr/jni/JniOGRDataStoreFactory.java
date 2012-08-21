@@ -12,7 +12,7 @@ public class JniOGRDataStoreFactory extends OGRDataStoreFactory {
     
     @Override
     protected boolean doIsAvailable() throws Throwable {
-        System.loadLibrary("gdal");
+        System.loadLibrary("gdaljni");
         return true;
     }
 

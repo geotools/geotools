@@ -14,9 +14,9 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+
 package org.geotools.referencing.factory;
 
-// OpenGIS dependencies
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
@@ -25,7 +25,6 @@ import org.opengis.referencing.cs.CSAuthorityFactory;
 import org.opengis.referencing.datum.DatumAuthorityFactory;
 import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
 
-// Geotools dependencies
 import org.geotools.factory.Hints;
 import org.geotools.util.GenericName;
 import org.geotools.metadata.iso.citation.Citations;
@@ -41,18 +40,9 @@ import org.geotools.resources.i18n.Errors;
  * {@link AllAuthoritiesFactory#getSeparator} method, since the separator is not the usual
  * {@value org.geotools.util.GenericName#DEFAULT_SEPARATOR} character.
  *
- * @since 2.4
- *
- *
- * @source $URL$
- * @version $Id$
  * @author Martin Desruisseaux
  *
- * @deprecated This class will move in a <code>org.geotools.referencing.factory.<strong>web</strong></code>
- *             package in Geotools 2.5, in order to put together other web-related factories.
- *             Don't use this class directly. You should not need to anyway - use
- *             {@link org.geotools.referencing.ReferencingFactoryFinder} instead, which will
- *             continue to work no matter where this class is located.
+ * @source $URL$
  */
 public class HTTP_AuthorityFactory extends AuthorityFactoryAdapter implements CRSAuthorityFactory,
         CSAuthorityFactory, DatumAuthorityFactory, CoordinateOperationAuthorityFactory

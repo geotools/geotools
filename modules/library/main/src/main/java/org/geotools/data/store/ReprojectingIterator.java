@@ -86,7 +86,7 @@ public class ReprojectingIterator implements Iterator {
 
         MathTransform transform = ReferencingFactoryFinder.getCoordinateOperationFactory(
                 null).createOperation(source, target).getMathTransform();
-        tx.setMathTransform((MathTransform2D) transform);
+        tx.setMathTransform(transform);
     }
 
     public Iterator getDelegate() {

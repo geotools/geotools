@@ -38,20 +38,20 @@ import org.opengis.parameter.ParameterValueGroup;
  *
  * @source $URL$
  */
-@DescribeProcess(title = "scaleCoverage", description = "Applies a generic scale and translate operation to a coverage")
+@DescribeProcess(title = "Scale Coverage", description = "Returns a scaled and translated version of a given raster")
 public class ScaleCoverage implements GSProcess {
 
     private static final CoverageProcessor PROCESSOR = CoverageProcessor.getInstance();
     private static final Operation SCALE = PROCESSOR.getOperation("Scale");
 
-    @DescribeResult(name = "result", description = "The scaled raster")
+    @DescribeResult(name = "result", description = "Scaled raster")
     public GridCoverage2D execute(
-            @DescribeParameter(name = "coverage", description = "The raster to be scaled") GridCoverage2D coverage,
+            @DescribeParameter(name = "coverage", description = "Input raster") GridCoverage2D coverage,
             @DescribeParameter(name = "xScale", description = "Scale factor along the x axis") double xScale,
             @DescribeParameter(name = "yScale", description = "Scale factor along the y axis") double yScale,
             @DescribeParameter(name = "xTranslate", description = "Offset along the x axis") double xTranslate,
             @DescribeParameter(name = "yTranslate", description = "Offset along the y axis") double yTranslate,
-            @DescribeParameter(name = "interpolation", description = "Interpolation type", min = 0) Interpolation interpolation) throws IOException {
+            @DescribeParameter(name = "interpolation", description = "Interpolation function to use.  Values are NEAREST, BILINEAR, BICUBIC2, BICUBIC", min = 0) Interpolation interpolation) throws IOException {
         final ParameterValueGroup param = SCALE.getParameters();
         
         param.parameter("Source").setValue(coverage);

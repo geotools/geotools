@@ -594,6 +594,7 @@ final class Resampler2D extends GridCoverage2D {
          */
         final String operation;
         final ParameterBlock paramBlk = new ParameterBlock().addSource(sourceImage);
+        final Map<String, Object> imageProperties = new HashMap<String, Object>();
         Warp warp = null;
         if (allSteps.isIdentity() || (allSteps instanceof AffineTransform &&
                 XAffineTransform.isIdentity((AffineTransform) allSteps, EPS)))
@@ -708,10 +709,17 @@ final class Resampler2D extends GridCoverage2D {
                 } else {
                     warp = createWarp(name, sourceBB, targetBB, transform, mtFactory, hints);
                 }
+                // store the transormation in the properties, as we might want to retrieve and chain
+                // it with affine transforms down the chain
+                imageProperties.put("MathTransform", transform);
+                imageProperties.put("SourceBoundingBox", sourceBB);
                 paramBlk.add(warp).add(interpolation).add(background);
             }
         }
         final RenderedOp targetImage = getJAI(hints).createNS(operation, paramBlk, targetHints);
+        for (Map.Entry<String, Object> entry : imageProperties.entrySet()) {
+            targetImage.setProperty(entry.getKey(), entry.getValue());
+        }
         final Locale locale = sourceCoverage.getLocale();  // For logging purpose.
         /*
          * The JAI operation sometime returns an image with a bounding box different than what we

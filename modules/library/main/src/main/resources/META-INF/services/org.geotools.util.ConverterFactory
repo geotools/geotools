@@ -8,4 +8,5 @@ org.geotools.util.ColorConverterFactory
 org.geotools.util.CollectionConverterFactory
 org.geotools.util.CharsetConverterFactory
 org.geotools.util.UuidConverterFactory
+org.geotools.util.EnumerationConverterFactory
 org.geotools.temporal.TemporalConverterFactory

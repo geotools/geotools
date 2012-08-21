@@ -35,6 +35,44 @@ import org.geotools.gml3.Circle;
 
 
 /**
+ *  &lt;complexType name="ArcType">
+ *        &lt;annotation>
+ *            &lt;documentation>An Arc is an arc string with only one arc unit, i.e. three control points.&lt;/documentation>
+ *        &lt;/annotation>
+ *        &lt;complexContent>
+ *            &lt;restriction base="gml:ArcStringType">
+ *                &lt;sequence>
+ *                    &lt;choice>
+ *                        &lt;annotation>
+ *                            &lt;documentation>GML supports two different ways to specify the control points of a curve segment.
+ *1. A sequence of "pos" (DirectPositionType) or "pointProperty" (PointPropertyType) elements. "pos" elements are control points that are only part of this curve segment, "pointProperty" elements contain a point that may be referenced from other geometry elements or reference another point defined outside of this curve segment (reuse of existing points).
+ *2. The "posList" element allows for a compact way to specifiy the coordinates of the control points, if all control points are in the same coordinate reference systems and belong to this curve segment only. The number of direct positions in the list must be three.&lt;/documentation>
+ *                        &lt;/annotation>
+ *                        &lt;choice minOccurs="3" maxOccurs="3">
+ *                            &lt;element ref="gml:pos"/>
+ *                            &lt;element ref="gml:pointProperty"/>
+ *                            &lt;element ref="gml:pointRep">
+ *                                &lt;annotation>
+ *                                    &lt;documentation>Deprecated with GML version 3.1.0. Use "pointProperty" instead. Included for backwards compatibility with GML 3.0.0.&lt;/documentation>
+ *                                &lt;/annotation>
+ *                            &lt;/element>
+ *                        &lt;/choice>
+ *                        &lt;element ref="gml:posList"/>
+ *                        &lt;element ref="gml:coordinates">
+ *                            &lt;annotation>
+ *                                &lt;documentation>Deprecated with GML version 3.1.0. Use "posList" instead.&lt;/documentation>
+ *                            &lt;/annotation>
+ *                        &lt;/element>
+ *                    &lt;/choice>
+ *                &lt;/sequence>
+ *                &lt;attribute name="numArc" type="integer" use="optional" fixed="1">
+ *                    &lt;annotation>
+ *                        &lt;documentation>An arc is an arc string consiting of a single arc, the attribute is fixed to "1".&lt;/documentation>
+ *                    &lt;/annotation>
+ *                &lt;/attribute>
+ *            &lt;/restriction>
+ *        &lt;/complexContent>
+ *    &lt;/complexType>
  *
  * @author Erik van de Pol. B3Partners BV.
  *
@@ -71,7 +109,7 @@ public class ArcTypeBinding extends AbstractComplexBinding {
 
     @Override
     public int getExecutionMode() {
-        return OVERRIDE;
+        return AFTER;
     }
 
     /**
@@ -84,71 +122,13 @@ public class ArcTypeBinding extends AbstractComplexBinding {
     public Object parse(ElementInstance instance, Node node, Object value)
         throws Exception {
 
+        //check that three points were specified
         LineString arcLineString = GML3ParsingUtils.lineString(node, gFactory, csFactory);
-        
-        Coordinate[] arcCoordinates = arcLineString.getCoordinates();
-        if (arcCoordinates.length != 3) {
-            // maybe log this instead and return null
-            throw new RuntimeException(
-                    "GML3 parser exception: The number of coordinates of an Arc should be 3. It currently is: " + arcCoordinates.length + "; " + arcLineString);
+        if (arcLineString.getCoordinates().length != 3) {
+            throw new RuntimeException("Number of coordinates in an arc must be exactly 3, " 
+                    + arcLineString.getCoordinates().length + " were specified: " + arcLineString);
         }
 
-        Coordinate c1 = arcCoordinates[0];
-        Coordinate c2 = arcCoordinates[1];
-        Coordinate c3 = arcCoordinates[2];
-
-        // determine whether we need to reverse our input.
-        boolean mustReverse = laidOutClockwise(c1, c2, c3);
-
-        if (mustReverse) {
-            // swap coords 1 and 3
-            Coordinate cTemp = c1;
-            c1 = c3;
-            c3 = cTemp;
-        }
-
-        Circle circle = new Circle(c1, c2, c3);
-        double tolerance = arcParameters.getLinearizationTolerance().getTolerance(circle);
-        Coordinate[] resultCoordinates = circle.linearizeArc(c1, c2, c3, tolerance);
-
-        if (mustReverse) {
-            // reverse back
-            List<Coordinate> reversingCoordinates = Arrays.asList(resultCoordinates);
-            Collections.reverse(reversingCoordinates);
-            resultCoordinates = (Coordinate[])
-                    reversingCoordinates.toArray(new Coordinate[reversingCoordinates.size()]);
-        }
-
-        LineString resultLineString = gFactory.createLineString(resultCoordinates);
-
-        return resultLineString;
+        return value;
     }
-
-    /**
-     * Returns whether the input coordinates are laid out clockwise on their corresponding circle.
-     * Only works correctly if the Euclidean distance between c1 and c2 is equal to the Euclidean distance between c2 and c3.
-     * @param c1
-     * @param c2
-     * @param c3
-     * @return true if input coordinates are laid out clockwise on their corresponding circle. false otherwise.
-     */
-    protected boolean laidOutClockwise(Coordinate c1, Coordinate c2, Coordinate c3) {
-        double x1 = c1.x;
-        double y1 = c1.y;
-        double x2 = c2.x;
-        double y2 = c2.y;
-        double x3 = c3.x;
-        double y3 = c3.y;
-        
-        double midY = y1 - (y1 - y3) / 2;
-        
-        return  (x1 < x3 && midY < y2) ||
-                (x1 > x3 && midY > y2) ||
-                (Double.compare(x1, x3) == 0 && (
-                    (y1 < y3 && x1 > x2) || // x1 == x3 == midX in this case and the case below
-                    (y1 > y3 && x1 < x2)
-                    // Double.compare(y1, y3) == 0 degenerate case omitted
-                ));
-    }
-
 }

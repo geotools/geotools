@@ -51,13 +51,13 @@ import com.vividsolutions.jts.geom.MultiPolygon;
  *
  * @source $URL$
  */
-@DescribeProcess(title = "buffer", description = "Buffers each feature in a collection by a fixed amount or by a value coming from a feature attribute. Works in pure cartesian mode.")
+@DescribeProcess(title = "Buffer", description = "Buffers features by a distance value supplied either as a parameter or by a feature attribute. Calculates buffers based on Cartesian distances.")
 public class BufferFeatureCollection implements GSProcess {
-    @DescribeResult(description = "The buffered feature collection")
+    @DescribeResult(description = "Buffered feature collection")
     public SimpleFeatureCollection execute(
-            @DescribeParameter(name = "feature collection", description = "Feature collection") SimpleFeatureCollection features,
-            @DescribeParameter(name = "width of the buffer", description = "The width of the buffer") Double distance,
-            @DescribeParameter(name = "name of the layer attribute containing the width of the buffer", description = "Name of the layer attribute",min=0) String attribute) {
+            @DescribeParameter(name = "features", description = "Input feature collection") SimpleFeatureCollection features,
+            @DescribeParameter(name = "distance", description = "Fixed value to use for the buffer distance") Double distance,
+            @DescribeParameter(name = "attributeName", description = "Attribute containing the buffer distance value",min=0) String attribute) {
 
         if (distance == null && (attribute == null || attribute == "")) {
             throw new IllegalArgumentException("Buffer distance was not specified");

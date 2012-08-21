@@ -45,16 +45,14 @@ import org.opengis.feature.type.PropertyDescriptor;
  * @author Andrea Di Nora - Sinergis
  * @author Pietro Arena - Sinergis
  */
-@DescribeProcess(title = "union", description = "Returns a SQL like union between two feature collections " +
-		"(will contain attributes from both collections, if two attributes are not the same type " +
-		"they will be turned into strings)")
+@DescribeProcess(title = "Union Feature Collections", description = "Returns single feature collection containing all features from two input feature collections.  The output attribute schema is a combination of the attributes from the inputs.  Attributes with same name but different types will be converted to strings.")
 public class UnionFeatureCollection implements GSProcess {
 
     static final String SCHEMA_NAME = "Union_Layer";
 
-    @DescribeResult(description = "feature collection containg the union between the two feature collections")
+    @DescribeResult(name = "result", description = "Output feature collection")
     public SimpleFeatureCollection execute(
-            @DescribeParameter(name = "first feature collection", description = "First feature collection") SimpleFeatureCollection firstFeatures,
+            @DescribeParameter(name = "first feature collection", description = "First input feature collection") SimpleFeatureCollection firstFeatures,
             @DescribeParameter(name = "second feature collection", description = "Second feature collection") SimpleFeatureCollection secondFeatures)
             throws ClassNotFoundException {
         if (!(firstFeatures.features().next().getDefaultGeometry().getClass().equals(secondFeatures

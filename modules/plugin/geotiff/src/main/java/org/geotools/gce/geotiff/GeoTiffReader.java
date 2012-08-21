@@ -723,8 +723,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             }
 
             final int index = sourceAsString.lastIndexOf(".");
-            final StringBuilder base = new StringBuilder(sourceAsString
-                    .substring(0, index)).append(".prj");
+            final String base=index>0?sourceAsString.substring(0, index)+".prj":sourceAsString+".prj";
 
             // does it exist?
             final File prjFile = new File(base.toString());

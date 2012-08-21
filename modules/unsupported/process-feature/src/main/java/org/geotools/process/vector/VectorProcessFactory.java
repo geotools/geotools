@@ -63,7 +63,8 @@ public class VectorProcessFactory extends AnnotatedBeanProcessFactory {
                 TransformProcess.class,
                 LRSGeocodeProcess.class,
                 LRSMeasureProcess.class,
-                LRSSegmentProcess.class);
+                LRSSegmentProcess.class, 
+                VectorToRasterProcess.class);
     }
 
 }

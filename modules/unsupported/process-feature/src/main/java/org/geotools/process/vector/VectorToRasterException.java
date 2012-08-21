@@ -24,7 +24,7 @@
  */
 
 
-package org.geotools.process.raster;
+package org.geotools.process.vector;
 
 import org.geotools.process.ProcessException;
 

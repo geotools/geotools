@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.process.raster;
+package org.geotools.process.vector;
 
 import java.awt.Dimension;
 import java.awt.Point;
@@ -75,16 +75,12 @@ public class VectorToRasterProcessTest {
     
     @Test
     public void testCreateProcess() throws Exception {
-        System.out.println("   create process");
-        Process p = Processors.createProcess(new NameImpl("gt", "VectorToRaster"));
+        Process p = Processors.createProcess(new NameImpl("vec", "VectorToRaster"));
         assertNotNull(p);
-        assertTrue(p instanceof VectorToRasterProcess);
     }
 
     @Test
     public void rasterizePolygons() throws Exception {
-        System.out.println("   rasterize polygons");
-        
         SimpleFeatureCollection features = createPolys();
         ReferencedEnvelope bounds = features.getBounds();
 
@@ -137,8 +133,6 @@ public class VectorToRasterProcessTest {
     
     @Test
     public void rasterizePoints() throws Exception {
-        System.out.println("   rasterize points");
-        
         ReferencedEnvelope bounds = new ReferencedEnvelope(-10, 10, -20, 20, DefaultEngineeringCRS.GENERIC_2D);
         Dimension gridDim = new Dimension(100, 100);
         
@@ -174,7 +168,7 @@ public class VectorToRasterProcessTest {
     @Test
     public void executeProcessWithFloat() throws Exception {
         System.out.println("   execute process using float values");
-        Process p = Processors.createProcess(new NameImpl("gt", "VectorToRaster"));
+        Process p = Processors.createProcess(new NameImpl("vec", "VectorToRaster"));
         assertNotNull(p);
 
         SimpleFeatureCollection features = createFloatLines();
@@ -188,13 +182,13 @@ public class VectorToRasterProcessTest {
 
         Map<String, Object> map = new HashMap<String, Object>();
         map.put(AbstractFeatureCollectionProcessFactory.FEATURES.key, features);
-        map.put(VectorToRasterFactory.ATTRIBUTE.key, "value");
-        map.put(VectorToRasterFactory.RASTER_WIDTH.key, gridDim.width);
-        map.put(VectorToRasterFactory.RASTER_HEIGHT.key, gridDim.height);
-        map.put(VectorToRasterFactory.BOUNDS.key, bounds);
+        map.put("attribute", "value");
+        map.put("rasterWidth", gridDim.width);
+        map.put("rasterHeight", gridDim.height);
+        map.put("bounds", bounds);
 
         Map<String, Object> result = p.execute(map, monitor);
-        GridCoverage2D cov = (GridCoverage2D) result.get(VectorToRasterFactory.RESULT.key);
+        GridCoverage2D cov = (GridCoverage2D) result.get("result");
         
         //textPrintFloat(cov);
         
@@ -224,8 +218,7 @@ public class VectorToRasterProcessTest {
      */
     @Test
     public void executeProcessWithString() throws Exception {
-        System.out.println("   execute process using String values");
-        Process p = Processors.createProcess(new NameImpl("gt", "VectorToRaster"));
+        Process p = Processors.createProcess(new NameImpl("vec", "VectorToRaster"));
         assertNotNull(p);
 
         SimpleFeatureCollection features = createStringLines();
@@ -239,13 +232,13 @@ public class VectorToRasterProcessTest {
 
         Map<String, Object> map = new HashMap<String, Object>();
         map.put(AbstractFeatureCollectionProcessFactory.FEATURES.key, features);
-        map.put(VectorToRasterFactory.ATTRIBUTE.key, "value");
-        map.put(VectorToRasterFactory.RASTER_WIDTH.key, gridDim.width);
-        map.put(VectorToRasterFactory.RASTER_HEIGHT.key, gridDim.height);
-        map.put(VectorToRasterFactory.BOUNDS.key, bounds);
+        map.put("attribute", "value");
+        map.put("rasterWidth", gridDim.width);
+        map.put("rasterHeight", gridDim.height);
+        map.put("bounds", bounds);
 
         Map<String, Object> result = p.execute(map, monitor);
-        GridCoverage2D cov = (GridCoverage2D) result.get(VectorToRasterFactory.RESULT.key);
+        GridCoverage2D cov = (GridCoverage2D) result.get("result");
         
         //textPrint(cov);
         

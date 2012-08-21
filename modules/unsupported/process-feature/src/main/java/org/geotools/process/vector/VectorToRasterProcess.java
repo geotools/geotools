@@ -23,7 +23,7 @@
  *    of any kind is given regarding the work.
  */
 
-package org.geotools.process.raster;
+package org.geotools.process.vector;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -55,17 +55,23 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.data.Parameter;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.FeatureCollection;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.process.factory.DescribeParameter;
+import org.geotools.process.factory.DescribeProcess;
+import org.geotools.process.factory.DescribeResult;
 import org.geotools.process.feature.AbstractFeatureCollectionProcess;
 import org.geotools.process.feature.AbstractFeatureCollectionProcessFactory;
 import org.geotools.referencing.CRS;
+import org.geotools.text.Text;
 import org.geotools.util.NullProgressListener;
 import org.geotools.util.SimpleInternationalString;
 import org.opengis.feature.simple.SimpleFeature;
@@ -94,8 +100,11 @@ import org.opengis.util.ProgressListener;
  *
  * @source $URL$
  * @version $Id$
+ * 
+ * 
  */
-public class VectorToRasterProcess extends AbstractFeatureCollectionProcess {
+@DescribeProcess(title = "Transform", description = "Converts some or all of a feature collection to a raster grid, using an attribute to specify cell values.")
+public class VectorToRasterProcess {
 
     private static final int COORD_GRID_CHUNK_SIZE = 1000;
 
@@ -130,14 +139,6 @@ public class VectorToRasterProcess extends AbstractFeatureCollectionProcess {
     TiledImage image;
     Graphics2D graphics;
 
-    /**
-     * Constructor
-     *
-     * @param factory
-     */
-    public VectorToRasterProcess(VectorToRasterFactory factory) {
-        super(factory);
-    }
 
     /**
      * A static helper method that can be called directy to run the process.
@@ -175,61 +176,80 @@ public class VectorToRasterProcess extends AbstractFeatureCollectionProcess {
             String covName,
             ProgressListener monitor) throws VectorToRasterException {
 
-        VectorToRasterFactory factory = new VectorToRasterFactory();
-        VectorToRasterProcess process = factory.create();
-
+        VectorToRasterProcess process = new VectorToRasterProcess();
         return process.convert(features, attribute, gridDim, bounds, covName, monitor);
     }
 
-    /**
-     * Retrieves the input parameters from the supplied Map, conducts some basic checking,
-     * and then carries out the vector to raster conversion.
-     *
-     * @param input
-     *          input parameters from those defined in {@linkplain VectorToRasterFactory}
-     *
-     * @param monitor
-     *          a ProgressListener object, or null if monitoring is not required
-     *
-     * @return  a Map of result objects
-     *
-     * @throws org.geotools.process.raster.VectorToRasterException if unable to
-     * rasterize the features as requested
-     *
-     * @see VectorToRasterFactory#getResultInfo(java.util.Map)
-     */
-    @Override
-    public Map<String, Object> execute( Map<String, Object> input, ProgressListener monitor )
-        throws VectorToRasterException {
-
-        SimpleFeatureCollection features = (SimpleFeatureCollection)
-            input.get(AbstractFeatureCollectionProcessFactory.FEATURES.key);
-
-        String attributeStr = (String) input.get(VectorToRasterFactory.ATTRIBUTE.key);
-        Expression attribute = null;
+    @DescribeResult(name = "result", description = "Rasterized grid")
+    public GridCoverage2D execute(
+        @DescribeParameter(name = "features", description = "Features to process", min = 1, max = 1) SimpleFeatureCollection features,
+        @DescribeParameter(name = "rasterWidth", description = "Width of the output grid in pixels", min = 1, max = 1) Integer rasterWidth,
+        @DescribeParameter(name = "rasterHeight", description = "Height of the output grid in pixels", min = 1, max = 1) Integer rasterHeight,
+        @DescribeParameter(name = "title", description = "Title to use for the output grid", min = 0, max = 1, defaultValue = "raster" ) String title,
+        @DescribeParameter(name = "attribute", description = "Attribute name to use for the raster cell values", min = 1, max = 1) String attribute,
+        @DescribeParameter(name = "bounds", description = "Bounding box of the area to rasterize", min = 0, max = 1) Envelope bounds,
+        ProgressListener progressListener) {
+        
+        Expression attributeExpr = null;
         try {
-        	attribute = ECQL.toExpression(attributeStr);
+              attributeExpr = ECQL.toExpression(attribute);
         } catch(CQLException e) {
-        	throw new VectorToRasterException(e);
+              throw new VectorToRasterException(e);
         }
-
-        int w = (Integer) input.get(VectorToRasterFactory.RASTER_WIDTH.key);
-        int h = (Integer) input.get(VectorToRasterFactory.RASTER_HEIGHT.key);
-        Dimension gridDim = new Dimension(w, h);
-
-        ReferencedEnvelope env = (ReferencedEnvelope) input.get(VectorToRasterFactory.BOUNDS.key);
-
-        String title = (String) input.get(VectorToRasterFactory.TITLE.key);
-        if(title == null) {
-        	title = "raster";
-        }
-
-        GridCoverage2D cov = convert(features, attribute, gridDim, env, title, monitor);
-
-        Map<String, Object> results = new HashMap<String, Object>();
-        results.put(VectorToRasterFactory.RESULT.key, cov);
-        return results;
+        return convert(features, attributeExpr, new Dimension(rasterWidth, rasterHeight), bounds, 
+            title, progressListener);
     }
+    
+    
+//    /**
+//     * Retrieves the input parameters from the supplied Map, conducts some basic checking,
+//     * and then carries out the vector to raster conversion.
+//     *
+//     * @param input
+//     *          input parameters from those defined in {@linkplain VectorToRasterFactory}
+//     *
+//     * @param monitor
+//     *          a ProgressListener object, or null if monitoring is not required
+//     *
+//     * @return  a Map of result objects
+//     *
+//     * @throws org.geotools.process.raster.VectorToRasterException if unable to
+//     * rasterize the features as requested
+//     *
+//     * @see VectorToRasterFactory#getResultInfo(java.util.Map)
+//     */
+//    @Override
+//    public Map<String, Object> execute( Map<String, Object> input, ProgressListener monitor )
+//        throws VectorToRasterException {
+//
+//        SimpleFeatureCollection features = (SimpleFeatureCollection)
+//            input.get(AbstractFeatureCollectionProcessFactory.FEATURES.key);
+//
+//        String attributeStr = (String) input.get(VectorToRasterFactory.ATTRIBUTE.key);
+//        Expression attribute = null;
+//        try {
+//        	attribute = ECQL.toExpression(attributeStr);
+//        } catch(CQLException e) {
+//        	throw new VectorToRasterException(e);
+//        }
+//
+//        int w = (Integer) input.get(VectorToRasterFactory.RASTER_WIDTH.key);
+//        int h = (Integer) input.get(VectorToRasterFactory.RASTER_HEIGHT.key);
+//        Dimension gridDim = new Dimension(w, h);
+//
+//        ReferencedEnvelope env = (ReferencedEnvelope) input.get(VectorToRasterFactory.BOUNDS.key);
+//
+//        String title = (String) input.get(VectorToRasterFactory.TITLE.key);
+//        if(title == null) {
+//        	title = "raster";
+//        }
+//
+//        GridCoverage2D cov = convert(features, attribute, gridDim, env, title, monitor);
+//
+//        Map<String, Object> results = new HashMap<String, Object>();
+//        results.put(VectorToRasterFactory.RESULT.key, cov);
+//        return results;
+//    }
 
     /**
      * This method is called by {@linkplain #execute} to rasterize an individual feature.
@@ -242,10 +262,8 @@ public class VectorToRasterProcess extends AbstractFeatureCollectionProcess {
      *
      * @throws java.lang.Exception
      */
-    @Override
-    protected void processFeature(SimpleFeature feature, Map<String, Object> input) throws Exception {
+    protected void processFeature(SimpleFeature feature, Object attribute) throws Exception {
 
-        Object attribute = input.get(VectorToRasterFactory.ATTRIBUTE.key);
         Geometry geometry = (Geometry) feature.getDefaultGeometry();
 
         if (geometry.intersects(extentGeometry)) {
@@ -327,9 +345,6 @@ public class VectorToRasterProcess extends AbstractFeatureCollectionProcess {
 
         initialize( features, bounds, attribute, gridDim );
 
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put(VectorToRasterFactory.ATTRIBUTE.key, attribute);
-
         monitor.setTask(new SimpleInternationalString("Rasterizing features..."));
 
         float scale = 100.0f / features.size();
@@ -340,7 +355,7 @@ public class VectorToRasterProcess extends AbstractFeatureCollectionProcess {
             int counter = 0;
             while( fi.hasNext() ) {
                 try {
-                    processFeature(fi.next(), params);
+                    processFeature(fi.next(), attribute);
                 }
                 catch( Exception e ) {
                     monitor.exceptionOccurred( e );
@@ -482,7 +497,7 @@ public class VectorToRasterProcess extends AbstractFeatureCollectionProcess {
         // features to the output CRS prior to rasterizing them.
 
         CoordinateReferenceSystem featuresCRS = featureBounds.getCoordinateReferenceSystem();
-        CoordinateReferenceSystem boundsCRS = bounds.getCoordinateReferenceSystem();
+        CoordinateReferenceSystem boundsCRS = extent.getCoordinateReferenceSystem();
 
         transformFeatures = false;
         if (featuresCRS != null 

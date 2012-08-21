@@ -15,15 +15,19 @@
  *    Lesser General Public License for more details.
  *    
  */
-package org.geotools.process.jts;
+package org.geotools.process.geometry;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.geotools.geometry.jts.JTS;
+import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
+import org.geotools.referencing.CRS;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.densify.Densifier;
 import com.vividsolutions.jts.geom.Geometry;
@@ -402,5 +406,23 @@ public class GeometryFunctions {
         }
         return polygon.getFactory().createGeometryCollection(
                 GeometryFactory.toGeometryArray(output));
+    }
+
+    /**
+     * Will reproject a geometry to another CRS. 
+     */
+    @DescribeProcess(title = "Reproject Geometry", description = "Reprojects a given geometry into a supplied coordinate reference system.")
+    @DescribeResult(name = "result", description = "Reprojected geometry")
+    static public Geometry reproject(
+        @DescribeParameter(name = "geometry", description = "Input geometry") Geometry geometry,
+        @DescribeParameter(name = "sourceCRS", min = 0, description = "Coordinate reference system of input geometry") CoordinateReferenceSystem sourceCRS,
+        @DescribeParameter(name = "targetCRS", min = 0, description = "Target coordinate reference system to use for reprojection") CoordinateReferenceSystem targetCRS) {
+
+        try {
+            return JTS.transform(geometry, CRS.findMathTransform(sourceCRS, targetCRS, true));
+        } 
+        catch (Exception e) {
+            throw new ProcessException("Reprojection faiiled", e);
+        }
     }
 }

@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  *    
  */
-package org.geotools.process.jts;
+package org.geotools.process.geometry;
 
 import org.geotools.process.factory.StaticMethodsProcessFactory;
 import org.geotools.util.SimpleInternationalString;
@@ -31,8 +31,7 @@ import org.geotools.util.SimpleInternationalString;
 public class GeometryProcessFactory extends StaticMethodsProcessFactory<GeometryFunctions> {
 
     public GeometryProcessFactory() {
-        super(new SimpleInternationalString("Simple JTS based spatial analysis methods"), "JTS",
-                GeometryFunctions.class);
+        super(new SimpleInternationalString("Geometry processes"), "geo", GeometryFunctions.class);
     }
 
 }

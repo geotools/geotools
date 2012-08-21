@@ -441,7 +441,8 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
             fullExtent = null;
             doSetDisplayArea(newEnvelope);
 
-            ReferencedEnvelope displayArea = getDisplayArea();
+            // ReferencedEnvelope displayArea =
+            getDisplayArea();
             // System.out.println(displayArea);
         } catch (Exception e) {
             e.printStackTrace();
@@ -1236,6 +1237,15 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
         // draw the created new image on the pane
         if (gc != null && !gc.isDisposed())
             gc.drawImage(tmpImage, imageOrigin.x, imageOrigin.y);
+
+        if (tmpImage != null && !tmpImage.isDisposed()) {
+            tmpImage.dispose();
+            tmpImage = null;
+        }
+        if (tmpGc != null && !tmpGc.isDisposed()) {
+            tmpGc.dispose();
+            tmpGc = null;
+        }
     }
 
     @SuppressWarnings("deprecation")

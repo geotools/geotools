@@ -117,6 +117,7 @@ import org.opengis.referencing.operation.TransformException;
  * @author Simone Giannecchini
  * @since 2.1
  *
+ *
  * @source $URL$
  */
 public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridCoverageReader {
@@ -132,9 +133,6 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 
 	/** SPI for creating tiff readers in ImageIO tools */
 	private final static TIFFImageReaderSpi READER_SPI = new TIFFImageReaderSpi();
-
-	/** Decoder for the GeoTiff metadata. */
-	private GeoTiffIIOMetadataDecoder metadata;
 
 	/** Adapter for the GeoTiff crs. */
 	private GeoTiffMetadata2CRSAdapter gtcs;
@@ -290,7 +288,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             inStream.mark();
             reader.setInput(inStream);
             final IIOMetadata iioMetadata = reader.getImageMetadata(0);
-            metadata = new GeoTiffIIOMetadataDecoder(iioMetadata);
+            final GeoTiffIIOMetadataDecoder metadata = new GeoTiffIIOMetadataDecoder(iioMetadata);
             gtcs = new GeoTiffMetadata2CRSAdapter(hints);
             
             // //
@@ -397,6 +395,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                     overViewResolutions[i][0] = spanRes0 / ovrReader.getWidth(i - firstExternalOverview);
                     overViewResolutions[i][1] = spanRes1 / ovrReader.getHeight(i - firstExternalOverview);
                 }
+               
             } else
                 overViewResolutions = null;
         } catch (Throwable e) {
@@ -582,14 +581,64 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 
 	}
 
-	/**
-	 * Returns the geotiff metadata for this geotiff file.
-	 * 
-	 * @return the metadata
-	 */
-	public GeoTiffIIOMetadataDecoder getMetadata() {
-		return metadata;
-	}
+    /**
+     * Returns the geotiff metadata for this geotiff file.
+     * 
+     * @return the metadata
+     */
+    public GeoTiffIIOMetadataDecoder getMetadata() {
+        GeoTiffIIOMetadataDecoder metadata = null;
+        ImageReader reader = null;
+        boolean closeMe = true;
+        ImageInputStream stream = null;
+        
+        try {
+            if ((source instanceof InputStream)|| (source instanceof ImageInputStream)){
+                closeMe = false;
+            }
+            if (source instanceof ImageInputStream ) {
+                    stream =(ImageInputStream) source;
+            } else {
+                inStreamSPI = ImageIOExt.getImageInputStreamSPI(source);
+                if (inStreamSPI == null) {
+                    throw new IllegalArgumentException("No input stream for the provided source");
+                }
+                stream = inStreamSPI.createInputStreamInstance(source, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
+            }
+            if (stream == null) {
+                    throw new IllegalArgumentException("No input stream for the provided source");
+            }
+            stream.mark();
+            reader = READER_SPI.createReaderInstance();
+            reader.setInput(stream);
+            final IIOMetadata iioMetadata = reader.getImageMetadata(0);
+            metadata = new GeoTiffIIOMetadataDecoder(iioMetadata);
+        } catch (IOException e) {
+            if (LOGGER.isLoggable(Level.SEVERE)) {
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            }
+        } finally {
+            if (reader != null)
+                try {
+                    reader.dispose();
+                } catch (Throwable t) {
+                }
+
+            if (stream != null){
+                try {
+                    stream.reset();
+                } catch (Throwable t) {
+                }
+                if (closeMe){
+                    try {
+                        stream.close();
+                    } catch (Throwable t) {
+                    }
+                }
+            }
+        }
+        return metadata;
+    }
 	
 	/**
          * Creates a {@link GridCoverage} for the provided {@link PlanarImage} using
@@ -674,8 +723,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             }
 
             final int index = sourceAsString.lastIndexOf(".");
-            final StringBuilder base = new StringBuilder(sourceAsString
-                    .substring(0, index)).append(".prj");
+            final String base=index>0?sourceAsString.substring(0, index)+".prj":sourceAsString+".prj";
 
             // does it exist?
             final File prjFile = new File(base.toString());

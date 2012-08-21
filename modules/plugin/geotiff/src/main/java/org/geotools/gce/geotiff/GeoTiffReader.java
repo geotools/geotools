@@ -124,6 +124,12 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 
 	/** Logger for the {@link GeoTiffReader} class. */
 	private Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GeoTiffReader.class.toString());
+	
+	/** With this java switch I can control whether or not an external PRJ files takes precedence over the internal CRS definition*/
+	public static final String OVERRIDE_CRS_SWITCH = "org.geotools.gce.geotiff.override.crs";
+	
+	/** With this java switch I can control whether or not an external PRJ files takes precedence over the internal CRS definition*/
+	static boolean OVERRIDE_INNER_CRS=Boolean.valueOf(System.getProperty(GeoTiffReader.OVERRIDE_CRS_SWITCH, "True"));
 
 	/** SPI for creating tiff readers in ImageIO tools */
 	private final static TIFFImageReaderSpi READER_SPI = new TIFFImageReaderSpi();
@@ -296,12 +302,19 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                 if (LOGGER.isLoggable(Level.FINE))
                     LOGGER.log(Level.FINE, "Using forced coordinate reference system");
             } else {
-                // check metadata first
-                if (metadata.hasGeoKey()&& gtcs != null)
-                    crs = gtcs.createCoordinateSystem(metadata);
+            	
+            	// check external prj first
+            	crs = getCRS(source);
+                                
+            	// now, if we did not want to override the inner CRS or we did not have any external PRJ at hand
+            	// let's look inside the geotiff
+                if (!OVERRIDE_INNER_CRS|| crs==null){
+                	if(metadata.hasGeoKey()&& gtcs != null){
+                        crs = gtcs.createCoordinateSystem(metadata);
+                	}
+                }
 
-                if (crs == null)
-                    crs = getCRS(source);
+
             }
 
             if (crs == null){

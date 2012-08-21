@@ -22,6 +22,7 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -35,6 +36,7 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.IIOMetadataDumper;
 import org.geotools.data.DataSourceException;
+import org.geotools.data.PrjFileReader;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
@@ -53,12 +55,87 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * 
  * @author Simone Giannecchini
  *
+ *
  * @source $URL$
  */
 public class GeoTiffReaderTest extends Assert {
 	private final static Logger LOGGER = org.geotools.util.logging.Logging
 			.getLogger(GeoTiffReaderTest.class.toString());
 
+	/**
+	 * Testing proper CRS override with PRJ.
+	 * 
+	 * @throws IllegalArgumentException
+	 * @throws IOException
+	 * @throws FactoryException
+	 */
+	    @Test
+	    public void prjOverrideTesting1() throws IllegalArgumentException, IOException,
+	            FactoryException {
+
+
+	        // NO override
+	        GeoTiffReader.OVERRIDE_INNER_CRS=true;
+	        
+	        //
+	        // PRJ override
+	        //
+	        final File noCrs = TestData.file(GeoTiffReaderTest.class, "sample.tif");
+	        final AbstractGridFormat format = new GeoTiffFormat();
+	        assertTrue(format.accepts(noCrs));
+	        GeoTiffReader reader = (GeoTiffReader) format.getReader(noCrs);
+	        CoordinateReferenceSystem crs=reader.getCrs();
+	        
+	        final File prj= TestData.file(GeoTiffReaderTest.class, "sample.prj");
+	        final CoordinateReferenceSystem crs_=new PrjFileReader(new FileInputStream(prj).getChannel()).getCoordinateReferenceSystem();
+	        assertTrue(CRS.equalsIgnoreMetadata(crs, crs_));
+	        GridCoverage2D coverage=reader.read(null);
+	        assertTrue(CRS.equalsIgnoreMetadata(coverage.getCoordinateReferenceSystem(), crs_));
+
+	        coverage.dispose(true);
+	    }
+	    
+		/**
+		 * Testing proper CRS override with PRJ.
+		 * 
+		 * @throws IllegalArgumentException
+		 * @throws IOException
+		 * @throws FactoryException
+		 */
+		    @Test
+		    public void prjOverrideTesting2() throws IllegalArgumentException, IOException,
+		            FactoryException {
+
+
+
+		        // NO override
+		        GeoTiffReader.OVERRIDE_INNER_CRS=false;
+		        
+		        //
+		        // PRJ override
+		        //
+		        final File noCrs = TestData.file(GeoTiffReaderTest.class, "sample.tif");
+
+		        
+		        final File prj= TestData.file(GeoTiffReaderTest.class, "sample.prj");
+		        final CoordinateReferenceSystem crs_=new PrjFileReader(new FileInputStream(prj).getChannel()).getCoordinateReferenceSystem();
+
+		        
+
+		        // getting a reader
+		        GeoTiffReader reader = new GeoTiffReader(noCrs);
+
+		        // reading the coverage
+		        GridCoverage2D coverage1 = (GridCoverage2D) reader.read(null);
+
+		        // check coverage and crs
+		        assertNotNull(coverage1);
+		        assertNotNull(coverage1.getCoordinateReferenceSystem());
+		        assertNotSame(coverage1.getCoordinateReferenceSystem(),crs_);
+		        reader.dispose();
+
+		        coverage1.dispose(true);
+		    }
     /**
      * Test for reading bad/strange geotiff files
      * 
@@ -78,9 +155,9 @@ public class GeoTiffReaderTest extends Assert {
         assertTrue(format.accepts(noCrs));
         GeoTiffReader reader = (GeoTiffReader) format.getReader(noCrs);
         CoordinateReferenceSystem crs=reader.getCrs();
-        assertTrue(crs.toWKT().equalsIgnoreCase(DefaultEngineeringCRS.GENERIC_2D.toWKT()));
+        assertTrue(CRS.equalsIgnoreMetadata(crs, DefaultEngineeringCRS.GENERIC_2D));
         GridCoverage2D coverage=reader.read(null);
-        assertTrue(coverage.getCoordinateReferenceSystem().toWKT().equalsIgnoreCase(DefaultEngineeringCRS.GENERIC_2D.toWKT()));
+        assertTrue(CRS.equalsIgnoreMetadata(coverage.getCoordinateReferenceSystem(), DefaultEngineeringCRS.GENERIC_2D));
         
 
         // hint for CRS

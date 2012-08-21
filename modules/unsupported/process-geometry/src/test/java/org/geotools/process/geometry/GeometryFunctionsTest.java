@@ -14,10 +14,11 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.process.jts;
+package org.geotools.process.geometry;
 
 import static org.junit.Assert.*;
 
+import org.geotools.process.geometry.GeometryFunctions;
 import org.junit.Test;
 
 import com.vividsolutions.jts.geom.Geometry;

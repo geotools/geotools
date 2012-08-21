@@ -1,4 +1,4 @@
-package org.geotools.process.jts;
+package org.geotools.process.geometry;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,6 +13,8 @@ import org.geotools.feature.NameImpl;
 import org.geotools.process.ProcessException;
 import org.geotools.process.ProcessFactory;
 import org.geotools.process.Processors;
+import org.geotools.process.geometry.GeometryFunctions;
+import org.geotools.process.geometry.GeometryProcessFactory;
 import org.opengis.feature.type.Name;
 import org.opengis.util.InternationalString;
 
@@ -38,12 +40,12 @@ public class GeometryProcessFactoryTest extends TestCase {
 		Set<Name> names = factory.getNames();
 		assertTrue(names.size() > 0);
 		// System.out.println(names);
-		assertTrue(names.contains(new NameImpl("JTS", "buffer")));
-		assertTrue(names.contains(new NameImpl("JTS", "union")));
+		assertTrue(names.contains(new NameImpl("geo", "buffer")));
+		assertTrue(names.contains(new NameImpl("geo", "union")));
 	}
 	
 	public void testDescribeBuffer() {
-		NameImpl bufferName = new NameImpl("JTS", "buffer");
+		NameImpl bufferName = new NameImpl("geo", "buffer");
 		InternationalString desc = factory.getDescription(bufferName);
 		assertNotNull(desc);
 		
@@ -72,7 +74,7 @@ public class GeometryProcessFactoryTest extends TestCase {
 	}
 	
 	public void testExecuteBuffer() throws Exception {
-		org.geotools.process.Process buffer = factory.create(new NameImpl("JTS", "Buffer"));
+		org.geotools.process.Process buffer = factory.create(new NameImpl("geo", "Buffer"));
 		
 		// try less than the required params
 		Map<String, Object> inputs = new HashMap<String, Object>();
@@ -106,7 +108,7 @@ public class GeometryProcessFactoryTest extends TestCase {
 	}
 
 	public void testSPI() throws Exception {
-		NameImpl bufferName = new NameImpl("JTS", "buffer");
+		NameImpl bufferName = new NameImpl("geo", "buffer");
 		ProcessFactory factory = Processors.createProcessFactory(bufferName);
 		assertNotNull(factory);
 		assertTrue(factory instanceof GeometryProcessFactory);
@@ -116,7 +118,7 @@ public class GeometryProcessFactoryTest extends TestCase {
 	}
 	
 	public void testDescribeUnion() {
-		NameImpl unionName = new NameImpl("JTS", "union");
+		NameImpl unionName = new NameImpl("geo", "union");
 		InternationalString desc = factory.getDescription(unionName);
 		assertNotNull(desc);
 		
@@ -131,7 +133,7 @@ public class GeometryProcessFactoryTest extends TestCase {
 	}
 
 	public void testExecuteUnion() throws Exception {
-		org.geotools.process.Process union = factory.create(new NameImpl("JTS", "union"));
+		org.geotools.process.Process union = factory.create(new NameImpl("geo", "union"));
 		
 		// try less than the required params
 		Map<String, Object> inputs = new HashMap<String, Object>();
@@ -166,7 +168,7 @@ public class GeometryProcessFactoryTest extends TestCase {
 	}
 	
 	public void testExecuteHull() throws Exception {
-		NameImpl hullName = new NameImpl("JTS", "convexHull");
+		NameImpl hullName = new NameImpl("geo", "convexHull");
 		org.geotools.process.Process hull = factory.create(hullName);
 		
 		Map<String, Object> inputs = new HashMap<String, Object>();

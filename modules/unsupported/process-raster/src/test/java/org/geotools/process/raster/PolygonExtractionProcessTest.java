@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.process.raster.gs;
+package org.geotools.process.raster;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -44,6 +44,7 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.process.raster.PolygonExtractionProcess;
 
 import org.opengis.feature.simple.SimpleFeature;
 

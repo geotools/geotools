@@ -15,7 +15,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.process.raster.gs;
+package org.geotools.process.raster;
 
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
@@ -32,7 +32,6 @@ import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.process.gs.GSProcess;
 import org.geotools.process.gs.WrappingIterator;
-import org.geotools.process.raster.CoverageUtilities;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;

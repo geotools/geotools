@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.process.raster.gs;
+package org.geotools.process.raster;
 
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -26,6 +26,7 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.process.raster.ContourProcess;
 import org.opengis.feature.simple.SimpleFeature;
 
 import org.junit.Before;

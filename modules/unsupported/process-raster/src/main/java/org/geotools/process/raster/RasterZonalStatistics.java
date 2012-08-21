@@ -15,7 +15,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.process.raster.gs;
+package org.geotools.process.raster;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
@@ -34,7 +34,6 @@ import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.process.gs.GSProcess;
 import org.geotools.process.gs.WrappingIterator;
-import org.geotools.process.raster.GridCoverage2DRIA;
 
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;

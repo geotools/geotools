@@ -15,7 +15,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.process.raster.gs;
+package org.geotools.process.raster;
 
 import static org.junit.Assert.*;
 
@@ -25,6 +25,7 @@ import org.geotools.coverage.grid.GridCoordinates2D;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.process.ProcessException;
+import org.geotools.process.raster.AreaGridProcess;
 import org.geotools.util.logging.Logging;
 import org.junit.Test;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;

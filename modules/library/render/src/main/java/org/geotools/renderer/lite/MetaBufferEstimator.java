@@ -272,50 +272,54 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
     public void visit(Graphic gr) {
         try {
             Expression grSize = gr.getSize();
-            if (!isNull(grSize)) {
-                evaluateWidth(grSize);
-            } else {
-                for (GraphicalSymbol gs : gr.graphicalSymbols()) {
-                    if(gs instanceof ExternalGraphic) {
-                        ExternalGraphic eg = (ExternalGraphic) gs;
-                        String location = eg.getLocation().toExternalForm();
-                        // expand embedded cql expression
-                        Expression expanded = ExpressionExtractor.extractCqlExpressions(location);
-                        // if not a literal there is an attribute dependency
-                        if(!(expanded instanceof Literal)) {
-                            estimateAccurate = false;
-                            return;
-                        }
-                        
-                        Iterator<ExternalGraphicFactory> it  = DynamicSymbolFactoryFinder.getExternalGraphicFactories();
-                        while(it.hasNext()) {
-                            try {
-                                Icon icon = it.next().getIcon(null, expanded, eg.getFormat(), -1);
-                                if(icon != null) {
-                                    int size = Math.max(icon.getIconHeight(), icon.getIconWidth());
-                                    if(size > buffer) {
-                                        buffer = size;
-                                    }
-                                    return;
+            int imageSize = -1;
+            boolean isSizeLiteral = false;
+
+            if (grSize instanceof Literal) {
+                isSizeLiteral = true;
+                imageSize = (int) Math.ceil(grSize.evaluate(null, Double.class));
+            }
+
+            for (GraphicalSymbol gs : gr.graphicalSymbols()) {
+                if(gs instanceof ExternalGraphic) {
+                    ExternalGraphic eg = (ExternalGraphic) gs;
+                    String location = eg.getLocation().toExternalForm();
+                    // expand embedded cql expression
+                    Expression expanded = ExpressionExtractor.extractCqlExpressions(location);
+                    // if not a literal there is an attribute dependency
+                    if(!(expanded instanceof Literal)) {
+                        estimateAccurate = false;
+                        return;
+                    }
+                    
+                    Iterator<ExternalGraphicFactory> it  = DynamicSymbolFactoryFinder.getExternalGraphicFactories();
+                    while(it.hasNext()) {
+                        try {
+
+                            Icon icon = it.next().getIcon(null, expanded, eg.getFormat(), imageSize);
+                            if(icon != null) {
+                                int size = Math.max(icon.getIconHeight(), icon.getIconWidth());
+                                if(size > buffer) {
+                                    buffer = size;
                                 }
-                            } catch(Exception e) {
-                                LOGGER.log(Level.FINE, "Error occurred evaluating external graphic", e);
+                                return;
                             }
-                        }
-                    } else if(gs instanceof Mark) {
-                        Mark m = (Mark) gs;
-                        if(m.getSize() instanceof Literal) {
-                            int size = (int) Math.ceil(m.getSize().evaluate(null, Double.class));
-                            if(size > buffer) {
-                                buffer = size;
-                            }
-                            return;
-                        } else {
-                            estimateAccurate = false;
-                            return;
+                        } catch(Exception e) {
+                            LOGGER.log(Level.FINE, "Error occurred evaluating external graphic", e);
                         }
                     }
-                } 
+                } else if(gs instanceof Mark) {
+                    if(isSizeLiteral) {
+                        if(imageSize > buffer) {
+                            buffer = imageSize;
+                        }
+                        return;
+                    } else {
+                        estimateAccurate = false;
+                        return;
+                    }
+                }
+
                 // if we got here we could not find a way to actually estimate the graphic size
                 estimateAccurate = false;
             }

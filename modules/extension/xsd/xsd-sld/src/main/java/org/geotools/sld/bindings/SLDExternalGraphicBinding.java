@@ -17,9 +17,8 @@
 package org.geotools.sld.bindings;
 
 import org.picocontainer.MutablePicoContainer;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import java.net.URI;
+import java.net.URL;
+import java.net.URLDecoder;
 import javax.xml.namespace.QName;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.StyleFactory;
@@ -111,9 +110,9 @@ public class SLDExternalGraphicBinding extends AbstractComplexBinding {
         //the Converters wrapper here is a workaround for http://jira.codehaus.org/browse/GEOT-2457
         // for some reason on the IBM JDK returns a string, we should really find out why instead 
         // of applying this bandaid
-        URI uri = Converters.convert( node.getChildValue("OnlineResource"), URI.class );
+        String onlineResource = Converters.convert(node.getChildValue("OnlineResource"), String.class);
+        URL url = new URL(URLDecoder.decode(onlineResource, "UTF-8"));
         String format = (String) node.getChildValue("Format");
-
-        return styleFactory.createExternalGraphic(uri.toURL(), format);
+        return styleFactory.createExternalGraphic(url, format);
     }
 }

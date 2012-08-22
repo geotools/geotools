@@ -369,7 +369,7 @@ public class GeometryFunctions {
             @DescribeParameter(name = "distance", description = "The maximum segment length in the result, in the units of the geometry") double distance) {
         return Densifier.densify(geom, distance);
     }    
-    @DescribeProcess(title = "Polygonize", description = "Polygonizes a set of linestrings.  The lines must be fully noded.")
+    @DescribeProcess(title = "Polygonize", description = "Creates a set of polygons from linestrings delineating them.  The linestrings must be corrctly noded (i.e. touch only at endpoints).")
     @DescribeResult(description = "The collection of created polygons")
     static public Geometry polygonize(
             @DescribeParameter(name = "geom", description = "Linework to polygonize") Geometry geom) {

@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.process.raster.surface;
+package org.geotools.process.vector;
 
 import static org.junit.Assert.assertTrue;
 
@@ -41,7 +41,7 @@ import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
  * @author Martin Davis - OpenGeo
  * 
  */
-public class BarnesSurfaceProcessTest {
+public class HeatmapProcessTest {
     
     /**
      * A test of a simple surface, validating that the process
@@ -52,43 +52,42 @@ public class BarnesSurfaceProcessTest {
     @Test
     public void testSimpleSurface() {
 
-        ReferencedEnvelope bounds = new ReferencedEnvelope(0, 30, 0, 30, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope bounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
         Coordinate[] data = new Coordinate[] { 
-                new Coordinate(10, 10, 100),
-                new Coordinate(10, 20, 20), 
-                new Coordinate(20, 10, 0), 
-                new Coordinate(20, 20, 80) };
+                new Coordinate(4, 4),
+                new Coordinate(4, 6)
+        };
         SimpleFeatureCollection fc = createPoints(data, bounds);
 
         ProgressListener monitor = null;
 
-        BarnesSurfaceProcess process = new BarnesSurfaceProcess();
+        HeatmapProcess process = new HeatmapProcess();
         GridCoverage2D cov = process.execute(fc, // data
-                "value", // valueAttr
-                1000, // dataLimit
-                10.0, // scale
-                (Double) null, // convergence
-                (Integer) 2, // passes
-                (Integer) null, // minObservations
-                (Double) null, // maxObservationDistance
-                -999.0, // noDataValue
+                20,  //radius
+                null, // weightAttr
                 1, // pixelsPerCell
-                0.0, // queryBuffer
                 bounds, // outputEnv
                 100, // outputWidth
                 100, // outputHeight
                 monitor // monitor)
         );
         
-//      System.out.println(coverageValue(cov, 20, 20));
-
-        double ERROR_TOL = 10;
+        // following tests are checking for an appropriate shape for the surface
         
-        for (Coordinate p : data) {
-            float covval = coverageValue(cov, p.x, p.y);
-            double error = Math.abs(p.z - covval);
-            assertTrue(error < ERROR_TOL);
-        }
+        float center1 = coverageValue(cov, 4, 4);
+        float center2 = coverageValue(cov, 4, 6);
+        float midway = coverageValue(cov, 4, 5);
+        float far = coverageValue(cov, 9, 9);
+        
+        // peaks are roughly equal
+        float peakDiff = Math.abs(center1 - center2);
+        assert(peakDiff < center1 / 10);
+        
+        // dip between peaks
+        assertTrue(midway > center1 / 2);
+        
+        // surface is flat far away
+        assertTrue(far < center1 / 1000);
 
     }
 
@@ -104,7 +103,7 @@ public class BarnesSurfaceProcessTest {
     {
 
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
-        tb.setName("obsType");
+        tb.setName("data");
         tb.setCRS(bounds.getCoordinateReferenceSystem());
         tb.add("shape", MultiPoint.class);
         tb.add("value", Double.class);

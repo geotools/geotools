@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <package
+            uri="http:///net/opengis/cat/csw20.ecore"
+            class="net.opengis.cat.csw20.Csw20Package"
+            genModel="csw.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <parser
+            type="csw20"
+            class="net.opengis.cat.csw20.util.Csw20ResourceFactoryImpl"/>
+   </extension>
+
+</plugin>

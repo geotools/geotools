@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/net.opengis.csw/src"
+    modelPluginID="net.opengis.csw" modelName="Csw" importerID="org.eclipse.emf.importer.java"
+    complianceLevel="6.0" copyrightFields="false" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/XMLType.genmodel#//type platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore ../net.opengis.ows/ows10.genmodel#//ows10">
+  <foreignModel>@model</foreignModel>
+  <genPackages prefix="Csw20" basePackage="net.opengis.cat" resource="XML" disposableProviderFactory="true"
+      ecorePackage="csw20.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="csw20.ecore#//ElementSetType">
+      <genEnumLiterals ecoreEnumLiteral="csw20.ecore#//ElementSetType/brief"/>
+      <genEnumLiterals ecoreEnumLiteral="csw20.ecore#//ElementSetType/summary"/>
+      <genEnumLiterals ecoreEnumLiteral="csw20.ecore#//ElementSetType/full"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="csw20.ecore#//ResultType">
+      <genEnumLiterals ecoreEnumLiteral="csw20.ecore#//ResultType/results"/>
+      <genEnumLiterals ecoreEnumLiteral="csw20.ecore#//ResultType/hits"/>
+      <genEnumLiterals ecoreEnumLiteral="csw20.ecore#//ResultType/validate"/>
+    </genEnums>
+    <genDataTypes ecoreDataType="csw20.ecore#//TypeNameListType"/>
+    <genDataTypes ecoreDataType="csw20.ecore#//ServiceType"/>
+    <genDataTypes ecoreDataType="csw20.ecore#//TypeNameListType_1"/>
+    <genDataTypes ecoreDataType="csw20.ecore#//ServiceType_1"/>
+    <genDataTypes ecoreDataType="csw20.ecore#//VersionType"/>
+    <genDataTypes ecoreDataType="csw20.ecore#//Calendar"/>
+    <genClasses image="false" ecoreClass="csw20.ecore#//AbstractQueryType"/>
+    <genClasses image="false" ecoreClass="csw20.ecore#//AbstractRecordType"/>
+    <genClasses ecoreClass="csw20.ecore#//AcknowledgementType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//AcknowledgementType/echoedRequest"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//AcknowledgementType/requestId"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//AcknowledgementType/timeStamp"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//BriefRecordType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute csw20.ecore#//BriefRecordType/identifierGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference csw20.ecore#//BriefRecordType/identifier"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute csw20.ecore#//BriefRecordType/titleGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference csw20.ecore#//BriefRecordType/title"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute csw20.ecore#//BriefRecordType/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute csw20.ecore#//BriefRecordType/boundingBoxGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference csw20.ecore#//BriefRecordType/boundingBox"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//CapabilitiesType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//CapabilitiesType/filterCapabilities"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//ConceptualSchemeType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//ConceptualSchemeType/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//ConceptualSchemeType/document"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//ConceptualSchemeType/authority"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//DeleteType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//DeleteType/constraint"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//DeleteType/handle"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//DeleteType/typeName"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//DescribeRecordResponseType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//DescribeRecordResponseType/schemaComponent"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//DescribeRecordType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//DescribeRecordType/typeName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//DescribeRecordType/outputFormat"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//DescribeRecordType/schemaLanguage"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//DistributedSearchType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//DistributedSearchType/hopCount"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//DomainValuesType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//DomainValuesType/propertyName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//DomainValuesType/parameterName"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//DomainValuesType/listOfValues"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//DomainValuesType/conceptualScheme"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//DomainValuesType/rangeOfValues"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//DomainValuesType/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//DomainValuesType/uom"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//EchoedRequestType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute csw20.ecore#//EchoedRequestType/any"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//ElementSetNameType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//ElementSetNameType/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//ElementSetNameType/typeNames"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//EmptyType"/>
+    <genClasses ecoreClass="csw20.ecore#//GetCapabilitiesType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//GetCapabilitiesType/service"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//GetDomainResponseType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//GetDomainResponseType/domainValues"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//GetDomainType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//GetDomainType/propertyName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//GetDomainType/parameterName"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//GetRecordByIdType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//GetRecordByIdType/id"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//GetRecordByIdType/elementSetName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//GetRecordByIdType/outputFormat"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//GetRecordByIdType/outputSchema"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//GetRecordsResponseType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//GetRecordsResponseType/requestId"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//GetRecordsResponseType/searchStatus"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//GetRecordsResponseType/searchResults"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//GetRecordsResponseType/version"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//GetRecordsType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//GetRecordsType/distributedSearch"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//GetRecordsType/responseHandler"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute csw20.ecore#//GetRecordsType/abstractQueryGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference csw20.ecore#//GetRecordsType/abstractQuery"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute csw20.ecore#//GetRecordsType/any"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//GetRecordsType/maxRecords"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//GetRecordsType/outputFormat"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//GetRecordsType/outputSchema"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//GetRecordsType/requestId"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//GetRecordsType/resultType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//GetRecordsType/startPosition"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//HarvestResponseType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//HarvestResponseType/acknowledgement"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//HarvestResponseType/transactionResponse"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//HarvestType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//HarvestType/source"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//HarvestType/resourceType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//HarvestType/resourceFormat"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//HarvestType/harvestInterval"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//HarvestType/responseHandler"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//InsertResultType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//InsertResultType/briefRecord"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//InsertResultType/handleRef"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//InsertType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute csw20.ecore#//InsertType/any"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//InsertType/handle"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//InsertType/typeName"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//ListOfValuesType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//ListOfValuesType/value"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//QueryConstraintType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//QueryConstraintType/filter"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//QueryConstraintType/cqlText"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//QueryConstraintType/version"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//QueryType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//QueryType/elementSetName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//QueryType/elementName"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//QueryType/constraint"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//QueryType/sortBy"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//QueryType/typeNames"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//RangeOfValuesType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//RangeOfValuesType/minValue"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//RangeOfValuesType/maxValue"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//RecordPropertyType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//RecordPropertyType/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//RecordPropertyType/value"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="csw20.ecore#//RequestBaseType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//RequestBaseType/service"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//RequestBaseType/version"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//RequestStatusType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//RequestStatusType/timestamp"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//SchemaComponentType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute csw20.ecore#//SchemaComponentType/mixed"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//SchemaComponentType/any"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//SchemaComponentType/parentSchema"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//SchemaComponentType/schemaLanguage"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//SchemaComponentType/targetNamespace"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//SearchResultsType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute csw20.ecore#//SearchResultsType/abstractRecordGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference csw20.ecore#//SearchResultsType/abstractRecord"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute csw20.ecore#//SearchResultsType/any"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//SearchResultsType/elementSet"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//SearchResultsType/expires"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//SearchResultsType/nextRecord"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//SearchResultsType/numberOfRecordsMatched"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//SearchResultsType/numberOfRecordsReturned"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//SearchResultsType/recordSchema"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//SearchResultsType/resultSetId"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//TransactionResponseType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//TransactionResponseType/transactionSummary"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//TransactionResponseType/insertResult"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//TransactionResponseType/version"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//TransactionSummaryType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//TransactionSummaryType/totalInserted"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//TransactionSummaryType/totalUpdated"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//TransactionSummaryType/totalDeleted"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//TransactionSummaryType/requestId"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//TransactionType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute csw20.ecore#//TransactionType/group"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference csw20.ecore#//TransactionType/insert"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference csw20.ecore#//TransactionType/update"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference csw20.ecore#//TransactionType/delete"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//TransactionType/requestId"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//TransactionType/verboseResponse"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//UpdateType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute csw20.ecore#//UpdateType/any"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//UpdateType/recordProperty"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//UpdateType/constraint"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//UpdateType/handle"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="csw20.ecore#//String"/>
+    <genClasses image="false" ecoreClass="csw20.ecore#//FilterCapabilities"/>
+    <genClasses image="false" ecoreClass="csw20.ecore#//Filter"/>
+    <genClasses image="false" ecoreClass="csw20.ecore#//SortBy"/>
+  </genPackages>
+</genmodel:GenModel>

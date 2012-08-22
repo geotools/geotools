@@ -16,18 +16,20 @@
  */
 package org.geotools.styling;
 
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-
+import java.util.logging.Level;
 import javax.swing.Icon;
-
 import org.geotools.metadata.iso.citation.OnLineResourceImpl;
 import org.geotools.util.Utilities;
 import org.opengis.metadata.citation.OnLineResource;
@@ -48,7 +50,7 @@ import org.opengis.util.Cloneable;
  */
 public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
     /** The logger for the default core module. */
-    //private static final java.util.logging.Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.core");
+    private static final java.util.logging.Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.core");
     private Icon inlineContent;
     private OnLineResource online;
     
@@ -77,6 +79,11 @@ public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
     
     @Deprecated
     public void setURI(String uri) {
+        try {
+            uri = URLDecoder.decode(uri, "UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+            LOGGER.log(Level.WARNING, "Can''t decode the uri: {0}", uri);
+        }
         this.uri = uri;
     }
 
@@ -120,8 +127,17 @@ public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
      * @param location New value of property location.
      */
     public void setLocation(java.net.URL location) {
-        this.uri = location.toString();
+        String locationString = location.toString();
         this.location = location;
+        try {
+            locationString = URLDecoder.decode(location.toString(), "UTF-8");
+            this.location = new URL(locationString);
+        } catch (UnsupportedEncodingException ex) {
+            LOGGER.log(Level.WARNING, "Can''t decode the url: {0}", location.toString());
+        } catch (MalformedURLException ex) {
+            LOGGER.log(Level.WARNING, "Can''t create the url: {0}", locationString);
+        }
+        this.uri = locationString;
     }
 
     public Object accept(StyleVisitor visitor,Object data) {
@@ -216,8 +232,10 @@ public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
         if(online == null) {
             OnLineResourceImpl impl = new OnLineResourceImpl();
             try {
-                impl.setLinkage(new URI(uri));
+                impl.setLinkage(new URI(URLEncoder.encode(uri, "UTF-8")));
             } catch (URISyntaxException e) {
+                throw new IllegalArgumentException(e);
+            } catch (UnsupportedEncodingException e){
                 throw new IllegalArgumentException(e);
             }
             online = impl;

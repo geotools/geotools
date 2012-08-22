@@ -1,1 +1,1 @@
-org.geotools.process.feature.gs.FeatureGSProcessFactory
+org.geotools.process.vector.VectorProcessFactory

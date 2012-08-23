@@ -63,10 +63,10 @@ public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
 		props.setProperty("passwd", "xxx");
 		props.setProperty("database", "ddd");
 		props.setProperty("schema", "public");
-		props.setProperty("Loose\\ bbox", "true");
-		props.setProperty("Estimated\\ extends=", "false");
-		props.setProperty("validate\\ connections", "true");
-		props.setProperty("Connection\\ timeout", "10");
+		props.setProperty("Loose bbox", "true");
+		props.setProperty("Estimated extends=", "false");
+		props.setProperty("validate connections", "true");
+		props.setProperty("Connection timeout", "10");
 		props.setProperty("preparedStatements", "false");
 		return props;
 	}

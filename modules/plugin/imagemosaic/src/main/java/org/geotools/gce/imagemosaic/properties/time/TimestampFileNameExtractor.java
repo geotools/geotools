@@ -27,7 +27,11 @@ import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.geotools.gce.imagemosaic.properties.RegExPropertiesCollector;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
-
+/**
+ * 
+ * @author Simone Giannecchini, GeoSolutions SAS
+ *
+ */
 class TimestampFileNameExtractor extends RegExPropertiesCollector {
 	private final static Logger LOGGER= Logging.getLogger(TimestampFileNameExtractor.class);
 	

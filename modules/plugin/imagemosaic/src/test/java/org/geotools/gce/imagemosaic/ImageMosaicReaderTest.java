@@ -253,16 +253,17 @@ public class ImageMosaicReaderTest extends Assert{
 	@Test
 	public void timeElevationH2() throws Exception {
 	    
-    	final File workDir=new File(TestData.file(this, "."),"watertemp3");
-    	assertTrue(workDir.mkdir());
+    	final File workDir=new File(TestData.file(this, "."),"water temp3");
+    	workDir.mkdir();
+    	assertTrue(workDir.exists());
     	FileUtils.copyFile(TestData.file(this, "watertemp.zip"), new File(workDir,"watertemp.zip"));
-    	TestData.unzipFile(this, "watertemp3/watertemp.zip");
-	    final URL timeElevURL = TestData.url(this, "watertemp3");
+    	TestData.unzipFile(this, "water temp3/watertemp.zip");
+	    final URL timeElevURL = TestData.url(this, "water temp3");
 	    
 	    //place H2 file in the dir
 	    FileWriter out=null;
 	    try{
-	    	out = new FileWriter(new File(TestData.file(this, "."),"/watertemp3/datastore.properties"));
+	    	out = new FileWriter(new File(TestData.file(this, "."),"/water temp3/datastore.properties"));
 	    	out.write("SPI=org.geotools.data.h2.H2DataStoreFactory\n");
 	    	out.write("database=imagemosaic\n");
 	    	out.write("dbtype=h2\n");
@@ -349,7 +350,7 @@ public class ImageMosaicReaderTest extends Assert{
                 
          // clean up
          if (!INTERACTIVE){        	
-         	FileUtils.deleteDirectory( TestData.file(this, "watertemp3"));
+         	FileUtils.deleteDirectory( TestData.file(this, "water temp3"));
          }
 	}	
 

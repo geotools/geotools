@@ -42,8 +42,6 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.test.OnlineTestCase;
 import org.geotools.test.TestData;
 import org.geotools.util.NumberRange;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;

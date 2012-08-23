@@ -1296,7 +1296,7 @@ public class CatalogBuilder implements Runnable {
 
 				// set ParentLocation parameter since for embedded database like H2 we must change the database
 				// to incorporate the path where to write the db 
-				params.put("ParentLocation", parent.getAbsolutePath());
+				params.put("ParentLocation", DataUtilities.fileToURL(parent).toExternalForm());
 				catalog=GranuleCatalogFactory.createGranuleCatalog(params,false,true, spi);
 			} catch (ClassNotFoundException e) {
 				final IOException ioe = new IOException();

@@ -123,8 +123,10 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
         String metadataTable = (String) GEOMETRY_METADATA_TABLE.lookUp(params);
         dialect.setGeometryMetadataTable(metadataTable);
         
-        // setup proper fetch size
-        dataStore.setFetchSize(200);
+        if (dataStore.getFetchSize() <= 0) {
+            // Oracle is dead slow with the fetch size at 0, let's have a sane default
+            dataStore.setFetchSize(200);
+        }
         
         return dataStore;
     }

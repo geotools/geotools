@@ -123,10 +123,9 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
         // check the geometry metadata table
         String metadataTable = (String) GEOMETRY_METADATA_TABLE.lookUp(params);
         dialect.setGeometryMetadataTable(metadataTable);
-
-        if (dataStore.getFetchSize() <= 0) {
-            dataStore.setFetchSize(200);
-        }
+        
+        // setup proper fetch size
+        dataStore.setFetchSize(200);
         
         return dataStore;
     }

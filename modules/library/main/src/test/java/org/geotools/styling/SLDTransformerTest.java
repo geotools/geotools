@@ -85,6 +85,7 @@ public class SLDTransformerTest {
         namespaces.put("sld", "http://www.opengis.net/sld");
         namespaces.put("ogc", "http://www.opengis.net/ogc");
         namespaces.put("gml", "http://www.opengis.net/gml");
+        namespaces.put("xlink", "http://www.w3.org/1999/xlink");
         setXpathNamespaceContext(new SimpleNamespaceContext(namespaces));
     }
 
@@ -1075,5 +1076,29 @@ public class SLDTransformerTest {
         assertTrue(actualXml.contains("<ogc:Literal>500</ogc:Literal>"));
         assertTrue(actualXml.contains("</ogc:Function>"));
         assertTrue(actualXml.contains("</sld:Transformation>"));
+    }
+    
+    @Test
+    public void testDynamicSymbolizer() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        String chartURI = "http://chart?cht=p&chd=t:${100 * MALE / PERSONS},${100 * FEMALE / PERSONS}&chf=bg,s,FFFFFF00";
+        ExternalGraphic eg = sb.createExternalGraphic(chartURI, "image/png");
+        PointSymbolizer ps = sb.createPointSymbolizer(sb.createGraphic(eg, null, null));
+        
+        Style s = sb.createStyle(ps);
+        s.setDefault(true);
+        
+        String xml = transformer.transform(s);
+        // System.out.println(xml);
+        Document doc = buildTestDocument(xml);
+        
+        assertXpathEvaluatesTo(chartURI, "/sld:UserStyle/sld:FeatureTypeStyle/sld:Rule/sld:PointSymbolizer/sld:Graphic/sld:ExternalGraphic/sld:OnlineResource/@xlink:href", doc);
+        
+        SLDParser parser = new SLDParser(sf);
+        parser.setInput(new StringReader(xml));
+        Style importedStyle = (Style) parser.readXML()[0];
+        PointSymbolizer psCopy = (PointSymbolizer) importedStyle.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
+        ExternalGraphic egCopy = (ExternalGraphic) psCopy.getGraphic().graphicalSymbols().get(0);
+        assertEquals(chartURI, egCopy.getLocation().toExternalForm());
     }
 }

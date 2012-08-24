@@ -19,6 +19,8 @@ package org.geotools.coverage.grid;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.metadata.iso.spatial.PixelTranslation;
@@ -31,6 +33,7 @@ import org.geotools.resources.Classes;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
+import org.geotools.util.logging.Logging;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.coverage.grid.GridGeometry;
 import org.opengis.geometry.Envelope;
@@ -77,6 +80,9 @@ import org.opengis.util.Cloneable;
  * @see ImageGeometry
  */
 public class GeneralGridGeometry implements GridGeometry, Serializable {
+    
+    static final Logger LOGGER = Logging.getLogger(GeneralGridGeometry.class);
+    
     /**
      * Serial number for interoperability with different versions.
      */
@@ -408,7 +414,9 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
 			        	final double scale= Math.min(XAffineTransform.getScaleX0(transform), XAffineTransform.getScaleY0(transform));
 						final GeneralEnvelope tempEnvelope = CRS.transform(tr,toEnvelope(gridRange));
 						tempEnvelope.setCoordinateReferenceSystem(envelope.getCoordinateReferenceSystem());
-						assert tempEnvelope.equals(envelope,scale*1E-3,true):"Unable to preserve the envelope for this GridGeometry";
+						if(LOGGER.isLoggable(Level.FINE) && !tempEnvelope.equals(envelope,scale*1E-3,true)) {
+						    LOGGER.log(Level.FINE, "Unable to preserve the envelope for this GridGeometry, expected " + envelope + ", actual " + tempEnvelope);
+						}
 					} catch (Throwable e) {
 						throw new RuntimeException(e);
 					}

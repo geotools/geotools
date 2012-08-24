@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsd:definitions
+    targetNamespace="urn:ogc:specification:wrs:1.0:wsdl-1.1:binding"
+    xmlns:tns="urn:ogc:specification:wrs:1.0:wsdl-1.1:binding"
+    xmlns:interface="urn:ogc:specification:wrs:1.0:wsdl-1.1:interface"
+    xmlns:wrs="http://www.opengis.net/cat/wrs/1.0"
+    xmlns:kvp="http://www.opengis.net/cat/wrs/1.0/kvp"
+    xmlns:csw="http://www.opengis.net/cat/csw/2.0.2"
+    xmlns:ows="http://www.opengis.net/ows"
+    xmlns:wsd="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <wsd:documentation>
+    WSDL 1.1 binding descriptions for the CSW-ebRIM catalogue application profile.
+    </wsd:documentation>
+    <wsd:import
+        namespace="urn:ogc:specification:wrs:1.0:wsdl-1.1:interface"
+        location="./csw-ebrim-interface.wsdl" />
+   
+    <wsd:binding name="OGCWebServiceSOAPBinding" type="interface:OGCWebService">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsd:operation name="GetCapabilities-xml">
+            <soap:operation soapAction="urn:ogc:specification:wrs:1.0:wsdl-1.1:binding:OGCWebService#GetCapabilities-xml"/>
+            <wsd:input>
+                <soap:body use="literal"/>
+            </wsd:input>
+            <wsd:output>
+                <soap:body use="literal"/>
+            </wsd:output>
+            <wsd:fault name="invalidRequestException">
+                <soap:fault name="invalidRequestException" use="literal"/>
+            </wsd:fault>
+        </wsd:operation>
+    </wsd:binding>
+   
+    <wsd:binding name="DiscoverySOAPBinding" type="interface:Discovery">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsd:operation name="GetRecords">
+            <soap:operation soapAction="urn:ogc:specification:wrs:1.0:wsdl-1.1:binding:Discovery#GetRecords"/>
+            <wsd:input>
+                <soap:body use="literal"/>
+            </wsd:input>
+            <wsd:output>
+                <soap:body use="literal"/>
+            </wsd:output>
+            <wsd:fault name="invalidRequestException">
+                <soap:fault name="invalidRequestException" use="literal"/>
+            </wsd:fault>
+        </wsd:operation>
+       
+        <wsd:operation name="GetRecordById-xml">
+            <soap:operation soapAction="urn:ogc:specification:wrs:1.0:wsdl-1.1:binding:Discovery#GetRecordById-xml"/>
+            <wsd:input>
+                <soap:body use="literal"/>
+            </wsd:input>
+            <wsd:output>
+                <soap:body use="literal"/>
+            </wsd:output>
+            <wsd:fault name="invalidRequestException">
+                <soap:fault name="invalidRequestException" use="literal"/>
+            </wsd:fault>
+        </wsd:operation>
+       
+        <wsd:operation name="DescribeRecord">
+            <soap:operation soapAction="urn:ogc:specification:wrs:1.0:wsdl-1.1:binding:Discovery#DescribeRecord"/>
+            <wsd:input>
+                <soap:body use="literal"/>
+            </wsd:input>
+            <wsd:output>
+                <soap:body use="literal"/>
+            </wsd:output>
+            <wsd:fault name="invalidRequestException">
+                <soap:fault name="invalidRequestException" use="literal"/>
+            </wsd:fault>
+        </wsd:operation>
+       
+        <wsd:operation name="GetDomain">
+            <soap:operation soapAction="urn:ogc:specification:wrs:1.0:wsdl-1.1:binding:Discovery#GetDomain"/>
+            <wsd:input>
+                <soap:body use="literal"/>
+            </wsd:input>
+            <wsd:output>
+                <soap:body use="literal"/>
+            </wsd:output>
+            <wsd:fault name="invalidRequestException">
+                <soap:fault name="invalidRequestException" use="literal"/>
+            </wsd:fault>
+        </wsd:operation>
+    </wsd:binding>
+   
+    <wsd:binding name="PublicationSOAPBinding" type="interface:Publication">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsd:operation name="Transaction">
+            <soap:operation soapAction="urn:ogc:specification:wrs:1.0:wsdl-1.1:binding:Publication#Transaction"/>
+            <wsd:input>
+                <soap:body use="literal"/>
+            </wsd:input>
+            <wsd:output>
+                <soap:body use="literal"/>
+            </wsd:output>
+            <wsd:fault name="invalidRequestException">
+                <soap:fault name="invalidRequestException" use="literal"/>
+            </wsd:fault>
+            <wsd:fault name="transactionFailedFault">
+                <soap:fault name="transactionFailedFault" use="literal"/>
+            </wsd:fault>
+        </wsd:operation>
+       
+        <wsd:operation name="Harvest">
+            <soap:operation soapAction="urn:ogc:specification:wrs:1.0:wsdl-1.1:binding:Publication#Harvest"/>
+            <wsd:input>
+                <soap:body use="literal"/>
+            </wsd:input>
+            <wsd:output>
+                <soap:body use="literal"/>
+            </wsd:output>
+            <wsd:fault name="invalidRequestException">
+                <soap:fault name="invalidRequestException" use="literal"/>
+            </wsd:fault>
+            <wsd:fault name="transactionFailedFault">
+                <soap:fault name="transactionFailedFault" use="literal"/>
+            </wsd:fault>
+        </wsd:operation>
+    </wsd:binding>
+</wsd:definitions>

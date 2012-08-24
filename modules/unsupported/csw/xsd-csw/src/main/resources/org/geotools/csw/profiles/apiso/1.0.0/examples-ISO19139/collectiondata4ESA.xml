@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- gmd based instance document -->
+<!--  Info   :  This Instance document was created by translating the Spacebel sample with the Spacebel xsl and then manually corrected to be valid against ISO19139.-->
+<!--             Uwe Voges, con terra GmbH, 15.06.2007 -->
+<MD_Metadata xmlns="http://www.isotc211.org/2005/gmd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.isotc211.org/2005/gmd ../../../../../../iso/19139/20060504/gmd/gmd.xsd" uuid="US_NGA_VPF_VMAP0" id="VMAP0">
+	<fileIdentifier>
+		<gco:CharacterString/>
+	</fileIdentifier>
+	<language>
+		<gco:CharacterString>eng</gco:CharacterString>
+	</language>
+	<characterSet>
+		<MD_CharacterSetCode codeList="./resources/codeList.xml#MD_CharacterSetCode" codeListValue="utf8"/>
+	</characterSet>
+	<contact>
+		<CI_ResponsibleParty>
+			<individualName>
+				<gco:CharacterString>Jolyon Martin</gco:CharacterString>
+			</individualName>
+			<organisationName>
+				<gco:CharacterString>ESA</gco:CharacterString>
+			</organisationName>
+			<contactInfo>
+				<CI_Contact>
+					<address>
+						<CI_Address>
+							<deliveryPoint>
+								<gco:CharacterString>Via Galilei Galileo, CP. 64</gco:CharacterString>
+							</deliveryPoint>
+							<city>
+								<gco:CharacterString/>
+							</city>
+							<postalCode>
+								<gco:CharacterString>00044</gco:CharacterString>
+							</postalCode>
+							<country>
+								<gco:CharacterString>Italy</gco:CharacterString>
+							</country>
+							<electronicMailAddress>
+								<gco:CharacterString>Jolyon.Martin@esa.int</gco:CharacterString>
+							</electronicMailAddress>
+						</CI_Address>
+					</address>
+					<onlineResource>
+						<CI_OnlineResource>
+							<linkage>
+								<URL/>
+							</linkage>
+						</CI_OnlineResource>
+					</onlineResource>
+				</CI_Contact>
+			</contactInfo>
+			<role>
+				<CI_RoleCode codeList="./resources/codeList.xml#CI_RoleCode" codeListValue="Technical"/>
+			</role>
+		</CI_ResponsibleParty>
+	</contact>
+	<dateStamp>
+		<gco:DateTime>2006-10-05T09:55:27</gco:DateTime>
+	</dateStamp>
+	<metadataStandardName>
+		<gco:CharacterString>ISO 19115:2003/19139</gco:CharacterString>
+	</metadataStandardName>
+	<metadataStandardVersion>
+		<gco:CharacterString>1.0</gco:CharacterString>
+	</metadataStandardVersion>
+	<identificationInfo>
+		<MD_DataIdentification>
+			<citation>
+				<CI_Citation>
+					<title>
+						<gco:CharacterString>ESA ENVISAT ASAR Wide Swath Striplines</gco:CharacterString>
+					</title>
+					<date>
+						<CI_Date>
+							<date>
+								<!-- result of translation of Spacebel Stylesheet cannot validate against ISO19139 2006
+replaced:
+										<gco:DateTime/>
+by:
+-->
+								<gco:Date>2002-09-03</gco:Date>
+							</date>
+							<dateType>
+								<CI_DateTypeCode codeList="./resources/codeList.xml#CI_DateTypeCode" codeListValue="creation"/>
+							</dateType>
+						</CI_Date>
+					</date>
+					<edition>
+						<gco:CharacterString>First edition.</gco:CharacterString>
+					</edition>
+					<presentationForm>
+						<CI_PresentationFormCode codeList="./resources/codeList.xml#CI_PresentationFormCode" codeListValue="mapDigital"/>
+					</presentationForm>
+				</CI_Citation>
+			</citation>
+			<abstract>
+				<gco:CharacterString>The &lt;a href=http://envisat.esa.int/instruments/asar/&gt;Advanced Synthetic Aperture Radar (ASAR)&lt;/a&gt; (more info &lt;a href=http://envisat.esa.int/dataproducts/asar/CNTR3.htm&gt;here&lt;/a&gt;) is one of the instruments aboard the Environmental Satellite &lt;a href=http://envisat.esa.int/m-s/&gt;ENVISAT&lt;/a&gt; (more info &lt;a href=http://directory.eoportal.org/pres_ENVISAT.html&gt;here&lt;/a&gt;). ENVISAT provides measurements of the atmosphere, ocean, land, and ice. This data supports earth science research and allows monitoring of the evolution of environmental and climatic changes. Some examples of specific ASAR applications can be found &lt;a href=http://envisat.esa.int/instruments/asar/data-app/app/&gt;here&lt;/a&gt;.&lt;br&gt;&lt;br&gt;From this collection you may order &lt;a href=http://envisat.esa.int/instruments/asar/data-app/dataprod.html&gt;products&lt;/a&gt; of the following types:&lt;br&gt;- &lt;a href=http://envisat.esa.int/instruments/asar/data-app/prodspread.html#pgfId=ASA_WS__0P&gt;Wide Swath Level 0 (ASA_WS__0P)&lt;/a&gt;&lt;br&gt;- &lt;a href=http://envisat.esa.int/instruments/asar/data-app/prodspread.html#pgfId=ASA_WSM_1P&gt;Wide Swath Medium Resolution (ASA_WSM_1P)&lt;/a&gt;</gco:CharacterString>
+			</abstract>
+			<purpose>
+				<gco:CharacterString/>
+			</purpose>
+			<status>
+				<MD_ProgressCode codeList="./resources/codeList.xml#MD_ProgressCode" codeListValue="ongoing"/>
+			</status>
+			<descriptiveKeywords>
+				<MD_Keywords>
+					<keyword>
+						<gco:CharacterString>Spectral/Engineering &gt; Radar &gt; Radar Imagery</gco:CharacterString>
+					</keyword>
+					<thesaurusName>
+						<!-- result of translation of Spacebel Stylesheet cannot validate against ISO19139 2006
+replaced:
+						<CI_Citation>IDN Parameter keywords</CI_Citation>
+by:
+-->
+						<CI_Citation>
+							<title>
+								<gco:CharacterString>IDN Parameter keywords</gco:CharacterString>
+							</title>
+							<date>
+								<CI_Date>
+									<date>
+										<gco:Date>2000-06-24</gco:Date>
+									</date>
+									<dateType>
+										<CI_DateTypeCode codeList="CI_DateTypeCode" codeListValue="creation"/>
+									</dateType>
+								</CI_Date>
+							</date>
+						</CI_Citation>
+					</thesaurusName>
+				</MD_Keywords>
+			</descriptiveKeywords>
+			<descriptiveKeywords>
+				<MD_Keywords>
+					<keyword>
+						<gco:CharacterString>Spectral/Engineering &gt; Radar &gt; Radar Imagery,</gco:CharacterString>
+					</keyword>
+					<type>
+						<MD_KeywordTypeCode codeList="./resources/codeList.xml#MD_KeywordTypeCode" codeListValue="theme"/>
+					</type>
+				</MD_Keywords>
+			</descriptiveKeywords>
+			<language>
+				<gco:CharacterString>eng</gco:CharacterString>
+			</language>
+			<characterSet>
+				<MD_CharacterSetCode codeList="./resources/codeList.xml#MD_CharacterSetCode" codeListValue="utf8"/>
+			</characterSet>
+			<topicCategory>
+				<!-- result of translation of Spacebel Stylesheet cannot validate against ISO19139 2006
+replaced:
+				<MD_TopicCategoryCode codeList="./resources/codeList.xml#MD_TopicCategoryCode" codeListValue="environment"/>
+by:
+-->
+				<MD_TopicCategoryCode>environment</MD_TopicCategoryCode>
+			</topicCategory>
+			<extent>
+				<EX_Extent>
+					<temporalElement>
+						<EX_TemporalExtent>
+							<extent>
+								<!-- result of translation of Spacebel Stylesheet cannot validate against ISO19139 2006
+replaced:
+								<gml:TimePeriod>
+by:
+-->
+								<gml:TimePeriod gml:id="ID00006">
+									<gml:beginPosition>2000-09-05</gml:beginPosition>
+									<gml:endPosition>2002-01-30</gml:endPosition>
+								</gml:TimePeriod>
+							</extent>
+						</EX_TemporalExtent>
+					</temporalElement>
+				</EX_Extent>
+			</extent>
+			<extent>
+				<EX_Extent>
+					<geographicElement>
+						<EX_GeographicBoundingBox>
+							<westBoundLongitude>
+								<gco:Decimal>-180</gco:Decimal>
+							</westBoundLongitude>
+							<eastBoundLongitude>
+								<gco:Decimal>180</gco:Decimal>
+							</eastBoundLongitude>
+							<southBoundLatitude>
+								<gco:Decimal>-90</gco:Decimal>
+							</southBoundLatitude>
+							<northBoundLatitude>
+								<gco:Decimal>90</gco:Decimal>
+							</northBoundLatitude>
+						</EX_GeographicBoundingBox>
+					</geographicElement>
+				</EX_Extent>
+			</extent>
+		</MD_DataIdentification>
+	</identificationInfo>
+	<distributionInfo>
+		<MD_Distribution>
+			<transferOptions>
+				<MD_DigitalTransferOptions>
+					<onLine>
+						<CI_OnlineResource>
+							<linkage>
+								<URL/>
+							</linkage>
+							<protocol>
+								<gco:CharacterString>WWW:LINK-1.0-http- -link</gco:CharacterString>
+							</protocol>
+							<description>
+								<gco:CharacterString>Online link to a website</gco:CharacterString>
+							</description>
+						</CI_OnlineResource>
+					</onLine>
+					<onLine>
+						<CI_OnlineResource>
+							<linkage>
+								<URL/>
+							</linkage>
+							<protocol>
+								<gco:CharacterString>WWW:DOWNLOAD-1.0-http--download</gco:CharacterString>
+							</protocol>
+							<name>
+								<gco:CharacterString>165.zip</gco:CharacterString>
+							</name>
+							<description>
+								<gco:CharacterString/>
+							</description>
+							<function>
+								<CI_OnLineFunctionCode codeList="./resources/codeList.xml#CI_OnLineFunctionCode" codeListValue="download"/>
+							</function>
+						</CI_OnlineResource>
+					</onLine>
+				</MD_DigitalTransferOptions>
+			</transferOptions>
+		</MD_Distribution>
+	</distributionInfo>
+	<dataQualityInfo>
+		<DQ_DataQuality>
+			<scope>
+				<DQ_Scope>
+					<level>
+						<MD_ScopeCode codeList="./resources/codeList.xml#MD_ScopeCode" codeListValue="dataset"/>
+					</level>
+				</DQ_Scope>
+			</scope>
+			<report>
+				<DQ_TemporalValidity>
+					<result/>
+				</DQ_TemporalValidity>
+			</report>
+			<lineage>
+				<LI_Lineage>
+					<statement>
+						<gco:CharacterString/>
+					</statement>
+					<processStep>
+						<LI_ProcessStep>
+							<description>
+								<gco:CharacterString>Last Updated</gco:CharacterString>
+							</description>
+							<dateTime>
+								<!-- result of translation of Spacebel Stylesheet cannot validate against ISO19139 2006
+replaced:
+								<gco:DateTime/>
+by:
+-->
+								<gco:DateTime>2001-09-05T09:21:22.0Z</gco:DateTime>
+							</dateTime>
+						</LI_ProcessStep>
+					</processStep>
+				</LI_Lineage>
+			</lineage>
+		</DQ_DataQuality>
+	</dataQualityInfo>
+	<metadataMaintenance>
+		<MD_MaintenanceInformation>
+			<maintenanceAndUpdateFrequency>
+				<MD_MaintenanceFrequencyCode codeList="./resources/codeList.xml#MD_MaintenanceFrequencyCode" codeListValue="asNeeded"/>
+			</maintenanceAndUpdateFrequency>
+		</MD_MaintenanceInformation>
+	</metadataMaintenance>
+</MD_Metadata>

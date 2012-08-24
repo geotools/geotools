@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://www.opengis.net/cat/csw/2.0.2/wsdl" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:csw-http="http://www.opengis.net/cat/csw/2.0.2/http" xmlns:csw-http-kvp="http://www.opengis.net/cat/csw/2.0.2/http/kvp" xmlns:csw-soap="http://www.opengis.net/cat/csw/2.0.2/soap" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+	<wsdl:documentation xmlns:dc="http://purl.org/dc/elements/1.1/">
+		<dc:date>2004-06-07</dc:date>
+		<dc:description>
+         This WSDL document defines the service-specific properties
+         of a MyService CSW implementation; it specifies available
+         endpoints and alternative bindings.
+      </dc:description>
+	</wsdl:documentation>
+	<wsdl:import namespace="http://www.opengis.net/cat/csw/2.0.2/soap" location="./soap-binding.wsdl"/>
+	<wsdl:import namespace="http://www.opengis.net/cat/csw/2.0.2/http" location="./http-binding.wsdl"/>
+	<wsdl:import namespace="http://www.opengis.net/cat/csw/2.0.2/http/kvp" location="./kvp-binding.wsdl"/>
+	<wsdl:service name="CSW">
+		<wsdl:documentation>
+         A CSW implementation. Includes alternative SOAP bindings
+         for the CSW interfaces.
+      </wsdl:documentation>
+		<wsdl:port name="csw-SOAP-Port" binding="csw-soap:csw-SOAP">
+			<soap:address location="http://localhost:8080/csw/CSW"/>
+		</wsdl:port>
+		<wsdl:port name="csw-POST-Port" binding="csw-http:csw-POST">
+			<http:address location="http://localhost:8080/csw"/>
+		</wsdl:port>
+		<wsdl:port name="csw-GET-Port" binding="csw-http-kvp:csw-GET">
+			<http:address location="http://localhost:8080/csw"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

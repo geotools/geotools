@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<ExceptionReport
+   version="1.2.0"
+   xmlns="http://www.opengis.net/ows"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://www.opengis.net/ows
+                       ../../../ows/1.0.0/owsExceptionReport.xsd">
+   <Exception exceptionCode="999" locator="INSERT STMT 01">
+   <ExceptionText>parse error: missing closing tag for element</ExceptionText>
+   </Exception>
+</ExceptionReport>

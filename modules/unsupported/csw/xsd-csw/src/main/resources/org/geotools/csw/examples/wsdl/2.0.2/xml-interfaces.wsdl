@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://www.opengis.net/cat/csw/2.0.2/requests" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:csw-req="http://www.opengis.net/cat/csw/2.0.2/requests" xmlns:csw-resp="http://www.opengis.net/cat/csw/2.0.2/responses" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<wsdl:documentation xmlns:dc="http://purl.org/dc/elements/1.1/">
+		<dc:identifier>urn:opengis:spec:csw:wsdl-1.1:interfaces:2.0.2</dc:identifier>
+		<dc:date>2007-04-18</dc:date>
+		<dc:description>
+         This is the the normative abstract service interface definition
+         for the  OpenGIS CSW, v2.0.2. The WSDL 1.1 syntax is 
+         used to describe the interface signatures and message structures.
+      </dc:description>
+	</wsdl:documentation>
+	<wsdl:import namespace="http://www.opengis.net/cat/csw/2.0.2/responses" location="./responses.wsdl"/>
+	<wsdl:types>
+		<wsdl:documentation>
+         Convenience schema that defines all common CSW message elements.
+      </wsdl:documentation>
+		<xsd:schema targetNamespace="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" version="2.0.2">
+			<xsd:include schemaLocation="../../csw/2.0.2/CSW-discovery.xsd"/>
+			<xsd:include schemaLocation="../../csw/2.0.2/CSW-publication.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="GetCapabilitiesRequest">
+		<wsdl:part name="Body" element="csw:GetCapabilities"/>
+	</wsdl:message>
+	<wsdl:message name="DescribeRecordRequest">
+		<wsdl:part name="Body" element="csw:DescribeRecord"/>
+	</wsdl:message>
+	<wsdl:message name="GetRecordsRequest">
+		<wsdl:part name="Body" element="csw:GetRecords"/>
+	</wsdl:message>
+	<wsdl:message name="GetRecordByIdRequest">
+		<wsdl:part name="Body" element="csw:GetRecordById"/>
+	</wsdl:message>
+	<wsdl:message name="GetDomainRequest">
+		<wsdl:part name="Body" element="csw:GetDomain"/>
+	</wsdl:message>
+	<wsdl:message name="HarvestRequest">
+		<wsdl:part name="Body" element="csw:Harvest"/>
+	</wsdl:message>
+	<wsdl:message name="TransactionRequest">
+		<wsdl:part name="Body" element="csw:Transaction"/>
+	</wsdl:message>
+	<wsdl:portType name="csw">
+		<wsdl:operation name="csw.getCapabilities">
+			<wsdl:input message="csw-req:GetCapabilitiesRequest"/>
+			<wsdl:output message="csw-resp:GetCapabilitiesResponse"/>
+			<wsdl:fault name="ServiceExceptionReport" message="csw-resp:ServiceExceptionReport"/>
+		</wsdl:operation>
+		<wsdl:operation name="csw.describeRecord">
+			<wsdl:input message="csw-req:DescribeRecordRequest"/>
+			<wsdl:output message="csw-resp:DescribeRecordResponse"/>
+			<wsdl:fault name="ServiceExceptionReport" message="csw-resp:ServiceExceptionReport"/>
+		</wsdl:operation>
+		<wsdl:operation name="csw.getRecords">
+			<wsdl:input message="csw-req:GetRecordsRequest"/>
+			<wsdl:output message="csw-resp:GetRecordsResponse"/>
+			<wsdl:fault name="ServiceExceptionReport" message="csw-resp:ServiceExceptionReport"/>
+		</wsdl:operation>
+		<wsdl:operation name="csw.getRecordById">
+			<wsdl:input message="csw-req:GetRecordByIdRequest"/>
+			<wsdl:output message="csw-resp:GetRecordByIdResponse"/>
+			<wsdl:fault name="ServiceExceptionReport" message="csw-resp:ServiceExceptionReport"/>
+		</wsdl:operation>
+		<wsdl:operation name="csw.getDomain">
+			<wsdl:input message="csw-req:GetDomainRequest"/>
+			<wsdl:output message="csw-resp:GetDomainResponse"/>
+			<wsdl:fault name="ServiceExceptionReport" message="csw-resp:ServiceExceptionReport"/>
+		</wsdl:operation>
+		<wsdl:operation name="csw.harvest">
+			<wsdl:input message="csw-req:HarvestRequest"/>
+			<wsdl:output message="csw-resp:HarvestResponse"/>
+			<wsdl:fault name="ServiceExceptionReport" message="csw-resp:ServiceExceptionReport"/>
+		</wsdl:operation>
+		<wsdl:operation name="csw.transaction">
+			<wsdl:input message="csw-req:TransactionRequest"/>
+			<wsdl:output message="csw-resp:TransactionResponse"/>
+			<wsdl:fault name="ServiceExceptionReport" message="csw-resp:ServiceExceptionReport"/>
+		</wsdl:operation>
+	</wsdl:portType>
+</wsdl:definitions>

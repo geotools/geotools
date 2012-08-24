@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Record xmlns="http://www.opengis.net/cat/csw/2.0.2" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dct="http://purl.org/dc/terms/" xmlns:ows="http://www.opengis.net/ows" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/cat/csw/2.0.2
+../../../../record.xsd">
+	<dc:creator>U.S. Geological Survey</dc:creator>
+	<dc:contributor>State of Texas</dc:contributor>
+	<dc:publisher>U.S. Geological Survey</dc:publisher>
+	<dc:subject>Elevation, Hypsography, and Contours</dc:subject>
+	<dc:subject>elevation</dc:subject>
+	<dct:abstract>Elevation data collected for the National Elevation Dataset (NED) based on 30m horizontal and 15m vertical accuracy.</dct:abstract>
+	<dc:identifier>AC522EF2-89A6-11DB-91B1-7EEA55D89593f264-77d2-09ce-aa39-f0f0</dc:identifier>
+	<dc:relation>g</dc:relation>
+	<dc:source>h</dc:source>
+	<dc:rights>i</dc:rights>
+	<dc:format>j</dc:format>
+	<dc:type>Service</dc:type>
+	<dc:title>National Elevation Mapping Service for Texas</dc:title>
+	<dct:modified>2004-03-01</dct:modified>
+	<ows:BoundingBox>
+		<ows:LowerCorner>-108.44 28.229</ows:LowerCorner>
+		<ows:UpperCorner>-96.223 34.353</ows:UpperCorner>
+	</ows:BoundingBox>
+</Record>

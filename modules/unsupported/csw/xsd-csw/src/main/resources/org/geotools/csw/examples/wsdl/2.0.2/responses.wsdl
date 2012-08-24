@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://www.opengis.net/cat/csw/2.0.2/responses" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:ows="http://www.opengis.net/ows" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<wsdl:documentation xmlns:dc="http://purl.org/dc/elements/1.1/">
+		<dc:date>2007-04-18</dc:date>
+		<dc:description>
+         This WSDL document defines the response messages and types
+         for the CWS.
+      </dc:description>
+	</wsdl:documentation>
+	<wsdl:types>
+		<xsd:schema elementFormDefault="qualified" targetNamespace="http://www.opengis.net/cat/csw/2.0.2" version="2.0.2" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:include schemaLocation="../../csw/2.0.2/CSW-discovery.xsd"/>
+			<xsd:include schemaLocation="../../csw/2.0.2/CSW-publication.xsd"/>
+			<xsd:import namespace="http://www.opengis.net/ows" schemaLocation="../../ows/1.0.0/owsExceptionReport.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="ServiceExceptionReport">
+		<wsdl:part element="ows:ExceptionReport" name="Body"/>
+	</wsdl:message>
+	<wsdl:message name="GetCapabilitiesResponse">
+		<wsdl:part element="csw:Capabilities" name="Body"/>
+	</wsdl:message>
+	<wsdl:message name="DescribeRecordResponse">
+		<wsdl:part element="csw:DescribeRecordResponse" name="Body"/>
+	</wsdl:message>
+	<wsdl:message name="GetRecordsResponse">
+		<wsdl:part element="csw:GetRecordsResponse" name="Body"/>
+	</wsdl:message>
+	<wsdl:message name="GetRecordByIdResponse">
+		<wsdl:part element="csw:GetRecordByIdResponse" name="Body"/>
+	</wsdl:message>
+	<wsdl:message name="GetDomainResponse">
+		<wsdl:part element="csw:GetDomainResponse" name="Body"/>
+	</wsdl:message>
+	<wsdl:message name="HarvestResponse">
+		<wsdl:part element="csw:HarvestResponse" name="Body"/>
+	</wsdl:message>
+	<wsdl:message name="TransactionResponse">
+		<wsdl:part element="csw:TransactionResponse" name="Body"/>
+	</wsdl:message>
+</wsdl:definitions>

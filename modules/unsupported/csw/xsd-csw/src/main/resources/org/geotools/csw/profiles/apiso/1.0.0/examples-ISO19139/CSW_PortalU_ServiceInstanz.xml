@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Core gmd based instance document -->
+<MD_Metadata xmlns="http://www.isotc211.org/2005/gmd" xmlns:srv="http://www.isotc211.org/2005/srv" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gco="http://www.isotc211.org/2005/gco" xsi:schemaLocation="http://www.isotc211.org/2005/gmd ../apiso.xsd">
+	<fileIdentifier>
+		<gco:CharacterString>09844e51-e5cd-52c3-737d-b3a61366d028</gco:CharacterString>
+	</fileIdentifier>
+	<language>
+		<gco:CharacterString>eng</gco:CharacterString>
+	</language>
+	<hierarchyLevel>
+		<MD_ScopeCode codeList="http://metadata.dgiwg.org/codelistRegistry?MD_ScopeCode" codeListValue="service"/>
+	</hierarchyLevel>
+	<hierarchyLevelName>
+		<gco:CharacterString>urn:de:conterra:suite:catalog:georesource:service:CSW:2.0.2:AP:ISO:1.0</gco:CharacterString>
+	</hierarchyLevelName>
+	<contact>
+		<CI_ResponsibleParty>
+			<individualName>
+				<gco:CharacterString>Uwe Voges</gco:CharacterString>
+			</individualName>
+			<organisationName>
+				<gco:CharacterString>con terra GmbH</gco:CharacterString>
+			</organisationName>
+			<contactInfo>
+				<CI_Contact>
+					<address>
+						<CI_Address>
+							<electronicMailAddress>
+								<gco:CharacterString>voges@conterra.de</gco:CharacterString>
+							</electronicMailAddress>
+						</CI_Address>
+					</address>
+				</CI_Contact>
+			</contactInfo>
+			<role>
+				<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_RoleCode" codeListValue="author">author</CI_RoleCode>
+			</role>
+		</CI_ResponsibleParty>
+	</contact>
+	<dateStamp>
+		<gco:Date>2007-05-29</gco:Date>
+	</dateStamp>
+	<metadataStandardName>
+		<gco:CharacterString>ISO19119</gco:CharacterString>
+	</metadataStandardName>
+	<metadataStandardVersion>
+		<gco:CharacterString>2005/PDAM 1</gco:CharacterString>
+	</metadataStandardVersion>
+	<identificationInfo>
+		<srv:SV_ServiceIdentification>
+			<citation>
+				<CI_Citation>
+					<title>
+						<gco:CharacterString>Portal-U CSW DE 1.0.1</gco:CharacterString>
+					</title>
+					<date>
+						<CI_Date>
+							<date>
+								<gco:Date>2007-01-06</gco:Date>
+							</date>
+							<dateType>
+								<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_DateTypeCode" codeListValue="creation">creation</CI_DateTypeCode>
+							</dateType>
+						</CI_Date>
+					</date>
+					<date>
+						<CI_Date>
+							<date>
+								<gco:Date>2007-05-14</gco:Date>
+							</date>
+							<dateType>
+								<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_DateTypeCode" codeListValue="revision">revision</CI_DateTypeCode>
+							</dateType>
+						</CI_Date>
+					</date>
+					<citedResponsibleParty>
+						<CI_ResponsibleParty>
+							<organisationName>
+								<gco:CharacterString>Koordinierungsstelle PortalU</gco:CharacterString>
+							</organisationName>
+							<contactInfo>
+								<CI_Contact>
+									<phone>
+										<CI_Telephone>
+											<voice>
+												<gco:CharacterString>+49 (0)511 120 3407</gco:CharacterString>
+											</voice>
+										</CI_Telephone>
+									</phone>
+									<onlineResource>
+										<CI_OnlineResource>
+											<linkage>
+												<URL>http://www.kst.portalu.de</URL>
+											</linkage>
+										</CI_OnlineResource>
+									</onlineResource>
+								</CI_Contact>
+							</contactInfo>
+							<role>
+								<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_RoleCode" codeListValue="publisher">publisher</CI_RoleCode>
+							</role>
+						</CI_ResponsibleParty>
+					</citedResponsibleParty>
+				</CI_Citation>
+			</citation>
+			<abstract>
+				<gco:CharacterString>CSW-Schnittstelle auf dem Produktionssystem zu Testzwecken. Technisch sollte alles soweit funktionieren, das Mapping UDK->CSW ist aber noch nicht komplett umgesetzt, so dass die Inhalte noch unvollständig sind.</gco:CharacterString>
+			</abstract>
+			<graphicOverview>
+				<MD_BrowseGraphic>
+					<fileName>
+						<gco:CharacterString>http://www.portalu.de/ingrid-portal-apps/images/index_themen.jpg</gco:CharacterString>
+					</fileName>
+					<fileDescription>
+						<gco:CharacterString>info map</gco:CharacterString>
+					</fileDescription>
+					<fileType>
+						<gco:CharacterString>jpeg</gco:CharacterString>
+					</fileType>
+				</MD_BrowseGraphic>
+			</graphicOverview>
+			<descriptiveKeywords>
+				<MD_Keywords>
+					<keyword>
+						<gco:CharacterString>PortalU</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>Niedersächsischen Umweltministerium</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>Catalogue Service Web</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>UDK</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>Umwelt</gco:CharacterString>
+					</keyword>
+					<type>
+						<MD_KeywordTypeCode codeList="http://metadata.dgiwg.org/codelistRegistry?MD_KeywordTypeCode" codeListValue="theme"/>
+					</type>
+				</MD_Keywords>
+			</descriptiveKeywords>
+			<descriptiveKeywords>
+				<MD_Keywords>
+					<keyword>
+						<gco:CharacterString>Deutschland</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>Niedersachsen</gco:CharacterString>
+					</keyword>
+					<type>
+						<MD_KeywordTypeCode codeList="http://metadata.dgiwg.org/codelistRegistry?MD_KeywordTypeCode" codeListValue="place"/>
+					</type>
+				</MD_Keywords>
+			</descriptiveKeywords>
+			<srv:serviceType>
+				<gco:LocalName>CSW</gco:LocalName>
+			</srv:serviceType>
+			<srv:serviceTypeVersion>
+				<gco:CharacterString>2.0.2</gco:CharacterString>
+			</srv:serviceTypeVersion>
+			<srv:extent>
+				<EX_Extent>
+					<geographicElement>
+						<EX_GeographicBoundingBox>
+							<westBoundLongitude>
+								<gco:Decimal>1.90</gco:Decimal>
+							</westBoundLongitude>
+							<eastBoundLongitude>
+								<gco:Decimal>64.35</gco:Decimal>
+							</eastBoundLongitude>
+							<southBoundLatitude>
+								<gco:Decimal>-50.94</gco:Decimal>
+							</southBoundLatitude>
+							<northBoundLatitude>
+								<gco:Decimal>55.61</gco:Decimal>
+							</northBoundLatitude>
+						</EX_GeographicBoundingBox>
+					</geographicElement>
+				</EX_Extent>
+			</srv:extent>
+			<srv:couplingType>
+				<srv:SV_CouplingType codeList="http://someurl#SV_CouplingType" codeListValue="loose"/>
+			</srv:couplingType>
+			<srv:containsOperations>
+				<srv:SV_OperationMetadata>
+					<srv:operationName>
+						<gco:CharacterString>GetCapabilities</gco:CharacterString>
+					</srv:operationName>
+					<srv:DCP>
+						<srv:DCPList codeList="http://someurl#DCPList" codeListValue="HTTPGet"/>
+					</srv:DCP>
+					<srv:connectPoint>
+						<CI_OnlineResource>
+							<linkage>
+								<URL>http://www.portalu.de/csw?</URL>
+							</linkage>
+						</CI_OnlineResource>
+					</srv:connectPoint>
+				</srv:SV_OperationMetadata>
+			</srv:containsOperations>
+		</srv:SV_ServiceIdentification>
+	</identificationInfo>
+</MD_Metadata>

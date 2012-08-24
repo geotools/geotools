@@ -1,0 +1,26 @@
+OGC is incrementally changing how schemas will be hosted. A new revision
+of the Specification Best Practice policy document (06-135r5) is in the
+works which should clarify the practices.
+
+OGC is moving to host the schemas using a 2 digit version number so that
+dependent documents (schemas) will not have to change each time a
+schema is corrected (by a corrigendum). The schemas actual version
+number will be kept in the version attribute on the schema element which
+will be used to signify that there has been a change to the schema. Each
+previous revision will be available online in a ZIP archive.
+
+The LATEST version is the M.N directory where 
+ * M is the major version
+ * N is the minor version
+The latest bugfix version now is always in the M.N directory and 
+documented in the version attribute on the schema element. The older
+versions are now archived in the -M_N_X.zip files.
+
+Previously the OGC used M.N.X where
+ * M is the major version
+ * N is the minor version
+ * X is the bugfix (corrigendum) version
+These will be left here for historical reasons.
+
+ -- 2009-03-10
+

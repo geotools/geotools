@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsd:definitions
+    targetNamespace="urn:ogc:specification:wrs:1.0:wsdl-1.1:service"
+    xmlns:tns="urn:ogc:specification:wrs:1.0:wsdl-1.1:service"
+    xmlns:binding="urn:ogc:specification:wrs:1.0:wsdl-1.1:binding"
+    xmlns:wsd="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <wsd:documentation>
+    WSDL 1.1 service descriptions for the CSW-ebRIM catalogue application profile.
+    This is meant to be a template and does not specify an actual service.
+    </wsd:documentation>
+   
+    <wsd:import
+        namespace="urn:ogc:specification:wrs:1.0:wsdl-1.1:binding"
+        location="./csw-ebrim-binding.wsdl" />
+    <wsd:service name="CSWEBRIMSOAPService">
+        <wsd:port binding="binding:OGCWebServiceSOAPBinding" name="OGCWebServicePort">
+            <soap:address location="http://localhost:8080/wrs/ogcwebservice"/>
+        </wsd:port>
+        <wsd:port binding="binding:DiscoverySOAPBinding" name="DiscoveryPort">
+            <soap:address location="http://localhost:8080/wrs/discovery"/>
+        </wsd:port>
+        <wsd:port binding="binding:PublicationSOAPBinding" name="PublicationPort">
+            <soap:address location="http://localhost:8080/wrs/publication"/>
+        </wsd:port>
+    </wsd:service>
+   
+</wsd:definitions>

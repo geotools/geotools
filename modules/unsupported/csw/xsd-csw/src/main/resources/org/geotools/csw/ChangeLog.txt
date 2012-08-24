@@ -1,0 +1,39 @@
+OpenGIS Catalog 2.0.2 ChangeLog.txt
+
+2012-07-21  Kevin Stegemoller
+
+  * v2.0.2: include all-components document (CSW-publication.xsd) in all schema
+    documents per OGC Change Request 11-025. See also 06-135r11 s#14.
+  * v2.0.2: archived previous version in csw-2_0_2_1.zip contained in csw-2_0_2.zip
+
+2010-01-22  Kevin Stegemoller
+
+  * v2.0: update/verify copyright (06-135r7 s#3.2)
+  * v2.0: update relative schema imports to absolute URLs (06-135r7 s#15)
+  * v2.0: updated xsd:schema:@version attribute (06-135r7 s#13.4)
+  * v2.0: add archives (.zip) files of previous versions
+  * v2.0: create/update ReadMe.txt (06-135r7 s#17)
+
+2007-08-14  Uwe Voges
+
+  * v2.0.2: added profiles/apiso/1.0.0 examples/capabilities examples/wsdl
+
+2007-07-27  Peter Vretanos
+
+  * v2.0.2: added ChangeLog.txt ; for additional changes see OGC 07-010
+  * v2.0.2/CSW-publication.xsd: import owsAll.xsd, rather than
+    owsGetCapabilities.xsd, for the http://www.opengis.net/ows namespace
+    to prevent validation errors caused by namespace caching in a number
+    of XML parsers (Xerces,XSV) (as per Lorenzo Bigagli [bigagli@imaa.cnr.it]
+    & Valerio Angelini [valerio.angelini@pin.unifi.it])
+  * v2.0.2/record.xsd: import owsAll.xsd, rather than owsCommon.xsd, for the
+    http://www.opengis.net/ows namespace to prevent validation errors caused by
+    namespace caching in a number of XML parsers (Xerces,XSV) (as per Lorenzo
+    Bigagli [bigagli@imaa.cnr.it] & Valerio Angelini [valerio.angelini@pin.unifi.it])
+
+2007-04-30  Doug Nebert, Arliss Whiteside, Peter Vretanos
+
+  * v2.0.2: See OGC 07-006r1 for associated specification and OGC 07-010
+    for revision notes.
+  * v2.0.2: validated using XML Spy 2007 - pVretanos
+

@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Core gmd based instance document -->
+<MD_Metadata xmlns="http://www.isotc211.org/2005/gmd" xmlns:srv="http://www.isotc211.org/2005/srv" xmlns:extsrv="http://www.isotc211.org/2005/extendedsrv" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gco="http://www.isotc211.org/2005/gco" xsi:schemaLocation="http://www.isotc211.org/2005/gmd ../apiso.xsd">
+	<fileIdentifier>
+		<gco:CharacterString>33462e89-e5ab-11c3-737d-b3a69942d028</gco:CharacterString>
+	</fileIdentifier>
+	<language>
+		<gco:CharacterString>eng</gco:CharacterString>
+	</language>
+	<hierarchyLevel>
+		<MD_ScopeCode codeList="http://metadata.dgiwg.org/codelistRegistry?MD_ScopeCode" codeListValue="service"/>
+	</hierarchyLevel>
+	<hierarchyLevelName>
+		<gco:CharacterString>urn:eustat:georesource:service:WMS:</gco:CharacterString>
+	</hierarchyLevelName>
+	<contact>
+		<CI_ResponsibleParty>
+			<individualName>
+				<gco:CharacterString>Uwe Voges</gco:CharacterString>
+			</individualName>
+			<organisationName>
+				<gco:CharacterString>con terra GmbH</gco:CharacterString>
+			</organisationName>
+			<contactInfo>
+				<CI_Contact>
+					<address>
+						<CI_Address>
+							<electronicMailAddress>
+								<gco:CharacterString>voges@conterra.de</gco:CharacterString>
+							</electronicMailAddress>
+						</CI_Address>
+					</address>
+				</CI_Contact>
+			</contactInfo>
+			<role>
+				<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_RoleCode" codeListValue="author">author</CI_RoleCode>
+			</role>
+		</CI_ResponsibleParty>
+	</contact>
+	<dateStamp>
+		<gco:Date>2007-03-09</gco:Date>
+	</dateStamp>
+	<metadataStandardName>
+		<gco:CharacterString>ISO19119</gco:CharacterString>
+	</metadataStandardName>
+	<metadataStandardVersion>
+		<gco:CharacterString>2005/PDAM 1</gco:CharacterString>
+	</metadataStandardVersion>
+	<identificationInfo>
+		<srv:SV_ServiceIdentification>
+			<citation>
+				<CI_Citation>
+					<title>
+						<gco:CharacterString>JRC - Image 2000 multispectral (BO 321)</gco:CharacterString>
+					</title>
+					<date>
+						<CI_Date>
+							<date>
+								<gco:Date>2006-01-06</gco:Date>
+							</date>
+							<dateType>
+								<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_DateTypeCode" codeListValue="creation">creation</CI_DateTypeCode>
+							</dateType>
+						</CI_Date>
+					</date>
+					<date>
+						<CI_Date>
+							<date>
+								<gco:Date>2006-05-18</gco:Date>
+							</date>
+							<dateType>
+								<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_DateTypeCode" codeListValue="revision">revision</CI_DateTypeCode>
+							</dateType>
+						</CI_Date>
+					</date>
+					<citedResponsibleParty>
+						<CI_ResponsibleParty>
+							<organisationName>
+								<gco:CharacterString>Joint Research Center</gco:CharacterString>
+							</organisationName>
+							<contactInfo>
+								<CI_Contact>
+									<phone>
+										<CI_Telephone>
+											<voice>
+												<gco:CharacterString>+39 0332785052</gco:CharacterString>
+											</voice>
+										</CI_Telephone>
+									</phone>
+									<onlineResource>
+										<CI_OnlineResource>
+											<linkage>
+												<URL>http://www.jrc.ec.europa.eu</URL>
+											</linkage>
+										</CI_OnlineResource>
+									</onlineResource>
+								</CI_Contact>
+							</contactInfo>
+							<role>
+								<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_RoleCode" codeListValue="publisher">publisher</CI_RoleCode>
+							</role>
+						</CI_ResponsibleParty>
+					</citedResponsibleParty>
+				</CI_Citation>
+			</citation>
+			<abstract>
+				<gco:CharacterString>Image2000 products are intended to be the main source of data for updating the European Land Cover database (CORINE Land Cover), but are also reference data in themselves. Primarily derived from Landsat 7 Enhanced Thematic Mapper ETM+ imagery, they are georeferenced and orthorectified, resulting in a consistent, high quality product. Image2000 products currently cover the entire European Union. Image2000 data are multi-user and multi-purpose, covering a wide range of potential applications.Individual orthorectified scenes in national map projection system (approximately 1000 scenes, 25m resolution (multispectral) and 12.5m panchromatic).</gco:CharacterString>
+			</abstract>
+			<graphicOverview>
+				<MD_BrowseGraphic>
+					<fileName>
+						<gco:CharacterString>http://mapserver.jrc.it/website/image2000/viewer.htm</gco:CharacterString>
+					</fileName>
+					<fileDescription>
+						<gco:CharacterString>preview map</gco:CharacterString>
+					</fileDescription>
+					<fileType>
+						<gco:CharacterString>html</gco:CharacterString>
+					</fileType>
+				</MD_BrowseGraphic>
+			</graphicOverview>
+			<descriptiveKeywords>
+				<MD_Keywords>
+					<keyword>
+						<gco:CharacterString>Image2000</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>Land management</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>CORINE Land Cover</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>Landsat 7</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString> Enhanced Thematic Mapper ETM+ imagery</gco:CharacterString>
+					</keyword>
+					<type>
+						<MD_KeywordTypeCode codeList="http://metadata.dgiwg.org/codelistRegistry?MD_KeywordTypeCode" codeListValue="theme"/>
+					</type>
+				</MD_Keywords>
+			</descriptiveKeywords>
+			<resourceConstraints>
+				<MD_LegalConstraints>
+					<useLimitation>
+						<gco:CharacterString>see: http://europa.eu/geninfo/legal_notices_en.htm</gco:CharacterString>
+					</useLimitation>
+				</MD_LegalConstraints>
+			</resourceConstraints>
+			<srv:serviceType>
+				<gco:LocalName>WMS</gco:LocalName>
+			</srv:serviceType>
+			<srv:serviceTypeVersion>
+				<gco:CharacterString>1.1.1</gco:CharacterString>
+			</srv:serviceTypeVersion>
+			<srv:extent>
+				<EX_Extent>
+					<geographicElement>
+						<EX_GeographicBoundingBox>
+							<westBoundLongitude>
+								<gco:Decimal>-61.90</gco:Decimal>
+							</westBoundLongitude>
+							<eastBoundLongitude>
+								<gco:Decimal>64.35</gco:Decimal>
+							</eastBoundLongitude>
+							<southBoundLatitude>
+								<gco:Decimal>-20.94</gco:Decimal>
+							</southBoundLatitude>
+							<northBoundLatitude>
+								<gco:Decimal>71.61</gco:Decimal>
+							</northBoundLatitude>
+						</EX_GeographicBoundingBox>
+					</geographicElement>
+				</EX_Extent>
+			</srv:extent>
+			<srv:coupledResource>
+				<srv:SV_CoupledResource>
+					<srv:operationName>
+						<gco:CharacterString>GetMap</gco:CharacterString>
+					</srv:operationName>
+					<srv:identifier>
+						<gco:CharacterString>3B20D603-30D1-47D5-AC62-E10193CDE1D8</gco:CharacterString>
+					</srv:identifier>
+					<gco:ScopedName codeSpace="http://someurl">LayerName</gco:ScopedName>
+				</srv:SV_CoupledResource>
+			</srv:coupledResource>
+			<srv:couplingType>
+				<srv:SV_CouplingType codeList="http://someurl#SV_CouplingType" codeListValue="tight"/>
+			</srv:couplingType>
+			<srv:containsOperations>
+				<srv:SV_OperationMetadata>
+					<srv:operationName>
+						<gco:CharacterString>GetCapabilities</gco:CharacterString>
+					</srv:operationName>
+					<srv:DCP>
+						<srv:DCPList codeList="http://someurl#DCPList" codeListValue="HTTPGet"/>
+					</srv:DCP>
+					<srv:connectPoint>
+						<CI_OnlineResource>
+							<linkage>
+								<URL>http://mapserver.jrc.it:80/wmsconnector/com.esri.wms.Esrimap/img2k_321_mos?</URL>
+							</linkage>
+						</CI_OnlineResource>
+					</srv:connectPoint>
+				</srv:SV_OperationMetadata>
+			</srv:containsOperations>
+			<srv:operatesOn uuidref="3B20D603-30D1-47D5-AC62-E10193CDE1D8"/>
+		</srv:SV_ServiceIdentification>
+	</identificationInfo>
+	<dataQualityInfo>
+		<DQ_DataQuality>
+			<scope>
+				<DQ_Scope>
+					<level>
+						<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_ScopeCode" codeListValue="data">data</MD_ScopeCode>
+					</level>
+				</DQ_Scope>
+			</scope>
+			<lineage>
+				<LI_Lineage>
+					<statement>
+						<gco:CharacterString>Image2000 is produced from ETM+ Landsat 7 satellite, providing both multi-spectral (25 m) and panchromatic data (12.5 m). As a multi-purpose product, Image2000 meets user requirements at National and European level. The images are delivered ortho-rectified in National projection systems, and one European projection system. Image purchase, ortho-rectification and quality control is centralised. This centralised approach gives advantages in overall management and assures consistency in quality of the end product. Image2000 consists of: Mosaic of Europe compatible with the national mosaics. Resolution and radiometry of satellite data is compatible with satellite data used for former Corine Land Cover (CLC90). No atmospheric calibration is applied, only standard radiometric corrections such as destriping, dropline correction and bit errors.</gco:CharacterString>
+					</statement>
+				</LI_Lineage>
+			</lineage>
+		</DQ_DataQuality>
+	</dataQualityInfo>
+</MD_Metadata>

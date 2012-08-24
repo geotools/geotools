@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- gmd based instance document -->
+<!--  Info   :  Dieses Instanz-Dokument wurde von der con terra GmbH entsprechend den Vorgaben des Dokumentes: -->
+<!--             Geoinformation - Metadaten (AT Länderprofil) (ISO 19115:2003),  Version 0.3, Stand: 17.03.2006 -->
+<!--             und dem daraus abgeleiteten XML Schema erstellt. -->
+<!--             Autor : Dr. Uwe Voges -->
+<!--             Stand: 08.05.2007 -->
+<!--             Firma: con terra GmbH (www.conterra.de) -->
+<MD_Metadata xmlns="http://www.isotc211.org/2005/gmd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.isotc211.org/2005/gmd ../../../../../../iso/19139/20060504/gmd/gmd.xsd" uuid="US_NGA_VPF_VMAP0" id="VMAP0">
+	<fileIdentifier>
+		<gco:CharacterString>550e8400-e29b-41d4-a716-44389665234</gco:CharacterString>
+	</fileIdentifier>
+	<language>
+		<gco:CharacterString>deu</gco:CharacterString>
+	</language>
+	<hierarchyLevel>
+		<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_ScopeCode" codeListValue="dataset"/>
+	</hierarchyLevel>
+	<hierarchyLevelName>
+		<gco:CharacterString>Gewässer</gco:CharacterString>
+	</hierarchyLevelName>
+	<contact>
+		<CI_ResponsibleParty>
+			<individualName>
+				<gco:CharacterString>Frau Neumeier</gco:CharacterString>
+			</individualName>
+			<organisationName>
+				<gco:CharacterString>Hessisches Landesamt für Umwelt und Geologie (HLUG)</gco:CharacterString>
+			</organisationName>
+			<contactInfo>
+				<CI_Contact>
+					<address>
+						<CI_Address>
+							<deliveryPoint>
+								<gco:CharacterString>Rheingaustraße 186</gco:CharacterString>
+							</deliveryPoint>
+							<city>
+								<gco:CharacterString>Wiesbaden</gco:CharacterString>
+							</city>
+							<postalCode>
+								<gco:CharacterString>65203</gco:CharacterString>
+							</postalCode>
+							<country>
+								<gco:CharacterString>Deutschland</gco:CharacterString>
+							</country>
+							<electronicMailAddress>
+								<gco:CharacterString>s.neumeier@hlug.de</gco:CharacterString>
+							</electronicMailAddress>
+						</CI_Address>
+					</address>
+					<onlineResource>
+						<CI_OnlineResource>
+							<linkage>
+								<URL>http://www.hlug.de</URL>
+							</linkage>
+							<protocol>
+								<gco:CharacterString>http</gco:CharacterString>
+							</protocol>
+							<function>
+								<CI_OnLineFunctionCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_OnLineFunctionCode" codeListValue="information"/>
+							</function>
+						</CI_OnlineResource>
+					</onlineResource>
+				</CI_Contact>
+			</contactInfo>
+			<role>
+				<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_RoleCode" codeListValue="publisher"/>
+			</role>
+		</CI_ResponsibleParty>
+	</contact>
+	<!-- Date the metadata was created -->
+	<dateStamp>
+		<gco:Date>2007-05-08</gco:Date>
+	</dateStamp>
+	<metadataStandardName>
+		<gco:CharacterString>ISO19115</gco:CharacterString>
+	</metadataStandardName>
+	<metadataStandardVersion>
+		<gco:CharacterString>2003/Cor.1:2006</gco:CharacterString>
+	</metadataStandardVersion>
+	<dataSetURI>
+		<gco:CharacterString>http://www.hlug.de/ftp/gewaesserDaten/gewdata05622</gco:CharacterString>
+	</dataSetURI>
+	<!-- REFERENCE SYSTEM INFORMATION -->
+	<referenceSystemInfo>
+		<MD_ReferenceSystem>
+			<referenceSystemIdentifier>
+				<RS_Identifier>
+					<code>
+						<gco:CharacterString>4326</gco:CharacterString>
+					</code>
+					<codeSpace>
+						<gco:CharacterString>EPSG</gco:CharacterString>
+					</codeSpace>
+				</RS_Identifier>
+			</referenceSystemIdentifier>
+		</MD_ReferenceSystem>
+	</referenceSystemInfo>
+	<!-- END REFERENCE SYSTEM INFORMATION -->
+	<!-- IDENTIFICATION INFORMATION -->
+	<identificationInfo>
+		<MD_DataIdentification>
+			<citation>
+				<CI_Citation>
+					<title>
+						<gco:CharacterString>Wasserkörper Linien</gco:CharacterString>
+					</title>
+					<alternateTitle>
+						<gco:CharacterString>WK Linien</gco:CharacterString>
+					</alternateTitle>
+					<date>
+						<CI_Date>
+							<date>
+								<gco:Date>2004-10-18</gco:Date>
+							</date>
+							<dateType>
+								<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_DateTypeCode" codeListValue="creation"/>
+							</dateType>
+						</CI_Date>
+					</date>
+					<date>
+						<CI_Date>
+							<date>
+								<gco:Date>2006-10-03</gco:Date>
+							</date>
+							<dateType>
+								<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_DateTypeCode" codeListValue="revision"/>
+							</dateType>
+						</CI_Date>
+					</date>
+					<identifier>
+						<MD_Identifier>
+							<code>
+								<gco:CharacterString>550e8400-e29b-41d4-a716-446655441234</gco:CharacterString>
+							</code>
+						</MD_Identifier>
+					</identifier>
+					<citedResponsibleParty>
+						<CI_ResponsibleParty>
+							<organisationName>
+								<gco:CharacterString>Hessisches Landesamt für Umwelt und Geologie (HLUG)</gco:CharacterString>
+							</organisationName>
+							<contactInfo>
+								<CI_Contact>
+									<address>
+										<CI_Address>
+											<deliveryPoint>
+												<gco:CharacterString>Rheingaustraße 186</gco:CharacterString>
+											</deliveryPoint>
+											<city>
+												<gco:CharacterString>Wiesbaden</gco:CharacterString>
+											</city>
+											<postalCode>
+												<gco:CharacterString>65203</gco:CharacterString>
+											</postalCode>
+											<country>
+												<gco:CharacterString>Deutschland</gco:CharacterString>
+											</country>
+										</CI_Address>
+									</address>
+									<onlineResource>
+										<CI_OnlineResource>
+											<linkage>
+												<URL>http://www.hlug.de</URL>
+											</linkage>
+											<protocol>
+												<gco:CharacterString>http</gco:CharacterString>
+											</protocol>
+											<function>
+												<CI_OnLineFunctionCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_OnLineFunctionCode" codeListValue="information"/>
+											</function>
+										</CI_OnlineResource>
+									</onlineResource>
+								</CI_Contact>
+							</contactInfo>
+							<role>
+								<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_RoleCode" codeListValue="publisher"/>
+							</role>
+						</CI_ResponsibleParty>
+					</citedResponsibleParty>
+					<presentationForm>
+						<CI_PresentationFormCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_PresentationFormCode" codeListValue="mapDigital"/>
+					</presentationForm>
+				</CI_Citation>
+			</citation>
+			<abstract>
+				<gco:CharacterString>Linienhafte Wasserkörper für die Wasserrahmenrichtlinie, auf Basis der Gewässer DLM25</gco:CharacterString>
+			</abstract>
+			<status>
+				<MD_ProgressCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_ProgressCode" codeListValue="completed"/>
+			</status>
+			<pointOfContact>
+				<CI_ResponsibleParty>
+					<individualName>
+						<gco:CharacterString>Herr Keuner</gco:CharacterString>
+					</individualName>
+					<organisationName>
+						<gco:CharacterString>Hessisches Landesamt für Umwelt und Geologie (HLUG)</gco:CharacterString>
+					</organisationName>
+					<positionName>
+						<gco:CharacterString>Leiter Datenproduktion</gco:CharacterString>
+					</positionName>
+					<contactInfo>
+						<CI_Contact>
+							<phone>
+								<CI_Telephone>
+									<voice>
+										<gco:CharacterString>++49 0611 6939 551</gco:CharacterString>
+									</voice>
+									<voice>
+										<gco:CharacterString>++49 0611 6939 536</gco:CharacterString>
+									</voice>
+									<facsimile>
+										<gco:CharacterString>++49 0611 6939 555</gco:CharacterString>
+									</facsimile>
+								</CI_Telephone>
+							</phone>
+							<address>
+								<CI_Address>
+									<deliveryPoint>
+										<gco:CharacterString>Rheingaustraße 186</gco:CharacterString>
+									</deliveryPoint>
+									<city>
+										<gco:CharacterString>Wiesbaden</gco:CharacterString>
+									</city>
+									<postalCode>
+										<gco:CharacterString>65203</gco:CharacterString>
+									</postalCode>
+									<country>
+										<gco:CharacterString>Deutschland</gco:CharacterString>
+									</country>
+									<electronicMailAddress>
+										<gco:CharacterString>a.keuner@hlug.de</gco:CharacterString>
+									</electronicMailAddress>
+								</CI_Address>
+							</address>
+							<onlineResource>
+								<CI_OnlineResource>
+									<linkage>
+										<URL>http://www.hlug.de</URL>
+									</linkage>
+									<protocol>
+										<gco:CharacterString>http</gco:CharacterString>
+									</protocol>
+									<function>
+										<CI_OnLineFunctionCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_OnLineFunctionCode" codeListValue="download"/>
+									</function>
+								</CI_OnlineResource>
+							</onlineResource>
+						</CI_Contact>
+					</contactInfo>
+					<role>
+						<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_RoleCode" codeListValue="originator"/>
+					</role>
+				</CI_ResponsibleParty>
+			</pointOfContact>
+			<!-- ***** KEYWORDS ***** -->
+			<!-- ***** DISCIPLINE ***** -->
+			<descriptiveKeywords>
+				<MD_Keywords>
+					<keyword>
+						<gco:CharacterString>Geologie</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>Wasser</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>Wasserrahmenrichtlinie</gco:CharacterString>
+					</keyword>
+					<keyword>
+						<gco:CharacterString>WRRL</gco:CharacterString>
+					</keyword>
+					<type>
+						<MD_KeywordTypeCode codeList="http://metadata.dgiwg.org/codelistRegistry?MD_KeywordTypeCode" codeListValue="discipline"/>
+					</type>
+				</MD_Keywords>
+			</descriptiveKeywords>
+			<!-- ***** PLACE ***** -->
+			<descriptiveKeywords>
+				<MD_Keywords>
+					<keyword>
+						<gco:CharacterString>Deutschland</gco:CharacterString>
+					</keyword>
+					<type>
+						<MD_KeywordTypeCode codeList="http://metadata.dgiwg.org/codelistRegistry?MD_KeywordTypeCode" codeListValue="place"/>
+					</type>
+				</MD_Keywords>
+			</descriptiveKeywords>
+			<spatialRepresentationType>
+				<MD_SpatialRepresentationTypeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_SpatialRepresentationTypeCode" codeListValue="vector"/>
+			</spatialRepresentationType>
+			<spatialResolution>
+				<MD_Resolution>
+					<equivalentScale>
+						<MD_RepresentativeFraction>
+							<denominator>
+								<gco:Integer>100000</gco:Integer>
+							</denominator>
+						</MD_RepresentativeFraction>
+					</equivalentScale>
+				</MD_Resolution>
+			</spatialResolution>
+			<language>
+				<gco:CharacterString>deu</gco:CharacterString>
+			</language>
+			<topicCategory>
+				<MD_TopicCategoryCode>environment</MD_TopicCategoryCode>
+			</topicCategory>
+			<topicCategory>
+				<MD_TopicCategoryCode>inlandWaters</MD_TopicCategoryCode>
+			</topicCategory>
+			<topicCategory>
+				<MD_TopicCategoryCode>transportation</MD_TopicCategoryCode>
+			</topicCategory>
+			<!-- Method one for indicating data coverage area -->
+			<!-- Use EX_GeographicBoundingBoxType to describe -->
+			<!-- the data coverage area using approximate coordinates -->
+			<!-- THIS METHOD IS MANDATORY IF THE HIERARCHY  -->
+			<!-- LEVEL OF THIS METADATA IS "DATASET" -->
+			<extent>
+				<EX_Extent>
+					<geographicElement>
+						<EX_GeographicBoundingBox>
+							<westBoundLongitude>
+								<gco:Decimal>7.73</gco:Decimal>
+							</westBoundLongitude>
+							<eastBoundLongitude>
+								<gco:Decimal>10.35</gco:Decimal>
+							</eastBoundLongitude>
+							<southBoundLatitude>
+								<gco:Decimal>49.39</gco:Decimal>
+							</southBoundLatitude>
+							<northBoundLatitude>
+								<gco:Decimal>51.66</gco:Decimal>
+							</northBoundLatitude>
+						</EX_GeographicBoundingBox>
+					</geographicElement>
+				</EX_Extent>
+			</extent>
+			<extent>
+				<EX_Extent>
+					<temporalElement>
+						<EX_TemporalExtent>
+							<extent>
+								<gml:TimePeriod gml:id="ID00006">
+									<gml:beginPosition>2000-01-01</gml:beginPosition>
+									<gml:endPosition>2007-05-07</gml:endPosition>
+								</gml:TimePeriod>
+							</extent>
+						</EX_TemporalExtent>
+					</temporalElement>
+				</EX_Extent>
+			</extent>
+			<extent>
+				<EX_Extent>
+					<geographicElement>
+						<EX_GeographicDescription>
+							<geographicIdentifier>
+								<RS_Identifier>
+									<code>
+										<gco:CharacterString>Deutschland</gco:CharacterString>
+									</code>
+								</RS_Identifier>
+							</geographicIdentifier>
+						</EX_GeographicDescription>
+					</geographicElement>
+				</EX_Extent>
+			</extent>
+		</MD_DataIdentification>
+	</identificationInfo>
+	<!-- END OF IDENTIFICATION INFORMATION -->
+	<distributionInfo>
+		<MD_Distribution>
+			<distributionFormat>
+				<MD_Format>
+					<name>
+						<gco:CharacterString>shapefile</gco:CharacterString>
+					</name>
+					<version>
+						<gco:CharacterString>1.0</gco:CharacterString>
+					</version>
+				</MD_Format>
+			</distributionFormat>
+			<transferOptions>
+				<MD_DigitalTransferOptions>
+					<onLine>
+						<CI_OnlineResource>
+							<linkage>
+								<URL>http://www.hlug.de/ftp/gewaesserDaten/gewdata05622.zip</URL>
+							</linkage>
+							<protocol>
+								<gco:CharacterString>http</gco:CharacterString>
+							</protocol>
+							<function>
+								<CI_OnLineFunctionCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_OnLineFunctionCode" codeListValue="download"/>
+							</function>
+						</CI_OnlineResource>
+					</onLine>
+				</MD_DigitalTransferOptions>
+			</transferOptions>
+		</MD_Distribution>
+	</distributionInfo>
+	<!-- DATA QUALITY AND LINEAGE -->
+	<dataQualityInfo>
+		<DQ_DataQuality>
+			<scope>
+				<DQ_Scope>
+					<level>
+						<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_ScopeCode" codeListValue="dataset"/>
+					</level>
+					<extent>
+						<EX_Extent>
+							<geographicElement>
+								<EX_GeographicBoundingBox>
+									<westBoundLongitude>
+										<gco:Decimal>7.73</gco:Decimal>
+									</westBoundLongitude>
+									<eastBoundLongitude>
+										<gco:Decimal>10.35</gco:Decimal>
+									</eastBoundLongitude>
+									<southBoundLatitude>
+										<gco:Decimal>49.39</gco:Decimal>
+									</southBoundLatitude>
+									<northBoundLatitude>
+										<gco:Decimal>51.66</gco:Decimal>
+									</northBoundLatitude>
+								</EX_GeographicBoundingBox>
+							</geographicElement>
+						</EX_Extent>
+					</extent>
+					<levelDescription>
+						<MD_ScopeDescription>
+							<attributes/>
+						</MD_ScopeDescription>
+					</levelDescription>
+				</DQ_Scope>
+			</scope>
+			<lineage>
+				<LI_Lineage>
+					<statement>
+						<gco:CharacterString>Typisierung der Gewässer auf der Basis einer DLM25 Karte...</gco:CharacterString>
+					</statement>
+					<source>
+						<LI_Source>
+							<scaleDenominator>
+								<MD_RepresentativeFraction>
+									<denominator>
+										<gco:Integer>100000</gco:Integer>
+									</denominator>
+								</MD_RepresentativeFraction>
+							</scaleDenominator>
+							<sourceStep>
+								<LI_ProcessStep>
+									<description>
+										<gco:CharacterString>Grundlage bilden die gelieferten Karten, Tabellen und Textbeiträge der Bearbeitungsgebiete, die DLM25...</gco:CharacterString>
+									</description>
+									<processor>
+										<CI_ResponsibleParty>
+											<organisationName>
+												<gco:CharacterString>Hessisches Landesamt für Umwelt und Geologie (HLUG)</gco:CharacterString>
+											</organisationName>
+											<role>
+												<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_RoleCode" codeListValue="originator"/>
+											</role>
+										</CI_ResponsibleParty>
+									</processor>
+								</LI_ProcessStep>
+							</sourceStep>
+						</LI_Source>
+					</source>
+				</LI_Lineage>
+			</lineage>
+		</DQ_DataQuality>
+	</dataQualityInfo>
+	<!-- END OF DATA QUALITY & LINEAGE -->
+</MD_Metadata>

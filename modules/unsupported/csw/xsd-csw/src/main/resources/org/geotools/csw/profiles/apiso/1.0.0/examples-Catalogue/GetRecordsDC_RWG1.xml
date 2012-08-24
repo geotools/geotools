@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GetRecords xmlns="http://www.opengis.net/cat/csw/2.0.2" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xmlns:ogc="http://www.opengis.net/ogc" xmlns:ows="http://www.opengis" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dct="http://purl.org/dc/terms/" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/cat/csw/2.0.2
+../../../../CSW-discovery.xsd" service="CSW" version="2.0.2" resultType="results" outputFormat="application/xml" outputSchema="http://www.opengis.net/cat/csw/2.0.2" startPosition="1" maxRecords="5">
+	<Query typeNames="csw:Record">
+		<ElementSetName typeNames="">brief</ElementSetName>
+		<Constraint version="1.1.0">
+			<ogc:Filter>
+				<ogc:And>
+					<ogc:PropertyIsLike escapeChar="\" singleChar="?" wildCard="*">
+						<ogc:PropertyName>dc:title</ogc:PropertyName>
+						<ogc:Literal>*spectra*</ogc:Literal>
+					</ogc:PropertyIsLike>
+					<ogc:PropertyIsEqualTo>
+						<ogc:PropertyName>dc:type</ogc:PropertyName>
+						<ogc:Literal>dataset</ogc:Literal>
+					</ogc:PropertyIsEqualTo>
+					<ogc:Intersects>
+						<ogc:PropertyName>ows:BoundingBox</ogc:PropertyName>
+						<gml:Envelope>
+							<gml:lowerCorner>14.05 46.46</gml:lowerCorner>
+							<gml:upperCorner>17.24 48.42</gml:upperCorner>
+						</gml:Envelope>
+					</ogc:Intersects>
+				</ogc:And>
+			</ogc:Filter>
+		</Constraint>
+	</Query>
+</GetRecords>

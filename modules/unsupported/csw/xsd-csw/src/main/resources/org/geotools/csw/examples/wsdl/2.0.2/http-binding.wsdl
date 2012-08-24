@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://www.opengis.net/cat/csw/2.0.2/http" xmlns:csw-req="http://www.opengis.net/cat/csw/2.0.2/requests" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/">
+	<wsdl:documentation xmlns:dc="http://purl.org/dc/elements/1.1/">
+		<dc:description>
+         HTTP/1.1 protocol bindings for CSW interfaces.
+      </dc:description>
+		<dc:date>2007-04-18</dc:date>
+	</wsdl:documentation>
+	<wsdl:import namespace="http://www.opengis.net/cat/csw/2.0.2/requests" location="./xml-interfaces.wsdl"/>
+	<wsdl:binding name="csw-POST" type="csw-req:csw">
+		<wsdl:documentation>
+         CSW interface bound to the HTTP/1.1 POST method.
+      </wsdl:documentation>
+		<http:binding verb="POST"/>
+		<wsdl:operation name="csw.getCapabilities">
+			<http:operation location="GetCapabilities"/>
+			<wsdl:input>
+				<mime:mimeXml/>
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml/>
+			</wsdl:output>
+			<wsdl:fault name="ServiceExceptionReport">
+				<soap:fault use="literal" name="ServiceExceptionReport"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="csw.describeRecord">
+			<http:operation location="DescribeRecord"/>
+			<wsdl:input>
+				<mime:mimeXml/>
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml/>
+			</wsdl:output>
+			<wsdl:fault name="ServiceExceptionReport">
+				<soap:fault use="literal" name="ServiceExceptionReport"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="csw.getRecords">
+			<http:operation location="GetRecords"/>
+			<wsdl:input>
+				<mime:mimeXml/>
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml/>
+			</wsdl:output>
+			<wsdl:fault name="ServiceExceptionReport">
+				<soap:fault use="literal" name="ServiceExceptionReport"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="csw.getRecordById">
+			<http:operation location="GetRecordById"/>
+			<wsdl:input>
+				<mime:mimeXml/>
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml/>
+			</wsdl:output>
+			<wsdl:fault name="ServiceExceptionReport">
+				<soap:fault use="literal" name="ServiceExceptionReport"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="csw.getDomain">
+			<http:operation location="GetDomain"/>
+			<wsdl:input>
+				<mime:mimeXml/>
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml/>
+			</wsdl:output>
+			<wsdl:fault name="ServiceExceptionReport">
+				<soap:fault use="literal" name="ServiceExceptionReport"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="csw.harvest">
+			<http:operation location="Harvest"/>
+			<wsdl:input>
+				<mime:mimeXml/>
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml/>
+			</wsdl:output>
+			<wsdl:fault name="ServiceExceptionReport">
+				<soap:fault use="literal" name="ServiceExceptionReport"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="csw.transaction">
+			<http:operation location="Transaction"/>
+			<wsdl:input>
+				<mime:mimeXml/>
+			</wsdl:input>
+			<wsdl:output>
+				<mime:mimeXml/>
+			</wsdl:output>
+			<wsdl:fault name="ServiceExceptionReport">
+				<soap:fault use="literal" name="ServiceExceptionReport"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+</wsdl:definitions>

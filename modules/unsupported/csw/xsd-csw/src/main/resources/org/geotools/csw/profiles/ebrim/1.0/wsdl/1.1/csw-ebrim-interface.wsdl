@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsd:definitions
+    targetNamespace="urn:ogc:specification:wrs:1.0:wsdl-1.1:interface"
+    xmlns:tns="urn:ogc:specification:wrs:1.0:wsdl-1.1:interface"
+    xmlns:wrs="http://www.opengis.net/cat/wrs/1.0"
+    xmlns:kvp="http://www.opengis.net/cat/wrs/1.0/kvp"
+    xmlns:csw="http://www.opengis.net/cat/csw/2.0.2"
+    xmlns:ows="http://www.opengis.net/ows"
+    xmlns:wsd="http://schemas.xmlsoap.org/wsdl/" 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <wsd:documentation>
+    WSDL 1.1 interface descriptions for the CSW-ebRIM catalogue application profile.
+    </wsd:documentation>
+    <wsd:types>
+        <xs:schema id="wrs-kvp"
+                   targetNamespace="http://www.opengis.net/cat/wrs/1.0/kvp"
+                   xmlns:kvp="http://www.opengis.net/cat/wrs/1.0/kvp">
+            <xs:import
+                namespace="http://www.opengis.net/cat/wrs/1.0"
+                schemaLocation="../../csw-ebrim.xsd" />
+            <xs:import namespace="http://www.opengis.net/cat/csw/2.0.2"
+                schemaLocation="http://schemas.opengis.net/csw/2.0.2/CSW-publication.xsd" />
+            <xs:import
+                namespace="http://www.opengis.net/ows"
+                schemaLocation="http://schemas.opengis.net/ows/1.0.0/owsAll.xsd" />
+
+            <xs:annotation>
+                <xs:documentation xml:lang="en">
+                    This schema declares message elements for GET requests or POST requests
+                    encoded as content type "application/x-www-form-urlencoded" (i.e.,
+                    KVP-style encoding).
+                   
+                    1. Parameter names and values are escaped. Space characters are
+                    replaced by '+', and then reserved characters are percent-encoded
+                    as described in RFC 3986, section 2.2.
+                    2. the parameter name is separated from the value by the EQUALS SIGN
+                    character and name/value pairs are separated from each other
+                    by the AMPERSAND character. If multiple values are allowed they
+                    are separated using the COMMA character.
+                </xs:documentation>
+            </xs:annotation>
+            <xs:group name="common-elements">
+                <xs:sequence>
+                    <xs:element name="service" type="xs:anyURI"
+                                fixed="urn:x-ogc:specification:csw-ebrim:Service:OGC-CSW:ebRIM" />
+                    <xs:element name="request" type="xs:string" />
+                </xs:sequence>
+            </xs:group>
+            <xs:element name="GetCapabilities" type="kvp:GetCapabilitiesType"/>
+            <!-- TODO: Fix temporary hack to satisfy missing def -->
+            <xs:element name="GetRepositoryItem" type="kvp:GetCapabilitiesType"/>
+            <xs:complexType name="GetCapabilitiesType">
+                <xs:sequence>
+                    <xs:group ref="kvp:common-elements"/>
+                    <xs:element name="acceptVersions" type="kvp:AcceptVersionsType" minOccurs="0" />
+                    <!-- TODO: Find out where this type is defined -->
+                    <!-- xs:element name="sections" type="kvp:CommaSeparatedWordsType" minOccurs="0" /-->
+                    <xs:element name="updateSequence" type="xs:string" minOccurs="0" />
+                    <xs:element name="acceptFormats" type="kvp:CommaSeparatedValuesType" minOccurs="0" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="GetRecordById" type="kvp:GetRecordByIdType"/>
+            <xs:complexType name="GetRecordByIdType">
+                <xs:sequence>
+                    <xs:group ref="kvp:common-elements"/>
+                    <xs:element name="id" type="xs:anyURI" />
+                    <xs:element name="elementSet" type="kvp:ElementSetType" minOccurs="0"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:simpleType name="AcceptVersionsType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Examples: "2.0.35", "1.1.0,1.1.1"
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:restriction base="xs:string">
+                    <xs:pattern value="(\d+\.\d?\d\.\d?\d,?)+" />
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType name="CommaSeparatedValuesType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Examples: "OperationsMetadata", "application/xml,text/html"
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:restriction base="xs:string">
+                    <xs:pattern value="([\w\+\-/]+,?)+" />
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType name="ElementSetType">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="brief" />
+                    <xs:enumeration value="summary" />
+                    <xs:enumeration value="full" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:schema>
+    </wsd:types>
+   
+    <!-- Request message definitions. -->
+    <wsd:message name="msgGetCapabilitiesKVP">
+        <wsd:part element="kvp:GetCapabilities" name="partGetCapabilitiesKVP"/>
+    </wsd:message>
+    <wsd:message name="msgCapabilities">
+        <wsd:part element="wrs:Capabilities" name="partCapabilities"/>
+    </wsd:message>
+    <wsd:message name="msgGetCapabilitiesCSW">
+        <wsd:part element="csw:GetCapabilities" name="partGetCapabilitiesCSW"/>
+    </wsd:message>
+    <wsd:message name="msgGetRecords">
+        <wsd:part element="csw:GetRecords" name="partGetRecords"/>
+    </wsd:message>
+    <wsd:message name="msgGetRecordsResponse">
+        <wsd:part element="csw:GetRecordsResponse" name="partGetRecordsResponse"/>
+    </wsd:message>
+    <wsd:message name="msgGetRecordByIdCSW">
+        <wsd:part element="csw:GetRecordById" name="partGetRecordByIdCSW"/>
+    </wsd:message>
+    <wsd:message name="msgGetRecordByIdResponse">
+        <wsd:part element="csw:GetRecordByIdResponse" name="partGetRecordByIdResponse"/>
+    </wsd:message>
+    <wsd:message name="msgGetRecordByIdKVP">
+        <wsd:part element="kvp:GetRecordById" name="partGetRecordByIdKVP"/>
+    </wsd:message>
+    <wsd:message name="msgDescribeRecord">
+        <wsd:part element="csw:DescribeRecord" name="partDescribeRecord"/>
+    </wsd:message>
+    <wsd:message name="msgDescribeRecordResponse">
+        <wsd:part element="csw:DescribeRecordResponse" name="partDescribeRecordResponse"/>
+    </wsd:message>
+    <wsd:message name="msgGetDomain">
+        <wsd:part element="csw:GetDomain" name="partGetDomain"/>
+    </wsd:message>
+    <wsd:message name="msgGetDomainResponse">
+        <wsd:part element="csw:GetDomainResponse" name="partGetDomainResponse"/>
+    </wsd:message>
+    <wsd:message name="msgGetRepositoryItemKVP">
+        <wsd:part element="kvp:GetRepositoryItem" name="partGetRepositoryItemKVP"/>
+    </wsd:message>
+    <wsd:message name="msgGetRepositoryItemResponse">
+        <wsd:part type="xs:anyType" name="partGetRepositoryItemResponse"/>
+    </wsd:message>
+    <wsd:message name="msgTransaction">
+        <wsd:part element="csw:Transaction" name="partTransaction"/>
+    </wsd:message>
+    <wsd:message name="msgTransactionResponse">
+        <wsd:part element="csw:TransactionResponse" name="partTransactionResponse"/>
+    </wsd:message>
+    <wsd:message name="msgHarvest">
+        <wsd:part element="csw:Harvest" name="partHarvest"/>
+    </wsd:message>
+    <wsd:message name="msgHarvestResponse">
+        <wsd:part element="csw:HarvestResponse" name="partHarvestResponse"/>
+    </wsd:message>
+    <wsd:message name="msgInvalidRequestFault">
+        <wsd:part element="ows:ExceptionReport" name="partInvalidRequestFault"/>
+    </wsd:message>
+    <wsd:message name="msgTransactionFailedFault">
+        <wsd:part element="ows:ExceptionReport" name="partTransactionFailedFault"/>
+    </wsd:message>
+   
+    <wsd:portType name="OGCWebService">
+        <!--wsd:operation name="GetCapabilities">
+            <wsd:documentation>
+                Uses the GET method with the "application/x-www-form-urlencoded"
+                serialization format. Message elements are inserted into the Request-URI.
+            </wsd:documentation>
+            <wsd:input message="tns:msgGetCapabilitiesKVP" />
+            <wsd:output message="tns:msgCapabilities" />
+            <wsd:fault name="invalidRequestException" message="tns:msgInvalidRequestFault" />
+        </wsd:operation-->
+        <wsd:operation name="GetCapabilities-xml">
+            <wsd:documentation>
+                Uses the POST method with the "application/xml" serialization format.
+            </wsd:documentation>
+            <wsd:input message="tns:msgGetCapabilitiesCSW" />
+            <wsd:output message="tns:msgCapabilities" />
+            <wsd:fault name="invalidRequestException" message="tns:msgInvalidRequestFault" />
+        </wsd:operation>
+    </wsd:portType>
+   
+    <wsd:portType name="Discovery">
+        <wsd:operation name="GetRecords">
+            <wsd:input message="tns:msgGetRecords" />
+            <wsd:output message="tns:msgGetRecordsResponse" />
+            <wsd:fault name="invalidRequestException" message="tns:msgInvalidRequestFault" />
+        </wsd:operation>
+        <!--wsd:operation name="GetRecordById">
+            <wsd:documentation>
+                Uses the GET method with the "application/x-www-form-urlencoded"
+                serialization format. Message elements are inserted into the Request-URI.
+            </wsd:documentation>
+            <wsd:input message="tns:msgGetRecordByIdKVP" />
+            <wsd:output message="tns:msgGetRecordByIdResponse" />
+            <wsd:fault name="invalidRequestException" message="tns:msgInvalidRequestFault" />
+        </wsd:operation-->
+        <wsd:operation name="GetRecordById-xml">
+            <wsd:input message="tns:msgGetRecordByIdCSW" />
+            <wsd:output message="tns:msgGetRecordByIdResponse" />
+            <wsd:fault name="invalidRequestException" message="tns:msgInvalidRequestFault" />
+        </wsd:operation>
+        <wsd:operation name="DescribeRecord">
+            <wsd:input message="tns:msgDescribeRecord" />
+            <wsd:output message="tns:msgDescribeRecordResponse" />
+            <wsd:fault name="invalidRequestException" message="tns:msgInvalidRequestFault" />
+        </wsd:operation>
+        <wsd:operation name="GetDomain">
+            <wsd:input message="tns:msgGetDomain" />
+            <wsd:output message="tns:msgGetDomainResponse" />
+            <wsd:fault name="invalidRequestException" message="tns:msgInvalidRequestFault" />
+        </wsd:operation>
+        <!--wsd:operation name="GetRepositoryItem">
+            <wsd:documentation>
+                Uses the GET method with the "application/x-www-form-urlencoded"
+                serialization format. Message elements are inserted into the Request-URI.
+            </wsd:documentation>
+            <wsd:input message="tns:msgGetRepositoryItemKVP" />
+            <wsd:output message="tns:msgGetRepositoryItemResponse">
+                <wsd:documentation>
+                    The entity-body must be an instance of a registered MIME media type.
+                    See http://www.iana.org/assignments/media-types/.
+                </wsd:documentation>
+            </wsd:output>
+            <wsd:fault name="invalidRequestException" message="tns:msgInvalidRequestFault" />
+        </wsd:operation-->
+    </wsd:portType>
+   
+    <wsd:portType name="Publication">
+        <wsd:operation name="Transaction">
+            <wsd:input message="tns:msgTransaction"/>
+            <wsd:output message="tns:msgTransactionResponse"/>
+            <wsd:fault name="invalidRequestException" message="tns:msgInvalidRequestFault" />
+            <wsd:fault name="transactionFailedFault" message="tns:msgTransactionFailedFault" />
+        </wsd:operation>
+        <wsd:operation name="Harvest">
+            <wsd:input message="tns:msgHarvest"/>
+            <wsd:output message="tns:msgHarvestResponse"/>
+            <wsd:fault name="invalidRequestException" message="tns:msgInvalidRequestFault" />
+            <wsd:fault name="transactionFailedFault" message="tns:msgTransactionFailedFault" />
+        </wsd:operation>
+    </wsd:portType>
+</wsd:definitions>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema id="csw-ebrim-iri"
+  targetNamespace="http://www.opengis.net/cat/wrs/1.0/iri"
+  xmlns:iri="http://www.opengis.net/cat/wrs/1.0/iri"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+  elementFormDefault="qualified" 
+  version="1.0.2">
+
+  <xsd:annotation>
+    <xsd:documentation xml:lang="en" 
+      source="http://www.w3.org/TR/wsdl20-adjuncts/#http-binding">
+    This schema defines content models for HTTP request messages that may be 
+    serialized into the query string portion of the URI or into the message body 
+    in accord with the WSDL HTTP binding rules for the IRI style. The schemas 
+    defined in the base specifications do not adhere to the rules for the IRI 
+    style and thus cannot be used for this purpose.
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsd:element name="GetCapabilities">
+    <xsd:annotation>
+      <xsd:documentation 
+        source="http://portal.opengeospatial.org/files/?artifact_id=8798">
+        See OGC 05-008c1, cl. 7.2.1.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="service" type="xsd:string" fixed="CSW" />
+        <xsd:element name="request" type="xsd:string" fixed="GetCapabilities" />
+        <xsd:element name="version" type="xsd:string" minOccurs="0"/>
+        <xsd:element name="acceptVersions" type="iri:AcceptVersionsType" minOccurs="0" />
+        <xsd:element name="sections" type="iri:CommaSeparatedListType" minOccurs="0" />
+        <xsd:element name="updateSequence" type="xsd:string" minOccurs="0" />
+        <xsd:element name="acceptFormats" type="iri:CommaSeparatedListType" minOccurs="0" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+ 
+  <xsd:element name="GetRecordById">
+  <xsd:annotation>
+    <xsd:documentation 
+      source="http://portal.opengeospatial.org/files/?artifact_id=20555">
+    See OGC 07-006r1, cl. 10.9.2</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="service" type="xsd:string" fixed="CSW" />
+        <xsd:element name="request" type="xsd:string" fixed="GetRecordById" />
+        <xsd:element name="version" type="xsd:string" fixed="2.0.2" />
+        <xsd:element name="id" type="iri:CommaSeparatedListType" />
+        <xsd:element name="elementSetName" type="iri:ElementSetType" minOccurs="0"/>
+        <xsd:element name="outputFormat" type="xsd:string" minOccurs="0"/>
+        <xsd:element name="outputSchema" type="xsd:anyURI" minOccurs="0"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="GetRecords">
+  <xsd:annotation>
+    <xsd:documentation 
+      source="http://portal.opengeospatial.org/files/?artifact_id=20555">
+    See OGC 07-006r1, cl. 10.8.2. Some optional CSW parameters have been elided.
+    Matching items are returned as rim:RegistryObject elements that include 
+    the "summary" element set.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="service" type="xsd:string" fixed="CSW" />
+        <xsd:element name="request" type="xsd:string" fixed="GetRecords" />
+        <xsd:element name="version" type="xsd:string" fixed="2.0.2" />
+        <xsd:element name="typeNames" type="iri:CommaSeparatedListType" />
+        <xsd:element name="namespace" type="xsd:string" minOccurs="0" />
+        <xsd:element name="resultType" type="iri:ResultType" minOccurs="0" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  
+  <xsd:element name="GetRepositoryItem">
+  <xsd:annotation>
+    <xsd:documentation>
+    See OGC 07-110r2, cl. 12.2.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="service" type="xsd:string" fixed="CSW-ebRIM" />
+        <xsd:element name="request" type="xsd:string" fixed="GetRepositoryItem" />
+        <xsd:element name="version" type="xsd:string" minOccurs="0" />
+        <xsd:element name="id" type="xsd:anyURI" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  
+  <xsd:element name="Query">
+  <xsd:annotation>
+    <xsd:documentation>
+    Invokes a predefined query. See OGC 07-110r2, cl. 16.1</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="service" type="xsd:string" fixed="CSW-ebRIM" />
+        <xsd:element name="request" type="xsd:string" fixed="Query" />
+        <xsd:element name="qid" type="xsd:anyURI" />
+        <xsd:element name="elementSetName" type="iri:ElementSetType" minOccurs="0"/>
+        <xsd:element name="startPosition" type="xsd:positiveInteger" minOccurs="0"/>
+        <xsd:element name="maxRecords" type="xsd:nonNegativeInteger" minOccurs="0"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  
+  <xsd:simpleType name="AcceptVersionsType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+      Examples: "2.0.35", "1.1.0,1.1.1"
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="(\d+\.\d{1,2}\.\d{1,2},?)+" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+  <xsd:simpleType name="CommaSeparatedListType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+      Examples: "OperationsMetadata", "application/xml,text/html"
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="([\w:\.\-/]+,?)+" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+  <xsd:simpleType name="ElementSetType">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="brief" />
+      <xsd:enumeration value="summary" />
+      <xsd:enumeration value="full" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+  <xsd:simpleType name="ResultType">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="hits" />
+      <xsd:enumeration value="results" />
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>

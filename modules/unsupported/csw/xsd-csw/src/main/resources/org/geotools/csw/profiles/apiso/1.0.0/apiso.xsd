@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://www.isotc211.org/2005/gmd" elementFormDefault="qualified" version="1.0.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xlink="http://www.w3.org/1999/xlink"
+           xmlns:gmd="http://www.isotc211.org/2005/gmd">
+<!-- 
+    Copyright (c) 2007,2010 Open Geospatial Consortium.
+    To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .
+
+    Updated: 2010-01-22
+-->
+    <!-- ================================= Annotation ================================ -->
+    <xs:annotation>
+        <xs:documentation>ISO Wrapper to include service related type to GMD</xs:documentation>
+    </xs:annotation>
+    <!-- ================================== Imports & Includes ================================== -->
+    <xs:include schemaLocation="../../../../../iso/19139/20060504/gmd/gmd.xsd"/>
+    <xs:import namespace="http://www.isotc211.org/2005/srv" schemaLocation="http://schemas.opengis.net/iso/19139/20060504/srv/srv.xsd"/>
+</xs:schema>
+ 

@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsd:description
+  targetNamespace="http://www.opengis.net/cat/wrs/1.0/wsdl"
+  xmlns:tns="http://www.opengis.net/cat/wrs/1.0/wsdl"
+  xmlns:wrs="http://www.opengis.net/cat/wrs/1.0"
+  xmlns:iri="http://www.opengis.net/cat/wrs/1.0/iri"
+  xmlns:csw="http://www.opengis.net/cat/csw/2.0.2"
+  xmlns:ows="http://www.opengis.net/ows"
+  xmlns:wsd="http://www.w3.org/ns/wsdl"
+  xmlns:wsdx="http://www.w3.org/ns/wsdl-extensions"
+  xmlns:wsoap="http://www.w3.org/ns/wsdl/soap"
+  xmlns:whttp="http://www.w3.org/ns/wsdl/http"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xsi:schemaLocation="http://www.w3.org/ns/wsdl http://www.w3.org/2007/06/wsdl/wsdl20.xsd
+  http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd">
+
+  <wsd:documentation>
+  W3C WSDL interface descriptions for the CSW-ebRIM 1.0 catalogue service. This
+  document shall be imported by all instance-specific service descriptions.
+  </wsd:documentation>
+
+  <wsd:types>
+    <xsd:import
+      namespace="http://www.opengis.net/cat/wrs/1.0"
+      schemaLocation="http://schemas.opengis.net/csw/2.0.2/profiles/ebrim/1.0/csw-ebrim.xsd" />
+    <xsd:import
+      namespace="http://www.opengis.net/cat/wrs/1.0/iri"
+      schemaLocation="http://schemas.opengis.net/csw/2.0.2/profiles/ebrim/1.0/csw-ebrim-iri.xsd" />
+    <xsd:import
+      namespace="http://www.opengis.net/cat/csw/2.0.2"
+      schemaLocation="http://schemas.opengis.net/csw/2.0.2/CSW-publication.xsd" />
+    <xsd:import
+      namespace="http://www.opengis.net/ows"
+      schemaLocation="http://schemas.opengis.net/ows/1.0.0/owsAll.xsd" />
+
+  </wsd:types>
+ 
+  <wsd:interface name="CommonDiscoveryInterface">
+   
+    <wsd:fault name="InvalidRequestFault"
+      element="ows:ExceptionReport">
+      <wsd:documentation>
+      The body of the request message is invalid or not well formed. The response
+      status code is 400 and the OGC exception code is "InvalidRequest".
+      </wsd:documentation>
+    </wsd:fault>
+
+    <wsd:fault name="NotImplementedFault"
+      element="ows:ExceptionReport">
+      <wsd:documentation>
+      Unsupported functionality--the request cannot be processed. The response
+      status code is 501 and the OGC exception code is "NotImplemented".
+      </wsd:documentation>
+    </wsd:fault>
+   
+    <wsd:operation name="GetCapabilities-iri"
+      pattern="http://www.w3.org/2005/08/wsdl/in-out"
+      style="http://www.w3.org/2005/08/wsdl/style/iri"
+      wsdx:safe="true">
+      <wsd:documentation>Request OGC service description (mandatory).</wsd:documentation>
+      <wsd:input messageLabel="In" element="iri:GetCapabilities" />
+      <wsd:output messageLabel="Out" element="wrs:Capabilities" />
+      <wsd:outfault messageLabel="Out" ref="tns:InvalidRequestFault" />
+    </wsd:operation>
+
+    <wsd:operation name="GetCapabilities-xml"
+      pattern="http://www.w3.org/2005/08/wsdl/in-out"
+      wsdx:safe="true">
+      <wsd:documentation>
+      Alternative GetCapabilities request that supplies an XML message body
+      (optional).
+      </wsd:documentation>
+      <wsd:input messageLabel="In" element="csw:GetCapabilities" />
+      <wsd:output messageLabel="Out" element="wrs:Capabilities" />
+      <wsd:outfault messageLabel="Out" ref="tns:InvalidRequestFault" />
+      <wsd:outfault messageLabel="Out" ref="tns:NotImplementedFault" />
+    </wsd:operation>
+   
+    <wsd:operation name="GetRecords-xml"
+      pattern="http://www.w3.org/2005/05/wsdl/in-out"
+      wsdx:safe="true">
+      <wsd:documentation>
+      Main search and retrieval facility (mandatory).
+      </wsd:documentation>
+      <wsd:input messageLabel="In" element="csw:GetRecords" />
+      <wsd:output messageLabel="Out" element="csw:GetRecordsResponse" />
+      <wsd:outfault messageLabel="Out" ref="tns:InvalidRequestFault" />
+    </wsd:operation>
+
+    <wsd:operation name="GetRecords-iri"
+      pattern="http://www.w3.org/2005/05/wsdl/in-out"
+      style="http://www.w3.org/2005/08/wsdl/style/iri"
+      wsdx:safe="true">
+      <wsd:documentation>
+      Alternative GetRecords request using the IRI style (optional).
+      </wsd:documentation>
+      <wsd:input messageLabel="In" element="iri:GetRecords" />
+      <wsd:output messageLabel="Out" element="csw:GetRecordsResponse" />
+      <wsd:outfault messageLabel="Out" ref="tns:InvalidRequestFault" />
+      <wsd:outfault messageLabel="Out" ref="tns:NotImplementedFault" />
+    </wsd:operation>
+   
+    <wsd:operation name="GetRecordById-iri"
+      pattern="http://www.w3.org/2005/08/wsdl/in-out"
+      style="http://www.w3.org/2005/08/wsdl/style/iri"
+      wsdx:safe="true">
+      <wsd:documentation>
+      Retrieve representations of one or more registry objects by identifier
+      (mandatory).
+      </wsd:documentation>
+      <wsd:input messageLabel="In" element="iri:GetRecordById" />
+      <wsd:output messageLabel="Out" element="csw:GetRecordByIdResponse" />
+      <wsd:outfault messageLabel="Out" ref="tns:InvalidRequestFault" />
+    </wsd:operation>
+
+    <wsd:operation name="GetRecordById-xml"
+      pattern="http://www.w3.org/2005/08/wsdl/in-out"
+      wsdx:safe="true">
+      <wsd:documentation>Alternative GetRecordById request that supplies an XML
+      message body (optional).</wsd:documentation>
+      <wsd:input messageLabel="In" element="csw:GetRecordById" />
+      <wsd:output messageLabel="Out" element="csw:GetRecordByIdResponse" />
+      <wsd:outfault messageLabel="Out" ref="tns:InvalidRequestFault" />
+      <wsd:outfault messageLabel="Out" ref="tns:NotImplementedFault" />
+    </wsd:operation>
+
+    <wsd:operation name="DescribeRecord"
+      pattern="http://www.w3.org/2005/08/wsdl/in-out"
+      wsdx:safe="true">
+      <wsd:input messageLabel="In" element="csw:DescribeRecord" />
+      <wsd:output messageLabel="Out" element="csw:DescribeRecordResponse" />
+      <wsd:outfault messageLabel="Out" ref="tns:InvalidRequestFault" />
+    </wsd:operation>
+
+    <wsd:operation name="GetDomain"
+      pattern="http://www.w3.org/2005/08/wsdl/in-out"
+      wsdx:safe="true">
+      <wsd:input messageLabel="In" element="csw:GetDomain" />
+      <wsd:output messageLabel="Out" element="csw:GetDomainResponse" />
+      <wsd:outfault messageLabel="Out" ref="tns:InvalidRequestFault" />
+      <wsd:outfault messageLabel="Out" ref="tns:NotImplementedFault" />
+    </wsd:operation>
+   
+  </wsd:interface>
+ 
+  <wsd:interface name="DiscoveryInterface" extends="tns:CommonDiscoveryInterface">
+   
+    <wsd:documentation>
+    Includes discovery operations specific to CSW-ebRIM implementations.
+    </wsd:documentation>
+
+    <wsd:operation name="GetRepositoryItem"
+      pattern="http://www.w3.org/2005/08/wsdl/in-out"
+      style="http://www.w3.org/2005/08/wsdl/style/iri"
+      wsdx:safe="true">
+      <wsd:documentation>
+      Retrieve a repository item described by an ExtrinsicObject (mandatory).
+      </wsd:documentation>
+      <wsd:input messageLabel="In" element="iri:GetRepositoryItem" />
+      <wsd:output messageLabel="Out" element="#other">
+        <wsd:documentation>
+        The response body contains the actual repository item.
+        </wsd:documentation>
+      </wsd:output>
+      <wsd:outfault messageLabel="Out" ref="tns:InvalidRequestFault" />
+    </wsd:operation>
+   
+    <wsd:operation name="Query"
+      pattern="http://www.w3.org/2005/08/wsdl/in-out"
+      style="http://www.w3.org/2005/08/wsdl/style/iri"
+      wsdx:safe="true">
+      <wsd:documentation>
+      Invoke a predefined query (mandatory).
+      </wsd:documentation>
+      <wsd:input messageLabel="In" element="iri:Query" />
+      <wsd:output messageLabel="Out" element="csw:GetRecordsResponse" />
+      <wsd:outfault messageLabel="Out" ref="tns:InvalidRequestFault" />
+    </wsd:operation>
+
+  </wsd:interface>
+ 
+  <wsd:interface name="RegistrationInterface">
+   
+    <wsd:documentation>
+    At least one of the registration operations must be implemented.
+    </wsd:documentation>
+     
+    <wsd:fault name="InvalidRequestFault"
+      element="ows:ExceptionReport">
+      <wsd:documentation>
+      The body of the request message is invalid or not well formed. The
+      response status code is 400 and the OGC exception code is "InvalidRequest".
+      </wsd:documentation>
+    </wsd:fault>
+
+    <wsd:fault name="NotImplementedFault"
+      element="ows:ExceptionReport">
+      <wsd:documentation>
+      Unsupported functionality--the request cannot be processed. The response
+      status code is 501 and the OGC exception code is "NotImplemented".
+      </wsd:documentation>
+    </wsd:fault>
+   
+    <wsd:fault name="TransactionFailedFault"
+      element="ows:ExceptionReport">
+      <wsd:documentation>
+      The requested transaction could not be completed for some reason other
+      than a validation error. The response status code is 500 and the OGC
+      exception code is "TransactionFailed".
+      </wsd:documentation>
+    </wsd:fault>
+
+    <wsd:operation name="Transaction"
+      pattern="http://www.w3.org/2005/08/wsdl/in-out">
+
+      <wsd:input messageLabel="In" element="csw:Transaction"/>          
+      <wsd:output messageLabel="Out" element="csw:TransactionResponse"/>
+      <wsd:outfault messageLabel="Out" ref="tns:InvalidRequestFault" />
+      <wsd:outfault messageLabel="Out" ref="tns:TransactionFailedFault" />
+      <wsd:outfault messageLabel="Out" ref="tns:NotImplementedFault" />
+    </wsd:operation>
+
+    <wsd:operation name="Harvest"
+      pattern="http://www.w3.org/2005/08/wsdl/in-out">
+
+      <wsd:input messageLabel="In" element="csw:Harvest"/>
+      <wsd:output messageLabel="Out" element="csw:HarvestResponse"/>
+      <wsd:outfault messageLabel="Out" ref="tns:InvalidRequestFault" />
+      <wsd:outfault messageLabel="Out" ref="tns:TransactionFailedFault" />
+      <wsd:outfault messageLabel="Out" ref="tns:NotImplementedFault" />
+    </wsd:operation>
+  </wsd:interface>
+ 
+  <wsd:binding name="CommonDiscovery-HttpBinding"
+    interface="tns:CommonDiscoveryInterface"
+    type="http://www.w3.org/ns/wsdl/http">
+
+    <wsd:fault ref="tns:InvalidRequestFault" whttp:code="400" />
+    <wsd:fault ref="tns:NotImplementedFault" whttp:code="501" />
+   
+    <wsd:operation ref="tns:GetCapabilities-iri" whttp:method="GET" />
+    <wsd:operation ref="tns:GetCapabilities-xml" whttp:method="POST" />
+    <wsd:operation ref="tns:GetRecordById-iri" whttp:method="GET" />
+    <wsd:operation ref="tns:GetRecordById-xml" whttp:method="POST" />
+    <wsd:operation ref="tns:GetRecords-iri" whttp:method="GET" />
+    <wsd:operation ref="tns:GetRecords-xml" whttp:method="POST" />
+    <wsd:operation ref="tns:DescribeRecord" whttp:method="POST" />
+    <wsd:operation ref="tns:GetDomain" whttp:method="POST" />
+
+  </wsd:binding>
+ 
+  <wsd:binding name="Discovery-HttpBinding"
+    interface="tns:DiscoveryInterface"
+    type="http://www.w3.org/ns/wsdl/http">
+
+    <wsd:fault ref="tns:InvalidRequestFault" whttp:code="400" />
+    <wsd:fault ref="tns:NotImplementedFault" whttp:code="501" />
+
+    <!-- need binding ops from CommonDiscovery-HttpBinding? -->
+    <wsd:operation ref="tns:GetRepositoryItem" whttp:method="GET"
+      whttp:outputSerialization="*/*" />
+    <wsd:operation ref="tns:Query" whttp:method="GET" />
+
+  </wsd:binding>
+ 
+  <wsd:binding name="Registration-HttpBinding"
+    interface="tns:RegistrationInterface"
+    type="http://www.w3.org/ns/wsdl/http">
+
+    <wsd:fault ref="tns:InvalidRequestFault" whttp:code="400" />
+    <wsd:fault ref="tns:NotImplementedFault" whttp:code="501" />
+    <wsd:fault ref="tns:TransactionFailedFault" whttp:code="500" />
+   
+    <wsd:operation ref="tns:Transaction" whttp:method="POST"
+      whttp:inputSerialization="application/xml,multipart/related;type='application/xml'"/>
+    <wsd:operation ref="tns:Harvest" whttp:method="POST" />
+
+  </wsd:binding>
+ 
+  <wsd:binding name="CommonDiscovery-SoapBinding"
+    interface="tns:CommonDiscoveryInterface"
+    type="http://www.w3.org/ns/wsdl/soap"
+    wsoap:protocol="http://www.w3.org/2003/05/soap/bindings/HTTP/">
+
+    <wsd:fault ref="tns:InvalidRequestFault"
+      wsoap:code="soap:Sender" wsoap:subcodes="InvalidRequest" />
+    <wsd:fault ref="tns:NotImplementedFault"
+      wsoap:code="soap:Receiver" wsoap:subcodes="NotImplemented" />
+
+    <wsd:operation ref="tns:GetCapabilities-iri"
+      wsoap:mep="http://www.w3.org/2003/05/soap/mep/soap-response"/>
+    <wsd:operation ref="tns:GetCapabilities-xml"
+      wsoap:mep="http://www.w3.org/2003/05/soap/mep/request-response/"
+      wsoap:action="urn:ogc:serviceType:CatalogueService:2.0.2:HTTP:ebRIM" />
+
+    <wsd:operation ref="tns:GetRecordById-iri"
+      wsoap:mep="http://www.w3.org/2003/05/soap/mep/soap-response"/>
+    <wsd:operation ref="tns:GetRecordById-xml"
+      wsoap:mep="http://www.w3.org/2003/05/soap/mep/request-response/"
+      wsoap:action="urn:ogc:serviceType:CatalogueService:2.0.2:HTTP:ebRIM" />
+
+    <wsd:operation ref="tns:DescribeRecord"
+      wsoap:mep="http://www.w3.org/2003/05/soap/mep/request-response/"
+      wsoap:action="urn:ogc:serviceType:WebRegistryService:1.0" />
+    <wsd:operation ref="tns:GetDomain"
+      wsoap:mep="http://www.w3.org/2003/05/soap/mep/request-response/"
+      wsoap:action="urn:ogc:serviceType:CatalogueService:2.0.2:HTTP:ebRIM" />
+
+    <wsd:operation ref="tns:GetRecords-iri"
+      wsoap:mep="http://www.w3.org/2003/05/soap/mep/soap-response"/>
+    <wsd:operation ref="tns:GetRecords-xml"
+      wsoap:mep="http://www.w3.org/2003/05/soap/mep/request-response/"
+      wsoap:action="urn:ogc:serviceType:CatalogueService:2.0.2:HTTP:ebRIM" />
+  </wsd:binding>
+ 
+  <wsd:binding name="Registration-SoapBinding"
+    interface="tns:RegistrationInterface"
+    type="http://www.w3.org/ns/wsdl/soap"
+    wsoap:protocol="http://www.w3.org/2003/05/soap/bindings/HTTP/">
+
+    <wsd:fault ref="tns:InvalidRequestFault"
+      wsoap:code="soap:Sender" wsoap:subcodes="InvalidRequest" />
+    <wsd:fault ref="tns:NotImplementedFault"
+      wsoap:code="soap:Receiver" wsoap:subcodes="NotImplemented" />
+    <wsd:fault ref="tns:TransactionFailedFault"
+      wsoap:code="soap:Receiver" wsoap:subcodes="TransactionFailed" />
+   
+    <wsd:operation ref="tns:Transaction"
+      wsoap:mep="http://www.w3.org/2003/05/soap/mep/request-response/"
+      wsoap:action="urn:ogc:serviceType:CatalogueService:2.0.2:HTTP:ebRIM">
+      <wsd:input>
+        <wsoap:module
+          ref="http://www.w3.org/2004/08/soap/features/http-optimization"
+          required="true">
+          <wsd:documentation>
+          The HTTP SOAP Transmission Optimization Feature is required to handle
+          requests containing MIME multipart/related entities with repository
+          items. See http://www.w3.org/TR/soap12-mtom/.
+          </wsd:documentation>
+        </wsoap:module>
+      </wsd:input>
+    </wsd:operation>
+     
+    <wsd:operation ref="tns:Harvest"
+      wsoap:mep="http://www.w3.org/2003/05/soap/mep/request-response/"
+      wsoap:action="urn:ogc:serviceType:CatalogueService:2.0.2:HTTP:ebRIM" />
+
+  </wsd:binding>
+</wsd:description>

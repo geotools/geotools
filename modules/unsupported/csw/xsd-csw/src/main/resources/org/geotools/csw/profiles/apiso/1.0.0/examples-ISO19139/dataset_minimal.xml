@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MD_Metadata xmlns="http://www.isotc211.org/2005/gmd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.isotc211.org/2005/gmd ../../../../../../iso/19139/20060504/gmd/gmd.xsd" uuid="US_NGA_VPF_VMAP0" id="VMAP0">
+	<fileIdentifier>
+		<gco:CharacterString>2345-aa453-ade456</gco:CharacterString>
+	</fileIdentifier>
+	<language>
+		<gco:CharacterString>eng</gco:CharacterString>
+	</language>
+	<hierarchyLevel>
+		<MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_ScopeCode" codeListValue="dataset"/>
+	</hierarchyLevel>
+	<contact>
+		<CI_ResponsibleParty>
+			<organisationName>
+				<gco:CharacterString>US National Geospatial-Intelligence Agency</gco:CharacterString>
+			</organisationName>
+			<role>
+				<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_RoleCode" codeListValue="publisher"/>
+			</role>
+		</CI_ResponsibleParty>
+	</contact>
+	<!-- Date the metadata was created -->
+	<dateStamp>
+		<gco:Date>2004-03-14</gco:Date>
+	</dateStamp>
+	<metadataStandardName>
+		<gco:CharacterString>ISO19115</gco:CharacterString>
+	</metadataStandardName>
+	<metadataStandardVersion>
+		<gco:CharacterString>2003/Cor.1:2006</gco:CharacterString>
+	</metadataStandardVersion>
+	<!-- IDENTIFICATION INFORMATION -->
+	<identificationInfo>
+		<MD_DataIdentification>
+			<citation>
+				<CI_Citation>
+					<title>
+						<gco:CharacterString>VMAPLV0</gco:CharacterString>
+					</title>
+					<date>
+						<CI_Date>
+							<date>
+								<gco:Date>2000-09-03</gco:Date>
+							</date>
+							<dateType>
+								<CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_DateTypeCode" codeListValue="publication"/>
+							</dateType>
+						</CI_Date>
+					</date>
+					<identifier>
+						<MD_Identifier>
+							<code>
+								<gco:CharacterString>String</gco:CharacterString>
+							</code>
+						</MD_Identifier>
+					</identifier>
+					<citedResponsibleParty>
+						<CI_ResponsibleParty id="ID00010">
+							<organisationName>
+								<gco:CharacterString>US National Geospatial-Intelligence Agency</gco:CharacterString>
+							</organisationName>
+							<role/>
+						</CI_ResponsibleParty>
+					</citedResponsibleParty>
+				</CI_Citation>
+			</citation>
+			<abstract>
+				<gco:CharacterString>Vector Map: a general purpose database design to support GIS applications</gco:CharacterString>
+			</abstract>
+			<pointOfContact>
+				<CI_ResponsibleParty id="ID00001">
+					<organisationName>
+						<gco:CharacterString>US National Geospatial-Intelligence Agency</gco:CharacterString>
+					</organisationName>
+					<role>
+						<CI_RoleCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_RoleCode" codeListValue="originator"/>
+					</role>
+				</CI_ResponsibleParty>
+			</pointOfContact>
+			<language>
+				<gco:CharacterString>eng</gco:CharacterString>
+			</language>
+			<topicCategory>
+				<MD_TopicCategoryCode>boundaries</MD_TopicCategoryCode>
+			</topicCategory>
+			<topicCategory>
+				<MD_TopicCategoryCode>elevation</MD_TopicCategoryCode>
+			</topicCategory>
+			<extent>
+				<EX_Extent>
+					<geographicElement>
+						<EX_GeographicBoundingBox>
+							<westBoundLongitude>
+								<gco:Decimal>-180.00</gco:Decimal>
+							</westBoundLongitude>
+							<eastBoundLongitude>
+								<gco:Decimal>180.00</gco:Decimal>
+							</eastBoundLongitude>
+							<southBoundLatitude>
+								<gco:Decimal>-90.00</gco:Decimal>
+							</southBoundLatitude>
+							<northBoundLatitude>
+								<gco:Decimal>90.00</gco:Decimal>
+							</northBoundLatitude>
+						</EX_GeographicBoundingBox>
+					</geographicElement>
+				</EX_Extent>
+			</extent>
+		</MD_DataIdentification>
+	</identificationInfo>
+</MD_Metadata>

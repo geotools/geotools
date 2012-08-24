@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DescribeRecord xmlns="http://www.opengis.net/cat/csw/2.0.2" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/cat/csw/2.0.2
+ ../../../../CSW-discovery.xsd" schemaLanguage="http://www.w3.org/2001/XMLSchema"  service="CSW" version="2.0.2">
+	<TypeName>gmd:MD_Metadata</TypeName>
+</DescribeRecord>

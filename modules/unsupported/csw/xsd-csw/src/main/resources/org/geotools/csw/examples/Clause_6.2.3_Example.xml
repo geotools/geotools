@@ -1,0 +1,7 @@
+<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+   <ogc:ClassifiedAs>
+      <ogc:TypeName>csw:Record</ogc:TypeName>
+      <ogc:ClassificationScheme>GetClass</ogc:ClassificationScheme>
+      <ogc:ClassificationNode>/GeoClass/NorthAmerica/%/Ontario</ogc:ClassificationNode>
+   </ogc:ClassifiedAs>
+</ogc:Filter>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xsd:schema id="wrs" targetNamespace="http://www.opengis.net/cat/wrs/1.0" 
+  xmlns:wrs="http://www.opengis.net/cat/wrs/1.0" 
+  xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" 
+  xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" 
+  xmlns:ogc="http://www.opengis.net/ogc"
+  xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xmime="http://www.w3.org/2005/05/xmlmime"
+  elementFormDefault="qualified" 
+  version="1.0.2">
+
+  <xsd:annotation>
+    <xsd:appinfo xmlns:sch="http://www.ascc.net/xml/schematron">
+      <sch:pattern id="ComplexSlotValuesPattern" name="ComplexSlotValuesPattern">
+        <sch:rule context="//wrs:ValueList">
+          <sch:report test="rim:Value">rim:Value not allowed in this context: expected wrs:AnyValue.</sch:report>
+        </sch:rule>
+      </sch:pattern>
+    </xsd:appinfo>
+    <xsd:documentation xml:lang="en">
+    Schema for CSW-ebRIM catalogue profile (OGC 07-110r3).
+    </xsd:documentation>
+  </xsd:annotation>
+    
+  <xsd:import namespace="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" 
+    schemaLocation="http://docs.oasis-open.org/regrep/v3.0/schema/rim.xsd" />
+  <xsd:import namespace="http://www.opengis.net/cat/csw/2.0.2"
+    schemaLocation="http://schemas.opengis.net/csw/2.0.2/CSW-publication.xsd" />
+  <xsd:import namespace="http://www.w3.org/1999/xlink" 
+    schemaLocation="http://www.w3.org/1999/xlink.xsd" />
+  <xsd:import namespace="http://www.opengis.net/ogc"
+    schemaLocation="http://schemas.opengis.net/filter/1.1.0/filter.xsd"/>
+    
+  <xsd:element name="Capabilities" type="csw:CapabilitiesType" />
+  <xsd:element name="RecordId" type="wrs:RecordIdType" 
+    substitutionGroup="ogc:_Id" id="RecordId">
+    <xsd:annotation>
+    <xsd:documentation xml:lang="en">
+    A general record identifier, expressed as an absolute URI that maps to 
+    the rim:RegistryObject/@id attribute. It substitutes for the ogc:_Id 
+    element in an OGC filter expression.
+    </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:complexType name="RecordIdType" id="RecordIdType">
+    <xsd:complexContent mixed="true">
+      <xsd:extension base="ogc:AbstractIdType" />
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <xsd:element name="ExtrinsicObject" type="wrs:ExtrinsicObjectType" 
+    substitutionGroup="rim:ExtrinsicObject"/>
+  <xsd:complexType name="ExtrinsicObjectType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+      Extends rim:ExtrinsicObjectType to add the following:
+      1. MTOM/XOP based attachment support.
+      2. XLink based reference to a part in a multipart/related message 
+         structure.
+      NOTE: This content model is planned for RegRep 4.0.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="rim:ExtrinsicObjectType">
+        <xsd:choice minOccurs="0" maxOccurs="1">
+          <xsd:element name="repositoryItemRef" type="wrs:simpleAttrsType"/>
+          <xsd:element name="repositoryItem" type="xsd:base64Binary" xmime:expectedContentTypes="*/*" />
+        </xsd:choice>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <xsd:element name="ValueList" type="wrs:ValueListType" 
+    substitutionGroup="rim:ValueList" />
+  <xsd:complexType name="ValueListType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">Allows complex slot values.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="rim:ValueListType">
+        <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+          <xsd:element ref="wrs:AnyValue" />
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:element name="AnyValue" type="wrs:AnyValueType"/>
+  <xsd:complexType name="AnyValueType" mixed="true">
+    <xsd:sequence>
+      <xsd:any minOccurs="0" />
+    </xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:complexType name="simpleAttrsType" id="simpleAttrsType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+      Incorporates the attributes defined for use in simple XLink elements.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:attributeGroup ref="xlink:simpleAttrs" />
+  </xsd:complexType>
+</xsd:schema>

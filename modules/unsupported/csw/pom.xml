@@ -23,7 +23,7 @@
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
-  <groupId>org.geotools.jdbc</groupId>
+  <groupId>org.geotools</groupId>
   <artifactId>gt-csw</artifactId>
   <packaging>pom</packaging>
   <name>CSW unsupported modules</name>

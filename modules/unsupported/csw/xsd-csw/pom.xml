@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================    
+        Maven Project Configuration File                                        
+                                                                                
+        The Geotools Project                                                    
+            http://www.geotools.org/                                            
+                                                                                
+        Version: $Id$              
+     ======================================================================= -->
+  <project xmlns="http://maven.apache.org/POM/4.0.0" 
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>gt-csw</artifactId>
+    <version>9-SNAPSHOT</version>
+  </parent>
+  
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools.xsd</groupId>
+  <artifactId>gt-xsd-csw</artifactId>
+  <packaging>jar</packaging>
+  <name>CSW XML Support</name>
+  
+
+  <scm>
+    <connection>
+      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/csw/xsd-csw/
+    </connection>
+    <url>http://svn.osgeo.org/geotools/trunk/modules/extension/csw/xsd-csw/</url>
+  </scm>
+
+  <description>
+    Coverage Services for the Web XML support for Geotools.
+  </description>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+  <developers>
+    <developer>
+      <name>Andrea Aime</name>
+      <id>aaime</id>
+      <email>andrea.aime@geo-solutions.it</email>
+      <organization>GeoSolutions</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+
+  <!-- =========================================================== -->
+  <!--     Dependency Management                                   -->
+  <!-- =========================================================== -->
+  <dependencies>
+    <dependency>
+      <groupId>org.geotools.ogc</groupId>
+      <artifactId>net.opengis.csw</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools.xsd</groupId>
+      <artifactId>gt-xsd-ows</artifactId>
+      <version>${project.version}</version>
+    </dependency>          
+
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-epsg-hsql</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>          
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.geotools.maven</groupId>
+        <artifactId>xmlcodegen</artifactId>
+        <configuration>
+          <schemaLocation>csw.xsd</schemaLocation>
+          <schemaSourceDirectory>${basedir}/src/main/resources/org/geotools/csw/</schemaSourceDirectory>
+          <schemaLookupDirectories>
+            <schemaLookupDirectory>${basedir}/../../../extension/xsd/xsd-ows/src/main/resources/org/geotools/ows/</schemaLookupDirectory>
+            <schemaLookupDirectory>${basedir}/../../../extension/xsd/xsd-filter/src/main/resources/org/geotools/filter/v1_1/</schemaLookupDirectory>
+          </schemaLookupDirectories>
+          <destinationPackage>org.geotools.csw</destinationPackage>
+          <!--generateTypeBindings>true</generateTypeBindings-->
+          <complexBindingBaseClass>org.geotools.xml.AbstractComplexEMFBinding</complexBindingBaseClass>
+          <generateElementBindings>true</generateElementBindings>
+          <bindingConstructorArguments>
+            <bindingConstructorArgument>
+              <name>factory</name>
+              <type>net.opengis.cat.csw20.Csw20Factory</type>
+              <mode>parent</mode>
+            </bindingConstructorArgument>
+          </bindingConstructorArguments>
+          <includes>
+            <include>Languages</include>
+          </includes>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </build>
+
+</project>

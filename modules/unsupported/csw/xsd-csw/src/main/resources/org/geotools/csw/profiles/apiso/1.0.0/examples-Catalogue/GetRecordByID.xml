@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GetRecordById xmlns="http://www.opengis.net/cat/csw/2.0.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/cat/csw/2.0.2 
+../../../../CSW-discovery.xsd" service="CSW" version="2.0.2" outputSchema="http://www.opengis.net/cat/csw/2.0.2">
+	<Id>efc40467-284d-4fee-af2a-522c717e7165</Id>
+	<ElementSetName>full</ElementSetName>
+</GetRecordById>

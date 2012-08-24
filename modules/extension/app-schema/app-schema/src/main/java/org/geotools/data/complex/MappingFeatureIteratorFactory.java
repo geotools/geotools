@@ -103,8 +103,9 @@ public class MappingFeatureIteratorFactory {
     }
 
     public static IMappingFeatureIterator getInstance(AppSchemaDataAccess store,
-            FeatureTypeMapping mapping, Query query, Filter unrolledFilter) throws IOException {
+            FeatureTypeMapping mapping, Query rawQuery, Filter unrolledFilter) throws IOException {
 
+    	Query query = new Query(rawQuery);
         if (mapping instanceof XmlFeatureTypeMapping) {
             return new XmlMappingFeatureIterator(store, mapping, query);
         }        

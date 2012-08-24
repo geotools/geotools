@@ -508,12 +508,8 @@ final class Resampler2D extends GridCoverage2D {
             /*
              * Computes the final transform.
              */
-            if (step1.equals(step3.inverse())) {
-                allSteps = step2;
-            } else {
-                allSteps = mtFactory.createConcatenatedTransform(
-                           mtFactory.createConcatenatedTransform(step1, step2), step3);
-            }
+            allSteps = mtFactory.createConcatenatedTransform(
+                       mtFactory.createConcatenatedTransform(step1, step2), step3);
         }
         allSteps2D = toMathTransform2D(allSteps, mtFactory, targetGG);
         if (!(allSteps2D instanceof MathTransform2D)) {

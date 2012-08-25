@@ -134,6 +134,7 @@ public class ParserHandler extends DefaultHandler {
         namespaces = new NamespaceSupport();
         validating = false;
         validator = new ValidatorHandler();
+        uriHandlers.add(new HTTPURIHandler());
     }
 
     public Configuration getConfiguration() {

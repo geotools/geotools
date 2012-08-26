@@ -4,7 +4,7 @@
 
   <parent>
     <groupId>org.geotools</groupId>
-    <artifactId>ogc</artifactId>
+    <artifactId>gt-csw</artifactId>
     <version>9-SNAPSHOT</version>
   </parent>
 

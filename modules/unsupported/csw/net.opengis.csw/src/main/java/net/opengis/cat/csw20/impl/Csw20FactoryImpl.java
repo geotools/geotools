@@ -15,6 +15,7 @@ import net.opengis.cat.csw20.CapabilitiesType;
 import net.opengis.cat.csw20.ConceptualSchemeType;
 import net.opengis.cat.csw20.Csw20Factory;
 import net.opengis.cat.csw20.Csw20Package;
+import net.opengis.cat.csw20.DCMIRecordType;
 import net.opengis.cat.csw20.DeleteType;
 import net.opengis.cat.csw20.DescribeRecordResponseType;
 import net.opengis.cat.csw20.DescribeRecordType;
@@ -39,10 +40,13 @@ import net.opengis.cat.csw20.QueryConstraintType;
 import net.opengis.cat.csw20.QueryType;
 import net.opengis.cat.csw20.RangeOfValuesType;
 import net.opengis.cat.csw20.RecordPropertyType;
+import net.opengis.cat.csw20.RecordType;
 import net.opengis.cat.csw20.RequestStatusType;
 import net.opengis.cat.csw20.ResultType;
 import net.opengis.cat.csw20.SchemaComponentType;
 import net.opengis.cat.csw20.SearchResultsType;
+import net.opengis.cat.csw20.SimpleLiteral;
+import net.opengis.cat.csw20.SummaryRecordType;
 import net.opengis.cat.csw20.TransactionResponseType;
 import net.opengis.cat.csw20.TransactionSummaryType;
 import net.opengis.cat.csw20.TransactionType;
@@ -135,6 +139,10 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
             case Csw20Package.TRANSACTION_SUMMARY_TYPE: return createTransactionSummaryType();
             case Csw20Package.TRANSACTION_TYPE: return createTransactionType();
             case Csw20Package.UPDATE_TYPE: return createUpdateType();
+            case Csw20Package.DCMI_RECORD_TYPE: return createDCMIRecordType();
+            case Csw20Package.RECORD_TYPE: return createRecordType();
+            case Csw20Package.SIMPLE_LITERAL: return createSimpleLiteral();
+            case Csw20Package.SUMMARY_RECORD_TYPE: return createSummaryRecordType();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -536,6 +544,46 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
     public UpdateType createUpdateType() {
         UpdateTypeImpl updateType = new UpdateTypeImpl();
         return updateType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public DCMIRecordType createDCMIRecordType() {
+        DCMIRecordTypeImpl dcmiRecordType = new DCMIRecordTypeImpl();
+        return dcmiRecordType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public RecordType createRecordType() {
+        RecordTypeImpl recordType = new RecordTypeImpl();
+        return recordType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public SimpleLiteral createSimpleLiteral() {
+        SimpleLiteralImpl simpleLiteral = new SimpleLiteralImpl();
+        return simpleLiteral;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public SummaryRecordType createSummaryRecordType() {
+        SummaryRecordTypeImpl summaryRecordType = new SummaryRecordTypeImpl();
+        return summaryRecordType;
     }
 
     /**

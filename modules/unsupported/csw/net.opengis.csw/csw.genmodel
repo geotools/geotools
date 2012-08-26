@@ -3,7 +3,7 @@
     xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/net.opengis.csw/src/main/java"
     modelPluginID="net.opengis.csw" modelName="Csw" importerID="org.eclipse.emf.importer.java"
-    complianceLevel="6.0" copyrightFields="false" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/XMLType.genmodel#//type platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore ../net.opengis.ows/ows10.genmodel#//ows10">
+    complianceLevel="6.0" copyrightFields="false" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/XMLType.genmodel#//type ../net.opengis.ows/ows10.genmodel#//ows10 platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore">
   <foreignModel>@model</foreignModel>
   <genPackages prefix="Csw20" basePackage="net.opengis.cat" resource="XML" disposableProviderFactory="true"
       ecorePackage="csw20.ecore#/">
@@ -31,12 +31,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//AcknowledgementType/timeStamp"/>
     </genClasses>
     <genClasses ecoreClass="csw20.ecore#//BriefRecordType">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute csw20.ecore#//BriefRecordType/identifierGroup"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference csw20.ecore#//BriefRecordType/identifier"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute csw20.ecore#//BriefRecordType/titleGroup"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference csw20.ecore#//BriefRecordType/title"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//BriefRecordType/type"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute csw20.ecore#//BriefRecordType/boundingBoxGroup"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference csw20.ecore#//BriefRecordType/boundingBox"/>
     </genClasses>
     <genClasses ecoreClass="csw20.ecore#//CapabilitiesType">
@@ -212,5 +209,28 @@
     <genClasses image="false" ecoreClass="csw20.ecore#//FilterCapabilities"/>
     <genClasses image="false" ecoreClass="csw20.ecore#//Filter"/>
     <genClasses image="false" ecoreClass="csw20.ecore#//SortBy"/>
+    <genClasses ecoreClass="csw20.ecore#//DCMIRecordType">
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference csw20.ecore#//DCMIRecordType/dCElement"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//RecordType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//RecordType/anyText"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference csw20.ecore#//RecordType/boundingBox"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//SimpleLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//SimpleLiteral/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//SimpleLiteral/scheme"/>
+    </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//SummaryRecordType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//SummaryRecordType/identifier"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//SummaryRecordType/title"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//SummaryRecordType/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//SummaryRecordType/subject"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//SummaryRecordType/format"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//SummaryRecordType/relation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//SummaryRecordType/modified"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//SummaryRecordType/abstract"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//SummaryRecordType/spatial"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//SummaryRecordType/boundingBox"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

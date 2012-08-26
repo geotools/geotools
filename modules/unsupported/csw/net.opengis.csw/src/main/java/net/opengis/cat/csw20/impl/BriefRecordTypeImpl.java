@@ -12,6 +12,7 @@ import java.util.Collection;
 
 import net.opengis.cat.csw20.BriefRecordType;
 import net.opengis.cat.csw20.Csw20Package;
+import net.opengis.cat.csw20.SimpleLiteral;
 
 import net.opengis.ows10.BoundingBoxType;
 
@@ -21,13 +22,11 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.eclipse.emf.ecore.util.BasicFeatureMap;
-import org.eclipse.emf.ecore.util.FeatureMap;
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
@@ -37,12 +36,9 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link net.opengis.cat.csw20.impl.BriefRecordTypeImpl#getIdentifierGroup <em>Identifier Group</em>}</li>
  *   <li>{@link net.opengis.cat.csw20.impl.BriefRecordTypeImpl#getIdentifier <em>Identifier</em>}</li>
- *   <li>{@link net.opengis.cat.csw20.impl.BriefRecordTypeImpl#getTitleGroup <em>Title Group</em>}</li>
  *   <li>{@link net.opengis.cat.csw20.impl.BriefRecordTypeImpl#getTitle <em>Title</em>}</li>
  *   <li>{@link net.opengis.cat.csw20.impl.BriefRecordTypeImpl#getType <em>Type</em>}</li>
- *   <li>{@link net.opengis.cat.csw20.impl.BriefRecordTypeImpl#getBoundingBoxGroup <em>Bounding Box Group</em>}</li>
  *   <li>{@link net.opengis.cat.csw20.impl.BriefRecordTypeImpl#getBoundingBox <em>Bounding Box</em>}</li>
  * </ul>
  * </p>
@@ -51,24 +47,24 @@ import org.eclipse.emf.ecore.util.InternalEList;
  */
 public class BriefRecordTypeImpl extends AbstractRecordTypeImpl implements BriefRecordType {
     /**
-     * The cached value of the '{@link #getIdentifierGroup() <em>Identifier Group</em>}' attribute list.
+     * The cached value of the '{@link #getIdentifier() <em>Identifier</em>}' reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getIdentifierGroup()
+     * @see #getIdentifier()
      * @generated
      * @ordered
      */
-    protected FeatureMap identifierGroup;
+    protected EList<SimpleLiteral> identifier;
 
     /**
-     * The cached value of the '{@link #getTitleGroup() <em>Title Group</em>}' attribute list.
+     * The cached value of the '{@link #getTitle() <em>Title</em>}' reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getTitleGroup()
+     * @see #getTitle()
      * @generated
      * @ordered
      */
-    protected FeatureMap titleGroup;
+    protected EList<SimpleLiteral> title;
 
     /**
      * The default value of the '{@link #getType() <em>Type</em>}' attribute.
@@ -89,16 +85,6 @@ public class BriefRecordTypeImpl extends AbstractRecordTypeImpl implements Brief
      * @ordered
      */
     protected String type = TYPE_EDEFAULT;
-
-    /**
-     * The cached value of the '{@link #getBoundingBoxGroup() <em>Bounding Box Group</em>}' attribute list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getBoundingBoxGroup()
-     * @generated
-     * @ordered
-     */
-    protected FeatureMap boundingBoxGroup;
 
     /**
      * <!-- begin-user-doc -->
@@ -124,11 +110,11 @@ public class BriefRecordTypeImpl extends AbstractRecordTypeImpl implements Brief
      * <!-- end-user-doc -->
      * @generated
      */
-    public FeatureMap getIdentifierGroup() {
-        if (identifierGroup == null) {
-            identifierGroup = new BasicFeatureMap(this, Csw20Package.BRIEF_RECORD_TYPE__IDENTIFIER_GROUP);
+    public EList<SimpleLiteral> getIdentifier() {
+        if (identifier == null) {
+            identifier = new EObjectResolvingEList<SimpleLiteral>(SimpleLiteral.class, this, Csw20Package.BRIEF_RECORD_TYPE__IDENTIFIER);
         }
-        return identifierGroup;
+        return identifier;
     }
 
     /**
@@ -136,29 +122,11 @@ public class BriefRecordTypeImpl extends AbstractRecordTypeImpl implements Brief
      * <!-- end-user-doc -->
      * @generated
      */
-    public EList<String> getIdentifier() {
-        return getIdentifierGroup().list(Csw20Package.Literals.BRIEF_RECORD_TYPE__IDENTIFIER);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public FeatureMap getTitleGroup() {
-        if (titleGroup == null) {
-            titleGroup = new BasicFeatureMap(this, Csw20Package.BRIEF_RECORD_TYPE__TITLE_GROUP);
+    public EList<SimpleLiteral> getTitle() {
+        if (title == null) {
+            title = new EObjectResolvingEList<SimpleLiteral>(SimpleLiteral.class, this, Csw20Package.BRIEF_RECORD_TYPE__TITLE);
         }
-        return titleGroup;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EList<String> getTitle() {
-        return getTitleGroup().list(Csw20Package.Literals.BRIEF_RECORD_TYPE__TITLE);
+        return title;
     }
 
     /**
@@ -187,20 +155,12 @@ public class BriefRecordTypeImpl extends AbstractRecordTypeImpl implements Brief
      * <!-- end-user-doc -->
      * @generated
      */
-    public FeatureMap getBoundingBoxGroup() {
-        if (boundingBoxGroup == null) {
-            boundingBoxGroup = new BasicFeatureMap(this, Csw20Package.BRIEF_RECORD_TYPE__BOUNDING_BOX_GROUP);
-        }
-        return boundingBoxGroup;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
     public EList<BoundingBoxType> getBoundingBox() {
-        return getBoundingBoxGroup().list(Csw20Package.Literals.BRIEF_RECORD_TYPE__BOUNDING_BOX);
+        // TODO: implement this method to return the 'Bounding Box' containment reference list
+        // Ensure that you remove @generated or mark it @generated NOT
+        // The list is expected to implement org.eclipse.emf.ecore.util.InternalEList and org.eclipse.emf.ecore.EStructuralFeature.Setting
+        // so it's likely that an appropriate subclass of org.eclipse.emf.ecore.util.EcoreEList should be used.
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -211,16 +171,6 @@ public class BriefRecordTypeImpl extends AbstractRecordTypeImpl implements Brief
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
-            case Csw20Package.BRIEF_RECORD_TYPE__IDENTIFIER_GROUP:
-                return ((InternalEList<?>)getIdentifierGroup()).basicRemove(otherEnd, msgs);
-            case Csw20Package.BRIEF_RECORD_TYPE__IDENTIFIER:
-                return ((InternalEList<?>)getIdentifier()).basicRemove(otherEnd, msgs);
-            case Csw20Package.BRIEF_RECORD_TYPE__TITLE_GROUP:
-                return ((InternalEList<?>)getTitleGroup()).basicRemove(otherEnd, msgs);
-            case Csw20Package.BRIEF_RECORD_TYPE__TITLE:
-                return ((InternalEList<?>)getTitle()).basicRemove(otherEnd, msgs);
-            case Csw20Package.BRIEF_RECORD_TYPE__BOUNDING_BOX_GROUP:
-                return ((InternalEList<?>)getBoundingBoxGroup()).basicRemove(otherEnd, msgs);
             case Csw20Package.BRIEF_RECORD_TYPE__BOUNDING_BOX:
                 return ((InternalEList<?>)getBoundingBox()).basicRemove(otherEnd, msgs);
         }
@@ -235,21 +185,12 @@ public class BriefRecordTypeImpl extends AbstractRecordTypeImpl implements Brief
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case Csw20Package.BRIEF_RECORD_TYPE__IDENTIFIER_GROUP:
-                if (coreType) return getIdentifierGroup();
-                return ((FeatureMap.Internal)getIdentifierGroup()).getWrapper();
             case Csw20Package.BRIEF_RECORD_TYPE__IDENTIFIER:
                 return getIdentifier();
-            case Csw20Package.BRIEF_RECORD_TYPE__TITLE_GROUP:
-                if (coreType) return getTitleGroup();
-                return ((FeatureMap.Internal)getTitleGroup()).getWrapper();
             case Csw20Package.BRIEF_RECORD_TYPE__TITLE:
                 return getTitle();
             case Csw20Package.BRIEF_RECORD_TYPE__TYPE:
                 return getType();
-            case Csw20Package.BRIEF_RECORD_TYPE__BOUNDING_BOX_GROUP:
-                if (coreType) return getBoundingBoxGroup();
-                return ((FeatureMap.Internal)getBoundingBoxGroup()).getWrapper();
             case Csw20Package.BRIEF_RECORD_TYPE__BOUNDING_BOX:
                 return getBoundingBox();
         }
@@ -265,25 +206,16 @@ public class BriefRecordTypeImpl extends AbstractRecordTypeImpl implements Brief
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case Csw20Package.BRIEF_RECORD_TYPE__IDENTIFIER_GROUP:
-                ((FeatureMap.Internal)getIdentifierGroup()).set(newValue);
-                return;
             case Csw20Package.BRIEF_RECORD_TYPE__IDENTIFIER:
                 getIdentifier().clear();
-                getIdentifier().addAll((Collection<? extends String>)newValue);
-                return;
-            case Csw20Package.BRIEF_RECORD_TYPE__TITLE_GROUP:
-                ((FeatureMap.Internal)getTitleGroup()).set(newValue);
+                getIdentifier().addAll((Collection<? extends SimpleLiteral>)newValue);
                 return;
             case Csw20Package.BRIEF_RECORD_TYPE__TITLE:
                 getTitle().clear();
-                getTitle().addAll((Collection<? extends String>)newValue);
+                getTitle().addAll((Collection<? extends SimpleLiteral>)newValue);
                 return;
             case Csw20Package.BRIEF_RECORD_TYPE__TYPE:
                 setType((String)newValue);
-                return;
-            case Csw20Package.BRIEF_RECORD_TYPE__BOUNDING_BOX_GROUP:
-                ((FeatureMap.Internal)getBoundingBoxGroup()).set(newValue);
                 return;
             case Csw20Package.BRIEF_RECORD_TYPE__BOUNDING_BOX:
                 getBoundingBox().clear();
@@ -301,23 +233,14 @@ public class BriefRecordTypeImpl extends AbstractRecordTypeImpl implements Brief
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case Csw20Package.BRIEF_RECORD_TYPE__IDENTIFIER_GROUP:
-                getIdentifierGroup().clear();
-                return;
             case Csw20Package.BRIEF_RECORD_TYPE__IDENTIFIER:
                 getIdentifier().clear();
-                return;
-            case Csw20Package.BRIEF_RECORD_TYPE__TITLE_GROUP:
-                getTitleGroup().clear();
                 return;
             case Csw20Package.BRIEF_RECORD_TYPE__TITLE:
                 getTitle().clear();
                 return;
             case Csw20Package.BRIEF_RECORD_TYPE__TYPE:
                 setType(TYPE_EDEFAULT);
-                return;
-            case Csw20Package.BRIEF_RECORD_TYPE__BOUNDING_BOX_GROUP:
-                getBoundingBoxGroup().clear();
                 return;
             case Csw20Package.BRIEF_RECORD_TYPE__BOUNDING_BOX:
                 getBoundingBox().clear();
@@ -334,18 +257,12 @@ public class BriefRecordTypeImpl extends AbstractRecordTypeImpl implements Brief
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case Csw20Package.BRIEF_RECORD_TYPE__IDENTIFIER_GROUP:
-                return identifierGroup != null && !identifierGroup.isEmpty();
             case Csw20Package.BRIEF_RECORD_TYPE__IDENTIFIER:
-                return !getIdentifier().isEmpty();
-            case Csw20Package.BRIEF_RECORD_TYPE__TITLE_GROUP:
-                return titleGroup != null && !titleGroup.isEmpty();
+                return identifier != null && !identifier.isEmpty();
             case Csw20Package.BRIEF_RECORD_TYPE__TITLE:
-                return !getTitle().isEmpty();
+                return title != null && !title.isEmpty();
             case Csw20Package.BRIEF_RECORD_TYPE__TYPE:
                 return TYPE_EDEFAULT == null ? type != null : !TYPE_EDEFAULT.equals(type);
-            case Csw20Package.BRIEF_RECORD_TYPE__BOUNDING_BOX_GROUP:
-                return boundingBoxGroup != null && !boundingBoxGroup.isEmpty();
             case Csw20Package.BRIEF_RECORD_TYPE__BOUNDING_BOX:
                 return !getBoundingBox().isEmpty();
         }
@@ -362,14 +279,8 @@ public class BriefRecordTypeImpl extends AbstractRecordTypeImpl implements Brief
         if (eIsProxy()) return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (identifierGroup: ");
-        result.append(identifierGroup);
-        result.append(", titleGroup: ");
-        result.append(titleGroup);
-        result.append(", type: ");
+        result.append(" (type: ");
         result.append(type);
-        result.append(", boundingBoxGroup: ");
-        result.append(boundingBoxGroup);
         result.append(')');
         return result.toString();
     }

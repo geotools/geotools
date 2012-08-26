@@ -33,6 +33,7 @@ import org.geotools.ows.OWSConfiguration;
 import org.geotools.xml.ComplexEMFBinding;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.EnumSimpleBinding;
+import org.geotools.xml.SimpleContentComplexEMFBinding;
 import org.picocontainer.MutablePicoContainer;
 
 /**
@@ -53,6 +54,7 @@ public class CSWConfiguration extends Configuration {
         // add dependencies on OWS 1.0 and Filter 1.1
         addDependency(new OWSConfiguration());
         addDependency(new OGCConfiguration());
+        addDependency(new DCTConfiguration());
     }
 
     /**

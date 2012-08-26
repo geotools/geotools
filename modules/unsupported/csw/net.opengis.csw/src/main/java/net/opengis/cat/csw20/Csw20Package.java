@@ -160,40 +160,22 @@ public interface Csw20Package extends EPackage {
     int BRIEF_RECORD_TYPE = 3;
 
     /**
-     * The feature id for the '<em><b>Identifier Group</b></em>' attribute list.
+     * The feature id for the '<em><b>Identifier</b></em>' reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int BRIEF_RECORD_TYPE__IDENTIFIER_GROUP = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 0;
+    int BRIEF_RECORD_TYPE__IDENTIFIER = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Identifier</b></em>' containment reference list.
+     * The feature id for the '<em><b>Title</b></em>' reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int BRIEF_RECORD_TYPE__IDENTIFIER = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 1;
-
-    /**
-     * The feature id for the '<em><b>Title Group</b></em>' attribute list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int BRIEF_RECORD_TYPE__TITLE_GROUP = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 2;
-
-    /**
-     * The feature id for the '<em><b>Title</b></em>' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int BRIEF_RECORD_TYPE__TITLE = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 3;
+    int BRIEF_RECORD_TYPE__TITLE = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Type</b></em>' attribute.
@@ -202,16 +184,7 @@ public interface Csw20Package extends EPackage {
      * @generated
      * @ordered
      */
-    int BRIEF_RECORD_TYPE__TYPE = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 4;
-
-    /**
-     * The feature id for the '<em><b>Bounding Box Group</b></em>' attribute list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int BRIEF_RECORD_TYPE__BOUNDING_BOX_GROUP = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 5;
+    int BRIEF_RECORD_TYPE__TYPE = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 2;
 
     /**
      * The feature id for the '<em><b>Bounding Box</b></em>' containment reference list.
@@ -220,7 +193,7 @@ public interface Csw20Package extends EPackage {
      * @generated
      * @ordered
      */
-    int BRIEF_RECORD_TYPE__BOUNDING_BOX = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 6;
+    int BRIEF_RECORD_TYPE__BOUNDING_BOX = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 3;
 
     /**
      * The number of structural features of the '<em>Brief Record Type</em>' class.
@@ -229,7 +202,7 @@ public interface Csw20Package extends EPackage {
      * @generated
      * @ordered
      */
-    int BRIEF_RECORD_TYPE_FEATURE_COUNT = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 7;
+    int BRIEF_RECORD_TYPE_FEATURE_COUNT = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 4;
 
     /**
      * The meta object id for the '{@link net.opengis.cat.csw20.impl.CapabilitiesTypeImpl <em>Capabilities Type</em>}' class.
@@ -2087,6 +2060,226 @@ public interface Csw20Package extends EPackage {
     int SORT_BY_FEATURE_COUNT = 0;
 
     /**
+     * The meta object id for the '{@link net.opengis.cat.csw20.impl.DCMIRecordTypeImpl <em>DCMI Record Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see net.opengis.cat.csw20.impl.DCMIRecordTypeImpl
+     * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getDCMIRecordType()
+     * @generated
+     */
+    int DCMI_RECORD_TYPE = 41;
+
+    /**
+     * The feature id for the '<em><b>DC Element</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DCMI_RECORD_TYPE__DC_ELEMENT = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>DCMI Record Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DCMI_RECORD_TYPE_FEATURE_COUNT = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 1;
+
+    /**
+     * The meta object id for the '{@link net.opengis.cat.csw20.impl.RecordTypeImpl <em>Record Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see net.opengis.cat.csw20.impl.RecordTypeImpl
+     * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getRecordType()
+     * @generated
+     */
+    int RECORD_TYPE = 42;
+
+    /**
+     * The feature id for the '<em><b>DC Element</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int RECORD_TYPE__DC_ELEMENT = DCMI_RECORD_TYPE__DC_ELEMENT;
+
+    /**
+     * The feature id for the '<em><b>Any Text</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int RECORD_TYPE__ANY_TEXT = DCMI_RECORD_TYPE_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Bounding Box</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int RECORD_TYPE__BOUNDING_BOX = DCMI_RECORD_TYPE_FEATURE_COUNT + 1;
+
+    /**
+     * The number of structural features of the '<em>Record Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int RECORD_TYPE_FEATURE_COUNT = DCMI_RECORD_TYPE_FEATURE_COUNT + 2;
+
+    /**
+     * The meta object id for the '{@link net.opengis.cat.csw20.impl.SimpleLiteralImpl <em>Simple Literal</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see net.opengis.cat.csw20.impl.SimpleLiteralImpl
+     * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getSimpleLiteral()
+     * @generated
+     */
+    int SIMPLE_LITERAL = 43;
+
+    /**
+     * The feature id for the '<em><b>Value</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SIMPLE_LITERAL__VALUE = 0;
+
+    /**
+     * The feature id for the '<em><b>Scheme</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SIMPLE_LITERAL__SCHEME = 1;
+
+    /**
+     * The number of structural features of the '<em>Simple Literal</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SIMPLE_LITERAL_FEATURE_COUNT = 2;
+
+    /**
+     * The meta object id for the '{@link net.opengis.cat.csw20.impl.SummaryRecordTypeImpl <em>Summary Record Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see net.opengis.cat.csw20.impl.SummaryRecordTypeImpl
+     * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getSummaryRecordType()
+     * @generated
+     */
+    int SUMMARY_RECORD_TYPE = 44;
+
+    /**
+     * The feature id for the '<em><b>Identifier</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SUMMARY_RECORD_TYPE__IDENTIFIER = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Title</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SUMMARY_RECORD_TYPE__TITLE = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Type</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SUMMARY_RECORD_TYPE__TYPE = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Subject</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SUMMARY_RECORD_TYPE__SUBJECT = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Format</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SUMMARY_RECORD_TYPE__FORMAT = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 4;
+
+    /**
+     * The feature id for the '<em><b>Relation</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SUMMARY_RECORD_TYPE__RELATION = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 5;
+
+    /**
+     * The feature id for the '<em><b>Modified</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SUMMARY_RECORD_TYPE__MODIFIED = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 6;
+
+    /**
+     * The feature id for the '<em><b>Abstract</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SUMMARY_RECORD_TYPE__ABSTRACT = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 7;
+
+    /**
+     * The feature id for the '<em><b>Spatial</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SUMMARY_RECORD_TYPE__SPATIAL = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 8;
+
+    /**
+     * The feature id for the '<em><b>Bounding Box</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SUMMARY_RECORD_TYPE__BOUNDING_BOX = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 9;
+
+    /**
+     * The number of structural features of the '<em>Summary Record Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SUMMARY_RECORD_TYPE_FEATURE_COUNT = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 10;
+
+    /**
      * The meta object id for the '{@link net.opengis.cat.csw20.ElementSetType <em>Element Set Type</em>}' enum.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2094,7 +2287,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getElementSetType()
      * @generated
      */
-    int ELEMENT_SET_TYPE = 41;
+    int ELEMENT_SET_TYPE = 45;
 
     /**
      * The meta object id for the '{@link net.opengis.cat.csw20.ResultType <em>Result Type</em>}' enum.
@@ -2104,7 +2297,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getResultType()
      * @generated
      */
-    int RESULT_TYPE = 42;
+    int RESULT_TYPE = 46;
 
     /**
      * The meta object id for the '<em>Type Name List Type</em>' data type.
@@ -2114,7 +2307,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getTypeNameListType()
      * @generated
      */
-    int TYPE_NAME_LIST_TYPE = 43;
+    int TYPE_NAME_LIST_TYPE = 47;
 
     /**
      * The meta object id for the '<em>Service Type</em>' data type.
@@ -2124,7 +2317,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getServiceType()
      * @generated
      */
-    int SERVICE_TYPE = 44;
+    int SERVICE_TYPE = 48;
 
     /**
      * The meta object id for the '<em>Type Name List Type 1</em>' data type.
@@ -2134,7 +2327,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getTypeNameListType_1()
      * @generated
      */
-    int TYPE_NAME_LIST_TYPE_1 = 45;
+    int TYPE_NAME_LIST_TYPE_1 = 49;
 
     /**
      * The meta object id for the '<em>Service Type 1</em>' data type.
@@ -2144,7 +2337,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getServiceType_1()
      * @generated
      */
-    int SERVICE_TYPE_1 = 46;
+    int SERVICE_TYPE_1 = 50;
 
     /**
      * The meta object id for the '<em>Version Type</em>' data type.
@@ -2154,7 +2347,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getVersionType()
      * @generated
      */
-    int VERSION_TYPE = 47;
+    int VERSION_TYPE = 51;
 
 
     /**
@@ -2165,7 +2358,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getCalendar()
      * @generated
      */
-    int CALENDAR = 48;
+    int CALENDAR = 52;
 
 
     /**
@@ -2242,21 +2435,10 @@ public interface Csw20Package extends EPackage {
     EClass getBriefRecordType();
 
     /**
-     * Returns the meta object for the attribute list '{@link net.opengis.cat.csw20.BriefRecordType#getIdentifierGroup <em>Identifier Group</em>}'.
+     * Returns the meta object for the reference list '{@link net.opengis.cat.csw20.BriefRecordType#getIdentifier <em>Identifier</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute list '<em>Identifier Group</em>'.
-     * @see net.opengis.cat.csw20.BriefRecordType#getIdentifierGroup()
-     * @see #getBriefRecordType()
-     * @generated
-     */
-    EAttribute getBriefRecordType_IdentifierGroup();
-
-    /**
-     * Returns the meta object for the containment reference list '{@link net.opengis.cat.csw20.BriefRecordType#getIdentifier <em>Identifier</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the containment reference list '<em>Identifier</em>'.
+     * @return the meta object for the reference list '<em>Identifier</em>'.
      * @see net.opengis.cat.csw20.BriefRecordType#getIdentifier()
      * @see #getBriefRecordType()
      * @generated
@@ -2264,21 +2446,10 @@ public interface Csw20Package extends EPackage {
     EReference getBriefRecordType_Identifier();
 
     /**
-     * Returns the meta object for the attribute list '{@link net.opengis.cat.csw20.BriefRecordType#getTitleGroup <em>Title Group</em>}'.
+     * Returns the meta object for the reference list '{@link net.opengis.cat.csw20.BriefRecordType#getTitle <em>Title</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute list '<em>Title Group</em>'.
-     * @see net.opengis.cat.csw20.BriefRecordType#getTitleGroup()
-     * @see #getBriefRecordType()
-     * @generated
-     */
-    EAttribute getBriefRecordType_TitleGroup();
-
-    /**
-     * Returns the meta object for the containment reference list '{@link net.opengis.cat.csw20.BriefRecordType#getTitle <em>Title</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the containment reference list '<em>Title</em>'.
+     * @return the meta object for the reference list '<em>Title</em>'.
      * @see net.opengis.cat.csw20.BriefRecordType#getTitle()
      * @see #getBriefRecordType()
      * @generated
@@ -2295,17 +2466,6 @@ public interface Csw20Package extends EPackage {
      * @generated
      */
     EAttribute getBriefRecordType_Type();
-
-    /**
-     * Returns the meta object for the attribute list '{@link net.opengis.cat.csw20.BriefRecordType#getBoundingBoxGroup <em>Bounding Box Group</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute list '<em>Bounding Box Group</em>'.
-     * @see net.opengis.cat.csw20.BriefRecordType#getBoundingBoxGroup()
-     * @see #getBriefRecordType()
-     * @generated
-     */
-    EAttribute getBriefRecordType_BoundingBoxGroup();
 
     /**
      * Returns the meta object for the containment reference list '{@link net.opengis.cat.csw20.BriefRecordType#getBoundingBox <em>Bounding Box</em>}'.
@@ -3837,6 +3997,211 @@ public interface Csw20Package extends EPackage {
     EClass getSortBy();
 
     /**
+     * Returns the meta object for class '{@link net.opengis.cat.csw20.DCMIRecordType <em>DCMI Record Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>DCMI Record Type</em>'.
+     * @see net.opengis.cat.csw20.DCMIRecordType
+     * @generated
+     */
+    EClass getDCMIRecordType();
+
+    /**
+     * Returns the meta object for the containment reference list '{@link net.opengis.cat.csw20.DCMIRecordType#getDCElement <em>DC Element</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference list '<em>DC Element</em>'.
+     * @see net.opengis.cat.csw20.DCMIRecordType#getDCElement()
+     * @see #getDCMIRecordType()
+     * @generated
+     */
+    EReference getDCMIRecordType_DCElement();
+
+    /**
+     * Returns the meta object for class '{@link net.opengis.cat.csw20.RecordType <em>Record Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Record Type</em>'.
+     * @see net.opengis.cat.csw20.RecordType
+     * @generated
+     */
+    EClass getRecordType();
+
+    /**
+     * Returns the meta object for the containment reference list '{@link net.opengis.cat.csw20.RecordType#getAnyText <em>Any Text</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference list '<em>Any Text</em>'.
+     * @see net.opengis.cat.csw20.RecordType#getAnyText()
+     * @see #getRecordType()
+     * @generated
+     */
+    EReference getRecordType_AnyText();
+
+    /**
+     * Returns the meta object for the containment reference list '{@link net.opengis.cat.csw20.RecordType#getBoundingBox <em>Bounding Box</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference list '<em>Bounding Box</em>'.
+     * @see net.opengis.cat.csw20.RecordType#getBoundingBox()
+     * @see #getRecordType()
+     * @generated
+     */
+    EReference getRecordType_BoundingBox();
+
+    /**
+     * Returns the meta object for class '{@link net.opengis.cat.csw20.SimpleLiteral <em>Simple Literal</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Simple Literal</em>'.
+     * @see net.opengis.cat.csw20.SimpleLiteral
+     * @generated
+     */
+    EClass getSimpleLiteral();
+
+    /**
+     * Returns the meta object for the attribute '{@link net.opengis.cat.csw20.SimpleLiteral#getValue <em>Value</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Value</em>'.
+     * @see net.opengis.cat.csw20.SimpleLiteral#getValue()
+     * @see #getSimpleLiteral()
+     * @generated
+     */
+    EAttribute getSimpleLiteral_Value();
+
+    /**
+     * Returns the meta object for the attribute '{@link net.opengis.cat.csw20.SimpleLiteral#getScheme <em>Scheme</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Scheme</em>'.
+     * @see net.opengis.cat.csw20.SimpleLiteral#getScheme()
+     * @see #getSimpleLiteral()
+     * @generated
+     */
+    EAttribute getSimpleLiteral_Scheme();
+
+    /**
+     * Returns the meta object for class '{@link net.opengis.cat.csw20.SummaryRecordType <em>Summary Record Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Summary Record Type</em>'.
+     * @see net.opengis.cat.csw20.SummaryRecordType
+     * @generated
+     */
+    EClass getSummaryRecordType();
+
+    /**
+     * Returns the meta object for the containment reference list '{@link net.opengis.cat.csw20.SummaryRecordType#getIdentifier <em>Identifier</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference list '<em>Identifier</em>'.
+     * @see net.opengis.cat.csw20.SummaryRecordType#getIdentifier()
+     * @see #getSummaryRecordType()
+     * @generated
+     */
+    EReference getSummaryRecordType_Identifier();
+
+    /**
+     * Returns the meta object for the containment reference list '{@link net.opengis.cat.csw20.SummaryRecordType#getTitle <em>Title</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference list '<em>Title</em>'.
+     * @see net.opengis.cat.csw20.SummaryRecordType#getTitle()
+     * @see #getSummaryRecordType()
+     * @generated
+     */
+    EReference getSummaryRecordType_Title();
+
+    /**
+     * Returns the meta object for the containment reference '{@link net.opengis.cat.csw20.SummaryRecordType#getType <em>Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference '<em>Type</em>'.
+     * @see net.opengis.cat.csw20.SummaryRecordType#getType()
+     * @see #getSummaryRecordType()
+     * @generated
+     */
+    EReference getSummaryRecordType_Type();
+
+    /**
+     * Returns the meta object for the containment reference list '{@link net.opengis.cat.csw20.SummaryRecordType#getSubject <em>Subject</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference list '<em>Subject</em>'.
+     * @see net.opengis.cat.csw20.SummaryRecordType#getSubject()
+     * @see #getSummaryRecordType()
+     * @generated
+     */
+    EReference getSummaryRecordType_Subject();
+
+    /**
+     * Returns the meta object for the containment reference list '{@link net.opengis.cat.csw20.SummaryRecordType#getFormat <em>Format</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference list '<em>Format</em>'.
+     * @see net.opengis.cat.csw20.SummaryRecordType#getFormat()
+     * @see #getSummaryRecordType()
+     * @generated
+     */
+    EReference getSummaryRecordType_Format();
+
+    /**
+     * Returns the meta object for the containment reference list '{@link net.opengis.cat.csw20.SummaryRecordType#getRelation <em>Relation</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference list '<em>Relation</em>'.
+     * @see net.opengis.cat.csw20.SummaryRecordType#getRelation()
+     * @see #getSummaryRecordType()
+     * @generated
+     */
+    EReference getSummaryRecordType_Relation();
+
+    /**
+     * Returns the meta object for the containment reference list '{@link net.opengis.cat.csw20.SummaryRecordType#getModified <em>Modified</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference list '<em>Modified</em>'.
+     * @see net.opengis.cat.csw20.SummaryRecordType#getModified()
+     * @see #getSummaryRecordType()
+     * @generated
+     */
+    EReference getSummaryRecordType_Modified();
+
+    /**
+     * Returns the meta object for the containment reference list '{@link net.opengis.cat.csw20.SummaryRecordType#getAbstract <em>Abstract</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference list '<em>Abstract</em>'.
+     * @see net.opengis.cat.csw20.SummaryRecordType#getAbstract()
+     * @see #getSummaryRecordType()
+     * @generated
+     */
+    EReference getSummaryRecordType_Abstract();
+
+    /**
+     * Returns the meta object for the containment reference list '{@link net.opengis.cat.csw20.SummaryRecordType#getSpatial <em>Spatial</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference list '<em>Spatial</em>'.
+     * @see net.opengis.cat.csw20.SummaryRecordType#getSpatial()
+     * @see #getSummaryRecordType()
+     * @generated
+     */
+    EReference getSummaryRecordType_Spatial();
+
+    /**
+     * Returns the meta object for the containment reference list '{@link net.opengis.cat.csw20.SummaryRecordType#getBoundingBox <em>Bounding Box</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference list '<em>Bounding Box</em>'.
+     * @see net.opengis.cat.csw20.SummaryRecordType#getBoundingBox()
+     * @see #getSummaryRecordType()
+     * @generated
+     */
+    EReference getSummaryRecordType_BoundingBox();
+
+    /**
      * Returns the meta object for enum '{@link net.opengis.cat.csw20.ElementSetType <em>Element Set Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4009,15 +4374,7 @@ public interface Csw20Package extends EPackage {
         EClass BRIEF_RECORD_TYPE = eINSTANCE.getBriefRecordType();
 
         /**
-         * The meta object literal for the '<em><b>Identifier Group</b></em>' attribute list feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute BRIEF_RECORD_TYPE__IDENTIFIER_GROUP = eINSTANCE.getBriefRecordType_IdentifierGroup();
-
-        /**
-         * The meta object literal for the '<em><b>Identifier</b></em>' containment reference list feature.
+         * The meta object literal for the '<em><b>Identifier</b></em>' reference list feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
@@ -4025,15 +4382,7 @@ public interface Csw20Package extends EPackage {
         EReference BRIEF_RECORD_TYPE__IDENTIFIER = eINSTANCE.getBriefRecordType_Identifier();
 
         /**
-         * The meta object literal for the '<em><b>Title Group</b></em>' attribute list feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute BRIEF_RECORD_TYPE__TITLE_GROUP = eINSTANCE.getBriefRecordType_TitleGroup();
-
-        /**
-         * The meta object literal for the '<em><b>Title</b></em>' containment reference list feature.
+         * The meta object literal for the '<em><b>Title</b></em>' reference list feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
@@ -4047,14 +4396,6 @@ public interface Csw20Package extends EPackage {
          * @generated
          */
         EAttribute BRIEF_RECORD_TYPE__TYPE = eINSTANCE.getBriefRecordType_Type();
-
-        /**
-         * The meta object literal for the '<em><b>Bounding Box Group</b></em>' attribute list feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute BRIEF_RECORD_TYPE__BOUNDING_BOX_GROUP = eINSTANCE.getBriefRecordType_BoundingBoxGroup();
 
         /**
          * The meta object literal for the '<em><b>Bounding Box</b></em>' containment reference list feature.
@@ -5265,6 +5606,166 @@ public interface Csw20Package extends EPackage {
          * @generated
          */
         EClass SORT_BY = eINSTANCE.getSortBy();
+
+        /**
+         * The meta object literal for the '{@link net.opengis.cat.csw20.impl.DCMIRecordTypeImpl <em>DCMI Record Type</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see net.opengis.cat.csw20.impl.DCMIRecordTypeImpl
+         * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getDCMIRecordType()
+         * @generated
+         */
+        EClass DCMI_RECORD_TYPE = eINSTANCE.getDCMIRecordType();
+
+        /**
+         * The meta object literal for the '<em><b>DC Element</b></em>' containment reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference DCMI_RECORD_TYPE__DC_ELEMENT = eINSTANCE.getDCMIRecordType_DCElement();
+
+        /**
+         * The meta object literal for the '{@link net.opengis.cat.csw20.impl.RecordTypeImpl <em>Record Type</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see net.opengis.cat.csw20.impl.RecordTypeImpl
+         * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getRecordType()
+         * @generated
+         */
+        EClass RECORD_TYPE = eINSTANCE.getRecordType();
+
+        /**
+         * The meta object literal for the '<em><b>Any Text</b></em>' containment reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference RECORD_TYPE__ANY_TEXT = eINSTANCE.getRecordType_AnyText();
+
+        /**
+         * The meta object literal for the '<em><b>Bounding Box</b></em>' containment reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference RECORD_TYPE__BOUNDING_BOX = eINSTANCE.getRecordType_BoundingBox();
+
+        /**
+         * The meta object literal for the '{@link net.opengis.cat.csw20.impl.SimpleLiteralImpl <em>Simple Literal</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see net.opengis.cat.csw20.impl.SimpleLiteralImpl
+         * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getSimpleLiteral()
+         * @generated
+         */
+        EClass SIMPLE_LITERAL = eINSTANCE.getSimpleLiteral();
+
+        /**
+         * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute SIMPLE_LITERAL__VALUE = eINSTANCE.getSimpleLiteral_Value();
+
+        /**
+         * The meta object literal for the '<em><b>Scheme</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute SIMPLE_LITERAL__SCHEME = eINSTANCE.getSimpleLiteral_Scheme();
+
+        /**
+         * The meta object literal for the '{@link net.opengis.cat.csw20.impl.SummaryRecordTypeImpl <em>Summary Record Type</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see net.opengis.cat.csw20.impl.SummaryRecordTypeImpl
+         * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getSummaryRecordType()
+         * @generated
+         */
+        EClass SUMMARY_RECORD_TYPE = eINSTANCE.getSummaryRecordType();
+
+        /**
+         * The meta object literal for the '<em><b>Identifier</b></em>' containment reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference SUMMARY_RECORD_TYPE__IDENTIFIER = eINSTANCE.getSummaryRecordType_Identifier();
+
+        /**
+         * The meta object literal for the '<em><b>Title</b></em>' containment reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference SUMMARY_RECORD_TYPE__TITLE = eINSTANCE.getSummaryRecordType_Title();
+
+        /**
+         * The meta object literal for the '<em><b>Type</b></em>' containment reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference SUMMARY_RECORD_TYPE__TYPE = eINSTANCE.getSummaryRecordType_Type();
+
+        /**
+         * The meta object literal for the '<em><b>Subject</b></em>' containment reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference SUMMARY_RECORD_TYPE__SUBJECT = eINSTANCE.getSummaryRecordType_Subject();
+
+        /**
+         * The meta object literal for the '<em><b>Format</b></em>' containment reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference SUMMARY_RECORD_TYPE__FORMAT = eINSTANCE.getSummaryRecordType_Format();
+
+        /**
+         * The meta object literal for the '<em><b>Relation</b></em>' containment reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference SUMMARY_RECORD_TYPE__RELATION = eINSTANCE.getSummaryRecordType_Relation();
+
+        /**
+         * The meta object literal for the '<em><b>Modified</b></em>' containment reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference SUMMARY_RECORD_TYPE__MODIFIED = eINSTANCE.getSummaryRecordType_Modified();
+
+        /**
+         * The meta object literal for the '<em><b>Abstract</b></em>' containment reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference SUMMARY_RECORD_TYPE__ABSTRACT = eINSTANCE.getSummaryRecordType_Abstract();
+
+        /**
+         * The meta object literal for the '<em><b>Spatial</b></em>' containment reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference SUMMARY_RECORD_TYPE__SPATIAL = eINSTANCE.getSummaryRecordType_Spatial();
+
+        /**
+         * The meta object literal for the '<em><b>Bounding Box</b></em>' containment reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference SUMMARY_RECORD_TYPE__BOUNDING_BOX = eINSTANCE.getSummaryRecordType_BoundingBox();
 
         /**
          * The meta object literal for the '{@link net.opengis.cat.csw20.ElementSetType <em>Element Set Type</em>}' enum.

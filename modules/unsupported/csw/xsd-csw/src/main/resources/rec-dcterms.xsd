@@ -9,7 +9,7 @@
          source="http://dublincore.org/documents/dcmi-terms/">This schema declares additional DCMI elements and element refinements 
     in the "http://purl.org/dc/terms/" namespace.</xs:documentation>
    </xs:annotation>
-   <xs:import namespace="http://purl.org/dc/elements/1.1/" schemaLocation="./rec-dcmes.xsd"/>
+   <xs:import namespace="http://purl.org/dc/elements/1.1/" schemaLocation="http://schemas.opengis.net/csw/2.0.2/rec-dcmes.xsd"/>
    <xs:element name="abstract" type="dc:SimpleLiteral"
       substitutionGroup="dc:description"/>
    <xs:element name="accessRights" type="dc:SimpleLiteral"

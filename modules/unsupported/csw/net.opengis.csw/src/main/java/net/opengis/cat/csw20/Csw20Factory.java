@@ -332,6 +332,42 @@ public interface Csw20Factory extends EFactory {
     UpdateType createUpdateType();
 
     /**
+     * Returns a new object of class '<em>DCMI Record Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>DCMI Record Type</em>'.
+     * @generated
+     */
+    DCMIRecordType createDCMIRecordType();
+
+    /**
+     * Returns a new object of class '<em>Record Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Record Type</em>'.
+     * @generated
+     */
+    RecordType createRecordType();
+
+    /**
+     * Returns a new object of class '<em>Simple Literal</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Simple Literal</em>'.
+     * @generated
+     */
+    SimpleLiteral createSimpleLiteral();
+
+    /**
+     * Returns a new object of class '<em>Summary Record Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Summary Record Type</em>'.
+     * @generated
+     */
+    SummaryRecordType createSummaryRecordType();
+
+    /**
      * Returns the package supported by this factory.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

@@ -98,6 +98,7 @@
       <plugin>
         <groupId>org.geotools.maven</groupId>
         <artifactId>xmlcodegen</artifactId>
+        <!-- 
         <configuration>
           <schemaLocation>csw.xsd</schemaLocation>
           <schemaSourceDirectory>${basedir}/src/main/resources/org/geotools/csw/</schemaSourceDirectory>
@@ -105,8 +106,23 @@
             <schemaLookupDirectory>${basedir}/../../../extension/xsd/xsd-ows/src/main/resources/org/geotools/ows/</schemaLookupDirectory>
             <schemaLookupDirectory>${basedir}/../../../extension/xsd/xsd-filter/src/main/resources/org/geotools/filter/v1_1/</schemaLookupDirectory>
           </schemaLookupDirectories>
-          <!-- <destinationPackage>org.geotools.csw</destinationPackage>  -->
-          <!--generateTypeBindings>true</generateTypeBindings-->
+          <complexBindingBaseClass>org.geotools.xml.AbstractComplexEMFBinding</complexBindingBaseClass>
+          <generateElementBindings>true</generateElementBindings>
+          <bindingConstructorArguments>
+            <bindingConstructorArgument>
+              <name>factory</name>
+              <type>net.opengis.cat.csw20.Csw20Factory</type>
+              <mode>parent</mode>
+            </bindingConstructorArgument>
+          </bindingConstructorArguments>
+          <includes>
+            <include>Languages</include>
+          </includes>
+        </configuration>
+        -->
+        <configuration>
+          <schemaLocation>rec-dcmes.xsd</schemaLocation>
+          <schemaSourceDirectory>${basedir}/src/main/resources/org/geotools/csw/</schemaSourceDirectory>
           <complexBindingBaseClass>org.geotools.xml.AbstractComplexEMFBinding</complexBindingBaseClass>
           <generateElementBindings>true</generateElementBindings>
           <bindingConstructorArguments>

@@ -268,6 +268,8 @@ public final class CSW extends XSD {
     /** @generated */
     public static final QName RecordProperty = 
         new QName("http://www.opengis.net/cat/csw/2.0.2","RecordProperty");
+    public static final QName SimpleType = 
+        new QName("http://www.opengis.net/cat/csw/2.0.2","SummaryRecord");
     /** @generated */
     public static final QName SummaryRecord = 
         new QName("http://www.opengis.net/cat/csw/2.0.2","SummaryRecord");
@@ -277,7 +279,9 @@ public final class CSW extends XSD {
     /** @generated */
     public static final QName TransactionResponse = 
         new QName("http://www.opengis.net/cat/csw/2.0.2","TransactionResponse");
-
+    public static final QName SimpleLiteral = 
+        new QName("http://purl.org/dc/elements/1.1/", "SimpleLiteral");
+    
     /* Attributes */
 
 }

@@ -9,6 +9,8 @@ package net.opengis.cat.csw20.impl;
 import java.lang.String;
 
 import javax.xml.datatype.Duration;
+import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.namespace.QName;
 
 import net.opengis.cat.csw20.Csw20Package;
 import net.opengis.cat.csw20.HarvestType;

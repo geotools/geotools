@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/net.opengis.csw/src"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/net.opengis.csw/src/main/java"
     modelPluginID="net.opengis.csw" modelName="Csw" importerID="org.eclipse.emf.importer.java"
     complianceLevel="6.0" copyrightFields="false" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/XMLType.genmodel#//type platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore ../net.opengis.ows/ows10.genmodel#//ows10">
   <foreignModel>@model</foreignModel>
@@ -35,7 +35,7 @@
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference csw20.ecore#//BriefRecordType/identifier"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute csw20.ecore#//BriefRecordType/titleGroup"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference csw20.ecore#//BriefRecordType/title"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute csw20.ecore#//BriefRecordType/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//BriefRecordType/type"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute csw20.ecore#//BriefRecordType/boundingBoxGroup"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference csw20.ecore#//BriefRecordType/boundingBox"/>
     </genClasses>
@@ -105,8 +105,6 @@
     <genClasses ecoreClass="csw20.ecore#//GetRecordsType">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//GetRecordsType/distributedSearch"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//GetRecordsType/responseHandler"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute csw20.ecore#//GetRecordsType/abstractQueryGroup"/>
-      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference csw20.ecore#//GetRecordsType/abstractQuery"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute csw20.ecore#//GetRecordsType/any"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//GetRecordsType/maxRecords"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//GetRecordsType/outputFormat"/>
@@ -114,6 +112,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//GetRecordsType/requestId"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//GetRecordsType/resultType"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//GetRecordsType/startPosition"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//GetRecordsType/query"/>
     </genClasses>
     <genClasses ecoreClass="csw20.ecore#//HarvestResponseType">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//HarvestResponseType/acknowledgement"/>

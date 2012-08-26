@@ -1068,31 +1068,13 @@ public interface Csw20Package extends EPackage {
     int GET_RECORDS_TYPE__RESPONSE_HANDLER = REQUEST_BASE_TYPE_FEATURE_COUNT + 1;
 
     /**
-     * The feature id for the '<em><b>Abstract Query Group</b></em>' attribute list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int GET_RECORDS_TYPE__ABSTRACT_QUERY_GROUP = REQUEST_BASE_TYPE_FEATURE_COUNT + 2;
-
-    /**
-     * The feature id for the '<em><b>Abstract Query</b></em>' containment reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int GET_RECORDS_TYPE__ABSTRACT_QUERY = REQUEST_BASE_TYPE_FEATURE_COUNT + 3;
-
-    /**
      * The feature id for the '<em><b>Any</b></em>' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int GET_RECORDS_TYPE__ANY = REQUEST_BASE_TYPE_FEATURE_COUNT + 4;
+    int GET_RECORDS_TYPE__ANY = REQUEST_BASE_TYPE_FEATURE_COUNT + 2;
 
     /**
      * The feature id for the '<em><b>Max Records</b></em>' attribute.
@@ -1101,7 +1083,7 @@ public interface Csw20Package extends EPackage {
      * @generated
      * @ordered
      */
-    int GET_RECORDS_TYPE__MAX_RECORDS = REQUEST_BASE_TYPE_FEATURE_COUNT + 5;
+    int GET_RECORDS_TYPE__MAX_RECORDS = REQUEST_BASE_TYPE_FEATURE_COUNT + 3;
 
     /**
      * The feature id for the '<em><b>Output Format</b></em>' attribute.
@@ -1110,7 +1092,7 @@ public interface Csw20Package extends EPackage {
      * @generated
      * @ordered
      */
-    int GET_RECORDS_TYPE__OUTPUT_FORMAT = REQUEST_BASE_TYPE_FEATURE_COUNT + 6;
+    int GET_RECORDS_TYPE__OUTPUT_FORMAT = REQUEST_BASE_TYPE_FEATURE_COUNT + 4;
 
     /**
      * The feature id for the '<em><b>Output Schema</b></em>' attribute.
@@ -1119,7 +1101,7 @@ public interface Csw20Package extends EPackage {
      * @generated
      * @ordered
      */
-    int GET_RECORDS_TYPE__OUTPUT_SCHEMA = REQUEST_BASE_TYPE_FEATURE_COUNT + 7;
+    int GET_RECORDS_TYPE__OUTPUT_SCHEMA = REQUEST_BASE_TYPE_FEATURE_COUNT + 5;
 
     /**
      * The feature id for the '<em><b>Request Id</b></em>' attribute.
@@ -1128,7 +1110,7 @@ public interface Csw20Package extends EPackage {
      * @generated
      * @ordered
      */
-    int GET_RECORDS_TYPE__REQUEST_ID = REQUEST_BASE_TYPE_FEATURE_COUNT + 8;
+    int GET_RECORDS_TYPE__REQUEST_ID = REQUEST_BASE_TYPE_FEATURE_COUNT + 6;
 
     /**
      * The feature id for the '<em><b>Result Type</b></em>' attribute.
@@ -1137,7 +1119,7 @@ public interface Csw20Package extends EPackage {
      * @generated
      * @ordered
      */
-    int GET_RECORDS_TYPE__RESULT_TYPE = REQUEST_BASE_TYPE_FEATURE_COUNT + 9;
+    int GET_RECORDS_TYPE__RESULT_TYPE = REQUEST_BASE_TYPE_FEATURE_COUNT + 7;
 
     /**
      * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -1146,7 +1128,16 @@ public interface Csw20Package extends EPackage {
      * @generated
      * @ordered
      */
-    int GET_RECORDS_TYPE__START_POSITION = REQUEST_BASE_TYPE_FEATURE_COUNT + 10;
+    int GET_RECORDS_TYPE__START_POSITION = REQUEST_BASE_TYPE_FEATURE_COUNT + 8;
+
+    /**
+     * The feature id for the '<em><b>Query</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int GET_RECORDS_TYPE__QUERY = REQUEST_BASE_TYPE_FEATURE_COUNT + 9;
 
     /**
      * The number of structural features of the '<em>Get Records Type</em>' class.
@@ -1155,7 +1146,7 @@ public interface Csw20Package extends EPackage {
      * @generated
      * @ordered
      */
-    int GET_RECORDS_TYPE_FEATURE_COUNT = REQUEST_BASE_TYPE_FEATURE_COUNT + 11;
+    int GET_RECORDS_TYPE_FEATURE_COUNT = REQUEST_BASE_TYPE_FEATURE_COUNT + 10;
 
     /**
      * The meta object id for the '{@link net.opengis.cat.csw20.impl.HarvestResponseTypeImpl <em>Harvest Response Type</em>}' class.
@@ -2884,28 +2875,6 @@ public interface Csw20Package extends EPackage {
     EAttribute getGetRecordsType_ResponseHandler();
 
     /**
-     * Returns the meta object for the attribute list '{@link net.opengis.cat.csw20.GetRecordsType#getAbstractQueryGroup <em>Abstract Query Group</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the attribute list '<em>Abstract Query Group</em>'.
-     * @see net.opengis.cat.csw20.GetRecordsType#getAbstractQueryGroup()
-     * @see #getGetRecordsType()
-     * @generated
-     */
-    EAttribute getGetRecordsType_AbstractQueryGroup();
-
-    /**
-     * Returns the meta object for the containment reference '{@link net.opengis.cat.csw20.GetRecordsType#getAbstractQuery <em>Abstract Query</em>}'.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Abstract Query</em>'.
-     * @see net.opengis.cat.csw20.GetRecordsType#getAbstractQuery()
-     * @see #getGetRecordsType()
-     * @generated
-     */
-    EReference getGetRecordsType_AbstractQuery();
-
-    /**
      * Returns the meta object for the attribute list '{@link net.opengis.cat.csw20.GetRecordsType#getAny <em>Any</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2981,6 +2950,17 @@ public interface Csw20Package extends EPackage {
      * @generated
      */
     EAttribute getGetRecordsType_StartPosition();
+
+    /**
+     * Returns the meta object for the attribute '{@link net.opengis.cat.csw20.GetRecordsType#getQuery <em>Query</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Query</em>'.
+     * @see net.opengis.cat.csw20.GetRecordsType#getQuery()
+     * @see #getGetRecordsType()
+     * @generated
+     */
+    EAttribute getGetRecordsType_Query();
 
     /**
      * Returns the meta object for class '{@link net.opengis.cat.csw20.HarvestResponseType <em>Harvest Response Type</em>}'.
@@ -4533,22 +4513,6 @@ public interface Csw20Package extends EPackage {
         EAttribute GET_RECORDS_TYPE__RESPONSE_HANDLER = eINSTANCE.getGetRecordsType_ResponseHandler();
 
         /**
-         * The meta object literal for the '<em><b>Abstract Query Group</b></em>' attribute list feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EAttribute GET_RECORDS_TYPE__ABSTRACT_QUERY_GROUP = eINSTANCE.getGetRecordsType_AbstractQueryGroup();
-
-        /**
-         * The meta object literal for the '<em><b>Abstract Query</b></em>' containment reference feature.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
-         * @generated
-         */
-        EReference GET_RECORDS_TYPE__ABSTRACT_QUERY = eINSTANCE.getGetRecordsType_AbstractQuery();
-
-        /**
          * The meta object literal for the '<em><b>Any</b></em>' attribute list feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -4603,6 +4567,14 @@ public interface Csw20Package extends EPackage {
          * @generated
          */
         EAttribute GET_RECORDS_TYPE__START_POSITION = eINSTANCE.getGetRecordsType_StartPosition();
+
+        /**
+         * The meta object literal for the '<em><b>Query</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute GET_RECORDS_TYPE__QUERY = eINSTANCE.getGetRecordsType_Query();
 
         /**
          * The meta object literal for the '{@link net.opengis.cat.csw20.impl.HarvestResponseTypeImpl <em>Harvest Response Type</em>}' class.

@@ -37,8 +37,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <ul>
  *   <li>{@link net.opengis.cat.csw20.impl.GetRecordsTypeImpl#getDistributedSearch <em>Distributed Search</em>}</li>
  *   <li>{@link net.opengis.cat.csw20.impl.GetRecordsTypeImpl#getResponseHandler <em>Response Handler</em>}</li>
- *   <li>{@link net.opengis.cat.csw20.impl.GetRecordsTypeImpl#getAbstractQueryGroup <em>Abstract Query Group</em>}</li>
- *   <li>{@link net.opengis.cat.csw20.impl.GetRecordsTypeImpl#getAbstractQuery <em>Abstract Query</em>}</li>
  *   <li>{@link net.opengis.cat.csw20.impl.GetRecordsTypeImpl#getAny <em>Any</em>}</li>
  *   <li>{@link net.opengis.cat.csw20.impl.GetRecordsTypeImpl#getMaxRecords <em>Max Records</em>}</li>
  *   <li>{@link net.opengis.cat.csw20.impl.GetRecordsTypeImpl#getOutputFormat <em>Output Format</em>}</li>
@@ -46,6 +44,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link net.opengis.cat.csw20.impl.GetRecordsTypeImpl#getRequestId <em>Request Id</em>}</li>
  *   <li>{@link net.opengis.cat.csw20.impl.GetRecordsTypeImpl#getResultType <em>Result Type</em>}</li>
  *   <li>{@link net.opengis.cat.csw20.impl.GetRecordsTypeImpl#getStartPosition <em>Start Position</em>}</li>
+ *   <li>{@link net.opengis.cat.csw20.impl.GetRecordsTypeImpl#getQuery <em>Query</em>}</li>
  * </ul>
  * </p>
  *
@@ -81,16 +80,6 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * @ordered
      */
     protected String responseHandler = RESPONSE_HANDLER_EDEFAULT;
-
-    /**
-     * The cached value of the '{@link #getAbstractQueryGroup() <em>Abstract Query Group</em>}' attribute list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getAbstractQueryGroup()
-     * @generated
-     * @ordered
-     */
-    protected FeatureMap abstractQueryGroup;
 
     /**
      * The cached value of the '{@link #getAny() <em>Any</em>}' attribute list.
@@ -259,6 +248,26 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
     protected boolean startPositionESet;
 
     /**
+     * The default value of the '{@link #getQuery() <em>Query</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getQuery()
+     * @generated
+     * @ordered
+     */
+    protected static final Object QUERY_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getQuery() <em>Query</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getQuery()
+     * @generated
+     * @ordered
+     */
+    protected Object query = QUERY_EDEFAULT;
+
+    /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -339,36 +348,6 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
         responseHandler = newResponseHandler;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, Csw20Package.GET_RECORDS_TYPE__RESPONSE_HANDLER, oldResponseHandler, responseHandler));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public FeatureMap getAbstractQueryGroup() {
-        if (abstractQueryGroup == null) {
-            abstractQueryGroup = new BasicFeatureMap(this, Csw20Package.GET_RECORDS_TYPE__ABSTRACT_QUERY_GROUP);
-        }
-        return abstractQueryGroup;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public AbstractQueryType getAbstractQuery() {
-        return (AbstractQueryType)getAbstractQueryGroup().get(Csw20Package.Literals.GET_RECORDS_TYPE__ABSTRACT_QUERY, true);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public NotificationChain basicSetAbstractQuery(AbstractQueryType newAbstractQuery, NotificationChain msgs) {
-        return ((FeatureMap.Internal)getAbstractQueryGroup()).basicAdd(Csw20Package.Literals.GET_RECORDS_TYPE__ABSTRACT_QUERY, newAbstractQuery, msgs);
     }
 
     /**
@@ -614,15 +593,32 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
+    public Object getQuery() {
+        return query;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setQuery(Object newQuery) {
+        Object oldQuery = query;
+        query = newQuery;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, Csw20Package.GET_RECORDS_TYPE__QUERY, oldQuery, query));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case Csw20Package.GET_RECORDS_TYPE__DISTRIBUTED_SEARCH:
                 return basicSetDistributedSearch(null, msgs);
-            case Csw20Package.GET_RECORDS_TYPE__ABSTRACT_QUERY_GROUP:
-                return ((InternalEList<?>)getAbstractQueryGroup()).basicRemove(otherEnd, msgs);
-            case Csw20Package.GET_RECORDS_TYPE__ABSTRACT_QUERY:
-                return basicSetAbstractQuery(null, msgs);
             case Csw20Package.GET_RECORDS_TYPE__ANY:
                 return ((InternalEList<?>)getAny()).basicRemove(otherEnd, msgs);
         }
@@ -641,11 +637,6 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
                 return getDistributedSearch();
             case Csw20Package.GET_RECORDS_TYPE__RESPONSE_HANDLER:
                 return getResponseHandler();
-            case Csw20Package.GET_RECORDS_TYPE__ABSTRACT_QUERY_GROUP:
-                if (coreType) return getAbstractQueryGroup();
-                return ((FeatureMap.Internal)getAbstractQueryGroup()).getWrapper();
-            case Csw20Package.GET_RECORDS_TYPE__ABSTRACT_QUERY:
-                return getAbstractQuery();
             case Csw20Package.GET_RECORDS_TYPE__ANY:
                 if (coreType) return getAny();
                 return ((FeatureMap.Internal)getAny()).getWrapper();
@@ -661,6 +652,8 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
                 return getResultType();
             case Csw20Package.GET_RECORDS_TYPE__START_POSITION:
                 return getStartPosition();
+            case Csw20Package.GET_RECORDS_TYPE__QUERY:
+                return getQuery();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -678,9 +671,6 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
                 return;
             case Csw20Package.GET_RECORDS_TYPE__RESPONSE_HANDLER:
                 setResponseHandler((String)newValue);
-                return;
-            case Csw20Package.GET_RECORDS_TYPE__ABSTRACT_QUERY_GROUP:
-                ((FeatureMap.Internal)getAbstractQueryGroup()).set(newValue);
                 return;
             case Csw20Package.GET_RECORDS_TYPE__ANY:
                 ((FeatureMap.Internal)getAny()).set(newValue);
@@ -703,6 +693,9 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
             case Csw20Package.GET_RECORDS_TYPE__START_POSITION:
                 setStartPosition((BigInteger)newValue);
                 return;
+            case Csw20Package.GET_RECORDS_TYPE__QUERY:
+                setQuery(newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -720,9 +713,6 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
                 return;
             case Csw20Package.GET_RECORDS_TYPE__RESPONSE_HANDLER:
                 setResponseHandler(RESPONSE_HANDLER_EDEFAULT);
-                return;
-            case Csw20Package.GET_RECORDS_TYPE__ABSTRACT_QUERY_GROUP:
-                getAbstractQueryGroup().clear();
                 return;
             case Csw20Package.GET_RECORDS_TYPE__ANY:
                 getAny().clear();
@@ -745,6 +735,9 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
             case Csw20Package.GET_RECORDS_TYPE__START_POSITION:
                 unsetStartPosition();
                 return;
+            case Csw20Package.GET_RECORDS_TYPE__QUERY:
+                setQuery(QUERY_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -761,10 +754,6 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
                 return distributedSearch != null;
             case Csw20Package.GET_RECORDS_TYPE__RESPONSE_HANDLER:
                 return RESPONSE_HANDLER_EDEFAULT == null ? responseHandler != null : !RESPONSE_HANDLER_EDEFAULT.equals(responseHandler);
-            case Csw20Package.GET_RECORDS_TYPE__ABSTRACT_QUERY_GROUP:
-                return abstractQueryGroup != null && !abstractQueryGroup.isEmpty();
-            case Csw20Package.GET_RECORDS_TYPE__ABSTRACT_QUERY:
-                return getAbstractQuery() != null;
             case Csw20Package.GET_RECORDS_TYPE__ANY:
                 return any != null && !any.isEmpty();
             case Csw20Package.GET_RECORDS_TYPE__MAX_RECORDS:
@@ -779,6 +768,8 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
                 return isSetResultType();
             case Csw20Package.GET_RECORDS_TYPE__START_POSITION:
                 return isSetStartPosition();
+            case Csw20Package.GET_RECORDS_TYPE__QUERY:
+                return QUERY_EDEFAULT == null ? query != null : !QUERY_EDEFAULT.equals(query);
         }
         return super.eIsSet(featureID);
     }
@@ -795,8 +786,6 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (responseHandler: ");
         result.append(responseHandler);
-        result.append(", abstractQueryGroup: ");
-        result.append(abstractQueryGroup);
         result.append(", any: ");
         result.append(any);
         result.append(", maxRecords: ");
@@ -811,6 +800,8 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
         if (resultTypeESet) result.append(resultType); else result.append("<unset>");
         result.append(", startPosition: ");
         if (startPositionESet) result.append(startPosition); else result.append("<unset>");
+        result.append(", query: ");
+        result.append(query);
         result.append(')');
         return result.toString();
     }

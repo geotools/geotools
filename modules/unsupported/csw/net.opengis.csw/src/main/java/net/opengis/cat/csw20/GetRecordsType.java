@@ -32,8 +32,6 @@ import org.eclipse.emf.ecore.util.FeatureMap;
  * <ul>
  *   <li>{@link net.opengis.cat.csw20.GetRecordsType#getDistributedSearch <em>Distributed Search</em>}</li>
  *   <li>{@link net.opengis.cat.csw20.GetRecordsType#getResponseHandler <em>Response Handler</em>}</li>
- *   <li>{@link net.opengis.cat.csw20.GetRecordsType#getAbstractQueryGroup <em>Abstract Query Group</em>}</li>
- *   <li>{@link net.opengis.cat.csw20.GetRecordsType#getAbstractQuery <em>Abstract Query</em>}</li>
  *   <li>{@link net.opengis.cat.csw20.GetRecordsType#getAny <em>Any</em>}</li>
  *   <li>{@link net.opengis.cat.csw20.GetRecordsType#getMaxRecords <em>Max Records</em>}</li>
  *   <li>{@link net.opengis.cat.csw20.GetRecordsType#getOutputFormat <em>Output Format</em>}</li>
@@ -41,6 +39,7 @@ import org.eclipse.emf.ecore.util.FeatureMap;
  *   <li>{@link net.opengis.cat.csw20.GetRecordsType#getRequestId <em>Request Id</em>}</li>
  *   <li>{@link net.opengis.cat.csw20.GetRecordsType#getResultType <em>Result Type</em>}</li>
  *   <li>{@link net.opengis.cat.csw20.GetRecordsType#getStartPosition <em>Start Position</em>}</li>
+ *   <li>{@link net.opengis.cat.csw20.GetRecordsType#getQuery <em>Query</em>}</li>
  * </ul>
  * </p>
  *
@@ -104,23 +103,6 @@ public interface GetRecordsType extends RequestBaseType {
     void setResponseHandler(String value);
 
     /**
-     * Returns the value of the '<em><b>Abstract Query Group</b></em>' attribute list.
-     * The list contents are of type {@link org.eclipse.emf.ecore.util.FeatureMap.Entry}.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Abstract Query Group</em>' attribute list isn't clear,
-     * there really should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * @return the value of the '<em>Abstract Query Group</em>' attribute list.
-     * @see net.opengis.cat.csw20.Csw20Package#getGetRecordsType_AbstractQueryGroup()
-     * @model dataType="org.eclipse.emf.ecore.EFeatureMapEntry" many="false"
-     *        extendedMetaData="kind='group' name='AbstractQuery:group' namespace='##targetNamespace'"
-     * @generated
-     */
-    FeatureMap getAbstractQueryGroup();
-
-    /**
      * Returns the value of the '<em><b>Abstract Query</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <p>
@@ -130,11 +112,19 @@ public interface GetRecordsType extends RequestBaseType {
      * <!-- end-user-doc -->
      * @return the value of the '<em>Abstract Query</em>' containment reference.
      * @see net.opengis.cat.csw20.Csw20Package#getGetRecordsType_AbstractQuery()
-     * @model containment="true" transient="true" changeable="false" volatile="true" derived="true"
-     *        extendedMetaData="kind='element' name='AbstractQuery' namespace='##targetNamespace' group='AbstractQuery:group'"
+     * @model 
+     */
+    Object getQuery();
+
+    /**
+     * Sets the value of the '{@link net.opengis.cat.csw20.GetRecordsType#getQuery <em>Query</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Query</em>' attribute.
+     * @see #getQuery()
      * @generated
      */
-    AbstractQueryType getAbstractQuery();
+    void setQuery(Object value);
 
     /**
      * Returns the value of the '<em><b>Any</b></em>' attribute list.

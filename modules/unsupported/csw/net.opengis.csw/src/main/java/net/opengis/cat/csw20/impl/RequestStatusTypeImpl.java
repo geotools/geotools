@@ -115,7 +115,7 @@ public class RequestStatusTypeImpl extends EObjectImpl implements RequestStatusT
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Csw20Package.REQUEST_STATUS_TYPE__TIMESTAMP:
-                setTimestamp((XMLGregorianCalendar)newValue);
+                setTimestamp((XMLGregorianCalendar) newValue);
                 return;
         }
         super.eSet(featureID, newValue);

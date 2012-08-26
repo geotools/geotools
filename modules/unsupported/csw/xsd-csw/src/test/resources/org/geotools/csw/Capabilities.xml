@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ========================================================================
+* Topic:           Capabilities document for the CSW 2.0.2 AP ISO 1.0 Catalogue Service terraCatalog 2.2                           *
+* Last update:  26.06.2007                                                                                                           *
+* Author:          con terra GmbH						                                                                             *
+=========================================================================== -->
+<csw:Capabilities version="2.0.2" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xsi:schemaLocation="http://www.opengis.net/cat/csw/2.0.2 ../../../../csw/2.0.2/CSW-discovery.xsd" xmlns:gml="http://www.opengis.net/gml" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:ows="http://www.opengis.net/ows" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<ows:ServiceIdentification>
+		<ows:Title>con terra GmbH Catalogue Server</ows:Title>
+		<ows:Abstract>
+        terraCatalog 2.1 - Web based Catalogue Service 
+        (CS-W 2.0.0/AP ISO19115/19 0.9.3 (DE-Profil 1.0.1)) for service, datasets and applications      
+        </ows:Abstract>
+		<ows:Keywords>
+			<ows:Keyword>CS-W</ows:Keyword>
+			<ows:Keyword>ISO19119</ows:Keyword>
+			<ows:Keyword>ISO19115</ows:Keyword>
+			<ows:Keyword>con terra</ows:Keyword>
+			<ows:Keyword>Catalog Service</ows:Keyword>
+			<ows:Keyword>metadata</ows:Keyword>
+			<ows:Type codeSpace="http://www.conterra.de">theme</ows:Type>
+		</ows:Keywords>
+		<ows:ServiceType>CSW</ows:ServiceType>
+		<ows:ServiceTypeVersion>2.0.0</ows:ServiceTypeVersion>
+		<ows:ServiceTypeVersion>2.0.2</ows:ServiceTypeVersion>
+	</ows:ServiceIdentification>
+	<ows:ServiceProvider>
+		<ows:ProviderName>con terra GmbH</ows:ProviderName>
+		<ows:ProviderSite xlink:type="simple" xlink:href="http://www.conterra.de"/>
+		<ows:ServiceContact>
+			<ows:IndividualName/>
+			<ows:PositionName/>
+			<ows:ContactInfo>
+				<ows:Phone>
+					<ows:Voice>+49-251-7474-400</ows:Voice>
+					<ows:Facsimile>+49-251-7474-100</ows:Facsimile>
+				</ows:Phone>
+				<ows:Address>
+					<ows:DeliveryPoint>Marting-Luther-King-Weg 24</ows:DeliveryPoint>
+					<ows:City>Muenster</ows:City>
+					<ows:AdministrativeArea>NRW</ows:AdministrativeArea>
+					<ows:PostalCode>48165</ows:PostalCode>
+					<ows:Country>Germany</ows:Country>
+					<ows:ElectronicMailAddress>conterra@conterra.de</ows:ElectronicMailAddress>
+				</ows:Address>
+				<ows:OnlineResource xlink:href="mailto:conterra@conterra.de"/>
+			</ows:ContactInfo>
+		</ows:ServiceContact>
+	</ows:ServiceProvider>
+	<ows:OperationsMetadata>
+		<ows:Operation name="GetRecords">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Post xlink:href="http://tc22-test:9090/soapService/services/CSWDiscovery"/>
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="TypeName">
+				<ows:Value>gmd:MD_Metadata</ows:Value>
+				<ows:Value>csw:Record</ows:Value>
+			</ows:Parameter>
+			<ows:Parameter name="outputFormat">
+				<ows:Value>text/xml</ows:Value>
+				<ows:Value>application/xml</ows:Value>
+			</ows:Parameter>
+			<ows:Parameter name="outputSchema">
+				<ows:Value>http://www.opengis.net/cat/csw/2.0.2</ows:Value>
+				<ows:Value>http://www.isotc211.org/2005/gmd</ows:Value>
+			</ows:Parameter>
+			<ows:Parameter name="resultType">
+				<ows:Value>hits</ows:Value>
+				<ows:Value>results</ows:Value>
+				<ows:Value>validate</ows:Value>
+			</ows:Parameter>
+			<ows:Parameter name="ElementSetName">
+				<ows:Value>brief</ows:Value>
+				<ows:Value>summary</ows:Value>
+				<ows:Value>full</ows:Value>
+			</ows:Parameter>
+			<ows:Parameter name="CONSTRAINTLANGUAGE">
+				<ows:Value>Filter</ows:Value>
+				<ows:Value>CQL</ows:Value>
+			</ows:Parameter>
+			<ows:Constraint name="SupportedISOQueryables">
+				<ows:Value>RevisionDate</ows:Value>
+				<ows:Value>AlternateTitle</ows:Value>
+				<ows:Value>CreationDate</ows:Value>
+				<ows:Value>PublicationDate</ows:Value>
+				<ows:Value>OrganisationName</ows:Value>
+				<ows:Value>HasSecurityConstraints</ows:Value>
+				<ows:Value>Language</ows:Value>
+				<ows:Value>ResourceIdentifier</ows:Value>
+				<ows:Value>ParentIdentifier</ows:Value>
+				<ows:Value>KeywordType</ows:Value>
+				<ows:Value>TopicCategory</ows:Value>
+				<ows:Value>ResourceLanguage</ows:Value>
+				<ows:Value>GeographicDescriptionCode</ows:Value>
+				<ows:Value>DistanceValue</ows:Value>
+				<ows:Value>DistanceUOM</ows:Value>
+				<ows:Value>TempExtent_begin</ows:Value>
+				<ows:Value>TempExtent_end</ows:Value>
+				<ows:Value>ServiceType</ows:Value>
+				<ows:Value>ServiceTypeVersion</ows:Value>
+				<ows:Value>Operation</ows:Value>
+				<ows:Value>CouplingType</ows:Value>
+				<ows:Value>OperatesOn</ows:Value>
+				<ows:Value>Denominator</ows:Value>
+				<ows:Value>OperatesOnIdentifier</ows:Value>
+				<ows:Value>OperatesOnWithOpName</ows:Value>
+			</ows:Constraint>
+			<ows:Constraint name="AdditionalQueryables">
+				<ows:Value>HierarchyLevelName</ows:Value>
+			</ows:Constraint>
+		</ows:Operation>
+		<ows:Operation name="GetRecordById">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Post xlink:href="http://tc22-test:9090/soapService/services/CSWDiscovery"/>
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="ElementSetName">
+				<ows:Value>brief</ows:Value>
+				<ows:Value>summary</ows:Value>
+				<ows:Value>full</ows:Value>
+			</ows:Parameter>
+		</ows:Operation>
+		<ows:Operation name="DescribeRecord">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Post xlink:href="http://tc22-test:9090/soapService/services/CSWDiscovery"/>
+				</ows:HTTP>
+			</ows:DCP>
+		</ows:Operation>
+		<ows:Operation name="GetDomain">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Post xlink:href="http://tc22-test:9090/soapService/services/CSWDiscovery"/>
+				</ows:HTTP>
+			</ows:DCP>
+		</ows:Operation>
+		<ows:Operation name="Transaction">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Post xlink:href="http://tc22-test:9090/soapService/services/CSWManager"/>
+				</ows:HTTP>
+			</ows:DCP>
+		</ows:Operation>
+		<ows:Operation name="Harvest">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Post xlink:href="http://tc22-test:9090/soapService/services/CSWManager"/>
+				</ows:HTTP>
+			</ows:DCP>
+		</ows:Operation>
+	</ows:OperationsMetadata>
+	<ogc:Filter_Capabilities>
+		<ogc:Spatial_Capabilities>
+			<ogc:GeometryOperands>
+				<ogc:GeometryOperand>gml:Envelope</ogc:GeometryOperand>
+				<ogc:GeometryOperand>gml:Point</ogc:GeometryOperand>
+				<ogc:GeometryOperand>gml:LineString</ogc:GeometryOperand>
+				<ogc:GeometryOperand>gml:Polygon</ogc:GeometryOperand>
+			</ogc:GeometryOperands>
+			<ogc:SpatialOperators>
+				<ogc:SpatialOperator name="BBOX"/>
+				<ogc:SpatialOperator name="Beyond"/>
+				<ogc:SpatialOperator name="Contains"/>
+				<ogc:SpatialOperator name="Crosses"/>
+				<ogc:SpatialOperator name="Disjoint"/>
+				<ogc:SpatialOperator name="DWithin"/>
+				<ogc:SpatialOperator name="Equals"/>
+				<ogc:SpatialOperator name="Intersects"/>
+				<ogc:SpatialOperator name="Overlaps"/>
+				<ogc:SpatialOperator name="Touches"/>
+				<ogc:SpatialOperator name="Within"/>
+			</ogc:SpatialOperators>
+		</ogc:Spatial_Capabilities>
+		<ogc:Scalar_Capabilities>
+			<ogc:LogicalOperators/>
+			<ogc:ComparisonOperators>
+				<ogc:ComparisonOperator>Between</ogc:ComparisonOperator>
+				<ogc:ComparisonOperator>EqualTo</ogc:ComparisonOperator>
+				<ogc:ComparisonOperator>GreaterThan</ogc:ComparisonOperator>
+				<ogc:ComparisonOperator>GreaterThanEqualTo</ogc:ComparisonOperator>
+				<ogc:ComparisonOperator>LessThan</ogc:ComparisonOperator>
+				<ogc:ComparisonOperator>LessThanEqualTo</ogc:ComparisonOperator>
+				<ogc:ComparisonOperator>Like</ogc:ComparisonOperator>
+				<ogc:ComparisonOperator>NotEqualTo</ogc:ComparisonOperator>
+				<ogc:ComparisonOperator>NullCheck</ogc:ComparisonOperator>
+			</ogc:ComparisonOperators>
+		</ogc:Scalar_Capabilities>
+		<ogc:Id_Capabilities>
+			<ogc:FID/>
+		</ogc:Id_Capabilities>
+	</ogc:Filter_Capabilities>
+</csw:Capabilities>

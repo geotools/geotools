@@ -24,9 +24,13 @@ import javax.xml.namespace.QName;
 
 import net.opengis.cat.csw20.Csw20Factory;
 
+import org.geotools.csw.bindings.ElementSetNameTypeBinding;
+import org.geotools.csw.bindings.ElementSetTypeBinding;
+import org.geotools.csw.bindings.TypeNameListTypeBinding;
 import org.geotools.ows.OWSConfiguration;
 import org.geotools.xml.ComplexEMFBinding;
 import org.geotools.xml.Configuration;
+import org.geotools.xml.SimpleContentComplexEMFBinding;
 import org.picocontainer.MutablePicoContainer;
 
 /**
@@ -68,8 +72,8 @@ public class CSWConfiguration extends Configuration {
         bindings.put(CSW.DistributedSearchType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.DistributedSearchType));
         bindings.put(CSW.DomainValuesType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.DomainValuesType));
         bindings.put(CSW.EchoedRequestType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.EchoedRequestType));
-        bindings.put(CSW.ElementSetNameType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.ElementSetNameType));
-        bindings.put(CSW.ElementSetType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.ElementSetType));
+        bindings.put(CSW.ElementSetNameType, new ElementSetNameTypeBinding());
+        bindings.put(CSW.ElementSetType, new ElementSetTypeBinding());
         bindings.put(CSW.EmptyType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.EmptyType));
         bindings.put(CSW.GetCapabilitiesType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetCapabilitiesType));
         bindings.put(CSW.GetDomainResponseType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetDomainResponseType));
@@ -97,7 +101,7 @@ public class CSWConfiguration extends Configuration {
         bindings.put(CSW.TransactionResponseType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.TransactionResponseType));
         bindings.put(CSW.TransactionSummaryType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.TransactionSummaryType));
         bindings.put(CSW.TransactionType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.TransactionType));
-        bindings.put(CSW.TypeNameListType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.TypeNameListType));
+        bindings.put(CSW.TypeNameListType, new TypeNameListTypeBinding());
         /**
         bindings.put(CSW.UpdateType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.UpdateType));
         bindings.put(CSW.AbstractQuery, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.AbstractQuery));

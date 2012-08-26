@@ -45,5 +45,6 @@
 
   <modules>
     <module>net.opengis.csw</module>
+    <module>xsd-csw</module>
   </modules>
 </project>

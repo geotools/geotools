@@ -1,13 +1,38 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2012, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.csw;
 
-import org.eclipse.xsd.util.XSDSchemaLocationResolver;	
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.Map;
+
+import javax.xml.namespace.QName;
+
+import net.opengis.cat.csw20.Csw20Factory;
+
+import org.geotools.ows.OWSConfiguration;
+import org.geotools.xml.ComplexEMFBinding;
 import org.geotools.xml.Configuration;
 import org.picocontainer.MutablePicoContainer;
 
 /**
  * Parser configuration for the http://www.opengis.net/cat/csw/2.0.2 schema.
- *
- * @generated
+ * 
+ * @author Andrea Aime - GeoSolutions
  */
 public class CSWConfiguration extends Configuration {
 
@@ -15,66 +40,107 @@ public class CSWConfiguration extends Configuration {
      * Creates a new configuration.
      * 
      * @generated
-     */     
+     */
     public CSWConfiguration() {
-       super(CSW.getInstance());
-       
-       //TODO: add dependencies here
+        super(CSW.getInstance());
+
+        // add dependencies on OWS 1.0 and Filter 1.1
+        addDependency(new OWSConfiguration());
     }
-    
+
     /**
      * Registers the bindings for the configuration.
-     *
+     * 
      * @generated
      */
-    protected final void registerBindings( MutablePicoContainer container ) {
-        //Types
-        container.registerComponentImplementation(CSW.AbstractQueryType,AbstractQueryTypeBinding.class);
-        container.registerComponentImplementation(CSW.AbstractRecordType,AbstractRecordTypeBinding.class);
-        container.registerComponentImplementation(CSW.AcknowledgementType,AcknowledgementTypeBinding.class);
-        container.registerComponentImplementation(CSW.BriefRecordType,BriefRecordTypeBinding.class);
-        container.registerComponentImplementation(CSW.CapabilitiesType,CapabilitiesTypeBinding.class);
-        container.registerComponentImplementation(CSW.ConceptualSchemeType,ConceptualSchemeTypeBinding.class);
-        container.registerComponentImplementation(CSW.DCMIRecordType,DCMIRecordTypeBinding.class);
-        container.registerComponentImplementation(CSW.DeleteType,DeleteTypeBinding.class);
-        container.registerComponentImplementation(CSW.DescribeRecordResponseType,DescribeRecordResponseTypeBinding.class);
-        container.registerComponentImplementation(CSW.DescribeRecordType,DescribeRecordTypeBinding.class);
-        container.registerComponentImplementation(CSW.DistributedSearchType,DistributedSearchTypeBinding.class);
-        container.registerComponentImplementation(CSW.DomainValuesType,DomainValuesTypeBinding.class);
-        container.registerComponentImplementation(CSW.EchoedRequestType,EchoedRequestTypeBinding.class);
-        container.registerComponentImplementation(CSW.ElementSetNameType,ElementSetNameTypeBinding.class);
-        container.registerComponentImplementation(CSW.ElementSetType,ElementSetTypeBinding.class);
-        container.registerComponentImplementation(CSW.EmptyType,EmptyTypeBinding.class);
-        container.registerComponentImplementation(CSW.GetCapabilitiesType,GetCapabilitiesTypeBinding.class);
-        container.registerComponentImplementation(CSW.GetDomainResponseType,GetDomainResponseTypeBinding.class);
-        container.registerComponentImplementation(CSW.GetDomainType,GetDomainTypeBinding.class);
-        container.registerComponentImplementation(CSW.GetRecordByIdResponseType,GetRecordByIdResponseTypeBinding.class);
-        container.registerComponentImplementation(CSW.GetRecordByIdType,GetRecordByIdTypeBinding.class);
-        container.registerComponentImplementation(CSW.GetRecordsResponseType,GetRecordsResponseTypeBinding.class);
-        container.registerComponentImplementation(CSW.GetRecordsType,GetRecordsTypeBinding.class);
-        container.registerComponentImplementation(CSW.HarvestResponseType,HarvestResponseTypeBinding.class);
-        container.registerComponentImplementation(CSW.HarvestType,HarvestTypeBinding.class);
-        container.registerComponentImplementation(CSW.InsertResultType,InsertResultTypeBinding.class);
-        container.registerComponentImplementation(CSW.InsertType,InsertTypeBinding.class);
-        container.registerComponentImplementation(CSW.ListOfValuesType,ListOfValuesTypeBinding.class);
-        container.registerComponentImplementation(CSW.QueryConstraintType,QueryConstraintTypeBinding.class);
-        container.registerComponentImplementation(CSW.QueryType,QueryTypeBinding.class);
-        container.registerComponentImplementation(CSW.RangeOfValuesType,RangeOfValuesTypeBinding.class);
-        container.registerComponentImplementation(CSW.RecordPropertyType,RecordPropertyTypeBinding.class);
-        container.registerComponentImplementation(CSW.RecordType,RecordTypeBinding.class);
-        container.registerComponentImplementation(CSW.RequestBaseType,RequestBaseTypeBinding.class);
-        container.registerComponentImplementation(CSW.RequestStatusType,RequestStatusTypeBinding.class);
-        container.registerComponentImplementation(CSW.ResultType,ResultTypeBinding.class);
-        container.registerComponentImplementation(CSW.SchemaComponentType,SchemaComponentTypeBinding.class);
-        container.registerComponentImplementation(CSW.SearchResultsType,SearchResultsTypeBinding.class);
-        container.registerComponentImplementation(CSW.SummaryRecordType,SummaryRecordTypeBinding.class);
-        container.registerComponentImplementation(CSW.TransactionResponseType,TransactionResponseTypeBinding.class);
-        container.registerComponentImplementation(CSW.TransactionSummaryType,TransactionSummaryTypeBinding.class);
-        container.registerComponentImplementation(CSW.TransactionType,TransactionTypeBinding.class);
-        container.registerComponentImplementation(CSW.TypeNameListType,TypeNameListTypeBinding.class);
-        container.registerComponentImplementation(CSW.UpdateType,UpdateTypeBinding.class);
-
-
-    
+    protected void registerBindings(Map bindings) {
+        // generated code, see the main method
+        bindings.put(CSW.AbstractQueryType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.AbstractQueryType));
+        bindings.put(CSW.AbstractRecordType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.AbstractRecordType));
+        bindings.put(CSW.AcknowledgementType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.AcknowledgementType));
+        bindings.put(CSW.BriefRecordType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.BriefRecordType));
+        bindings.put(CSW.CapabilitiesType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.CapabilitiesType));
+        bindings.put(CSW.ConceptualSchemeType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.ConceptualSchemeType));
+        bindings.put(CSW.DCMIRecordType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.DCMIRecordType));
+        bindings.put(CSW.DeleteType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.DeleteType));
+        bindings.put(CSW.DescribeRecordResponseType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.DescribeRecordResponseType));
+        bindings.put(CSW.DescribeRecordType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.DescribeRecordType));
+        bindings.put(CSW.DistributedSearchType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.DistributedSearchType));
+        bindings.put(CSW.DomainValuesType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.DomainValuesType));
+        bindings.put(CSW.EchoedRequestType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.EchoedRequestType));
+        bindings.put(CSW.ElementSetNameType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.ElementSetNameType));
+        bindings.put(CSW.ElementSetType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.ElementSetType));
+        bindings.put(CSW.EmptyType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.EmptyType));
+        bindings.put(CSW.GetCapabilitiesType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetCapabilitiesType));
+        bindings.put(CSW.GetDomainResponseType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetDomainResponseType));
+        bindings.put(CSW.GetDomainType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetDomainType));
+        bindings.put(CSW.GetRecordByIdResponseType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetRecordByIdResponseType));
+        bindings.put(CSW.GetRecordByIdType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetRecordByIdType));
+        bindings.put(CSW.GetRecordsResponseType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetRecordsResponseType));
+        bindings.put(CSW.GetRecordsType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetRecordsType));
+        bindings.put(CSW.HarvestResponseType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.HarvestResponseType));
+        bindings.put(CSW.HarvestType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.HarvestType));
+        bindings.put(CSW.InsertResultType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.InsertResultType));
+        bindings.put(CSW.InsertType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.InsertType));
+        bindings.put(CSW.ListOfValuesType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.ListOfValuesType));
+        bindings.put(CSW.QueryConstraintType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.QueryConstraintType));
+        bindings.put(CSW.QueryType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.QueryType));
+        bindings.put(CSW.RangeOfValuesType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.RangeOfValuesType));
+        bindings.put(CSW.RecordPropertyType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.RecordPropertyType));
+        bindings.put(CSW.RecordType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.RecordType));
+        bindings.put(CSW.RequestBaseType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.RequestBaseType));
+        bindings.put(CSW.RequestStatusType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.RequestStatusType));
+        bindings.put(CSW.ResultType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.ResultType));
+        bindings.put(CSW.SchemaComponentType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.SchemaComponentType));
+        bindings.put(CSW.SearchResultsType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.SearchResultsType));
+        bindings.put(CSW.SummaryRecordType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.SummaryRecordType));
+        bindings.put(CSW.TransactionResponseType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.TransactionResponseType));
+        bindings.put(CSW.TransactionSummaryType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.TransactionSummaryType));
+        bindings.put(CSW.TransactionType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.TransactionType));
+        bindings.put(CSW.TypeNameListType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.TypeNameListType));
+        /**
+        bindings.put(CSW.UpdateType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.UpdateType));
+        bindings.put(CSW.AbstractQuery, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.AbstractQuery));
+        bindings.put(CSW.AbstractRecord, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.AbstractRecord));
+        bindings.put(CSW.Acknowledgement, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.Acknowledgement));
+        bindings.put(CSW.BriefRecord, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.BriefRecord));
+        bindings.put(CSW.Capabilities, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.Capabilities));
+        bindings.put(CSW.Constraint, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.Constraint));
+        bindings.put(CSW.DCMIRecord, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.DCMIRecord));
+        bindings.put(CSW.DescribeRecord, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.DescribeRecord));
+        bindings.put(CSW.DescribeRecordResponse, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.DescribeRecordResponse));
+        bindings.put(CSW.ElementSetName, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.ElementSetName));
+        bindings.put(CSW.GetCapabilities, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetCapabilities));
+        bindings.put(CSW.GetDomain, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetDomain));
+        bindings.put(CSW.GetDomainResponse, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetDomainResponse));
+        bindings.put(CSW.GetRecordById, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetRecordById));
+        bindings.put(CSW.GetRecordByIdResponse, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetRecordByIdResponse));
+        bindings.put(CSW.GetRecords, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetRecords));
+        bindings.put(CSW.GetRecordsResponse, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetRecordsResponse));
+        bindings.put(CSW.Harvest, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.Harvest));
+        bindings.put(CSW.HarvestResponse, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.HarvestResponse));
+        bindings.put(CSW.Query, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.Query));
+        bindings.put(CSW.Record, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.Record));
+        bindings.put(CSW.RecordProperty, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.RecordProperty));
+        bindings.put(CSW.SummaryRecord, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.SummaryRecord));
+        bindings.put(CSW.Transaction, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.Transaction));
+        bindings.put(CSW.TransactionResponse, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.TransactionResponse));
+        **/
     }
-} 
+    
+    protected void configureContext(MutablePicoContainer container) {
+        container.registerComponentInstance(Csw20Factory.eINSTANCE);
+    }
+
+    /**
+     * Generates the bindings registrations for this class
+     * @param args
+     */
+    public static void main(String[] args) {
+        for(Field f : CSW.class.getFields()) {
+            if((f.getModifiers() & (Modifier.STATIC | Modifier.FINAL)) != 0 && f.getType().equals(QName.class)) {
+                System.out.println("bindings.put(CSW." + f.getName() + ", new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW."  + f.getName() + "));");
+            }
+        }
+    }
+}

@@ -23,6 +23,10 @@
     <genDataTypes ecoreDataType="csw20.ecore#//ServiceType_1"/>
     <genDataTypes ecoreDataType="csw20.ecore#//VersionType"/>
     <genDataTypes ecoreDataType="csw20.ecore#//Calendar"/>
+    <genDataTypes ecoreDataType="csw20.ecore#//Set">
+      <genTypeParameters ecoreTypeParameter="csw20.ecore#//Set/T"/>
+    </genDataTypes>
+    <genDataTypes ecoreDataType="csw20.ecore#//URI"/>
     <genClasses image="false" ecoreClass="csw20.ecore#//AbstractQueryType"/>
     <genClasses image="false" ecoreClass="csw20.ecore#//AbstractRecordType"/>
     <genClasses ecoreClass="csw20.ecore#//AcknowledgementType">
@@ -31,10 +35,10 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//AcknowledgementType/timeStamp"/>
     </genClasses>
     <genClasses ecoreClass="csw20.ecore#//BriefRecordType">
-      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference csw20.ecore#//BriefRecordType/identifier"/>
-      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference csw20.ecore#//BriefRecordType/title"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference csw20.ecore#//BriefRecordType/identifier"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference csw20.ecore#//BriefRecordType/title"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//BriefRecordType/type"/>
-      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference csw20.ecore#//BriefRecordType/boundingBox"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//BriefRecordType/boundingBox"/>
     </genClasses>
     <genClasses ecoreClass="csw20.ecore#//CapabilitiesType">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//CapabilitiesType/filterCapabilities"/>
@@ -214,7 +218,7 @@
     </genClasses>
     <genClasses ecoreClass="csw20.ecore#//RecordType">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//RecordType/anyText"/>
-      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference csw20.ecore#//RecordType/boundingBox"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//RecordType/boundingBox"/>
     </genClasses>
     <genClasses ecoreClass="csw20.ecore#//SimpleLiteral">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//SimpleLiteral/value"/>

@@ -7,6 +7,9 @@
 package net.opengis.cat.csw20;
 
 import java.lang.String;
+import java.net.URI;
+import org.eclipse.emf.common.util.EList;
+import java.util.List;
 
 /**
  * <!-- begin-user-doc -->
@@ -47,23 +50,10 @@ public interface GetRecordByIdType extends RequestBaseType {
      * </p>
      * <!-- end-user-doc -->
      * @return the value of the '<em>Id</em>' attribute.
-     * @see #setId(String)
      * @see net.opengis.cat.csw20.Csw20Package#getGetRecordByIdType_Id()
-     * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.AnyURI" required="true"
-     *        extendedMetaData="kind='element' name='Id' namespace='##targetNamespace'"
-     * @generated
+     * @model  
      */
-    String getId();
-
-    /**
-     * Sets the value of the '{@link net.opengis.cat.csw20.GetRecordByIdType#getId <em>Id</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Id</em>' attribute.
-     * @see #getId()
-     * @generated
-     */
-    void setId(String value);
+    EList<URI> getId();
 
     /**
      * Returns the value of the '<em><b>Element Set Name</b></em>' containment reference.

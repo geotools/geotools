@@ -11,6 +11,7 @@ import java.lang.String;
 import java.util.Calendar;
 import java.util.List;
 
+import java.util.Set;
 import net.opengis.cat.csw20.AbstractQueryType;
 import net.opengis.cat.csw20.AbstractRecordType;
 import net.opengis.cat.csw20.AcknowledgementType;
@@ -63,6 +64,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
+import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -454,6 +456,20 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * @generated
      */
     private EDataType calendarEDataType = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EDataType setEDataType = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EDataType uriEDataType = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -2135,6 +2151,24 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EDataType getSet() {
+        return setEDataType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EDataType getURI() {
+        return uriEDataType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public Csw20Factory getCsw20Factory() {
         return (Csw20Factory)getEFactoryInstance();
     }
@@ -2385,6 +2419,8 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         serviceType_1EDataType = createEDataType(SERVICE_TYPE_1);
         versionTypeEDataType = createEDataType(VERSION_TYPE);
         calendarEDataType = createEDataType(CALENDAR);
+        setEDataType = createEDataType(SET);
+        uriEDataType = createEDataType(URI);
     }
 
     /**
@@ -2416,6 +2452,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 
         // Create type parameters
+        addETypeParameter(setEDataType, "T");
 
         // Set bounds for type parameters
 
@@ -2503,7 +2540,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         initEAttribute(getGetDomainType_ParameterName(), theXMLTypePackage.getAnyURI(), "parameterName", null, 0, 1, GetDomainType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(getRecordByIdTypeEClass, GetRecordByIdType.class, "GetRecordByIdType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getGetRecordByIdType_Id(), theXMLTypePackage.getAnyURI(), "id", null, 1, 1, GetRecordByIdType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getGetRecordByIdType_Id(), this.getURI(), "id", null, 0, -1, GetRecordByIdType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getGetRecordByIdType_ElementSetName(), this.getElementSetNameType(), null, "elementSetName", null, 0, 1, GetRecordByIdType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getGetRecordByIdType_OutputFormat(), theXMLTypePackage.getString(), "outputFormat", "application/xml", 0, 1, GetRecordByIdType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getGetRecordByIdType_OutputSchema(), theXMLTypePackage.getAnyURI(), "outputSchema", null, 0, 1, GetRecordByIdType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2669,6 +2706,8 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         initEDataType(serviceType_1EDataType, String.class, "ServiceType_1", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(versionTypeEDataType, String.class, "VersionType", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(calendarEDataType, Calendar.class, "Calendar", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(setEDataType, Set.class, "Set", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(uriEDataType, java.net.URI.class, "URI", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
         // Create resource
         createResource(eNS_URI);
@@ -3036,14 +3075,6 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
              "name", "GetRecordByIdType",
              "kind", "elementOnly"
            });			
-        addAnnotation
-          (getGetRecordByIdType_Id(), 
-           source, 
-           new String[] {
-             "kind", "element",
-             "name", "Id",
-             "namespace", "##targetNamespace"
-           });		
         addAnnotation
           (getGetRecordByIdType_ElementSetName(), 
            source, 

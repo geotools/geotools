@@ -895,7 +895,7 @@ public interface Csw20Package extends EPackage {
     int GET_RECORD_BY_ID_TYPE__VERSION = REQUEST_BASE_TYPE__VERSION;
 
     /**
-     * The feature id for the '<em><b>Id</b></em>' attribute.
+     * The feature id for the '<em><b>Id</b></em>' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -2362,6 +2362,28 @@ public interface Csw20Package extends EPackage {
 
 
     /**
+     * The meta object id for the '<em>Set</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see java.util.Set
+     * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getSet()
+     * @generated
+     */
+    int SET = 53;
+
+
+    /**
+     * The meta object id for the '<em>URI</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see java.net.URI
+     * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getURI()
+     * @generated
+     */
+    int URI = 54;
+
+
+    /**
      * Returns the meta object for class '{@link net.opengis.cat.csw20.AbstractQueryType <em>Abstract Query Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2905,10 +2927,10 @@ public interface Csw20Package extends EPackage {
     EClass getGetRecordByIdType();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.cat.csw20.GetRecordByIdType#getId <em>Id</em>}'.
+     * Returns the meta object for the attribute list '{@link net.opengis.cat.csw20.GetRecordByIdType#getId <em>Id</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Id</em>'.
+     * @return the meta object for the attribute list '<em>Id</em>'.
      * @see net.opengis.cat.csw20.GetRecordByIdType#getId()
      * @see #getGetRecordByIdType()
      * @generated
@@ -4288,6 +4310,28 @@ public interface Csw20Package extends EPackage {
     EDataType getCalendar();
 
     /**
+     * Returns the meta object for data type '{@link java.util.Set <em>Set</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for data type '<em>Set</em>'.
+     * @see java.util.Set
+     * @model instanceClass="java.util.Set" typeParameters="T"
+     * @generated
+     */
+    EDataType getSet();
+
+    /**
+     * Returns the meta object for data type '{@link java.net.URI <em>URI</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for data type '<em>URI</em>'.
+     * @see java.net.URI
+     * @model instanceClass="java.net.URI"
+     * @generated
+     */
+    EDataType getURI();
+
+    /**
      * Returns the factory that creates the instances of the model.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4754,7 +4798,7 @@ public interface Csw20Package extends EPackage {
         EClass GET_RECORD_BY_ID_TYPE = eINSTANCE.getGetRecordByIdType();
 
         /**
-         * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Id</b></em>' attribute list feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
@@ -5846,6 +5890,26 @@ public interface Csw20Package extends EPackage {
          * @generated
          */
         EDataType CALENDAR = eINSTANCE.getCalendar();
+
+        /**
+         * The meta object literal for the '<em>Set</em>' data type.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see java.util.Set
+         * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getSet()
+         * @generated
+         */
+        EDataType SET = eINSTANCE.getSet();
+
+        /**
+         * The meta object literal for the '<em>URI</em>' data type.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see java.net.URI
+         * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getURI()
+         * @generated
+         */
+        EDataType URI = eINSTANCE.getURI();
 
     }
 

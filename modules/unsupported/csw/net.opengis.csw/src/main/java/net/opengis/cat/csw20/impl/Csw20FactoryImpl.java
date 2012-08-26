@@ -6,9 +6,11 @@
  */
 package net.opengis.cat.csw20.impl;
 
+import java.net.URI;
 import java.util.Calendar;
 import java.util.List;
 
+import java.util.Set;
 import net.opengis.cat.csw20.AcknowledgementType;
 import net.opengis.cat.csw20.BriefRecordType;
 import net.opengis.cat.csw20.CapabilitiesType;
@@ -172,6 +174,10 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
                 return createVersionTypeFromString(eDataType, initialValue);
             case Csw20Package.CALENDAR:
                 return createCalendarFromString(eDataType, initialValue);
+            case Csw20Package.SET:
+                return createSetFromString(eDataType, initialValue);
+            case Csw20Package.URI:
+                return createURIFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -201,6 +207,10 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
                 return convertVersionTypeToString(eDataType, instanceValue);
             case Csw20Package.CALENDAR:
                 return convertCalendarToString(eDataType, instanceValue);
+            case Csw20Package.SET:
+                return convertSetToString(eDataType, instanceValue);
+            case Csw20Package.URI:
+                return convertURIToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -733,6 +743,42 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * @generated
      */
     public String convertCalendarToString(EDataType eDataType, Object instanceValue) {
+        return super.convertToString(eDataType, instanceValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public Set<?> createSetFromString(EDataType eDataType, String initialValue) {
+        return (Set<?>)super.createFromString(initialValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertSetToString(EDataType eDataType, Object instanceValue) {
+        return super.convertToString(instanceValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public URI createURIFromString(EDataType eDataType, String initialValue) {
+        return (URI)super.createFromString(eDataType, initialValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertURIToString(EDataType eDataType, Object instanceValue) {
         return super.convertToString(eDataType, instanceValue);
     }
 

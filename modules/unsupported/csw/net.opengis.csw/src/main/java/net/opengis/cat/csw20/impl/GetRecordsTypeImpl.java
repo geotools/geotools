@@ -10,7 +10,6 @@ import java.lang.String;
 
 import java.math.BigInteger;
 
-import net.opengis.cat.csw20.AbstractQueryType;
 import net.opengis.cat.csw20.Csw20Package;
 import net.opengis.cat.csw20.DistributedSearchType;
 import net.opengis.cat.csw20.GetRecordsType;

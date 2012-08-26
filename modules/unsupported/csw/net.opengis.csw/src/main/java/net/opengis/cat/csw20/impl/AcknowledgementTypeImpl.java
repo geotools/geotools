@@ -9,7 +9,6 @@ package net.opengis.cat.csw20.impl;
 import java.lang.String;
 
 import java.util.Calendar;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 import net.opengis.cat.csw20.AcknowledgementType;
 import net.opengis.cat.csw20.Csw20Package;

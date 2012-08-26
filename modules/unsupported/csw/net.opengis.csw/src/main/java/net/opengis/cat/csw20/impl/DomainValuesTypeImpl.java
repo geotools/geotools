@@ -455,7 +455,7 @@ public class DomainValuesTypeImpl extends EObjectImpl implements DomainValuesTyp
                 setRangeOfValues((RangeOfValuesType)newValue);
                 return;
             case Csw20Package.DOMAIN_VALUES_TYPE__TYPE:
-                setType((QName) newValue);
+                setType((QName)newValue);
                 return;
             case Csw20Package.DOMAIN_VALUES_TYPE__UOM:
                 setUom((String)newValue);

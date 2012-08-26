@@ -14,7 +14,7 @@ public class CSWRecordTest {
 
 
     @Test
-    @Ignore /* Fails miserably */
+    @Ignore
     public void testParseGetRecordsEbrimBrief() throws Exception {
         BriefRecordType br = (BriefRecordType) parser.parse(getClass().getResourceAsStream("BriefRecord.xml"));
         assertEquals("00180e67-b7cf-40a3-861d-b3a09337b195", br.getIdentifier().get(0).getValue());

@@ -7,6 +7,8 @@
 package net.opengis.cat.csw20.impl;
 
 import java.lang.String;
+import java.net.URI;
+import java.util.Collection;
 
 import net.opengis.cat.csw20.Csw20Package;
 import net.opengis.cat.csw20.ElementSetNameType;
@@ -14,11 +16,12 @@ import net.opengis.cat.csw20.GetRecordByIdType;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -38,24 +41,14 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class GetRecordByIdTypeImpl extends RequestBaseTypeImpl implements GetRecordByIdType {
     /**
-     * The default value of the '{@link #getId() <em>Id</em>}' attribute.
+     * The cached value of the '{@link #getId() <em>Id</em>}' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @see #getId()
      * @generated
      * @ordered
      */
-    protected static final String ID_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getId()
-     * @generated
-     * @ordered
-     */
-    protected String id = ID_EDEFAULT;
+    protected EList<URI> id;
 
     /**
      * The cached value of the '{@link #getElementSetName() <em>Element Set Name</em>}' containment reference.
@@ -140,20 +133,11 @@ public class GetRecordByIdTypeImpl extends RequestBaseTypeImpl implements GetRec
      * <!-- end-user-doc -->
      * @generated
      */
-    public String getId() {
+    public EList<URI> getId() {
+        if (id == null) {
+            id = new EDataTypeUniqueEList<URI>(URI.class, this, Csw20Package.GET_RECORD_BY_ID_TYPE__ID);
+        }
         return id;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setId(String newId) {
-        String oldId = id;
-        id = newId;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Csw20Package.GET_RECORD_BY_ID_TYPE__ID, oldId, id));
     }
 
     /**
@@ -305,11 +289,13 @@ public class GetRecordByIdTypeImpl extends RequestBaseTypeImpl implements GetRec
      * <!-- end-user-doc -->
      * @generated
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Csw20Package.GET_RECORD_BY_ID_TYPE__ID:
-                setId((String)newValue);
+                getId().clear();
+                getId().addAll((Collection<? extends URI>)newValue);
                 return;
             case Csw20Package.GET_RECORD_BY_ID_TYPE__ELEMENT_SET_NAME:
                 setElementSetName((ElementSetNameType)newValue);
@@ -333,7 +319,7 @@ public class GetRecordByIdTypeImpl extends RequestBaseTypeImpl implements GetRec
     public void eUnset(int featureID) {
         switch (featureID) {
             case Csw20Package.GET_RECORD_BY_ID_TYPE__ID:
-                setId(ID_EDEFAULT);
+                getId().clear();
                 return;
             case Csw20Package.GET_RECORD_BY_ID_TYPE__ELEMENT_SET_NAME:
                 setElementSetName((ElementSetNameType)null);
@@ -357,7 +343,7 @@ public class GetRecordByIdTypeImpl extends RequestBaseTypeImpl implements GetRec
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case Csw20Package.GET_RECORD_BY_ID_TYPE__ID:
-                return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
+                return id != null && !id.isEmpty();
             case Csw20Package.GET_RECORD_BY_ID_TYPE__ELEMENT_SET_NAME:
                 return elementSetName != null;
             case Csw20Package.GET_RECORD_BY_ID_TYPE__OUTPUT_FORMAT:

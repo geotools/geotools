@@ -518,7 +518,7 @@ public class SearchResultsTypeImpl extends EObjectImpl implements SearchResultsT
                 setElementSet((ElementSetType)newValue);
                 return;
             case Csw20Package.SEARCH_RESULTS_TYPE__EXPIRES:
-                setExpires((XMLGregorianCalendar) newValue);
+                setExpires((XMLGregorianCalendar)newValue);
                 return;
             case Csw20Package.SEARCH_RESULTS_TYPE__NEXT_RECORD:
                 setNextRecord((BigInteger)newValue);

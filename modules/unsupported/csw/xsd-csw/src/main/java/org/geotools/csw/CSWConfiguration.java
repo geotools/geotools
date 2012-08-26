@@ -23,14 +23,16 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 
 import net.opengis.cat.csw20.Csw20Factory;
+import net.opengis.cat.csw20.ElementSetType;
+import net.opengis.cat.csw20.ResultType;
 
 import org.geotools.csw.bindings.ElementSetNameTypeBinding;
-import org.geotools.csw.bindings.ElementSetTypeBinding;
 import org.geotools.csw.bindings.TypeNameListTypeBinding;
+import org.geotools.filter.v1_1.OGCConfiguration;
 import org.geotools.ows.OWSConfiguration;
 import org.geotools.xml.ComplexEMFBinding;
 import org.geotools.xml.Configuration;
-import org.geotools.xml.SimpleContentComplexEMFBinding;
+import org.geotools.xml.EnumSimpleBinding;
 import org.picocontainer.MutablePicoContainer;
 
 /**
@@ -50,6 +52,7 @@ public class CSWConfiguration extends Configuration {
 
         // add dependencies on OWS 1.0 and Filter 1.1
         addDependency(new OWSConfiguration());
+        addDependency(new OGCConfiguration());
     }
 
     /**
@@ -73,7 +76,7 @@ public class CSWConfiguration extends Configuration {
         bindings.put(CSW.DomainValuesType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.DomainValuesType));
         bindings.put(CSW.EchoedRequestType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.EchoedRequestType));
         bindings.put(CSW.ElementSetNameType, new ElementSetNameTypeBinding());
-        bindings.put(CSW.ElementSetType, new ElementSetTypeBinding());
+        bindings.put(CSW.ElementSetType, new EnumSimpleBinding(ElementSetType.class, CSW.ElementSetType));
         bindings.put(CSW.EmptyType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.EmptyType));
         bindings.put(CSW.GetCapabilitiesType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetCapabilitiesType));
         bindings.put(CSW.GetDomainResponseType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.GetDomainResponseType));
@@ -94,7 +97,7 @@ public class CSWConfiguration extends Configuration {
         bindings.put(CSW.RecordType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.RecordType));
         bindings.put(CSW.RequestBaseType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.RequestBaseType));
         bindings.put(CSW.RequestStatusType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.RequestStatusType));
-        bindings.put(CSW.ResultType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.ResultType));
+        bindings.put(CSW.ResultType, new EnumSimpleBinding(ResultType.class, CSW.ResultType));
         bindings.put(CSW.SchemaComponentType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.SchemaComponentType));
         bindings.put(CSW.SearchResultsType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.SearchResultsType));
         bindings.put(CSW.SummaryRecordType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.SummaryRecordType));

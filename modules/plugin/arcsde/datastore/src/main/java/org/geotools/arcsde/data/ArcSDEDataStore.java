@@ -391,9 +391,16 @@ public class ArcSDEDataStore implements DataStore {
                     e);
         }
 
+        // SDE geometry filters are setup to be same or less restrictive than the JTS ones,
+        // so we do post filtering in memory with the full filter (it's fast anyways)
         if (!unsupportedFilter.equals(Filter.INCLUDE)) {
+            // use the full filter in this case, no sure how it was unpacked
             reader = new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(reader,
-                    unsupportedFilter);
+                    queryFilter);
+        } else if (!Filter.INCLUDE.equals(sdeQuery.getFilters().getGeometryFilter())) {
+            // its ok to just use the geometry filter in-process
+            reader = new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(reader, sdeQuery
+                    .getFilters().getGeometryFilter());
         }
 
         if (!targetSchema.equals(reader.getFeatureType())) {

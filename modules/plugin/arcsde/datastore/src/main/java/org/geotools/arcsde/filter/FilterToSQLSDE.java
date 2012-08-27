@@ -172,7 +172,10 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
                 // we've got to 'de-namespaceify' this attribute, if neccesary
                 nonNsPrefixedAlias = alias.substring(alias.indexOf(":") + 1);
             }
-            encodedColumnDefinition = layerQualifiedName + "." + nonNsPrefixedAlias;
+            // commented out, this produces some sql queries to fail, not sure why.
+            // ArcSDEQueryTest.testCalculateQueryExtent for example
+            //encodedColumnDefinition = layerQualifiedName + "." + nonNsPrefixedAlias;
+            encodedColumnDefinition = nonNsPrefixedAlias;
         }
         return encodedColumnDefinition;
     }

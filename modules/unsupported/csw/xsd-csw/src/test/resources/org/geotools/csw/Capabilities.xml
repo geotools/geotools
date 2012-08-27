@@ -7,10 +7,8 @@
 <csw:Capabilities version="2.0.2" xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" xsi:schemaLocation="http://www.opengis.net/cat/csw/2.0.2 ../../../../csw/2.0.2/CSW-discovery.xsd" xmlns:gml="http://www.opengis.net/gml" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:ows="http://www.opengis.net/ows" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<ows:ServiceIdentification>
 		<ows:Title>con terra GmbH Catalogue Server</ows:Title>
-		<ows:Abstract>
-        terraCatalog 2.1 - Web based Catalogue Service 
-        (CS-W 2.0.0/AP ISO19115/19 0.9.3 (DE-Profil 1.0.1)) for service, datasets and applications      
-        </ows:Abstract>
+		<ows:Abstract>terraCatalog 2.1 - Web based Catalogue Service 
+        (CS-W 2.0.0/AP ISO19115/19 0.9.3 (DE-Profil 1.0.1)) for service, datasets and applications</ows:Abstract>
 		<ows:Keywords>
 			<ows:Keyword>CS-W</ows:Keyword>
 			<ows:Keyword>ISO19119</ows:Keyword>
@@ -28,8 +26,8 @@
 		<ows:ProviderName>con terra GmbH</ows:ProviderName>
 		<ows:ProviderSite xlink:type="simple" xlink:href="http://www.conterra.de"/>
 		<ows:ServiceContact>
-			<ows:IndividualName/>
-			<ows:PositionName/>
+			<ows:IndividualName>Markus Neteler</ows:IndividualName>
+			<ows:PositionName>GRASS leader</ows:PositionName>
 			<ows:ContactInfo>
 				<ows:Phone>
 					<ows:Voice>+49-251-7474-400</ows:Voice>

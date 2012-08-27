@@ -29,7 +29,7 @@ public final class DCT extends XSD {
     }
     
     protected void addDependencies(Set dependencies) {
-       //TODO: add dependencies here
+       dependencies.add(DC.getInstance());
     }
     
     /**

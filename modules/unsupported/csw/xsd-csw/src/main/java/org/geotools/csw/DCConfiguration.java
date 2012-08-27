@@ -7,6 +7,7 @@ import javax.xml.namespace.QName;
 
 import net.opengis.cat.csw20.Csw20Factory;
 
+import org.geotools.csw.bindings.SimpleLiteralBinding;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.SimpleContentComplexEMFBinding;
 import org.picocontainer.MutablePicoContainer;
@@ -35,22 +36,22 @@ public class DCConfiguration extends Configuration {
     protected void registerBindings(Map bindings) {
         bindings.put(DC.elementContainer, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.elementContainer));
         bindings.put(DC.SimpleLiteral, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DC.contributor, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.contributor));
-        bindings.put(DC.coverage, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.coverage));
-        bindings.put(DC.creator, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.creator));
-        bindings.put(DC.date, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.date));
+        bindings.put(DC.contributor, new SimpleLiteralBinding(DC.contributor));
+        bindings.put(DC.coverage, new SimpleLiteralBinding(DC.coverage));
+        bindings.put(DC.creator, new SimpleLiteralBinding(DC.creator));
+        bindings.put(DC.date, new SimpleLiteralBinding(DC.date));
         bindings.put(DC.DCelement, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.DCelement));
-        bindings.put(DC.description, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.description));
-        bindings.put(DC.format, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.format));
-        bindings.put(DC.identifier, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.identifier));
-        bindings.put(DC.language, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.language));
-        bindings.put(DC.publisher, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.publisher));
-        bindings.put(DC.relation, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.relation));
-        bindings.put(DC.rights, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.rights));
-        bindings.put(DC.source, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.source));
-        bindings.put(DC.subject, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.subject));
-        bindings.put(DC.title, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.title));
-        bindings.put(DC.type, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.type));
+        bindings.put(DC.description, new SimpleLiteralBinding(DC.description));
+        bindings.put(DC.format, new SimpleLiteralBinding(DC.format));
+        bindings.put(DC.identifier, new SimpleLiteralBinding(DC.identifier));
+        bindings.put(DC.language, new SimpleLiteralBinding(DC.language));
+        bindings.put(DC.publisher, new SimpleLiteralBinding(DC.publisher));
+        bindings.put(DC.relation, new SimpleLiteralBinding(DC.relation));
+        bindings.put(DC.rights, new SimpleLiteralBinding(DC.rights));
+        bindings.put(DC.source, new SimpleLiteralBinding(DC.source));
+        bindings.put(DC.subject, new SimpleLiteralBinding(DC.subject));
+        bindings.put(DC.title, new SimpleLiteralBinding(DC.title));
+        bindings.put(DC.type, new SimpleLiteralBinding(DC.type));
     }
     
     protected void configureContext(MutablePicoContainer container) {

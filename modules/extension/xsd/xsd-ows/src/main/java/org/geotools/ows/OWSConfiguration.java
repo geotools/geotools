@@ -17,10 +17,9 @@
 package org.geotools.ows;
 
 import net.opengis.ows10.Ows10Factory;
-import org.picocontainer.MutablePicoContainer;
+
 import org.geotools.filter.v1_1.OGCConfiguration;
 import org.geotools.ows.bindings.AcceptFormatsTypeBinding;
-import org.geotools.ows.bindings.AcceptVersionsTypeBinding;
 import org.geotools.ows.bindings.AddressTypeBinding;
 import org.geotools.ows.bindings.BoundingBoxTypeBinding;
 import org.geotools.ows.bindings.CapabilitiesBaseTypeBinding;
@@ -54,7 +53,9 @@ import org.geotools.ows.bindings._OperationsMetadataBinding;
 import org.geotools.ows.bindings._ServiceIdentificationBinding;
 import org.geotools.ows.bindings._ServiceProviderBinding;
 import org.geotools.xlink.XLINKConfiguration;
+import org.geotools.xml.ComplexEMFBinding;
 import org.geotools.xml.Configuration;
+import org.picocontainer.MutablePicoContainer;
 
 
 /**
@@ -92,8 +93,8 @@ public class OWSConfiguration extends Configuration {
         //Types
         container.registerComponentImplementation(OWS.AcceptFormatsType,
             AcceptFormatsTypeBinding.class);
-        container.registerComponentImplementation(OWS.AcceptVersionsType,
-            AcceptVersionsTypeBinding.class);
+        container.registerComponentInstance(OWS.AcceptVersionsType, 
+                new ComplexEMFBinding(Ows10Factory.eINSTANCE, OWS.AcceptVersionsType));
         container.registerComponentImplementation(OWS.AddressType, AddressTypeBinding.class);
         container.registerComponentImplementation(OWS.BoundingBoxType, BoundingBoxTypeBinding.class);
         container.registerComponentImplementation(OWS.CapabilitiesBaseType,
@@ -107,7 +108,7 @@ public class OWSConfiguration extends Configuration {
             GetCapabilitiesTypeBinding.class);
         container.registerComponentImplementation(OWS.IdentificationType,
             IdentificationTypeBinding.class);
-        container.registerComponentImplementation(OWS.KeywordsType, KeywordsTypeBinding.class);
+        container.registerComponentInstance(OWS.KeywordsType, new ComplexEMFBinding(Ows10Factory.eINSTANCE, OWS.KeywordsType));
         container.registerComponentImplementation(OWS.MetadataType, MetadataTypeBinding.class);
         container.registerComponentImplementation(OWS.MimeType, MimeTypeBinding.class);
         container.registerComponentImplementation(OWS.OnlineResourceType,

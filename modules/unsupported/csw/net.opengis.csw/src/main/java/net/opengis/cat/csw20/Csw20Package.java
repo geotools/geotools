@@ -2162,13 +2162,22 @@ public interface Csw20Package extends EPackage {
     int SIMPLE_LITERAL__SCHEME = 1;
 
     /**
+     * The feature id for the '<em><b>Name</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SIMPLE_LITERAL__NAME = 2;
+
+    /**
      * The number of structural features of the '<em>Simple Literal</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int SIMPLE_LITERAL_FEATURE_COUNT = 2;
+    int SIMPLE_LITERAL_FEATURE_COUNT = 3;
 
     /**
      * The meta object id for the '{@link net.opengis.cat.csw20.impl.SummaryRecordTypeImpl <em>Summary Record Type</em>}' class.
@@ -4104,6 +4113,17 @@ public interface Csw20Package extends EPackage {
     EAttribute getSimpleLiteral_Scheme();
 
     /**
+     * Returns the meta object for the reference '{@link net.opengis.cat.csw20.SimpleLiteral#getName <em>Name</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference '<em>Name</em>'.
+     * @see net.opengis.cat.csw20.SimpleLiteral#getName()
+     * @see #getSimpleLiteral()
+     * @generated
+     */
+    EReference getSimpleLiteral_Name();
+
+    /**
      * Returns the meta object for class '{@link net.opengis.cat.csw20.SummaryRecordType <em>Summary Record Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -5720,6 +5740,14 @@ public interface Csw20Package extends EPackage {
          * @generated
          */
         EAttribute SIMPLE_LITERAL__SCHEME = eINSTANCE.getSimpleLiteral_Scheme();
+
+        /**
+         * The meta object literal for the '<em><b>Name</b></em>' reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference SIMPLE_LITERAL__NAME = eINSTANCE.getSimpleLiteral_Name();
 
         /**
          * The meta object literal for the '{@link net.opengis.cat.csw20.impl.SummaryRecordTypeImpl <em>Summary Record Type</em>}' class.

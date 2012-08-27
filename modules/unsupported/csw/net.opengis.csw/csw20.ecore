@@ -1184,6 +1184,7 @@
         <details key="name" value="scheme"/>
       </eAnnotations>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="name" eType="#//String"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SummaryRecordType" eSuperTypes="#//AbstractRecordType">
     <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">

@@ -59,6 +59,26 @@ public class SummaryRecordTypeImpl extends AbstractRecordTypeImpl implements Sum
      * @ordered
      */
     protected SimpleLiteral type;
+    
+    /**
+     * The cached value of the '{@link #getSubject() <em>Identifier</em>}' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getSubject()
+     * @ordered
+     */
+    protected EList<SimpleLiteral> identifier;
+    
+    /**
+     * The cached value of the '{@link #getSubject() <em>title</em>}' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getSubject()
+     * @ordered
+     */
+    protected EList<SimpleLiteral> title;
+
+
 
     /**
      * The cached value of the '{@link #getSubject() <em>Subject</em>}' containment reference list.
@@ -91,6 +111,33 @@ public class SummaryRecordTypeImpl extends AbstractRecordTypeImpl implements Sum
     protected EList<SimpleLiteral> abstract_;
 
     /**
+     * The cached value of the '{@link #getFormat() <em>Format</em>}' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getSpatial()
+     * @ordered
+     */
+    protected EList<SimpleLiteral> format;
+    
+    /**
+     * The cached value of the '{@link #getRelation() <em>Relation</em>}' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getSpatial()
+     * @ordered
+     */
+    protected EList<SimpleLiteral> relation;
+    
+    /**
+     * The cached value of the '{@link #getBoundingBox() <em>BoundingBox</em>}' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getSpatial()
+     * @ordered
+     */
+    protected EList<BoundingBoxType> boundingBox;
+    
+    /**
      * The cached value of the '{@link #getSpatial() <em>Spatial</em>}' containment reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -122,14 +169,12 @@ public class SummaryRecordTypeImpl extends AbstractRecordTypeImpl implements Sum
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
      */
     public EList<SimpleLiteral> getIdentifier() {
-        // TODO: implement this method to return the 'Identifier' containment reference list
-        // Ensure that you remove @generated or mark it @generated NOT
-        // The list is expected to implement org.eclipse.emf.ecore.util.InternalEList and org.eclipse.emf.ecore.EStructuralFeature.Setting
-        // so it's likely that an appropriate subclass of org.eclipse.emf.ecore.util.EcoreEList should be used.
-        throw new UnsupportedOperationException();
+        if (identifier == null) {
+            identifier = new EObjectContainmentEList<SimpleLiteral>(SimpleLiteral.class, this, Csw20Package.SUMMARY_RECORD_TYPE__IDENTIFIER);
+        }
+        return identifier;
     }
 
     /**
@@ -138,11 +183,10 @@ public class SummaryRecordTypeImpl extends AbstractRecordTypeImpl implements Sum
      * @generated
      */
     public EList<SimpleLiteral> getTitle() {
-        // TODO: implement this method to return the 'Title' containment reference list
-        // Ensure that you remove @generated or mark it @generated NOT
-        // The list is expected to implement org.eclipse.emf.ecore.util.InternalEList and org.eclipse.emf.ecore.EStructuralFeature.Setting
-        // so it's likely that an appropriate subclass of org.eclipse.emf.ecore.util.EcoreEList should be used.
-        throw new UnsupportedOperationException();
+        if (title == null) {
+            title = new EObjectContainmentEList<SimpleLiteral>(SimpleLiteral.class, this, Csw20Package.SUMMARY_RECORD_TYPE__TITLE);
+        }
+        return title;
     }
 
     /**
@@ -203,27 +247,23 @@ public class SummaryRecordTypeImpl extends AbstractRecordTypeImpl implements Sum
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
      */
     public EList<SimpleLiteral> getFormat() {
-        // TODO: implement this method to return the 'Format' containment reference list
-        // Ensure that you remove @generated or mark it @generated NOT
-        // The list is expected to implement org.eclipse.emf.ecore.util.InternalEList and org.eclipse.emf.ecore.EStructuralFeature.Setting
-        // so it's likely that an appropriate subclass of org.eclipse.emf.ecore.util.EcoreEList should be used.
-        throw new UnsupportedOperationException();
+        if (format == null) {
+            format = new EObjectContainmentEList<SimpleLiteral>(SimpleLiteral.class, this, Csw20Package.SUMMARY_RECORD_TYPE__FORMAT);
+        }
+        return format;
     }
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
      */
     public EList<SimpleLiteral> getRelation() {
-        // TODO: implement this method to return the 'Relation' containment reference list
-        // Ensure that you remove @generated or mark it @generated NOT
-        // The list is expected to implement org.eclipse.emf.ecore.util.InternalEList and org.eclipse.emf.ecore.EStructuralFeature.Setting
-        // so it's likely that an appropriate subclass of org.eclipse.emf.ecore.util.EcoreEList should be used.
-        throw new UnsupportedOperationException();
+        if (relation == null) {
+            relation = new EObjectContainmentEList<SimpleLiteral>(SimpleLiteral.class, this, Csw20Package.SUMMARY_RECORD_TYPE__RELATION);
+        }
+        return relation;
     }
 
     /**
@@ -268,11 +308,10 @@ public class SummaryRecordTypeImpl extends AbstractRecordTypeImpl implements Sum
      * @generated
      */
     public EList<BoundingBoxType> getBoundingBox() {
-        // TODO: implement this method to return the 'Bounding Box' containment reference list
-        // Ensure that you remove @generated or mark it @generated NOT
-        // The list is expected to implement org.eclipse.emf.ecore.util.InternalEList and org.eclipse.emf.ecore.EStructuralFeature.Setting
-        // so it's likely that an appropriate subclass of org.eclipse.emf.ecore.util.EcoreEList should be used.
-        throw new UnsupportedOperationException();
+        if (boundingBox == null) {
+            boundingBox = new EObjectContainmentEList<BoundingBoxType>(BoundingBoxType.class, this, Csw20Package.SUMMARY_RECORD_TYPE__BOUNDING_BOX);
+        }
+        return boundingBox;
     }
 
     /**

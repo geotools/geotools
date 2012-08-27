@@ -1980,6 +1980,15 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EReference getSimpleLiteral_Name() {
+        return (EReference)simpleLiteralEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getSummaryRecordType() {
         return summaryRecordTypeEClass;
     }
@@ -2395,6 +2404,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         simpleLiteralEClass = createEClass(SIMPLE_LITERAL);
         createEAttribute(simpleLiteralEClass, SIMPLE_LITERAL__VALUE);
         createEAttribute(simpleLiteralEClass, SIMPLE_LITERAL__SCHEME);
+        createEReference(simpleLiteralEClass, SIMPLE_LITERAL__NAME);
 
         summaryRecordTypeEClass = createEClass(SUMMARY_RECORD_TYPE);
         createEReference(summaryRecordTypeEClass, SUMMARY_RECORD_TYPE__IDENTIFIER);
@@ -2675,6 +2685,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         initEClass(simpleLiteralEClass, SimpleLiteral.class, "SimpleLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getSimpleLiteral_Value(), ecorePackage.getEJavaObject(), "value", null, 0, 1, SimpleLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getSimpleLiteral_Scheme(), theXMLTypePackage.getAnyURI(), "scheme", null, 0, 1, SimpleLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getSimpleLiteral_Name(), this.getString(), null, "name", null, 0, 1, SimpleLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(summaryRecordTypeEClass, SummaryRecordType.class, "SummaryRecordType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getSummaryRecordType_Identifier(), this.getSimpleLiteral(), null, "identifier", null, 1, -1, SummaryRecordType.class, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);

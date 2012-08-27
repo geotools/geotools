@@ -9,6 +9,7 @@ package net.opengis.cat.csw20.impl;
 import net.opengis.cat.csw20.Csw20Package;
 import net.opengis.cat.csw20.DCMIRecordType;
 import net.opengis.cat.csw20.SimpleLiteral;
+import net.opengis.ows10.BoundingBoxType;
 
 import org.eclipse.emf.common.notify.NotificationChain;
 
@@ -17,6 +18,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
@@ -33,6 +35,16 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * @generated
  */
 public class DCMIRecordTypeImpl extends AbstractRecordTypeImpl implements DCMIRecordType {
+    
+    /**
+     * The cached value of the '{@link #getDCElement()() <em>DCElement</em>}' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getDCElement()()
+     * @ordered
+     */
+    protected EList<SimpleLiteral> dcElement;
+    
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -55,14 +67,12 @@ public class DCMIRecordTypeImpl extends AbstractRecordTypeImpl implements DCMIRe
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
      */
     public EList<SimpleLiteral> getDCElement() {
-        // TODO: implement this method to return the 'DC Element' containment reference list
-        // Ensure that you remove @generated or mark it @generated NOT
-        // The list is expected to implement org.eclipse.emf.ecore.util.InternalEList and org.eclipse.emf.ecore.EStructuralFeature.Setting
-        // so it's likely that an appropriate subclass of org.eclipse.emf.ecore.util.EcoreEList should be used.
-        throw new UnsupportedOperationException();
+        if (dcElement == null) {
+            dcElement = new EObjectContainmentEList<SimpleLiteral>(SimpleLiteral.class, this, Csw20Package.DCMI_RECORD_TYPE__DC_ELEMENT);
+        }
+        return dcElement;
     }
 
     /**

@@ -110,7 +110,6 @@ public class QueryConstraintTypeImpl extends EObjectImpl implements QueryConstra
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
      */
     public Filter getFilter() {
         return filter;
@@ -134,20 +133,9 @@ public class QueryConstraintTypeImpl extends EObjectImpl implements QueryConstra
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
      */
     public void setFilter(Filter newFilter) {
-        if (newFilter != filter) {
-            NotificationChain msgs = null;
-            if (filter != null)
-                msgs = ((InternalEObject)filter).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - Csw20Package.QUERY_CONSTRAINT_TYPE__FILTER, null, msgs);
-            if (newFilter != null)
-                msgs = ((InternalEObject)newFilter).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - Csw20Package.QUERY_CONSTRAINT_TYPE__FILTER, null, msgs);
-            msgs = basicSetFilter(newFilter, msgs);
-            if (msgs != null) msgs.dispatch();
-        }
-        else if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Csw20Package.QUERY_CONSTRAINT_TYPE__FILTER, newFilter, newFilter));
+        this.filter = newFilter;
     }
 
     /**

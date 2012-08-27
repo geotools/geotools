@@ -14,6 +14,23 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface SimpleLiteral extends EObject {
     /**
+     * @model
+     */
+    String getName();
+    
+    
+    /**
+     * Sets the value of the '{@link net.opengis.cat.csw20.SimpleLiteral#getName <em>Name</em>}' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Name</em>' reference.
+     * @see #getName()
+     * @generated
+     */
+    void setName(String value);
+
+
+    /**
      * @model 
      */
     Object getValue();

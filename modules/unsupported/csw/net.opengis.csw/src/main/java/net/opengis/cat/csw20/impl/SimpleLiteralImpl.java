@@ -15,6 +15,8 @@ import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
 
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 
@@ -27,6 +29,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * <ul>
  *   <li>{@link net.opengis.cat.csw20.impl.SimpleLiteralImpl#getValue <em>Value</em>}</li>
  *   <li>{@link net.opengis.cat.csw20.impl.SimpleLiteralImpl#getScheme <em>Scheme</em>}</li>
+ *   <li>{@link net.opengis.cat.csw20.impl.SimpleLiteralImpl#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *
@@ -72,6 +75,16 @@ public class SimpleLiteralImpl extends EObjectImpl implements SimpleLiteral {
      * @ordered
      */
     protected String scheme = SCHEME_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getName() <em>Name</em>}' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getName()
+     * @generated
+     * @ordered
+     */
+    protected String name;
 
     /**
      * <!-- begin-user-doc -->
@@ -137,6 +150,35 @@ public class SimpleLiteralImpl extends EObjectImpl implements SimpleLiteral {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String basicGetName() {
+        return name;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setName(String newName) {
+        String oldName = name;
+        name = newName;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, Csw20Package.SIMPLE_LITERAL__NAME, oldName, name));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
     @Override
@@ -146,6 +188,9 @@ public class SimpleLiteralImpl extends EObjectImpl implements SimpleLiteral {
                 return getValue();
             case Csw20Package.SIMPLE_LITERAL__SCHEME:
                 return getScheme();
+            case Csw20Package.SIMPLE_LITERAL__NAME:
+                if (resolve) return getName();
+                return basicGetName();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -163,6 +208,9 @@ public class SimpleLiteralImpl extends EObjectImpl implements SimpleLiteral {
                 return;
             case Csw20Package.SIMPLE_LITERAL__SCHEME:
                 setScheme((String)newValue);
+                return;
+            case Csw20Package.SIMPLE_LITERAL__NAME:
+                setName((String)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -182,6 +230,9 @@ public class SimpleLiteralImpl extends EObjectImpl implements SimpleLiteral {
             case Csw20Package.SIMPLE_LITERAL__SCHEME:
                 setScheme(SCHEME_EDEFAULT);
                 return;
+            case Csw20Package.SIMPLE_LITERAL__NAME:
+                setName((String)null);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -198,6 +249,8 @@ public class SimpleLiteralImpl extends EObjectImpl implements SimpleLiteral {
                 return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
             case Csw20Package.SIMPLE_LITERAL__SCHEME:
                 return SCHEME_EDEFAULT == null ? scheme != null : !SCHEME_EDEFAULT.equals(scheme);
+            case Csw20Package.SIMPLE_LITERAL__NAME:
+                return name != null;
         }
         return super.eIsSet(featureID);
     }

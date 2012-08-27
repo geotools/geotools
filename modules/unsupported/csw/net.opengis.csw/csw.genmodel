@@ -223,6 +223,7 @@
     <genClasses ecoreClass="csw20.ecore#//SimpleLiteral">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//SimpleLiteral/value"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//SimpleLiteral/scheme"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference csw20.ecore#//SimpleLiteral/name"/>
     </genClasses>
     <genClasses ecoreClass="csw20.ecore#//SummaryRecordType">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//SummaryRecordType/identifier"/>

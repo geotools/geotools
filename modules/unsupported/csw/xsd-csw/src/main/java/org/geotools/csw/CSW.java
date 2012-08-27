@@ -18,7 +18,11 @@ package org.geotools.csw;
 
 
 import java.util.Set;
+
 import javax.xml.namespace.QName;
+
+import org.geotools.filter.v1_0.OGC;
+import org.geotools.ows.OWS;
 import org.geotools.xml.XSD;
 
 /**
@@ -47,7 +51,9 @@ public final class CSW extends XSD {
     }
     
     protected void addDependencies(Set dependencies) {
-       //TODO: add dependencies here
+        dependencies.add(OWS.getInstance());
+        dependencies.add(OGC.getInstance());
+        dependencies.add(DCT.getInstance());
     }
     
     /**

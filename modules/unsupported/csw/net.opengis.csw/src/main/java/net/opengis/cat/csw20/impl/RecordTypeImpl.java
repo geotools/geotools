@@ -40,6 +40,16 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * @generated
  */
 public class RecordTypeImpl extends DCMIRecordTypeImpl implements RecordType {
+    
+    /**
+     * The cached value of the '{@link #getBoundingBox() <em>BoundingBox</em>}' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getSpatial()
+     * @ordered
+     */
+    protected EList<BoundingBoxType> boundingBox;
+
     /**
      * The cached value of the '{@link #getAnyText() <em>Any Text</em>}' containment reference list.
      * <!-- begin-user-doc -->
@@ -87,11 +97,10 @@ public class RecordTypeImpl extends DCMIRecordTypeImpl implements RecordType {
      * @generated
      */
     public EList<BoundingBoxType> getBoundingBox() {
-        // TODO: implement this method to return the 'Bounding Box' containment reference list
-        // Ensure that you remove @generated or mark it @generated NOT
-        // The list is expected to implement org.eclipse.emf.ecore.util.InternalEList and org.eclipse.emf.ecore.EStructuralFeature.Setting
-        // so it's likely that an appropriate subclass of org.eclipse.emf.ecore.util.EcoreEList should be used.
-        throw new UnsupportedOperationException();
+        if (boundingBox == null) {
+            boundingBox = new EObjectContainmentEList<BoundingBoxType>(BoundingBoxType.class, this, Csw20Package.SUMMARY_RECORD_TYPE__BOUNDING_BOX);
+        }
+        return boundingBox;
     }
 
     /**

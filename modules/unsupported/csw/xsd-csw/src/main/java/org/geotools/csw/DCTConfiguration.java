@@ -7,8 +7,8 @@ import javax.xml.namespace.QName;
 
 import net.opengis.cat.csw20.Csw20Factory;
 
+import org.geotools.csw.bindings.SimpleLiteralBinding;
 import org.geotools.xml.Configuration;
-import org.geotools.xml.SimpleContentComplexEMFBinding;
 
 /**
  * Parser configuration for the http://purl.org/dc/terms/ schema.
@@ -34,42 +34,42 @@ public class DCTConfiguration extends Configuration {
      * @generated
      */
     protected void registerBindings(Map bindings) {
-        bindings.put(DCT.recordAbstract, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.accessRights, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.alternative, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.audience, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.available, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.bibliographicCitation, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.conformsTo, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.created, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.dateAccepted, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.dateCopyrighted, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.dateSubmitted, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.educationLevel, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.extent, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.hasFormat, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.hasPart, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.hasVersion, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.isFormatOf, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.isPartOf, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.isReferencedBy, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.isReplacedBy, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.isRequiredBy, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.issued, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.isVersionOf, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.license, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.mediator, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.medium, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.modified, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.provenance, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.references, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.replaces, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.requires, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.rightsHolder, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.spatial, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.tableOfContents, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.temporal, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
-        bindings.put(DCT.valid, new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));
+        bindings.put(DCT.recordAbstract, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.accessRights, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.alternative, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.audience, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.available, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.bibliographicCitation, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.conformsTo, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.created, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.dateAccepted, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.dateCopyrighted, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.dateSubmitted, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.educationLevel, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.extent, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.hasFormat, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.hasPart, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.hasVersion, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.isFormatOf, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.isPartOf, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.isReferencedBy, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.isReplacedBy, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.isRequiredBy, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.issued, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.isVersionOf, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.license, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.mediator, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.medium, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.modified, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.provenance, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.references, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.replaces, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.requires, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.rightsHolder, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.spatial, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.tableOfContents, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.temporal, new SimpleLiteralBinding(DC.SimpleLiteral));
+        bindings.put(DCT.valid, new SimpleLiteralBinding(DC.SimpleLiteral));
     }
     
     /**
@@ -79,7 +79,7 @@ public class DCTConfiguration extends Configuration {
     public static void main(String[] args) {
         for(Field f : DCT.class.getFields()) {
             if((f.getModifiers() & (Modifier.STATIC | Modifier.FINAL)) != 0 && f.getType().equals(QName.class)) {
-                System.out.println("bindings.put(DCT." + f.getName() + ", new SimpleContentComplexEMFBinding(Csw20Factory.eINSTANCE, DC.SimpleLiteral));");
+                System.out.println("bindings.put(DCT." + f.getName() + ", new SimpleLiteralBinding(DC.SimpleLiteral));");
             }
         }
     }

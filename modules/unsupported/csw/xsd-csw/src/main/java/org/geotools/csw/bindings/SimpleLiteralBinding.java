@@ -35,5 +35,11 @@ public class SimpleLiteralBinding extends SimpleContentComplexEMFBinding {
         
         return sl;
     }
+    
+    @Override
+    public Object getProperty(Object object, QName name) throws Exception {
+        Object result = super.getProperty(object, name);
+        return result;
+    }
 
 }

@@ -27,6 +27,7 @@ import net.opengis.cat.csw20.ElementSetType;
 import net.opengis.cat.csw20.ResultType;
 
 import org.geotools.csw.bindings.ElementSetNameTypeBinding;
+import org.geotools.csw.bindings.RecordBinding;
 import org.geotools.csw.bindings.TypeNameListTypeBinding;
 import org.geotools.filter.v1_1.OGCConfiguration;
 import org.geotools.ows.OWSConfiguration;
@@ -96,7 +97,7 @@ public class CSWConfiguration extends Configuration {
         bindings.put(CSW.QueryType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.QueryType));
         bindings.put(CSW.RangeOfValuesType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.RangeOfValuesType));
         bindings.put(CSW.RecordPropertyType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.RecordPropertyType));
-        bindings.put(CSW.RecordType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.RecordType));
+        bindings.put(CSW.RecordType, new RecordBinding());
         bindings.put(CSW.RequestBaseType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.RequestBaseType));
         bindings.put(CSW.RequestStatusType, new ComplexEMFBinding(Csw20Factory.eINSTANCE, CSW.RequestStatusType));
         bindings.put(CSW.ResultType, new EnumSimpleBinding(ResultType.class, CSW.ResultType));

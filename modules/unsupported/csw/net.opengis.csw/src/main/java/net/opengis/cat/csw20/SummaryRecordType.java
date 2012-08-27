@@ -93,17 +93,15 @@ public interface SummaryRecordType extends AbstractRecordType {
      * @return the value of the '<em>Type</em>' containment reference.
      * @see #setType(SimpleLiteral)
      * @see net.opengis.cat.csw20.Csw20Package#getSummaryRecordType_Type()
-     * @model containment="true"
-     *        extendedMetaData="kind='element' name='type' namespace='http://purl.org/dc/elements/1.1/'"
-     * @generated
+     * @model
      */
     SimpleLiteral getType();
 
     /**
-     * Sets the value of the '{@link net.opengis.cat.csw20.SummaryRecordType#getType <em>Type</em>}' containment reference.
+     * Sets the value of the '{@link net.opengis.cat.csw20.SummaryRecordType#getType <em>Type</em>}' reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Type</em>' containment reference.
+     * @param value the new value of the '<em>Type</em>' reference.
      * @see #getType()
      * @generated
      */

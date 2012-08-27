@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -65,26 +66,26 @@ public class BriefRecordTypeImpl extends AbstractRecordTypeImpl implements Brief
      * @ordered
      */
     protected EList<SimpleLiteral> title;
+    
+    /**
+     * The cached value of the '{@link #getBoundingBox() <em>BoundingBox</em>}' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getSpatial()
+     * @ordered
+     */
+    protected EList<BoundingBoxType> boundingBox;
+
 
     /**
-     * The default value of the '{@link #getType() <em>Type</em>}' attribute.
+     * The cached value of the '{@link #getType() <em>Type</em>}' reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @see #getType()
      * @generated
      * @ordered
      */
-    protected static final String TYPE_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getType()
-     * @generated
-     * @ordered
-     */
-    protected String type = TYPE_EDEFAULT;
+    protected SimpleLiteral type;
 
     /**
      * <!-- begin-user-doc -->
@@ -134,7 +135,15 @@ public class BriefRecordTypeImpl extends AbstractRecordTypeImpl implements Brief
      * <!-- end-user-doc -->
      * @generated
      */
-    public String getType() {
+    public SimpleLiteral getType() {
+        if (type != null && type.eIsProxy()) {
+            InternalEObject oldType = (InternalEObject)type;
+            type = (SimpleLiteral)eResolveProxy(oldType);
+            if (type != oldType) {
+                if (eNotificationRequired())
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, Csw20Package.BRIEF_RECORD_TYPE__TYPE, oldType, type));
+            }
+        }
         return type;
     }
 
@@ -143,8 +152,17 @@ public class BriefRecordTypeImpl extends AbstractRecordTypeImpl implements Brief
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setType(String newType) {
-        String oldType = type;
+    public SimpleLiteral basicGetType() {
+        return type;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setType(SimpleLiteral newType) {
+        SimpleLiteral oldType = type;
         type = newType;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, Csw20Package.BRIEF_RECORD_TYPE__TYPE, oldType, type));
@@ -153,14 +171,13 @@ public class BriefRecordTypeImpl extends AbstractRecordTypeImpl implements Brief
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public EList<BoundingBoxType> getBoundingBox() {
-        // TODO: implement this method to return the 'Bounding Box' containment reference list
-        // Ensure that you remove @generated or mark it @generated NOT
-        // The list is expected to implement org.eclipse.emf.ecore.util.InternalEList and org.eclipse.emf.ecore.EStructuralFeature.Setting
-        // so it's likely that an appropriate subclass of org.eclipse.emf.ecore.util.EcoreEList should be used.
-        throw new UnsupportedOperationException();
+        if (boundingBox == null) {
+            boundingBox = new EObjectResolvingEList<BoundingBoxType>(BoundingBoxType.class, this, Csw20Package.SUMMARY_RECORD_TYPE__BOUNDING_BOX);
+        }
+        return boundingBox;
     }
 
     /**
@@ -190,7 +207,8 @@ public class BriefRecordTypeImpl extends AbstractRecordTypeImpl implements Brief
             case Csw20Package.BRIEF_RECORD_TYPE__TITLE:
                 return getTitle();
             case Csw20Package.BRIEF_RECORD_TYPE__TYPE:
-                return getType();
+                if (resolve) return getType();
+                return basicGetType();
             case Csw20Package.BRIEF_RECORD_TYPE__BOUNDING_BOX:
                 return getBoundingBox();
         }
@@ -215,7 +233,7 @@ public class BriefRecordTypeImpl extends AbstractRecordTypeImpl implements Brief
                 getTitle().addAll((Collection<? extends SimpleLiteral>)newValue);
                 return;
             case Csw20Package.BRIEF_RECORD_TYPE__TYPE:
-                setType((String)newValue);
+                setType((SimpleLiteral)newValue);
                 return;
             case Csw20Package.BRIEF_RECORD_TYPE__BOUNDING_BOX:
                 getBoundingBox().clear();
@@ -240,7 +258,7 @@ public class BriefRecordTypeImpl extends AbstractRecordTypeImpl implements Brief
                 getTitle().clear();
                 return;
             case Csw20Package.BRIEF_RECORD_TYPE__TYPE:
-                setType(TYPE_EDEFAULT);
+                setType((SimpleLiteral)null);
                 return;
             case Csw20Package.BRIEF_RECORD_TYPE__BOUNDING_BOX:
                 getBoundingBox().clear();
@@ -262,27 +280,11 @@ public class BriefRecordTypeImpl extends AbstractRecordTypeImpl implements Brief
             case Csw20Package.BRIEF_RECORD_TYPE__TITLE:
                 return title != null && !title.isEmpty();
             case Csw20Package.BRIEF_RECORD_TYPE__TYPE:
-                return TYPE_EDEFAULT == null ? type != null : !TYPE_EDEFAULT.equals(type);
+                return type != null;
             case Csw20Package.BRIEF_RECORD_TYPE__BOUNDING_BOX:
                 return !getBoundingBox().isEmpty();
         }
         return super.eIsSet(featureID);
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public String toString() {
-        if (eIsProxy()) return super.toString();
-
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (type: ");
-        result.append(type);
-        result.append(')');
-        return result.toString();
     }
 
 } //BriefRecordTypeImpl

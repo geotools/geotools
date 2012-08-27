@@ -91,19 +91,19 @@ public interface BriefRecordType extends AbstractRecordType {
      * @return the value of the '<em>Type</em>' containment reference.
      * @see #setType(String)
      * @see net.opengis.cat.csw20.Csw20Package#getBriefRecordType_Type()
-     * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+     * @model 
      */
-    String getType();
+    SimpleLiteral getType();
 
     /**
-     * Sets the value of the '{@link net.opengis.cat.csw20.BriefRecordType#getType <em>Type</em>}' attribute.
+     * Sets the value of the '{@link net.opengis.cat.csw20.BriefRecordType#getType <em>Type</em>}' reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Type</em>' attribute.
+     * @param value the new value of the '<em>Type</em>' reference.
      * @see #getType()
      * @generated
      */
-    void setType(String value);
+    void setType(SimpleLiteral value);
 
     /**
      * Returns the value of the '<em><b>Bounding Box</b></em>' containment reference list.

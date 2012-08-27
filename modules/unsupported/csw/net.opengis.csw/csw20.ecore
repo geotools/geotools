@@ -60,7 +60,7 @@
         <details key="documentation" value="A name given to the resource. Typically, Title will be a name by&#xA;      which the resource is formally known."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/XMLType.ecore#//String">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//SimpleLiteral">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="The nature or genre of the content of the resource. Type includes&#xA;      terms describing general categories, functions, genres, or aggregation&#xA;      levels for content. Recommended best practice is to select a value&#xA;      from a controlled vocabulary (for example, the DCMI Type Vocabulary).&#xA;      To describe the physical or digital manifestation of the resource,&#xA;      use the Format element."/>
       </eAnnotations>
@@ -1220,13 +1220,7 @@
         <details key="documentation" value="A name given to the resource. Typically, Title will be a name by&#xA;      which the resource is formally known."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//SimpleLiteral"
-        containment="true" resolveProxies="false">
-      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
-        <details key="kind" value="element"/>
-        <details key="name" value="type"/>
-        <details key="namespace" value="http://purl.org/dc/elements/1.1/"/>
-      </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//SimpleLiteral">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="The nature or genre of the content of the resource. Type includes&#xA;      terms describing general categories, functions, genres, or aggregation&#xA;      levels for content. Recommended best practice is to select a value&#xA;      from a controlled vocabulary (for example, the DCMI Type Vocabulary).&#xA;      To describe the physical or digital manifestation of the resource,&#xA;      use the Format element."/>
       </eAnnotations>

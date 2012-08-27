@@ -37,7 +37,7 @@
     <genClasses ecoreClass="csw20.ecore#//BriefRecordType">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference csw20.ecore#//BriefRecordType/identifier"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference csw20.ecore#//BriefRecordType/title"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//BriefRecordType/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference csw20.ecore#//BriefRecordType/type"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//BriefRecordType/boundingBox"/>
     </genClasses>
     <genClasses ecoreClass="csw20.ecore#//CapabilitiesType">

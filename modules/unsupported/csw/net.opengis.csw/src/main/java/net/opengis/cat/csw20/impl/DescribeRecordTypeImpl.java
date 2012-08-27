@@ -272,7 +272,7 @@ public class DescribeRecordTypeImpl extends RequestBaseTypeImpl implements Descr
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Csw20Package.DESCRIBE_RECORD_TYPE__TYPE_NAME:
-                setTypeName((QName)newValue);
+                setTypeName((QName) newValue);
                 return;
             case Csw20Package.DESCRIBE_RECORD_TYPE__OUTPUT_FORMAT:
                 setOutputFormat((String)newValue);

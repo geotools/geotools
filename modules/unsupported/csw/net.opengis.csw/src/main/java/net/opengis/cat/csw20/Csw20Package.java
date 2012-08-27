@@ -178,7 +178,7 @@ public interface Csw20Package extends EPackage {
     int BRIEF_RECORD_TYPE__TITLE = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 1;
 
     /**
-     * The feature id for the '<em><b>Type</b></em>' attribute.
+     * The feature id for the '<em><b>Type</b></em>' reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -2208,7 +2208,7 @@ public interface Csw20Package extends EPackage {
     int SUMMARY_RECORD_TYPE__TITLE = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 1;
 
     /**
-     * The feature id for the '<em><b>Type</b></em>' containment reference.
+     * The feature id for the '<em><b>Type</b></em>' reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -2488,15 +2488,15 @@ public interface Csw20Package extends EPackage {
     EReference getBriefRecordType_Title();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.cat.csw20.BriefRecordType#getType <em>Type</em>}'.
+     * Returns the meta object for the reference '{@link net.opengis.cat.csw20.BriefRecordType#getType <em>Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Type</em>'.
+     * @return the meta object for the reference '<em>Type</em>'.
      * @see net.opengis.cat.csw20.BriefRecordType#getType()
      * @see #getBriefRecordType()
      * @generated
      */
-    EAttribute getBriefRecordType_Type();
+    EReference getBriefRecordType_Type();
 
     /**
      * Returns the meta object for the containment reference list '{@link net.opengis.cat.csw20.BriefRecordType#getBoundingBox <em>Bounding Box</em>}'.
@@ -4156,10 +4156,10 @@ public interface Csw20Package extends EPackage {
     EReference getSummaryRecordType_Title();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.cat.csw20.SummaryRecordType#getType <em>Type</em>}'.
+     * Returns the meta object for the reference '{@link net.opengis.cat.csw20.SummaryRecordType#getType <em>Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Type</em>'.
+     * @return the meta object for the reference '<em>Type</em>'.
      * @see net.opengis.cat.csw20.SummaryRecordType#getType()
      * @see #getSummaryRecordType()
      * @generated
@@ -4454,12 +4454,12 @@ public interface Csw20Package extends EPackage {
         EReference BRIEF_RECORD_TYPE__TITLE = eINSTANCE.getBriefRecordType_Title();
 
         /**
-         * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Type</b></em>' reference feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute BRIEF_RECORD_TYPE__TYPE = eINSTANCE.getBriefRecordType_Type();
+        EReference BRIEF_RECORD_TYPE__TYPE = eINSTANCE.getBriefRecordType_Type();
 
         /**
          * The meta object literal for the '<em><b>Bounding Box</b></em>' containment reference list feature.
@@ -5776,7 +5776,7 @@ public interface Csw20Package extends EPackage {
         EReference SUMMARY_RECORD_TYPE__TITLE = eINSTANCE.getSummaryRecordType_Title();
 
         /**
-         * The meta object literal for the '<em><b>Type</b></em>' containment reference feature.
+         * The meta object literal for the '<em><b>Type</b></em>' reference feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated

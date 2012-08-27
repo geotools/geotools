@@ -346,7 +346,7 @@ public class QueryTypeImpl extends AbstractQueryTypeImpl implements QueryType {
                 setElementSetName((ElementSetNameType)newValue);
                 return;
             case Csw20Package.QUERY_TYPE__ELEMENT_NAME:
-                setElementName((QName)newValue);
+                setElementName((QName) newValue);
                 return;
             case Csw20Package.QUERY_TYPE__CONSTRAINT:
                 setConstraint((QueryConstraintType)newValue);

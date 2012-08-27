@@ -355,6 +355,11 @@ public class GeoServerOnlineTest {
             public MatchAction getMatchAction() {
                 return MatchAction.ANY;
             }
+
+            @Override
+            public BoundingBox getBounds() {
+                return bbox.getBounds();
+            }
         };
 
         final Query query = new Query(ft.getTypeName());

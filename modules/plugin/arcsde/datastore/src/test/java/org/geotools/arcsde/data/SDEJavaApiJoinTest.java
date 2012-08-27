@@ -145,6 +145,7 @@ import com.vividsolutions.jts.geom.Point;
  *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/test/java/org
  *         /geotools/arcsde/data/SDEJavaApiJoinTest.java $
  */
+@Ignore
 public class SDEJavaApiJoinTest {
 
     /** Helper class that provides config loading and test data for unit tests */

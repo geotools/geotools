@@ -69,6 +69,7 @@ import com.vividsolutions.jts.util.Stopwatch;
  * @source $URL$
  */
 @SuppressWarnings("nls")
+@Ignore
 public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
 
     private static final String RASTER_TEST_DEBUG_TO_DISK = "raster.test.debugToDisk";

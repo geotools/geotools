@@ -575,7 +575,7 @@ class ArcSDEQuery {
 
         final SimpleFeatureType schema = this.schema;
 
-        final String colName;
+        final List <String> colNames = new ArrayList<String>(2);
         {
             String fidAtt;
             if (fidReader.getFidColumn() == null) {
@@ -583,10 +583,15 @@ class ArcSDEQuery {
             } else {
                 fidAtt = fidReader.getFidColumn();
             }
-            colName = filters.getSqlEncoder().getColumnDefinition(fidAtt);
+            colNames.add(fidAtt);
         }
-
-        final SeQueryInfo qInfo = filters.getQueryInfo(new String[] { colName });
+        if (null != schema.getGeometryDescriptor()) {
+            String geomCol = schema.getGeometryDescriptor().getLocalName();
+            //geomCol = filters.getSqlEncoder().getColumnDefinition(geomCol);
+            colNames.add(geomCol);
+        }
+        
+        final SeQueryInfo qInfo = filters.getQueryInfo(colNames.toArray(new String[colNames.size()]));
 
         final SeFilter[] spatialFilters = filters.getSpatialFilters();
 
@@ -635,7 +640,7 @@ class ArcSDEQuery {
 
                     final int defaultMaxDistinctValues = 0;
                     final SeTable.SeTableStats tableStats;
-                    tableStats = query.calculateTableStatistics(colName,
+                    tableStats = query.calculateTableStatistics(colNames.get(0),
                             SeTable.SeTableStats.SE_COUNT_STATS, queryInfo, defaultMaxDistinctValues);
 
                     int actualCount = tableStats.getCount();
@@ -665,16 +670,25 @@ class ArcSDEQuery {
                 public SeExtent execute(ISession session, SeConnection connection)
                         throws SeException, IOException {
 
-                    final String[] spatialCol;
+                    final String[] queryColumns;
                     {
+                        List<String> cols = new ArrayList<String>(2);
                         String geomCol = schema.getGeometryDescriptor().getLocalName();
                         geomCol = filters.getSqlEncoder().getColumnDefinition(geomCol);
-                        spatialCol = new String[] { geomCol };
+                        
+                        String fidAtt;
+                        if (fidReader.getFidColumn() == null) {
+                            fidAtt = schema.getDescriptor(0).getLocalName();
+                        } else {
+                            fidAtt = fidReader.getFidColumn();
+                        }
+                        cols.add(fidAtt);
+                        queryColumns = cols.toArray(new String[cols.size()]);
                     }
 
                     // fullConstruct may hold information about multiple tables in case of an
                     // in-process view
-                    final SeSqlConstruct fullConstruct = filters.getQueryInfo(spatialCol)
+                    final SeSqlConstruct fullConstruct = filters.getQueryInfo(queryColumns)
                             .getConstruct();
                     String whereClause = fullConstruct.getWhere();
                     if (whereClause == null) {
@@ -702,7 +716,7 @@ class ArcSDEQuery {
                         sqlCons.setWhere(whereClause);
 
                         final SeQueryInfo seQueryInfo = new SeQueryInfo();
-                        seQueryInfo.setColumns(spatialCol);
+                        seQueryInfo.setColumns(queryColumns);
                         seQueryInfo.setConstruct(sqlCons);
 
                         extent = extentQuery.calculateLayerExtent(seQueryInfo);
@@ -986,9 +1000,7 @@ class ArcSDEQuery {
             if (LOGGER.isLoggable(Level.FINE) && geometryFilter != null)
                 LOGGER.fine("Spatial-Filter portion of SDE Query: '" + geometryFilter + "'");
 
-            // SDE geometry filters are setup to be same or less restrictive than the JTS ones,
-            // so we do post filterin in memory with the full filter (it's fast anyways)
-            this.unsupportedFilter = remainingFilter; 
+            this.unsupportedFilter = unpacker.getFilterPost();
             if (LOGGER.isLoggable(Level.FINE) && unsupportedFilter != null)
                 LOGGER.fine("Unsupported (and therefore ignored) portion of SDE Query: '"
                         + unsupportedFilter + "'");

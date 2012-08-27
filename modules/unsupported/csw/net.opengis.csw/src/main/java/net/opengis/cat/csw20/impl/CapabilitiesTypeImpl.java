@@ -91,20 +91,9 @@ public class CapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements Ca
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
      */
     public void setFilterCapabilities(FilterCapabilities newFilterCapabilities) {
-        if (newFilterCapabilities != filterCapabilities) {
-            NotificationChain msgs = null;
-            if (filterCapabilities != null)
-                msgs = ((InternalEObject)filterCapabilities).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - Csw20Package.CAPABILITIES_TYPE__FILTER_CAPABILITIES, null, msgs);
-            if (newFilterCapabilities != null)
-                msgs = ((InternalEObject)newFilterCapabilities).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - Csw20Package.CAPABILITIES_TYPE__FILTER_CAPABILITIES, null, msgs);
-            msgs = basicSetFilterCapabilities(newFilterCapabilities, msgs);
-            if (msgs != null) msgs.dispatch();
-        }
-        else if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Csw20Package.CAPABILITIES_TYPE__FILTER_CAPABILITIES, newFilterCapabilities, newFilterCapabilities));
+        this.filterCapabilities = newFilterCapabilities;
     }
 
     /**

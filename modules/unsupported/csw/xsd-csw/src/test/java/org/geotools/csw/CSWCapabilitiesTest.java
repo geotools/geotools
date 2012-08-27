@@ -3,6 +3,7 @@ package org.geotools.csw;
 import static org.junit.Assert.*;
 
 import java.io.StringReader;
+import java.util.Collection;
 import java.util.List;
 
 import net.opengis.cat.csw20.CapabilitiesType;
@@ -18,10 +19,20 @@ import net.opengis.ows10.ResponsiblePartySubsetType;
 import net.opengis.ows10.ServiceIdentificationType;
 import net.opengis.ows10.ServiceProviderType;
 
+import org.geotools.filter.v1_1.OGC;
+import org.geotools.ows.OWS;
 import org.geotools.xml.Encoder;
 import org.geotools.xml.Parser;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.opengis.filter.capability.ArithmeticOperators;
+import org.opengis.filter.capability.ComparisonOperators;
+import org.opengis.filter.capability.FilterCapabilities;
+import org.opengis.filter.capability.GeometryOperand;
+import org.opengis.filter.capability.IdCapabilities;
+import org.opengis.filter.capability.ScalarCapabilities;
+import org.opengis.filter.capability.SpatialCapabilities;
+import org.opengis.filter.capability.SpatialOperators;
 
 
 public class CSWCapabilitiesTest {
@@ -92,25 +103,63 @@ public class CSWCapabilitiesTest {
         assertEquals("RevisionDate", ct.getValue().get(0));
         assertEquals("OperatesOnWithOpName", ct.getValue().get(24));
         
-        /** This fails, caps are not getting parsed
+        /** This fails, caps are not getting parsed **/
         FilterCapabilities filterCapabilities = caps.getFilterCapabilities();
         assertNotNull(filterCapabilities);
-        **/
+        SpatialCapabilities spatial = filterCapabilities.getSpatialCapabilities();
+        Collection<GeometryOperand> geoms = spatial.getGeometryOperands();
+        assertEquals(4, geoms.size());
+        assertTrue(geoms.contains(GeometryOperand.Envelope));
+        assertTrue(geoms.contains(GeometryOperand.Polygon));
+        assertTrue(geoms.contains(GeometryOperand.LineString));
+        assertTrue(geoms.contains(GeometryOperand.Point));
+        SpatialOperators sop = spatial.getSpatialOperators();
+        assertEquals(11, sop.getOperators().size());
+        assertNotNull(sop.getOperator("Crosses"));
+        assertNotNull(sop.getOperator("Overlaps"));
+        assertNotNull(sop.getOperator("BBOX"));
+        assertNotNull(sop.getOperator("Touches"));
+        assertNotNull(sop.getOperator("Intersects"));
+        assertNotNull(sop.getOperator("Equals"));
+        assertNotNull(sop.getOperator("Within"));
+        assertNotNull(sop.getOperator("Contains"));
+        assertNotNull(sop.getOperator("DWithin"));
+        assertNotNull(sop.getOperator("Beyond"));
+        ScalarCapabilities scalar = filterCapabilities.getScalarCapabilities();
+        assertTrue(scalar.hasLogicalOperators());
+        ComparisonOperators comparison = scalar.getComparisonOperators();
+        assertEquals(9, comparison.getOperators().size());
+        assertNotNull(comparison.getOperator("NullCheck"));
+        assertNotNull(comparison.getOperator("Between"));
+        assertNotNull(comparison.getOperator("LessThan"));
+        assertNotNull(comparison.getOperator("GreaterThan"));
+        assertNotNull(comparison.getOperator("GreaterThanEqualTo"));
+        assertNotNull(comparison.getOperator("EqualTo"));
+        assertNotNull(comparison.getOperator("NotEqualTo"));
+        assertNotNull(comparison.getOperator("Like"));
+        assertNotNull(comparison.getOperator("LessThanEqualTo"));
+        ArithmeticOperators arithmetic = scalar.getArithmeticOperators();
+        assertEquals(0, arithmetic.getFunctions().getFunctionNames().size());
+        IdCapabilities id = filterCapabilities.getIdCapabilities();
+        assertTrue(id.hasFID());
+        assertFalse(id.hasEID());
     }
     
     @Test
-    @Ignore // does not work at the moment
+    // @Ignore // does not work at the moment
     public void testRoundTripCapabilities() throws Exception {
         CapabilitiesType caps = (CapabilitiesType) parser.parse(getClass().getResourceAsStream("Capabilities.xml"));
 
         Encoder encoder = new Encoder(new CSWConfiguration());
         encoder.setIndenting(true);
         encoder.setNamespaceAware(true);
-        encoder.getNamespaces().declarePrefix("ows", "http://www.opengis.net/ows");
+        encoder.getNamespaces().declarePrefix("ows", OWS.NAMESPACE);
+        encoder.getNamespaces().declarePrefix("ogc", OGC.NAMESPACE);
         String encoded = encoder.encodeAsString(caps, CSW.Capabilities);
         System.out.println(encoded);
         
         CapabilitiesType reParsed = (CapabilitiesType) parser.parse(new StringReader(encoded));
-        assertEquals(caps.getServiceIdentification(), reParsed.getServiceIdentification());
+        // this one returns false...
+        EMFUtils.emfEquals(caps, reParsed);
     }
 }

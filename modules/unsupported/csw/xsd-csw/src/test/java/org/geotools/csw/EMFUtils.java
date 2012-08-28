@@ -3,6 +3,7 @@ package org.geotools.csw;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.util.FeatureMap;
 
 public class EMFUtils {
     
@@ -17,6 +18,10 @@ public class EMFUtils {
         for (EStructuralFeature sf :  e1.eClass().getEAllStructuralFeatures()) {
             Object o1 = e1.eGet(sf);
             Object o2 = e2.eGet(sf);
+            if(o1 instanceof FeatureMap) {
+                // this is just extra stuff that EMF adds when there is a substitution group
+                continue;
+            }
             boolean equals = objectEquals(o1, o2);
             
             if(!equals) {

@@ -20,6 +20,7 @@ import net.opengis.ows10.ServiceIdentificationType;
 import net.opengis.ows10.ServiceProviderType;
 
 import org.geotools.filter.v1_1.OGC;
+import org.geotools.gml2.GML;
 import org.geotools.ows.OWS;
 import org.geotools.xml.Encoder;
 import org.geotools.xml.Parser;
@@ -146,7 +147,6 @@ public class CSWCapabilitiesTest {
     }
     
     @Test
-    // @Ignore // does not work at the moment
     public void testRoundTripCapabilities() throws Exception {
         CapabilitiesType caps = (CapabilitiesType) parser.parse(getClass().getResourceAsStream("Capabilities.xml"));
 
@@ -155,11 +155,11 @@ public class CSWCapabilitiesTest {
         encoder.setNamespaceAware(true);
         encoder.getNamespaces().declarePrefix("ows", OWS.NAMESPACE);
         encoder.getNamespaces().declarePrefix("ogc", OGC.NAMESPACE);
+        encoder.getNamespaces().declarePrefix("gml", GML.NAMESPACE);
         String encoded = encoder.encodeAsString(caps, CSW.Capabilities);
-        System.out.println(encoded);
+        // System.out.println(encoded);
         
         CapabilitiesType reParsed = (CapabilitiesType) parser.parse(new StringReader(encoded));
-        // this one returns false...
-        EMFUtils.emfEquals(caps, reParsed);
+        assertTrue(EMFUtils.emfEquals(caps, reParsed));
     }
 }

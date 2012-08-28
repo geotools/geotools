@@ -18,23 +18,16 @@
 package org.geotools.process.raster.gs;
 
 import java.awt.geom.AffineTransform;
+import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
-
 import javax.media.jai.JAI;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.RenderedOp;
-
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.util.AffineTransformation;
-
-import org.jaitools.media.jai.contour.ContourDescriptor;
-import org.jaitools.media.jai.contour.ContourRIF;
-import org.jaitools.numeric.Range;
-
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -52,11 +45,16 @@ import org.geotools.process.raster.CoverageUtilities;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.util.NumberRange;
-
+import org.jaitools.media.jai.contour.ContourDescriptor;
+import org.jaitools.media.jai.contour.ContourRIF;
+import org.jaitools.numeric.Range;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.metadata.spatial.PixelOrientation;
 import org.opengis.util.InternationalString;
 import org.opengis.util.ProgressListener;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.util.AffineTransformation;
 
 
 /**
@@ -73,6 +71,7 @@ import org.opengis.util.ProgressListener;
  * value as the {@code Double} attribute "value".
  * 
  * @author Simone Giannecchini, GeoSolutions
+ * @author Mike Benowitz
  * @since 8.0
  *
  * @source $URL$
@@ -194,11 +193,11 @@ public class ContourProcess implements GSProcess {
         }
 
         // get the rendered image
-        final RenderedImage raster = gc2d.getRenderedImage();
-
+        final RenderedImage rasterImage = gc2d.getRenderedImage();
+        
         // perform jai operation
         ParameterBlockJAI pb = new ParameterBlockJAI("Contour");
-        pb.setSource("source0", raster);
+        pb.setSource("source0", rasterImage);
 
         if (roi != null) {
             pb.setParameter("roi", CoverageUtilities.prepareROI(roi, mt2D));
@@ -208,12 +207,15 @@ public class ContourProcess implements GSProcess {
             pb.setParameter("band", band);
         }
         
-        if (levels != null && levels.length > 0) {
-            final ArrayList<Double> elements = new ArrayList<Double>(levels.length);
-            for (double level : levels)
-                elements.add(level);
-            pb.setParameter("levels", elements);
+        final LevelData levelData;
+        final List<Double> adjustedLevels;
+        if (hasValues) {
+            levelData = new LevelData(levels, rasterImage, band); 
+            adjustedLevels = levelData.getAdjustedLevels();
+            pb.setParameter("levels", adjustedLevels);
         } else {
+            levelData = null;
+            adjustedLevels = null;
             pb.setParameter("interval", interval);
         }
         
@@ -253,6 +255,13 @@ public class ContourProcess implements GSProcess {
 
             // create feature and add to list
             builder.set("the_geom", line);
+            if (hasValues) {
+                // Assign non-adjusted level value to the feature  
+                final int levelIndex = Collections.binarySearch(adjustedLevels, value);
+                if (levelIndex >= 0) {
+                    value = levelData.getLevel(levelIndex);
+                }
+            }
             builder.set("value", value);
 
             featureCollection.add(builder.buildFeature(String.valueOf(i++)));
@@ -264,5 +273,85 @@ public class ContourProcess implements GSProcess {
         return featureCollection;
 
     }
+    
+    
+    /** Nested class for contour level data. */
+    private static final class LevelData {
+        private int count;
+        private final ArrayList<Double> levels;
+        private boolean[] edgeValueFlags;
+        private double[] binMins;
+        
+        LevelData(double[] levArray, RenderedImage rasterImage, int band) {
+            this.count = levArray.length;
+            this.levels = new ArrayList<Double>(this.count);
+            Arrays.sort(levArray);
+            for (double lev : levArray) this.levels.add(lev);
+            
+            // For each level, record (a) whether it matches any raster value,
+            // and (b) the minimum data value present
+            this.edgeValueFlags = new boolean[this.count];
+            this.binMins = Arrays.copyOf(levArray, this.count);
+            Raster raster = rasterImage.getData();
+            final int minX = raster.getMinX();
+            final int endX = minX + raster.getWidth();
+            final int minY = raster.getMinY();
+            final int endY = minY + raster.getHeight();
+            for (int x = minX; x < endX; x++) {
+                for (int y = minY; y < endY; y++) {
+                    final double val = raster.getSampleDouble(x, y, band);
+                    final int binIndex = levelIndexForValue(val);
+                    if (binIndex >= 0) {
+                        if (val == this.levels.get(binIndex)) {
+                            edgeValueFlags[binIndex] = true;
+                        } else if (val < binMins[binIndex]) {
+                            binMins[binIndex] = val;
+                        }
+                    }
+                }
+            }
+        }
+        
+        /** Returns the level value at the given index. */
+        Double getLevel(int index) { return levels.get(index); }
+        
+        /**
+         * Returns a version of the level list where no level value is equal to
+         * any value in the input raster (subject to the limits of floating
+         * point math). This is important because of an issue in the JAITools
+         * Contour operation where unwarranted squares are drawn in regions of
+         * equal-valued cells where the data value matches a level value.
+         * The adjustment is made by increasing each offending level value by a
+         * small enough amount not to match or exceed any higher raster value.
+         */
+        List<Double> getAdjustedLevels() {
+            if (count == 0) return Collections.emptyList();
+            final List<Double> adjustedLevels = new ArrayList<Double>(levels);
+            final int maxLevelIndex = count - 1;
+            for (int i = 0; i < maxLevelIndex; i++) {
+                if (edgeValueFlags[i]) {
+                    final double origLevel = levels.get(i);
+                    final double bump = (binMins[i+1] - origLevel) / 2; 
+                    adjustedLevels.set(i, origLevel + bump);
+                }
+            }
+            if (edgeValueFlags[maxLevelIndex]) {
+                final double origLevel = levels.get(maxLevelIndex);
+                final double bump = count == 1 ? .01 :
+                    (origLevel - levels.get(maxLevelIndex-1)) / 10;
+                adjustedLevels.set(maxLevelIndex, origLevel + bump);
+            }
+            return adjustedLevels;
+        }
 
+        /** Determines the bin index of the given value. */
+        private int levelIndexForValue(double value) {
+            for (int i = 0; i < this.count; i++) {
+                if (value <= levels.get(i)) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+    }
 }

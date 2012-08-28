@@ -115,4 +115,40 @@ public class ScalarCapabilitiesImpl implements ScalarCapabilities {
             logicalOperators = true;
         }
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((arithmeticOperators == null) ? 0 : arithmeticOperators.hashCode());
+        result = prime * result
+                + ((comparisonOperators == null) ? 0 : comparisonOperators.hashCode());
+        result = prime * result + (logicalOperators ? 1231 : 1237);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ScalarCapabilitiesImpl other = (ScalarCapabilitiesImpl) obj;
+        if (arithmeticOperators == null) {
+            if (other.arithmeticOperators != null)
+                return false;
+        } else if (!arithmeticOperators.equals(other.arithmeticOperators))
+            return false;
+        if (comparisonOperators == null) {
+            if (other.comparisonOperators != null)
+                return false;
+        } else if (!comparisonOperators.equals(other.comparisonOperators))
+            return false;
+        if (logicalOperators != other.logicalOperators)
+            return false;
+        return true;
+    }
 }

@@ -196,4 +196,51 @@ public class FilterCapabilitiesImpl implements FilterCapabilities {
         }        
         return buf.toString();
     }
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((scalar == null) ? 0 : scalar.hashCode());
+        result = prime * result + ((spatial == null) ? 0 : spatial.hashCode());
+        result = prime * result + ((temporal == null) ? 0 : temporal.hashCode());
+        result = prime * result + ((version == null) ? 0 : version.hashCode());
+        return result;
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        FilterCapabilitiesImpl other = (FilterCapabilitiesImpl) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        if (scalar == null) {
+            if (other.scalar != null)
+                return false;
+        } else if (!scalar.equals(other.scalar))
+            return false;
+        if (spatial == null) {
+            if (other.spatial != null)
+                return false;
+        } else if (!spatial.equals(other.spatial))
+            return false;
+        if (temporal == null) {
+            if (other.temporal != null)
+                return false;
+        } else if (!temporal.equals(other.temporal))
+            return false;
+        if (version == null) {
+            if (other.version != null)
+                return false;
+        } else if (!version.equals(other.version))
+            return false;
+        return true;
+    }
 }

@@ -73,7 +73,7 @@
     <stress.skip.pattern>**/*StressTest.java</stress.skip.pattern>
     <test.maxHeapSize>512M</test.maxHeapSize>
     <src.output>${basedir}/target</src.output>
-    <imageio.ext.version>1.1.4</imageio.ext.version>
+    <imageio.ext.version>1.1.5</imageio.ext.version>
     <jt.version>1.1.1</jt.version>
     <jvm.opts></jvm.opts>
     <maven.build.timestamp.format>dd-MMM-yyyy HH:mm</maven.build.timestamp.format>

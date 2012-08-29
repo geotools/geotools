@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ecore:EPackage xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="csw20"
-    nsURI="http:///net/opengis/cat/csw20.ecore" nsPrefix="net.opengis.cat.csw20">
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="csw20" nsURI="http:///net/opengis/cat/csw20.ecore" nsPrefix="net.opengis.cat.csw20">
   <eClassifiers xsi:type="ecore:EClass" name="AbstractQueryType" abstract="true">
     <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
       <details key="name" value="AbstractQueryType"/>
@@ -177,14 +175,8 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="This request allows a user to discover elements of the&#xA;         information model supported by the catalogue. If no TypeName&#xA;         elements are included, then all of the schemas for the&#xA;         information model must be returned.&#xA;&#xA;         schemaLanguage - preferred schema language&#xA;                          (W3C XML Schema by default)&#xA;         outputFormat - preferred output format (application/xml by default)"/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="typeName" unique="false"
-        eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/XMLType.ecore#//QName">
-      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
-        <details key="kind" value="element"/>
-        <details key="name" value="TypeName"/>
-        <details key="namespace" value="##targetNamespace"/>
-      </eAnnotations>
-    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="typeName" upperBound="-1"
+        eType="#//QName"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="outputFormat" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/XMLType.ecore#//String"
         defaultValueLiteral="application/xml" unsettable="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
@@ -1338,4 +1330,5 @@
     <eTypeParameters name="T"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="URI" instanceClassName="java.net.URI"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="QName" instanceClassName="javax.xml.namespace.QName"/>
 </ecore:EPackage>

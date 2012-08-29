@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import java.util.Set;
+import javax.xml.namespace.QName;
 import net.opengis.cat.csw20.AcknowledgementType;
 import net.opengis.cat.csw20.BriefRecordType;
 import net.opengis.cat.csw20.CapabilitiesType;
@@ -178,6 +179,8 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
                 return createSetFromString(eDataType, initialValue);
             case Csw20Package.URI:
                 return createURIFromString(eDataType, initialValue);
+            case Csw20Package.QNAME:
+                return createQNameFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -211,6 +214,8 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
                 return convertSetToString(eDataType, instanceValue);
             case Csw20Package.URI:
                 return convertURIToString(eDataType, instanceValue);
+            case Csw20Package.QNAME:
+                return convertQNameToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -642,8 +647,8 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * @generated
      */
     @SuppressWarnings("unchecked")
-    public List createTypeNameListTypeFromString(EDataType eDataType, String initialValue) {
-        return (List)super.createFromString(initialValue);
+    public List<QName> createTypeNameListTypeFromString(EDataType eDataType, String initialValue) {
+        return (List<QName>)super.createFromString(initialValue);
     }
 
     /**
@@ -679,8 +684,8 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * @generated
      */
     @SuppressWarnings("unchecked")
-    public List createTypeNameListType_1FromString(EDataType eDataType, String initialValue) {
-        return (List)super.createFromString(initialValue);
+    public List<QName> createTypeNameListType_1FromString(EDataType eDataType, String initialValue) {
+        return (List<QName>)super.createFromString(initialValue);
     }
 
     /**
@@ -779,6 +784,24 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * @generated
      */
     public String convertURIToString(EDataType eDataType, Object instanceValue) {
+        return super.convertToString(eDataType, instanceValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public QName createQNameFromString(EDataType eDataType, String initialValue) {
+        return (QName)super.createFromString(eDataType, initialValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertQNameToString(EDataType eDataType, Object instanceValue) {
         return super.convertToString(eDataType, instanceValue);
     }
 

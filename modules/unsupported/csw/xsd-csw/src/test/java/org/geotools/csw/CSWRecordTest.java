@@ -12,8 +12,6 @@ import net.opengis.cat.csw20.SummaryRecordType;
 import net.opengis.ows10.BoundingBoxType;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.geotools.ows.OWS;
 import org.geotools.xml.Encoder;
 import org.geotools.xml.Parser;
@@ -107,11 +105,9 @@ public class CSWRecordTest {
     public void testRoundTripRecord() throws Exception {
         RecordType record = (RecordType) parser.parse(getClass().getResourceAsStream("Record.xml"));
         String encoded = encoder.encodeAsString(record, CSW.Record);
-        // System.out.println(encoded);
-        /** This does not quite work, the bbox is parsed as a OWS 1.1 one
+        System.out.println(encoded);
         RecordType reparsed = (RecordType) parser.parse(new StringReader(encoded));
-        assertTrue(emfEquals(record, reparsed));
-        */
+        assertTrue(EMFUtils.emfEquals(record, reparsed));
     }
     
     private Object getElement(List<SimpleLiteral> elements, String name) {

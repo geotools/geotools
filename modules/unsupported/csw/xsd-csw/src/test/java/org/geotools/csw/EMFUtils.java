@@ -25,7 +25,7 @@ public class EMFUtils {
             boolean equals = objectEquals(o1, o2);
             
             if(!equals) {
-                System.out.println("Comparison failed on " + sf + " e1 has " + o1 + " while o2 has " + o2);
+                System.out.println("Comparison failed on " + sf + " o1 has " + o1 + " while o2 has " + o2);
                 return false;
             }
         }
@@ -45,6 +45,7 @@ public class EMFUtils {
             EList l1 = (EList) o1;
             EList l2 = (EList) o2;
             if(l1.size() != l2.size()) {
+                System.out.println("The two lists do not have the same size, e1 has " + l1.size() + " while o2 has " + l2.size());
                 equals = false;
             } else {
                 for (int i = 0; i < l1.size() && equals; i++) {

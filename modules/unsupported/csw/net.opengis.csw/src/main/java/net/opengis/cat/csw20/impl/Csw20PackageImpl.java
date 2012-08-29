@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import java.util.Set;
+import javax.xml.namespace.QName;
 import net.opengis.cat.csw20.AbstractQueryType;
 import net.opengis.cat.csw20.AbstractRecordType;
 import net.opengis.cat.csw20.AcknowledgementType;
@@ -470,6 +471,13 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * @generated
      */
     private EDataType uriEDataType = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EDataType qNameEDataType = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -2178,6 +2186,15 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EDataType getQName() {
+        return qNameEDataType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public Csw20Factory getCsw20Factory() {
         return (Csw20Factory)getEFactoryInstance();
     }
@@ -2431,6 +2448,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         calendarEDataType = createEDataType(CALENDAR);
         setEDataType = createEDataType(SET);
         uriEDataType = createEDataType(URI);
+        qNameEDataType = createEDataType(QNAME);
     }
 
     /**
@@ -2514,7 +2532,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         initEReference(getDescribeRecordResponseType_SchemaComponent(), this.getSchemaComponentType(), null, "schemaComponent", null, 0, -1, DescribeRecordResponseType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(describeRecordTypeEClass, DescribeRecordType.class, "DescribeRecordType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getDescribeRecordType_TypeName(), theXMLTypePackage.getQName(), "typeName", null, 0, 1, DescribeRecordType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getDescribeRecordType_TypeName(), this.getQName(), "typeName", null, 0, -1, DescribeRecordType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getDescribeRecordType_OutputFormat(), theXMLTypePackage.getString(), "outputFormat", "application/xml", 0, 1, DescribeRecordType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getDescribeRecordType_SchemaLanguage(), theXMLTypePackage.getAnyURI(), "schemaLanguage", "http://www.w3.org/XML/Schema", 0, 1, DescribeRecordType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -2719,6 +2737,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         initEDataType(calendarEDataType, Calendar.class, "Calendar", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(setEDataType, Set.class, "Set", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(uriEDataType, java.net.URI.class, "URI", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(qNameEDataType, QName.class, "QName", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
         // Create resource
         createResource(eNS_URI);
@@ -2886,14 +2905,6 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
              "name", "DescribeRecordType",
              "kind", "elementOnly"
            });			
-        addAnnotation
-          (getDescribeRecordType_TypeName(), 
-           source, 
-           new String[] {
-             "kind", "element",
-             "name", "TypeName",
-             "namespace", "##targetNamespace"
-           });		
         addAnnotation
           (getDescribeRecordType_OutputFormat(), 
            source, 

@@ -463,7 +463,7 @@ public interface Csw20Package extends EPackage {
     int DESCRIBE_RECORD_TYPE__VERSION = REQUEST_BASE_TYPE__VERSION;
 
     /**
-     * The feature id for the '<em><b>Type Name</b></em>' attribute.
+     * The feature id for the '<em><b>Type Name</b></em>' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -2393,6 +2393,17 @@ public interface Csw20Package extends EPackage {
 
 
     /**
+     * The meta object id for the '<em>QName</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.xml.namespace.QName
+     * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getQName()
+     * @generated
+     */
+    int QNAME = 55;
+
+
+    /**
      * Returns the meta object for class '{@link net.opengis.cat.csw20.AbstractQueryType <em>Abstract Query Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2648,10 +2659,10 @@ public interface Csw20Package extends EPackage {
     EClass getDescribeRecordType();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.cat.csw20.DescribeRecordType#getTypeName <em>Type Name</em>}'.
+     * Returns the meta object for the attribute list '{@link net.opengis.cat.csw20.DescribeRecordType#getTypeName <em>Type Name</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Type Name</em>'.
+     * @return the meta object for the attribute list '<em>Type Name</em>'.
      * @see net.opengis.cat.csw20.DescribeRecordType#getTypeName()
      * @see #getDescribeRecordType()
      * @generated
@@ -4352,6 +4363,17 @@ public interface Csw20Package extends EPackage {
     EDataType getURI();
 
     /**
+     * Returns the meta object for data type '{@link javax.xml.namespace.QName <em>QName</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for data type '<em>QName</em>'.
+     * @see javax.xml.namespace.QName
+     * @model instanceClass="javax.xml.namespace.QName"
+     * @generated
+     */
+    EDataType getQName();
+
+    /**
      * Returns the factory that creates the instances of the model.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4584,7 +4606,7 @@ public interface Csw20Package extends EPackage {
         EClass DESCRIBE_RECORD_TYPE = eINSTANCE.getDescribeRecordType();
 
         /**
-         * The meta object literal for the '<em><b>Type Name</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Type Name</b></em>' attribute list feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
@@ -5938,6 +5960,16 @@ public interface Csw20Package extends EPackage {
          * @generated
          */
         EDataType URI = eINSTANCE.getURI();
+
+        /**
+         * The meta object literal for the '<em>QName</em>' data type.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see javax.xml.namespace.QName
+         * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getQName()
+         * @generated
+         */
+        EDataType QNAME = eINSTANCE.getQName();
 
     }
 

@@ -9,6 +9,7 @@ import net.opengis.cat.csw20.Csw20Factory;
 import net.opengis.cat.csw20.RecordType;
 import net.opengis.cat.csw20.SimpleLiteral;
 import net.opengis.ows10.BoundingBoxType;
+import net.opengis.ows10.WGS84BoundingBoxType;
 
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDElementDeclaration;
@@ -32,6 +33,8 @@ public class RecordBinding extends ComplexEMFBinding {
         RecordType record = (RecordType) object;
         
         List result = new ArrayList();
+        XSDParticle previous = null;
+        String previousName = null;
         for (SimpleLiteral sl : record.getDCElement()) {
             XSDSchema dctSchema = DCT.getInstance().getSchema();
             XSDElementDeclaration declaration = dctSchema.resolveElementDeclaration(sl.getName());
@@ -40,15 +43,27 @@ public class RecordBinding extends ComplexEMFBinding {
                 declaration = dcSchema.resolveElementDeclaration(sl.getName());
             }
             if(declaration != null) {
-                XSDParticle particle = buildParticle(declaration);
+                XSDParticle particle;
+                if(previousName != null && sl.getName().equals(previousName)) {
+                    particle = previous;
+                } else {
+                    particle = buildParticle(declaration);
+                    previous = particle;
+                    previousName = sl.getName();
+                }
                 result.add(new Object[] {particle, sl});
             }
         }
         
         if(record.getBoundingBox() != null && record.getBoundingBox().size() > 0) {
-            XSDElementDeclaration bboxElement  = OWS.getInstance().getSchema().resolveElementDeclaration("BoundingBox");
-            XSDParticle particle = buildParticle(bboxElement);
             for (Object box : record.getBoundingBox()) {
+                XSDElementDeclaration bboxElement;
+                if(box instanceof WGS84BoundingBoxType) {
+                    bboxElement = OWS.getInstance().getSchema().resolveElementDeclaration("WGS84BoundingBox");
+                } else {
+                    bboxElement = OWS.getInstance().getSchema().resolveElementDeclaration("BoundingBox");
+                }
+                XSDParticle particle = buildParticle(bboxElement);
                 result.add(new Object[] {particle, box});
             }
         }

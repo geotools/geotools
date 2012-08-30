@@ -194,6 +194,20 @@ public class Processors extends FactoryFinder {
     }
 
     /**
+     * Reinitializes all static state, including the ProcessFactory service registry and reference
+     * to the last used ProcessFactory
+     */
+    public synchronized static void reset() {
+        if (registry == null) {
+            //nothing to do
+            return;
+        }
+        registry.deregisterAll();
+        registry.scanForPlugins();
+        lastFactory = null;
+    }
+
+    /**
      * This progress listener checks if the current Thread is interrupted, it
      * acts as a bridge between Future and ProgressListener code.
      * 

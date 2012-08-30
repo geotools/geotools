@@ -6,9 +6,8 @@
  */
 package net.opengis.cat.csw20.impl;
 
-import java.lang.String;
-
 import java.math.BigInteger;
+import java.util.Calendar;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -19,15 +18,11 @@ import net.opengis.cat.csw20.SearchResultsType;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-
 import org.eclipse.emf.ecore.util.BasicFeatureMap;
 import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.InternalEList;
@@ -112,7 +107,7 @@ public class SearchResultsTypeImpl extends EObjectImpl implements SearchResultsT
      * @generated
      * @ordered
      */
-    protected static final XMLGregorianCalendar EXPIRES_EDEFAULT = null;
+    protected static final Calendar EXPIRES_EDEFAULT = null;
 
     /**
      * The cached value of the '{@link #getExpires() <em>Expires</em>}' attribute.
@@ -122,7 +117,7 @@ public class SearchResultsTypeImpl extends EObjectImpl implements SearchResultsT
      * @generated
      * @ordered
      */
-    protected XMLGregorianCalendar expires = EXPIRES_EDEFAULT;
+    protected Calendar expires = EXPIRES_EDEFAULT;
 
     /**
      * The default value of the '{@link #getNextRecord() <em>Next Record</em>}' attribute.
@@ -327,7 +322,7 @@ public class SearchResultsTypeImpl extends EObjectImpl implements SearchResultsT
      * <!-- end-user-doc -->
      * @generated
      */
-    public XMLGregorianCalendar getExpires() {
+    public Calendar getExpires() {
         return expires;
     }
 
@@ -336,8 +331,8 @@ public class SearchResultsTypeImpl extends EObjectImpl implements SearchResultsT
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setExpires(XMLGregorianCalendar newExpires) {
-        XMLGregorianCalendar oldExpires = expires;
+    public void setExpires(Calendar newExpires) {
+        Calendar oldExpires = expires;
         expires = newExpires;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, Csw20Package.SEARCH_RESULTS_TYPE__EXPIRES, oldExpires, expires));
@@ -518,7 +513,7 @@ public class SearchResultsTypeImpl extends EObjectImpl implements SearchResultsT
                 setElementSet((ElementSetType)newValue);
                 return;
             case Csw20Package.SEARCH_RESULTS_TYPE__EXPIRES:
-                setExpires((XMLGregorianCalendar) newValue);
+                setExpires((Calendar)newValue);
                 return;
             case Csw20Package.SEARCH_RESULTS_TYPE__NEXT_RECORD:
                 setNextRecord((BigInteger)newValue);

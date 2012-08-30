@@ -181,9 +181,7 @@ public interface DomainValuesType extends EObject {
      * @return the value of the '<em>Type</em>' attribute.
      * @see #setType(QName)
      * @see net.opengis.cat.csw20.Csw20Package#getDomainValuesType_Type()
-     * @model dataType="org.eclipse.emf.ecore.xml.type.QName" required="true"
-     *        extendedMetaData="kind='attribute' name='type'"
-     * @generated
+     * @model 
      */
     QName getType();
 

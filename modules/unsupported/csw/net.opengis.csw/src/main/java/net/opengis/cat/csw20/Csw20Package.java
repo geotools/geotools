@@ -2404,6 +2404,17 @@ public interface Csw20Package extends EPackage {
 
 
     /**
+     * The meta object id for the '<em>Duration</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.xml.datatype.Duration
+     * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getDuration()
+     * @generated
+     */
+    int DURATION = 56;
+
+
+    /**
      * Returns the meta object for class '{@link net.opengis.cat.csw20.AbstractQueryType <em>Abstract Query Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4374,6 +4385,17 @@ public interface Csw20Package extends EPackage {
     EDataType getQName();
 
     /**
+     * Returns the meta object for data type '{@link javax.xml.datatype.Duration <em>Duration</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for data type '<em>Duration</em>'.
+     * @see javax.xml.datatype.Duration
+     * @model instanceClass="javax.xml.datatype.Duration"
+     * @generated
+     */
+    EDataType getDuration();
+
+    /**
      * Returns the factory that creates the instances of the model.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -5970,6 +5992,16 @@ public interface Csw20Package extends EPackage {
          * @generated
          */
         EDataType QNAME = eINSTANCE.getQName();
+
+        /**
+         * The meta object literal for the '<em>Duration</em>' data type.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see javax.xml.datatype.Duration
+         * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getDuration()
+         * @generated
+         */
+        EDataType DURATION = eINSTANCE.getDuration();
 
     }
 

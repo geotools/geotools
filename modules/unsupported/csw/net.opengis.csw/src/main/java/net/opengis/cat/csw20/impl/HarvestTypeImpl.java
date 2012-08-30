@@ -335,7 +335,7 @@ public class HarvestTypeImpl extends RequestBaseTypeImpl implements HarvestType 
                 setResourceFormat((String)newValue);
                 return;
             case Csw20Package.HARVEST_TYPE__HARVEST_INTERVAL:
-                setHarvestInterval((Duration) newValue);
+                setHarvestInterval((Duration)newValue);
                 return;
             case Csw20Package.HARVEST_TYPE__RESPONSE_HANDLER:
                 setResponseHandler((String)newValue);

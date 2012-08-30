@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import java.util.Set;
+import javax.xml.datatype.Duration;
 import javax.xml.namespace.QName;
 import net.opengis.cat.csw20.AcknowledgementType;
 import net.opengis.cat.csw20.BriefRecordType;
@@ -181,6 +182,8 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
                 return createURIFromString(eDataType, initialValue);
             case Csw20Package.QNAME:
                 return createQNameFromString(eDataType, initialValue);
+            case Csw20Package.DURATION:
+                return createDurationFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -216,6 +219,8 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
                 return convertURIToString(eDataType, instanceValue);
             case Csw20Package.QNAME:
                 return convertQNameToString(eDataType, instanceValue);
+            case Csw20Package.DURATION:
+                return convertDurationToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -802,6 +807,24 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * @generated
      */
     public String convertQNameToString(EDataType eDataType, Object instanceValue) {
+        return super.convertToString(eDataType, instanceValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public Duration createDurationFromString(EDataType eDataType, String initialValue) {
+        return (Duration)super.createFromString(eDataType, initialValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertDurationToString(EDataType eDataType, Object instanceValue) {
         return super.convertToString(eDataType, instanceValue);
     }
 

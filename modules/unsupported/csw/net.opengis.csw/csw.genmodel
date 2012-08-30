@@ -27,6 +27,7 @@
     </genDataTypes>
     <genDataTypes ecoreDataType="csw20.ecore#//URI"/>
     <genDataTypes ecoreDataType="csw20.ecore#//QName"/>
+    <genDataTypes ecoreDataType="csw20.ecore#//Duration"/>
     <genClasses image="false" ecoreClass="csw20.ecore#//AbstractQueryType"/>
     <genClasses image="false" ecoreClass="csw20.ecore#//AbstractRecordType"/>
     <genClasses ecoreClass="csw20.ecore#//AcknowledgementType">

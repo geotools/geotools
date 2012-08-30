@@ -33,7 +33,6 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.logging.Logging;
@@ -60,7 +59,7 @@ import com.vividsolutions.jts.operation.distance.DistanceOp;
  *
  * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/process-feature/src/main/java/org/geotools/process/feature/gs/NearestProcess.java $
  */
-public class LRSMeasureProcess implements GSProcess {
+public class LRSMeasureProcess implements VectorProcess {
     private static final Logger LOGGER = Logging.getLogger(LRSMeasureProcess.class);
 
     private final GeometryFactory geometryFactory = new GeometryFactory();

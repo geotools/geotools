@@ -32,7 +32,6 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 import org.geotools.process.gs.WrappingIterator;
 
 import org.geotools.coverage.Category;
@@ -86,7 +85,7 @@ import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
  * @author Andrea Aime - GeoSolutions
  */
 @DescribeProcess(title = "Raster Zonal Statistics", description = "Computes statistics for the distribution of a certain quantity in a set of polygonal zones.")
-public class RasterZonalStatistics implements GSProcess {
+public class RasterZonalStatistics implements RasterProcess {
 
     private final static CoverageProcessor PROCESSOR = CoverageProcessor.getInstance();
 

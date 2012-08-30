@@ -24,7 +24,6 @@ import javax.media.jai.Interpolation;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.opengis.coverage.processing.Operation;
@@ -39,7 +38,7 @@ import org.opengis.parameter.ParameterValueGroup;
  * @source $URL$
  */
 @DescribeProcess(title = "Scale Coverage", description = "Returns a scaled and translated version of a given raster")
-public class ScaleCoverage implements GSProcess {
+public class ScaleCoverage implements RasterProcess {
 
     private static final CoverageProcessor PROCESSOR = CoverageProcessor.getInstance();
     private static final Operation SCALE = PROCESSOR.getOperation("Scale");

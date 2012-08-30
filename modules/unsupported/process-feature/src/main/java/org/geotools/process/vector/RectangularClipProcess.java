@@ -24,7 +24,6 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 
 /**
  * A process clipping the geometries in the input feature collection to a specified rectangle
@@ -35,7 +34,7 @@ import org.geotools.process.gs.GSProcess;
  * @source $URL$
  */
 @DescribeProcess(title = "Rectangular Clip", description = "Clips (crops) features to the specified rectangular extent")
-public class RectangularClipProcess implements GSProcess {
+public class RectangularClipProcess implements VectorProcess {
 
     @DescribeResult(name = "result", description = "Clipped feature collection")
     public SimpleFeatureCollection execute(

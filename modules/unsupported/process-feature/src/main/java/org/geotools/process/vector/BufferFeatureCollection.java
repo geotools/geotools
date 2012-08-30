@@ -23,7 +23,6 @@ import java.util.NoSuchElementException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 import org.geotools.process.gs.WrappingIterator;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -52,7 +51,7 @@ import com.vividsolutions.jts.geom.MultiPolygon;
  * @source $URL$
  */
 @DescribeProcess(title = "Buffer", description = "Buffers features by a distance value supplied either as a parameter or by a feature attribute. Calculates buffers based on Cartesian distances.")
-public class BufferFeatureCollection implements GSProcess {
+public class BufferFeatureCollection implements VectorProcess {
     @DescribeResult(description = "Buffered feature collection")
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "features", description = "Input feature collection") SimpleFeatureCollection features,

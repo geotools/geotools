@@ -26,7 +26,6 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 import org.geotools.process.gs.WrappingIterator;
 import org.geotools.process.vector.AggregateProcess.AggregationFunction;
 import org.geotools.process.vector.AggregateProcess.Results;
@@ -54,7 +53,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * The data layer must be a point layer, the reference layer must be a polygonal one
  */
 @DescribeProcess(title = "Vector Zonal Statistics", description = "Computes statistics for the distribution of a given attribute in a set of polygonal zones.  Input must be points.")
-public class VectorZonalStatistics implements GSProcess {
+public class VectorZonalStatistics implements VectorProcess {
 
     @DescribeResult(name = "statistics", description = "A feature collection with the attributes of the zone layer (prefixed by 'z_') and the statistics fields count,min,max,sum,avg,stddev")
     public SimpleFeatureCollection execute(

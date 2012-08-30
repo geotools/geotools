@@ -20,7 +20,6 @@ package org.geotools.process.vector;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 import org.geotools.data.crs.ForceCoordinateSystemFeatureResults;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.store.ReprojectingFeatureCollection;
@@ -35,7 +34,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @source $URL$
  */
 @DescribeProcess(title = "Reproject Features", description = "Reprojects features into a supplied coordinate reference system.  Can also force a feature collection to have a given CRS.")
-public class ReprojectProcess implements GSProcess {
+public class ReprojectProcess implements VectorProcess {
 
     @DescribeResult(name = "result", description = "Input feature collection")
     public SimpleFeatureCollection execute(

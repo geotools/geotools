@@ -33,7 +33,6 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -78,7 +77,7 @@ import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
  *
  */
 @DescribeProcess(title = "Point Stacker", description = "Aggregates a collection of points over a grid into one point per grid cell.")
-public class PointStackerProcess implements GSProcess {
+public class PointStackerProcess implements VectorProcess {
 
     public static final String ATTR_GEOM = "geom";
     public static final String ATTR_COUNT = "count";

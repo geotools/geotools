@@ -28,7 +28,6 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
@@ -49,7 +48,7 @@ import com.vividsolutions.jts.linearref.LengthIndexedLine;
  *
  * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/process-feature/src/main/java/org/geotools/process/feature/gs/NearestProcess.java $
  */
-public class LRSGeocodeProcess implements GSProcess {
+public class LRSGeocodeProcess implements VectorProcess {
     private static final Logger LOGGER = Logging.getLogger(LRSGeocodeProcess.class);
 
     private final GeometryFactory geometryFactory = new GeometryFactory();

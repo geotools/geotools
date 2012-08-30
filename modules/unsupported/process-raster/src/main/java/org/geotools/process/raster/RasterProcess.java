@@ -2,8 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
- *    (C) 2008-2011 TOPP - www.openplans.org.
+ *    (C) 2012, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -15,16 +14,15 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.process.gs;
+package org.geotools.process.raster;
+
+import org.geotools.process.gs.GSProcess;
 
 /**
- * A marker interface used to lookup the processes.
+ * Marker interface for processes that should be grouped into the "raster" family. 
  * 
- * @author Andrea Aime - OpenGeo
- *
- * @source $URL$
- * @deprecated Not longer needed.
+ * @author Justin Deoliveira, OpenGeo
  */
-public interface GSProcess {
+public interface RasterProcess extends GSProcess {
 
 }

@@ -1,5 +1,5 @@
 /*
- *    GeoTools - The Open Source Java GIS Toolkit
+  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
  *    (C) 2008-2011, Open Source Geospatial Foundation (OSGeo)
@@ -104,7 +104,7 @@ import org.opengis.util.ProgressListener;
  * 
  */
 @DescribeProcess(title = "Transform", description = "Converts some or all of a feature collection to a raster grid, using an attribute to specify cell values.")
-public class VectorToRasterProcess {
+public class VectorToRasterProcess implements VectorProcess {
 
     private static final int COORD_GRID_CHUNK_SIZE = 1000;
 

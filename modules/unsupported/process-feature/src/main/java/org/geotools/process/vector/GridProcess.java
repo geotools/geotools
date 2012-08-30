@@ -34,7 +34,6 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -48,7 +47,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @source $URL$
  */
 @DescribeProcess(title = "Grid", description = "Generates a georeferenced regular grid of cells.  Output contains the attributes: cell - the cell polygon; id - a unique identifier; centerX and centerY - the ordinates of the cell center.")
-public class GridProcess implements GSProcess {
+public class GridProcess implements VectorProcess {
 
     enum GridMode {
         Rectangular, HexagonFlat, HexagonAngled

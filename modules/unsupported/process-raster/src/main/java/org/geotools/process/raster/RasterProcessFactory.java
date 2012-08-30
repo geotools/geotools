@@ -5,19 +5,21 @@ import org.geotools.text.Text;
 
 public class RasterProcessFactory extends AnnotatedBeanProcessFactory {
 
+    static volatile BeanFactoryRegistry<RasterProcess> registry;
+
+    public static BeanFactoryRegistry<RasterProcess> getRegistry() {
+        if (registry == null) {
+            synchronized (RasterProcessFactory.class) {
+                if (registry == null) {
+                    registry = new BeanFactoryRegistry<RasterProcess>(RasterProcess.class);
+                }
+            }
+        }
+        return registry;
+    }
+
     public RasterProcessFactory() {
-        super(Text.text("Raster processes"), "ras",
-            AddCoveragesProcess.class, 
-            AreaGridProcess.class, 
-            ContourProcess.class,
-            CropCoverage.class, 
-            MultiplyCoveragesProcess.class, 
-            PolygonExtractionProcess.class,
-            RangeLookupProcess.class,
-            RasterAsPointCollectionProcess.class,
-            RasterZonalStatistics.class,
-            ScaleCoverage.class, 
-            StyleCoverage.class);
+        super(Text.text("Raster processes"), "ras", getRegistry().lookupBeanClasses());
     }
 
 }

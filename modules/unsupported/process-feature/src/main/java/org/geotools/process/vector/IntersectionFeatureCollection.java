@@ -34,7 +34,6 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 import org.geotools.process.gs.WrappingIterator;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeature;
@@ -68,7 +67,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author Luca Paolino - GeoSolutions
  */
 @DescribeProcess(title = "Intersection of Feature Collections", description = "Spatial intersection of two feature collections, incuding combining attributes from both.")
-public class IntersectionFeatureCollection implements GSProcess {
+public class IntersectionFeatureCollection implements VectorProcess {
     private static final Logger logger = Logger
             .getLogger("org.geotools.process.feature.gs.IntersectionFeatureCollection");
     public static enum IntersectionMode {

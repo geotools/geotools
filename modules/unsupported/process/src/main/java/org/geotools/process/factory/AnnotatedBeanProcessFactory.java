@@ -20,11 +20,13 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.geotools.factory.FactoryRegistry;
 import org.geotools.feature.NameImpl;
 import org.opengis.feature.type.Name;
 import org.opengis.util.InternationalString;
@@ -160,4 +162,27 @@ public class AnnotatedBeanProcessFactory extends AnnotationDrivenProcessFactory 
         }
     }
 
+    /**
+     * Subclass of FactoryRegistry meant for convenience of looking up all the classes
+     * that implement a specific bean interface.
+     */
+    public static class BeanFactoryRegistry<T> extends FactoryRegistry {
+
+        public BeanFactoryRegistry(Class<T> clazz) {
+            super(clazz);
+        }
+
+        public Class<T> getBeanClass() {
+            return (Class<T>) getCategories().next();
+        }
+
+        public Class<? extends T>[] lookupBeanClasses() {
+            Iterator<T> it = getServiceProviders(getBeanClass(), null, null);
+            List<Class> list = new ArrayList();
+            while(it.hasNext()) {
+                list.add((Class<? extends T>) it.next().getClass());
+            }
+            return list.toArray(new Class[list.size()]);
+        }
+    }
 }

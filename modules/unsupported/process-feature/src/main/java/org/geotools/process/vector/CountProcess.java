@@ -20,7 +20,6 @@ package org.geotools.process.vector;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 import org.geotools.data.simple.SimpleFeatureCollection;
 
 /**
@@ -31,7 +30,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
  * @source $URL$
  */
 @DescribeProcess(title = "Count Features", description = "Computes the number of features in a feature collection.")
-public class CountProcess implements GSProcess {
+public class CountProcess implements VectorProcess {
     /** The functions this process can handle */
     public enum AggregationFunction {
         Average, Max, Median, Min, StdDev, Sum;

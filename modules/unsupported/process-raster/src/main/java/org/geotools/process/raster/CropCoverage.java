@@ -44,7 +44,7 @@ import com.vividsolutions.jts.geom.GeometryCollection;
  * @source $URL$
  */
 @DescribeProcess(title = "Crop Coverage", description = "Returns the portion of a raster bounded by a given geometry.")
-public class CropCoverage implements GSProcess {
+public class CropCoverage implements RasterProcess {
 
     private static final CoverageProcessor PROCESSOR = CoverageProcessor.getInstance();
     private static final Operation CROP = PROCESSOR.getOperation("CoverageCrop");

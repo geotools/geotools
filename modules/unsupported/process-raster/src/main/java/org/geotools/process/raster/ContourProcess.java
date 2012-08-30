@@ -47,7 +47,6 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.util.NumberRange;
@@ -78,7 +77,7 @@ import org.opengis.util.ProgressListener;
  * @version $Id$
  */
 @DescribeProcess(title = "Contour", description = "Computes contour lines at specified intervals or levels for the values in a raster.")
-public class ContourProcess implements GSProcess {
+public class ContourProcess implements RasterProcess {
 
     private static final InternationalString NO_DATA = Vocabulary
             .formatInternational(VocabularyKeys.NODATA);

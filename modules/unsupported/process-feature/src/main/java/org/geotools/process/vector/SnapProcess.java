@@ -36,7 +36,6 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.text.Text;
@@ -63,7 +62,7 @@ import com.vividsolutions.jts.operation.distance.DistanceOp;
  *
  * @source $URL$
  */
-public class SnapProcess implements GSProcess {
+public class SnapProcess implements VectorProcess {
     private static final Logger LOGGER = Logging.getLogger(SnapProcess.class);
 
     private GeometryFactory geometryFactory = new GeometryFactory();

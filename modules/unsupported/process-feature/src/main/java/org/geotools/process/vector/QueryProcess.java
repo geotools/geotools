@@ -22,7 +22,6 @@ import java.util.List;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.store.ReTypingFeatureCollection;
 import org.geotools.feature.collection.FilteringSimpleFeatureCollection;
@@ -37,7 +36,7 @@ import org.opengis.filter.Filter;
  *
  * @source $URL$
  */
-public class QueryProcess implements GSProcess {
+public class QueryProcess implements VectorProcess {
     @DescribeResult(name = "result", description = "The filtered feature collection")
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "features", description = "Input feature collection") SimpleFeatureCollection features,

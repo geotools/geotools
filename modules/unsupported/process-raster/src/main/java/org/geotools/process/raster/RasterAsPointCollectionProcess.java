@@ -30,7 +30,6 @@ import javax.media.jai.iterator.RectIterFactory;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 import org.geotools.process.gs.WrappingIterator;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -66,7 +65,7 @@ import com.vividsolutions.jts.geom.Point;
  * @source $URL$
  */
 @DescribeProcess(title = "Raster As Point Collection", description = "Returns a collection of point features for the pixels of a raster.  The band values are provided as attributes.")
-public class RasterAsPointCollectionProcess implements GSProcess {
+public class RasterAsPointCollectionProcess implements RasterProcess {
 
     @DescribeResult(name = "result", description = "Point features")
     public SimpleFeatureCollection execute(

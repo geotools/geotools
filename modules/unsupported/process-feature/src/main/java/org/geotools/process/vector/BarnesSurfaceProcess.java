@@ -38,7 +38,6 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 import org.geotools.referencing.CRS;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridGeometry;
@@ -138,7 +137,7 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 
 @DescribeProcess(title = "BarnesSurface", description = "Uses Barnes Analysis to compute an interpolated surface over a set of irregular data points.")
-public class BarnesSurfaceProcess implements GSProcess {
+public class BarnesSurfaceProcess implements VectorProcess {
 
     // no process state is defined, since RenderingTransformation processes must be stateless
     

@@ -23,7 +23,6 @@ import java.util.NoSuchElementException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 import org.geotools.process.gs.WrappingIterator;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -46,7 +45,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Pietro Arena - Sinergis
  */
 @DescribeProcess(title = "Inclusion of Feature Collections", description = "Returns a feature collection consisting of the features from the first collection which are spatially contained in at least one feature of the second collection.")
-public class InclusionFeatureCollection implements GSProcess {
+public class InclusionFeatureCollection implements VectorProcess {
     @DescribeResult(description = "Output feature collection")
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "first feature collection", description = "First feature collection") SimpleFeatureCollection firstFeatures,

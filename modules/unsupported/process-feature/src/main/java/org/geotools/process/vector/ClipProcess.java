@@ -25,7 +25,6 @@ import java.util.NoSuchElementException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 import org.geotools.process.gs.WrappingIterator;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -63,7 +62,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @source $URL$
  */
 @DescribeProcess(title = "Clip", description = "Clips (crops) features to a given geometry")
-public class ClipProcess implements GSProcess {
+public class ClipProcess implements VectorProcess {
 
     @DescribeResult(name = "result", description = "Clipped feature collection")
     public SimpleFeatureCollection execute(

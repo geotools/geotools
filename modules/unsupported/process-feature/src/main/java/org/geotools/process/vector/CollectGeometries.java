@@ -25,7 +25,6 @@ import org.geotools.geometry.jts.GeometryCollector;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 import org.opengis.util.ProgressListener;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -40,7 +39,7 @@ import com.vividsolutions.jts.geom.GeometryCollection;
  * @source $URL$
  */
 @DescribeProcess(title = "Collect Geometries", description = "Collects the deafult geometries of the input features and combines them into a single geometry collection")
-public class CollectGeometries implements GSProcess {
+public class CollectGeometries implements VectorProcess {
 
     @DescribeResult(name = "result", description = "Geometry collection of all input geometries")
     public GeometryCollection execute(

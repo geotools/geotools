@@ -22,7 +22,6 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 
 /**
  * Simple process with a {@link ReferencedEnvelope} as the output
@@ -32,7 +31,7 @@ import org.geotools.process.gs.GSProcess;
  * @source $URL$
  */
 @DescribeProcess(title = "Bounds", description = "Computes the bounding box of the input features.")
-public class BoundsProcess implements GSProcess {
+public class BoundsProcess implements VectorProcess {
 
     @DescribeResult(name = "bounds", description = "Bounding box of input features")
     public ReferencedEnvelope execute(

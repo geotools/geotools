@@ -1,0 +1,11 @@
+org.geotools.process.raster.AddCoveragesProcess 
+org.geotools.process.raster.AreaGridProcess 
+org.geotools.process.raster.ContourProcess
+org.geotools.process.raster.CropCoverage 
+org.geotools.process.raster.MultiplyCoveragesProcess 
+org.geotools.process.raster.PolygonExtractionProcess
+org.geotools.process.raster.RangeLookupProcess
+org.geotools.process.raster.RasterAsPointCollectionProcess
+org.geotools.process.raster.RasterZonalStatistics
+org.geotools.process.raster.ScaleCoverage 
+org.geotools.process.raster.StyleCoverage

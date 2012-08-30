@@ -24,7 +24,6 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 import org.geotools.process.gs.WrappingIterator;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -46,7 +45,7 @@ import org.opengis.feature.type.PropertyDescriptor;
  * @author Pietro Arena - Sinergis
  */
 @DescribeProcess(title = "Union Feature Collections", description = "Returns single feature collection containing all features from two input feature collections.  The output attribute schema is a combination of the attributes from the inputs.  Attributes with same name but different types will be converted to strings.")
-public class UnionFeatureCollection implements GSProcess {
+public class UnionFeatureCollection implements VectorProcess {
 
     static final String SCHEMA_NAME = "Union_Layer";
 

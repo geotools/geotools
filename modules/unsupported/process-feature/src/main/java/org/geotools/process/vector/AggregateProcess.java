@@ -39,7 +39,6 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 import org.geotools.util.NullProgressListener;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -53,7 +52,7 @@ import org.opengis.util.ProgressListener;
  * @source $URL$
  */
 @DescribeProcess(title = "Aggregate", description = "Computes one or more aggregation functions on a feature attribute. Functions include Count, Average, Max, Median, Min, StdDev, and Sum.")
-public class AggregateProcess implements GSProcess {
+public class AggregateProcess implements VectorProcess {
     // the functions this process can handle
     public enum AggregationFunction {
         Count, Average, Max, Median, Min, StdDev, Sum;

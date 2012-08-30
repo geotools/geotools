@@ -38,7 +38,6 @@ import com.vividsolutions.jts.geom.util.AffineTransformation;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -70,7 +69,7 @@ import org.opengis.util.ProgressListener;
  * @version $Id$
  */
 @DescribeProcess(title = "Polygon Extraction", description = "Extracts vector polygons from a raster, based on regions which are equal or in given ranges")
-public class PolygonExtractionProcess implements GSProcess {
+public class PolygonExtractionProcess implements RasterProcess {
 
     static {
         Registry.registerRIF(JAI.getDefaultInstance(), new VectorizeDescriptor(), new VectorizeRIF(), Registry.JAI_TOOLS_PRODUCT);

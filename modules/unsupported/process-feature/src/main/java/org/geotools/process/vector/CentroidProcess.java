@@ -29,7 +29,6 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -48,7 +47,7 @@ import com.vividsolutions.jts.geom.Point;
  * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/process-feature/src/main/java/org/geotools/process/feature/gs/CentroidProcess.java $
  */
 @DescribeProcess(title = "Centroid", description = "Computes the geometric centroids of features")
-public class CentroidProcess implements GSProcess {
+public class CentroidProcess implements VectorProcess {
 
     @DescribeResult(name = "result", description = "Centroids of input features")
     public SimpleFeatureCollection execute(

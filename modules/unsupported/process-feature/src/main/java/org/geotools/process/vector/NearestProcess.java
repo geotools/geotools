@@ -33,7 +33,6 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.logging.Logging;
@@ -59,7 +58,7 @@ import com.vividsolutions.jts.operation.distance.DistanceOp;
  *
  * @source $URL$
  */
-public class NearestProcess implements GSProcess {
+public class NearestProcess implements VectorProcess {
     private static final Logger LOGGER = Logging.getLogger(NearestProcess.class);
 
     private GeometryFactory geometryFactory = new GeometryFactory();

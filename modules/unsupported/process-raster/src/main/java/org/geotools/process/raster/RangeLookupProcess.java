@@ -30,7 +30,6 @@ import javax.media.jai.operator.BandSelectDescriptor;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 
 import org.geotools.coverage.Category;
 import org.geotools.coverage.CoverageFactoryFinder;
@@ -62,7 +61,7 @@ import org.opengis.util.ProgressListener;
  * @source $URL$
  */
 @DescribeProcess(title = "Reclassify", description = "Reclassifies a continous raster into integer values defined by a set of ranges")
-public class RangeLookupProcess implements GSProcess {
+public class RangeLookupProcess implements RasterProcess {
 	
     private final static double DEFAULT_NODATA = 0d;
 	

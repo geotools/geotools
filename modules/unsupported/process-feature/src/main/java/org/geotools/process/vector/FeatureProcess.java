@@ -7,7 +7,6 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -21,7 +20,7 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  * @source $URL$
  */
-public class FeatureProcess implements GSProcess {
+public class FeatureProcess implements VectorProcess {
 
     @DescribeResult(name = "result", description = "Output feature collection")
     public SimpleFeatureCollection execute(

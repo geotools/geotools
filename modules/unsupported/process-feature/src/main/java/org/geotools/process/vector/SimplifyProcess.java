@@ -28,7 +28,6 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 import org.geotools.process.gs.WrappingIterator;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -47,7 +46,7 @@ import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
  * @source $URL$
  */
 @DescribeProcess(title = "Simplify", description = "Simplifies feature geometry by reducing vertices using Douglas-Peucker simplification.")
-public class SimplifyProcess implements GSProcess {
+public class SimplifyProcess implements VectorProcess {
 
     @DescribeResult(name = "result", description = "The simplified feature collection")
     public SimpleFeatureCollection execute(

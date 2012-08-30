@@ -1,5 +1,10 @@
 package org.geotools.process.vector;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.geotools.factory.FactoryRegistry;
 import org.geotools.process.factory.AnnotatedBeanProcessFactory;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.vector.AggregateProcess;
@@ -37,37 +42,21 @@ import org.geotools.text.Text;
  */
 public class VectorProcessFactory extends AnnotatedBeanProcessFactory {
 
+    static volatile BeanFactoryRegistry<VectorProcess> registry;
+
+    public static BeanFactoryRegistry<VectorProcess> getRegistry() {
+        if (registry == null) {
+            synchronized (VectorProcessFactory.class) {
+                if (registry == null) {
+                    registry = new BeanFactoryRegistry<VectorProcess>(VectorProcess.class);
+                }
+            }
+        }
+        return registry;
+    }
+
     public VectorProcessFactory() {
-        super(Text.text("Vector processes"), "vec",
-                AggregateProcess.class,
-                BarnesSurfaceProcess.class,
-                BoundsProcess.class,
-                BufferFeatureCollection.class,
-                CentroidProcess.class,
-                ClipProcess.class,
-                CollectGeometries.class,
-                CountProcess.class,
-                FeatureProcess.class,
-                GridProcess.class,
-                HeatmapProcess.class,
-                InclusionFeatureCollection.class,
-                IntersectionFeatureCollection.class,
-                NearestProcess.class,
-                PointBuffers.class,
-                PointStackerProcess.class,
-                QueryProcess.class,
-                RectangularClipProcess.class,
-                ReprojectProcess.class,
-                SimplifyProcess.class,
-                SnapProcess.class,
-                UnionFeatureCollection.class,
-                UniqueProcess.class,
-                VectorZonalStatistics.class,
-                TransformProcess.class,
-                LRSGeocodeProcess.class,
-                LRSMeasureProcess.class,
-                LRSSegmentProcess.class, 
-                VectorToRasterProcess.class);
+        super(Text.text("Vector processes"), "vec", getRegistry().lookupBeanClasses());
     }
 
 }

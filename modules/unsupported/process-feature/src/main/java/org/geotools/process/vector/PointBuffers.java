@@ -31,7 +31,7 @@ import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
+
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.GeodeticCalculator;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -52,7 +52,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * be a point layer, the reference layer must be a polygonal one"
  */
 @DescribeProcess(title = "Point Buffers", description = "Returns a collection of circular buffer polygons with specified radii centered on a given point")
-public class PointBuffers implements GSProcess {
+public class PointBuffers implements VectorProcess {
 
     @DescribeResult(name = "buffers", description = "Features for the circular buffer polygons around the point, with attributes geom and radius")
     public SimpleFeatureCollection execute(

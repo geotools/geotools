@@ -35,7 +35,6 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.GSProcess;
 import org.geotools.referencing.CRS;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridGeometry;
@@ -118,7 +117,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  */
 @DescribeProcess(title = "Heatmap", description = "Computes a heatmap surface over a set of data points and outputs as a single-band raster.")
-public class HeatmapProcess implements GSProcess {
+public class HeatmapProcess implements VectorProcess {
 
     @DescribeResult(name = "result", description = "Output raster")
     public GridCoverage2D execute(

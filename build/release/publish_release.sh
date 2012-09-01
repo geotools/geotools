@@ -60,7 +60,7 @@ if [ "$( echo $str | egrep "[0-9]+\.[0-9]+((\.|-).*)?" )" != "$str" ]; then
   echo "$tag is not a valid release version number"
   exit 1
 fi
-dir=`echo $tag | sed 's/\([0-9]*\)\.\([0-9]*\).*/\1/g'
+dir=`echo $tag | sed 's/\([0-9]*\)\.\([0-9]*\).*/\1/g'`
 
 pushd $DIST_PATH/$tag > /dev/null
 

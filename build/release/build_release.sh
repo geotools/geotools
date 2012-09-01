@@ -131,7 +131,7 @@ if [ -z $SKIP_BUILD ]; then
   mvn $MAVEN_FLAGS -DskipTests assembly:assembly
 fi
 
-# sanitize the bin artifact
+# sanitize the bin artifact 
 pushd target > /dev/null
 bin=geotools-$tag-bin.zip
 unzip $bin
@@ -143,6 +143,19 @@ rm $bin
 zip -r $bin geotools-$tag
 rm -rf geotools-$tag
 popd > /dev/null
+
+# sanitize the src artifact 
+pushd target > /dev/null
+src=geotools-$tag-project.zip
+unzip $src
+cd geotools-$tag
+rm -rf .git
+cd ..
+rm $src
+zip -r $src geotools-$tag
+rm -rf geotools-$tag
+popd > /dev/null
+
 
 target=`pwd`/target
 

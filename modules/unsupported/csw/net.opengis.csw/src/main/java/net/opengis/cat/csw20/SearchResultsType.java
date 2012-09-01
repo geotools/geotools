@@ -6,6 +6,7 @@
  */
 package net.opengis.cat.csw20;
 
+import java.lang.String;
 import java.math.BigInteger;
 import java.util.Calendar;
 
@@ -181,6 +182,16 @@ public interface SearchResultsType extends EObject {
      */
     Calendar getExpires();
 
+
+    /**
+     * Sets the value of the '{@link net.opengis.cat.csw20.SearchResultsType#getExpires <em>Expires</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Expires</em>' attribute.
+     * @see #getExpires()
+     * @generated
+     */
+    void setExpires(Calendar value);
 
     /**
      * Returns the value of the '<em><b>Next Record</b></em>' attribute.

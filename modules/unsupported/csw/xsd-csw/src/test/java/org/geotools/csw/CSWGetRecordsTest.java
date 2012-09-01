@@ -74,16 +74,17 @@ public class CSWGetRecordsTest {
         expected.add(new QName("http://www.opengis.net/cat/csw/2.0.2", "Record"));
         assertEquals(expected, query.getTypeNames());
 
-        // the element set name
-        ElementSetNameType esn = query.getElementSetName();
-        assertEquals(ElementSetType.BRIEF, esn.getValue());
+        // the element names
+        List<QName> names = query.getElementName();
+        assertEquals(2, names.size());
+        assertEquals(new QName("http://purl.org/dc/terms/", "abstract"), names.get(0));
+        assertEquals(new QName("http://purl.org/dc/elements/1.1/", "title"), names.get(1));
 
         // The filter
         QueryConstraintType constraint = query.getConstraint();
         assertEquals("1.1.0", constraint.getVersion());
         Filter filter = CQL.toFilter("AnyText like '%polution%'");
-        // NOT WORKING, IT DOES NOT GET PARSED!
-        // assertEquals(filter, constraint.getFilter());
+        assertEquals(filter, constraint.getFilter());
     }
 
     @Test

@@ -6,6 +6,7 @@
  */
 package net.opengis.cat.csw20.impl;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -18,11 +19,13 @@ import net.opengis.cat.csw20.QueryType;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 import org.opengis.filter.sort.SortBy;
 
 /**
@@ -54,24 +57,14 @@ public class QueryTypeImpl extends AbstractQueryTypeImpl implements QueryType {
     protected ElementSetNameType elementSetName;
 
     /**
-     * The default value of the '{@link #getElementName() <em>Element Name</em>}' attribute.
+     * The cached value of the '{@link #getElementName() <em>Element Name</em>}' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @see #getElementName()
      * @generated
      * @ordered
      */
-    protected static final QName ELEMENT_NAME_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getElementName() <em>Element Name</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getElementName()
-     * @generated
-     * @ordered
-     */
-    protected QName elementName = ELEMENT_NAME_EDEFAULT;
+    protected EList<QName> elementName;
 
     /**
      * The cached value of the '{@link #getConstraint() <em>Constraint</em>}' containment reference.
@@ -170,20 +163,11 @@ public class QueryTypeImpl extends AbstractQueryTypeImpl implements QueryType {
      * <!-- end-user-doc -->
      * @generated
      */
-    public QName getElementName() {
+    public EList<QName> getElementName() {
+        if (elementName == null) {
+            elementName = new EDataTypeUniqueEList<QName>(QName.class, this, Csw20Package.QUERY_TYPE__ELEMENT_NAME);
+        }
         return elementName;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setElementName(QName newElementName) {
-        QName oldElementName = elementName;
-        elementName = newElementName;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Csw20Package.QUERY_TYPE__ELEMENT_NAME, oldElementName, elementName));
     }
 
     /**
@@ -346,7 +330,8 @@ public class QueryTypeImpl extends AbstractQueryTypeImpl implements QueryType {
                 setElementSetName((ElementSetNameType)newValue);
                 return;
             case Csw20Package.QUERY_TYPE__ELEMENT_NAME:
-                setElementName((QName)newValue);
+                getElementName().clear();
+                getElementName().addAll((Collection<? extends QName>)newValue);
                 return;
             case Csw20Package.QUERY_TYPE__CONSTRAINT:
                 setConstraint((QueryConstraintType)newValue);
@@ -373,7 +358,7 @@ public class QueryTypeImpl extends AbstractQueryTypeImpl implements QueryType {
                 setElementSetName((ElementSetNameType)null);
                 return;
             case Csw20Package.QUERY_TYPE__ELEMENT_NAME:
-                setElementName(ELEMENT_NAME_EDEFAULT);
+                getElementName().clear();
                 return;
             case Csw20Package.QUERY_TYPE__CONSTRAINT:
                 setConstraint((QueryConstraintType)null);
@@ -399,7 +384,7 @@ public class QueryTypeImpl extends AbstractQueryTypeImpl implements QueryType {
             case Csw20Package.QUERY_TYPE__ELEMENT_SET_NAME:
                 return elementSetName != null;
             case Csw20Package.QUERY_TYPE__ELEMENT_NAME:
-                return ELEMENT_NAME_EDEFAULT == null ? elementName != null : !ELEMENT_NAME_EDEFAULT.equals(elementName);
+                return elementName != null && !elementName.isEmpty();
             case Csw20Package.QUERY_TYPE__CONSTRAINT:
                 return constraint != null;
             case Csw20Package.QUERY_TYPE__SORT_BY:

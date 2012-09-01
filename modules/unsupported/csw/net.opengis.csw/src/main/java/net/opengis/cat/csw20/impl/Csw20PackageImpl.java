@@ -2639,7 +2639,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
 
         initEClass(queryTypeEClass, QueryType.class, "QueryType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getQueryType_ElementSetName(), this.getElementSetNameType(), null, "elementSetName", null, 0, 1, QueryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getQueryType_ElementName(), theXMLTypePackage.getQName(), "elementName", null, 0, 1, QueryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getQueryType_ElementName(), this.getQName(), "elementName", null, 0, -1, QueryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getQueryType_Constraint(), this.getQueryConstraintType(), null, "constraint", null, 0, 1, QueryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getQueryType_SortBy(), this.getSortBy(), null, "sortBy", null, 0, 1, QueryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getQueryType_TypeNames(), this.getTypeNameListType_1(), "typeNames", null, 1, 1, QueryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2671,7 +2671,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         initEReference(getSearchResultsType_AbstractRecord(), this.getAbstractRecordType(), null, "abstractRecord", null, 0, -1, SearchResultsType.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
         initEAttribute(getSearchResultsType_Any(), theEcorePackage.getEFeatureMapEntry(), "any", null, 0, -1, SearchResultsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getSearchResultsType_ElementSet(), this.getElementSetType(), "elementSet", null, 0, 1, SearchResultsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getSearchResultsType_Expires(), theXMLTypePackage.getDateTime(), "expires", null, 0, 1, SearchResultsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getSearchResultsType_Expires(), this.getCalendar(), "expires", null, 0, 1, SearchResultsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getSearchResultsType_NextRecord(), theXMLTypePackage.getNonNegativeInteger(), "nextRecord", null, 0, 1, SearchResultsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getSearchResultsType_NumberOfRecordsMatched(), theXMLTypePackage.getNonNegativeInteger(), "numberOfRecordsMatched", null, 1, 1, SearchResultsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getSearchResultsType_NumberOfRecordsReturned(), theXMLTypePackage.getNonNegativeInteger(), "numberOfRecordsReturned", null, 1, 1, SearchResultsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3397,14 +3397,6 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
              "namespace", "##targetNamespace"
            });		
         addAnnotation
-          (getQueryType_ElementName(), 
-           source, 
-           new String[] {
-             "kind", "element",
-             "name", "ElementName",
-             "namespace", "##targetNamespace"
-           });		
-        addAnnotation
           (getQueryType_Constraint(), 
            source, 
            new String[] {
@@ -3584,13 +3576,6 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
            new String[] {
              "kind", "attribute",
              "name", "elementSet"
-           });		
-        addAnnotation
-          (getSearchResultsType_Expires(), 
-           source, 
-           new String[] {
-             "kind", "attribute",
-             "name", "expires"
            });		
         addAnnotation
           (getSearchResultsType_NextRecord(), 

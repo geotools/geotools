@@ -6,6 +6,7 @@
  */
 package net.opengis.cat.csw20.impl;
 
+import java.lang.String;
 import java.math.BigInteger;
 import java.util.Calendar;
 

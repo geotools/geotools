@@ -1417,7 +1417,7 @@ public interface Csw20Package extends EPackage {
     int QUERY_TYPE__ELEMENT_SET_NAME = ABSTRACT_QUERY_TYPE_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Element Name</b></em>' attribute.
+     * The feature id for the '<em><b>Element Name</b></em>' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -3433,10 +3433,10 @@ public interface Csw20Package extends EPackage {
     EReference getQueryType_ElementSetName();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.cat.csw20.QueryType#getElementName <em>Element Name</em>}'.
+     * Returns the meta object for the attribute list '{@link net.opengis.cat.csw20.QueryType#getElementName <em>Element Name</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Element Name</em>'.
+     * @return the meta object for the attribute list '<em>Element Name</em>'.
      * @see net.opengis.cat.csw20.QueryType#getElementName()
      * @see #getQueryType()
      * @generated
@@ -5232,7 +5232,7 @@ public interface Csw20Package extends EPackage {
         EReference QUERY_TYPE__ELEMENT_SET_NAME = eINSTANCE.getQueryType_ElementSetName();
 
         /**
-         * The meta object literal for the '<em><b>Element Name</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Element Name</b></em>' attribute list feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated

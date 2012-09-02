@@ -359,12 +359,8 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
            } else {
                // we have to iterate, probably best if we do a minimal query that
                // only loads a short attribute
-               AttributeDescriptor chosen = null;
-               for (AttributeDescriptor ad : getSchema().getAttributeDescriptors()) {
-                   if(chosen == null || size(ad) < size(chosen)) {
-                       chosen = ad;
-                   } 
-               }
+               AttributeDescriptor chosen = getSmallAttributeInSchema();
+
                // build the minimal query
                Query q = new Query(query);
                if(chosen != null) {
@@ -390,6 +386,16 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
                 }
             }
         }
+    }
+    
+    private AttributeDescriptor getSmallAttributeInSchema() {
+        AttributeDescriptor chosen = null;
+        for (AttributeDescriptor ad : getSchema().getAttributeDescriptors()) {
+            if (chosen == null || size(ad) < size(chosen)) {
+            	chosen = ad;
+            }
+        }
+    	return chosen;
     }
     
     /**
@@ -422,7 +428,25 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
     }
 
     public boolean isEmpty() {
-        return size() == 0;
+        // build a minimal query
+        Query notEmptyQuery = new Query(query);
+        notEmptyQuery.setMaxFeatures(1);
+        
+        AttributeDescriptor smallAttribute = getSmallAttributeInSchema();
+        if (smallAttribute != null) {
+            notEmptyQuery.setPropertyNames(Collections.singletonList(smallAttribute.getLocalName()));
+        }
+               
+        try {
+            FeatureReader fr = featureSource.getReader(notEmptyQuery);
+            try {
+                return !fr.hasNext();               
+            } finally {
+                fr.close();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public boolean add(SimpleFeature o) {

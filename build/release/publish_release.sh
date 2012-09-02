@@ -52,7 +52,7 @@ fi
 set -e
 
 # deploy the release to maven repo
-mvn deploy -DskipTests
+mvn deploy -DskipTests -Dall
 mvn -P deploy.opengeo deploy -DskipTests -Dall
 
 # get <major.minor> for sf release dir

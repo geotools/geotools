@@ -24,6 +24,7 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geojson.DelegatingHandler;
 import org.geotools.geojson.IContentHandler;
+import org.geotools.geojson.geom.GeometryCollectionHandler;
 import org.geotools.geojson.geom.GeometryHandler;
 import org.json.simple.parser.ParseException;
 import org.opengis.feature.simple.SimpleFeature;
@@ -50,7 +51,11 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
     AttributeIO attio;
     
     SimpleFeature feature;
-    
+
+    public FeatureHandler() {
+        this(null, new DefaultAttributeIO());
+    }
+
     public FeatureHandler(SimpleFeatureBuilder builder, AttributeIO attio) {
         this.builder = builder;
         this.attio = attio;
@@ -120,15 +125,23 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
             ((IContentHandler) delegate).endObject();
             
             if (delegate instanceof GeometryHandler) {
-                if (properties != null) {
-                    //this is a regular property
-                    values.add(((IContentHandler<Geometry>)delegate).getValue());
+                Geometry g = ((IContentHandler<Geometry>)delegate).getValue();
+                if (g == null && 
+                    ((GeometryHandler)delegate).getDelegate() instanceof GeometryCollectionHandler) {
+                    //this means that the collecetion handler is still parsing objects, continue 
+                    // to delegate to it
                 }
                 else {
-                    //its the default geometry
-                    geometry = ((IContentHandler<Geometry>)delegate).getValue();
+                    if (properties != null) {
+                        //this is a regular property
+                        values.add(g);
+                    }
+                    else {
+                        //its the default geometry
+                        geometry = g;
+                    }
+                    delegate = NULL;
                 }
-                delegate = NULL;
             }
             else if (delegate instanceof CRSHandler) {
                 crs = ((CRSHandler)delegate).getValue();

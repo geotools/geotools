@@ -28,11 +28,13 @@ import junit.framework.TestSuite;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
 import org.opengis.filter.Filter;
+import org.geotools.filter.function.EnvFunction;
 import org.opengis.filter.Id;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.PropertyIsNull;
+import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.DWithin;
@@ -264,5 +266,16 @@ public class FilterAttributeExtractorTest extends TestCase {
                 (org.opengis.filter.Filter) filterTrue));
 
         assertAttributeName(filter, "testString");
+    }
+    
+    public void testDynamicProperty() throws Exception {
+        Function func = fac.function("property", fac.function("env", fac.literal("pname")));
+        PropertyIsEqualTo filter = fac.equals(func, fac.literal("test"));
+        try {
+            EnvFunction.setLocalValue("pname", "name");
+            assertAttributeName(filter, "name");
+        } finally {
+            EnvFunction.clearLocalValues();
+        }
     }
 }

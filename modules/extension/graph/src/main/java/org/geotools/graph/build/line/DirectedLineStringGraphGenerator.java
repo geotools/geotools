@@ -31,5 +31,8 @@ public class DirectedLineStringGraphGenerator extends LineStringGraphGenerator {
     setGraphBuilder(new BasicDirectedGraphBuilder());
   }
 	
-  	
+  public DirectedLineStringGraphGenerator(double tolerance) {
+      super(tolerance);
+      setGraphBuilder(new BasicDirectedGraphBuilder());
+  }
 }

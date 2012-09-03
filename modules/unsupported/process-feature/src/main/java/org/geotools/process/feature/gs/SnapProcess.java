@@ -57,7 +57,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.operation.distance.DistanceOp;
 
-@DescribeProcess(title = "Snap", description = "Snap to the nearest feature")
+@DescribeProcess(title = "Snap", description = "Returns the feature in a feature collection nearest to a given point.  Attributes for distance and bearing are added.")
 /**
  * 
  *
@@ -89,11 +89,11 @@ public class SnapProcess implements GSProcess {
      * @throws ProcessException
      *             error
      */
-    @DescribeResult(name = "result", description = "The nearest feature")
+    @DescribeResult(name = "result", description = "Nearest feature, with added attributes for distance and bearing.")
     public FeatureCollection execute(
-            @DescribeParameter(name = "features", description = "The feature collection to search") FeatureCollection featureCollection,
-            @DescribeParameter(name = "point", description = "The point to search from") Point point,
-            @DescribeParameter(name = "crs", min = 0, description = "The coordinate reference system of the collection and point (will use the collection one if not provided") CoordinateReferenceSystem crs)
+            @DescribeParameter(name = "features", description = "Input feature collection") FeatureCollection featureCollection,
+            @DescribeParameter(name = "point", description = "Point geometry to test against for nearest feature") Point point,
+            @DescribeParameter(name = "crs", min = 0, description = "Coordinate reference system to assume for input geometry (default is to use the input collection CRS)") CoordinateReferenceSystem crs)
             throws ProcessException {
         try {
             if (crs == null) {

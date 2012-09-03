@@ -43,7 +43,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.linearref.LengthIndexedLine;
 
-@DescribeProcess(title = "LRSGeocode", description = "Translate LRS measure to geocoded point")
+@DescribeProcess(title = "Geocode point in LRS", description = "Extracts points at a given measure from LRS features")
 /**
  * 
  *
@@ -63,12 +63,12 @@ public class LRSGeocodeProcess implements GSProcess {
      * @return the snapped to feature
      * @throws ProcessException error
      */
-    @DescribeResult(name = "result", description = "The geocoded point")
+    @DescribeResult(name = "result", description = "Output feature collection")
     public FeatureCollection execute(
-            @DescribeParameter(name = "features", description = "The features to search") FeatureCollection featureCollection,
-            @DescribeParameter(name = "from_measure_attb", description = "The feature attribue holding the features starting measure") String fromMeasureAttb,
-            @DescribeParameter(name = "to_measure_attb", description = "The feature attribue holding the features ending measure") String toMeasureAttb,
-            @DescribeParameter(name = "measure", description = "The LRS measure") Double measure)
+            @DescribeParameter(name = "features", description = "Input feature collection") FeatureCollection featureCollection,
+            @DescribeParameter(name = "from_measure_attb", description = "Attribute providing start measure of feature") String fromMeasureAttb,
+            @DescribeParameter(name = "to_measure_attb", description = "Attribute providing end measure of feature") String toMeasureAttb,
+            @DescribeParameter(name = "measure", description = "Measure of the point along the feature to be computed") Double measure)
             throws ProcessException {
         FeatureCollection results = FeatureCollections.newCollection();
         try {

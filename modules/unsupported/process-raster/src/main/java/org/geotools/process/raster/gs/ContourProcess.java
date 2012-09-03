@@ -78,7 +78,7 @@ import org.opengis.util.ProgressListener;
  * @source $URL$
  * @version $Id$
  */
-@DescribeProcess(title = "Contour", description = "Perform the contouring on a provided raster")
+@DescribeProcess(title = "Contour", description = "Computes contour lines at specified intervals or levels for the values in a raster.")
 public class ContourProcess implements GSProcess {
 
     private static final InternationalString NO_DATA = Vocabulary
@@ -127,15 +127,15 @@ public class ContourProcess implements GSProcess {
                 progressListener);
     }
 
-    @DescribeResult(name = "result", description = "The contours feature collection")
+    @DescribeResult(name = "result", description = "Contour line features.  Contour level is in value attribute.")
     public SimpleFeatureCollection execute(
-            @DescribeParameter(name = "data", description = "The raster to be used as the source") GridCoverage2D gc2d,
-            @DescribeParameter(name = "band", description = "The source image band to process", min = 0, max = 1) Integer band,
-            @DescribeParameter(name = "levels", description = "Values for which to generate contours") double[] levels,
-            @DescribeParameter(name = "interval", description = "Interval between contour values (ignored if levels arg is supplied)", min = 0) Double interval,
-            @DescribeParameter(name = "simplify", description = "Values for which to generate contours", min = 0) Boolean simplify,
-            @DescribeParameter(name = "smooth", description = "Values for which to generate contours", min = 0) Boolean smooth,
-            @DescribeParameter(name = "roi", description = "The geometry used to delineate the area of interest in model space", min = 0) Geometry roi,
+            @DescribeParameter(name = "data", description = "Input raster") GridCoverage2D gc2d,
+            @DescribeParameter(name = "band", description = "Name of band to use for values to be contoured", min = 0, max = 1) Integer band,
+            @DescribeParameter(name = "levels", description = "Values of levels at which to generate contours") double[] levels,
+            @DescribeParameter(name = "interval", description = "Interval between contour values (ignored if levels parameter is supplied)", min = 0) Double interval,
+            @DescribeParameter(name = "simplify", description = "Indicates whether contour lines are simplified", min = 0) Boolean simplify,
+            @DescribeParameter(name = "smooth", description = "Indicates whether contour lines are smoothed using Bezier smoothing", min = 0) Boolean smooth,
+            @DescribeParameter(name = "roi", description = "Geometry delineating the region of interest (in raster coordinate system)", min = 0) Geometry roi,
             ProgressListener progressListener) throws ProcessException {
 
         //

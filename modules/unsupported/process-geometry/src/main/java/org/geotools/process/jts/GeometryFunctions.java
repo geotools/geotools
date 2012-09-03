@@ -17,6 +17,10 @@
  */
 package org.geotools.process.jts;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
@@ -24,14 +28,19 @@ import org.geotools.process.factory.DescribeResult;
 import com.vividsolutions.jts.densify.Densifier;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.util.LineStringExtracter;
 import com.vividsolutions.jts.operation.buffer.BufferParameters;
+import com.vividsolutions.jts.operation.polygonize.Polygonizer;
 import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
 
 /**
- * A set of static functions powering the {@link GeometryProcessFactory}.
+ * A set of static functions providing the implementation of
+ * processes exposed by the {@link GeometryProcessFactory}.
+ * 
  * @author Andrea Aime 
  *
  * @source $URL$
@@ -39,7 +48,7 @@ import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
 public class GeometryFunctions {
 
     /**
-     * Maps the enumeration into a set of
+     * Maps the enumeration into the set of values used by the JTS {@link BufferParameters} class.
      * 
      * @author Andrea Aime - OpenGeo
      * 
@@ -54,140 +63,164 @@ public class GeometryFunctions {
         }
     };
 
-    @DescribeProcess(title = "Geometry containment check", description = "Checks if a contains b")
-    static public boolean contains(@DescribeParameter(name = "a") Geometry a,
-            @DescribeParameter(name = "b") Geometry b) {
+    @DescribeProcess(title = "Contains Test", description = "Tests if no points of the second geometry lie in the exterior of the first geometry and at least one point of the interior of second geometry lies in the interior of first geometry.")
+    @DescribeResult(description = "True if the first input contains the second input")
+    static public boolean contains(@DescribeParameter(name = "a", description = "First input geometry") Geometry a,
+            @DescribeParameter(name = "b", description = "Second input geometry, tested to be contained in first geometry") Geometry b) {
         return a.contains(b);
     }
 
-    @DescribeProcess(title = "Geometry emptiness check", description = "Checks if the provided geometry is empty")
-    static public boolean isEmpty(@DescribeParameter(name = "geom") Geometry geom) {
+    @DescribeProcess(title = "Empty Test", description = "Tests if a geometry contains no vertices.")
+    @DescribeResult(description = "True if the input is empty")
+    static public boolean isEmpty(@DescribeParameter(name = "geom", description = "Input geometry") Geometry geom) {
         return geom.isEmpty();
     }
 
-    @DescribeProcess(title = "Geometry length", description = "Returns the geometry perimeters, computed using cartesian geometry expressions in the same unit of measure as the geometry (will not return a valid perimeter for geometries expressed geographic coordinates")
-    static public double length(@DescribeParameter(name = "geom") Geometry geom) {
+    @DescribeProcess(title = "Length", description = "Returns the total length of all line segments in a geometry. Measurement is given in the source units, so geographic coordinates are not recommended.")
+    @DescribeResult(description = "Total perimeter of the geometry")
+    static public double length(@DescribeParameter(name = "geom", description = "Input geometry") Geometry geom) {
         return geom.getLength();
     }
 
-    @DescribeProcess(title = "Geometry intersection test", description = "Returns true if the two geometries intersect, false otherwise")
-    static public boolean intersects(@DescribeParameter(name = "a") Geometry a,
-            @DescribeParameter(name = "b") Geometry b) {
+    @DescribeProcess(title = "Intersects Test", description = "Tests if two geometries intersect.")
+    @DescribeResult(description = "True if the inputs intersect")
+    static public boolean intersects(@DescribeParameter(name = "a", description = "First input geometry") Geometry a,
+            @DescribeParameter(name = "b", description = "Second input geometry") Geometry b) {
         return a.intersects(b);
     }
 
-    @DescribeProcess(title = "Geometry validity test", description = "Returns true if the geometry is topologically valid, false otherwise")
-    static public boolean isValid(@DescribeParameter(name = "geom") Geometry geom) {
+    @DescribeProcess(title = "Valid Test", description = "Tests if a geometry is topologically valid.")
+    @DescribeResult(description = "True if the input is valid")
+    static public boolean isValid(@DescribeParameter(name = "geom", description = "Input geometry") Geometry geom) {
         return geom.isValid();
     }
 
-    @DescribeProcess(title = "Geometry type detector", description = "Returns the type of the geometry (POINT,LINE,POLYGON,MULTIPOINT,MULTILINE,MULTIPOLYGON,GEOMETRY COLLECTION)")
-    static public String geometryType(@DescribeParameter(name = "geom") Geometry geom) {
+    @DescribeProcess(title = "Geometry Type", description = "Returns the name of a geometry's type. Values are one of POINT, LINESTRING, POLYGON, MULTIPOINT, MULTILINESTRING, MULTIPOLYGON, GEOMETRYCOLLECTION.")
+    @DescribeResult(description = "The name of the geometry type")
+    static public String geometryType(@DescribeParameter(name = "geom", description = "Input geometry") Geometry geom) {
         return geom.getGeometryType();
     }
 
-    @DescribeProcess(title = "Point counter", description = "Returns the number of points in the geometry")
-    static public int numPoints(@DescribeParameter(name = "geom") Geometry geom) {
+    @DescribeProcess(title = "Number of Points", description = "Returns the number of vertices in a given geometry.")
+    @DescribeResult(description = "Total number of vertices")
+    static public int numPoints(@DescribeParameter(name = "geom", description = "Input geometry") Geometry geom) {
         return geom.getNumPoints();
     }
 
-    @DescribeProcess(title = "Geometry simplicity test", description = "Returns true if the geometry is simple")
-    static public boolean isSimple(@DescribeParameter(name = "geom") Geometry geom) {
+    @DescribeProcess(title = "Simple Test", description = "Tests if a geometry is topologically simple. Points, polygons, closed line strings, and linear rings are always simple. Other geometries are considered simple if no two points are identical.")
+    @DescribeResult(description = "True if the input is simple")
+    static public boolean isSimple(@DescribeParameter(name = "geom", description = "Input geometry") Geometry geom) {
         return geom.isSimple();
     }
 
-    @DescribeProcess(title = "Geometry distance", description = "Returns the minimum distance between a and b")
-    static public double distance(@DescribeParameter(name = "a") Geometry a,
-            @DescribeParameter(name = "b") Geometry b) {
+    @DescribeProcess(title = "Distance", description = "Returns the minimum distance between two geometries. Measurement is given in the input units, so geographic coordinates are not recommended.")
+    @DescribeResult(description = "Distance between the two input geometries")
+    static public double distance(@DescribeParameter(name = "a", description = "First input geometry") Geometry a,
+            @DescribeParameter(name = "b", description = "Second input geometry") Geometry b) {
         return a.distance(b);
     }
 
-    @DescribeProcess(title = "Proximity check", description = "Returns true if the distance between the two geomeries is less than the specified value")
-    static public boolean isWithinDistance(@DescribeParameter(name = "a") Geometry a,
-            @DescribeParameter(name = "b") Geometry b,
-            @DescribeParameter(name = "distance") double distance) {
+    @DescribeProcess(title = "Within Distance Test", description = "Tests if the minimum distance between two geometries is less than a tolerance value.")
+    @DescribeResult(description = "True if the inputs are within the specified distance")
+    static public boolean isWithinDistance(@DescribeParameter(name = "a", description = "First input geometry") Geometry a,
+            @DescribeParameter(name = "b", description = "Second input geometry") Geometry b,
+            @DescribeParameter(name = "distance", description = "Distance tolerance, in units of the input geometry") double distance) {
         return a.isWithinDistance(b, distance);
     }
 
-    @DescribeProcess(title = "Geometry area", description = "Computes the geometry area (in a cartesian plane, using the same unit of measure as the geometry coordinates, don't use with geometries expressed in geographic coordinates)")
-    static public double area(@DescribeParameter(name = "geom") Geometry geom) {
+    @DescribeProcess(title = "Area", description = "Returns the area of a geometry, in the units of the geometry. Assumes a Cartesian plane, so this process is only recommended for non-geographic CRSes.")
+    @DescribeResult(description = "Area of the input geometry")
+    static public double area(@DescribeParameter(name = "geom", description = "Input geometry") Geometry geom) {
         return geom.getArea();
     }
 
-    @DescribeProcess(title = "Centroid", description = "Extracts a geometry centroid")
-    static public Geometry centroid(@DescribeParameter(name = "geom") Geometry geom) {
+    @DescribeProcess(title = "Centroid", description = "Returns the geometric centroid of a geometry. Output is a single point.  The centroid point may be located outside the geometry.")
+    @DescribeResult(description = "Centroid of the input geometry")
+    static public Geometry centroid(@DescribeParameter(name = "geom", description = "Input geometry") Geometry geom) {
         return geom.getCentroid();
     }
 
-    @DescribeProcess(title = "Interior point", description = "Returns a point that lies inside the geometry, or at most is located on its boundary")
-    static public Geometry interiorPoint(@DescribeParameter(name = "geom") Geometry geom) {
+    @DescribeProcess(title = "Interior Point", description = "Returns a point that lies inside a geometry if possible, or that lies on its boundary.")
+    @DescribeResult(description = "Interior point")
+    static public Geometry interiorPoint(@DescribeParameter(name = "geom", description = "Input geometry") Geometry geom) {
         return geom.getInteriorPoint();
     }
 
-    @DescribeProcess(title = "Geometry dimension", description = "Returns 0 for points, 1 for lines, 2 for polygons")
-    static public int dimension(@DescribeParameter(name = "geom") Geometry geom) {
+    @DescribeProcess(title = "Dimension", description = "Returns the largest dimension of a geometry or geometry collection: 0 for point, 1 for line, 2 for polygon.")
+    @DescribeResult(description = "Dimension of the input geometry")
+    static public int dimension(@DescribeParameter(name = "geom", description = "Input geometry") Geometry geom) {
         return geom.getDimension();
     }
 
-    @DescribeProcess(title = "Boundary", description = "Returns a geometry boundary, or an empty geometry if there is no boundary")
-    static public Geometry boundary(@DescribeParameter(name = "geom") Geometry geom) {
+    @DescribeProcess(title = "Boundary", description = "Returns a geometry boundary. For polygons, returns a linear ring or multi-linestring equal to the boundary of the polygon(s). For linestrings, returns a multipoint equal to the endpoints of the linestring. For points, returns an empty geometry collection.")
+    @DescribeResult(description = "Boundary of the input geometry")
+    static public Geometry boundary(@DescribeParameter(name = "geom", description = "Input geometry") Geometry geom) {
         return geom.getBoundary();
     }
 
-    @DescribeProcess(title = "Envelope", description = "Returns the geometry envelope either as a Polygon, or a Point if the input is a Point")
-    static public Geometry envelope(@DescribeParameter(name = "geom") Geometry geom) {
+    @DescribeProcess(title = "Envelope", description = "Returns the smallest bounding box polygon that contains a geometry. For a point geometry, returns the same point.")
+    @DescribeResult(description = "Envelope of the input geometry")
+    static public Geometry envelope(@DescribeParameter(name = "geom", description = "Input geometry") Geometry geom) {
         return geom.getEnvelope();
     }
 
-    @DescribeProcess(title = "Disjoint check", description = "Returns true if the two geometries have no points in common")
-    static public boolean disjoint(@DescribeParameter(name = "a") Geometry a,
-            @DescribeParameter(name = "b") Geometry b) {
+    @DescribeProcess(title = "Disjoint Test", description = "Tests if two geometries do not have any points in common.")
+    @DescribeResult(description = "True if the inputs are disjoint")
+    static public boolean disjoint(@DescribeParameter(name = "a", description = "First input geometry") Geometry a,
+            @DescribeParameter(name = "b", description = "Second input geometry") Geometry b) {
         return a.disjoint(b);
     }
 
-    @DescribeProcess(title = "Touch check", description = "Returns true if the two geometries touch each other")
-    static public boolean touches(@DescribeParameter(name = "a") Geometry a,
-            @DescribeParameter(name = "b") Geometry b) {
+    @DescribeProcess(title = "Touches Test", description = "Tests if two geometries have at least one boundary point in common, but share no interior points.")
+    @DescribeResult(description = "True if the inputs touch")
+    static public boolean touches(@DescribeParameter(name = "a", description = "First input geometry") Geometry a,
+            @DescribeParameter(name = "b", description = "Second input geometry") Geometry b) {
         return a.touches(b);
     }
 
-    @DescribeProcess(title = "Crossing check", description = "Returns true if the two geometries cross each other")
-    static public boolean crosses(@DescribeParameter(name = "a") Geometry a,
-            @DescribeParameter(name = "b") Geometry b) {
+    @DescribeProcess(title = "Crosses Test", description = "Tests if two geometries have some, but not all, interior points in common.")
+    @DescribeResult(description = "True if the inputs cross")
+    static public boolean crosses(@DescribeParameter(name = "a", description = "First input geometry") Geometry a,
+            @DescribeParameter(name = "b", description = "Second input geometry") Geometry b) {
         return a.crosses(b);
     }
 
-    @DescribeProcess(title = "Within check", description = "Returns true if a is within b")
-    static public boolean within(@DescribeParameter(name = "a") Geometry a,
-            @DescribeParameter(name = "b") Geometry b) {
+    @DescribeProcess(title = "Within Test", description = "Tests if the first geometry is contained in the second geometry.")
+    @DescribeResult(description = "True if the first input is within the second input")
+    static public boolean within(@DescribeParameter(name = "a", description = "First input geometry") Geometry a,
+            @DescribeParameter(name = "b", description = "Second input geometry") Geometry b) {
         return a.within(b);
     }
 
-    @DescribeProcess(title = "Overlap check", description = "Returns true if a overlaps with b")
-    static public boolean overlaps(@DescribeParameter(name = "a") Geometry a,
-            @DescribeParameter(name = "b") Geometry b) {
+    @DescribeProcess(title = "Overlaps Test", description = "Tests if two geometries share some but not all interior points. Points or lines will always return False.")
+    @DescribeResult(description = "True if the inputs overlap")
+    static public boolean overlaps(@DescribeParameter(name = "a", description = "First input geometry") Geometry a,
+            @DescribeParameter(name = "b", description = "Second input geometry") Geometry b) {
         return a.overlaps(b);
     }
 
-    @DescribeProcess(title = "Relate check", description = "Returns true if a and b DE-9IM intersection matrix matches the provided pattern")
-    static public boolean relatePattern(@DescribeParameter(name = "a") Geometry a,
-            @DescribeParameter(name = "b") Geometry b, String pattern) {
+    @DescribeProcess(title = "Relate Test", description = "Tests if the spatial relationship between two geometries matches the given DE-9IM intersection matrix pattern. The pattern is given in the form [II][IB][IE][BI][BB][BE][EI][EB][EE] where I=interior, B=boundary, and E=exterior. Pattern symbols can be 2, 1, 0, F or *.")
+    @DescribeResult(description = "True if the inputs have the given relationship")
+    static public boolean relatePattern(@DescribeParameter(name = "a", description = "First input geometry") Geometry a,
+            @DescribeParameter(name = "b", description = "First input geometry") Geometry b,
+            @DescribeParameter(name = "Relate pattern", description = "Intersection matrix pattern") String pattern) {
         return a.relate(b, pattern);
     }
 
-    @DescribeProcess(title = "Relate", description = "Returns the DE-9IM intersection matrix of the two geometries")
-    static public String relate(@DescribeParameter(name = "a") Geometry a,
-            @DescribeParameter(name = "b") Geometry b) {
+    @DescribeProcess(title = "Relate Matrix String", description = "Returns the DE-9IM intersection matrix string for the spatial relationship between the input geometries. The matrix string is in the form [II][IB][IE][BI][BB][BE][EI][EB][EE] where I=interior, B=boundary, and E=exterior. Matrix symbols are 2, 1, 0 or F.")
+    @DescribeResult(description = "Intersection matrix string")
+    static public String relate(@DescribeParameter(name = "a", description = "First input geometry") Geometry a,
+            @DescribeParameter(name = "b", description = "Second input geometry") Geometry b) {
         return a.relate(b).toString();
     }
 
-    @DescribeProcess(title = "Geometry buffer", description = "Buffers a geometry using a certain distance")
-    @DescribeResult(description = "The buffered geometry")
+    @DescribeProcess(title = "Buffer", description = "Returns a polygonal geometry representing the input geometry enlarged by a given distance around its exterior.")
+    @DescribeResult(description = "Buffered geometry")
     static public Geometry buffer(
-            @DescribeParameter(name = "geom", description = "The geometry to be buffered") Geometry geom,
-            @DescribeParameter(name = "distance", description = "The distance (same unit of measure as the geometry)") double distance,
-            @DescribeParameter(name = "quadrantSegments", description = "Number of quadrant segments. Use > 0 for round joins, 0 for flat joins, < 0 for mitred joins", min = 0) Integer quadrantSegments,
-            @DescribeParameter(name = "capStyle", description = "The buffer cap style, round, flat, square", min = 0) BufferCapStyle capStyle) {
+            @DescribeParameter(name = "geom", description = "Input geometry") Geometry geom,
+            @DescribeParameter(name = "distance", description = "Distance to buffer the input geometry, in the units of the geometry") double distance,
+            @DescribeParameter(name = "quadrantSegments", description = "Number determining the style and smoothness of buffer corners. Positive numbers create round corners with that number of segments per quarter-circle, 0 creates flat corners.", min = 0) Integer quadrantSegments,
+            @DescribeParameter(name = "capStyle", description = "Style for the buffer end caps. Values are: Round - rounded ends (default), Flat - flat ends; Square - square ends.", min = 0) BufferCapStyle capStyle) {
         if (quadrantSegments == null)
             quadrantSegments = BufferParameters.DEFAULT_QUADRANT_SEGMENTS;
         if (capStyle == null)
@@ -195,21 +228,23 @@ public class GeometryFunctions {
         return geom.buffer(distance, quadrantSegments, capStyle.value);
     }
 
-    @DescribeProcess(title = "Convex hull", description = "Returns the convex hull of the specified geometry")
-    static public Geometry convexHull(@DescribeParameter(name = "geom") Geometry geom) {
+    @DescribeProcess(title = "Convex Hull", description = "Returns the smallest convex polygon that contains the entire input geometry.")
+    @DescribeResult(description = "Convex hull of input geometry")
+    static public Geometry convexHull(@DescribeParameter(name = "geom", description = "Input geometry") Geometry geom) {
         return geom.convexHull();
     }
 
-    @DescribeProcess(title = "Intersection", description = "Returns the intersectoin between a and b (eventually an empty collection if there is no intersection)")
-    static public Geometry intersection(@DescribeParameter(name = "a") Geometry a,
-            @DescribeParameter(name = "b") Geometry b) {
+    @DescribeProcess(title = "Intersection", description = "Returns a geometry representing the points that two geometries have in common.  The result may be a heterogeneous geometry collection. If no intersection, returns an empty geometry.")
+    @DescribeResult(description = "Intersection of geometries")
+    static public Geometry intersection(@DescribeParameter(name = "a", description = "First input geometry") Geometry a,
+            @DescribeParameter(name = "b", description = "Second input geometry") Geometry b) {
         return a.intersection(b);
     }
 
-    @DescribeProcess(title = "Union", description = "Performs the geometric union of two or more geometries")
-    @DescribeResult(description = "The union of all input geometries")
+    @DescribeProcess(title = "Union", description = "Returns a geometry representing all points contained in any of the geometries in a geometry collection.")
+    @DescribeResult(description = "Union of input geometries")
     static public Geometry union(
-            @DescribeParameter(name = "geom", description = "The geometries to be united", min = 2) Geometry... geoms) {
+            @DescribeParameter(name = "geom", description = "Input geometries (minimum 2)", min = 2) Geometry... geoms) {
         Geometry result = null;
         for (Geometry g : geoms) {
             if (result == null) {
@@ -221,99 +256,151 @@ public class GeometryFunctions {
         return result;
     }
 
-    @DescribeProcess(title = "Difference", description = "Returns the difference between a and b (all the points that are in a but not in b)")
-    static public Geometry difference(@DescribeParameter(name = "a") Geometry a,
-            @DescribeParameter(name = "b") Geometry b) {
+    @DescribeProcess(title = "Difference", description = "Returns a geometry representing the points that are contained in a geometry but not contained in a second geometry. The result may be a heterogeneous geometry collection.")
+    @DescribeResult(description = "Geometry representing the difference of the input geometries")
+    static public Geometry difference(@DescribeParameter(name = "a", description = "First input geometry") Geometry a,
+            @DescribeParameter(name = "b", description = "Second input geometry") Geometry b) {
         return a.difference(b);
     }
 
-    @DescribeProcess(title = "Symmetrical difference", description = "Returns a geometry made of points that are in a or b, but not in both")
-    static public Geometry symDifference(@DescribeParameter(name = "a") Geometry a,
-            @DescribeParameter(name = "b") Geometry b) {
+    @DescribeProcess(title = "Symmetric Difference", description = "Returns a geometry representing the points contained in either one of two geometries but not in both. The result may be a heterogeneous geometry collection.")
+    @DescribeResult(description = "Symmetric difference of the two geometries")
+    static public Geometry symDifference(@DescribeParameter(name = "a", description = "First input geometry") Geometry a,
+            @DescribeParameter(name = "b", description = "Second input geometry") Geometry b) {
         return a.symDifference(b);
     }
 
-    @DescribeProcess(title = "EqualsExactTolerance", description = "Returns true if the two geometries are exactly the same, minus small differences in coordinate values")
-    static public boolean equalsExactTolerance(@DescribeParameter(name = "a") Geometry a,
-            @DescribeParameter(name = "b") Geometry b, double tolerance) {
+    @DescribeProcess(title = "Exactly Equal Test with Tolerance", description = "Tests if two geometries are identical on a vertex-by-vertex basis, up to a vertex distance tolerance.")
+    @DescribeResult(description = "True if the geometries are vertex-identical within tolerance")
+    static public boolean equalsExactTolerance(@DescribeParameter(name = "a", description = "First input geometry") Geometry a,
+            @DescribeParameter(name = "b", description = "Second input geometry") Geometry b, @DescribeParameter(name = "tolerance", description = "Tolerance distance for vertex equality test") double tolerance) {
         return a.equalsExact(b, tolerance);
     }
 
-    @DescribeProcess(title = "EqualsExact", description = "Returns true if the two geometries are exactly the same")
-    static public boolean equalsExact(@DescribeParameter(name = "a") Geometry a,
-            @DescribeParameter(name = "b") Geometry b) {
+    @DescribeProcess(title = "Exactly Equal Test", description = "Tests if two geometries are identical on a vertex-by-vertex basis.")
+    @DescribeResult(description = "True if the geometries are vertex-identical")
+    static public boolean equalsExact(@DescribeParameter(name = "a", description = "First input geometry") Geometry a,
+            @DescribeParameter(name = "b", description = "Second input geometry") Geometry b) {
         return a.equalsExact(b);
     }
 
-    @DescribeProcess(title = "Geometry count", description = "Returns the number of elements in the geometry collection, or one if it's not a collection")
-    static public int numGeometries(Geometry collection) {
+    @DescribeProcess(title = "Geometry Count", description = "Returns the total number of elements in a geometry collection. If not a geometry collection, returns 1. If empty, returns 0.")
+    @DescribeResult(description = "Total number of geometries")
+    static public int numGeometries(@DescribeParameter(name = "geom", description = "Input geometry") Geometry collection) {
         return collection.getNumGeometries();
     }
 
-    @DescribeProcess(title = "N-th geometry", description = "Returns the n-th geomery in the collection")
-    static public Geometry getGeometryN(GeometryCollection collection, int index) {
+    @DescribeProcess(title = "Nth Geometry", description = "Returns the geometry element at a given index in a geometry collection. Indexing starts at 0.")
+    @DescribeResult(description = "Geometry element from the geometry collection")
+    static public Geometry getGeometryN(@DescribeParameter(name = "geom", description = "Input geometry") GeometryCollection collection, @DescribeParameter(name = "index", description = "Index of geometry element (0 is first)") int index) {
         return collection.getGeometryN(index);
     }
 
-    @DescribeProcess(title = "GetX", description = "Returns the X ordinate of the point")
-    static public double getX(Point point) {
+    @DescribeProcess(title = "Get X Ordinate", description = "Returns the X value (first ordinate) for point geometries. For other geometry types returns the X value of the centroid.")
+    @DescribeResult(description = "X value of point")
+    static public double getX(@DescribeParameter(name = "geom", description = "Input point") Point point) {
         return point.getX();
     }
 
-    @DescribeProcess(title = "GetY", description = "Returns the Y ordinate of the point")
-    static public double getY(Point point) {
+    @DescribeProcess(title = "Get Y Ordinate", description = "Returns the Y value (second ordinate) for point geometries. For other geometry types returns the Y value of the centroid.")
+    @DescribeResult(description = "Y value of point")
+    static public double getY(@DescribeParameter(name = "geom", description = "Input point") Point point) {
         return point.getY();
     }
 
-    @DescribeProcess(title = "Closed", description = "Returns true if the line is closed")
-    static public boolean isClosed(LineString line) {
+    @DescribeProcess(title = "Closed Test", description = "Tests if the initial vertex equals the final vertex in a linear geometry. Points and polygons always return True.")
+    @DescribeResult(description = "True if the input is closed")
+    static public boolean isClosed(@DescribeParameter(name = "geom", description = "Input geometry") LineString line) {
         return line.isClosed();
     }
 
-    @DescribeProcess(title = "N-th point", description = "Returns the n-th point in the line")
-    static public Point pointN(LineString line, int index) {
+    @DescribeProcess(title = "Nth Point", description = "Returns a point geometry equal to the Nth vertex in a geometry as determined by a given index. First vertex has index 0.")
+    @DescribeResult(description = "Vertex as point geometry")
+    static public Point pointN(@DescribeParameter(name = "geom", description = "Input geometry") LineString line, @DescribeParameter(name = "index", description = "Index of vertex (0 is first)") int index) {
         return line.getPointN(index);
     }
 
-    @DescribeProcess(title = "Start point", description = "Returns the start point of the line")
-    static public Point startPoint(LineString line) {
+    @DescribeProcess(title = "Start Point", description = "Returns a point geometry equal to the first vertex of a LineString.")
+    @DescribeResult(description = "First vertex as point geometry")
+    static public Point startPoint(@DescribeParameter(name = "geom", description = "Input line") LineString line) {
         return line.getStartPoint();
     }
 
-    @DescribeProcess(title = "End point", description = "Returns the end point of the line")
-    static public Point endPoint(LineString line) {
+    @DescribeProcess(title = "End Point", description = "Returns a point geometry equal to the final vertex of a LineString.")
+    @DescribeResult(description = "Final vertex as point geometry")
+    static public Point endPoint(@DescribeParameter(name = "geom", description = "Input line") LineString line) {
         return line.getEndPoint();
     }
 
-    @DescribeProcess(title = "Ring", description = "Returns true if the line is a ring")
-    static public boolean isRing(LineString line) {
+    @DescribeProcess(title = "Ring Test", description = "Tests if a geometry is both closed and simple.")
+    @DescribeResult(description = "True if the input is a ring")
+    static public boolean isRing(@DescribeParameter(name = "geom", description = "Input geometry") LineString line) {
         return line.isRing();
     }
 
-    @DescribeProcess(title = "Exterior ring", description = "Returns the exterior ring of the polygon")
-    static public Geometry exteriorRing(Polygon polygon) {
+    @DescribeProcess(title = "Exterior Ring", description = "Returns the exterior ring of a polygonal geometry.")
+    @DescribeResult(description = "Exterior ring of geometry")
+    static public Geometry exteriorRing(@DescribeParameter(name = "geom", description = "Input geometry") Polygon polygon) {
         return polygon.getExteriorRing();
     }
 
-    @DescribeProcess(title = "Interior ring count", description = "Returns the number of interior rings in the polygon")
-    static public int numInteriorRing(Polygon polygon) {
+    @DescribeProcess(title = "Interior Ring Count", description = "Returns the total number of interior rings in a polygonal geometry. Points and lines return 0.")
+    @DescribeResult(description = "Total number of interior rings")
+    static public int numInteriorRing(@DescribeParameter(name = "geom", description = "Input geometry") Polygon polygon) {
         return polygon.getNumInteriorRing();
     }
 
-    @DescribeProcess(title = "N-th interorior ring", description = "Returns the n-th interior ring in the polygon")
-    static public Geometry interiorRingN(Polygon polygon, int index) {
+    @DescribeProcess(title = "Nth Interior Ring", description = "Returns a linear ring from a polygon containing interior rings (holes) determined by a given index. First interior ring has index 0. If no interior rings, returns null.")
+    @DescribeResult(description = "Interior ring as a linear ring")
+    static public Geometry interiorRingN(@DescribeParameter(name = "geom", description = "Input polygon with interior ring") Polygon polygon, @DescribeParameter(name = "index", description = "Index of interior ring (0 is first)") int index) {
         return polygon.getInteriorRingN(index);
     }
 
-    @DescribeProcess(title = "Simplify", description = "Simplifies the geometry using the specified distance using the Douglas-Peuker algorithm")
-    static public Geometry simplify(@DescribeParameter(name = "geom") Geometry geom,
-            @DescribeParameter(name = "distance") double distance) {
+    @DescribeProcess(title = "Simplify", description = "Returns a geometry that has been simplified (reduced in vertices) according to the Douglas-Peucker algorithm.")
+    @DescribeResult(description = "Simplified geometry")
+    static public Geometry simplify(@DescribeParameter(name = "geom", description="Input geometry") Geometry geom,
+            @DescribeParameter(name = "distance", description="Simplification distance tolerance, in units of the input geometry") double distance) {
         return DouglasPeuckerSimplifier.simplify(geom, distance);
     }
 
-    @DescribeProcess(title = "Densify", description = "Densifies the geometry using the specified distance")
-    static public Geometry densify(@DescribeParameter(name = "geom") Geometry geom,
-            @DescribeParameter(name = "distance") double distance) {
+    @DescribeProcess(title = "Densify", description = "Returns a spatially equivalent geometry with vertices added to ensure line segments are no longer than a given distance.")
+    @DescribeResult(description = "Densified geometry")
+    static public Geometry densify(@DescribeParameter(name = "geom", description = "Input geometry") Geometry geom,
+            @DescribeParameter(name = "distance", description = "The maximum segment length in the result, in the units of the geometry") double distance) {
         return Densifier.densify(geom, distance);
+    }    
+    @DescribeProcess(title = "Polygonize", description = "Polygonizes a set of linestrings.  The lines must be fully noded.")
+    @DescribeResult(description = "The collection of created polygons")
+    static public Geometry polygonize(
+            @DescribeParameter(name = "geom", description = "Linework to polygonize") Geometry geom) {
+        @SuppressWarnings("rawtypes")
+        List lines = LineStringExtracter.getLines(geom);
+        Polygonizer polygonizer = new Polygonizer();
+        polygonizer.add(lines);
+        @SuppressWarnings("rawtypes")
+        Collection polys = polygonizer.getPolygons();
+        Polygon[] polyArray = GeometryFactory.toPolygonArray(polys);
+        return geom.getFactory().createGeometryCollection(polyArray);
+    }
+
+    @DescribeProcess(title = "Split Polygon", description = "Splits a polygon by a linestring")
+    @DescribeResult(description = "The collection of split polygons")
+    static public Geometry splitPolygon(
+            @DescribeParameter(name = "polygon", description = "Polygon to split") Geometry polygon,
+            @DescribeParameter(name = "line", description = "Linestring to split by") LineString line) {
+        Geometry nodedLinework = polygon.getBoundary().union(line);
+        Geometry polys = polygonize(nodedLinework);
+
+        // Only keep polygons which are inside the input
+        List<Polygon> output = new ArrayList<Polygon>();
+        for (int i = 0; i < polys.getNumGeometries(); i++) {
+            Polygon candpoly = (Polygon) polys.getGeometryN(i);
+            // use interior point to test for inclusion in parent
+            if (polygon.contains(candpoly.getInteriorPoint())) {
+                output.add(candpoly);
+            }
+        }
+        return polygon.getFactory().createGeometryCollection(
+                GeometryFactory.toGeometryArray(output));
     }
 }

@@ -19,6 +19,7 @@ package org.geotools.geojson.geom;
 import java.io.IOException;
 
 import org.geotools.geojson.DelegatingHandler;
+import org.geotools.geojson.RecordingHandler;
 import org.json.simple.parser.ParseException;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -32,16 +33,24 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 public class GeometryHandler extends DelegatingHandler<Geometry> {
 
     GeometryFactory factory;
-    
+    RecordingHandler proxy;
+
     public GeometryHandler(GeometryFactory factory) {
         this.factory = factory;
     }
     
     @Override
     public boolean startObjectEntry(String key) throws ParseException, IOException {
-        if ("type".equals(key) && delegate == NULL) {
+        if ("type".equals(key) && (delegate == NULL || delegate == proxy)) {
             delegate = UNINITIALIZED;
             return true;
+        }
+        else if ("coordinates".equals(key) && delegate == NULL) {
+            //case of specifying coordinates before the actual geometry type, create a proxy 
+            // handler that will simply track calls until the type is actually specified
+            proxy = new RecordingHandler();
+            delegate = proxy;
+            return super.startObjectEntry(key);
         }
         else {
             return super.startObjectEntry(key);
@@ -52,6 +61,10 @@ public class GeometryHandler extends DelegatingHandler<Geometry> {
     public boolean primitive(Object value) throws ParseException, IOException {
         if (delegate == UNINITIALIZED) {
             delegate = createDelegate(lookupDelegate(value.toString()), new Object[]{factory});
+            if (proxy != null) {
+                proxy.replay(delegate);
+                proxy = null;
+            }
             return true;
         }
         else {

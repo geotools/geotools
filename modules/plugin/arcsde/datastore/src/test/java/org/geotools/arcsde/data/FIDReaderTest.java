@@ -47,6 +47,7 @@ import com.esri.sde.sdk.client.SeTable;
  * @version $Id$
  * @since 2.5.x
  */
+@Ignore
 public class FIDReaderTest {
 
     private static TestData testData;

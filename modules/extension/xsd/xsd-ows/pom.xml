@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools.xsd</groupId>
     <artifactId>xsd</artifactId>
-    <version>8.0</version>
+    <version>8.1</version>
   </parent>
   
   <!-- =========================================================== -->
@@ -71,7 +71,7 @@
     <dependency>
       <groupId>org.geotools.ogc</groupId>
       <artifactId>net.opengis.ows</artifactId>
-      <version>8.0</version>
+      <version>8.1</version>
     </dependency>
     <dependency>
       <groupId>org.geotools.xsd</groupId>

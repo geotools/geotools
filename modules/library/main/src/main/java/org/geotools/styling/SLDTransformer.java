@@ -593,9 +593,13 @@ public class SLDTransformer extends TransformerBase {
             start("ExternalGraphic");
 
             AttributesImpl atts = new AttributesImpl();
-        	atts.addAttribute(XMLNS_NAMESPACE, "xlink", "xmlns:xlink", "", XLINK_NAMESPACE);
-            atts.addAttribute(XLINK_NAMESPACE, "type", "xlink:type", "", "simple");
-            atts.addAttribute(XLINK_NAMESPACE, "xlink", "xlink:href","", exgr.getOnlineResource().getLinkage().toString());
+            try {
+            	atts.addAttribute(XMLNS_NAMESPACE, "xlink", "xmlns:xlink", "", XLINK_NAMESPACE);
+                atts.addAttribute(XLINK_NAMESPACE, "type", "xlink:type", "", "simple");
+                atts.addAttribute(XLINK_NAMESPACE, "xlink", "xlink:href","", exgr.getLocation().toString());
+            } catch (java.net.MalformedURLException e) {
+                throw new Error("Failed to encode the xlink location", e);
+            }
             element("OnlineResource", (String) null, atts);
 
             element("Format", exgr.getFormat());

@@ -85,8 +85,12 @@ public class BeanProcessFactoryTest extends TestCase {
 
     public void testDescribeIdentity() {
         NameImpl name = new NameImpl("bean", "Identity");
+        DescribeProcess describeProcessAnno = IdentityProcess.class.getAnnotation(DescribeProcess.class);
+
         InternationalString desc = factory.getDescription(name);
-        assertNotNull(desc);
+        assertTrue(desc.toString().equals(describeProcessAnno.description()));
+        InternationalString title = factory.getTitle(name);
+        assertTrue(title.toString().equals(describeProcessAnno.title()));
 
         Map<String, Parameter<?>> params = factory.getParameterInfo(name);
         assertEquals(1, params.size());

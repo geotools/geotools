@@ -30,16 +30,16 @@ import org.geotools.data.simple.SimpleFeatureCollection;
  *
  * @source $URL$
  */
-@DescribeProcess(title = "countFeatures", description = "Counts the number of features in the specified collection")
+@DescribeProcess(title = "Count Features", description = "Computes the number of features in a feature collection.")
 public class CountProcess implements GSProcess {
     /** The functions this process can handle */
     public enum AggregationFunction {
         Average, Max, Median, Min, StdDev, Sum;
     }
 
-    @DescribeResult(name = "result", description = "The reprojected features")
+    @DescribeResult(name = "result", description = "Number of features")
     public Number execute(
-            @DescribeParameter(name = "features", description = "The feature collection that will be aggregate") SimpleFeatureCollection features)
+            @DescribeParameter(name = "features", description = "Input feature collection") SimpleFeatureCollection features)
             throws Exception {
 
         return features.size();

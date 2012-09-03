@@ -60,7 +60,11 @@ public abstract class DelegatingHandler<T> implements IContentHandler<T> {
     protected static List NULL_LIST = Collections.unmodifiableList(new ArrayList(0));
     
     protected ContentHandler delegate = NULL;
-    
+
+    public ContentHandler getDelegate() {
+        return delegate;
+    }
+
     public void startJSON() throws ParseException, IOException {
         delegate.startJSON();
     }

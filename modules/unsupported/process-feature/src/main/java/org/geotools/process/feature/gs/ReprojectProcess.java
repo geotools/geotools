@@ -34,14 +34,14 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @source $URL$
  */
-@DescribeProcess(title = "reprojectFeatures", description = "Reprojects the specified features to another CRS, can also be used to force a known CRS onto a set of feaures that miss one (or that have a wrong one)")
+@DescribeProcess(title = "Reproject Features", description = "Reprojects features into a supplied coordinate reference system.  Can also force a feature collection to have a given CRS.")
 public class ReprojectProcess implements GSProcess {
 
-    @DescribeResult(name = "result", description = "The reprojected features")
+    @DescribeResult(name = "result", description = "Input feature collection")
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "features", description = "The feature collection that will be reprojected") SimpleFeatureCollection features,
-            @DescribeParameter(name = "forcedCRS", min = 0, description = "Forces a certain CRS on features before reprojection") CoordinateReferenceSystem forcedCRS,
-            @DescribeParameter(name = "targetCRS", min = 0, description = "Features will be reprojected from their native/forced CRS to the target CRS") CoordinateReferenceSystem targetCRS)
+            @DescribeParameter(name = "forcedCRS", min = 0, description = "Coordinate reference system to use for input feature collection (overrides native one)") CoordinateReferenceSystem forcedCRS,
+            @DescribeParameter(name = "targetCRS", min = 0, description = "Target coordinate reference system to use for reprojection") CoordinateReferenceSystem targetCRS)
             throws Exception {
 
         if (forcedCRS != null) {

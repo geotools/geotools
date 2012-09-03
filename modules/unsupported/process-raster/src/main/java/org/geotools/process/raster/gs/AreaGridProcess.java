@@ -54,15 +54,15 @@ import org.opengis.referencing.operation.MathTransform;
  *
  * @source $URL$
  */
-@DescribeProcess(title = "areaGrid", description = "Builds a regular cell grid where each pixel represents its effective area in the envelope using the EckertIV projection")
+@DescribeProcess(title = "Area Grid", description = "Computes a raster grid of given geographic extent with cell values equal to the area the cell represents on the surface of the earth.  Area is computed using the EckertIV projection.")
 public class AreaGridProcess implements GSProcess {
     private static final String targetCRSWKT = "PROJCS[\"World_Eckert_IV\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Eckert_IV\"],PARAMETER[\"Central_Meridian\",0.0],UNIT[\"Meter\",1.0]]";
 
-    @DescribeResult(name = "result", description = "The grid")
+    @DescribeResult(name = "result", description = "Output raster")
     public GridCoverage2D execute(
-            @DescribeParameter(name = "envelope", description = "The envelope. The envelope must be in WGS84") ReferencedEnvelope bounds,
-            @DescribeParameter(name = "width", description = "image width ") int width,
-            @DescribeParameter(name = "height", description = "image height ") int height)
+            @DescribeParameter(name = "envelope", description = "Bounding box for the computed raster, in WGS84 geographic coordinates.") ReferencedEnvelope bounds,
+            @DescribeParameter(name = "width", description = "Width of the output raster in pixels") int width,
+            @DescribeParameter(name = "height", description = "Height of the output raster in pixels") int height)
             throws ProcessException {
 
         // basic checks

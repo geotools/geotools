@@ -137,6 +137,21 @@ public class WPSUtils
      */
     public static DataType createInputDataType(Object obj, int type, String schema)
     {
+        return createInputDataType(obj, type, schema, null);
+    }
+    
+    /**
+     * Creates a DataType input object from the given object, schema and type (complex or literal).
+     *
+     * @param obj
+     *            the base input object
+     * @param type
+     *            the input type (literal or complexdata)
+     * @param schema
+     *            only used for type complexdata
+     * @return the created DataType input object
+     */
+    public static DataType createInputDataType(Object obj, int type, String schema, String mimeType) {
         DataType dt = Wps10Factory.eINSTANCE.createDataType();
 
         if (type == INPUTTYPE_LITERAL)
@@ -161,11 +176,15 @@ public class WPSUtils
             {
                 cdt.setSchema(schema);
             }
+            if(mimeType != null) {
+                cdt.setMimeType(mimeType);
+            }
             dt.setComplexData(cdt);
         }
 
         return dt;
     }
+
 
     /**
      * Create a map of <String name, Parameter> inputs for a process based on its describeProcess.

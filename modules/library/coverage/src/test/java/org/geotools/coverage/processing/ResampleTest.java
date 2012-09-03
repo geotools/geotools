@@ -16,33 +16,40 @@
  */
 package org.geotools.coverage.processing;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
+import java.awt.image.ColorModel;
+import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
+import java.awt.image.SampleModel;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.File;
+import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
+import javax.media.jai.PlanarImage;
+import javax.media.jai.RasterFactory;
+import javax.media.jai.TiledImage;
 
 import org.geotools.TestData;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GeneralGridEnvelope;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
+import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.ViewType;
 import org.geotools.coverage.processing.operation.Extrema;
 import org.geotools.factory.Hints;
+import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.metadata.iso.spatial.PixelTranslation;
@@ -55,6 +62,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridGeometry;
+import org.opengis.geometry.DirectPosition;
+import org.opengis.geometry.Envelope;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
@@ -357,6 +366,45 @@ public final class ResampleTest extends GridProcessingTestBase {
         doTranslation(indexedCoverage);
         doTranslation(indexedCoverageWithTransparency);
     }
+    
+    /**
+     * Tests that flipping axis on a coverage whose origin is not (0,0) works as expected
+     */
+    @Test
+    public void testFlipTranslated() throws Exception {
+        // build a translated image
+        SampleModel sm = RasterFactory.createPixelInterleavedSampleModel(DataBuffer.TYPE_BYTE, 256, 256, 3);
+        ColorModel cm = PlanarImage.createColorModel(sm);
+        TiledImage ti = new TiledImage(-10, -10, 5, 5, 0, 0, sm, cm);
+        Graphics2D g = ti.createGraphics();
+        g.setColor(Color.GREEN);
+        g.fillRect(-10, -10, 5, 5);
+        g.dispose();
+        
+        // build a coverage around it
+        CoordinateReferenceSystem wgs84LatLon = CRS.decode("EPSG:4326");
+        final GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(null);
+        GridCoverage2D coverage = factory.create("translated", ti, new Envelope2D(wgs84LatLon, 3, 5, 6, 8));
+        
+        // verify we're good
+        int[] pixel = new int[3];
+        coverage.evaluate((DirectPosition) new DirectPosition2D(4, 6), pixel);
+        assertEquals(0, pixel[0]);
+        assertEquals(255, pixel[1]);
+        assertEquals(0, pixel[2]);
+        
+        // now reproject flipping the axis
+        CoordinateReferenceSystem wgs84LonLat = CRS.decode("EPSG:4326", true);
+        GridGeometry gg = new GridGeometry2D(new GridEnvelope2D(-10, -10, 5, 5), (Envelope) new Envelope2D(wgs84LonLat, 5, 3, 8, 6)); 
+        GridCoverage2D flipped = (GridCoverage2D) Operations.DEFAULT.resample(coverage, wgs84LonLat,  
+                gg, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+
+        // before the fix the pixel would have been black
+        flipped.evaluate((DirectPosition) new DirectPosition2D(6, 4), pixel);
+        assertEquals(0, pixel[0]);
+        assertEquals(255, pixel[1]);
+        assertEquals(0, pixel[2]);
+    }
 
     /**
      * Performs a translation using the "Resample" operation.
@@ -407,4 +455,6 @@ public final class ResampleTest extends GridProcessingTestBase {
         final Point point = new Point(transX, transY);
         assertSame(point, expected.transform(point, point)); // Round toward neareast integer
     }
+    
+    
 }

@@ -374,7 +374,43 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
         assertEqual(collection(), (GeometryCollection) gjson.read(reader(collectionText())));
         assertEqual(collection3d(), (GeometryCollection) gjson.read(reader(collection3dText())));
     }
-    
+
+    public void testReadOrder() throws Exception {
+        String json = strip("{'coordinates':[100.1,0.1], 'type': 'Point'}");
+        assertTrue(point().equals(gjson.read(reader(json))));
+
+        json = strip("{'coordinates': [[100.1,0.1],[101.1,1.1]], 'type': 'LineString'}");
+        assertTrue(line().equals(gjson.read(reader(json))));
+
+        json = strip("{ 'coordinates': ["+
+            "      [ [100.1, 0.1, 10.2], [101.1, 0.1, 11.2], [101.1, 1.1, 11.2], [100.1, 1.1, 10.2], [100.1, 0.1, 10.2] ],"+
+            "      [ [100.2, 0.2, 10.2], [100.8, 0.2, 11.2], [100.8, 0.8, 11.2], [100.2, 0.8, 10.2], [100.2, 0.2, 10.2] ]"+
+            "      ]"+
+            ", 'type': 'Polygon' }");
+        assertTrue(polygon3().equals(gjson.read(reader(json))));
+
+        json = strip(
+            "{ 'coordinates': [ [100.1, 0.1], [101.1, 1.1] ], 'type': 'MultiPoint'}");
+        assertTrue(multiPoint().equals(gjson.read(reader(json))));
+        
+        json = strip(
+        "{ 'coordinates': ["+
+                "        [ [100.1, 0.1], [101.1, 1.1] ],"+
+                "        [ [102.1, 2.1], [103.1, 3.1] ]"+
+                "      ]"+
+                "    , 'type': 'MultiLineString'}");
+        assertTrue(multiLine().equals(gjson.read(reader(json))));
+        
+        json = strip(
+            "{ 'coordinates': ["+
+            "      [[[102.1, 2.1], [103.1, 2.1], [103.1, 3.1], [102.1, 3.1], [102.1, 2.1]]],"+
+            "      [[[100.1, 0.1], [101.1, 0.1], [101.1, 1.1], [100.1, 1.1], [100.1, 0.1]],"+
+            "       [[100.2, 0.2], [100.8, 0.2], [100.8, 0.8], [100.2, 0.8], [100.2, 0.2]]]"+
+            "      ]"+
+            "   , 'type': 'MultiPolygon' }");
+        assertTrue(multiPolygon().equals(gjson.read(reader(json))));
+    }
+
     void assertEqual(GeometryCollection col1, GeometryCollection col2) {
         assertEquals(col1.getNumGeometries(), col2.getNumGeometries());
         for (int i = 0; i < col1.getNumGeometries(); i++) {

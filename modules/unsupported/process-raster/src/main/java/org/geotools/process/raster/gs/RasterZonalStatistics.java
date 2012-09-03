@@ -86,9 +86,7 @@ import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
  * @author Emanuele Tajariol (GeoSolutions)
  * @author Andrea Aime - GeoSolutions
  */
-@DescribeProcess(title = "Raster Zonal Statistics", description = "Provides statistics for the distribution "
-        + "of a certain quantity in a set of reference areas. "
-        + "The data layer is a raster layer, the reference layer must be a polygonal one")
+@DescribeProcess(title = "Raster Zonal Statistics", description = "Computes statistics for the distribution of a certain quantity in a set of polygonal zones.")
 public class RasterZonalStatistics implements GSProcess {
 
     private final static CoverageProcessor PROCESSOR = CoverageProcessor.getInstance();
@@ -103,18 +101,13 @@ public class RasterZonalStatistics implements GSProcess {
         }
     }
 
-    @DescribeResult(name = "statistics", description = "A geometryless feature collection with all the attributes "
-            + "of the zoning layer (prefixed by 'z_'), "
-            + "and the statistics fields count/min/max/sum/avg/stddev")
+    @DescribeResult(name = "statistics", description = "A feature collection with the attributes of the zone layer (prefixed by 'z_') and the statistics fields count,min,max,sum,avg,stddev")
     public SimpleFeatureCollection execute(
-            @DescribeParameter(name = "data", description = "The raster containing "
-                    + "the data to be used in the statistics") GridCoverage2D coverage,
-            @DescribeParameter(name = "band", description = "The raster band used to compute statistifcs (first band used if not specified)", min = 0) Integer band,
-            @DescribeParameter(name = "zones", description = "The various zones in which the statistics will be computed. "
-                    + "Must be a polygon layer, each polygon will be used to generate a separate statistic") SimpleFeatureCollection zones,
-            @DescribeParameter(name = "classification", description = "An optional coverage whose values will be used as classes" +
-            		"for the statistica analysis: each zone will report statistics partitioned by classes according to the values of the grid coverage. " +
-            		"It is supposed to be a single band integral data type coverage", min = 0) GridCoverage2D classification) {
+            @DescribeParameter(name = "data", description = "Input raster to compute statistics for") GridCoverage2D coverage,
+            @DescribeParameter(name = "band", description = "Source band used to compute statistics (default is 0)", min = 0) Integer band,
+            @DescribeParameter(name = "zones", description = "Zone polygon features for which to compute statistics") SimpleFeatureCollection zones,
+            @DescribeParameter(name = "classification", description = "Raster whose values will be used as classes for the statistical analysis. Each zone reports statistics partitioned by classes according to the values of the raster. Must be a single band raster with integer values.", 
+            min = 0) GridCoverage2D classification) {
         int iband = 0;
         if (band != null) {
             iband = band;

@@ -15,7 +15,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Geometry;
 
-@DescribeProcess(title = "feature", description = "Turns a single geometry into a feature collection")
+@DescribeProcess(title = "Feature from Geometry", description = "Converts a geometry into a feature collection.")
 /**
  * 
  *
@@ -23,11 +23,11 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class FeatureProcess implements GSProcess {
 
-    @DescribeResult(name = "result", description = "The feature collection wrapping the geometry")
+    @DescribeResult(name = "result", description = "Output feature collection")
     public SimpleFeatureCollection execute(
-            @DescribeParameter(name = "geometry", description = "The feature geometry", min = 1) Geometry geometry,
-            @DescribeParameter(name = "crs", description = "The geometry CRS (if not already available)") CoordinateReferenceSystem crs,
-            @DescribeParameter(name = "typeName", description = "The generated feature type name", min = 1) String name) {
+            @DescribeParameter(name = "geometry", description = "Input geometry", min = 1) Geometry geometry,
+            @DescribeParameter(name = "crs", description = "Coordinate reference system of the input geometry (if not provided in the geometry)") CoordinateReferenceSystem crs,
+            @DescribeParameter(name = "typeName", description = "Feauturetype name for the feature collection", min = 1) String name) {
         // get the crs
         if (crs == null) {
             try {

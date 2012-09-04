@@ -32,17 +32,14 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.Fill;
@@ -57,7 +54,6 @@ import org.geotools.styling.PointPlacement;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.StyleAttributeExtractorTruncated;
-import org.geotools.styling.StyleFactoryFinder;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
@@ -70,8 +66,10 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.style.GraphicalSymbol;
-
 import com.vividsolutions.jts.geom.Geometry;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLDecoder;
 
 /**
  * Factory object that converts SLD style into rendered styles.
@@ -1193,10 +1191,16 @@ public class SLDStyleFactory {
 		// extract the url
 		String strLocation;
 		try {
-			strLocation = eg.getLocation().toExternalForm();
+			String location = eg.getLocation().toString();
+                    	URL locationURL = new URL(URLDecoder.decode(location, "UTF-8"));
+		    	strLocation = locationURL.toExternalForm();
 		} catch (MalformedURLException e) {
 			LOGGER.log(Level.INFO, "Malformed URL processing external graphic",
 					e);
+			return null;
+		} catch (UnsupportedEncodingException ex) {
+			LOGGER.log(Level.INFO, "Unsupported Encoding Exception processing external graphic",
+					ex);
 			return null;
 		}
 		// parse the eventual ${cqlExpression} embedded in the URL

@@ -16,15 +16,15 @@
  */
 package org.geotools.styling;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URLDecoder;
 import java.util.Random;
 import java.util.logging.Logger;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 import org.opengis.feature.simple.SimpleFeature;
@@ -32,7 +32,6 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
-
 
 /**
  * Capture the default values produce by the style factory in order to capture
@@ -44,6 +43,7 @@ import org.opengis.filter.expression.Expression;
  * @source $URL$
  */
 public class StyleFactoryImplTest extends TestCase {
+    
     static StyleFactory styleFactory;
     static FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);        
     static SimpleFeature feature;
@@ -280,6 +280,21 @@ public class StyleFactoryImplTest extends TestCase {
                 symbols, opacity, size, rotation);
 
         assertNotNull("failed to build graphic ", g);
+    }
+    
+    /**
+     * Test of createExternalGraphic method and passing an URL instead of an URI, 
+     * of class org.geotools.styling.StyleFactoryImpl.
+     */
+    public void testCreateExternalGraphic() throws UnsupportedEncodingException {
+        LOGGER.finer("testCreateExternalGraphic");
+        final String url = "http://chart?cht=p&chd=t:${100 * MALE / PERSONS},${100 * FEMALE / PERSONS}&chf=bg,s,FFFFFF00";
+        ExternalGraphic[] externalGraphics = new ExternalGraphic[]{
+            styleFactory.createExternalGraphic(url, "application/chart")
+        };
+        final String encodedURL = URLDecoder.decode(externalGraphics[0].getOnlineResource().getLinkage().toString(),
+                "UTF-8");
+        assertEquals("URL comparison", url, encodedURL);
     }
 
     /**

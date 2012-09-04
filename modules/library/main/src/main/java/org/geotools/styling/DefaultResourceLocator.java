@@ -18,6 +18,7 @@ package org.geotools.styling;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
 
 /**
  * Default locator for online resources. Searches by absolute URL, relative
@@ -42,20 +43,24 @@ public class DefaultResourceLocator implements ResourceLocator {
         try {
             url = new URL(uri);
         } catch (MalformedURLException mfe) {
-            LOGGER.fine("Looks like " + uri + " is a relative path..");
-            if (sourceUrl != null) {
-                try {
-                    url = new URL(sourceUrl, uri);
-                } catch (MalformedURLException e) {
-                    LOGGER.warning("can't parse " + uri + " as relative to"
-                            + sourceUrl.toExternalForm());
+            try {
+                url = new URL(URLDecoder.decode(uri, "UTF-8"));
+            } catch (Exception ex) {
+                LOGGER.fine("Looks like " + uri + " is a relative path..");
+                if (sourceUrl != null) {
+                    try {
+                        url = new URL(sourceUrl, uri);
+                    } catch (MalformedURLException e) {
+                        LOGGER.warning("can't parse " + uri + " as relative to"
+                                + sourceUrl.toExternalForm());
+                    }
                 }
-            }
-            if (url == null)
-            {
-                url = getClass().getResource(uri);
                 if (url == null)
-                        LOGGER.warning("can't parse " + uri + " as a java resource present in the classpath");
+                {
+                    url = getClass().getResource(uri);
+                    if (url == null)
+                            LOGGER.warning("can't parse " + uri + " as a java resource present in the classpath");
+                }
             }
         }
         return url;

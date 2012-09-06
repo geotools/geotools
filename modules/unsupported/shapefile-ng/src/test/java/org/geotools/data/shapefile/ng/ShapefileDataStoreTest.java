@@ -368,6 +368,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         SimpleFeatureCollection features = featureSource.getFeatures( query );
         
         assertNotNull( "selection query worked", features );
+        assertFalse( "selection non empty", features.isEmpty() );        
         assertTrue( "selection non empty", features.size() > 0 );
         ReferencedEnvelope bounds = features.getBounds();
         
@@ -387,6 +388,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         features = featureSource.getFeatures( query );
         
         assertNotNull("selection query worked", features );
+        assertTrue( "selection non empty", !features.isEmpty() );        
         assertEquals(selection.size(), features.size());
         ds.dispose();
     }
@@ -1054,6 +1056,42 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
                 reader.next();
             }
             assertEquals(count, store.getCount(Query.ALL));
+            
+            // check SimpleFeatureCollection size
+            SimpleFeatureSource featureSource = store.getFeatureSource();
+            SimpleFeatureCollection features = featureSource.getFeatures();
+            assertEquals(count, features.size());
+            assertFalse(features.isEmpty());
+
+            
+            // execute Query that returns all features
+            
+            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+            SimpleFeatureType schema = featureSource.getSchema();
+            String geomName = schema.getGeometryDescriptor().getName().getLocalPart();
+            
+            Query query = new Query(schema.getTypeName());
+            query.setPropertyNames(Query.ALL_NAMES);            
+            ReferencedEnvelope bounds = features.getBounds();
+            query.setFilter(ff.bbox(ff.property(geomName), bounds));
+
+            features = featureSource.getFeatures(query);
+            // check SimpleFeatureCollection size
+            assertEquals(count, features.size());
+            assertFalse(features.isEmpty());
+
+            
+            // execute Query that doesn't return any feature
+            
+            bounds = new ReferencedEnvelope(bounds.getMaxX() + 1, bounds.getMaxX() + 2, 
+                    bounds.getMaxY() + 1, bounds.getMaxY() + 2, bounds.getCoordinateReferenceSystem());
+            query.setFilter(ff.bbox(ff.property(geomName), bounds));            
+
+            features = featureSource.getFeatures(query);
+            // check SimpleFeatureCollection size
+            assertEquals(0, features.size());
+            assertTrue(features.isEmpty());
+                        
         } finally {
             reader.close();
         }

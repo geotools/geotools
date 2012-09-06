@@ -104,6 +104,11 @@ public class DelegatingHandler implements DocumentHandler, ElementHandler {
         delegate.endDocument();
     }
 
+    @Override
+    public void startPrefixMapping(String prefix, String uri) throws SAXException {
+        delegate.startPrefixMapping(prefix, uri);
+    }
+
     public void startElement(QName name, Attributes attributes)
         throws SAXException {
         
@@ -123,7 +128,11 @@ public class DelegatingHandler implements DocumentHandler, ElementHandler {
     public void endElement(QName name) throws SAXException {
         delegate.endElement( name.getNamespaceURI(), name.getLocalPart(), qname( name ) );
     }
-    
+
+    public void endPrefixMapping(String prefix) throws SAXException {
+        delegate.endPrefixMapping(prefix);
+    }
+
     String qname( QName name ) {
         return name.getNamespaceURI() != null ? name.getPrefix() + ":" + name.getLocalPart() : name.getLocalPart();
     }

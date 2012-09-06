@@ -19,6 +19,7 @@ package org.geotools.xml.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -236,6 +237,10 @@ public class ParserHandler extends DefaultHandler {
     public void startPrefixMapping(String prefix, String uri)
         throws SAXException {
         namespaces.declarePrefix(prefix, uri);
+        if (!handlers.isEmpty()) {
+            Handler h = (Handler) handlers.peek();
+            h.startPrefixMapping(prefix, uri);    
+        }
     }
 
     public void startDocument() throws SAXException {
@@ -546,7 +551,16 @@ O:          for (int i = 0; i < schemas.length; i++) {
                 if (canHandle) {
                     //found one
                     handler = new DelegatingHandler( delegate, qualifiedName, parent );
-                    ((DelegatingHandler)handler).startDocument();
+
+                    DelegatingHandler dh = (DelegatingHandler) handler;
+                    dh.startDocument();
+
+                    //inject the current namespace context
+                    Enumeration e = namespaces.getPrefixes();
+                    while(e.hasMoreElements()) {
+                        String pre = (String) e.nextElement();
+                        dh.startPrefixMapping(pre, namespaces.getURI(pre));
+                    }
                 }
                 
             }
@@ -701,6 +715,14 @@ O:          for (int i = 0; i < schemas.length; i++) {
 
     protected void endElementInternal(ElementHandler handler) {
         //do nothing
+    }
+
+    @Override
+    public void endPrefixMapping(String prefix) throws SAXException {
+        if (!handlers.isEmpty()) {
+            Handler h = (Handler) handlers.peek();
+            h.endPrefixMapping(prefix);
+        }
     }
 
     public void endDocument() throws SAXException {

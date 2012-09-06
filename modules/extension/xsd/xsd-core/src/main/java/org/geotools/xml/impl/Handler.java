@@ -18,6 +18,8 @@ package org.geotools.xml.impl;
 
 import org.eclipse.xsd.XSDSchemaContent;
 import org.picocontainer.MutablePicoContainer;
+import org.xml.sax.SAXException;
+
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.xml.InstanceComponent;
@@ -127,4 +129,20 @@ public interface Handler {
      * @param child The executing child handler.
      */
     void endChildHandler(Handler child);
+
+    /**
+     * Called when a prefix mapping is registred with ParserHandler.
+     * 
+     * @param prefix Namespace prefix.
+     * @param uri Namespace uri.
+     *
+     */
+    void startPrefixMapping (String prefix, String uri) throws SAXException;
+
+    /**
+     * Called when a prefix mapping is de-registred with ParserHandler.
+     * 
+     * @param prefix Namespace prefix.
+     */
+    void endPrefixMapping (String prefix) throws SAXException;
 }

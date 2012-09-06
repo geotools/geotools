@@ -16,15 +16,10 @@
  */
 package org.geotools.data.ows;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,11 +28,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.zip.GZIPInputStream;
 
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
 import org.geotools.ows.ServiceException;
+
 
 /**
  * This abstract class provides a building block for one to implement an 
@@ -411,7 +406,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
         final URL finalURL = request.getFinalURL();
 
         final HTTPResponse httpResponse;
-
+        
         if (request.requiresPost()) {
 
             final String postContentType = request.getPostContentType();
@@ -431,6 +426,10 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
 
         final Response response = request.createResponse(httpResponse);
 
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine("Executed request to URL: " + finalURL.toExternalForm());
+        }        
+        
         return response;
     }
     

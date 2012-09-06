@@ -17,6 +17,7 @@
 package org.geotools.xml.impl;
 
 import org.picocontainer.MutablePicoContainer;
+import org.xml.sax.SAXException;
 
 
 /**
@@ -33,5 +34,13 @@ public abstract class HandlerImpl implements Handler {
 
     public void setContext(MutablePicoContainer context) {
         this.context = context;
+    }
+
+    @Override
+    public void startPrefixMapping(String prefix, String uri) throws SAXException {
+    }
+
+    @Override
+    public void endPrefixMapping(String prefix) throws SAXException {
     }
 }

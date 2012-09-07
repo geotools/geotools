@@ -7,6 +7,8 @@
 package net.opengis.cat.csw20;
 
 import java.lang.String;
+import java.net.URI;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -46,10 +48,10 @@ public interface SimpleLiteral extends EObject {
     void setValue(Object value);
 
     /**
-     * @model dataType="org.eclipse.emf.ecore.xml.type.AnyURI"
-     *        extendedMetaData="kind='attribute' name='scheme'" 
+     * @model 
      */
-    String getScheme();
+    URI getScheme();
+
 
     /**
      * Sets the value of the '{@link net.opengis.cat.csw20.SimpleLiteral#getScheme <em>Scheme</em>}' attribute.
@@ -59,7 +61,7 @@ public interface SimpleLiteral extends EObject {
      * @see #getScheme()
      * @generated
      */
-    void setScheme(String value);
+    void setScheme(URI value);
 
 
 } // BriefRecordType

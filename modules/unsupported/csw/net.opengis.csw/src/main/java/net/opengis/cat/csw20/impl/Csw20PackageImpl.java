@@ -2720,7 +2720,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
 
         initEClass(simpleLiteralEClass, SimpleLiteral.class, "SimpleLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getSimpleLiteral_Value(), ecorePackage.getEJavaObject(), "value", null, 0, 1, SimpleLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getSimpleLiteral_Scheme(), theXMLTypePackage.getAnyURI(), "scheme", null, 0, 1, SimpleLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getSimpleLiteral_Scheme(), this.getURI(), "scheme", null, 0, 1, SimpleLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getSimpleLiteral_Name(), this.getString(), null, "name", null, 0, 1, SimpleLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(summaryRecordTypeEClass, SummaryRecordType.class, "SummaryRecordType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -3820,13 +3820,6 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
            new String[] {
              "name", "SimpleLiteral",
              "kind", "elementOnly"
-           });		
-        addAnnotation
-          (getSimpleLiteral_Scheme(), 
-           source, 
-           new String[] {
-             "kind", "attribute",
-             "name", "scheme"
            });		
         addAnnotation
           (summaryRecordTypeEClass, 

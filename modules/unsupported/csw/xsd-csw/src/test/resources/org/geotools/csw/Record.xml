@@ -12,7 +12,7 @@
    <dct:modified>2004-10-04 00:00:00</dct:modified>
    <dct:abstract>IMAGE2000 product 1 individual orthorectified scenes. IMAGE2000 was  produced from ETM+ Landsat 7 satellite data and provides a consistent European coverage of individual orthorectified scenes in national map projection systems.</dct:abstract>
    <dc:type>dataset</dc:type>
-   <dc:subject>imagery</dc:subject>
+   <dc:subject scheme="http://www.digest.org/2.1">Vegetation</dc:subject>
    <dc:subject>baseMaps</dc:subject>
    <dc:subject>earthCover</dc:subject>
    <dc:format>BIL</dc:format>

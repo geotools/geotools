@@ -3,6 +3,7 @@ package org.geotools.csw;
 import static org.junit.Assert.*;
 
 import java.io.StringReader;
+import java.net.URI;
 import java.util.List;
 
 import net.opengis.cat.csw20.BriefRecordType;
@@ -87,18 +88,19 @@ public class CSWRecordTest {
         EList<SimpleLiteral> dcElements = record.getDCElement();
         assertEquals(11, dcElements.size());
         
-        assertEquals("00180e67-b7cf-40a3-861d-b3a09337b195", getElement(dcElements, "identifier"));
-        assertEquals("Image2000 Product 1 (at1) Multispectral", getElement(dcElements, "title"));
-        assertEquals("dataset", getElement(dcElements, "type"));
-        assertEquals("imagery", getElement(dcElements, "subject", 0));
-        assertEquals("baseMaps", getElement(dcElements, "subject", 1));
-        assertEquals("earthCover", getElement(dcElements, "subject", 2));
-        assertEquals("BIL", getElement(dcElements, "format"));
-        assertEquals("Vanda Lima", getElement(dcElements, "creator"));
-        assertEquals("en", getElement(dcElements, "language"));
-        assertEquals("2004-10-04 00:00:00", getElement(dcElements, "modified"));
+        assertEquals("00180e67-b7cf-40a3-861d-b3a09337b195", getValue(dcElements, "identifier"));
+        assertEquals("Image2000 Product 1 (at1) Multispectral", getValue(dcElements, "title"));
+        assertEquals("dataset", getValue(dcElements, "type"));
+        assertEquals("Vegetation", getValue(dcElements, "subject", 0));
+        assertEquals(new URI("http://www.digest.org/2.1"), getScheme(dcElements, "subject", 0));
+        assertEquals("baseMaps", getValue(dcElements, "subject", 1));
+        assertEquals("earthCover", getValue(dcElements, "subject", 2));
+        assertEquals("BIL", getValue(dcElements, "format"));
+        assertEquals("Vanda Lima", getValue(dcElements, "creator"));
+        assertEquals("en", getValue(dcElements, "language"));
+        assertEquals("2004-10-04 00:00:00", getValue(dcElements, "modified"));
         String abs = "IMAGE2000 product 1 individual orthorectified scenes. IMAGE2000 was produced from ETM+ Landsat 7 satellite data and provides a consistent European coverage of individual orthorectified scenes in national map projection systems.";
-        assertEquals(abs, getElement(dcElements, "abstract", 0));
+        assertEquals(abs, getValue(dcElements, "abstract", 0));
     }
     
     @Test
@@ -110,16 +112,16 @@ public class CSWRecordTest {
         assertTrue(EMFUtils.emfEquals(record, reparsed));
     }
     
-    private Object getElement(List<SimpleLiteral> elements, String name) {
-        return getElement(elements, name, 0);
+    private Object getValue(List<SimpleLiteral> elements, String name) {
+        return getValue(elements, name, 0);
     }
     
-    private Object getElement(List<SimpleLiteral> elements, String name, int idx) {
+    private SimpleLiteral getSimpleLiteral(List<SimpleLiteral> elements, String name, int idx) {
         int curr = 0;
         for (SimpleLiteral sl : elements) {
             if(name.equals(sl.getName())) {
                 if(idx == curr) {
-                    return sl.getValue();
+                    return sl;
                 } else {
                     curr++;
                 }
@@ -127,6 +129,24 @@ public class CSWRecordTest {
         }
         
         return null;
+    }
+    
+    private Object getValue(List<SimpleLiteral> elements, String name, int idx) {
+        SimpleLiteral sl = getSimpleLiteral(elements, name, idx);
+        if(sl == null) {
+            return null;
+        } else {
+            return sl.getValue();
+        }
+    }
+    
+    private Object getScheme(List<SimpleLiteral> elements, String name, int idx) {
+        SimpleLiteral sl = getSimpleLiteral(elements, name, idx);
+        if(sl == null) {
+            return null;
+        } else {
+            return sl.getScheme();
+        }
     }
 
     

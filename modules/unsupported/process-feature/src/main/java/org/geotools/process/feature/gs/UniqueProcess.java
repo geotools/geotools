@@ -42,10 +42,6 @@ import org.opengis.util.ProgressListener;
  */
 @DescribeProcess(title = "Unique", description = "Returns the unique values of a given attribute in a feature collection.")
 public class UniqueProcess implements GSProcess {
-    // the functions this process can handle
-    public enum AggregationFunction {
-        Average, Max, Median, Min, StdDev, Sum;
-    }
 
     @DescribeResult(name = "result", description = "Feature collection with an attribute containing the unique values")
     public SimpleFeatureCollection execute(

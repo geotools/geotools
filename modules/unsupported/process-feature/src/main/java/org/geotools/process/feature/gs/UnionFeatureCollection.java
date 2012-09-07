@@ -52,8 +52,8 @@ public class UnionFeatureCollection implements GSProcess {
 
     @DescribeResult(name = "result", description = "Output feature collection")
     public SimpleFeatureCollection execute(
-            @DescribeParameter(name = "first feature collection", description = "First input feature collection") SimpleFeatureCollection firstFeatures,
-            @DescribeParameter(name = "second feature collection", description = "Second feature collection") SimpleFeatureCollection secondFeatures)
+            @DescribeParameter(name = "first_feature_collection", description = "First input feature collection") SimpleFeatureCollection firstFeatures,
+            @DescribeParameter(name = "second_feature_collection", description = "Second feature collection") SimpleFeatureCollection secondFeatures)
             throws ClassNotFoundException {
         if (!(firstFeatures.features().next().getDefaultGeometry().getClass().equals(secondFeatures
                 .features().next().getDefaultGeometry().getClass()))) {

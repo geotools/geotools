@@ -49,8 +49,8 @@ import com.vividsolutions.jts.geom.Geometry;
 public class InclusionFeatureCollection implements GSProcess {
     @DescribeResult(description = "Output feature collection")
     public SimpleFeatureCollection execute(
-            @DescribeParameter(name = "first feature collection", description = "First feature collection") SimpleFeatureCollection firstFeatures,
-            @DescribeParameter(name = "second feature collection", description = "Second feature collection") SimpleFeatureCollection secondFeatures) {
+            @DescribeParameter(name = "first_feature_collection", description = "First feature collection") SimpleFeatureCollection firstFeatures,
+            @DescribeParameter(name = "second_feature_collection", description = "Second feature collection") SimpleFeatureCollection secondFeatures) {
         return new IncludedFeatureCollection(firstFeatures, secondFeatures);
     }
 

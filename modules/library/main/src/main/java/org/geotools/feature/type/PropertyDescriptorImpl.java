@@ -60,7 +60,7 @@ public class PropertyDescriptorImpl implements PropertyDescriptor {
         }
         
         if (max > 0 && (max < min) ) {
-            throw new IllegalArgumentException("max must be -1, or < min");
+            throw new IllegalArgumentException("max must be -1, or >= min");
         }
     }
     

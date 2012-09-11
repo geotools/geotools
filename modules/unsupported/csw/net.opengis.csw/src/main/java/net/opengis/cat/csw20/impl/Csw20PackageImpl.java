@@ -11,6 +11,7 @@ import java.lang.String;
 import java.util.Calendar;
 import java.util.List;
 
+import java.util.Map;
 import java.util.Set;
 import javax.xml.datatype.Duration;
 import javax.xml.namespace.QName;
@@ -486,6 +487,13 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * @generated
      */
     private EDataType durationEDataType = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EDataType mapEDataType = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -1528,6 +1536,24 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EAttribute getRequestBaseType_BaseUrl() {
+        return (EAttribute)requestBaseTypeEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getRequestBaseType_ExtendedProperties() {
+        return (EAttribute)requestBaseTypeEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getRequestStatusType() {
         return requestStatusTypeEClass;
     }
@@ -2212,6 +2238,15 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EDataType getMap() {
+        return mapEDataType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public Csw20Factory getCsw20Factory() {
         return (Csw20Factory)getEFactoryInstance();
     }
@@ -2372,6 +2407,8 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         requestBaseTypeEClass = createEClass(REQUEST_BASE_TYPE);
         createEAttribute(requestBaseTypeEClass, REQUEST_BASE_TYPE__SERVICE);
         createEAttribute(requestBaseTypeEClass, REQUEST_BASE_TYPE__VERSION);
+        createEAttribute(requestBaseTypeEClass, REQUEST_BASE_TYPE__BASE_URL);
+        createEAttribute(requestBaseTypeEClass, REQUEST_BASE_TYPE__EXTENDED_PROPERTIES);
 
         requestStatusTypeEClass = createEClass(REQUEST_STATUS_TYPE);
         createEAttribute(requestStatusTypeEClass, REQUEST_STATUS_TYPE__TIMESTAMP);
@@ -2467,6 +2504,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         uriEDataType = createEDataType(URI);
         qNameEDataType = createEDataType(QNAME);
         durationEDataType = createEDataType(DURATION);
+        mapEDataType = createEDataType(MAP);
     }
 
     /**
@@ -2655,6 +2693,8 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         initEClass(requestBaseTypeEClass, RequestBaseType.class, "RequestBaseType", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getRequestBaseType_Service(), this.getServiceType_1(), "service", "CSW", 1, 1, RequestBaseType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getRequestBaseType_Version(), this.getVersionType(), "version", "2.0.2", 1, 1, RequestBaseType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getRequestBaseType_BaseUrl(), theXMLTypePackage.getString(), "baseUrl", null, 0, 1, RequestBaseType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getRequestBaseType_ExtendedProperties(), this.getMap(), "extendedProperties", null, 0, 1, RequestBaseType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(requestStatusTypeEClass, RequestStatusType.class, "RequestStatusType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getRequestStatusType_Timestamp(), this.getCalendar(), "timestamp", null, 0, 1, RequestStatusType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2757,6 +2797,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         initEDataType(uriEDataType, java.net.URI.class, "URI", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(qNameEDataType, QName.class, "QName", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(durationEDataType, Duration.class, "Duration", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(mapEDataType, Map.class, "Map", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
         // Create resource
         createResource(eNS_URI);

@@ -10,6 +10,7 @@ import java.net.URI;
 import java.util.Calendar;
 import java.util.List;
 
+import java.util.Map;
 import java.util.Set;
 import javax.xml.datatype.Duration;
 import javax.xml.namespace.QName;
@@ -184,6 +185,8 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
                 return createQNameFromString(eDataType, initialValue);
             case Csw20Package.DURATION:
                 return createDurationFromString(eDataType, initialValue);
+            case Csw20Package.MAP:
+                return createMapFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -221,6 +224,8 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
                 return convertQNameToString(eDataType, instanceValue);
             case Csw20Package.DURATION:
                 return convertDurationToString(eDataType, instanceValue);
+            case Csw20Package.MAP:
+                return convertMapToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -825,6 +830,24 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * @generated
      */
     public String convertDurationToString(EDataType eDataType, Object instanceValue) {
+        return super.convertToString(eDataType, instanceValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public Map createMapFromString(EDataType eDataType, String initialValue) {
+        return (Map)super.createFromString(eDataType, initialValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertMapToString(EDataType eDataType, Object instanceValue) {
         return super.convertToString(eDataType, instanceValue);
     }
 

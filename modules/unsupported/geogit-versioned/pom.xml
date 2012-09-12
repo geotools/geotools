@@ -86,7 +86,7 @@
 		<dependency>
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-cql</artifactId>
-			<version>9-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.caucho</groupId>
@@ -120,7 +120,7 @@
 		<dependency>
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-property</artifactId>
-			<version>9-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

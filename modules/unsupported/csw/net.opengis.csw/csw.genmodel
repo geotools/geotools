@@ -28,6 +28,7 @@
     <genDataTypes ecoreDataType="csw20.ecore#//URI"/>
     <genDataTypes ecoreDataType="csw20.ecore#//QName"/>
     <genDataTypes ecoreDataType="csw20.ecore#//Duration"/>
+    <genDataTypes ecoreDataType="csw20.ecore#//Map"/>
     <genClasses image="false" ecoreClass="csw20.ecore#//AbstractQueryType"/>
     <genClasses image="false" ecoreClass="csw20.ecore#//AbstractRecordType"/>
     <genClasses ecoreClass="csw20.ecore#//AcknowledgementType">
@@ -162,6 +163,8 @@
     <genClasses image="false" ecoreClass="csw20.ecore#//RequestBaseType">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//RequestBaseType/service"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//RequestBaseType/version"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//RequestBaseType/baseUrl"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//RequestBaseType/extendedProperties"/>
     </genClasses>
     <genClasses ecoreClass="csw20.ecore#//RequestStatusType">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//RequestStatusType/timestamp"/>

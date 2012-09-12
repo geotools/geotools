@@ -7,6 +7,7 @@
 package net.opengis.cat.csw20;
 
 import java.lang.String;
+import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -26,6 +27,8 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link net.opengis.cat.csw20.RequestBaseType#getService <em>Service</em>}</li>
  *   <li>{@link net.opengis.cat.csw20.RequestBaseType#getVersion <em>Version</em>}</li>
+ *   <li>{@link net.opengis.cat.csw20.RequestBaseType#getBaseUrl <em>Base Url</em>}</li>
+ *   <li>{@link net.opengis.cat.csw20.RequestBaseType#getExtendedProperties <em>Extended Properties</em>}</li>
  * </ul>
  * </p>
  *
@@ -144,5 +147,52 @@ public interface RequestBaseType extends EObject {
      * @generated
      */
     boolean isSetVersion();
+    
+    /**
+     * Returns the value of the '<em><b>Base Url</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Base Url</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Base Url</em>' attribute.
+     * @see #setBaseUrl(String)
+     * @see net.opengis.cat.csw20.Csw20Package#getRequestBaseType_BaseUrl()
+     * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+     * @generated
+     */
+    String getBaseUrl();
+
+    /**
+     * Sets the value of the '{@link net.opengis.cat.csw20.RequestBaseType#getBaseUrl <em>Base Url</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Base Url</em>' attribute.
+     * @see #getBaseUrl()
+     * @generated
+     */
+    void setBaseUrl(String value);
+
+    /**
+     * Extended model properties.
+     * <p>
+     * This map allows client to store additional properties with the this
+     * request object, properties that are not part of the model proper.
+     * </p>
+     * 
+     * @model
+     */
+    Map getExtendedProperties();
+
+    /**
+     * Sets the value of the '{@link net.opengis.cat.csw20.RequestBaseType#getExtendedProperties <em>Extended Properties</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Extended Properties</em>' attribute.
+     * @see #getExtendedProperties()
+     * @generated
+     */
+    void setExtendedProperties(Map value);
 
 } // RequestBaseType

@@ -8,6 +8,7 @@ package net.opengis.cat.csw20.impl;
 
 import java.lang.String;
 
+import java.util.Map;
 import net.opengis.cat.csw20.Csw20Package;
 import net.opengis.cat.csw20.RequestBaseType;
 
@@ -27,6 +28,8 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * <ul>
  *   <li>{@link net.opengis.cat.csw20.impl.RequestBaseTypeImpl#getService <em>Service</em>}</li>
  *   <li>{@link net.opengis.cat.csw20.impl.RequestBaseTypeImpl#getVersion <em>Version</em>}</li>
+ *   <li>{@link net.opengis.cat.csw20.impl.RequestBaseTypeImpl#getBaseUrl <em>Base Url</em>}</li>
+ *   <li>{@link net.opengis.cat.csw20.impl.RequestBaseTypeImpl#getExtendedProperties <em>Extended Properties</em>}</li>
  * </ul>
  * </p>
  *
@@ -90,6 +93,46 @@ public abstract class RequestBaseTypeImpl extends EObjectImpl implements Request
      * @ordered
      */
     protected boolean versionESet;
+
+    /**
+     * The default value of the '{@link #getBaseUrl() <em>Base Url</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getBaseUrl()
+     * @generated
+     * @ordered
+     */
+    protected static final String BASE_URL_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getBaseUrl() <em>Base Url</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getBaseUrl()
+     * @generated
+     * @ordered
+     */
+    protected String baseUrl = BASE_URL_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getExtendedProperties() <em>Extended Properties</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getExtendedProperties()
+     * @generated
+     * @ordered
+     */
+    protected static final Map EXTENDED_PROPERTIES_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getExtendedProperties() <em>Extended Properties</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getExtendedProperties()
+     * @generated
+     * @ordered
+     */
+    protected Map extendedProperties = EXTENDED_PROPERTIES_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -207,6 +250,48 @@ public abstract class RequestBaseTypeImpl extends EObjectImpl implements Request
      * <!-- end-user-doc -->
      * @generated
      */
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setBaseUrl(String newBaseUrl) {
+        String oldBaseUrl = baseUrl;
+        baseUrl = newBaseUrl;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, Csw20Package.REQUEST_BASE_TYPE__BASE_URL, oldBaseUrl, baseUrl));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public Map getExtendedProperties() {
+        return extendedProperties;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setExtendedProperties(Map newExtendedProperties) {
+        Map oldExtendedProperties = extendedProperties;
+        extendedProperties = newExtendedProperties;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, Csw20Package.REQUEST_BASE_TYPE__EXTENDED_PROPERTIES, oldExtendedProperties, extendedProperties));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
@@ -214,6 +299,10 @@ public abstract class RequestBaseTypeImpl extends EObjectImpl implements Request
                 return getService();
             case Csw20Package.REQUEST_BASE_TYPE__VERSION:
                 return getVersion();
+            case Csw20Package.REQUEST_BASE_TYPE__BASE_URL:
+                return getBaseUrl();
+            case Csw20Package.REQUEST_BASE_TYPE__EXTENDED_PROPERTIES:
+                return getExtendedProperties();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -231,6 +320,12 @@ public abstract class RequestBaseTypeImpl extends EObjectImpl implements Request
                 return;
             case Csw20Package.REQUEST_BASE_TYPE__VERSION:
                 setVersion((String)newValue);
+                return;
+            case Csw20Package.REQUEST_BASE_TYPE__BASE_URL:
+                setBaseUrl((String)newValue);
+                return;
+            case Csw20Package.REQUEST_BASE_TYPE__EXTENDED_PROPERTIES:
+                setExtendedProperties((Map)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -250,6 +345,12 @@ public abstract class RequestBaseTypeImpl extends EObjectImpl implements Request
             case Csw20Package.REQUEST_BASE_TYPE__VERSION:
                 unsetVersion();
                 return;
+            case Csw20Package.REQUEST_BASE_TYPE__BASE_URL:
+                setBaseUrl(BASE_URL_EDEFAULT);
+                return;
+            case Csw20Package.REQUEST_BASE_TYPE__EXTENDED_PROPERTIES:
+                setExtendedProperties(EXTENDED_PROPERTIES_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -266,6 +367,10 @@ public abstract class RequestBaseTypeImpl extends EObjectImpl implements Request
                 return isSetService();
             case Csw20Package.REQUEST_BASE_TYPE__VERSION:
                 return isSetVersion();
+            case Csw20Package.REQUEST_BASE_TYPE__BASE_URL:
+                return BASE_URL_EDEFAULT == null ? baseUrl != null : !BASE_URL_EDEFAULT.equals(baseUrl);
+            case Csw20Package.REQUEST_BASE_TYPE__EXTENDED_PROPERTIES:
+                return EXTENDED_PROPERTIES_EDEFAULT == null ? extendedProperties != null : !EXTENDED_PROPERTIES_EDEFAULT.equals(extendedProperties);
         }
         return super.eIsSet(featureID);
     }
@@ -284,6 +389,10 @@ public abstract class RequestBaseTypeImpl extends EObjectImpl implements Request
         if (serviceESet) result.append(service); else result.append("<unset>");
         result.append(", version: ");
         if (versionESet) result.append(version); else result.append("<unset>");
+        result.append(", baseUrl: ");
+        result.append(baseUrl);
+        result.append(", extendedProperties: ");
+        result.append(extendedProperties);
         result.append(')');
         return result.toString();
     }

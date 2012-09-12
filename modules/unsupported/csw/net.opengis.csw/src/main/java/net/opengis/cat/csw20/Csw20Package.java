@@ -426,13 +426,31 @@ public interface Csw20Package extends EPackage {
     int REQUEST_BASE_TYPE__VERSION = 1;
 
     /**
+     * The feature id for the '<em><b>Base Url</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REQUEST_BASE_TYPE__BASE_URL = 2;
+
+    /**
+     * The feature id for the '<em><b>Extended Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REQUEST_BASE_TYPE__EXTENDED_PROPERTIES = 3;
+
+    /**
      * The number of structural features of the '<em>Request Base Type</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int REQUEST_BASE_TYPE_FEATURE_COUNT = 2;
+    int REQUEST_BASE_TYPE_FEATURE_COUNT = 4;
 
     /**
      * The meta object id for the '{@link net.opengis.cat.csw20.impl.DescribeRecordTypeImpl <em>Describe Record Type</em>}' class.
@@ -461,6 +479,24 @@ public interface Csw20Package extends EPackage {
      * @ordered
      */
     int DESCRIBE_RECORD_TYPE__VERSION = REQUEST_BASE_TYPE__VERSION;
+
+    /**
+     * The feature id for the '<em><b>Base Url</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DESCRIBE_RECORD_TYPE__BASE_URL = REQUEST_BASE_TYPE__BASE_URL;
+
+    /**
+     * The feature id for the '<em><b>Extended Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DESCRIBE_RECORD_TYPE__EXTENDED_PROPERTIES = REQUEST_BASE_TYPE__EXTENDED_PROPERTIES;
 
     /**
      * The feature id for the '<em><b>Type Name</b></em>' attribute list.
@@ -840,6 +876,24 @@ public interface Csw20Package extends EPackage {
     int GET_DOMAIN_TYPE__VERSION = REQUEST_BASE_TYPE__VERSION;
 
     /**
+     * The feature id for the '<em><b>Base Url</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int GET_DOMAIN_TYPE__BASE_URL = REQUEST_BASE_TYPE__BASE_URL;
+
+    /**
+     * The feature id for the '<em><b>Extended Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int GET_DOMAIN_TYPE__EXTENDED_PROPERTIES = REQUEST_BASE_TYPE__EXTENDED_PROPERTIES;
+
+    /**
      * The feature id for the '<em><b>Property Name</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -893,6 +947,24 @@ public interface Csw20Package extends EPackage {
      * @ordered
      */
     int GET_RECORD_BY_ID_TYPE__VERSION = REQUEST_BASE_TYPE__VERSION;
+
+    /**
+     * The feature id for the '<em><b>Base Url</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int GET_RECORD_BY_ID_TYPE__BASE_URL = REQUEST_BASE_TYPE__BASE_URL;
+
+    /**
+     * The feature id for the '<em><b>Extended Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int GET_RECORD_BY_ID_TYPE__EXTENDED_PROPERTIES = REQUEST_BASE_TYPE__EXTENDED_PROPERTIES;
 
     /**
      * The feature id for the '<em><b>Id</b></em>' attribute list.
@@ -1021,6 +1093,24 @@ public interface Csw20Package extends EPackage {
      * @ordered
      */
     int GET_RECORDS_TYPE__VERSION = REQUEST_BASE_TYPE__VERSION;
+
+    /**
+     * The feature id for the '<em><b>Base Url</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int GET_RECORDS_TYPE__BASE_URL = REQUEST_BASE_TYPE__BASE_URL;
+
+    /**
+     * The feature id for the '<em><b>Extended Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int GET_RECORDS_TYPE__EXTENDED_PROPERTIES = REQUEST_BASE_TYPE__EXTENDED_PROPERTIES;
 
     /**
      * The feature id for the '<em><b>Distributed Search</b></em>' containment reference.
@@ -1185,6 +1275,24 @@ public interface Csw20Package extends EPackage {
      * @ordered
      */
     int HARVEST_TYPE__VERSION = REQUEST_BASE_TYPE__VERSION;
+
+    /**
+     * The feature id for the '<em><b>Base Url</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int HARVEST_TYPE__BASE_URL = REQUEST_BASE_TYPE__BASE_URL;
+
+    /**
+     * The feature id for the '<em><b>Extended Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int HARVEST_TYPE__EXTENDED_PROPERTIES = REQUEST_BASE_TYPE__EXTENDED_PROPERTIES;
 
     /**
      * The feature id for the '<em><b>Source</b></em>' attribute.
@@ -1866,6 +1974,24 @@ public interface Csw20Package extends EPackage {
     int TRANSACTION_TYPE__VERSION = REQUEST_BASE_TYPE__VERSION;
 
     /**
+     * The feature id for the '<em><b>Base Url</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TRANSACTION_TYPE__BASE_URL = REQUEST_BASE_TYPE__BASE_URL;
+
+    /**
+     * The feature id for the '<em><b>Extended Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TRANSACTION_TYPE__EXTENDED_PROPERTIES = REQUEST_BASE_TYPE__EXTENDED_PROPERTIES;
+
+    /**
      * The feature id for the '<em><b>Group</b></em>' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2412,6 +2538,17 @@ public interface Csw20Package extends EPackage {
      * @generated
      */
     int DURATION = 56;
+
+
+    /**
+     * The meta object id for the '<em>Map</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see java.util.Map
+     * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getMap()
+     * @generated
+     */
+    int MAP = 57;
 
 
     /**
@@ -3573,6 +3710,28 @@ public interface Csw20Package extends EPackage {
     EAttribute getRequestBaseType_Version();
 
     /**
+     * Returns the meta object for the attribute '{@link net.opengis.cat.csw20.RequestBaseType#getBaseUrl <em>Base Url</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Base Url</em>'.
+     * @see net.opengis.cat.csw20.RequestBaseType#getBaseUrl()
+     * @see #getRequestBaseType()
+     * @generated
+     */
+    EAttribute getRequestBaseType_BaseUrl();
+
+    /**
+     * Returns the meta object for the attribute '{@link net.opengis.cat.csw20.RequestBaseType#getExtendedProperties <em>Extended Properties</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Extended Properties</em>'.
+     * @see net.opengis.cat.csw20.RequestBaseType#getExtendedProperties()
+     * @see #getRequestBaseType()
+     * @generated
+     */
+    EAttribute getRequestBaseType_ExtendedProperties();
+
+    /**
      * Returns the meta object for class '{@link net.opengis.cat.csw20.RequestStatusType <em>Request Status Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4394,6 +4553,17 @@ public interface Csw20Package extends EPackage {
      * @generated
      */
     EDataType getDuration();
+
+    /**
+     * Returns the meta object for data type '{@link java.util.Map <em>Map</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for data type '<em>Map</em>'.
+     * @see java.util.Map
+     * @model instanceClass="java.util.Map"
+     * @generated
+     */
+    EDataType getMap();
 
     /**
      * Returns the factory that creates the instances of the model.
@@ -5342,6 +5512,22 @@ public interface Csw20Package extends EPackage {
         EAttribute REQUEST_BASE_TYPE__VERSION = eINSTANCE.getRequestBaseType_Version();
 
         /**
+         * The meta object literal for the '<em><b>Base Url</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute REQUEST_BASE_TYPE__BASE_URL = eINSTANCE.getRequestBaseType_BaseUrl();
+
+        /**
+         * The meta object literal for the '<em><b>Extended Properties</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute REQUEST_BASE_TYPE__EXTENDED_PROPERTIES = eINSTANCE.getRequestBaseType_ExtendedProperties();
+
+        /**
          * The meta object literal for the '{@link net.opengis.cat.csw20.impl.RequestStatusTypeImpl <em>Request Status Type</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -6002,6 +6188,16 @@ public interface Csw20Package extends EPackage {
          * @generated
          */
         EDataType DURATION = eINSTANCE.getDuration();
+
+        /**
+         * The meta object literal for the '<em>Map</em>' data type.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see java.util.Map
+         * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getMap()
+         * @generated
+         */
+        EDataType MAP = eINSTANCE.getMap();
 
     }
 

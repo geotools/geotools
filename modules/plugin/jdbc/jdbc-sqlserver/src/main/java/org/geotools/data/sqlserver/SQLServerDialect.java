@@ -24,8 +24,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Types;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.factory.Hints;
@@ -41,7 +43,14 @@ import org.opengis.referencing.cs.CoordinateSystem;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiLineString;
+import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKBReader;
 import com.vividsolutions.jts.io.WKTReader;
@@ -57,6 +66,49 @@ import com.vividsolutions.jts.io.WKTReader;
  */
 public class SQLServerDialect extends BasicSQLDialect {
 
+    private static final int DEFAULT_AXIS_MAX = 10000000;
+    private static final int DEFAULT_AXIS_MIN = -10000000;
+    
+    /**
+     * The direct geometry metadata table
+     * @param dataStore
+     */
+    private String geometryMetadataTable;
+    
+    final static Map<String, Class> TYPE_TO_CLASS_MAP = new HashMap<String, Class>() {
+        {
+            put("GEOMETRY", Geometry.class);
+            put("GEOGRAPHY", Geometry.class);
+            put("POINT", Point.class);
+            put("POINTM", Point.class);
+            put("LINESTRING", LineString.class);
+            put("LINESTRINGM", LineString.class);
+            put("POLYGON", Polygon.class);
+            put("POLYGONM", Polygon.class);
+            put("MULTIPOINT", MultiPoint.class);
+            put("MULTIPOINTM", MultiPoint.class);
+            put("MULTILINESTRING", MultiLineString.class);
+            put("MULTILINESTRINGM", MultiLineString.class);
+            put("MULTIPOLYGON", MultiPolygon.class);
+            put("MULTIPOLYGONM", MultiPolygon.class);
+            put("GEOMETRYCOLLECTION", GeometryCollection.class);
+            put("GEOMETRYCOLLECTIONM", GeometryCollection.class);
+        }
+    };
+
+    final static Map<Class, String> CLASS_TO_TYPE_MAP = new HashMap<Class, String>() {
+        {
+            put(Geometry.class, "GEOMETRY");
+            put(Point.class, "POINT");
+            put(LineString.class, "LINESTRING");
+            put(Polygon.class, "POLYGON");
+            put(MultiPoint.class, "MULTIPOINT");
+            put(MultiLineString.class, "MULTILINESTRING");
+            put(MultiPolygon.class, "MULTIPOLYGON");
+            put(GeometryCollection.class, "GEOMETRYCOLLECTION");
+        }
+    };
+    
     public SQLServerDialect(JDBCDataStore dataStore) {
         super(dataStore);
     }
@@ -104,17 +156,69 @@ public class SQLServerDialect extends BasicSQLDialect {
     public void postCreateTable(String schemaName, SimpleFeatureType featureType, Connection cx)
             throws SQLException, IOException {
         
-        Statement st = cx.createStatement();
+        String tableName = featureType.getName().getLocalPart();
+
+        Statement st = null;
         try {
-            //create spatial indexes for all geometry columns
-            for (AttributeDescriptor ad : featureType.getAttributeDescriptors()) {
-                if (ad instanceof GeometryDescriptor) {
-                    String bbox = null;
-                    GeometryDescriptor gd = (GeometryDescriptor) ad;
-                    
+            st = cx.createStatement();
+
+            // register all geometry columns in the database
+            for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
+                if (att instanceof GeometryDescriptor) {
+                    GeometryDescriptor gd = (GeometryDescriptor) att;
+
+                    if (geometryMetadataTable != null) {
+                        // lookup or reverse engineer the srid
+                        int srid = -1;
+                        if (gd.getUserData().get(JDBCDataStore.JDBC_NATIVE_SRID) != null) {
+                            srid = (Integer) gd.getUserData().get(JDBCDataStore.JDBC_NATIVE_SRID);
+                        } else if (gd.getCoordinateReferenceSystem() != null) {
+                            try {
+                                Integer result = CRS.lookupEpsgCode(
+                                        gd.getCoordinateReferenceSystem(), true);
+                                if (result != null)
+                                    srid = result;
+                            } catch (Exception e) {
+                                LOGGER.log(Level.FINE, "Error looking up the "
+                                        + "epsg code for metadata " + "insertion, assuming -1", e);
+                            }
+                        }
+
+                        // assume 2 dimensions, but ease future customisation
+                        int dimensions = 2;
+
+                        // grab the geometry type
+                        String geomType = CLASS_TO_TYPE_MAP.get(gd.getType().getBinding());
+                        if (geomType == null)
+                            geomType = "GEOMETRY";
+
+                        StringBuilder sqlBuilder = new StringBuilder();
+
+                        // register the geometry type, first remove and eventual
+                        // leftover, then write out the real one
+                        sqlBuilder.append("DELETE FROM ").append(geometryMetadataTable)
+                                .append(" WHERE f_table_schema = '").append(schemaName).append("'")
+                                .append(" AND f_table_name = '").append(tableName).append("'")
+                                .append(" AND f_geometry_column = '").append(gd.getLocalName())
+                                .append("'");
+                        LOGGER.fine(sqlBuilder.toString());
+                        st.execute(sqlBuilder.toString());
+
+                        sqlBuilder = new StringBuilder();
+                        sqlBuilder.append("INSERT INTO ").append(geometryMetadataTable)
+                                .append(" VALUES ('").append(schemaName).append("','")
+                                .append(tableName).append("',").append("'")
+                                .append(gd.getLocalName()).append("',").append(dimensions)
+                                .append(",").append(srid).append(",").append("'").append(geomType)
+                                .append("')");
+                        LOGGER.fine(sqlBuilder.toString());
+                        st.execute(sqlBuilder.toString());
+                    }
+
                     //get the crs, and derive a bounds
                     //TODO: stop being lame and properly figure out the dimension and bounds, see 
                     // oracle dialect for the proper way to do it
+                    String bbox = null;
                     if (gd.getCoordinateReferenceSystem() != null) { 
                         CoordinateReferenceSystem crs = gd.getCoordinateReferenceSystem();
                         CoordinateSystem cs = crs.getCoordinateSystem();
@@ -142,16 +246,120 @@ public class SQLServerDialect extends BasicSQLDialect {
                     st.execute(sql.toString());
                 }
             }
-        }
-        finally {
+            if (!cx.getAutoCommit()) {
+                cx.commit();
+            }
+        } finally {
             dataStore.closeSafe(st);
         }
     }
     
     @Override
+    public Class<?> getMapping(ResultSet columnMetaData, Connection cx)
+            throws SQLException {
+    	
+    	String typeName = columnMetaData.getString("TYPE_NAME");
+        
+        String gType = null;
+        if ("geometry".equalsIgnoreCase(typeName) && geometryMetadataTable != null) {
+            gType = lookupGeometryType(columnMetaData, cx, geometryMetadataTable, "f_geometry_column");
+        } else {
+            return null;
+        }
+       
+        // decode the type into
+        if(gType == null) {
+            // it's either a generic geography or geometry not registered in the medatata tables
+            return Geometry.class;
+        } else {
+            Class geometryClass = (Class) TYPE_TO_CLASS_MAP.get(gType.toUpperCase());
+            if (geometryClass == null) {
+                geometryClass = Geometry.class;
+            }
+    
+            return geometryClass;
+        }
+    }
+    
+    private String lookupGeometryType(ResultSet columnMetaData, Connection cx, String gTableName, 
+            String gColumnName) throws SQLException {
+        
+        // grab the information we need to proceed
+        String tableName = columnMetaData.getString("TABLE_NAME");
+        String columnName = columnMetaData.getString("COLUMN_NAME");
+
+        // first attempt, try with the geometry metadata
+        Statement statement = null;
+        ResultSet result = null;
+        try {
+            String schema = dataStore.getDatabaseSchema();
+            String sqlStatement = "SELECT TYPE FROM " + gTableName + " WHERE " //
+                    + (schema == null ? "" : "F_TABLE_SCHEMA = '" + dataStore.getDatabaseSchema() + "' AND ") 
+                    + "F_TABLE_NAME = '" + tableName + "' " //
+                    + "AND " + gColumnName + " = '" + columnName + "'";
+
+            LOGGER.log(Level.FINE, "Geometry type check; {0} ", sqlStatement);
+            statement = cx.createStatement();
+            result = statement.executeQuery(sqlStatement);
+
+            if (result.next()) {
+                return result.getString(1);
+            }
+        }
+        catch(SQLException e){
+            return null;
+        }
+        finally {
+            dataStore.closeSafe(result);
+            dataStore.closeSafe(statement);
+        }
+
+        return null;
+    }
+    
+    public Integer getGeometrySRIDfromMetadataTable(String schemaName, String tableName,
+            String columnName, Connection cx) throws SQLException {
+        
+        if(geometryMetadataTable == null) {
+            return null;
+        }
+
+        Statement statement = null;
+        ResultSet result = null;
+
+        try {
+            String schema = dataStore.getDatabaseSchema();
+            String sql = "SELECT SRID FROM " + geometryMetadataTable + " WHERE " //
+                    + (schema == null ? "" : "F_TABLE_SCHEMA = '" + dataStore.getDatabaseSchema() + "' AND ") 
+                    + "F_TABLE_NAME = '" + tableName + "' ";//
+
+            LOGGER.log(Level.FINE, "Geometry type check; {0} ", sql);
+            statement = cx.createStatement();
+            result = statement.executeQuery(sql);
+
+            if (result.next()) {
+                return result.getInt(1);
+            }
+        } finally {
+            dataStore.closeSafe(result);
+            dataStore.closeSafe(statement);
+        }
+
+        return null;
+    }
+    
+    
+    @Override
     public Integer getGeometrySRID(String schemaName, String tableName,
             String columnName, Connection cx) throws SQLException {
         
+        // try retrieve the srid from geometryMetadataTable
+        Integer srid = getGeometrySRIDfromMetadataTable(schemaName, tableName, columnName, cx);
+        if (srid != null) {
+            return srid;
+        }
+
+        // try retrieve srid from the feature table
         StringBuffer sql = new StringBuffer("SELECT TOP 1 ");
         encodeColumnName(columnName, sql);
         sql.append( ".STSrid");
@@ -173,7 +381,7 @@ public class SQLServerDialect extends BasicSQLDialect {
                 if ( rs.next() ) {
                     return rs.getInt( 1 );
                 }
-                // the default sql server srid
+                // no srid found, return the default sql server srid
                 return 0;
             }
             finally {
@@ -385,6 +593,22 @@ public class SQLServerDialect extends BasicSQLDialect {
         } else {
             super.encodeValue(value, type, sql);
         }
+    }
+    
+    /**
+     * The geometry metadata table in use, if any
+     * @return
+     */
+    public String getGeometryMetadataTable() {
+        return geometryMetadataTable;
+    }
+
+    /**
+     * Sets the geometry metadata table
+     * @param geometryMetadataTable
+     */
+    public void setGeometryMetadataTable(String geometryMetadataTable) {
+        this.geometryMetadataTable = geometryMetadataTable;
     }
     
 }

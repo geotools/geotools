@@ -57,10 +57,15 @@ public class SQLServerDataStoreFactoryTest extends JDBCTestSupport {
         }
         params.put(PORT.key, db.getProperty(PORT.key));
         params.put(USER.key, db.getProperty(USER.key));
-        params.put(PASSWD.key, db.getProperty(PASSWD.key));
+        String password=db.getProperty(PASSWD.key);
+        if(password==null){
+        	password=db.getProperty("password");
+        }
+        params.put(PASSWD.key,password );
 
         SQLServerDataStoreFactory factory = new SQLServerDataStoreFactory();
         params.put(DBTYPE.key, factory.getDatabaseID());
+        params.put(SQLServerDataStoreFactory.INTSEC.key, false);
         
         assertTrue(factory.canProcess(params));
         

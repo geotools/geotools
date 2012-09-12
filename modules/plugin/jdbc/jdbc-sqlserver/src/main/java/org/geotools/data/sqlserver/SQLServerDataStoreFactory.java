@@ -19,6 +19,7 @@ package org.geotools.data.sqlserver;
 import java.io.IOException;
 import java.util.Map;
 
+import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;
@@ -35,8 +36,14 @@ import org.geotools.jdbc.SQLDialect;
 public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
     /** parameter for database type */
     public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "sqlserver");
+    
     /** parameter for using integrated security, only works on windows, ignores the user and password parameters, the current windows user account is used for login*/
     public static final Param INTSEC = new Param("Integrated Security", Boolean.class, "Login as current windows user account. Works only in windows. Ignores user and password settings.", false, new Boolean(false)); 
+    
+    /** Metadata table providing information about primary keys **/
+    public static final Param GEOMETRY_METADATA_TABLE = new Param("Geometry metadata table", String.class,
+            "The optional table containing geometry metadata (geometry type and srid). Can be expressed as 'schema.name' or just 'name'", false);
+    
     
     @Override
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
@@ -68,6 +75,7 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
         super.setupParameters(parameters);
         parameters.put(DBTYPE.key, DBTYPE);
         parameters.put(INTSEC.key, INTSEC);
+        parameters.put(GEOMETRY_METADATA_TABLE.key, GEOMETRY_METADATA_TABLE);
     }
     
     /**
@@ -90,5 +98,16 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
         return url;
     }
 
+    @Override
+    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map params)
+            throws IOException {
+        SQLServerDialect dialect = (SQLServerDialect) dataStore.getSQLDialect();
+    	
+    	// check the geometry metadata table
+        String metadataTable = (String) GEOMETRY_METADATA_TABLE.lookUp(params);
+        dialect.setGeometryMetadataTable(metadataTable);
+        
+        return dataStore;
+    }
     
 }

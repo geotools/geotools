@@ -26,52 +26,35 @@ import org.geotools.jdbc.JDBCGeometryTestSetup;
 
 /**
  * @author DamianoG
- *
+ * 
  */
-public class SQLServerGeometryTestSetup extends JDBCGeometryTestSetup{
+public class SQLServerGeometryTestSetup extends JDBCGeometryTestSetup {
 
-	protected SQLServerGeometryTestSetup() {
-		super(new SQLServerTestSetup());
-	}
+    protected SQLServerGeometryTestSetup() {
+        super(new SQLServerTestSetup());
+    }
 
-	public void setUp() throws Exception{
-		super.setUp();
-		
-		runSafe("DROP TABLE GEOMETRY_COLUMNS");
-		
-		// create the geometry columns 
-	      run( "CREATE TABLE GEOMETRY_COLUMNS(" +
-				  "F_TABLE_SCHEMA VARCHAR(30) NOT NULL," +
-			      "F_TABLE_NAME VARCHAR(30) NOT NULL," +
-			      "F_GEOMETRY_COLUMN VARCHAR(30) NOT NULL," +
-			      "COORD_DIMENSION INTEGER," +
-			      "SRID INTEGER NOT NULL," +
-			      "TYPE VARCHAR(30) NOT NULL," +
-			      "UNIQUE(F_TABLE_SCHEMA, F_TABLE_NAME, F_GEOMETRY_COLUMN)," +
-			      "CHECK(TYPE IN ('POINT','LINE', 'POLYGON', 'COLLECTION', 'MULTIPOINT', 'MULTILINE', 'MULTIPOLYGON', 'GEOMETRY') ));");
-        
-	}
-	
-	
-	@Override
-	protected void dropSpatialTable(String tableName) throws Exception {
-		runSafe("DELETE FROM GEOMETRY_COLUMNS WHERE F_TABLE_NAME = '" + tableName + "'"); 
-		runSafe("DROP TABLE " + tableName);
-	}
-	
-	public void setupGeometryColumns(JDBCDataStore dataStore) throws Exception {
-        String schema = dataStore.getDatabaseSchema();
-        
-     
-        
-//        String sql;
-        
-        // register it in the override table with a different srs, so that we're sure it's getting read
-//        sql = "INSERT INTO GEOMETRY_COLUMNS (F_TABLE_SCHEMA, F_TABLE_NAME, F_GEOMETRY_COLUMN, COORD_DIMENSION, SRID, TYPE) " + 
-//              "VALUES ('" + schema + "', 'GTMETA','GEOMETRY', 2, 4269, 'POINT')";
-//        run(sql);
-        
+    public void setUp() throws Exception {
+        super.setUp();
+        runSafe("DROP TABLE GEOMETRY_COLUMNS");
+
+        // create the geometry columns
+        run("CREATE TABLE GEOMETRY_COLUMNS(" + "F_TABLE_SCHEMA VARCHAR(30) NOT NULL,"
+                + "F_TABLE_NAME VARCHAR(30) NOT NULL," + "F_GEOMETRY_COLUMN VARCHAR(30) NOT NULL,"
+                + "COORD_DIMENSION INTEGER," + "SRID INTEGER NOT NULL,"
+                + "TYPE VARCHAR(30) NOT NULL," + ");");
+
+    }
+
+    @Override
+    protected void dropSpatialTable(String tableName) throws Exception {
+        runSafe("DELETE FROM GEOMETRY_COLUMNS WHERE F_TABLE_NAME = '" + tableName + "'");
+        runSafe("DROP TABLE " + tableName);
+    }
+
+    public void setupMetadataTable(JDBCDataStore dataStore) {
         ((SQLServerDialect) dataStore.getSQLDialect()).setGeometryMetadataTable("GEOMETRY_COLUMNS");
+
     }
 
 }

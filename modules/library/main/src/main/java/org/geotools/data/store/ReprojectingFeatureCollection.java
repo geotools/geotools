@@ -125,10 +125,10 @@ public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollec
     private MathTransform transform(CoordinateReferenceSystem source,
             CoordinateReferenceSystem target) {
         try {
-            return CRS.findMathTransform(source, target);
+            return CRS.findMathTransform(source, target, true);
         } catch (FactoryException e) {
             throw new IllegalArgumentException(
-                    "Could not create math transform");
+            		"Could not create math transform", e);
         }
     }
 

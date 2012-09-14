@@ -2,7 +2,6 @@ package org.geotools.csw;
 
 import static org.junit.Assert.*;
 
-import java.math.BigInteger;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +20,8 @@ import org.geotools.filter.text.cql2.CQL;
 import org.geotools.xml.Parser;
 import org.junit.Test;
 import org.opengis.filter.Filter;
+import org.opengis.filter.sort.SortBy;
+import org.opengis.filter.sort.SortOrder;
 
 public class CSWGetRecordsTest {
 
@@ -52,6 +53,14 @@ public class CSWGetRecordsTest {
         expected.add(new QName(rimNamespace, "Service"));
         assertEquals(expected, esn.getTypeNames());
         assertEquals(ElementSetType.BRIEF, esn.getValue());
+        
+        // the sort by properties
+        SortBy[] sorts = query.getSortBy();
+        assertEquals(2, sorts.length);
+        assertEquals("rim:foo", sorts[0].getPropertyName().getPropertyName());
+        assertEquals(SortOrder.ASCENDING, sorts[0].getSortOrder());
+        assertEquals("rim:bar", sorts[1].getPropertyName().getPropertyName());
+        assertEquals(SortOrder.DESCENDING, sorts[1].getSortOrder());
     }
 
     @Test

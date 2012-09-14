@@ -65,6 +65,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+import org.opengis.filter.sort.SortBy;
 
 /**
  * <!-- begin-user-doc -->
@@ -187,6 +188,8 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
                 return createDurationFromString(eDataType, initialValue);
             case Csw20Package.MAP:
                 return createMapFromString(eDataType, initialValue);
+            case Csw20Package.SORT_BY_ARRAY:
+                return createSortByArrayFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -226,6 +229,8 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
                 return convertDurationToString(eDataType, instanceValue);
             case Csw20Package.MAP:
                 return convertMapToString(eDataType, instanceValue);
+            case Csw20Package.SORT_BY_ARRAY:
+                return convertSortByArrayToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -849,6 +854,24 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      */
     public String convertMapToString(EDataType eDataType, Object instanceValue) {
         return super.convertToString(eDataType, instanceValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public SortBy[] createSortByArrayFromString(EDataType eDataType, String initialValue) {
+        return (SortBy[])super.createFromString(initialValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertSortByArrayToString(EDataType eDataType, Object instanceValue) {
+        return super.convertToString(instanceValue);
     }
 
     /**

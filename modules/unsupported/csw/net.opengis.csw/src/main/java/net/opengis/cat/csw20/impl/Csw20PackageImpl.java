@@ -496,6 +496,13 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
     private EDataType mapEDataType = null;
 
     /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EDataType sortByArrayEDataType = null;
+
+    /**
      * Creates an instance of the model <b>Package</b>, registered with
      * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
      * package URI value.
@@ -1437,8 +1444,8 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EReference getQueryType_SortBy() {
-        return (EReference)queryTypeEClass.getEStructuralFeatures().get(3);
+    public EAttribute getQueryType_SortBy() {
+        return (EAttribute)queryTypeEClass.getEStructuralFeatures().get(3);
     }
 
     /**
@@ -2247,6 +2254,15 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EDataType getSortByArray() {
+        return sortByArrayEDataType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public Csw20Factory getCsw20Factory() {
         return (Csw20Factory)getEFactoryInstance();
     }
@@ -2393,7 +2409,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         createEReference(queryTypeEClass, QUERY_TYPE__ELEMENT_SET_NAME);
         createEAttribute(queryTypeEClass, QUERY_TYPE__ELEMENT_NAME);
         createEReference(queryTypeEClass, QUERY_TYPE__CONSTRAINT);
-        createEReference(queryTypeEClass, QUERY_TYPE__SORT_BY);
+        createEAttribute(queryTypeEClass, QUERY_TYPE__SORT_BY);
         createEAttribute(queryTypeEClass, QUERY_TYPE__TYPE_NAMES);
 
         rangeOfValuesTypeEClass = createEClass(RANGE_OF_VALUES_TYPE);
@@ -2505,6 +2521,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         qNameEDataType = createEDataType(QNAME);
         durationEDataType = createEDataType(DURATION);
         mapEDataType = createEDataType(MAP);
+        sortByArrayEDataType = createEDataType(SORT_BY_ARRAY);
     }
 
     /**
@@ -2679,7 +2696,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         initEReference(getQueryType_ElementSetName(), this.getElementSetNameType(), null, "elementSetName", null, 0, 1, QueryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getQueryType_ElementName(), this.getQName(), "elementName", null, 0, -1, QueryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getQueryType_Constraint(), this.getQueryConstraintType(), null, "constraint", null, 0, 1, QueryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getQueryType_SortBy(), this.getSortBy(), null, "sortBy", null, 0, 1, QueryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getQueryType_SortBy(), this.getSortByArray(), "sortBy", null, 0, 1, QueryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getQueryType_TypeNames(), this.getTypeNameListType_1(), "typeNames", null, 1, 1, QueryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(rangeOfValuesTypeEClass, RangeOfValuesType.class, "RangeOfValuesType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2798,6 +2815,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         initEDataType(qNameEDataType, QName.class, "QName", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(durationEDataType, Duration.class, "Duration", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(mapEDataType, Map.class, "Map", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(sortByArrayEDataType, SortBy[].class, "SortByArray", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
         // Create resource
         createResource(eNS_URI);
@@ -3444,14 +3462,6 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
              "kind", "element",
              "name", "Constraint",
              "namespace", "##targetNamespace"
-           });		
-        addAnnotation
-          (getQueryType_SortBy(), 
-           source, 
-           new String[] {
-             "kind", "element",
-             "name", "SortBy",
-             "namespace", "http://www.opengis.net/ogc"
            });		
         addAnnotation
           (getQueryType_TypeNames(), 

@@ -5,14 +5,25 @@
    outputFormat="application/xml"
    outputSchema="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
    xmlns="http://www.opengis.net/cat/csw/2.0.2"
+   xmlns:ogc="http://www.opengis.net/ogc"
    xmlns:csw="http://www.opengis.net/cat/csw/2.0.2"
    xmlns:rim="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0"
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xsi:schemaLocation="http://www.opengis.net/cat/csw/2.0.2
-                       ../../../csw/2.0.2/CSW-discovery.xsd
+                       http://schemas.opengis.net/csw/2.0.2/CSW-discovery.xsd
                        urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0
                        ../../../csw/2.0.2/profiles/ebrim/1.0/csw-ebrim.xsd">
    <Query typeNames="rim:Service rim:Classification rim:Association">
       <ElementSetName typeNames="rim:Service">brief</ElementSetName>
+      <ogc:SortBy>
+        <ogc:SortProperty>
+          <ogc:PropertyName>rim:foo</ogc:PropertyName>
+          <ogc:SortOrder>ASC</ogc:SortOrder>
+        </ogc:SortProperty>
+        <ogc:SortProperty>
+          <ogc:PropertyName>rim:bar</ogc:PropertyName>
+          <ogc:SortOrder>DESC</ogc:SortOrder>
+        </ogc:SortProperty>
+      </ogc:SortBy>
    </Query>
 </GetRecords>

@@ -126,21 +126,19 @@ public interface QueryType extends AbstractQueryType {
      * @return the value of the '<em>Sort By</em>' containment reference.
      * @see #setSortBy(SortBy)
      * @see net.opengis.cat.csw20.Csw20Package#getQueryType_SortBy()
-     * @model type="net.opengis.cat.csw20.SortBy" containment="true"
-     *        extendedMetaData="kind='element' name='SortBy' namespace='http://www.opengis.net/ogc'"
-     * @generated
+     * @model 
      */
-    SortBy getSortBy();
+    SortBy[] getSortBy();
 
     /**
-     * Sets the value of the '{@link net.opengis.cat.csw20.QueryType#getSortBy <em>Sort By</em>}' containment reference.
+     * Sets the value of the '{@link net.opengis.cat.csw20.QueryType#getSortBy <em>Sort By</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Sort By</em>' containment reference.
+     * @param value the new value of the '<em>Sort By</em>' attribute.
      * @see #getSortBy()
      * @generated
      */
-    void setSortBy(SortBy value);
+    void setSortBy(SortBy[] value);
 
     /**
      * Returns the value of the '<em><b>Type Names</b></em>' attribute.

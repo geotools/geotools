@@ -77,14 +77,24 @@ public class QueryTypeImpl extends AbstractQueryTypeImpl implements QueryType {
     protected QueryConstraintType constraint;
 
     /**
-     * The cached value of the '{@link #getSortBy() <em>Sort By</em>}' containment reference.
+     * The default value of the '{@link #getSortBy() <em>Sort By</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @see #getSortBy()
      * @generated
      * @ordered
      */
-    protected SortBy sortBy;
+    protected static final SortBy[] SORT_BY_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getSortBy() <em>Sort By</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getSortBy()
+     * @generated
+     * @ordered
+     */
+    protected SortBy[] sortBy = SORT_BY_EDEFAULT;
 
     /**
      * The cached value of the '{@link #getTypeNames() <em>Type Names</em>}' attribute.
@@ -218,7 +228,7 @@ public class QueryTypeImpl extends AbstractQueryTypeImpl implements QueryType {
      * <!-- end-user-doc -->
      * @generated
      */
-    public SortBy getSortBy() {
+    public SortBy[] getSortBy() {
         return sortBy;
     }
 
@@ -227,33 +237,11 @@ public class QueryTypeImpl extends AbstractQueryTypeImpl implements QueryType {
      * <!-- end-user-doc -->
      * @generated
      */
-    public NotificationChain basicSetSortBy(SortBy newSortBy, NotificationChain msgs) {
-        SortBy oldSortBy = sortBy;
+    public void setSortBy(SortBy[] newSortBy) {
+        SortBy[] oldSortBy = sortBy;
         sortBy = newSortBy;
-        if (eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, Csw20Package.QUERY_TYPE__SORT_BY, oldSortBy, newSortBy);
-            if (msgs == null) msgs = notification; else msgs.add(notification);
-        }
-        return msgs;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setSortBy(SortBy newSortBy) {
-        if (newSortBy != sortBy) {
-            NotificationChain msgs = null;
-            if (sortBy != null)
-                msgs = ((InternalEObject)sortBy).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - Csw20Package.QUERY_TYPE__SORT_BY, null, msgs);
-            if (newSortBy != null)
-                msgs = ((InternalEObject)newSortBy).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - Csw20Package.QUERY_TYPE__SORT_BY, null, msgs);
-            msgs = basicSetSortBy(newSortBy, msgs);
-            if (msgs != null) msgs.dispatch();
-        }
-        else if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Csw20Package.QUERY_TYPE__SORT_BY, newSortBy, newSortBy));
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, Csw20Package.QUERY_TYPE__SORT_BY, oldSortBy, sortBy));
     }
 
     /**
@@ -289,8 +277,6 @@ public class QueryTypeImpl extends AbstractQueryTypeImpl implements QueryType {
                 return basicSetElementSetName(null, msgs);
             case Csw20Package.QUERY_TYPE__CONSTRAINT:
                 return basicSetConstraint(null, msgs);
-            case Csw20Package.QUERY_TYPE__SORT_BY:
-                return basicSetSortBy(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -337,7 +323,7 @@ public class QueryTypeImpl extends AbstractQueryTypeImpl implements QueryType {
                 setConstraint((QueryConstraintType)newValue);
                 return;
             case Csw20Package.QUERY_TYPE__SORT_BY:
-                setSortBy((SortBy)newValue);
+                setSortBy((SortBy[])newValue);
                 return;
             case Csw20Package.QUERY_TYPE__TYPE_NAMES:
                 setTypeNames((List<QName>)newValue);
@@ -364,7 +350,7 @@ public class QueryTypeImpl extends AbstractQueryTypeImpl implements QueryType {
                 setConstraint((QueryConstraintType)null);
                 return;
             case Csw20Package.QUERY_TYPE__SORT_BY:
-                setSortBy((SortBy)null);
+                setSortBy(SORT_BY_EDEFAULT);
                 return;
             case Csw20Package.QUERY_TYPE__TYPE_NAMES:
                 setTypeNames((List<QName>)null);
@@ -388,7 +374,7 @@ public class QueryTypeImpl extends AbstractQueryTypeImpl implements QueryType {
             case Csw20Package.QUERY_TYPE__CONSTRAINT:
                 return constraint != null;
             case Csw20Package.QUERY_TYPE__SORT_BY:
-                return sortBy != null;
+                return SORT_BY_EDEFAULT == null ? sortBy != null : !SORT_BY_EDEFAULT.equals(sortBy);
             case Csw20Package.QUERY_TYPE__TYPE_NAMES:
                 return typeNames != null;
         }
@@ -407,6 +393,8 @@ public class QueryTypeImpl extends AbstractQueryTypeImpl implements QueryType {
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (elementName: ");
         result.append(elementName);
+        result.append(", sortBy: ");
+        result.append(sortBy);
         result.append(", typeNames: ");
         result.append(typeNames);
         result.append(')');

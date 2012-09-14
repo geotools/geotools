@@ -1543,7 +1543,7 @@ public interface Csw20Package extends EPackage {
     int QUERY_TYPE__CONSTRAINT = ABSTRACT_QUERY_TYPE_FEATURE_COUNT + 2;
 
     /**
-     * The feature id for the '<em><b>Sort By</b></em>' containment reference.
+     * The feature id for the '<em><b>Sort By</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -2549,6 +2549,16 @@ public interface Csw20Package extends EPackage {
      * @generated
      */
     int MAP = 57;
+
+
+    /**
+     * The meta object id for the '<em>Sort By Array</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getSortByArray()
+     * @generated
+     */
+    int SORT_BY_ARRAY = 58;
 
 
     /**
@@ -3592,15 +3602,15 @@ public interface Csw20Package extends EPackage {
     EReference getQueryType_Constraint();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.cat.csw20.QueryType#getSortBy <em>Sort By</em>}'.
+     * Returns the meta object for the attribute '{@link net.opengis.cat.csw20.QueryType#getSortBy <em>Sort By</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Sort By</em>'.
+     * @return the meta object for the attribute '<em>Sort By</em>'.
      * @see net.opengis.cat.csw20.QueryType#getSortBy()
      * @see #getQueryType()
      * @generated
      */
-    EReference getQueryType_SortBy();
+    EAttribute getQueryType_SortBy();
 
     /**
      * Returns the meta object for the attribute '{@link net.opengis.cat.csw20.QueryType#getTypeNames <em>Type Names</em>}'.
@@ -4566,6 +4576,16 @@ public interface Csw20Package extends EPackage {
     EDataType getMap();
 
     /**
+     * Returns the meta object for data type '<em>Sort By Array</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for data type '<em>Sort By Array</em>'.
+     * @model instanceClass="org.opengis.filter.sort.SortBy[]"
+     * @generated
+     */
+    EDataType getSortByArray();
+
+    /**
      * Returns the factory that creates the instances of the model.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -5418,12 +5438,12 @@ public interface Csw20Package extends EPackage {
         EReference QUERY_TYPE__CONSTRAINT = eINSTANCE.getQueryType_Constraint();
 
         /**
-         * The meta object literal for the '<em><b>Sort By</b></em>' containment reference feature.
+         * The meta object literal for the '<em><b>Sort By</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EReference QUERY_TYPE__SORT_BY = eINSTANCE.getQueryType_SortBy();
+        EAttribute QUERY_TYPE__SORT_BY = eINSTANCE.getQueryType_SortBy();
 
         /**
          * The meta object literal for the '<em><b>Type Names</b></em>' attribute feature.
@@ -6198,6 +6218,15 @@ public interface Csw20Package extends EPackage {
          * @generated
          */
         EDataType MAP = eINSTANCE.getMap();
+
+        /**
+         * The meta object literal for the '<em>Sort By Array</em>' data type.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getSortByArray()
+         * @generated
+         */
+        EDataType SORT_BY_ARRAY = eINSTANCE.getSortByArray();
 
     }
 

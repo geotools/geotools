@@ -29,6 +29,7 @@
     <genDataTypes ecoreDataType="csw20.ecore#//QName"/>
     <genDataTypes ecoreDataType="csw20.ecore#//Duration"/>
     <genDataTypes ecoreDataType="csw20.ecore#//Map"/>
+    <genDataTypes ecoreDataType="csw20.ecore#//SortByArray"/>
     <genClasses image="false" ecoreClass="csw20.ecore#//AbstractQueryType"/>
     <genClasses image="false" ecoreClass="csw20.ecore#//AbstractRecordType"/>
     <genClasses ecoreClass="csw20.ecore#//AcknowledgementType">
@@ -149,7 +150,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//QueryType/elementSetName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//QueryType/elementName"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//QueryType/constraint"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//QueryType/sortBy"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute csw20.ecore#//QueryType/sortBy"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute csw20.ecore#//QueryType/typeNames"/>
     </genClasses>
     <genClasses ecoreClass="csw20.ecore#//RangeOfValuesType">

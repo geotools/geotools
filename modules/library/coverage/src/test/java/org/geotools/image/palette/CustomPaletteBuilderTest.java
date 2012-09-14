@@ -16,39 +16,28 @@
  */
 package org.geotools.image.palette;
 
-import it.geosolutions.imageio.utilities.ImageIOUtilities;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
-import java.awt.image.SampleModel;
-import java.awt.image.WritableRaster;
 
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.OperationDescriptor;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.PlanarImage;
-import javax.media.jai.TiledImage;
 
 import junit.framework.Assert;
-import junit.framework.TestCase;
 
 import org.geotools.image.ImageWorker;
 import org.junit.Test;
-
-import com.sun.media.jai.codecimpl.util.RasterFactory;
 
 /**
  * Testing custom code for color reduction.
  * 
  * @author Simone Giannecchini, GeoSolutions SAS
  *
- * 
- * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/coverage/src/test/java/org/geotools/image/palette/CustomPaletteBuilderTest.java $
  */
 public class CustomPaletteBuilderTest extends Assert {
  

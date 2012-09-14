@@ -451,7 +451,7 @@ public final class CustomPaletteBuilder {
 							LOGGER.finer("Skipping J:"+j+" due to subsy:"+subsampley);
 						}							
 						continue;
-					}
+					} 
 
 					for (int i = minx; i < maxx; i++) {
 						if ((subsampleX > 1) && ((i % subsampleX) != 0)) {
@@ -460,24 +460,12 @@ public final class CustomPaletteBuilder {
 							}								
 							continue;
 						}
-						r.getPixel(i, j, rgba);
-						if(LOGGER.isLoggable(Level.FINER)){
-							final StringBuilder builder = new StringBuilder();
-							builder.append("Working on pixel (").append(i+",").append(j).append(") [");
-							for(int k=0;k<numBands;k++){
-								builder.append(rgba[k]);
-								if(k<(numBands-1)){
-									builder.append(",");
-								}
-							}
-							builder.append("]");
-							LOGGER.finer(builder.toString());
-						}							
+						r.getPixel(i, j, rgba);						
 						/*
 						 * If transparency of given image is not opaque we
 						 * assume all colors with alpha less than 1.0 as fully
 						 * transparent.
-						 */
+						 */ 
 						if (discriminantTransparency
 								&& (rgba[transpBand] < alphaThreshold)) {
 							transColor = insertNode(transColor, rgba, 0);

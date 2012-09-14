@@ -171,7 +171,7 @@ class TimeParser {
         for (int i=0; i<PATTERNS.length; i++) {
             // rebuild formats at each parse, date formats are not thread safe
             SimpleDateFormat format = new SimpleDateFormat(PATTERNS[i]);
-            format.setLenient(true);
+            format.setLenient(false);
             format.setTimeZone(TimeZone.getTimeZone("Zulu"));
 
             

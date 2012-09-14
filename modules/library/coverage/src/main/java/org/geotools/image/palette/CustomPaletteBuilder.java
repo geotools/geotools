@@ -23,8 +23,13 @@ import java.awt.image.IndexColorModel;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageTypeSpecifier;
+import javax.media.jai.ImageLayout;
+
+import org.geotools.util.logging.Logging;
 
 /**
  * This class implements the octree quantization method as it is described in
@@ -40,6 +45,10 @@ public final class CustomPaletteBuilder {
 	 * or transparent (<). Default is 1 to try to preserve antialising
 	 */
 	public static final int DEFAULT_ALPHA_TH = 1;
+	
+	/**Logger.*/
+	private static final Logger LOGGER= Logging.getLogger(CustomPaletteBuilder.class);
+	
 
 	/**
 	 * maximum of tree depth
@@ -173,17 +182,14 @@ public final class CustomPaletteBuilder {
 
 				int minx = r.getMinX();
 				int miny = r.getMinY();
-				int sampleModelTx = r.getSampleModelTranslateX();
-				int sampleModelTy = r.getSampleModelTranslateY();
 				
 				minx = minx < minx_ ? minx_ : minx;
 				miny = miny < miny_ ? miny_ : miny;
 				int maxx = minx + tileW;
 				int maxy = miny + tileH;
-				int maxxR = maxx + sampleModelTx;
-				int maxyR = maxy + sampleModelTy;
-				maxx = maxx > maxx_ ? (maxx_ > maxxR ? maxxR : maxx_) : (maxx > maxxR ? maxxR : maxx);
-				maxy = maxy > maxy_ ? (maxy_ > maxyR ? maxyR : maxy_) : (maxy > maxyR ? maxyR : maxy);
+
+				maxx = maxx > maxx_ ? maxx_  : maxx ;
+				maxy = maxy > maxy_ ? maxy_  : maxy ;
 				
 				actualWidth = maxx - minx;
 				actualHeight = maxy - miny;
@@ -217,6 +223,12 @@ public final class CustomPaletteBuilder {
 		if ((subsy <= 0) || (subsy >= src.getWidth())) {
 			throw new IllegalArgumentException("Invalid subsample y size");
 		}
+		
+		if(LOGGER.isLoggable(Level.FINER)){
+			LOGGER.finer("Working on RenderedImage:"+src.toString());
+			LOGGER.finer("ImageLayout:"+new ImageLayout(src).toString());
+			LOGGER.finer("MapSize:"+size+" subsx="+subsx+",subsy="+subsy);
+		}
 
 		this.alphaThreshold = alpha_th;
 		this.src = src;
@@ -225,6 +237,9 @@ public final class CustomPaletteBuilder {
 		this.subsampleX = subsx;
 		this.subsampley = subsy;
 		this.transparency = srcColorModel.getTransparency();
+		if(LOGGER.isLoggable(Level.FINER)){
+			LOGGER.finer("Transparency is: "+transparency);
+		}		
 		if (transparency != Transparency.OPAQUE) {
 			transparency = Transparency.BITMASK;
 			// make room for the transparent color
@@ -237,10 +252,13 @@ public final class CustomPaletteBuilder {
 
 		if (this.requiredSize > 256) {
 			throw new IllegalArgumentException(
-					"Unvalid number of colors require.");
+					"Unvalid number of colors required.");
 		}
 
 		this.maxLevel = (int) Math.ceil(Math.log(requiredSize) / Math.log(2));
+		if(LOGGER.isLoggable(Level.FINER)){
+			LOGGER.finer("MaxLevel is: "+maxLevel);
+		}	
 	}
 
 	protected int findColorIndex(ColorNode aNode, int[] rgba, int transpBand) {
@@ -280,10 +298,100 @@ public final class CustomPaletteBuilder {
 		}
 		return 0;
 	}
-
+//
+//
+//  RectIter dies on this
+//
+//	public CustomPaletteBuilder buildPalette2() {
+//		reduceList = new ColorNode[maxLevel + 1];
+//		for (int i = 0; i < reduceList.length; i++) {
+//			reduceList[i] = null;
+//		}
+//
+//		numNodes = 0;
+//		maxNodes = 0;
+//		root = null;
+//		currSize = 0;
+//		currLevel = maxLevel;
+//
+//		// //
+//		//
+//		// Collecting info about the source image
+//		//
+//		// //
+//		final int numBands = src.getSampleModel().getNumBands();
+//		final int rgba[] = new int[numBands];
+//		final boolean discriminantTransparency = transparency != Transparency.OPAQUE;
+//		final int transpBand = numBands - 1;
+//		
+//		int x=0,y=0;
+//		final RectIter iterator= RectIterFactory.create(src, null);
+//		
+//		while(!iterator.finishedPixels()){
+//			
+//			// line
+//			iterator.startLines();
+//			while(!iterator.finishedLines()){
+//				
+//				// skip line if we are subsampling
+//				if ((subsampley > 1) && ((y % subsampley) != 0)) {
+//					if(LOGGER.isLoggable(Level.FINER)){
+//						LOGGER.finer("Skipping y:"+y+" due to subsy:"+subsampley);
+//					}							
+//				} else {
+//					
+//					// check line
+//					iterator.startPixels();
+//					while(!iterator.finishedPixels()){
+//						
+//						// skip pixel if we are subsampling
+//						if ((subsampleX > 1) && ((x % subsampleX) != 0)) {
+//							if(LOGGER.isLoggable(Level.FINER)){
+//								LOGGER.finer("Skipping x:"+x+" due to subsx:"+subsampleX);
+//							}							
+//						} else {		
+//							// get pixel
+//							iterator.getPixel(rgba);		
+//							
+//							/*
+//							 * If transparency of given image is not opaque we
+//							 * assume all colors with alpha less than 1.0 as fully
+//							 * transparent.
+//							 */
+//							if (discriminantTransparency
+//									&& (rgba[transpBand] < alphaThreshold)) {
+//								transColor = insertNode(transColor, rgba, 0);
+//								if(LOGGER.isLoggable(Level.FINER)){
+//									LOGGER.finer("Transparent color!");
+//								}								
+//							} else {
+//								root = insertNode(root, rgba, 0);
+//							}
+//
+//							if (currSize > requiredSize) {
+//								reduceTree();
+//							}							
+//						}
+//
+//						// move to next pixel
+//						iterator.nextPixel();
+//						x++;
+//						
+//						
+//					}
+//				}
+//
+//				
+//				// next line
+//				iterator.nextLine();
+//				y++;
+//			}
+//		}
+//		
+//		return this;
+//	}
 	public CustomPaletteBuilder buildPalette() {
 		reduceList = new ColorNode[maxLevel + 1];
-
 		for (int i = 0; i < reduceList.length; i++) {
 			reduceList[i] = null;
 		}
@@ -319,30 +427,52 @@ public final class CustomPaletteBuilder {
 			for (int tx = minTileX; tx < maxTileX; tx++) {
 				// get the source raster
 				final Raster r = src.getTile(tx, ty);
+				
+				if(LOGGER.isLoggable(Level.FINER)){
+					LOGGER.finer("Working on tile tx:"+tx+"ty:"+ty);
+				}	
 
 				int minx = r.getMinX();
-				int miny = r.getMinY();
-				int sampleModelTx = r.getSampleModelTranslateX();
-				int sampleModelTy = r.getSampleModelTranslateY();
+				int miny = r.getMinY();	
+				if(LOGGER.isLoggable(Level.FINER)){
+					LOGGER.finer("minx:"+minx+" miny:"+miny);
+				}					
+				
 				minx = minx < minx_ ? minx_ : minx;
 				miny = miny < miny_ ? miny_ : miny;
 				int maxx = minx + tileW;
 				int maxy = miny + tileH;
-				int maxxR = maxx + sampleModelTx;
-				int maxyR = maxy + sampleModelTy;
-				maxx = maxx > maxx_ ? (maxx_ > maxxR ? maxxR : maxx_) : (maxx > maxxR ? maxxR : maxx);
-				maxy = maxy > maxy_ ? (maxy_ > maxyR ? maxyR : maxy_) : (maxy > maxyR ? maxyR : maxy);
+				maxx = maxx > maxx_ ?  maxx_:maxx;
+				maxy = maxy > maxy_ ? maxy_:maxy;
 				
 				for (int j = miny; j < maxy; j++) {
 					if ((subsampley > 1) && ((j % subsampley) != 0)) {
+						if(LOGGER.isLoggable(Level.FINER)){
+							LOGGER.finer("Skipping J:"+j+" due to subsy:"+subsampley);
+						}							
 						continue;
 					}
 
 					for (int i = minx; i < maxx; i++) {
 						if ((subsampleX > 1) && ((i % subsampleX) != 0)) {
+							if(LOGGER.isLoggable(Level.FINER)){
+								LOGGER.finer("Skipping I:"+j+" due to subsx:"+subsampleX);
+							}								
 							continue;
 						}
 						r.getPixel(i, j, rgba);
+						if(LOGGER.isLoggable(Level.FINER)){
+							final StringBuilder builder = new StringBuilder();
+							builder.append("Working on pixel (").append(i+",").append(j).append(") [");
+							for(int k=0;k<numBands;k++){
+								builder.append(rgba[k]);
+								if(k<(numBands-1)){
+									builder.append(",");
+								}
+							}
+							builder.append("]");
+							LOGGER.finer(builder.toString());
+						}							
 						/*
 						 * If transparency of given image is not opaque we
 						 * assume all colors with alpha less than 1.0 as fully
@@ -351,6 +481,9 @@ public final class CustomPaletteBuilder {
 						if (discriminantTransparency
 								&& (rgba[transpBand] < alphaThreshold)) {
 							transColor = insertNode(transColor, rgba, 0);
+							if(LOGGER.isLoggable(Level.FINER)){
+								LOGGER.finer("Transparent color!");
+							}								
 						} else {
 
 							root = insertNode(root, rgba, 0);
@@ -482,6 +615,9 @@ public final class CustomPaletteBuilder {
 	}
 
 	protected void reduceTree() {
+		if(LOGGER.isLoggable(Level.FINER)){
+			LOGGER.finer("reduceTree called");
+		}			
 		int level = reduceList.length - 1;
 		while ((reduceList[level] == null) && (level >= 0)) {
 			level--;

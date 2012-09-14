@@ -122,7 +122,7 @@ public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollec
             return CRS.findMathTransform(source, target, true);
         } catch (FactoryException e) {
             throw new IllegalArgumentException(
-                    "Could not create math transform");
+            		"Could not create math transform", e);
         }
     }
 

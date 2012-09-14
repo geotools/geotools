@@ -52,7 +52,7 @@ public class TimeParserTest extends Assert {
 	}
 	
 	@Test
-        public void testParserOnTimeInstant1() throws ParseException {
+        public void testParserOnTimeInstantFormat1() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -60,11 +60,11 @@ public class TimeParserTest extends Assert {
                 String timeInstant = "2011";
                 List<Date> time = PARSER.parse(timeInstant);
                 assertEquals(1, time.size());
-                assertEquals(timeInstant+"-01-01T00:00:00.000Z",df.format(time.get(0)));
+                assertEquals("2011-01-01T00:00:00.000Z",df.format(time.get(0)));
 	}
 	
 	@Test
-        public void testParserOnTimeInstant34() throws ParseException {
+        public void testParserOnTimeInstantFormat2() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -76,7 +76,7 @@ public class TimeParserTest extends Assert {
 	}
         
 	@Test
-        public void testParserOnTimeInstant3() throws ParseException {
+        public void testParserOnTimeInstantFormat3() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -88,7 +88,7 @@ public class TimeParserTest extends Assert {
 	}
 	
 	@Test
-        public void testParserOnTimeInstant4() throws ParseException {
+        public void testParserOnTimeInstantFormat4() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -100,7 +100,7 @@ public class TimeParserTest extends Assert {
 	}
 	
 	@Test
-        public void testParserOnTimeInstant5() throws ParseException {
+        public void testParserOnTimeInstantFormat5() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -108,11 +108,11 @@ public class TimeParserTest extends Assert {
                 String timeInstant = "2011-10-10";
                 List<Date> time = PARSER.parse(timeInstant);
                 assertEquals(1, time.size());
-                assertEquals(timeInstant+"T00:00:00.000Z",df.format(time.get(0)));
+                assertEquals("2011-10-10T00:00:00.000Z",df.format(time.get(0)));
 	}
 	
 	@Test
-        public void testParserOnTimeInstant6() throws ParseException {
+        public void testParserOnTimeInstantFormat6() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -124,7 +124,7 @@ public class TimeParserTest extends Assert {
 	}
         
 	@Test
-        public void testParserOnTimeInstant7() throws ParseException {
+        public void testParserOnTimeInstantFormat7() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -132,11 +132,11 @@ public class TimeParserTest extends Assert {
                 String timeInstant = "2011-10-10T10";
                 List<Date> time = PARSER.parse(timeInstant);
                 assertEquals(1, time.size());
-                assertEquals(timeInstant+":00:00.000Z",df.format(time.get(0)));
+                assertEquals("2011-10-10T10:00:00.000Z",df.format(time.get(0)));
 	}
 	
 	@Test
-        public void testParserOnTimeInstant8() throws ParseException {
+        public void testParserOnTimeInstantFormat8() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -150,7 +150,7 @@ public class TimeParserTest extends Assert {
 	}
 	
 	@Test
-        public void testParserOnTimeInstant9() throws ParseException {
+        public void testParserOnTimeInstantFormat9() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -163,7 +163,7 @@ public class TimeParserTest extends Assert {
 	}
         
 	@Test
-        public void testParserOnTimeInstant10() throws ParseException {
+        public void testParserOnTimeInstantFormat10() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -175,7 +175,7 @@ public class TimeParserTest extends Assert {
 	}
 	
 	@Test
-        public void testParserOnTimeInstant11() throws ParseException {
+        public void testParserOnTimeInstantFormat11() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -187,7 +187,7 @@ public class TimeParserTest extends Assert {
 	}
 	
 	@Test
-        public void testParserOnTimeInstant12() throws ParseException {
+        public void testParserOnTimeInstantFormat12() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -200,7 +200,7 @@ public class TimeParserTest extends Assert {
 	}
 	
 	@Test
-        public void testParserOnTimeInstant13() throws ParseException {
+        public void testParserOnTimeInstantFormat13() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -213,7 +213,7 @@ public class TimeParserTest extends Assert {
 	}
 	
 	@Test
-        public void testParserOnTimeInstant14() throws ParseException {
+        public void testParserOnTimeInstantFormat14() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -227,7 +227,7 @@ public class TimeParserTest extends Assert {
 	}
 	
 	@Test
-        public void testParserOnTimeInstant15() throws ParseException {
+        public void testParserOnTimeInstantFormat15() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -240,7 +240,7 @@ public class TimeParserTest extends Assert {
 	}
 	
 	@Test
-        public void testParserOnTimeInstant16() throws ParseException {
+        public void testParserOnTimeInstantFormat16() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -253,7 +253,7 @@ public class TimeParserTest extends Assert {
 	}
 	
 	@Test
-        public void testParserOnTimeInstant17() throws ParseException {
+        public void testParserOnTimeInstantFormat17() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -266,7 +266,7 @@ public class TimeParserTest extends Assert {
 	}
 	
 	@Test
-        public void testParserOnTimeInstant18() throws ParseException {
+        public void testParserOnTimeInstantFormat18() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -279,7 +279,7 @@ public class TimeParserTest extends Assert {
 	}
 	
 	@Test
-        public void testParserOnTimeInstant19() throws ParseException {
+        public void testParserOnTimeInstantFormat19() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -292,7 +292,7 @@ public class TimeParserTest extends Assert {
 	}
 	
 	@Test
-        public void testParserOnTimeInstant20() throws ParseException {
+        public void testParserOnTimeInstantFormat20() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -305,7 +305,7 @@ public class TimeParserTest extends Assert {
 	}
 	
 	@Test
-        public void testParserOnTimeInstant21() throws ParseException {
+        public void testParserOnTimeInstantFormat21() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -318,7 +318,7 @@ public class TimeParserTest extends Assert {
 	}
 	
 	@Test
-        public void testParserOnTimeInstant22() throws ParseException {
+        public void testParserOnTimeInstantFormat22() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -331,7 +331,7 @@ public class TimeParserTest extends Assert {
 	}
 	
 	@Test
-        public void testParserOnTimeInstant23() throws ParseException {
+        public void testParserOnTimeInstantFormat23() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -344,7 +344,7 @@ public class TimeParserTest extends Assert {
 	}
 	
 	@Test
-        public void testParserOnTimeInstant24() throws ParseException {
+        public void testParserOnTimeInstantFormat24() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -357,7 +357,7 @@ public class TimeParserTest extends Assert {
 	}
 	
 	@Test
-        public void testParserOnTimeInstant25() throws ParseException {
+        public void testParserOnTimeInstantFormat25() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -370,7 +370,7 @@ public class TimeParserTest extends Assert {
 	}
 	
 	@Test
-        public void testParserOnTimeInstant26() throws ParseException {
+        public void testParserOnTimeInstantFormat26() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -383,7 +383,7 @@ public class TimeParserTest extends Assert {
 	}
 	
 	@Test
-        public void testParserOnTimeInstant27() throws ParseException {
+        public void testParserOnTimeInstantFormat27() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -396,7 +396,7 @@ public class TimeParserTest extends Assert {
 	}
 	
 	@Test
-        public void testParserOnTimeInstant28() throws ParseException {
+        public void testParserOnTimeInstantFormat28() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -409,7 +409,7 @@ public class TimeParserTest extends Assert {
 	}
 	
 	@Test
-        public void testParserOnTimeInstant29() throws ParseException {
+        public void testParserOnTimeInstantFormat29() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -422,7 +422,7 @@ public class TimeParserTest extends Assert {
 	}
 	
 	@Test
-        public void testParserOnTimeInstant30() throws ParseException {
+        public void testParserOnTimeInstantFormat30() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -435,7 +435,7 @@ public class TimeParserTest extends Assert {
 	}
 	
 	@Test
-        public void testParserOnTimeInstant31() throws ParseException {
+        public void testParserOnTimeInstantFormat31() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -448,7 +448,7 @@ public class TimeParserTest extends Assert {
 	}
 	
 	@Test
-        public void testParserOnTimeInstant32() throws ParseException {
+        public void testParserOnTimeInstantFormat32() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -461,7 +461,7 @@ public class TimeParserTest extends Assert {
 	}
 	
 	@Test
-        public void testParserOnTimeInstant33() throws ParseException {
+        public void testParserOnTimeInstantFormat33() throws ParseException {
                 
                 final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 df.setTimeZone(TimeZone.getTimeZone("GMT"));

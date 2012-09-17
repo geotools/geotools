@@ -20,12 +20,11 @@ import java.util.Map;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Transaction;
+import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
-import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
@@ -70,7 +69,7 @@ public class Csv2Shape {
          * We create a FeatureCollection into which we will put each Feature created from a record
          * in the input csv data file
          */
-        SimpleFeatureCollection collection = FeatureCollections.newCollection();
+        ListFeatureCollection collection = new ListFeatureCollection( TYPE );
         /*
          * GeometryFactory will be used to create the geometry attribute of each feature (a Point
          * object for the location)

@@ -26,7 +26,6 @@ import java.util.UUID;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.data.store.FilteringFeatureCollection;
-import org.geotools.feature.CollectionListener;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.collection.SortedSimpleFeatureCollection;
@@ -58,8 +57,6 @@ import org.opengis.util.ProgressListener;
  */
 public abstract class ProcessingCollection<T extends FeatureType, F extends Feature>
         implements FeatureCollection<T, F> {
-
-    private static final String READ_ONLY_ERROR = "This collection is read only";
 
     private T schema;
 
@@ -100,7 +97,9 @@ public abstract class ProcessingCollection<T extends FeatureType, F extends Feat
             }
         } finally {
             progress.complete();
-            close(iterator);
+            if( iterator != null ){
+            	iterator.close();
+            }
         }
 
     }
@@ -121,7 +120,8 @@ public abstract class ProcessingCollection<T extends FeatureType, F extends Feat
     /**
      * Convenience implementation that
      */
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public FeatureCollection<T, F> sort(SortBy order) {
         if (schema instanceof SimpleFeatureType) {
             // go for the most efficient way if possible, otherwise rely on pure in memory
@@ -145,16 +145,6 @@ public abstract class ProcessingCollection<T extends FeatureType, F extends Feat
      */
     @Override
     public abstract ReferencedEnvelope getBounds();
-
-    @Override
-    public Iterator<F> iterator() {
-        final FeatureIterator<F> features = features();
-        if (features == null) {
-            return null;
-        } else {
-            return new WrappingIterator(features);
-        }
-    }
 
     /**
      * Builds once and for all the target feature type. The results are available by calling getSchema()
@@ -187,7 +177,9 @@ public abstract class ProcessingCollection<T extends FeatureType, F extends Feat
             }
             return count;
         } finally {
-            close(fi);
+        	if( fi != null ){
+        		fi.close();
+        	}
         }
     }
     
@@ -219,38 +211,10 @@ public abstract class ProcessingCollection<T extends FeatureType, F extends Feat
             
             return bounds;
         } finally {
-            close(fi);
+            if( fi != null ){
+            	fi.close();
+            }
         }
-    }
-
-    @Override
-    public void close(FeatureIterator<F> fi) {
-        if (fi != null) {
-            fi.close();
-        }
-    }
-
-    @Override
-    public void close(Iterator<F> close) {
-        if (close instanceof WrappingIterator) {
-            ((WrappingIterator) close).close();
-        }
-    }
-
-    /**
-     * An implementation that actually does not attach the listener, since the collection is not
-     * modifiable. Subclasses might want to override this.
-     */
-    @Override
-    public void addListener(CollectionListener listener) throws NullPointerException {
-        // we just don't implement this, contents of the collection might be generated
-        // out of thin air and cannot be changed normally, subclasses may want to override
-    }
-
-    @Override
-    public void removeListener(CollectionListener listener) throws NullPointerException {
-        // we just don't implement this, contents of the collection might be generated
-        // out of thin air and cannot be changed normally, subclasses may want to override
     }
 
     @Override
@@ -268,35 +232,6 @@ public abstract class ProcessingCollection<T extends FeatureType, F extends Feat
     }
 
     /**
-     * Empty as the collection is supposed to be empty anyways, but subclasses might want to
-     * override the method to get rid of whatever state they might be holding onto.
-     */
-    @Override
-    public void purge() {
-        // nothing to do here
-    }
-
-    @Override
-    public boolean add(F obj) {
-        throw new UnsupportedOperationException(READ_ONLY_ERROR);
-    }
-
-    @Override
-    public boolean addAll(Collection<? extends F> collection) {
-        throw new UnsupportedOperationException(READ_ONLY_ERROR);
-    }
-
-    @Override
-    public boolean addAll(FeatureCollection<? extends T, ? extends F> resource) {
-        throw new UnsupportedOperationException(READ_ONLY_ERROR);
-    }
-
-    @Override
-    public void clear() {
-        throw new UnsupportedOperationException(READ_ONLY_ERROR);
-    }
-
-    /**
      * Returns <tt>true</tt> if this collection contains the specified element. <tt></tt>.
      * <p>
      * 
@@ -307,9 +242,9 @@ public abstract class ProcessingCollection<T extends FeatureType, F extends Feat
      * @return <tt>true</tt> if this collection contains the specified element.
      */
     public boolean contains(Object o) {
-        Iterator<F> e = null;
+        FeatureIterator<F> e = null;
         try {
-            e = iterator();
+            e = features();
             if (o == null) {
                 while (e.hasNext())
                     if (e.next() == null)
@@ -321,7 +256,9 @@ public abstract class ProcessingCollection<T extends FeatureType, F extends Feat
             }
             return false;
         } finally {
-            close(e);
+            if( e != null ){
+            	e.close();
+            }
         }
     }
 
@@ -339,16 +276,12 @@ public abstract class ProcessingCollection<T extends FeatureType, F extends Feat
      */
     public boolean containsAll(Collection<?> c) {
         Iterator<?> e = c.iterator();
-        try {
-            while (e.hasNext())
-                if (!contains(e.next()))
+        while (e.hasNext()){
+                if (!contains(e.next())){
                     return false;
-            return true;
-        } finally {
-            if (c instanceof FeatureCollection) {
-                ((FeatureCollection) c).close(e);
-            }
+                }
         }
+        return true;        
     }
 
     @Override
@@ -358,23 +291,10 @@ public abstract class ProcessingCollection<T extends FeatureType, F extends Feat
             fi = features();
             return !fi.hasNext();
         } finally {
-            close(fi);
+        	if( fi != null ){
+        		fi.close();
+        	}
         }
-    }
-
-    @Override
-    public boolean remove(Object o) {
-        throw new UnsupportedOperationException(READ_ONLY_ERROR);
-    }
-
-    @Override
-    public boolean removeAll(Collection<?> c) {
-        throw new UnsupportedOperationException(READ_ONLY_ERROR);
-    }
-
-    @Override
-    public boolean retainAll(Collection<?> c) {
-        throw new UnsupportedOperationException(READ_ONLY_ERROR);
     }
 
     /**
@@ -385,12 +305,14 @@ public abstract class ProcessingCollection<T extends FeatureType, F extends Feat
         FeatureIterator<F> fi = null;
         try {
             fi = features();
-            for (int i = 0; fi.hasNext(); i++) {
+            while (fi.hasNext()) {
                 result.add(fi.next());
             }
             return result;
         } finally {
-            close(fi);
+        	if( fi != null ){
+        		fi.close();
+        	}
         }
     }
 
@@ -398,37 +320,8 @@ public abstract class ProcessingCollection<T extends FeatureType, F extends Feat
         return toList().toArray();
     }
 
-    @SuppressWarnings("unchecked")
-    public <T> T[] toArray(T[] a) {
+    public <O> O[] toArray(O[] a) {
         return toList().toArray(a);
-    }
-
-    /**
-     * Wraps a {@link FeatureIterator} into a standard {@link Iterator}
-     */
-    private static class WrappingIterator<F extends Feature> implements Iterator<F> {
-        FeatureIterator<F> delegate;
-
-        public WrappingIterator(FeatureIterator<F> delegate) {
-            super();
-            this.delegate = delegate;
-        }
-
-        public boolean hasNext() {
-            return delegate.hasNext();
-        }
-
-        public F next() {
-            return delegate.next();
-        }
-
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
-
-        public void close() {
-            delegate.close();
-        }
     }
 
 }

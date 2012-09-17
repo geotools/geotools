@@ -400,11 +400,6 @@ public class CachingFeatureSource implements SimpleFeatureSource {
         }
         
         @Override
-        protected void closeIterator(Iterator close) {
-            // nothing to do there
-        }
-        
-        @Override
         public SimpleFeatureCollection subCollection(Filter filter) {
             // get the new target envelope
             Envelope filterEnvelope = getEnvelope(filter);

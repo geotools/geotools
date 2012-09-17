@@ -16,10 +16,12 @@
  */
 package org.geotools.data.memory;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
 
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.collection.AbstractFeatureCollection;
 import org.geotools.feature.collection.RandomFeatureAccess;
 import org.geotools.feature.visitor.BoundsVisitor;
@@ -48,8 +50,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *         data/memory/MemoryFeatureCollection.java $
  */
 public class MemoryFeatureCollection extends AbstractFeatureCollection implements
-        RandomFeatureAccess {
-    TreeMap contents = new TreeMap();
+        RandomFeatureAccess, Collection<SimpleFeature> {
+    TreeMap<String,SimpleFeature> contents = new TreeMap<String,SimpleFeature>();
 
     public MemoryFeatureCollection(SimpleFeatureType schema) {
         super(schema);
@@ -65,22 +67,14 @@ public class MemoryFeatureCollection extends AbstractFeatureCollection implement
         return contents.size();
     }
 
-    public Iterator openIterator() {
+    public MemoryIterator openIterator() {
         return new MemoryIterator(contents.values().iterator());
     }
 
-    public void closeIterator(Iterator close) {
-        if (close == null)
-            return;
+    class MemoryIterator implements Iterator<SimpleFeature>, SimpleFeatureIterator {
+        Iterator<SimpleFeature> it;
 
-        MemoryIterator it = (MemoryIterator) close;
-        it.close();
-    }
-
-    class MemoryIterator implements Iterator {
-        Iterator it;
-
-        MemoryIterator(Iterator iterator) {
+        MemoryIterator(Iterator<SimpleFeature> iterator) {
             it = iterator;
         }
 
@@ -95,7 +89,7 @@ public class MemoryFeatureCollection extends AbstractFeatureCollection implement
             return it.hasNext();
         }
 
-        public Object next() {
+        public SimpleFeature next() {
             if (it == null) {
                 throw new IllegalStateException();
             }
@@ -135,5 +129,37 @@ public class MemoryFeatureCollection extends AbstractFeatureCollection implement
         accepts(bounds, new NullProgressListener());
         return bounds.getBounds();
     }
+
+	@Override
+	public boolean remove(Object o) {
+		return contents.values().remove(o);
+	}
+
+	@Override
+	public boolean addAll(Collection<? extends SimpleFeature> c) {
+		boolean changed = false;
+		for( SimpleFeature feature : c ){
+			boolean added = add( feature );
+			if( !changed && added ){
+				changed = true;
+			}
+		}
+		return changed;
+	}
+
+	@Override
+	public boolean removeAll(Collection<?> c) {
+		return contents.values().removeAll(c);
+	}
+
+	@Override
+	public boolean retainAll(Collection<?> c) {
+		return contents.values().retainAll(c);
+	}
+
+	@Override
+	public void clear() {
+		contents.clear();
+	}
 
 }

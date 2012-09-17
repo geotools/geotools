@@ -23,14 +23,15 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.feature.FeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.IllegalAttributeException;
+import org.geotools.feature.collection.DelegateSimpleFeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 
 /**
- *  FeatureReader<SimpleFeatureType, SimpleFeature> that reads features from a java.util.collection of features,
+ * FeatureReader<SimpleFeatureType, SimpleFeature> that reads features from a java.util.collection of features,
  * an array of features or a FeatureCollection.
  *
  * @author jones
@@ -39,8 +40,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @source $URL$
  */
 public class CollectionFeatureReader implements  FeatureReader<SimpleFeatureType, SimpleFeature> {
-    private SimpleFeatureCollection collection;
-    private Iterator features;
+    private SimpleFeatureIterator features;
     private SimpleFeatureType type;
     private boolean closed = false;
 
@@ -50,14 +50,9 @@ public class CollectionFeatureReader implements  FeatureReader<SimpleFeatureType
      * @param featuresArg a colleciton of features.  <b>All features must be of the same FeatureType</b> 
      * @param typeArg the Feature type of of the features.
      */
-    public CollectionFeatureReader(Collection featuresArg, SimpleFeatureType typeArg) {
+    public CollectionFeatureReader(Collection<SimpleFeature> featuresArg, SimpleFeatureType typeArg) {
         assert !featuresArg.isEmpty();
-
-        if (featuresArg instanceof FeatureCollection) {
-            collection = (SimpleFeatureCollection) featuresArg;
-        }
-
-        this.features = featuresArg.iterator();
+        this.features = new DelegateSimpleFeatureIterator( featuresArg.iterator() );
         this.type = typeArg;
     }
 
@@ -70,8 +65,7 @@ public class CollectionFeatureReader implements  FeatureReader<SimpleFeatureType
     public CollectionFeatureReader(SimpleFeatureCollection featuresArg,
         SimpleFeatureType typeArg) {
         assert !featuresArg.isEmpty();
-        collection = featuresArg;
-        this.features = featuresArg.iterator();
+        this.features = featuresArg.features();
         this.type = typeArg;
     }
 
@@ -82,7 +76,8 @@ public class CollectionFeatureReader implements  FeatureReader<SimpleFeatureType
      */
     public CollectionFeatureReader(SimpleFeature[] featuresArg) {
         assert featuresArg.length > 0;
-        this.features = Arrays.asList(featuresArg).iterator();
+        Iterator<SimpleFeature> iterator = Arrays.asList(featuresArg).iterator();
+		this.features = new DelegateSimpleFeatureIterator( iterator );
         type = featuresArg[0].getFeatureType();
     }
 
@@ -118,8 +113,9 @@ public class CollectionFeatureReader implements  FeatureReader<SimpleFeatureType
     public void close() throws IOException {
         closed = true;
 
-        if (collection != null) {
-            collection.close(features);
+        if (features != null) {
+        	features.close();
+        	features = null;
         }
     }
 }

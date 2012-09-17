@@ -16,12 +16,12 @@
  */
 package org.geotools.feature.collection;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.Filter;
 
 /**
@@ -44,33 +44,28 @@ import org.opengis.filter.Filter;
  *
  * @source $URL$
  */
-public class FilteredIterator<F extends Feature> implements Iterator<F> {
-	/** Used to close the delgate, or null */
-	private FeatureCollection<? extends FeatureType, F> collection;
+public class FilteredIterator<F extends Feature> implements Iterator<F>, FeatureIterator<F> {
 	private Iterator<F> delegate;
 	private Filter filter;
 
 	private F next;
 	
 	public FilteredIterator(Iterator<F> iterator, Filter filter) {
-		this.collection = null;
 		this.delegate = iterator;
 		this.filter = filter;
 	}
 	
-	public FilteredIterator(FeatureCollection<? extends FeatureType, F> collection, Filter filter) {
-		this.collection = collection;
+	public FilteredIterator(Collection<F> collection, Filter filter) {
 		this.delegate = collection.iterator();
 		this.filter = filter;
 		next = getNext();
 	}
 	
 	/** Package protected, please use SubFeatureCollection.close( iterator ) */
-	void close(){
-		if( collection != null ){
-			collection.close( delegate );
+	public void close(){
+		if( delegate instanceof FeatureIterator ){
+		    ((FeatureIterator<?>)delegate).close();
 		}
-		collection = null;
 		delegate = null;
 		filter = null;
 		next = null;

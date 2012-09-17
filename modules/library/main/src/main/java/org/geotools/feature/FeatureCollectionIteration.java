@@ -113,7 +113,7 @@ public class FeatureCollectionIteration {
     protected void walker(FeatureCollection<?,?> collection) {
         handler.handleFeatureCollection(collection);
 
-        iterate(collection.iterator());
+        iterate(collection.features());
 
         handler.endFeatureCollection(collection);
     }
@@ -123,10 +123,11 @@ public class FeatureCollectionIteration {
      *
      * @param iterator The Iterator to iterate upon.
      */
-    protected void iterate(Iterator<?> iterator) {
+    protected void iterate(FeatureIterator<?> iterator) {
         while (iterator.hasNext()) {
             walker((Feature) iterator.next());
         }
+        iterator.close();
     }
 
     /**

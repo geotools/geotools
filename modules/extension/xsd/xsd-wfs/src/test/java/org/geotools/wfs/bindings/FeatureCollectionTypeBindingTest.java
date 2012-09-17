@@ -57,7 +57,7 @@ public class FeatureCollectionTypeBindingTest extends WFSTestSupport {
         
         namespaceMappings.put( "geotools", "http://geotools.org" );
         		
-        FeatureCollection features = new DefaultFeatureCollection(null,null);
+        DefaultFeatureCollection features = new DefaultFeatureCollection(null,null);
         
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName( "feature" );
@@ -112,7 +112,9 @@ public class FeatureCollectionTypeBindingTest extends WFSTestSupport {
             
         }
         finally {
-            features.close( fi );
+            if( fi != null ){
+                fi.close();
+            }
         }
         
         

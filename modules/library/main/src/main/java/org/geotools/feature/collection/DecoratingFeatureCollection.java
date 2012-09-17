@@ -30,7 +30,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.sort.SortBy;
 
 /**
- * A FeatureCollection which completley delegates to another FeatureCollection.
+ * A FeatureCollection which completely delegates to another FeatureCollection.
  * <p>
  * This class should be subclasses by classes which must somehow decorate 
  * another SimpleFeatureCollection and override the relevant methods. 
@@ -57,7 +57,7 @@ public class DecoratingFeatureCollection<T extends FeatureType, F extends Featur
 
     public void accepts(org.opengis.feature.FeatureVisitor visitor,
             org.opengis.util.ProgressListener progress) {
-        FeatureIterator it = features();
+        FeatureIterator<F> it = features();
 
         try {
             Exception exception = null;
@@ -78,44 +78,15 @@ public class DecoratingFeatureCollection<T extends FeatureType, F extends Featur
                 }
             }
         } finally {
-            close(it);
+        	it.close();
         }
     }
     
-    public boolean add(F o) {
-        return delegate.add(o);
-    }
-
-    public boolean addAll(Collection c) {
-        return delegate.addAll(c);
-    }
-
-    public boolean addAll(FeatureCollection c) {
-        return delegate.addAll(c);
-    }
-    
-    public void addListener(CollectionListener listener)
-            throws NullPointerException {
-        delegate.addListener(listener);
-    }
-
-    public void clear() {
-        delegate.clear();
-    }
-
-    public void close(FeatureIterator<F> close) {
-        delegate.close(close);
-    }
-
-    public void close(Iterator<F> close) {
-        delegate.close(close);
-    }
-
     public boolean contains(Object o) {
         return delegate.contains(o);
     }
 
-    public boolean containsAll(Collection c) {
+    public boolean containsAll(Collection<?> c) {
         return delegate.containsAll(c);
     }
 
@@ -143,31 +114,6 @@ public class DecoratingFeatureCollection<T extends FeatureType, F extends Featur
         return delegate.isEmpty();
     }
 
-    public Iterator iterator() {
-        return delegate.iterator();
-    }
-
-    public void purge() {
-        delegate.purge();
-    }
-
-    public boolean remove(Object o) {
-        return delegate.remove(o);
-    }
-
-    public boolean removeAll(Collection c) {
-        return delegate.removeAll(c);
-    }
-
-    public void removeListener(CollectionListener listener)
-            throws NullPointerException {
-        delegate.removeListener(listener);
-    }
-
-    public boolean retainAll(Collection c) {
-        return delegate.retainAll(c);
-    }
-
     public int size() {
         return delegate.size();
     }
@@ -184,7 +130,7 @@ public class DecoratingFeatureCollection<T extends FeatureType, F extends Featur
         return delegate.toArray();
     }
 
-    public Object[] toArray(Object[] a) {
+    public <O> O[] toArray(O[] a) {
         return delegate.toArray(a);
     }
 	public String getID() {

@@ -163,8 +163,6 @@ public class RasterAsPointCollectionProcess implements GSProcess {
             
         }
         
-	
-
         @Override
         public SimpleFeatureIterator features() {
             return new RasterAsPointFeatureIterator(this);
@@ -182,16 +180,11 @@ public class RasterAsPointCollectionProcess implements GSProcess {
 
 		@Override
 		protected Iterator<SimpleFeature> openIterator() {
+			// JG because we have an implementation of features we should
+			// choose a different base class that does not require an Iterator
 			return new WrappingIterator(features());
 		}
 
-		@Override
-		protected void closeIterator(Iterator<SimpleFeature> close) {
-			 if (close instanceof WrappingIterator) {
-	                ((WrappingIterator) close).close();
-	            }
-			
-		}
     }
 
     private final static class RasterAsPointFeatureIterator implements SimpleFeatureIterator {

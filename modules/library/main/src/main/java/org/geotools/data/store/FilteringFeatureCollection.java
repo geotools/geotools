@@ -62,23 +62,6 @@ public class FilteringFeatureCollection<T extends FeatureType, F extends Feature
 		this.filter = filter;
 	}
 	
-	public FeatureIterator<F> features() {
-		return new DelegateFeatureIterator<F>( this, iterator() );
-	}
-
-	public void close(FeatureIterator<F> close) {
-		close.close();
-	}
-
-	public Iterator<F> iterator() {
-		return new FilteringIterator<F>( delegate.iterator(), filter );
-	}
-	
-	public void close(Iterator<F> close) {
-		FilteringIterator<F> filtering = (FilteringIterator<F>) close;
-		delegate.close( filtering.getDelegate() );
-	}
-
 	public FeatureCollection<T, F> subCollection(Filter filter) {
 		throw new UnsupportedOperationException();
 	}
@@ -89,7 +72,7 @@ public class FilteringFeatureCollection<T extends FeatureType, F extends Feature
 
 	public int size() {
 		int count = 0;
-		Iterator<F> i = iterator();
+		FeatureIterator<F> i = features();
 		try {
 			while( i.hasNext() ) {
 				count++; i.next();
@@ -98,7 +81,7 @@ public class FilteringFeatureCollection<T extends FeatureType, F extends Feature
 			return count;
 		}
 		finally {
-			close( i );
+			i.close();
 		}
 	}
 
@@ -110,50 +93,30 @@ public class FilteringFeatureCollection<T extends FeatureType, F extends Feature
 		return toArray( new Object[ size() ] );
 	}
 
-	public Object[] toArray(Object[] a) {
-		List list = new ArrayList();
-		Iterator i = iterator();
+	public <O> O[] toArray(O[] a) {
+		List<F> list = new ArrayList<F>();
+		FeatureIterator<F> i = features();
 		try {
 			while( i.hasNext() ) {
 				list.add( i.next() );
-			}
-			
+			}			
 			return list.toArray( a );
 		}
 		finally {
-			close( i );
+			i.close();
 		}
 	}
 	
-	public boolean add(F o) {
-		if ( !filter.evaluate( o ) ) {
-			return false;
-		}
-		
-		return delegate.add( o );
-	}
-
 	public boolean contains(Object o) {
 		return delegate.contains( o ) && filter.evaluate( o );
 	}
 
-	public boolean addAll(Collection c) {
-		boolean changed = false;
-		
-		for ( Iterator<F> i = c.iterator(); i.hasNext(); ) {
-			changed = changed | add( i.next() );
-		}
-		
-		return changed;
-	}
-
-	public boolean containsAll(Collection c) {
-		for ( Iterator i = c.iterator(); i.hasNext(); ) {
+	public boolean containsAll(Collection<?> c) {
+		for ( Iterator<?> i = c.iterator(); i.hasNext(); ) {
 			if ( !contains( i.next() ) ) {
 				return false;
 			}
-		}
-		
+		}		
 		return true;
 	}
 

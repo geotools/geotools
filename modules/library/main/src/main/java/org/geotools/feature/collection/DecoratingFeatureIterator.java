@@ -25,49 +25,37 @@ import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 
 /**
- * A feature iterator that completely delegates to a normal
- * Iterator, simply allowing Java 1.4 code to escape the caste (sic)
- * system.
- * <p>
- * This implementation is not suitable for use with collections
- * that make use of system resources. As an alterantive please
- * see ResourceFetaureIterator.
- * </p>
- * @author Jody Garnett, Refractions Research, Inc.
+ * A feature iterator that completely delegates to another FeatureIterator.
+ * 
+ * @author Jody Garnett
  *
  *
  * @source $URL$
  */
-public class DelegateFeatureIterator<F extends Feature> implements FeatureIterator<F> {
-	Iterator<F> delegate;
-	/**
-	 * Wrap the provided iterator up as a FeatureIterator.
-	 * 
-	 * @param iterator Iterator to be used as a delegate.
-	 */
-	public DelegateFeatureIterator( Iterator<F> iterator ){
-		delegate = iterator;
-	}
+public class DecoratingFeatureIterator<F extends Feature> implements FeatureIterator<F> {
+	FeatureIterator<F> delegate;
 	
 	/**
-	 * Wrap the provided iterator up as a FeatureIterator.
+	 * Wrap the provided FeatureIterator.
 	 * 
 	 * @param iterator Iterator to be used as a delegate.
-	 * @deprecated collection no longer used
 	 */
-	public DelegateFeatureIterator( FeatureCollection<? extends FeatureType, F> collection, Iterator<F> iterator ){
+	public DecoratingFeatureIterator( FeatureIterator<F> iterator ){
 		delegate = iterator;
 	}
+
 	public boolean hasNext() {
 		return delegate != null && delegate.hasNext();
 	}
+	
 	public F next() throws NoSuchElementException {
 		if( delegate == null ) throw new NoSuchElementException();
 		return  delegate.next();
 	}
+	
 	public void close() {
-		if( delegate!=null && delegate instanceof FeatureIterator ){
-			((FeatureIterator<?>)delegate).close();
+		if( delegate!=null ){
+			delegate.close();
 		}
 		delegate = null;		
 	}

@@ -16,6 +16,7 @@
  */
 package org.geotools.data;
 
+import java.io.Closeable;
 import java.io.IOException;
 
 import org.opengis.feature.Feature;
@@ -63,7 +64,7 @@ import org.opengis.feature.type.FeatureType;
  * @source $URL$
  * @version $Id$
  */
-public interface FeatureWriter<T extends FeatureType, F extends Feature> {
+public interface FeatureWriter<T extends FeatureType, F extends Feature> extends Closeable {
     /**
      * FeatureType this reader has been configured to create.
      *
@@ -174,9 +175,9 @@ public interface FeatureWriter<T extends FeatureType, F extends Feature> {
      *
      * @throws IOException if there there are problems releasing underlying resources, or
      * possibly if close has been called (up to the implementation).
+     * 
+     * @throws IOException if an I/O error occurs
      */
     void close() throws IOException;
-    
-    //FeatureWriter getFeatureWriter( Filter filter); // ask justin for proposal
-    //FeatureWriter getFeatureWriter( boolean append); // ask justin for proposal
+
 }

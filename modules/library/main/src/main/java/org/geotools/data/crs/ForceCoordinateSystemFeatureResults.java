@@ -101,7 +101,7 @@ public class ForceCoordinateSystemFeatureResults extends AbstractFeatureCollecti
 	            iterator.close();
 	        }
 	  }
-		
+	 
 	  public int size() {
 	        return results.size();
 	  }

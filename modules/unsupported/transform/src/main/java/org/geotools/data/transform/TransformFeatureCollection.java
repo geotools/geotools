@@ -117,15 +117,6 @@ class TransformFeatureCollection extends AbstractFeatureCollection {
     }
 
     @Override
-    protected void closeIterator(Iterator<SimpleFeature> close) {
-        if (close instanceof TransformFeatureIteratorWrapper) {
-            ((TransformFeatureIteratorWrapper) close).close();
-        } else if(close instanceof SimpleFeatureIterator) {
-            ((SimpleFeatureIterator) close).close();
-        } 
-    }
-
-    @Override
     public int size() {
         try {
             Query txQuery = transformer.transformQuery(query);

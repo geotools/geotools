@@ -39,23 +39,15 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @source $URL$
  */
-public class DelegateSimpleFeatureIterator extends DelegateFeatureIterator<SimpleFeature> implements SimpleFeatureIterator {
+public class DecoratingSimpleFeatureIterator extends DecoratingFeatureIterator<SimpleFeature> implements SimpleFeatureIterator {
 
 	/**
 	 * Wrap the provided iterator up as a FeatureIterator.
 	 * 
 	 * @param iterator Iterator to be used as a delegate.
 	 */
-	public DelegateSimpleFeatureIterator( Iterator<SimpleFeature> iterator ){
+	public DecoratingSimpleFeatureIterator( SimpleFeatureIterator iterator ){
 		super( iterator );
 	}
 	
-	/**
-	 * Wrap the provided iterator up as a FeatureIterator.
-	 * 
-	 * @param iterator Iterator to be used as a delegate.
-	 */
-	public DelegateSimpleFeatureIterator( FeatureCollection<SimpleFeatureType,SimpleFeature> collection, Iterator<SimpleFeature> iterator ){
-		super( collection, iterator );
-	}
 }

@@ -603,11 +603,14 @@ public class MemoryDataStore extends AbstractDataStore {
             SimpleFeature feature = iterator.next();
             if(filter.evaluate(feature)) {
                 count++;
-                Envelope env = ((Geometry) feature.getDefaultGeometry()).getEnvelopeInternal();
                 if (null == envelope) {
                     envelope = new ReferencedEnvelope(coordinateSystem);
                 }
-                envelope.expandToInclude(env);
+                Geometry geom = (Geometry) feature.getDefaultGeometry();
+                Envelope env = geom != null ? geom.getEnvelopeInternal() : null;
+                if (env != null) {
+                    envelope.expandToInclude(env);
+                }
             }
         }
 

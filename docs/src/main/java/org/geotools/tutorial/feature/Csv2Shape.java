@@ -70,8 +70,7 @@ public class Csv2Shape {
         /*
          * A list to collect features as we create them.
          */
-        List<SimpleFeature> features = new ArrayList<SimpleFeature>();
-        
+        ListFeatureCollection collection = new ListFeatureCollection( TYPE );
         /*
          * GeometryFactory will be used to create the geometry attribute of each feature (a Point
          * object for the location)

@@ -203,7 +203,7 @@ public class GeometryFunctions {
     @DescribeResult(description = "True if the inputs have the given relationship")
     static public boolean relatePattern(@DescribeParameter(name = "a", description = "First input geometry") Geometry a,
             @DescribeParameter(name = "b", description = "First input geometry") Geometry b,
-            @DescribeParameter(name = "Relate pattern", description = "Intersection matrix pattern") String pattern) {
+            @DescribeParameter(name = "pattern", description = "Intersection matrix pattern") String pattern) {
         return a.relate(b, pattern);
     }
 

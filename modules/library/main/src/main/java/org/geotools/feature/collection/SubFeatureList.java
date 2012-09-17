@@ -117,9 +117,10 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
     /** Lazy create a filter based on index */
     protected Filter createFilter() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-        Set featureIds = new HashSet();
-        for(Iterator it = index.iterator(); it.hasNext();){
-           featureIds.add(ff.featureId((String) it.next())); 
+        Set<FeatureId> featureIds = new HashSet<FeatureId>();
+        for(Iterator<FeatureId> it = index.iterator(); it.hasNext();){
+           FeatureId fid = it.next();
+           featureIds.add(ff.featureId( fid.getID() )); 
         }
         Id fids = ff.id(featureIds);
             
@@ -183,36 +184,6 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
         return fids;
     }
 
-    /**
-     * Appends element.
-     * <p>
-     * This implementation calls <tt>add(size(), o)</tt>.
-     * <p>
-     * Note that this implementation throws an
-     * <tt>UnsupportedOperationException</tt> unless <tt>add(int, Object)</tt>
-     * is overridden.
-     * 
-     * @param item
-     *            the Object element to be appended to this list.
-     * @return <tt>true</tt> (as per the general contract of
-     *         <tt>Collection.add</tt>).
-     * @throws UnsupportedOperationException
-     *             if the <tt>add</tt> method is not supported by this Set.
-     * @throws ClassCastException
-     *             if the class of the specified element prevents it from being
-     *             added to this set.
-     * @throws IllegalArgumentException
-     *             some aspect of this element prevents it from being added to
-     *             this collection.
-     */
-    public boolean add(SimpleFeature feature) {
-        boolean added = collection.add( feature );
-        if(added){
-            index.add( feature.getIdentifier() );
-        }
-        return true;
-    }
-    
     public int indexOf(SimpleFeature feature) {
         return index.indexOf(feature.getIdentifier());
     }
@@ -252,32 +223,7 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
         }        
         return new FeatureIdAccessor(false).getFeature(id);
     }
-    
-    public SimpleFeature removeFeatureMember( String id ) {
-        int position = index.indexOf( ff.featureId(id) );
-        if( position == -1){
-            throw new NoSuchElementException(id);
-        }        
-        if( collection instanceof RandomFeatureAccess ){
-            RandomFeatureAccess random = (RandomFeatureAccess) collection;
-            if( index != null ) index.remove( id );
-            return random.removeFeatureMember( id );            
-        }
-        return (SimpleFeature) remove( position );
-    }
-    
-    public SimpleFeature remove(int position) {
-        FeatureId fid = index.get(position);
-        if( collection instanceof RandomFeatureAccess){
-            RandomFeatureAccess random = (RandomFeatureAccess) collection;
-            
-            return random.removeFeatureMember( fid.getID() );
-        }
-        SimpleFeature feature = new FeatureIdAccessor(false).getFeature(id);
-        collection.remove(feature);
-        return feature;
-    }    
-    
+        
     /**
      * Returns a quick iterator that uses get and size methods.
      * <p>
@@ -365,6 +311,11 @@ public class SubFeatureList extends SubFeatureCollection implements RandomFeatur
                 throw new RuntimeException("Could not find feature with id " + id);
             }
         }
+    }
+
+    @Override
+    public SimpleFeature removeFeatureMember(String id) {
+        throw new UnsupportedOperationException();
     }
 
 }

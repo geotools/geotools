@@ -17,6 +17,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureCollections;
 import org.geotools.filter.FunctionFactory;
@@ -289,7 +290,7 @@ SimpleFeatureCollection distance(MapMouseEvent ev) throws Exception {
 void polygonInteraction() {
     SimpleFeatureCollection polygonCollection = null;
     SimpleFeatureCollection fcResult = null;
-    final SimpleFeatureCollection found = FeatureCollections.newCollection();
+    final DefaultFeatureCollection found = new DefaultFeatureCollection();
     
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
     SimpleFeature feature = null;
@@ -299,6 +300,8 @@ void polygonInteraction() {
     Filter boundsCheck = null;
     
     String qryStr = null;
+    
+    
     
     SimpleFeatureIterator it = polygonCollection.features();
     try {

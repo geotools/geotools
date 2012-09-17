@@ -17,6 +17,7 @@
 package org.geotools.feature.collection;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -62,40 +63,55 @@ public class SubFeatureCollection extends AbstractFeatureCollection {
     public SubFeatureCollection(SimpleFeatureCollection collection ) {
         this( collection, Filter.INCLUDE );
     }
-	public SubFeatureCollection(SimpleFeatureCollection collection, Filter subfilter ){
-	    super( collection.getSchema() );	    
-		if (subfilter == null ) subfilter = Filter.INCLUDE;
-		if (subfilter.equals(Filter.EXCLUDE)) {
-			throw new IllegalArgumentException("A subcollection with Filter.EXCLUDE would be empty");
-		}		
-        if( collection instanceof SubFeatureCollection){
-			SubFeatureCollection filtered = (SubFeatureCollection) collection;
-			if( subfilter.equals(Filter.INCLUDE)){
-                this.collection = filtered.collection;
-			    this.filter = filtered.filter();
-			}
-			else {
-			    this.collection = filtered.collection;	            			    
-			    this.filter = ff.and( filtered.filter(), subfilter );
-			}
-		} else {
-			this.collection = collection;
-			this.filter = subfilter;
-		}
-    }
-	
-	public Iterator openIterator() {
-		return new FilteredIterator<SimpleFeature>( collection, filter() );
-	}
 
-	public void closeIterator(Iterator iterator) {
-		if( iterator == null ) return;
-		
-		if( iterator instanceof FilteredIterator){
-			FilteredIterator filtered = (FilteredIterator) iterator;			
-			filtered.close();
-		}
-	}
+    /**
+     * @param collection Collection or AbstractFeatureCollection
+     * @param subfilter
+     */
+    public SubFeatureCollection(SimpleFeatureCollection collection, Filter subfilter) {
+        super(collection.getSchema());
+        if (subfilter == null)
+            subfilter = Filter.INCLUDE;
+        if (subfilter.equals(Filter.EXCLUDE)) {
+            throw new IllegalArgumentException("A subcollection with Filter.EXCLUDE would be empty");
+        }
+        if (collection instanceof SubFeatureCollection) {
+            SubFeatureCollection filtered = (SubFeatureCollection) collection;
+            if (subfilter.equals(Filter.INCLUDE)) {
+                this.collection = filtered.collection;
+                this.filter = filtered.filter();
+            } else {
+                this.collection = filtered.collection;
+                this.filter = ff.and(filtered.filter(), subfilter);
+            }
+        } else if (collection instanceof Collection
+                || collection instanceof AbstractFeatureCollection
+                || collection instanceof AdaptorFeatureCollection) {
+            this.collection = collection;
+            this.filter = subfilter;
+        }
+        else {
+            throw new IllegalArgumentException("collection supports java.util.Collection or AbstractFeatureCollection");
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public Iterator<SimpleFeature> openIterator() {
+        if (collection instanceof Collection) {
+            Iterator<SimpleFeature> it = ((Collection<SimpleFeature>) collection).iterator();
+            return new FilteredIterator<SimpleFeature>(it, filter());
+        } else if (collection instanceof AbstractFeatureCollection) {
+            Iterator<SimpleFeature> iterator = ((AbstractFeatureCollection) collection).iterator();
+            return new FilteredIterator<SimpleFeature>(iterator, filter());
+        } else if (collection instanceof AbstractFeatureCollection) {
+            Iterator<SimpleFeature> iterator = ((AdaptorFeatureCollection) collection).iterator();
+            return new FilteredIterator<SimpleFeature>(iterator, filter());
+        } else {
+            // JG because we have an implementation of features we should
+            // choose a different base class that does not require an Iterator
+            throw new UnsupportedOperationException();
+        }
+    }
     		
 	public int size() {
 		int count = 0;
@@ -104,7 +120,9 @@ public class SubFeatureCollection extends AbstractFeatureCollection {
 			for( i = iterator(); i.hasNext(); count++) i.next();
 		}
 		finally {
-			close( i );
+			if( i instanceof FeatureIterator){
+				((FeatureIterator<?>)i).close();
+			}
 		}
 		return count;
 	}
@@ -150,7 +168,9 @@ public class SubFeatureCollection extends AbstractFeatureCollection {
 			return !iterator.hasNext();
 		}
 		finally {
-			close( iterator );
+			if( iterator instanceof FeatureIterator){
+				((FeatureIterator<?>)iterator).close();
+			}
 		}
 	}
 	
@@ -173,27 +193,16 @@ public class SubFeatureCollection extends AbstractFeatureCollection {
         }
         finally {
             progress.complete();            
-            close( iterator );
+			if( iterator instanceof FeatureIterator){
+				((FeatureIterator<?>)iterator).close();
+			}
         }
 	}	
 
 	public SimpleFeatureCollection sort(SortBy order) {
 		return new SubFeatureList( collection, filter, order );
 	}
-	
-	public boolean add(SimpleFeature o) {
-		return collection.add(o); 
-	}
-	
-	public void clear() {
-		List toDelete = DataUtilities.list( this );
-		removeAll( toDelete );
-	}
-			
-	public boolean remove(Object o) {
-		return collection.remove( o );
-	}
-	
+
     public String getID() {
     	return collection.getID();
     }

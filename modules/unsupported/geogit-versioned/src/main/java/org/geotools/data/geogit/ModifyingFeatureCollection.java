@@ -56,25 +56,6 @@ class ModifyingFeatureCollection extends
         this.attributeValues = Arrays.copyOf(attributeValues, attributeValues.length);
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public Iterator<SimpleFeature> iterator() {
-        final Iterator<SimpleFeature> original = delegate.iterator();
-        Iterator<SimpleFeature> modified = Iterators.transform(original,
-                new ModifyFunction());
-        openIterators.put(modified, original);
-        return modified;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public void close(Iterator<SimpleFeature> modifying) {
-        Iterator<SimpleFeature> original = openIterators.remove(modifying);
-        if (original != null) {
-            delegate.close(original);
-        }
-    }
-
     @Override
     public SimpleFeatureIterator features() {
 
@@ -99,11 +80,6 @@ class ModifyingFeatureCollection extends
             }
         };
         return modifying;
-    }
-
-    @Override
-    public void close(FeatureIterator<SimpleFeature> close) {
-        close.close();
     }
 
     private class ModifyFunction implements

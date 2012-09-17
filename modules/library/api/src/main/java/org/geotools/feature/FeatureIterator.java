@@ -16,6 +16,8 @@
  */
 package org.geotools.feature;
 
+import java.io.Closeable;
+
 import org.opengis.feature.Feature;
 
 /**
@@ -26,7 +28,7 @@ import org.opengis.feature.Feature;
  *
  * @source $URL$
  */
-public interface FeatureIterator<F extends Feature> {
+public interface FeatureIterator<F extends Feature> extends Closeable {
     /**
      * Does another Feature exist in this Iteration.
      * <p>
@@ -46,7 +48,8 @@ public interface FeatureIterator<F extends Feature> {
     public F next() throws java.util.NoSuchElementException;
 
     /**
-     * Required so SimpleFeatureCollection classes can implement close( FeatureIterator<SimpleFeature> ).
+     * Closes this iterator and releases any system resources associated
+     * with it.
      */
-    public void close();
+    public void close(); // default implementation here does not throw IOException
 }

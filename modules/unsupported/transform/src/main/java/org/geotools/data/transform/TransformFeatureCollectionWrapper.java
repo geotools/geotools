@@ -59,15 +59,6 @@ class TransformFeatureCollectionWrapper extends AbstractFeatureCollection {
     }
 
     @Override
-    protected void closeIterator(Iterator<SimpleFeature> close) {
-        if (close instanceof TransformFeatureIteratorWrapper) {
-            ((TransformFeatureIteratorWrapper) close).close();
-        } else if (close instanceof SimpleFeatureIterator) {
-            ((SimpleFeatureIterator) close).close();
-        }
-    }
-
-    @Override
     public int size() {
         return wrapped.size();
     }

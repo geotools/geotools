@@ -16,7 +16,6 @@
  */
 package org.geotools.data.versioning.decorator;
 
-import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.geogit.api.Ref;
@@ -26,8 +25,6 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.collection.DecoratingFeatureCollection;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
-
-import com.google.common.collect.AbstractIterator;
 
 /**
  * FeatureCollectionDecorator that assigns as {@link ResourceId} as each Feature
@@ -56,49 +53,21 @@ class ResourceIdAssigningFeatureCollection<T extends FeatureType, F extends Feat
         this.currentTypeTree = currentTypeTree;
     }
 
-    private class ResourceIdAssigningIterator extends AbstractIterator<F> {
-
-        private final Iterator<F> iterator;
-
-        public ResourceIdAssigningIterator(final Iterator<F> iterator) {
-            this.iterator = iterator;
-        }
-
-        @Override
-        protected F computeNext() {
-            if (!iterator.hasNext()) {
-                return endOfData();
-            }
-            F next = iterator.next();
-            String featureId = next.getIdentifier().getID();
-            Ref ref = currentTypeTree.get(featureId);
-            String versionId = ref == null ? null : ref.getObjectId()
-                    .toString();
-            return VersionedFeatureWrapper.wrap(next, versionId);
-        }
-
-    }
-
-    @Override
-    public Iterator<F> iterator() {
-        @SuppressWarnings("deprecation")
-        Iterator<F> iterator = delegate.iterator();
-        return new ResourceIdAssigningIterator(iterator);
-    }
-
     protected static class ResourceIdAssigningFeatureIterator<G extends Feature>
             implements FeatureIterator<G> {
 
         protected FeatureIterator<G> features;
 
-        private final FeatureSourceDecorator source;
+        //@SuppressWarnings("rawtypes")
+		//private final FeatureSourceDecorator source;
 
         private final RevTree typeTree;
 
+        @SuppressWarnings("rawtypes")
         public ResourceIdAssigningFeatureIterator(FeatureIterator<G> features,
                 FeatureSourceDecorator source, RevTree currentTypeTree) {
             this.features = features;
-            this.source = source;
+            // this.source = source;
             this.typeTree = currentTypeTree;
         }
 
@@ -123,16 +92,10 @@ class ResourceIdAssigningFeatureCollection<T extends FeatureType, F extends Feat
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public FeatureIterator<F> features() {
-        return new ResourceIdAssigningFeatureIterator(delegate.features(),
+        return new ResourceIdAssigningFeatureIterator<F>(delegate.features(),
                 store, currentTypeTree);
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public void close(Iterator<F> close) {
-        delegate.close(((ResourceIdAssigningIterator) close).iterator);
-    }
 }

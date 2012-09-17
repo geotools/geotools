@@ -135,69 +135,6 @@ public interface FeatureCollection<T extends FeatureType, F extends Feature> {
     FeatureIterator<F> features();
 
     /**
-     * Clean up after any resources associated with this FeatureIterator in a manner similar to JDO collections.
-     * </p>
-     * Example (safe) use:<pre><code>
-     * Iterator iterator = collection.iterator();
-     * try {
-     *     for( Iterator i=collection.iterator(); i.hasNext();){
-     *          Feature feature = i.hasNext();
-     *          System.out.println( feature.getID() );
-     *     }
-     * }
-     * finally {
-     *     collection.close( iterator );
-     * }
-     * </code></pre>
-     * </p>
-     * @param close
-     * @deprecated Please FeatureIterator.close()
-     */
-    public void close(FeatureIterator<F> close);
-    
-    /**
-     * Clean up after any resources associated with this itterator in a manner similar to JDO collections.
-     * </p>
-     * Example (safe) use:<pre><code>
-     * Iterator iterator = collection.iterator();
-     * try {
-     *     for( Iterator i=collection.iterator(); i.hasNext();){
-     *          Feature feature = (Feature) i.hasNext();
-     *          System.out.println( feature.getID() );
-     *     }
-     * }
-     * finally {
-     *     collection.close( iterator );
-     * }
-     * </code></pre>
-     * </p>
-     * @deprecated Please use features() to obtain a FeatureIterator
-     */
-    public void close(Iterator<F> close);
-    
-    /**
-     * Adds a listener for collection events.
-     * <p>
-     * When this collection is backed by live data the event notification
-     * will follow the guidelines outlined by FeatureListner.
-     * </p>
-     *
-     * @param listener The listener to add
-     * @throws NullPointerException If the listener is null.
-     * @deprecated Use {@link FeatureSource#addFeatureListener} to monitor change
-     */
-    void addListener(CollectionListener listener) throws NullPointerException;
-
-    /**
-     * Removes a listener for collection events.
-     *
-     * @param listener The listener to remove
-     * @throws NullPointerException If the listener is null.
-     * @deprecated Use {@link FeatureSource#removeFeatureListener} to monitor change
-     */
-    void removeListener(CollectionListener listener) throws NullPointerException;
-
-    /**
      * The schema for the child feature members of this collection.
      * <p>
      * Represents the most general FeatureType in common to all the features in this
@@ -289,85 +226,7 @@ public interface FeatureCollection<T extends FeatureType, F extends Feature> {
     
     //
     // ResourceCollection methods
-    //
-    /**
-     * An iterator over this collection, which must be closed after use.
-     * <p>
-     * Collection is not guaranteed to be ordered in any manner.
-     * </p>
-     * <p>
-     * The implementation of Collection must adhere to the rules of
-     * fail-fast concurrent modification. In addition (to allow for
-     * resource backed collections, the <code>close( Iterator )</code>
-     * method must be called.
-     * <p>
-     * </p>
-     * Example (safe) use:<pre><code>
-     * Iterator iterator = collection.iterator();
-     * try {
-     *     while( iterator.hasNext();){
-     *          Feature feature = (Feature) iterator.hasNext();
-     *          System.out.println( feature.getID() );
-     *     }
-     * }
-     * finally {
-     *     collection.close( iterator );
-     * }
-     * </code></pre>
-     * </p>
-     * @return Iterator
-     * @deprecated Please use features() to obtain a closable FeatureIterator
-     */
-    public Iterator<F> iterator();
-
-    /**
-     * Close any outstanding resources released by this resources.
-     * <p>
-     * This method should be used with great caution, it is however available
-     * to allow the use of the ResourceCollection with algorthims that are
-     * unaware of the need to close iterators after use.
-     * </p>
-     * <p>
-     * Example of using a normal Collections utility method:<pre><code>
-     * Collections.sort( collection );
-     * collection.purge();
-     * </code></pre>
-     * @deprecated Please use features() to obtain a FeatureIterator
-     */
-    public void purge();
-    
-    /**
-     * Add object to this collection. 
-     * <p>
-     * This method is often not impelmented for collections produced as the result of a query.
-     * 
-     * @return true of the element was added
-     * @see java.util.Collection#add(Object)
-     * @deprecated Assumes modification Collection in memory - use FeatureSource
-     */
-    boolean add(F obj);
-    
-    /**
-     * Add all the objects to the collection.
-     * <p>
-     * This method is often not implemented for collections produced as the results of a query.
-     * @see java.util.Collection#addAll(Collection)
-     * @deprecated Assumes modification Collection in memory - use FeatureSource
-     */
-    boolean addAll(Collection<? extends F> collection);
-
-    /**
-     * @see #addAll(Collection)
-     * @deprecated Assume modification Collection in memory - use FeatureSource
-     */
-    boolean addAll(FeatureCollection<? extends T,? extends F> resource);
-    
-    /**
-     * @see java.util.Collection#clear()
-     * @deprecated Assumes modification Collection in memory - use FeatureSource
-     */
-    void clear();
-    
+    //   
     /**
      * @see java.util.Collection#contains(Object)
      */
@@ -378,26 +237,12 @@ public interface FeatureCollection<T extends FeatureType, F extends Feature> {
      */
     boolean containsAll(Collection<?> o);
 
-    /** @see java.util.Collection#isEmpty() */
+    /**
+     * Returns <tt>true</tt> if this feature collection contains no features.
+     *
+     * @return <tt>true</tt> if this collection contains no features
+     */
     boolean isEmpty();
-    
-    /**
-     * @see java.util.Collection#remove(Object)
-     * @deprecated Assumes modification Collection in memory - use FeatureSource
-     */
-    boolean remove(Object o);
-    
-    /**
-     * @see java.util.Collection#removeAll(Collection)
-     * @deprecated Assumes modification Collection in memory - use FeatureSource
-     */
-    public boolean removeAll(Collection<?> c);
-    
-    /**
-     * @see java.util.Collection#retainAll(Collection)
-     * @deprecated Assumes modification Collection in memory - use FeatureSource
-     */
-    public boolean retainAll(Collection<?> c);
     
     /**
      * Please note this operation may be expensive when working with remote content.

@@ -23,6 +23,7 @@ import java.util.Map;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.collection.DecoratingFeatureCollection;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
@@ -32,6 +33,7 @@ import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureFactory;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
+import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.FeatureTypeFactory;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.Schema;
@@ -45,13 +47,13 @@ import org.opengis.feature.type.Schema;
  * @author Justin Deoliveira, OpenGeo
  *
  */
-public class PropertyValueCollection extends DecoratingFeatureCollection {
+public class PropertyValueCollection<T extends FeatureType, F extends Feature> extends DecoratingFeatureCollection<T,F> {
 
     static FeatureTypeFactory typeFactory = new FeatureTypeFactoryImpl();
     static FeatureFactory factory = CommonFactoryFinder.getFeatureFactory(null);
     
     AttributeDescriptor descriptor;
-    List<Schema> typeMappingProfiles = new ArrayList();
+    List<Schema> typeMappingProfiles = new ArrayList<Schema>();
     
     public PropertyValueCollection(FeatureCollection delegate, AttributeDescriptor descriptor) {
         super(delegate);
@@ -61,21 +63,16 @@ public class PropertyValueCollection extends DecoratingFeatureCollection {
     }
 
     @Override
-    public Iterator iterator() {
-        return new PropertyValueIterator(delegate.iterator());
+    public FeatureIterator features() {
+        return new PropertyValueIterator(delegate.features());
     }
-    
-    @Override
-    public void close(Iterator close) {
-        delegate.close(((PropertyValueIterator)close).it);
-    }
-    
-    class PropertyValueIterator implements Iterator {
         
-        Iterator it;
+    class PropertyValueIterator<F extends Feature> implements FeatureIterator<F> {
+        
+    	FeatureIterator<F> it;
         Feature next;
         
-        PropertyValueIterator(Iterator it) {
+        PropertyValueIterator(FeatureIterator<F> it) {
             this.it = it;
         }
 
@@ -95,8 +92,8 @@ public class PropertyValueCollection extends DecoratingFeatureCollection {
         }
 
         @Override
-        public Object next() {
-            //create a new descriptor based on teh xml type
+        public F next() {
+            //create a new descriptor based on the xml type
             AttributeType xmlType = findType(descriptor.getType().getBinding());
             if (xmlType == null) {
                 throw new RuntimeException("Unable to map attribute " + descriptor.getName() + 
@@ -113,15 +110,10 @@ public class PropertyValueCollection extends DecoratingFeatureCollection {
                 descriptor.isNillable(), descriptor.getDefaultValue());
             
             next = null;
-            return factory.createAttribute(value, newDescriptor, null);
+            return (F) factory.createAttribute(value, newDescriptor, null);
         }
 
-        @Override
-        public void remove() {
-            it.remove();
-        }
-        
-        AttributeType findType(Class binding) {
+        AttributeType findType(Class<?> binding) {
             for (Schema schema : typeMappingProfiles) {
                 for (Map.Entry<Name,AttributeType> e : schema.entrySet()) {
                     AttributeType at = e.getValue();
@@ -139,5 +131,14 @@ public class PropertyValueCollection extends DecoratingFeatureCollection {
             }
             return null;
         }
+
+		@Override
+		public void close() {
+			if( it != null ){
+				it.close();
+			}
+			it = null;
+		}
     }
+    
 }

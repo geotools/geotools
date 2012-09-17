@@ -18,6 +18,7 @@ package org.geotools.data.collection;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -28,6 +29,8 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.collection.AbstractFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.opengis.feature.Feature;
+import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -57,7 +60,7 @@ import org.opengis.geometry.BoundingBox;
  * @source $URL$
  */
 @SuppressWarnings("unchecked")
-public class ListFeatureCollection extends AbstractFeatureCollection {
+public class ListFeatureCollection extends AbstractFeatureCollection implements Collection<SimpleFeature> {
     /** wrapped list of features containing the contents */
      private List<SimpleFeature> list;
      
@@ -108,7 +111,11 @@ public class ListFeatureCollection extends AbstractFeatureCollection {
       */
      public ListFeatureCollection(SimpleFeatureCollection copy ) throws IOException {
          this( copy.getSchema() );
-         addAll(copy );
+         copy.accepts( new FeatureVisitor() {
+			public void visit(Feature feature) {
+				list.add( (SimpleFeature) feature );
+			}
+		}, null );
      }
      
      @Override
@@ -117,19 +124,14 @@ public class ListFeatureCollection extends AbstractFeatureCollection {
      }
     
      @Override
-     protected Iterator openIterator() {
-         Iterator it = list.iterator();
+     protected Iterator<SimpleFeature> openIterator() {
+         Iterator<SimpleFeature> it = list.iterator();
          return it;
-     }
-    
-     @Override
-     protected void closeIterator(Iterator close) {
-         // nothing to do there
      }
      
     @Override
     public boolean add(SimpleFeature f) {
-         //maintain the bounds
+          //maintain the bounds
           BoundingBox boundingBox = f.getBounds();
           if (bounds == null){
               bounds = new ReferencedEnvelope(
@@ -140,14 +142,14 @@ public class ListFeatureCollection extends AbstractFeatureCollection {
               bounds.expandToInclude(boundingBox.getMinX(), boundingBox.getMinY());   
               bounds.expandToInclude(boundingBox.getMaxX(), boundingBox.getMaxY());   
           }
-        return list.add(f);
+          return list.add(f);
     }
 
     @Override
     public void clear() {
-        // maintain the bounds
+        list.clear();
+    	// maintain the bounds
         bounds = null;
-        super.clear();
     }
 
     @Override
@@ -195,7 +197,7 @@ public class ListFeatureCollection extends AbstractFeatureCollection {
         @Override
         public void close() {
             if( iter instanceof FeatureIterator){
-                ((FeatureIterator)iter).close();
+                ((FeatureIterator<?>)iter).close();
             }
         }
         @Override
@@ -222,4 +224,33 @@ public class ListFeatureCollection extends AbstractFeatureCollection {
         CollectionFeatureSource temp = new CollectionFeatureSource( this );
         return temp.getFeatures(subQuery);
     }
+	@Override
+	public boolean remove(Object o) {
+		boolean removed = list.remove(o);
+		if( removed ){
+			bounds = null; // maintain the bounds
+		}
+		return removed;
+	}
+	@Override
+	public boolean addAll(Collection<? extends SimpleFeature> c) {
+		boolean changed = false;
+		for( SimpleFeature feature : c ){
+			boolean added = add( feature );
+			if( !changed && added ){
+				changed = true;
+			}
+		}
+		return changed;
+	}
+	@Override
+	public boolean removeAll(Collection<?> c) {
+		bounds = null;
+		return list.removeAll(c);
+	}
+	@Override
+	public boolean retainAll(Collection<?> c) {
+		bounds = null;
+		return list.retainAll(c);
+	}
  }

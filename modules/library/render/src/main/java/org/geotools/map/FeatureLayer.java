@@ -62,6 +62,11 @@ public class FeatureLayer extends StyleLayer {
     protected FeatureListener sourceListener;
 
     /**
+     * Flag to force ignoring all text symbolizers. 
+     */
+    private boolean hideLabels;
+
+    /**
      * Creates a new instance of FeatureLayer
      * 
      * @param featureSource
@@ -183,6 +188,31 @@ public class FeatureLayer extends StyleLayer {
     public void setQuery(Query query) {
         this.query = query;
         fireMapLayerListenerLayerChanged(MapLayerEvent.FILTER_CHANGED);
+    }
+
+    /**
+     * Determines if all text symbolizers configured for a layer should be ignored during
+     * rendering.
+     * 
+     * @return {@code true} if the text symbolizers should be ignored, or {@code false} otherwise.
+     */
+    public boolean getHideLabels() {
+        return hideLabels;
+    }
+    
+    /**
+     * Sets wheather all text symbolizers configured for a layer should be ignored during rendering.
+     * 
+     * This allows to hide all labels for the layer without changing the style.
+     * 
+     * @param hideLabels {@code true} to ignore all text symbolizers;
+     *        {@code false} to restore default behavior.
+     */
+    public void setHideLabels(boolean hideLabels) {
+        if (this.hideLabels != hideLabels) {
+            this.hideLabels = hideLabels;
+            fireMapLayerListenerLayerChanged(MapLayerEvent.STYLE_CHANGED);
+        }
     }
 
     @Override

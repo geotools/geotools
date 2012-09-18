@@ -27,6 +27,8 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.DefaultMapContext;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.MapContent;
 import org.geotools.map.MapContext;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.SLDParser;
@@ -152,6 +154,27 @@ public class LabelingTest extends TestCase {
                 - boundary, env.getMaxY() + boundary, null);
         
         RendererBaseTest.showRender("testLineLabeling", renderer, timout, env);
+    }
+
+    public void testLabelHiding() throws Exception {
+        SimpleFeatureCollection collection = createLineFeatureCollection();
+        Style style = loadStyle("lineLabels.sld");
+        assertNotNull(style);
+        MapContent map = new MapContent();
+        map.getViewport().setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
+        FeatureLayer layer = new FeatureLayer(collection, style);
+        layer.setHideLabels(true);
+        map.addLayer(layer);
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(map);
+        ReferencedEnvelope env = map.getMaxBounds();
+        int boundary = 10;
+        env = new ReferencedEnvelope(env.getMinX() - boundary, env.getMaxX() + boundary, env
+                .getMinY()
+                - boundary, env.getMaxY() + boundary, null);
+
+        RendererBaseTest.showRender("testLabelHiding", renderer, timout, env);
     }
 
 	private SimpleFeatureCollection createLineFeatureCollection() throws Exception {

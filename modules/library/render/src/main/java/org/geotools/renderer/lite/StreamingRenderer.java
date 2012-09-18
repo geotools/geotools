@@ -85,6 +85,7 @@ import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.map.MapContext;
@@ -794,7 +795,7 @@ public final class StreamingRenderer implements GTRenderer {
                 if (renderingStopRequested) {
                     return;
                 }
-                labelCache.startLayer(i+"");
+                boolean hideLabels = false;
                 
                 if (layer instanceof DirectLayer) {
                     RenderingRequest request = new RenderDirectLayerRequest(
@@ -807,18 +808,27 @@ public final class StreamingRenderer implements GTRenderer {
                     
                 } else {
                     MapLayer currLayer = new MapLayer(layer);
+                    if (layer instanceof FeatureLayer) {
+                        FeatureLayer featureLayer = (FeatureLayer) layer;
+                        hideLabels = featureLayer.getHideLabels();
+                        if (!hideLabels) {
+                            labelCache.startLayer(i + "");
+                        }
+                    }
                     try {
 
                         // extract the feature type stylers from the style object
                         // and process them
                         processStylers(graphics, currLayer, worldToScreenTransform,
-                                destinationCrs, mapExtent, screenSize, i + "");
+                                destinationCrs, mapExtent, screenSize, i + "", hideLabels);
                     } catch (Throwable t) {
                         fireErrorEvent(t);
                     }
                 }
     
-                labelCache.endLayer(i+"", graphics, screenSize);
+                if (!hideLabels) {
+                    labelCache.endLayer(i+"", graphics, screenSize);
+                }
             }
         } finally {
             try {
@@ -964,7 +974,7 @@ public final class StreamingRenderer implements GTRenderer {
             Envelope mapArea, CoordinateReferenceSystem mapCRS,
             CoordinateReferenceSystem featCrs, Rectangle screenSize,
             GeometryDescriptor geometryAttribute,
-            AffineTransform worldToScreenTransform)
+            AffineTransform worldToScreenTransform, boolean hideLabels)
             throws IllegalFilterException, IOException, FactoryException {
         FeatureCollection<FeatureType, Feature> results = null;
         Query query = new Query(Query.ALL);
@@ -993,7 +1003,7 @@ public final class StreamingRenderer implements GTRenderer {
         if (styles == null) {
             attributes = null;
         } else {
-            attributes = findStyleAttributes(styles, schema );
+            attributes = findStyleAttributes(styles, schema, hideLabels);
         }
 
         ReferencedEnvelope envelope = new ReferencedEnvelope(mapArea, mapCRS);
@@ -1444,8 +1454,8 @@ public final class StreamingRenderer implements GTRenderer {
      *         <code>layer</code>
      */
     private List<PropertyName> findStyleAttributes(LiteFeatureTypeStyle[] styles,
-            FeatureType schema) {
-        final StyleAttributeExtractor sae = new StyleAttributeExtractor();
+            FeatureType schema, boolean hideLabels) {
+        final StyleAttributeExtractor sae = new StyleAttributeExtractor(hideLabels);
 
         LiteFeatureTypeStyle lfts;
         Rule[] rules;
@@ -1919,7 +1929,7 @@ public final class StreamingRenderer implements GTRenderer {
     private void processStylers(final Graphics2D graphics,
             MapLayer currLayer, AffineTransform at,
             CoordinateReferenceSystem destinationCrs, Envelope mapArea,
-            Rectangle screenSize, String layerId) throws Exception {
+            Rectangle screenSize, String layerId, boolean hideLabels) throws Exception {
         /*
          * DJB: changed this a wee bit so that it now does the layer query AFTER
          * it has evaluated the rules for scale inclusion. This makes it so that
@@ -1975,7 +1985,7 @@ public final class StreamingRenderer implements GTRenderer {
                 inMemoryGeneralization = true;
                 Query query = getLayerQuery(currLayer, featureSource, schema,
                         uniform, mapArea, destinationCrs, sourceCrs, screenSize,
-                        geometryAttribute, at);
+                        geometryAttribute, at, hideLabels);
                 FeatureCollection rawFeatures;
                 if(transform != null) {
                     GridEnvelope2D ge = new GridEnvelope2D(screenSize);
@@ -2008,10 +2018,10 @@ public final class StreamingRenderer implements GTRenderer {
                 // finally, perform rendering
                 if(isOptimizedFTSRenderingEnabled() && lfts.size() > 1) {
                     drawOptimized(graphics, currLayer, at, destinationCrs, layerId, null, features,
-                            scaleRange, uniform);
+                            scaleRange, uniform, hideLabels);
                 } else {
                     drawPlain(graphics, currLayer, at, destinationCrs, layerId, null, features,
-                            scaleRange, uniform);
+                            scaleRange, uniform, hideLabels);
                 }
             }
         } else {
@@ -2030,10 +2040,10 @@ public final class StreamingRenderer implements GTRenderer {
             // finally, perform rendering
             if(isOptimizedFTSRenderingEnabled() && lfts.size() > 1) {
                 drawOptimized(graphics, currLayer, at, destinationCrs, layerId, collection, null,
-                        scaleRange, lfts);
+                        scaleRange, lfts, hideLabels);
             } else {
                 drawPlain(graphics, currLayer, at, destinationCrs, layerId, collection, null,
-                        scaleRange, lfts);
+                        scaleRange, lfts, hideLabels);
             }
         }
     }
@@ -2483,7 +2493,8 @@ public final class StreamingRenderer implements GTRenderer {
      */
     private void drawPlain(final Graphics2D graphics, MapLayer currLayer, AffineTransform at,
             CoordinateReferenceSystem destinationCrs, String layerId, Collection collection,
-            FeatureCollection features, final NumberRange scaleRange, final List lfts) {
+            FeatureCollection features, final NumberRange scaleRange, final List lfts,
+            boolean hideLabels) {
         final LiteFeatureTypeStyle[] fts_array = (LiteFeatureTypeStyle[]) lfts
         .toArray(new LiteFeatureTypeStyle[lfts.size()]);
 
@@ -2499,7 +2510,7 @@ public final class StreamingRenderer implements GTRenderer {
                 return; // nothing to do
 
             try {
-                boolean clone = isCloningRequired(currLayer, fts_array);
+                boolean clone = isCloningRequired(currLayer, fts_array, hideLabels);
                 RenderableFeature rf = new RenderableFeature(currLayer, clone);
                 // loop exit condition tested inside try catch
                 // make sure we test hasNext() outside of the try/cath that follows, as that
@@ -2509,7 +2520,7 @@ public final class StreamingRenderer implements GTRenderer {
                 while (iterator.hasNext() && !renderingStopRequested) {
                     try {
                         rf.setFeature(iterator.next());
-                        process(rf, liteFeatureTypeStyle, scaleRange, at, destinationCrs, layerId);
+                        process(rf, liteFeatureTypeStyle, scaleRange, at, destinationCrs, layerId, hideLabels);
                     } catch (Throwable tr) {
                         fireErrorEvent(tr);
                     }
@@ -2532,7 +2543,8 @@ public final class StreamingRenderer implements GTRenderer {
      */
     private void drawOptimized(final Graphics2D graphics, MapLayer currLayer, AffineTransform at,
             CoordinateReferenceSystem destinationCrs, String layerId, Collection collection,
-            FeatureCollection features, final NumberRange scaleRange, final List lfts) {
+            FeatureCollection features, final NumberRange scaleRange, final List lfts,
+            boolean hideLabels) {
         Iterator iterator = null;
         if( collection != null ) iterator = collection.iterator();        
         if( features != null ) iterator = features.iterator();
@@ -2543,7 +2555,7 @@ public final class StreamingRenderer implements GTRenderer {
         .toArray(new LiteFeatureTypeStyle[lfts.size()]);
 
         try {
-            boolean clone = isCloningRequired(currLayer, fts_array);
+            boolean clone = isCloningRequired(currLayer, fts_array, hideLabels);
             RenderableFeature rf = new RenderableFeature(currLayer, clone);
             // loop exit condition tested inside try catch
             // make sure we test hasNext() outside of the try/cath that follows, as that
@@ -2556,7 +2568,7 @@ public final class StreamingRenderer implements GTRenderer {
                     // draw the feature on the main graphics and on the eventual extra image buffers
                     for (LiteFeatureTypeStyle liteFeatureTypeStyle : fts_array) {
                         rf.setScreenMap(liteFeatureTypeStyle.screenMap);
-                        process(rf, liteFeatureTypeStyle, scaleRange, at, destinationCrs, layerId);
+                        process(rf, liteFeatureTypeStyle, scaleRange, at, destinationCrs, layerId, hideLabels);
 
                     }
                 } catch (Throwable tr) {
@@ -2581,7 +2593,7 @@ public final class StreamingRenderer implements GTRenderer {
     /**
      * Tells if geometry cloning is required or not
      */
-    private boolean isCloningRequired(MapLayer layer, LiteFeatureTypeStyle[] lfts) {
+    private boolean isCloningRequired(MapLayer layer, LiteFeatureTypeStyle[] lfts, boolean hideLabels) {
         // check if the features are detached, we can thus modify the geometries in place
         final Set<Key> hints = layer.getFeatureSource().getSupportedHints();
         if(!hints.contains(Hints.FEATURE_DETACHED))
@@ -2592,7 +2604,7 @@ public final class StreamingRenderer implements GTRenderer {
         // Just one geometry transformation over an attribute -> we can modify geometries in place
         // Two tx over the same attribute, or straight usage and a tx -> we have to preserve the 
         // original geometry as well, thus we need cloning
-        StyleAttributeExtractor extractor = new StyleAttributeExtractor();
+        StyleAttributeExtractor extractor = new StyleAttributeExtractor(hideLabels);
         FeatureType featureType = layer.getFeatureSource().getSchema();
         Set<String> plainGeometries = new java.util.HashSet<String>();
         Set<String> txGeometries = new java.util.HashSet<String>();
@@ -2637,7 +2649,7 @@ public final class StreamingRenderer implements GTRenderer {
      */
     private void process(RenderableFeature rf, LiteFeatureTypeStyle fts,
             NumberRange scaleRange, AffineTransform at,
-            CoordinateReferenceSystem destinationCrs, String layerId)
+            CoordinateReferenceSystem destinationCrs, String layerId, boolean hideLabels)
             throws Exception {
         boolean doElse = true;
         Rule[] elseRuleList = fts.elseRules;
@@ -2653,7 +2665,7 @@ public final class StreamingRenderer implements GTRenderer {
 
             if (filter == null || filter.evaluate(rf.content)) {
                 doElse = false;
-                processSymbolizers(graphics, rf, r.symbolizers(), scaleRange, at, destinationCrs, layerId);
+                processSymbolizers(graphics, rf, r.symbolizers(), scaleRange, at, destinationCrs, layerId, hideLabels);
             }
         }
 
@@ -2663,7 +2675,7 @@ public final class StreamingRenderer implements GTRenderer {
                 r = elseRuleList[tt];
 
                 processSymbolizers(graphics, rf, r.symbolizers(), scaleRange,
-                        at, destinationCrs, layerId);
+                        at, destinationCrs, layerId, hideLabels);
 
             }
         }
@@ -2693,7 +2705,7 @@ public final class StreamingRenderer implements GTRenderer {
     private void processSymbolizers(final Graphics2D graphics,
             final RenderableFeature drawMe, final List<Symbolizer> symbolizers,
             NumberRange scaleRange, AffineTransform at,
-            CoordinateReferenceSystem destinationCrs, String layerId)
+            CoordinateReferenceSystem destinationCrs, String layerId, boolean hideLabels)
             throws Exception {
         
         for (Symbolizer symbolizer : symbolizers) {
@@ -2747,8 +2759,10 @@ public final class StreamingRenderer implements GTRenderer {
                 }
                 
                 if (symbolizer instanceof TextSymbolizer && drawMe.content instanceof Feature) {
-                    labelCache.put(layerId, (TextSymbolizer) symbolizer, (Feature) drawMe.content,
-                            shape, scaleRange);
+                    if (!hideLabels) {
+                        labelCache.put(layerId, (TextSymbolizer) symbolizer, (Feature) drawMe.content,
+                                shape, scaleRange);
+                    }
                 } else {
                     Style2D style = styleFactory.createStyle(drawMe.content,
                             symbolizer, scaleRange);

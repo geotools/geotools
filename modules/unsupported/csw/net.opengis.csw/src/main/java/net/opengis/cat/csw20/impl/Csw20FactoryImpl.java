@@ -33,6 +33,7 @@ import net.opengis.cat.csw20.EmptyType;
 import net.opengis.cat.csw20.GetCapabilitiesType;
 import net.opengis.cat.csw20.GetDomainResponseType;
 import net.opengis.cat.csw20.GetDomainType;
+import net.opengis.cat.csw20.GetRecordByIdResponseType;
 import net.opengis.cat.csw20.GetRecordByIdType;
 import net.opengis.cat.csw20.GetRecordsResponseType;
 import net.opengis.cat.csw20.GetRecordsType;
@@ -149,6 +150,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
             case Csw20Package.RECORD_TYPE: return createRecordType();
             case Csw20Package.SIMPLE_LITERAL: return createSimpleLiteral();
             case Csw20Package.SUMMARY_RECORD_TYPE: return createSummaryRecordType();
+            case Csw20Package.GET_RECORD_BY_ID_RESPONSE_TYPE: return createGetRecordByIdResponseType();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -614,6 +616,16 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
     public SummaryRecordType createSummaryRecordType() {
         SummaryRecordTypeImpl summaryRecordType = new SummaryRecordTypeImpl();
         return summaryRecordType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public GetRecordByIdResponseType createGetRecordByIdResponseType() {
+        GetRecordByIdResponseTypeImpl getRecordByIdResponseType = new GetRecordByIdResponseTypeImpl();
+        return getRecordByIdResponseType;
     }
 
     /**

@@ -2415,6 +2415,52 @@ public interface Csw20Package extends EPackage {
     int SUMMARY_RECORD_TYPE_FEATURE_COUNT = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 10;
 
     /**
+     * The meta object id for the '{@link net.opengis.cat.csw20.impl.GetRecordByIdResponseTypeImpl <em>Get Record By Id Response Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see net.opengis.cat.csw20.impl.GetRecordByIdResponseTypeImpl
+     * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getGetRecordByIdResponseType()
+     * @generated
+     */
+    int GET_RECORD_BY_ID_RESPONSE_TYPE = 45;
+
+    /**
+     * The feature id for the '<em><b>Abstract Record Group</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int GET_RECORD_BY_ID_RESPONSE_TYPE__ABSTRACT_RECORD_GROUP = 0;
+
+    /**
+     * The feature id for the '<em><b>Abstract Record</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int GET_RECORD_BY_ID_RESPONSE_TYPE__ABSTRACT_RECORD = 1;
+
+    /**
+     * The feature id for the '<em><b>Any</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int GET_RECORD_BY_ID_RESPONSE_TYPE__ANY = 2;
+
+    /**
+     * The number of structural features of the '<em>Get Record By Id Response Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int GET_RECORD_BY_ID_RESPONSE_TYPE_FEATURE_COUNT = 3;
+
+    /**
      * The meta object id for the '{@link net.opengis.cat.csw20.ElementSetType <em>Element Set Type</em>}' enum.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2422,7 +2468,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getElementSetType()
      * @generated
      */
-    int ELEMENT_SET_TYPE = 45;
+    int ELEMENT_SET_TYPE = 46;
 
     /**
      * The meta object id for the '{@link net.opengis.cat.csw20.ResultType <em>Result Type</em>}' enum.
@@ -2432,7 +2478,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getResultType()
      * @generated
      */
-    int RESULT_TYPE = 46;
+    int RESULT_TYPE = 47;
 
     /**
      * The meta object id for the '<em>Type Name List Type</em>' data type.
@@ -2442,7 +2488,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getTypeNameListType()
      * @generated
      */
-    int TYPE_NAME_LIST_TYPE = 47;
+    int TYPE_NAME_LIST_TYPE = 48;
 
     /**
      * The meta object id for the '<em>Service Type</em>' data type.
@@ -2452,7 +2498,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getServiceType()
      * @generated
      */
-    int SERVICE_TYPE = 48;
+    int SERVICE_TYPE = 49;
 
     /**
      * The meta object id for the '<em>Type Name List Type 1</em>' data type.
@@ -2462,7 +2508,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getTypeNameListType_1()
      * @generated
      */
-    int TYPE_NAME_LIST_TYPE_1 = 49;
+    int TYPE_NAME_LIST_TYPE_1 = 50;
 
     /**
      * The meta object id for the '<em>Service Type 1</em>' data type.
@@ -2472,7 +2518,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getServiceType_1()
      * @generated
      */
-    int SERVICE_TYPE_1 = 50;
+    int SERVICE_TYPE_1 = 51;
 
     /**
      * The meta object id for the '<em>Version Type</em>' data type.
@@ -2482,7 +2528,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getVersionType()
      * @generated
      */
-    int VERSION_TYPE = 51;
+    int VERSION_TYPE = 52;
 
 
     /**
@@ -2493,7 +2539,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getCalendar()
      * @generated
      */
-    int CALENDAR = 52;
+    int CALENDAR = 53;
 
 
     /**
@@ -2504,7 +2550,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getSet()
      * @generated
      */
-    int SET = 53;
+    int SET = 54;
 
 
     /**
@@ -2515,7 +2561,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getURI()
      * @generated
      */
-    int URI = 54;
+    int URI = 55;
 
 
     /**
@@ -2526,7 +2572,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getQName()
      * @generated
      */
-    int QNAME = 55;
+    int QNAME = 56;
 
 
     /**
@@ -2537,7 +2583,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getDuration()
      * @generated
      */
-    int DURATION = 56;
+    int DURATION = 57;
 
 
     /**
@@ -2548,7 +2594,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getMap()
      * @generated
      */
-    int MAP = 57;
+    int MAP = 58;
 
 
     /**
@@ -2558,7 +2604,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getSortByArray()
      * @generated
      */
-    int SORT_BY_ARRAY = 58;
+    int SORT_BY_ARRAY = 59;
 
 
     /**
@@ -4435,6 +4481,49 @@ public interface Csw20Package extends EPackage {
     EReference getSummaryRecordType_BoundingBox();
 
     /**
+     * Returns the meta object for class '{@link net.opengis.cat.csw20.GetRecordByIdResponseType <em>Get Record By Id Response Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Get Record By Id Response Type</em>'.
+     * @see net.opengis.cat.csw20.GetRecordByIdResponseType
+     * @generated
+     */
+    EClass getGetRecordByIdResponseType();
+
+    /**
+     * Returns the meta object for the attribute list '{@link net.opengis.cat.csw20.GetRecordByIdResponseType#getAbstractRecordGroup <em>Abstract Record Group</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute list '<em>Abstract Record Group</em>'.
+     * @see net.opengis.cat.csw20.GetRecordByIdResponseType#getAbstractRecordGroup()
+     * @see #getGetRecordByIdResponseType()
+     * @generated
+     */
+    EAttribute getGetRecordByIdResponseType_AbstractRecordGroup();
+
+    /**
+     * Returns the meta object for the containment reference list '{@link net.opengis.cat.csw20.GetRecordByIdResponseType#getAbstractRecord <em>Abstract Record</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference list '<em>Abstract Record</em>'.
+     * @see net.opengis.cat.csw20.GetRecordByIdResponseType#getAbstractRecord()
+     * @see #getGetRecordByIdResponseType()
+     * @generated
+     */
+    EReference getGetRecordByIdResponseType_AbstractRecord();
+
+    /**
+     * Returns the meta object for the attribute list '{@link net.opengis.cat.csw20.GetRecordByIdResponseType#getAny <em>Any</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute list '<em>Any</em>'.
+     * @see net.opengis.cat.csw20.GetRecordByIdResponseType#getAny()
+     * @see #getGetRecordByIdResponseType()
+     * @generated
+     */
+    EAttribute getGetRecordByIdResponseType_Any();
+
+    /**
      * Returns the meta object for enum '{@link net.opengis.cat.csw20.ElementSetType <em>Element Set Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -6088,6 +6177,40 @@ public interface Csw20Package extends EPackage {
          * @generated
          */
         EReference SUMMARY_RECORD_TYPE__BOUNDING_BOX = eINSTANCE.getSummaryRecordType_BoundingBox();
+
+        /**
+         * The meta object literal for the '{@link net.opengis.cat.csw20.impl.GetRecordByIdResponseTypeImpl <em>Get Record By Id Response Type</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see net.opengis.cat.csw20.impl.GetRecordByIdResponseTypeImpl
+         * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getGetRecordByIdResponseType()
+         * @generated
+         */
+        EClass GET_RECORD_BY_ID_RESPONSE_TYPE = eINSTANCE.getGetRecordByIdResponseType();
+
+        /**
+         * The meta object literal for the '<em><b>Abstract Record Group</b></em>' attribute list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute GET_RECORD_BY_ID_RESPONSE_TYPE__ABSTRACT_RECORD_GROUP = eINSTANCE.getGetRecordByIdResponseType_AbstractRecordGroup();
+
+        /**
+         * The meta object literal for the '<em><b>Abstract Record</b></em>' containment reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference GET_RECORD_BY_ID_RESPONSE_TYPE__ABSTRACT_RECORD = eINSTANCE.getGetRecordByIdResponseType_AbstractRecord();
+
+        /**
+         * The meta object literal for the '<em><b>Any</b></em>' attribute list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute GET_RECORD_BY_ID_RESPONSE_TYPE__ANY = eINSTANCE.getGetRecordByIdResponseType_Any();
 
         /**
          * The meta object literal for the '{@link net.opengis.cat.csw20.ElementSetType <em>Element Set Type</em>}' enum.

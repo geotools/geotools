@@ -242,5 +242,10 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//SummaryRecordType/spatial"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference csw20.ecore#//SummaryRecordType/boundingBox"/>
     </genClasses>
+    <genClasses ecoreClass="csw20.ecore#//GetRecordByIdResponseType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute csw20.ecore#//GetRecordByIdResponseType/abstractRecordGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference csw20.ecore#//GetRecordByIdResponseType/abstractRecord"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute csw20.ecore#//GetRecordByIdResponseType/any"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

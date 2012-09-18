@@ -368,6 +368,15 @@ public interface Csw20Factory extends EFactory {
     SummaryRecordType createSummaryRecordType();
 
     /**
+     * Returns a new object of class '<em>Get Record By Id Response Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Get Record By Id Response Type</em>'.
+     * @generated
+     */
+    GetRecordByIdResponseType createGetRecordByIdResponseType();
+
+    /**
      * Returns the package supported by this factory.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

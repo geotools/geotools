@@ -34,6 +34,7 @@ import org.geotools.map.event.MapLayerEvent;
 import org.geotools.map.event.MapLayerListener;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
+import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.style.FeatureTypeStyle;
@@ -72,6 +73,11 @@ public abstract class Layer {
      * Flag to record that {@linkplain #preDispose()} has been called.
      */
     private boolean preDispose;
+
+    /**
+     * Layer opacity if specified.
+     */
+    private Float opacity;
 
     /**
      * Map of application supplied information.
@@ -382,6 +388,35 @@ public abstract class Layer {
         if (added && listenerList.size() == 1) {
             // when first listener added we can start listening to data
             connectDataListener(true);
+        }
+    }
+
+    /**
+     * Determines layer opacity as used during rendering.
+     * 
+     * @return opacity value (0.0 for fully transparent, 1.0 for fully opaque) or {@code null} if
+     *         no opacity should be applied.
+     */
+    public Float getOpacity() {
+        return opacity;
+    }
+
+    /**
+     * Sets layer opacity which should be used during rendering.
+     * 
+     * The opacity (if set) is applied to the whole layer image, after it has been rendered.
+     * 
+     * @param opacity opacity value (0.0 for fully transparent layer, 1.0 for fully opaque) or
+     *        {@code null} if default rendering should be used. 
+     */
+    public void setOpacity(Float opacity) {
+        Float prevOpacity = this.opacity;
+        if (opacity != null) {
+            opacity = Math.min(1.0f, Math.max(0.0f, opacity));
+        }
+        this.opacity = opacity;
+        if (!Utilities.equals(prevOpacity, opacity)) {
+            fireMapLayerListenerLayerChanged(MapLayerEvent.STYLE_CHANGED);
         }
     }
 

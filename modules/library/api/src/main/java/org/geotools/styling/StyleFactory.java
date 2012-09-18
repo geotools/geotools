@@ -49,6 +49,8 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
 
     public ExternalGraphic createExternalGraphic(String uri, String format);
 
+    public ExternalGraphic createExternalGraphic(Icon inlineContent, String format);
+
     public AnchorPoint createAnchorPoint(Expression x, Expression y);
 
     public Displacement createDisplacement(Expression x, Expression y);

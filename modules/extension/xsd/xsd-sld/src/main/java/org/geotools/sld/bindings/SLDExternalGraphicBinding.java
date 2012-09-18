@@ -58,7 +58,7 @@ import org.geotools.xml.*;
  * @source $URL$
  */
 public class SLDExternalGraphicBinding extends AbstractComplexBinding {
-    StyleFactory styleFactory;
+    protected StyleFactory styleFactory;
 
     public SLDExternalGraphicBinding(StyleFactory styleFactory) {
         this.styleFactory = styleFactory;

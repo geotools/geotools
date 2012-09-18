@@ -16,6 +16,7 @@
  */
 package org.geotools.renderer.lite;
 
+import java.net.URL;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -280,6 +281,16 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
                     if(gs instanceof ExternalGraphic) {
                         ExternalGraphic eg = (ExternalGraphic) gs;
                         String location = eg.getLocation().toExternalForm();
+                        if (location == null) {
+                            Icon icon = eg.getInlineContent();
+                            if(icon != null) {
+                                int size = Math.max(icon.getIconHeight(), icon.getIconWidth());
+                                if(size > buffer) {
+                                    buffer = size;
+                                }
+                                return;
+                            }
+                        }
                         // expand embedded cql expression
                         Expression expanded = ExpressionExtractor.extractCqlExpressions(location);
                         // if not a literal there is an attribute dependency

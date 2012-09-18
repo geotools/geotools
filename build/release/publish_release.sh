@@ -69,13 +69,10 @@ rsync -ave "ssh -i $SF_PK" *.zip $SF_USER@$SF_HOST:"/home/pfs/project/g/ge/geoto
 
 popd > /dev/null
 
-# merge the tag release branch into main release branch and tag it
-git checkout rel_$branch
-git merge -Xtheirs -m "Merging rel_$tag into rel_$branch" rel_$tag
+# tag the release branch
 git tag $tag
 
-# push them up
-git push origin rel_$branch
+# push up tag
 git push origin $tag
 
 popd > /dev/null

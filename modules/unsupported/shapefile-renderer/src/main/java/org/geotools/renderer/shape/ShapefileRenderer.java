@@ -1451,7 +1451,7 @@ public class ShapefileRenderer implements GTRenderer {
                 FeatureLayer featureLayer = (FeatureLayer) currLayer.toLayer();
                 hideLabels = featureLayer.getHideLabels();
                 if (!hideLabels) {
-                    labelCache.startLayer(i+"");
+                    labelCache.startLayer(i+"", featureLayer.getLabelOpacity());
                 }
             }
 

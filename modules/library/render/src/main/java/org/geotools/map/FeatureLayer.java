@@ -29,6 +29,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.event.MapLayerEvent;
 import org.geotools.referencing.CRS;
 import org.geotools.styling.Style;
+import org.geotools.util.Utilities;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.geometry.Envelope;
@@ -65,6 +66,11 @@ public class FeatureLayer extends StyleLayer {
      * Flag to force ignoring all text symbolizers. 
      */
     private boolean hideLabels;
+
+    /**
+     * Label opacity if specified.
+     */
+    private Float labelOpacity;
 
     /**
      * Creates a new instance of FeatureLayer
@@ -211,6 +217,37 @@ public class FeatureLayer extends StyleLayer {
     public void setHideLabels(boolean hideLabels) {
         if (this.hideLabels != hideLabels) {
             this.hideLabels = hideLabels;
+            fireMapLayerListenerLayerChanged(MapLayerEvent.STYLE_CHANGED);
+        }
+    }
+
+    /**
+     * Determines layer's labels opacity as used during rendering.
+     *
+     * @return opacity value (0.0 for fully transparent, 1.0 for fully opaque) or {@code null} if
+     *         no opacity should be applied.
+     */
+    public Float getLabelOpacity() {
+        return labelOpacity;
+    }
+
+    /**
+     * Sets layer's labels opacity which should be used during rendering.
+     *
+     * The opacity (if set) is applied to already rendered labels in a single step.
+     * It does not change the opacity level of used TextSymbolizers but rather acts as
+     * a postprocessing step for already rendered labels.
+     *
+     * @param labelOpacity opacity value (0.0 for fully transparent labels, 1.0 for fully opaque) or
+     *        {@code null} if default rendering should be used. 
+     */
+    public void setLabelOpacity(Float labelOpacity) {
+        Float prevOpacity = this.labelOpacity;
+        if (labelOpacity != null) {
+            labelOpacity = Math.min(1.0f, Math.max(0.0f, labelOpacity));
+        }
+        this.labelOpacity = labelOpacity;
+        if (!Utilities.equals(prevOpacity, labelOpacity)) {
             fireMapLayerListenerLayerChanged(MapLayerEvent.STYLE_CHANGED);
         }
     }

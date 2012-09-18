@@ -812,7 +812,7 @@ public final class StreamingRenderer implements GTRenderer {
                         FeatureLayer featureLayer = (FeatureLayer) layer;
                         hideLabels = featureLayer.getHideLabels();
                         if (!hideLabels) {
-                            labelCache.startLayer(i + "");
+                            labelCache.startLayer(i + "", featureLayer.getLabelOpacity());
                         }
                     }
                     try {

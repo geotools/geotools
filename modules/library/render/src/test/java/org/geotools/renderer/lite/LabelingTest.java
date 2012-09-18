@@ -176,6 +176,27 @@ public class LabelingTest extends TestCase {
 
         RendererBaseTest.showRender("testLabelHiding", renderer, timout, env);
     }
+    
+    public void testLabelOpacity() throws Exception {
+        SimpleFeatureCollection collection = createLineFeatureCollection();
+        Style style = loadStyle("lineLabels.sld");
+        assertNotNull(style);
+        MapContent map = new MapContent();
+        map.getViewport().setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
+        FeatureLayer layer = new FeatureLayer(collection, style);
+        layer.setLabelOpacity(0.2f);
+        map.addLayer(layer);
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(map);
+        ReferencedEnvelope env = map.getMaxBounds();
+        int boundary = 10;
+        env = new ReferencedEnvelope(env.getMinX() - boundary, env.getMaxX() + boundary, env
+                .getMinY()
+                - boundary, env.getMaxY() + boundary, null);
+
+        RendererBaseTest.showRender("testLabelOpacity", renderer, timout, env);
+    }
 
 	private SimpleFeatureCollection createLineFeatureCollection() throws Exception {
         AttributeDescriptor[] types = new AttributeDescriptor[2];

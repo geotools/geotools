@@ -48,8 +48,9 @@ public interface LabelCache {
 	 * set of active layers.
 	 * 
 	 * @param layerId an id for the layer
+     * @param labelOpacity label opacity for the layer ({@link org.geotools.map.FeatureLayer#setLabelOpacity(Float)})
 	 */
-	void startLayer(String layerId);
+	void startLayer(String layerId, Float labelOpacity);
 	
 	/**
 	 * Puts a Label in the cache.

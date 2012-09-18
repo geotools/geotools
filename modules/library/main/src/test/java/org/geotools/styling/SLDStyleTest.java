@@ -17,6 +17,8 @@
 package org.geotools.styling;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,7 +52,10 @@ import org.opengis.filter.spatial.Disjoint;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Polygon;
+import org.opengis.style.GraphicalSymbol;
 
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
 
 /**
  * Try out our SLD parser and see how well it does.
@@ -733,5 +738,85 @@ public class SLDStyleTest extends TestCase {
         assertNotNull(fts.getTransformation());
         Function tx = (Function) fts.getTransformation();
         assertEquals("union", tx.getName());
+    }
+
+    public void testParseBase64EncodedContent() throws Exception {
+        ExternalGraphic graphic = getGraphic("base64.sld");
+        assertNotNull(graphic.getInlineContent());
+        assertEquals("image/png", graphic.getFormat());
+        assertNull(graphic.getLocation());
+        assertImagesEqual(getReferenceImage("test.png"), graphic.getInlineContent());
+    }
+
+    public void testInvalidInlineContent() throws Exception {
+        ExternalGraphic graphic = getGraphic("invalid-content.sld");
+        assertNotNull(graphic.getInlineContent());
+        assertEquals("image/png", graphic.getFormat());
+        assertNull(graphic.getLocation());
+        assertEquals(1, graphic.getInlineContent().getIconWidth());
+        assertEquals(1, graphic.getInlineContent().getIconHeight());
+    }
+
+    public void testUnsuppotedInlineContentEncoding() throws Exception {
+        ExternalGraphic graphic = getGraphic("unsupported-encoding.sld");
+        assertNotNull(graphic.getInlineContent());
+        assertEquals("image/svg", graphic.getFormat());
+        assertNull(graphic.getLocation());
+        assertEquals(1, graphic.getInlineContent().getIconWidth());
+        assertEquals(1, graphic.getInlineContent().getIconHeight());
+    }
+
+    private BufferedImage getReferenceImage(String resourceName) throws IOException {
+        URL url = TestData.getResource(this, resourceName);
+        return ImageIO.read(url);
+    }
+
+    private ExternalGraphic getGraphic(String resourceName) throws IOException {
+        URL surl = TestData.getResource(this, resourceName);
+        SLDParser stylereader = new SLDParser(sf, surl);
+
+        Style[] styles = stylereader.readXML();
+        assertEquals(1, styles.length);
+        assertEquals(1, styles[0].featureTypeStyles().size());
+        assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
+
+        Rule r = styles[0].featureTypeStyles().get(0).rules().get(0);
+        assertEquals(1, r.getSymbolizers().length);
+        
+        PolygonSymbolizer symbolizer = (PolygonSymbolizer)r.getSymbolizers()[0];
+
+        Fill fill = symbolizer.getFill();
+        assertNotNull(fill);
+
+        Graphic graphicFill = fill.getGraphicFill();
+        assertNotNull(graphicFill);
+        
+        assertEquals(1, graphicFill.graphicalSymbols().size());
+
+        GraphicalSymbol symbol = graphicFill.graphicalSymbols().get(0);
+        assertTrue(symbol instanceof ExternalGraphic);
+        return (ExternalGraphic) symbol;
+    }
+
+    private static void assertImagesEqual(BufferedImage expected, Icon icon) {
+        BufferedImage actual = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = actual.createGraphics();
+        try {
+            icon.paintIcon(null, g, 0, 0);
+        }
+        finally {
+            g.dispose();
+        }
+        
+        assertNotNull(expected);
+        assertEquals(expected.getWidth(), actual.getWidth());
+        assertEquals(expected.getHeight(), actual.getHeight());
+        int w = actual.getWidth();
+        int h = actual.getHeight();
+        for (int x = 0; x < w; ++x) {
+            for (int y = 0; y < h; ++y) {
+                assertEquals("mismatch at (" + x + ", " + y + ")", actual.getRGB(x, y), expected.getRGB(x, y));
+            }
+        }
     }
 }

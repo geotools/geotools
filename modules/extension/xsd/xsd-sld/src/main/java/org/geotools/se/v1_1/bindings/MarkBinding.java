@@ -26,8 +26,8 @@ import org.geotools.styling.Mark;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xml.*;
 import org.opengis.filter.FilterFactory;
-import org.w3c.dom.Document;
 
+import javax.swing.Icon;
 import javax.xml.namespace.QName;
 
 /**
@@ -98,7 +98,7 @@ public class MarkBinding extends SLDMarkBinding {
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Mark mark = (Mark) super.parse(instance, node, value);
         
-        if (mark.getWellKnownName() == null) {
+        if (node.getChildValue("WellKnownName") == null) {
             String format = (String) node.getChildValue("Format");
             int markIndex = -1;
             
@@ -113,10 +113,9 @@ public class MarkBinding extends SLDMarkBinding {
                     new OnLineResourceImpl((URI)node.getChildValue("OnlineResource")), format, markIndex);
             }
             else if (node.hasChild("InlineContent")) {
-                //TODO: implement this
-                if (true) throw new UnsupportedOperationException("");
-                InlineContent ic = (InlineContent) node.getChildValue("InlineContent");
-                //emark = styleFactory.externalMark(inline);
+                Icon ic = (Icon) node.getChildValue("InlineContent");
+                emark = styleFactory.externalMark(ic);
+                emark.setFormat((String) node.getChildValue("Format"));
             }
             
             mark.setExternalMark(emark);

@@ -36,6 +36,7 @@ import net.opengis.cat.csw20.EmptyType;
 import net.opengis.cat.csw20.GetCapabilitiesType;
 import net.opengis.cat.csw20.GetDomainResponseType;
 import net.opengis.cat.csw20.GetDomainType;
+import net.opengis.cat.csw20.GetRecordByIdResponseType;
 import net.opengis.cat.csw20.GetRecordByIdType;
 import net.opengis.cat.csw20.GetRecordsResponseType;
 import net.opengis.cat.csw20.GetRecordsType;
@@ -403,6 +404,13 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * @generated
      */
     private EClass summaryRecordTypeEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass getRecordByIdResponseTypeEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -2137,6 +2145,42 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EClass getGetRecordByIdResponseType() {
+        return getRecordByIdResponseTypeEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getGetRecordByIdResponseType_AbstractRecordGroup() {
+        return (EAttribute)getRecordByIdResponseTypeEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getGetRecordByIdResponseType_AbstractRecord() {
+        return (EReference)getRecordByIdResponseTypeEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getGetRecordByIdResponseType_Any() {
+        return (EAttribute)getRecordByIdResponseTypeEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EEnum getElementSetType() {
         return elementSetTypeEEnum;
     }
@@ -2505,6 +2549,11 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         createEReference(summaryRecordTypeEClass, SUMMARY_RECORD_TYPE__SPATIAL);
         createEReference(summaryRecordTypeEClass, SUMMARY_RECORD_TYPE__BOUNDING_BOX);
 
+        getRecordByIdResponseTypeEClass = createEClass(GET_RECORD_BY_ID_RESPONSE_TYPE);
+        createEAttribute(getRecordByIdResponseTypeEClass, GET_RECORD_BY_ID_RESPONSE_TYPE__ABSTRACT_RECORD_GROUP);
+        createEReference(getRecordByIdResponseTypeEClass, GET_RECORD_BY_ID_RESPONSE_TYPE__ABSTRACT_RECORD);
+        createEAttribute(getRecordByIdResponseTypeEClass, GET_RECORD_BY_ID_RESPONSE_TYPE__ANY);
+
         // Create enums
         elementSetTypeEEnum = createEEnum(ELEMENT_SET_TYPE);
         resultTypeEEnum = createEEnum(RESULT_TYPE);
@@ -2791,6 +2840,11 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         initEReference(getSummaryRecordType_Abstract(), this.getSimpleLiteral(), null, "abstract", null, 0, -1, SummaryRecordType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getSummaryRecordType_Spatial(), this.getSimpleLiteral(), null, "spatial", null, 0, -1, SummaryRecordType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getSummaryRecordType_BoundingBox(), theOws10Package.getBoundingBoxType(), null, "boundingBox", null, 0, -1, SummaryRecordType.class, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+
+        initEClass(getRecordByIdResponseTypeEClass, GetRecordByIdResponseType.class, "GetRecordByIdResponseType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getGetRecordByIdResponseType_AbstractRecordGroup(), theEcorePackage.getEFeatureMapEntry(), "abstractRecordGroup", null, 0, -1, GetRecordByIdResponseType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getGetRecordByIdResponseType_AbstractRecord(), this.getAbstractRecordType(), null, "abstractRecord", null, 0, -1, GetRecordByIdResponseType.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+        initEAttribute(getGetRecordByIdResponseType_Any(), theEcorePackage.getEFeatureMapEntry(), "any", null, 0, -1, GetRecordByIdResponseType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize enums and add enum literals
         initEEnum(elementSetTypeEEnum, ElementSetType.class, "ElementSetType");
@@ -3967,7 +4021,40 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
            source, 
            new String[] {
              "name", "ResultType"
-           });			
+           });					
+        addAnnotation
+          (getRecordByIdResponseTypeEClass, 
+           source, 
+           new String[] {
+             "name", "GetRecordsByIdType",
+             "kind", "elementOnly"
+           });		
+        addAnnotation
+          (getGetRecordByIdResponseType_AbstractRecordGroup(), 
+           source, 
+           new String[] {
+             "kind", "group",
+             "name", "AbstractRecord:group",
+             "namespace", "##targetNamespace"
+           });		
+        addAnnotation
+          (getGetRecordByIdResponseType_AbstractRecord(), 
+           source, 
+           new String[] {
+             "kind", "element",
+             "name", "AbstractRecord",
+             "namespace", "##targetNamespace",
+             "group", "AbstractRecord:group"
+           });		
+        addAnnotation
+          (getGetRecordByIdResponseType_Any(), 
+           source, 
+           new String[] {
+             "kind", "elementWildcard",
+             "wildcards", "##other",
+             "name", ":2",
+             "processing", "strict"
+           });
     }
 
 } //Csw20PackageImpl

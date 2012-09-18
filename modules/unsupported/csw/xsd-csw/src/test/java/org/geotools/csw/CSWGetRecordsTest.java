@@ -8,14 +8,18 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import net.opengis.cat.csw20.AbstractRecordType;
 import net.opengis.cat.csw20.ElementSetNameType;
 import net.opengis.cat.csw20.ElementSetType;
+import net.opengis.cat.csw20.GetRecordByIdResponseType;
 import net.opengis.cat.csw20.GetRecordByIdType;
 import net.opengis.cat.csw20.GetRecordsType;
 import net.opengis.cat.csw20.QueryConstraintType;
 import net.opengis.cat.csw20.QueryType;
+import net.opengis.cat.csw20.RecordType;
 import net.opengis.cat.csw20.ResultType;
 
+import org.eclipse.emf.common.util.EList;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.xml.Parser;
 import org.junit.Test;
@@ -115,5 +119,15 @@ public class CSWGetRecordsTest {
         assertEquals(new URI("REC-10"), ids.get(0));
         assertEquals(new URI("REC-11"), ids.get(1));
         assertEquals(new URI("REC-12"), ids.get(2));
+    }
+    
+    @Test 
+    public void testParseGetRecordsByIdResponse() throws Exception {
+        GetRecordByIdResponseType response = (GetRecordByIdResponseType) parser.parse(getClass().getResourceAsStream(
+                "GetRecordByIdResponse.xml"));
+        assertNotNull(response);
+        EList<AbstractRecordType> records = response.getAbstractRecord();
+        assertEquals(1, records.size());
+        RecordType record = (RecordType) records.get(0);
     }
 }

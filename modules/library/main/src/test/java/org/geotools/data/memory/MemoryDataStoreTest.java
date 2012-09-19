@@ -955,30 +955,6 @@ public class MemoryDataStoreTest extends DataTestCase {
         assertEquals(riverBounds, all.getBounds());
     }
 
-    public void testGetBoundsSupportsFeaturesWithoutGeometry() throws Exception {
-        SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(data.getSchema("road"));
-        featureBuilder.init(roadFeatures[0]);
-        featureBuilder.set("geom", null);
-        SimpleFeature feature = featureBuilder.buildFeature("road.rd0");
-        data.addFeature(feature);
-
-        SimpleFeatureSource road = data.getFeatureSource("road");
-        assertEquals(roadBounds, road.getBounds(Query.ALL));
-    }
-
-    public void testGetBoundsSupportsEmptyBounds() throws Exception {
-        SimpleFeatureType type = DataUtilities.createType(getName() + ".test",
-                "id:0,geom:LineString,name:String");
-        SimpleFeature[] features = new SimpleFeature[3];
-        features[0] = SimpleFeatureBuilder.build(type, new Object[] {1, null, "r1"}, "test.f1");
-        features[1] = SimpleFeatureBuilder.build(type, new Object[] {2, null, "r2"}, "test.f2");
-        features[2] = SimpleFeatureBuilder.build(type, new Object[] {3, null, "r3"}, "test.f3");
-        data.addFeatures(features);
-
-        SimpleFeatureSource featureSource = data.getFeatureSource("test");
-        assertTrue(featureSource.getBounds(Query.ALL).isEmpty());
-    }
-
     //
     // Feature Store Testing
     //

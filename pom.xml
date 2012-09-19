@@ -1281,6 +1281,9 @@
         <configuration> 
           <prefix>build</prefix>
           <failOnNoGitDirectory>false</failOnNoGitDirectory>
+
+          <!-- needed for filtering with VERSION.txt -->
+          <skipPoms>false</skipPoms>
         </configuration> 
       </plugin>
 

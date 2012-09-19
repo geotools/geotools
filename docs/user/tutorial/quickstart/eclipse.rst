@@ -257,7 +257,7 @@ Tips:
 * If maven has trouble downloading any jar; you can try again by selecting
   :menuselection:`Project --> Update All Maven Dependencies`.
   
-  If it really cannot connect you will need to switch to |version|-SNAPSHOT and add the following
+  If it really cannot connect you will need to switch to |branch|-SNAPSHOT and add the following
   snap shot repository.
     
   .. literalinclude:: artifacts/pom2.xml
@@ -364,7 +364,7 @@ Here are some additional challenges for you to try:
 * Important: GeoTools is an active open source project - you can quickly use maven to try out the
   latest nightly build by changing your pom.xml file to use a "SNAPSHOT" release.
   
-  At the time of writing |version|-SNAPSHOT is under active development.
+  At the time of writing |branch|-SNAPSHOT is under active development.
 
   .. literalinclude:: artifacts/pom2.xml
    :language: xml

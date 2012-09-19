@@ -165,14 +165,6 @@ zip -r $target/geotools-$tag-doc.zip apidocs
 popd > /dev/null
 popd > /dev/null
 
-# build the user docs
-pushd docs > /dev/null
-mvn $MAVEN_FLAGS install
-pushd target/user > /dev/null
-zip -r $target/geotools-$tag-userguide.zip html
-popd > /dev/null
-popd > /dev/null
-
 # copy over the artifacts
 if [ ! -e $DIST_PATH ]; then
   mkdir -p $DIST_PATH

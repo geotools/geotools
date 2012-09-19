@@ -202,3 +202,7 @@ latex_documents = [
 
 # If false, no module index is generated.
 #latex_use_modindex = True
+
+rst_epilog = """
+.. |branch| replace:: %s
+""" % branch

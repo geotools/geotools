@@ -2,6 +2,7 @@
 
 # error out if any statements fail
 set -e
+set -x
 
 function usage() {
   echo "$0 [options] <tag> <branch> <user> <email>"

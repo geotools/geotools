@@ -84,6 +84,7 @@ import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Converters;
 import org.geotools.util.Utilities;
+import org.opengis.filter.sort.SortOrder;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -1088,6 +1089,10 @@ public class Utils {
     public static final boolean DEFAULT_COLOR_EXPANSION_BEHAVIOR = false;
 
     public static final TimeZone UTC_TIME_ZONE = TimeZone.getTimeZone("UTC");
+
+	static final String DESCENDING_ORDER_IDENTIFIER = " D"; //SortOrder.DESCENDING.identifier();
+
+	static final String ASCENDING_ORDER_IDENTIFIER = " A"; //SortOrder.ASCENDING.identifier();
     
     /**
      * Private constructor to initialize the ehCache instance.

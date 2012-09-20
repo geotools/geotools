@@ -159,10 +159,21 @@ class RasterLayerRequest {
 
 	private List<?> elevation;
 	
-	private Filter filter = null;
+	private Filter filter;
+
+	/** Sort clause on shapefile attributes.*/
+	private String sortClause;
 
 	public List<?> getElevation() {
 		return elevation;
+	}
+
+	public String getSortClause() {
+		return sortClause;
+	}
+
+	public void setSortClause(String sortClause) {
+		this.sortClause = sortClause;
 	}
 
 	public Filter getFilter() {
@@ -493,6 +504,19 @@ class RasterLayerRequest {
         	if(value==null)
         		return;
             readType = param.booleanValue() ? ReadType.JAI_IMAGEREAD: ReadType.DIRECT_READ;
+            return;
+        }
+
+        // //
+        //
+        // Sort clause
+        //
+        // //
+        if (name.equals(ImageMosaicFormat.SORT_BY.getName())) {
+            final Object value = param.getValue();
+            if(value==null)
+                return;
+            sortClause = param.stringValue();
             return;
         }
 

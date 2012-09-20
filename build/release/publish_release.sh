@@ -65,7 +65,10 @@ dir=`echo $tag | sed 's/\([0-9]*\)\.\([0-9]*\).*/\1/g'`
 
 pushd $DIST_PATH/$tag > /dev/null
 
-ssh -i $SF_PK $SF_USER@$SF_HOST mkdir -p "/home/pfs/project/g/ge/geotools/GeoTools\ $dir\ Releases"
+#JD: disabling this for now... i think something recently changes on the sf
+# server in that we can't use ssh directly to log in, need to find an 
+# to this command for remotely creating a directory on the server
+#ssh -i $SF_PK $SF_USER@$SF_HOST mkdir -p "/home/pfs/project/g/ge/geotools/GeoTools\ $dir\ Releases"
 rsync -ave "ssh -i $SF_PK" *.zip $SF_USER@$SF_HOST:"/home/pfs/project/g/ge/geotools/GeoTools\ $dir\ Releases/$tag/"
 
 popd > /dev/null

@@ -148,6 +148,20 @@ public final class Utilities {
      */
     private Utilities() {
     }
+    
+    /**
+     * Casts passed value to inferred type T.
+     * 
+     * Can be used to eliminate usge of {@code @SuppressWarnings("unchecked")} in code.
+     * 
+     * @param obj an object to be cast to type T.
+     *          
+     * @return the object cast to type T. 
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T cast(Object obj) {
+        return (T)obj;
+    }
 
     /**
      * Returns {@code true} if the given booleans are equals. This overloaded flavor is provided

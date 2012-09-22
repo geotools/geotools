@@ -29,6 +29,7 @@ import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.DirectColorModel;
 import java.awt.image.IndexColorModel;
+import java.awt.image.MultiPixelPackedSampleModel;
 import java.awt.image.PackedColorModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
@@ -40,9 +41,11 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -1758,6 +1761,45 @@ public class ImageWorker {
     }
 
     /**
+     * Replaces all occurences of the given colors (usually opaque) by a fully transparent color.
+     * Currents implementation supports image backed by any {@link IndexColorModel}, or by
+     * {@link ComponentColorModel} with {@link DataBuffer#TYPE_BYTE TYPE_BYTE}.
+     *
+     * @param transparentColors Colors to make transparent.
+     * @return this image worker.
+     *
+     * @throws IllegalStateException if the current {@linkplain #image} has an unsupported color
+     *         model.
+     */
+    public final ImageWorker makeColorsTransparent(Set<Color> transparentColors)
+            throws IllegalStateException {
+        if (transparentColors == null || transparentColors.isEmpty()) {
+            return this;
+        }
+        if (transparentColors.size() == 1) {
+            Color color = transparentColors.iterator().next();
+            return makeColorTransparent(color);
+        }
+
+        if (image.getSampleModel() instanceof MultiPixelPackedSampleModel) {
+            forceComponentColorModel();
+        }
+
+        ColorModel cm = image.getColorModel();
+        if (cm instanceof IndexColorModel) {
+            return maskIndexColorModel(transparentColors);
+        }
+        if (cm instanceof ComponentColorModel) {
+            switch (image.getSampleModel().getDataType()) {
+                case DataBuffer.TYPE_BYTE: {
+                    return maskComponentColorModelByte(transparentColors);
+                }
+            }
+        }
+        throw new IllegalStateException(Errors.format(ErrorKeys.UNSUPPORTED_DATA_TYPE));
+    }
+
+    /**
      * For an image backed by an {@link IndexColorModel}, replaces all occurences of the given
      * color (usually opaque) by a fully transparent color.
      *
@@ -1765,7 +1807,7 @@ public class ImageWorker {
      * @return this image worker.
      *
      */
-    private final ImageWorker maskIndexColorModel(final Color transparentColor) {
+    private final ImageWorker maskIndexColorModel(final Set<Color> transparentColors) {
         assert image.getColorModel() instanceof IndexColorModel;
 
         // Gets informations about the provided images.
@@ -1774,13 +1816,13 @@ public class ImageWorker {
         int       transparency      = cm.getTransparency();
         int       transparencyIndex = cm.getTransparentPixel();
         final int mapSize           = cm.getMapSize();
-        final int transparentRGB    = transparentColor.getRGB() & 0x00FFFFFF;
         /*
          * Optimization in case of Transparency.BITMASK.
          * If the color we want to use as the fully transparent one is the same
          * that is actually used as the transparent color, we leave doing nothing.
          */
-        if (transparency == Transparency.BITMASK && transparencyIndex != -1) {
+        if (transparency == Transparency.BITMASK && transparencyIndex != -1 && transparentColors.size() == 1) {
+            int transparentRGB = transparentColors.iterator().next().getRGB() & 0x00FFFFFF;
             int transpColor = cm.getRGB(transparencyIndex) & 0x00FFFFFF;
             if (transpColor == transparentRGB) {
                 return this;
@@ -1795,11 +1837,8 @@ public class ImageWorker {
         for (int i=0; i<mapSize; i++) {
             // Gets the color for this pixel removing the alpha information.
             final int color = cm.getRGB(i) & 0xFFFFFF;
-            if (transparentRGB == color) {
+            if (transparentColors.contains(new Color(color))) {
                 transparentPixelsIndexes.add(i);
-                if (Transparency.BITMASK == transparency) {
-                    break;
-                }
             }
         }
         final int found = transparentPixelsIndexes.size();
@@ -1847,6 +1886,10 @@ public class ImageWorker {
         return this;
     }
 
+    private final ImageWorker maskIndexColorModel(final Color transparentColor) {
+        return maskIndexColorModel(Collections.singleton(transparentColor));
+    }
+
     /**
      * For an image backed by an {@link ComponentColorModel}, replaces all occurences
      * of the given color (usually opaque) by a fully transparent color.
@@ -1865,7 +1908,7 @@ public class ImageWorker {
      * depends on statistics on pixel values) and avoid unwanted side-effect like turning black
      * color (RGB = 0,0,0) to transparent one. It would also be easier to maintain I believe.
      */
-    private final ImageWorker maskComponentColorModelByte(final Color transparentColor) {
+    private final ImageWorker maskComponentColorModelByte(final Set<Color> transparentColors) {
         assert image.getColorModel() instanceof ComponentColorModel;
         assert image.getSampleModel().getDataType() == DataBuffer.TYPE_BYTE;
         /*
@@ -1920,21 +1963,29 @@ public class ImageWorker {
         if (singleStep) {
             final byte[] data = tableData[0];
             Arrays.fill(data, (byte) 255);
-            data[transparentColor.getRed()] = 0;
+            for (Color color : transparentColors) {
+                data[color.getRed()] = 0;
+            }
         } else {
             switch (numColorBands) {
                 case 3: 
                 	Arrays.fill(tableData[2], (byte) 255);
-                	tableData[2][transparentColor.getBlue() ] = 0; // fall through
-                	
-                case 2: 
+                	for (Color color : transparentColors) {
+                	    tableData[2][color.getBlue()] = 0;
+                	}
+                	// fall through
+                case 2:
                 	Arrays.fill(tableData[1], (byte) 255);
-                	tableData[1][transparentColor.getGreen()] = 0; // fall through
-                	
-                case 1: 
-                	Arrays.fill(tableData[0], (byte)   255);
-                	tableData[0][transparentColor.getRed()  ] = 0; // fall through
-                	
+                	for (Color color : transparentColors) {
+                	    tableData[1][color.getGreen()] = 0;
+                	}
+                	// fall through
+                case 1:
+                	Arrays.fill(tableData[0], (byte) 255);
+                	for (Color color : transparentColors) {
+                	    tableData[0][color.getRed()] = 0;
+                	}
+                	// fall through
                 case 0: break;
             }
         }
@@ -1968,6 +2019,10 @@ public class ImageWorker {
         
         invalidateStatistics();
         return this;
+    }
+
+    private ImageWorker maskComponentColorModelByte(final Color transparentColor) {
+        return maskComponentColorModelByte(Collections.singleton(transparentColor));
     }
 
     /**

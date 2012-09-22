@@ -185,6 +185,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                 new GeneralParameterDescriptor[]{
         		READ_GRIDGEOMETRY2D,
         		INPUT_TRANSPARENT_COLOR,
+                INPUT_TRANSPARENT_COLORS,
                 OUTPUT_TRANSPARENT_COLOR,
                 USE_JAI_IMAGEREAD,
                 BACKGROUND_VALUES,

@@ -21,6 +21,7 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -46,6 +47,7 @@ import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.geometry.XRectangle2D;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
+import org.geotools.util.Utilities;
 import org.opengis.filter.Filter;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.Envelope;
@@ -123,6 +125,8 @@ class RasterLayerRequest {
     private boolean empty;
 
 	private Color inputTransparentColor=AbstractGridFormat.INPUT_TRANSPARENT_COLOR.getDefaultValue();;
+
+	private Set<Color> inputTransparentColors=AbstractGridFormat.INPUT_TRANSPARENT_COLORS.getDefaultValue();
 
 	private boolean blend=ImageMosaicFormat.FADING.getDefaultValue();
 
@@ -346,6 +350,11 @@ class RasterLayerRequest {
 	
 			} 
 	
+            if (name.equals(AbstractGridFormat.INPUT_TRANSPARENT_COLORS.getName())) {
+                inputTransparentColors = Utilities.cast(value);
+                continue;
+            }
+
 			if (name.equals(ImageMosaicFormat.FADING.getName())) {
 	        	if(value==null)
 	        		continue;
@@ -550,6 +559,11 @@ class RasterLayerRequest {
 			return;
 
 		} 
+
+        if (name.equals(AbstractGridFormat.INPUT_TRANSPARENT_COLORS.getName())) {
+            inputTransparentColors = Utilities.cast(param.getValue());
+            return;
+        }
 
 		if (name.equals(ImageMosaicFormat.FADING.getName())) {
         	final Object value = param.getValue();
@@ -1285,6 +1299,10 @@ class RasterLayerRequest {
 	public Color getInputTransparentColor() {
 		return inputTransparentColor;
 	}
+
+    public Set<Color> getInputTransparentColors() {
+        return inputTransparentColors;
+    }
 
 	public Color getOutputTransparentColor() {
 		return outputTransparentColor;

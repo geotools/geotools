@@ -49,7 +49,7 @@ public class MouseDragBox extends MouseInputAdapter {
      * 
      * @param component the component on which the box will be drawn
      */
-    MouseDragBox(JComponent component) {
+    public MouseDragBox(JComponent component) {
         parentComponent = component;
         rect = new Rectangle();
         dragged = false;
@@ -62,7 +62,7 @@ public class MouseDragBox extends MouseInputAdapter {
      * 
      * @param state {@code true} to enable; {@code false} to disable
      */
-    void setEnabled(boolean state) {
+    public void setEnabled(boolean state) {
         enabled = state;
     }
 

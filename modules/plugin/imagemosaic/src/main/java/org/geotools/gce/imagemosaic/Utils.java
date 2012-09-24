@@ -1430,6 +1430,10 @@ public class Utils {
     static final double AFFINE_IDENTITY_EPS = 1E-6;
 
     public static final boolean DEFAULT_COLOR_EXPANSION_BEHAVIOR = false;
+
+	static final String DESCENDING_ORDER_IDENTIFIER = " D"; //SortOrder.DESCENDING.identifier();
+
+	static final String ASCENDING_ORDER_IDENTIFIER = " A"; //SortOrder.ASCENDING.identifier();
     
     /**
      * Private constructor to initialize the ehCache instance.

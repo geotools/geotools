@@ -84,7 +84,6 @@ import org.opengis.referencing.datum.PixelInCell;
  *
  * @source $URL$
  */
-@SuppressWarnings("deprecation")
 public class ImageMosaicReaderTest extends Assert{
 
     private final static Logger LOGGER = Logger.getLogger(ImageMosaicReaderTest.class.toString());

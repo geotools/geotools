@@ -893,6 +893,7 @@ public class ImageMosaicReaderTest extends Assert{
         GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {ggp, bgp});
         assertNotNull(coverage);
         assertTrue(coverage.getEnvelope2D().intersects((Rectangle2D) env));
+        assertTrue(coverage.getEnvelope2D().intersects(env.getBounds2D()));
         
         // and that the color is the expected one given the background values provided
         RenderedImage ri = coverage.getRenderedImage();
@@ -929,6 +930,7 @@ public class ImageMosaicReaderTest extends Assert{
         System.out.println(coverage.getEnvelope2D());
         System.out.println(env);
         assertTrue(coverage.getEnvelope2D().contains((Rectangle2D) env));
+        assertTrue(coverage.getEnvelope2D().contains(env.getBounds2D()));
         
         // and that the color is the expected one given the background values provided
         RenderedImage ri = coverage.getRenderedImage();

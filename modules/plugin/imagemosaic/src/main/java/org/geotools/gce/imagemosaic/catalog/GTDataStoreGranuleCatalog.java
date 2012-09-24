@@ -485,13 +485,17 @@ class GTDataStoreGranuleCatalog extends AbstractGranuleCatalog {
 				it.close();
 			}
 			
+			// visiting the features from the underlying store
 			final DefaultProgressListener listener= new DefaultProgressListener();
 			features.accepts( new AbstractFeatureVisitor(){
 			    public void visit( Feature feature ) {
 			        if(feature instanceof SimpleFeature)
 			        {
+			        	// get the feature
 			        	final SimpleFeature sf= (SimpleFeature) feature;
 			        	final GranuleDescriptor granule;
+			        	
+			        	// caching by granule's location
 			        	synchronized (granuleDescriptorsCache) {
 			        	    String granuleLocation = (String) sf.getAttribute(locationAttribute);
                                             if(granuleDescriptorsCache.containsKey(granuleLocation)){

@@ -20,14 +20,18 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -38,19 +42,50 @@ import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.data.Query;
+import org.geotools.factory.Hints;
+import org.geotools.filter.SortByImpl;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.test.OnlineTestCase;
 import org.geotools.test.TestData;
 import org.geotools.util.NumberRange;
 import org.junit.Test;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.sort.SortBy;
+import org.opengis.filter.sort.SortOrder;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 
 /**
+ * Testing index in postgis database
  * @author Simone Giannecchini, GeoSolutions SAS
  *
  */
 public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
+	
+	/**
+	 * Simple Class for better testing raster manager
+	 * @author Simone Giannecchini, GeoSolutions SAS
+	 *
+	 */
+	private static class MyImageMosaicReader extends ImageMosaicReader{
+
+		public MyImageMosaicReader(Object source) throws IOException {
+			super(source);
+		}
+
+		public MyImageMosaicReader(Object source, Hints uHints)
+				throws IOException {
+			super(source, uHints);
+		}
+		
+		public RasterManager getRasterManager(){
+			return rasterManager;
+		}
+		
+	}
 
 	@Override
 	protected Properties createExampleFixture() {
@@ -84,6 +119,7 @@ public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
 	 * 
 	 * @throws Exception
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void testPostgisIndexing() throws Exception{
     	final File workDir=new File(TestData.file(this, "."),"watertemp4");
@@ -133,8 +169,8 @@ public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
 		final String elevationMetadata = reader.getMetadataValue("ELEVATION_DOMAIN");
 		assertNotNull(elevationMetadata);
 		assertEquals(2,elevationMetadata.split(",").length);
-	        assertEquals(Double.parseDouble(elevationMetadata.split(",")[0]),Double.parseDouble(reader.getMetadataValue("ELEVATION_DOMAIN_MINIMUM")),1E-6);
-	        assertEquals(Double.parseDouble(elevationMetadata.split(",")[1]),Double.parseDouble(reader.getMetadataValue("ELEVATION_DOMAIN_MAXIMUM")),1E-6);
+	    assertEquals(Double.parseDouble(elevationMetadata.split(",")[0]),Double.parseDouble(reader.getMetadataValue("ELEVATION_DOMAIN_MINIMUM")),1E-6);
+	    assertEquals(Double.parseDouble(elevationMetadata.split(",")[1]),Double.parseDouble(reader.getMetadataValue("ELEVATION_DOMAIN_MAXIMUM")),1E-6);
 		
 		
 		// limit yourself to reading just a bit of it
@@ -171,16 +207,125 @@ public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
 		TestUtils.checkCoverage(reader, new GeneralParameterValue[] {gg,time,bkg ,elevation ,direct}, "Time-Elevation Test");
 		
 		reader= TestUtils.getReader(timeElevURL, format);
-                elevation.setValue(Arrays.asList(NumberRange.create(0.0,10.0)));
-        
-                // Test the output coverage
-                TestUtils.checkCoverage(reader, new GeneralParameterValue[] { gg, time, bkg, elevation,direct },
-                        "Time-Elevation Test");
+                        
+        // Test the output coverage
+		elevation.setValue(Arrays.asList(NumberRange.create(0.0,10.0)));
+        TestUtils.checkCoverage(reader, new GeneralParameterValue[] { gg, time, bkg, elevation,direct },"Time-Elevation Test");
                 
+        reader.dispose();
 
 		
 	}
 
+	/**
+	 * Complex test for Postgis indexing on db.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testSortingAndLimiting() throws Exception{
+    	final File workDir=new File(TestData.file(this, "."),"watertemp4");
+    	assertTrue(workDir.mkdir());
+    	FileUtils.copyFile(TestData.file(this, "watertemp.zip"), new File(workDir,"watertemp.zip"));
+    	TestData.unzipFile(this, "watertemp4/watertemp.zip");
+	    final URL timeElevURL = TestData.url(this, "watertemp4");
+	    
+	    //place datastore.properties file in the dir for the indexing
+	    FileWriter out=null;
+	    try{
+	    	out = new FileWriter(new File(TestData.file(this, "."),"/watertemp4/datastore.properties"));
+	    	
+	    	final Set<Object> keyset = fixture.keySet();
+	    	for(Object key:keyset){
+	    		final String key_=(String) key;
+	    		final String value=fixture.getProperty(key_);
+	    		out.write(key_.replace(" ", "\\ ")+"="+value.replace(" ", "\\ ")+"\n");
+	    	}
+	    	out.flush();
+	    } finally {
+	    	if(out!=null){
+	    		IOUtils.closeQuietly(out);
+	    	}
+	    }
+	    
+	    
+	    // now start the test
+		final AbstractGridFormat format = TestUtils.getFormat(timeElevURL);
+		assertNotNull(format);
+		ImageMosaicReader reader = TestUtils.getReader(timeElevURL, format);
+		assertNotNull(reader);
+		
+		final String[] metadataNames = reader.getMetadataNames();
+		assertNotNull(metadataNames);
+		assertEquals(metadataNames.length,10);
+		
+		assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));		
+		assertEquals("true", reader.getMetadataValue("HAS_ELEVATION_DOMAIN"));
+
+		// dispose and create new reader
+		reader.dispose();
+		final MyImageMosaicReader reader1 = new MyImageMosaicReader(timeElevURL);
+		final RasterManager rm = reader1.getRasterManager();
+		
+		// query
+		final SimpleFeatureType type = rm.granuleCatalog.getType();
+		Query query = null;
+		if (type != null){
+			// creating query
+			query= new Query(rm.granuleCatalog.getType().getTypeName());
+			
+			// sorting and limiting
+            // max number of elements
+            query.setMaxFeatures(1);
+            
+            // sorting
+            final SortBy[] clauses=new SortBy[]{
+            		new SortByImpl(FeatureUtilities.DEFAULT_FILTER_FACTORY.property("ingestion"),SortOrder.DESCENDING),
+            		new SortByImpl(FeatureUtilities.DEFAULT_FILTER_FACTORY.property("elevation"),SortOrder.ASCENDING),
+            };
+            query.setSortBy(clauses);
+			
+		}
+		
+		// checking that we get a single feature and that feature is correct
+		Collection<GranuleDescriptor> features = rm.getGranules(query);
+		assertEquals(features.size(), 1);
+		GranuleDescriptor granule=features.iterator().next();
+		SimpleFeature sf=granule.getOriginator();
+		assertNotNull(sf);
+		Object ingestion = sf.getAttribute("ingestion");
+		assertTrue(ingestion instanceof Timestamp);
+		final GregorianCalendar gc=  new GregorianCalendar(TimeZone.getTimeZone("GMT"));
+		gc.setTimeInMillis(1225497600000l);
+		assertEquals(0,(((Timestamp)ingestion).compareTo(gc.getTime())));		
+		Object elevation = sf.getAttribute("elevation");
+		assertTrue(elevation instanceof Integer);
+		assertEquals(((Integer)elevation).intValue(), 0);
+		
+		
+		
+		// Reverting order (the previous timestamp shouldn't match anymore)
+		final SortBy[] clauses=new SortBy[]{
+	                        new SortByImpl(FeatureUtilities.DEFAULT_FILTER_FACTORY.property("ingestion"),SortOrder.ASCENDING),
+	                        new SortByImpl(FeatureUtilities.DEFAULT_FILTER_FACTORY.property("elevation"),SortOrder.DESCENDING),
+	            };
+	            query.setSortBy(clauses);
+	            
+	         // checking that we get a single feature and that feature is correct
+	                features = rm.getGranules(query);
+	                assertEquals(features.size(), 1);
+	                granule=features.iterator().next();
+	                sf=granule.getOriginator();
+	                assertNotNull(sf);
+	                ingestion = sf.getAttribute("ingestion");
+	                assertTrue(ingestion instanceof Timestamp);
+	                assertNotSame(0,(((Timestamp)ingestion).compareTo(gc.getTime())));               
+	                elevation = sf.getAttribute("elevation");
+	                assertTrue(elevation instanceof Integer);
+	                assertNotSame(((Integer)elevation).intValue(), 0);
+		
+	}
+	
 	@Override
 	protected void setUpInternal() throws Exception {
 		super.setUpInternal();

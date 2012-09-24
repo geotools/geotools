@@ -69,7 +69,6 @@ import org.geotools.util.Utilities;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridCoverageReader;
-import org.opengis.coverage.grid.GridCoverageWriter;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.sort.SortBy;
@@ -107,7 +106,7 @@ import org.opengis.referencing.operation.MathTransform;
  *
  * @source $URL$
  */
-public final class ImageMosaicReader extends AbstractGridCoverage2DReader implements GridCoverageReader, GridCoverageWriter {
+public class ImageMosaicReader extends AbstractGridCoverage2DReader implements GridCoverageReader {
 
 		/** Logger. */
 	private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ImageMosaicReader.class);
@@ -918,7 +917,7 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
         if(queryCapabilities.supportsSorting(sortBy))
                 query.setSortBy(sortBy);
         else
-                manualSort=true;				
+                manualSort=true;	
         final UniqueVisitor visitor= new UniqueVisitor(attribute);
         rasterManager.granuleCatalog.computeAggregateFunction(query, visitor);
         

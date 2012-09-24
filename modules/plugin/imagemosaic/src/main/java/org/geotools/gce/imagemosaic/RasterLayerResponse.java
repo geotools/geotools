@@ -16,7 +16,6 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import jaitools.imageutils.ImageLayout2;
 import jaitools.imageutils.ROIGeometry;
 
 import java.awt.Color;
@@ -76,6 +75,7 @@ import org.geotools.data.Query;
 import org.geotools.factory.Hints;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.filter.IllegalFilterException;
+import org.geotools.filter.SortByImpl;
 import org.geotools.gce.imagemosaic.GranuleDescriptor.GranuleLoadingResult;
 import org.geotools.gce.imagemosaic.OverviewsController.OverviewLevel;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
@@ -84,6 +84,7 @@ import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.ImageLayout2;
 import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
@@ -105,6 +106,8 @@ import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.sort.SortBy;
+import org.opengis.filter.sort.SortOrder;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
@@ -133,7 +136,6 @@ class RasterLayerResponse{
 		 * 
 		 */
 		private static final long serialVersionUID = 2227219522016820587L;
-
 
 		private double nodata;
 		private double minimum;
@@ -239,7 +241,6 @@ class RasterLayerResponse{
 	/**
 	 * My specific {@link MaxVisitor} that keeps track of the feature used for the maximum.
 	 * @author Simone Giannecchini, GeoSolutions SAS
-	 *
 	 */
 	static class MaxVisitor2 extends MaxVisitor{
 
@@ -361,10 +362,10 @@ class RasterLayerResponse{
         public void visit(GranuleDescriptor granuleDescriptor, Object o) {
             // don't collect more than the specified amount of granules
             // SG20092011 this might not happen since we set the max features in the query, but 
-            // hwo knows
-            if(maxNumberOfGranules>0 &&granulesNumber >=maxNumberOfGranules) {
-                return;
-            }
+            // who knows!
+//        	if(maxNumberOfGranules>0 &&granulesNumber >=maxNumberOfGranules) {
+//                return;
+//            }
             
             //
             // load raster data
@@ -876,14 +877,19 @@ class RasterLayerResponse{
 			final boolean hasElevation=(elevations!=null && elevations.size()>0);
 			final boolean hasFilter = filter != null && !Filter.INCLUDE.equals(filter);
 
+			// create query
 			final SimpleFeatureType type = rasterManager.granuleCatalog.getType();
 			Query query = null;
 			if (type != null){
 			    query= new Query(rasterManager.granuleCatalog.getType().getTypeName());
 			    final Filter bbox=FeatureUtilities.DEFAULT_FILTER_FACTORY.bbox(FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.granuleCatalog.getType().getGeometryDescriptor().getName()),mosaicBBox);
 			    query.setFilter( bbox);
+			} else {
+				throw new IllegalStateException("GranuleCatalog feature type was null!!!");
 			}
 
+			
+			// prepare eventual filter for filtering granules
                         if(hasTime||hasElevation||hasFilter )
                         {
                                 //handle elevation indexing first since we then combine this with the max in case we are asking for current in time
@@ -970,16 +976,76 @@ class RasterLayerResponse{
                                             if(sizeTime==1)
                                                 query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.and(query.getFilter(), timeFilter.get(0)));
                                 }
-                                
-                                rasterManager.getGranules(query, visitor);
 
-                        } else {
-                                                        
-                            if(request.getMaximumNumberOfGranules()>0){
-                                query.setMaxFeatures(request.getMaximumNumberOfGranules());
-                            }
-                            rasterManager.getGranules(query, visitor);    
                         }
+
+            //
+            // handle secondary query parameters
+            //
+
+            // max number of elements
+            if(request.getMaximumNumberOfGranules()>0){
+                query.setMaxFeatures(request.getMaximumNumberOfGranules());
+            }
+
+            // sort by clause
+            final String sortByClause= request.getSortClause();
+            if(sortByClause!=null&&sortByClause.length()>0){
+            	final String[] elements=sortByClause.split(",");
+            	if(elements!=null&& elements.length>0){
+            		final List<SortBy> clauses= new ArrayList<SortBy>(elements.length);
+            		for (String element:elements){
+            			// check
+            			if(element==null||element.length()<=0){
+            				continue;// next, please!
+            			}
+            			try{
+            				// which clause?
+            				// ASCENDING
+            			element = element.trim();
+            			if(element.endsWith(Utils.ASCENDING_ORDER_IDENTIFIER)) {
+                                    String attribute = element.substring(0, element.length() - 2);
+                                    clauses.add(new SortByImpl(FeatureUtilities.DEFAULT_FILTER_FACTORY.property(attribute),SortOrder.ASCENDING));
+                            } else 
+                                    // DESCENDING
+                                    if(element.contains(Utils.DESCENDING_ORDER_IDENTIFIER)) {
+                                            String attribute = element.substring(0, element.length() - 2);
+                                            clauses.add(new SortByImpl(FeatureUtilities.DEFAULT_FILTER_FACTORY.property(attribute),SortOrder.DESCENDING));
+                            } 
+//            				if(element.startsWith(Utils.ASCENDING_ORDER_IDENTIFIER)){
+//	            				String attribute=element.substring(Utils.ASCENDING_ORDER_IDENTIFIER.length()+1);
+//	            				attribute=attribute.substring(0, attribute.length()-1);
+//	            				clauses.add(new SortByImpl(FeatureUtilities.DEFAULT_FILTER_FACTORY.property(attribute),SortOrder.ASCENDING));
+//	            			} else 
+//	            				// DESCENDING
+//	            				if(element.startsWith(Utils.DESCENDING_ORDER_IDENTIFIER)){
+//	                				String attribute=element.substring(Utils.DESCENDING_ORDER_IDENTIFIER.length()+1);
+//	                				attribute=attribute.substring(0, attribute.length()-1);
+//	                				clauses.add(new SortByImpl(FeatureUtilities.DEFAULT_FILTER_FACTORY.property(attribute),SortOrder.DESCENDING));
+//	            			} else {
+                                        else {
+	            				if(LOGGER.isLoggable(Level.FINE)){
+	            					LOGGER.fine("Ignoring sort clause :"+element);
+	            				}
+	            			}
+            			}catch (Exception e) {
+            				if(LOGGER.isLoggable(Level.INFO)){
+            					LOGGER.log(Level.INFO,e.getLocalizedMessage(),e);
+            				}
+						}
+            		}
+            		
+            		// assign to query if sorting is supported!
+            		final SortBy[] sb= clauses.toArray(new SortBy[]{});
+            		if(rasterManager.granuleCatalog.getQueryCapabilities().supportsSorting(sb)){
+            			query.setSortBy(sb);
+            		}
+            	}
+            }
+
+            // collect granules
+            rasterManager.getGranules(query, visitor);
+
 			// get those granules
 			visitor.produce();
 			

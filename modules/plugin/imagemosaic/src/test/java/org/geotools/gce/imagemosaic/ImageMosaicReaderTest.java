@@ -19,8 +19,6 @@ package org.geotools.gce.imagemosaic;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.io.File;
@@ -84,7 +82,6 @@ import org.opengis.referencing.datum.PixelInCell;
  *
  * @source $URL$
  */
-@SuppressWarnings("deprecation")
 public class ImageMosaicReaderTest extends Assert{
 
     private final static Logger LOGGER = Logger.getLogger(ImageMosaicReaderTest.class.toString());
@@ -893,7 +890,7 @@ public class ImageMosaicReaderTest extends Assert{
         // read and check we actually got a coverage in the requested area
         GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {ggp, bgp});
         assertNotNull(coverage);
-        assertTrue(coverage.getEnvelope2D().intersects(env));
+        assertTrue(coverage.getEnvelope2D().intersects(env.getBounds2D()));
         
         // and that the color is the expected one given the background values provided
         RenderedImage ri = coverage.getRenderedImage();
@@ -929,7 +926,7 @@ public class ImageMosaicReaderTest extends Assert{
         assertNotNull(coverage);
         System.out.println(coverage.getEnvelope2D());
         System.out.println(env);
-        assertTrue(coverage.getEnvelope2D().contains(env));
+        assertTrue(coverage.getEnvelope2D().contains(env.getBounds2D()));
         
         // and that the color is the expected one given the background values provided
         RenderedImage ri = coverage.getRenderedImage();

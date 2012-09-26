@@ -43,6 +43,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.map.DefaultMapContext;
+import org.geotools.referencing.CRS;
 import org.geotools.styling.SLDParser;
 import org.geotools.styling.Style;
 import org.junit.BeforeClass;
@@ -72,8 +73,9 @@ public class LabelObstacleTest {
 
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
 
+        tb.setCRS(CRS.decode("EPSG:4326", true));
+
         tb.setName("roads");
-        tb.setSRS("epsg:4326");
         tb.add("geom", LineString.class);
         tb.add("name", String.class);
         mem.createSchema(tb.buildFeatureType());

@@ -25,31 +25,26 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.opengis.feature.Feature;
 import org.opengis.filter.expression.Expression;
 
-/*
+/**
  * Adds to the well-known shapes some symbols the weathermen may find useful. 
  * 
  * @author Luca Morandini lmorandini@ieee.org
  * @version $Id$
- */
-/**
- * 
- *
- * @source $URL$
  */
 public class MeteoMarkFactory implements MarkFactory {
 
     public static final String SHAPE_PREFIX = "extshape://";
 
     /** The logger for the rendering module. */
-    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(
-            "org.geotools.rendering");
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(MeteoMarkFactory.class);
 
-    protected static Map<String, Shape> shapes = new HashMap<String, Shape>();
+    protected final static Map<String, Shape> WELLKNOWN_SHAPES = new HashMap<String, Shape>();
 
     static {
         GeneralPath gp = new GeneralPath();
@@ -63,7 +58,7 @@ public class MeteoMarkFactory implements MarkFactory {
         gp.closePath();
         bnd= new ExplicitBoundsShape(gp);
         bnd.setBounds(new Rectangle2D.Double(-0.5, -0.5, 0.5, 0.5));
-        shapes.put("triangle", bnd);
+        WELLKNOWN_SHAPES.put("triangle", bnd);
 
         gp = new GeneralPath();
         gp.moveTo(-0.125f, 0.000f);
@@ -71,7 +66,7 @@ public class MeteoMarkFactory implements MarkFactory {
         gp.closePath();
         bnd= new ExplicitBoundsShape(gp);
         bnd.setBounds(new Rectangle2D.Double(-0.5, -0.5, 0.5, 0.5));
-        shapes.put("emicircle", bnd);
+        WELLKNOWN_SHAPES.put("emicircle", bnd);
 
         gp = new GeneralPath();
         gp.moveTo(-0.395f, 0.000f);
@@ -82,7 +77,20 @@ public class MeteoMarkFactory implements MarkFactory {
         gp.closePath();
         bnd= new ExplicitBoundsShape(gp);
         bnd.setBounds(new Rectangle2D.Double(-0.5, -0.5, 1.0, 1.0));
-        shapes.put("triangleemicircle", bnd);       
+        WELLKNOWN_SHAPES.put("triangleemicircle", bnd);     
+        
+        gp = new GeneralPath();
+        gp.moveTo(0f, 0.5f);
+        gp.lineTo(0.5, -0.5f);
+        gp.lineTo(0.1f, -0.5f);
+        gp.lineTo(0.1f, -2.0f);
+        gp.lineTo(-0.1f, -2.0f);
+        gp.lineTo(-0.1f, -0.5f);
+        gp.lineTo(-0.5f, -0.5f);
+        gp.closePath();
+        ExplicitBoundsShape narrow = new ExplicitBoundsShape(gp);
+        narrow.setBounds(new Rectangle2D.Double(-1.2, -0.3, 1, 0.6));
+        WELLKNOWN_SHAPES.put("narrow", narrow);   
      }
 
     /*
@@ -93,14 +101,24 @@ public class MeteoMarkFactory implements MarkFactory {
         // cannot handle a null url
         if(symbolUrl == null)
             return null;
-
+ 
         // see if it's a shape
+        if(LOGGER.isLoggable(Level.FINE)){
+        	LOGGER.fine("Trying to resolve symbol:"+symbolUrl.toString());
+        }
         String wellKnownName = symbolUrl.evaluate(feature, String.class);
-        if(!wellKnownName.startsWith(SHAPE_PREFIX)) {
+        if(wellKnownName==null||!wellKnownName.startsWith(SHAPE_PREFIX)) {
+            // see if it's a shape
+            if(LOGGER.isLoggable(Level.FINE)){
+            	LOGGER.fine("Unable to resolve symbol");
+            }        	
             return null;
         }
         
-        return shapes.get(wellKnownName.substring(SHAPE_PREFIX.length()));
+        if(LOGGER.isLoggable(Level.FINE)){
+        	LOGGER.fine("Resolved symbol");
+        }           
+        return WELLKNOWN_SHAPES.get(wellKnownName.substring(SHAPE_PREFIX.length()));
     }
 
 }

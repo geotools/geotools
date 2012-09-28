@@ -335,7 +335,9 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
     				if(spi instanceof H2DataStoreFactory || spi instanceof H2JNDIDataStoreFactory){
     					if(params.containsKey(H2DataStoreFactory.DATABASE.key)){
     						String dbname = (String) params.get(H2DataStoreFactory.DATABASE.key);
-    						params.put(H2DataStoreFactory.DATABASE.key,( DataUtilities.fileToURL(sourceF.getParentFile()).toExternalForm()+"/"+dbname));
+    						// H2 database URLs must not be percent-encoded: see GEOT-4262.
+    						params.put(H2DataStoreFactory.DATABASE.key,
+    						        "file:" + (new File(sourceF.getParentFile(), dbname)).getPath());
     					}
     				}   
     				

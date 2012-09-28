@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2006-2012, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This file is hereby placed into the Public Domain. This means anyone is
  *    free to do whatever they wish with this file. Use it well and enjoy!
@@ -14,24 +14,18 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Transaction;
-import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
@@ -40,9 +34,13 @@ import org.geotools.swing.data.JFileDataStoreChooser;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
+
 /**
- * This example reads data for point locations and associated attributes from a 
- * comma separated text (CSV) file and exports them as a new shapefile. It illustrates how to build a feature type.
+ * This example reads data for point locations and associated attributes from a comma separated text
+ * (CSV) file and exports them as a new shapefile. It illustrates how to build a feature type.
  * <p>
  * Note: to keep things simple in the code below the input file should not have additional spaces or
  * tabs between fields.
@@ -69,10 +67,10 @@ public class Csv2Shape {
         );
         // docs break feature collection
         /*
-         * A list to collect features as we create them.
+         * We create a FeatureCollection into which we will put each Feature created from a record
+         * in the input csv data file
          */
-        List<SimpleFeature> features = new ArrayList<SimpleFeature>();
-        
+        SimpleFeatureCollection collection = FeatureCollections.newCollection();
         /*
          * GeometryFactory will be used to create the geometry attribute of each feature (a Point
          * object for the location)
@@ -103,7 +101,7 @@ public class Csv2Shape {
                     featureBuilder.add(name);
                     featureBuilder.add(number);
                     SimpleFeature feature = featureBuilder.buildFeature(null);
-                    features.add(feature);
+                    collection.add(feature);
                 }
             }
         } finally {
@@ -142,13 +140,6 @@ public class Csv2Shape {
 
         if (featureSource instanceof SimpleFeatureStore) {
             SimpleFeatureStore featureStore = (SimpleFeatureStore) featureSource;
-            
-            /*
-             * SimpleFeatureStore has a method to add features from a
-             * SimpleFeatureCollection object, so we use the ListFeatureCollection
-             * class to wrap our list of features.
-             */
-            SimpleFeatureCollection collection = new ListFeatureCollection(TYPE, features);
 
             featureStore.setTransaction(transaction);
             try {

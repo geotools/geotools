@@ -104,11 +104,11 @@ Here we use the DataUtilities convenience class:
    :start-after: // docs break feature type
    :end-before: // docs break feature collection
 
-Read into a FeatureCollection
------------------------------
-We can now read the CSV File into a FeatureCollection; please note the following:
+Create features
+---------------
 
- * Use of FeatureCollections.newCollection() to create a FeatureCollection
+We can now read the CSV file and create a feature for each record. Please note the following:
+
  * Use of GeometryFactory to create new Points
  * Creation of features (SimpleFeature objects) using SimpleFeatureBuilder
 
@@ -117,6 +117,12 @@ We can now read the CSV File into a FeatureCollection; please note the following
       :start-after: // docs break feature collection
       :end-before: // docs break new shapefile
 
+.. note:: 
+
+  If you have used previous versions of GeoTools you might be used to creating a new
+  FeatureCollection and using the add method to accumulate features. This usage has now been
+  deprecated and we encourage you to treat FeatureCollections as immutable views or result sets.
+
 Create a shapefile From a FeatureCollection
 -------------------------------------------
 
@@ -124,7 +130,8 @@ Things to note as we create the shapefile:
 
  * Use of DataStoreFactory with a parameter indicating we want a spatial index
  * The createSchema( SimpleFeatureType ) method to set up the shapefile
- * Our SimpleFeatureType did not include map projection (coordinate reference system) information needed to make a .prj file, so we call forceSchemaCRS to do this
+ * Our SimpleFeatureType did not include map projection (coordinate reference system) information
+   needed to make a .prj file, so we call forceSchemaCRS to do this
 
  .. literalinclude:: /../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
     :language: java
@@ -134,7 +141,9 @@ Things to note as we create the shapefile:
 Write the feature data to the shapefile
 ---------------------------------------
 
-Here we use a Transaction to safely add the FeatureCollection in one go:
+Here we use a Transaction to safely add all of our features in one go. The SimpleFeatureStore that
+we use to do this expects a FeatureCollection object, so we wrap our list of features in a
+ListFeatureCollection:
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
       :language: java
@@ -146,8 +155,8 @@ This completes the main method.
 Prompt for the output shapefile
 -------------------------------
 
-This method prompts the user for an appropriate shapefile to write out to. The original csv file is used to determine a good default
-shapefile name.
+This method prompts the user for an appropriate shapefile to write out to. The original csv file is
+used to determine a good default shapefile name.
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
       :language: java

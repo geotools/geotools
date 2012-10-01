@@ -25,6 +25,10 @@ import com.vividsolutions.jts.geom.Envelope;
  * and one defined by a discrete zero-based grid
  * representing the same area as the envelope.
  * The transformation incorporates an isotropic scaling and a translation.
+ * <p>
+ * By default output values are clamped to the input envelope.
+ * This behaviour can be disabled, in which case the client
+ * must check that values are in an acceptable range.
  * 
  * @author Martin Davis - OpenGeo
  *
@@ -41,6 +45,8 @@ class GridTransform {
 
     private double dy;
 
+    private boolean isClamped = true;
+
     /**
      * Creates a new transform.
      * 
@@ -56,6 +62,17 @@ class GridTransform {
         dy = env.getHeight() / (ySize - 1);
     }
 
+    /**
+     * Sets whether to clamp outputs from transform to input envelope.
+     * Default is to clamp the outputs.
+     * 
+     * @param isClamped true if input is to be clamped
+     */
+    public void setClamp(boolean isClamped)
+    {
+        this.isClamped  = isClamped;
+    }
+    
     /**
      * Computes the X ordinate of the i'th grid column.
      * @param i the index of a grid column
@@ -84,13 +101,13 @@ class GridTransform {
      * @return the column index
      */
     public int i(double x) {
-        if (x > env.getMaxX())
+        if (isClamped && x > env.getMaxX())
             return xSize;
-        if (x < env.getMinX())
+        if (isClamped && x < env.getMinX())
             return -1;
         int i = (int) ((x - env.getMinX()) / dx);
         // have already check x is in bounds, so ensure returning a valid value
-        if (i >= xSize)
+        if (isClamped && i >= xSize)
             i = xSize - 1;
         return i;
     }
@@ -101,13 +118,13 @@ class GridTransform {
      * @return the column index
      */
     public int j(double y) {
-        if (y > env.getMaxY())
+        if (isClamped && y > env.getMaxY())
             return ySize;
-        if (y < env.getMinY())
+        if (isClamped && y < env.getMinY())
             return -1;
         int j = (int) ((y - env.getMinY()) / dy);
         // have already check x is in bounds, so ensure returning a valid value
-        if (j >= ySize)
+        if (isClamped && j >= ySize)
             j = ySize - 1;
         return j;
     }

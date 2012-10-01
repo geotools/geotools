@@ -72,6 +72,13 @@ public class HeatmapSurface {
 
     private void init() {
         gridTrans = new GridTransform(srcEnv, xSize, ySize);
+        /**
+         * Do NOT clamp transform output, since
+         * the actual target grid is larger than the source Envelope,
+         * due to the required buffering.
+         * This means that transform outputs MUST be checked for validity.
+         */
+        gridTrans.setClamp(false);
 
         int xSizeExp = xSize + 2 * kernelRadiusGrid;
         int ySizeExp = ySize + 2 * kernelRadiusGrid;

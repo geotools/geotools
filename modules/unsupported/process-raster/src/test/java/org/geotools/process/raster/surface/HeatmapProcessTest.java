@@ -47,6 +47,10 @@ public class HeatmapProcessTest {
      * A test of a simple surface, validating that the process
      * can be invoked and return a reasonable result in a simple situation.
      * 
+     * Test includes data which lies outside the heatmap buffer area, 
+     * to check that it is filtered correctly
+     * (i.e. does not cause out-of-range errors, and does not affect generated surface).
+     * 
      * @throws Exception
      */
     @Test
@@ -55,7 +59,9 @@ public class HeatmapProcessTest {
         ReferencedEnvelope bounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
         Coordinate[] data = new Coordinate[] { 
                 new Coordinate(4, 4),
-                new Coordinate(4, 6)
+                new Coordinate(4, 6),
+                // include a coordinate outside the heatmap buffer bounds, to ensure it is filtered correctly
+                new Coordinate(100, 100)
         };
         SimpleFeatureCollection fc = createPoints(data, bounds);
 

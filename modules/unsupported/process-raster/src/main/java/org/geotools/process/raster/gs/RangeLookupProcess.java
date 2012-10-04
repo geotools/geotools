@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javax.media.jai.JAI;
+import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.BandSelectDescriptor;
 
@@ -141,7 +142,10 @@ public class RangeLookupProcess implements GSProcess {
 			        "classification ranges size",size));
 		}
         // reclassify the source image
-        final RenderedOp indexedClassification = RangeLookupDescriptor.create(sourceImage, lookupTable, null);
+        ParameterBlockJAI pb = new ParameterBlockJAI("RangeLookup");
+        pb.setSource("source0", sourceImage);
+        pb.setParameter("table", lookupTable);
+        final RenderedOp indexedClassification = JAI.create("RangeLookup", pb);
         
         
         //

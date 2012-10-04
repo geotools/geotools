@@ -147,11 +147,14 @@ public class GeoJSONUtil {
         sb.append("\"").append(JSONObject.escape(string)).append("\"");
         return sb;
     }
-    
+
     public static StringBuilder entry(String key, Object value, StringBuilder sb) {
+
         string(key, sb).append(":");
         
-        if (value instanceof Number || value instanceof Boolean || value instanceof Date) {
+        if (value == null) {
+            nul(sb);
+        } else if (value instanceof Number || value instanceof Boolean || value instanceof Date) {
             literal(value, sb);
         } else {
             String str = Converters.convert(value, String.class);

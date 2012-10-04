@@ -66,9 +66,17 @@ public class FeatureJSONExtendedTest extends GeoJSONTestSupport {
         StringWriter writer = new StringWriter();
         fjson.writeFeature(feature(1, true), writer);
         
-        assertEquals(strip(featureText(1, true)), writer.toString());
+        assertEquals(strip(featureText(1, true, false)), writer.toString());
     }
     
+    public void testFeatureWriteMismatchedWithNullProperties() throws Exception {
+        StringWriter writer = new StringWriter();
+        fjson.setEncodeNullValues(true);
+        fjson.writeFeature(feature(1, true), writer);
+
+        assertEquals(strip(featureText(1, true, true)), writer.toString());
+    }
+
     SimpleFeature feature(int val) {
         return feature(val, false);
     }
@@ -91,10 +99,14 @@ public class FeatureJSONExtendedTest extends GeoJSONTestSupport {
     }
     
     String featureText(int val) {
-        return featureText(val, false);
+        return featureText(val, false, false);
+    }
+
+    String featureText(int val, boolean excludeString) {
+        return featureText(val, excludeString, false);
     }
     
-    String featureText(int val, boolean excludeString) {
+    String featureText(int val, boolean excludeString, boolean valIsNull) {
         String text = 
             "{" +
             "  'type': 'Feature'," +
@@ -106,7 +118,9 @@ public class FeatureJSONExtendedTest extends GeoJSONTestSupport {
             "     'int': " + val + "," +
             "     'double': " + (val + 0.1) + ",";
         
-        if (!excludeString) {
+        if (valIsNull) {
+            text += "     'string': null,";
+        } else if (!excludeString) {
             text += "     'string': '" + toString(val) + "',";
             
         }

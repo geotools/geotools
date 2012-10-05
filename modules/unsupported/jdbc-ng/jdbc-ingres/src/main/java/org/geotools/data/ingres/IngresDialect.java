@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import org.geotools.data.DataSourceException;
+import org.geotools.factory.Hints;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
@@ -123,13 +124,13 @@ public class IngresDialect extends PreparedStatementSQLDialect {
     }
     
     @Override
-    public void encodeGeometryColumn(GeometryDescriptor gatt, int srid,
-            StringBuffer sql) {
+    public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix,
+            int srid, Hints hints, StringBuffer sql) {
     	sql.append(" AsBinary( ");
-    	encodeColumnName(gatt.getLocalName(), sql);
+    	encodeColumnName(prefix, gatt.getLocalName(), sql);
     	sql.append(" ) ");
     }
-    
+
     @Override
     public void prepareGeometryValue(Geometry g, int srid, Class binding,
             StringBuffer sql) {
@@ -212,7 +213,7 @@ public class IngresDialect extends PreparedStatementSQLDialect {
     
     @Override
     public void encodePrimaryKey(String column, StringBuffer sql) {
-        encodeColumnName(column, sql);
+        encodeColumnName(null, column, sql);
         sql.append(" INT PRIMARY KEY");
     }
 

@@ -244,11 +244,7 @@ public class ShpFiles {
             for (ShpFilesLocker locker : lockerList) {
                 StringBuilder sb = new StringBuilder("The following locker still has a lock: ");
                 sb.append(locker);
-                if (locker.getTrace() != null) {
-                    sb.append("\nIt was created with the following stack trace:\n");
-                    sb.append(locker.getTrace());
-                }
-                LOGGER.log(logLevel, sb.toString());
+                LOGGER.log(logLevel, sb.toString(), locker.getTrace());
             }
         }
     }

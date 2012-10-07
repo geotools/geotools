@@ -236,7 +236,7 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
         this.gridShiftTransform = grid.getMathTransform();
     }
     
-    URL locateGrid(URI uri ) throws FactoryException {
+    protected URL locateGrid(URI uri ) throws FactoryException {
         String grid = uri.toString();
         for (GridShiftLocator locator : ReferencingFactoryFinder.getGridShiftLocators(null)) {
             URL result = locator.locateGrid(grid);

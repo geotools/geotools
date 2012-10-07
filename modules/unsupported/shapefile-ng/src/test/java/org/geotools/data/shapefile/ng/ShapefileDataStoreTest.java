@@ -440,11 +440,17 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         Set<String> actualFids = new HashSet<String>();
         {
             features = featureSource.getFeatures(fidFilter);
-            indexIter = features.features();
-            while (indexIter.hasNext()) {
-                SimpleFeature next = indexIter.next();
-                String id = next.getID();
-                actualFids.add(id);
+            try {
+	            indexIter = features.features();
+	            while (indexIter.hasNext()) {
+	                SimpleFeature next = indexIter.next();
+	                String id = next.getID();
+	                actualFids.add(id);
+	            }
+            } finally {
+            	if(indexIter != null) {
+            		indexIter.close();
+            	}
             }
         }
 
@@ -673,8 +679,16 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
             SimpleFeatureCollection fc = loadFeatures(sds);
 
             assertEquals(10, fc.size());
-            for (SimpleFeatureIterator i = fc.features(); i.hasNext();) {
-                assertEquals(-1, ((Integer) i.next().getAttribute(1)).byteValue());
+            SimpleFeatureIterator features = null;
+            try {
+            	features = fc.features();
+				for (SimpleFeatureIterator i = features; i.hasNext();) {
+	                assertEquals(-1, ((Integer) i.next().getAttribute(1)).byteValue());
+	            }
+            } finally {
+            	if(features != null) {
+            		features.close();
+            	}
             }
             sds.dispose();
     }
@@ -1038,6 +1052,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
                         + Arrays.asList(fromShape.getCoordinates()));
             }
         }
+        fci.close();
         tmpFile.delete();
         shapeDataStore.dispose();
     }
@@ -1178,6 +1193,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         Transaction t= new DefaultTransaction();
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer = s.getFeatureWriter(s.getTypeNames()[0], t);
         SimpleFeature feature1 = writer.next();
+        writer.close();
         s.dispose();
     }
     
@@ -1290,9 +1306,9 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         
         assertFalse(ds.indexManager.isIndexStale(fix));
         long fixMod = fixFile.lastModified();
-        shpFile.setLastModified(fixMod+1000);
+        shpFile.setLastModified(fixMod+1000000);
         assertTrue(ds.indexManager.isIndexStale(fix));
-        fixFile.setLastModified(shpFile.lastModified());
+        assertTrue(fixFile.setLastModified(shpFile.lastModified()));
         assertFalse(ds.indexManager.isIndexStale(fix));
         assertTrue(fixFile.delete());
         assertTrue(ds.indexManager.isIndexStale(fix));

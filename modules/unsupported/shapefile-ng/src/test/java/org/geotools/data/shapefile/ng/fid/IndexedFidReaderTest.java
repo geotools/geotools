@@ -101,6 +101,7 @@ public class IndexedFidReaderTest extends FIDTestCase {
                 expectedCount++;
                 expectedFids.add(next.getID());
             }
+            features.close();
             ds.dispose();
         }
 
@@ -125,6 +126,7 @@ public class IndexedFidReaderTest extends FIDTestCase {
                 expectedCount++;
                 expectedFids.add(next.getID());
             }
+            features.close();
             ds.dispose();
         }
 

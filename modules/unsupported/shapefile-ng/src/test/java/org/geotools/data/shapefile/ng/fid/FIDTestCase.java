@@ -57,8 +57,18 @@ public abstract class FIDTestCase extends TestCaseSupport {
         fixFile =  sibling(backshp, "fix");
 
         shpFiles = new ShpFiles(backshx);
-
     }
+    
+    @Override
+    protected void tearDown() throws Exception {
+    	super.tearDown();
+    }
+
+	private void cleanup(File file) {
+		if(file.exists()) {
+			assertTrue(file.delete());
+		}
+	}
     
     
 

@@ -27,6 +27,7 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.io.RandomAccessFile;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -247,11 +248,7 @@ public class ShpFiles {
             for (ShpFilesLocker locker : lockerList) {
                 StringBuilder sb = new StringBuilder("The following locker still has a lock: ");
                 sb.append(locker);
-                if(locker.getTrace() != null) {
-                    sb.append("\nIt was created with the following stack trace:\n");
-                    sb.append(locker.getTrace());
-                }
-                ShapefileDataStoreFactory.LOGGER.log(logLevel, sb.toString());
+                ShapefileDataStoreFactory.LOGGER.log(logLevel, sb.toString(), locker.getTrace());
             }
         }
     }

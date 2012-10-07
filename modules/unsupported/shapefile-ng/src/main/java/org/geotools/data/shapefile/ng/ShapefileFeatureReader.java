@@ -248,8 +248,14 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
                     dbf.close();
                 }
             } finally {
-                shp = null;
-                dbf = null;
+            	try {
+	            	if(fidReader != null) {
+	            		fidReader.close();
+	            	}
+            	} finally {
+	                shp = null;
+	                dbf = null;
+            	}
             }
         }
 

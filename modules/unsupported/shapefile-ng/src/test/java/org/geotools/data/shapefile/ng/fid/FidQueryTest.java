@@ -182,8 +182,9 @@ public class FidQueryTest extends FIDTestCase {
         try {
             assertFalse(features.hasNext());
         } finally {
-            if (features != null)
+            if (features != null) {
                 features.close();
+            }
         }
 
         this.assertFidsMatch();
@@ -203,15 +204,17 @@ public class FidQueryTest extends FIDTestCase {
             FeatureId id = fac.featureId(fid);
             Filter filter = fac.id(Collections.singleton(id));
             query.setFilter(filter);
-            SimpleFeatureIterator features = featureStore.getFeatures(query).features();
+            SimpleFeatureIterator features = null;
             try {
+            	features = featureStore.getFeatures(query).features();
                 assertTrue("Missing feature for fid " + fid, features.hasNext());
                 SimpleFeature feature = features.next();
                 assertFalse("More than one feature with fid " + fid, features.hasNext());
                 assertEquals(i + "th feature", entry.getValue(), feature);
             } finally {
-                if (features != null)
+                if (features != null) {
                     features.close();
+                }
             }
 
         }

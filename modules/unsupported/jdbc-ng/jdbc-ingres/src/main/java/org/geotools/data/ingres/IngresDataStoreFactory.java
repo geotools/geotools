@@ -85,6 +85,7 @@ public class IngresDataStoreFactory extends JDBCDataStoreFactory {
         if (database != null) {
             url.append("/").append(database);
         }
+        url.append(";autocommit_mode=multi");
         
         return url.toString();
     }

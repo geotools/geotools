@@ -36,7 +36,7 @@ public class IngresFilterToSQL extends PreparedFilterToSQL {
 	boolean looseBBOXEnabled;
 	
     public IngresFilterToSQL(IngresDialect dialect) {
-
+        super(dialect);
     }
 
     public boolean isLooseBBOXEnabled() {
@@ -167,9 +167,8 @@ public class IngresFilterToSQL extends PreparedFilterToSQL {
         out.write("(");
 
         property.accept(this, extraData);
-        out.write(", GeomFromWKB(");
+        out.write(", ");
         geometry.accept(this, extraData);
-        out.write(")");
         out.write(closingParenthesis);
         out.write(" = 1");
     }

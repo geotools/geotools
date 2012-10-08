@@ -25,7 +25,7 @@ public class IngresDataStoreFactory extends JDBCDataStoreFactory {
     public static final Param LOOSEBBOX = new Param("Loose bbox", Boolean.class, "Perform only primary filter on bbox", false, Boolean.TRUE);
     
     /** parameter for database port */
-    public static final Param PORT = new Param("port", Integer.class, "Port", true, 5432);
+    public static final Param PORT = new Param("port", String.class, "Port", true, "II7");
     
     /** parameter for database schema */
     public static final Param SCHEMA = new Param("schema", String.class, "Schema", false, null);
@@ -68,5 +68,27 @@ public class IngresDataStoreFactory extends JDBCDataStoreFactory {
     public String getDescription() {
         return "Ingres Database";
     }
+
+    @Override
+    protected String getJDBCUrl(Map params) throws IOException {
+        String host = (String) HOST.lookUp(params);
+        String port = (String) PORT.lookUp(params);
+        String database = (String) DATABASE.lookUp(params);
+        
+        StringBuilder url = new StringBuilder("jdbc:");
+        url.append(getDatabaseID());
+        url.append("://");
+        url.append(host);
+        if (port != null) {
+            url.append(":").append(port);
+        }
+        if (database != null) {
+            url.append("/").append(database);
+        }
+        
+        return url.toString();
+    }
+    
+    
 
 }

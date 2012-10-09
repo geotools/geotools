@@ -16,17 +16,34 @@
  */
 package org.geotools.data.ows;
 
+import org.geotools.factory.GeoTools;
+import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
+import org.geotools.referencing.factory.epsg.LongitudeFirstFactory;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
 
 /**
- * A pair of coordinates and a reference system that represents a section of the Earth
+ * A pair of coordinates and a reference system that represents a section of the Earth.
+ * <p>
+ * Represents one of the following:
+ * <ul>
+ * <li>EX_GeographicBoundingBox: (implicit CRS:84) limits of the enclosing rectangle in longitude and latitude decimal degrees</li>
+ * <li>BoundingBox: The BoundingBox attributes indicate the limits of the bounding box in units of the specified coordinate reference system.</li>
+ * </ul>
+ * The interpretation of the srsName is based on the version of WMS specification used:
+ * <ul>
+ * <li>After WMS 1.3.0: axis order be returned with forceXY=false</li>
+ * <li>Before WMS 1.3.0: axis order defined using forceXY=true</li>
+ * </ul>
  * 
  * @author Richard Gould
  *
@@ -41,16 +58,30 @@ public class CRSEnvelope implements Envelope {
      * code such as "EPSG:4326"
      */
     private String srsName;
-
+    
+    /** Min of axis 0 as specified by CRS */
     protected double minX;
-
+    /** Min of axis 1 as specified by CRS */
     protected double minY;
-
+    /** Max of axis 0 as specified by CRS */
     protected double maxX;
-
+    /** Max of axis 1 as specified by CRS */
     protected double maxY;
-
+    
+    /** CRS as defined my WebMapServer (CRS:84 implicit if null) */
     private CoordinateReferenceSystem crs;
+
+    /** optional spatial resolution in the units of crs */
+    protected double resX;
+    
+    /** optional spatial resolution in the units of crs */
+    protected double resY;
+    
+    /**
+     * Indicate how srsName is defined. Use <code>null</code> if unknown (will default to global GeoTools setting), <code>True</code> to forceXY axis
+     * order (used prior to WMS 1.3.0), <code>False</code> to use provided axis order (WMS 1.3.0 and later )
+     */
+    private Boolean forceXY=null;
 
     /**
      * Construct an empty BoundingBox
@@ -92,7 +123,25 @@ public class CRSEnvelope implements Envelope {
         synchronized (this) {
             if (crs == null) {
                 try {
-                    crs = CRS.decode(srsName);
+                    if( srsName != null ){
+                        if( forceXY == null ){
+                            crs = CRS.decode(srsName);
+                        }
+                        else if( forceXY == Boolean.TRUE ){
+                            crs = CRS.decode(srsName,true);
+                        }
+                        else if( srsName.startsWith("EPSG:") && Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER)){
+                            // how do we look up the unmodified axis order?
+                            String explicit = srsName.replace("EPSG:", "urn:x-ogc:def:crs:EPSG:");
+                            crs = CRS.decode(explicit,false);
+                        }
+                        else {
+                            crs = CRS.decode(srsName,false);
+                        }                        
+                    }
+                    else {
+                        crs = CRS.decode("CRS:84"); // implicit
+                    }
                 } catch (NoSuchAuthorityCodeException e) {
                     crs = DefaultEngineeringCRS.CARTESIAN_2D;
                 } catch (FactoryException e) {
@@ -104,15 +153,17 @@ public class CRSEnvelope implements Envelope {
     }
 
     /**
-     * The CRS is bounding box's Coordinate Reference System
+     * The CRS is bounding box's Coordinate Reference System.
      * 
-     * @return the CRS/SRS value
+     * @return the CRS/SRS value, or null for implicit CRS:84
      */
     public String getSRSName() {
         return srsName;
     }
 
     /**
+     * Helper method to set srsName.
+     * 
      * @see setSRSName
      */
     public void setEPSGCode(String epsgCode) {
@@ -127,13 +178,34 @@ public class CRSEnvelope implements Envelope {
     }
 
     /**
-     * The CRS is bounding box's Coordinate Reference System
-     * 
+     * The CRS is bounding box's Coordinate Reference System.
+     * <p>
+     * Examples from WMS specification:
+     * <ul>
+     * <li>CRS:84: default in lon / lat order</li>
+     * </ul>
      * @param srsName
      *            The SRSName for this envelope; usually an EPSG code
+     * @deprecated Please use setSRSName(String,boolean) to explicitly indicate axis handling
      */
-    public void setSRSName(String epsgCode) {
-        this.srsName = epsgCode;
+    public void setSRSName(String srsName) {
+        this.srsName = srsName;
+        this.forceXY=null;
+    }
+    
+    /**
+     * The CRS is bounding box's Coordinate Reference System.
+     * <p>
+     * Examples from WMS specification:
+     * <ul>
+     * <li>CRS:84: default in lon / lat order</li>
+     * </ul>
+     * @param srsName The SRSName for this envelope; usually an EPSG code
+     * @param forceXY True to forceXY axis order (used prior to WMS 1.3.0), False to use provided axis order (WMS 1.3.0 and later ) 
+     */
+    public void setSRSName(String srsName, boolean forceXY) {
+        this.srsName = srsName;
+        this.forceXY= forceXY;
     }
 
     public int getDimension() {
@@ -273,8 +345,64 @@ public class CRSEnvelope implements Envelope {
         this.minY = minY;
     }
 
+    /**
+     * Optional spatial resolution in the units of crs.
+     * @return spatial resolutionm, or Double.NaN if not provided
+     */
+    public double getResX() {
+        return resX;
+    }
+
+    /**
+     * Optional spatial resolution in the units of crs.
+     * @param resX spatial resolutionm, or Double.NaN if not provided
+     */
+    public void setResX(double resX) {
+        this.resX = resX;
+    }
+    /**
+     * Optional spatial resolution in the units of crs.
+     * @return spatial resolutionm, or Double.NaN if not provided
+     */
+    public double getResY() {
+        return resY;
+    }
+    /**
+     * Optional spatial resolution in the units of crs.
+     * @param resY spatial resolutionm, or Double.NaN if not provided
+     */
+    public void setResY(double resY) {
+        this.resY = resY;
+    }
+
     public String toString() {
-        return srsName.toString() + " [" + minX + "," + minY + " " + maxX + "," + maxY + "]";
+        StringBuilder build = new StringBuilder();
+        build.append("[");
+        build.append(minX);
+        build.append(",");
+        build.append(maxX);
+        if( !Double.isNaN( resX )){
+            build.append(",");
+            build.append( resX);
+        }
+        build.append(" ");
+        build.append(minY);
+        build.append(",");
+        build.append(maxY);
+        if( !Double.isNaN( resY )){
+            build.append(",");
+            build.append( resY);
+        }
+        if( srsName != null ){
+            build.append(" crs=");
+            build.append( srsName );            
+        }
+        else {
+            build.append(" default=CRS:84");
+        }
+        build.append("]");
+        
+        return build.toString();
     }
 
 }

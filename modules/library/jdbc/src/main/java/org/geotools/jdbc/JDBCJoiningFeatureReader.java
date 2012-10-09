@@ -69,8 +69,18 @@ public class JDBCJoiningFeatureReader extends JDBCFeatureReader {
 
         for (JoinPart part : join.getParts()) {
             SimpleFeatureType ft = part.getQueryFeatureType();
-            joinReaders.add(new JDBCFeatureReader(rs, cx, offset,
-                featureSource.getDataStore().getAbsoluteFeatureSource(ft.getTypeName()), ft, hints)); 
+            joinReaders.add(new JDBCFeatureReader(rs, cx, offset, featureSource.getDataStore()
+                    .getAbsoluteFeatureSource(ft.getTypeName()), ft, hints) {
+                @Override
+                protected void finalize() throws Throwable {
+                    // Do nothing.
+                    //
+                    // This override protects the injected result set and connection from being
+                    // closed by the garbage collector, which is unwanted because this is a
+                    // delegate which uses resources that will be closed elsewhere, or so it
+                    // is claimed in the comment in the close() method below. See GEOT-4204.
+                }
+            });
         }
 
         //builder for the final joined feature

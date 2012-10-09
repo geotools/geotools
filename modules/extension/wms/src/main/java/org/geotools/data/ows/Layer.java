@@ -313,7 +313,7 @@ public class Layer implements Comparable<Layer> {
      * The Extents contributed by this Layer.
      * <p>
      * Please note that for the complete list of Extents valid for this layer
-     * you should use the getExtents() mehtod which will consider extents defined
+     * you should use the getExtents() method which will consider extents defined
      * as part of a Dimension and all those contributed by Parent layers.
      * <p>
      * This is an accessor; if you modify the provided list please call clearCache().
@@ -580,6 +580,12 @@ public class Layer implements Comparable<Layer> {
     }
 
     public void setLatLonBoundingBox(CRSEnvelope latLonBoundingBox) {
+        if( latLonBoundingBox.getSRSName() != null ){
+            String srsName = latLonBoundingBox.getSRSName();
+            if( !srsName.equals("CRS:84")){
+                throw new IllegalStateException("Layer LatLonBoundingBox srsName required to be null or CRS:84");
+            }
+        }
         this.latLonBoundingBox = latLonBoundingBox;
     }
 

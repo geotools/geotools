@@ -45,8 +45,46 @@ public class WMSCapabilities extends Capabilities {
         return layer;
     }
 
+    @Override
+    public void setVersion(String version) {
+        super.setVersion(version);
+        boolean forceXY = !getVersion().startsWith("1.3");
+        if( layer != null ){
+            fixLayerBoundingBox( layer, forceXY );
+            layer.clearCache();
+        }
+    }
+    
     public void setLayer(Layer layer) {
         this.layer = layer;
+        if( getVersion() != null ){
+            boolean forceXY = !getVersion().startsWith("1.3");
+            fixLayerBoundingBox( layer, forceXY );
+            layer.clearCache();
+        }
+    }
+    
+    /**
+     * Fix the provided layer's bounding box so that it can be correctly handled.
+     * <p>
+     * Call layer.clearCache() after this method.
+     * 
+     * @param layer
+     * @param forceXY true prior to WMS 1.3.0, false after WMS 1.3.0
+     */
+    static void fixLayerBoundingBox( Layer layer, boolean forceXY ){
+        if( layer == null ){
+            return;
+        }
+        if( layer.getLayerBoundingBoxes() != null ){
+            for( CRSEnvelope boundingBox : layer.getLayerBoundingBoxes() ){
+                String srsName = boundingBox.getSRSName();
+                boundingBox.setSRSName(srsName, forceXY);                
+            }
+        }
+        for( Layer child : layer.getChildren() ){
+            fixLayerBoundingBox(child, forceXY);
+        }
     }
         
     /**

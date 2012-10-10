@@ -16,8 +16,14 @@
  */
 package org.geotools.data.wms.test;
 
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import javax.imageio.ImageIO;
 
 import junit.framework.TestCase;
 
@@ -25,9 +31,16 @@ import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.ows.CRSEnvelope;
 import org.geotools.data.ows.Layer;
+import org.geotools.data.ows.OperationType;
 import org.geotools.data.ows.WMSCapabilities;
 import org.geotools.data.wms.WebMapServer;
+import org.geotools.data.wms.request.GetMapRequest;
+import org.geotools.data.wms.response.GetMapResponse;
+import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeocentricCRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -38,7 +51,8 @@ import com.vividsolutions.jts.geom.Coordinate;
  * This is being used to look at WMS 1.1.1 vs WMS 1.3.0 compatibility issues for uDig.
  * <p>
  * 
- * <pre><code>
+ * <pre>
+ * <code>
  * &lt;Layer queryable="1"&gt;
  * &lt;Name&gt;nurc:Img_Sample&lt;/Name&gt;
  *     &lt;Title&gt;North America sample imagery&lt;/Title&gt;
@@ -70,7 +84,8 @@ import com.vividsolutions.jts.geom.Coordinate;
  *     &lt;/LegendURL&gt;
  *     &lt;/Style&gt;
  * &lt;/Layer&gt;
- * </code></pre>
+ * </code>
+ * </pre>
  * 
  * </p>
  * 
@@ -159,50 +174,126 @@ public class LocalGeoServerOnlineTest extends TestCase {
         assertNotNull(info.getDescription());
     }
 
-    String axisName(CoordinateReferenceSystem crs, int dimension ){
+    String axisName(CoordinateReferenceSystem crs, int dimension) {
         return crs.getCoordinateSystem().getAxis(dimension).getName().getCode();
     }
-    
-    public void testImgSample130() {
-        Layer img_sample = find( "nurc:Img_Sample");
-        assertNotNull("Img_Sample layer found", img_sample );
+
+    public void testImgSample130() throws Exception {
+        Layer img_sample = find("nurc:Img_Sample");
+        assertNotNull("Img_Sample layer found", img_sample);
         CRSEnvelope latLon = img_sample.getLatLonBoundingBox();
-        assertEquals( "LatLonBoundingBox axis 0 name", "Geodetic longitude", axisName( latLon.getCoordinateReferenceSystem(), 0) );
-        assertEquals( "LatLonBoundingBox axis 0 name", "Geodetic latitude", axisName( latLon.getCoordinateReferenceSystem(), 1) );
-        
+        assertEquals("LatLonBoundingBox axis 0 name", "Geodetic longitude",
+                axisName(latLon.getCoordinateReferenceSystem(), 0));
+        assertEquals("LatLonBoundingBox axis 0 name", "Geodetic latitude",
+                axisName(latLon.getCoordinateReferenceSystem(), 1));
+
         CRSEnvelope bounds = img_sample.getBoundingBoxes().get("EPSG:4326");
-        assertEquals( "EPSG:4326 axis 0 name", "Geodetic latitude", axisName( bounds.getCoordinateReferenceSystem(), 0) );
-        assertEquals( "EPSG:4326 axis 1 name", "Geodetic longitude", axisName( bounds.getCoordinateReferenceSystem(), 1) );
-        
+        assertEquals("EPSG:4326 axis 0 name", "Geodetic latitude",
+                axisName(bounds.getCoordinateReferenceSystem(), 0));
+        assertEquals("EPSG:4326 axis 1 name", "Geodetic longitude",
+                axisName(bounds.getCoordinateReferenceSystem(), 1));
+
         assertEquals("axis order 0 min", latLon.getMinimum(1), bounds.getMinimum(0));
         assertEquals("axis order 1 min", latLon.getMinimum(0), bounds.getMinimum(1));
         assertEquals("axis order 1 max", latLon.getMaximum(0), bounds.getMaximum(1));
         assertEquals("axis order 1 min", latLon.getMaximum(1), bounds.getMaximum(0));
+
+        // GETMAP
+        checkGetMap(wms, img_sample, DefaultGeographicCRS.WGS84);
+        checkGetMap(wms, img_sample, CRS.decode("CRS:84"));
+        checkGetMap(wms, img_sample, CRS.decode("EPSG:4326"));
+        checkGetMap(wms, img_sample, CRS.decode("urn:x-ogc:def:crs:EPSG:4326"));
     }
-    
+
+    /**
+     * Check GetMap request functionality in the provided CRS.
+     * <p>
+     * Attempt is made to request the entire image.
+     * 
+     * @param wms
+     * @param layer
+     * @param crs
+     */
+    private void checkGetMap(WebMapServer wms, Layer layer, CoordinateReferenceSystem crs)
+            throws Exception {
+        CRSEnvelope latLon = layer.getLatLonBoundingBox();
+        String srs = CRS.toSRS(crs);
+        GeneralEnvelope envelope = wms.getEnvelope(layer, crs);
+        assertFalse(envelope.isEmpty() || envelope.isNull() || envelope.isInfinite());
+        assertNotNull(srs + " envelope", envelope);
+
+        GetMapRequest getMap = wms.createGetMapRequest();
+        OperationType operationType = wms.getCapabilities().getRequest().getGetMap();
+
+        getMap.addLayer(layer);
+        ReferencedEnvelope bbox = ReferencedEnvelope.reference(envelope);
+        getMap.setBBox(bbox);
+        getMap.setSRS(srs);
+        String format = format(operationType, "jpeg");
+        getMap.setFormat(format);
+        getMap.setDimensions(500, 500);
+
+        URL url = getMap.getFinalURL();
+        GetMapResponse response = wms.issueRequest(getMap);
+        assertEquals("image/jpeg", response.getContentType());
+
+        InputStream stream = response.getInputStream();
+        BufferedImage image = ImageIO.read(stream);
+        assertNotNull("jpeg", image);
+        assertEquals(500, image.getWidth());
+        assertEquals(500, image.getHeight());
+        
+        int rgb = image.getRGB(250, 250);
+        Color sample = new Color(rgb);
+        if(Color.WHITE.equals(sample)){
+            System.out.println("FAIL: "+ srs + ": " + bbox);
+            System.out.println("--> " + url);
+        }
+        else {
+            System.out.println("PASS "+srs + ": " + bbox);
+        }
+        
+    }
+
+    private String format(OperationType operationType, String search) {
+        for (String format : operationType.getFormats()) {
+            if (format.contains(search)) {
+                return format;
+            }
+        }
+        return null; // not found
+    }
+
     public void testImageSample111() throws Exception {
-        WebMapServer wms111 = new WebMapServer( new URL(serverURL +"&VERSION=1.1.1") );
+        WebMapServer wms111 = new WebMapServer(new URL(serverURL + "&VERSION=1.1.1"));
         WMSCapabilities caps = wms111.getCapabilities();
-        assertEquals( "1.1.1", caps.getVersion() );
-        
-        Layer img_sample = find("nurc:Img_Sample",caps );
-        assertNotNull("Img_Sample layer found", img_sample );
+        assertEquals("1.1.1", caps.getVersion());
+
+        Layer img_sample = find("nurc:Img_Sample", caps);
+        assertNotNull("Img_Sample layer found", img_sample);
         CRSEnvelope latLon = img_sample.getLatLonBoundingBox();
-        assertEquals( "LatLonBoundingBox axis 0 name", "Geodetic longitude", axisName( latLon.getCoordinateReferenceSystem(), 0) );
-        assertEquals( "LatLonBoundingBox axis 1 name", "Geodetic latitude", axisName( latLon.getCoordinateReferenceSystem(), 1) );
-      
+        assertEquals("LatLonBoundingBox axis 0 name", "Geodetic longitude",
+                axisName(latLon.getCoordinateReferenceSystem(), 0));
+        assertEquals("LatLonBoundingBox axis 1 name", "Geodetic latitude",
+                axisName(latLon.getCoordinateReferenceSystem(), 1));
+
         CRSEnvelope bounds = img_sample.getBoundingBoxes().get("EPSG:4326");
-        assertEquals( "EPSG:4326 axis 0 name", "Geodetic longitude", axisName( bounds.getCoordinateReferenceSystem(), 0) );
-        assertEquals( "EPSG:4326 axis 1 name", "Geodetic latitude", axisName( bounds.getCoordinateReferenceSystem(), 1) );
-        
+        assertEquals("EPSG:4326 axis 0 name", "Geodetic longitude",
+                axisName(bounds.getCoordinateReferenceSystem(), 0));
+        assertEquals("EPSG:4326 axis 1 name", "Geodetic latitude",
+                axisName(bounds.getCoordinateReferenceSystem(), 1));
+
         assertEquals("axis order 0 min", latLon.getMinimum(0), bounds.getMinimum(0));
         assertEquals("axis order 1 min", latLon.getMinimum(1), bounds.getMinimum(1));
         assertEquals("axis order 1 max", latLon.getMaximum(0), bounds.getMaximum(0));
         assertEquals("axis order 1 min", latLon.getMaximum(1), bounds.getMaximum(1));
-        
-        
-        
-        
-        
+
+        // GETMAP
+        // GETMAP
+        checkGetMap(wms111, img_sample, DefaultGeographicCRS.WGS84);
+        checkGetMap(wms111, img_sample, CRS.decode("CRS:84"));
+        checkGetMap(wms111, img_sample, CRS.decode("EPSG:4326"));
+        checkGetMap(wms111, img_sample, CRS.decode("urn:x-ogc:def:crs:EPSG:4326"));
+
     }
 }

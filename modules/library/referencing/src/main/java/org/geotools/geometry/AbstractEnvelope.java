@@ -22,6 +22,7 @@ import org.opengis.geometry.MismatchedReferenceSystemException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import org.geotools.util.Utilities;
+import org.geotools.referencing.CRS;
 import org.geotools.resources.Classes;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
@@ -129,8 +130,15 @@ public abstract class AbstractEnvelope implements Envelope {
                 buffer.append(separator).append(envelope.getMaximum(i));
                 separator = ", ";
             }
-            buffer.append(")]");
-        }
+            buffer.append(")");
+            CoordinateReferenceSystem crs = envelope.getCoordinateReferenceSystem();
+            if( crs != null ){
+                String srsName = CRS.toSRS( crs );
+                buffer.append(",srs=");                                
+                buffer.append(srsName);
+            }
+            buffer.append("]");
+        }        
         return buffer.toString();
     }
 

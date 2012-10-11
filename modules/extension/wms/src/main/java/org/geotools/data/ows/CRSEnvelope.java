@@ -16,6 +16,7 @@
  */
 package org.geotools.data.ows;
 
+import org.geotools.data.wms.request.AbstractGetMapRequest;
 import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralDirectPosition;
@@ -107,7 +108,7 @@ public class CRSEnvelope implements Envelope {
         this.maxY = maxY;
     }
     public CRSEnvelope(Envelope envelope) {
-        this.srsName = envelope.getCoordinateReferenceSystem().getIdentifiers().iterator().next().toString();
+        this.srsName = CRS.toSRS( envelope.getCoordinateReferenceSystem());
         //this.srsName = epsgCode;
         this.minX = envelope.getMinimum(0);
         this.maxX = envelope.getMaximum(0);
@@ -123,24 +124,12 @@ public class CRSEnvelope implements Envelope {
         synchronized (this) {
             if (crs == null) {
                 try {
-                    if( srsName != null ){
-                        if( forceXY == null ){
-                            crs = CRS.decode(srsName);
-                        }
-                        else if( forceXY == Boolean.TRUE ){
-                            crs = CRS.decode(srsName,true);
-                        }
-                        else if( srsName.startsWith("EPSG:") && Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER)){
-                            // how do we look up the unmodified axis order?
-                            String explicit = srsName.replace("EPSG:", "urn:x-ogc:def:crs:EPSG:");
-                            crs = CRS.decode(explicit,false);
-                        }
-                        else {
-                            crs = CRS.decode(srsName,false);
-                        }                        
+                    String srs = srsName != null ? srsName : "CRS:84";
+                    if( forceXY == null ){
+                        crs = CRS.decode(srs);
                     }
                     else {
-                        crs = CRS.decode("CRS:84"); // implicit
+                        crs = AbstractGetMapRequest.toServerCRS(srsName, forceXY );
                     }
                 } catch (NoSuchAuthorityCodeException e) {
                     crs = DefaultEngineeringCRS.CARTESIAN_2D;

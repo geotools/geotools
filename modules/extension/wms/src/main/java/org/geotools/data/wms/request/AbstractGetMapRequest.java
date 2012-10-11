@@ -27,7 +27,15 @@ import java.util.Stack;
 import org.geotools.data.ows.CRSEnvelope;
 import org.geotools.data.ows.Layer;
 import org.geotools.data.ows.StyleImpl;
+import org.geotools.factory.GeoTools;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.opengis.geometry.BoundingBox;
+import org.opengis.geometry.Envelope;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.TransformException;
 
 /**
  * 
@@ -168,7 +176,10 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
      * server has declared that a Layer is not subsettable, then the Client
      * shall specify exactly the declared Bounding Box values in the GetMap
      * request and the Server may issue a Service Exception otherwise."
-     *
+     * <p>
+     * Yu must also call setSRS to provide the spatial reference system
+     * information (or CRS:84 will be assumed)
+     * 
      * @param bbox A string representing a bounding box in the format
      *        "minx,miny,maxx,maxy"
      */
@@ -176,26 +187,51 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
         //TODO enforce non-subsettable layers
         properties.setProperty(BBOX, bbox);
     }
-
-    public void setBBox(CRSEnvelope box){
-        StringBuffer sb = new StringBuffer();
-        sb.append(box.getMinX());
-        sb.append(",");
-        sb.append(box.getMinY()+",");
-        sb.append(box.getMaxX()+",");
-        sb.append(box.getMaxY());
-        setBBox(sb.toString());
+    
+    public static CoordinateReferenceSystem toServerCRS(String srsName, boolean forceXY) {
+        try {
+            if (srsName != null) {
+                if (forceXY) {
+                    return CRS.decode(srsName, true);
+                } else if (srsName.startsWith("EPSG:")
+                        && Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER)) {
+                    // how do we look up the unmodified axis order?
+                    String explicit = srsName.replace("EPSG:", "urn:x-ogc:def:crs:EPSG:");
+                    return CRS.decode(explicit, false);
+                } else {
+                    return CRS.decode(srsName, false);
+                }
+            }
+            else {
+                return CRS.decode("CRS:84");
+            }
+        } catch (NoSuchAuthorityCodeException e) {
+        } catch (FactoryException e) {
+        }
+        return DefaultEngineeringCRS.CARTESIAN_2D;
     }
-    public void setBBox(BoundingBox box) {
-        StringBuffer sb = new StringBuffer();
-        sb.append(box.getMinX());
-        sb.append(",");
-        sb.append(box.getMinY());
-        sb.append(",");
-        sb.append(box.getMaxX());
-        sb.append(",");
-        sb.append(box.getMaxY());
+    /**
+     * Sets BBOX and SRS using the provided Envelope.
+     */
+    public void setBBox(Envelope envelope){
+        String version = properties.getProperty(VERSION);
+        boolean forceXY = version == null || !version.startsWith("1.3");
+        String srsName = CRS.toSRS( envelope.getCoordinateReferenceSystem() );
+        setSRS( srsName );
         
+        CoordinateReferenceSystem crs = toServerCRS( srsName, forceXY );
+        Envelope bbox;
+        try {
+            bbox = CRS.transform( envelope, crs);
+        } catch (TransformException e) {
+            bbox = envelope;
+        }
+        StringBuffer sb = new StringBuffer();
+        sb.append(bbox.getMinimum(0));
+        sb.append(",");
+        sb.append(bbox.getMinimum(1)+",");
+        sb.append(bbox.getMaximum(0)+",");
+        sb.append(bbox.getMaximum(1));
         setBBox(sb.toString());
     }
     /**

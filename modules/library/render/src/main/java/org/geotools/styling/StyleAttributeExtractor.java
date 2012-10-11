@@ -44,8 +44,17 @@ import org.opengis.filter.expression.PropertyName;
 public class StyleAttributeExtractor extends FilterAttributeExtractor
     implements StyleVisitor {
     
+    private final boolean ignoreTextSymbolizerProperties;
     /* NC */ protected Set<PropertyName> attributes = new HashSet<PropertyName>();
     
+    public StyleAttributeExtractor() {
+        this(false);
+    }
+
+    public StyleAttributeExtractor(boolean ignoreTextSymbolizerProperties) {
+        this.ignoreTextSymbolizerProperties = ignoreTextSymbolizerProperties;
+    }
+
     @Override
     public void clear() {
         super.clear();
@@ -283,6 +292,10 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.TextSymbolizer)
      */
     public void visit(TextSymbolizer text) {
+        if (ignoreTextSymbolizerProperties) {
+            return;
+        }
+
         if (text.getGeometry() != null) {
             text.getGeometry().accept(this, null);
         } else {

@@ -23,6 +23,7 @@ import java.awt.Composite;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Paint;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
@@ -98,7 +99,7 @@ public class LabelPainter {
     /**
      * The graphics object used during painting
      */
-    Graphics2D graphics;
+    LabelPainterGraphics graphics;
 
     /**
      * Whether we draw text using its {@link Shape} outline, or we use a plain
@@ -122,8 +123,9 @@ public class LabelPainter {
      * @param graphics
      * @param outlineRenderingEnabled
      */
-    public LabelPainter(Graphics2D graphics, LabelRenderingMode labelRenderingMode) {
-        this.graphics = graphics;
+    public LabelPainter(Graphics2D graphics, LabelRenderingMode labelRenderingMode, 
+            Rectangle displayArea) {
+        this.graphics = new LabelPainterGraphics(graphics, displayArea);
         this.labelRenderingMode = labelRenderingMode;
     }
 
@@ -136,6 +138,7 @@ public class LabelPainter {
      */
     public void setLabel(LabelCacheItem labelItem) {
         this.labelItem = labelItem;
+        graphics.setOpacity(labelItem.getOpacity());
         labelItem.getTextStyle().setLabel(labelItem.getLabel());
 
         // reset previous caches
@@ -266,6 +269,10 @@ public class LabelPainter {
             info.y = labelY;
         }
         normalizeBounds(labelBounds);
+    }
+
+    public void finish() {
+        graphics.merge();
     }
 
     /**

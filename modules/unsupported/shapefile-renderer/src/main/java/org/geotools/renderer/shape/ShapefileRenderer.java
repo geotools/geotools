@@ -75,6 +75,7 @@ import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.index.quadtree.StoreException;
 import org.geotools.map.DefaultMapContext;
+import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.map.MapContext;
@@ -281,7 +282,7 @@ public class ShapefileRenderer implements GTRenderer {
 
     private void processStylers( Graphics2D graphics, ShapefileDataStore datastore,
             Query query, Envelope bbox, Rectangle screenSize, MathTransform mt, Style style, IndexInfo info,
-            Transaction transaction, String layerId) throws IOException {
+            Transaction transaction, String layerId, boolean hideLabels) throws IOException {
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("processing " + style.getFeatureTypeStyles().length + " stylers");
         }
@@ -383,19 +384,19 @@ public class ShapefileRenderer implements GTRenderer {
                 NumberRange<Double> scaleRange = NumberRange.create(scaleDenominator, scaleDenominator);
 
                 Set modifiedFIDs = processTransaction(graphics, bbox, mt, datastore, transaction,
-                        typeName, query, ruleList, elseRuleList, scaleRange, layerId);
+                        typeName, query, ruleList, elseRuleList, scaleRange, layerId, hideLabels);
 
                 // don't try to read the shapefile if there is nothing to draw
                 if(ruleList.size() > 0 || elseRuleList.size() > 0)
                 	processShapefile(graphics, datastore, bbox,screenSize, mt, info, type, query, ruleList,
-                        elseRuleList, modifiedFIDs, scaleRange, layerId);
+                        elseRuleList, modifiedFIDs, scaleRange, layerId, hideLabels);
             }
         }
     }
 
     private Set processTransaction( Graphics2D graphics, Envelope bbox, MathTransform transform,
             DataStore ds, Transaction transaction, String typename, Query query, List ruleList,
-            List elseRuleList, NumberRange scaleRange, String layerId ) {
+            List elseRuleList, NumberRange scaleRange, String layerId, boolean hideLabels ) {
         if (transaction == Transaction.AUTO_COMMIT) {
             return Collections.EMPTY_SET;
         }
@@ -472,7 +473,7 @@ public class ShapefileRenderer implements GTRenderer {
 
                             try {
                                 processSymbolizers(graphics, feature, symbolizers, scaleRange,
-                                        transform, layerId);
+                                        transform, layerId, hideLabels);
                             } catch (Exception e) {
                                 fireErrorEvent(e);
 
@@ -501,7 +502,7 @@ public class ShapefileRenderer implements GTRenderer {
 
                             try {
                                 processSymbolizers(graphics, feature, symbolizers, scaleRange,
-                                        transform, layerId);
+                                        transform, layerId, hideLabels);
                             } catch (Exception e) {
                                 fireErrorEvent(e);
 
@@ -528,8 +529,8 @@ public class ShapefileRenderer implements GTRenderer {
 
     private void processShapefile( Graphics2D graphics, ShapefileDataStore datastore,
             Envelope bbox, Rectangle screenSize, MathTransform mt, IndexInfo info, SimpleFeatureType type, Query query,
-            List ruleList, List elseRuleList, Set modifiedFIDs, NumberRange scaleRange, String layerId )
-            throws IOException {
+            List ruleList, List elseRuleList, Set modifiedFIDs, NumberRange scaleRange, String layerId,
+            boolean hideLabels ) throws IOException {
         IndexedDbaseFileReader dbfreader = null;
         IndexInfo.Reader shpreader = null;
         FIDReader fidReader = null;
@@ -680,7 +681,8 @@ public class ShapefileRenderer implements GTRenderer {
 
                             Symbolizer[] symbolizers = r.getSymbolizers();
 
-                            processSymbolizers(graphics, feature, geom, symbolizers, scaleRange, useJTS, layerId, screenSize);
+                            processSymbolizers(graphics, feature, geom, symbolizers, scaleRange,
+                                    useJTS, layerId, screenSize, hideLabels);
 
                             if (LOGGER.isLoggable(Level.FINER)) {
                                 LOGGER.finer("... done!");
@@ -702,7 +704,8 @@ public class ShapefileRenderer implements GTRenderer {
                                 LOGGER.finer("processing Symobolizer ...");
                             }
 
-                            processSymbolizers(graphics, feature, geom, symbolizers, scaleRange, useJTS, layerId, screenSize);
+                            processSymbolizers(graphics, feature, geom, symbolizers, scaleRange,
+                                    useJTS, layerId, screenSize, hideLabels);
 
                             if (LOGGER.isLoggable(Level.FINER)) {
                                 LOGGER.finer("... done!");
@@ -895,7 +898,8 @@ public class ShapefileRenderer implements GTRenderer {
      * @param layerId 
      */
     private void processSymbolizers( Graphics2D graphics, SimpleFeature feature, Object geom,
-            Symbolizer[] symbolizers, NumberRange scaleRange, boolean isJTS, String layerId, Rectangle screenSize) {
+            Symbolizer[] symbolizers, NumberRange scaleRange, boolean isJTS, String layerId, Rectangle screenSize,
+            boolean hideLabels) {
         for( int m = 0; m < symbolizers.length; m++ ) {
             if (LOGGER.isLoggable(Level.FINER)) {
                 LOGGER.finer("applying symbolizer " + symbolizers[m]);
@@ -906,13 +910,15 @@ public class ShapefileRenderer implements GTRenderer {
             }
 
             if (symbolizers[m] instanceof TextSymbolizer) {
-                try {
-                    labelCache.put(layerId,(TextSymbolizer) symbolizers[m], 
-                            feature, 
-                            new LiteShape2((Geometry)feature.getDefaultGeometry(), null, null, false, false),
-                            scaleRange);
-                } catch (Exception e) {
-                    fireErrorEvent(e);
+                if (!hideLabels) {
+                    try {
+                        labelCache.put(layerId,(TextSymbolizer) symbolizers[m],
+                                feature,
+                                new LiteShape2((Geometry)feature.getDefaultGeometry(), null, null, false, false),
+                                scaleRange);
+                    } catch (Exception e) {
+                        fireErrorEvent(e);
+                    }
                 }
             } else {
                 Shape shape;
@@ -973,8 +979,8 @@ public class ShapefileRenderer implements GTRenderer {
      * @throws FactoryException
      */
     private void processSymbolizers( final Graphics2D graphics, final SimpleFeature feature,
-            final Symbolizer[] symbolizers, NumberRange scaleRange, MathTransform transform, String layerId )
-            throws TransformException, FactoryException {
+            final Symbolizer[] symbolizers, NumberRange scaleRange, MathTransform transform, String layerId,
+            boolean hideLabels) throws TransformException, FactoryException {
         LiteShape2 shape;
 
         for( int m = 0; m < symbolizers.length; m++ ) {
@@ -988,7 +994,9 @@ public class ShapefileRenderer implements GTRenderer {
             shape = new LiteShape2(g, transform, getDecimator(transform), false);
 
             if (symbolizers[m] instanceof TextSymbolizer) {
-                labelCache.put(layerId, (TextSymbolizer) symbolizers[m], feature, shape, scaleRange);
+                if (!hideLabels) {
+                    labelCache.put(layerId, (TextSymbolizer) symbolizers[m], feature, shape, scaleRange);
+                }
             } else {
                 Style2D style = styleFactory.createStyle(feature, symbolizers[m], scaleRange);
                 painter.paint(graphics, shape, style, scaleDenominator);
@@ -1437,7 +1445,15 @@ public class ShapefileRenderer implements GTRenderer {
             	renderWithStreamingRenderer(currLayer, graphics, paintArea, envelope, transform);
                 continue;
             }
-            labelCache.startLayer(""+i);
+
+            boolean hideLabels = false;
+            if (currLayer.toLayer() instanceof FeatureLayer) {
+                FeatureLayer featureLayer = (FeatureLayer) currLayer.toLayer();
+                hideLabels = featureLayer.getHideLabels();
+                if (!hideLabels) {
+                    labelCache.startLayer(i+"", featureLayer.getLabelOpacity());
+                }
+            }
 
             ReferencedEnvelope bbox = envelope;
 
@@ -1520,13 +1536,15 @@ public class ShapefileRenderer implements GTRenderer {
                 //processStylers(graphics, ds, query, extractor.getIntersection(), paintArea,
                 //        mt, currLayer.getStyle(), layerIndexInfo[i], transaction);
                 processStylers(graphics, ds, query, bbox, paintArea,
-                        mt, currLayer.getStyle(), layerIndexInfo[i], transaction, ""+i);
+                        mt, currLayer.getStyle(), layerIndexInfo[i], transaction, ""+i, hideLabels);
             } catch (Exception exception) {
                 Exception e = new Exception("Exception rendering layer " + currLayer, exception);
                 fireErrorEvent(e);
             }
 
-            labelCache.endLayer(""+i, graphics, paintArea);
+            if (!hideLabels) {
+                labelCache.endLayer(""+i, graphics, paintArea);
+            }
         }
 
         labelCache.end(graphics, paintArea);

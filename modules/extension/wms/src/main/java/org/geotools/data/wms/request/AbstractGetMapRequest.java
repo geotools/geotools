@@ -196,7 +196,7 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
                 } else if (srsName.startsWith("EPSG:")
                         && Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER)) {
                     // how do we look up the unmodified axis order?
-                    String explicit = srsName.replace("EPSG:", "urn:x-ogc:def:crs:EPSG:");
+                    String explicit = srsName.replace("EPSG:", "urn:x-ogc:def:crs:EPSG::");
                     return CRS.decode(explicit, false);
                 } else {
                     return CRS.decode(srsName, false);

@@ -40,6 +40,7 @@ import org.geotools.factory.GeoTools;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.geometry.Envelope;
@@ -192,12 +193,12 @@ public class LocalGeoServerOnlineTest extends TestCase {
         assertEquals("LatLonBoundingBox axis 0 name", "Geodetic latitude",
                 axisName(latLon.getCoordinateReferenceSystem(), 1));
 
+        boolean globalXY = Boolean.getBoolean("org.geotools.referencing.forceXY");
+        
         CRSEnvelope bounds = img_sample.getBoundingBoxes().get("EPSG:4326");
-        assertEquals("EPSG:4326 axis 0 name", "Geodetic latitude",
-                axisName(bounds.getCoordinateReferenceSystem(), 0));
-        assertEquals("EPSG:4326 axis 1 name", "Geodetic longitude",
-                axisName(bounds.getCoordinateReferenceSystem(), 1));
-
+        CoordinateReferenceSystem boundsCRS = bounds.getCoordinateReferenceSystem();
+        assertEquals( "EPSG:4326", AxisOrder.EAST_NORTH, CRS.getAxisOrder(boundsCRS) );
+        
         assertEquals("axis order 0 min", latLon.getMinimum(1), bounds.getMinimum(0));
         assertEquals("axis order 1 min", latLon.getMinimum(0), bounds.getMinimum(1));
         assertEquals("axis order 1 max", latLon.getMaximum(0), bounds.getMaximum(1));
@@ -207,7 +208,7 @@ public class LocalGeoServerOnlineTest extends TestCase {
         checkGetMap(wms, img_sample, DefaultGeographicCRS.WGS84);
         checkGetMap(wms, img_sample, CRS.decode("CRS:84"));
         checkGetMap(wms, img_sample, CRS.decode("EPSG:4326"));
-        checkGetMap(wms, img_sample, CRS.decode("urn:x-ogc:def:crs:EPSG:4326"));
+        checkGetMap(wms, img_sample, CRS.decode("urn:x-ogc:def:crs:EPSG::4326"));
     }
 
     public void testImageSample111() throws Exception {
@@ -224,10 +225,8 @@ public class LocalGeoServerOnlineTest extends TestCase {
                 axisName(latLon.getCoordinateReferenceSystem(), 1));
     
         CRSEnvelope bounds = img_sample.getBoundingBoxes().get("EPSG:4326");
-        assertEquals("EPSG:4326 axis 0 name", "Geodetic longitude",
-                axisName(bounds.getCoordinateReferenceSystem(), 0));
-        assertEquals("EPSG:4326 axis 1 name", "Geodetic latitude",
-                axisName(bounds.getCoordinateReferenceSystem(), 1));
+        CoordinateReferenceSystem boundsCRS = bounds.getCoordinateReferenceSystem();
+        assertEquals( "EPSG:4326", AxisOrder.EAST_NORTH, CRS.getAxisOrder(boundsCRS) );;
     
         assertEquals("axis order 0 min", latLon.getMinimum(0), bounds.getMinimum(0));
         assertEquals("axis order 1 min", latLon.getMinimum(1), bounds.getMinimum(1));
@@ -238,7 +237,7 @@ public class LocalGeoServerOnlineTest extends TestCase {
         checkGetMap(wms111, img_sample, DefaultGeographicCRS.WGS84);
         checkGetMap(wms111, img_sample, CRS.decode("CRS:84"));
         checkGetMap(wms111, img_sample, CRS.decode("EPSG:4326"));
-        checkGetMap(wms111, img_sample, CRS.decode("urn:x-ogc:def:crs:EPSG:4326"));
+        checkGetMap(wms111, img_sample, CRS.decode("urn:x-ogc:def:crs:EPSG::4326"));
     
     }
 

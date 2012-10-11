@@ -903,7 +903,7 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
                 // not usual axis order, check if we can have a EPSG code
                 Integer code = CRS.lookupEpsgCode(crs, false);
                 if (code != null) {
-                    return "urn:ogc:def:crs:EPSG:" + code;
+                    return "urn:ogc:def:crs:EPSG::" + code;
                 }
             } catch (Exception e) {
                 // all right it was a best effort attempt

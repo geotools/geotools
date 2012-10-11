@@ -413,6 +413,14 @@ public class CRSTest extends TestCase {
             assertEquals("EPSG:4326", CRS.toSRS(crs));
             Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
             assertEquals("urn:ogc:def:crs:EPSG::4326", CRS.toSRS(crs));
+            
+            crs = CRS.decode("urn:ogc:def:crs:EPSG::4326");
+            assertEquals( "yx", AxisOrder.NORTH_EAST, CRS.getAxisOrder( crs ) );
+            
+            crs = CRS.decode("urn:ogc:def:crs:EPSG:4326");
+            assertEquals( "yx", AxisOrder.NORTH_EAST, CRS.getAxisOrder( crs ) );
+            
+                    
         } finally {
             Hints.removeSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
         }

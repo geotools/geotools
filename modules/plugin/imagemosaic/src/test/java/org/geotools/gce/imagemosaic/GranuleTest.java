@@ -277,7 +277,7 @@ public class GranuleTest extends Assert {
         BoundingBox checkCropBBox = requestNE.getCropBBox();
         assertNotNull(checkCropBBox);
         assertEquals(
-                "ReferencedEnvelope[1587997.8835 : 1612003.2265, 6162000.4515 : 6198002.1165]",
+                "ReferencedEnvelope[1587997.8835 : 1612003.2265, 6162000.4515 : 6198002.1165 crs=EPSG:2193]",
                 checkCropBBox.toString());
 
         // set up the request (east-north version)
@@ -292,7 +292,7 @@ public class GranuleTest extends Assert {
         checkCropBBox = requestEN.getCropBBox();
         assertNotNull(checkCropBBox);
         assertEquals(
-                "ReferencedEnvelope[1587997.8835 : 1612003.2265, 6162000.4515 : 6198002.1165]",
+                "ReferencedEnvelope[1587997.8835 : 1612003.2265, 6162000.4515 : 6198002.1165 crs=EPSG:2193]",
                 checkCropBBox.toString());
     }
 

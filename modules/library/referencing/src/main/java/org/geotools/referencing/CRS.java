@@ -917,8 +917,11 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
         }
         final Set<ReferenceIdentifier> identifiers = crs.getIdentifiers();
         if (identifiers.isEmpty()) {
+//            if ( crs == DefaultGeographicCRS.WGS84 ){
+//                return "CRS:84";
+//            }
             // fallback unfortunately this often does not work
-            final ReferenceIdentifier name = crs.getName();
+            ReferenceIdentifier name = crs.getName();
             if (name != null) {
                 return name.toString();
             }

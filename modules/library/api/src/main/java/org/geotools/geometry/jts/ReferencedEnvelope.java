@@ -741,7 +741,11 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
 
             buffer.append(getMinimum(i)).append(" : ").append(getMaximum(i));
         }
-
+        if( crs != null ){
+            String srsName = CRS.toSRS( crs );
+            buffer.append(" crs=");
+            buffer.append(srsName);
+        }
         return buffer.append(']').toString();
     }
     

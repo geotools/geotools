@@ -424,8 +424,12 @@ public class FeatureTypeRegistry {
         if (elemDecl.isElementDeclarationReference()) {
             elemDecl = elemDecl.getResolvedElementDeclaration();
         }
+        boolean hasToBeRegistered = false;
         typeDefinition = elemDecl.getAnonymousTypeDefinition();
         if (typeDefinition == null) {
+        	// anonymous types already has type definition inline in the element
+        	// so the handling is different
+        	hasToBeRegistered = true;
             typeDefinition = elemDecl.getTypeDefinition();
         }
         
@@ -458,11 +462,23 @@ public class FeatureTypeRegistry {
             throw new NoSuchElementException(msg);
         }
 
-        String targetNamespace = typeDefinition.getTargetNamespace();
-        String name = typeDefinition.getName();
-        Name typeName = Types.typeName(targetNamespace, name);
-     
-        return getAttributeType(typeName, typeDefinition, crs);
+        AttributeType type;
+        if (hasToBeRegistered) {
+            String targetNamespace = typeDefinition.getTargetNamespace();
+            String name = typeDefinition.getName();
+            Name typeName = Types.typeName(targetNamespace, name);
+            type = getAttributeType(typeName, typeDefinition, crs);
+            if (type == null) {
+                type = createType(typeName, typeDefinition, crs, false);
+            }
+        } else {
+            String name = elemDecl.getName();
+            String targetNamespace = elemDecl.getTargetNamespace();
+            Name overrideName = Types.typeName(targetNamespace, name);
+            type = createType(overrideName, typeDefinition, crs, true);
+        }
+        
+        return type;
         
     }
 

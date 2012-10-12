@@ -24,6 +24,13 @@ This plugin expects the following table layout:
    Of course, it is possible to use sql views instead of tables for
    creating the best physical table layout for the local deployment
 
+.. warning::
+
+   For Postgis JDBC drivers < version 9 it is necessary to set a property in the database:
+
+   ALTER DATABASE dbname SET bytea_output TO 'escape'
+
+
 Prepare the tiles and overviews using the gdal tool box http://www.gdal.org. 
 A good candidate is http://www.gdal.org/gdal_retile.html.
 

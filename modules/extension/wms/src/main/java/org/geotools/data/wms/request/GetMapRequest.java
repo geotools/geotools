@@ -24,6 +24,7 @@ import org.geotools.data.ows.Layer;
 import org.geotools.data.ows.Request;
 import org.geotools.data.ows.StyleImpl;
 import org.opengis.geometry.BoundingBox;
+import org.opengis.geometry.Envelope;
 
 /**
  * Construct a WMS getMap request.
@@ -224,8 +225,13 @@ public interface GetMapRequest extends Request{
      *        "minx,miny,maxx,maxy"
      */
     public void setBBox(String bbox);
-    public void setBBox(CRSEnvelope box);
-    public void setBBox(BoundingBox box);
+    
+    /**
+     * Sets the BBOX and SRS information from the provided Envelope (such as a CRSEnvelope).
+     * @param box
+     */
+    public void setBBox(Envelope box);
+    
     
     /**
      * From the Web Map Service Implementation Specification: "The required

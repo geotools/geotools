@@ -816,7 +816,7 @@ public class Layer implements Comparable<Layer> {
         Collection<Object> identifiers = new ArrayList<Object>();
         identifiers.addAll( crs.getIdentifiers() );
         if (crs == DefaultGeographicCRS.WGS84 || crs == DefaultGeographicCRS.WGS84_3D) {
-            identifiers.add( "EPSG:4326" );
+            identifiers.add( "CRS:84" );
         }
         for (Object identifier : identifiers ) {
             String srsName = identifier.toString();
@@ -850,12 +850,12 @@ public class Layer implements Comparable<Layer> {
                     layer = layer.getParent();
                 }
 
-                if (latLonBBox == null) {
-                    // TODO could convert another bbox to latlon?
-                    tempBBox = new CRSEnvelope("EPSG:4326", -180, -90, 180, 90);
-                } else {
-                    tempBBox = new CRSEnvelope("EPSG:4326", latLonBBox.getMinX(), latLonBBox
+                if (latLonBBox != null) {
+                    tempBBox = new CRSEnvelope("CRS:84", latLonBBox.getMinX(), latLonBBox
                             .getMinY(), latLonBBox.getMaxX(), latLonBBox.getMaxY());
+                } else {
+                    tempBBox = new CRSEnvelope("CRS:84", -180, -90, 180, 90);
+                    // TODO could convert another bbox to latlon?
                 }
             }
 
@@ -914,10 +914,15 @@ public class Layer implements Comparable<Layer> {
             // TODO Attempt to figure out the valid area of the CRS and use that.
 
             if (tempBBox != null) {
-                GeneralEnvelope env = new GeneralEnvelope(new double[] { tempBBox.getMinX(),
-                        tempBBox.getMinY() },
-                        new double[] { tempBBox.getMaxX(), tempBBox.getMaxY() });
-                env.setCoordinateReferenceSystem(crs);
+                GeneralEnvelope env;
+                try {
+                    Envelope fixed = CRS.transform( tempBBox, crs );
+                    env = new GeneralEnvelope( fixed );
+                } catch (TransformException e) {
+                    env = new GeneralEnvelope(new double[] { tempBBox.getMinX(),tempBBox.getMinY() },
+                            new double[] { tempBBox.getMaxX(), tempBBox.getMaxY() });
+                    env.setCoordinateReferenceSystem(crs);
+                }
                 return env;
             }
 

@@ -22,9 +22,11 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.xml.namespace.QName;
 
+import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.geotools.gml3.ApplicationSchemaConfiguration;
 import org.geotools.gml3.GML;
@@ -125,7 +127,21 @@ public class EmfAppSchemaReader {
     public SchemaIndex parse(String nameSpace, String schemaLocation) throws IOException {
         AppSchemaConfiguration configuration = new AppSchemaConfiguration(nameSpace,
                 schemaLocation, resolver);
-        configuration.addDependency(findGmlConfiguration(configuration));
+        Configuration gmlConfig = findGmlConfiguration(configuration);
+        if (gmlConfig != null) {
+            configuration.addDependency(gmlConfig);
+		} else {
+			// No GML configuration found.. could be deliberate
+			// where there is no direct connection between the primary schema
+			// (GML based)
+			// and secondary schemaUri.. but possible by using anyType
+			// will warn in AppSchemaDataAccessConfiguration
+			Logger LOGGER = org.geotools.util.logging.Logging
+					.getLogger(EmfAppSchemaReader.class.getPackage().getName());
+			LOGGER.warning("Non GML based schema found in schemaURI: "
+					+ schemaLocation
+					+ "! This may result in corrupted data as some types may not be encoded correctly.");
+		}
         return parse(configuration);
     }
     
@@ -230,13 +246,20 @@ public class EmfAppSchemaReader {
                     }
                 }
             }
-            throw new RuntimeException("Unsupported GML version for schema at "
-                    + configuration.getSchemaLocation());
-        } finally {
-            if (index != null) {
-                index.destroy();
-            }
+			for (XSDSchema schema : index.getSchemas()) {
+				String ns = schema.getTargetNamespace();
+				if (ns != null && ns.startsWith("http://www.opengis.net/gml")) {
+					throw new RuntimeException(
+							"Unsupported GML version for schema at "
+									+ configuration.getSchemaLocation());
+				}
+			}
+		} finally {
+			if (index != null) {
+				index.destroy();
+			}
         }
+        return null;
     }
 
 }

@@ -100,6 +100,7 @@
     <fork.javac>true</fork.javac>
     <javac.maxHeapSize>256M</javac.maxHeapSize>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <postgresql.jdbc.version>8.4-701.jdbc3</postgresql.jdbc.version>
   </properties>
 
   <!-- Profiles set on the command-line overwrite default properties. -->
@@ -921,7 +922,7 @@
       <dependency>
         <groupId>postgresql</groupId>
         <artifactId>postgresql</artifactId>
-        <version>8.4-701.jdbc3</version>
+        <version>${postgresql.jdbc.version}</version>
       </dependency>
       <dependency>
         <groupId>mysql</groupId>

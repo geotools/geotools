@@ -33,9 +33,19 @@ public class PostgisUDTTestSetup extends JDBCUDTTestSetup {
         super(setup);
     }
 
+    public PostGISTestSetup getDelegate() {
+        return (PostGISTestSetup) delegate;
+    }
+
     @Override
     protected void createUdtTable() throws Exception {
-        run("CREATE DOMAIN foo AS text CHECK (VALUE ~ '\\\\d{2}\\\\D{2}');");
+        if (getDelegate().isPgsqlVersionGreaterThanEqualTo(PostGISDialect.PGSQL_V_9_0)) {
+            run("CREATE DOMAIN foo AS text CHECK (VALUE ~ '\\d{2}\\D{2}');");
+        }
+        else {
+            run("CREATE DOMAIN foo AS text CHECK (VALUE ~ '\\\\d{2}\\\\D{2}');");  
+        }
+        
         run("CREATE DOMAIN foo2 AS integer CONSTRAINT posint_check CHECK ((VALUE >= 0));");
         run("CREATE DOMAIN foo3 AS real CONSTRAINT posreal_check CHECK ((VALUE >= (0)::real));");
         run("CREATE DOMAIN foo4 AS bigint CONSTRAINT posbigint_check CHECK ((VALUE >= (0)::bigint));");

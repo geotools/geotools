@@ -33,14 +33,16 @@ import org.geotools.util.Version;
  */
 public class PostGISTestSetup extends JDBCTestSetup {
 
-    protected Version postgisVersion;
+    protected Version postgisVersion, pgsqlVersion;
 
     @Override
     protected void initializeDatabase() throws Exception {
         DataSource dataSource = getDataSource();
         Connection cx = dataSource.getConnection();
         try {
-            postgisVersion = new PostGISDialect(new JDBCDataStore()).getVersion(cx);
+            PostGISDialect dialect = new PostGISDialect(new JDBCDataStore());
+            postgisVersion = dialect.getVersion(cx);
+            pgsqlVersion = dialect.getPostgreSQLVersion(cx);
         }
         finally {
             cx.close();
@@ -49,6 +51,10 @@ public class PostGISTestSetup extends JDBCTestSetup {
 
     public boolean isVersion2() {
         return postgisVersion != null && postgisVersion.compareTo(PostGISDialect.V_2_0_0) >= 0;
+    }
+
+    public boolean isPgsqlVersionGreaterThanEqualTo(Version v) {
+        return pgsqlVersion != null && pgsqlVersion.compareTo(v) >= 0;
     }
 
     @Override

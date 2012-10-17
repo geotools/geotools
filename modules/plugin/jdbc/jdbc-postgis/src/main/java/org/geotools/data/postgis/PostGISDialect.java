@@ -18,6 +18,7 @@ package org.geotools.data.postgis;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Savepoint;
@@ -106,6 +107,8 @@ public class PostGISDialect extends BasicSQLDialect {
 
     static final Version V_2_0_0 = new Version("2.0.0");
 
+    static final Version PGSQL_V_9_0 = new Version("9.0");
+
     public PostGISDialect(JDBCDataStore dataStore) {
         super(dataStore);
     }
@@ -116,7 +119,7 @@ public class PostGISDialect extends BasicSQLDialect {
     
     boolean functionEncodingEnabled = false;
     
-    Version version;
+    Version version, pgsqlVersion;
 
     public boolean isLooseBBOXEnabled() {
         return looseBBOXEnabled;
@@ -145,6 +148,11 @@ public class PostGISDialect extends BasicSQLDialect {
         this.functionEncodingEnabled = functionEncodingEnabled;
     }
 
+    @Override
+    public void initializeConnection(Connection cx) throws SQLException {
+        super.initializeConnection(cx);
+        getPostgreSQLVersion(cx);
+    }
 
     @Override
     public boolean includeTable(String schemaName, String tableName,
@@ -822,36 +830,54 @@ public class PostGISDialect extends BasicSQLDialect {
     @Override
     public void encodeValue(Object value, Class type, StringBuffer sql) {
         if(byte[].class.equals(type)) {
-            // escape the into bytea representation
-            StringBuffer sb = new StringBuffer();
             byte[] input = (byte[]) value;
-            for (int i = 0; i < input.length; i++) {
-                byte b = input[i];
-                if(b == 0) {
-                    sb.append("\\\\000");
-                } else if(b == 39) {
-                    sb.append("\\'");
-                } else if(b == 92) {
-                    sb.append("\\\\134'");
-                } else if(b < 31 || b >= 127) {
-                    sb.append("\\\\");
-                    String octal = Integer.toOctalString(b);
-                    if(octal.length() == 1) {
-                        sb.append("00");
-                    } else if(octal.length() == 2) {
-                        sb.append("0");
-                    }
-                    sb.append(octal);
-                } else {
-                    sb.append((char) b);
-                }
+            //check postgres version, if > 9 default encoding is hex
+            if (pgsqlVersion.compareTo(PGSQL_V_9_0) >= 0) {
+                encodeByteArrayAsHex(input, sql);
             }
-            super.encodeValue(sb.toString(), String.class, sql);
+            else {
+                encodeByteArrayAsEscape(input, sql);
+            }
+
         } else {
             super.encodeValue(value, type, sql);
         }
     }
-    
+
+    void encodeByteArrayAsHex(byte[] input, StringBuffer sql) {
+        StringBuffer sb = new StringBuffer("\\x");
+        for (int i = 0; i < input.length; i++) {
+            sb.append(String.format("%02x", input[i]));
+        }
+        super.encodeValue(sb.toString(), String.class, sql);
+    }
+
+    void encodeByteArrayAsEscape(byte[] input, StringBuffer sql) {
+        // escape the into bytea representation
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < input.length; i++) {
+            byte b = input[i];
+            if(b == 0) {
+                sb.append("\\\\000");
+            } else if(b == 39) {
+                sb.append("\\'");
+            } else if(b == 92) {
+                sb.append("\\\\134'");
+            } else if(b < 31 || b >= 127) {
+                sb.append("\\\\");
+                String octal = Integer.toOctalString(b);
+                if(octal.length() == 1) {
+                    sb.append("00");
+                } else if(octal.length() == 2) {
+                    sb.append("0");
+                }
+                sb.append(octal);
+            } else {
+                sb.append((char) b);
+            }
+        }
+        super.encodeValue(sb.toString(), String.class, sql);
+    }
     @Override
     public int getDefaultVarcharSize(){
         return -1;
@@ -879,7 +905,18 @@ public class PostGISDialect extends BasicSQLDialect {
         
         return version;
     }
-    
+
+    /**
+     * Returns the PostgreSQL version
+     */
+    public Version getPostgreSQLVersion(Connection conn) throws SQLException {
+        if (pgsqlVersion == null) {
+            DatabaseMetaData md = conn.getMetaData();
+            pgsqlVersion = new Version(
+                String.format("%d.%d", md.getDatabaseMajorVersion(), md.getDatabaseMinorVersion()));
+        }
+        return pgsqlVersion;
+    }
     /**
      * Returns true if the PostGIS version is >= 1.5.0
      */

@@ -174,10 +174,10 @@ public class XSDateTimeStrategyTest extends TestSchema {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
         encoder.encode(cal, qname, out);
-
+        
         Document dom = DocumentBuilderFactory.newInstance().newDocumentBuilder()
                 .parse(new ByteArrayInputStream(out.toByteArray()));
-        System.out.println(out.toString());
+        
         String encodedValue = dom.getDocumentElement().getTextContent();
 
         assertEquals(expected, encodedValue);

@@ -2,7 +2,11 @@ package org.geotools.maven.xmlcodegen.templates;
 
 import org.geotools.maven.xmlcodegen.*;
 import java.util.*;
-import org.apache.xml.serialize.*;
+import javax.xml.transform.*; 
+import javax.xml.transform.sax.*;
+import javax.xml.transform.dom.*;
+import javax.xml.transform.stream.*; 
+
 import org.eclipse.xsd.*;
 import java.io.*;
 import org.geotools.xml.*;
@@ -94,23 +98,29 @@ public class CLASS
     stringBuffer.append(TEXT_7);
     stringBuffer.append(named.getName());
     stringBuffer.append(TEXT_8);
-    
-	
-	OutputFormat output = new OutputFormat();
-	output.setOmitXMLDeclaration(true);
-	output.setIndenting(true);
-	
-	StringWriter writer = new StringWriter();
-	XMLSerializer serializer = new XMLSerializer(writer,output);
 
-	try {
-		serializer.serialize(named.getElement());
-	} 
-	catch (IOException e) {
-		e.printStackTrace();
-		return null;
-	}
-	
+    StringWriter writer = new StringWriter();
+
+    SAXTransformerFactory txFactory = 
+            (SAXTransformerFactory) SAXTransformerFactory.newInstance();
+    TransformerHandler xmls;
+    try {
+        xmls = txFactory.newTransformerHandler();
+    } catch (TransformerConfigurationException e) {
+        throw new RuntimeException(e);
+    }
+    xmls.getTransformer().setOutputProperty(OutputKeys.METHOD, "XML");
+    xmls.getTransformer().setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "true");
+    xmls.getTransformer().setOutputProperty(OutputKeys.INDENT, "true");
+
+    try {
+        xmls.getTransformer().transform(new DOMSource(named.getElement()), new StreamResult(writer));
+    } 
+    catch (Exception e) {
+        e.printStackTrace();
+        return null;
+    }
+    
 	String[] lines = writer.getBuffer().toString().split("\n");
 	for (int i = 0; i < lines.length; i++) {
 

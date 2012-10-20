@@ -31,13 +31,14 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 
-import org.apache.xerces.parsers.SAXParser;
 import org.eclipse.emf.ecore.resource.URIHandler;
 import org.eclipse.xsd.XSDSchema;
 import org.geotools.xml.impl.ParserHandler;
@@ -233,10 +234,8 @@ public class Parser {
     public Object parse(InputSource source)
         throws IOException, SAXException, ParserConfigurationException {
         parser = parser();
-        parser.setContentHandler(handler);
-        parser.setErrorHandler(handler);
 
-        parser.parse(source);
+        parser.parse(source, handler);
 
         return handler.getValue();
     }
@@ -443,9 +442,7 @@ public class Parser {
      */
     public void validate( InputSource source ) throws IOException, SAXException, ParserConfigurationException {
         SAXParser parser = parser( true );
-        parser.setContentHandler( handler.getValidator() );
-        parser.setErrorHandler( handler.getValidator() );
-        parser.parse( source );
+        parser.parse(source, handler.getValidator());
     }
 
     /**
@@ -506,17 +503,19 @@ public class Parser {
     protected SAXParser parser(boolean validate) throws ParserConfigurationException, SAXException {
         //JD: we use xerces directly here because jaxp does seem to allow use to 
         // override all the namespaces to validate against
-        SAXParser parser = new SAXParser();
-
+        SAXParserFactory pFactory = SAXParserFactory.newInstance();
+        
         //set the appropriate features
-        parser.setFeature("http://xml.org/sax/features/namespaces", true);
-
+        pFactory.setFeature("http://xml.org/sax/features/namespaces", true);
+        
         if (validate) {
-            parser.setFeature("http://xml.org/sax/features/validation", true);
-            parser.setFeature("http://apache.org/xml/features/validation/schema", true);
-            parser.setFeature("http://apache.org/xml/features/validation/schema-full-checking", true);
+            pFactory.setFeature("http://xml.org/sax/features/validation", true);
+            pFactory.setFeature("http://apache.org/xml/features/validation/schema", true);
+            pFactory.setFeature("http://apache.org/xml/features/validation/schema-full-checking", true);
         }
 
+        SAXParser parser = pFactory.newSAXParser();
+        
         //set the schema sources of this configuration, and all dependent ones
         StringBuffer schemaLocation = new StringBuffer();
 

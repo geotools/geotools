@@ -19,19 +19,31 @@ package org.geotools.gml3;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 
+import javax.xml.XMLConstants;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
+
 import junit.framework.TestCase;
 
-import org.apache.xerces.parsers.SAXParser;
 import org.eclipse.xsd.XSDSchema;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.gml2.SrsSyntax;
 import org.geotools.gml3.bindings.GML3MockData;
 import org.geotools.gml3.bindings.TEST;
 import org.geotools.gml3.bindings.TestConfiguration;
+import org.geotools.xml.Configuration;
 import org.geotools.xml.Encoder;
 import org.geotools.xml.Parser;
 import org.opengis.feature.simple.SimpleFeature;
@@ -83,36 +95,7 @@ public class GML3EncodingTest extends TestCase {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         encoder.write(fc, TEST.TestFeatureCollection, output);
 
-        SAXParser saxParser = new SAXParser();
-        saxParser.setFeature("http://xml.org/sax/features/validation", true);
-        saxParser.setFeature("http://apache.org/xml/features/validation/schema", true);
-        saxParser.setFeature("http://apache.org/xml/features/validation/schema-full-checking", true);
-
-        saxParser.setProperty("http://apache.org/xml/properties/schema/external-noNamespaceSchemaLocation",
-            TEST.NAMESPACE);
-
-        saxParser.setProperty("http://apache.org/xml/properties/schema/external-schemaLocation",
-            TEST.NAMESPACE + " " + configuration.getSchemaFileURL());
-
-        final ArrayList errors = new ArrayList();
-        DefaultHandler handler = new DefaultHandler() {
-                public void error(SAXParseException e)
-                    throws SAXException {
-                    System.out.println(e.getMessage());
-                    errors.add(e);
-                }
-
-                public void fatalError(SAXParseException e)
-                    throws SAXException {
-                    System.out.println(e.getMessage());
-                    errors.add(e);
-                }
-            };
-
-        saxParser.setErrorHandler(handler);
-        saxParser.parse(new InputSource(new ByteArrayInputStream(output.toByteArray())));
-
-        assertTrue(errors.isEmpty());
+        validate(output.toByteArray(), configuration);
     }
 
     public void testWithApplicationSchemaConfiguration()
@@ -141,38 +124,38 @@ public class GML3EncodingTest extends TestCase {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         encoder.write(fc, TEST.TestFeatureCollection, output);
 
-        SAXParser saxParser = new SAXParser();
-        saxParser.setFeature("http://xml.org/sax/features/validation", true);
-        saxParser.setFeature("http://apache.org/xml/features/validation/schema", true);
-        saxParser.setFeature("http://apache.org/xml/features/validation/schema-full-checking", true);
+        validate(output.toByteArray(), configuration);
+    }
 
-        saxParser.setProperty("http://apache.org/xml/properties/schema/external-noNamespaceSchemaLocation",
-            TEST.NAMESPACE);
+    void validate(byte[] data, Configuration configuration) throws Exception  {
+        SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
-        saxParser.setProperty("http://apache.org/xml/properties/schema/external-schemaLocation",
-            TEST.NAMESPACE + " " + configuration.getSchemaFileURL());
+        
+        Schema s = sf.newSchema(new URI(configuration.getSchemaFileURL()).toURL());
+
+        Validator v = s.newValidator();
 
         final ArrayList errors = new ArrayList();
         DefaultHandler handler = new DefaultHandler() {
-                public void error(SAXParseException e)
-                    throws SAXException {
-                    System.out.println(e.getMessage());
-                    errors.add(e);
-                }
+            public void error(SAXParseException e)
+                throws SAXException {
+                System.out.println(e.getMessage());
+                errors.add(e);
+            }
 
-                public void fatalError(SAXParseException e)
-                    throws SAXException {
-                    System.out.println(e.getMessage());
-                    errors.add(e);
-                }
-            };
+            public void fatalError(SAXParseException e)
+                throws SAXException {
+                System.out.println(e.getMessage());
+                errors.add(e);
+            }
+        };
 
-        saxParser.setErrorHandler(handler);
-        saxParser.parse(new InputSource(new ByteArrayInputStream(output.toByteArray())));
+        v.setErrorHandler(handler);
+        v.validate(new StreamSource(new ByteArrayInputStream(data)));
 
         assertTrue(errors.isEmpty());
     }
-    
+
     public void testEncodeFeatureWithBounds() throws Exception {
         SimpleFeature feature = GML3MockData.feature();
         TestConfiguration configuration  = new TestConfiguration();

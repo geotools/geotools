@@ -346,7 +346,7 @@ public abstract class XMLTestSupport extends TestCase {
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
-        
+
         return dbf.newDocumentBuilder().parse(new ByteArrayInputStream(output.toByteArray()));
     }
 

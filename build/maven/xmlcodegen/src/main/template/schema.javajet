@@ -5,7 +5,8 @@
         org.geotools.feature.NameImpl
         org.opengis.feature.type.ComplexType org.opengis.feature.type.AttributeDescriptor 
         org.opengis.feature.type.PropertyDescriptor org.opengis.feature.type.PropertyType 
-        org.apache.xml.serialize.* org.eclipse.xsd.*" class="SchemaClassTemplate" %>
+        javax.xml.transform.* javax.xml.transform.sax.* javax.xml.transform.dom.* javax.xml.transform.stream.* 
+        org.eclipse.xsd.*" class="SchemaClassTemplate" %>
 
 <%  
     Object[] arguments = (Object[]) argument;
@@ -60,21 +61,26 @@ public class <%=prefix%>Schema extends SchemaImpl {
      *  <pre>
      *   <code>
 <%
-      XSDTypeDefinition xsdType = sg.getXSDType(type);
-      OutputFormat output = new OutputFormat();
-      output.setOmitXMLDeclaration(true);
-      output.setIndenting(true);
+    XSDTypeDefinition xsdType = sg.getXSDType(type);
+    SAXTransformerFactory txFactory = 
+            (SAXTransformerFactory) SAXTransformerFactory.newInstance();
+    TransformerHandler xmls;
+    try {
+        xmls = txFactory.newTransformerHandler();
+    } catch (TransformerConfigurationException e) {
+        throw new RuntimeException(e);
+    }
+    xmls.getTransformer().setOutputProperty(OutputKeys.METHOD, "XML");
+    xmls.getTransformer().setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "true");
+    xmls.getTransformer().setOutputProperty(OutputKeys.INDENT, "true");
 
-      StringWriter writer = new StringWriter();
-      XMLSerializer serializer = new XMLSerializer(writer,output);
-    
-      try {
-        serializer.serialize(xsdType.getElement());
-      }
-      catch (IOException e) {
+    try {
+        xmls.getTransformer().transform(new DOMSource(xsdType.getElement()), new StreamResult(writer));
+    } 
+    catch (Exception e) {
         e.printStackTrace();
         return null;
-      }
+    }
       
       String[] lines = writer.getBuffer().toString().split("\n");
       for (int i = 0; i < lines.length; i++) {

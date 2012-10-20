@@ -1,4 +1,4 @@
-<%@ jet package="org.geotools.maven.xmlcodegen.templates" imports="org.geotools.maven.xmlcodegen.* java.util.* org.apache.xml.serialize.* org.eclipse.xsd.* java.io.* org.geotools.xml.*" class="BindingTestClass" %>
+<%@ jet package="org.geotools.maven.xmlcodegen.templates" imports="org.geotools.maven.xmlcodegen.* java.util.* javax.xml.transform.* javax.xml.transform.sax.* javax.xml.transform.dom.* javax.xml.transform.stream.* org.eclipse.xsd.* java.io.* org.geotools.xml.*" class="BindingTestClass" %>
 <%
 
     Object[] arguments = (Object[]) argument;
@@ -21,17 +21,24 @@ import org.geotools.xml.Binding;
  *   <code>
 <%
     
-    OutputFormat output = new OutputFormat();
-    output.setOmitXMLDeclaration(true);
-    output.setIndenting(true);
-    
     StringWriter writer = new StringWriter();
-    XMLSerializer serializer = new XMLSerializer(writer,output);
+
+    SAXTransformerFactory txFactory = 
+        (SAXTransformerFactory) SAXTransformerFactory.newInstance();
+    TransformerHandler xmls;
+    try {
+        xmls = txFactory.newTransformerHandler();
+    } catch (TransformerConfigurationException e) {
+        throw new RuntimeException(e);
+    }
+    xmls.getTransformer().setOutputProperty(OutputKeys.METHOD, "XML");
+    xmls.getTransformer().setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "true");
+    xmls.getTransformer().setOutputProperty(OutputKeys.INDENT, "true");
 
     try {
-        serializer.serialize(named.getElement());
+        xmls.getTransformer().transform(new DOMSource(named.getElement()), new StreamResult(writer));
     } 
-    catch (IOException e) {
+    catch (Exception e) {
         e.printStackTrace();
         return null;
     }

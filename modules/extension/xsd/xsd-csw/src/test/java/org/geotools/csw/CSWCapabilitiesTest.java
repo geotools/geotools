@@ -192,7 +192,7 @@ public class CSWCapabilitiesTest {
                 output.startElement(rimNamespace, "Slot", "rim:Slot", atts);
                 String content = "test content";
                 output.characters(content.toCharArray(), 0, content.length());
-                output.endElement(rimNamespace, "test", "rim:test");
+                output.endElement(rimNamespace, "Slot", "rim:Slot");
                 output.endPrefixMapping("rim");
             }
         });

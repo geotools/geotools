@@ -2,7 +2,10 @@ package org.geotools.maven.xmlcodegen.templates;
 
 import org.geotools.maven.xmlcodegen.*;
 import java.util.*;
-import org.apache.xml.serialize.*;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.*;
+import javax.xml.transform.sax.*;
+import javax.xml.transform.stream.*;
 import org.eclipse.xsd.*;
 import java.io.*;
 import org.geotools.xml.*;
@@ -52,18 +55,24 @@ public class BindingTestClass
     stringBuffer.append(named.getName());
     stringBuffer.append(TEXT_3);
     
-    
-    OutputFormat output = new OutputFormat();
-    output.setOmitXMLDeclaration(true);
-    output.setIndenting(true);
-    
     StringWriter writer = new StringWriter();
-    XMLSerializer serializer = new XMLSerializer(writer,output);
+
+    SAXTransformerFactory txFactory = 
+            (SAXTransformerFactory) SAXTransformerFactory.newInstance();
+    TransformerHandler xmls;
+    try {
+        xmls = txFactory.newTransformerHandler();
+    } catch (TransformerConfigurationException e) {
+        throw new RuntimeException(e);
+    }
+    xmls.getTransformer().setOutputProperty(OutputKeys.METHOD, "XML");
+    xmls.getTransformer().setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "true");
+    xmls.getTransformer().setOutputProperty(OutputKeys.INDENT, "true");
 
     try {
-        serializer.serialize(named.getElement());
+        xmls.getTransformer().transform(new DOMSource(named.getElement()), new StreamResult(writer));
     } 
-    catch (IOException e) {
+    catch (Exception e) {
         e.printStackTrace();
         return null;
     }

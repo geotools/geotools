@@ -5,8 +5,14 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.xml.serialize.OutputFormat;
-import org.apache.xml.serialize.XMLSerializer;
+
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.sax.SAXTransformerFactory;
+import javax.xml.transform.sax.TransformerHandler;
+import javax.xml.transform.stream.StreamResult;
+
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.geotools.maven.xmlcodegen.SchemaGenerator;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -127,18 +133,28 @@ public class CycleSchemaClassTemplate
     stringBuffer.append(TEXT_7);
     
             XSDTypeDefinition xsdType = sg.getXSDType(type);
-            OutputFormat output = new OutputFormat();
-            output.setOmitXMLDeclaration(true);
-            output.setIndenting(true);
             StringWriter writer = new StringWriter();
-            XMLSerializer serializer = new XMLSerializer(writer,output);
+
+            SAXTransformerFactory txFactory = 
+                    (SAXTransformerFactory) SAXTransformerFactory.newInstance();
+            TransformerHandler xmls;
             try {
-                serializer.serialize(xsdType.getElement());
+                xmls = txFactory.newTransformerHandler();
+            } catch (TransformerConfigurationException e) {
+                throw new RuntimeException(e);
             }
-            catch (IOException e) {
+            xmls.getTransformer().setOutputProperty(OutputKeys.METHOD, "XML");
+            xmls.getTransformer().setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "true");
+            xmls.getTransformer().setOutputProperty(OutputKeys.INDENT, "true");
+
+            try {
+                xmls.getTransformer().transform(new DOMSource(xsdType.getElement()), new StreamResult(writer));
+            } 
+            catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }
+
             String[] lines = writer.getBuffer().toString().split("\n");
             for (int i = 0; i < lines.length; i++) {
 

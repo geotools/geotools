@@ -22,6 +22,7 @@ import java.util.Enumeration;
 import net.opengis.wfs20.QueryExpressionTextType;
 import net.opengis.wfs20.Wfs20Factory;
 
+import org.eclipse.emf.ecore.EDataType;
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.xml.*;
 import org.w3c.dom.Document;
@@ -32,6 +33,8 @@ import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 /**
  * Binding object for the type http://www.opengis.net/wfs/2.0:QueryExpressionTextType.
@@ -91,21 +94,21 @@ public class QueryExpressionTextTypeBinding extends AbstractComplexEMFBinding {
         QueryExpressionTextType qe = (QueryExpressionTextType) object;
         if (!qe.isIsPrivate()) {
             //include the query text
+
+            //this is a hack, but we need to build up a dom with namespaces without actually 
+            // having them decelared by the edxpression text, so we first parse the query 
+            // expression with a sax handler that can transform to a namespace aware dom 
+            // using the current namespace context
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder db = dbf.newDocumentBuilder();
+            dbf.setNamespaceAware(true);
+
+            ConvertToDomHandler h = new ConvertToDomHandler(
+                dbf.newDocumentBuilder().newDocument(), namespaceContext);
             
-            Document d = db.parse(new ByteArrayInputStream(qe.getValue().getBytes()));
+            SAXParser saxp = SAXParserFactory.newInstance().newSAXParser();
+            saxp.parse(new ByteArrayInputStream(qe.getValue().getBytes()), h);
             
-            //register all the namespaces from this context with the root element of the parsed
-            // content
-            for (Enumeration en = namespaceContext.getPrefixes(); en.hasMoreElements(); ) {
-                String prefix = (String) en.nextElement();
-                if (prefix == null) {
-                    continue;
-                }
-                String uri = namespaceContext.getURI(prefix);
-                d.getDocumentElement().setAttribute("xmlns:" + prefix, uri);
-            }
+            Document d = h.getDocument();
             e.appendChild(document.importNode(d.getDocumentElement(), true));
         }
         

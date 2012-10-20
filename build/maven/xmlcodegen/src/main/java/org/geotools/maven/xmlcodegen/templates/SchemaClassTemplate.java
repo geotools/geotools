@@ -2,6 +2,10 @@ package org.geotools.maven.xmlcodegen.templates;
 
 import java.util.*;
 import java.io.*;
+import javax.xml.transform.*;
+import javax.xml.transform.sax.*;
+import javax.xml.transform.dom.*;
+import javax.xml.transform.stream.*; 
 import org.geotools.xml.*;
 import org.geotools.maven.xmlcodegen.*;
 import org.opengis.feature.type.Schema;
@@ -12,7 +16,6 @@ import org.opengis.feature.type.ComplexType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.feature.type.PropertyType;
-import org.apache.xml.serialize.*;
 import org.eclipse.xsd.*;
 
 public class SchemaClassTemplate
@@ -134,21 +137,28 @@ public class SchemaClassTemplate
 
     stringBuffer.append(TEXT_7);
     
-      XSDTypeDefinition xsdType = sg.getXSDType(type);
-      OutputFormat output = new OutputFormat();
-      output.setOmitXMLDeclaration(true);
-      output.setIndenting(true);
+    StringWriter writer = new StringWriter();
 
-      StringWriter writer = new StringWriter();
-      XMLSerializer serializer = new XMLSerializer(writer,output);
-    
-      try {
-        serializer.serialize(xsdType.getElement());
-      }
-      catch (IOException e) {
+    XSDTypeDefinition xsdType = sg.getXSDType(type);
+    SAXTransformerFactory txFactory = 
+            (SAXTransformerFactory) SAXTransformerFactory.newInstance();
+    TransformerHandler xmls;
+    try {
+        xmls = txFactory.newTransformerHandler();
+    } catch (TransformerConfigurationException e) {
+        throw new RuntimeException(e);
+    }
+    xmls.getTransformer().setOutputProperty(OutputKeys.METHOD, "XML");
+    xmls.getTransformer().setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "true");
+    xmls.getTransformer().setOutputProperty(OutputKeys.INDENT, "true");
+
+    try {
+        xmls.getTransformer().transform(new DOMSource(xsdType.getElement()), new StreamResult(writer));
+    } 
+    catch (Exception e) {
         e.printStackTrace();
         return null;
-      }
+    }
       
       String[] lines = writer.getBuffer().toString().split("\n");
       for (int i = 0; i < lines.length; i++) {

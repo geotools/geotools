@@ -93,7 +93,6 @@ public class StoredQueryDescriptionTypeBindingTest extends WFSTestSupport {
         qet.setValue(xml);
 
         Document dom = encode(sqd, WFS.StoredQueryDescription, WFS.StoredQueryDescriptionType);
-        print(dom);
         assertEquals("wfs:StoredQueryDescription", dom.getDocumentElement().getNodeName());
         assertEquals(1, dom.getElementsByTagName("wfs:QueryExpressionText").getLength());
         

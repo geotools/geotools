@@ -1,7 +1,7 @@
 <test:TestFeatureCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:gml="http://www.opengis.net/gml"
 	xmlns:test="http://www.geotools.org/test"
-	xsi:schemaLocation="http://www.geotools.org/test test.xsd">
+	xsi:schemaLocation="http://www.geotools.org/test /Users/jdeolive/Projects/geotools/git/modules/extension/xsd/xsd-gml3/target/test-classes/org/geotools/gml3/bindings/test.xsd">
 
 	<gml:featureMember>
 	   <test:TestFeature gml:id="fid.0">

@@ -118,7 +118,7 @@
         <!--     Oracle tools dependency (JDK 7+)                        -->
         <!-- =========================================================== -->
         <profile>
-            <id>default-tools.jar</id>
+            <id>jdk-7-default-tools.jar</id>
             <activation>
                 <property>
                     <name>java.vendor</name>

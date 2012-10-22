@@ -10,9 +10,7 @@
 package org.geotools.process;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.feature.NameImpl;
-import org.geotools.process.feature.gs.TransformProcess;
-import org.geotools.util.NullProgressListener;
+import org.geotools.process.vector.TransformProcess;
 
 public class FeatureProcessExamples {
 

@@ -4,9 +4,12 @@ import static org.junit.Assert.*;
 
 import java.io.StringReader;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.opengis.cat.csw20.CapabilitiesType;
+import net.opengis.cat.csw20.Csw20Factory;
 import net.opengis.cat.csw20.GetCapabilitiesType;
 import net.opengis.ows10.ContactType;
 import net.opengis.ows10.DCPType;
@@ -14,17 +17,23 @@ import net.opengis.ows10.DomainType;
 import net.opengis.ows10.KeywordsType;
 import net.opengis.ows10.OperationType;
 import net.opengis.ows10.OperationsMetadataType;
+import net.opengis.ows10.Ows10Factory;
 import net.opengis.ows10.RequestMethodType;
 import net.opengis.ows10.ResponsiblePartySubsetType;
+import net.opengis.ows10.SectionsType;
 import net.opengis.ows10.ServiceIdentificationType;
 import net.opengis.ows10.ServiceProviderType;
 
+import org.custommonkey.xmlunit.SimpleNamespaceContext;
+import org.custommonkey.xmlunit.XMLAssert;
+import org.custommonkey.xmlunit.XMLUnit;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.gml2.GML;
 import org.geotools.ows.OWS;
+import org.geotools.xlink.XLINK;
 import org.geotools.xml.Encoder;
+import org.geotools.xml.EncoderDelegate;
 import org.geotools.xml.Parser;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.filter.capability.ArithmeticOperators;
 import org.opengis.filter.capability.ComparisonOperators;
@@ -34,6 +43,9 @@ import org.opengis.filter.capability.IdCapabilities;
 import org.opengis.filter.capability.ScalarCapabilities;
 import org.opengis.filter.capability.SpatialCapabilities;
 import org.opengis.filter.capability.SpatialOperators;
+import org.w3c.dom.Document;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.helpers.AttributesImpl;
 
 
 public class CSWCapabilitiesTest {
@@ -161,5 +173,51 @@ public class CSWCapabilitiesTest {
         
         CapabilitiesType reParsed = (CapabilitiesType) parser.parse(new StringReader(encoded));
         assertTrue(EMFUtils.emfEquals(caps, reParsed));
+    }
+    
+    @Test 
+    @SuppressWarnings("unchecked")
+    public void testExtendedCapabilities() throws Exception {
+        Csw20Factory cswf = Csw20Factory.eINSTANCE;
+        Ows10Factory owsf = Ows10Factory.eINSTANCE;
+        CapabilitiesType caps = cswf.createCapabilitiesType();
+        OperationsMetadataType om = owsf.createOperationsMetadataType();
+        caps.setOperationsMetadata(om);
+        final String rimNamespace = "urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0";
+        om.setExtendedCapabilities(new EncoderDelegate() {
+            
+            @Override
+            public void encode(ContentHandler output) throws Exception {
+                AttributesImpl atts = new AttributesImpl();
+                output.startPrefixMapping("rim", rimNamespace);
+                atts.addAttribute(rimNamespace, "test", "rim:test", "xs:string", "test");
+                output.startElement(rimNamespace, "Slot", "rim:Slot", atts);
+                String content = "test content";
+                output.characters(content.toCharArray(), 0, content.length());
+                output.endElement(rimNamespace, "test", "rim:test");
+                output.endPrefixMapping("rim");
+            }
+        });
+        
+        Encoder encoder = new Encoder(new CSWConfiguration());
+        encoder.setIndenting(true);
+        encoder.setNamespaceAware(true);
+        encoder.getNamespaces().declarePrefix("ows", OWS.NAMESPACE);
+        encoder.getNamespaces().declarePrefix("ogc", OGC.NAMESPACE);
+        encoder.getNamespaces().declarePrefix("gml", GML.NAMESPACE);
+        String encoded = encoder.encodeAsString(caps, CSW.Capabilities);
+        
+        // System.out.println(encoded);
+
+        // prepare xmlunit
+        Map<String, String> namespaces = new HashMap<String, String>();
+        namespaces.put("csw", CSW.NAMESPACE);
+        namespaces.put("ows", OWS.NAMESPACE);
+        namespaces.put("rim", rimNamespace);
+        XMLUnit.setXpathNamespaceContext(new SimpleNamespaceContext(namespaces));
+        
+        Document doc = XMLUnit.buildControlDocument(encoded);
+        XMLAssert.assertXpathEvaluatesTo("test", "/csw:Capabilities/ows:OperationsMetadata/rim:Slot/@rim:test", doc);
+        XMLAssert.assertXpathEvaluatesTo("test content", "/csw:Capabilities/ows:OperationsMetadata/rim:Slot", doc);
     }
 }

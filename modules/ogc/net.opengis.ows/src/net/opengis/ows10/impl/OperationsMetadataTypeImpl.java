@@ -146,27 +146,10 @@ public class OperationsMetadataTypeImpl extends EObjectImpl implements Operation
      * @generated
      */
 	public Object getExtendedCapabilities() {
-        if (extendedCapabilities != null && ((EObject)extendedCapabilities).eIsProxy()) {
-            InternalEObject oldExtendedCapabilities = (InternalEObject)extendedCapabilities;
-            extendedCapabilities = (Object)eResolveProxy(oldExtendedCapabilities);
-            if (extendedCapabilities != oldExtendedCapabilities) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, Ows10Package.OPERATIONS_METADATA_TYPE__EXTENDED_CAPABILITIES, oldExtendedCapabilities, extendedCapabilities));
-            }
-        }
         return extendedCapabilities;
     }
 
 	/**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public Object basicGetExtendedCapabilities() {
-        return extendedCapabilities;
-    }
-
-    /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -209,8 +192,7 @@ public class OperationsMetadataTypeImpl extends EObjectImpl implements Operation
             case Ows10Package.OPERATIONS_METADATA_TYPE__CONSTRAINT:
                 return getConstraint();
             case Ows10Package.OPERATIONS_METADATA_TYPE__EXTENDED_CAPABILITIES:
-                if (resolve) return getExtendedCapabilities();
-                return basicGetExtendedCapabilities();
+                return getExtendedCapabilities();
         }
         return super.eGet(featureID, resolve, coreType);
     }

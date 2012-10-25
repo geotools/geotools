@@ -104,8 +104,8 @@ import org.geotools.styling.RuleImpl;
 import org.geotools.styling.StyleAttributeExtractor;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.visitor.DpiRescaleStyleVisitor;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
-import org.geotools.styling.visitor.RescaleStyleVisitor;
 import org.geotools.styling.visitor.UomRescaleStyleVisitor;
 import org.geotools.util.NumberRange;
 import org.opengis.coverage.processing.OperationNotFoundException;
@@ -247,7 +247,7 @@ public final class StreamingRenderer implements GTRenderer {
      * The ratio required to scale the features to be rendered so that they fit
      * into the output space.
      */
-    private double scaleDenominator;
+    protected double scaleDenominator;
 
     /** Maximum displacement for generalization during rendering */
     private double generalizationDistance = 0.8;
@@ -1983,22 +1983,22 @@ public final class StreamingRenderer implements GTRenderer {
      * @param lfts
      */
     void applyUnitRescale(final ArrayList<LiteFeatureTypeStyle> lfts) {
-        // apply UOM rescaling
-        double pixelsPerMeters = RendererUtilities.calculatePixelsPerMeterRatio(scaleDenominator, rendererHints);
-        UomRescaleStyleVisitor rescaleVisitor = new UomRescaleStyleVisitor(pixelsPerMeters);
-        for(LiteFeatureTypeStyle fts : lfts) {
-            rescaleFeatureTypeStyle(fts, rescaleVisitor);
-        }
-        
         // apply dpi rescale
         double dpi = RendererUtilities.getDpi(getRendererHints());
         double standardDpi = RendererUtilities.getDpi(Collections.emptyMap());
         if(dpi != standardDpi) {
             double scaleFactor = dpi / standardDpi;
-            RescaleStyleVisitor dpiVisitor = new RescaleStyleVisitor(scaleFactor);
+            DpiRescaleStyleVisitor dpiVisitor = new DpiRescaleStyleVisitor(scaleFactor);
             for(LiteFeatureTypeStyle fts : lfts) {
                 rescaleFeatureTypeStyle(fts, dpiVisitor);
             }
+        }
+        
+        // apply UOM rescaling
+        double pixelsPerMeters = RendererUtilities.calculatePixelsPerMeterRatio(scaleDenominator, rendererHints);
+        UomRescaleStyleVisitor rescaleVisitor = new UomRescaleStyleVisitor(pixelsPerMeters);
+        for(LiteFeatureTypeStyle fts : lfts) {
+            rescaleFeatureTypeStyle(fts, rescaleVisitor);
         }
     }
     

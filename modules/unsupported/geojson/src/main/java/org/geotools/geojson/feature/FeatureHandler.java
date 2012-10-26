@@ -231,22 +231,41 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
             }
         }
         if (geometry != null) {
-            typeBuilder.add("geometry", geometry != null ? geometry.getClass() : Geometry.class);
-            typeBuilder.setDefaultGeometry("geometry");    
+            addGeometryType(typeBuilder, geometry);
         }
         
         return new SimpleFeatureBuilder(typeBuilder.buildFeatureType());
     }
-    
+
+    void addGeometryType(SimpleFeatureTypeBuilder typeBuilder, Geometry geometry) {
+        typeBuilder.add("geometry", geometry != null ? geometry.getClass() : Geometry.class);
+        typeBuilder.setDefaultGeometry("geometry");
+    }
+
     SimpleFeature buildFeature() {
       
         SimpleFeatureBuilder builder = this.builder != null ? this.builder : createBuilder();
-      SimpleFeatureType featureType = builder.getFeatureType();
+        SimpleFeatureType featureType = builder.getFeatureType();
+        SimpleFeature f = builder.buildFeature(id);
         if (geometry != null) {
-            builder.set(featureType.getGeometryDescriptor().getLocalName(), geometry);    
-        }
-        
-        return builder.buildFeature(id);
+            if(featureType.getGeometryDescriptor() == null) {
+                //GEOT-4293, case of geometry coming after properties, we have to retype 
+                // the builder
+                // JD: this is ugly, we should really come up with a better way to store internal
+                // state of properties, and avoid creating the builder after the properties object
+                // is completed
+                SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
+                typeBuilder.init(featureType);
+                addGeometryType(typeBuilder, geometry);
+
+                featureType = typeBuilder.buildFeatureType();
+                SimpleFeatureBuilder newBuilder = new SimpleFeatureBuilder(featureType);
+                newBuilder.init(f);
+                f = newBuilder.buildFeature(id);
+            }
+            f.setAttribute(featureType.getGeometryDescriptor().getLocalName(), geometry);
+        }        
+        return f;
     }
 //    "{" +
 //    "  'type': 'Feature'," +

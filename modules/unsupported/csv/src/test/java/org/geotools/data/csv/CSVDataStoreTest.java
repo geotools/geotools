@@ -64,7 +64,7 @@ public class CSVDataStoreTest {
      */
     @Before
     public void createTestFile() throws IOException {
-        File tempDir = new File(System.getProperty("java.io.tmpdir") + "/csvDataStoreTest");
+        File tempDir = new File(new File("./target"), "/csvDataStoreTest");
         if (!tempDir.exists()) {
             tempDir.mkdir();
         }

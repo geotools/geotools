@@ -19,6 +19,8 @@ package org.geotools.data.jdbc.datasource;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
+import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
@@ -71,7 +73,13 @@ public abstract class AbstractManageableDataSource implements ManageableDataSour
 		return false;
 	}
 
-	public Object unwrap(Class arg0) throws SQLException {
-		throw new SQLException("This implementation cannot unwrap anything");
-	}
+    public Object unwrap(Class arg0) throws SQLException {
+        throw new SQLException("This implementation cannot unwrap anything");
+    }
+
+    @Override
+    public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+        throw new SQLFeatureNotSupportedException();
+    }
+
 }

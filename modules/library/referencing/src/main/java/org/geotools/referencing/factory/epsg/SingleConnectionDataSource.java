@@ -19,6 +19,8 @@ package org.geotools.referencing.factory.epsg;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
+import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
@@ -67,6 +69,11 @@ class SingleConnectionDataSource implements DataSource {
 
     public <T> T unwrap(Class<T> iface) throws SQLException {
         throw new SQLException("Not wrapping an object implementing "+ iface.getClass().getName() );
+    }
+
+    @Override
+    public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+        throw new SQLFeatureNotSupportedException();
     }
 
 }

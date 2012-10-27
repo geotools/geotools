@@ -61,9 +61,7 @@ public class ThreadedHsqlEpsgFactoryTest {
         }
         // force in the standard timeout
         factory.setTimeout(30 * 60 * 1000);
-        if( finder == null ){
-            finder = factory.getIdentifiedObjectFinder(CoordinateReferenceSystem.class);
-        }
+        finder = factory.getIdentifiedObjectFinder(CoordinateReferenceSystem.class);
         corruptConnection();
     }
     

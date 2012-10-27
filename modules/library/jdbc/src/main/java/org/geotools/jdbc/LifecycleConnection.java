@@ -286,27 +286,22 @@ class LifecycleConnection implements Connection {
         return delegate.createStruct(typeName, attributes);
     }
 
-    @Override
     public void setSchema(String schema) throws SQLException {
         invokeMethodQuietly("setSchema", new Class[] {String.class}, new Object[] {schema}, null);
     }
 
-    @Override
     public String getSchema() throws SQLException {
         return (String) invokeMethodQuietly("getSchema", null, null, null);
     }
 
-    @Override
     public void abort(Executor executor) throws SQLException {
         invokeMethodQuietly("abort", new Class[] {Executor.class}, new Object[] {executor}, null);
     }
 
-    @Override
     public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException {
         invokeMethodQuietly("setNetworkTimeout", new Class[] {Executor.class, int.class}, new Object[] {executor, milliseconds}, null);
     }
 
-    @Override
     public int getNetworkTimeout() throws SQLException {
         return (Integer) invokeMethodQuietly("getNetworkTimeout", null, null, 0);
     }

@@ -71,7 +71,6 @@ class SingleConnectionDataSource implements DataSource {
         throw new SQLException("Not wrapping an object implementing "+ iface.getClass().getName() );
     }
 
-    @Override
     public Logger getParentLogger() throws SQLFeatureNotSupportedException {
         throw new SQLFeatureNotSupportedException();
     }

@@ -19,7 +19,7 @@ package org.geotools.geometry.iso.complex;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
+import java.util.HashSet;
 
 import org.geotools.geometry.iso.primitive.PrimitiveImpl;
 import org.geotools.geometry.iso.root.GeometryImpl;
@@ -221,7 +221,7 @@ public abstract class ComplexImpl extends GeometryImpl implements Complex {
 	 * @see org.opengis.geometry.coordinate.root.Geometry#getMaximalComplex()
 	 */
 	public Set<Complex> getMaximalComplex() {
-		TreeSet<Complex> result = new TreeSet<Complex>();
+		HashSet<Complex> result = new HashSet<Complex>();
 		if (this.isMaximal()) {
 			result.add(this);
 		} else {

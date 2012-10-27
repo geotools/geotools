@@ -17,10 +17,10 @@
 package org.geotools.geometry.iso.complex;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.geotools.geometry.iso.coordinate.DirectPositionImpl;
 import org.geotools.geometry.iso.coordinate.EnvelopeImpl;
@@ -135,7 +135,7 @@ public class CompositeCurveImpl extends CompositeImpl<OrientableCurveImpl>
 		if (generator == null)
 			throw new IllegalArgumentException(
 					"Could not create the boundary of CompositeCurve."); //$NON-NLS-1$
-		TreeSet<Complex> result = new TreeSet<Complex>();
+		HashSet<Complex> result = new HashSet<Complex>();
 		result.add( new CurveBoundaryImpl( getCoordinateReferenceSystem(), 
 				new PointImpl( ((CurveImpl) generator
 						.get(0)).getStartPoint()), new PointImpl( ((CurveImpl) generator

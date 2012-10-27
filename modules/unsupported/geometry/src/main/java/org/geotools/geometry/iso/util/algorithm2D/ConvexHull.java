@@ -307,7 +307,7 @@ public class ConvexHull {
 		// System.out.println(ring);
 
 		// add points defining polygon
-		TreeSet reducedSet = new TreeSet();
+		HashSet reducedSet = new HashSet();
 		for (int i = 0; i < polyPts.length; i++) {
 			reducedSet.add(polyPts[i]);
 		}

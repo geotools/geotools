@@ -77,7 +77,6 @@ public abstract class AbstractManageableDataSource implements ManageableDataSour
         throw new SQLException("This implementation cannot unwrap anything");
     }
 
-    @Override
     public Logger getParentLogger() throws SQLFeatureNotSupportedException {
         throw new SQLFeatureNotSupportedException();
     }

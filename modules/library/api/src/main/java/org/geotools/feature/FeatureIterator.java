@@ -21,10 +21,21 @@ import java.io.Closeable;
 import org.opengis.feature.Feature;
 
 /**
- * A drop in replacement for Iterator<Feature> supporting a close method.
- * 
+ * Streaming access to features, required to {@link #close()} after use.
+ * <p>
+ * FeatureIterator is a drop in replacement for Iterator<Feature> supporting a close method.
+ * <p>
+ * Sample use:<pre> FeatureIterator<SimpleFeature> i = featureCollection.features()
+ * try {
+ *    while( i.hasNext() ){
+ *        SimpleFeature feature = i.next();
+ *    }
+ * }
+ * finally {
+ *    i.close();
+ * }
+ * </pre>
  * @author Ian Schneider
- *
  *
  * @source $URL$
  */

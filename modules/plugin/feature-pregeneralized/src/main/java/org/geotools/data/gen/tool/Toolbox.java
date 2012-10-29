@@ -162,33 +162,37 @@ public class Toolbox {
 
         SimpleFeatureCollection fcoll = fs.getFeatures();
         SimpleFeatureIterator it = fcoll.features();
-        int countTotal = fcoll.size();
-
-        List<FeatureWriter<SimpleFeatureType, SimpleFeature>> writers = new ArrayList<FeatureWriter<SimpleFeatureType, SimpleFeature>>();
-        for (int i = 0; i < dataStores.length; i++) {
-            writers.add(dataStores[i].getFeatureWriter(typeName, Transaction.AUTO_COMMIT));
-        }
-
-        int counter = 0;
-        while (it.hasNext()) {
-            SimpleFeature feature = it.next();
-            for (int i = 0; i < distanceArray.length; i++) {
-                FeatureWriter<SimpleFeatureType, SimpleFeature> w = writers.get(i);
-                SimpleFeature genFeature = w.next();
-                genFeature.setAttributes(feature.getAttributes());
-                Geometry newGeom = TopologyPreservingSimplifier.simplify((Geometry) feature
-                        .getDefaultGeometry(), distanceArray[i]);
-                genFeature.setDefaultGeometry(newGeom);
-                w.write();
+        try {
+            int countTotal = fcoll.size();
+    
+            List<FeatureWriter<SimpleFeatureType, SimpleFeature>> writers = new ArrayList<FeatureWriter<SimpleFeatureType, SimpleFeature>>();
+            for (int i = 0; i < dataStores.length; i++) {
+                writers.add(dataStores[i].getFeatureWriter(typeName, Transaction.AUTO_COMMIT));
             }
-            counter++;
-            showProgress(countTotal, counter);
-
+    
+            int counter = 0;
+            while (it.hasNext()) {
+                SimpleFeature feature = it.next();
+                for (int i = 0; i < distanceArray.length; i++) {
+                    FeatureWriter<SimpleFeatureType, SimpleFeature> w = writers.get(i);
+                    SimpleFeature genFeature = w.next();
+                    genFeature.setAttributes(feature.getAttributes());
+                    Geometry newGeom = TopologyPreservingSimplifier.simplify((Geometry) feature
+                            .getDefaultGeometry(), distanceArray[i]);
+                    genFeature.setDefaultGeometry(newGeom);
+                    w.write();
+                }
+                counter++;
+                showProgress(countTotal, counter);
+    
+            }
+            for (FeatureWriter<SimpleFeatureType, SimpleFeature> w : writers){
+                w.close();
+            }
         }
-        fcoll.close(it);
-
-        for (FeatureWriter<SimpleFeatureType, SimpleFeature> w : writers)
-            w.close();
+        finally {
+            it.close();
+        }
 
         for (DataStore ds : dataStores) {
             ds.dispose();

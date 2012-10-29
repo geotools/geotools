@@ -248,8 +248,14 @@ public class GeoSciMLTest extends AppSchemaTestSupport {
 
     private int size(FeatureCollection<FeatureType, Feature> features) {
         int size = 0;
-        for (Iterator i = features.iterator(); i.hasNext(); i.next()) {
-            size++;
+        FeatureIterator<Feature> i = features.features();
+        try {
+            for (; i.hasNext(); i.next()) {
+                size++;
+            }
+        }
+        finally {
+            i.close();
         }
         return size;
     }

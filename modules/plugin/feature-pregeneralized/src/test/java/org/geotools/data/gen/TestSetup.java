@@ -24,12 +24,10 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.geotools.TestData;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.DefaultRepository;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureReader;
@@ -41,6 +39,7 @@ import org.geotools.data.gen.tool.Toolbox;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -110,7 +109,7 @@ public class TestSetup {
 
             // StreamsFeatureSource = ds.getFeatureSource(typeName);
             Transaction t = new DefaultTransaction();
-            Query query = new DefaultQuery(typeName, Filter.INCLUDE);
+            Query query = new Query(typeName, Filter.INCLUDE);
             FeatureReader<SimpleFeatureType, SimpleFeature> reader = ds.getFeatureReader(query, t);
             while (reader.hasNext()) {
 
@@ -299,12 +298,17 @@ public class TestSetup {
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer = ds.getFeatureWriter(ds
                 .getTypeNames()[0], Transaction.AUTO_COMMIT);
 
-        Iterator<SimpleFeature> it = fs.getFeatures().iterator();
-        while (it.hasNext()) {
-            SimpleFeature f = it.next();
-            SimpleFeature fNew = writer.next();
-            fNew.setAttributes(f.getAttributes());
-            writer.write();
+        SimpleFeatureIterator it = fs.getFeatures().features();
+        try {
+            while (it.hasNext()) {
+                SimpleFeature f = it.next();
+                SimpleFeature fNew = writer.next();
+                fNew.setAttributes(f.getAttributes());
+                writer.write();
+            }
+        }
+        finally {
+            it.close();
         }
         writer.close();
         ds.dispose();

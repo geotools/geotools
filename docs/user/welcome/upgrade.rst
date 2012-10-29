@@ -5,11 +5,11 @@ With a library as old as GeoTools you will occasionally run into a project from 
 needs to be upgraded. This page collects the upgrade notes for each release change; highlighting any
 fundemental changes with code examples showing how to upgrade your code.
 
-But first to upgrade - change your dependency to 8-SNAPSHOT (or an appropriate stable version)::
+But first to upgrade - change your dependency to |release| (or an appropriate stable version)::
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <geotools.version>8-SNAPSHOT</geotools.version>
+        <geotools.version>|release|</geotools.version>
     </properties>
     ....
     <dependencies>
@@ -25,6 +25,120 @@ But first to upgrade - change your dependency to 8-SNAPSHOT (or an appropriate s
         </dependency>
         ....
     </dependencies>
+
+GeoTools 9.0
+------------
+
+.. sidebar:: Wiki
+   
+   * `GeoTools 9.0 <http://docs.codehaus.org/display/GEOTOOLS/9.x>`_
+   
+   For background details on any API changes review the change proposals above.
+
+GeoTools 9 has resolved a long standing conflict between FeatureCollection acting as a "result" set capable of
+streaming large datasets vs. acting as a familiar Java Collection. The Java 5 "for each" syntax prevents
+the safe use of Iterator (as we cannot ensure it will be closed). As a result FeatureCollection no longer
+can extend java Collection and is acting as a pure "result set" with streaming access provided by FeatureIterator.
+
+FeatureCollection Add
+^^^^^^^^^^^^^^^^^^^^^
+
+With the FeatureCollection.add method being removed, you will need to use an explicit instance that supports
+adding content.
+
+BEFORE::
+
+	SimpleFeatureCollection features = FeatureCollections.newCollection();
+	
+	for( SimpleFeature feature : list ){
+	   features.add( feature );
+	}
+
+AFTER::
+
+	TreeSetFeatureCollection features = new TreeSetFeatureCollection();
+	for( SimpleFeature feature : list ){
+	   features.add( feature );
+	}
+
+ALTERNATE::
+
+	SimpleFeatureCollection features = FeatureCollections.newCollection();
+	if( features instanceof Collection ){
+	    Collection<SimpleFeature> collection = (Collection) features;
+	    collection.addAll( list );
+	}
+	else {
+	    throw new IllegalStateException("FeatureCollections configured with immutbale implementation");
+	}
+
+        
+FeatureCollection Iterator
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The deprecated FeatureCollection.iterator() method is no longer available, please use FeatureCollection.features()
+as shown below.
+
+BEFORE:
+   
+  Iterator i=featureCollection.iterator();
+  try {
+	  while( i.hasNext(); ){
+	     SimpleFeature feature = i.next();
+	     ...
+	  }
+  }
+  finally {
+      featureCollection.close( i );
+  }
+	  
+
+AFTER::
+
+	FeatureIterator i=featureCollection.features();
+	try {
+		 while( i.hasNext(); ){
+		     SimpleFeature feature = i.next();
+		     ...
+		 }
+	}
+	finally {
+	     i.close();
+	}
+
+
+FeatureCollection close method
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+We have made FeatureCollection implement closable (for Java 7 try-with-resource compatibility). This
+also provides an excellent replacement for FeatureCollection.close( Iterator ).
+
+BEFORE::
+
+        Iterator iterator = collection.iterator();
+        try {
+           ...
+        } finally {
+            if (collection instanceof SimpleFeatureCollection) {
+                ((SimpleFeatureCollection) collection).close(iterator);
+            }
+        }
+
+AFTER::
+
+        Iterator iterator = collection.iterator();
+        try {
+           ...
+        } finally {
+            if( iterator instanceof Closeable ){
+                try {
+                    ((Closeable)iterator).close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
 
 GeoTools 8.0
 ------------

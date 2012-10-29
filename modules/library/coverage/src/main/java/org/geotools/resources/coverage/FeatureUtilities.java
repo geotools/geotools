@@ -18,6 +18,7 @@ package org.geotools.resources.coverage;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Collection;
 import java.util.List;
 
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -130,6 +131,7 @@ public final class FeatureUtilities {
      * @return a feature with the grid coverage envelope as the geometry and the
      *         grid coverage itself in the "grid" attribute.
      */
+    @SuppressWarnings("unchecked")
     public static SimpleFeatureCollection wrapGridCoverage(final GridCoverage2D coverage)
             throws TransformException, SchemaException {
         final Polygon bounds = getPolygon(coverage.getEnvelope2D());
@@ -148,9 +150,13 @@ public final class FeatureUtilities {
         SimpleFeature feature = fb.buildFeature(null);
 
         final SimpleFeatureCollection collection = FeatureCollections.newCollection();
-        collection.add(feature);
-
-        return collection;
+        if( collection instanceof Collection){
+            ((Collection<SimpleFeature>)collection).add(feature);
+            return collection;
+        }
+        else {
+            throw new IllegalStateException("Require access to a FeatureCollection supporting Collection.add");
+        }
     }
     
     /**
@@ -184,6 +190,7 @@ public final class FeatureUtilities {
      * @return a feature with the grid coverage envelope as the geometry and the
      *         grid coverage itself in the "grid" attribute.
      */
+    @SuppressWarnings("unchecked")
     public static SimpleFeatureCollection wrapGridCoverageReader(final AbstractGridCoverage2DReader gridCoverageReader,
 			GeneralParameterValue[] params) throws TransformException,
 			FactoryRegistryException, SchemaException {
@@ -226,12 +233,15 @@ public final class FeatureUtilities {
         fb.add(params);
         SimpleFeature feature = fb.buildFeature(null);
 
-
-		final SimpleFeatureCollection collection = FeatureCollections.newCollection();
-		collection.add(feature);
-
-		return collection;
-	}
+        final SimpleFeatureCollection collection = FeatureCollections.newCollection();
+        if( collection instanceof Collection ){
+            ((Collection<SimpleFeature>)collection).add(feature);
+            return collection;
+        }
+        else {
+            throw new IllegalStateException("Require access to SimpleFeatureCollection implementing Collecion.add");
+        }
+    }
     
     /**
      * Checks if the feature type specified is a AbstractGridCoverage2DReader wrapper

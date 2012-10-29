@@ -34,6 +34,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.opengis.feature.simple.SimpleFeature;
@@ -238,7 +239,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
         List<FeatureId> ids = new LinkedList<FeatureId>();
         
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer = getWriterAppend();
-        Iterator f = collection.iterator();
+        FeatureIterator<SimpleFeature> f = collection.features();
         try {
             while (f.hasNext()) {
                 SimpleFeature feature = (SimpleFeature) f.next();
@@ -247,7 +248,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
             }
         } finally {
             writer.close();
-            collection.close( f );
+            f.close();
         }        
         return ids;
     }

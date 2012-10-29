@@ -71,7 +71,8 @@ public class Csv2Shape {
         /*
          * A list to collect features as we create them.
          */
-        ListFeatureCollection collection = new ListFeatureCollection( TYPE );
+        List<SimpleFeature> features = new ArrayList<SimpleFeature>();
+        
         /*
          * GeometryFactory will be used to create the geometry attribute of each feature (a Point
          * object for the location)
@@ -148,7 +149,6 @@ public class Csv2Shape {
              * class to wrap our list of features.
              */
             SimpleFeatureCollection collection = new ListFeatureCollection(TYPE, features);
-
             featureStore.setTransaction(transaction);
             try {
                 featureStore.addFeatures(collection);

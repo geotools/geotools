@@ -29,6 +29,7 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.Types;
 import org.geotools.gml3.bindings.GML3EncodingUtils;
 import org.geotools.test.AppSchemaTestSupport;
@@ -119,26 +120,37 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
                 put("sc.3", "c");
             }
         };
-        Iterator<Feature> features = exCollection.iterator();
-        while (features.hasNext()) {
-            Feature feature = features.next();
-            String fId = feature.getIdentifier().getID();
-            String recodedName = VALUE_MAP.get(fId);
-            // gml[3]: <OCQL>Recode(STRING, 'string_one', 'a', 'string_two', 'b', 'string_three',
-            // 'c')</OCQL>
-            ComplexAttribute complexAttribute = (ComplexAttribute) ff.property("gml:name[3]")
-                    .evaluate(feature);
-            String value = Converters.convert(GML3EncodingUtils.getSimpleContent(complexAttribute),
-                    String.class);
-            assertEquals(recodedName, value);
+        FeatureIterator<Feature> features = exCollection.features();
+        try {
+            while (features.hasNext()) {
+                Feature feature = features.next();
+                String fId = feature.getIdentifier().getID();
+                String recodedName = VALUE_MAP.get(fId);
+                // gml[3]: <OCQL>Recode(STRING, 'string_one', 'a', 'string_two', 'b', 'string_three',
+                // 'c')</OCQL>
+                ComplexAttribute complexAttribute = (ComplexAttribute) ff.property("gml:name[3]")
+                        .evaluate(feature);
+                String value = Converters.convert(GML3EncodingUtils.getSimpleContent(complexAttribute),
+                        String.class);
+                assertEquals(recodedName, value);
+            }
         }
-        exCollection.close(features);
+        finally {
+            features.close();
+        }
     }
 
     private int size(FeatureCollection<FeatureType, Feature> features) {
+        // return features.size(); // JG: why are you not doing this?        
         int size = 0;
-        for (Iterator i = features.iterator(); i.hasNext(); i.next()) {
-            size++;
+        FeatureIterator<Feature> i = features.features();
+        try {
+            for (; i.hasNext(); i.next()) {
+                size++;
+            }
+        }
+        finally {
+            i.close();
         }
         return size;
     }
@@ -155,15 +167,19 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
                 put("sc.3", "a valid value");
             }
         };
-        Iterator<Feature> features = exCollection.iterator();
-        while (features.hasNext()) {
-            Feature feature = features.next();
-            String fId = feature.getIdentifier().getID();
-            Property attribute = feature.getProperty("someAttribute");
-            // <OCQL>Categorize(getID(), 'missing value', 2, 'a valid value')</OCQL>
-            assertEquals(attribute.getValue(), VALUE_MAP.get(fId));
+        FeatureIterator<Feature> features = exCollection.features();
+        try {
+            while (features.hasNext()) {
+                Feature feature = features.next();
+                String fId = feature.getIdentifier().getID();
+                Property attribute = feature.getProperty("someAttribute");
+                // <OCQL>Categorize(getID(), 'missing value', 2, 'a valid value')</OCQL>
+                assertEquals(attribute.getValue(), VALUE_MAP.get(fId));
+            }
         }
-        exCollection.close(features);
+        finally {
+            features.close();
+        }
     }
 
     /**
@@ -210,19 +226,23 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
                 put("sc.3", "urn:cgi:classifier:CGI:SimpleLithology:2008:sediment");
             }
         };
-        Iterator<Feature> features = exCollection.iterator();
-        while (features.hasNext()) {
-            Feature feature = features.next();
-            String fId = feature.getIdentifier().getID();
-            // gml[2]: <OCQL>Vocab(URN_ID,
-            // 'src/test/java/org/geotools/filter/test-data/minoc_lithology_mapping.properties')</OCQL>
-            ComplexAttribute complexAttribute = (ComplexAttribute) ff.property("gml:name[2]")
-                    .evaluate(feature);
-            String value = Converters.convert(GML3EncodingUtils.getSimpleContent(complexAttribute),
-                    String.class);
-            assertEquals(VALUE_MAP.get(fId), value);
+        FeatureIterator<Feature> features = exCollection.features();
+        try {
+            while (features.hasNext()) {
+                Feature feature = features.next();
+                String fId = feature.getIdentifier().getID();
+                // gml[2]: <OCQL>Vocab(URN_ID,
+                // 'src/test/java/org/geotools/filter/test-data/minoc_lithology_mapping.properties')</OCQL>
+                ComplexAttribute complexAttribute = (ComplexAttribute) ff.property("gml:name[2]")
+                        .evaluate(feature);
+                String value = Converters.convert(GML3EncodingUtils.getSimpleContent(complexAttribute),
+                        String.class);
+                assertEquals(VALUE_MAP.get(fId), value);
+            }
         }
-        exCollection.close(features);
+        finally {
+            features.close();
+        }
     }
 
 }

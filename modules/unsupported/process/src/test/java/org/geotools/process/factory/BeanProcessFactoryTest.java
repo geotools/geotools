@@ -200,7 +200,7 @@ public class BeanProcessFactoryTest {
         tb.add("count", Integer.class);
         SimpleFeatureType schema = tb.buildFeatureType();
 
-        SimpleFeatureCollection fc = new ListFeatureCollection(schema);
+        ListFeatureCollection fc = new ListFeatureCollection(schema);
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(schema);
 
         GeometryFactory factory = new GeometryFactory(new PackedCoordinateSequenceFactory());

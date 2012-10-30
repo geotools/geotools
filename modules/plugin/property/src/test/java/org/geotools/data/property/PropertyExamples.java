@@ -22,6 +22,7 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.opengis.feature.simple.SimpleFeature;
@@ -232,7 +233,7 @@ public class PropertyExamples {
         final SimpleFeatureType type = store.getSchema("example");
         final FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
         SimpleFeature f;
-        SimpleFeatureCollection collection = FeatureCollections.newCollection();
+        DefaultFeatureCollection collection = new DefaultFeatureCollection();
         f = SimpleFeatureBuilder
                 .build(type, new Object[] { 1, "jody" }, "fid1");
         collection.add(f);

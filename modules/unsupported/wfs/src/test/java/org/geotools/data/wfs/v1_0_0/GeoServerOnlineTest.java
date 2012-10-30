@@ -161,17 +161,15 @@ public class GeoServerOnlineTest {
                     "work already");
             features = source.getFeatures(query);
             features.size();
-            Iterator reader = features.iterator();
-            while (reader.hasNext()) {
-                SimpleFeature feature = (SimpleFeature) reader.next();
-            }
-            features.close(reader);
-
             SimpleFeatureIterator iterator = features.features();
-            while (iterator.hasNext()) {
-                SimpleFeature feature = iterator.next();
+            try {
+                while (iterator.hasNext()) {
+                    SimpleFeature feature = (SimpleFeature) iterator.next();
+                }
             }
-            features.close(iterator);
+            finally {
+                iterator.close();
+            }
         }
     }
 
@@ -210,18 +208,11 @@ public class GeoServerOnlineTest {
         features = source.getFeatures(query);
         features.size();
 
-        Iterator reader = features.iterator();
-        while (reader.hasNext()) {
-            SimpleFeature feature = (SimpleFeature) reader.next();
-            System.out.println(feature);
-        }
-        features.close(reader);
-
         SimpleFeatureIterator iterator = features.features();
         while (iterator.hasNext()) {
             SimpleFeature feature = iterator.next();
         }
-        features.close(iterator);
+        iterator.close();
     }
 
     public void XtestFeatureType() throws NoSuchElementException, IOException, SAXException {

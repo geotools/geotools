@@ -19,9 +19,7 @@ package org.geotools.feature.collection;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
-import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.collection.DelegateFeatureReader;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -115,7 +113,7 @@ public class SubFeatureCollection extends AbstractFeatureCollection {
     		
 	public int size() {
 		int count = 0;
-		Iterator i = null;		
+		Iterator<SimpleFeature> i = null;		
 		try {
 			for( i = iterator(); i.hasNext(); count++) i.next();
 		}

@@ -16,33 +16,40 @@
  */
 package org.geotools.feature.collection;
 
+import java.io.Closeable;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 
 /**
- * A convenience class for dealing with FeatureCollection Iterators
+ * A convenience class for dealing with wrapping a Collection Iterator up
+ * as a FeatureIterator.
  * <p>
  * Note this does not implement Iterator (FeatureIterator is a separate class).
- * 
+ * <p>
+ * This class will check to see if the provided Iterator implements {@link Closeable}.
  * @author Ian Schneider
- *
  *
  * @source $URL$
  */
 public class FeatureIteratorImpl<F extends Feature> implements FeatureIterator<F> {
-    /** The iterator from the SimpleFeatureCollection to return features from. */
-     java.util.Iterator<F> iterator;
-     FeatureCollection<? extends FeatureType, F> collection;
-     
+     /** The iterator from the SimpleFeatureCollection to return features from. */
+     Iterator<F> iterator;
+     Collection<F> collection;
     /**
      * Create a new SimpleFeatureIterator using the Iterator from the given
      * FeatureCollection.
      *
      * @param collection The SimpleFeatureCollection to perform the iteration on.
      */
-    public FeatureIteratorImpl(FeatureCollection<? extends FeatureType, F> collection) {
+    public FeatureIteratorImpl(Collection<F> collection) {
         this.collection = collection;
         this.iterator = collection.iterator();
     }
@@ -72,8 +79,15 @@ public class FeatureIteratorImpl<F extends Feature> implements FeatureIterator<F
      * Required so SimpleFeatureCollection classes can implement close( SimpleFeatureIterator ).
      */
     public void close(){
-        if( iterator != null ){
-            collection.close( iterator );
+        if( iterator != null){
+            if( iterator instanceof Closeable ){
+                try {
+                    ((Closeable)iterator).close();
+                } catch (IOException e) {
+                    Logger log = Logger.getLogger( collection.getClass().getPackage().getName() );
+                    log.log(Level.FINE, e.getMessage(), e );
+                }
+            }
             iterator = null;
             collection = null;
         }

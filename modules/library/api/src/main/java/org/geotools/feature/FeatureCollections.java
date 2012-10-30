@@ -30,7 +30,7 @@ import org.geotools.factory.GeoTools;
  * Provides a mechanism for obtaining a SimpleFeatureCollection instance.
  * @author  Ian Schneider
  *
- *
+ * @deprecated Use DefaultFeatureCollection
  * @source $URL$
  */
 public abstract class FeatureCollections implements Factory {
@@ -43,6 +43,7 @@ public abstract class FeatureCollections implements Factory {
   /**
    * create a new SimpleFeatureCollection using the current default factory.
    * @return A SimpleFeatureCollection instance.
+   * @deprecated Use new DefaultFeatureCollection(null,null)
    */
   public static SimpleFeatureCollection newCollection() {
     return instance().createCollection(); 
@@ -57,6 +58,7 @@ public abstract class FeatureCollections implements Factory {
    * @return A new SimpleFeatureCollection intsance with the specified id.
    * 
    * @since 2.4
+   * @deprecated Use new DefaultFeatureCollection( id, null )
    */
   public static SimpleFeatureCollection newCollection( String id ) {
 	  return instance().createCollection( id );

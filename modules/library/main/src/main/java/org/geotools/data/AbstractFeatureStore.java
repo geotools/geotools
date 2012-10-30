@@ -26,6 +26,7 @@ import java.util.Set;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.identity.FeatureIdImpl;
@@ -301,7 +302,7 @@ public abstract class AbstractFeatureStore extends AbstractFeatureSource
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer = getDataStore()
                 .getFeatureWriterAppend(typeName, getTransaction());
 
-        Iterator iterator = collection.iterator();
+        FeatureIterator iterator = collection.features();
         try {
         	
             while (iterator.hasNext()) {
@@ -324,7 +325,7 @@ public abstract class AbstractFeatureStore extends AbstractFeatureSource
                 addedFids.add(newFeature.getIdentifier());
             }
         } finally {
-            collection.close( iterator );
+            iterator.close();
             writer.close();
         }
         return addedFids;

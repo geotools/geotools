@@ -16,9 +16,8 @@
  */
 package org.geotools.feature.visitor;
 
-import java.util.Iterator;
-
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 
@@ -42,29 +41,32 @@ public class CollectionUtil {
      * @param visitor the visitor which already knows which attributes it wants to meet
      */
     static void accept(SimpleFeatureCollection collection, FeatureVisitor visitor) {
-        Iterator iterator;
-
-        for (iterator = collection.iterator(); iterator.hasNext();) {
-            SimpleFeature feature = (SimpleFeature) iterator.next();
-            visitor.visit(feature);
-        }
-
-        collection.close(iterator);
-    }
-
-    static void accept(SimpleFeatureCollection collection, FeatureVisitor[] visitors) {
-        Iterator iterator;
-
-        for (iterator = collection.iterator(); iterator.hasNext();) {
-        	SimpleFeature feature = (SimpleFeature) iterator.next();
-
-            for (int i = 0; i < visitors.length; i++) {
-                FeatureVisitor visitor = visitors[i];
+        SimpleFeatureIterator iterator = collection.features();
+        try {
+            while( iterator.hasNext()) {
+                SimpleFeature feature = (SimpleFeature) iterator.next();
                 visitor.visit(feature);
             }
         }
+        finally {
+            iterator.close();
+        }
+    }
 
-        collection.close(iterator);
+    static void accept(SimpleFeatureCollection collection, FeatureVisitor[] visitors) {
+        SimpleFeatureIterator iterator = collection.features();
+        try {
+            while( iterator.hasNext()) {
+            	SimpleFeature feature = (SimpleFeature) iterator.next();
+    
+                for (int i = 0; i < visitors.length; i++) {
+                    FeatureVisitor visitor = visitors[i];
+                    visitor.visit(feature);
+                }
+            }
+        } finally {
+            iterator.close();
+        }
     }
 
     public static Object calc(SimpleFeatureCollection collection,

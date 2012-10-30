@@ -322,7 +322,7 @@ public class DefaultVersionedFeatureCollection implements SimpleFeatureCollectio
      * @return the SimpleFeatureIterator for this collection.
      */
     public SimpleFeatureIterator features() {
-        return new SimpleFeatureIteratorImpl(this);
+        return new SimpleFeatureIteratorImpl( contents.values() );
     }
 
     /**

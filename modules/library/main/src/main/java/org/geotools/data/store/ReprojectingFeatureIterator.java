@@ -17,9 +17,9 @@
 package org.geotools.data.store;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.FactoryRegistryException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
@@ -41,12 +41,12 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  * @source $URL$
  */
-public class ReprojectingIterator implements Iterator<SimpleFeature> {
+public class ReprojectingFeatureIterator implements SimpleFeatureIterator {
 
     /**
      * decorated iterator
      */
-    Iterator<SimpleFeature> delegate;
+    SimpleFeatureIterator delegate;
 
     /**
      * The target coordinate reference system
@@ -63,19 +63,20 @@ public class ReprojectingIterator implements Iterator<SimpleFeature> {
      */
     GeometryCoordinateSequenceTransformer tx;
 
-    public ReprojectingIterator(
-		Iterator<SimpleFeature> delegate, MathTransform transform, SimpleFeatureType schema, 
+    public ReprojectingFeatureIterator(
+		SimpleFeatureIterator delegate, MathTransform transform, SimpleFeatureType schema, 
 		GeometryCoordinateSequenceTransformer transformer
     ) throws OperationNotFoundException, FactoryRegistryException, FactoryException {
         this.delegate = delegate;
+        
         this.schema = schema;
 
         tx = transformer;
         tx.setMathTransform((MathTransform2D) transform);
     }
 
-    public ReprojectingIterator(
-		Iterator<SimpleFeature> delegate, CoordinateReferenceSystem source, CoordinateReferenceSystem target,
+    public ReprojectingFeatureIterator(
+            SimpleFeatureIterator delegate, CoordinateReferenceSystem source, CoordinateReferenceSystem target,
         SimpleFeatureType schema, GeometryCoordinateSequenceTransformer transformer
     ) throws OperationNotFoundException, FactoryRegistryException, FactoryException {
         this.delegate = delegate;
@@ -88,12 +89,8 @@ public class ReprojectingIterator implements Iterator<SimpleFeature> {
         tx.setMathTransform(transform);
     }
 
-    public Iterator<SimpleFeature> getDelegate() {
+    public SimpleFeatureIterator getDelegate() {
         return delegate;
-    }
-
-    public void remove() {
-        delegate.remove();
     }
 
     public boolean hasNext() {
@@ -134,6 +131,11 @@ public class ReprojectingIterator implements Iterator<SimpleFeature> {
             String msg = "Error creating reprojeced feature";
             throw (IOException) new IOException(msg).initCause(e);
         }
+    }
+    
+    @Override
+    public void close() {
+        delegate.close();
     }
 
 }

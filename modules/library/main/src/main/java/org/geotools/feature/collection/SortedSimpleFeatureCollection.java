@@ -1,15 +1,11 @@
 package org.geotools.feature.collection;
 
 import java.io.IOException;
-import java.util.Iterator;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.sort.SortedFeatureIterator;
-import org.geotools.data.store.FeatureIteratorIterator;
 import org.geotools.factory.Hints;
-import org.geotools.feature.FeatureIterator;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.sort.SortBy;
 
 /**
@@ -43,19 +39,4 @@ public class SortedSimpleFeatureCollection extends DecoratingSimpleFeatureCollec
         }
     }
 
-    @Override
-    public Iterator iterator() {
-        return new FeatureIteratorIterator<SimpleFeature>(features());
-    }
-
-    @Override
-    public void close(FeatureIterator<SimpleFeature> close) {
-        close.close();
-    }
-
-    @Override
-    public void close(Iterator<SimpleFeature> close) {
-        FeatureIteratorIterator<SimpleFeature> fii = (FeatureIteratorIterator<SimpleFeature>) close;
-        delegate.close(fii.getDelegate());
-    }
 }

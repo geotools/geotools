@@ -182,15 +182,11 @@ public abstract class AbstractDataStoreTest extends DataTestCase {
     protected abstract String getRiverTypeName();
 
     SimpleFeature[] grabArray(SimpleFeatureCollection features, int size) {
-        try {
-            SimpleFeature array[] = new SimpleFeature[size];
-            array = (SimpleFeature[]) features.toArray(array);
-            assertNotNull(array);
+        SimpleFeature array[] = new SimpleFeature[size];
+        array = (SimpleFeature[]) features.toArray(array);
+        assertNotNull(array);
 
-            return array;
-        } finally {
-            features.purge();
-        }
+        return array;
     }
 
     protected void tearDown() throws Exception {

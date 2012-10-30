@@ -3,16 +3,10 @@ package org.geotools.data.property.ng;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
@@ -22,29 +16,18 @@ import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
-import org.geotools.data.property.ng.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
-import org.geotools.feature.FeatureCollections;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.filter.text.cql2.CQL;
-import org.geotools.filter.text.cql2.CQLException;
-import org.opengis.feature.Feature;
-import org.opengis.feature.FeatureVisitor;
-import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
-import org.opengis.filter.identity.FeatureId;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * 
@@ -249,7 +232,7 @@ public class PropertyExamples {
         final SimpleFeatureType type = store.getSchema("example");
         final FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
         SimpleFeature f;
-        SimpleFeatureCollection collection = FeatureCollections.newCollection();
+        DefaultFeatureCollection collection = new DefaultFeatureCollection();
         f = SimpleFeatureBuilder
                 .build(type, new Object[] { 1, "jody" }, "fid1");
         collection.add(f);

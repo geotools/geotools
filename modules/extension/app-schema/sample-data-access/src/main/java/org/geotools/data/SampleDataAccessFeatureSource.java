@@ -104,7 +104,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
      * @see org.geotools.data.FeatureSource#getFeatures()
      */
     public FeatureCollection<FeatureType, Feature> getFeatures() throws IOException {
-        FeatureCollection<FeatureType, Feature> fc = new SampleDataAccessFeatureCollection();
+        SampleDataAccessFeatureCollection fc = new SampleDataAccessFeatureCollection();
         fc.addAll(SampleDataAccessData.createMappedFeatures());
         return fc;
     }

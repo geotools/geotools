@@ -23,6 +23,7 @@ import javax.measure.converter.UnitConverter;
 import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
 
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.FeatureIterator;
@@ -81,7 +82,7 @@ public class LRSMeasureProcess implements VectorProcess {
             @DescribeParameter(name = "point", description = "Point whose location to measure") Point point,
             @DescribeParameter(name = "crs", min = 0, description = "Coordinate reference system to use for input (default is the input collection CRS)") CoordinateReferenceSystem crs)
             throws ProcessException {
-        FeatureCollection results = FeatureCollections.newCollection();
+        DefaultFeatureCollection results = new DefaultFeatureCollection();
         try {
             if (featureCollection == null || featureCollection.size() == 0) {
                 LOGGER.info("No features provided in request");

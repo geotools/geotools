@@ -20,6 +20,7 @@ import static junit.framework.Assert.*;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -182,7 +183,7 @@ public class PointStackerProcessTest {
 
         SimpleFeatureType type = tb.buildFeatureType();
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(type);
-        SimpleFeatureCollection fc = FeatureCollections.newCollection();
+        DefaultFeatureCollection fc = new DefaultFeatureCollection();
 
         GeometryFactory factory = new GeometryFactory(new PackedCoordinateSequenceFactory());
 

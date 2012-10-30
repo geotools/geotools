@@ -19,8 +19,8 @@ package org.geotools.process.vector;
 
 import java.util.logging.Logger;
 
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.process.ProcessException;
@@ -68,7 +68,7 @@ public class LRSSegmentProcess implements VectorProcess {
             @DescribeParameter(name = "from_measure", description = "Measure for start of segment to extract") Double fromMeasure,
             @DescribeParameter(name = "to_measure", description = "Measure for end of segment to extract") Double toMeasure)
             throws ProcessException {
-        FeatureCollection results = FeatureCollections.newCollection();
+        DefaultFeatureCollection results = new DefaultFeatureCollection();
         try {
             if (featureCollection == null || featureCollection.size() == 0) {
                 LOGGER.info("No features provided in request");

@@ -130,11 +130,11 @@ AFTER::
         try {
            ...
         } finally {
-            if( iterator instanceof Closeable ){
+			if (iterator instanceof Closeable) {
                 try {
-                    ((Closeable)iterator).close();
+                    ((Closeable) iterator).close();
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    LOGGER.log(Level.FINE, e.getMessage(), e);
                 }
             }
         }

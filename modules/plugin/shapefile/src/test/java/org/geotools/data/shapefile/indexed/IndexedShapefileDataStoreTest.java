@@ -38,11 +38,10 @@ import java.util.TreeSet;
 import org.geotools.TestData;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.DefaultQuery;
+import org.geotools.data.Query;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
-import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.ShpFileType;
@@ -53,6 +52,7 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.FactoryRegistryException;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -115,7 +115,7 @@ public class IndexedShapefileDataStoreTest extends TestCaseSupport {
     protected SimpleFeatureCollection loadFeatures(String resource, Query q)
             throws Exception {
         if (q == null) {
-            q = new DefaultQuery();
+            q = new Query();
         }
         
         File shpFile = copyShapefiles(resource);
@@ -131,7 +131,7 @@ public class IndexedShapefileDataStoreTest extends TestCaseSupport {
     protected SimpleFeatureCollection loadFeatures(String resource, Charset charset,
             Query q) throws Exception {
         if (q == null)
-            q = new DefaultQuery();
+            q = new Query();
         File shpFile = copyShapefiles(resource);
         URL url = shpFile.toURI().toURL();
         s = new IndexedShapefileDataStore(url, null, false,
@@ -340,7 +340,7 @@ public class IndexedShapefileDataStoreTest extends TestCaseSupport {
                 IndexType.NONE);
         SimpleFeatureSource featureSource = ds.getFeatureSource();
         SimpleFeatureType schema = featureSource.getSchema();
-        DefaultQuery query = new DefaultQuery( schema.getTypeName() );
+        Query query = new Query( schema.getTypeName() );
         query.setPropertyNames(new String[0]);
         SimpleFeatureCollection features = featureSource.getFeatures( query );
         
@@ -377,7 +377,7 @@ public class IndexedShapefileDataStoreTest extends TestCaseSupport {
         
         // build a query that extracts no geom but uses a bbox filter
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
-        DefaultQuery q = new DefaultQuery();
+        Query q = new Query();
         q.setPropertyNames(new String[] {"STATE_NAME", "PERSONS"});
         ReferencedEnvelope queryBounds = new ReferencedEnvelope(-75.102613, -72.361859, 40.212597,
                 41.512517, null);
@@ -703,7 +703,7 @@ public class IndexedShapefileDataStoreTest extends TestCaseSupport {
         SimpleFeatureType featureType = createExampleSchema();
         SimpleFeatureBuilder build = new SimpleFeatureBuilder(featureType);
 
-        SimpleFeatureCollection features = FeatureCollections.newCollection();
+        DefaultFeatureCollection features = new DefaultFeatureCollection();
         for (int i = 0, ii = 20; i < ii; i++) {
 
             build.add(new GeometryFactory().createPoint(new Coordinate(1, -1)));
@@ -791,7 +791,7 @@ public class IndexedShapefileDataStoreTest extends TestCaseSupport {
         ftb.add("a", geom.getClass());
         SimpleFeatureType type = ftb.buildFeatureType();
 
-        SimpleFeatureCollection features = FeatureCollections.newCollection();
+        DefaultFeatureCollection features = new DefaultFeatureCollection();
 
         for (int i = 0, ii = 20; i < ii; i++) {
             SimpleFeature feature = SimpleFeatureBuilder.build(type,
@@ -937,12 +937,12 @@ public class IndexedShapefileDataStoreTest extends TestCaseSupport {
     	String typeName = store.getSchema().getTypeName();
 		Id id = ff.id(Collections.singleton(ff.featureId(fid)));
 		
-		assertEquals(-1, store.getCount(new DefaultQuery(typeName, id)));
+		assertEquals(-1, store.getCount(new Query(typeName, id)));
 		assertEquals(1, count(ds, typeName, id, t));
 		
 		store.removeFeatures(id);
 		
-		assertEquals(-1, store.getCount(new DefaultQuery(store.getSchema().getTypeName(), id)));
+		assertEquals(-1, store.getCount(new Query(store.getSchema().getTypeName(), id)));
 		assertEquals(initialCount - 1, count(ds, typeName, Filter.INCLUDE, t));
 		assertEquals(0, count(ds, typeName, id, t));
 		ds.dispose();
@@ -954,7 +954,7 @@ public class IndexedShapefileDataStoreTest extends TestCaseSupport {
     
     private int count(DataStore ds, String typeName, Filter filter, Transaction t) throws Exception {
         FeatureReader<SimpleFeatureType, SimpleFeature> reader;
-        reader = ds.getFeatureReader(new DefaultQuery(typeName, filter), t);
+        reader = ds.getFeatureReader(new Query(typeName, filter), t);
         int count = 0;
         try {
             while (reader.hasNext()) {

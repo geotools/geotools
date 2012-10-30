@@ -16,9 +16,8 @@
  */
 package org.geotools.gml3.bindings;
 
-import java.util.Iterator;
-
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.geotools.xml.Configuration;
@@ -60,12 +59,16 @@ public class AbstractFeatureCollectionTypeBindingTest extends GML3TestSupport {
 
         assertEquals(2, fc.size());
 
-        Iterator i = fc.iterator();
-        SimpleFeature f = (SimpleFeature) i.next();
-        assertEquals("fid.1", f.getID());
-
-        f = (SimpleFeature) i.next();
-        assertEquals("fid.2", f.getID());
+        SimpleFeatureIterator i = fc.features();
+        try {
+            SimpleFeature f = (SimpleFeature) i.next();
+            assertEquals("fid.1", f.getID());
+    
+            f = (SimpleFeature) i.next();
+            assertEquals("fid.2", f.getID());
+        } finally {
+            i.close();
+        }
     }
 
     public void testFeatureMembers() throws Exception {
@@ -85,11 +88,15 @@ public class AbstractFeatureCollectionTypeBindingTest extends GML3TestSupport {
 
         assertEquals(2, fc.size());
 
-        Iterator i = fc.iterator();
-        SimpleFeature f = (SimpleFeature) i.next();
-        assertEquals("fid.1", f.getID());
-
-        f = (SimpleFeature) i.next();
-        assertEquals("fid.2", f.getID());
+        SimpleFeatureIterator i = fc.features();
+        try {
+            SimpleFeature f = (SimpleFeature) i.next();
+            assertEquals("fid.1", f.getID());
+    
+            f = (SimpleFeature) i.next();
+            assertEquals("fid.2", f.getID());
+        } finally {
+            i.close();
+        }
     }
 }

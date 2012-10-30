@@ -16,9 +16,13 @@
  */
 package org.geotools.gml3.bindings;
 
+import java.util.Collection;
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollections;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.gml3.GML;
@@ -87,19 +91,34 @@ public class AbstractFeatureCollectionTypeBinding extends AbstractComplexBinding
         SimpleFeatureCollection featureCollection = 
             (SimpleFeatureCollection) node.getChildValue(FeatureCollection.class);
         if (featureCollection == null) {
-            featureCollection = DefaultFeatureCollections.newCollection();
+            featureCollection = new DefaultFeatureCollection();
         }
 
         //&lt;element maxOccurs="unbounded" minOccurs="0" ref="gml:featureMember"/&gt;
-        featureCollection.addAll(node.getChildValues(SimpleFeature.class));
+        List childValues = node.getChildValues(SimpleFeature.class);
+        
+        if( featureCollection instanceof Collection){
+            // example DefaultFeatureCollections or ListFeatureCollection
+            ((Collection)featureCollection).addAll(childValues);
+        }
+        else {
+            throw new IllegalStateException("DefaultFeatureCollection or ListFeatureCollection required");
+        }
 
         //&lt;element minOccurs="0" ref="gml:featureMembers"/&gt;
         SimpleFeature[] featureMembers = (SimpleFeature[]) node.getChildValue(SimpleFeature[].class);
 
-        if (featureMembers != null) {
-            for (int i = 0; i < featureMembers.length; i++) {
-                featureCollection.add(featureMembers[i]);
+        if( featureCollection instanceof Collection){
+            // example DefaultFeatureCollections or ListFeatureCollection
+            if (featureMembers != null) {
+                for (int i = 0; i < featureMembers.length; i++) {
+                    ((Collection)featureCollection).add(featureMembers[i]);
+                }
             }
+
+        }
+        else {
+            throw new IllegalStateException("DefaultFeatureCollection or ListFeatureCollection required");
         }
 
         return featureCollection;

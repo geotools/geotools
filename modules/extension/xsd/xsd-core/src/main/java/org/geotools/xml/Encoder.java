@@ -18,6 +18,7 @@ package org.geotools.xml;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
@@ -58,6 +59,7 @@ import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.util.XSDUtil;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
 import org.geotools.xml.impl.BindingFactoryImpl;
 import org.geotools.xml.impl.BindingLoader;
 import org.geotools.xml.impl.BindingPropertyExtractor;
@@ -69,6 +71,7 @@ import org.geotools.xml.impl.GetPropertyExecutor;
 import org.geotools.xml.impl.MismatchedBindingFinder;
 import org.geotools.xml.impl.NamespaceSupportWrapper;
 import org.geotools.xml.impl.SchemaIndexImpl;
+import org.opengis.feature.Feature;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.w3c.dom.Attr;
@@ -1022,7 +1025,7 @@ O:
                                     iterator = collection.iterator();
                                 } else if (obj instanceof FeatureCollection) {
                                     FeatureCollection collection = (FeatureCollection) obj;
-                                    iterator = collection.iterator();
+                                    iterator = new BridgeIterator( collection.features() );
                                 } else {
                                     iterator = new SingleIterator(obj);
                                 }
@@ -1118,14 +1121,23 @@ O:
     }
 
     protected void closeIterator(Iterator itr, Object source) {
-        //special case check here for feature collection
-        // we need to ensure the iterator is closed properly
-        if ( source instanceof FeatureCollection ) {
-            //only close the iterator if not just a wrapping one
-            if ( !( itr instanceof SingleIterator ) ) {
-                ((FeatureCollection)source).close( itr );
+        if( itr instanceof Closeable){
+            try {
+                ((Closeable)itr).close();
+            }
+            catch( IOException e){
+                Logger log = Logger.getLogger( source.getClass().getPackage().toString() );
+                log.log(Level.FINE, e.getMessage(), e );
             }
         }
+        //special case check here for feature collection
+        // we need to ensure the iterator is closed properly
+//        if ( source instanceof FeatureCollection ) {
+//            //only close the iterator if not just a wrapping one
+//            if ( !( itr instanceof SingleIterator ) ) {
+//                ((FeatureCollection)source).close( itr );
+//            }
+//        }
     }
     protected Node encode(Object object, XSDNamedComponent component) {
         return encode( object, component, null );
@@ -1255,7 +1267,38 @@ O:
             return null;
         }
     }
+    /**
+     * Internal closeable iterator used to bridge from FeatureCollection
+     * to a "normal" iterator for encoding.
+     * 
+     * @author jody
+     */
+    private static class BridgeIterator implements Iterator<Feature>, Closeable {
+        FeatureIterator<?> delegate;
+        public BridgeIterator(FeatureIterator<?> features) {
+            this.delegate = features;
+        }
 
+        @Override
+        public boolean hasNext() {
+            return delegate.hasNext();
+        }
+
+        @Override
+        public Feature next() {
+            return delegate.next();
+        }
+
+        @Override
+        public void remove() {
+        }
+
+        @Override
+        public void close() throws IOException {
+            delegate.close();
+        }
+    }
+    
     private static class SingleIterator implements Iterator {
         Object object;
         boolean more;

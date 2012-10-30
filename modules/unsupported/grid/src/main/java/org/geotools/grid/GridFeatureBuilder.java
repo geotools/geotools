@@ -18,6 +18,7 @@
 package org.geotools.grid;
 
 import java.util.Map;
+
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**

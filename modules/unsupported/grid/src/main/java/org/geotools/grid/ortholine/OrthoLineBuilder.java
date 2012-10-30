@@ -23,10 +23,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.grid.GridFeatureBuilder;
+import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * A builder to generate a grid of horizontal and/or vertical ortho-lines.
@@ -60,7 +61,7 @@ public class OrthoLineBuilder {
 
     /**
      * Creates line features according to the provided {@code OrthoLineDef} objects and 
-     * places them into the feature collection.
+     * places them into the provided {@link ListFeatureCollection}.
      * Densified lines (lines strings with additional vertices along their length) can be
      * created by setting the value of {@code vertexSpacing} greater than zero; if so, any
      * lines more than twice as long as this value will be densified.
@@ -72,7 +73,7 @@ public class OrthoLineBuilder {
      * @param fc the feature collection into which generated line features are placed
      */
     public void buildGrid(Collection<OrthoLineDef> lineDefs, 
-            GridFeatureBuilder lineFeatureBuilder, double vertexSpacing, SimpleFeatureCollection fc) {
+            GridFeatureBuilder lineFeatureBuilder, double vertexSpacing, ListFeatureCollection fc) {
         
         init(lineDefs, lineFeatureBuilder, vertexSpacing);
         
@@ -103,7 +104,7 @@ public class OrthoLineBuilder {
             GridFeatureBuilder lineFeatureBuilder, 
             boolean densify,
             double vertexSpacing,
-            SimpleFeatureCollection fc) {
+            ListFeatureCollection fc) {
 
         final int NDEFS = lineDefs.size();
         if (NDEFS > 0) {
@@ -181,17 +182,19 @@ public class OrthoLineBuilder {
                         if (lineFeatureBuilder.getCreateFeature(element)) {
                             lineFeatureBuilder.setAttributes(element, attributes);
 
-                        if (densify) {
-                            featureBuilder.set(geomPropName, element.toDenseGeometry(vertexSpacing));
-                        } else {
-                            featureBuilder.set(geomPropName, element.toGeometry());
-                        }
-
-                        for (String propName : attributes.keySet()) {
-                            featureBuilder.set(propName, attributes.get(propName));
-                        }
-
-                        fc.add(featureBuilder.buildFeature(lineFeatureBuilder.getFeatureID(element)));
+                            if (densify) {
+                                featureBuilder.set(geomPropName, element.toDenseGeometry(vertexSpacing));
+                            } else {
+                                featureBuilder.set(geomPropName, element.toGeometry());
+                            }
+    
+                            for (String propName : attributes.keySet()) {
+                                featureBuilder.set(propName, attributes.get(propName));
+                            }
+    
+                            String featureID = lineFeatureBuilder.getFeatureID(element);
+                            SimpleFeature feature = featureBuilder.buildFeature(featureID);
+                            fc.add(feature);
                         }
                     }
                 }

@@ -17,12 +17,13 @@
 
 package org.geotools.grid.hexagon;
 
-import com.vividsolutions.jts.geom.Coordinate;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.geotools.grid.PolygonElement;
 import org.geotools.grid.TestBase;
 
-import static org.junit.Assert.*;
+import com.vividsolutions.jts.geom.Coordinate;
 
 /**
  * Base class for Hexagon unit tests.

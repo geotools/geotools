@@ -17,9 +17,11 @@
 
 package org.geotools.grid;
 
-import java.util.Map;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import com.vividsolutions.jts.geom.Polygon;
+import java.util.Map;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -27,13 +29,12 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * Unit tests for the Grids class.

@@ -17,13 +17,15 @@
 
 package org.geotools.grid;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-import org.geotools.data.simple.SimpleFeatureCollection;
+
+import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * The base class for builders that generate polygonal grid elements.
@@ -51,7 +53,7 @@ public abstract class PolygonBuilder {
 
     public boolean buildGrid(GridFeatureBuilder gridFeatureBuilder,
             double vertexSpacing,
-            SimpleFeatureCollection fc) {
+            ListFeatureCollection fc) {
 
         boolean result = true;
 

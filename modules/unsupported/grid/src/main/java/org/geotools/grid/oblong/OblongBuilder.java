@@ -18,9 +18,9 @@
 package org.geotools.grid.oblong;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.grid.Neighbor;
 import org.geotools.grid.PolygonBuilder;
 import org.geotools.grid.PolygonElement;
-import org.geotools.grid.Neighbor;
 
 /**
  * Used by {@code Oblongs} class to build grids.

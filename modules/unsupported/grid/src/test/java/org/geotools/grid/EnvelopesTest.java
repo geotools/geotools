@@ -17,10 +17,10 @@
 
 package org.geotools.grid;
 
-import org.geotools.geometry.jts.ReferencedEnvelope;
+import static org.junit.Assert.assertTrue;
 
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * Unit tests for the Grids class.

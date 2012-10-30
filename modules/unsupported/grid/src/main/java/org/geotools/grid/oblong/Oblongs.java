@@ -19,12 +19,10 @@ package org.geotools.grid.oblong;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.data.collection.ListFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.grid.GridFeatureBuilder;
 import org.geotools.referencing.CRS;
-
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
@@ -144,7 +142,7 @@ public class Oblongs {
             throw new IllegalArgumentException("Different CRS set for bounds and the feature builder");
         }
 
-        final SimpleFeatureCollection fc = new ListFeatureCollection(gridFeatureBuilder.getType());
+        final ListFeatureCollection fc = new ListFeatureCollection(gridFeatureBuilder.getType());
         OblongBuilder gridBuilder = new OblongBuilder(bounds, width, height);
         gridBuilder.buildGrid(gridFeatureBuilder, vertexSpacing, fc);
         return DataUtilities.source(fc);

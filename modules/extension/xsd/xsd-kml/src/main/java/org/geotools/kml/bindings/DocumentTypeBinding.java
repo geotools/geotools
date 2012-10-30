@@ -16,15 +16,22 @@
  */
 package org.geotools.kml.bindings;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.namespace.QName;
+
+import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.kml.KML;
@@ -117,8 +124,11 @@ public class DocumentTypeBinding extends AbstractComplexBinding {
         Object[] prop = new Object[2];
         prop[0] = KML.Placemark;
         if ( object instanceof FeatureCollection ) {
+            FeatureCollection fc = (FeatureCollection) object;
             //TODO: this does not close the iterator!!
-            prop[1] = ((FeatureCollection)object).iterator();
+            BridgeIterator iterator = new BridgeIterator( fc.features() );
+            
+            prop[1] = iterator;
         }
         else if ( object instanceof Collection ) {
             prop[1] = ((Collection)object).iterator();
@@ -126,11 +136,42 @@ public class DocumentTypeBinding extends AbstractComplexBinding {
         else if ( object instanceof SimpleFeature ) {
             SimpleFeature feature = (SimpleFeature) object;
             prop[1] = feature.getAttribute( "Feature" );
-        }
-        
+        }        
         ArrayList l = new ArrayList();
         l.add( prop );
         return l;
+    }
+    
+    /**
+     * Internal closeable iterator used to bridge from FeatureCollection
+     * to a "normal" iterator for encoding.
+     * 
+     * @author jody
+     */
+    private static class BridgeIterator implements Iterator<Feature>, Closeable {
+        FeatureIterator<?> delegate;
+        public BridgeIterator(FeatureIterator<?> features) {
+            this.delegate = features;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return delegate.hasNext();
+        }
+
+        @Override
+        public Feature next() {
+            return delegate.next();
+        }
+
+        @Override
+        public void remove() {
+        }
+
+        @Override
+        public void close() throws IOException {
+            delegate.close();
+        }
     }
 }
 

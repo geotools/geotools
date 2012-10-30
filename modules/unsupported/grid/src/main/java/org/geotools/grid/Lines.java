@@ -17,16 +17,15 @@
 
 package org.geotools.grid;
 
-import org.geotools.grid.ortholine.OrthoLineFeatureBuilder;
 import java.util.Collection;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.data.collection.ListFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.grid.ortholine.OrthoLineBuilder;
 import org.geotools.grid.ortholine.OrthoLineDef;
+import org.geotools.grid.ortholine.OrthoLineFeatureBuilder;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -113,7 +112,7 @@ public class Lines {
             throw new IllegalArgumentException("Different CRS set for bounds and the feature builder");
         }
 
-        final SimpleFeatureCollection fc = new ListFeatureCollection(lineFeatureBuilder.getType());
+        final ListFeatureCollection fc = new ListFeatureCollection(lineFeatureBuilder.getType());
         OrthoLineBuilder lineBuilder = new OrthoLineBuilder(bounds);
         lineBuilder.buildGrid(lineDefs, lineFeatureBuilder, vertexSpacing, fc);
         return DataUtilities.source(fc);

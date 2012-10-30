@@ -350,7 +350,7 @@ public class VectorToRasterProcess extends AbstractFeatureCollectionProcess {
             }
         }
         finally {
-            features.close( fi );
+            fi.close();
         }
         monitor.complete();
 

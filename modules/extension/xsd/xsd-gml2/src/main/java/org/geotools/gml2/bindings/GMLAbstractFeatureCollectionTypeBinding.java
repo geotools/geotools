@@ -16,6 +16,8 @@
  */
 package org.geotools.gml2.bindings;
 
+import java.util.Collection;
+
 import javax.xml.namespace.QName;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -97,7 +99,12 @@ public class GMLAbstractFeatureCollectionTypeBinding extends AbstractComplexBind
         SimpleFeatureCollection fc = (SimpleFeatureCollection) value;
 
         //add all feature member children
-        fc.addAll(node.getChildValues(SimpleFeature.class));
+        if( fc instanceof Collection){
+            ((Collection)fc).addAll(node.getChildValues(SimpleFeature.class));
+        }
+        else {
+            throw new IllegalStateException("Please provide DefaultFeatureCollection or ListFeatureCollection");
+        }
 
         return fc;
     }

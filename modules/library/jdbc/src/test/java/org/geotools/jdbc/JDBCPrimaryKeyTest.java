@@ -18,6 +18,7 @@ package org.geotools.jdbc;
 
 import java.util.Collections;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureStore;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -56,7 +57,7 @@ public abstract class JDBCPrimaryKeyTest extends JDBCTestSupport {
         
         FeatureCollection features = fs.getFeatures();
         assertPrimaryKeyValues(features, 3);
-        addFeature(fs.getSchema(),features);
+        addFeature(fs.getSchema(),fs);
         assertPrimaryKeyValues(features,4);
     }
     
@@ -68,7 +69,7 @@ public abstract class JDBCPrimaryKeyTest extends JDBCTestSupport {
         
         FeatureCollection features = fs.getFeatures();
         assertPrimaryKeyValues(features, 3);
-        addFeature(fs.getSchema(),features);
+        addFeature(fs.getSchema(),fs);
         assertPrimaryKeyValues(features,4);
     }
 
@@ -80,17 +81,17 @@ public abstract class JDBCPrimaryKeyTest extends JDBCTestSupport {
         
         FeatureCollection features = fs.getFeatures();
         assertPrimaryKeyValues(features, 3);
-        addFeature(fs.getSchema(),features);
+        addFeature(fs.getSchema(),fs);
         assertPrimaryKeyValues(features,4);
     }
     
-    protected void addFeature( SimpleFeatureType featureType, FeatureCollection features ) throws Exception {
+    protected void addFeature( SimpleFeatureType featureType, JDBCFeatureStore features ) throws Exception {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder( featureType );
         b.add("four");
         b.add( new GeometryFactory().createPoint( new Coordinate(4,4) ) );
         
         SimpleFeature f = b.buildFeature(null); 
-        features.add( f );
+        features.addFeatures(DataUtilities.collection( f ) );
         
         //pattern match to handle the multi primary key case
         assertTrue(((String)f.getUserData().get( "fid" )).matches( tname(featureType.getTypeName()) + ".4(\\..*)?"));
@@ -118,7 +119,7 @@ public abstract class JDBCPrimaryKeyTest extends JDBCTestSupport {
         
         assertMultiPrimaryKeyValues(features,3);
         
-        addFeature(fs.getSchema(),features);
+        addFeature(fs.getSchema(),fs);
 
         assertMultiPrimaryKeyValues(features,4);
         
@@ -163,7 +164,7 @@ public abstract class JDBCPrimaryKeyTest extends JDBCTestSupport {
         
         FeatureCollection features = fs.getFeatures();
         assertPrimaryKeyValues(features, 3);
-        addFeature(fs.getSchema(),features);
+        addFeature(fs.getSchema(),fs);
         assertPrimaryKeyValues(features,4);
     }
     

@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -79,7 +80,7 @@ public abstract class JDBCConnectionLifecycleTest extends JDBCTestSupport {
             b.set(aname("geometry"), new GeometryFactory().createPoint(new Coordinate(i, i)));
             collection.add(b.buildFeature(null));
         }
-        featureStore.addFeatures(collection);
+        featureStore.addFeatures((SimpleFeatureCollection)collection);
         t.commit();
         assertTrue(mockListener.onBorrowCalled);
         assertTrue(mockListener.onReleaseCalled);

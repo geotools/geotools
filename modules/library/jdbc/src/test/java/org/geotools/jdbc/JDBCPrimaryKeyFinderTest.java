@@ -16,6 +16,8 @@
  */
 package org.geotools.jdbc;
 
+import org.geotools.data.DataUtilities;
+import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -48,9 +50,9 @@ public abstract class JDBCPrimaryKeyFinderTest extends JDBCTestSupport {
         assertEquals( 1, fs.getPrimaryKey().getColumns().size() );
         assertTrue( fs.getPrimaryKey().getColumns().get(0) instanceof SequencedPrimaryKeyColumn );
         
-        FeatureCollection features = fs.getFeatures();
+        ContentFeatureCollection features = fs.getFeatures();
         assertPrimaryKeyValues(features, 3);
-        addFeature(fs.getSchema(),features);
+        addFeature(fs.getSchema(),fs);
         assertPrimaryKeyValues(features,4);
     }
 
@@ -82,13 +84,13 @@ public abstract class JDBCPrimaryKeyFinderTest extends JDBCTestSupport {
         i.close();
     }
     
-    protected void addFeature( SimpleFeatureType featureType, FeatureCollection features ) throws Exception {
+    protected void addFeature( SimpleFeatureType featureType, JDBCFeatureStore features ) throws Exception {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder( featureType );
         b.add("four");
         b.add( new GeometryFactory().createPoint( new Coordinate(4,4) ) );
         
         SimpleFeature f = b.buildFeature(null); 
-        features.add( f );
+        features.addFeatures( DataUtilities.collection( f ) );
         
         //pattern match to handle the multi primary key case
         assertTrue(((String)f.getUserData().get( "fid" )).matches( tname(featureType.getTypeName()) + ".4(\\..*)?"));

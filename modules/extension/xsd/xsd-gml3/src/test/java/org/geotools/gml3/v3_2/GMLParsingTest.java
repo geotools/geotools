@@ -77,20 +77,23 @@ public class GMLParsingTest extends TestCase {
         assertEquals( 3, features.size() );
         
         FeatureIterator fi = features.features();
-        
-        for ( int i = 0; i < 3; i++ ) {
-            assertTrue( fi.hasNext() );
+        try {
+            for ( int i = 0; i < 3; i++ ) {
+                assertTrue( fi.hasNext() );
+                
+                SimpleFeature f = (SimpleFeature) fi.next();
+                assertTrue( f.getDefaultGeometry() instanceof Point );
             
-            SimpleFeature f = (SimpleFeature) fi.next();
-            assertTrue( f.getDefaultGeometry() instanceof Point );
-        
-            Point point = (Point) f.getDefaultGeometry();
-            assertEquals( i/1d, point.getX(), 0.1 );
-            assertEquals( i/1d, point.getX(), 0.1 );
-            
-            assertEquals( i, f.getAttribute( "count" ) );
+                Point point = (Point) f.getDefaultGeometry();
+                assertEquals( i/1d, point.getX(), 0.1 );
+                assertEquals( i/1d, point.getX(), 0.1 );
+                
+                assertEquals( i, f.getAttribute( "count" ) );
+            }
         }
-        features.close( fi );
+        finally {
+            fi.close();
+        }
     }
 
     /**

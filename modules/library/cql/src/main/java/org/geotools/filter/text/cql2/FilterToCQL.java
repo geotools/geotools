@@ -237,11 +237,11 @@ class FilterToCQL implements FilterVisitor {
     }
     public Object visit(Overlaps filter, Object extraData) {
     	checkLeftExpressionIsProperty(filter.getExpression1());
-    	return FilterToTextUtil.buildBinarySpatialOperator("OVERLAP", filter, extraData);
+    	return FilterToTextUtil.buildBinarySpatialOperator("OVERLAPS", filter, extraData);
     }
     public Object visit(Touches filter, Object extraData) {
     	checkLeftExpressionIsProperty(filter.getExpression1());
-    	return FilterToTextUtil.buildBinarySpatialOperator("TOUCH", filter, extraData);
+    	return FilterToTextUtil.buildBinarySpatialOperator("TOUCHES", filter, extraData);
     }
     	     
     public Object visit(Within filter, Object extraData) {

@@ -473,16 +473,15 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         FeatureCollection expected = collection();
         assertEquals(expected.size(), actual.size());
         
-        Iterator a = actual.iterator();
-        Iterator e = expected.iterator();
+        FeatureIterator a = actual.features();
+        FeatureIterator e = expected.features();
         
         while(e.hasNext()) {
             assertTrue(a.hasNext());
             assertEqualsLax((SimpleFeature)e.next(), (SimpleFeature) a.next());
         }
-        
-        actual.close(a);
-        expected.close(e);
+        a.close();
+        e.close();
     }
     
     public void testFeatureCollectionStreamBasic() throws Exception {
@@ -498,7 +497,7 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
             fjson.streamFeatureCollection(reader(strip(collectionText(withBounds, withCRS))));
         
         FeatureCollection expected = collection();
-        Iterator e = expected.iterator();
+        FeatureIterator e = expected.features();
         
         while(e.hasNext()) {
             features.hasNext(); //ensure that hasNext() does not skip features
@@ -507,7 +506,7 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         }
         
         features.close();
-        expected.close(e);
+        e.close();
     }
 
     public void testFeatureCollectionWithBoundsWrite() throws Exception {

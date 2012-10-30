@@ -50,6 +50,7 @@ import org.geotools.data.store.ReTypingFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -254,7 +255,7 @@ public class VersionedPostgisFeatureStore extends AbstractFeatureStore implement
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer = getDataStore()
                 .getFeatureWriterAppend(typeName, getTransaction());
 
-        Iterator iterator = collection.iterator();
+         FeatureIterator<SimpleFeature> iterator = collection.features();
         try {
 
             while (iterator.hasNext()) {
@@ -274,7 +275,7 @@ public class VersionedPostgisFeatureStore extends AbstractFeatureStore implement
                 addedFids.add(newFeature.getIdentifier());
             }
         } finally {
-            collection.close(iterator);
+            iterator.close();
             writer.close();
         }
         return addedFids;

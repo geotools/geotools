@@ -20,9 +20,8 @@ import java.util.List;
 
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Transaction;
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureStore;
-import org.geotools.feature.FeatureCollections;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -57,7 +56,7 @@ public class PostgisFeatureStoreOnlineTest extends AbstractPostgisOnlineTestCase
         fs = (SimpleFeatureStore) ds.getFeatureSource(table);
         fs.setTransaction(transaction);
         SimpleFeatureType ft = fs.getSchema();
-        SimpleFeatureCollection fc = FeatureCollections.newCollection();
+        DefaultFeatureCollection fc = new DefaultFeatureCollection();
         SimpleFeature feature = SimpleFeatureBuilder.build(ft, new Object[] {"test"}, null);
         fc.add(feature);
         List<FeatureId> set = fs.addFeatures(fc);

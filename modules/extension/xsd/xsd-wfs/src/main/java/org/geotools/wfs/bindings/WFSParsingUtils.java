@@ -19,6 +19,7 @@ package org.geotools.wfs.bindings;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -55,15 +56,25 @@ public class WFSParsingUtils {
         //check for an array
         SimpleFeature[] featureMembers = (SimpleFeature[]) node.getChildValue(SimpleFeature[].class);
         if (featureMembers != null) {
-            for (int i = 0; i < featureMembers.length; i++) {
-                fc.add(featureMembers[i]);
+            if( fc instanceof Collection){
+                for (int i = 0; i < featureMembers.length; i++) {
+                    ((Collection)fc).add(featureMembers[i]);
+                }
+            }
+            else {
+                throw new IllegalStateException("Require DefaultFeatureCollection or ListFeatureCollection");
             }
         }
         else {
             //gml:featureMember
-            List<SimpleFeature> featureMember = node.getChildValues( SimpleFeature.class );
-            for (SimpleFeature f : featureMember ) {
-                fc.add( f );
+            if( fc instanceof Collection){
+                List<SimpleFeature> featureMember = node.getChildValues( SimpleFeature.class );
+                for (SimpleFeature f : featureMember ) {
+                    ((Collection)fc).add( f );
+                }
+            }
+            else {
+                throw new IllegalStateException("Require DefaultFeatureCollection or ListFeatureCollection");
             }
         }
         

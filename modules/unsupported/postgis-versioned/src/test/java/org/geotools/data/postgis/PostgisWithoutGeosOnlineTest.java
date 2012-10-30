@@ -23,6 +23,7 @@ import java.util.List;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.filter.FilterFactory;
 import org.geotools.filter.FilterFactoryFinder;
 import org.geotools.filter.GeometryFilter;
@@ -63,10 +64,16 @@ public class PostgisWithoutGeosOnlineTest extends AbstractPostgisDataTestCase {
 		List bbox = new ArrayList();
 		List fids = new ArrayList();
 		SimpleFeatureCollection fc = data.getFeatureSource("road").getFeatures();
-		for (Iterator itr = fc.iterator(); itr.hasNext();) {
-			SimpleFeature f = (SimpleFeature)itr.next();
-			bbox.add(((Geometry) f.getDefaultGeometry()).getEnvelopeInternal());
-			fids.add(f.getID());
+		SimpleFeatureIterator itr = fc.features();
+		try {
+        		while(itr.hasNext()) {
+        			SimpleFeature f = (SimpleFeature)itr.next();
+        			bbox.add(((Geometry) f.getDefaultGeometry()).getEnvelopeInternal());
+        			fids.add(f.getID());
+        		}
+		}
+		finally {
+		    itr.close();
 		}
 		
 		//query each feature

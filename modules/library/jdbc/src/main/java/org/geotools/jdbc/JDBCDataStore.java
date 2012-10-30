@@ -775,7 +775,7 @@ public final class JDBCDataStore extends ContentDataStore
                 }
             }
             finally {
-                features.close( fi );
+                fi.close();
             }
         }
         

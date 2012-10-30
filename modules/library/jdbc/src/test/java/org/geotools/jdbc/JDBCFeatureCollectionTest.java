@@ -20,7 +20,10 @@ import java.io.IOException;
 import java.util.Iterator;
 
 import com.vividsolutions.jts.geom.Point;
+
+import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -41,11 +44,12 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  */
 public abstract class JDBCFeatureCollectionTest extends JDBCTestSupport {
     SimpleFeatureCollection collection;
+    JDBCFeatureStore source;
 
     protected void connect() throws Exception {
         super.connect();
 
-        JDBCFeatureStore source = (JDBCFeatureStore) dataStore.getFeatureSource(tname("ft1"));
+        source = (JDBCFeatureStore) dataStore.getFeatureSource(tname("ft1"));
         collection = source.getFeatures(); 
     }
 
@@ -92,7 +96,6 @@ public abstract class JDBCFeatureCollectionTest extends JDBCTestSupport {
 
         SimpleFeatureCollection sub = collection.subCollection(f);
         assertNotNull(sub);
-
         assertEquals(1, sub.size());
         
         ReferencedEnvelope exp = new ReferencedEnvelope(1, 1, 1, 1, CRS.decode("EPSG:4326")); 
@@ -102,9 +105,6 @@ public abstract class JDBCFeatureCollectionTest extends JDBCTestSupport {
         assertEquals(exp.getMinY(), act.getMinY(), 0.1);
         assertEquals(exp.getMaxX(), act.getMaxX(), 0.1);
         assertEquals(exp.getMaxY(), act.getMaxY(), 0.1);
-        
-        sub.clear();
-        assertEquals(2, collection.size());
     }
 
     public void testAdd() throws IOException {
@@ -117,37 +117,32 @@ public abstract class JDBCFeatureCollectionTest extends JDBCTestSupport {
         SimpleFeature feature = b.buildFeature(null);
         assertEquals(3, collection.size());
 
-        collection.add(feature);
+        source.addFeatures( DataUtilities.collection( feature ));
+
         assertEquals(4, collection.size());
 
-        Iterator i = collection.iterator();
-        boolean found = false;
-
-        while (i.hasNext()) {
-            SimpleFeature f = (SimpleFeature) i.next();
-
-            if ("three".equals(f.getAttribute(aname("stringProperty")))) {
-                assertEquals(feature.getAttribute(aname("doubleProperty")),
-                    f.getAttribute(aname("doubleProperty")));
-                assertEquals(feature.getAttribute(aname("stringProperty")),
-                    f.getAttribute(aname("stringProperty")));
-                assertEquals(feature.getAttribute(aname("geometry")),
-                    f.getAttribute(aname("geometry")));
-                found = true;
+        SimpleFeatureIterator i = collection.features();
+        try {
+            boolean found = false;
+    
+            while (i.hasNext()) {
+                SimpleFeature f = (SimpleFeature) i.next();
+    
+                if ("three".equals(f.getAttribute(aname("stringProperty")))) {
+                    assertEquals(feature.getAttribute(aname("doubleProperty")),
+                        f.getAttribute(aname("doubleProperty")));
+                    assertEquals(feature.getAttribute(aname("stringProperty")),
+                        f.getAttribute(aname("stringProperty")));
+                    assertEquals(feature.getAttribute(aname("geometry")),
+                        f.getAttribute(aname("geometry")));
+                    found = true;
+                }
             }
+            assertTrue(found);
         }
-
-        assertTrue(found);
-
-        collection.close(i);
+        finally {
+            i.close();
+        }
     }
 
-    public void testClear() throws IOException {
-        collection.clear();
-
-        Iterator i = collection.iterator();
-        assertFalse(i.hasNext());
-
-        collection.close(i);
-    }
 }

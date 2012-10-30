@@ -58,7 +58,7 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.FactoryRegistryException;
-import org.geotools.feature.FeatureCollections;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -851,7 +851,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         SimpleFeatureType featureType = createExampleSchema();
         SimpleFeatureBuilder build = new SimpleFeatureBuilder(featureType);
 
-        SimpleFeatureCollection features = FeatureCollections.newCollection();
+        DefaultFeatureCollection features = new DefaultFeatureCollection();
         for (int i = 0, ii = 20; i < ii; i++) {
 
             build.add(new GeometryFactory().createPoint(new Coordinate(1, -1)));
@@ -910,7 +910,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         // create feature type
         SimpleFeatureType type = DataUtilities.createType("junk",
                 "a:Point,b:java.math.BigDecimal,c:java.math.BigInteger");
-        SimpleFeatureCollection features = FeatureCollections.newCollection();
+        DefaultFeatureCollection features = new DefaultFeatureCollection();
 
         BigInteger bigInteger = new BigInteger("1234567890123456789");
         BigDecimal bigDecimal = new BigDecimal(bigInteger, 2);
@@ -999,7 +999,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         ftb.add("a", geom.getClass());
         SimpleFeatureType type = ftb.buildFeatureType();
 
-        SimpleFeatureCollection features = FeatureCollections.newCollection();
+        DefaultFeatureCollection features = new DefaultFeatureCollection();
         SimpleFeatureBuilder build = new SimpleFeatureBuilder(type);
         for (int i = 0, ii = 20; i < ii; i++) {
             build.set(0, (Geometry) geom.clone());

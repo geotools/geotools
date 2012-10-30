@@ -17,10 +17,10 @@
 package org.geotools.data.memory;
 
 import java.util.Arrays;
-import java.util.Iterator;
 
 import org.geotools.data.DataTestCase;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
@@ -55,22 +55,28 @@ public class MemoryFeatureCollectionTest extends DataTestCase {
     }
     public void testResources(){
         Object[] array = roads.toArray();
-        roads.purge();        
         assertEquals( roads.size(), array.length );
         
-        Iterator i=roads.iterator();
-        assertTrue( i.hasNext() );
-        roads.close( i );
+        SimpleFeatureIterator i = roads.features();
+        try {
+            assertTrue( i.hasNext() );
+        }
+        finally {
+            i.close();
+        }
         try {
             assertFalse( i.hasNext() );
             fail("should be closed");
         }
         catch( IllegalStateException closed ){            
         }
-        
-        i=roads.iterator();
-        assertTrue( i.hasNext() );
-        roads.purge();        
+        i=roads.features();
+        try {
+            assertTrue( i.hasNext() );
+        }
+        finally {
+            i.close();
+        }
         try {
             assertFalse( i.hasNext() );
             fail("should be closed");

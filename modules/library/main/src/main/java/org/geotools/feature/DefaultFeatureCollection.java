@@ -81,15 +81,6 @@ public class DefaultFeatureCollection implements SimpleFeatureCollection, Collec
     //private String id; /// fid
 
     /**
-     * This constructor should not be used by client code.
-     * @param collection SimpleFeatureCollection to copy into memory
-     */
-    public DefaultFeatureCollection( FeatureCollection<SimpleFeatureType,SimpleFeature> collection ) {
-        this( collection.getID(), collection.getSchema() );
-        addAll(collection);
-    }
-    
-    /**
      * Default implementation of Feature collection.
      * <p>
      * feature type determined by the first feature added.
@@ -97,14 +88,31 @@ public class DefaultFeatureCollection implements SimpleFeatureCollection, Collec
     public DefaultFeatureCollection() {
         this( null, null );
     }
+
     /**
-     * This constructor should not be used by client code.
+     * Used to stage content in memory.
      * <p>
-     * Opportunistic reuse is encouraged, but only for the purposes
-     * of testing or other specialized uses. Normal creation should
-     * occur through <code>org.geotools.core.FeatureCollections.newCollection()</code>
-     * allowing applications to customize any generated collections.
-     * </p>
+     * Client code is encouraged to use DataUtilities.collection( collection )
+     * @param collection SimpleFeatureCollection to copy into memory
+     */
+    public DefaultFeatureCollection( FeatureCollection<SimpleFeatureType,SimpleFeature> collection ) {
+        this( collection.getID(), collection.getSchema() );
+        addAll(collection);
+    }
+
+    /**
+     * Used to create a feature collection to stage content in memory.
+     * <p>
+     * The feature type will be determined by the first feature added.
+     * 
+     * @param id may be null ... feature id
+     */
+    public DefaultFeatureCollection(String id) {
+        this( id, null );
+    }
+    
+    /**
+     * Used to create a feature collection to stage content in memory.
      * 
      * @param id may be null ... feature id
      * @param featureType optional, may be null
@@ -320,7 +328,25 @@ public class DefaultFeatureCollection implements SimpleFeatureCollection, Collec
      * @return an <tt>Iterator</tt> over the elements in this collection
      */
     public Iterator<SimpleFeature> iterator() {
-        return contents.values().iterator();
+        //return contents.values().iterator();
+        final Iterator<SimpleFeature> iterator = contents.values().iterator();
+        return new Iterator<SimpleFeature>() {
+            SimpleFeature currFeature = null;
+
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            public SimpleFeature next() {
+                currFeature = (SimpleFeature) iterator.next();
+                return currFeature;
+            }
+
+            public void remove() {
+                iterator.remove();
+                bounds = null; // recalc
+            }
+        };
     }
 
     /**
@@ -330,7 +356,7 @@ public class DefaultFeatureCollection implements SimpleFeatureCollection, Collec
      * @return the SimpleFeatureIterator for this collection.
      */
     public SimpleFeatureIterator features() {
-        return new SimpleFeatureIteratorImpl(this);
+        return new SimpleFeatureIteratorImpl( contents.values() );
     }
 
     /**

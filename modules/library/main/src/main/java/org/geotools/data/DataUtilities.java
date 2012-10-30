@@ -1226,7 +1226,8 @@ public class DataUtilities {
      * @return FeatureCollection
      */
     public static SimpleFeatureCollection collection(SimpleFeature[] features) {
-        SimpleFeatureCollection collection = FeatureCollections.newCollection();
+        // JG: There may be some performance to be gained by using ListFeatureCollection here
+        DefaultFeatureCollection collection = new DefaultFeatureCollection(null,null);
         final int length = features.length;
         for (int i = 0; i < length; i++) {
             collection.add(features[i]);
@@ -1497,7 +1498,7 @@ public class DataUtilities {
      * @return FeatureCollection
      */
     public static SimpleFeatureCollection collection(List<SimpleFeature> list) {
-        SimpleFeatureCollection collection = FeatureCollections.newCollection();
+        DefaultFeatureCollection collection = new DefaultFeatureCollection( null, null);
         for (SimpleFeature feature : list) {
             collection.add(feature);
         }
@@ -1520,7 +1521,7 @@ public class DataUtilities {
      * @return FeatureCollection
      */
     public static SimpleFeatureCollection collection(SimpleFeature feature) {
-        SimpleFeatureCollection collection = FeatureCollections.newCollection();
+        DefaultFeatureCollection collection = new DefaultFeatureCollection( null, null);
         collection.add(feature);
         return collection;
     }
@@ -1540,7 +1541,7 @@ public class DataUtilities {
      */
     public static SimpleFeatureCollection collection(
             FeatureReader<SimpleFeatureType, SimpleFeature> reader) throws IOException {
-        SimpleFeatureCollection collection = FeatureCollections.newCollection();
+        DefaultFeatureCollection collection = new DefaultFeatureCollection(null,null);
         try {
             while (reader.hasNext()) {
                 try {
@@ -1572,7 +1573,7 @@ public class DataUtilities {
      */
     public static SimpleFeatureCollection collection(SimpleFeatureIterator reader)
             throws IOException {
-        SimpleFeatureCollection collection = FeatureCollections.newCollection();
+        DefaultFeatureCollection collection = new DefaultFeatureCollection( null,null);
         try {
             while (reader.hasNext()) {
                 try {

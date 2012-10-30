@@ -16,8 +16,12 @@
  */
 package org.geotools.feature.collection;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -29,9 +33,9 @@ import org.opengis.feature.type.FeatureType;
  * Iterator, simply allowing Java 1.4 code to escape the caste (sic)
  * system.
  * <p>
- * This implementation is not suitable for use with collections
- * that make use of system resources. As an alterantive please
- * see ResourceFetaureIterator.
+ * This implementation checks the iterator to see if it implements
+ * {@link Closeable} in order to allow for collections that
+ * make use of system resources.
  * </p>
  * @author Jody Garnett, Refractions Research, Inc.
  *
@@ -66,9 +70,14 @@ public class DelegateFeatureIterator<F extends Feature> implements FeatureIterat
 		return  delegate.next();
 	}
 	public void close() {
-		if( delegate!=null && delegate instanceof FeatureIterator ){
-			((FeatureIterator<?>)delegate).close();
-		}
-		delegate = null;		
+	    if( delegate instanceof Closeable){
+	        try {
+                    ((Closeable)delegate).close();
+                } catch (IOException e) {
+                    Logger log = Logger.getLogger(delegate.getClass().getPackage().toString() );
+                    log.log(Level.FINER, e.getMessage(), e);
+                }
+	    }
+	    delegate = null;		
 	}
 }

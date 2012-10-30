@@ -232,14 +232,15 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
      * <p>
      * This method calls through to {@link #addFeatures(Collection)}.
      * </p>
+     * @param featureCollection
      */
-    public final List<FeatureId> addFeatures(FeatureCollection<SimpleFeatureType,SimpleFeature> collection)
+    public final List<FeatureId> addFeatures(FeatureCollection<SimpleFeatureType,SimpleFeature> featureCollection)
         throws IOException {
         // gather up id's
         List<FeatureId> ids = new LinkedList<FeatureId>();
         
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer = getWriterAppend();
-        FeatureIterator<SimpleFeature> f = collection.features();
+        FeatureIterator<SimpleFeature> f = featureCollection.features();
         try {
             while (f.hasNext()) {
                 SimpleFeature feature = (SimpleFeature) f.next();

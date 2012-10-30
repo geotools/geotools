@@ -17,6 +17,7 @@
 package org.geotools.data.collection;
 
 // J2SE interfaces
+import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -97,7 +98,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
     /**
      * listeners
      */
-    protected List<CollectionListener> listeners = new ArrayList<CollectionListener>();
+    // protected List<CollectionListener> listeners = new ArrayList<CollectionListener>();
 
     /**
      * id used when serialized to gml
@@ -109,6 +110,13 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
      */
     protected SimpleFeatureType schema;
 
+    /**
+     * FeatureCollection schema will be defined by the first added feature.
+     */
+    public TreeSetFeatureCollection(){
+        this( (String) null, (SimpleFeatureType) null);
+    }
+    
     /**
      * This constructor should not be used by client code.
      * 
@@ -164,25 +172,25 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
     /**
      * To let listeners know that something has changed.
      */
-    protected void fireChange(SimpleFeature[] features, int type) {
-        bounds = null;
-
-        CollectionEvent cEvent = new CollectionEvent(this, features, type);
-
-        for (int i = 0, ii = listeners.size(); i < ii; i++) {
-            ((CollectionListener) listeners.get(i)).collectionChanged(cEvent);
-        }
-    }
-
-    protected void fireChange(SimpleFeature feature, int type) {
-        fireChange(new SimpleFeature[] { feature }, type);
-    }
-
-    protected void fireChange(Collection<SimpleFeature> coll, int type) {
-        SimpleFeature[] features = new SimpleFeature[coll.size()];
-        features = (SimpleFeature[]) coll.toArray(features);
-        fireChange(features, type);
-    }
+//    protected void fireChange(SimpleFeature[] features, int type) {
+//        bounds = null;
+//
+//        CollectionEvent cEvent = new CollectionEvent(this, features, type);
+//
+//        for (int i = 0, ii = listeners.size(); i < ii; i++) {
+//            ((CollectionListener) listeners.get(i)).collectionChanged(cEvent);
+//        }
+//    }
+//
+//    protected void fireChange(SimpleFeature feature, int type) {
+//        fireChange(new SimpleFeature[] { feature }, type);
+//    }
+//
+//    protected void fireChange(Collection<SimpleFeature> coll, int type) {
+//        SimpleFeature[] features = new SimpleFeature[coll.size()];
+//        features = (SimpleFeature[]) coll.toArray(features);
+//        fireChange(features, type);
+//    }
 
     /**
      * Ensures that this collection contains the specified element (optional operation). Returns
@@ -212,7 +220,13 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
     public boolean add(SimpleFeature o) {
         return add(o, true);
     }
-
+    /**
+     * Add a feature (safely to the internal collection).
+     * 
+     * @param feature
+     * @param fire ignored (formally used to control events)
+     * @return true of feature was added
+     */
     protected boolean add(SimpleFeature feature, boolean fire) {
 
         // This cast is neccessary to keep with the contract of Set!
@@ -237,9 +251,9 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         // }
         // TODO check inheritance with FeatureType here!!!
         contents.put(ID, feature);
-        if (fire) {
-            fireChange(feature, CollectionEvent.FEATURES_ADDED);
-        }
+//        if (fire) {
+//            fireChange(feature, CollectionEvent.FEATURES_ADDED);
+//        }
         return true;
     }
 
@@ -273,24 +287,28 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
                     featuresAdded.add(f);
             }
 
-            if (changed) {
-                fireChange(featuresAdded, CollectionEvent.FEATURES_ADDED);
-            }
+//            if (changed) {
+//                fireChange(featuresAdded, CollectionEvent.FEATURES_ADDED);
+//            }
 
             return changed;
         } finally {
-            if (collection instanceof FeatureCollection) {
-                ((SimpleFeatureCollection) collection).close(iterator);
+            if( iterator instanceof Closeable ){
+                try {
+                    ((Closeable)iterator).close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }
 
     @SuppressWarnings("unchecked")
-    public boolean addAll(FeatureCollection collection) {
+    public boolean addAll(FeatureCollection<?,?> collection) {
         // TODO check inheritance with FeatureType here!!!
         boolean changed = false;
 
-        Iterator<?> iterator = collection.iterator();
+        FeatureIterator<?> iterator = collection.features();
         try {
             List<SimpleFeature> featuresAdded = new ArrayList<SimpleFeature>(collection.size());
             while (iterator.hasNext()) {
@@ -302,13 +320,13 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
                     featuresAdded.add(f);
             }
 
-            if (changed) {
-                fireChange(featuresAdded, CollectionEvent.FEATURES_ADDED);
-            }
+//            if (changed) {
+//                fireChange(featuresAdded, CollectionEvent.FEATURES_ADDED);
+//            }
 
             return changed;
         } finally {
-            collection.close(iterator);
+            iterator.close();
         }
     }
 
@@ -324,7 +342,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         oldFeatures = (SimpleFeature[]) contents.values().toArray(oldFeatures);
 
         contents.clear();
-        fireChange(oldFeatures, CollectionEvent.FEATURES_REMOVED);
+        //fireChange(oldFeatures, CollectionEvent.FEATURES_REMOVED);
     }
 
     /**
@@ -368,8 +386,12 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
             }
             return true;
         } finally {
-            if (collection instanceof FeatureCollection) {
-                ((SimpleFeatureCollection) collection).close(iterator);
+            if (iterator instanceof Closeable ){
+                try {
+                    ((Closeable)iterator).close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }
@@ -407,7 +429,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
 
             public void remove() {
                 iterator.remove();
-                fireChange(currFeature, CollectionEvent.FEATURES_REMOVED);
+                bounds = null; // recalc
             }
         };
     }
@@ -419,7 +441,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
      * @return the SimpleFeatureIterator for this collection.
      */
     public SimpleFeatureIterator features() {
-        return new SimpleFeatureIteratorImpl(this);
+        return new SimpleFeatureIteratorImpl( contents.values() );
     }
 
     /**
@@ -442,9 +464,9 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         SimpleFeature f = (SimpleFeature) o;
         boolean changed = contents.values().remove(f);
 
-        if (changed) {
-            fireChange(f, CollectionEvent.FEATURES_REMOVED);
-        }
+//        if (changed) {
+//            fireChange(f, CollectionEvent.FEATURES_REMOVED);
+//        }
         return changed;
     }
 
@@ -477,14 +499,18 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
                 }
             }
 
-            if (changed) {
-                fireChange(removedFeatures, CollectionEvent.FEATURES_REMOVED);
-            }
+//            if (changed) {
+//                fireChange(removedFeatures, CollectionEvent.FEATURES_REMOVED);
+//            }
 
             return changed;
         } finally {
-            if (collection instanceof FeatureCollection) {
-                ((SimpleFeatureCollection) collection).close(iterator);
+            if( iterator instanceof Closeable ){
+                try {
+                    ((Closeable)iterator).close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }
@@ -516,9 +542,9 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
             }
         }
 
-        if (modified) {
-            fireChange(removedFeatures, CollectionEvent.FEATURES_REMOVED);
-        }
+//        if (modified) {
+//            fireChange(removedFeatures, CollectionEvent.FEATURES_REMOVED);
+//        }
 
         return modified;
     }
@@ -643,7 +669,7 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
     }
 
     public SimpleFeatureCollection collection() throws IOException {
-        SimpleFeatureCollection copy = new TreeSetFeatureCollection(null, getSchema());
+        TreeSetFeatureCollection copy = new TreeSetFeatureCollection(null, getSchema());
         List<SimpleFeature> list = new ArrayList<SimpleFeature>(contents.size());
         SimpleFeatureIterator iterator = features();
         try {
@@ -735,13 +761,13 @@ public class TreeSetFeatureCollection implements SimpleFeatureCollection {
         return id;
     }
 
-    public final void addListener(CollectionListener listener) throws NullPointerException {
-        listeners.add(listener);
-    }
-
-    public final void removeListener(CollectionListener listener) throws NullPointerException {
-        listeners.remove(listener);
-    }
+//    public final void addListener(CollectionListener listener) throws NullPointerException {
+//        listeners.add(listener);
+//    }
+//
+//    public final void removeListener(CollectionListener listener) throws NullPointerException {
+//        listeners.remove(listener);
+//    }
 
     public SimpleFeatureType getSchema() {
         return schema;

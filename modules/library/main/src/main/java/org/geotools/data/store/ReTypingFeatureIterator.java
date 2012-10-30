@@ -16,8 +16,7 @@
  */
 package org.geotools.data.store;
 
-import java.util.Iterator;
-
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
@@ -25,95 +24,86 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 
 /**
- * Iterator wrapper which re-types features on the fly based on a target 
- * feature type.
+ * FeatureIterator wrapper which re-types features on the fly based on a target feature type.
  * 
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
- *
- * @deprecated Please use {@link ReTypingFeatureIterator}
  * @source $URL$
  */
-public class ReTypingIterator implements Iterator<SimpleFeature> {
+public class ReTypingFeatureIterator implements SimpleFeatureIterator {
 
-	/**
-	 * The delegate iterator
-	 */
-	Iterator<SimpleFeature> delegate;
-	
-	/**
-	 * The target feature type
-	 */
-	SimpleFeatureType target;
-	
-	/**
-	 * The matching types from target 
-	 */
-	AttributeDescriptor[] types;
-	
-	SimpleFeatureBuilder builder;
-	
-	public ReTypingIterator( Iterator<SimpleFeature> delegate, SimpleFeatureType source, SimpleFeatureType target ) {
-		this.delegate = delegate;
-		this.target = target;
-		types = typeAttributes( source, target );
-		this.builder = new SimpleFeatureBuilder(target);
-	}
-	
-	public Iterator<SimpleFeature> getDelegate() {
-		return delegate;
-	}
+    /**
+     * The delegate iterator
+     */
+    SimpleFeatureIterator delegate;
 
-	public void remove() {
-		delegate.remove();
-	}
+    /**
+     * The target feature type
+     */
+    SimpleFeatureType target;
 
-	public boolean hasNext() {
-		return delegate.hasNext();
-	}
+    /**
+     * The matching types from target
+     */
+    AttributeDescriptor[] types;
 
-	public SimpleFeature next() {
-		SimpleFeature next = (SimpleFeature) delegate.next();
+    SimpleFeatureBuilder builder;
+
+    public ReTypingFeatureIterator(SimpleFeatureIterator delegate, SimpleFeatureType source,
+            SimpleFeatureType target) {
+        this.delegate = delegate;
+        this.target = target;
+        types = typeAttributes(source, target);
+        this.builder = new SimpleFeatureBuilder(target);
+    }
+
+    public SimpleFeatureIterator getDelegate() {
+        return delegate;
+    }
+
+    public boolean hasNext() {
+        return delegate.hasNext();
+    }
+
+    public SimpleFeature next() {
+        SimpleFeature next = delegate.next();
         String id = next.getID();
 
         try {
-			for (int i = 0; i < types.length; i++) {
-			    final String xpath = types[i].getLocalName();
-			    builder.add(next.getAttribute(xpath));
-			}
-			
-			return builder.buildFeature(id);
-		} 
-        catch (IllegalAttributeException e) {
-        	throw new RuntimeException( e );
-		}
-	}
-	
-	 /**
+            for (int i = 0; i < types.length; i++) {
+                final String xpath = types[i].getLocalName();
+                builder.add(next.getAttribute(xpath));
+            }
+
+            return builder.buildFeature(id);
+        } catch (IllegalAttributeException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Supplies mapping from origional to target FeatureType.
      * 
      * <p>
      * Will also ensure that origional can cover target
      * </p>
-     *
+     * 
      * @param target Desired FeatureType
      * @param origional Origional FeatureType
-     *
+     * 
      * @return Mapping from originoal to target FeatureType
-     *
+     * 
      * @throws IllegalArgumentException if unable to provide a mapping
      */
     protected AttributeDescriptor[] typeAttributes(SimpleFeatureType original,
-        SimpleFeatureType target) {
+            SimpleFeatureType target) {
         if (target.equals(original)) {
             throw new IllegalArgumentException(
-                "FeatureReader allready produces contents with the correct schema");
+                    "FeatureReader allready produces contents with the correct schema");
         }
 
         if (target.getAttributeCount() > original.getAttributeCount()) {
             throw new IllegalArgumentException(
-                "Unable to retype  FeatureReader<SimpleFeatureType, SimpleFeature> (origional does not cover requested type)");
+                    "Unable to retype  FeatureReader<SimpleFeatureType, SimpleFeature> (origional does not cover requested type)");
         }
 
         String xpath;
@@ -126,12 +116,16 @@ public class ReTypingIterator implements Iterator<SimpleFeature> {
 
             if (!attrib.equals(original.getDescriptor(xpath))) {
                 throw new IllegalArgumentException(
-                    "Unable to retype  FeatureReader<SimpleFeatureType, SimpleFeature> (origional does not cover "
-                    + xpath + ")");
+                        "Unable to retype  FeatureReader<SimpleFeatureType, SimpleFeature> (origional does not cover "
+                                + xpath + ")");
             }
         }
 
         return types;
     }
 
+    @Override
+    public void close() {
+        delegate.close();
+    }
 }

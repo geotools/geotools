@@ -169,18 +169,6 @@ public class RasterZonalStatistics implements RasterProcess {
             return new RasterZonalStatisticsIterator(delegate.features(), coverage, band,
                     targetSchema, classification);
         }
-
-        @Override
-        public Iterator<SimpleFeature> iterator() {
-            return new WrappingIterator(features());
-        }
-
-        @Override
-        public void close(Iterator<SimpleFeature> close) {
-            if (close instanceof WrappingIterator) {
-                ((WrappingIterator) close).close();
-            }
-        }
     }
 
     /**

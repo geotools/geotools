@@ -368,12 +368,12 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
         return toArray( new SimpleFeature[ size() ]);
     }
 
-    public Object[] toArray( Object[] array ) {
-        List list = new ArrayList();
+    public <T> T[] toArray( T[] array ) {
+        List<T> list = new ArrayList<T>();
         Iterator i = iterator();
         try {
             while( i.hasNext() ){
-                list.add( i.next() );
+                list.add( (T) i.next() );
             }
         }
         finally {

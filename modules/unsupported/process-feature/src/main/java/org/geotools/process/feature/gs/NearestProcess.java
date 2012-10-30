@@ -24,8 +24,10 @@ import javax.measure.converter.UnitConverter;
 import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
 
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureCollections;
+import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.measure.Measure;
@@ -103,7 +105,7 @@ public class NearestProcess implements GSProcess {
             }
             MathTransform crsTransform = CRS.findMathTransform(crs, epsg4326);
 
-            FeatureCollection results = FeatureCollections.newCollection();
+            DefaultFeatureCollection results = new DefaultFeatureCollection();
             FeatureType targetFeatureType = createTargetFeatureType(featureCollection.getSchema());
             Unit fromUnit = SI.METER;
             Unit toUnit = Unit.valueOf("mi");
@@ -111,9 +113,8 @@ public class NearestProcess implements GSProcess {
             Feature nearestFeature = null;
             double nearestDistance = 9e9;
             double nearestBearing = 0;
-            Iterator featureIterator = null;
+            FeatureIterator featureIterator = featureCollection.features();
             try {
-                featureIterator = featureCollection.iterator();
                 while (featureIterator.hasNext()) {
                     SimpleFeature f = (SimpleFeature) featureIterator.next();
                     if (f.getDefaultGeometryProperty().getValue() == null)
@@ -137,8 +138,7 @@ public class NearestProcess implements GSProcess {
                     nearestBearing = calcBearing(co);
                 }
             } finally {
-                if (featureIterator != null)
-                    featureCollection.close(featureIterator);
+                featureIterator.close();
             }
             if (nearestFeature != null) {
                 nearestDistance = unitConvert.convert(nearestDistance);

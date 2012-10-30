@@ -19,6 +19,7 @@ package org.geotools.process.feature.gs;
 
 import java.util.logging.Logger;
 
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.FeatureIterator;
@@ -70,7 +71,7 @@ public class LRSGeocodeProcess implements GSProcess {
             @DescribeParameter(name = "to_measure_attb", description = "Attribute providing end measure of feature") String toMeasureAttb,
             @DescribeParameter(name = "measure", description = "Measure of the point along the feature to be computed") Double measure)
             throws ProcessException {
-        FeatureCollection results = FeatureCollections.newCollection();
+        DefaultFeatureCollection results = new DefaultFeatureCollection();
         try {
             if (featureCollection == null || featureCollection.size() == 0) {
                 LOGGER.info("No features provided in request");

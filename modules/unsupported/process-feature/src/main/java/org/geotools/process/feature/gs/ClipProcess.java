@@ -137,17 +137,6 @@ public class ClipProcess implements GSProcess {
             return new ClippingFeatureIterator(delegate.features(), clip, getSchema());
         }
 
-        @Override
-        public Iterator<SimpleFeature> iterator() {
-            return new WrappingIterator(features());
-        }
-
-        @Override
-        public void close(Iterator<SimpleFeature> close) {
-            if (close instanceof WrappingIterator) {
-                ((WrappingIterator) close).close();
-            }
-        }
     }
 
     static class ClippingFeatureIterator implements SimpleFeatureIterator {

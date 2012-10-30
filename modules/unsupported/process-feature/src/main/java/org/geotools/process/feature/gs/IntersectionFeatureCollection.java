@@ -380,18 +380,6 @@ public class IntersectionFeatureCollection implements GSProcess {
                     delegate.getSchema(), features.getSchema(), firstAttributes, sndAttributes,
                     intersectionMode, percentagesEnabled, areasEnabled,fb);
         }
-
-        @Override
-        public Iterator<SimpleFeature> iterator() {
-            return new WrappingIterator(features());
-        }
-
-        @Override
-        public void close(Iterator<SimpleFeature> close) {
-            if (close instanceof WrappingIterator) {
-                ((WrappingIterator) close).close();
-            }
-        }
     }
 
     /**

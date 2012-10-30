@@ -303,18 +303,6 @@ public class TransformProcess implements GSProcess {
         public SimpleFeatureIterator features() {
             return new ReshapeFeatureIterator(delegate.features(), definition, schema);
         }
-
-        @Override
-        public Iterator<SimpleFeature> iterator() {
-            return new WrappingIterator(features());
-        }
-
-        @Override
-        public void close(Iterator<SimpleFeature> close) {
-            if (close instanceof WrappingIterator) {
-                ((WrappingIterator) close).close();
-            }
-        }
     }
     /**
      * Process one feature at time; obtaining values by evaulating the provided list of definitions.

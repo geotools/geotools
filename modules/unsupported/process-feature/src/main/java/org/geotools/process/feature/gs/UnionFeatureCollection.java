@@ -113,19 +113,6 @@ public class UnionFeatureCollection implements GSProcess {
             return new UnitedFeatureIterator(delegate.features(), delegate, features.features(),
                     features, getSchema());
         }
-
-        @Override
-        public Iterator<SimpleFeature> iterator() {
-            return new WrappingIterator(features());
-        }
-
-        @Override
-        public void close(Iterator<SimpleFeature> close) {
-            if (close instanceof WrappingIterator) {
-                ((WrappingIterator) close).close();
-            }
-        }
-
         @Override
         public SimpleFeatureType getSchema() {
             return this.schema;

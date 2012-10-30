@@ -79,7 +79,7 @@ public class Benchmark {
         
         long t2 = System.currentTimeMillis();
         System.out.println(t2-t1);
-        features.close(it);
+        it.close();
     }
 
     static FeatureSource loadData() throws Exception {

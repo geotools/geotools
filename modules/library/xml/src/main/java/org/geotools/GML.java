@@ -550,7 +550,7 @@ public class GML {
      * @return SimpleFeatureCollection
      */
     private SimpleFeatureCollection simpleFeatureCollection(Collection<?> collection) {
-        SimpleFeatureCollection featureCollection = FeatureCollections.newCollection();
+        DefaultFeatureCollection featureCollection = new DefaultFeatureCollection();
         SimpleFeatureType schema = null;
         for (Object obj : collection) {
             if (schema == null) {

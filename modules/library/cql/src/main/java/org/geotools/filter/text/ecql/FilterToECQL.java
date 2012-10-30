@@ -228,12 +228,12 @@ final class FilterToECQL implements FilterVisitor {
 
 	@Override
 	public Object visit(Overlaps filter, Object extraData) {
-    	return FilterToTextUtil.buildBinarySpatialOperator("OVERLAP", filter, extraData);
+    	return FilterToTextUtil.buildBinarySpatialOperator("OVERLAPS", filter, extraData);
 	}
 
 	@Override
 	public Object visit(Touches filter, Object extraData) {
-    	return FilterToTextUtil.buildBinarySpatialOperator("TOUCH", filter, extraData);
+    	return FilterToTextUtil.buildBinarySpatialOperator("TOUCHES", filter, extraData);
 	}
 
 	@Override

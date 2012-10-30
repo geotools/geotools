@@ -234,10 +234,35 @@ public class FilterToCQLTest{
     }
 
     @Test
-    public void testIntersects() throws Exception{
+    public void testIntersectsPoint() throws Exception{
     	
     	cqlTest("INTERSECTS(the_geom, POINT (1 2))");
     }
+    
+	@Test
+	public void testIntersects() throws Exception {
+		cqlTest("INTERSECTS(theGeom, POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0)))");
+	}
+
+	@Test
+	public void testOverlaps() throws Exception {
+		cqlTest("OVERLAPS(theGeom, POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0)))");
+	}
+
+	@Test
+	public void testCrosses() throws Exception {
+		cqlTest("CROSSES(theGeom, POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0)))");
+	}
+
+	@Test
+	public void testContains() throws Exception {
+		cqlTest("CONTAINS(theGeom, POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0)))");
+	}
+
+	@Test
+	public void testTouches() throws Exception {
+		cqlTest("TOUCHES(theGeom, POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0)))");
+	}
 
     protected void cqlTest( String cql ) throws Exception {
         Filter filter = CQL.toFilter(cql);

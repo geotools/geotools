@@ -68,9 +68,11 @@ public abstract class JDBCEmptyTest extends JDBCTestSupport {
         assertEquals( 0, features.size() );
         
         FeatureIterator i = features.features();
-        assertFalse( i.hasNext() );
-        features.close( i );
-        
+        try {
+            assertFalse(i.hasNext());
+        } finally {
+            i.close();
+        }        
     }
 
 }

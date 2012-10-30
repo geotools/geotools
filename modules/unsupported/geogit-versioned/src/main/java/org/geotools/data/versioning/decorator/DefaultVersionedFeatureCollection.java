@@ -16,6 +16,7 @@
  */
 package org.geotools.data.versioning.decorator;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,19 +27,17 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.data.DataSourceException;
 import org.geotools.data.FeatureReader;
+import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.feature.CollectionEvent;
 import org.geotools.feature.CollectionListener;
-import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.IllegalAttributeException;
-import org.geotools.feature.collection.FeatureIteratorImpl;
 import org.geotools.feature.collection.SimpleFeatureIteratorImpl;
 import org.geotools.feature.collection.SubFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -60,11 +59,10 @@ public class DefaultVersionedFeatureCollection implements SimpleFeatureCollectio
     public DefaultVersionedFeatureCollection(
             FeatureCollection<SimpleFeatureType, SimpleFeature> collection) {
         this( collection.getID(), collection.getSchema() );
-        addAll(collection);
+        init(collection);
     }
 
-    public DefaultVersionedFeatureCollection(String id,
-            SimpleFeatureType memberType) {
+    public DefaultVersionedFeatureCollection(String id,SimpleFeatureType memberType) {
         this.id = id == null ? "featureCollection" : id;
         this.schema = memberType;       
     }
@@ -82,12 +80,6 @@ public class DefaultVersionedFeatureCollection implements SimpleFeatureCollectio
 
     /** Internal envelope of bounds. */
     private ReferencedEnvelope bounds = null;
-
-    /**
-     * listeners
-     */
-    private List<CollectionListener> listeners = new ArrayList<CollectionListener>();
-
     /** 
      * id used when serialized to gml
      */
@@ -96,29 +88,11 @@ public class DefaultVersionedFeatureCollection implements SimpleFeatureCollectio
     private SimpleFeatureType schema;
 
     /**
-     * To let listeners know that something has changed.
+     * Used by FeatureSourceDecorator to stage versioned content.
+     * @param feature
+     * @return
      */
-    protected void fireChange(SimpleFeature[] features, int type) {
-        bounds = null;
-
-        CollectionEvent cEvent = new CollectionEvent(this, features, type);
-
-        for (int i = 0, ii = listeners.size(); i < ii; i++) {
-            ((CollectionListener) listeners.get(i)).collectionChanged(cEvent);
-        }
-    }
-
-    protected void fireChange(SimpleFeature feature, int type) {
-        fireChange(new SimpleFeature[] {feature}, type);
-    }
-
-    protected void fireChange(Collection<SimpleFeature> coll, int type) {
-        SimpleFeature[] features = new SimpleFeature[coll.size()];
-        features = coll.toArray(features);
-        fireChange(features, type);
-    }
-
-    protected boolean add(SimpleFeature feature, boolean fire) {
+    boolean add(SimpleFeature feature) {
         if (feature == null) {
             return false; // cannot add null!
         }
@@ -128,8 +102,7 @@ public class DefaultVersionedFeatureCollection implements SimpleFeatureCollectio
         }
         if (contents.containsKey(ID)) {
             return false; // feature all ready present
-        }
-    
+        }    
         if (this.schema == null) {
             this.schema = feature.getFeatureType();
         }
@@ -139,9 +112,6 @@ public class DefaultVersionedFeatureCollection implements SimpleFeatureCollectio
                     + " mix of features");
         }
         contents.put(ID, feature);
-        if (fire) {
-            fireChange(feature, CollectionEvent.FEATURES_ADDED);
-        }
         return true;
     }
 
@@ -172,9 +142,9 @@ public class DefaultVersionedFeatureCollection implements SimpleFeatureCollectio
      *
      * @return <tt>true</tt> if this collection changed as a result of the call
      */
-    public boolean add(SimpleFeature o) {
-        return add(o, true);
-    }
+//    public boolean add(SimpleFeature o) {
+//        return add(o, true);
+//    }
 
     /**
      * Adds all of the elements in the specified collection to this collection
@@ -187,60 +157,58 @@ public class DefaultVersionedFeatureCollection implements SimpleFeatureCollectio
      * @param collection elements to be inserted into this collection.
      *
      * @return <tt>true</tt> if this collection changed as a result of the call
-     *
-     * @see #add(Object)
      */
-    public boolean addAll(Collection collection) {
-        if(collection instanceof FeatureCollection) {
-            return addAll((FeatureCollection)collection);
-        }
-        //TODO check inheritance with FeatureType here!!!
-        boolean changed = false;
-
-        Iterator iterator = collection.iterator();
-        List<SimpleFeature> featuresAdded = new ArrayList<SimpleFeature>(collection.size());
-        while (iterator.hasNext()) {
-            SimpleFeature f = (SimpleFeature) iterator.next();
-            boolean added = add(f,false);
-            changed |= added;
-
-            if(added) {
-                featuresAdded.add(f);
-            }
-        }
-
-        if (changed) {
-            fireChange(featuresAdded, CollectionEvent.FEATURES_ADDED);
-        }
-
-        return changed;
-    }
-
-    public boolean addAll(FeatureCollection collection) {
-        //TODO check inheritance with FeatureType here!!!
-        boolean changed = false;
-
-        FeatureIterator iterator = collection.features();
+    public void init(FeatureCollection<SimpleFeatureType, SimpleFeature> collection) {
+        FeatureIterator<SimpleFeature> iterator = collection.features();
         try {
-            List<SimpleFeature> featuresAdded = new ArrayList<SimpleFeature>(collection.size());
             while (iterator.hasNext()) {
-                SimpleFeature f = (SimpleFeature) iterator.next();
-                boolean added = add(f,false);
-                changed |= added;
-
-                if(added) featuresAdded.add(f);
+                SimpleFeature feature = (SimpleFeature) iterator.next();
+                if (feature == null) {
+                    continue; // cannot add null!
+                }
+                final String ID = getKey(feature.getIdentifier());
+                if (ID == null) {
+                    continue; // ID is required!
+                }
+                if (contents.containsKey(ID)) {
+                    continue; // feature all ready present
+                }    
+                if (this.schema == null) {
+                    this.schema = feature.getFeatureType();
+                }
+                SimpleFeatureType childType = (SimpleFeatureType) getSchema();
+                if (!feature.getFeatureType().equals(childType)) {
+                    LOGGER.warning("Feature Collection contains a heterogeneous"
+                            + " mix of features");
+                }
+                contents.put(ID, feature);
             }
-
-            if (changed) {
-                fireChange(featuresAdded, CollectionEvent.FEATURES_ADDED);
-            }
-
-            return changed;
         }
         finally {
             iterator.close();
         }
     }
+
+//    public boolean addAll(FeatureCollection collection) {
+//        //TODO check inheritance with FeatureType here!!!
+//        boolean changed = false;
+//
+//        FeatureIterator iterator = collection.features();
+//        try {
+//            List<SimpleFeature> featuresAdded = new ArrayList<SimpleFeature>(collection.size());
+//            while (iterator.hasNext()) {
+//                SimpleFeature f = (SimpleFeature) iterator.next();
+//                boolean added = add(f,false);
+//                changed |= added;
+//
+//                if(added) featuresAdded.add(f);
+//            }
+//            return changed;
+//        }
+//        finally {
+//            iterator.close();
+//        }
+//    }
 
     private String getKey(FeatureId id) {
         if (id.getFeatureVersion() == null) {
@@ -276,8 +244,8 @@ public class DefaultVersionedFeatureCollection implements SimpleFeatureCollectio
     }
 
     @Override
-    public boolean containsAll(Collection collection) {
-        Iterator iterator = collection.iterator();
+    public boolean containsAll(Collection<?> collection) {
+        Iterator<?> iterator = collection.iterator();
         try {
             while (iterator.hasNext()) {
                 SimpleFeature feature = (SimpleFeature) iterator.next();
@@ -288,8 +256,12 @@ public class DefaultVersionedFeatureCollection implements SimpleFeatureCollectio
             }
             return true;
         } finally {
-            if (collection instanceof FeatureCollection) {
-                ((SimpleFeatureCollection) collection).close(iterator);
+            if (iterator instanceof Closeable) {
+                try {
+                    ((Closeable) iterator).close();
+                } catch (IOException e) {
+                    LOGGER.log(Level.FINE, e.getMessage(), e);
+                }
             }
         }
     }
@@ -322,27 +294,26 @@ public class DefaultVersionedFeatureCollection implements SimpleFeatureCollectio
      *
      * @return an <tt>Iterator</tt> over the elements in this collection
      */
-    public Iterator iterator() {
-        final Iterator iterator = contents.values().iterator();
-
-        return new Iterator() {
-            SimpleFeature currFeature = null;
-
-            public boolean hasNext() {
-                return iterator.hasNext();
-            }
-
-            public Object next() {
-                currFeature = (SimpleFeature) iterator.next();
-                return currFeature;
-            }
-
-            public void remove() {
-                iterator.remove();
-                fireChange(currFeature, CollectionEvent.FEATURES_REMOVED);
-            }
-        };
-    }
+//    public Iterator iterator() {
+//        final Iterator iterator = contents.values().iterator();
+//
+//        return new Iterator() {
+//            SimpleFeature currFeature = null;
+//
+//            public boolean hasNext() {
+//                return iterator.hasNext();
+//            }
+//
+//            public Object next() {
+//                currFeature = (SimpleFeature) iterator.next();
+//                return currFeature;
+//            }
+//
+//            public void remove() {
+//                iterator.remove();
+//            }
+//        };
+//    }
 
     /**
      * Gets a SimpleFeatureIterator of this feature collection.  This allows
@@ -367,19 +338,15 @@ public class DefaultVersionedFeatureCollection implements SimpleFeatureCollectio
      *
      * @return <tt>true</tt> if this collection changed as a result of the call
      */
-    public boolean remove(Object o) {
-        if( !(o instanceof SimpleFeature)) {
-            return false;
-        }
-
-        SimpleFeature f = (SimpleFeature) o;
-        boolean changed = contents.values().remove(f);
-
-        if (changed) {
-            fireChange(f, CollectionEvent.FEATURES_REMOVED);
-        }
-        return changed;
-    }
+//    public boolean remove(Object o) {
+//        if( !(o instanceof SimpleFeature)) {
+//            return false;
+//        }
+//
+//        SimpleFeature f = (SimpleFeature) o;
+//        boolean changed = contents.values().remove(f);
+//        return changed;
+//    }
 
     /**
      * Removes all this collection's elements that are also contained in the
@@ -394,33 +361,32 @@ public class DefaultVersionedFeatureCollection implements SimpleFeatureCollectio
      * @see #remove(Object)
      * @see #contains(Object)
      */
-    public boolean removeAll(Collection collection) {
-        boolean changed = false;
-        Iterator iterator = collection.iterator();
-        try {
-            List removedFeatures = new ArrayList(collection.size());
-            while (iterator.hasNext()) {
-                SimpleFeature f = (SimpleFeature) iterator.next();
-                boolean removed = contents.values().remove(f);
-
-                if(removed) {
-                    changed = true;
-                    removedFeatures.add(f);
-                }
-            }
-
-            if (changed) {
-                fireChange(removedFeatures, CollectionEvent.FEATURES_REMOVED);
-            }
-
-            return changed;
-        }
-        finally {
-            if( collection instanceof FeatureCollection ){
-                ((SimpleFeatureCollection)collection).close( iterator );
-            }
-        }
-    }
+//    public boolean removeAll(Collection<?> collection) {
+//        boolean changed = false;
+//        Iterator<?> iterator = collection.iterator();
+//        try {
+//            List<SimpleFeature> removedFeatures = new ArrayList<SimpleFeature>(collection.size());
+//            while (iterator.hasNext()) {
+//                SimpleFeature f = (SimpleFeature) iterator.next();
+//                boolean removed = contents.values().remove(f);
+//
+//                if(removed) {
+//                    changed = true;
+//                    removedFeatures.add(f);
+//                }
+//            }
+//            return changed;
+//        }
+//        finally {
+//            if (iterator instanceof Closeable) {
+//                try {
+//                    ((Closeable) iterator).close();
+//                } catch (IOException e) {
+//                    LOGGER.log(Level.FINE, e.getMessage(), e);
+//                }
+//            }
+//        }
+//    }
 
     /**
      * Retains only the elements in this collection that are contained in the
@@ -435,36 +401,29 @@ public class DefaultVersionedFeatureCollection implements SimpleFeatureCollectio
      * @see #remove(Object)
      * @see #contains(Object)
      */
-    public boolean retainAll(Collection collection) {
-        List removedFeatures = new ArrayList(contents.size() - collection.size());
-        boolean modified = false;
+//    public boolean retainAll(Collection collection) {
+//        List removedFeatures = new ArrayList(contents.size() - collection.size());
+//        boolean modified = false;
+//
+//        for(Iterator it = contents.values().iterator(); it.hasNext(); )  {
+//            SimpleFeature f = (SimpleFeature) it.next();
+//            if(!collection.contains(f)) {
+//                it.remove();
+//                modified = true;
+//                removedFeatures.add(f);
+//            }
+//        }
+//
+//        return modified;
+//    }
 
-        for(Iterator it = contents.values().iterator(); it.hasNext(); )  {
-            SimpleFeature f = (SimpleFeature) it.next();
-            if(!collection.contains(f)) {
-                it.remove();
-                modified = true;
-                removedFeatures.add(f);
-            }
-        }
-
-        if (modified) {
-            fireChange(removedFeatures, CollectionEvent.FEATURES_REMOVED);
-        }
-
-        return modified;
-    }
-
-    public void close( FeatureIterator<SimpleFeature>  close ) {
-        if( close instanceof FeatureIteratorImpl){
-            FeatureIteratorImpl<SimpleFeature> wrapper = (FeatureIteratorImpl<SimpleFeature>) close;
-            wrapper.close();
-        }
-    }
-
-    public void close( Iterator close ) {
-        // nop
-    }
+//    public void close( FeatureIterator<SimpleFeature>  close ) {
+//        if( close instanceof FeatureIteratorImpl){
+//            FeatureIteratorImpl<SimpleFeature> wrapper = (FeatureIteratorImpl<SimpleFeature>) close;
+//            wrapper.close();
+//        }
+//    }
+//
 
     public  FeatureReader<SimpleFeatureType, SimpleFeature> reader() throws IOException {
         final SimpleFeatureIterator iterator = features(); 
@@ -472,7 +431,7 @@ public class DefaultVersionedFeatureCollection implements SimpleFeatureCollectio
             public SimpleFeatureType getFeatureType() {
                 return getSchema();
             }
-            public SimpleFeature next() throws IOException, IllegalAttributeException, NoSuchElementException {
+            public SimpleFeature next() throws NoSuchElementException {
                 return iterator.next();
             }
 
@@ -481,7 +440,7 @@ public class DefaultVersionedFeatureCollection implements SimpleFeatureCollectio
             }
 
             public void close() throws IOException {
-                DefaultVersionedFeatureCollection.this.close( iterator );
+                iterator.close();
             }            
         };
     }
@@ -514,7 +473,7 @@ public class DefaultVersionedFeatureCollection implements SimpleFeatureCollectio
     }
 
     public SimpleFeatureCollection collection() throws IOException {
-        SimpleFeatureCollection copy = new DefaultFeatureCollection( null, getSchema() );
+        ListFeatureCollection copy = new ListFeatureCollection( getSchema() );
         List<SimpleFeature> list = new ArrayList<SimpleFeature>( contents.size() );
         SimpleFeatureIterator iterator = features();
         try {
@@ -523,7 +482,7 @@ public class DefaultVersionedFeatureCollection implements SimpleFeatureCollectio
                 SimpleFeature duplicate;
                 try {                
                     duplicate = SimpleFeatureBuilder.copy(feature);
-                } catch (IllegalAttributeException e) {
+                } catch (org.opengis.feature.IllegalAttributeException e) {
                     throw new DataSourceException( "Unable to copy "+feature.getID(), e );
                 }
                 list.add( duplicate );
@@ -547,13 +506,13 @@ public class DefaultVersionedFeatureCollection implements SimpleFeatureCollectio
     }
 
     public void accepts(org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress) {
-        Iterator iterator = null;
+        FeatureIterator<SimpleFeature> iterator = null;
         if (progress == null) progress = new NullProgressListener();
         try{
             float size = size();
             float position = 0;            
             progress.started();
-            for( iterator = iterator(); !progress.isCanceled() && iterator.hasNext(); progress.progress( position++/size )){
+            for( iterator = features(); !progress.isCanceled() && iterator.hasNext(); progress.progress( position++/size )){
                 try {
                     SimpleFeature feature = (SimpleFeature) iterator.next();
                     visitor.visit(feature);
@@ -564,8 +523,8 @@ public class DefaultVersionedFeatureCollection implements SimpleFeatureCollectio
             }            
         }
         finally {
-            progress.complete();            
-            close( iterator );
+            progress.complete();  
+            iterator.close();
         }       
     }
 
@@ -616,24 +575,12 @@ public class DefaultVersionedFeatureCollection implements SimpleFeatureCollectio
         // custom
         return null; // new OrderedFeatureList( order, compare );
     }
-
-    public void purge() {
-        // no resources were harmed in the making of this FeatureCollection
-    }       
+      
     public void validate() {        
     }
 
     public String getID() {
         return id;
-    }
-
-    public final void addListener(CollectionListener listener) throws NullPointerException {
-        listeners.add(listener);
-    }
-
-    public final void removeListener(CollectionListener listener)
-            throws NullPointerException {
-        listeners.remove(listener);
     }
 
     public SimpleFeatureType getSchema() {
@@ -654,7 +601,6 @@ public class DefaultVersionedFeatureCollection implements SimpleFeatureCollectio
         oldFeatures = (SimpleFeature[]) contents.values().toArray(oldFeatures);
     
         contents.clear();
-        fireChange(oldFeatures, CollectionEvent.FEATURES_REMOVED);
     }
 
     /**

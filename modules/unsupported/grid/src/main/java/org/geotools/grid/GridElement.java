@@ -17,9 +17,10 @@
 
 package org.geotools.grid;
 
+import org.geotools.geometry.jts.ReferencedEnvelope;
+
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
-import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
  * The base interface for vector grid elements.

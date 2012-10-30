@@ -17,18 +17,19 @@
 
 package org.geotools.grid.hexagon;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import com.vividsolutions.jts.geom.Coordinate;
-
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.grid.PolygonBuilder;
 import org.geotools.grid.Neighbor;
-
+import org.geotools.grid.PolygonBuilder;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import com.vividsolutions.jts.geom.Coordinate;
 
 /**
  * Unit tests for the HexagonGridBuilder class.

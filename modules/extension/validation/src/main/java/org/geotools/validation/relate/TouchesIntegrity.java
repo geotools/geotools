@@ -163,12 +163,12 @@ public class TouchesIntegrity extends RelationIntegrity {
     				}
                 }
                 finally {
-                    collectionB.close( fr2 );
+                    fr2.close();
                 }
 			}
 		}finally
 		{
-            collectionA.close( fr1 );            
+		    fr1.close();
 		}
 				
 		return success;
@@ -249,12 +249,12 @@ public class TouchesIntegrity extends RelationIntegrity {
     				}
                 }
                 finally {
-                    collection.close( fr2 );
+                    fr2.close();
                 }
 			}
 		}
         finally {
-            collection.close( fr1 );
+            fr1.close();
 		}
 		
 		return success;

@@ -18,6 +18,7 @@ package org.geotools.validation.spatial;
 
 import java.util.Map;
 
+import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -105,7 +106,7 @@ public class LineCoveredByPolygonValidation
         
         SimpleFeatureSource fsPoly = (SimpleFeatureSource) layers.get(getRestrictedPolygonTypeRef());
         
-        SimpleFeatureCollection fcPoly = fsPoly.getFeatures();
+        ListFeatureCollection fcPoly = new ListFeatureCollection( fsPoly.getFeatures() );
                 
         while(fLine.hasNext()){
         	SimpleFeature line = fLine.next();

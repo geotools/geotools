@@ -69,13 +69,13 @@ public interface FeatureStore<T extends FeatureType, F extends Feature> extends 
      * A list of {@code FeatureIds} is returned, one for each feature in the order created.
      * However, these might not be assigned until after a commit has been performed.
      * 
-     * @param collection the collection of features to add
+     * @param featureCollection the collection of features to add
      *
      * @return the {@code FeatureIds} of the newly added features
      *
      * @throws IOException if an error occurs modifying the data source
      */
-    List<FeatureId> addFeatures(FeatureCollection<T, F> collection) throws IOException;
+    List<FeatureId> addFeatures(FeatureCollection<T, F> featureCollection) throws IOException;
 
     /**
      * Removes features selected by the given filter.

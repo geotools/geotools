@@ -14,16 +14,14 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.store;
+package org.geotools.feature.collection;
 
-import java.util.Iterator;
-
-import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.collection.DelegateFeatureIterator;
-import org.opengis.feature.Feature;
+import org.geotools.data.simple.SimpleFeatureIterator;
+import org.opengis.feature.simple.SimpleFeature;
 
 /**
- * Iterator wrapper which caps the number of returned features.
+ * SimpleFeatureIterator wrapper which can use a start and end bounds to
+ * cap the number of returned features.
  * 
  * @author Justin Deoliveira, The Open Planning Project
  *
@@ -31,34 +29,26 @@ import org.opengis.feature.Feature;
  *         http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/
  *         data/store/MaxFeaturesIterator.java $
  */
-public class MaxFeaturesIterator<F extends Feature> implements FeatureIterator<F> {
+public class MaxFeaturesSimpleFeatureIterator implements SimpleFeatureIterator {
 
-    FeatureIterator<F> delegate;
+    SimpleFeatureIterator delegate;
 
     long start;
     long end;
     long counter;
 
-    public MaxFeaturesIterator(Iterator<F> iterator, long max) {
-        this( new DelegateFeatureIterator<F>(iterator), 0, max);
+    public MaxFeaturesSimpleFeatureIterator(SimpleFeatureIterator iterator, long max) {
+        this( iterator, 0, max);
     }
 
-    public MaxFeaturesIterator(Iterator<F> iterator, long start, long max) {
-        this( new DelegateFeatureIterator<F>(iterator), start, max);
-    }
-    
-    public MaxFeaturesIterator(FeatureIterator<F> delegate, long max) {
-        this(delegate, 0, max);
-    }
-
-    public MaxFeaturesIterator(FeatureIterator<F> delegate, long start, long max) {
+    public MaxFeaturesSimpleFeatureIterator(SimpleFeatureIterator delegate, long start, long max) {
         this.delegate = delegate;
         this.start = start;
         this.end = start + max;
         counter = 0;
     }
 
-    public FeatureIterator<F> getDelegate() {
+    public SimpleFeatureIterator getDelegate() {
         return delegate;
     }
 
@@ -70,14 +60,14 @@ public class MaxFeaturesIterator<F extends Feature> implements FeatureIterator<F
         return delegate.hasNext() && counter < end;
     }
 
-    public F next() {
+    public SimpleFeature  next() {
         if (counter < start) {
             // skip to just before start if needed
             skip();
         }
         if (counter <= end) {
             counter++;
-            F next = delegate.next();
+            SimpleFeature next = delegate.next();
             return next;
         }
         return null;
@@ -87,7 +77,8 @@ public class MaxFeaturesIterator<F extends Feature> implements FeatureIterator<F
         if (counter < start) {
             while (delegate.hasNext() && counter < start) {
                 counter++;
-                F skip = delegate.next(); // skip!
+                @SuppressWarnings("unused")
+                SimpleFeature skip = delegate.next(); // skip!
             }
         }
     }

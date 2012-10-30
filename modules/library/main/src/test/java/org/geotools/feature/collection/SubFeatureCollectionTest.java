@@ -21,7 +21,7 @@ import junit.framework.TestSuite;
 
 import org.geotools.data.DataTestCase;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.feature.FeatureCollections;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.opengis.filter.Filter;
@@ -33,8 +33,7 @@ import org.opengis.filter.FilterVisitor;
  * @source $URL$
  */
 public class SubFeatureCollectionTest extends DataTestCase {
-    SimpleFeatureCollection features = FeatureCollections
-            .newCollection();
+    DefaultFeatureCollection features = new DefaultFeatureCollection(null,null);
 
     public SubFeatureCollectionTest(String testName) {
         super(testName);

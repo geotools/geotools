@@ -18,9 +18,9 @@ package org.geotools.styling;
 
 import java.awt.Color;
 import java.util.Arrays;
-import java.util.Iterator;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
 import org.geotools.filter.IllegalFilterException;
@@ -1727,14 +1727,19 @@ public class StyleBuilder {
         String geomName = schema.getGeometryDescriptor().getLocalName();
 
         double[] values = new double[fc.size()];
-        Iterator it = fc.iterator();
         int count = 0;
 
-        while (it.hasNext()) {
-            SimpleFeature f = (SimpleFeature) it.next();
-            values[count++] = ((Number) f.getAttribute(name)).doubleValue();
+        SimpleFeatureIterator it = fc.features();
+        try {
+            while (it.hasNext()) {
+                SimpleFeature f = (SimpleFeature) it.next();
+                values[count++] = ((Number) f.getAttribute(name)).doubleValue();
+            }
         }
-
+        finally {
+            it.close();
+        }
+        
         //pass to classification algorithm
         EqualClasses ec = new EqualClasses(colors.length, values);
 

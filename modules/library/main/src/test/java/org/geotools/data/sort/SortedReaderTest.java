@@ -1,14 +1,12 @@
 package org.geotools.data.sort;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.Date;
 import java.util.NoSuchElementException;
 
-import org.geotools.data.collection.DelegateFeatureReader;
 import org.geotools.data.simple.DelegateSimpleFeatureReader;
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureReader;
 import org.geotools.factory.CommonFactoryFinder;
@@ -49,7 +47,7 @@ public class SortedReaderTest {
 
     SimpleFeatureType schema;
 
-    SimpleFeatureCollection fc;
+    DefaultFeatureCollection fc;
 
     private SortBy[] dateAsc;
 

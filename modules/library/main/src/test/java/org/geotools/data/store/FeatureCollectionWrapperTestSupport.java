@@ -18,7 +18,6 @@ package org.geotools.data.store;
 
 import junit.framework.TestCase;
 
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -39,7 +38,7 @@ import com.vividsolutions.jts.geom.Point;
 public class FeatureCollectionWrapperTestSupport extends TestCase {
 
 	protected CoordinateReferenceSystem crs;
-	protected SimpleFeatureCollection delegate;
+	protected DefaultFeatureCollection delegate;
 	
 	protected void setUp() throws Exception {
 		crs = CRS.parseWKT( 

@@ -17,6 +17,9 @@
 
 package org.geotools.grid.oblong;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.Map;
 
 import org.geotools.data.DataUtilities;
@@ -29,14 +32,11 @@ import org.geotools.grid.PolygonElement;
 import org.geotools.grid.TestBase;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
-import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * Unit tests for the Oblongs class.

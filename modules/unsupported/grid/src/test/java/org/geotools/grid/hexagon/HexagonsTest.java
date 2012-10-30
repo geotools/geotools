@@ -17,6 +17,9 @@
 
 package org.geotools.grid.hexagon;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.Map;
 
 import org.geotools.data.DataUtilities;
@@ -24,11 +27,8 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.grid.GridElement;
 import org.geotools.grid.GridFeatureBuilder;
-
-import org.opengis.feature.simple.SimpleFeatureType;
-
 import org.junit.Test;
-import static org.junit.Assert.*;
+import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * Unit tests for the Hexagons class.

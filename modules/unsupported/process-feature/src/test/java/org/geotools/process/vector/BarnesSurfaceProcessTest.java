@@ -22,7 +22,7 @@ import java.awt.geom.Point2D;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.feature.FeatureCollections;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -111,7 +111,7 @@ public class BarnesSurfaceProcessTest {
 
         SimpleFeatureType type = tb.buildFeatureType();
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(type);
-        SimpleFeatureCollection fc = FeatureCollections.newCollection();
+        DefaultFeatureCollection fc = new DefaultFeatureCollection();
 
         GeometryFactory factory = new GeometryFactory(new PackedCoordinateSequenceFactory());
 

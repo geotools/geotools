@@ -365,7 +365,7 @@ public class VectorToRasterProcess implements VectorProcess {
             }
         }
         finally {
-            features.close( fi );
+            fi.close();
         }
         monitor.complete();
 

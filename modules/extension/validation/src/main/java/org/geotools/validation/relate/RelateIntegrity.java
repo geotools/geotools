@@ -187,8 +187,8 @@ public class RelateIntegrity extends RelationIntegrity
 			}
 		}finally
 		{
-			collectionA.close( fr1 );
-            collectionB.close( fr2 );
+		    fr1.close();
+		    fr2.close();
 		}
 			
 		return success;
@@ -278,8 +278,8 @@ public class RelateIntegrity extends RelationIntegrity
 			}
 		}finally
 		{
-            collection.close( fr1 );
-            collection.close( fr2 );
+		        fr1.close();
+		        fr2.close();
 		}
 	
 		return success;

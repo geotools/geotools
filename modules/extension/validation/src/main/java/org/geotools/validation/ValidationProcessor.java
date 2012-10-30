@@ -358,7 +358,7 @@ public class ValidationProcessor {
                 }
              }
              finally {
-                 collection.close( features );
+                 features.close();
              }
         }
     }

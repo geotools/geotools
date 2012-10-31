@@ -16,12 +16,16 @@
  */
 package org.geotools.data.memory;
 
+import java.io.Closeable;
 import java.util.Arrays;
+import java.util.Iterator;
 
 import org.geotools.data.DataTestCase;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.collection.FilteredIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * 
@@ -84,8 +88,7 @@ public class MemoryFeatureCollectionTest extends DataTestCase {
         catch( IllegalStateException closed ){            
         }        
     }
-
-
+    
     public void testBounds() {
         MemoryFeatureCollection rivers = new MemoryFeatureCollection(riverType);
         ReferencedEnvelope expected = new ReferencedEnvelope();
@@ -100,10 +103,52 @@ public class MemoryFeatureCollectionTest extends DataTestCase {
         assertEquals( expected, rivers.getBounds() );
     }
 
+    /**
+     * This feature collection is still implementing Collection so we best check it works
+     */
+    public void testIterator() throws Exception {
+        int count=0;
+        Iterator<SimpleFeature> it = roads.iterator();
+        try {
+            while( it.hasNext() ){
+                SimpleFeature feature = it.next();
+                count++;
+            }
+        } finally {
+            if( it instanceof Closeable){
+                ((Closeable)it).close();
+            }
+        }
+        assertEquals( roads.size(), count );
+        
+        count=0;
+        FilteredIterator<SimpleFeature> filteredIterator = new FilteredIterator<SimpleFeature>( roads, rd12Filter );
+        try {
+            while( filteredIterator.hasNext() ){
+                SimpleFeature feature = filteredIterator.next();
+                count++;
+            }
+        } finally {
+            filteredIterator.close();
+        }
+        assertEquals( rd12Filter.getIDs().size(), count );
+    }
     
     public void testSubCollection(){
+        int count = 0;
+        SimpleFeatureIterator it = roads.features();
+        try {
+            while( it.hasNext() ){
+                SimpleFeature feature = it.next();
+                if( rd12Filter.evaluate( feature )){
+                    count++;
+                }
+            }
+        } finally {
+            it.close();
+        }
         SimpleFeatureCollection sub = roads.subCollection( rd12Filter );
-        assertEquals( 2, sub.size() );
+        assertEquals( count, sub.size() );
     }
     public void testSubSubCollection(){
         SimpleFeatureCollection sub = roads.subCollection( rd12Filter );        

@@ -143,7 +143,7 @@ public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollec
 
     public SimpleFeatureIterator features() {
         try {
-            return new ReprojectingFeatureIterator(features(), transform, schema, transformer);
+            return new ReprojectingFeatureIterator(delegate.features(), transform, schema, transformer);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

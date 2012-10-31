@@ -21,6 +21,8 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.geotools.feature.FeatureCollection;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -163,7 +165,8 @@ public class EMFUtils {
                 collection = createEmptyCollection(feature);
                 eobject.eSet(feature, collection);
             }
-            collection.addAll(collection(value));
+            Collection addCollection = collection(value);
+            collection.addAll(addCollection);
         }
     }
     
@@ -202,8 +205,9 @@ public class EMFUtils {
                 Object val = Array.get(value, i);
                 list.add(val);
             }
-
             return list;
+        } else if (value instanceof FeatureCollection){
+            return Collections.singletonList(value); // force singleton for FeatureCollectionType
         } else if (value instanceof Collection) {
             return (Collection) value;
         }

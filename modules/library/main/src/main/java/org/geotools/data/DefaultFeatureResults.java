@@ -27,12 +27,13 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.data.store.DataFeatureCollection;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollections;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.type.GeometryDescriptorImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -346,10 +347,9 @@ public class DefaultFeatureResults extends DataFeatureCollection {
 
     public SimpleFeatureCollection collection() throws IOException {
         try {
-            SimpleFeatureCollection collection = FeatureCollections.newCollection();
-            //Feature feature;
+             DefaultFeatureCollection collection = new DefaultFeatureCollection(null,null);
+             
              FeatureReader<SimpleFeatureType, SimpleFeature> reader = reader();
-            //SimpleFeatureType type = reader.getFeatureType();
              try {
             	 while (reader.hasNext()) {
             		 collection.add(reader.next());
@@ -358,8 +358,8 @@ public class DefaultFeatureResults extends DataFeatureCollection {
             	 reader.close();
              }
 
-            return collection;
-        } catch (IllegalAttributeException e) {
+             return collection;
+        } catch (org.opengis.feature.IllegalAttributeException e) {
             throw new DataSourceException("Could not read feature ", e);
         }
     }

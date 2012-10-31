@@ -16,7 +16,8 @@
  */
 package org.geotools.feature.collection;
 
-import org.geotools.data.simple.SimpleFeatureCollection;
+import junit.framework.TestCase;
+
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -27,11 +28,9 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 
-import junit.framework.TestCase;
-
 public class MaxSimpleFeatureCollectionTest extends TestCase {
 
-    SimpleFeatureCollection delegate;
+    DefaultFeatureCollection delegate;
 
     @Override
     protected void setUp() throws Exception {

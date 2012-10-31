@@ -16,15 +16,19 @@
  */
 package org.geotools.feature.collection;
 
+import java.io.Closeable;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.collection.DelegateFeatureReader;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.data.store.FilteringFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.visitor.BoundsVisitor;
@@ -37,80 +41,81 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.sort.SortBy;
 
 /**
- * Used as a reasonable default implementation for subCollection.
+ * Reasonable default implementation for subCollection making
+ * use of parent {@link SimpleFeatureCollection#features()}
+ * and provided Fitler.
  * <p>
- * Note: to implementors, this is not optimal, please do your own
- * thing - your users will thank you.
- * </p>
+ * This is only a reasonable implementation and is not optimal. It is recommended
+ * that implementors construct a new {@link Query} and use {@link SimpleFeatureSource#getFeatures(Query)}.
  * 
  * @author Jody Garnett, Refractions Research, Inc.
- *
- *
- *
  * @source $URL$
  */
-public class SubFeatureCollection extends AbstractFeatureCollection {
+public class SubFeatureCollection extends BaseFeatureCollection {
     
     /** Filter */
     protected Filter filter;
     
     /** Original Collection */
-	protected SimpleFeatureCollection collection;
-	
-    protected FilterFactory ff = CommonFactoryFinder.getFilterFactory( null );
+    protected SimpleFeatureCollection collection;
+    protected FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         
-    public SubFeatureCollection(SimpleFeatureCollection collection ) {
+    public SubFeatureCollection(SimpleFeatureCollection collection) {
         this( collection, Filter.INCLUDE );
     }
-	public SubFeatureCollection(SimpleFeatureCollection collection, Filter subfilter ){
-	    super( collection.getSchema() );	    
-		if (subfilter == null ) subfilter = Filter.INCLUDE;
-		if (subfilter.equals(Filter.EXCLUDE)) {
-			throw new IllegalArgumentException("A subcollection with Filter.EXCLUDE would be empty");
-		}		
-        if( collection instanceof SubFeatureCollection){
-			SubFeatureCollection filtered = (SubFeatureCollection) collection;
-			if( subfilter.equals(Filter.INCLUDE)){
+    /**
+     * @param collection Collection or AbstractFeatureCollection
+     * @param subfilter
+     */
+    public SubFeatureCollection(SimpleFeatureCollection collection, Filter subfilter) {
+        super( collection.getSchema() );
+        
+        if (subfilter == null){
+            subfilter = Filter.INCLUDE;
+        }
+        if (subfilter.equals(Filter.EXCLUDE)) {
+            throw new IllegalArgumentException("A subcollection with Filter.EXCLUDE would be empty");
+        }
+        if (collection instanceof SubFeatureCollection) {
+            SubFeatureCollection filtered = (SubFeatureCollection) collection;
+            if (subfilter.equals(Filter.INCLUDE)) {
                 this.collection = filtered.collection;
-			    this.filter = filtered.filter();
-			}
-			else {
-			    this.collection = filtered.collection;	            			    
-			    this.filter = ff.and( filtered.filter(), subfilter );
-			}
-		} else {
-			this.collection = collection;
-			this.filter = subfilter;
-		}
+                this.filter = filtered.filter();
+            } else {
+                this.collection = filtered.collection;
+                this.filter = ff.and(filtered.filter(), subfilter);
+            }
+        } else {
+            this.collection = collection;
+            this.filter = subfilter;
+        }
     }
-	
-	public Iterator openIterator() {
-		return new FilteredIterator<SimpleFeature>( collection, filter() );
-	}
 
-	public void closeIterator(Iterator iterator) {
-		if( iterator == null ) return;
-		
-		if( iterator instanceof FilteredIterator){
-			FilteredIterator filtered = (FilteredIterator) iterator;			
-			filtered.close();
-		}
-	}
+    public SimpleFeatureIterator features() {
+        return new FilteringFeatureIterator( collection.features(), filter());
+    }
     		
-	public int size() {
-		int count = 0;
-		Iterator i = null;		
-		try {
-			for( i = iterator(); i.hasNext(); count++) i.next();
-		}
-		finally {
-			close( i );
-		}
-		return count;
-	}
-    
-	protected Filter filter(){
-	    if( filter == null ){
+    public int size() {
+        int count = 0;
+        SimpleFeatureIterator i = features();
+        try {
+            while (i.hasNext()) {
+                i.next();
+                count++;
+            }
+        } finally {
+            i.close();
+        }
+        return count;
+    }
+    /**
+     * Generate filter to use for content, makes use of {@link #createFilter()}
+     * if needed.
+     * 
+     * @return Filter to use for content
+     */
+    protected Filter filter() {
+        if (filter == null) {
             filter = createFilter();
         }
         return filter;
@@ -120,48 +125,40 @@ public class SubFeatureCollection extends AbstractFeatureCollection {
     protected Filter createFilter(){
         return Filter.INCLUDE;
     }
-    
-	public SimpleFeatureIterator features() {
-		return new DelegateSimpleFeatureIterator( this, iterator() );		
-	}
-	
-	
-	public void close(SimpleFeatureIterator close) {
-		if( close != null ) close.close();
-	}
-
     //
     //
     //
-	public SimpleFeatureCollection subCollection(Filter filter) {
-		if (filter.equals(Filter.INCLUDE)) {
-			return this;
-		}
-		if (filter.equals(Filter.EXCLUDE)) {
-			// TODO implement EmptyFeatureCollection( schema )
-		}
-		return new SubFeatureCollection(this, filter);
-	}
+    public SimpleFeatureCollection subCollection(Filter filter) {
+        if (filter.equals(Filter.INCLUDE)) {
+            return this;
+        }
+        if (filter.equals(Filter.EXCLUDE)) {
+            // TODO implement EmptyFeatureCollection( schema )
+        }
+        return new SubFeatureCollection(this, filter);
+    }
 
 	
-	public boolean isEmpty() {
-		Iterator iterator = iterator();
-		try {
-			return !iterator.hasNext();
-		}
-		finally {
-			close( iterator );
-		}
-	}
+    public boolean isEmpty() {
+        SimpleFeatureIterator iterator = features();
+        try {
+            return !iterator.hasNext();
+        } finally {
+            iterator.close();
+        }
+    }
 	
 	public void accepts(org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress) {
-		Iterator iterator = null;
-        // if( progress == null ) progress = new NullProgressListener();
+	    if( progress == null ) {
+                progress = new NullProgressListener();
+            }
+	    SimpleFeatureIterator iterator = features();
+            
         try{
             float size = size();
             float position = 0;            
             progress.started();
-            for( iterator = iterator(); !progress.isCanceled() && iterator.hasNext(); progress.progress( position++/size )){
+            while( !progress.isCanceled() && iterator.hasNext()){
                 try {
                     SimpleFeature feature = (SimpleFeature) iterator.next();
                     visitor.visit(feature);
@@ -169,31 +166,19 @@ public class SubFeatureCollection extends AbstractFeatureCollection {
                 catch( Exception erp ){
                     progress.exceptionOccurred( erp );
                 }
+                progress.progress( position++/size );
             }            
         }
         finally {
             progress.complete();            
-            close( iterator );
+            iterator.close();
         }
 	}	
 
 	public SimpleFeatureCollection sort(SortBy order) {
 		return new SubFeatureList( collection, filter, order );
 	}
-	
-	public boolean add(SimpleFeature o) {
-		return collection.add(o); 
-	}
-	
-	public void clear() {
-		List toDelete = DataUtilities.list( this );
-		removeAll( toDelete );
-	}
-			
-	public boolean remove(Object o) {
-		return collection.remove( o );
-	}
-	
+
     public String getID() {
     	return collection.getID();
     }

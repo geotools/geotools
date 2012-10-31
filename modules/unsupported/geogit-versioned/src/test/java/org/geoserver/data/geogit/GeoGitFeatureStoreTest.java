@@ -16,6 +16,7 @@
  */
 package org.geoserver.data.geogit;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -28,12 +29,16 @@ import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Transaction;
 import org.geotools.data.geogit.GeoGitDataStore;
 import org.geotools.data.geogit.GeoGitFeatureStore;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
 import org.opengis.filter.identity.FeatureId;
@@ -188,7 +193,20 @@ public class GeoGitFeatureStoreTest extends GeoGITRepositoryTestCase {
             tx.close();
         }
     }
-
+    private SimpleFeature sample( SimpleFeatureSource store, Filter filter ) throws IOException {
+        SimpleFeatureIterator iterator = null;
+        try {
+            SimpleFeatureCollection result = store.getFeatures( filter );
+            iterator = result.features();
+            
+            return iterator.next();
+        }
+        finally {
+            if( iterator != null ){
+                iterator.close();
+            }
+        }
+    }
     @SuppressWarnings("deprecation")
     public void testModifyFeatures() throws Exception {
         // add features circunventing FeatureStore.addFeatures to keep the test
@@ -202,33 +220,30 @@ public class GeoGitFeatureStoreTest extends GeoGITRepositoryTestCase {
         points.setTransaction(tx);
         try {
             // initial value
-            assertEquals("StringProp1_1", points.getFeatures(filter).iterator()
-                    .next().getAttribute("sp"));
+            assertEquals("StringProp1_1", sample( points, filter ).getAttribute("sp"));
             // modify
             points.modifyFeatures("sp", "modified", filter);
             // modified value before commit
-            assertEquals("modified", points.getFeatures(filter).iterator()
-                    .next().getAttribute("sp"));
+            assertEquals("modified", sample( points, filter ).getAttribute("sp"));
             // unmodified value before commit on another store instance (tx
             // isolation)
             assertEquals(
                     "StringProp1_1",
-                    dataStore.getFeatureSource(pointsTypeName)
-                            .getFeatures(filter).iterator().next()
+                    sample( dataStore.getFeatureSource(pointsTypeName), filter )
                             .getAttribute("sp"));
 
             tx.commit();
 
             // modified value after commit on another store instance
-            assertEquals("modified", dataStore.getFeatureSource(pointsTypeName)
-                    .getFeatures(filter).iterator().next().getAttribute("sp"));
+            assertEquals("modified", sample( dataStore.getFeatureSource(pointsTypeName),filter)
+                    .getAttribute("sp") );
         } catch (Exception e) {
             tx.rollback();
             throw e;
         } finally {
             tx.close();
         }
-        SimpleFeature modified = points.getFeatures(filter).iterator().next();
+        SimpleFeature modified = sample( points,filter);
         assertEquals("modified", modified.getAttribute("sp"));
     }
 

@@ -362,7 +362,7 @@ public class PostgisFeatureStore extends JDBCFeatureStore {
                 fidFilter.addFid(feature.getID());
             }
         } finally {
-          features.close( it );  
+            it.close();
         }
         return fidFilter;
     }

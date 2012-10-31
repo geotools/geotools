@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -88,7 +89,7 @@ public class LineIntersectsLineWithNodeValidation
         
         SimpleFeatureSource fsRLine = (SimpleFeatureSource) layers.get(getRestrictedLineTypeRef());
         
-        SimpleFeatureCollection fcRLine = fsRLine.getFeatures();
+        ListFeatureCollection fcRLine = new ListFeatureCollection( fsRLine.getFeatures() );
                 
         while(fLine.hasNext()){
         	SimpleFeature line = fLine.next();

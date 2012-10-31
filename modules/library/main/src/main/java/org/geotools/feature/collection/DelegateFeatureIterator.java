@@ -16,8 +16,12 @@
  */
 package org.geotools.feature.collection;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -29,9 +33,9 @@ import org.opengis.feature.type.FeatureType;
  * Iterator, simply allowing Java 1.4 code to escape the caste (sic)
  * system.
  * <p>
- * This implementation is not suitable for use with collections
- * that make use of system resources. As an alterantive please
- * see ResourceFetaureIterator.
+ * This implementation checks the iterator to see if it implements
+ * {@link Closeable} in order to allow for collections that
+ * make use of system resources.
  * </p>
  * @author Jody Garnett, Refractions Research, Inc.
  *
@@ -40,15 +44,23 @@ import org.opengis.feature.type.FeatureType;
  */
 public class DelegateFeatureIterator<F extends Feature> implements FeatureIterator<F> {
 	Iterator<F> delegate;
-	private FeatureCollection<? extends FeatureType, F> collection;
 	/**
 	 * Wrap the provided iterator up as a FeatureIterator.
 	 * 
 	 * @param iterator Iterator to be used as a delegate.
 	 */
+	public DelegateFeatureIterator( Iterator<F> iterator ){
+		delegate = iterator;
+	}
+	
+	/**
+	 * Wrap the provided iterator up as a FeatureIterator.
+	 * 
+	 * @param iterator Iterator to be used as a delegate.
+	 * @deprecated collection no longer used
+	 */
 	public DelegateFeatureIterator( FeatureCollection<? extends FeatureType, F> collection, Iterator<F> iterator ){
 		delegate = iterator;
-		this.collection=collection;
 	}
 	public boolean hasNext() {
 		return delegate != null && delegate.hasNext();
@@ -58,10 +70,14 @@ public class DelegateFeatureIterator<F extends Feature> implements FeatureIterat
 		return  delegate.next();
 	}
 	public void close() {
-		if( collection!=null && delegate!=null)
-			collection.close(delegate);
-		collection =null;
-		delegate = null;
-		
+	    if( delegate instanceof Closeable){
+	        try {
+                    ((Closeable)delegate).close();
+                } catch (IOException e) {
+                    Logger log = Logger.getLogger(delegate.getClass().getPackage().toString() );
+                    log.log(Level.FINER, e.getMessage(), e);
+                }
+	    }
+	    delegate = null;		
 	}
 }

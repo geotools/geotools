@@ -19,13 +19,10 @@ package org.geotools.grid.hexagon;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.data.collection.ListFeatureCollection;
-
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.grid.GridFeatureBuilder;
 import org.geotools.referencing.CRS;
-
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
@@ -183,7 +180,7 @@ public class Hexagons {
             throw new IllegalArgumentException("Different CRS set for bounds and the feature builder");
         }
 
-        final SimpleFeatureCollection fc = new ListFeatureCollection(gridFeatureBuilder.getType());
+        final ListFeatureCollection fc = new ListFeatureCollection(gridFeatureBuilder.getType());
         HexagonBuilder gridBuilder = new HexagonBuilder(bounds, sideLen, orientation);
         gridBuilder.buildGrid(gridFeatureBuilder, vertexSpacing, fc);
         return DataUtilities.source(fc);

@@ -57,9 +57,6 @@ class SimpleFeatureCollectionBridge implements SimpleFeatureCollection {
         if( featureCollection instanceof SimpleFeatureCollection){
             throw new IllegalArgumentException("Already a SimpleFeatureCollection");
         }
-        if( featureCollection == null ){
-            throw new NullPointerException("FeatureCollection required");
-        }        
         this.collection = featureCollection;
     }
 
@@ -92,35 +89,6 @@ class SimpleFeatureCollectionBridge implements SimpleFeatureCollection {
         collection.accepts(visitor, progress);
     }
 
-    public boolean add(SimpleFeature feature) {
-        return collection.add(feature);
-    }
-
-    public boolean addAll(Collection<? extends SimpleFeature> toAdd) {
-        return collection.addAll(toAdd);
-    }
-
-    public boolean addAll(
-            FeatureCollection<? extends SimpleFeatureType, ? extends SimpleFeature> resource) {
-        return collection.addAll(resource);
-    }
-
-    public void addListener(CollectionListener listener) throws NullPointerException {
-        collection.addListener(listener);
-    }
-
-    public void clear() {
-        collection.clear();
-    }
-
-    public void close(FeatureIterator<SimpleFeature> close) {
-        collection.close(close);
-    }
-
-    public void close(Iterator<SimpleFeature> close) {
-        collection.close(close);
-    }
-
     public boolean contains(Object o) {
         return collection.contains(o);
     }
@@ -143,31 +111,6 @@ class SimpleFeatureCollectionBridge implements SimpleFeatureCollection {
 
     public boolean isEmpty() {
         return collection.isEmpty();
-    }
-
-    public Iterator<SimpleFeature> iterator() {
-        return collection.iterator();
-    }
-
-    @SuppressWarnings("deprecation")
-    public void purge() {
-        collection.purge();
-    }
-
-    public boolean remove(Object o) {
-        return collection.remove(o);
-    }
-
-    public boolean removeAll(Collection<?> c) {
-        return collection.removeAll(c);
-    }
-
-    public void removeListener(CollectionListener listener) throws NullPointerException {
-        collection.removeListener(listener);
-    }
-
-    public boolean retainAll(Collection<?> c) {
-        return collection.retainAll(c);
     }
 
     public int size() {

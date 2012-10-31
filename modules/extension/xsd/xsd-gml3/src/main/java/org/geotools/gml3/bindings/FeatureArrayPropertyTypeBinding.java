@@ -16,10 +16,12 @@
  */
 package org.geotools.gml3.bindings;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollections;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.gml3.GML;
@@ -86,8 +88,8 @@ public class FeatureArrayPropertyTypeBinding extends AbstractComplexBinding {
         }
         
         List features = node.getChildValues(SimpleFeature.class);
-        fc = DefaultFeatureCollections.newCollection();
-        fc.addAll(features);
+        fc = new DefaultFeatureCollection();
+        ((Collection)fc).addAll(features);
         return fc;
     }
 

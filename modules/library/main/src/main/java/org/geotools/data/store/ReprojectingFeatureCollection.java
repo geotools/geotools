@@ -18,7 +18,6 @@ package org.geotools.data.store;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.geotools.data.DataUtilities;
@@ -28,13 +27,9 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.SchemaException;
-import org.geotools.feature.collection.DecoratingFeatureCollection;
 import org.geotools.feature.collection.DecoratingSimpleFeatureCollection;
-import org.geotools.feature.collection.DelegateFeatureIterator;
-import org.geotools.feature.collection.DelegateSimpleFeatureIterator;
 import org.geotools.filter.spatial.DefaultCRSFilterVisitor;
 import org.geotools.filter.spatial.ReprojectingFilterVisitor;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
@@ -147,24 +142,11 @@ public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollec
     }
 
     public SimpleFeatureIterator features() {
-        return new DelegateSimpleFeatureIterator(this, iterator());
-    }
-
-    public void close(SimpleFeatureIterator close) {
-        close.close();
-    }
-
-    public Iterator<SimpleFeature> iterator() {
         try {
-            return new ReprojectingIterator(delegate.iterator(), transform, schema, transformer);
+            return new ReprojectingFeatureIterator(delegate.features(), transform, schema, transformer);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public void close(Iterator close) {
-        Iterator iterator = ((ReprojectingIterator) close).getDelegate();
-        delegate.close(iterator);
     }
 
     public SimpleFeatureType getSchema() {
@@ -196,17 +178,17 @@ public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollec
         return toArray(new Object[size()]);
     }
 
-    public Object[] toArray(Object[] a) {
-        List list = new ArrayList();
-        Iterator i = iterator();
+    @SuppressWarnings("unchecked")
+    public <T> T[] toArray(T[] a) {
+        List<T> list = new ArrayList<T>();
+        SimpleFeatureIterator i = features();
         try {
             while (i.hasNext()) {
-                list.add(i.next());
+                list.add((T) i.next());
             }
-
             return list.toArray(a);
         } finally {
-            close(i);
+            i.close();
         }
     }
 

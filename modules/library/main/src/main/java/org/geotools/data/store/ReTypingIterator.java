@@ -18,8 +18,8 @@ package org.geotools.data.store;
 
 import java.util.Iterator;
 
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -32,15 +32,15 @@ import org.opengis.feature.type.AttributeDescriptor;
  *
  *
  *
- *
+ * @deprecated Please use {@link ReTypingFeatureIterator}
  * @source $URL$
  */
-public class ReTypingIterator implements Iterator {
+public class ReTypingIterator implements Iterator<SimpleFeature> {
 
 	/**
 	 * The delegate iterator
 	 */
-	Iterator delegate;
+	Iterator<SimpleFeature> delegate;
 	
 	/**
 	 * The target feature type
@@ -54,14 +54,14 @@ public class ReTypingIterator implements Iterator {
 	
 	SimpleFeatureBuilder builder;
 	
-	public ReTypingIterator( Iterator delegate, SimpleFeatureType source, SimpleFeatureType target ) {
+	public ReTypingIterator( Iterator<SimpleFeature> delegate, SimpleFeatureType source, SimpleFeatureType target ) {
 		this.delegate = delegate;
 		this.target = target;
 		types = typeAttributes( source, target );
 		this.builder = new SimpleFeatureBuilder(target);
 	}
 	
-	public Iterator getDelegate() {
+	public Iterator<SimpleFeature> getDelegate() {
 		return delegate;
 	}
 
@@ -73,7 +73,7 @@ public class ReTypingIterator implements Iterator {
 		return delegate.hasNext();
 	}
 
-	public Object next() {
+	public SimpleFeature next() {
 		SimpleFeature next = (SimpleFeature) delegate.next();
         String id = next.getID();
 

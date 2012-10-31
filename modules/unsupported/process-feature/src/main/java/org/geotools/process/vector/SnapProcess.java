@@ -27,8 +27,10 @@ import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
 
 import org.geotools.data.Parameter;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureCollections;
+import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.measure.Measure;
@@ -114,7 +116,7 @@ public class SnapProcess implements VectorProcess {
             }
             MathTransform crsTransform = CRS.findMathTransform(crs, epsg4326);
 
-            FeatureCollection results = FeatureCollections.newCollection();
+            DefaultFeatureCollection results = new DefaultFeatureCollection();
             FeatureType targetFeatureType = createTargetFeatureType(featureCollection.getSchema());
             Unit fromUnit = SI.METER;
             Unit toUnit = Unit.valueOf("mi");
@@ -122,10 +124,9 @@ public class SnapProcess implements VectorProcess {
             Feature nearestFeature = null;
             double nearestDistance = 9e9;
             double nearestBearing = 0;
-            Iterator featureIterator = null;
             double[] nearestPoint = new double[2];
+            FeatureIterator featureIterator = featureCollection.features();
             try {
-                featureIterator = featureCollection.iterator();
                 while (featureIterator.hasNext()) {
                     SimpleFeature f = (SimpleFeature) featureIterator.next();
                     if (f.getDefaultGeometryProperty().getValue() == null)
@@ -151,8 +152,7 @@ public class SnapProcess implements VectorProcess {
                     nearestPoint[1] = geo1[1];
                 }
             } finally {
-                if (featureIterator != null)
-                    featureCollection.close(featureIterator);
+                featureIterator.close();
             }
             if (nearestFeature != null) {
                 nearestDistance = unitConvert.convert(nearestDistance);

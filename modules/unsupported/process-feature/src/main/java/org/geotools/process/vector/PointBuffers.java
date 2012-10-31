@@ -87,7 +87,7 @@ public class PointBuffers implements VectorProcess {
         }
 
         // we don't expect million of directions, so we use a simple in memory collection
-        SimpleFeatureCollection result = new ListFeatureCollection(schema);
+        ListFeatureCollection result = new ListFeatureCollection(schema);
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(schema);
         for (int i = 0; i < distances.length; i++) {
             fb.add(generator.getBuffer(distances[i]));

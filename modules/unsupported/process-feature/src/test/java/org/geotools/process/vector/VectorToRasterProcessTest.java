@@ -16,6 +16,14 @@
  */
 package org.geotools.process.vector;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.geom.Point2D;
@@ -28,21 +36,13 @@ import java.util.Random;
 import javax.media.jai.iterator.RectIter;
 import javax.media.jai.iterator.RectIterFactory;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTReader;
-
 import org.geotools.coverage.grid.GridCoordinates2D;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -52,7 +52,7 @@ import org.geotools.process.Process;
 import org.geotools.process.Processors;
 import org.geotools.process.feature.AbstractFeatureCollectionProcessFactory;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
-
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.geometry.DirectPosition;
@@ -61,8 +61,14 @@ import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
 import org.opengis.util.ProgressListener;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKTReader;
 
 /**
  * Unit tests for rasterizing vector features.
@@ -290,7 +296,7 @@ public class VectorToRasterProcessTest {
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
         WKTReader reader = new WKTReader();
 
-        SimpleFeatureCollection fc = FeatureCollections.newCollection();
+        DefaultFeatureCollection fc = new DefaultFeatureCollection();
         SimpleFeature feature;
 
         feature = buildFeature(builder, reader,
@@ -338,7 +344,7 @@ public class VectorToRasterProcessTest {
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
         WKTReader reader = new WKTReader();
 
-        SimpleFeatureCollection fc = FeatureCollections.newCollection();
+        DefaultFeatureCollection fc = new DefaultFeatureCollection();
         Random rand = new Random();
         
         GridCoordinates2D gridPos = new GridCoordinates2D();
@@ -373,7 +379,7 @@ public class VectorToRasterProcessTest {
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
         WKTReader reader = new WKTReader();
 
-        SimpleFeatureCollection fc = FeatureCollections.newCollection();
+        DefaultFeatureCollection fc = new DefaultFeatureCollection();
         SimpleFeature feature;
         
         feature = buildFeature(builder, reader,
@@ -405,7 +411,7 @@ public class VectorToRasterProcessTest {
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
         WKTReader reader = new WKTReader();
 
-        SimpleFeatureCollection fc = FeatureCollections.newCollection();
+        DefaultFeatureCollection fc = new DefaultFeatureCollection();
         SimpleFeature feature;
         
         feature = buildFeature(builder, reader,

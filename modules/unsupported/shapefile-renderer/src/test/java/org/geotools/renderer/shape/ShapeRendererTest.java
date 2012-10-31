@@ -224,20 +224,21 @@ public class ShapeRendererTest extends TestCase {
         // Preparing the Filter
         Set<FeatureId> selectedFids = new HashSet<FeatureId>();
         {
-            Iterator<SimpleFeature> fIt = features.iterator();
-
-            int count = 0;
-            while (fIt.hasNext()) {
-                SimpleFeature sf = fIt.next();
-
-                // Add every third to the filter
-                if (count++ % 3 != 0)
-                    continue;
-
-                selectedFids.add(sf.getIdentifier());
+            SimpleFeatureIterator fIt = features.features();
+            try {
+                int count = 0;
+                while (fIt.hasNext()) {
+                    SimpleFeature sf = fIt.next();
+    
+                    // Add every third to the filter
+                    if (count++ % 3 != 0)
+                        continue;
+    
+                    selectedFids.add(sf.getIdentifier());
+                }
+            } finally {
+                fIt.close();
             }
-
-            features.close(fIt);
         }
         assertEquals(84, selectedFids.size());
         Id filter = CommonFactoryFinder.getFilterFactory2(null).id(selectedFids);
@@ -341,9 +342,14 @@ public class ShapeRendererTest extends TestCase {
         store.setTransaction(t);
         SimpleFeatureCollection collection = store.getFeatures();
         SimpleFeatureIterator iter = collection.features();
-        FeatureId id = TestUtilites.filterFactory.featureId(iter.next().getID());
+        String fid = null;
+        try {
+            fid = iter.next().getID();
+        } finally {
+            iter.close();
+        }
+        FeatureId id = TestUtilites.filterFactory.featureId(fid);
         Id createFidFilter = TestUtilites.filterFactory.id(Collections.singleton(id));
-        collection.close(iter);
         store.removeFeatures(createFidFilter);
 
         MapContext context = new DefaultMapContext();
@@ -362,12 +368,18 @@ public class ShapeRendererTest extends TestCase {
 
         collection = store.getFeatures();
         iter = collection.features();
-        final SimpleFeature feature = iter.next();
-        collection.close(iter);
-
+        try {
+            @SuppressWarnings("unused")
+            SimpleFeature first = iter.next();
+        } finally {
+            iter.close();
+        }
+        
         // now add a new feature new fid should be theme2.4 remove it and assure
         // that it is not rendered
+        @SuppressWarnings("unused")
         SimpleFeatureType type = store.getSchema();
+        
         store.addFeatures(DataUtilities.collection(new SimpleFeature[] { sf } )); //$NON-NLS-1$
         t.commit();
         System.out.println("Count: " + ds.getFeatureSource().getCount(Query.ALL));
@@ -399,9 +411,14 @@ public class ShapeRendererTest extends TestCase {
         store.setTransaction(t);
         SimpleFeatureCollection collection = store.getFeatures();
         SimpleFeatureIterator iter = collection.features();
-        final SimpleFeature feature = iter.next();
-        collection.close(iter);
+        try {
+            @SuppressWarnings("unused")
+            final SimpleFeature feature = iter.next();
+        } finally {
+            iter.close();
+        }
 
+        @SuppressWarnings("unused")
         SimpleFeatureType type = ds.getSchema();
         store.addFeatures(DataUtilities.collection(sf));
 

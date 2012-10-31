@@ -152,13 +152,13 @@ public class ContainsIntegrity extends RelationIntegrity {
     				}
                 }
                 finally {
-                    featureResultsB.close( fr2 );
+                    fr2.close();
                 }
 			}
 		}finally
 		{
-            featureResultsA.close( fr1 );
-            featureResultsB.close( fr2 );
+		    fr1.close();
+		    fr2.close();
 		}
 				
 		return success;

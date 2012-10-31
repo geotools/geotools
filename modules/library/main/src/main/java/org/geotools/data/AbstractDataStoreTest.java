@@ -124,16 +124,11 @@ public abstract class AbstractDataStoreTest extends DataTestCase {
     }
     
     SimpleFeature[] grabArray( SimpleFeatureCollection features, int size ){        
-        try {
-            SimpleFeature array[] = new SimpleFeature[ size ];
-            array = (SimpleFeature[]) features.toArray( array );
-            assertNotNull( array );
-            
-            return array;
-        }
-        finally {
-            features.purge();
-        }
+        SimpleFeature array[] = new SimpleFeature[ size ];
+        array = (SimpleFeature[]) features.toArray( array );
+        assertNotNull( array );
+        
+        return array;
     }
 
     protected void tearDown() throws Exception {
@@ -459,7 +454,7 @@ public abstract class AbstractDataStoreTest extends DataTestCase {
 
     public void testGetFeatureReader()
         throws IOException, IllegalAttributeException {
-        Query query = new DefaultQuery(roadType.getTypeName());
+        Query query = new Query(roadType.getTypeName());
          FeatureReader<SimpleFeatureType, SimpleFeature> reader = data.getFeatureReader(query,
                 Transaction.AUTO_COMMIT);
         assertCovered(roadFeatures, reader);
@@ -468,7 +463,7 @@ public abstract class AbstractDataStoreTest extends DataTestCase {
 
     public void testGetFeatureReaderMutability()
         throws IOException, IllegalAttributeException {
-        Query query = new DefaultQuery(roadType.getTypeName());
+        Query query = new Query(roadType.getTypeName());
          FeatureReader<SimpleFeatureType, SimpleFeature> reader = data.getFeatureReader(query,
                 Transaction.AUTO_COMMIT);
         SimpleFeature feature;
@@ -500,12 +495,12 @@ public abstract class AbstractDataStoreTest extends DataTestCase {
 
     public void testGetFeatureReaderConcurancy()
         throws NoSuchElementException, IOException, IllegalAttributeException {
-        Query query = new DefaultQuery(roadType.getTypeName());
+        Query query = new Query(roadType.getTypeName());
          FeatureReader<SimpleFeatureType, SimpleFeature> reader1 = data.getFeatureReader(query,
                 Transaction.AUTO_COMMIT);
          FeatureReader<SimpleFeatureType, SimpleFeature> reader2 = data.getFeatureReader(query,
                 Transaction.AUTO_COMMIT);
-        query = new DefaultQuery(riverType.getTypeName());
+        query = new Query(riverType.getTypeName());
 
          FeatureReader<SimpleFeatureType, SimpleFeature> reader3 = data.getFeatureReader(query,
                 Transaction.AUTO_COMMIT);
@@ -553,13 +548,13 @@ public abstract class AbstractDataStoreTest extends DataTestCase {
         SimpleFeatureType type = data.getSchema("ROAD");
          FeatureReader<SimpleFeatureType, SimpleFeature> reader;
 
-        reader = data.getFeatureReader(new DefaultQuery("ROAD"),
+        reader = data.getFeatureReader(new Query("ROAD"),
                 Transaction.AUTO_COMMIT);
         assertFalse(reader instanceof FilteringFeatureReader);
         assertEquals(type, reader.getFeatureType());
         assertEquals(roadFeatures.length, count(reader));
 
-        reader = data.getFeatureReader(new DefaultQuery("ROAD", Filter.EXCLUDE),
+        reader = data.getFeatureReader(new Query("ROAD", Filter.EXCLUDE),
                 Transaction.AUTO_COMMIT);
 
         //TODO: This assert sucks since it EXPECTS an emptyFeatureWriter...well, we got A writer...
@@ -570,7 +565,7 @@ public abstract class AbstractDataStoreTest extends DataTestCase {
         assertEquals(type, reader.getFeatureType());
         assertEquals(0, count(reader));
 
-        reader = data.getFeatureReader(new DefaultQuery("ROAD", rd1Filter),
+        reader = data.getFeatureReader(new Query("ROAD", rd1Filter),
                 Transaction.AUTO_COMMIT);
 
         //TODO: Do we care what type it is? In fact, we'll never get FilteringFeatureReader
@@ -586,19 +581,19 @@ public abstract class AbstractDataStoreTest extends DataTestCase {
         SimpleFeatureType type = data.getSchema("ROAD");
          FeatureReader<SimpleFeatureType, SimpleFeature> reader;
 
-        reader = data.getFeatureReader(new DefaultQuery("ROAD", Filter.EXCLUDE), t);
+        reader = data.getFeatureReader(new Query("ROAD", Filter.EXCLUDE), t);
 
         //TODO: remove this silly check!
         //assertTrue(reader instanceof EmptyFeatureReader);
         assertEquals(type, reader.getFeatureType());
         assertEquals(0, count(reader));
 
-        reader = data.getFeatureReader(new DefaultQuery("ROAD"), t);
+        reader = data.getFeatureReader(new Query("ROAD"), t);
         assertTrue(reader instanceof DiffFeatureReader);
         assertEquals(type, reader.getFeatureType());
         assertEquals(roadFeatures.length, count(reader));
 
-        reader = data.getFeatureReader(new DefaultQuery("ROAD", rd1Filter), t);
+        reader = data.getFeatureReader(new Query("ROAD", rd1Filter), t);
 
         //assertTrue(reader instanceof DiffFeatureReader);//Currently wrapped by a filtering feature reader
         assertEquals(type, reader.getFeatureType());
@@ -608,23 +603,23 @@ public abstract class AbstractDataStoreTest extends DataTestCase {
         store.setTransaction(t);
         store.removeFeatures(rd1Filter);
 
-        reader = data.getFeatureReader(new DefaultQuery("ROAD", Filter.EXCLUDE), t);
+        reader = data.getFeatureReader(new Query("ROAD", Filter.EXCLUDE), t);
         assertEquals(0, count(reader));
 
-        reader = data.getFeatureReader(new DefaultQuery("ROAD"), t);
+        reader = data.getFeatureReader(new Query("ROAD"), t);
         assertEquals(roadFeatures.length - 1, count(reader));
 
-        reader = data.getFeatureReader(new DefaultQuery("ROAD", rd1Filter), t);
+        reader = data.getFeatureReader(new Query("ROAD", rd1Filter), t);
         assertEquals(0, count(reader));
 
         t.rollback();
-        reader = data.getFeatureReader(new DefaultQuery("ROAD", Filter.EXCLUDE), t);
+        reader = data.getFeatureReader(new Query("ROAD", Filter.EXCLUDE), t);
         assertEquals(0, count(reader));
 
-        reader = data.getFeatureReader(new DefaultQuery("ROAD"), t);
+        reader = data.getFeatureReader(new Query("ROAD"), t);
         assertEquals(roadFeatures.length, count(reader));
 
-        reader = data.getFeatureReader(new DefaultQuery("ROAD", rd1Filter), t);
+        reader = data.getFeatureReader(new Query("ROAD", rd1Filter), t);
         assertEquals(1, count(reader));
     }
 
@@ -663,7 +658,7 @@ public abstract class AbstractDataStoreTest extends DataTestCase {
         
         SimpleFeature feature;
         int count = 0;
-        Iterator i = features.iterator();
+        SimpleFeatureIterator i = features.features();
         try {
             while (i.hasNext()) {
                 feature = (SimpleFeature) i.next();
@@ -673,7 +668,7 @@ public abstract class AbstractDataStoreTest extends DataTestCase {
                 count++;
             }
         } finally {
-            features.close( i );
+            i.close();
         }
         return count == array.length;
     }
@@ -877,7 +872,7 @@ public abstract class AbstractDataStoreTest extends DataTestCase {
 
         feature = null;
 
-         FeatureReader<SimpleFeatureType, SimpleFeature> reader = data.getFeatureReader(new DefaultQuery("ROAD",
+         FeatureReader<SimpleFeatureType, SimpleFeature> reader = data.getFeatureReader(new Query("ROAD",
                     rd1Filter), Transaction.AUTO_COMMIT);
 
         if (reader.hasNext()) {
@@ -979,7 +974,7 @@ public abstract class AbstractDataStoreTest extends DataTestCase {
         FINAL[i] = newRoad;
 
         // start of with ORIGINAL                        
-        reader = data.getFeatureReader(new DefaultQuery("ROAD"),
+        reader = data.getFeatureReader(new Query("ROAD"),
                 Transaction.AUTO_COMMIT);
         assertTrue(covers(reader, ORIGIONAL));
 
@@ -993,12 +988,12 @@ public abstract class AbstractDataStoreTest extends DataTestCase {
         }
 
         // still have ORIGIONAL and t1 has REMOVE
-        reader = data.getFeatureReader(new DefaultQuery("ROAD"),
+        reader = data.getFeatureReader(new Query("ROAD"),
                 Transaction.AUTO_COMMIT);
         
         assertTrue(covers(reader, ORIGIONAL));
         
-        reader = data.getFeatureReader(new DefaultQuery("ROAD"), t1);
+        reader = data.getFeatureReader(new Query("ROAD"), t1);
         assertTrue(covers(reader, REMOVE));
 
         // close writer1
@@ -1007,10 +1002,10 @@ public abstract class AbstractDataStoreTest extends DataTestCase {
         writer1.close();
 
         // We still have ORIGIONAL and t1 has REMOVE
-        reader = data.getFeatureReader(new DefaultQuery("ROAD"),
+        reader = data.getFeatureReader(new Query("ROAD"),
                 Transaction.AUTO_COMMIT);
         assertTrue(covers(reader, ORIGIONAL));
-        reader = data.getFeatureReader(new DefaultQuery("ROAD"), t1);
+        reader = data.getFeatureReader(new Query("ROAD"), t1);
         assertTrue(covers(reader, REMOVE));
 
         // writer 2 adds road.rd4 on t2
@@ -1021,10 +1016,10 @@ public abstract class AbstractDataStoreTest extends DataTestCase {
         writer2.write();
 
         // We still have ORIGIONAL and t2 has ADD
-        reader = data.getFeatureReader(new DefaultQuery("ROAD"),
+        reader = data.getFeatureReader(new Query("ROAD"),
                 Transaction.AUTO_COMMIT);
         assertTrue(covers(reader, ORIGIONAL));
-        reader = data.getFeatureReader(new DefaultQuery("ROAD"), t2);
+        reader = data.getFeatureReader(new Query("ROAD"), t2);
         assertTrue(coversLax(reader, ADD));
 
         // close writer2
@@ -1033,10 +1028,10 @@ public abstract class AbstractDataStoreTest extends DataTestCase {
         writer2.close();
 
         // Still have ORIGIONAL and t2 has ADD
-        reader = data.getFeatureReader(new DefaultQuery("ROAD"),
+        reader = data.getFeatureReader(new Query("ROAD"),
                 Transaction.AUTO_COMMIT);
         assertTrue(covers(reader, ORIGIONAL));
-        reader = data.getFeatureReader(new DefaultQuery("ROAD"), t2);
+        reader = data.getFeatureReader(new Query("ROAD"), t2);
         assertTrue(coversLax(reader, ADD));
 
         // commit t1
@@ -1047,12 +1042,12 @@ public abstract class AbstractDataStoreTest extends DataTestCase {
 
         // We now have REMOVE, as does t1 (which has not additional diffs)
         // t2 will have FINAL
-        reader = data.getFeatureReader(new DefaultQuery("ROAD"),
+        reader = data.getFeatureReader(new Query("ROAD"),
                 Transaction.AUTO_COMMIT);
         assertTrue(covers(reader, REMOVE));
-        reader = data.getFeatureReader(new DefaultQuery("ROAD"), t1);
+        reader = data.getFeatureReader(new Query("ROAD"), t1);
         assertTrue(covers(reader, REMOVE));
-        reader = data.getFeatureReader(new DefaultQuery("ROAD"), t2);
+        reader = data.getFeatureReader(new Query("ROAD"), t2);
         assertTrue(coversLax(reader, FINAL));
 
         // commit t2
@@ -1061,14 +1056,14 @@ public abstract class AbstractDataStoreTest extends DataTestCase {
         t2.commit();
 
         // We now have Number( remove one and add one)
-        reader = data.getFeatureReader(new DefaultQuery("ROAD"),
+        reader = data.getFeatureReader(new Query("ROAD"),
                 Transaction.AUTO_COMMIT);
-        reader = data.getFeatureReader(new DefaultQuery("ROAD"),
+        reader = data.getFeatureReader(new Query("ROAD"),
                 Transaction.AUTO_COMMIT);
         assertTrue(coversLax(reader, FINAL));
-        reader = data.getFeatureReader(new DefaultQuery("ROAD"), t1);
+        reader = data.getFeatureReader(new Query("ROAD"), t1);
         assertTrue(coversLax(reader, FINAL));
-        reader = data.getFeatureReader(new DefaultQuery("ROAD"), t2);
+        reader = data.getFeatureReader(new Query("ROAD"), t2);
         assertTrue(coversLax(reader, FINAL));
     }
 
@@ -1105,8 +1100,7 @@ public abstract class AbstractDataStoreTest extends DataTestCase {
         //We need to fetch "GEOM" since we'll need to create the bounds based
         //on the geometry later on (getting the geom from the DB is expensive and
         //so far unsupported
-        DefaultQuery query = new DefaultQuery("ROAD", rd12Filter,
-                new String[] { "NAME", });
+        Query query = new Query("ROAD", rd12Filter, new String[] { "NAME", });
 
         SimpleFeatureCollection half = road.getFeatures(query);
         assertEquals(2, half.size());

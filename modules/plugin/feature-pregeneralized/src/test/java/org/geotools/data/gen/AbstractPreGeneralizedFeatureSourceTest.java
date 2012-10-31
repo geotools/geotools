@@ -321,11 +321,15 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
                 assertTrue("the_geom".equals(fCollection.getSchema().getGeometryDescriptor()
                         .getLocalName()));
                 SimpleFeatureIterator iterator = fCollection.features();
-                while (iterator.hasNext()) {
-                    SimpleFeature f = iterator.next();
-                    checkPoints(f, 0.0);
+                try {
+                    while (iterator.hasNext()) {
+                        SimpleFeature f = iterator.next();
+                        checkPoints(f, 0.0);
+                    }
                 }
-                fCollection.close(iterator);
+                finally {
+                    iterator.close();
+                }
 
                 q.getHints().put(Hints.GEOMETRY_DISTANCE, 5.0);
                 fCollection = fs.getFeatures(q);
@@ -334,11 +338,15 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
                 assertTrue("the_geom".equals(fCollection.getSchema().getGeometryDescriptor()
                         .getLocalName()));
                 iterator = fCollection.features();
-                while (iterator.hasNext()) {
-                    SimpleFeature f = iterator.next();
-                    checkPoints(f, 5.0);
+                try {
+                    while (iterator.hasNext()) {
+                        SimpleFeature f = iterator.next();
+                        checkPoints(f, 5.0);
+                    }
                 }
-                fCollection.close(iterator);
+                finally {
+                    iterator.close();
+                }
 
                 q.getHints().put(Hints.GEOMETRY_DISTANCE, 10.0);
                 fCollection = fs.getFeatures(q);
@@ -347,11 +355,15 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
                 assertTrue("the_geom".equals(fCollection.getSchema().getGeometryDescriptor()
                         .getLocalName()));
                 iterator = fCollection.features();
-                while (iterator.hasNext()) {
-                    SimpleFeature f = iterator.next();
-                    checkPoints(f, 10.0);
+                try {
+                    while (iterator.hasNext()) {
+                        SimpleFeature f = iterator.next();
+                        checkPoints(f, 10.0);
+                    }
                 }
-                fCollection.close(iterator);
+                finally {
+                    iterator.close();
+                }
 
                 q.getHints().put(Hints.GEOMETRY_DISTANCE, 20.0);
                 fCollection = fs.getFeatures(q);
@@ -360,12 +372,15 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
                 assertTrue("the_geom".equals(fCollection.getSchema().getGeometryDescriptor()
                         .getLocalName()));
                 iterator = fCollection.features();
-                while (iterator.hasNext()) {
-                    SimpleFeature f = iterator.next();
-                    checkPoints(f, 20.0);
+                try {
+                    while (iterator.hasNext()) {
+                        SimpleFeature f = iterator.next();
+                        checkPoints(f, 20.0);
+                    }
                 }
-                fCollection.close(iterator);
-
+                finally {
+                    iterator.close();
+                }
                 q.getHints().put(Hints.GEOMETRY_DISTANCE, 50.0);
                 fCollection = fs.getFeatures(q);
                 typeName = fCollection.getSchema().getTypeName();
@@ -373,12 +388,15 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
                 assertTrue("the_geom".equals(fCollection.getSchema().getGeometryDescriptor()
                         .getLocalName()));
                 iterator = fCollection.features();
-                while (iterator.hasNext()) {
-                    SimpleFeature f = iterator.next();
-                    checkPoints(f, 0.0);
+                try {
+                    while (iterator.hasNext()) {
+                        SimpleFeature f = iterator.next();
+                        checkPoints(f, 0.0);
+                    }
                 }
-                fCollection.close(iterator);
-
+                finally {
+                    iterator.close();
+                }
             }
         } catch (Exception ex) {
             Assert.fail(ex.getMessage());
@@ -411,32 +429,33 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
             assertTrue("GenStreams".equals(typeName));
             assertTrue(fCollection.size() > 0);
             assertFalse(fCollection.isEmpty());
-            Iterator<SimpleFeature> iterator = fCollection.iterator();
-            while (iterator.hasNext()) {
-                SimpleFeature f = iterator.next();
-                checkPoints(f, 0.0);
+            SimpleFeatureIterator iterator = fCollection.features();
+            try {
+                while (iterator.hasNext()) {
+                    SimpleFeature f = iterator.next();
+                    checkPoints(f, 0.0);
+                }
             }
-            fCollection.close(iterator);
-
+            finally {
+                iterator.close();
+            }
             fCollection = fs.getFeatures(Filter.INCLUDE);
             typeName = fCollection.getSchema().getTypeName();
             assertTrue("GenStreams".equals(typeName));
             assertTrue(fCollection.size() > 0);
             assertFalse(fCollection.isEmpty());
-            iterator = fCollection.iterator();
-            while (iterator.hasNext()) {
-                SimpleFeature f = iterator.next();
-                checkPoints(f, 0.0);
-            }
-            boolean error = true;
+            iterator = fCollection.features();
             try {
-                iterator.remove();
-            } catch (UnsupportedOperationException e) {
-                error = false;
+                while (iterator.hasNext()) {
+                
+                    SimpleFeature f = iterator.next();
+                    checkPoints(f, 0.0);
+                }
+                // iterator.remove() no longer provided
             }
-            assertFalse(error);
-            fCollection.close(iterator);
-
+            finally {
+                iterator.close();
+            }
             ds.dispose();
 
         } catch (Exception ex) {

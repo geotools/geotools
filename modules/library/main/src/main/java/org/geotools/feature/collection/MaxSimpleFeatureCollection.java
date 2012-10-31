@@ -69,25 +69,12 @@ public class MaxSimpleFeatureCollection extends
         this.max = max;
     }
 	
-	public  FeatureReader<SimpleFeatureType,SimpleFeature> reader() throws IOException {
-		return new DelegateFeatureReader<SimpleFeatureType,SimpleFeature>( getSchema(), features() );
+	FeatureReader<SimpleFeatureType,SimpleFeature> reader() throws IOException {
+	    return new DelegateFeatureReader<SimpleFeatureType,SimpleFeature>( getSchema(), features() );
 	}
 	
 	public SimpleFeatureIterator features() {
-		return new DelegateSimpleFeatureIterator( this, iterator() );
-	}
-
-	public void close(SimpleFeatureIterator close) {
-		close.close();
-	}
-
-	public Iterator<SimpleFeature> iterator() {
-		return new MaxFeaturesIterator<SimpleFeature>( delegate.iterator(), start, max );
-	}
-	
-	public void close(Iterator<SimpleFeature> close) {
-		Iterator<SimpleFeature> iterator = ((MaxFeaturesIterator<SimpleFeature>)close).getDelegate();
-		delegate.close( iterator );
+		return new MaxFeaturesSimpleFeatureIterator( delegate.features(), start, max );
 	}
 
 	public SimpleFeatureCollection subCollection(Filter filter) {
@@ -113,44 +100,24 @@ public class MaxSimpleFeatureCollection extends
 
 	public Object[] toArray() {
 		return toArray( new Object[ size() ] );
-	}
-
-	public Object[] toArray(Object[] a) {
-		List list = new ArrayList();
-		Iterator i = iterator();
+	}	
+    @SuppressWarnings("unchecked")
+    public <T> T[] toArray(T[] a) {
+		List<T> list = new ArrayList<T>();
+		SimpleFeatureIterator i = features();
 		try {
 			while( i.hasNext() ) {
-				list.add( i.next() );
-			}
-			
+				list.add( (T)i.next() );
+			}			
 			return list.toArray( a );
 		}
 		finally {
-			close( i );
+		    i.close();
 		}
 	}
 	
-	public boolean add(SimpleFeature o) {
-		long size = delegate.size();
-		if ( size < max ) {
-			return delegate.add( o );	
-		}
-		
-		return false;
-	}
-
-	public boolean addAll(Collection c) {
-		boolean changed = false;
-		
-		for ( Iterator<SimpleFeature> i = c.iterator(); i.hasNext(); ) {
-			changed = changed | add( i.next() );
-		}
-		
-		return changed;
-	}
-
-	public boolean containsAll(Collection c) {
-		for ( Iterator i = c.iterator(); i.hasNext(); ) {
+	public boolean containsAll(Collection<?> c) {
+		for ( Iterator<?> i = c.iterator(); i.hasNext(); ) {
 			if ( !contains( i.next() ) ) {
 				return false;
 			}

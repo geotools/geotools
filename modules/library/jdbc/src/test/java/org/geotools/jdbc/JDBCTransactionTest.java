@@ -18,6 +18,7 @@ package org.geotools.jdbc;
 
 import java.io.IOException;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
@@ -37,7 +38,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  */
 public abstract class JDBCTransactionTest extends JDBCTestSupport {
     public void testCommit() throws IOException {
-        JDBCFeatureStore fs = (JDBCFeatureStore) dataStore.getFeatureSource(tname("ft1"));
+        //JDBCFeatureStore fs = (JDBCFeatureStore) dataStore.getFeatureSource(tname("ft1"));
 
         Transaction tx = new DefaultTransaction();
 
@@ -55,7 +56,7 @@ public abstract class JDBCTransactionTest extends JDBCTestSupport {
     }
 
     public void testNoCommit() throws IOException {
-        JDBCFeatureStore fs = (JDBCFeatureStore) dataStore.getFeatureSource(tname("ft1"));
+        //JDBCFeatureStore fs = (JDBCFeatureStore) dataStore.getFeatureSource(tname("ft1"));
 
         Transaction tx = new DefaultTransaction();
 
@@ -73,7 +74,7 @@ public abstract class JDBCTransactionTest extends JDBCTestSupport {
     }
 
     public void testConcurrentTransactions() throws IOException {
-        JDBCFeatureStore fs = (JDBCFeatureStore) dataStore.getFeatureSource(tname("ft1"));
+        //JDBCFeatureStore fs = (JDBCFeatureStore) dataStore.getFeatureSource(tname("ft1"));
 
         Transaction tx1 = new DefaultTransaction();
 
@@ -111,7 +112,7 @@ public abstract class JDBCTransactionTest extends JDBCTestSupport {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(st.getSchema());
         b.set(aname("intProperty"), new Integer(100));
         SimpleFeature f1 = b.buildFeature(null);
-        SimpleFeatureCollection features = new DefaultFeatureCollection(null,null);
+        DefaultFeatureCollection features = new DefaultFeatureCollection(null,null);
         features.add( f1 );
 
         Transaction tx1 = new DefaultTransaction();

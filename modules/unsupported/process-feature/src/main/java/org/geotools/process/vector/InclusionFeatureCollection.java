@@ -17,18 +17,17 @@
  */
 package org.geotools.process.vector;
 
-import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.geotools.process.factory.DescribeParameter;
-import org.geotools.process.factory.DescribeProcess;
-import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.WrappingIterator;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.collection.DecoratingSimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.process.factory.DescribeParameter;
+import org.geotools.process.factory.DescribeProcess;
+import org.geotools.process.factory.DescribeResult;
+import org.geotools.process.gs.GSProcess;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -72,17 +71,6 @@ public class InclusionFeatureCollection implements VectorProcess {
             return new IncludedFeatureIterator(delegate.features(), delegate, features, getSchema());
         }
 
-        @Override
-        public Iterator<SimpleFeature> iterator() {
-            return new WrappingIterator(features());
-        }
-
-        @Override
-        public void close(Iterator<SimpleFeature> close) {
-            if (close instanceof WrappingIterator) {
-                ((WrappingIterator) close).close();
-            }
-        }
     }
 
     /**

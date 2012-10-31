@@ -228,12 +228,12 @@ public class OverlapsIntegrity extends RelationIntegrity
 						System.out.println("count: " + counter);
 						
 				}finally{
-					collectionB.close( fr2 );
+				    fr2.close();
 				}
 			}// end while 1
 		}finally
 		{
-			collectionA.close( fr1 );
+		    fr1.close();
 		}
 		
 		return success;
@@ -347,7 +347,7 @@ public class OverlapsIntegrity extends RelationIntegrity
 					//	System.out.println("count: " + counter);
 						
 				}finally{
-					collectionB.close( fr2 );
+				    fr2.close();
 				}
 			}// end while 1
 		}finally
@@ -359,8 +359,7 @@ public class OverlapsIntegrity extends RelationIntegrity
 				System.out.println("########## Validation duration: " + dt);
 				System.out.println("########## Validation errors: " + errors);
 			}
-			
-            collectionA.close( fr1 );
+			fr1.close();
 		}
 		
 		return success;

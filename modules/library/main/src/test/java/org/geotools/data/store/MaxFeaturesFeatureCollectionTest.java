@@ -16,8 +16,7 @@
  */
 package org.geotools.data.store;
 
-import java.util.Iterator;
-
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.collection.MaxSimpleFeatureCollection;
 
 /**
@@ -44,26 +43,38 @@ public class MaxFeaturesFeatureCollectionTest extends
 
     public void testIteratorMax() throws Exception {
         MaxSimpleFeatureCollection max = new MaxSimpleFeatureCollection(delegate, 2);
-        Iterator i = max.iterator();
-        for (int x = 0; x < 2; x++) {
-            assertTrue(i.hasNext());
-            i.next();
+        SimpleFeatureIterator i = max.features();
+        try {
+            for (int x = 0; x < 2; x++) {
+                assertTrue(i.hasNext());
+                i.next();
+            }
+            assertFalse(i.hasNext());
+        } finally {
+            i.close();
         }
-
-        assertFalse(i.hasNext());
     }
     
     public void testIteratorSkipMax() throws Exception {
         MaxSimpleFeatureCollection max = new MaxSimpleFeatureCollection(delegate, delegate.size() - 1, 2);
-        Iterator i = max.iterator();
-        assertTrue(i.hasNext());
-        i.next();
-        assertFalse(i.hasNext());
+        SimpleFeatureIterator i = max.features();
+        try {
+            assertTrue(i.hasNext());
+            i.next();
+            assertFalse(i.hasNext());
+        } finally {
+            i.close();
+        }
     }
     
     public void testIteratorSkipMoreSize() throws Exception {
         MaxSimpleFeatureCollection max = new MaxSimpleFeatureCollection(delegate, delegate.size() + 1, 2);
-        Iterator i = max.iterator();
-        assertFalse(i.hasNext());
+        SimpleFeatureIterator i = max.features();
+        try {
+            assertFalse(i.hasNext());
+        } finally {
+            i.close();            
+        }
+        
     }
 }

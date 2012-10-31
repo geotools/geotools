@@ -28,6 +28,7 @@ import java.util.Set;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.FeatureCollection;
 import org.geotools.util.SoftValueHashMap;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
@@ -39,7 +40,11 @@ import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
 /**
- * 
+ * Default implementation of {@link FeatureCollection#sort(SortBy)}.
+ * <p>
+ * This implementation is not suitable for working with large content as it makes
+ * use of memory both when eastablishing an initial sort order, and subsequently
+ * to hold a list of FeatureId.
  *
  * @source $URL$
  */

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2012, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -30,10 +30,23 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.sort.SortBy;
 
 /**
- * Implement a feature collection just based on provision of iterator.
+ * Implement a feature collection just based on provision of an {@link Iterator}.
+ * <p>
+ * This implementation asks you to implement:
+ * <ul>
+ * <li>{@link #openIterator()}</li>
+ * <li>{@link #size()}</li>
+ * <li>
+ * User interaction is provided by the public API for FeatureCollection:
+ * <ul>
+ * <li>{@link #features()}: makes use of {@link DelegateSimpleFeatureIterator} (if needed) to wrap your iterator up as a SimpleFeatureIterator for
+ * public use.</li>
+ * </ul>
+ * This is the origional implementation of FeatureCollection and is recommended
+ * when presenting {@link Collection} classes as a FeatureCollection.
  * 
- * @author Jody Garnett (Refractions Research Inc)
- *
+ * @author Jody Garnett (LISAsoft)
+ * 
  * @source $URL$
  */
 public abstract class AbstractFeatureCollection implements SimpleFeatureCollection {
@@ -51,14 +64,13 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
     //
     // SimpleFeatureCollection - Feature Access
     // 
-	public SimpleFeatureIterator features() {
+    public SimpleFeatureIterator features() {
         Iterator<SimpleFeature> iterator = openIterator();
-        if( iterator instanceof SimpleFeatureIterator ){
-        	return (SimpleFeatureIterator) iterator;
-        }
-        else {
-        	SimpleFeatureIterator iter = new DelegateSimpleFeatureIterator( this, iterator );
-        	return iter;
+        if (iterator instanceof SimpleFeatureIterator) {
+            return (SimpleFeatureIterator) iterator;
+        } else {
+            SimpleFeatureIterator iter = new DelegateSimpleFeatureIterator(this, iterator);
+            return iter;
         }
     }
     

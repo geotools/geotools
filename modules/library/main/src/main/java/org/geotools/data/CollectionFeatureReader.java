@@ -104,7 +104,7 @@ public class CollectionFeatureReader implements  FeatureReader<SimpleFeatureType
      * @see org.geotools.data.FeatureReader#hasNext()
      */
     public boolean hasNext() throws IOException {
-        return features.hasNext() && !closed;
+        return features != null && features.hasNext() && !closed;
     }
 
     /**

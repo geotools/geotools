@@ -68,9 +68,9 @@ public class DataTestCase extends TestCase {
     protected SimpleFeature[] roadFeatures;
     protected ReferencedEnvelope roadBounds;
     protected ReferencedEnvelope rd12Bounds;    
-    protected Filter rd1Filter;
-    protected Filter rd2Filter;
-    protected Filter rd12Filter;
+    protected Id rd1Filter;
+    protected Id rd2Filter;
+    protected Id rd12Filter;
     protected SimpleFeature newRoad;
     
     protected SimpleFeatureType riverType; // river: id, geom, river, flow

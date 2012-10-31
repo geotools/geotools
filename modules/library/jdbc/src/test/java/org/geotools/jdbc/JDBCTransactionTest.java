@@ -112,8 +112,8 @@ public abstract class JDBCTransactionTest extends JDBCTestSupport {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(st.getSchema());
         b.set(aname("intProperty"), new Integer(100));
         SimpleFeature f1 = b.buildFeature(null);
-        SimpleFeatureCollection features = new DefaultFeatureCollection(null,null);
-        st.addFeatures( DataUtilities.collection(f1));
+        DefaultFeatureCollection features = new DefaultFeatureCollection(null,null);
+        features.add( f1 );
 
         Transaction tx1 = new DefaultTransaction();
         st.setTransaction(tx1);

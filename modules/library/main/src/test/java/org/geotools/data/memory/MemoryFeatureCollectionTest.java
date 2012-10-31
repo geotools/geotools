@@ -111,6 +111,7 @@ public class MemoryFeatureCollectionTest extends DataTestCase {
         Iterator<SimpleFeature> it = roads.iterator();
         try {
             while( it.hasNext() ){
+                @SuppressWarnings("unused")
                 SimpleFeature feature = it.next();
                 count++;
             }
@@ -125,13 +126,14 @@ public class MemoryFeatureCollectionTest extends DataTestCase {
         FilteredIterator<SimpleFeature> filteredIterator = new FilteredIterator<SimpleFeature>( roads, rd12Filter );
         try {
             while( filteredIterator.hasNext() ){
+                @SuppressWarnings("unused")
                 SimpleFeature feature = filteredIterator.next();
                 count++;
             }
         } finally {
             filteredIterator.close();
         }
-        assertEquals( rd12Filter.getIDs().size(), count );
+        assertEquals( expected( rd12Filter) , count );
     }
     
     public void testSubCollection(){

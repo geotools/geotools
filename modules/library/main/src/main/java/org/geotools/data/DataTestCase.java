@@ -68,9 +68,9 @@ public class DataTestCase extends TestCase {
     protected SimpleFeature[] roadFeatures;
     protected ReferencedEnvelope roadBounds;
     protected ReferencedEnvelope rd12Bounds;    
-    protected Id rd1Filter;
-    protected Id rd2Filter;
-    protected Id rd12Filter;
+    protected Filter rd1Filter;
+    protected Filter rd2Filter;
+    protected Filter rd12Filter;
     protected SimpleFeature newRoad;
     
     protected SimpleFeatureType riverType; // river: id, geom, river, flow
@@ -93,6 +93,14 @@ public class DataTestCase extends TestCase {
         super(name);
     }
 
+    protected int expected( Filter filter ){
+        if( filter instanceof Id){
+            Id id = (Id) filter;
+            return id.getIDs().size();
+        }
+        return -1;
+    }
+    
     /**
      * Invoked before a test is run. The default implementation invokes {@link #dataSetUp}.
      */

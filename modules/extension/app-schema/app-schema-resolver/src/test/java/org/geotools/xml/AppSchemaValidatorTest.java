@@ -167,20 +167,4 @@ public class AppSchemaValidatorTest {
                 + "\"><wfs:Query typeName=\"test\"/></wfs:GetFeature>", null);
     }
 
-    /**
-     * Test that a GetFeature with a missing schemaLocation causes a sensible error message.
-     */
-    @Test
-    public void validateGetFeatureWithMissingSchemaLocation() {
-        try {
-            AppSchemaValidator.validate("<wfs:GetFeature " //
-                    + "xmlns:wfs=\"http://www.opengis.net/wfs\">" //
-                    + "<wfs:Query typeName=\"test\"/></wfs:GetFeature>", null);
-            Assert.fail("Unexpected validation success for GetFeature with missing schemaLocation");
-        } catch (Exception e) {
-            Assert.assertEquals(e.getMessage(), "Schema validation failure caused by "
-                    + "missing schemaLocation for namespace http://www.opengis.net/wfs");
-        }
-    }
-
 }

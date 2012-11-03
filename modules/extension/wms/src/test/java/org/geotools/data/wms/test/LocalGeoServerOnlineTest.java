@@ -21,12 +21,15 @@ import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Properties;
 
 import javax.imageio.ImageIO;
 
 import junit.framework.TestCase;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.output.StringBuilderWriter;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.ows.CRSEnvelope;
@@ -34,7 +37,9 @@ import org.geotools.data.ows.Layer;
 import org.geotools.data.ows.OperationType;
 import org.geotools.data.ows.WMSCapabilities;
 import org.geotools.data.wms.WebMapServer;
+import org.geotools.data.wms.request.GetFeatureInfoRequest;
 import org.geotools.data.wms.request.GetMapRequest;
+import org.geotools.data.wms.response.GetFeatureInfoResponse;
 import org.geotools.data.wms.response.GetMapResponse;
 import org.geotools.factory.GeoTools;
 import org.geotools.geometry.GeneralEnvelope;
@@ -185,9 +190,9 @@ public class LocalGeoServerOnlineTest extends TestCase {
     }
 
     public void testImgSample130() throws Exception {
-        Layer img_sample = find("nurc:Img_Sample");
-        assertNotNull("Img_Sample layer found", img_sample);
-        CRSEnvelope latLon = img_sample.getLatLonBoundingBox();
+        Layer water_bodies = find("topp:tasmania_water_bodies");
+        assertNotNull("Img_Sample layer found", water_bodies);
+        CRSEnvelope latLon = water_bodies.getLatLonBoundingBox();
         assertEquals("LatLonBoundingBox axis 0 name", "Geodetic longitude",
                 axisName(latLon.getCoordinateReferenceSystem(), 0));
         assertEquals("LatLonBoundingBox axis 0 name", "Geodetic latitude",
@@ -195,7 +200,7 @@ public class LocalGeoServerOnlineTest extends TestCase {
 
         boolean globalXY = Boolean.getBoolean("org.geotools.referencing.forceXY");
         
-        CRSEnvelope bounds = img_sample.getBoundingBoxes().get("EPSG:4326");
+        CRSEnvelope bounds = water_bodies.getBoundingBoxes().get("EPSG:4326");
         CoordinateReferenceSystem boundsCRS = bounds.getCoordinateReferenceSystem();
         assertEquals( "EPSG:4326", AxisOrder.EAST_NORTH, CRS.getAxisOrder(boundsCRS) );
         
@@ -205,10 +210,16 @@ public class LocalGeoServerOnlineTest extends TestCase {
         assertEquals("axis order 1 min", latLon.getMaximum(1), bounds.getMaximum(0));
 
         // GETMAP
-        checkGetMap(wms, img_sample, DefaultGeographicCRS.WGS84);
-        checkGetMap(wms, img_sample, CRS.decode("CRS:84"));
-        checkGetMap(wms, img_sample, CRS.decode("EPSG:4326"));
-        checkGetMap(wms, img_sample, CRS.decode("urn:x-ogc:def:crs:EPSG::4326"));
+        checkGetMap(wms, water_bodies, DefaultGeographicCRS.WGS84);
+        checkGetMap(wms, water_bodies, CRS.decode("CRS:84"));
+        checkGetMap(wms, water_bodies, CRS.decode("EPSG:4326"));
+        checkGetMap(wms, water_bodies, CRS.decode("urn:x-ogc:def:crs:EPSG::4326"));
+
+        // GETFEATURE INFO
+        checkGetFeatureInfo( wms, water_bodies, DefaultGeographicCRS.WGS84 );
+        checkGetFeatureInfo(wms, water_bodies, CRS.decode("CRS:84"));
+        checkGetFeatureInfo( wms, water_bodies, CRS.decode("EPSG:4326") );
+        checkGetFeatureInfo( wms, water_bodies, CRS.decode("urn:x-ogc:def:crs:EPSG::4326") );
     }
 
     public void testImageSample111() throws Exception {
@@ -216,15 +227,15 @@ public class LocalGeoServerOnlineTest extends TestCase {
         WMSCapabilities caps = wms111.getCapabilities();
         assertEquals("1.1.1", caps.getVersion());
     
-        Layer img_sample = find("nurc:Img_Sample", caps);
-        assertNotNull("Img_Sample layer found", img_sample);
-        CRSEnvelope latLon = img_sample.getLatLonBoundingBox();
+        Layer water_bodies = find("topp:tasmania_water_bodies", caps);
+        assertNotNull("Img_Sample layer found", water_bodies);
+        CRSEnvelope latLon = water_bodies.getLatLonBoundingBox();
         assertEquals("LatLonBoundingBox axis 0 name", "Geodetic longitude",
                 axisName(latLon.getCoordinateReferenceSystem(), 0));
         assertEquals("LatLonBoundingBox axis 1 name", "Geodetic latitude",
                 axisName(latLon.getCoordinateReferenceSystem(), 1));
     
-        CRSEnvelope bounds = img_sample.getBoundingBoxes().get("EPSG:4326");
+        CRSEnvelope bounds = water_bodies.getBoundingBoxes().get("EPSG:4326");
         CoordinateReferenceSystem boundsCRS = bounds.getCoordinateReferenceSystem();
         assertEquals( "EPSG:4326", AxisOrder.EAST_NORTH, CRS.getAxisOrder(boundsCRS) );;
     
@@ -234,11 +245,25 @@ public class LocalGeoServerOnlineTest extends TestCase {
         assertEquals("axis order 1 min", latLon.getMaximum(1), bounds.getMaximum(1));
     
         // GETMAP
-        checkGetMap(wms111, img_sample, DefaultGeographicCRS.WGS84);
-        checkGetMap(wms111, img_sample, CRS.decode("CRS:84"));
-        checkGetMap(wms111, img_sample, CRS.decode("EPSG:4326"));
-        checkGetMap(wms111, img_sample, CRS.decode("urn:x-ogc:def:crs:EPSG::4326"));
+        checkGetMap(wms111, water_bodies, DefaultGeographicCRS.WGS84);
+        checkGetMap(wms111, water_bodies, CRS.decode("CRS:84"));
+        checkGetMap(wms111, water_bodies, CRS.decode("EPSG:4326"));
+        checkGetMap(wms111, water_bodies, CRS.decode("urn:x-ogc:def:crs:EPSG::4326"));
     
+        // GETFEATURE INFO
+        checkGetFeatureInfo( wms111, water_bodies, DefaultGeographicCRS.WGS84 );
+        checkGetFeatureInfo( wms111, water_bodies, CRS.decode("CRS:84"));
+        checkGetFeatureInfo( wms111, water_bodies, CRS.decode("EPSG:4326") );
+        checkGetFeatureInfo( wms111, water_bodies, CRS.decode("urn:x-ogc:def:crs:EPSG::4326") );
+    }
+
+    private String format(OperationType operationType, String search) {
+        for (String format : operationType.getFormats()) {
+            if (format.contains(search)) {
+                return format;
+            }
+        }
+        return null; // not found
     }
 
     /**
@@ -283,7 +308,7 @@ public class LocalGeoServerOnlineTest extends TestCase {
         assertEquals(500, image.getWidth());
         assertEquals(500, image.getHeight());
         
-        int rgb = image.getRGB(250, 250);
+        int rgb = image.getRGB(70, 420);
         Color sample = new Color(rgb);
         boolean forceXY = Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
         String context = "srs="+srs+" forceXY="+forceXY+" Version="+version;
@@ -296,14 +321,61 @@ public class LocalGeoServerOnlineTest extends TestCase {
             //System.out.println("PASS: "+ context+": GetMap BBOX=" + bbox);
         }
         
+        
     }
      
-    private String format(OperationType operationType, String search) {
-        for (String format : operationType.getFormats()) {
-            if (format.contains(search)) {
-                return format;
-            }
+    /**
+     * Check GetMap request functionality in the provided CRS.
+     * <p>
+     * Attempt is made to request the entire image.
+     * 
+     * @param wms
+     * @param layer
+     * @param crs
+     */
+    private void checkGetFeatureInfo(WebMapServer wms, Layer layer, CoordinateReferenceSystem crs)
+            throws Exception {
+        
+        layer.clearCache();
+        CRSEnvelope latLon = layer.getLatLonBoundingBox();
+        GeneralEnvelope envelope = wms.getEnvelope(layer, crs);
+        assertFalse(envelope.isEmpty() || envelope.isNull() || envelope.isInfinite());
+        assertNotNull("Envelope "+CRS.toSRS(crs), envelope);
+    
+        GetMapRequest getMap = wms.createGetMapRequest();
+        OperationType operationType = wms.getCapabilities().getRequest().getGetMap();
+
+        getMap.addLayer(layer);
+        String version = wms.getCapabilities().getVersion();
+        String srs = CRS.toSRS(envelope.getCoordinateReferenceSystem());
+        getMap.setBBox(envelope);
+        String format = format(operationType, "jpeg");
+        getMap.setFormat(format);
+        getMap.setDimensions(500, 500);
+        URL url = getMap.getFinalURL();
+        
+        GetFeatureInfoRequest getFeatureInfo = wms.createGetFeatureInfoRequest( getMap );
+        getFeatureInfo.setInfoFormat("text/html");
+        getFeatureInfo.setQueryLayers( Collections.singleton(layer));
+        getFeatureInfo.setQueryPoint( 75,  100 );
+        URL url2 = getFeatureInfo.getFinalURL();
+        
+        GetFeatureInfoResponse response = wms.issueRequest(getFeatureInfo);
+        assertEquals("text/html", response.getContentType() );
+        InputStream stream = response.getInputStream();
+        StringBuilderWriter writer = new StringBuilderWriter();
+        IOUtils.copy(stream, writer ); 
+        
+        String info = writer.toString();
+        assertTrue( "response available", !info.isEmpty() );
+        assertTrue( "html", info.contains("<html") || info.contains("<HTML"));
+        boolean forceXY = Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
+        String context = "srs="+srs+" forceXY="+forceXY+" Version="+version;
+        if( !info.contains("tasmania_water_bodies.3") ){
+            System.out.println("FAIL: "+ context+": GetFeatureInfo BBOX=" + envelope);
+            System.out.println("GETMAP         --> " + url);
+            System.out.println("GETFEATUREINFO --> " + url2);
+            fail( context+": GetFeatureInfo BBOX=" + envelope );
         }
-        return null; // not found
     }
 }

@@ -55,7 +55,7 @@ public class ValueCollectionTypeBindingTest extends WFSTestSupport {
     public void testNothing(){
         // just to prevent build failure
     }
-    public void XtestEncode() throws Exception {
+    public void testEncode() throws Exception {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("feature");
         tb.setNamespaceURI("http://geotools.org");

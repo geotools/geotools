@@ -18,27 +18,24 @@ package org.geotools.data.store;
 
 import java.util.NoSuchElementException;
 
-import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.FeatureIterator;
-import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.Feature;
 import org.opengis.filter.Filter;
 
 /**
- * Decorates a SimpleFeatureIterator  with one that filters content.
+ * Decorates a FeatureIterator  with one that filters content.
  * 
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
- *
- *
  * @source $URL$
  */
-public class FilteringFeatureIterator implements SimpleFeatureIterator {
+public class FilteringFeatureIterator<F extends Feature> implements FeatureIterator<F> {
 
     /**
      * delegate iterator
      */
-    protected SimpleFeatureIterator delegate;
+    protected FeatureIterator<F> delegate;
     /**
      * The Filter
      */
@@ -46,9 +43,9 @@ public class FilteringFeatureIterator implements SimpleFeatureIterator {
     /**
      * Next feature
      */
-    protected SimpleFeature next;
+    protected F next;
     
-    public FilteringFeatureIterator( SimpleFeatureIterator delegate, Filter filter ) {
+    public FilteringFeatureIterator( FeatureIterator<F> delegate, Filter filter ) {
         this.delegate = delegate;
         this.filter = filter;
     }
@@ -59,7 +56,7 @@ public class FilteringFeatureIterator implements SimpleFeatureIterator {
         }
         
         while( delegate.hasNext() ) {
-            SimpleFeature peek = (SimpleFeature) delegate.next();
+            F peek = (F) delegate.next();
             if ( filter.evaluate( peek ) ) {
                 next = peek;
                 break;
@@ -69,8 +66,8 @@ public class FilteringFeatureIterator implements SimpleFeatureIterator {
         return next != null;
     }
 
-    public SimpleFeature next() throws NoSuchElementException {
-        SimpleFeature f = next;
+    public F next() throws NoSuchElementException {
+        F f = next;
         next = null;
         return f;
     }

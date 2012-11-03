@@ -92,7 +92,7 @@ public class SubFeatureCollection extends BaseFeatureCollection {
     }
 
     public SimpleFeatureIterator features() {
-        return new FilteringFeatureIterator( collection.features(), filter());
+        return new FilteringSimpleFeatureIterator( collection.features(), filter());
     }
     		
     public int size() {

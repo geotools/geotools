@@ -27,6 +27,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.FactoryRegistryException;
 import org.geotools.factory.GeoTools;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -149,14 +150,9 @@ public final class FeatureUtilities {
         fb.add(coverage);
         SimpleFeature feature = fb.buildFeature(null);
 
-        final SimpleFeatureCollection collection = FeatureCollections.newCollection();
-        if( collection instanceof Collection){
-            ((Collection<SimpleFeature>)collection).add(feature);
-            return collection;
-        }
-        else {
-            throw new IllegalStateException("Require access to a FeatureCollection supporting Collection.add");
-        }
+        final DefaultFeatureCollection collection = new DefaultFeatureCollection();
+        collection.add(feature);
+        return collection;        
     }
     
     /**
@@ -233,14 +229,9 @@ public final class FeatureUtilities {
         fb.add(params);
         SimpleFeature feature = fb.buildFeature(null);
 
-        final SimpleFeatureCollection collection = FeatureCollections.newCollection();
-        if( collection instanceof Collection ){
-            ((Collection<SimpleFeature>)collection).add(feature);
-            return collection;
-        }
-        else {
-            throw new IllegalStateException("Require access to SimpleFeatureCollection implementing Collecion.add");
-        }
+        final DefaultFeatureCollection collection = new DefaultFeatureCollection();
+        collection.add(feature);
+        return collection;        
     }
     
     /**

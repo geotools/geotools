@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollections;
@@ -95,30 +96,19 @@ public class AbstractFeatureCollectionTypeBinding extends AbstractComplexBinding
         }
 
         //&lt;element maxOccurs="unbounded" minOccurs="0" ref="gml:featureMember"/&gt;
-        List childValues = node.getChildValues(SimpleFeature.class);
+        List<SimpleFeature> childValues = node.getChildValues(SimpleFeature.class);
         
-        if( featureCollection instanceof Collection){
-            // example DefaultFeatureCollections or ListFeatureCollection
-            ((Collection)featureCollection).addAll(childValues);
-        }
-        else {
-            throw new IllegalStateException("DefaultFeatureCollection or ListFeatureCollection required");
-        }
+        // example DefaultFeatureCollections or ListFeatureCollection
+        Collection<SimpleFeature> collection = DataUtilities.collectionCast( featureCollection );
+        collection.addAll(childValues);
 
         //&lt;element minOccurs="0" ref="gml:featureMembers"/&gt;
         SimpleFeature[] featureMembers = (SimpleFeature[]) node.getChildValue(SimpleFeature[].class);
 
-        if( featureCollection instanceof Collection){
-            // example DefaultFeatureCollections or ListFeatureCollection
-            if (featureMembers != null) {
-                for (int i = 0; i < featureMembers.length; i++) {
-                    ((Collection)featureCollection).add(featureMembers[i]);
-                }
+        if (featureMembers != null) {
+            for (int i = 0; i < featureMembers.length; i++) {
+                collection.add(featureMembers[i]);
             }
-
-        }
-        else {
-            throw new IllegalStateException("DefaultFeatureCollection or ListFeatureCollection required");
         }
 
         return featureCollection;

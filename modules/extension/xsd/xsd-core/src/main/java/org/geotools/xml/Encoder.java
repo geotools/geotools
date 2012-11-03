@@ -58,6 +58,7 @@ import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.util.XSDUtil;
+import org.geotools.data.DataUtilities;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.xml.impl.BindingFactoryImpl;
@@ -1025,7 +1026,7 @@ O:
                                     iterator = collection.iterator();
                                 } else if (obj instanceof FeatureCollection) {
                                     FeatureCollection collection = (FeatureCollection) obj;
-                                    iterator = new BridgeIterator( collection.features() );
+                                    iterator = DataUtilities.iterator( collection.features() );
                                 } else {
                                     iterator = new SingleIterator(obj);
                                 }
@@ -1120,25 +1121,10 @@ O:
         return new String(out.toByteArray());
     }
 
-    protected void closeIterator(Iterator itr, Object source) {
-        if( itr instanceof Closeable){
-            try {
-                ((Closeable)itr).close();
-            }
-            catch( IOException e){
-                Logger log = Logger.getLogger( source.getClass().getPackage().toString() );
-                log.log(Level.FINE, e.getMessage(), e );
-            }
-        }
-        //special case check here for feature collection
-        // we need to ensure the iterator is closed properly
-//        if ( source instanceof FeatureCollection ) {
-//            //only close the iterator if not just a wrapping one
-//            if ( !( itr instanceof SingleIterator ) ) {
-//                ((FeatureCollection)source).close( itr );
-//            }
-//        }
+    protected void closeIterator(Iterator iterator, Object source) {
+        DataUtilities.close( iterator );
     }
+    
     protected Node encode(Object object, XSDNamedComponent component) {
         return encode( object, component, null );
     }
@@ -1265,37 +1251,6 @@ O:
         public Object next() {
             // TODO Auto-generated method stub
             return null;
-        }
-    }
-    /**
-     * Internal closeable iterator used to bridge from FeatureCollection
-     * to a "normal" iterator for encoding.
-     * 
-     * @author jody
-     */
-    private static class BridgeIterator implements Iterator<Feature>, Closeable {
-        FeatureIterator<?> delegate;
-        public BridgeIterator(FeatureIterator<?> features) {
-            this.delegate = features;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return delegate.hasNext();
-        }
-
-        @Override
-        public Feature next() {
-            return delegate.next();
-        }
-
-        @Override
-        public void remove() {
-        }
-
-        @Override
-        public void close() throws IOException {
-            delegate.close();
         }
     }
     

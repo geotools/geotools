@@ -2513,13 +2513,7 @@ public final class StreamingRenderer implements GTRenderer {
                         }
                     }
                 } finally {
-                    if( iterator instanceof Closeable ){
-                        try {
-                            ((Closeable)iterator).close();
-                        } catch (IOException e) {
-                            LOGGER.log(Level.FINER, e.getMessage(), e);
-                        }
-                    }
+                    DataUtilities.close( iterator );
                 }
             }
             
@@ -2595,13 +2589,7 @@ public final class StreamingRenderer implements GTRenderer {
             } catch(InterruptedException e) {
                 fireErrorEvent(e);
             } finally {
-                if( iterator instanceof Closeable ){
-                    try {
-                        ((Closeable)iterator).close();
-                    } catch (IOException e) {
-                        LOGGER.log(Level.FINER, e.getMessage(), e);
-                    }
-                }
+                DataUtilities.close( iterator );
             }             
         }
 

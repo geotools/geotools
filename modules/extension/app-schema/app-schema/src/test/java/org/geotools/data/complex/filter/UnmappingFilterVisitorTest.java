@@ -38,6 +38,7 @@ import javax.xml.namespace.QName;
 
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.complex.AppSchemaDataAccess;
 import org.geotools.data.complex.AttributeMapping;
@@ -313,15 +314,7 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         this.visitor = new UnmappingFilterVisitor(this.mapping);
         
         // retrieve a single sample feature
-        FeatureCollection<?,?> content = mapping.getSource().getFeatures();
-        FeatureIterator<?> iterator = content.features();
-        Feature sourceFeature = null;
-        try {
-            sourceFeature = iterator.next();
-        }
-        finally {
-            iterator.close();
-        }
+        Feature sourceFeature = DataUtilities.first( mapping.getSource().getFeatures() );
         String fid = sourceFeature.getIdentifier().toString();
         Id fidFilter = ff.id(Collections.singleton(ff.featureId(fid)));
         Filter unrolled = (Filter) fidFilter.accept(visitor, null);
@@ -331,10 +324,9 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         FeatureCollection<SimpleFeatureType,SimpleFeature> results = mapping.getSource()
                 .getFeatures(unrolled);
         assertEquals(1, getCount(results));
-        iterator = results.features();
-        SimpleFeature unmappedFeature = (SimpleFeature) iterator.next();
-        iterator.close();
-
+        
+        SimpleFeature unmappedFeature =  DataUtilities.first( results);
+        
         assertEquals(fid, unmappedFeature.getID());
     }
     

@@ -64,7 +64,7 @@ public class ValueCollectionTypeImpl extends EObjectImpl implements ValueCollect
      * @generated
      * @ordered
      */
-    protected EList<FeatureCollection> member;
+    protected EList<Collection> member;
 
     /**
      * The cached value of the '{@link #getAdditionalValues() <em>Additional Values</em>}' containment reference.
@@ -210,9 +210,9 @@ public class ValueCollectionTypeImpl extends EObjectImpl implements ValueCollect
      * <!-- end-user-doc -->
      * @generated
      */
-    public EList<FeatureCollection> getMember() {
+    public EList<Collection> getMember() {
         if (member == null) {
-            member = new EDataTypeUniqueEList<FeatureCollection>(FeatureCollection.class, this, Wfs20Package.VALUE_COLLECTION_TYPE__MEMBER);
+            member = new EDataTypeUniqueEList<Collection>(Collection.class, this, Wfs20Package.VALUE_COLLECTION_TYPE__MEMBER);
         }
         return member;
     }
@@ -463,7 +463,7 @@ public class ValueCollectionTypeImpl extends EObjectImpl implements ValueCollect
         switch (featureID) {
             case Wfs20Package.VALUE_COLLECTION_TYPE__MEMBER:
                 getMember().clear();
-                getMember().addAll((Collection<? extends FeatureCollection>)newValue);
+                getMember().addAll((Collection<? extends Collection>)newValue);
                 return;
             case Wfs20Package.VALUE_COLLECTION_TYPE__ADDITIONAL_VALUES:
                 setAdditionalValues((AdditionalValuesType)newValue);

@@ -65,7 +65,7 @@ public class FilteringSimpleFeatureCollection extends DecoratingSimpleFeatureCol
 	}
 	
 	public SimpleFeatureIterator features() {
-	    return new FilteringFeatureIterator( delegate.features(), filter );
+	    return new FilteringSimpleFeatureIterator( delegate.features(), filter );
 	}
 
 	public void close(SimpleFeatureIterator close) {

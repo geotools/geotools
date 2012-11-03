@@ -63,15 +63,7 @@ AFTER::
 
 ALTERNATE::
 
-    SimpleFeatureCollection features = FeatureCollections.newCollection();
-    if( features instanceof Collection ){
-        Collection<SimpleFeature> collection = (Collection) features;
-        collection.addAll( list );
-    }
-    else {
-        throw new IllegalStateException("FeatureCollections configured with immutbale implementation");
-    }
-
+    ListFeatureCollection features = FeatureCollections.newCollection( schema, list );
 
 FeatureCollection Iterator
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -107,24 +99,36 @@ AFTER::
     }
 
 
-FeatureCollection close method
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+How to Close an Iterator
+^^^^^^^^^^^^^^^^^^^^^^^^
 
-We have made FeatureCollection implement closable (for Java 7 try-with-resource compatibility). This
+We have made FeatureIterator implement Closable (for Java 7 try-with-resource compatibility). This
 also provides an excellent replacement for FeatureCollection.close( Iterator ).
+
+If you are using any wrapping Iterators that still require the ability to close()
+please consider the following approach.
 
 BEFORE::
 
-        Iterator iterator = collection.iterator();
-        try {
-           ...
-        } finally {
-            if (collection instanceof SimpleFeatureCollection) {
-                ((SimpleFeatureCollection) collection).close(iterator);
-            }
+    Iterator iterator = collection.iterator();
+    try {
+       ...
+    } finally {
+        if (collection instanceof SimpleFeatureCollection) {
+            ((SimpleFeatureCollection) collection).close(iterator);
         }
+    }
 
-AFTER::
+QUICK::
+
+    Iterator iterator = collection.iterator();
+    try {
+       ...
+    } finally {
+        DataUtilities.close( iterator );
+    }
+
+DETAIL::
 
     Iterator iterator = collection.iterator();
     try {
@@ -140,7 +144,6 @@ AFTER::
             }
         }
     }
-
 
 GeoTools 8.0
 ------------

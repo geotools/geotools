@@ -16,6 +16,7 @@
  */
 package org.geotools.data;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FilenameFilter;
@@ -74,6 +75,7 @@ import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.GeometryAttributeImpl;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.SchemaException;
+import org.geotools.feature.collection.BridgeIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.AttributeDescriptorImpl;
@@ -1144,41 +1146,41 @@ public class DataUtilities {
             throws IOException, SchemaException {
         return new DefaultView(store.getFeatureSource(query.getTypeName()), query);
     }
-    /**
-     * Returns collection from the provided feature array
-     * 
-     * @param featureArray 
-     * @return array contents as a SimpleFeatureCollection
-     * @deprecated Please use {@link #collection(SimpleFeature[])} and check {@link SimpleFeatureCollection#size()} to ensure contents are not empty
-     */
-    public static SimpleFeatureCollection results(SimpleFeature[] featureArray) {
-        return results(collection(featureArray));
-    }
+//    /**
+//     * Returns collection from the provided feature array
+//     * 
+//     * @param featureArray 
+//     * @return array contents as a SimpleFeatureCollection
+//     * @deprecated Please use {@link #collection(SimpleFeature[])} and check {@link SimpleFeatureCollection#size()} to ensure contents are not empty
+//     */
+//    public static SimpleFeatureCollection results(SimpleFeature[] featureArray) {
+//        return results(collection(featureArray));
+//    }
 
-    /**
-     * Returns collection if non empty.
-     * <p>
-     * Previous implementation would throw an IOException if the collection was empty; method
-     * is now duplicated as it does not servce a function.
-     * 
-     * @param collection
-     * @return provided collection
-     * @deprecated Please check collection.size() directly to ensure your collection contains content
-     */
-    public static SimpleFeatureCollection results(final SimpleFeatureCollection collection) {
-        if (collection.size() == 0) {
-            // throw new IOException("Provided collection was empty");
-        }
-        return collection;
-    }
+//    /**
+//     * Returns collection if non empty.
+//     * <p>
+//     * Previous implementation would throw an IOException if the collection was empty; method
+//     * is now duplicated as it does not servce a function.
+//     * 
+//     * @param collection
+//     * @return provided collection
+//     * @deprecated Please check collection.size() directly to ensure your collection contains content
+//     */
+//    public static SimpleFeatureCollection results(final SimpleFeatureCollection collection) {
+//        if (collection.size() == 0) {
+//            // throw new IOException("Provided collection was empty");
+//        }
+//        return collection;
+//    }
 
-    public static <T extends FeatureType, F extends Feature> FeatureCollection<T, F> results(
-            final FeatureCollection<T, F> collection) {
-        if (collection.size() == 0) {
-            // throw new IOException("Provided collection was empty");
-        }
-        return collection;
-    }
+//    public static <T extends FeatureType, F extends Feature> FeatureCollection<T, F> results(
+//            final FeatureCollection<T, F> collection) {
+//        if (collection.size() == 0) {
+//            // throw new IOException("Provided collection was empty");
+//        }
+//        return collection;
+//    }
 
     /**
      * Adapt a collection to a reader for use with FeatureStore.setFeatures( reader ).
@@ -1248,6 +1250,72 @@ public class DataUtilities {
             FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection) {
         return new DefaultFeatureCollection(featureCollection);
     }
+
+    /**
+     * Checks if the provided iterator implements {@link Closeable}.
+     * <p>
+     * Any problems are logged at {@link Level#FINE}.
+     */
+    public static void close(Iterator<?> iterator) {
+        if (iterator != null && iterator instanceof Closeable) {
+            try {
+                ((Closeable) iterator).close();
+            } catch (IOException e) {
+                String name = iterator.getClass().getPackage().toString();
+                Logger log = Logger.getLogger(name);
+                log.log(Level.FINE, e.getMessage(), e);
+            }
+        }
+    }
+
+    /**
+     * Obtain the first feature from the collection as an exemplar.
+     * 
+     * @param simpleFeatureCollection
+     * @return first feature from the featureCollection
+     */
+    public static SimpleFeature first(SimpleFeatureCollection simpleFeatureCollection) {
+        if (simpleFeatureCollection == null) {
+            return null;
+        }
+        SimpleFeatureIterator iter = simpleFeatureCollection.features();
+        try {
+            while (iter.hasNext()) {
+                SimpleFeature feature = iter.next();
+                if (feature != null) {
+                    return feature;
+                }
+            }
+            return null; // not found!
+        } finally {
+            iter.close();
+        }
+    }
+    /**
+     * Obtain the first feature from the collection as an exemplar.
+     * 
+     * @param featureCollection
+     * @return first feature from the featureCollection
+     */
+
+    public static <F extends Feature> F first( FeatureCollection<?,F> featureCollection ){
+        if (featureCollection == null) {
+            return null;
+        }
+        FeatureIterator<F> iter = featureCollection.features();
+        try {
+            while (iter.hasNext()) {
+                F feature = iter.next();
+                if (feature != null) {
+                    return feature;
+                }
+            }
+            return null; // not found!
+        } finally {
+            iter.close();
+        }
+    }
+    
     //
     // Conversion (or casting) from general feature model to simple feature model
     //
@@ -1446,23 +1514,55 @@ public class DataUtilities {
     // FeatureCollection Utility Methods
     //
     /**
-     * Copies the provided fetaures into a List.
+     * Copies the provided features into a List.
      * 
      * @param featureCollection
      * @return List of features copied into memory
      */
-    public static List<SimpleFeature> list(
-            FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection) {
-        final ArrayList<SimpleFeature> list = new ArrayList<SimpleFeature>();
+    public static <F extends Feature> List<F> list(FeatureCollection<?, F> featureCollection) {
+        final ArrayList<F> list = new ArrayList<F>();
+        FeatureIterator<F> iter = featureCollection.features();
         try {
-            featureCollection.accepts(new FeatureVisitor() {
-                public void visit(Feature feature) {
-                    list.add((SimpleFeature) feature);
-                }
-            }, null);
-        } catch (IOException ignore) {
+            while( iter.hasNext() ){
+                F feature = iter.next();
+                list.add( feature );
+            }
+        }
+        finally {
+            iter.close();
         }
         return list;
+    }
+    /**
+     * Copies the provided fetaures into a List.
+     * 
+     * @param featureCollection
+     * @param maxFeatures Maximum number of features to load
+     * @return List of features copied into memory
+     */
+    public static <F extends Feature> List<F> list(FeatureCollection<?, F> featureCollection, int maxFeatures) {
+        final ArrayList<F> list = new ArrayList<F>();
+        FeatureIterator<F> iter = featureCollection.features();
+        try {
+            for( int count = 0; iter.hasNext() && count < maxFeatures; count++){
+                F feature = iter.next();
+                list.add( feature );        
+            }
+        }
+        finally {
+            iter.close();
+        }
+        return list;
+    }
+    /**
+     * Iteator wrapped around the provided FeatureIterator, implementing {@link Closeable}.
+     * 
+     * @see #close(Iterator)
+     * @param featureIterator
+     * @return Iterator wrapped around provided FeatureIterator, implements Closeable 
+     */
+    public static <F extends Feature> Iterator<F> iterator( FeatureIterator<F> featureIterator ){
+        return new BridgeIterator<F>( featureIterator );
     }
 
     /**
@@ -1484,6 +1584,25 @@ public class DataUtilities {
         } catch (IOException ignore) {
         }
         return fids;
+    }
+    //
+    // Conversion to java.util.Collection
+    //
+    /**
+     * Used to quickly cast to a java.util.Collection.
+     * 
+     * @param featureCollection
+     * @return Collection
+     */
+    @SuppressWarnings("unchecked")
+    public static <F extends Feature> Collection<F> collectionCast(
+            FeatureCollection<?, F> featureCollection) {
+        if (featureCollection instanceof Collection<?>) {
+            return (Collection<F>) featureCollection;
+        } else {
+            throw new IllegalArgumentException(
+                    "Require access to SimpleFeatureCollection implementing Collecion.add");
+        }
     }
     //
     // Conversion to FeatureCollection

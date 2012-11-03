@@ -38,6 +38,7 @@ import org.geotools.factory.GeoTools;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.collection.AbstractFeatureCollection;
 import org.geotools.feature.collection.AdaptorFeatureCollection;
+import org.geotools.feature.collection.BaseFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.JTSFactoryFinder;
@@ -90,7 +91,7 @@ public class RasterAsPointCollectionProcess implements RasterProcess {
      * @author simboss
      *
      */
-    private final static class RasterAsPointFeatureCollection extends AbstractFeatureCollection implements SimpleFeatureCollection {
+    private final static class RasterAsPointFeatureCollection extends BaseFeatureCollection {
     	
     	/**
     	 * The {@link GeometryFactory} cached here for building points inside iterators
@@ -175,14 +176,6 @@ public class RasterAsPointCollectionProcess implements RasterProcess {
 		public ReferencedEnvelope getBounds() {
 			return new ReferencedEnvelope(bounds);
 		}
-
-		@Override
-		protected Iterator<SimpleFeature> openIterator() {
-			// JG because we have an implementation of features we should
-			// choose a different base class that does not require an Iterator
-			return new WrappingIterator(features());
-		}
-
     }
 
     private final static class RasterAsPointFeatureIterator implements SimpleFeatureIterator {

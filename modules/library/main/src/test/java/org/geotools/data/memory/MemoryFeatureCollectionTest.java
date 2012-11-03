@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 import org.geotools.data.DataTestCase;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.collection.FilteredIterator;
@@ -116,9 +117,7 @@ public class MemoryFeatureCollectionTest extends DataTestCase {
                 count++;
             }
         } finally {
-            if( it instanceof Closeable){
-                ((Closeable)it).close();
-            }
+            DataUtilities.close( it );
         }
         assertEquals( roads.size(), count );
         

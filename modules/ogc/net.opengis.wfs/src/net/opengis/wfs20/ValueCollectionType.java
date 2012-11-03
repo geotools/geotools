@@ -8,6 +8,7 @@ package net.opengis.wfs20;
 
 import java.math.BigInteger;
 import java.util.Calendar;
+import java.util.Collection;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -54,7 +55,7 @@ public interface ValueCollectionType extends EObject {
      * @model 
      * @generated NOT
      */
-    EList<FeatureCollection> getMember();
+    EList<Collection> getMember();
 
     /**
      * Returns the value of the '<em><b>Additional Values</b></em>' containment reference.

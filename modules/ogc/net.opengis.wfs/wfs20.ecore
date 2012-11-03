@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ecore:EPackage xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="wfs20"
-    nsURI="http://www.opengis.net/wfs/2.0" nsPrefix="wfs">
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="wfs20" nsURI="http://www.opengis.net/wfs/2.0" nsPrefix="wfs">
   <eAnnotations source="urn:opengis:specification:gml:schema-xlinks:v3.0c2">
     <details key="appinfo" value="xlinks.xsd v3.0b2 2001-07"/>
   </eAnnotations>
@@ -2004,7 +2002,7 @@
       <details key="kind" value="elementOnly"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="member" upperBound="-1"
-        eType="#//FeatureCollection"/>
+        eType="#//Collection"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="additionalValues" eType="#//AdditionalValuesType"
         containment="true" resolveProxies="false">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
@@ -2323,4 +2321,5 @@
   <eClassifiers xsi:type="ecore:EDataType" name="FeatureCollection" instanceClassName="org.geotools.feature.FeatureCollection"/>
   <eClassifiers xsi:type="ecore:EDataType" name="PropertyName" instanceClassName="org.opengis.filter.expression.PropertyName"/>
   <eClassifiers xsi:type="ecore:EDataType" name="FeatureId" instanceClassName="org.opengis.filter.identity.FeatureId"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="Collection" instanceClassName="java.util.Collection"/>
 </ecore:EPackage>

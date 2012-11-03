@@ -31,6 +31,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.data.DataSourceException;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -116,37 +117,6 @@ public class DefaultVersionedFeatureCollection implements SimpleFeatureCollectio
     }
 
     /**
-     * Ensures that this collection contains the specified element (optional
-     * operation).  Returns <tt>true</tt> if this collection changed as a
-     * result of the call.  (Returns <tt>false</tt> if this collection does
-     * not permit duplicates and already contains the specified element.)
-     * 
-     * <p>
-     * Collections that support this operation may place limitations on what
-     * elements may be added to this collection.  In particular, some
-     * collections will refuse to add <tt>null</tt> elements, and others will
-     * impose restrictions on the type of elements that may be added.
-     * Collection classes should clearly specify in their documentation any
-     * restrictions on what elements may be added.
-     * </p>
-     * 
-     * <p>
-     * If a collection refuses to add a particular element for any reason other
-     * than that it already contains the element, it <i>must</i> throw an
-     * exception (rather than returning <tt>false</tt>).  This preserves the
-     * invariant that a collection always contains the specified element after
-     * this call returns.
-     * </p>
-     *
-     * @param o element whose presence in this collection is to be ensured.
-     *
-     * @return <tt>true</tt> if this collection changed as a result of the call
-     */
-//    public boolean add(SimpleFeature o) {
-//        return add(o, true);
-//    }
-
-    /**
      * Adds all of the elements in the specified collection to this collection
      * (optional operation).  The behavior of this operation is undefined if
      * the specified collection is modified while the operation is in
@@ -188,27 +158,6 @@ public class DefaultVersionedFeatureCollection implements SimpleFeatureCollectio
             iterator.close();
         }
     }
-
-//    public boolean addAll(FeatureCollection collection) {
-//        //TODO check inheritance with FeatureType here!!!
-//        boolean changed = false;
-//
-//        FeatureIterator iterator = collection.features();
-//        try {
-//            List<SimpleFeature> featuresAdded = new ArrayList<SimpleFeature>(collection.size());
-//            while (iterator.hasNext()) {
-//                SimpleFeature f = (SimpleFeature) iterator.next();
-//                boolean added = add(f,false);
-//                changed |= added;
-//
-//                if(added) featuresAdded.add(f);
-//            }
-//            return changed;
-//        }
-//        finally {
-//            iterator.close();
-//        }
-//    }
 
     private String getKey(FeatureId id) {
         if (id.getFeatureVersion() == null) {
@@ -256,13 +205,7 @@ public class DefaultVersionedFeatureCollection implements SimpleFeatureCollectio
             }
             return true;
         } finally {
-            if (iterator instanceof Closeable) {
-                try {
-                    ((Closeable) iterator).close();
-                } catch (IOException e) {
-                    LOGGER.log(Level.FINE, e.getMessage(), e);
-                }
-            }
+            DataUtilities.close( iterator );
         }
     }
 
@@ -287,35 +230,6 @@ public class DefaultVersionedFeatureCollection implements SimpleFeatureCollectio
     }
 
     /**
-     * Returns an iterator over the elements in this collection.  There are no
-     * guarantees concerning the order in which the elements are returned
-     * (unless this collection is an instance of some class that provides a
-     * guarantee).
-     *
-     * @return an <tt>Iterator</tt> over the elements in this collection
-     */
-//    public Iterator iterator() {
-//        final Iterator iterator = contents.values().iterator();
-//
-//        return new Iterator() {
-//            SimpleFeature currFeature = null;
-//
-//            public boolean hasNext() {
-//                return iterator.hasNext();
-//            }
-//
-//            public Object next() {
-//                currFeature = (SimpleFeature) iterator.next();
-//                return currFeature;
-//            }
-//
-//            public void remove() {
-//                iterator.remove();
-//            }
-//        };
-//    }
-
-    /**
      * Gets a SimpleFeatureIterator of this feature collection.  This allows
      * iteration without having to cast.
      *
@@ -324,106 +238,6 @@ public class DefaultVersionedFeatureCollection implements SimpleFeatureCollectio
     public SimpleFeatureIterator features() {
         return new SimpleFeatureIteratorImpl( contents.values() );
     }
-
-    /**
-     * Removes a single instance of the specified element from this collection,
-     * if it is present (optional operation).  More formally, removes an
-     * element <tt>e</tt> such that <tt>(o==null ?  e==null :
-     * o.equals(e))</tt>, if this collection contains one or more such
-     * elements.  Returns true if this collection contained the specified
-     * element (or equivalently, if this collection changed as a result of the
-     * call).
-     *
-     * @param o element to be removed from this collection, if present.
-     *
-     * @return <tt>true</tt> if this collection changed as a result of the call
-     */
-//    public boolean remove(Object o) {
-//        if( !(o instanceof SimpleFeature)) {
-//            return false;
-//        }
-//
-//        SimpleFeature f = (SimpleFeature) o;
-//        boolean changed = contents.values().remove(f);
-//        return changed;
-//    }
-
-    /**
-     * Removes all this collection's elements that are also contained in the
-     * specified collection (optional operation).  After this call returns,
-     * this collection will contain no elements in common with the specified
-     * collection.
-     *
-     * @param collection elements to be removed from this collection.
-     *
-     * @return <tt>true</tt> if this collection changed as a result of the call
-     *
-     * @see #remove(Object)
-     * @see #contains(Object)
-     */
-//    public boolean removeAll(Collection<?> collection) {
-//        boolean changed = false;
-//        Iterator<?> iterator = collection.iterator();
-//        try {
-//            List<SimpleFeature> removedFeatures = new ArrayList<SimpleFeature>(collection.size());
-//            while (iterator.hasNext()) {
-//                SimpleFeature f = (SimpleFeature) iterator.next();
-//                boolean removed = contents.values().remove(f);
-//
-//                if(removed) {
-//                    changed = true;
-//                    removedFeatures.add(f);
-//                }
-//            }
-//            return changed;
-//        }
-//        finally {
-//            if (iterator instanceof Closeable) {
-//                try {
-//                    ((Closeable) iterator).close();
-//                } catch (IOException e) {
-//                    LOGGER.log(Level.FINE, e.getMessage(), e);
-//                }
-//            }
-//        }
-//    }
-
-    /**
-     * Retains only the elements in this collection that are contained in the
-     * specified collection (optional operation).  In other words, removes
-     * from this collection all of its elements that are not contained in the
-     * specified collection.
-     *
-     * @param collection elements to be retained in this collection.
-     *
-     * @return <tt>true</tt> if this collection changed as a result of the call
-     *
-     * @see #remove(Object)
-     * @see #contains(Object)
-     */
-//    public boolean retainAll(Collection collection) {
-//        List removedFeatures = new ArrayList(contents.size() - collection.size());
-//        boolean modified = false;
-//
-//        for(Iterator it = contents.values().iterator(); it.hasNext(); )  {
-//            SimpleFeature f = (SimpleFeature) it.next();
-//            if(!collection.contains(f)) {
-//                it.remove();
-//                modified = true;
-//                removedFeatures.add(f);
-//            }
-//        }
-//
-//        return modified;
-//    }
-
-//    public void close( FeatureIterator<SimpleFeature>  close ) {
-//        if( close instanceof FeatureIteratorImpl){
-//            FeatureIteratorImpl<SimpleFeature> wrapper = (FeatureIteratorImpl<SimpleFeature>) close;
-//            wrapper.close();
-//        }
-//    }
-//
 
     public  FeatureReader<SimpleFeatureType, SimpleFeature> reader() throws IOException {
         final SimpleFeatureIterator iterator = features(); 

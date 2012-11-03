@@ -23,6 +23,7 @@ import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.Feature;
@@ -70,14 +71,7 @@ public class DelegateFeatureIterator<F extends Feature> implements FeatureIterat
 		return  delegate.next();
 	}
 	public void close() {
-	    if( delegate instanceof Closeable){
-	        try {
-                    ((Closeable)delegate).close();
-                } catch (IOException e) {
-                    Logger log = Logger.getLogger(delegate.getClass().getPackage().toString() );
-                    log.log(Level.FINER, e.getMessage(), e);
-                }
-	    }
+	    DataUtilities.close( delegate );
 	    delegate = null;		
 	}
 }

@@ -29,6 +29,7 @@ import javax.xml.namespace.QName;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -126,7 +127,7 @@ public class DocumentTypeBinding extends AbstractComplexBinding {
         if ( object instanceof FeatureCollection ) {
             FeatureCollection fc = (FeatureCollection) object;
             //TODO: this does not close the iterator!!
-            BridgeIterator iterator = new BridgeIterator( fc.features() );
+            Iterator iterator = DataUtilities.iterator( fc.features() );
             
             prop[1] = iterator;
         }
@@ -142,36 +143,5 @@ public class DocumentTypeBinding extends AbstractComplexBinding {
         return l;
     }
     
-    /**
-     * Internal closeable iterator used to bridge from FeatureCollection
-     * to a "normal" iterator for encoding.
-     * 
-     * @author jody
-     */
-    private static class BridgeIterator implements Iterator<Feature>, Closeable {
-        FeatureIterator<?> delegate;
-        public BridgeIterator(FeatureIterator<?> features) {
-            this.delegate = features;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return delegate.hasNext();
-        }
-
-        @Override
-        public Feature next() {
-            return delegate.next();
-        }
-
-        @Override
-        public void remove() {
-        }
-
-        @Override
-        public void close() throws IOException {
-            delegate.close();
-        }
-    }
 }
 

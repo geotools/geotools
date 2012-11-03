@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.Feature;
@@ -80,14 +81,7 @@ public class FeatureIteratorImpl<F extends Feature> implements FeatureIterator<F
      */
     public void close(){
         if( iterator != null){
-            if( iterator instanceof Closeable ){
-                try {
-                    ((Closeable)iterator).close();
-                } catch (IOException e) {
-                    Logger log = Logger.getLogger( collection.getClass().getPackage().getName() );
-                    log.log(Level.FINE, e.getMessage(), e );
-                }
-            }
+            DataUtilities.close( iterator );
             iterator = null;
             collection = null;
         }

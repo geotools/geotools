@@ -16,26 +16,14 @@
  */
 package org.geotools.feature.collection;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.geotools.data.FeatureReader;
-import org.geotools.data.collection.DelegateFeatureReader;
+import org.geotools.data.DataUtilities;
+import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.data.store.FilteringFeatureIterator;
+import org.geotools.data.store.EmptyFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.visitor.BoundsVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.util.NullProgressListener;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.sort.SortBy;
@@ -43,7 +31,7 @@ import org.opengis.filter.sort.SortBy;
 /**
  * Reasonable default implementation for subCollection making
  * use of parent {@link SimpleFeatureCollection#features()}
- * and provided Fitler.
+ * and provided Filter.
  * <p>
  * This is only a reasonable implementation and is not optimal. It is recommended
  * that implementors construct a new {@link Query} and use {@link SimpleFeatureSource#getFeatures(Query)}.
@@ -51,7 +39,7 @@ import org.opengis.filter.sort.SortBy;
  * @author Jody Garnett, Refractions Research, Inc.
  * @source $URL$
  */
-public class SubFeatureCollection extends BaseFeatureCollection {
+public class SubFeatureCollection extends BaseSimpleFeatureCollection {
     
     /** Filter */
     protected Filter filter;
@@ -125,56 +113,17 @@ public class SubFeatureCollection extends BaseFeatureCollection {
     protected Filter createFilter(){
         return Filter.INCLUDE;
     }
-    //
-    //
-    //
+
     public SimpleFeatureCollection subCollection(Filter filter) {
         if (filter.equals(Filter.INCLUDE)) {
             return this;
         }
         if (filter.equals(Filter.EXCLUDE)) {
-            // TODO implement EmptyFeatureCollection( schema )
+            return new EmptyFeatureCollection( schema );
         }
         return new SubFeatureCollection(this, filter);
     }
-
 	
-    public boolean isEmpty() {
-        SimpleFeatureIterator iterator = features();
-        try {
-            return !iterator.hasNext();
-        } finally {
-            iterator.close();
-        }
-    }
-	
-	public void accepts(org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress) {
-	    if( progress == null ) {
-                progress = new NullProgressListener();
-            }
-	    SimpleFeatureIterator iterator = features();
-            
-        try{
-            float size = size();
-            float position = 0;            
-            progress.started();
-            while( !progress.isCanceled() && iterator.hasNext()){
-                try {
-                    SimpleFeature feature = (SimpleFeature) iterator.next();
-                    visitor.visit(feature);
-                }
-                catch( Exception erp ){
-                    progress.exceptionOccurred( erp );
-                }
-                progress.progress( position++/size );
-            }            
-        }
-        finally {
-            progress.complete();            
-            iterator.close();
-        }
-	}	
-
 	public SimpleFeatureCollection sort(SortBy order) {
 		return new SubFeatureList( collection, filter, order );
 	}
@@ -183,30 +132,12 @@ public class SubFeatureCollection extends BaseFeatureCollection {
     	return collection.getID();
     }
 
-    // extra methods
-    public FeatureReader<SimpleFeatureType, SimpleFeature> reader() throws IOException {
-        return new DelegateFeatureReader<SimpleFeatureType, SimpleFeature>( getSchema(), features() );
+    /**
+     * Calculates the bounds of the features without caching.
+     */
+    @Override
+    public ReferencedEnvelope getBounds() {
+        return DataUtilities.bounds(this);
     }
-
-    public int getCount() throws IOException {
-        return size();
-    }
-
-    public SimpleFeatureCollection collection() throws IOException {
-        return this;
-    }
-
-	/**
-	 * Calculates the bounds of the features without caching.
-	 *  
-	 * TODO Have some pro look at this code.
-	 * author by Stefan Krueger 
-	 */
-	@Override
-	public ReferencedEnvelope getBounds() {
-	    BoundsVisitor bounds = new BoundsVisitor();
-	    accepts( bounds, new NullProgressListener() );            
-            return bounds.getBounds();
-	}
 
 }

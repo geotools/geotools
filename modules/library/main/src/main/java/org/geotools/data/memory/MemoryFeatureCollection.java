@@ -21,12 +21,11 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.collection.AbstractFeatureCollection;
 import org.geotools.feature.collection.RandomFeatureAccess;
-import org.geotools.feature.visitor.BoundsVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.util.NullProgressListener;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -125,9 +124,7 @@ public class MemoryFeatureCollection extends AbstractFeatureCollection implement
      */
     @Override
     public ReferencedEnvelope getBounds() {
-        BoundsVisitor bounds = new BoundsVisitor();
-        accepts(bounds, new NullProgressListener());
-        return bounds.getBounds();
+        return DataUtilities.bounds( features() );
     }
 
 	@Override

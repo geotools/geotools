@@ -198,30 +198,7 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
 
     public void accepts(org.opengis.feature.FeatureVisitor visitor,
             org.opengis.util.ProgressListener progress) throws IOException {
-        FeatureIterator<F> iterator = null;
-        if (progress == null)
-            progress = new NullProgressListener();
-        try {
-            float size = size();
-            float position = 0;
-            progress.started();
-            for (iterator = features(); !progress.isCanceled() && iterator.hasNext();) {
-                try {
-                    Feature feature = (Feature) iterator.next();
-                    visitor.visit(feature);
-                } catch (Exception erp) {
-                    progress.exceptionOccurred(erp);
-                }
-                if (size > 0){
-                    progress.progress(position++ / size);
-                }
-            }
-        } finally {
-            progress.complete();
-            if( iterator != null ){
-                iterator.close();
-            }
-        }
+        DataUtilities.visit(this, visitor, progress);
     }
 
     //

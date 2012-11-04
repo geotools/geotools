@@ -16,8 +16,10 @@
  */
 package org.geotools.feature.collection;
 
+import java.io.IOException;
 import java.util.Collection;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -50,30 +52,8 @@ public class DecoratingFeatureCollection<T extends FeatureType, F extends Featur
     }
 
     public void accepts(org.opengis.feature.FeatureVisitor visitor,
-            org.opengis.util.ProgressListener progress) {
-        FeatureIterator<F> it = features();
-
-        try {
-            Exception exception = null;
-            while (it.hasNext()) {
-                try {
-                    visitor.visit(it.next());
-                } catch (Exception e) {
-                    if (exception != null)
-                        exception = e;
-                }
-            }
-
-            if (exception != null) {
-                if (exception instanceof RuntimeException) {
-                    throw (RuntimeException) exception;
-                } else {
-                    throw new RuntimeException(exception);
-                }
-            }
-        } finally {
-        	it.close();
-        }
+            org.opengis.util.ProgressListener progress) throws IOException {
+        DataUtilities.visit(this, visitor, progress);
     }
     
     public boolean contains(Object o) {

@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.CollectionListener;
@@ -82,27 +83,7 @@ public class PreGeneralizedFeatureCollection implements
      *      org.opengis.util.ProgressListener) Logic copied from DefaultFeatureCollection class
      */
     public void accepts(FeatureVisitor visitor, ProgressListener progress) throws IOException {
-        SimpleFeatureIterator iterator = null;
-        if (progress == null)
-            progress = new NullProgressListener();
-        try {
-            float size = size();
-            float position = 0;
-            progress.started();
-            
-            for (iterator = features(); !progress.isCanceled() && iterator.hasNext(); progress
-                    .progress(position++ / size)) {
-                try {
-                    SimpleFeature feature = (SimpleFeature) iterator.next();
-                    visitor.visit(feature);
-                } catch (Exception erp) {
-                    progress.exceptionOccurred(erp);
-                }
-            }
-        } finally {
-            progress.complete();
-            iterator.close();
-        }
+        DataUtilities.visit(this, visitor, progress);
     }
 
     public boolean contains(Object feature) {

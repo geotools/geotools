@@ -319,27 +319,8 @@ public class DefaultVersionedFeatureCollection implements SimpleFeatureCollectio
         return Collections.unmodifiableSet( contents.keySet() );
     }
 
-    public void accepts(org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress) {
-        FeatureIterator<SimpleFeature> iterator = null;
-        if (progress == null) progress = new NullProgressListener();
-        try{
-            float size = size();
-            float position = 0;            
-            progress.started();
-            for( iterator = features(); !progress.isCanceled() && iterator.hasNext(); progress.progress( position++/size )){
-                try {
-                    SimpleFeature feature = (SimpleFeature) iterator.next();
-                    visitor.visit(feature);
-                }
-                catch( Exception erp ){
-                    progress.exceptionOccurred( erp );
-                }
-            }            
-        }
-        finally {
-            progress.complete();  
-            iterator.close();
-        }       
+    public void accepts(org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress) throws IOException {
+        DataUtilities.visit(this, visitor, progress);       
     }
 
     /**

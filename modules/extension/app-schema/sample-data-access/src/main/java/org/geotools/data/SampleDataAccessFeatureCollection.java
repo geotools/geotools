@@ -52,9 +52,7 @@ public class SampleDataAccessFeatureCollection extends ArrayList<Feature> implem
      *      org.opengis.util.ProgressListener)
      */
     public void accepts(FeatureVisitor visitor, ProgressListener progress) throws IOException {
-        for (Feature feature : this) {
-            visitor.visit(feature);
-        }
+        DataUtilities.visit(this, visitor, progress);
     }
 
     /**

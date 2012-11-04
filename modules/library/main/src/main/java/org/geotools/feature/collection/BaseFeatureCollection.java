@@ -18,14 +18,13 @@ package org.geotools.feature.collection;
 
 import java.util.Collection;
 
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.data.store.EmptyFeatureCollection;
+import org.geotools.data.store.FilteringFeatureCollection;
+import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.NullProgressListener;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.Feature;
+import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.geometry.BoundingBox;
@@ -38,8 +37,7 @@ import org.opengis.geometry.BoundingBox;
  * <li>{@link #features()}</li>
  * <li>
  * This is the direct decentent of the origional {@link AbstractFeatureCollection}
- * and represents the easiest way to package your content as a SimpleFeatureCollection
- * (with no optimisation).
+ * and represents the easiest way to package your content as a FeatureCollection.
  * <p>
  * As this class provides no optimization, it is strongly recommended that you implement
  * the following methods (which require a whole collection traversal):
@@ -51,14 +49,14 @@ import org.opengis.geometry.BoundingBox;
  * @author Jody Garnett (LISAsoft)
  * @source $URL$
  */
-public abstract class BaseFeatureCollection implements SimpleFeatureCollection {
+public abstract class BaseFeatureCollection<T extends FeatureType, F extends Feature> implements FeatureCollection<T,F> {
     /**
      * id used when serialized to gml
      */
     protected String id;
-    protected SimpleFeatureType schema;
+    protected T schema;
 
-    protected BaseFeatureCollection(SimpleFeatureType schema) {
+    protected BaseFeatureCollection(T schema) {
         this.id = id == null ? "featureCollection" : id;
         this.schema = schema;
     }
@@ -67,20 +65,20 @@ public abstract class BaseFeatureCollection implements SimpleFeatureCollection {
         return id;
     }
 
-    public SimpleFeatureType getSchema() {
+    public T getSchema() {
         return schema;
     }
 
     //
-    // SimpleFeatureCollection - Feature Access
+    // FeatureCollection - Feature Access
     //
     /**
      * Subclasses required to implement this method to traverse FeatureCollection contents.
      * <p>
-     * Note that {@link SimpleFeatureIterator#close()} is available to clean up
+     * Note that {@link FeatureIterator<F>#close()} is available to clean up
      * after any resource use required during traversal.
      */
-    public abstract SimpleFeatureIterator features();
+    public abstract FeatureIterator<F> features();
 
     /**
      * Returns <tt>true</tt> if this collection contains the specified element. <tt></tt>.
@@ -92,7 +90,7 @@ public abstract class BaseFeatureCollection implements SimpleFeatureCollection {
      * @return <tt>true</tt> if this collection contains the specified element.
      */
     public boolean contains(Object o) {
-        SimpleFeatureIterator e = features();
+        FeatureIterator<F> e = features();
         try {
             if (o == null) {
                 while (e.hasNext()){
@@ -124,10 +122,10 @@ public abstract class BaseFeatureCollection implements SimpleFeatureCollection {
      * @see #contains(Object)
      */
     public boolean containsAll(Collection<?> c) {
-        SimpleFeatureIterator e = features();
+        FeatureIterator<F> e = features();
         try {
             while (e.hasNext()){
-                SimpleFeature feature = e.next();
+                Feature feature = e.next();
                 if (!c.contains(feature)){
                     return false;
                 }
@@ -142,7 +140,7 @@ public abstract class BaseFeatureCollection implements SimpleFeatureCollection {
      * @return <tt>true</tt> if this collection contains no elements.
      */
     public boolean isEmpty() {
-        SimpleFeatureIterator iterator = features();
+        FeatureIterator<F> iterator = features();
         try {
             return !iterator.hasNext();
         } finally {
@@ -157,7 +155,7 @@ public abstract class BaseFeatureCollection implements SimpleFeatureCollection {
      */
     public Object[] toArray() {
         Object[] result = new Object[size()];
-        SimpleFeatureIterator e = null;
+        FeatureIterator<F> e = null;
         try {
             e = features();
             for (int i = 0; e.hasNext(); i++)
@@ -174,7 +172,7 @@ public abstract class BaseFeatureCollection implements SimpleFeatureCollection {
         if (a.length < size) {
             a = (O[]) java.lang.reflect.Array.newInstance(a.getClass().getComponentType(), size);
         }
-        SimpleFeatureIterator it = features();
+        FeatureIterator<F> it = features();
         try {
             Object[] result = a;
             for (int i = 0; i < size; i++)
@@ -189,7 +187,7 @@ public abstract class BaseFeatureCollection implements SimpleFeatureCollection {
 
     public void accepts(org.opengis.feature.FeatureVisitor visitor,
             org.opengis.util.ProgressListener progress) {
-        SimpleFeatureIterator iterator = null;
+        FeatureIterator<F> iterator = null;
         if (progress == null)
             progress = new NullProgressListener();
         try {
@@ -198,7 +196,7 @@ public abstract class BaseFeatureCollection implements SimpleFeatureCollection {
             progress.started();
             for (iterator = features(); !progress.isCanceled() && iterator.hasNext();) {
                 try {
-                    SimpleFeature feature = (SimpleFeature) iterator.next();
+                    Feature feature = (Feature) iterator.next();
                     visitor.visit(feature);
                 } catch (Exception erp) {
                     progress.exceptionOccurred(erp);
@@ -218,18 +216,15 @@ public abstract class BaseFeatureCollection implements SimpleFeatureCollection {
     //
     // Feature Collections API
     //
-    public SimpleFeatureCollection subCollection(Filter filter) {
+    public FeatureCollection<T,F> subCollection(Filter filter) {
         if (filter == Filter.INCLUDE) {
             return this;
         }
-        if( filter == Filter.EXCLUDE) {
-            return new EmptyFeatureCollection(schema);
-        }
-        return new SubFeatureCollection(this, filter);
+        return new FilteringFeatureCollection<T, F>(this, filter);
     }
 
-    public SimpleFeatureCollection sort(SortBy order) {
-        return new SubFeatureList(this, order);
+    public FeatureCollection<T,F> sort(SortBy order) {
+        throw new UnsupportedOperationException("Cannot sort on complex features at the moment");
     }
 
     /**
@@ -239,11 +234,11 @@ public abstract class BaseFeatureCollection implements SimpleFeatureCollection {
      */
     public int size(){
         int count = 0;
-        SimpleFeatureIterator it = features();
+        FeatureIterator<F> it = features();
         try {
             while( it.hasNext() ){
                 @SuppressWarnings("unused")
-                SimpleFeature feature = it.next();
+                Feature feature = it.next();
                 count++;
             }
         } finally {
@@ -259,10 +254,10 @@ public abstract class BaseFeatureCollection implements SimpleFeatureCollection {
      */
     public ReferencedEnvelope getBounds(){
         ReferencedEnvelope bounds = null;
-        SimpleFeatureIterator it = features();
+        FeatureIterator<F> it = features();
         try {
             while( it.hasNext() ){
-                SimpleFeature feature = it.next();
+                Feature feature = it.next();
                 BoundingBox bbox = feature.getBounds();
                 if( bbox != null ){
                     if( bounds == null ){

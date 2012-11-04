@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 
 import java.util.Map;
@@ -212,6 +213,8 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
                 return createPropertyNameFromString(eDataType, initialValue);
             case Wfs20Package.FEATURE_ID:
                 return createFeatureIdFromString(eDataType, initialValue);
+            case Wfs20Package.COLLECTION:
+                return createCollectionFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -283,6 +286,8 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
                 return convertPropertyNameToString(eDataType, instanceValue);
             case Wfs20Package.FEATURE_ID:
                 return convertFeatureIdToString(eDataType, instanceValue);
+            case Wfs20Package.COLLECTION:
+                return convertCollectionToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -1560,6 +1565,24 @@ public class Wfs20FactoryImpl extends EFactoryImpl implements Wfs20Factory {
      * @generated
      */
     public String convertFeatureIdToString(EDataType eDataType, Object instanceValue) {
+        return super.convertToString(eDataType, instanceValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public Collection createCollectionFromString(EDataType eDataType, String initialValue) {
+        return (Collection)super.createFromString(eDataType, initialValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertCollectionToString(EDataType eDataType, Object instanceValue) {
         return super.convertToString(eDataType, instanceValue);
     }
 

@@ -87,9 +87,10 @@ public class ValueCollectionTypeBinding extends AbstractComplexEMFBinding {
         if (WFS.member.equals(name)) {
             return ((ValueCollectionType)object).getMember().iterator().next();
         }
-        else {
-            return WFSParsingUtils.FeatureCollectionType_getProperty((EObject)object, name);
-        }
+        return null;
+        //else {
+        //    return WFSParsingUtils.FeatureCollectionType_getProperty((EObject)object, name);
+        //}
     }
 
 }

@@ -120,6 +120,10 @@ public class FilteringFeatureCollection<T extends FeatureType, F extends Feature
 		return true;
 	}
 
+	public FeatureIterator<F> features() {
+	    return new FilteringFeatureIterator<F>(delegate.features(), filter);
+	}
+
 	public  FeatureReader<T, F> reader() throws IOException {
 		return new DelegateFeatureReader<T, F>( getSchema(), features() );
 	}

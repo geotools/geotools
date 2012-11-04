@@ -23,7 +23,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.TimeZone;
 
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.text.cql2.CQLException;
@@ -392,6 +392,7 @@ public abstract class AbstractFilterBuilder {
 			}
 			String dateTimeFormat = format.toString();
 			DateFormat formatter = new SimpleDateFormat(dateTimeFormat);
+			formatter.setTimeZone( TimeZone.getTimeZone("GMT") );
 
 			Date dateTime = formatter.parse(date + "T"+ time + timeZone);
 			Literal literalDate = filterFactory.literal(dateTime);

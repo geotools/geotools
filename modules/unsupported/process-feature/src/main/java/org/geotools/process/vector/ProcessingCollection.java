@@ -25,16 +25,12 @@ import java.util.List;
 import java.util.UUID;
 
 import org.geotools.data.DataUtilities;
-import org.geotools.data.store.FilteringFeatureCollection;
-import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.collection.SortedSimpleFeatureCollection;
+import org.geotools.feature.collection.BaseFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.NullProgressListener;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.sort.SortBy;
@@ -56,14 +52,10 @@ import org.opengis.util.ProgressListener;
  * @param <F>
  */
 public abstract class ProcessingCollection<T extends FeatureType, F extends Feature>
-        implements FeatureCollection<T, F> {
-
-    private T schema;
-
-    private String id;
+        extends BaseFeatureCollection<T, F> {
 
     public ProcessingCollection() {
-        id = getClass().getSimpleName() + "-" + UUID.randomUUID().toString();
+        this.id = getClass().getSimpleName() + "-" + UUID.randomUUID().toString();
     }
 
     /**
@@ -105,40 +97,6 @@ public abstract class ProcessingCollection<T extends FeatureType, F extends Feat
     }
 
     /**
-     * Convenience implementation that just wraps this collection into a
-     * {@link FilteringFeatureCollection}. Subclasses might want to override this in case the filter
-     * can be cascaded to their data sources.
-     * 
-     * @param filter
-     * @return
-     */
-    @Override
-    public FeatureCollection<T, F> subCollection(Filter filter) {
-        return new FilteringFeatureCollection<T, F>(this, filter);
-    }
-
-    /**
-     * Convenience implementation that
-     */
-    @SuppressWarnings("unchecked")
-	@Override
-    public FeatureCollection<T, F> sort(SortBy order) {
-        if (schema instanceof SimpleFeatureType) {
-            // go for the most efficient way if possible, otherwise rely on pure in memory
-            // sorting...
-            return (FeatureCollection<T, F>) new SortedSimpleFeatureCollection(
-                    DataUtilities
-                            .simple((FeatureCollection<SimpleFeatureType, SimpleFeature>) this),
-                    new SortBy[] { order });
-        } else {
-            // hmm... we don't even have a basic non simple collection... need to implement one
-            // before
-            // going here
-            throw new UnsupportedOperationException("Cannot sort on complex features at the moment");
-        }
-    }
-
-    /**
      * The bounds of features in the output. If the bounds are not known in advance once can call the
      * getFeatureBounds() which will build it from the features as they are returned from the feature
      * iterator.
@@ -164,164 +122,36 @@ public abstract class ProcessingCollection<T extends FeatureType, F extends Feat
     /**
      * Convenience method that counts features by traversing the feature iterator.
      * 
-     * @return
+     * @return number of features using {@link #features()}
+     * @deprecated Use {@link DataUtilities#count(org.geotools.feature.FeatureCollection)
      */
     protected int getFeatureCount() {
-        FeatureIterator<F> fi = null;
-        try {
-            fi = features();
-            int count = 0;
-            while (fi.hasNext()) {
-                fi.next();
-                count++;
-            }
-            return count;
-        } finally {
-        	if( fi != null ){
-        		fi.close();
-        	}
-        }
+        return DataUtilities.count( this );
     }
     
     /**
+     * Utility to get all the features to implement the toArray methods
+     * @deprecated Use {@link DataUtilities#list(org.geotools.feature.FeatureCollection)}
+     */
+    protected List<F> toList() {
+        return DataUtilities.list( this );
+    }
+    /**
      * Convenience method that computes the feature bounds by traversing the feature iterator.
      * 
-     * @return
+     * @return bounds calculated using {@link #features()}
+     * @deprecated Use {@link DataUtilities#bounds(FeatureIterator)
      */
     protected ReferencedEnvelope getFeatureBounds() {
-        FeatureIterator<F> fi = null;
-        try {
-            fi = features();
-            ReferencedEnvelope bounds = null;
-            while (fi.hasNext()) {
-                F feature = fi.next();
-                ReferencedEnvelope featureEnvelope = null;
-                if(feature != null && feature.getBounds() != null) {
-                    featureEnvelope = ReferencedEnvelope.reference(feature.getBounds());
-                }
-                
-                if(featureEnvelope != null) {
-                    if(bounds == null) {
-                        bounds = new ReferencedEnvelope(featureEnvelope);
-                    } else {
-                        bounds.expandToInclude(featureEnvelope);
-                    }
-                }
-            }
-            
-            return bounds;
-        } finally {
-            if( fi != null ){
-            	fi.close();
-            }
-        }
+        return DataUtilities.bounds( features() );
     }
 
     @Override
     public T getSchema() {
         if(schema == null) {
             schema = buildTargetFeatureType();
-        }
-        
+        }        
         return schema;
-    }
-
-    @Override
-    public String getID() {
-        return id;
-    }
-
-    /**
-     * Returns <tt>true</tt> if this collection contains the specified element. <tt></tt>.
-     * <p>
-     * 
-     * This implementation iterates over the elements in the collection, checking each element in
-     * turn for equality with the specified element.
-     * 
-     * @param o object to be checked for containment in this collection.
-     * @return <tt>true</tt> if this collection contains the specified element.
-     */
-    public boolean contains(Object o) {
-        FeatureIterator<F> e = null;
-        try {
-            e = features();
-            if (o == null) {
-                while (e.hasNext())
-                    if (e.next() == null)
-                        return true;
-            } else {
-                while (e.hasNext())
-                    if (o.equals(e.next()))
-                        return true;
-            }
-            return false;
-        } finally {
-            if( e != null ){
-            	e.close();
-            }
-        }
-    }
-
-    /**
-     * Returns <tt>true</tt> if this collection contains all of the elements in the specified
-     * collection.
-     * <p>
-     * 
-     * @param c collection to be checked for containment in this collection.
-     * @return <tt>true</tt> if this collection contains all of the elements in the specified
-     *         collection.
-     * @throws NullPointerException if the specified collection is null.
-     * 
-     * @see #contains(Object)
-     */
-    public boolean containsAll(Collection<?> c) {
-        Iterator<?> e = c.iterator();
-        while (e.hasNext()){
-                if (!contains(e.next())){
-                    return false;
-                }
-        }
-        return true;        
-    }
-
-    @Override
-    public boolean isEmpty() {
-        FeatureIterator<F> fi = null;
-        try {
-            fi = features();
-            return !fi.hasNext();
-        } finally {
-        	if( fi != null ){
-        		fi.close();
-        	}
-        }
-    }
-
-    /**
-     * Utility to get all the features to implement the toArray methods
-     */
-    protected List<F> toList() {
-        ArrayList<F> result = new ArrayList<F>();
-        FeatureIterator<F> fi = null;
-        try {
-            fi = features();
-            while (fi.hasNext()) {
-                result.add(fi.next());
-            }
-            return result;
-        } finally {
-        	if( fi != null ){
-        		fi.close();
-        	}
-        }
-    }
-
-    public Object[] toArray() {
-        return toList().toArray();
-    }
-
-    public <O> O[] toArray(O[] a) {
-        return toList().toArray(a);
     }
 
 }

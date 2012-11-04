@@ -16,14 +16,19 @@
  */
 package org.geotools.feature.collection;
 
+import java.io.IOException;
 import java.util.Collection;
 
+import org.geotools.data.DataUtilities;
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.store.FilteringFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.NullProgressListener;
 import org.opengis.feature.Feature;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.sort.SortBy;
@@ -56,7 +61,13 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
     protected String id;
     protected T schema;
 
+    protected BaseFeatureCollection(){
+        this( null, null );
+    }
     protected BaseFeatureCollection(T schema) {
+        this( schema, null );
+    }
+    protected BaseFeatureCollection(T schema, String id) {
         this.id = id == null ? "featureCollection" : id;
         this.schema = schema;
     }
@@ -186,7 +197,7 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
     }
 
     public void accepts(org.opengis.feature.FeatureVisitor visitor,
-            org.opengis.util.ProgressListener progress) {
+            org.opengis.util.ProgressListener progress) throws IOException {
         FeatureIterator<F> iterator = null;
         if (progress == null)
             progress = new NullProgressListener();
@@ -216,15 +227,40 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
     //
     // Feature Collections API
     //
+    /**
+     * Convenience implementation that just wraps this collection into a
+     * {@link FilteringFeatureCollection}. Subclasses might want to override this in case the filter
+     * can be cascaded to their data sources.
+     * 
+     * @param filter
+     * @return
+     */
     public FeatureCollection<T,F> subCollection(Filter filter) {
         if (filter == Filter.INCLUDE) {
             return this;
         }
         return new FilteringFeatureCollection<T, F>(this, filter);
     }
-
+    /**
+     * Obtained sorted contents, only implemented for SimpleFeature at present.
+     * <p>
+     * This method only supports SimpleFeature at present, consider use of FeatureSource.features( Query ).
+     * 
+     * @param order Sort order
+     * @return FeatureCollection sorted in the indicated order
+     */
+    @SuppressWarnings("unchecked")
     public FeatureCollection<T,F> sort(SortBy order) {
-        throw new UnsupportedOperationException("Cannot sort on complex features at the moment");
+        if (getSchema() instanceof SimpleFeatureType) {
+            // go for the most efficient way if possible, otherwise rely on pure in memory
+            // sorting...
+            SimpleFeatureCollection simple = DataUtilities.simple((FeatureCollection<SimpleFeatureType, SimpleFeature>) this);
+            return (FeatureCollection<T, F>) new SortedSimpleFeatureCollection(simple,new SortBy[] { order });
+        } else {
+            // hmm... we don't even have a basic non simple collection... need to implement one
+            // before going here
+            throw new UnsupportedOperationException("Cannot sort on complex features at the moment");
+        }
     }
 
     /**

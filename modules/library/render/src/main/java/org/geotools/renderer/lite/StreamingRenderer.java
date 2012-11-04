@@ -676,16 +676,15 @@ public final class StreamingRenderer implements GTRenderer {
         // Check for null arguments, recompute missing ones if possible
         //
         // ////////////////////////////////////////////////////////////////////
-        if (graphics == null || paintArea == null) {
-            LOGGER.severe("renderer passed null arguments");
-            throw new NullPointerException("renderer passed null arguments");
-        } else if (mapArea == null && paintArea == null) {
-            LOGGER.severe("renderer passed null arguments");
-            throw new NullPointerException("renderer passed null arguments");
+        if (graphics == null) {
+            LOGGER.severe("renderer passed null graphics argument");
+            throw new NullPointerException("renderer requires graphics");
+        } else if (paintArea == null) {
+            LOGGER.severe("renderer passed null paintArea argument");
+            throw new NullPointerException("renderer requires paintArea");
         } else if (mapArea == null) {
-
-            LOGGER.severe("renderer passed null arguments");
-            throw new NullPointerException("renderer passed null arguments");
+            LOGGER.severe("renderer passed null mapArea argument");
+            throw new NullPointerException("renderer requires mapArea");
         } else if (worldToScreen == null) {
             worldToScreen = RendererUtilities.worldToScreenTransform(mapArea,
                     paintArea);
@@ -2089,7 +2088,9 @@ public final class StreamingRenderer implements GTRenderer {
                     // similar to this (like passing it as a param to readCoverage
                 }
                 
-                Feature gridWrapper = featureSource.getFeatures().features().next();
+                FeatureCollection<?,?> sample = featureSource.getFeatures();
+                Feature gridWrapper = DataUtilities.first( sample );
+                
                 if(FeatureUtilities.isWrappedCoverageReader(simpleSchema)) {
                     final Object params = paramsPropertyName.evaluate(gridWrapper);
                     final AbstractGridCoverage2DReader reader = (AbstractGridCoverage2DReader) gridPropertyName.evaluate(gridWrapper);
@@ -2186,7 +2187,7 @@ public final class StreamingRenderer implements GTRenderer {
             // if we could not find an optimized query no other choice but to just limit
             // ourselves to the bbox, we don't know if the transformation alters/adds attributes :-(
             if(optimizedQuery == null) {
-                 Envelope bounds = (Envelope) renderingQuery.getFilter().accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, null);
+                 Envelope bounds = (Envelope) query.getFilter().accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, null);
                  Filter bbox = new FastBBOX(filterFactory.property(""), bounds, filterFactory);
                  optimizedQuery = new Query(null, bbox);
             }
@@ -2201,7 +2202,7 @@ public final class StreamingRenderer implements GTRenderer {
         } 
         
         // null safety, a transformation might be free to return null
-         if(result == null) {
+        if(result == null) {
             return null;
         }
         
@@ -2396,15 +2397,16 @@ public final class StreamingRenderer implements GTRenderer {
      */
     private void drawPlain(final Graphics2D graphics, MapLayer currLayer, AffineTransform at,
             CoordinateReferenceSystem destinationCrs, String layerId, Collection collection,
-            FeatureCollection features, final NumberRange scaleRange, final List lfts) {
-        final LiteFeatureTypeStyle[] fts_array = (LiteFeatureTypeStyle[]) lfts
-        .toArray(new LiteFeatureTypeStyle[lfts.size()]);
+            FeatureCollection<?,?> features, final NumberRange scaleRange,
+            final List<LiteFeatureTypeStyle> lfts) {
+        
+        final LiteFeatureTypeStyle[] fts_array = lfts.toArray(new LiteFeatureTypeStyle[lfts.size()]);
 
         // for each lite feature type style, scan the whole collection and draw
         for (LiteFeatureTypeStyle liteFeatureTypeStyle : fts_array) {
-            
+            Iterator<?> iterator = null;
             if (collection != null){
-                Iterator iterator = collection.iterator();
+                iterator = collection.iterator();
                 if (iterator == null ){
                     return; // nothing to do
                 }
@@ -2428,14 +2430,17 @@ public final class StreamingRenderer implements GTRenderer {
                     DataUtilities.close( iterator );
                 }
             }
-            
-            
-            if( features != null ){
-                FeatureIterator<?> iterator = features.features();
-                if (iterator == null ){
+            else if (features != null ){
+                FeatureIterator<?> featureIterator = ((FeatureCollection<?,?>)features).features();
+                if( featureIterator == null ){
                     return; // nothing to do
-                }  
-                try {
+                }
+                iterator = DataUtilities.iterator( featureIterator );
+            }
+            else {
+                return; // nothing to do
+            }
+            try {
                     boolean clone = isCloningRequired(currLayer, fts_array);
                     RenderableFeature rf = new RenderableFeature(currLayer, clone);
                     // loop exit condition tested inside try catch
@@ -2451,9 +2456,8 @@ public final class StreamingRenderer implements GTRenderer {
                             fireErrorEvent(tr);
                         }
                     }
-                } finally {
-                    iterator.close();
-                }
+            } finally {
+                DataUtilities.close( iterator );
             }
         }
     }

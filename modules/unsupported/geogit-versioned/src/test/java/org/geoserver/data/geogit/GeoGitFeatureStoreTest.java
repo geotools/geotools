@@ -194,20 +194,9 @@ public class GeoGitFeatureStoreTest extends GeoGITRepositoryTestCase {
         }
     }
     private SimpleFeature sample( SimpleFeatureSource store, Filter filter ) throws IOException {
-        SimpleFeatureIterator iterator = null;
-        try {
-            SimpleFeatureCollection result = store.getFeatures( filter );
-            iterator = result.features();
-            
-            return iterator.next();
-        }
-        finally {
-            if( iterator != null ){
-                iterator.close();
-            }
-        }
+        SimpleFeatureCollection result = store.getFeatures( filter );
+        return DataUtilities.first( result );
     }
-    @SuppressWarnings("deprecation")
     public void testModifyFeatures() throws Exception {
         // add features circunventing FeatureStore.addFeatures to keep the test
         // independent of the

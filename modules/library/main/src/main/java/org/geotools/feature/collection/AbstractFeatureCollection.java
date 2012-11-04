@@ -16,14 +16,15 @@
  */
 package org.geotools.feature.collection;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.util.NullProgressListener;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -221,30 +222,8 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
         }
     }
 
-	public void accepts(org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress) {
-    	Iterator<SimpleFeature> iterator = null;
-    	if( progress == null ) progress = new NullProgressListener();
-        try{
-            float size = size();
-            float position = 0;            
-            progress.started();
-            for( iterator = iterator(); !progress.isCanceled() && iterator.hasNext();){
-                if (size > 0) progress.progress( position++/size );
-                try {
-                    SimpleFeature feature = (SimpleFeature) iterator.next();
-                    visitor.visit(feature);
-                }
-                catch( Exception erp ){
-                    progress.exceptionOccurred( erp );
-                }
-            }            
-        }
-        finally {
-            progress.complete();
-            if( iterator instanceof FeatureIterator){
-        		((FeatureIterator<?>)iterator).close();
-        	}
-        }
+    public void accepts(org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress) throws IOException {
+        DataUtilities.visit(this, visitor, progress);
     }
     
     //

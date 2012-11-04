@@ -134,20 +134,27 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
         final ProgressListener progress = listener != null ? listener : new NullProgressListener();
         progress.started();
         final float size = (float) size();
+        final IOException problem[] = new IOException[1];
         index.query(everything, new ItemVisitor() {
             float count = 0f;
 
             public void visitItem(Object item) {
+                SimpleFeature feature = null;
                 try {
-                    SimpleFeature feature = (SimpleFeature) item;
+                    feature = (SimpleFeature) item;
                     visitor.visit(feature);
                 } catch (Throwable t) {
                     progress.exceptionOccurred(t);
+                    String fid = feature == null ? "feature" : feature.getIdentifier().toString();
+                    problem[0] = new IOException("Problem visiting " + fid + ":" + t, t);
                 } finally {
                     progress.progress(count / size);
                 }
             }
         });
+        if( problem[0] != null ){
+            throw problem[0];
+        }
         progress.complete();
     }
 

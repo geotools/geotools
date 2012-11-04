@@ -682,13 +682,21 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
             float position = 0;
             progress.started();
             while( reader.hasNext() ){
+                SimpleFeature feature = null;
                 if (size > 0) progress.progress( position++/size );
                 try {
-                    SimpleFeature feature = reader.next();
+                    feature = reader.next();
                     visitor.visit(feature);
                 }
-                catch( Exception erp ){
+                catch( IOException erp ){
                     progress.exceptionOccurred( erp );
+                    throw erp;
+                }
+                catch( Exception unexpected ){
+                    progress.exceptionOccurred( unexpected );
+                    String fid = feature == null ? "feature" : feature.getIdentifier().toString();
+                    throw new IOException("Problem visiting " + query.getTypeName() + " visiting " + fid
+                            + ":" + unexpected, unexpected);
                 }
             }
         }

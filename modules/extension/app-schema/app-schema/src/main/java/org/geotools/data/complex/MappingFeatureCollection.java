@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.crs.ReprojectFeatureResults;
 import org.geotools.feature.CollectionListener;
@@ -78,24 +79,7 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
      *      org.opengis.util.ProgressListener)
      */
     public void accepts(FeatureVisitor visitor, ProgressListener progress) throws IOException {
-        FeatureIterator iterator = null;
-        if( progress == null ) progress = new NullProgressListener();
-        try{
-            progress.started();
-            for( iterator = features(); !progress.isCanceled() && iterator.hasNext();){
-                try {
-                    Feature feature = iterator.next();
-                    visitor.visit(feature);
-                }
-                catch( Exception erp ){
-                    progress.exceptionOccurred( erp );
-                }
-            }            
-        }
-        finally {
-            progress.complete();            
-            iterator.close();
-        }
+        DataUtilities.visit(this, visitor, progress);
     }
 
     /**

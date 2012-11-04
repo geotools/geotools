@@ -63,39 +63,7 @@ public abstract class ProcessingCollection<T extends FeatureType, F extends Feat
      */
     @Override
     public abstract FeatureIterator<F> features();
-
-    @Override
-    public void accepts(FeatureVisitor visitor, ProgressListener progress) throws IOException {
-        FeatureIterator<F> iterator = null;
-        float size = progress != null ? size() : 0;
-        if (progress == null) {
-            progress = new NullProgressListener();
-        }
-        try {
-            float position = 0;
-            progress.started();
-            iterator = features();
-            while (!progress.isCanceled() && iterator.hasNext()) {
-                try {
-                    F feature = iterator.next();
-                    visitor.visit(feature);
-                    if (size > 0) {
-                        progress.progress(position++ / size);
-                    }
-                } catch (Exception erp) {
-                    progress.exceptionOccurred(erp);
-                    throw new IOException("Error occurred while iterating over features", erp);
-                }
-            }
-        } finally {
-            progress.complete();
-            if( iterator != null ){
-            	iterator.close();
-            }
-        }
-
-    }
-
+    
     /**
      * The bounds of features in the output. If the bounds are not known in advance once can call the
      * getFeatureBounds() which will build it from the features as they are returned from the feature

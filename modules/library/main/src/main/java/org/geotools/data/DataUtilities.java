@@ -91,6 +91,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Converters;
+import org.geotools.util.NullProgressListener;
 import org.geotools.util.Utilities;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.feature.Feature;
@@ -117,6 +118,7 @@ import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.util.ProgressListener;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
@@ -2649,8 +2651,9 @@ public class DataUtilities {
     }
 
     /**
-     * Manually count the number of features from the provided FeatureIterator
-     * 
+     * Manually count the number of features from the provided FeatureIterator.
+     * This implementation is intended for FeatureCollection implementors and test case
+     * verification. Client code should always call {@link FeatureCollection#size()}
      * @param collection
      * @return number of featuers in feature collection
      */
@@ -2674,6 +2677,8 @@ public class DataUtilities {
     /**
      * Manually count the number of features in a feature collection using using {@link FeatureCollection#features()}.
      * 
+     * This implementation is intended for FeatureCollection implementors and test case
+     * verification. Client code should always call {@link FeatureCollection#size()}
      * @param collection
      * @return number of featuers in feature collection
      */
@@ -2696,7 +2701,10 @@ public class DataUtilities {
         }
     }
     /**
-     * Manually calculate the bounds from the provided FeatureIteator
+     * Manually calculate the bounds from the provided FeatureIteator.
+     * This implementation is intended for FeatureCollection implementors and test case
+     * verification. Client code should always call {@link FeatureCollection#getBounds()}.
+     * 
      * @param iterator
      * @return
      */
@@ -2728,7 +2736,10 @@ public class DataUtilities {
     }
     /**
      * Manually calculates the bounds of a feature collection using {@link FeatureCollection#features()}.
-     * 
+     * <p>
+     * This implementation is intended for FeatureCollection implementors and test case
+     * verification. Client code should always call {@link FeatureCollection#getBounds()}.
+     *  
      * @param collection
      * @return bounds of features in feature collection
      */
@@ -2757,6 +2768,49 @@ public class DataUtilities {
         finally {
             if( i != null ){
                 i.close();
+            }
+        }
+    }
+
+    /**
+     * Manually visit each feature using {@link FeatureCollection#features()}.
+     * <p>
+     * This method is intended to assist FeatureCollection implementors, and used to verify test-case results. Client code should always call
+     * {@link FeatureCollection#accepts(FeatureVisitor, ProgressListener)}
+     * 
+     * @param collection
+     * @return bounds of features in feature collection
+     */
+    public static void visit(FeatureCollection<?, ?> collection, FeatureVisitor visitor,
+            ProgressListener progress) throws IOException {
+        FeatureIterator<?> iterator = null;
+        float size = progress != null ? collection.size() : 0;
+        if (progress == null) {
+            progress = new NullProgressListener();
+        }
+        try {
+            float position = 0;
+            progress.started();
+            iterator = collection.features();
+            while (!progress.isCanceled() && iterator.hasNext()) {
+                Feature feature = null;
+                try {
+                    feature = iterator.next();
+                    visitor.visit(feature);
+                    if (size > 0) {
+                        progress.progress(position++ / size);
+                    }
+                } catch (Exception erp) {
+                    progress.exceptionOccurred(erp);
+                    String fid = feature == null ? "feature" : feature.getIdentifier().toString();
+                    throw new IOException("Problem with " + collection.getID() + " visiting " + fid
+                            + ":" + erp, erp);
+                }
+            }
+        } finally {
+            progress.complete();
+            if (iterator != null) {
+                iterator.close();
             }
         }
     }

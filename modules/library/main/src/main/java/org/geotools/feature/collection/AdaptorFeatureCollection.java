@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.CollectionListener;
@@ -87,27 +88,7 @@ public abstract class AdaptorFeatureCollection implements SimpleFeatureCollectio
      * @throws IOException 
      */
     public void accepts(FeatureVisitor visitor, ProgressListener progress ) throws IOException {
-        Iterator<SimpleFeature> iterator = null;
-        if( progress == null ) progress = new NullProgressListener();
-        try{
-            float size = size();
-            float position = 0;            
-            progress.started();
-            for( iterator = iterator(); !progress.isCanceled() && iterator.hasNext();){
-                if (size > 0) progress.progress( position++/size );
-                try {
-                    SimpleFeature feature = iterator.next();
-                    visitor.visit(feature);
-                }
-                catch( Exception erp ){
-                    progress.exceptionOccurred( erp );
-                }
-            }            
-        }
-        finally {
-            progress.complete();            
-            close( iterator );
-        }
+        DataUtilities.visit(this, visitor, progress);
     }
         
     //

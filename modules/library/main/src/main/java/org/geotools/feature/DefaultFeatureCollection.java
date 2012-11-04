@@ -30,6 +30,7 @@ import java.util.TreeMap;
 import java.util.logging.Logger;
 
 import org.geotools.data.DataSourceException;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -596,29 +597,8 @@ public class DefaultFeatureCollection implements SimpleFeatureCollection, Collec
         return Collections.unmodifiableSet( contents.keySet() );
     }
 
-    public void accepts(org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress) {
-    	FeatureIterator<?> iterator = null;
-        if (progress == null) progress = new NullProgressListener();
-        try{
-            float size = size();
-            float position = 0;            
-            progress.started();
-            for( iterator = features(); !progress.isCanceled() && iterator.hasNext(); progress.progress( position++/size )){
-                try {
-                    SimpleFeature feature = (SimpleFeature) iterator.next();
-                    visitor.visit(feature);
-                }
-                catch( Exception erp ){
-                    progress.exceptionOccurred( erp );
-                }
-            }            
-        }
-        finally {
-            progress.complete();
-            if( iterator != null){
-                iterator.close();
-            }
-        }	
+    public void accepts(org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress) throws IOException {
+        DataUtilities.visit(this, visitor, progress);	
     }
 
     /**

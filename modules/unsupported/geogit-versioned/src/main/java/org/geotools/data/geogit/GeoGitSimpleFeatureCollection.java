@@ -31,6 +31,7 @@ import org.geogit.api.SpatialRef;
 import org.geogit.storage.ObjectDatabase;
 import org.geogit.storage.ObjectReader;
 import org.geogit.storage.WrappedSerialisingFactory;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.Hints;
@@ -448,8 +449,7 @@ public class GeoGitSimpleFeatureCollection implements SimpleFeatureCollection {
     @Override
     public void accepts(FeatureVisitor visitor, ProgressListener progress)
             throws IOException {
-        // TODO Auto-generated method stub
-
+        DataUtilities.visit(this, visitor, progress);
     }
 
     /**

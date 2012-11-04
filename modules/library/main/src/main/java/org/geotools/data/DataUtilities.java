@@ -2649,10 +2649,88 @@ public class DataUtilities {
     }
 
     /**
-     * Manually calculates the bounds of a feature collection.
+     * Manually count the number of features from the provided FeatureIterator
      * 
      * @param collection
+     * @return number of featuers in feature collection
+     */
+    public static int count( FeatureIterator<?> iterator) {
+        int count = 0;
+        if( iterator != null ){
+            try {
+                while (iterator.hasNext()) {
+                    @SuppressWarnings("unused")
+                    Feature feature = iterator.next();
+                    count++;
+                }
+                return count;
+            }
+            finally {
+                iterator.close();
+            }
+        }
+        return count;
+    }
+    /**
+     * Manually count the number of features in a feature collection using using {@link FeatureCollection#features()}.
+     * 
+     * @param collection
+     * @return number of featuers in feature collection
+     */
+    public static int count(
+            FeatureCollection<? extends FeatureType, ? extends Feature> collection) {
+        int count = 0;
+        FeatureIterator<? extends Feature> i = collection.features();
+        try {
+            while (i.hasNext()) {
+                @SuppressWarnings("unused")
+                Feature feature = (Feature) i.next();
+                count++;
+            }
+            return count;
+        }
+        finally {
+            if( i != null ){
+                i.close();
+            }
+        }
+    }
+    /**
+     * Manually calculate the bounds from the provided FeatureIteator
+     * @param iterator
      * @return
+     */
+    public static ReferencedEnvelope bounds( FeatureIterator<?> iterator ){
+        if( iterator == null ){
+            return null;
+        }
+        try {
+            ReferencedEnvelope bounds = null;
+            while (iterator.hasNext()) {
+                Feature feature = iterator.next();
+                ReferencedEnvelope featureEnvelope = null;
+                if(feature != null && feature.getBounds() != null) {
+                    featureEnvelope = ReferencedEnvelope.reference(feature.getBounds());
+                }
+                
+                if(featureEnvelope != null) {
+                    if(bounds == null) {
+                        bounds = new ReferencedEnvelope(featureEnvelope);
+                    } else {
+                        bounds.expandToInclude(featureEnvelope);
+                    }
+                }
+            }            
+            return bounds;
+        } finally {
+            iterator.close();
+        }
+    }
+    /**
+     * Manually calculates the bounds of a feature collection using {@link FeatureCollection#features()}.
+     * 
+     * @param collection
+     * @return bounds of features in feature collection
      */
     public static ReferencedEnvelope bounds(
             FeatureCollection<? extends FeatureType, ? extends Feature> collection) {
@@ -2663,11 +2741,14 @@ public class DataUtilities {
             ReferencedEnvelope bounds = new ReferencedEnvelope(crs);
 
             while (i.hasNext()) {
-                BoundingBox geomBounds = ((SimpleFeature) i.next()).getBounds();
+                Feature feature = i.next();
+                if( feature == null ) continue;
+                
+                BoundingBox geomBounds = feature.getBounds();
                 // IanS - as of 1.3, JTS expandToInclude ignores "null" Envelope
                 // and simply adds the new bounds...
                 // This check ensures this behavior does not occur.
-                if ( ! geomBounds.isEmpty() ) {
+                if ( geomBounds != null && !geomBounds.isEmpty() ) {
                     bounds.include(geomBounds);
                 }
             }

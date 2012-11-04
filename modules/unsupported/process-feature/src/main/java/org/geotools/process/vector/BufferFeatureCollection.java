@@ -24,6 +24,7 @@ import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.process.gs.WrappingIterator;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.AttributeTypeBuilder;
@@ -117,7 +118,7 @@ public class BufferFeatureCollection implements VectorProcess {
                 return re;
             } else {
                 // unlucky case, we need to actually compute by hand...
-                return getFeatureBounds();
+                return DataUtilities.bounds(features());
             }
         }
 

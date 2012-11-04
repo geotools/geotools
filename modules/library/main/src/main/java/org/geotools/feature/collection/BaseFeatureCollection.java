@@ -197,18 +197,21 @@ public abstract class BaseFeatureCollection implements SimpleFeatureCollection {
             float position = 0;
             progress.started();
             for (iterator = features(); !progress.isCanceled() && iterator.hasNext();) {
-                if (size > 0)
-                    progress.progress(position++ / size);
                 try {
                     SimpleFeature feature = (SimpleFeature) iterator.next();
                     visitor.visit(feature);
                 } catch (Exception erp) {
                     progress.exceptionOccurred(erp);
                 }
+                if (size > 0){
+                    progress.progress(position++ / size);
+                }
             }
         } finally {
             progress.complete();
-            iterator.close();
+            if( iterator != null ){
+                iterator.close();
+            }
         }
     }
 

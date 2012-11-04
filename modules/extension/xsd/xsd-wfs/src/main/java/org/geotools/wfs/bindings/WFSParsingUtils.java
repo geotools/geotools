@@ -29,6 +29,7 @@ import net.opengis.wfs20.FeatureCollectionType;
 import net.opengis.wfs20.Wfs20Factory;
 
 import org.eclipse.emf.ecore.EObject;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
@@ -56,25 +57,16 @@ public class WFSParsingUtils {
         //check for an array
         SimpleFeature[] featureMembers = (SimpleFeature[]) node.getChildValue(SimpleFeature[].class);
         if (featureMembers != null) {
-            if( fc instanceof Collection){
-                for (int i = 0; i < featureMembers.length; i++) {
-                    ((Collection)fc).add(featureMembers[i]);
-                }
-            }
-            else {
-                throw new IllegalStateException("Require DefaultFeatureCollection or ListFeatureCollection");
+            Collection<SimpleFeature> collection = DataUtilities.collectionCast( fc );
+            for (int i = 0; i < featureMembers.length; i++) {
+                collection.add(featureMembers[i]);
             }
         }
         else {
-            //gml:featureMember
-            if( fc instanceof Collection){
-                List<SimpleFeature> featureMember = node.getChildValues( SimpleFeature.class );
-                for (SimpleFeature f : featureMember ) {
-                    ((Collection)fc).add( f );
-                }
-            }
-            else {
-                throw new IllegalStateException("Require DefaultFeatureCollection or ListFeatureCollection");
+            Collection<SimpleFeature> collection = DataUtilities.collectionCast( fc );
+            List<SimpleFeature> featureMember = node.getChildValues( SimpleFeature.class );
+            for (SimpleFeature f : featureMember ) {
+                collection.add( f );
             }
         }
         

@@ -110,7 +110,12 @@ public class DataUtilitiesTest extends DataTestCase {
         assertSame( simple, source);  
     } 
 
-
+    public void testFirst() {
+        SimpleFeatureCollection collection = DataUtilities.collection( roadFeatures );
+         SimpleFeature first = DataUtilities.first( collection );
+        assertNotNull( first);
+        assertEquals( "road.rd1", first.getID() );
+    }
     public void testCheckDirectory() {
         File home = new File(System.getProperty("user.home"));
         File file = DataUtilities.checkDirectory(home);

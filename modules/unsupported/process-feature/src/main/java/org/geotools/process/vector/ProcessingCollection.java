@@ -83,7 +83,7 @@ public abstract class ProcessingCollection<T extends FeatureType, F extends Feat
             float position = 0;
             progress.started();
             iterator = features();
-            while (iterator.hasNext()) {
+            while (!progress.isCanceled() && iterator.hasNext()) {
                 try {
                     F feature = iterator.next();
                     visitor.visit(feature);

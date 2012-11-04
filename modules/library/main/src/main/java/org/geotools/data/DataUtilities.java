@@ -1146,41 +1146,6 @@ public class DataUtilities {
             throws IOException, SchemaException {
         return new DefaultView(store.getFeatureSource(query.getTypeName()), query);
     }
-//    /**
-//     * Returns collection from the provided feature array
-//     * 
-//     * @param featureArray 
-//     * @return array contents as a SimpleFeatureCollection
-//     * @deprecated Please use {@link #collection(SimpleFeature[])} and check {@link SimpleFeatureCollection#size()} to ensure contents are not empty
-//     */
-//    public static SimpleFeatureCollection results(SimpleFeature[] featureArray) {
-//        return results(collection(featureArray));
-//    }
-
-//    /**
-//     * Returns collection if non empty.
-//     * <p>
-//     * Previous implementation would throw an IOException if the collection was empty; method
-//     * is now duplicated as it does not servce a function.
-//     * 
-//     * @param collection
-//     * @return provided collection
-//     * @deprecated Please check collection.size() directly to ensure your collection contains content
-//     */
-//    public static SimpleFeatureCollection results(final SimpleFeatureCollection collection) {
-//        if (collection.size() == 0) {
-//            // throw new IOException("Provided collection was empty");
-//        }
-//        return collection;
-//    }
-
-//    public static <T extends FeatureType, F extends Feature> FeatureCollection<T, F> results(
-//            final FeatureCollection<T, F> collection) {
-//        if (collection.size() == 0) {
-//            // throw new IOException("Provided collection was empty");
-//        }
-//        return collection;
-//    }
 
     /**
      * Adapt a collection to a reader for use with FeatureStore.setFeatures( reader ).
@@ -1267,37 +1232,13 @@ public class DataUtilities {
             }
         }
     }
-
-    /**
-     * Obtain the first feature from the collection as an exemplar.
-     * 
-     * @param simpleFeatureCollection
-     * @return first feature from the featureCollection
-     */
-    public static SimpleFeature first(SimpleFeatureCollection simpleFeatureCollection) {
-        if (simpleFeatureCollection == null) {
-            return null;
-        }
-        SimpleFeatureIterator iter = simpleFeatureCollection.features();
-        try {
-            while (iter.hasNext()) {
-                SimpleFeature feature = iter.next();
-                if (feature != null) {
-                    return feature;
-                }
-            }
-            return null; // not found!
-        } finally {
-            iter.close();
-        }
-    }
+    
     /**
      * Obtain the first feature from the collection as an exemplar.
      * 
      * @param featureCollection
      * @return first feature from the featureCollection
      */
-
     public static <F extends Feature> F first( FeatureCollection<?,F> featureCollection ){
         if (featureCollection == null) {
             return null;

@@ -55,14 +55,8 @@ public class FeatureCollectionTest extends org.geotools.data.collection.FeatureC
         super(testName);
     }
     protected SimpleFeatureCollection newCollection(SimpleFeatureType schema, List<SimpleFeature> list ) {
-        SimpleFeatureCollection features = FeatureCollections.newCollection();
-        if( features instanceof Collection ){
-            Collection<SimpleFeature> collection = (Collection) features;
-            collection.addAll( list );
-            return features;
-        }
-        else {
-            throw new IllegalStateException("Please configure test wih provided contents");
-        }
+        DefaultFeatureCollection features = new DefaultFeatureCollection();
+        features.addAll( list );
+        return features;
     }
 }

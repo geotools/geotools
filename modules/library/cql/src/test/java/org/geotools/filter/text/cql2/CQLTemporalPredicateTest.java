@@ -20,6 +20,7 @@ package org.geotools.filter.text.cql2;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.Language;
@@ -182,6 +183,7 @@ public class CQLTemporalPredicateTest {
         final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
         
         final DateFormat dateFormatter = new SimpleDateFormat(DATE_FORMAT);
+        dateFormatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
 
         Date expectedDate = dateFormatter.parse(cqlDateTime);
         Date actualDate = (Date) literalDate.getValue();
@@ -211,6 +213,7 @@ public class CQLTemporalPredicateTest {
         final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
         
         final DateFormat dateFormatter = new SimpleDateFormat(DATE_FORMAT);
+        dateFormatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
 
 		Date expectedDate = dateFormatter.parse(localTime);
         Date actualDate = (Date) literalDate.getValue();

@@ -756,13 +756,13 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
     public Object visit(Id filter, Object notUsed) {
         if (original == null)
             original = filter;
-
-        // figure out how to check that this is top level.
-        // otherwise this is fine
-        if (!postStack.isEmpty()) {
+        
+        if (!fcs.supports(filter)) {
             postStack.push(filter);
+        } else {
+            preStack.push(filter);            
         }
-        preStack.push(filter);
+
         return null;
     }
 

@@ -739,16 +739,16 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
 	
 
 	    public Object visit(Id filter, Object notUsed) {
-	        if( original==null )
-	        	original=filter;
-
-	        // figure out how to check that this is top level.
-	        // otherwise this is fine
-	        if (!postStack.isEmpty()) {
-	        	postStack.push(filter);
+	        if (original == null)
+	            original = filter;
+	        
+	        if (!fcs.supports(filter)) {
+	            postStack.push(filter);
+	        } else {
+	            preStack.push(filter);            
 	        }
-	        preStack.push(filter);
-            return null;
+
+	        return null;
 	    }
         
 	    public Object visit(PropertyName expression, Object notUsed) {

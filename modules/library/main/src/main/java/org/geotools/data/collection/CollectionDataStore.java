@@ -21,6 +21,7 @@ import java.util.Iterator;
 
 import org.geotools.data.AbstractDataStore;
 import org.geotools.data.DataSourceException;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.SchemaNotFoundException;
@@ -149,24 +150,27 @@ public class CollectionDataStore extends AbstractDataStore {
      * @param query
      */
     protected ReferencedEnvelope getBoundsInternal(Query query) {
-        FeatureIterator<SimpleFeature> iterator = collection.features();
         ReferencedEnvelope envelope = new ReferencedEnvelope( featureType.getCoordinateReferenceSystem() );
-
-        if (iterator.hasNext()) {
-            int count = 1;
-            Filter filter = query.getFilter();
-            
-            while (iterator.hasNext() && (count < query.getMaxFeatures())) {
-                SimpleFeature feature = iterator.next();
-
-                if (filter.evaluate(feature)) {
-                    count++;
-                    envelope.expandToInclude(((Geometry)feature.getDefaultGeometry()).getEnvelopeInternal());
+        
+        FeatureIterator<SimpleFeature> iterator = collection.features();
+        try {
+            if (iterator.hasNext()) {
+                int count = 1;
+                Filter filter = query.getFilter();
+                
+                while (iterator.hasNext() && (count < query.getMaxFeatures())) {
+                    SimpleFeature feature = iterator.next();
+                    if (filter.evaluate(feature)) {
+                        count++;
+                        envelope.expandToInclude(((Geometry)feature.getDefaultGeometry()).getEnvelopeInternal());
+                    }
                 }
             }
         }
-        return envelope;
-        
+        finally {
+            iterator.close();
+        }
+        return envelope;        
     }
 
     /**
@@ -178,18 +182,20 @@ public class CollectionDataStore extends AbstractDataStore {
         if (!featureType.getTypeName().equals(featureTypeName)) {
             throw new SchemaNotFoundException(featureTypeName);
         }
-            int count = 0;
-            FeatureIterator<SimpleFeature>  iterator = collection.features();
-
+        int count = 0;
+        FeatureIterator<SimpleFeature> iterator = collection.features();
+        try {
             Filter filter = query.getFilter();
-
             while (iterator.hasNext() && (count < query.getMaxFeatures())) {
                 if (filter.evaluate(iterator.next())) {
                     count++;
                 }
             }
-
-            return count;
+        }
+        finally {
+            iterator.close();
+        }
+        return count;
     }
 
     /**

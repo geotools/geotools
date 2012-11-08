@@ -46,6 +46,7 @@ import org.geotools.data.wfs.protocol.wfs.WFSOperationType;
 import org.geotools.data.wfs.protocol.wfs.WFSProtocol;
 import org.geotools.factory.GeoTools;
 import org.geotools.filter.Capabilities;
+import org.geotools.filter.capability.FilterCapabilitiesImpl;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.filter.v1_1.OGCConfiguration;
 import org.geotools.filter.visitor.CapabilitiesFilterSplitter;
@@ -55,6 +56,8 @@ import org.geotools.xml.Configuration;
 import org.geotools.xml.Encoder;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
+import org.opengis.filter.capability.FilterCapabilities;
+import org.opengis.filter.capability.IdCapabilities;
 import org.opengis.filter.identity.Identifier;
 import org.opengis.filter.sort.SortBy;
 
@@ -73,8 +76,6 @@ import org.opengis.filter.sort.SortBy;
  */
 @SuppressWarnings("nls")
 public class DefaultWFSStrategy implements WFSStrategy {
-
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.wfs");
 
     protected static final String DEFAULT_OUTPUT_FORMAT = "text/xml; subtype=gml/3.1.1";
 
@@ -279,15 +280,49 @@ public class DefaultWFSStrategy implements WFSStrategy {
      * @see WFSStrategy#splitFilters(WFS_1_1_0_Protocol, Filter)
      */
     public Filter[] splitFilters(Capabilities caps, Filter queryFilter) {
-        CapabilitiesFilterSplitter splitter = new CapabilitiesFilterSplitter(
-                caps, null, null);
+        // ID Filters aren't allowed to be parameters in Logical or Comparison Operators
+        
+        FilterCapabilities filterCapabilities = caps.getContents();
+        IdCapabilities idCapabilities = filterCapabilities.getIdCapabilities();
+        if (idCapabilities != null && (idCapabilities.hasEID() || idCapabilities.hasFID())) {
+            // server supports ID Filters so we need to check our queryFilter is valid            
+            
+            Capabilities idFilterCaps = new Capabilities();
+            idFilterCaps.addName("Id");
+            
+            CapabilitiesFilterSplitter splitter = new CapabilitiesFilterSplitter(idFilterCaps, null, null);
+            queryFilter.accept(splitter, null);
+        
+            Filter server = splitter.getFilterPre();
+            if (server.equals(Filter.INCLUDE)) {
+                // ID Filters not found in the root Filter
+                // remove ID Filter from Capabilities
+                FilterCapabilities filterCapabilitiesWithoutId = new FilterCapabilitiesImpl(
+                        filterCapabilities.getVersion(),
+                        filterCapabilities.getScalarCapabilities(),
+                        filterCapabilities.getSpatialCapabilities(),
+                        null,
+                        filterCapabilities.getTemporalCapabilities());
 
-        queryFilter.accept(splitter, null);
+                Capabilities capabilitiesWithoutId = new Capabilities();
+                capabilitiesWithoutId.addAll(filterCapabilitiesWithoutId);
+                
+                return splitFilters(capabilitiesWithoutId, queryFilter);                
+            } else {
+                // ID Filter found
+                // query the server using the ID Filter
+                Filter post = splitter.getFilterPost();
+                return new Filter[] { server, post };                            
+            }
+        } else {
+            CapabilitiesFilterSplitter splitter = new CapabilitiesFilterSplitter(caps, null, null);
 
-        Filter server = splitter.getFilterPre();
-        Filter post = splitter.getFilterPost();
+            queryFilter.accept(splitter, null);
 
-        return new Filter[] { server, post };
+            Filter server = splitter.getFilterPre();
+            Filter post = splitter.getFilterPost();
+
+            return new Filter[] { server, post };
+        }
     }
-
 }

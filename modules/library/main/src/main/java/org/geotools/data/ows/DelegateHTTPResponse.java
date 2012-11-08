@@ -48,4 +48,9 @@ public class DelegateHTTPResponse implements HTTPResponse {
     public InputStream getResponseStream() throws IOException {
         return delegate.getResponseStream();
     }
+
+    @Override
+    public String getResponseCharset() {
+        return delegate.getResponseCharset();
+    }
 }

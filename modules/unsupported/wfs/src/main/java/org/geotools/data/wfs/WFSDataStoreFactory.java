@@ -122,8 +122,10 @@ import org.xml.sax.SAXException;
  */
 @SuppressWarnings( { "unchecked", "nls" })
 public class WFSDataStoreFactory extends AbstractDataStoreFactory {
-    private static final Logger logger = Logging.getLogger("org.geotools.data.wfs");
 
+    private static final Logger logger = Logging.getLogger("org.geotools.data.wfs");
+    private HTTPClient http = new SimpleHttpClient();
+    
     /**
      * A {@link Param} subclass that allows to provide a default value to the lookUp method.
      * 
@@ -368,6 +370,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
                 description, null);
     }
 
+    
     /**
      * Requests the WFS Capabilities document from the {@link WFSDataStoreFactory#URL url} parameter
      * in {@code params} and returns a {@link WFSDataStore} according to the version of the
@@ -405,7 +408,6 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
 
         final WFSDataStore dataStore;
 
-        final HTTPClient http = new SimpleHttpClient();
         http.setTryGzip(tryGZIP);
         http.setUser(user);
         http.setPassword(pass);
@@ -572,6 +574,10 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
         return strategy;
     }
 
+    public void setHTTPClient(HTTPClient http) {
+        this.http = http;
+    }
+    
     /**
      * Unsupported operation, can't create a WFS service.
      * 
@@ -687,7 +693,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
         if (version == null) {
             throw new NullPointerException("version");
         }
-        HTTPClient httpUtils = new SimpleHttpClient();
+
         Map<String, String> getCapsKvp = new HashMap<String, String>();
         getCapsKvp.put("SERVICE", "WFS");
         getCapsKvp.put("REQUEST", "GetCapabilities");

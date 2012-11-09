@@ -2707,10 +2707,10 @@ public class WMSComplexTypes {
 			// Do not set queryable unless it is explicitly specified
 			String queryable = attrs.getValue("queryable");
 			if (queryable != null) {
-				if ("1".equals(queryable)) {
+				if ("1".equals(queryable) || "true".equalsIgnoreCase(queryable)) {
 					layer.setQueryable(true);
-				} else if ("0".equals(queryable)) {
-					layer.setQueryable(new Boolean(queryable).booleanValue());
+				} else if ("0".equals(queryable) || "false".equalsIgnoreCase(queryable)) {
+				    layer.setQueryable( false );
 				}
 			}
 			String cascaded = attrs.getValue("cascaded");

@@ -42,6 +42,7 @@ import org.geotools.data.wms.request.GetMapRequest;
 import org.geotools.data.wms.response.GetFeatureInfoResponse;
 import org.geotools.data.wms.response.GetMapResponse;
 import org.geotools.factory.GeoTools;
+import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -122,8 +123,8 @@ public class LocalGeoServerOnlineTest extends TestCase {
 
     @Override
     protected void setUp() throws Exception {
-        super.setUp();
-        System.setProperty("org.geotools.referencing.forceXY", "true"); //$NON-NLS-1$ //$NON-NLS-2$
+        //System.out.println("CRS configured to forceXY"+System.getProperty("org.geotools.referencing.forceXY"));
+        //Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
         if (wms == null) {
             // do setup once!
             if (serverURL != null) {
@@ -137,7 +138,18 @@ public class LocalGeoServerOnlineTest extends TestCase {
             }
         }
     }
-
+    public void testCRSEnvelope(){
+        CRSEnvelope test = new CRSEnvelope( null, -20, -100, 20, 100 );
+        test.setSRSName("EPSG:4326", false );
+        CoordinateReferenceSystem crs = test.getCoordinateReferenceSystem();
+        assertEquals( AxisOrder.NORTH_EAST, CRS.getAxisOrder( crs ) );
+        
+        test = new CRSEnvelope( null, 100, -20, 100, 20 );
+        test.setSRSName("EPSG:4326", true );
+        crs = test.getCoordinateReferenceSystem();
+        assertEquals( AxisOrder.EAST_NORTH, CRS.getAxisOrder( crs ) );
+        
+    }
     public void testLocalGeoServer() {
         assertNotNull(wms);
         assertNotNull(capabilities);
@@ -202,12 +214,26 @@ public class LocalGeoServerOnlineTest extends TestCase {
         
         CRSEnvelope bounds = water_bodies.getBoundingBoxes().get("EPSG:4326");
         CoordinateReferenceSystem boundsCRS = bounds.getCoordinateReferenceSystem();
-        assertEquals( "EPSG:4326", AxisOrder.EAST_NORTH, CRS.getAxisOrder(boundsCRS) );
+        if( globalXY ){
+            // ensure WMS CRSEnvelope returned according to application globalXY setting
+            assertEquals( "EPSG:4326", AxisOrder.EAST_NORTH, CRS.getAxisOrder(boundsCRS) );
+        }
+        else {
+            assertEquals( "EPSG:4326", AxisOrder.NORTH_EAST, CRS.getAxisOrder(boundsCRS) );
+        }
+        if( CRS.getAxisOrder(boundsCRS) == AxisOrder.EAST_NORTH ){
+            assertEquals("axis order 0 min", latLon.getMinimum(1), bounds.getMinimum(1));
+            assertEquals("axis order 1 min", latLon.getMinimum(0), bounds.getMinimum(0));
+            assertEquals("axis order 1 max", latLon.getMaximum(0), bounds.getMaximum(0));
+            assertEquals("axis order 1 min", latLon.getMaximum(1), bounds.getMaximum(1));
+        }
         
-        assertEquals("axis order 0 min", latLon.getMinimum(1), bounds.getMinimum(0));
-        assertEquals("axis order 1 min", latLon.getMinimum(0), bounds.getMinimum(1));
-        assertEquals("axis order 1 max", latLon.getMaximum(0), bounds.getMaximum(1));
-        assertEquals("axis order 1 min", latLon.getMaximum(1), bounds.getMaximum(0));
+        if( CRS.getAxisOrder(boundsCRS) == AxisOrder.NORTH_EAST ){
+            assertEquals("axis order 0 min", latLon.getMinimum(1), bounds.getMinimum(0));
+            assertEquals("axis order 1 min", latLon.getMinimum(0), bounds.getMinimum(1));
+            assertEquals("axis order 1 max", latLon.getMaximum(0), bounds.getMaximum(1));
+            assertEquals("axis order 1 min", latLon.getMaximum(1), bounds.getMaximum(0));
+        }
 
         // GETMAP
         checkGetMap(wms, water_bodies, DefaultGeographicCRS.WGS84);
@@ -289,9 +315,23 @@ public class LocalGeoServerOnlineTest extends TestCase {
 
         getMap.addLayer(layer);
         String version = wms.getCapabilities().getVersion();
-        String srs = CRS.toSRS(envelope.getCoordinateReferenceSystem());
         
         getMap.setBBox(envelope);
+        
+        Properties properties = getMap.getProperties();
+        String srs = null;
+        if( properties.containsKey("SRS")){
+            srs = properties.getProperty("SRS");
+        }
+        else if( properties.containsKey("CRS")){
+            srs = properties.getProperty("CRS");
+        }
+        assertNotNull( "setBBox supplied SRS information", srs );
+        String expectedSRS = CRS.toSRS(envelope.getCoordinateReferenceSystem());
+        assertEquals( "srs matches CRS.toSRS", expectedSRS, srs );
+        
+        assertTrue( "cite authority:"+srs, srs.contains("CRS") || srs.contains("EPSG") );
+        
         //getMap.setSRS( srs );
         
         String format = format(operationType, "jpeg");
@@ -320,8 +360,6 @@ public class LocalGeoServerOnlineTest extends TestCase {
         else {
             //System.out.println("PASS: "+ context+": GetMap BBOX=" + bbox);
         }
-        
-        
     }
      
     /**

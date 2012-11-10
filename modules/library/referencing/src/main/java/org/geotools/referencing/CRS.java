@@ -919,21 +919,31 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
             // if( forcedLonLat ) return "EPSG:4326"; <-- this is a bad idea for interoperability WMS 1.3.0
             return "CRS:84"; // WMS Authority definition DefaultGeographicCRS.WGS84
         }
-        // fall back on simple lookups
-        for( ReferenceIdentifier identifier : crs.getIdentifiers() ){
-            if( identifier.toString().contains("EPSG:") || identifier.toString().contains("CRS:")){
-                return identifier.toString(); // handles prj files that supply EPSG code
-            }
-        }
-        // fallback unfortunately this often does not work
-        final ReferenceIdentifier name = crs.getName();
-        if (name != null) {
-            if( name.toString().contains("EPSG:") || name.toString().contains("CRS:")){
+        Set<ReferenceIdentifier> identifiers = crs.getIdentifiers();
+        if (identifiers.isEmpty()) {
+            // we got nothing to work with ... unfortunately this often does not work
+            final ReferenceIdentifier name = crs.getName();
+            if (name != null) {
                 return name.toString();
             }
-            return "CUSTOM:"+name.toString(); // easier then seeing "WGS84(DD)" 
+            return null;
         }
-        return null;
+        else {
+            // check for an identifier to use as an srsName
+            for( ReferenceIdentifier identifier : crs.getIdentifiers() ){
+                String srs = identifier.toString();
+                if( srs.contains("EPSG:") || srs.contains("CRS:")){
+                    return srs; // handles prj files that supply EPSG code
+                }
+            }
+            // fallback unfortunately this often does not work
+            ReferenceIdentifier name = crs.getName();
+            if (name != null && (name.toString().contains("EPSG:") || name.toString().contains("CRS:"))){
+                return name.toString();
+            }
+            // nothing was obviously an identifier .. so we grab the first
+            return identifiers.iterator().next().toString();
+        }
     }
     /**
      * Returns the <cite>Spatial Reference System</cite> identifier, or {@code null} if none.

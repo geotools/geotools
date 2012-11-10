@@ -891,7 +891,7 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
      * @since 2.5
      */
     public static String toSRS(final CoordinateReferenceSystem crs) {
-        if( crs == null ){
+        if (crs == null) {
             return null;
         }
         boolean forcedLonLat = false;
@@ -915,7 +915,7 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
             }
         }
         // special case DefaultGeographic.WGS84 to prevent SRS="WGS84(DD)"
-        if( crs == DefaultGeographicCRS.WGS84){
+        if (crs == DefaultGeographicCRS.WGS84) {
             // if( forcedLonLat ) return "EPSG:4326"; <-- this is a bad idea for interoperability WMS 1.3.0
             return "CRS:84"; // WMS Authority definition DefaultGeographicCRS.WGS84
         }
@@ -927,18 +927,18 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
                 return name.toString();
             }
             return null;
-        }
-        else {
+        } else {
             // check for an identifier to use as an srsName
-            for( ReferenceIdentifier identifier : crs.getIdentifiers() ){
+            for (ReferenceIdentifier identifier : crs.getIdentifiers()) {
                 String srs = identifier.toString();
-                if( srs.contains("EPSG:") || srs.contains("CRS:")){
+                if (srs.contains("EPSG:") || srs.contains("CRS:")) {
                     return srs; // handles prj files that supply EPSG code
                 }
             }
             // fallback unfortunately this often does not work
             ReferenceIdentifier name = crs.getName();
-            if (name != null && (name.toString().contains("EPSG:") || name.toString().contains("CRS:"))){
+            if (name != null
+                    && (name.toString().contains("EPSG:") || name.toString().contains("CRS:"))) {
                 return name.toString();
             }
             // nothing was obviously an identifier .. so we grab the first

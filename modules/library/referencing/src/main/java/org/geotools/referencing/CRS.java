@@ -877,9 +877,10 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
      * Spatial Reference System (ie SRS) values:
      * <ul>
      *   <li>{@code EPSG:4326} - this is the usual format understood to mean <cite>forceXY</cite>
-     *       order. Note that the axis order is <em>not necessarly</em> (<var>longitude</var>,
+     *       order prior to WMS 1.3.0. Note that the axis order is <em>not necessarly</em> (<var>longitude</var>,
      *       <var>latitude</var>), but this is the common behavior we observe in practice.</li>
      *   <li>{@code AUTO:43200} - </li>
+     *   <li>{@code CRS:84} - similar to {@link DefaultGeographicCRS#WGS84} (formally defined by CRSAuthorityFactory)
      *   <li>{@code ogc:uri:.....} - understood to match the EPSG database axis order.</li>
      *   <li>Well Known Text (WKT)</li>
      * </ul>
@@ -890,6 +891,9 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
      * @since 2.5
      */
     public static String toSRS(final CoordinateReferenceSystem crs) {
+        if( crs == null ){
+            return null;
+        }
         boolean forcedLonLat = false;
         try {
             forcedLonLat = Boolean.getBoolean("org.geotools.referencing.forceXY") || 
@@ -910,20 +914,24 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
                 LOGGER.log(Level.FINE, "Failed to determine EPSG code", e);
             }
         }
-        
-        // fall back on simple lookups
-        if( crs == null ){
-            return null;
+        // special case DefaultGeographic.WGS84 to prevent SRS="WGS84(DD)"
+        if( crs == DefaultGeographicCRS.WGS84){
+            // if( forcedLonLat ) return "EPSG:4326"; <-- this is a bad idea for interoperability WMS 1.3.0
+            return "CRS:84"; // WMS Authority definition DefaultGeographicCRS.WGS84
         }
-        final Set<ReferenceIdentifier> identifiers = crs.getIdentifiers();
-        if (identifiers.isEmpty()) {
-            // fallback unfortunately this often does not work
-            final ReferenceIdentifier name = crs.getName();
-            if (name != null) {
+        // fall back on simple lookups
+        for( ReferenceIdentifier identifier : crs.getIdentifiers() ){
+            if( identifier.toString().contains("EPSG:") || identifier.toString().contains("CRS:")){
+                return identifier.toString(); // handles prj files that supply EPSG code
+            }
+        }
+        // fallback unfortunately this often does not work
+        final ReferenceIdentifier name = crs.getName();
+        if (name != null) {
+            if( name.toString().contains("EPSG:") || name.toString().contains("CRS:")){
                 return name.toString();
             }
-        } else {
-            return identifiers.iterator().next().toString();
+            return "CUSTOM:"+name.toString(); // easier then seeing "WGS84(DD)" 
         }
         return null;
     }

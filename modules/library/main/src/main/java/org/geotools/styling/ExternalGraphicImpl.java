@@ -98,6 +98,9 @@ public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
      * @throws MalformedURLException If unable to represent external graphic as a URL
      */
     public java.net.URL getLocation() throws MalformedURLException {
+        if (uri == null) {
+            return null;
+        }
         if (location == null) {
             location = new URL(uri);
         }
@@ -120,7 +123,7 @@ public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
      * @param location New value of property location.
      */
     public void setLocation(java.net.URL location) {
-        this.uri = location.toString();
+        this.uri = location == null ? null : location.toString();
         this.location = location;
     }
 

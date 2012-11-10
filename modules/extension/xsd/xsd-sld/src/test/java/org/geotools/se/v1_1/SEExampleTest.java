@@ -17,11 +17,13 @@
 package org.geotools.se.v1_1;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.ExternalGraphic;
+import org.geotools.styling.ExternalMark;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
@@ -38,21 +40,17 @@ import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.UomOgcMapping;
 import org.geotools.xml.Parser;
 import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.PropertyName;
 import org.opengis.style.ContrastMethod;
 import org.opengis.style.OverlapBehavior;
 import org.opengis.style.Rule;
-
-import junit.framework.TestCase;
 
 /**
  * 
  *
  * @source $URL$
  */
-public class SEExampleTest extends TestCase {
+public class SEExampleTest extends SETestSupport {
 
     SimpleFeature f1;
     
@@ -140,6 +138,75 @@ public class SEExampleTest extends TestCase {
         eg = g.getExternalGraphics()[1];
         assertEquals("http://www.vendor.com/geosym/2267.png", eg.getLocation().toString());
         assertEquals("image/png", eg.getFormat());
+    }
+
+    public void testParsePointSymbolizer3() throws Exception {
+        /*<PointSymbolizer version="1.1.0" xmlns="http://www.opengis.net/se" uom="http://www.opengeospatial.org/se/units/pixel">
+              <Name>MyPointSymbolizer</Name>
+              <Description>
+                  <Title>Example Pointsymbolizer</Title>
+                  <Abstract>This is just a simple example of a point symbolizer.</Abstract>
+              </Description>
+              <Graphic>
+                  <ExternalGraphic>
+                      <InlineContent encoding="base64"> iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAK3RFWHRDcmVhdGlvbiBUaW1lAFd0IDE0IHdyeiAyMDEwIDEyOjA2OjAyICswMTAweoAlkgAAAAd0SU1FB9oJDgo6HdmGt90AAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAEZ0FNQQAAsY8L/GEFAAABfklEQVR42mP8//8/AwYACn779o2bmxtTiokBG9iwboOfq9+1K9eI0vDp06cZk2e8ffp2zuQ5mPZj0bB963aGLwxTI6YdO3QMiyX/UcHz58/tLeyXZ674O+NfgVthWnTaz58/kRWg27B8yXKu31yeGp6MjIwpVimnjp86fvg4Tic9ffp0zfI1ZU7lfBx8QK6WpFasSdzMiTN//fqFRQPQusULFsvzyFsqWMIFw4zDHt5+uH/Xfiwarl27tnj+4nSzdDYWNrigtIB0iF5IZ1MnMOhQNACNnztjrq64roWiJQMqCDUO+/D6w/YN21E0XLp06fD+w3l2+cjGwy1Jt82YO3Pe+/fvoRqAfupq6bKVs7VQsMAa8REmEf8+/V04fSFUw/Hjxy+cvZBklgwMSqwagIGWYpm6cOEiYDCyAI2fPnG6mrD6n39/Lj25xIADAB325/vvVQtXsXz58uX7z+8vfr7I2ZrNgBew87HfvnebERg+X79+/ffvHwMRgJWVFQBa4Mt756r78AAAAABJRU5ErkJggg==</InlineContent>
+                      <Format>image/png</Format>
+                  </ExternalGraphic>
+                  <Size>15.0</Size>
+              </Graphic>
+          </PointSymbolizer>*/
+        BufferedImage referenceImage = getReferenceImage("inlineContent-image.png");
+
+        PointSymbolizer sym = (PointSymbolizer) parse("example-pointsymbolizer3.xml");
+        assertEquals("MyPointSymbolizer", sym.getName());
+        assertEquals("Example Pointsymbolizer", sym.getDescription().getTitle().toString());
+        assertEquals("This is just a simple example of a point symbolizer.",
+                sym.getDescription().getAbstract().toString());
+
+        Graphic g = sym.getGraphic();
+        assertEquals(15.0, g.getSize().evaluate(null, Double.class));
+        assertEquals(1, g.graphicalSymbols().size());
+
+        ExternalGraphic eg = (ExternalGraphic) g.graphicalSymbols().get(0);
+        assertNull(eg.getLocation());
+        assertEquals("image/png", eg.getFormat());
+        assertImagesEqual(referenceImage, eg.getInlineContent());
+        assertNull(eg.getLocation());
+    }
+
+    public void testParsePointSymbolizer4() throws Exception {
+        /*<PointSymbolizer version="1.1.0" xmlns="http://www.opengis.net/se" uom="http://www.opengeospatial.org/se/units/pixel">
+              <Name>MyPointSymbolizer</Name>
+              <Description>
+                  <Title>Example Pointsymbolizer</Title>
+                  <Abstract>This is just a simple example of a point symbolizer.</Abstract>
+              </Description>
+              <Graphic>
+                  <Mark>
+                      <InlineContent encoding="base64">iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAK3RFWHRDcmVhdGlvbiBUaW1lAFd0IDE0IHdyeiAyMDEwIDEyOjA2OjAyICswMTAweoAlkgAAAAd0SU1FB9oJDgo6HdmGt90AAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAEZ0FNQQAAsY8L/GEFAAABfklEQVR42mP8//8/AwYACn779o2bmxtTiokBG9iwboOfq9+1K9eI0vDp06cZk2e8ffp2zuQ5mPZj0bB963aGLwxTI6YdO3QMiyX/UcHz58/tLeyXZ674O+NfgVthWnTaz58/kRWg27B8yXKu31yeGp6MjIwpVimnjp86fvg4Tic9ffp0zfI1ZU7lfBx8QK6WpFasSdzMiTN//fqFRQPQusULFsvzyFsqWMIFw4zDHt5+uH/Xfiwarl27tnj+4nSzdDYWNrigtIB0iF5IZ1MnMOhQNACNnztjrq64roWiJQMqCDUO+/D6w/YN21E0XLp06fD+w3l2+cjGwy1Jt82YO3Pe+/fvoRqAfupq6bKVs7VQsMAa8REmEf8+/V04fSFUw/Hjxy+cvZBklgwMSqwagIGWYpm6cOEiYDCyAI2fPnG6mrD6n39/Lj25xIADAB325/vvVQtXsXz58uX7z+8vfr7I2ZrNgBew87HfvnebERg+X79+/ffvHwMRgJWVFQBa4Mt756r78AAAAABJRU5ErkJggg==</InlineContent>
+                      <Format>image/png</Format>
+                  </Mark>
+                  <Size>15.0</Size>
+              </Graphic>
+          </PointSymbolizer>*/
+        BufferedImage referenceImage = getReferenceImage("inlineContent-image.png");
+
+        PointSymbolizer sym = (PointSymbolizer) parse("example-pointsymbolizer4.xml");
+        assertEquals("MyPointSymbolizer", sym.getName());
+        assertEquals("Example Pointsymbolizer", sym.getDescription().getTitle().toString());
+        assertEquals("This is just a simple example of a point symbolizer.",
+                sym.getDescription().getAbstract().toString());
+
+        Graphic g = sym.getGraphic();
+        assertEquals(15.0, g.getSize().evaluate(null, Double.class));
+        assertEquals(1, g.graphicalSymbols().size());
+
+        Mark mark = (Mark) g.graphicalSymbols().get(0);
+        ExternalMark em = mark.getExternalMark();
+        assertNotNull(em);
+        assertEquals("image/png", em.getFormat());
+        assertImagesEqual(referenceImage, em.getInlineContent());
+        assertNull(em.getOnlineResource());
     }
     
     public void testParseLineSymbolizer() throws Exception {

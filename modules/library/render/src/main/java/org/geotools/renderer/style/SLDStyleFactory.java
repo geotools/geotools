@@ -1190,6 +1190,11 @@ public class SLDStyleFactory {
 		if (eg == null)
 			return null;
 
+        Icon inlineContent = eg.getInlineContent();
+        if (inlineContent != null) {
+            return inlineContent;
+        }
+
 		// extract the url
 		String strLocation;
 		try {

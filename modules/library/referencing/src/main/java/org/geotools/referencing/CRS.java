@@ -877,9 +877,10 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
      * Spatial Reference System (ie SRS) values:
      * <ul>
      *   <li>{@code EPSG:4326} - this is the usual format understood to mean <cite>forceXY</cite>
-     *       order. Note that the axis order is <em>not necessarly</em> (<var>longitude</var>,
+     *       order prior to WMS 1.3.0. Note that the axis order is <em>not necessarly</em> (<var>longitude</var>,
      *       <var>latitude</var>), but this is the common behavior we observe in practice.</li>
      *   <li>{@code AUTO:43200} - </li>
+     *   <li>{@code CRS:84} - similar to {@link DefaultGeographicCRS#WGS84} (formally defined by CRSAuthorityFactory)
      *   <li>{@code ogc:uri:.....} - understood to match the EPSG database axis order.</li>
      *   <li>Well Known Text (WKT)</li>
      * </ul>
@@ -890,6 +891,9 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
      * @since 2.5
      */
     public static String toSRS(final CoordinateReferenceSystem crs) {
+        if (crs == null) {
+            return null;
+        }
         boolean forcedLonLat = false;
         try {
             forcedLonLat = Boolean.getBoolean("org.geotools.referencing.forceXY") || 
@@ -910,22 +914,36 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
                 LOGGER.log(Level.FINE, "Failed to determine EPSG code", e);
             }
         }
-        
-        // fall back on simple lookups
-        if( crs == null ){
-            return null;
+        // special case DefaultGeographic.WGS84 to prevent SRS="WGS84(DD)"
+        if (crs == DefaultGeographicCRS.WGS84) {
+            // if( forcedLonLat ) return "EPSG:4326"; <-- this is a bad idea for interoperability WMS 1.3.0
+            return "CRS:84"; // WMS Authority definition DefaultGeographicCRS.WGS84
         }
-        final Set<ReferenceIdentifier> identifiers = crs.getIdentifiers();
+        Set<ReferenceIdentifier> identifiers = crs.getIdentifiers();
         if (identifiers.isEmpty()) {
-            // fallback unfortunately this often does not work
+            // we got nothing to work with ... unfortunately this often does not work
             final ReferenceIdentifier name = crs.getName();
             if (name != null) {
                 return name.toString();
             }
+            return null;
         } else {
+            // check for an identifier to use as an srsName
+            for (ReferenceIdentifier identifier : crs.getIdentifiers()) {
+                String srs = identifier.toString();
+                if (srs.contains("EPSG:") || srs.contains("CRS:")) {
+                    return srs; // handles prj files that supply EPSG code
+                }
+            }
+            // fallback unfortunately this often does not work
+            ReferenceIdentifier name = crs.getName();
+            if (name != null
+                    && (name.toString().contains("EPSG:") || name.toString().contains("CRS:"))) {
+                return name.toString();
+            }
+            // nothing was obviously an identifier .. so we grab the first
             return identifiers.iterator().next().toString();
         }
-        return null;
     }
     /**
      * Returns the <cite>Spatial Reference System</cite> identifier, or {@code null} if none.
@@ -934,13 +952,13 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
      * true for force a very simple representation that is just based on the code portion.
      * 
      * @param crs
-     * @param simple Set to true to force generation of a simple srsName entry
+     * @param codeOnly Set to true to force generation of a simple srsName using only the code portion
      * @return srsName
      */
-    public static String toSRS(final CoordinateReferenceSystem crs, boolean simple){
+    public static String toSRS(final CoordinateReferenceSystem crs, boolean codeOnly){
         if( crs == null ) return null;
         String srsName = toSRS( crs );
-        if( simple && srsName != null ){
+        if( codeOnly && srsName != null ){
             // Some Server implementations using older versions of this
             // library barf on a fully qualified CRS name with messages
             // like : "couldnt decode SRS - EPSG:EPSG:4326. currently

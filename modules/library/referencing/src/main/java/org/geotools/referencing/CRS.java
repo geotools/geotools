@@ -952,13 +952,13 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
      * true for force a very simple representation that is just based on the code portion.
      * 
      * @param crs
-     * @param simple Set to true to force generation of a simple srsName entry
+     * @param codeOnly Set to true to force generation of a simple srsName using only the code portion
      * @return srsName
      */
-    public static String toSRS(final CoordinateReferenceSystem crs, boolean simple){
+    public static String toSRS(final CoordinateReferenceSystem crs, boolean codeOnly){
         if( crs == null ) return null;
         String srsName = toSRS( crs );
-        if( simple && srsName != null ){
+        if( codeOnly && srsName != null ){
             // Some Server implementations using older versions of this
             // library barf on a fully qualified CRS name with messages
             // like : "couldnt decode SRS - EPSG:EPSG:4326. currently

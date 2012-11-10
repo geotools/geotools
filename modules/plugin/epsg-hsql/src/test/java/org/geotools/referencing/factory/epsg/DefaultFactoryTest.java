@@ -773,14 +773,21 @@ public class DefaultFactoryTest {
               "UNIT[\"m\", 1.0], " +
               "AXIS[\"x\", EAST], " +
               "AXIS[\"y\", NORTH]]";
-
-        final CoordinateReferenceSystem crs1 = CRS.parseWKT(wkt);
-        final CoordinateReferenceSystem crs2 = CRS.decode("EPSG:26986");
-
-        // This is the current state of Geotools, but it is wrong. The CRS should be equivalent.
-        // We will change to 'assertTrue' if a MapProjection.equivalent(MapProjection) method is
-        // implemented in some future Geotools version.
-        assertFalse(CRS.equalsIgnoreMetadata(crs1, crs2));
+        try {
+            // Was failing from maven due to differences in Axis order
+            Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
+            
+            final CoordinateReferenceSystem crs1 = CRS.parseWKT(wkt);
+            final CoordinateReferenceSystem crs2 = CRS.decode("EPSG:26986",false);
+    
+            // This is the current state of Geotools, but it is wrong. The CRS should be equivalent.
+            // We will change to 'assertTrue' if a MapProjection.equivalent(MapProjection) method is
+            // implemented in some future Geotools version.
+            assertTrue("CRS should be equivalent", CRS.equalsIgnoreMetadata(crs1, crs2));
+        }
+        finally {
+            Hints.removeSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
+        }
     }
 
     /**

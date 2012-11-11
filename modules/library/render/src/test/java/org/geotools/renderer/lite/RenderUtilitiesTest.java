@@ -46,19 +46,35 @@ public class RenderUtilitiesTest extends TestCase {
      * @throws Exception
      */
     public void testNAD83() throws Exception {
-        CoordinateReferenceSystem nad83 = CRS.decode("EPSG:4269");
+        CoordinateReferenceSystem nad83 = CRS.decode("EPSG:4269", true);
         ReferencedEnvelope re = new ReferencedEnvelope(
                 new Envelope(-121.1, -121.0, 46.7, 46.8), nad83);
         double scale = RendererUtilities.calculateScale(re, 750, 600, 75);
-        assertEquals(23512.3453, scale, 0.1); 
+        assertEquals(41470, scale, 1d); 
     }
 
     public void testWGS84() throws Exception {
-        CoordinateReferenceSystem wgs84 = CRS.decode("EPSG:4326");
+        CoordinateReferenceSystem wgs84 = CRS.decode("EPSG:4326", true);
         ReferencedEnvelope re = new ReferencedEnvelope(
                 new Envelope(-121.1, -121.0, 46.7, 46.8), wgs84);
         double scale = RendererUtilities.calculateScale(re, 750, 600, 75);
-        assertEquals(23512.3453, scale, 0.1); 
+        assertEquals(41470, scale, 1d); 
+    }
+    
+    public void testWorld() throws Exception {
+        CoordinateReferenceSystem wgs84 = CRS.decode("EPSG:4326", true);
+        ReferencedEnvelope re = new ReferencedEnvelope(
+                new Envelope(-180, 180, -90, 90), wgs84);
+        double scale = RendererUtilities.calculateScale(re, 1000, 500, 75);
+        assertEquals(52830886, scale, 1);
+    }
+    
+    public void testWorldTwice() throws Exception {
+        CoordinateReferenceSystem wgs84 = CRS.decode("EPSG:4326", true);
+        ReferencedEnvelope re = new ReferencedEnvelope(
+                new Envelope(-360, 360, -180, 180), wgs84);
+        double scale = RendererUtilities.calculateScale(re, 1000, 500, 75);
+        assertEquals(52830886 * 2, scale, 1);
     }
 
 	public void testScaleProjected() throws Exception {

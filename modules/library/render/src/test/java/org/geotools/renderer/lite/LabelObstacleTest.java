@@ -16,9 +16,8 @@
  */
 package org.geotools.renderer.lite;
 
-import static java.awt.RenderingHints.KEY_ANTIALIASING;
-import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
-import static org.junit.Assert.assertEquals;
+import static java.awt.RenderingHints.*;
+import static org.junit.Assert.*;
 
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
@@ -73,9 +72,8 @@ public class LabelObstacleTest {
 
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
 
-        tb.setCRS(CRS.decode("EPSG:4326", true));
-
         tb.setName("roads");
+        tb.setCRS(CRS.decode("EPSG:4326", true));
         tb.add("geom", LineString.class);
         tb.add("name", String.class);
         mem.createSchema(tb.buildFeatureType());
@@ -103,7 +101,7 @@ public class LabelObstacleTest {
         loadData(mem, "polys");
         loadData(mem, "lines2");
     }
-
+    
     static void loadData(MemoryDataStore mem, String name) throws Exception {
         WKTReader wkt = new WKTReader();
 

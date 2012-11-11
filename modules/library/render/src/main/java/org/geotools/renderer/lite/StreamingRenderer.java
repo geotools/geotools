@@ -1817,26 +1817,15 @@ public final class StreamingRenderer implements GTRenderer {
     }
 
     /**
-     * Prepair a FeatureCollection<SimpleFeatureType, SimpleFeature> for display, this method formally ensured that a FeatureReader
-     * produced the correct CRS and has now been updated to work with FeatureCollection.
-     * <p>
-     * What is really going on is the need to set up for reprojection; but *after* decimation has
-     * occured.
-     * </p>
+     * Makes sure the feature collection generates the desired sourceCrs, this is mostly a workaround
+     * against feature sources generating feature collections without a CRS (which is fatal to
+     * the reprojection handling later in the code)
      *  
      * @param features
      * @param sourceCrs
      * @return FeatureCollection<SimpleFeatureType, SimpleFeature> that produces results with the correct CRS
      */
     private FeatureCollection prepFeatureCollection(FeatureCollection features, CoordinateReferenceSystem sourceCrs ) {
-        // DJB: dont do reprojection here - do it after decimation
-        // but we ensure that the reader is producing geometries with
-        // the correct CRS
-        // NOTE: it, by default, produces ones that are are tagged with
-        // the CRS of the datastore, which
-        // maybe incorrect.
-        // The correct value is in sourceCrs.
-
         // this is the reader's CRS
         CoordinateReferenceSystem rCS = null;
         try {
@@ -1845,27 +1834,15 @@ public final class StreamingRenderer implements GTRenderer {
             // life sucks sometimes
         }
 
-        // sourceCrs == source's real SRS
-        // if we need to recode the incoming geometries
-
-        if (rCS != sourceCrs) // not both null or both EXACTLY the
-            // same CRS object
-        {
-            if (sourceCrs != null) // dont re-tag to null, keep the
-                // DataStore's CRS (this shouldnt
-                // really happen)
-            {
-                // if the datastore is producing null CRS, we recode.
-                // if the datastore's CRS != real CRS, then we recode
-                if ((rCS == null) || !CRS.equalsIgnoreMetadata(rCS, sourceCrs)) {
-                    // need to retag the features
-                    try {
-                        if( features instanceof SimpleFeatureCollection){
-                            return new ForceCoordinateSystemFeatureResults( (SimpleFeatureCollection) features, sourceCrs );
-                        }
-                    } catch (Exception ee) {
-                        LOGGER.log(Level.WARNING, ee.getLocalizedMessage(), ee);
-                    }
+        if (rCS != sourceCrs && sourceCrs != null) {
+            // if the datastore is producing null CRS, we recode.
+            // if the datastore's CRS != real CRS, then we recode
+            if ((rCS == null) || !CRS.equalsIgnoreMetadata(rCS, sourceCrs)) {
+                // need to retag the features
+                try {
+                    return new ForceCoordinateSystemFeatureResults( (SimpleFeatureCollection) features, sourceCrs);
+                } catch (Exception ee) {
+                    LOGGER.log(Level.WARNING, ee.getLocalizedMessage(), ee);
                 }
             }
         }
@@ -1961,7 +1938,6 @@ public final class StreamingRenderer implements GTRenderer {
                 // ... assume we have to do the generalization, the query layer process will
                 // turn down the flag if we don't 
                 inMemoryGeneralization = true;
-                FeatureCollection rawFeatures;
                 Query styleQuery = getStyleQuery(featureSource, schema,
                         uniform, mapArea, destinationCrs, sourceCrs, screenSize,
                         geometryAttribute, at);
@@ -1976,17 +1952,17 @@ public final class StreamingRenderer implements GTRenderer {
                     // The first source attributes, the latter talks tx output attributes
                     // so they have to be applied before and after the transformation respectively
                     
-                    rawFeatures = applyRenderingTransformation(transform, featureSource, definitionQuery, 
-                            styleQuery, gridGeometry);
-                    if(rawFeatures == null) {
+                    features = applyRenderingTransformation(transform, featureSource, definitionQuery, 
+                            styleQuery, gridGeometry, sourceCrs);
+                    if(features == null) {
                         return;
                     }
                 } else {
                     Query mixed = DataUtilities.mixQueries(definitionQuery, styleQuery, null);
                     checkAttributeExistence(featureSource.getSchema(), mixed);
-                    rawFeatures = featureSource.getFeatures(mixed);
+                    features = featureSource.getFeatures(mixed);
+                    features = prepFeatureCollection(features, sourceCrs);
                 }
-                features = prepFeatureCollection(rawFeatures, sourceCrs);          
 
                 // HACK HACK HACK
                 // For complex features, we need the targetCrs and version in scenario where we have
@@ -2090,7 +2066,7 @@ public final class StreamingRenderer implements GTRenderer {
 
     FeatureCollection applyRenderingTransformation(Expression transformation,
             FeatureSource featureSource, Query layerQuery, Query renderingQuery, 
-            GridGeometry2D gridGeometry) throws IOException, SchemaException, TransformException, FactoryException  {
+            GridGeometry2D gridGeometry, CoordinateReferenceSystem sourceCrs) throws IOException, SchemaException, TransformException, FactoryException  {
         Object result = null;
         
         // check if it's a wrapper coverage or a wrapped reader
@@ -2216,6 +2192,7 @@ public final class StreamingRenderer implements GTRenderer {
             // grab the original features
             Query mixedQuery = DataUtilities.mixQueries(layerQuery, optimizedQuery, null);
             originalFeatures = featureSource.getFeatures(mixedQuery);
+            prepFeatureCollection(originalFeatures, sourceCrs);
             
             // transform them
             result = transformation.evaluate(originalFeatures);

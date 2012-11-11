@@ -935,8 +935,6 @@ public final class StreamingRenderer implements GTRenderer {
      * package protected just to allow unit testing it.
      * </p>
      * 
-     * @param currLayer
-     *            the actually processing layer for renderition
      * @param schema
      * @param source
      * @param envelope
@@ -958,16 +956,14 @@ public final class StreamingRenderer implements GTRenderer {
      * Default visibility for testing purposes
      */
 
-    Query getLayerQuery(MapLayer currLayer, FeatureSource<FeatureType, Feature> source,
+    Query getStyleQuery(FeatureSource<FeatureType, Feature> source,
             FeatureType schema, List<LiteFeatureTypeStyle> styleList,
             Envelope mapArea, CoordinateReferenceSystem mapCRS,
             CoordinateReferenceSystem featCrs, Rectangle screenSize,
             GeometryDescriptor geometryAttribute,
             AffineTransform worldToScreenTransform)
             throws IllegalFilterException, IOException, FactoryException {
-        FeatureCollection<FeatureType, Feature> results = null;
         Query query = new Query(Query.ALL);
-        Query definitionQuery;
         Filter filter = null;
         
         LiteFeatureTypeStyle[] styles = (LiteFeatureTypeStyle[]) styleList.toArray(new LiteFeatureTypeStyle[styleList.size()]);
@@ -1053,22 +1049,6 @@ public final class StreamingRenderer implements GTRenderer {
 
         }
 
-        // now, if a definition query has been established for this layer, be
-        // sure to respect it by combining it with the bounding box one.
-        // Currently this definition query is being set dynamically in geoserver
-        // as per the user's filter, maxFeatures and startIndex WMS GetMap custom parameters
-        definitionQuery = reprojectQuery(currLayer.getQuery(), source);
-
-        if (definitionQuery != Query.ALL) {
-            if (query == Query.ALL) {
-                query = new Query(definitionQuery);
-            } else {
-                query = new Query(DataUtilities.mixQueries(
-                        definitionQuery, query, "liteRenderer"));
-            }
-        }
-        query.setCoordinateSystem(featCrs);
-
         // prepare hints
         // ... basic one, we want fast and compact coordinate sequences and geometries optimized
         // for the collection of one item case (typical in shapefiles)
@@ -1128,6 +1108,15 @@ public final class StreamingRenderer implements GTRenderer {
         query.setFilter(simplifiedFilter);
         
         return query;
+    }
+    
+    Query getDefinitionQuery(MapLayer currLayer, FeatureSource<FeatureType, Feature> source, CoordinateReferenceSystem featCrs) throws FactoryException {
+        // now, if a definition query has been established for this layer, be
+        // sure to respect it by combining it with the bounding box one.
+        Query definitionQuery = reprojectQuery(currLayer.getQuery(), source);
+        definitionQuery.setCoordinateSystem(featCrs);
+        
+        return definitionQuery;
     }
 
     /**
@@ -1972,22 +1961,30 @@ public final class StreamingRenderer implements GTRenderer {
                 // ... assume we have to do the generalization, the query layer process will
                 // turn down the flag if we don't 
                 inMemoryGeneralization = true;
-                Query query = getLayerQuery(currLayer, featureSource, schema,
+                FeatureCollection rawFeatures;
+                Query styleQuery = getStyleQuery(featureSource, schema,
                         uniform, mapArea, destinationCrs, sourceCrs, screenSize,
                         geometryAttribute, at);
-                FeatureCollection rawFeatures;
+                Query definitionQuery = getDefinitionQuery(currLayer, featureSource, sourceCrs);
                 if(transform != null) {
+                    // prepare the stage for the raster transformations
                     GridEnvelope2D ge = new GridEnvelope2D(screenSize);
                     ReferencedEnvelope re = new ReferencedEnvelope(mapArea, destinationCrs);
                     GridGeometry2D gridGeometry = new GridGeometry2D(ge, re);
-                    rawFeatures = applyRenderingTransformation(transform, featureSource, query,
-                            gridGeometry);
+                    // vector transformation wise, we have to account for two separate queries,
+                    // the one attached to the layer and then one coming from SLD.
+                    // The first source attributes, the latter talks tx output attributes
+                    // so they have to be applied before and after the transformation respectively
+                    
+                    rawFeatures = applyRenderingTransformation(transform, featureSource, definitionQuery, 
+                            styleQuery, gridGeometry);
                     if(rawFeatures == null) {
                         return;
                     }
                 } else {
-                    checkAttributeExistence(featureSource.getSchema(), query);
-                    rawFeatures = featureSource.getFeatures(query);
+                    Query mixed = DataUtilities.mixQueries(definitionQuery, styleQuery, null);
+                    checkAttributeExistence(featureSource.getSchema(), mixed);
+                    rawFeatures = featureSource.getFeatures(mixed);
                 }
                 features = prepFeatureCollection(rawFeatures, sourceCrs);          
 
@@ -2092,7 +2089,8 @@ public final class StreamingRenderer implements GTRenderer {
     }
 
     FeatureCollection applyRenderingTransformation(Expression transformation,
-            FeatureSource featureSource, Query query, GridGeometry2D gridGeometry) throws IOException, SchemaException, TransformException, FactoryException  {
+            FeatureSource featureSource, Query layerQuery, Query renderingQuery, 
+            GridGeometry2D gridGeometry) throws IOException, SchemaException, TransformException, FactoryException  {
         Object result = null;
         
         // check if it's a wrapper coverage or a wrapped reader
@@ -2108,7 +2106,7 @@ public final class StreamingRenderer implements GTRenderer {
                 GridGeometry2D readGG = gridGeometry;
                 if(transformation instanceof RenderingTransformation) {
                     RenderingTransformation tx = (RenderingTransformation) transformation;
-                    readGG = (GridGeometry2D) tx.invertGridGeometry(query, gridGeometry);
+                    readGG = (GridGeometry2D) tx.invertGridGeometry(renderingQuery, gridGeometry);
                     // TODO: override the read params and force this grid geometry, or something
                     // similar to this (like passing it as a param to readCoverage
                 }
@@ -2205,38 +2203,32 @@ public final class StreamingRenderer implements GTRenderer {
             Query optimizedQuery = null;
             if(transformation instanceof RenderingTransformation) {
                 RenderingTransformation tx = (RenderingTransformation) transformation;
-                optimizedQuery = tx.invertQuery(query, gridGeometry);
+                optimizedQuery = tx.invertQuery(renderingQuery, gridGeometry);
             }
             // if we could not find an optimized query no other choice but to just limit
             // ourselves to the bbox, we don't know if the transformation alters/adds attributes :-(
             if(optimizedQuery == null) {
-                 Envelope bounds = (Envelope) query.getFilter().accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, null);
+                 Envelope bounds = (Envelope) renderingQuery.getFilter().accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, null);
                  Filter bbox = new FastBBOX(filterFactory.property(""), bounds, filterFactory);
                  optimizedQuery = new Query(null, bbox);
-                // optimizedQuery = query;
             }
             
             // grab the original features
-            originalFeatures = featureSource.getFeatures(optimizedQuery);
+            Query mixedQuery = DataUtilities.mixQueries(layerQuery, optimizedQuery, null);
+            originalFeatures = featureSource.getFeatures(mixedQuery);
             
             // transform them
             result = transformation.evaluate(originalFeatures);
         } 
         
         // null safety, a transformation might be free to return null
-        if(result == null) {
+         if(result == null) {
             return null;
         }
         
         // what did we get? raster or vector?
         if(result instanceof FeatureCollection) {
-            // we need to apply the original query, but that uses the wrong type name and
-            // likely the wrong attribute name for the default geometry
-            final SimpleFeatureSource source = DataUtilities.source((FeatureCollection) result);
-            SimpleFeatureType transformedSchema = source.getSchema();
-            Query adapted = adaptQuery(query, transformedSchema, schema);
-            checkAttributeExistence(transformedSchema, adapted);
-            return source.getFeatures(adapted);
+            return (FeatureCollection) result;
         } else if(result instanceof GridCoverage2D) {
             return FeatureUtilities.wrapGridCoverage((GridCoverage2D) result);
         } else if(result instanceof AbstractGridCoverage2DReader) {
@@ -2246,63 +2238,6 @@ public final class StreamingRenderer implements GTRenderer {
                     "the supported result types are FeatureCollection, GridCoverage2D " +
                     "and AbstractGridCoverage2DReader, but we got: " + result.getClass());
         }
-    }
-
-    /**
-     * Changes the original query to account for the transformation altering the
-     * type name and the default geometry name 
-     * @param query
-     * @param targetSchema
-     * @param originalSchema
-     * @return
-     */
-    Query adaptQuery(Query query, FeatureType targetSchema, FeatureType originalSchema) {
-        // build the query with target schema name
-        Query result = new Query(targetSchema.getName().getLocalPart());
-        
-        // check if the default geometry attribute name changed
-        final GeometryDescriptor gdTarget = targetSchema.getGeometryDescriptor();
-        final GeometryDescriptor gdSource = originalSchema.getGeometryDescriptor();
-        if(gdTarget != null && gdSource != null && 
-                !gdTarget.getLocalName().equals(gdSource.getLocalName())) {
-            String source = gdSource.getLocalName();
-            String target = gdTarget.getLocalName();
-            
-            // rename attributes
-            List<String> attributes = new ArrayList(Arrays.asList(query.getPropertyNames()));
-            for (int i = 0; i < attributes.size(); ) {
-                String attribute = attributes.get(i);
-                if(attribute.equals(source)){
-                    attributes.set(i,  target);
-                    i++;
-                } else if(targetSchema.getDescriptor(attribute) == null &&
-                        (attribute.equals("params") || attribute.equals("grid"))) {
-                    // skip params and grid as they have been added out of the blue
-                    attributes.remove(i);
-                } else {
-                    i++;
-                }
-            }
-            result.setPropertyNames(attributes);
-            
-            // rename the filter
-            AttributeRenameVisitor visitor = new AttributeRenameVisitor(source, target);
-            Filter original = query.getFilter();
-            Filter renamedFilter = (Filter) original.accept(visitor, null);
-            result.setFilter(renamedFilter);
-        } else if(originalSchema instanceof SimpleFeatureType 
-                && (FeatureUtilities.isWrappedCoverage((SimpleFeatureType) originalSchema) 
-                        || FeatureUtilities.isWrappedCoverageReader((SimpleFeatureType) originalSchema))) {
-            // use all the properties generated by the transformation, the query normally in this
-            // case contains grid/params/geom or grid/geom which have nothing to do with
-            // the actual attributes we are going to use, especially in raster to vector transformations
-            result.setFilter(query.getFilter());
-        } else {
-            result.setPropertyNames(query.getPropertyNames());
-            result.setFilter(query.getFilter());
-        }
-        
-        return result;
     }
 
     /**

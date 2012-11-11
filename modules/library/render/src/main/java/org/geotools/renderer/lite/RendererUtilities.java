@@ -542,6 +542,14 @@ public final class RendererUtilities {
 	            throw new TransformException(Errors.format(
 	                      ErrorKeys.CANT_REDUCE_TO_TWO_DIMENSIONS_$1,
 	                      envelope.getCoordinateReferenceSystem()));
+                /**
+                 * For Geographic CRS, just compute the diagonal distance using WGS84,
+                 * since the distance discrepancy should be small
+                 */
+                if (tempCRS instanceof GeographicCRS) {
+                    diagonalGroundDistance = geodeticDiagonalDistance(envelope);
+                }
+                else {
 			// make sure the crs is 2d
 			envelope = new ReferencedEnvelope((Envelope) envelope, tempCRS);
 			final MathTransform toWGS84 = CRS.findMathTransform(tempCRS, DefaultGeographicCRS.WGS84, true);
@@ -626,6 +634,7 @@ public final class RendererUtilities {
 					.getOrdinate(0), upperRightCorner.getOrdinate(1));
 			diagonalGroundDistance = calculator
 					.getOrthodromicDistance();
+                }
 		} else {
 			// if it's an engineering crs, compute only the graphical scale, assuming a CAD space
 			diagonalGroundDistance = Math.sqrt(envelope.getWidth() * envelope.getWidth()
@@ -646,6 +655,12 @@ public final class RendererUtilities {
 		// remember, this is the denominator, not the actual scale;
 	}
 
+    private static double geodeticDiagonalDistance(Envelope env) {
+        final GeodeticCalculator calculator = new GeodeticCalculator(DefaultGeographicCRS.WGS84);
+        calculator.setStartingGeographicPoint(env.getMinX(), env.getMinY());
+        calculator.setDestinationGeographicPoint(env.getMaxX(), env.getMinY());
+        return calculator.getOrthodromicDistance();
+    }
 	
 	/**
 	 * This worldToScreenTransform method makes the assumption that the crs is

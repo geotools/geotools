@@ -53,8 +53,11 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.operation.buffer.BufferParameters;
+import com.vividsolutions.jts.operation.buffer.OffsetCurveBuilder;
 
 /**
  * A simple class that knows how to paint a Shape object onto a Graphic given a
@@ -113,7 +116,7 @@ public final class StyledShapePainter {
      * @throws FactoryException 
      * @throws TransformException 
      */
-    public void paint(final Graphics2D graphics, final LiteShape2 shape,
+    public void paint(final Graphics2D graphics, LiteShape2 shape,
             final Style2D style, final double scale, boolean isLabelObstacle) {
         if (style == null) {
             // TODO: what's going on? Should not be reached...
@@ -259,6 +262,23 @@ public final class StyledShapePainter {
 
             if (style instanceof LineStyle2D) {
                 LineStyle2D ls2d = (LineStyle2D) style;
+                
+                double perpendicularOffset = ls2d.getPerpendicularOffset();
+                if (Math.abs(perpendicularOffset) != 0){
+                	GeometryFactory factory = new GeometryFactory();
+            		LineString lineString = factory.createLineString(shape.getGeometry().getCoordinates());
+            		BufferParameters bufParams = new BufferParameters();
+            		bufParams.setQuadrantSegments(0);
+            		bufParams.setJoinStyle(BufferParameters.CAP_FLAT);
+            		OffsetCurveBuilder offsetCurveBuilder = new OffsetCurveBuilder(lineString.getPrecisionModel(), bufParams);
+            		Coordinate[] coordinates = offsetCurveBuilder.getOffsetCurve(lineString.getCoordinates(), perpendicularOffset);
+            		LineString offsetLineString = shape.getGeometry().getFactory().createLineString(coordinates);
+            		try {
+						shape = new LiteShape2(offsetLineString, null, null, false);
+					} catch (TransformException e) {
+					} catch (FactoryException e) {
+					}
+                }
 
                 if (ls2d.getStroke() != null) {
                     // see if a graphic stroke is to be used, the drawing method

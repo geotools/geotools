@@ -37,6 +37,7 @@ import org.geotools.resources.Classes;
 public class LineStyle2D extends Style2D {
     protected Paint contour;
     protected Stroke stroke;
+    protected double perpendicularOffset;
     protected Composite contourComposite;
 
     /** Holds value of property graphicStroke. */
@@ -60,6 +61,14 @@ public class LineStyle2D extends Style2D {
      */
     public void setStroke(Stroke stroke) {
         this.stroke = stroke;
+    }
+    
+    public double getPerpendicularOffset() {
+    	return perpendicularOffset;
+    }
+    
+    public void setPerpendicularOffset(double perpendicularOffset) {
+    	this.perpendicularOffset = perpendicularOffset;
     }
 
     /**

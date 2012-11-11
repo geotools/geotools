@@ -38,17 +38,28 @@ import com.vividsolutions.jts.geom.Envelope;
  */
 public class RenderUtilitiesTest extends TestCase {
 
-	public void testScaleOutsideCrsDefinition() throws Exception {
-		CoordinateReferenceSystem utm1N = CRS.decode("EPSG:32601");
-		ReferencedEnvelope re = new ReferencedEnvelope(new Envelope(0, 0, 100,
-				100), utm1N);
-		try {
-			RendererUtilities.calculateScale(re, 100, 100, 75);
-			fail("Should have failed, envelope outside of the source crs validity area");
-		} catch (IllegalArgumentException e) {
-			// ok
-		}
-	}
+    /**
+     * This tests a fix to handle Geographic CRSes (such as NAD83)
+     * whose domain of validity crosses the Date Line.
+     * Previously this would cause a failure.
+     * 
+     * @throws Exception
+     */
+    public void testNAD83() throws Exception {
+        CoordinateReferenceSystem nad83 = CRS.decode("EPSG:4269");
+        ReferencedEnvelope re = new ReferencedEnvelope(
+                new Envelope(-121.1, -121.0, 46.7, 46.8), nad83);
+        double scale = RendererUtilities.calculateScale(re, 750, 600, 75);
+        assertEquals(23512.3453, scale, 0.1); 
+    }
+
+    public void testWGS84() throws Exception {
+        CoordinateReferenceSystem wgs84 = CRS.decode("EPSG:4326");
+        ReferencedEnvelope re = new ReferencedEnvelope(
+                new Envelope(-121.1, -121.0, 46.7, 46.8), wgs84);
+        double scale = RendererUtilities.calculateScale(re, 750, 600, 75);
+        assertEquals(23512.3453, scale, 0.1); 
+    }
 
 	public void testScaleProjected() throws Exception {
 		CoordinateReferenceSystem utm1N = CRS.decode("EPSG:32601");

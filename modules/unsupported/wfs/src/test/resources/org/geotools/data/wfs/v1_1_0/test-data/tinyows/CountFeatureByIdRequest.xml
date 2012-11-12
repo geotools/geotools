@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wfs:GetFeature handle="GeoTools ${project.version} WFS DataStore"
+ outputFormat="text/xml; subtype=gml/3.1.1" resultType="hits"
+ service="WFS" version="1.1.0" xmlns:ogc="http://www.opengis.net/ogc"
+ xmlns:gml="http://www.opengis.net/gml"
+ xmlns:comuni="http://www.tinyows.org/"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:ows="http://www.opengis.net/ows" xmlns:wfs="http://www.opengis.net/wfs">
+ <wfs:Query srsName="urn:ogc:def:crs:EPSG::3857" typeName="comuni:comuni11">
+  <ogc:Filter>
+   <ogc:FeatureId fid="comuni11.2671"/>
+  </ogc:Filter>
+ </wfs:Query>
+</wfs:GetFeature>

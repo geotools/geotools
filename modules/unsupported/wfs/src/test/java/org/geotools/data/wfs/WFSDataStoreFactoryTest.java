@@ -32,7 +32,7 @@ import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.geotools.data.wfs.protocol.http.HTTPProtocol;
+import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.wfs.v1_1_0.CubeWerxStrategy;
 import org.geotools.data.wfs.v1_1_0.GeoServerStrategy;
 import org.geotools.data.wfs.v1_1_0.IonicStrategy;
@@ -136,7 +136,7 @@ public class WFSDataStoreFactoryTest {
         // load the test file
         final WFSDataStoreFactory dsf = new WFSDataStoreFactory() {
             @Override
-            byte[] loadCapabilities(final URL capabilitiesUrl, HTTPProtocol htp) throws IOException {
+            byte[] loadCapabilities(final URL capabilitiesUrl, HTTPClient http) throws IOException {
                 InputStream in = capabilitiesUrl.openStream();
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 int aByte;

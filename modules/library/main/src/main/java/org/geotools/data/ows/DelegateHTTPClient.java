@@ -80,4 +80,14 @@ public class DelegateHTTPClient implements HTTPClient {
     public void setReadTimeout(int readTimeout) {
         delegate.setReadTimeout(readTimeout);
     }
+
+    @Override
+    public void setTryGzip(boolean tryGZIP) {
+        delegate.setTryGzip(tryGZIP);
+    }
+
+    @Override
+    public boolean isTryGzip() {
+        return delegate.isTryGzip();
+    }
 }

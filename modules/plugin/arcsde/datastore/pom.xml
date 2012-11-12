@@ -13,7 +13,7 @@
 	<parent>
 		<groupId>org.geotools</groupId>
 		<artifactId>arcsde-plugin</artifactId>
-		<version>9-SNAPSHOT</version>
+		<version>9.0-M0</version>
 	</parent>
 
 

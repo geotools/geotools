@@ -49,7 +49,7 @@ copyright = u'2012, GeoTools'
 # built documents.
 #
 # The full version, including alpha/beta/rc tags.
-release = '9-SNAPSHOT'
+release = '9.0-M0'
 
 # The short X.Y version.
 version = release

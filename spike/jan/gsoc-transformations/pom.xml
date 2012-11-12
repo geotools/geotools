@@ -100,7 +100,7 @@
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-metadata</artifactId>
-      <version>9-SNAPSHOT</version>
+      <version>9.0-M0</version>
     </dependency>
     <dependency>
 	    <groupId>junit</groupId>
@@ -113,38 +113,38 @@
      <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-image</artifactId>
-      <version>9-SNAPSHOT</version>
+      <version>9.0-M0</version>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-coverage</artifactId>
-      <version>9-SNAPSHOT</version>
+      <version>9.0-M0</version>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-api</artifactId>
-      <version>9-SNAPSHOT</version>
+      <version>9.0-M0</version>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-main</artifactId>
-      <version>9-SNAPSHOT</version>
+      <version>9.0-M0</version>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-sample-data</artifactId>
-      <version>9-SNAPSHOT</version>
+      <version>9.0-M0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
 	    <groupId>org.geotools</groupId>
 	    <artifactId>gt-referencing</artifactId>
-	    <version>9-SNAPSHOT</version>	    
+	    <version>9.0-M0</version>	    
     </dependency>
     <dependency>
 	    <groupId>org.geotools</groupId>
 	    <artifactId>gt-api</artifactId>
-	    <version>9-SNAPSHOT</version>
+	    <version>9.0-M0</version>
     </dependency>
 
     <dependency>

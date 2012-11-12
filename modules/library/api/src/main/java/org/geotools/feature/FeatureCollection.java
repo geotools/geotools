@@ -34,28 +34,26 @@ import org.opengis.util.ProgressListener;
  * Collection of features, often handled as a result set.
  * <p>
  * Where possible FeatureCollection is method compatible with {@link Collection}.
- * In keeping with the rules set for by {@link Collection}, some methods are
- * optional, and may throw an UnsupportedOperationException.
  * </p>
  * <p>
  * SimpleFeatureCollection house rules:
  * <ul>
- * <li>Each iterator is considered a connection which my be closed (see example below)</li>
+ * <li>Each iterator is considered a live connection which must be closed (see example below)</li>
  * <li>Features are not specifically ordered within the SimpleFeatureCollection</li>
- * <li>Two instances cannot exist with the same {@link FeatureId}</li>
+ * <li>Two Feature instances cannot exist with the same {@link FeatureId}</li>
  * </ul>
  * </p>
  * <p>
  * <h3>FeatureIterator close</h3>
  * <p>
- * FeatureCollection provides streaming access. With this in mind we have
- * a restriction on the use of {@link FeatureIterator}: You must call
+ * FeatureCollection provides streaming access with the following restriction
+ * on the use of {@link FeatureIterator}: You must call
  * {@link FeatureIterator#close()}. This allows FeatureCollection
  * to clean up any operating system resources used to access information.
  * </p>
  * <p>
  * Example (safe) use:<pre><code>
- * FeatureIterator iterator = collection.features();
+ * FeatureIterator iterator = featureCollection.features();
  * try {
  *     while( iterator.hasNext() ){
  *          Feature feature = iterator.hasNext();
@@ -67,6 +65,14 @@ import org.opengis.util.ProgressListener;
  * }
  * </code></pre>
  * </p>
+ * And in Java 7:<pre><code>
+ * try ( FeatureIterator iterator = featureCollection.features() ){
+ *     while( iterator.hasNext() ){
+ *          Feature feature = iterator.hasNext();
+ *          System.out.println( feature.getID() );
+ *     }
+ * }
+ * </code></pre>
  * <p>
  * Handy Tip: Although many resource backed collections will choose
  * to release resources at when the iterator has reached the end of its contents
@@ -74,11 +80,11 @@ import org.opengis.util.ProgressListener;
  * </p>
  * <h2>FeatureCollection Implementation Tips</h2>
  * <p>
- * Try and close up resources when you can detect that an Iterator is no
+ * Auto close: Try and close up resources when you can detect that an Iterator is no
  * longer in use.
  * </p>
  * <p>
- * FeatureCollection is used in two fashions, as a result set, where each iterator acts
+ * Lazy Connect: FeatureCollection is used in two fashions, as a result set, where each iterator acts
  * as a cursor over the content. Also as a predefined query which can be refined
  * further. An example is using featureCollection.subCollection( Filter ) or
  * featureCollection.sort( SortBy ) before listing features out of a FeatureCollection.
@@ -88,29 +94,21 @@ import org.opengis.util.ProgressListener;
  * @author Ian Turton, CCG
  * @author Rob Hranac, VFNY
  * @author Ian Schneider, USDA-ARS
- * @author Jody Garnett, Refractions Research, Inc.
+ * @author Jody Garnett, LISAsoft
  *
  * @source $URL$
  * @version $Id$
  */
 public interface FeatureCollection<T extends FeatureType, F extends Feature> {
     /**
-     * Obtain a FeatureIterator<SimpleFeature> of the Features within this collection.
+     * Obtain a FeatureIterator<SimpleFeature> of the Features within this FeatureCollection.
      * <p>
-     * The implementation of Collection must adhere to the rules of
+     * The implementation of FeatureIterator must adhere to the rules of
      * fail-fast concurrent modification. In addition (to allow for
-     * resource backed collections, the <code>close( Iterator )</code>
+     * resource backed collections) the <code>FeatureIterator.close()</code>
      * method must be called.
      * <p>
-     *
-     * This is almost equivalent to:
-     * <ul>
-     * <li>a Type-Safe call to:
-     * <code>getAttribute(getFeatureType().getAttributeType(0).getName()).iterator();</code>.
-     * <li>A Java 5:<code>Iterator&lt;Feature&gt;</code>
-     * </ul>
-     * </p>
-     * Example (safe) use:<pre><code>
+     * Example use:<pre><code>
      * FeatureIterator<SimpleFeature> iterator=collection.features();
      * try {
      *     while( iterator.hasNext()  ){
@@ -119,7 +117,7 @@ public interface FeatureCollection<T extends FeatureType, F extends Feature> {
      *     }
      * }
      * finally {
-     *     collection.close( iterator );
+     *     iterator.close();
      * }
      * </code></pre>
      * </p>
@@ -251,9 +249,9 @@ public interface FeatureCollection<T extends FeatureType, F extends Feature> {
      */
     int size();
     
-    /** @see java.util.Collection#toArray() */    
+    /** @see java.util.Collection#toArray() */
     Object[] toArray();
     
-    /** @see java.util.Collection#toArray(Object[]) */ 
+    /** @see java.util.Collection#toArray(Object[]) */
     <O> O[] toArray(O[] a);    
 }

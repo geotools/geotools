@@ -6,7 +6,7 @@ needs to be upgraded. This page collects the upgrade notes for each release chan
 fundemental changes with code examples showing how to upgrade your code.
 
 But first to upgrade - change your dependency to |release| (or an appropriate stable version)::
-
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <geotools.version>|release|</geotools.version>
@@ -61,9 +61,25 @@ AFTER::
        features.add( feature );
     }
 
-ALTERNATE::
+ALTERNATE (will throw exception if FeatureCollection does not implement java.util.Collection)::
 
-    ListFeatureCollection features = FeatureCollections.newCollection( schema, list );
+    Collection<SimpleFeature> collection = DataUtilities.collectionCast( featureCollection );
+    collection.addAll( list );
+
+ALTERNATE DETAIL::
+
+    SimpleFeatureCollection features = FeatureCollections.newCollection();
+    if( features instanceof Collection ){
+        Collection<SimpleFeature> collection = (Collection) features;
+        collection.addAll( list );
+    }
+    else {
+        throw new IllegalStateException("FeatureCollections configured with immutbale implementation");
+    }
+    
+SPECIFIC::
+
+    ListFeatureCollection features = new ListFeatureCollection( schema, list );
 
 FeatureCollection Iterator
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -98,6 +114,14 @@ AFTER::
          i.close();
     }
 
+JAVA7::
+
+    try ( FeatureIterator i=featureCollection.features()){
+        while( i.hasNext() ){
+             SimpleFeature feature = i.next();
+             ...
+        }
+    }
 
 How to Close an Iterator
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -145,6 +169,15 @@ DETAIL::
         }
     }
 
+JAVA7 using try-with-resource syntax for Iterator that implements Closeable::
+
+    try ( Iterator i=collection.features()){
+        while( i.hasNext() ){
+             Object object = i.next();
+             ...
+        }
+    }
+    
 GeoTools 8.0
 ------------
 

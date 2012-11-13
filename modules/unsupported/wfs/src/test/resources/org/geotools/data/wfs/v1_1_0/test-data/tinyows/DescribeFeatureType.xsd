@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xs:schema targetNamespace='http://www.tinyows.org/' xmlns:comuni='http://www.tinyows.org/' xmlns:ogc='http://www.opengis.net/ogc' xmlns:xs='http://www.w3.org/2001/XMLSchema' xmlns='http://www.w3.org/2001/XMLSchema' xmlns:gml='http://www.opengis.net/gml' elementFormDefault='qualified' version='1.1'>
+<xs:import namespace='http://www.opengis.net/gml' schemaLocation='http://schemas.opengis.net/gml/3.1.1/base/gml.xsd'/>
+<xs:element name='comuni11' type='comuni:comuni11Type' substitutionGroup='gml:_Feature' />
+<xs:complexType name='comuni11Type'>
+ <xs:complexContent>
+  <xs:extension base='gml:AbstractFeatureType'>
+   <xs:sequence>
+    <xs:element name ='cod_reg' type='int' nillable='true' minOccurs='0' maxOccurs='1'/>
+    <xs:element name ='cod_pro' type='int' nillable='true' minOccurs='0' maxOccurs='1'/>
+    <xs:element name ='cod_istat' type='int' nillable='true' minOccurs='0' maxOccurs='1'/>
+    <xs:element name ='pro_com' type='int' nillable='true' minOccurs='0' maxOccurs='1'/>
+    <xs:element name ='nome' type='string' nillable='true' minOccurs='0' maxOccurs='1'/>
+    <xs:element name ='shape_leng' type='decimal' nillable='true' minOccurs='0' maxOccurs='1'/>
+    <xs:element name ='shape_area' type='decimal' nillable='true' minOccurs='0' maxOccurs='1'/>
+    <xs:element name ='the_geom' type='gml:MultiSurfacePropertyType' nillable='true' minOccurs='0' maxOccurs='1'/>
+   </xs:sequence>
+  </xs:extension>
+ </xs:complexContent>
+</xs:complexType>
+</xs:schema>

@@ -1,4 +1,4 @@
-package org.geotools.data.ows;
+package org.geotools.data.wfs;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -79,5 +79,4 @@ public class MockHttpResponse implements HTTPResponse {
     public String getResponseCharset() {
         return null;
     }
-
 }

@@ -23,6 +23,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
@@ -31,90 +32,23 @@ import org.apache.commons.collections.map.CaseInsensitiveMap;
 import org.geotools.util.logging.Logging;
 
 /**
- * Base class for {@link HTTPProtocol} implementations that provides the basic property accessors
- * and a good implementation for the URL factory helper method {@link #createUrl(URL, Map)}
- * 
- * @author Gabriel Roldan (OpenGeo)
- * @version $Id$
- * @since 2.6
- *
- *
- *
- * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs/src/main/java/org/geotools
- *         /data/wfs/protocol/http/AbstractHttpProtocol.java $
  * 
  */
-public abstract class AbstractHttpProtocol implements HTTPProtocol {
+public class HttpUtil {
 
-    protected static final Logger LOGGER = Logging.getLogger("org.geotools.data.wfs.protocol.http");
-
-    private boolean tryGzip;
-
-    protected String authUsername;
-
-    protected String authPassword;
-
-    protected int timeoutMillis = -1;
-
-    public AbstractHttpProtocol() {
-        super();
-    }
-
-    /**
-     * @see HTTPProtocol#isTryGzip()
-     */
-    public boolean isTryGzip() {
-        return this.tryGzip;
-    }
-
-    /**
-     * @see HTTPProtocol#setTryGzip(boolean)
-     */
-    public void setTryGzip(boolean tryGzip) {
-        this.tryGzip = tryGzip;
-    }
-
-    /**
-     * @see HTTPProtocol#setAuth(String, String)
-     */
-    public void setAuth(String username, String password) {
-        this.authUsername = username;
-        this.authPassword = password;
-    }
-    
-    /**
-     * @see org.geotools.data.wfs.protocol.http.HTTPProtocol#isAuthenticating()
-     */
-    public boolean isAuthenticating(){
-        return authUsername != null && authPassword != null;
-    }
-
-    /**
-     * @see HTTPProtocol#
-     */
-    public int getTimeoutMillis() {
-        return this.timeoutMillis;
-    }
-
-    /**
-     * @see HTTPProtocol#setTimeoutMillis(int)
-     */
-    public void setTimeoutMillis(int milliseconds) {
-        this.timeoutMillis = milliseconds;
-    }
+    protected static final Logger LOGGER = Logging.getLogger(HttpUtil.class);
 
     /**
      * @see HTTPProtocol#createUrl(URL, Map)
      */
-    public URL createUrl(final URL baseUrl, final Map<String, String> queryStringKvp)
+    public static URL createUrl(final URL baseUrl, final Map<String, String> queryStringKvp)
             throws MalformedURLException {
         final String finalUrlString = createUri(baseUrl, queryStringKvp);
         URL queryUrl = new URL(finalUrlString);
         return queryUrl;
     }
 
-    protected String createUri(final URL baseUrl, final Map<String, String> queryStringKvp) {
+    public static String createUri(final URL baseUrl, final Map<String, String> queryStringKvp) {
         final String query = baseUrl.getQuery();
         Map<String, String> finalKvpMap = new HashMap<String, String>(queryStringKvp);
         if (query != null && query.length() > 0) {
@@ -186,6 +120,27 @@ public abstract class AbstractHttpProtocol implements HTTPProtocol {
 
         final String finalUrlString = sb.toString();
         return finalUrlString;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Map<String, String> requestKvp(URL url) {
+        String queryString = url.getQuery();
+        String[] split = queryString.split("&");
+        Map<String, String> kvp = new LinkedHashMap<String, String>();
+        for (String encodedKvp : split) {
+            String[] splittedKvp = encodedKvp.split("=");
+            final String key = splittedKvp[0];
+            String value = splittedKvp.length == 2 ? splittedKvp[1] : null;
+            if (value != null) {
+                try {
+                    value = URLDecoder.decode(value, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            kvp.put(key, value);
+        }
+        return new CaseInsensitiveMap(kvp);
     }
 
 }

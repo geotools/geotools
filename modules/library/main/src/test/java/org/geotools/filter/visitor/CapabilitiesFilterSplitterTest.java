@@ -23,8 +23,10 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.geotools.filter.Capabilities;
+import org.geotools.filter.capability.FilterCapabilitiesImpl;
 import org.junit.Before;
 import org.junit.Test;
+import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
 import org.opengis.filter.Or;
@@ -169,6 +171,22 @@ public class CapabilitiesFilterSplitterTest extends AbstractCapabilitiesFilterSp
         assertEquals(filter, visitor.getFilterPre());
     }
 
+    @Test    
+    @SuppressWarnings("rawtypes")    
+    public void testVisitIdFilterWithNoIdCapabilities() throws Exception {
+        // Id Filter
+        HashSet ids = new HashSet();
+        ids.add(ff.featureId("david"));
+        Filter idFilter = ff.id(ids);
+
+        // no Id Capabilities
+        visitor = newVisitor(Capabilities.SIMPLE_COMPARISONS_OPENGIS);
+        idFilter.accept(visitor, null);
+        
+        assertEquals(Filter.INCLUDE, visitor.getFilterPre());
+        assertEquals(idFilter, visitor.getFilterPost());        
+    }    
+    
     @Test
     public void testFunctionFilter() throws Exception {
         simpleLogicalCaps.addType(BBOX.class);

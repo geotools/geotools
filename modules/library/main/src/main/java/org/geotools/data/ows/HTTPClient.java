@@ -119,4 +119,14 @@ public interface HTTPClient {
      *            socket read timeout in seconds
      */
     public void setReadTimeout(int readTimeout);
+
+    /**
+     * @param tryGZIP
+     */
+    void setTryGzip(boolean tryGZIP);
+    
+    /**
+     * @return whether gzip content encoding will be attempted; defaults to {@code false}
+     */
+    boolean isTryGzip();
 }

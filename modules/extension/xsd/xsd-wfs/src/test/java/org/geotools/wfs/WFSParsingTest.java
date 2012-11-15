@@ -268,6 +268,7 @@ public class WFSParsingTest extends TestCase {
         SimpleFeatureCollection featureCollection;
         featureCollection = (SimpleFeatureCollection) featureCollections.get(0);
         assertEquals(5, featureCollection.size());
+        assertNotNull(featureCollection.getBounds().getCoordinateReferenceSystem());
 
         SimpleFeatureIterator features = featureCollection.features();
 

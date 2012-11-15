@@ -17,10 +17,14 @@
  */
 package org.geotools.data.wfs.v1_1_0;
 
-import static org.geotools.data.wfs.v1_1_0.DataTestSupport.*;
-import static org.junit.Assert.*;
+import static org.geotools.data.wfs.v1_1_0.DataTestSupport.GEOS_STATES;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.Collections;
@@ -30,12 +34,13 @@ import java.util.Map;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
+import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.WFSDataStoreFactory;
-import org.geotools.data.wfs.protocol.http.HTTPResponse;
+import org.geotools.data.wfs.protocol.http.HttpUtil;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.junit.Test;
@@ -134,30 +139,27 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
         originalHandler.http = new HttpProtocolWrapper(originalHandler.http) {
             
             @Override
-            public HTTPResponse issueGet(URL baseUrl, Map<String, String> kvp) throws IOException {
+            public HTTPResponse get(URL url) throws IOException {
                 // check the vendor params actually made it into the url (at this stage they are not url encoded)
+                Map<String, String> kvp = HttpUtil.requestKvp(url);
                 assertEquals("true", kvp.get("strict"));
                 assertEquals("mysecret", kvp.get("authkey"));
                 assertEquals("low:2000000;high:5000000", kvp.get("viewparams"));
                 
-                return super.issueGet(baseUrl, kvp);
+                return super.get(url);
             }
             
             @Override
-            public HTTPResponse issuePost(URL targetUrl, POSTCallBack callback) throws IOException {
-                String[] keyValueArray = targetUrl.getQuery().split("&");
-                Map<String, String> kvp = new HashMap<String, String>();
-                for (String keyValue : keyValueArray) {
-                    String[] skv = keyValue.split("=");
-                    kvp.put(skv[0], skv[1]);
-                }
+            public HTTPResponse post(URL url, InputStream postContent, String postContentType)
+                    throws IOException {
+                Map<String, String> kvp = HttpUtil.requestKvp(url);
                 
                 // check the vendor params actually made it into the url
                 assertEquals("true", kvp.get("strict"));
                 assertEquals("mysecret", kvp.get("authkey"));
                 assertEquals("low%3A2000000%3Bhigh%3A5000000", kvp.get("viewparams"));
                 
-                return super.issuePost(targetUrl, callback);
+                return super.post(url, postContent, postContentType);
             }
 
         };    

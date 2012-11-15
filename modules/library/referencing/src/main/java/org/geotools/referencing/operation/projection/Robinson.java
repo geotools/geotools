@@ -193,6 +193,8 @@ public class Robinson extends MapProjection {
         double phi = abs(y / FYC);
         if (phi >= 1d) { /* simple pathologic cases */
             if (phi > ONEEPS) {
+                throw new ProjectionException("Tolerance error occurred appling inverse Robinson projection");
+            } else {
                 phi = y < 0. ? -PI / 2 : PI / 2;
                 lam /= X[NODES].c0;
             }

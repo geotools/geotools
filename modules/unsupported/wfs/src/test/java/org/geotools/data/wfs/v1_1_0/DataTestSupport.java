@@ -28,9 +28,10 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import org.geotools.data.wfs.protocol.http.DefaultHTTPProtocol;
-import org.geotools.data.wfs.protocol.http.HTTPProtocol;
-import org.geotools.data.wfs.protocol.http.HTTPResponse;
+import org.apache.commons.io.IOUtils;
+import org.geotools.data.ows.HTTPClient;
+import org.geotools.data.ows.HTTPResponse;
+import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.test.TestData;
 
 @SuppressWarnings("nls")
@@ -156,7 +157,7 @@ public final class DataTestSupport {
      * @throws IOException
      */
     public static void createTestProtocol(String capabilitiesFileName) throws IOException {
-        HTTPProtocol http = new DefaultHTTPProtocol();
+        HTTPClient http = new SimpleHttpClient();
         createTestProtocol(capabilitiesFileName, http);
     }
 
@@ -172,7 +173,7 @@ public final class DataTestSupport {
      *            WFS_Capabilities document.
      * @throws IOException
      */
-    public static void createTestProtocol(String capabilitiesFileName, HTTPProtocol http)
+    public static void createTestProtocol(String capabilitiesFileName, HTTPClient http)
             throws IOException {
         InputStream stream = TestData.openStream(DataTestSupport.class, capabilitiesFileName);
         wfs = new TestWFS_1_1_0_Protocol(stream, http);
@@ -182,7 +183,7 @@ public final class DataTestSupport {
 
         private URL describeFeatureTypeUrlOverride;
 
-        public TestWFS_1_1_0_Protocol(InputStream capabilitiesReader, HTTPProtocol http)
+        public TestWFS_1_1_0_Protocol(InputStream capabilitiesReader, HTTPClient http)
                 throws IOException {
             super(capabilitiesReader, http, null);
         }
@@ -207,17 +208,13 @@ public final class DataTestSupport {
         }
     }
 
-    public static class TestHttpProtocol extends DefaultHTTPProtocol {
+    public static class TestHttpProtocol extends SimpleHttpClient {
 
         private HTTPResponse mockResponse;
 
         public URL targetUrl;
 
-        public Map<String, String> issueGetKvp;
-
         public String postCallbackContentType;
-
-        public long postCallbackContentLength;
 
         public ByteArrayOutputStream postCallbackEncodedRequestBody;
 
@@ -226,22 +223,20 @@ public final class DataTestSupport {
         }
 
         @Override
-        public HTTPResponse issueGet(final URL baseUrl, final Map<String, String> kvp)
-                throws IOException {
+        public HTTPResponse get(final URL baseUrl) throws IOException {
             this.targetUrl = baseUrl;
-            this.issueGetKvp = kvp;
             return mockResponse;
         }
 
         @Override
-        public HTTPResponse issuePost(final URL targetUrl, final POSTCallBack callback)
-                throws IOException {
-            this.targetUrl = targetUrl;
-            this.postCallbackContentType = callback.getContentType();
-            this.postCallbackContentLength = callback.getContentLength();
+        public HTTPResponse post(final URL url, final InputStream postContent,
+                final String postContentType) throws IOException {
+            
+            this.targetUrl = url;
+            this.postCallbackContentType = postContentType;
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             this.postCallbackEncodedRequestBody = out;
-            callback.writeBody(out);
+            IOUtils.copy(postContent, postCallbackEncodedRequestBody);
             return mockResponse;
         }
     }
@@ -285,16 +280,32 @@ public final class DataTestSupport {
             return charset;
         }
 
+        /**
+         * @see org.geotools.data.ows.HTTPResponse#getResponseStream()
+         */
         public InputStream getResponseStream() throws IOException {
             return bodyContent == null ? null : new StringBufferInputStream(bodyContent);
         }
 
+        /**
+         * @see org.geotools.data.ows.HTTPResponse#getResponseHeader(java.lang.String)
+         */
         public String getResponseHeader(String headerName) {
             return null;
         }
 
         public String getTargetUrl() {
             return null;
+        }
+
+        /**
+         * 
+         * @see org.geotools.data.ows.HTTPResponse#dispose()
+         */
+        @Override
+        public void dispose() {
+            // TODO Auto-generated method stub
+            
         }
     }
 

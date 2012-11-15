@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -108,6 +109,36 @@ public class TinyOwsTest {
         
         Query query = new Query(typeName, Filter.INCLUDE, 20, Query.ALL_NAMES, "my query");
         iterate(source.getFeatures(query), 20, true);        
+    }
+    
+    @Test
+    public void testGetFeatureByIncludeAndOperatorAndInclude() throws Exception {
+        WFSDataStore wfs = getWFSDataStore(new TinyOwsMockHttpClient() {
+            @Override
+            public HTTPResponse post(URL url, InputStream postContent, String postContentType) throws IOException {
+                String request = new String(IOUtils.toByteArray(postContent), "UTF-8");
+                if (isResultsRequest(request, 
+                        "<wfs:GetFeature",
+                        "maxFeatures=\"20\"",
+                        "resultType=\"results\"",
+                        "<ogc:PropertyIsGreaterThan")) {
+                    assertXMLEqual("tinyows/GetFeatureIncludeAndPropertyGreaterThanAndIncludeRequest.xml", request);
+                    return new MockHttpResponse(TestData.getResource(this, "tinyows/GetFirstFeatures.xml"), "text/xml");
+                } else {
+                    return super.post(url, postContent, postContentType);
+                }
+            }
+        });
+        
+        SimpleFeatureSource source = wfs.getFeatureSource(typeName);
+
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        Filter and = ff.and(
+                Arrays.asList(Filter.INCLUDE, 
+                ff.greater(ff.property("gid"), ff.literal(0)), 
+                Filter.INCLUDE));
+        Query query = new Query(typeName, and, 20, Query.ALL_NAMES, "my query");
+        iterate(source.getFeatures(query), 20, false);        
     }
     
     @Test

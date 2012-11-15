@@ -33,7 +33,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import net.opengis.wfs.GetFeatureType;
 import net.opengis.wfs.QueryType;
@@ -50,7 +49,7 @@ import org.geotools.filter.capability.FilterCapabilitiesImpl;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.filter.v1_1.OGCConfiguration;
 import org.geotools.filter.visitor.CapabilitiesFilterSplitter;
-import org.geotools.util.logging.Logging;
+import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.wfs.v1_1.WFSConfiguration;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.Encoder;
@@ -280,6 +279,9 @@ public class DefaultWFSStrategy implements WFSStrategy {
      * @see WFSStrategy#splitFilters(WFS_1_1_0_Protocol, Filter)
      */
     public Filter[] splitFilters(Capabilities caps, Filter queryFilter) {
+        SimplifyingFilterVisitor simplifier = new SimplifyingFilterVisitor(); 
+        queryFilter = (Filter) queryFilter.accept(simplifier, null);
+        
         // ID Filters aren't allowed to be parameters in Logical or Comparison Operators
         
         FilterCapabilities filterCapabilities = caps.getContents();

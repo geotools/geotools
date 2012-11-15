@@ -117,8 +117,16 @@ public class GML2ParsingUtils {
             }
 
             if (sfType == null) {
+                // let's use the CRS from the node (only if it's available) on the feature type
+                CoordinateReferenceSystem crs = null;
+                if (node.hasChild("boundedBy") && node.getChild("boundedBy").hasChild("Box")) {
+                    crs = crs(node.getChild("boundedBy").getChild("Box"));
+                } else if (node.hasChild("boundedBy") && node.getChild("boundedBy").hasChild("Envelope")) {
+                    crs = crs(node.getChild("boundedBy").getChild("Envelope"));
+                }
+
                 //build from element declaration
-                sfType = GML2ParsingUtils.featureType(decl, bwFactory);
+                sfType = GML2ParsingUtils.featureType(decl, bwFactory, crs);
                 ftCache.put(sfType);
             }
         } else {
@@ -174,6 +182,9 @@ public class GML2ParsingUtils {
         ftBuilder.setName(node.getComponent().getName());
         ftBuilder.setNamespaceURI(node.getComponent().getNamespace());
         ftBuilder.setCRS(null); //JD: set explicitly to null to avoid warning
+
+        CoordinateReferenceSystem crs = null;
+
         //mandatory gml attributes
         if (!node.hasChild("description")) {
             ftBuilder.add("description", String.class);
@@ -185,6 +196,12 @@ public class GML2ParsingUtils {
 
         if (!node.hasChild("boundedBy")) {
             ftBuilder.add("boundedBy", ReferencedEnvelope.class);
+        } else {
+            if (node.getChild("boundedBy").hasChild("Box")) {
+                crs = crs(node.getChild("boundedBy").getChild("Box"));
+            } else if (node.getChild("boundedBy").hasChild("Envelope")) {
+                crs = crs(node.getChild("boundedBy").getChild("Envelope"));
+            }
         }
 
         //application schema defined attributes
@@ -192,6 +209,11 @@ public class GML2ParsingUtils {
             Node child = (Node) c.next();
             String name = child.getComponent().getName();
             Object valu = child.getValue();
+
+            // if the next property is of type geometry, let's set its CRS
+            if (Geometry.class.isAssignableFrom(valu.getClass()) && crs != null) {
+                ftBuilder.crs(crs);
+            }
 
             ftBuilder.add(name, (valu != null) ? valu.getClass() : Object.class);
         }
@@ -202,13 +224,32 @@ public class GML2ParsingUtils {
     /**
      * Turns a xml type definition into a geotools feature type.
      *
-     * @param type
-     *            The xml schema tupe.
+     * @param element
+     *            The element declaration.
+     * @param bwFactory
+     *            The binding walker factory.
      *
      * @return The corresponding geotools feature type.
      */
     public static SimpleFeatureType featureType(XSDElementDeclaration element,
         BindingWalkerFactory bwFactory) throws Exception {
+        return featureType(element, bwFactory, null);
+    }
+
+    /**
+     * Turns a xml type definition into a geotools feature type.
+     *
+     * @param element
+     *            The element declaration.
+     * @param bwFactory
+     *            The binding walker factory.
+     * @param crs
+     *            The coordinate reference system to use on this feature type.
+     *
+     * @return The corresponding geotools feature type.
+     */
+    public static SimpleFeatureType featureType(XSDElementDeclaration element,
+        BindingWalkerFactory bwFactory, CoordinateReferenceSystem crs) throws Exception {
         SimpleFeatureTypeBuilder ftBuilder = new SimpleFeatureTypeBuilder();
         ftBuilder.setName(element.getName());
         ftBuilder.setNamespaceURI(element.getTargetNamespace());
@@ -259,6 +300,11 @@ public class GML2ParsingUtils {
 
             if (max == -1) {
                 max = 1;
+            }
+
+            // if the next property is of type geometry, let's set its CRS
+            if (Geometry.class.isAssignableFrom(theClass) && crs != null) {
+                ftBuilder.crs(crs);
             }
 
             // create the type
@@ -412,6 +458,14 @@ public class GML2ParsingUtils {
 
         if (crs != null) {
             gc.setUserData(crs);
+
+            // since we're setting the CRS on the UserData object, might as well set the SRID for the geom
+            // collection
+            try {
+                gc.setSRID(CRS.lookupEpsgCode(crs, true));
+            } catch (FactoryException e) {
+                // as long as the provided CRS is valid, this block will be unreachable
+            }
         }
         
         return gc;

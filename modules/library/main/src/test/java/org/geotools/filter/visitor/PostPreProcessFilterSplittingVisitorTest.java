@@ -154,6 +154,25 @@ public class PostPreProcessFilterSplittingVisitorTest extends AbstractPostPrePro
 		assertEquals(filter, visitor.getFilterPre());
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void testVisitIdFilterWithNoIdCapabilities() throws Exception {
+	    // Id Filter
+	    HashSet ids = new HashSet();
+	    ids.add(ff.featureId("david"));
+	    Filter idFilter = ff.id(ids);
+
+	    // no Id Capabilities
+	    FilterCapabilities fc = new FilterCapabilities();
+            fc.addAll(FilterCapabilities.SIMPLE_COMPARISONS_OPENGIS);
+            fc.addType(And.class);
+
+            visitor = newVisitor(fc);
+            idFilter.accept(visitor, null);
+            
+            assertEquals(Filter.INCLUDE, visitor.getFilterPre());
+            assertEquals(idFilter, visitor.getFilterPost());	    
+	}
+	
 	public void testFunctionFilter() throws Exception {
 		simpleLogicalCaps.addType(BBOX.class);
         visitor=newVisitor(simpleLogicalCaps);

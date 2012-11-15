@@ -121,6 +121,8 @@ public class GML2ParsingUtils {
                 CoordinateReferenceSystem crs = null;
                 if (node.hasChild("boundedBy") && node.getChild("boundedBy").hasChild("Box")) {
                     crs = crs(node.getChild("boundedBy").getChild("Box"));
+                } else if (node.hasChild("boundedBy") && node.getChild("boundedBy").hasChild("Envelope")) {
+                    crs = crs(node.getChild("boundedBy").getChild("Envelope"));
                 }
 
                 //build from element declaration
@@ -197,6 +199,8 @@ public class GML2ParsingUtils {
         } else {
             if (node.getChild("boundedBy").hasChild("Box")) {
                 crs = crs(node.getChild("boundedBy").getChild("Box"));
+            } else if (node.getChild("boundedBy").hasChild("Envelope")) {
+                crs = crs(node.getChild("boundedBy").getChild("Envelope"));
             }
         }
 

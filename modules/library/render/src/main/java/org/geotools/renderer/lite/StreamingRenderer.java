@@ -2187,7 +2187,7 @@ public final class StreamingRenderer implements GTRenderer {
             // if we could not find an optimized query no other choice but to just limit
             // ourselves to the bbox, we don't know if the transformation alters/adds attributes :-(
             if(optimizedQuery == null) {
-                 Envelope bounds = (Envelope) query.getFilter().accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, null);
+                 Envelope bounds = (Envelope) renderingQuery.getFilter().accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, null);
                  Filter bbox = new FastBBOX(filterFactory.property(""), bounds, filterFactory);
                  optimizedQuery = new Query(null, bbox);
             }
@@ -2396,8 +2396,8 @@ public final class StreamingRenderer implements GTRenderer {
      * the collection multiple times, one for each feature type style provided
      */
     private void drawPlain(final Graphics2D graphics, MapLayer currLayer, AffineTransform at,
-            CoordinateReferenceSystem destinationCrs, String layerId, Collection collection,
-            FeatureCollection<?,?> features, final NumberRange scaleRange,
+            CoordinateReferenceSystem destinationCrs, String layerId, Collection<?> collection,
+            FeatureCollection<?,?> features, final NumberRange<?> scaleRange,
             final List<LiteFeatureTypeStyle> lfts) {
         
         final LiteFeatureTypeStyle[] fts_array = lfts.toArray(new LiteFeatureTypeStyle[lfts.size()]);
@@ -2409,25 +2409,6 @@ public final class StreamingRenderer implements GTRenderer {
                 iterator = collection.iterator();
                 if (iterator == null ){
                     return; // nothing to do
-                }
-                try {
-                    boolean clone = isCloningRequired(currLayer, fts_array);
-                    RenderableFeature rf = new RenderableFeature(currLayer, clone);
-                    // loop exit condition tested inside try catch
-                    // make sure we test hasNext() outside of the try/cath that follows, as that
-                    // one is there to make sure a single feature error does not ruin the rendering
-                    // (best effort) whilst an exception in hasNext() + ignoring catch results in
-                    // an infinite loop
-                    while (iterator.hasNext() && !renderingStopRequested) {
-                        try {
-                            rf.setFeature(iterator.next());
-                            process(rf, liteFeatureTypeStyle, scaleRange, at, destinationCrs, layerId);
-                        } catch (Throwable tr) {
-                            fireErrorEvent(tr);
-                        }
-                    }
-                } finally {
-                    DataUtilities.close( iterator );
                 }
             }
             else if (features != null ){
@@ -2441,21 +2422,21 @@ public final class StreamingRenderer implements GTRenderer {
                 return; // nothing to do
             }
             try {
-                    boolean clone = isCloningRequired(currLayer, fts_array);
-                    RenderableFeature rf = new RenderableFeature(currLayer, clone);
-                    // loop exit condition tested inside try catch
-                    // make sure we test hasNext() outside of the try/cath that follows, as that
-                    // one is there to make sure a single feature error does not ruin the rendering
-                    // (best effort) whilst an exception in hasNext() + ignoring catch results in
-                    // an infinite loop
-                    while (iterator.hasNext() && !renderingStopRequested) {
-                        try {
-                            rf.setFeature(iterator.next());
-                            process(rf, liteFeatureTypeStyle, scaleRange, at, destinationCrs, layerId);
-                        } catch (Throwable tr) {
-                            fireErrorEvent(tr);
-                        }
+                boolean clone = isCloningRequired(currLayer, fts_array);
+                RenderableFeature rf = new RenderableFeature(currLayer, clone);
+                // loop exit condition tested inside try catch
+                // make sure we test hasNext() outside of the try/cath that follows, as that
+                // one is there to make sure a single feature error does not ruin the rendering
+                // (best effort) whilst an exception in hasNext() + ignoring catch results in
+                // an infinite loop
+                while (iterator.hasNext() && !renderingStopRequested) {
+                    try {
+                        rf.setFeature(iterator.next());
+                        process(rf, liteFeatureTypeStyle, scaleRange, at, destinationCrs, layerId);
+                    } catch (Throwable tr) {
+                        fireErrorEvent(tr);
                     }
+                }
             } finally {
                 DataUtilities.close( iterator );
             }

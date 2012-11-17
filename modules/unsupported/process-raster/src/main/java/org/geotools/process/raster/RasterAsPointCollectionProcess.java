@@ -20,29 +20,27 @@ package org.geotools.process.raster;
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import javax.media.jai.PlanarImage;
 import javax.media.jai.iterator.RectIter;
 import javax.media.jai.iterator.RectIterFactory;
 
-import org.geotools.process.factory.DescribeParameter;
-import org.geotools.process.factory.DescribeProcess;
-import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.WrappingIterator;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.GeoTools;
 import org.geotools.feature.DefaultFeatureCollection;
-import org.geotools.feature.collection.AbstractFeatureCollection;
 import org.geotools.feature.collection.AdaptorFeatureCollection;
+import org.geotools.feature.collection.BaseSimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.process.ProcessException;
+import org.geotools.process.factory.DescribeParameter;
+import org.geotools.process.factory.DescribeProcess;
+import org.geotools.process.factory.DescribeResult;
 import org.geotools.referencing.CRS;
 import org.geotools.resources.geometry.XRectangle2D;
 import org.geotools.util.Utilities;
@@ -90,7 +88,7 @@ public class RasterAsPointCollectionProcess implements RasterProcess {
      * @author simboss
      *
      */
-    private final static class RasterAsPointFeatureCollection extends AbstractFeatureCollection implements SimpleFeatureCollection {
+    private final static class RasterAsPointFeatureCollection extends BaseSimpleFeatureCollection {
     	
     	/**
     	 * The {@link GeometryFactory} cached here for building points inside iterators
@@ -161,8 +159,6 @@ public class RasterAsPointCollectionProcess implements RasterProcess {
             
         }
         
-	
-
         @Override
         public SimpleFeatureIterator features() {
             return new RasterAsPointFeatureIterator(this);
@@ -176,19 +172,6 @@ public class RasterAsPointCollectionProcess implements RasterProcess {
 		@Override
 		public ReferencedEnvelope getBounds() {
 			return new ReferencedEnvelope(bounds);
-		}
-
-		@Override
-		protected Iterator<SimpleFeature> openIterator() {
-			return new WrappingIterator(features());
-		}
-
-		@Override
-		protected void closeIterator(Iterator<SimpleFeature> close) {
-			 if (close instanceof WrappingIterator) {
-	                ((WrappingIterator) close).close();
-	            }
-			
 		}
     }
 

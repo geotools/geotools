@@ -96,7 +96,7 @@ public class KMLParsingTest extends TestCase {
         
         GeometryFactory gf = new GeometryFactory();
         SimpleFeatureBuilder sb = new SimpleFeatureBuilder( tb.buildFeatureType() );
-        FeatureCollection features = new DefaultFeatureCollection(null,null);
+        DefaultFeatureCollection features = new DefaultFeatureCollection();
         
         sb.add( "one" );
         sb.add( "the first feature");

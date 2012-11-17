@@ -37,6 +37,7 @@ import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
@@ -380,7 +381,7 @@ public class JDBCFeatureStore extends JDBCFeatureSource implements SimpleFeature
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer = getDataStore().getFeatureWriterAppend(typeName,
                 getTransaction());
 
-        Iterator iterator = collection.iterator();
+         FeatureIterator iterator = collection.features();
         try {
             while (iterator.hasNext()) {
                 try {
@@ -415,7 +416,7 @@ public class JDBCFeatureStore extends JDBCFeatureSource implements SimpleFeature
                 addedFids.add(newFeature.getIdentifier());
             }
         } finally {
-            collection.close( iterator );
+            iterator.close();
             writer.close();
         }
 

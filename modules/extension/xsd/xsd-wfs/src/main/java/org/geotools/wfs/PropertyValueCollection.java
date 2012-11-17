@@ -16,6 +16,8 @@
  */
 package org.geotools.wfs;
 
+import java.util.AbstractCollection;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -23,11 +25,13 @@ import java.util.Map;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.collection.DecoratingFeatureCollection;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.xs.XS;
+import org.opengis.feature.Attribute;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureFactory;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -45,42 +49,47 @@ import org.opengis.feature.type.Schema;
  * @author Justin Deoliveira, OpenGeo
  *
  */
-public class PropertyValueCollection extends DecoratingFeatureCollection {
+public class PropertyValueCollection extends AbstractCollection<Attribute> {
 
     static FeatureTypeFactory typeFactory = new FeatureTypeFactoryImpl();
     static FeatureFactory factory = CommonFactoryFinder.getFeatureFactory(null);
-    
+
+    FeatureCollection delegate;
     AttributeDescriptor descriptor;
     List<Schema> typeMappingProfiles = new ArrayList();
-    
+
     public PropertyValueCollection(FeatureCollection delegate, AttributeDescriptor descriptor) {
-        super(delegate);
+        this.delegate = delegate;
         this.descriptor = descriptor;
         this.typeMappingProfiles.add(XS.getInstance().getTypeMappingProfile());
         this.typeMappingProfiles.add(GML.getInstance().getTypeMappingProfile());
     }
 
     @Override
-    public Iterator iterator() {
-        return new PropertyValueIterator(delegate.iterator());
+    public int size() {
+        //JD: this is a lie, since we skip over features without the attribute
+        return delegate.size();
     }
-    
+
     @Override
-    public void close(Iterator close) {
-        delegate.close(((PropertyValueIterator)close).it);
+    public Iterator iterator() {
+        return new PropertyValueIterator(delegate.features());
     }
     
     class PropertyValueIterator implements Iterator {
         
-        Iterator it;
+        FeatureIterator it;
         Feature next;
         
-        PropertyValueIterator(Iterator it) {
+        PropertyValueIterator(FeatureIterator it) {
             this.it = it;
         }
 
         @Override
         public boolean hasNext() {
+            if (it == null) {
+                return false;
+            }
             if (next == null) {
                 while(it.hasNext()) {
                     Feature f = (Feature) it.next();
@@ -90,8 +99,15 @@ public class PropertyValueCollection extends DecoratingFeatureCollection {
                     }
                 }
             }
-            
-            return next != null;
+
+            if (next != null) {
+                return true;
+            }
+
+            //close the iterator
+            it.close();
+            it = null;
+            return false;
         }
 
         @Override
@@ -118,7 +134,7 @@ public class PropertyValueCollection extends DecoratingFeatureCollection {
 
         @Override
         public void remove() {
-            it.remove();
+            throw new UnsupportedOperationException();
         }
         
         AttributeType findType(Class binding) {

@@ -1018,9 +1018,12 @@ public abstract class JDBCDataStoreAPITest extends JDBCTestSupport {
 
         SimpleFeatureCollection results = road.getFeatures(td.rd1Filter);
         SimpleFeatureIterator features = results.features();
-        assertTrue(features.hasNext());
-        assertEquals(5, ((Number)features.next().getAttribute(aname("id"))).intValue());
-        results.close(features);
+        try {
+            assertTrue(features.hasNext());
+            assertEquals(5, ((Number) features.next().getAttribute(aname("id"))).intValue());
+        } finally {
+            features.close();
+        }
     }
 
     public void testGetFeatureStoreModifyFeatures2() throws IOException {
@@ -1038,9 +1041,12 @@ public abstract class JDBCDataStoreAPITest extends JDBCTestSupport {
 
         SimpleFeatureCollection results = road.getFeatures(td.rd1Filter);
         SimpleFeatureIterator features = results.features();
-        assertTrue(features.hasNext());
-        assertEquals("changed", features.next().getAttribute(aname("name")));
-        results.close(features);
+        try {
+            assertTrue(features.hasNext());
+            assertEquals("changed", features.next().getAttribute(aname("name")));
+        } finally {
+            features.close();
+        }
     }
 
     /**
@@ -1651,12 +1657,15 @@ public abstract class JDBCDataStoreAPITest extends JDBCTestSupport {
 			return;
 		
 		SimpleFeatureCollection fColl = fs.getFeatures();
-		SimpleFeatureIterator iterator =fColl.features();
-		Geometry original = null;
-		if (iterator.hasNext())
-			 original = (Geometry) iterator.next().getDefaultGeometry();
-		fColl.close(iterator);
-		
+                SimpleFeatureIterator iterator = fColl.features();
+                Geometry original = null;
+                try {
+                    if (iterator.hasNext()) {
+                        original = (Geometry) iterator.next().getDefaultGeometry();
+                    }
+                } finally {
+                    iterator.close();
+                }
 		double width = original.getEnvelope().getEnvelopeInternal().getWidth();
 		
 	    DefaultQuery query = new DefaultQuery();
@@ -1665,11 +1674,14 @@ public abstract class JDBCDataStoreAPITest extends JDBCTestSupport {
 	    
 	    Geometry generalized = null;    	
 	    fColl = fs.getFeatures(query);
-		iterator =fColl.features();    	
-		if (iterator.hasNext())
-			 generalized = (Geometry) iterator.next().getDefaultGeometry();
-		fColl.close(iterator);
-	    
+            iterator = fColl.features();
+            try {
+                if (iterator.hasNext()) {
+                    generalized = (Geometry) iterator.next().getDefaultGeometry();
+                }
+            } finally {
+                iterator.close();
+            }  
 	    assertTrue(original.getNumPoints()>=generalized.getNumPoints());
 	}
 
@@ -1680,25 +1692,30 @@ public abstract class JDBCDataStoreAPITest extends JDBCTestSupport {
 			return;
 		
 		SimpleFeatureCollection fColl = fs.getFeatures();
-		SimpleFeatureIterator iterator =fColl.features();
-		Geometry original = null;
-		if (iterator.hasNext())
-			 original = (Geometry) iterator.next().getDefaultGeometry();
-		fColl.close(iterator);
-		
+                SimpleFeatureIterator iterator = fColl.features();
+                Geometry original = null;
+                try {
+                    if (iterator.hasNext()) {
+                        original = (Geometry) iterator.next().getDefaultGeometry();
+                    }
+                } finally {
+                    iterator.close();
+                }		
 		double width = original.getEnvelope().getEnvelopeInternal().getWidth();
 		
-	    DefaultQuery query = new DefaultQuery();
+	    Query query = new Query();
 	    Hints hints = new Hints(Hints.GEOMETRY_SIMPLIFICATION,width/2);        
 	    query.setHints(hints);        
 	    
 	    Geometry simplified = null;    	
 	    fColl = fs.getFeatures(query);
-		iterator =fColl.features();    	
-		if (iterator.hasNext())
-			 simplified = (Geometry) iterator.next().getDefaultGeometry();
-		fColl.close(iterator);
-	    
+            iterator = fColl.features();
+            try {
+                if (iterator.hasNext())
+                    simplified = (Geometry) iterator.next().getDefaultGeometry();
+            } finally {
+                iterator.close();
+            }    
 	    assertTrue(original.getNumPoints()>=simplified.getNumPoints());
 	}
 }

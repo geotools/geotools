@@ -21,25 +21,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.data.DataUtilities;
-import org.geotools.data.DefaultQuery;
-import org.geotools.data.FeatureEvent;
-import org.geotools.data.FeatureListener;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Join;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.feature.CollectionEvent;
-import org.geotools.feature.CollectionListener;
-import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.SchemaException;
@@ -52,7 +44,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.Filter;
-import org.opengis.filter.identity.FeatureId;
 
 import com.vividsolutions.jts.geom.Point;
 
@@ -82,37 +73,6 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
      * state of the feature source 
      */
     protected ContentState state;
-    
-    /** Internal listener storage list */
-    protected List<CollectionListener> listeners = new ArrayList<CollectionListener>(2);
-
-    /** Set of open resource iterators */
-    protected final Set open = new HashSet();
-    
-    /**
-     * feature listener which listens to the feautre source and 
-     * forwards events to its listeners.
-     */
-    FeatureListener listener = new FeatureListener(){
-        public void changed(FeatureEvent featureEvent) {
-            if( listeners.isEmpty() ) return;
-
-            SimpleFeatureCollection collection;
-            collection = (SimpleFeatureCollection) ContentFeatureCollection.this;
-            CollectionEvent event = new CollectionEvent( collection, featureEvent );
-
-            CollectionListener[] notify = (CollectionListener[]) listeners.toArray( new CollectionListener[ listeners.size() ]);
-            for( int i=0; i<notify.length; i++ ){
-                CollectionListener listener = notify[i];
-                try {
-                    listener.collectionChanged( event );
-                }
-                catch (Throwable t ){
-                    LOGGER.log( Level.WARNING, "Problem encountered during notification of "+event, t );
-                }
-            }
-        }           
-    };
     
     protected ContentFeatureCollection( ContentFeatureSource featureSource, Query query ) {
         this.featureSource = featureSource;
@@ -160,40 +120,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
             org.opengis.util.ProgressListener progress) throws IOException {
         featureSource.accepts( query, visitor, progress);
     }
-    
-    
-    //Listeners
-    /**
-     * Adds a listener for collection events.
-     *
-     * @param listener The listener to add
-     */
-    public void addListener(CollectionListener listener) {
-        // create the bridge only if we have collection listeners around
-        synchronized (listeners) {
-            if(listeners.size() == 0) {
-                featureSource.addFeatureListener(this.listener);
-            }
-            
-            listeners.add(listener);
-        }
-    }
-
-    /**
-     * Removes a listener for collection events.
-     *
-     * @param listener The listener to remove
-     */
-    public void removeListener(CollectionListener listener) {
-        // as soon as the listeners are out we clean up
-        synchronized (listeners) {
-            listeners.remove(listener);
         
-            if(listeners.size() == 0)
-                featureSource.removeFeatureListener(this.listener);
-        }
-    }
-    
     // Iterators
     public static class WrappingFeatureIterator implements SimpleFeatureIterator {
        
@@ -236,61 +163,6 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
     public SimpleFeatureIterator features(){
         try {
             return new WrappingFeatureIterator( featureSource.getReader(query) );    
-        }
-        catch( IOException e ) {
-            throw new RuntimeException( e );
-        }
-    }
-    
-    public void close( FeatureIterator<SimpleFeature> iterator ) {
-        iterator.close();
-    }
-    
-    public static class WrappingIterator implements Iterator {
-    
-         FeatureReader<SimpleFeatureType, SimpleFeature> delegate;
-        
-        public  WrappingIterator(  FeatureReader<SimpleFeatureType, SimpleFeature> delegate ) {
-            this.delegate = delegate;
-        }
-        
-        public boolean hasNext() {
-            try {
-                return delegate.hasNext();    
-            }
-            catch( IOException e ) {
-                throw new RuntimeException( e );
-            }
-            
-        }
-
-        public Object next() {
-            try {
-                return delegate.next();    
-            }
-            catch( IOException e ) {
-                throw new RuntimeException( e );
-            }
-        }
-
-    
-       public void remove() {
-           throw new UnsupportedOperationException();
-       }
-    }
-    
-    public Iterator iterator() {
-        try {
-            return new WrappingIterator( featureSource.getReader(query) );    
-        }
-        catch( IOException e ) {
-            throw new RuntimeException( e );
-        }
-    }
-    
-    public void close(Iterator close) {
-        try {
-            ((WrappingIterator)close).delegate.close();    
         }
         catch( IOException e ) {
             throw new RuntimeException( e );
@@ -351,7 +223,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
     }
     
     public int size() {
-        FeatureReader fr = null;
+        FeatureReader<?,?> fr = null;
         try {
            int size = featureSource.getCount(query);
            if(size >= 0) {
@@ -438,7 +310,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
         }
                
         try {
-            FeatureReader fr = featureSource.getReader(notEmptyQuery);
+            FeatureReader<?,?> fr = featureSource.getReader(notEmptyQuery);
             try {
                 return !fr.hasNext();               
             } finally {
@@ -449,49 +321,11 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
         }
     }
 
-    public boolean add(SimpleFeature o) {
-        return addAll(Collections.singletonList(o));
-    }
-
     ContentFeatureStore ensureFeatureStore() {
         if ( featureSource instanceof ContentFeatureStore ) {
             return (ContentFeatureStore) featureSource;
         }
-        
         throw new UnsupportedOperationException( "read only" );
-    }
-    public boolean addAll(Collection c) {
-        ContentFeatureStore featureStore = ensureFeatureStore();
-        
-        try {
-            List<FeatureId> ids = featureStore.addFeatures(c);
-            return ids.size() == c.size();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    public boolean addAll(FeatureCollection c) {
-        ContentFeatureStore featureStore = ensureFeatureStore();
-        try {
-            List<FeatureId> ids;
-            ids = featureStore.addFeatures( c );
-            return ids.size() == c.size();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    public void clear() {
-        ContentFeatureStore featureStore = ensureFeatureStore();
-        
-        try { 
-            featureStore.removeFeatures(query.getFilter());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    
-    public void purge() {
-        //do nothing
     }
     
     public SimpleFeatureCollection sort(SortBy order) {
@@ -499,16 +333,16 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
     }
     
     public SimpleFeatureCollection sort(org.opengis.filter.sort.SortBy sort) {
-        Query query = new DefaultQuery();
-        ((DefaultQuery)query).setSortBy( new org.opengis.filter.sort.SortBy[]{sort});
+        Query query = new Query();
+        query.setSortBy( new org.opengis.filter.sort.SortBy[]{sort});
 
         query = DataUtilities.mixQueries( this.query, query, null );
         return new ContentFeatureCollection( featureSource, query );    
     }
     
     public SimpleFeatureCollection subCollection(Filter filter) {
-        Query query = new DefaultQuery();
-        ((DefaultQuery)query).setFilter( filter );
+        Query query = new Query();
+        query.setFilter( filter );
         
         query = DataUtilities.mixQueries(this.query, query, null);
         return new ContentFeatureCollection( featureSource, query );    
@@ -569,7 +403,6 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
      * @see #contains(Object)
      */
     public boolean containsAll(Collection<?> c) {
-        // TODO: base this on reader
         Iterator<?> e = c.iterator();
         try {
             while (e.hasNext()){
@@ -579,7 +412,9 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
             }
             return true;
         } finally {
-            close( e );
+            if( e instanceof FeatureIterator){
+                ((FeatureIterator<?>)e).close();
+            }
         }
     }
 
@@ -607,33 +442,6 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
         throw new UnsupportedOperationException("Content is not writable; FeatureStore not available" );
     }
 
-    public boolean removeAll(Collection collection) {
-//        if( featureSource instanceof SimpleFeatureStore){
-//            SimpleFeatureStore featureStore = (SimpleFeatureStore) featureSource;
-//            FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-//            Set<FeatureId> ids = new HashSet<FeatureId>();
-//            for( Object o : collection ){
-//                if( o instanceof SimpleFeature){
-//                    SimpleFeature feature = (SimpleFeature) o;
-//                    FeatureId fid = feature.getIdentifier();
-//                    ids.add( fid );
-//                }
-//            }
-//            Filter remove = ff.id(ids);
-//            try {
-//                featureStore.removeFeatures( remove );
-//                return true;
-//            } catch (IOException e) {
-//                //LOGGER.log(Level.FINER, e.getMessage(), e);
-//                return false; // unable to remove
-//            }
-//        }
-        throw new UnsupportedOperationException();
-    }
-
-    public boolean retainAll(Collection collection) {
-        throw new UnsupportedOperationException();
-    }
     /**
      * Array of all the elements.
      * 
@@ -643,24 +451,27 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
         // code based on AbstractFeatureCollection
         // TODO: base this on reader
         ArrayList<SimpleFeature> array = new ArrayList<SimpleFeature>();
-        Iterator<SimpleFeature> e = null;
+        FeatureIterator<SimpleFeature> e = null;
         try {
-            e = iterator();
+            e = features();
             while( e.hasNext() ){
                 array.add( e.next() );
             }
             return array.toArray( new SimpleFeature[array.size()]);
         } finally {
-            close( e );
+            if( e != null){
+                e.close();
+            }
         }
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T[] toArray(T[] array) {
         int size = size();
         if (array.length < size){
             array = (T[])java.lang.reflect.Array.newInstance(array.getClass().getComponentType(), size);
          }
-        Iterator<SimpleFeature> it = iterator();
+        FeatureIterator<SimpleFeature> it = features();
         try {
             Object[] result = array;
             for (int i=0; it.hasNext() && i<size; i++){
@@ -672,7 +483,9 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
             return array;
         }
         finally {
-            close( it );
+            if( it != null ){
+                it.close();
+            }
         }
     }
     public String getID() {

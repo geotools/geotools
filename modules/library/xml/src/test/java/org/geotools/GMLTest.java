@@ -22,6 +22,7 @@ import org.geotools.GML.Version;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -71,7 +72,7 @@ public class GMLTest {
     public void testEncodeGML2Legacy() throws Exception {
         SimpleFeatureType TYPE = DataUtilities.createType("Location", "geom:Point,name:String");
 
-        SimpleFeatureCollection collection = FeatureCollections.newCollection("internal");
+        DefaultFeatureCollection collection = new DefaultFeatureCollection();
         WKTReader2 wkt = new WKTReader2();
 
         collection.add(SimpleFeatureBuilder.build(TYPE, new Object[] { wkt.read("POINT (1 2)"),
@@ -115,7 +116,7 @@ public class GMLTest {
 
         out.close();
 
-        SimpleFeatureCollection collection = FeatureCollections.newCollection("internal");
+        DefaultFeatureCollection collection = new DefaultFeatureCollection();
         WKTReader2 wkt = new WKTReader2();
 
         collection.add(SimpleFeatureBuilder.build(TYPE, new Object[] { wkt.read("POINT (1 2)"),
@@ -146,7 +147,7 @@ public class GMLTest {
 
         SimpleFeatureType TYPE = tb.buildFeatureType();
 
-        SimpleFeatureCollection collection = FeatureCollections.newCollection("internal");
+        DefaultFeatureCollection collection = new DefaultFeatureCollection();
         WKTReader2 wkt = new WKTReader2();
         collection.add(SimpleFeatureBuilder.build(TYPE, new Object[] { wkt.read("POINT (1 2)"),
                 "name1" }, null));
@@ -175,7 +176,7 @@ public class GMLTest {
 
         SimpleFeatureType TYPE = tb.buildFeatureType();
 
-        SimpleFeatureCollection collection = FeatureCollections.newCollection("internal");
+        DefaultFeatureCollection collection = new DefaultFeatureCollection();
         WKTReader2 wkt = new WKTReader2();
         collection.add(SimpleFeatureBuilder.build(TYPE, new Object[] { wkt.read("POINT (1 2)"),
                 "name1" }, null));

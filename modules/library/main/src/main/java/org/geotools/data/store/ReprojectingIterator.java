@@ -21,10 +21,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.geotools.factory.FactoryRegistryException;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.geotools.referencing.ReferencingFactoryFinder;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.FactoryException;
@@ -41,12 +41,12 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  * @source $URL$
  */
-public class ReprojectingIterator implements Iterator {
+public class ReprojectingIterator implements Iterator<SimpleFeature> {
 
     /**
      * decorated iterator
      */
-    Iterator delegate;
+    Iterator<SimpleFeature> delegate;
 
     /**
      * The target coordinate reference system
@@ -64,11 +64,10 @@ public class ReprojectingIterator implements Iterator {
     GeometryCoordinateSequenceTransformer tx;
 
     public ReprojectingIterator(
-		Iterator delegate, MathTransform transform, SimpleFeatureType schema, 
+		Iterator<SimpleFeature> delegate, MathTransform transform, SimpleFeatureType schema, 
 		GeometryCoordinateSequenceTransformer transformer
     ) throws OperationNotFoundException, FactoryRegistryException, FactoryException {
         this.delegate = delegate;
-        
         this.schema = schema;
 
         tx = transformer;
@@ -76,7 +75,7 @@ public class ReprojectingIterator implements Iterator {
     }
 
     public ReprojectingIterator(
-		Iterator delegate, CoordinateReferenceSystem source, CoordinateReferenceSystem target,
+		Iterator<SimpleFeature> delegate, CoordinateReferenceSystem source, CoordinateReferenceSystem target,
         SimpleFeatureType schema, GeometryCoordinateSequenceTransformer transformer
     ) throws OperationNotFoundException, FactoryRegistryException, FactoryException {
         this.delegate = delegate;
@@ -89,7 +88,7 @@ public class ReprojectingIterator implements Iterator {
         tx.setMathTransform(transform);
     }
 
-    public Iterator getDelegate() {
+    public Iterator<SimpleFeature> getDelegate() {
         return delegate;
     }
 
@@ -101,7 +100,7 @@ public class ReprojectingIterator implements Iterator {
         return delegate.hasNext();
     }
 
-    public Object next() {
+    public SimpleFeature next() {
         SimpleFeature feature = (SimpleFeature) delegate.next();
         try {
             return reproject(feature);
@@ -112,7 +111,7 @@ public class ReprojectingIterator implements Iterator {
 
     SimpleFeature reproject(SimpleFeature feature) throws IOException {
 
-        List attributes = feature.getAttributes();
+        List<Object> attributes = feature.getAttributes();
 
         for (int i = 0; i < attributes.size(); i++) {
             Object object = attributes.get(i);

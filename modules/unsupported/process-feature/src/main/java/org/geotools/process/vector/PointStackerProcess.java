@@ -127,7 +127,7 @@ public class PointStackerProcess implements VectorProcess {
                 outputEnv.getMinX(), outputEnv.getMinY());
 
         SimpleFeatureType schema = createType(srcCRS);
-        SimpleFeatureCollection result = new ListFeatureCollection(schema);
+        ListFeatureCollection result = new ListFeatureCollection(schema);
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(schema);
 
         GeometryFactory factory = new GeometryFactory(new PackedCoordinateSequenceFactory());

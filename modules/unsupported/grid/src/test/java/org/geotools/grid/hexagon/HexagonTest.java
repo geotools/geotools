@@ -17,20 +17,21 @@
 
 package org.geotools.grid.hexagon;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.geotools.grid.PolygonElement;
+import org.junit.Test;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Polygon;
-
-import org.geotools.grid.PolygonElement;
-
-
-import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * Unit tests for the Hexagon class.

@@ -54,7 +54,9 @@ public class FeatureCollectionTest extends org.geotools.data.collection.FeatureC
     public FeatureCollectionTest(String testName) {
         super(testName);
     }
-    protected SimpleFeatureCollection newCollection(SimpleFeatureType schema ) {
-        return FeatureCollections.newCollection();
+    protected SimpleFeatureCollection newCollection(SimpleFeatureType schema, List<SimpleFeature> list ) {
+        DefaultFeatureCollection features = new DefaultFeatureCollection();
+        features.addAll( list );
+        return features;
     }
 }

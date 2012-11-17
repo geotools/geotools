@@ -18,6 +18,7 @@ package org.geotools.xml;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
@@ -57,7 +58,9 @@ import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.util.XSDUtil;
+import org.geotools.data.DataUtilities;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
 import org.geotools.xml.impl.BindingFactoryImpl;
 import org.geotools.xml.impl.BindingLoader;
 import org.geotools.xml.impl.BindingPropertyExtractor;
@@ -69,6 +72,7 @@ import org.geotools.xml.impl.GetPropertyExecutor;
 import org.geotools.xml.impl.MismatchedBindingFinder;
 import org.geotools.xml.impl.NamespaceSupportWrapper;
 import org.geotools.xml.impl.SchemaIndexImpl;
+import org.opengis.feature.Feature;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.w3c.dom.Attr;
@@ -1022,7 +1026,7 @@ O:
                                     iterator = collection.iterator();
                                 } else if (obj instanceof FeatureCollection) {
                                     FeatureCollection collection = (FeatureCollection) obj;
-                                    iterator = collection.iterator();
+                                    iterator = DataUtilities.iterator( collection.features() );
                                 } else {
                                     iterator = new SingleIterator(obj);
                                 }
@@ -1117,16 +1121,10 @@ O:
         return new String(out.toByteArray());
     }
 
-    protected void closeIterator(Iterator itr, Object source) {
-        //special case check here for feature collection
-        // we need to ensure the iterator is closed properly
-        if ( source instanceof FeatureCollection ) {
-            //only close the iterator if not just a wrapping one
-            if ( !( itr instanceof SingleIterator ) ) {
-                ((FeatureCollection)source).close( itr );
-            }
-        }
+    protected void closeIterator(Iterator iterator, Object source) {
+        DataUtilities.close( iterator );
     }
+    
     protected Node encode(Object object, XSDNamedComponent component) {
         return encode( object, component, null );
     }
@@ -1255,7 +1253,7 @@ O:
             return null;
         }
     }
-
+    
     private static class SingleIterator implements Iterator {
         Object object;
         boolean more;

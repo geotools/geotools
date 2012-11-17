@@ -118,7 +118,7 @@ public class UserLayerTest extends TestCase {
         final SimpleFeatureType schema = ftb.buildFeatureType();
 
         // create a feature collection ----------------------------------------
-        final SimpleFeatureCollection fc = new MemoryFeatureCollection(schema);
+        final MemoryFeatureCollection fc = new MemoryFeatureCollection(schema);
 
         // populate the collection --------------------------------------------
         final PrecisionModel pm = new PrecisionModel(PrecisionModel.FLOATING);

@@ -18,6 +18,7 @@ package org.geotools.resources.coverage;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Collection;
 import java.util.List;
 
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -26,6 +27,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.FactoryRegistryException;
 import org.geotools.factory.GeoTools;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -130,6 +132,7 @@ public final class FeatureUtilities {
      * @return a feature with the grid coverage envelope as the geometry and the
      *         grid coverage itself in the "grid" attribute.
      */
+    @SuppressWarnings("unchecked")
     public static SimpleFeatureCollection wrapGridCoverage(final GridCoverage2D coverage)
             throws TransformException, SchemaException {
         final Polygon bounds = getPolygon(coverage.getEnvelope2D());
@@ -147,10 +150,9 @@ public final class FeatureUtilities {
         fb.add(coverage);
         SimpleFeature feature = fb.buildFeature(null);
 
-        final SimpleFeatureCollection collection = FeatureCollections.newCollection();
+        final DefaultFeatureCollection collection = new DefaultFeatureCollection();
         collection.add(feature);
-
-        return collection;
+        return collection;        
     }
     
     /**
@@ -184,6 +186,7 @@ public final class FeatureUtilities {
      * @return a feature with the grid coverage envelope as the geometry and the
      *         grid coverage itself in the "grid" attribute.
      */
+    @SuppressWarnings("unchecked")
     public static SimpleFeatureCollection wrapGridCoverageReader(final AbstractGridCoverage2DReader gridCoverageReader,
 			GeneralParameterValue[] params) throws TransformException,
 			FactoryRegistryException, SchemaException {
@@ -226,12 +229,10 @@ public final class FeatureUtilities {
         fb.add(params);
         SimpleFeature feature = fb.buildFeature(null);
 
-
-		final SimpleFeatureCollection collection = FeatureCollections.newCollection();
-		collection.add(feature);
-
-		return collection;
-	}
+        final DefaultFeatureCollection collection = new DefaultFeatureCollection();
+        collection.add(feature);
+        return collection;        
+    }
     
     /**
      * Checks if the feature type specified is a AbstractGridCoverage2DReader wrapper

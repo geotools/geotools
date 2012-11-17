@@ -21,14 +21,13 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.geotools.data.DataSourceException;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -69,7 +68,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @source $URL$
  * @version $Id$
  */
-public class ReprojectFeatureIterator implements Iterator {
+public class ReprojectFeatureIterator implements Iterator<SimpleFeature>, SimpleFeatureIterator {
     FeatureIterator<SimpleFeature> reader;
     SimpleFeatureType schema;
     GeometryCoordinateSequenceTransformer transformer = new GeometryCoordinateSequenceTransformer();
@@ -120,7 +119,7 @@ public class ReprojectFeatureIterator implements Iterator {
      *
      * @see org.geotools.data.FeatureReader#next()
      */
-    public Object next()
+    public SimpleFeature next()
         throws NoSuchElementException {
         if (reader == null) {
             throw new IllegalStateException("Reader has already been closed");

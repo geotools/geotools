@@ -18,9 +18,9 @@
 package org.geotools.grid.hexagon;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.grid.Neighbor;
 import org.geotools.grid.PolygonBuilder;
 import org.geotools.grid.PolygonElement;
-import org.geotools.grid.Neighbor;
 
 /**
  * Used by {@code Hexagons} class to build grids.

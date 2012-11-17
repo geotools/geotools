@@ -70,7 +70,7 @@ public class CentroidProcess implements VectorProcess {
 
         @Override
         public ReferencedEnvelope getBounds() {
-            return getFeatureBounds();
+            return DataUtilities.bounds( features() );
         }
 
         @Override

@@ -25,13 +25,20 @@ With this in mind:
      :start-after: // exampleIterator start
      :end-before: // exampleIterator end
 
-* All the content is of the same type.
-  
-  As indicated by indicated by::
+* All the content is of the same FeatureType as indicated by indicated by::
     
     FeatureType type = featureCollection.getSchema();
 
-* We cannot support the java 'for each' loop syntax; as we need to be sure to close our iterator().
+* We cannot support the Java 'for each' loop syntax; as we need to be sure to close our iterator().
+
+* We can support the Java try-with-resource syntax::
+  
+      try (SimpleFeatureIterator iterator = featureCollection.features()){
+           while( iterator.hasNext() ){
+                 SimpleFeature feature = iterator.next();
+                 ...
+           }
+      }
 
 **FeatureCollection**
 
@@ -40,18 +47,9 @@ The interface provides the following methods::
   public interface FeatureCollection<T extends FeatureType, F extends Feature> {
     // feature access - close when done!
     FeatureIterator<F> features()
-    void close(FeatureIterator<F>)
-    // feature access - close when done!
-    Iterator<F> iterator()
-    void close(Iterator<F>);
-    // clean up any unclosed iterators
-    void purge()
     
     // feature access with out the loop
     void accepts(FeatureVisitor, ProgressListener);
-    
-    void addListener(CollectionListener);
-    void removeListener(CollectionListener);
     
     T getSchema();
     
@@ -66,87 +64,23 @@ The interface provides the following methods::
     boolean isEmpty()
     int size()
     
-    // modification of in memory feature collections
-    // (recommend using featuresource instead)
-    boolean add(F)
-    boolean addAll(Collection<? extends F>)
-    boolean addAll(FeatureCollection<? extends T, ? extends F>)
-    boolean clear()
-    
     boolean contains(Object)
     boolean containsAll(Collection<?>)
-    boolean remove(Object)
-    boolean removeAll(Collection<?>)
-    boolean retainAll(Collection<?>)
     
     // convert to array
     Object[] toArray()
     <O> O[] toArray(O[])
   }
-
-
-**SimpleFeatureCollection**
-
-Because Java Generics (ie <T> and <F>) are a little hard to read we introduced SimpleFeatureCollection to cover the common case::
-  
-  public interface SimpleFeatureCollection extends FeatureCollection<SimpleFeatureType,SimpleFeature> {
-    // feature access - close when done!
-    SimpleFeatureIterator features()
-    void close(FeatureIterator<SimpleFeature>)
-    Iterator<SimpleFeature> iterator()
-    void close(Iterator<SimpleFeature>);
-    // clean up any unclosed iterators
-    void purge()
-    
-    // feature access with out the loop
-    void accepts(FeatureVisitor, ProgressListener);
-    
-    void addListener(CollectionListener);
-    void removeListener(CollectionListener);
-    
-    SimpleFeatureType getSchema()
-    String getID()
-    
-    // sub query
-    SimpleFeatureCollection subCollection(Filter)
-    SimpleFeatureCollection sort(SortBy)
-    
-    // summary information
-    ReferencedEnvelope getBounds()
-    boolean isEmpty()
-    int size()
-    
-    // modification of in memory feature collections
-    // (recommend using featuresource instead)
-    boolean add(SimpleFeature)
-    boolean addAll(Collection<? extends SimpleFeature>)
-    boolean addAll(FeatureCollection<? extends SimpleFeatureType, ? extends SimpleFeature>)
-    boolean clear()
-    
-    boolean contains(Object)
-    boolean containsAll(Collection<?>)
-    boolean remove(Object)
-    boolean removeAll(Collection<?>)
-    boolean retainAll(Collection<?>)
-    
-    // convert to array
-    Object[] toArray()
-    <O> O[] toArray(O[])
-  }
-
-This interface is just syntactic sugar to avoid typing in FeatureCollection<SimpleFeatureType,SimpleFeature> all the time. If you need to safely convert you can use the DataUtilities.simple method::
-  
-  SimpleFeatureCollection simpleCollection = DataUtilities.simple(collection);
 
 **Streaming Results**
 
-A SimpleFeatureCollection is not an in memory snapshot of your data (as you might expect), we work with the assumption that GIS data is larger than you can fit into memory.
+A FeatureCollection is not an in memory snapshot of your data (as you might expect), we work with the assumption that GIS data is larger than you can fit into memory.
 
-Most implementations of SimpleFeatureCollection provide a memory footprint close to zero and each time you access the data will be loaded as you use it.
+Most implementations of FeatureCollection provide a memory footprint close to zero and each time you access the data will be loaded as you use it.
 
-Please note that you should not treat a SimpleFeatureCollection as a normal in memory Java collection - these are heavyweight objects and we must ask you to close any iterators you open.::
+Please note that you should not treat a FeatureCollection as a normal in memory Java collection - these are heavyweight objects and we must ask you to close any iterators you open.::
   
-  SimpleFeatureIterator iterator = featureCollection.features();
+  FeatureIterator<SimpleFeature> iterator = featureCollection.features();
   try {
        while( iterator.hasNext() ){
              SimpleFeature feature = iterator.next();
@@ -160,8 +94,52 @@ Please note that you should not treat a SimpleFeatureCollection as a normal in m
 We ask that you treat interaction with FeatureCollection as a ResultSet carefully closing each object
 when you are done with it.
 
+In Java 7 this becomes easier with the try-with-resoruce syntax::
+
+  try (FeatureIterator<SimpleFeature> iterator = featureCollection.features()){
+       while( iterator.hasNext() ){
+             SimpleFeature feature = iterator.next();
+             ...
+       }
+  }
+
 SimpleFeatureCollection 
 ^^^^^^^^^^^^^^^^^^^^^^^
+
+Because Java Generics (ie <T> and <F>) are a little hard to read we introduced SimpleFeatureCollection to cover the common case::
+  
+  public interface SimpleFeatureCollection extends FeatureCollection<SimpleFeatureType,SimpleFeature> {
+    // feature access - close when done!
+    SimpleFeatureIterator features()
+    
+    // feature access with out the loop
+    void accepts(FeatureVisitor, ProgressListener);
+    
+    SimpleFeatureType getSchema()
+    String getID()
+    
+    // sub query
+    SimpleFeatureCollection subCollection(Filter)
+    SimpleFeatureCollection sort(SortBy)
+    
+    // summary information
+    ReferencedEnvelope getBounds()
+    boolean isEmpty()
+    int size()
+    
+    boolean contains(Object)
+    boolean containsAll(Collection<?>)
+    
+    // convert to array
+    Object[] toArray()
+    <O> O[] toArray(O[])
+  }
+
+This SimpleFeatureCollection interface is just syntactic sugar to avoid typing in
+FeatureCollection<SimpleFeatureType,SimpleFeature> all the time. If you need to
+safely convert you can use the DataUtilities.simple method::
+  
+  SimpleFeatureCollection simpleCollection = DataUtilities.simple(collection);
 
 Creating a FeatureCollection is usually done for you as a result of a query, although we do have a number of implementations you can work with directly.
 
@@ -215,30 +193,30 @@ will be written out to the shapefile.
   and will not be fast. How not fast? Well your shapefile access on disk may be faster (since it has a spatial index).
 
 
-Default
-'''''''
+DefaultFeatureCollection
+''''''''''''''''''''''''
 
 GeoTools provides a default implementation of feature collection that can be used to gather up your features in memory; prior to writing them out to a DataStore.
 
 This default implementation of SimpleFeatureCollection uses a TreeMap sorted by FeatureId; so it does not offer very fast performance.
 
-To create a new SimpleFeatureCollection please use the FeatureCollections utility class::
+To create a new DefaultFeatureCollection::
   
-  SimpleFeatureCollection collection = FeatureCollections.newCollection();
+  DefaultFeatureCollection featureCollection = new DefaultFeatureCollection();
 
 You can also create your collection with an "id", which will can be used as a handle to tell your collections apart.::
   
-  SimpleFeatureCollection collection = FeatureCollections.newCollection("internal");
+  DefaultFeatureCollection featureCollection = new DefaultFeatureCollection("internal");
 
 You can create new features and add them to this FeatureCollection as needed::
   
   SimpleFeatureType TYPE = DataUtilities.createType("location","geom:Point,name:String");
   
-  SimpleFeatureCollection collection = FeatureCollections.newCollection("internal");
+  DefaultFeatureCollection featureCollection = new DefaultFeatureCollection("internal",TYPE);
   WKTReader2 wkt = new WKTReader2();
   
-  collection.add( SimpleFeatureBuilder.build( TYPE, new Object[]{ wkt.read("POINT(1,2)"), "name1"}, null) );
-  collection.add( SimpleFeatureBuilder.build( TYPE, new Object[]{ wkt.read("POINT(4,4)"), "name2"}, null) );
+  featureCollection.add( SimpleFeatureBuilder.build( TYPE, new Object[]{ wkt.read("POINT(1,2)"), "name1"}, null) );
+  featureCollection.add( SimpleFeatureBuilder.build( TYPE, new Object[]{ wkt.read("POINT(4,4)"), "name2"}, null) );
 
 To FeatureSource
 ''''''''''''''''
@@ -361,7 +339,7 @@ find the use of **Iterator** comfortable (but a bit troubling with try/catch cod
 extreme **FeatureReader** makes all the error messages visible requiring a lot of try/catch code. Finally we
 have **FeatureIterator** when working on Java 1.4 code before generics were available.
 
-* Using iterator
+* Using FeatureIterator
   
   Use of iterator is straight forward; with the addition of a try/finally statement to
   ensure the iterator is closed after use.::
@@ -369,7 +347,7 @@ have **FeatureIterator** when working on Java 1.4 code before generics were avai
         CoordinateReferenceSystem crs = features.getMemberType().getCRS();
         BoundingBox bounds = new ReferencedEnvelope( crs );
 
-        Iterator<SimpleFeature> iterator = features.iterator();
+        FeatureIterator<SimpleFeature> iterator = features.iterator();
         try {
             while( iterator.hasNext()){
                 SimpleFeature feature = iterator.next();
@@ -377,7 +355,7 @@ have **FeatureIterator** when working on Java 1.4 code before generics were avai
             }
         }
         finally{
-            features.close( iterator );
+            iterator.close();
         }
   
 * Invalid Data
@@ -388,11 +366,11 @@ have **FeatureIterator** when working on Java 1.4 code before generics were avai
   However often you may in want to just "skip" the troubled Feature and carry on; very few dataset's are perfect.::
     
     SimpleFeatureCollection featureCollection = featureSource.getFeatures(filter);
-    Iterator iterator = null;
+    FeatureIterator iterator = null;
     int count;
     int problems;
     try {
-       for( iterator = features.iteator(); iterator.hasNext(); count++){
+       for( iterator = features.features(); iterator.hasNext(); count++){
            try {
                SimpleFeature feature = (SimpleFeature) iterator.next();
                ...
@@ -404,7 +382,7 @@ have **FeatureIterator** when working on Java 1.4 code before generics were avai
        }
     }
     finally {
-       featureCollection.close( iterator );
+       if( iterator != null ) iterator.close();
     }
     if( problems == 0 ){
        System.out.println("Was able to read "+count+" features.");
@@ -416,7 +394,7 @@ have **FeatureIterator** when working on Java 1.4 code before generics were avai
 
 * Use of FeatureVisitor
   
-  FeatureVisitor lets you accomplish the same thing as Working with Invalid Data above, with less try/catch/finally boilerplate code.::
+  FeatureVisitor lets you traverse a FeatureCollection with less try/catch/finally boilerplate code.::
     
     CoordinateReferenceSystem crs = features.getMemberType().getCRS();
     final BoundingBox bounds = new ReferencedEnvelope( crs );
@@ -428,25 +406,6 @@ have **FeatureIterator** when working on Java 1.4 code before generics were avai
     }, new NullProgressListener() );
   
   You do not have to worry about exceptions, open or closing iterators and as an added bonus this may even be faster (depending on the number of cores you have available).
-
-* Use of SimpleFeatureIterator
-  
-  If you need to work with Java 1.4, or just want to keep your code free of generics for readability, you can use a
-  SimpleFeatureIterator. You will also find it has a less clunky close() operation.::
-        
-        CoordinateReferenceSystem crs = features.getMemberType().getCRS();
-        Envelope bounds = new Envelope();
-
-        SimpleFeatureIterator iter = collection.features();
-        try {
-            while( iter.hasNext()){
-                SimpleFeature feature = iter.next();
-                bounds.expandToInclude( feature.getBounds() );
-            }
-        }
-        finally{
-            iter.close();
-        }
 
 * Comparison with SimpleFeatureReader
   
@@ -606,7 +565,7 @@ GeoTools does not have any native ability to "Join" FeatureCollections; even tho
 References:
 
 * gt-validation additional examples
-* :doc`filter` example using filters
+* :docL`filter` example using filters
 
 * Join FeatureCollection
   

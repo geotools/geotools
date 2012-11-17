@@ -78,18 +78,6 @@ public class SimplifyProcess implements VectorProcess {
             return new SimplifyingFeatureIterator(delegate.features(), distance, preserveTopology,
                     getSchema());
         }
-
-        @Override
-        public Iterator<SimpleFeature> iterator() {
-            return new WrappingIterator(features());
-        }
-
-        @Override
-        public void close(Iterator<SimpleFeature> close) {
-            if (close instanceof WrappingIterator) {
-                ((WrappingIterator) close).close();
-            }
-        }
     }
 
     static class SimplifyingFeatureIterator implements SimpleFeatureIterator {

@@ -52,49 +52,7 @@ public class SampleDataAccessFeatureCollection extends ArrayList<Feature> implem
      *      org.opengis.util.ProgressListener)
      */
     public void accepts(FeatureVisitor visitor, ProgressListener progress) throws IOException {
-        for (Feature feature : this) {
-            visitor.visit(feature);
-        }
-    }
-
-    /**
-     * @see org.geotools.feature.FeatureCollection#addAll(org.geotools.feature.FeatureCollection)
-     */
-    public boolean addAll(FeatureCollection<? extends FeatureType, ? extends Feature> resource) {
-        boolean changed = false;
-        for (FeatureIterator<? extends Feature> iterator = resource.features(); iterator.hasNext();) {
-            if (this.add(iterator.next())) {
-                changed = true;
-            }
-        }
-        return changed;
-    }
-
-    /**
-     * Unsupported operation.
-     * 
-     * @see org.geotools.feature.FeatureCollection#addListener(org.geotools.feature.CollectionListener)
-     */
-    public void addListener(CollectionListener listener) throws NullPointerException {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Nothing to close.
-     * 
-     * @see org.geotools.feature.FeatureCollection#close(org.geotools.feature.FeatureIterator)
-     */
-    public void close(FeatureIterator<Feature> close) {
-        // do nothing
-    }
-
-    /**
-     * Nothing to close.
-     * 
-     * @see org.geotools.feature.FeatureCollection#close(java.util.Iterator)
-     */
-    public void close(Iterator<Feature> close) {
-        // do nothing
+        DataUtilities.visit(this, visitor, progress);
     }
 
     /**
@@ -133,22 +91,6 @@ public class SampleDataAccessFeatureCollection extends ArrayList<Feature> implem
      */
     public FeatureType getSchema() {
         return SampleDataAccessData.MAPPEDFEATURE_TYPE;
-    }
-
-    /**
-     * @see org.geotools.feature.FeatureCollection#purge()
-     */
-    public void purge() {
-        // do nothing
-    }
-
-    /**
-     * Unsupported operation.
-     * 
-     * @see org.geotools.feature.FeatureCollection#removeListener(org.geotools.feature.CollectionListener)
-     */
-    public void removeListener(CollectionListener listener) throws NullPointerException {
-        throw new UnsupportedOperationException();
     }
 
     /**

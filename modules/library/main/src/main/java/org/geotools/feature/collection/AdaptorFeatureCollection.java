@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.CollectionListener;
@@ -64,7 +65,6 @@ public abstract class AdaptorFeatureCollection implements SimpleFeatureCollectio
     // 
     public SimpleFeatureIterator features() {
         SimpleFeatureIterator iter = new DelegateSimpleFeatureIterator( this, openIterator() );
-        open.add( iter );
         return iter; 
     }
     public void close(FeatureIterator<SimpleFeature> close) {
@@ -75,7 +75,6 @@ public abstract class AdaptorFeatureCollection implements SimpleFeatureCollectio
     public void close( SimpleFeatureIterator close ) {     
         if( close != null ){
             closeIterator( close );
-            open.remove( close );
         }
     }
     public void closeIterator( SimpleFeatureIterator close ) {
@@ -89,27 +88,7 @@ public abstract class AdaptorFeatureCollection implements SimpleFeatureCollectio
      * @throws IOException 
      */
     public void accepts(FeatureVisitor visitor, ProgressListener progress ) throws IOException {
-        Iterator<SimpleFeature> iterator = null;
-        if( progress == null ) progress = new NullProgressListener();
-        try{
-            float size = size();
-            float position = 0;            
-            progress.started();
-            for( iterator = iterator(); !progress.isCanceled() && iterator.hasNext();){
-                if (size > 0) progress.progress( position++/size );
-                try {
-                    SimpleFeature feature = iterator.next();
-                    visitor.visit(feature);
-                }
-                catch( Exception erp ){
-                    progress.exceptionOccurred( erp );
-                }
-            }            
-        }
-        finally {
-            progress.complete();            
-            close( iterator );
-        }
+        DataUtilities.visit(this, visitor, progress);
     }
         
     //
@@ -211,67 +190,6 @@ public abstract class AdaptorFeatureCollection implements SimpleFeatureCollectio
         }
     }
 
-    // Modification Operations
-
-    /**
-     * Implement to support modification.
-     * 
-     * @param o element whose presence in this collection is to be ensured.
-     * @return <tt>true</tt> if the collection changed as a result of the call.
-     * 
-     * @throws UnsupportedOperationException if the <tt>add</tt> method is not
-     *        supported by this collection.
-     * 
-     * @throws NullPointerException if this collection does not permit
-     *        <tt>null</tt> elements, and the specified element is
-     *        <tt>null</tt>.
-     * 
-     * @throws ClassCastException if the class of the specified element
-     *        prevents it from being added to this collection.
-     * 
-     * @throws IllegalArgumentException if some aspect of this element
-     *         prevents it from being added to this collection.
-     */
-    public boolean add(SimpleFeature o) {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Removes a single instance of the specified element from this
-     * collection, if it is present (optional operation). 
-     * 
-     * @param o element to be removed from this collection, if present.
-     * @return <tt>true</tt> if the collection contained the specified
-     *         element.
-     * @throws UnsupportedOperationException if the <tt>remove</tt> method is
-     *        not supported by this collection.
-     */
-    public boolean remove(Object o) {
-        Iterator e = iterator();
-        try {
-            if (o==null) {
-                while (e.hasNext()) {
-                if (e.next()==null) {
-                    e.remove();
-                    return true;
-                }
-                }
-            } else {
-                while (e.hasNext()) {
-                if (o.equals(e.next())) {
-                    e.remove();
-                    return true;
-                }
-            }
-        }
-        return false;
-        }
-        finally {
-            close( e );
-        }
-    }
-
-
     // Bulk Operations
 
     /**
@@ -296,132 +214,6 @@ public abstract class AdaptorFeatureCollection implements SimpleFeatureCollectio
             close( e );
         }
     }
-
-    /**
-     * Adds all of the elements in the specified collection to this collection
-     * (optional operation).
-     *
-     * @param c collection whose elements are to be added to this collection.
-     * @return <tt>true</tt> if this collection changed as a result of the
-     *         call.
-     * @throws UnsupportedOperationException if this collection does not
-     *         support the <tt>addAll</tt> method.
-     * @throws NullPointerException if the specified collection is null.
-     * 
-     * @see #add(Object)
-     */
-    public boolean addAll(Collection c) {
-        boolean modified = false;
-        Iterator<SimpleFeature> e = c.iterator();
-        try {
-            while (e.hasNext()) {
-                if (add(e.next()))
-                modified = true;
-            }
-        }
-        finally {
-            if( c instanceof FeatureCollection){
-                FeatureCollection other = (FeatureCollection) c;
-                other.close( e );
-            }
-        }
-        return modified;
-    }
-    public boolean addAll(FeatureCollection c) {
-        boolean modified = false;
-        Iterator<SimpleFeature> e = c.iterator();
-        try {
-            while (e.hasNext()) {
-                if (add(e.next()))
-                modified = true;
-            }
-        }
-        finally {
-            c.close( e );            
-        }
-        return modified;
-    }
-    /**
-     * Removes from this collection all of its elements that are contained in
-     * the specified collection (optional operation). <p>
-     *
-     * @param c elements to be removed from this collection.
-     * @return <tt>true</tt> if this collection changed as a result of the
-     *         call.
-     * @throws UnsupportedOperationException if the <tt>removeAll</tt> method
-     *         is not supported by this collection.
-     * @throws NullPointerException if the specified collection is null.
-     *
-     * @see #remove(Object)
-     * @see #contains(Object)
-     */
-    public boolean removeAll(Collection c) {
-        boolean modified = false;
-        Iterator e = iterator();
-        try {
-            while (e.hasNext()) {
-                if (c.contains(e.next())) {
-                e.remove();
-                modified = true;
-                }
-            }
-            return modified;
-        }
-        finally {
-            close( e );
-        }
-    }
-
-    /**
-     * Retains only the elements in this collection that are contained in the
-     * specified collection (optional operation).
-     *
-     * @param c elements to be retained in this collection.
-     * @return <tt>true</tt> if this collection changed as a result of the
-     *         call.
-     * @throws UnsupportedOperationException if the <tt>retainAll</tt> method
-     *         is not supported by this Collection.
-     * @throws NullPointerException if the specified collection is null.
-     *
-     * @see #remove(Object)
-     * @see #contains(Object)
-     */
-    public boolean retainAll(Collection c) {
-        boolean modified = false;
-        Iterator e = iterator();
-        try {
-            while (e.hasNext()) {
-                if (!c.contains(e.next())) {
-                e.remove();
-                modified = true;
-                }
-            }
-            return modified;
-        }
-        finally {
-            close( e );
-        }
-    }
-
-    /**
-     * Removes all of the elements from this collection (optional operation).
-     * 
-     * @throws UnsupportedOperationException if the <tt>clear</tt> method is
-     *        not supported by this collection.
-     */
-    public void clear() {
-        Iterator e = iterator();
-        try {
-            while (e.hasNext()) {
-                e.next();
-                e.remove();
-            }
-        }finally {
-            close(e);
-        }
-    }
-
-
     //  String conversion
 
     /**
@@ -453,25 +245,11 @@ public abstract class AdaptorFeatureCollection implements SimpleFeatureCollectio
     // Contents
     //
     //
-    /** Set of open resource iterators */
-    protected final Set open = new HashSet();
-    /**
-     * listeners
-     */
-    protected List listeners = new ArrayList();
     /** 
      * id used when serialized to gml
      */
     protected String id;
     protected SimpleFeatureType schema;
-
-    /**
-     * Returns the set of open iterators.
-     * 
-     */
-    final public Set getOpenIterators() {
-        return open;
-    }
     
     /**
      * Please implement!
@@ -482,7 +260,6 @@ public abstract class AdaptorFeatureCollection implements SimpleFeatureCollectio
      */
     final public Iterator<SimpleFeature> iterator(){       
         Iterator<SimpleFeature> iterator = openIterator();
-        open.add( iterator );
         return iterator;
     }
 
@@ -519,10 +296,6 @@ public abstract class AdaptorFeatureCollection implements SimpleFeatureCollectio
         catch ( Throwable e ){
             // TODO Log e = ln
         }
-        finally {
-            open.remove( close );
-        }
-        
     }
     /**
      * Open an Iterator, we will call close( iterator ).
@@ -551,59 +324,8 @@ public abstract class AdaptorFeatureCollection implements SimpleFeatureCollectio
      */
     abstract protected void closeIterator( Iterator<SimpleFeature> close );
     
-    /**
-     * Close any outstanding resources released by this resources.
-     * <p>
-     * This method should be used with great caution, it is however available
-     * to allow the use of the ResourceCollection with algorthims that are
-     * unaware of the need to close iterators after use.
-     * </p>
-     * <p>
-     * Example of using a normal Collections utility method:<pre><code>
-     * Collections.sort( collection );
-     * collection.purge(); 
-     * </code></pre>
-     */
-    public void purge(){        
-        for( Iterator i = open.iterator(); i.hasNext(); ){
-            Object resource = i.next();
-            if( resource instanceof Iterator ){
-                Iterator resourceIterator = (Iterator) resource;
-                try {
-                    closeIterator( resourceIterator );
-                }
-                catch( Throwable e){
-                    // TODO: Log e = ln
-                }
-                finally {
-                    i.remove();
-                }
-            }
-            else if ( resource instanceof FeatureIterator ){
-                SimpleFeatureIterator resourceIterator = (SimpleFeatureIterator) resource;
-                try {
-                    closeIterator( resourceIterator );
-                }
-                catch( Throwable e){
-                    // TODO: Log e = ln
-                }
-                finally {
-                    i.remove();
-                }
-            }
-        }
-    }
-
     public String getID() {
     	return id;
-    }
-
-    public final void addListener(CollectionListener listener) throws NullPointerException {
-    	listeners.add(listener);
-    }
-
-    public final void removeListener(CollectionListener listener) throws NullPointerException {
-    	listeners.remove(listener);
     }
 
     public SimpleFeatureType getSchema() {

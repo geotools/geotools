@@ -19,8 +19,10 @@ package org.geotools.filter;
 import java.util.Iterator;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.store.FilteringFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureCollectionIteration;
+import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -35,6 +37,7 @@ import org.opengis.feature.type.PropertyDescriptor;
  *
  *
  * @source $URL$
+ * @deprecated Please use {@link FilteringFeatureCollection}
  */
 public class FilteringIteration extends FeatureCollectionIteration {
     /**
@@ -44,7 +47,8 @@ public class FilteringIteration extends FeatureCollectionIteration {
      * @param collection DOCUMENT ME!
      */
     public FilteringIteration(org.opengis.filter.Filter filter, FeatureCollection<?,?> collection) {
-        super(new FilterHandler(filter), collection);
+        super(new FilterHandler(filter),
+              new FilteringFeatureCollection(collection,filter) );
     }
 
     public static void filter(FeatureCollection<?,?> features, Filter filter) {
@@ -52,13 +56,13 @@ public class FilteringIteration extends FeatureCollectionIteration {
         i.iterate();
     }
 
-    protected void iterate(Iterator iterator) {
+    protected void iterate(FeatureIterator<?> iterator) {
         ((FilterHandler) handler).iterator = iterator;
         super.iterate(iterator);
     }
-
+    
     static class FilterHandler implements Handler {
-        Iterator<?> iterator;
+        FeatureIterator<?> iterator;
         final org.opengis.filter.Filter filter;
 
         public FilterHandler(org.opengis.filter.Filter filter) {
@@ -77,7 +81,8 @@ public class FilteringIteration extends FeatureCollectionIteration {
 
         public void handleFeature(Feature f) {
             if (!filter.evaluate(f)) {
-                iterator.remove();
+                // iterator.remove();
+                // this shoudl not occur
             }
         }
 

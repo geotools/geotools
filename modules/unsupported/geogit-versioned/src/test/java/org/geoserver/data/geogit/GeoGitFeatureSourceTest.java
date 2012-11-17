@@ -230,7 +230,7 @@ public class GeoGitFeatureSourceTest extends GeoGITRepositoryTestCase {
                 collection.getBounds());
 
         actual = new HashSet<Collection<Property>>();
-        for (Feature f : toList(collection.iterator())) {
+        for (Feature f : toList(collection.features())) {
             actual.add(f.getProperties());
         }
         expected = new HashSet<Collection<Property>>(Arrays.asList(
@@ -244,7 +244,7 @@ public class GeoGitFeatureSourceTest extends GeoGITRepositoryTestCase {
         assertEquals(boundsOf(lines1, lines2, lines3), collection.getBounds());
 
         actual = new HashSet<Collection<Property>>();
-        for (Feature f : toList(collection.iterator())) {
+        for (Feature f : toList(collection.features())) {
             actual.add(f.getProperties());
         }
         expected = new HashSet<Collection<Property>>(Arrays.asList(
@@ -266,7 +266,7 @@ public class GeoGitFeatureSourceTest extends GeoGITRepositoryTestCase {
                 .featureId(GeoGITRepositoryTestCase.idP2)));
         collection = pointsSource.getFeatures(new Query(pointsName, filter));
         actual = new HashSet<Collection<Property>>();
-        for (Feature f : toList(collection.iterator())) {
+        for (Feature f : toList(collection.features())) {
             actual.add(f.getProperties());
         }
         expected = Collections.singleton(points2.getProperties());
@@ -282,7 +282,7 @@ public class GeoGitFeatureSourceTest extends GeoGITRepositoryTestCase {
 
         collection = pointsSource.getFeatures(new Query(pointsName, filter));
         actual = new HashSet<Collection<Property>>();
-        for (Feature f : toList(collection.iterator())) {
+        for (Feature f : toList(collection.features())) {
             actual.add(f.getProperties());
         }
         expected = new HashSet<Collection<Property>>(Arrays.asList(
@@ -303,7 +303,7 @@ public class GeoGitFeatureSourceTest extends GeoGITRepositoryTestCase {
 
         collection = pointsSource.getFeatures(new Query(pointsName, filter));
         actual = new HashSet<Collection<Property>>();
-        for (Feature f : toList(collection.iterator())) {
+        for (Feature f : toList(collection.features())) {
             actual.add(f.getProperties());
         }
         expected = new HashSet<Collection<Property>>(Arrays.asList(
@@ -314,7 +314,7 @@ public class GeoGitFeatureSourceTest extends GeoGITRepositoryTestCase {
         filter = ECQL.toFilter("sp = 'StringProp2_3' OR ip = 2000");
         collection = linesSource.getFeatures(new Query(linesName, filter));
         actual = new HashSet<Collection<Property>>();
-        for (Feature f : toList(collection.iterator())) {
+        for (Feature f : toList(collection.features())) {
             actual.add(f.getProperties());
         }
         expected = new HashSet<Collection<Property>>(Arrays.asList(

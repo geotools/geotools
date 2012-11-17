@@ -866,7 +866,7 @@ public class Import extends AbstractCmd {
 				}
 
 				if (featureIterator.hasNext() == false) {
-					featureColl.close(featureIterator);
+				    featureIterator.close();
 
 					return false;
 				}

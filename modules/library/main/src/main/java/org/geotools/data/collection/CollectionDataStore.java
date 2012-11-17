@@ -17,7 +17,6 @@
 package org.geotools.data.collection;
 
 import java.io.IOException;
-import java.util.Iterator;
 
 import org.geotools.data.AbstractDataStore;
 import org.geotools.data.DataSourceException;
@@ -25,10 +24,8 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.SchemaNotFoundException;
-import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.feature.CollectionEvent;
-import org.geotools.feature.CollectionListener;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.FeatureIterator;
@@ -58,9 +55,8 @@ public class CollectionDataStore extends AbstractDataStore {
      * @param collection
      */
     public CollectionDataStore(SimpleFeatureType schema) {
-        this.collection = FeatureCollections.newCollection();
+        this.collection = new DefaultFeatureCollection();
         this.featureType = schema;
-        collection.addListener(new FeatureCollectionListener());
     }
     
     /**
@@ -74,16 +70,7 @@ public class CollectionDataStore extends AbstractDataStore {
             this.featureType = FeatureTypes.EMPTY;
         } else {
             this.featureType = collection.getSchema();
-//            Iterator iter = null;
-//            try {
-//                iter = collection.iterator();
-//                this.featureType = ((SimpleFeature) iter.next()).getFeatureType();
-//            } finally {
-//                if (iter != null)
-//                    collection.close(iter);
-//            }
         }
-        collection.addListener(new FeatureCollectionListener());
     }
 
     /**
@@ -196,36 +183,5 @@ public class CollectionDataStore extends AbstractDataStore {
             iterator.close();
         }
         return count;
-    }
-
-    /**
-     * Simple listener that forwards collection events into data store events
-     *
-     * @author aaime
-     */
-    private class FeatureCollectionListener implements CollectionListener {
-        public void collectionChanged(CollectionEvent tce) {
-            String typeName = featureType.getTypeName();
-            ReferencedEnvelope bounds = null;
-
-            bounds = getBoundsInternal(Query.ALL);
-
-            switch (tce.getEventType()) {
-            case CollectionEvent.FEATURES_ADDED:
-                listenerManager.fireFeaturesAdded(typeName, Transaction.AUTO_COMMIT, bounds, false);
-
-                break;
-
-            case CollectionEvent.FEATURES_CHANGED:
-                listenerManager.fireFeaturesChanged(typeName, Transaction.AUTO_COMMIT, bounds, false);
-
-                break;
-
-            case CollectionEvent.FEATURES_REMOVED:
-                listenerManager.fireFeaturesRemoved(typeName, Transaction.AUTO_COMMIT, bounds, false);
-
-                break;
-            }
-        }
     }
 }

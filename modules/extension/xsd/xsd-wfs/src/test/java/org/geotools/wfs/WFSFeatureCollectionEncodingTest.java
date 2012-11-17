@@ -44,7 +44,7 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         fc = WfsFactory.eINSTANCE.createFeatureCollectionType();
-        FeatureCollection features = new DefaultFeatureCollection(null,null);
+        DefaultFeatureCollection features = new DefaultFeatureCollection();
         
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName( "feature" );
@@ -95,7 +95,7 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
     }
     
     public void testEncodeFeatureCollectionMultipleFeatureTypes() throws Exception {
-        FeatureCollection features = new DefaultFeatureCollection(null,null);
+        DefaultFeatureCollection features = new DefaultFeatureCollection();
         
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName( "feature2" );

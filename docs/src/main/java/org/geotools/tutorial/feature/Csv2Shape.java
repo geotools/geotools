@@ -149,7 +149,6 @@ public class Csv2Shape {
              * class to wrap our list of features.
              */
             SimpleFeatureCollection collection = new ListFeatureCollection(TYPE, features);
-
             featureStore.setTransaction(transaction);
             try {
                 featureStore.addFeatures(collection);

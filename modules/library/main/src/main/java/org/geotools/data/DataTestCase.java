@@ -93,6 +93,14 @@ public class DataTestCase extends TestCase {
         super(name);
     }
 
+    protected int expected( Filter filter ){
+        if( filter instanceof Id){
+            Id id = (Id) filter;
+            return id.getIDs().size();
+        }
+        return -1;
+    }
+    
     /**
      * Invoked before a test is run. The default implementation invokes {@link #dataSetUp}.
      */

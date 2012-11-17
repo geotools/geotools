@@ -25,6 +25,7 @@ import org.geotools.data.FeatureReader;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.DataFeatureCollection;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -132,7 +133,7 @@ public final class IndexedFeatureResults extends DataFeatureCollection {
 	 * @see org.geotools.data.FeatureResults#collection()
 	 */
 	public SimpleFeatureCollection collection() throws IOException {
-	    SimpleFeatureCollection fc = FeatureCollections.newCollection();
+	    DefaultFeatureCollection fc = new DefaultFeatureCollection();
 		List<SimpleFeature> results = index.query(bounds);
 		for (Iterator<SimpleFeature> it = results.iterator(); it.hasNext();) {
 			fc.add(it.next());

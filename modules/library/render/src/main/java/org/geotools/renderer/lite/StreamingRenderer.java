@@ -28,6 +28,7 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
+import java.io.Closeable;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -68,6 +69,7 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.SchemaException;
 import org.geotools.filter.IllegalFilterException;
@@ -674,16 +676,15 @@ public final class StreamingRenderer implements GTRenderer {
         // Check for null arguments, recompute missing ones if possible
         //
         // ////////////////////////////////////////////////////////////////////
-        if (graphics == null || paintArea == null) {
-            LOGGER.severe("renderer passed null arguments");
-            throw new NullPointerException("renderer passed null arguments");
-        } else if (mapArea == null && paintArea == null) {
-            LOGGER.severe("renderer passed null arguments");
-            throw new NullPointerException("renderer passed null arguments");
+        if (graphics == null) {
+            LOGGER.severe("renderer passed null graphics argument");
+            throw new NullPointerException("renderer requires graphics");
+        } else if (paintArea == null) {
+            LOGGER.severe("renderer passed null paintArea argument");
+            throw new NullPointerException("renderer requires paintArea");
         } else if (mapArea == null) {
-
-            LOGGER.severe("renderer passed null arguments");
-            throw new NullPointerException("renderer passed null arguments");
+            LOGGER.severe("renderer passed null mapArea argument");
+            throw new NullPointerException("renderer requires mapArea");
         } else if (worldToScreen == null) {
             worldToScreen = RendererUtilities.worldToScreenTransform(mapArea,
                     paintArea);
@@ -2087,7 +2088,9 @@ public final class StreamingRenderer implements GTRenderer {
                     // similar to this (like passing it as a param to readCoverage
                 }
                 
-                Feature gridWrapper = featureSource.getFeatures().features().next();
+                FeatureCollection<?,?> sample = featureSource.getFeatures();
+                Feature gridWrapper = DataUtilities.first( sample );
+                
                 if(FeatureUtilities.isWrappedCoverageReader(simpleSchema)) {
                     final Object params = paramsPropertyName.evaluate(gridWrapper);
                     final AbstractGridCoverage2DReader reader = (AbstractGridCoverage2DReader) gridPropertyName.evaluate(gridWrapper);
@@ -2394,44 +2397,48 @@ public final class StreamingRenderer implements GTRenderer {
      */
     private void drawPlain(final Graphics2D graphics, MapLayer currLayer, AffineTransform at,
             CoordinateReferenceSystem destinationCrs, String layerId, Collection collection,
-            FeatureCollection features, final NumberRange scaleRange, final List lfts) {
-        final LiteFeatureTypeStyle[] fts_array = (LiteFeatureTypeStyle[]) lfts
-        .toArray(new LiteFeatureTypeStyle[lfts.size()]);
+            FeatureCollection<?,?> features, final NumberRange scaleRange,
+            final List<LiteFeatureTypeStyle> lfts) {
+        
+        final LiteFeatureTypeStyle[] fts_array = lfts.toArray(new LiteFeatureTypeStyle[lfts.size()]);
 
         // for each lite feature type style, scan the whole collection and draw
         for (LiteFeatureTypeStyle liteFeatureTypeStyle : fts_array) {
-            Iterator iterator = null;
-            if (collection != null)
+            Iterator<?> iterator = null;
+            if (collection != null){
                 iterator = collection.iterator();
-            if (features != null)
-                iterator = features.iterator();
-
-            if (iterator == null)
+                if (iterator == null ){
+                    return; // nothing to do
+                }
+            }
+            else if (features != null ){
+                FeatureIterator<?> featureIterator = ((FeatureCollection<?,?>)features).features();
+                if( featureIterator == null ){
+                    return; // nothing to do
+                }
+                iterator = DataUtilities.iterator( featureIterator );
+            }
+            else {
                 return; // nothing to do
-
+            }
             try {
-                boolean clone = isCloningRequired(currLayer, fts_array);
-                RenderableFeature rf = new RenderableFeature(currLayer, clone);
-                // loop exit condition tested inside try catch
-                // make sure we test hasNext() outside of the try/cath that follows, as that
-                // one is there to make sure a single feature error does not ruin the rendering
-                // (best effort) whilst an exception in hasNext() + ignoring catch results in
-                // an infinite loop
-                while (iterator.hasNext() && !renderingStopRequested) {
-                    try {
-                        rf.setFeature(iterator.next());
-                        process(rf, liteFeatureTypeStyle, scaleRange, at, destinationCrs, layerId);
-                    } catch (Throwable tr) {
-                        fireErrorEvent(tr);
+                    boolean clone = isCloningRequired(currLayer, fts_array);
+                    RenderableFeature rf = new RenderableFeature(currLayer, clone);
+                    // loop exit condition tested inside try catch
+                    // make sure we test hasNext() outside of the try/cath that follows, as that
+                    // one is there to make sure a single feature error does not ruin the rendering
+                    // (best effort) whilst an exception in hasNext() + ignoring catch results in
+                    // an infinite loop
+                    while (iterator.hasNext() && !renderingStopRequested) {
+                        try {
+                            rf.setFeature(iterator.next());
+                            process(rf, liteFeatureTypeStyle, scaleRange, at, destinationCrs, layerId);
+                        } catch (Throwable tr) {
+                            fireErrorEvent(tr);
+                        }
                     }
-                }
             } finally {
-                if (collection instanceof FeatureCollection) {
-                    FeatureCollection resource = (FeatureCollection) collection;
-                    resource.close(iterator);
-                } else if (features != null) {
-                    features.close(iterator);
-                }
+                DataUtilities.close( iterator );
             }
         }
     }
@@ -2444,49 +2451,77 @@ public final class StreamingRenderer implements GTRenderer {
     private void drawOptimized(final Graphics2D graphics, MapLayer currLayer, AffineTransform at,
             CoordinateReferenceSystem destinationCrs, String layerId, Collection collection,
             FeatureCollection features, final NumberRange scaleRange, final List lfts) {
-        Iterator iterator = null;
-        if( collection != null ) iterator = collection.iterator();        
-        if( features != null ) iterator = features.iterator();
-
-        if( iterator == null ) return; // nothing to do
-
+        
+ 
         final LiteFeatureTypeStyle[] fts_array = (LiteFeatureTypeStyle[]) lfts
-        .toArray(new LiteFeatureTypeStyle[lfts.size()]);
+                .toArray(new LiteFeatureTypeStyle[lfts.size()]);
 
-        try {
-            boolean clone = isCloningRequired(currLayer, fts_array);
-            RenderableFeature rf = new RenderableFeature(currLayer, clone);
-            // loop exit condition tested inside try catch
-            // make sure we test hasNext() outside of the try/cath that follows, as that
-            // one is there to make sure a single feature error does not ruin the rendering
-            // (best effort) whilst an exception in hasNext() + ignoring catch results in
-            // an infinite loop
-            while (iterator.hasNext() && !renderingStopRequested) { 
-                try {
-                    rf.setFeature(iterator.next());
-                    // draw the feature on the main graphics and on the eventual extra image buffers
-                    for (LiteFeatureTypeStyle liteFeatureTypeStyle : fts_array) {
-                        rf.setScreenMap(liteFeatureTypeStyle.screenMap);
-                        process(rf, liteFeatureTypeStyle, scaleRange, at, destinationCrs, layerId);
+        
+        if( collection != null ) {
+            Iterator iterator = collection.iterator();        
+            if( iterator == null ) return; // nothing to do
 
+            try {
+                boolean clone = isCloningRequired(currLayer, fts_array);
+                RenderableFeature rf = new RenderableFeature(currLayer, clone);
+                // loop exit condition tested inside try catch
+                // make sure we test hasNext() outside of the try/cath that follows, as that
+                // one is there to make sure a single feature error does not ruin the rendering
+                // (best effort) whilst an exception in hasNext() + ignoring catch results in
+                // an infinite loop
+                while (iterator.hasNext() && !renderingStopRequested) { 
+                    try {
+                        rf.setFeature(iterator.next());
+                        // draw the feature on the main graphics and on the eventual extra image buffers
+                        for (LiteFeatureTypeStyle liteFeatureTypeStyle : fts_array) {
+                            rf.setScreenMap(liteFeatureTypeStyle.screenMap);
+                            process(rf, liteFeatureTypeStyle, scaleRange, at, destinationCrs, layerId);
+                        }
+                    } catch (Throwable tr) {
+                        fireErrorEvent(tr);
                     }
-                } catch (Throwable tr) {
-                    fireErrorEvent(tr);
                 }
-            }
-            
-            // submit the merge request
-            requests.put(new MergeLayersRequest(graphics, fts_array));
-        }catch(InterruptedException e) {
-            fireErrorEvent(e);
-        } finally {
-            if( collection instanceof FeatureCollection ){
-                FeatureCollection resource = (FeatureCollection ) collection;
-                resource.close( iterator );
-            } else if(features != null) {
-                features.close( iterator );
-            }
-        } 
+                // submit the merge request
+                requests.put(new MergeLayersRequest(graphics, fts_array));
+            } catch(InterruptedException e) {
+                fireErrorEvent(e);
+            } finally {
+                DataUtilities.close( iterator );
+            }             
+        }
+
+        if( features != null ) {
+            FeatureIterator<?> iterator = features.features();
+            if( iterator == null ) return; // nothing to do
+            try {
+                boolean clone = isCloningRequired(currLayer, fts_array);
+                RenderableFeature rf = new RenderableFeature(currLayer, clone);
+                // loop exit condition tested inside try catch
+                // make sure we test hasNext() outside of the try/cath that follows, as that
+                // one is there to make sure a single feature error does not ruin the rendering
+                // (best effort) whilst an exception in hasNext() + ignoring catch results in
+                // an infinite loop
+                while (iterator.hasNext() && !renderingStopRequested) { 
+                    try {
+                        rf.setFeature(iterator.next());
+                        // draw the feature on the main graphics and on the eventual extra image buffers
+                        for (LiteFeatureTypeStyle liteFeatureTypeStyle : fts_array) {
+                            rf.setScreenMap(liteFeatureTypeStyle.screenMap);
+                            process(rf, liteFeatureTypeStyle, scaleRange, at, destinationCrs, layerId);
+    
+                        }
+                    } catch (Throwable tr) {
+                        fireErrorEvent(tr);
+                    }
+                }
+                // submit the merge request
+                requests.put(new MergeLayersRequest(graphics, fts_array));
+            }catch(InterruptedException e) {
+                fireErrorEvent(e);
+            } finally {
+                iterator.close();
+            } 
+        }
     }
 
     /**

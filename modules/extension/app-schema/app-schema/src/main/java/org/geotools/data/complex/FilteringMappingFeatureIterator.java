@@ -27,6 +27,7 @@ import org.geotools.data.store.ReprojectingIterator;
 import org.geotools.factory.FactoryRegistryException;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.opengis.feature.Feature;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.FactoryException;
@@ -133,9 +134,11 @@ public class FilteringMappingFeatureIterator extends DataAccessMappingFeatureIte
         if (targetCrs != null) {
             List<Feature> features = new ArrayList<Feature>();
             GeometryCoordinateSequenceTransformer transformer = new GeometryCoordinateSequenceTransformer();
-            Iterator<Feature> reprojectedFeatures;
+            Iterator<SimpleFeature> reprojectedFeatures;
             try {
-                reprojectedFeatures = new ReprojectingIterator(srcFeatures.iterator(), mappedSource
+                // this is really bad, app-schema really needs general feature utility classes
+                Iterator iterator = srcFeatures.iterator();
+                reprojectedFeatures = new ReprojectingIterator(iterator, mappedSource
                         .getSchema().getCoordinateReferenceSystem(), targetCrs,
                         (SimpleFeatureType) this.sourceFeatures.getSchema(), transformer);
                 while (reprojectedFeatures.hasNext()) {

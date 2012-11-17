@@ -31,6 +31,7 @@ import org.geogit.storage.bdbje.JERepositoryDatabase;
 import org.geoserver.data.RepositoryTestCase;
 import org.geoserver.data.versioning.decorator.DecoratedTestCase;
 import org.geotools.data.DataUtilities;
+import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -264,6 +265,19 @@ public abstract class GeoGITRepositoryTestCase extends RepositoryTestCase {
         return existed;
     }
 
+    protected <F extends Feature> List<F> toList(FeatureIterator<F> logs) {
+        List<F> logged = new ArrayList<F>();
+        try {
+            while( logs.hasNext() ){
+                logged.add( logs.next() );
+            }
+        }
+        finally {
+            logs.close();
+        }
+        return logged;
+    }
+    
     protected <E> List<E> toList(Iterator<E> logs) {
         List<E> logged = new ArrayList<E>();
         Iterators.addAll(logged, logs);

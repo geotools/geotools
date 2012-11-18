@@ -178,7 +178,7 @@ import com.vividsolutions.jts.geom.Point;
  * @source $URL$
  * @version $Id$
  */
-public final class StreamingRenderer implements GTRenderer {
+public class StreamingRenderer implements GTRenderer {
     private final static int defaultMaxFiltersToSendToDatastore = 5; // default
 
     /**
@@ -263,7 +263,7 @@ public final class StreamingRenderer implements GTRenderer {
      * This flag is set to false when starting rendering, and will be checked
      * during the rendering loop in order to make it stop forcefully
      */
-    private boolean renderingStopRequested = false;
+    private volatile boolean renderingStopRequested = false;
 
     /**
      * The ratio required to scale the features to be rendered so that they fit
@@ -405,6 +405,8 @@ public final class StreamingRenderer implements GTRenderer {
      */
     private ExecutorService threadPool;
 
+    private PainterThread painterThread;
+
     /**
      * Creates a new instance of LiteRenderer without a context. Use it only to
      * gain access to utility methods of this class or if you want to render
@@ -509,6 +511,18 @@ public final class StreamingRenderer implements GTRenderer {
      */
     public void stopRendering() {
         renderingStopRequested = true;
+        // un-block the queue in case it was filled with requests and the main
+        // thread got blocked on it
+        requests.clear();
+        // wake up the painter and put a death pill in the queue
+        painterThread.interrupt();
+        try {
+            requests.put(new EndRequest());
+        } catch(InterruptedException e) {
+            throw new RuntimeException("Interrupted while trying to put the end " +
+            		"request in the requests queue, this should never happen", e);
+        }
+
         labelCache.stop();
     }
 
@@ -756,8 +770,8 @@ public final class StreamingRenderer implements GTRenderer {
         }
         
         // Setup the secondary painting thread
-        requests = new ArrayBlockingQueue<RenderingRequest>(10000);
-        PainterThread painterThread = new PainterThread(requests);
+        requests = getRequestsQueue();
+        painterThread = new PainterThread(requests);
         ExecutorService localThreadPool = threadPool;
         boolean localPool = false;
         if(localThreadPool == null) {
@@ -821,8 +835,10 @@ public final class StreamingRenderer implements GTRenderer {
             }
         } finally {
             try {
-                requests.put(new EndRequest());
-                painterFuture.get();
+                if(!renderingStopRequested) {
+                    requests.put(new EndRequest());
+                    painterFuture.get();
+                }
             } catch(Exception e) {
                 painterFuture.cancel(true);
                 fireErrorEvent(e);
@@ -833,7 +849,11 @@ public final class StreamingRenderer implements GTRenderer {
             }
         }
         
-        labelCache.end(graphics, paintArea);
+        if(!renderingStopRequested) {
+            labelCache.end(graphics, paintArea);
+        } else {
+            labelCache.clear();
+        }
     
         if (LOGGER.isLoggable(Level.FINE))
             LOGGER.fine(new StringBuffer("Style cache hit ratio: ").append(
@@ -847,6 +867,15 @@ public final class StreamingRenderer implements GTRenderer {
             .append(error).toString());
         }
         
+    }
+
+    /**
+     * Builds the blocking queue used to bridge between the data loading thread and
+     * the painting one
+     * @return
+     */
+    protected BlockingQueue<RenderingRequest> getRequestsQueue() {
+        return new RenderingBlockingQueue(10000);
     }
 
     /**
@@ -2000,8 +2029,8 @@ public final class StreamingRenderer implements GTRenderer {
                 // This is a Hack, this information should not be passed through feature type
                 // appschema will need to remove this information from the feature type again
                 if (!(features instanceof SimpleFeatureCollection)) {
-                	features.getSchema().getUserData().put("targetCrs", destinationCrs);
-                	features.getSchema().getUserData().put("targetVersion", "wms:getmap");
+                    features.getSchema().getUserData().put("targetCrs", destinationCrs);
+                    features.getSchema().getUserData().put("targetVersion", "wms:getmap");
                 }
 
                 // finally, perform rendering
@@ -3534,12 +3563,20 @@ public final class StreamingRenderer implements GTRenderer {
      */
     class PainterThread implements Runnable {
         BlockingQueue<RenderingRequest> requests;
+        Thread thread;
         
         public PainterThread(BlockingQueue<RenderingRequest> requests) {
             this.requests = requests;
         }
 
+        public void interrupt() {
+            if(thread != null) {
+                thread.interrupt();
+            }
+        }
+
         public void run() {
+            thread = Thread.currentThread();
             boolean done = false;
             while(!done) {
                 try {
@@ -3558,6 +3595,41 @@ public final class StreamingRenderer implements GTRenderer {
                 
             }
             
+        }
+        
+    }
+    
+    /**
+     * A blocking queue subclass with a special behavior for the occasion when the
+     * rendering stop has been requested: puts are getting ignored, and take always
+     * returns an EndRequest
+     * 
+     * @author Andrea Aime - GeoSolutions
+     *
+     */
+    class RenderingBlockingQueue extends ArrayBlockingQueue<RenderingRequest> {
+
+        public RenderingBlockingQueue(int capacity) {
+            super(capacity);
+        }
+        
+        @Override
+        public void put(RenderingRequest e) throws InterruptedException {
+            if(!renderingStopRequested) {
+                super.put(e);
+                if(renderingStopRequested) {
+                    this.clear();
+                }
+            }
+        }
+        
+        @Override
+        public RenderingRequest take() throws InterruptedException {
+            if(!renderingStopRequested) {
+                return super.take();
+            } else {
+                return new EndRequest();
+            }
         }
         
     }

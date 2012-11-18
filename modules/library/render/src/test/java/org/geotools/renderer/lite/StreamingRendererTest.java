@@ -16,20 +16,24 @@
  */
 package org.geotools.renderer.lite;
 
-import static org.easymock.EasyMock.anyObject;
-import static org.easymock.EasyMock.createNiceMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.*;
+import static org.easymock.classextension.EasyMock.*;
+import static org.junit.Assert.*;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
-import junit.framework.TestCase;
-
+import org.easymock.IAnswer;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -38,12 +42,15 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.DefaultMapContext;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.MapContent;
 import org.geotools.map.MapContext;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
+import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -66,7 +73,7 @@ import com.vividsolutions.jts.geom.Point;
  *
  * @source $URL$
  */
-public class StreamingRendererTest extends TestCase {
+public class StreamingRendererTest {
 
     private SimpleFeatureType testFeatureType;
     private SimpleFeatureType testPointFeatureType;
@@ -74,8 +81,8 @@ public class StreamingRendererTest extends TestCase {
     protected int errors;
     protected int features;
     
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
 
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName("Lines");
@@ -239,5 +246,84 @@ public class StreamingRendererTest extends TestCase {
         assertTrue("Pixel should be drawn at image max corner ", image.getRGB(screen.width - 1,
                 screen.height - 1) != 0);
 
+    }
+    
+    @Test
+    public void testStopRenderingDeadlock() throws Exception {
+        SimpleFeature feature = createLine(0, 0, 10, 10);
+        
+        // setup the mock that will return an infinite feature collection
+        Iterator it = createNiceMock(Iterator.class);
+        expect(it.hasNext()).andReturn(true).anyTimes();
+        expect(it.next()).andReturn(feature).anyTimes();
+        replay(it);
+        
+        SimpleFeatureCollection fc = createNiceMock(SimpleFeatureCollection.class);
+        expect(fc.iterator()).andReturn(it);
+        expect(fc.size()).andReturn(Integer.MAX_VALUE);
+        expect(fc.getSchema()).andReturn(testFeatureType).anyTimes();
+        replay(fc);
+        
+        SimpleFeatureSource fs = createNiceMock(SimpleFeatureSource.class);
+        expect(fs.getFeatures((Query) anyObject())).andReturn(fc);
+        expect(fs.getSchema()).andReturn(testFeatureType).anyTimes();
+        expect(fs.getSupportedHints()).andReturn(new HashSet()).anyTimes();
+        replay(fs);
+        
+        // the executor that will be used to run the paint thread
+        ExecutorService painterExecutor = Executors.newSingleThreadExecutor();
+        
+        // build map context
+        MapContent mc = new MapContext(DefaultGeographicCRS.WGS84);
+        mc.addLayer(new FeatureLayer(fs, createLineStyle()));
+        
+        // prepare the renderer with just one slot in the rendering blocking queue
+        final StreamingRenderer sr = new StreamingRenderer() {
+            @Override
+            protected BlockingQueue<RenderingRequest> getRequestsQueue() {
+                return new StreamingRenderer.RenderingBlockingQueue(1);
+            }
+        };
+        sr.setMapContent(mc);
+        sr.setThreadPool(painterExecutor);        
+        
+        // prepare a very slow graphics
+        Graphics2D g2d = createNiceMock(Graphics2D.class);
+        g2d.draw((Shape) anyObject());
+        expectLastCall().andStubAnswer(new IAnswer<Object>() {
+            
+            @Override
+            public Object answer() throws Throwable {
+                Thread.sleep(100);
+                return null;
+            }
+        });
+        replay(g2d);
+        
+        // prepare a thread that will stop the renderer in one seconds
+        ExecutorService ex = Executors.newSingleThreadExecutor();
+        ex.submit(new Callable<Boolean>() {
+
+            @Override
+            public Boolean call() throws Exception {
+                Thread.sleep(1000);
+                sr.stopRendering();
+                return true;
+            }
+        
+        });
+        
+        // now draw, wait a bit, and then stop the rendering
+        ReferencedEnvelope reWgs = new ReferencedEnvelope(new Envelope(-180,
+                180, -90, 90), DefaultGeographicCRS.WGS84);
+        sr.paint(g2d, new Rectangle(200, 200), reWgs);
+        
+        // also make sure we close up the painter thread
+        painterExecutor.shutdown();
+        painterExecutor.awaitTermination(1000, TimeUnit.MILLISECONDS);
+        
+        // if the bug if fixed, we get here, if it's not, infinite wait that we 
+        // cannot do anything to stop...
+        
     }
 }

@@ -33,11 +33,9 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
-import org.geotools.data.complex.AppSchemaDataAccess;
-import org.geotools.data.complex.DataAccessRegistry;
-import org.geotools.data.complex.FeatureChainingTest;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
 import org.geotools.data.complex.config.XMLConfigDigester;
@@ -122,7 +120,7 @@ public class XmlDataStoreTest extends TestCase {
                 .literal("Unit Name1233811724109 UC1233811724109 description name"));
 
         FeatureCollection features = getFeatures(Query.DEFAULT_MAX, inputFilter);
-        assertEquals(1, size(features));
+        assertEquals(1, DataUtilities.count(features));
         
         // check that it returns the right feature
         FeatureIterator iterator = features.features();
@@ -135,7 +133,7 @@ public class XmlDataStoreTest extends TestCase {
         Filter inputFilter = ff.like(ff.property("gml:name"), "*description name*");
         
         FeatureCollection features = getFeatures(Query.DEFAULT_MAX, inputFilter);
-        assertEquals(3, size(features));
+        assertEquals(3, DataUtilities.count(features));
         
         // check feature ids
         FeatureIterator iterator = features.features();
@@ -152,7 +150,7 @@ public class XmlDataStoreTest extends TestCase {
         
         // now with maxFeatures = 1, it should only return the first one
         features = getFeatures(MAX_FEATURES, inputFilter);
-        assertEquals(MAX_FEATURES, size(features));
+        assertEquals(MAX_FEATURES, DataUtilities.count(features));
         
         iterator = features.features();
         f = iterator.next();
@@ -167,7 +165,7 @@ public class XmlDataStoreTest extends TestCase {
 
         FeatureCollection features = getFeatures(MAX_FEATURES, filter);
         
-        assertEquals(0, size(features));
+        assertEquals(0, DataUtilities.count(features));
 
         List<Feature> results = new ArrayList<Feature>();
         FeatureIterator it = features.features();
@@ -529,11 +527,4 @@ public class XmlDataStoreTest extends TestCase {
         return features;
     }
 
-    private int size(FeatureCollection<FeatureType, Feature> features) {
-        int size = 0;
-        for (Iterator i = features.iterator(); i.hasNext(); i.next()) {
-            size++;
-        }
-        return size;
-    }
 }

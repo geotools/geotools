@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gmlcov:GridCoverage
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns:gml='http://www.opengis.net/gml/3.2'
+    xmlns='http://www.opengis.net/gml/3.2'
+    xmlns:swe='http://www.opengis.net/swe/2.0'
+    xmlns:gmlcov='http://www.opengis.net/gmlcov/1.0'
+    xmlns:gmlwcs='http://www.opengis.net/gmlcov/1.0'
+    xsi:schemaLocation='http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd
+                        http://www.opengis.net/gmlcov/1.0 http://schemas.opengis.net/gmlcov/1.0/gmlcovAll.xsd'
+    gml:id="C0043">
+    <gml:boundedBy>
+        <gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/4326" axisLabels="Lat Long" uomLabels="deg deg" srsDimension="2"> 
+            <gml:lowerCorner>1 1</gml:lowerCorner>
+            <gml:upperCorner>1 1</gml:upperCorner>
+        </gml:Envelope>
+    </gml:boundedBy>
+    <gml:domainSet>
+        <gml:Grid gml:id="gr0001_C0043" dimension="2">
+            <gml:limits>
+                <gml:GridEnvelope>
+                    <gml:low>1 1</gml:low>
+                    <gml:high>1 1</gml:high>
+                </gml:GridEnvelope>
+            </gml:limits>
+            <gml:axisLabels>Lat Long</gml:axisLabels>
+        </gml:Grid>
+    </gml:domainSet>
+    <gml:rangeSet>
+        <gml:DataBlock>
+            <gml:rangeParameters/>
+            <gml:tupleList>
+                1 
+            </gml:tupleList>
+        </gml:DataBlock>
+    </gml:rangeSet>
+    <gmlcov:rangeType>
+        <swe:DataRecord>
+            <swe:field name="singleBand">
+               <swe:Quantity definition="http://www.opengis.net/def/property/OGC/0/Radiance">
+                       <swe:description>Panchromatic Channel</swe:description>
+                       <swe:uom code="W/cm2"/>
+                       <swe:constraint>
+                           <swe:AllowedValues>
+                               <swe:interval>0 255</swe:interval>
+                               <swe:significantFigures>3</swe:significantFigures>
+                           </swe:AllowedValues>
+                       </swe:constraint>
+                   </swe:Quantity>
+            </swe:field>
+        </swe:DataRecord>
+    </gmlcov:rangeType>
+</gmlcov:GridCoverage>
+
+

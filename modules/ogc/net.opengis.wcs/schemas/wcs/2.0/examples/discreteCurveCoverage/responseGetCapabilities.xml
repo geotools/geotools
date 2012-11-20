@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wcs:Capabilities  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns:xlink='http://www.w3.org/1999/xlink'
+    xmlns='http://www.opengis.net/ows/2.0'
+    xmlns:ows='http://www.opengis.net/ows/2.0'
+    xmlns:wcs='http://www.opengis.net/wcs/2.0'
+    xmlns:gml='http://www.opengis.net/gml/3.2'
+    xsi:schemaLocation='http://www.opengis.net/wcs/2.0 http://schemas.opengis.net/wcs/2.0/wcsAll.xsd' version="2.0.1">
+    <ows:ServiceIdentification>
+        <ows:Title>rasdaman</ows:Title>
+        <ows:Abstract>rasdaman server - free download from www.rasdaman.org</ows:Abstract>
+        <ows:ServiceType>OGC WCS</ows:ServiceType>
+        <ows:ServiceTypeVersion>2.0.1</ows:ServiceTypeVersion>
+        <ows:Profile>http://www.opengis.net/spec/WCS_protocol-binding_soap/1.0/conf/soap</ows:Profile>
+        <ows:Profile>http://www.opengis.net/spec/WCS_coverage-encoding_netcdf/1.0/conf/netcdf</ows:Profile>
+        <ows:Profile>http://www.opengis.net/spec/WCS_service-model_processing/1.0/conf/processing</ows:Profile>
+        <ows:Profile>http://www.opengis.net/spec/WCS_service-model_transaction/1.0/conf/transaction</ows:Profile>
+    </ows:ServiceIdentification>
+    <ows:ServiceProvider>
+        <ows:ProviderName>Jacobs University Bremen</ows:ProviderName>
+        <ows:ProviderSite xlink:href="http://www.jacobs-university.de/"/>
+        <ows:ServiceContact>
+            <ows:IndividualName>Andrei Aiordachioaie</ows:IndividualName>
+            <ows:PositionName>Developer</ows:PositionName>
+            <ows:ContactInfo>
+                <ows:Phone>
+                    <ows:Voice></ows:Voice>
+                </ows:Phone>
+            </ows:ContactInfo>
+        </ows:ServiceContact>
+    </ows:ServiceProvider>
+    <ows:OperationsMetadata>
+        <ows:Operation name="GetCapabilities">
+            <ows:DCP>
+                <ows:HTTP>
+                    <ows:Get xlink:href="http://server:8000/GetCapabilitiesURL"/>
+                </ows:HTTP>
+            </ows:DCP>
+        </ows:Operation>
+        <ows:Operation name="DescribeCoverage">
+            <ows:DCP>
+                <ows:HTTP>
+                    <ows:Get xlink:href="http://server:8000/DescribeCoverageURL"/>
+                </ows:HTTP>
+            </ows:DCP>
+        </ows:Operation>
+        <ows:Operation name="GetCoverage">
+            <ows:DCP>
+                <ows:HTTP>
+                    <ows:Get xlink:href="http://server:8000/GetCoverageURL"/>
+                </ows:HTTP>
+            </ows:DCP>
+        </ows:Operation>
+    </ows:OperationsMetadata>
+    <wcs:ServiceMetadata>
+        <wcs:formatSupported>application/gml+xml</wcs:formatSupported>
+    </wcs:ServiceMetadata>
+    <wcs:Contents>
+        <wcs:CoverageSummary>
+            <wcs:CoverageId>C0001</wcs:CoverageId>
+            <wcs:CoverageSubtype>GridCoverage</wcs:CoverageSubtype>
+        </wcs:CoverageSummary>
+        <wcs:CoverageSummary>
+            <wcs:CoverageId>C0002</wcs:CoverageId>
+            <wcs:CoverageSubtype>MultiPointCoverage</wcs:CoverageSubtype>
+        </wcs:CoverageSummary>
+        <wcs:CoverageSummary>
+            <wcs:CoverageId>C0003</wcs:CoverageId>
+            <wcs:CoverageSubtype>MultiCurveCoverage</wcs:CoverageSubtype>
+        </wcs:CoverageSummary>
+          <wcs:CoverageSummary>
+            <wcs:CoverageId>C0004</wcs:CoverageId>
+            <wcs:CoverageSubtype>MultiSurfaceCoverage</wcs:CoverageSubtype>
+        </wcs:CoverageSummary>
+           <wcs:CoverageSummary>
+            <wcs:CoverageId>C0005</wcs:CoverageId>
+            <wcs:CoverageSubtype>MultiSolidCoverage</wcs:CoverageSubtype>
+        </wcs:CoverageSummary>
+    </wcs:Contents>
+</wcs:Capabilities>

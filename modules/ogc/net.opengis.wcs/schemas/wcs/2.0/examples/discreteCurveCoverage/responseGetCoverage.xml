@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gmlcov:MultiCurveCoverage
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns:gml='http://www.opengis.net/gml/3.2'
+    xmlns='http://www.opengis.net/gml/3.2'
+    xmlns:swe='http://www.opengis.net/swe/2.0'
+    xmlns:gmlcov='http://www.opengis.net/gmlcov/1.0'
+    xmlns:gmlwcs='http://www.opengis.net/gmlcov/1.0'
+    xsi:schemaLocation='http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd
+                        http://www.opengis.net/gmlcov/1.0 http://schemas.opengis.net/gmlcov/1.0/gmlcovAll.xsd'
+    gml:id="C0003">
+    <gml:boundedBy>
+        <gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/4326" axisLabels="Lat Long" srsDimension="2">
+            <gml:lowerCorner>1.1 1.1</gml:lowerCorner>
+            <gml:upperCorner>5.5 5.5</gml:upperCorner>
+        </gml:Envelope>
+    </gml:boundedBy>
+    <gml:domainSet>
+        <gml:MultiCurve gml:id="mc0001_C0003" srsName="http://www.opengis.net/def/crs/EPSG/0/4326">
+            <gml:curveMember>
+                <gml:LineString gml:id="ls0001_C0003">
+                    <gml:posList>1.1 1.1 2.2 2.2</gml:posList>
+                </gml:LineString>
+            </gml:curveMember>
+            <gml:curveMember>
+                <gml:LineString gml:id="ls0002_C0003">
+                    <gml:posList>2.2 2.2 3.3 3.3</gml:posList>
+                </gml:LineString>
+            </gml:curveMember>
+            <gml:curveMember>
+                <gml:LineString gml:id="ls0003_C0003">
+                    <gml:posList>3.3 3.3 4.4 4.4</gml:posList>
+                </gml:LineString>
+            </gml:curveMember>
+            <gml:curveMember>
+                <gml:LineString gml:id="ls0004_C0003">
+                    <gml:posList>4.4 4.4 5.5 5.5</gml:posList>
+                </gml:LineString>
+            </gml:curveMember>
+        </gml:MultiCurve>
+    </gml:domainSet>
+    <gml:rangeSet>
+        <gml:DataBlock>
+            <gml:rangeParameters></gml:rangeParameters>
+            <gml:tupleList>23,1013.25 25,1011.35 21,1007.25 25,1009.65</gml:tupleList>
+        </gml:DataBlock>
+    </gml:rangeSet>
+    <gmlcov:rangeType>
+    <swe:DataRecord>
+        <swe:field name="Temperature">
+            <swe:Quantity definition="http://www.opengis.net/def/property/OGC/0/Temperature">
+                <swe:description>Temperature</swe:description>
+                <swe:uom code="Cel"/>
+                <swe:constraint>
+                    <swe:AllowedValues>
+                        <swe:interval>0 100</swe:interval>
+                    </swe:AllowedValues>
+                </swe:constraint>
+            </swe:Quantity>
+        </swe:field>
+        <swe:field name="Pressure">
+            <swe:Quantity definition="http://www.opengis.net/def/property/OGC/0/Pressure">
+                <swe:description>pressure</swe:description>
+                <swe:uom code="HPa"/>
+            </swe:Quantity>
+        </swe:field>
+        </swe:DataRecord>
+    </gmlcov:rangeType>
+</gmlcov:MultiCurveCoverage>
+

@@ -1,0 +1,942 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="wcs20" nsURI="http://www.opengis.net/wcs/2.0" nsPrefix="wcs">
+  <eAnnotations source="urn:x-ogc:specification:gml:schema-xsd:gml:3.2.1">
+    <details key="appinfo" value="gml.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="urn:x-ogc:specification:gml:schema-xsd:dynamicFeature:3.2.1">
+    <details key="appinfo" value="dynamicFeature.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="urn:x-ogc:specification:gml:schema-xsd:topology:3.2.1">
+    <details key="appinfo" value="topology.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="urn:x-ogc:specification:gml:schema-xsd:coverage:3.2.1">
+    <details key="appinfo" value="coverage.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="urn:x-ogc:specification:gml:schema-xsd:coordinateReferenceSystems:3.2.1">
+    <details key="appinfo" value="coordinateReferenceSystems.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="urn:x-ogc:specification:gml:schema-xsd:observation:3.2.1">
+    <details key="appinfo" value="observation.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="urn:x-ogc:specification:gml:schema-xsd:temporalReferenceSystems:3.2.1">
+    <details key="appinfo" value="temporalReferenceSystems.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="urn:x-ogc:specification:gml:schema-xsd:deprecatedTypes:3.2.1">
+    <details key="appinfo" value="deprecatedTypes.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="urn:x-ogc:specification:gml:schema-xsd:temporalTopology:3.2.1">
+    <details key="appinfo" value="temporalTopology.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="urn:opengis:specification:gml:schema-xsd:dictionary:v3.2.1">
+    <details key="appinfo" value="dictionary.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="urn:x-ogc:specification:gml:schema-xsd:gmlBase:3.2.1">
+    <details key="appinfo" value="gmlBase.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="urn:x-ogc:specification:gml:schema-xsd:temporal:3.2.1">
+    <details key="appinfo" value="temporal.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="urn:x-ogc:specification:gml:schema-xsd:feature:3.2.1">
+    <details key="appinfo" value="feature.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="urn:x-ogc:specification:gml:schema-xsd:direction:3.2.1">
+    <details key="appinfo" value="direction.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="urn:x-ogc:specification:gml:schema-xsd:valueObjects:3.2.1">
+    <details key="appinfo" value="valueObjects.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="urn:x-ogc:specification:gml:schema-xsd:geometryBasic0d1d:3.2.1">
+    <details key="appinfo" value="geometryBasic0d1d.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="urn:x-ogc:specification:gml:schema-xsd:coordinateSystems:3.2.1">
+    <details key="appinfo" value="coordinateSystems.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="urn:x-ogc:specification:gml:schema-xsd:datums:3.2.1">
+    <details key="appinfo" value="datums.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="urn:x-ogc:specification:gml:schema-xsd:coordinateOperations:3.2.1">
+    <details key="appinfo" value="coordinateOperations.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="urn:x-ogc:specification:gml:schema-xsd:referenceSystems:3.2.1">
+    <details key="appinfo" value="referenceSystems.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="urn:x-ogc:specification:gml:schema-xsd:measures:3.2.1">
+    <details key="appinfo" value="measures.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="urn:x-ogc:specification:gml:schema-xsd:units:3.2.1">
+    <details key="appinfo" value="units.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="urn:x-ogc:specification:gml:schema-xsd:grids:3.2.1">
+    <details key="appinfo" value="grids.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="urn:x-ogc:specification:gml:schema-xsd:geometryAggregates:3.2.1">
+    <details key="appinfo" value="geometryAggregates.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="urn:x-ogc:specification:gml:schema-xsd:geometryPrimitives:3.2.1">
+    <details key="appinfo" value="geometryPrimitives.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="urn:x-ogc:specification:gml:schema-xsd:geometryComplexes:3.2.1">
+    <details key="appinfo" value="geometryComplexes.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="urn:x-ogc:specification:gml:schema-xsd:basicTypes:3.2.1">
+    <details key="appinfo" value="basicTypes.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="urn:x-ogc:specification:gml:schema-xsd:geometryBasic2d:3.2.1">
+    <details key="appinfo" value="geometryBasic2d.xsd"/>
+  </eAnnotations>
+  <eAnnotations source="http://www.w3.org/XML/1998/namespace">
+    <details key="lang" value="en"/>
+  </eAnnotations>
+  <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+    <details key="documentation" value="This XML Schema Document defines the GetCapabilities operation request and response XML elements and types, used by the OGC Web Coverage Service (WCS).&#xA;            Last updated: 2012-feb-06&#xA;            Copyright (c) 2012 Open Geospatial Consortium.&#xA;            To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.&#xA;&#xA;This XML Schema Document defines the XML elements and types that are shared by multiple WCS operations.&#xA;            Last updated: 2012-feb-06&#xA;            Copyright (c) 2012 Open Geospatial Consortium.&#xA;            To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.&#xA;&#xA;This XML Schema Document includes, directly and indirectly, all the XML Schema Documents defined by the OGC Web Coverage Service (WCS).&#xA;            Last updated: 2012-feb-06&#xA;            Copyright (c) 2012 Open Geospatial Consortium.&#xA;            To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.&#xA;&#xA;This is the XML Schema for the GML 3.2.1 Application Schema for Coverages.&#xA;            This XML Schema Document includes, directly and indirectly, all the XML Schema Documents defined by the this standard.&#xA;            Last updated: 2012-Jul-10&#xA;            Copyright (c) 2012 Open Geospatial Consortium.&#xA;            To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.&#xA;&#xA;Component of GML 3.2.1 Application Schema for Coverages.&#xA;        Last updated: 2012-Jul-10&#xA;        Copyright (c) 2012 Open Geospatial Consortium.&#xA;        To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.&#xA;&#xA;This XML Schema Document encodes extensions to GML 3.2.1 for grids that are referenced by a Transformation, named &quot;ReferencedGridByTransformation&quot;. This document also extends the alternatives allowed in gml:ParameterValueType as expected to be needed by such Transformations.&#xA;        Last updated: 2012-Jul-10&#xA;        Copyright (c) 2012 Open Geospatial Consortium.&#xA;        To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.&#xA;&#xA;&#xA;&#x9;&#x9;&#x9;GML is an OGC Standard.&#xA;&#x9;&#x9;&#x9;Copyright (c) 2007,2010 Open Geospatial Consortium.&#xA;&#x9;&#x9;&#x9;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;See ISO/DIS 19136 15.6.&#xA;A number of types and relationships are defined to represent the time-varying properties of geographic features.&#xA;In a comprehensive treatment of spatiotemporal modeling, Langran (see Bibliography) distinguished three principal temporal entities: states, events, and evidence; the schema specified in the following Subclauses incorporates elements for each.&#xA;&#xA;GML is an OGC Standard.&#xA;Copyright (c) 2007,2010 Open Geospatial Consortium.&#xA;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;See ISO/DIS 19136 Clause 14.&#xA;Topology is the branch of mathematics describing the properties of objects which are invariant under continuous deformation. For example, a circle is topologically equivalent to an ellipse because one can be transformed into the other by stretching. In geographic modelling, the foremost use of topology is in accelerating computational geometry. The constructs of topology allow characterisation of the spatial relationships between objects using simple combinatorial or algebraic algorithms. Topology, realised by the appropriate geometry, also allows a compact and unambiguous mechanism for expressing shared geometry among geographic features.&#xA;There are four instantiable classes of primitive topology objects, one for each dimension up to 3D. In addition, topological complexes are supported, too.&#xA;There is strong symmetry in the (topological boundary and coboundary) relationships between topology primitives of adjacent dimensions. Topology primitives are bounded by directed primitives of one lower dimension. The coboundary of each topology primitive is formed from directed topology primitives of one higher dimension.&#xA;&#xA;GML is an OGC Standard.&#xA;Copyright (c) 2007,2010 Open Geospatial Consortium.&#xA;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;See ISO/DIS 19136 20.3.&#xA;A coverage incorporates a mapping from a spatiotemporal domain to a range set, the latter providing the set in which the attribute values live.  The range set may be an arbitrary set including discrete lists, integer or floating point ranges, and multi-dimensional vector spaces.&#xA;A coverage can be viewed as the graph of the coverage function f:A à B, that is as the set of ordered pairs {(x, f(x)) | where x is in A}. This view is especially applicable to the GML encoding of a coverage.  In the case of a discrete coverage, the domain set A is partitioned into a collection of subsets (typically a disjoint collection) A = UAi and the function f is constant on each Ai. For a spatial domain, the Ai are geometry elements, hence the coverage can be viewed as a collection of (geometry,value) pairs, where the value is an element of the range set.  If the spatial domain A is a topological space then the coverage can be viewed as a collection of (topology,value) pairs, where the topology element in the pair is a topological n-chain (in GML terms this is a gml:TopoPoint, gml:TopoCurve, gml:TopoSurface or gml:TopoSolid).&#xA;A coverage is implemented as a GML feature. We can thus speak of a &quot;temperature distribution feature&quot;, or a &quot;remotely sensed image feature&quot;, or a &quot;soil distribution feature&quot;.&#xA;As is the case for any GML object, a coverage object may also be the value of a property of a feature.&#xA;&#xA;GML is an OGC Standard.&#xA;Copyright (c) 2007,2010 Open Geospatial Consortium.&#xA;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;See ISO/DIS 19136 13.3.&#xA;The spatial-temporal coordinate reference systems schema components are divided into two logical parts. One part defines elements and types for XML encoding of abstract coordinate reference systems definitions. The larger part defines specialized constructs for XML encoding of definitions of the multiple concrete types of spatial-temporal coordinate reference systems.&#xA;These schema components encode the Coordinate Reference System packages of the UML Models of ISO 19111 Clause 8 and ISO/DIS 19136 D.3.10, with the exception of the abstract &quot;SC_CRS&quot; class.&#xA;&#xA;GML is an OGC Standard.&#xA;Copyright (c) 2007,2010 Open Geospatial Consortium.&#xA;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;See ISO/DIS 19136 Clause 19.&#xA;A GML observation models the act of observing, often with a camera, a person or some form of instrument.  An observation feature describes the &quot;metadata&quot; associated with an information capture event, together with a value for the result of the observation.  This covers a broad range of cases, from a tourist photo (not the photo but the act of taking the photo), to images acquired by space borne sensors or the measurement of a temperature 5 meters below the surfaces of a lake.&#xA;The basic structures introduced in this schema are intended to serve as the foundation for more comprehensive schemas for scientific, technical and engineering measurement schemas.&#xA;&#xA;GML is an OGC Standard.&#xA;Copyright (c) 2007,2010 Open Geospatial Consortium.&#xA;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;See ISO/DIS 19136 15.5.&#xA;A value in the time domain is measured relative to a temporal reference system. Common types of reference systems include calendars, ordinal temporal reference systems, and temporal coordinate systems (time elapsed since some epoch).  The primary temporal reference system for use with geographic information is the Gregorian Calendar and 24 hour local or Coordinated Universal Time (UTC), but special applications may entail the use of alternative reference systems.  The Julian day numbering system is a temporal coordinate system that has an origin earlier than any known calendar, at noon on 1 January 4713 BC in the Julian proleptic calendar, and is useful in transformations between dates in different calendars.&#xA;In GML seven concrete elements are used to describe temporal reference systems: gml:TimeReferenceSystem, gml:TimeCoordinateSystem, gml:TimeCalendar, gml:TimeCalendarEra, gml:TimeClock, gml:TimeOrdinalReferenceSystem, and gml:TimeOrdinalEra.&#xA;&#xA;GML is an OGC Standard.&#xA;Copyright (c) 2007,2010 Open Geospatial Consortium.&#xA;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;All global schema components that are part of the GML schema, but were deprecated. See Annex I.&#xA;&#xA;&#x9;&#x9;&#x9;GML is an OGC Standard.&#xA;&#x9;&#x9;&#x9;Copyright (c) 2007,2010 Open Geospatial Consortium.&#xA;&#x9;&#x9;&#x9;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;See ISO/DIS 19136 15.3.&#xA;Temporal topology is described in terms of time complexes, nodes, and edges, and the connectivity between these. Temporal topology does not directly provide information about temporal position. It is used in the case of describing a lineage or a history (e.g. a family tree expressing evolution of species, an ecological cycle, a lineage of lands or buildings, or a history of separation and merger of administrative boundaries). The following Subclauses specifies the temporal topology as temporal characteristics of features in compliance with ISO 19108.&#xA;&#xA;GML is an OGC Standard.&#xA;Copyright (c) 2007,2010 Open Geospatial Consortium.&#xA;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;See ISO/DIS 19136 Clause 16.&#xA;Many applications require definitions of terms which are used within instance documents as the values of certain properties or as reference information to tie properties to standard information values in some way.  Units of measure and descriptions of measurable phenomena are two particular examples.&#xA;It will often be convenient to use definitions provided by external authorities. These may already be packaged for delivery in various ways, both online and offline. In order that they may be referred to from GML documents it is generally necessary that a URI be available for each definition. Where this is the case then it is usually preferable to refer to these directly.&#xA;Alternatively, it may be convenient or necessary to capture definitions in XML, either embedded within an instance document containing features or as a separate document. The definitions may be transcriptions from an external source, or may be new definitions for a local purpose. In order to support this case, some simple components are provided in GML in the form of&#xA;-&#x9;a generic gml:Definition, which may serve as the basis for more specialized definitions&#xA;-&#x9;a generic gml:Dictionary, which allows a set of definitions or references to definitions to be collected&#xA;These components may be used directly, but also serve as the basis for more specialised definition elements in GML, in particular: coordinate operations, coordinate reference systems, datums, temporal reference systems, and units of measure.&#xA;Note that the GML definition and dictionary components implement a simple nested hierarchy of definitions with identifiers. The latter provide handles which may be used in the description of more complex relationships between terms. However, the GML dictionary components are not intended to provide direct support for complex taxonomies, ontologies or thesauri.  Specialised XML tools are available to satisfy the more sophisticated requirements.&#xA;&#xA;GML is an OGC Standard.&#xA;Copyright (c) 2007,2010 Open Geospatial Consortium.&#xA;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;See ISO/DIS 19136 7.2.&#xA;The gmlBase schema components establish the GML model and syntax, in particular&#xA;-&#x9;a root XML type from which XML types for all GML objects should be derived,&#xA;-&#x9;a pattern and components for GML properties,&#xA;-&#x9;patterns for collections and arrays, and components for generic collections and arrays,&#xA;-&#x9;components for associating metadata with GML objects,&#xA;-&#x9;components for constructing definitions and dictionaries.&#xA;&#xA;GML is an OGC Standard.&#xA;Copyright (c) 2007,2010 Open Geospatial Consortium.&#xA;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;See ISO/DIS 19136 15.2.&#xA;The GML temporal schemas include components for describing temporal geometry and topology, temporal reference systems, and the temporal characteristics of geographic data. The model underlying the representation constitutes a profile of the conceptual schema described in ISO 19108. The underlying spatiotemporal model strives to accommodate both feature-level and attribute-level time stamping; basic support for tracking moving objects is also included.&#xA;Time is measured on two types of scales: interval and ordinal.  An interval scale offers a basis for measuring duration, an ordinal scale provides information only about relative position in time.&#xA;Two other ISO standards are relevant to describing temporal objects:  ISO 8601 describes encodings for time instants and time periods, as text strings with particular structure and punctuation; ISO 11404 provides a detailed description of time intervals as part of a general discussion of language independent datatypes.&#xA;The temporal schemas cover two interrelated topics and provide basic schema components for representing temporal instants and periods, temporal topology, and reference systems; more specialized schema components defines components used for dynamic features. Instances of temporal geometric types are used as values for the temporal properties of geographic features.&#xA;&#xA;GML is an OGC Standard.&#xA;Copyright (c) 2007,2010 Open Geospatial Consortium.&#xA;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;See ISO/DIS 19136 Clause 9.&#xA;A GML feature is a (representation of a) identifiable real-world object in a selected domain of discourse. The feature schema provides a framework for the creation of GML features and feature collections.&#xA;&#xA;GML is an OGC Standard.&#xA;Copyright (c) 2007,2010 Open Geospatial Consortium.&#xA;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;See ISO/DIS 19136 Clause 18.&#xA;The direction schema components provide the GML Application Schema developer with a standard property element to describe direction, and associated objects that may be used to express orientation, direction, heading, bearing or other directional aspects of geographic features.&#xA;&#xA;GML is an OGC Standard.&#xA;Copyright (c) 2007,2010 Open Geospatial Consortium.&#xA;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;See ISO/DIS 19136 17.5.&#xA;The elements declared in this Clause build on other GML schema components, in particular gml:AbstractTimeObject, gml:AbstractGeometry, and the following types:  gml:MeasureType, gml:MeasureListType, gml:CodeType, gml:CodeOrNilReasonListType, gml:BooleanOrNilReasonListType, gml:IntegerOrNilReasonList.&#xA;Of particular interest are elements that are the heads of substitution groups, and one named choice group. These are the primary reasons for the value objects schema, since they may act as variables in the definition of content models, such as Observations, when it is desired to permit alternative value types to occur some of which may have complex content such as arrays, geometry and time objects, and where it is useful not to prescribe the actual value type in advance. The members of the groups include quantities, category classifications, boolean, count, temporal and spatial values, and aggregates of these.&#xA;The value objects are defined in a hierarchy. The following relationships are defined:&#xA;-&#x9;Concrete elements gml:Quantity, gml:Category, gml:Count and gml:Boolean are substitutable for the abstract element gml:AbstractScalarValue.&#xA;-&#x9;Concrete elements gml:QuantityList, gml:CategoryList, gml:CountList and gml:BooleanList are substitutable for the abstract element gml:AbstractScalarValueList.&#xA;-&#x9;Concrete element gml:ValueArray is substitutable for the concrete element gml:CompositeValue.&#xA;-&#x9;Abstract elements gml:AbstractScalarValue and gml:AbstractScalarValueList, and concrete elements gml:CompositeValue, gml:ValueExtent, gml:CategoryExtent, gml:CountExtent and gml:QuantityExtent are substitutable for abstract element gml:AbstractValue.&#xA;-&#x9;Abstract elements gml:AbstractValue, gml:AbstractTimeObject and gml:AbstractGeometry are all in a choice group named gml:Value, which is used for compositing in gml:CompositeValue and gml:ValueExtent.&#xA;-&#x9;Schemas which need values may use the abstract element gml:AbstractValue in a content model in order to permit any of the gml:AbstractScalarValues, gml:AbstractScalarValueLists, gml:CompositeValue or gml:ValueExtent to occur in an instance, or the named group gml:Value to also permit gml:AbstractTimeObjects, gml:AbstractGeometrys.&#xA;&#xA;GML is an OGC Standard.&#xA;Copyright (c) 2007,2010 Open Geospatial Consortium.&#xA;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;See ISO/DIS 19136 Clause 10.&#xA;Any geometry element that inherits the semantics of AbstractGeometryType may be viewed as a set of direct positions.&#xA;All of the classes derived from AbstractGeometryType inherit an optional association to a coordinate reference system. All direct positions shall directly or indirectly be associated with a coordinate reference system. When geometry elements are aggregated in another geometry element (such as a MultiGeometry or GeometricComplex), which already has a coordinate reference system specified, then these elements are assumed to be in that same coordinate reference system unless otherwise specified.&#xA;The geometry model distinguishes geometric primitives, aggregates and complexes.&#xA;Geometric primitives, i.e. instances of a subtype of AbstractGeometricPrimitiveType, will be open, that is, they will not contain their boundary points; curves will not contain their end points, surfaces will not contain their boundary curves, and solids will not contain their bounding surfaces.&#xA;&#xA;GML is an OGC Standard.&#xA;Copyright (c) 2007,2010 Open Geospatial Consortium.&#xA;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;See ISO/DIS 19136 13.4.&#xA;The coordinate systems schema components can be divded into  three logical parts, which define elements and types for XML encoding of the definitions of:&#xA;-&#x9;Coordinate system axes&#xA;-&#x9;Abstract coordinate system&#xA;-&#x9;Multiple concrete types of spatial-temporal coordinate systems&#xA;These schema components encode the Coordinate System packages of the UML Models of ISO 19111 Clause 9 and ISO/DIS 19136 D.3.10.&#xA;&#xA;GML is an OGC Standard.&#xA;Copyright (c) 2007,2010 Open Geospatial Consortium.&#xA;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;See ISO/DIS 19136 13.5&#xA;The datums schema components can be divided into three logical parts, which define elements and types for XML encoding of the definitions of:&#xA;-&#x9;Abstract datum&#xA;-&#x9;Geodetic datums, including ellipsoid and prime meridian&#xA;-&#x9;Multiple other concrete types of spatial or temporal datums&#xA;These schema components encode the Datum packages of the UML Models of ISO 19111 Clause 10 and ISO/DIS 19136 D.3.10.&#xA;&#xA;GML is an OGC Standard.&#xA;Copyright (c) 2007,2010 Open Geospatial Consortium.&#xA;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;See ISO/DIS 19136 13.6.&#xA;The spatial or temporal coordinate operations schema components can be divided into five logical parts, which define elements and types for XML encoding of the definitions of:&#xA;-&#x9;Multiple abstract coordinate operations&#xA;-&#x9;Multiple concrete types of coordinate operations, including Transformations and Conversions&#xA;-&#x9;Abstract and concrete parameter values and groups&#xA;-&#x9;Operation methods&#xA;-&#x9;Abstract and concrete operation parameters and groups&#xA;These schema component encodes the Coordinate Operation package of the UML Model for ISO 19111 Clause 11.&#xA;&#xA;GML is an OGC Standard.&#xA;Copyright (c) 2007,2010 Open Geospatial Consortium.&#xA;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;See ISO/DIS 19136 13.2.&#xA;The reference systems schema components have two logical parts, which define elements and types for XML encoding of the definitions of:&#xA;-&#x9;Identified Object, inherited by the ten types of GML objects used for coordinate reference systems and coordinate operations&#xA;-&#x9;High-level part of the definitions of coordinate reference systems&#xA;This schema encodes the Identified Object and Reference System packages of the UML Model for ISO 19111.&#xA;&#xA;GML is an OGC Standard.&#xA;Copyright (c) 2007,2010 Open Geospatial Consortium.&#xA;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;See ISO/DIS 19136 17.3.&#xA;gml:MeasureType is defined in the basicTypes schema.  The measure types defined here correspond with a set of convenience measure types described in ISO/TS 19103.  The XML implementation is based on the XML Schema simple type &quot;double&quot; which supports both decimal and scientific notation, and includes an XML attribute &quot;uom&quot; which refers to the units of measure for the value.  Note that, there is no requirement to store values using any particular format, and applications receiving elements of this type may choose to coerce the data to any other type as convenient.&#xA;&#xA;GML is an OGC Standard.&#xA;Copyright (c) 2007,2010 Open Geospatial Consortium.&#xA;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;See ISO/DIS 17.2.&#xA;Several GML Schema components concern or require a reference scale or units of measure.  Units are required for quantities that may occur as values of properties of feature types, as the results of observations, in the range parameters of a coverage, and for measures used in Coordinate Reference System definitions.&#xA;The basic unit definition is an extension of the general gml:Definition element defined in 16.2.1.  Three specialized elements for unit definition are further derived from this.&#xA;This model is based on the SI system of units [ISO 1000], which distinguishes between Base Units and Derived Units.&#xA;-&#x9;Base Units are the preferred units for a set of orthogonal fundamental quantities which define the particular system of units, which may not be derived by combination of other base units.&#xA;-&#x9;Derived Units are the preferred units for other quantities in the system, which may be defined by algebraic combination of the base units.&#xA;In some application areas Conventional units are used, which may be converted to the preferred units using a scaling factor or a formula which defines a re-scaling and offset.  The set of preferred units for all physical quantity types in a particular system of units is composed of the union of its base units and derived units.&#xA;Unit definitions are substitutable for the gml:Definition element declared as part of the dictionary model.  A dictionary that contains only unit definitions and references to unit definitions is a units dictionary.&#xA;&#xA;GML is an OGC Standard.&#xA;Copyright (c) 2007,2010 Open Geospatial Consortium.&#xA;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;Geographic MetaData (GMD) extensible markup language is a component of the XML Schema Implementation of Geographic Information Metadata documented in ISO/TS 19139:2007. GMD includes all the definitions of http://www.isotc211.org/2005/gmd namespace. The root document of this namespace is the file gmd.xsd.&#xA;Geographic MetaData (GMD) extensible markup language is a component of the XML Schema Implementation of Geographic Information Metadata documented in ISO/TS 19139:2007. GMD includes all the definitions of http://www.isotc211.org/2005/gmd namespace. The root document of this namespace is the file gmd.xsd. This metadataApplication.xsd schema implements the UML conceptual schema defined in A.2.12 of ISO 19115:2003. It contains the implementation of the class: MD_ApplicationSchemaInformation.&#xA;Geographic MetaData (GMD) extensible markup language is a component of the XML Schema Implementation of Geographic Information Metadata documented in ISO/TS 19139:2007. GMD includes all the definitions of http://www.isotc211.org/2005/gmd namespace. The root document of this namespace is the file gmd.xsd. This metadataEntity.xsd schema implements the UML conceptual schema defined in A.2.1 of ISO 19115:2003. It contains the implementation of the class MD_Metadata.&#xA;Geographic COmmon (GCO) extensible markup language is a component of the XML Schema Implementation of Geographic Information Metadata documented in ISO/TS 19139:2007. GCO includes all the definitions of http://www.isotc211.org/2005/gco namespace. The root document of this namespace is the file gco.xsd.&#xA;Geographic COmmon (GCO) extensible markup language is a component of the XML Schema Implementation of Geographic&#xA;Information Metadata documented in ISO/TS 19139:2007. GCO includes all the definitions of http://www.isotc211.org/2005/gco namespace. The root document of this namespace is the file gco.xsd. This basicTypes.xsd schema implements concepts from the &quot;basic types&quot; package of ISO/TS 19103.&#xA;Geographic COmmon (GCO) extensible markup language is a component of the XML Schema Implementation of Geographic&#xA;Information Metadata documented in ISO/TS 19139:2007. GCO includes all the definitions of http://www.isotc211.org/2005/gco namespace. The root document of this namespace is the file gco.xsd. This gcoBase.xsd schema provides:&#xA;&#x9;&#x9;1.  tools to handle specific objects like &quot;code lists&quot; and &quot;record&quot;;&#xA;&#x9;&#x9;2. Some XML types representing that do not follow the general encoding rules.&#xA;This schema document provides attribute declarations and&#xA;attribute group, complex type and simple type definitions which can be used in&#xA;the construction of user schemas to define the structure of particular linking&#xA;constructs, e.g.&#xA;&#xA;&lt;xs:schema xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot;&#xA;           xmlns:xl=&quot;http://www.w3.org/1999/xlink&quot;>&#xA;&#xA; &lt;xs:import namespace=&quot;http://www.w3.org/1999/xlink&quot;&#xA;            location=&quot;http://www.w3.org/1999/xlink.xsd&quot;>&#xA;&#xA; &lt;xs:element name=&quot;mySimple&quot;>&#xA;  &lt;xs:complexType>&#xA;   ...&#xA;   &lt;xs:attributeGroup ref=&quot;xl:simpleAttrs&quot;/>&#xA;   ...&#xA;  &lt;/xs:complexType>&#xA; &lt;/xs:element>&#xA; ...&#xA;&lt;/xs:schema>&#xA;&#xA;   &lt;div xmlns=&quot;http://www.w3.org/1999/xhtml&quot;>&#xA;    &lt;h1>About the XML namespace&lt;/h1>&#xA;&#xA;    &lt;div class=&quot;bodytext&quot;>&#xA;     &lt;p>&#xA;      This schema document describes the XML namespace, in a form&#xA;      suitable for import by other schema documents.&#xA;     &lt;/p>&#xA;     &lt;p>&#xA;      See &lt;a href=&quot;http://www.w3.org/XML/1998/namespace.html&quot;>&#xA;      http://www.w3.org/XML/1998/namespace.html&lt;/a> and&#xA;      &lt;a href=&quot;http://www.w3.org/TR/REC-xml&quot;>&#xA;      http://www.w3.org/TR/REC-xml&lt;/a> for information&#xA;      about this namespace.&#xA;     &lt;/p>&#xA;     &lt;p>&#xA;      Note that local names in this namespace are intended to be&#xA;      defined only by the World Wide Web Consortium or its subgroups.&#xA;      The names currently defined in this namespace are listed below.&#xA;      They should not be used with conflicting semantics by any Working&#xA;      Group, specification, or document instance.&#xA;     &lt;/p>&#xA;     &lt;p>&#xA;      See further below in this document for more information about &lt;a href=&quot;#usage&quot;>how to refer to this schema document from your own&#xA;      XSD schema documents&lt;/a> and about &lt;a href=&quot;#nsversioning&quot;>the&#xA;      namespace-versioning policy governing this schema document&lt;/a>.&#xA;     &lt;/p>&#xA;    &lt;/div>&#xA;   &lt;/div>&#xA;&#xA;&#xA;   &lt;div xmlns=&quot;http://www.w3.org/1999/xhtml&quot;>&#xA;&#xA;    &lt;h3>Father (in any context at all)&lt;/h3>&#xA;&#xA;    &lt;div class=&quot;bodytext&quot;>&#xA;     &lt;p>&#xA;      denotes Jon Bosak, the chair of&#xA;      the original XML Working Group.  This name is reserved by&#xA;      the following decision of the W3C XML Plenary and&#xA;      XML Coordination groups:&#xA;     &lt;/p>&#xA;     &lt;blockquote>&#xA;       &lt;p>&#xA;&#x9;In appreciation for his vision, leadership and&#xA;&#x9;dedication the W3C XML Plenary on this 10th day of&#xA;&#x9;February, 2000, reserves for Jon Bosak in perpetuity&#xA;&#x9;the XML name &quot;xml:Father&quot;.&#xA;       &lt;/p>&#xA;     &lt;/blockquote>&#xA;    &lt;/div>&#xA;   &lt;/div>&#xA;&#xA;&#xA;   &lt;div id=&quot;usage&quot; xml:id=&quot;usage&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;>&#xA;    &lt;h2>&#xA;      &lt;a name=&quot;usage&quot;>About this schema document&lt;/a>&#xA;    &lt;/h2>&#xA;&#xA;    &lt;div class=&quot;bodytext&quot;>&#xA;     &lt;p>&#xA;      This schema defines attributes and an attribute group suitable&#xA;      for use by schemas wishing to allow &lt;code>xml:base&lt;/code>,&#xA;      &lt;code>xml:lang&lt;/code>, &lt;code>xml:space&lt;/code> or&#xA;      &lt;code>xml:id&lt;/code> attributes on elements they define.&#xA;     &lt;/p>&#xA;     &lt;p>&#xA;      To enable this, such a schema must import this schema for&#xA;      the XML namespace, e.g. as follows:&#xA;     &lt;/p>&#xA;     &lt;pre>&#xA;          &amp;lt;schema . . .&amp;gt;&#xA;           . . .&#xA;           &amp;lt;import namespace=&quot;http://www.w3.org/XML/1998/namespace&quot;&#xA;                      schemaLocation=&quot;http://www.w3.org/2001/xml.xsd&quot;/&amp;gt;&#xA;     &lt;/pre>&#xA;     &lt;p>&#xA;      or&#xA;     &lt;/p>&#xA;     &lt;pre>&#xA;           &amp;lt;import namespace=&quot;http://www.w3.org/XML/1998/namespace&quot;&#xA;                      schemaLocation=&quot;http://www.w3.org/2009/01/xml.xsd&quot;/&amp;gt;&#xA;     &lt;/pre>&#xA;     &lt;p>&#xA;      Subsequently, qualified reference to any of the attributes or the&#xA;      group defined below will have the desired effect, e.g.&#xA;     &lt;/p>&#xA;     &lt;pre>&#xA;          &amp;lt;type . . .&amp;gt;&#xA;           . . .&#xA;           &amp;lt;attributeGroup ref=&quot;xml:specialAttrs&quot;/&amp;gt;&#xA;     &lt;/pre>&#xA;     &lt;p>&#xA;      will define a type which will schema-validate an instance element&#xA;      with any of those attributes.&#xA;     &lt;/p>&#xA;    &lt;/div>&#xA;   &lt;/div>&#xA;&#xA;&#xA;   &lt;div id=&quot;nsversioning&quot; xml:id=&quot;nsversioning&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;>&#xA;    &lt;h2>&#xA;      &lt;a name=&quot;nsversioning&quot;>Versioning policy for this schema document&lt;/a>&#xA;    &lt;/h2>&#xA;    &lt;div class=&quot;bodytext&quot;>&#xA;     &lt;p>&#xA;      In keeping with the XML Schema WG's standard versioning&#xA;      policy, this schema document will persist at&#xA;      &lt;a href=&quot;http://www.w3.org/2009/01/xml.xsd&quot;>&#xA;       http://www.w3.org/2009/01/xml.xsd&lt;/a>.&#xA;     &lt;/p>&#xA;     &lt;p>&#xA;      At the date of issue it can also be found at&#xA;      &lt;a href=&quot;http://www.w3.org/2001/xml.xsd&quot;>&#xA;       http://www.w3.org/2001/xml.xsd&lt;/a>.&#xA;     &lt;/p>&#xA;     &lt;p>&#xA;      The schema document at that URI may however change in the future,&#xA;      in order to remain compatible with the latest version of XML&#xA;      Schema itself, or with the XML namespace itself.  In other words,&#xA;      if the XML Schema or XML namespaces change, the version of this&#xA;      document at &lt;a href=&quot;http://www.w3.org/2001/xml.xsd&quot;>&#xA;       http://www.w3.org/2001/xml.xsd&#xA;      &lt;/a>&#xA;      will change accordingly; the version at&#xA;      &lt;a href=&quot;http://www.w3.org/2009/01/xml.xsd&quot;>&#xA;       http://www.w3.org/2009/01/xml.xsd&#xA;      &lt;/a>&#xA;      will not change.&#xA;     &lt;/p>&#xA;     &lt;p>&#xA;      Previous dated (and unchanging) versions of this schema&#xA;      document are at:&#xA;     &lt;/p>&#xA;     &lt;ul>&#xA;      &lt;li>&#xA;          &lt;a href=&quot;http://www.w3.org/2009/01/xml.xsd&quot;>&#xA;&#x9;http://www.w3.org/2009/01/xml.xsd&lt;/a>&#xA;        &lt;/li>&#xA;      &lt;li>&#xA;          &lt;a href=&quot;http://www.w3.org/2007/08/xml.xsd&quot;>&#xA;&#x9;http://www.w3.org/2007/08/xml.xsd&lt;/a>&#xA;        &lt;/li>&#xA;      &lt;li>&#xA;          &lt;a href=&quot;http://www.w3.org/2004/10/xml.xsd&quot;>&#xA;&#x9;http://www.w3.org/2004/10/xml.xsd&lt;/a>&#xA;        &lt;/li>&#xA;      &lt;li>&#xA;          &lt;a href=&quot;http://www.w3.org/2001/03/xml.xsd&quot;>&#xA;&#x9;http://www.w3.org/2001/03/xml.xsd&lt;/a>&#xA;        &lt;/li>&#xA;     &lt;/ul>&#xA;    &lt;/div>&#xA;   &lt;/div>&#xA;&#xA;Geographic MetaData (GMD) extensible markup language is a component of the XML Schema Implementation of Geographic Information Metadata documented in ISO/TS 19139:2007. GMD includes all the definitions of http://www.isotc211.org/2005/gmd namespace. The root document of this namespace is the file gmd.xsd. This portrayalCatalogue.xsd schema implements the UML conceptual schema defined in A.2.6 of ISO 19115:2003. It contains the implementation of the following classes: MD_GridSpatialRepresentation, MD_VectorSpatialRepresentation, MD_SpatialRepresentation, MD_Georeferenceable, MD_Dimension, MD_Georectified, MD_GeometricObjects, MD_TopologyLevelCode, MD_GeometricObjectTypeCode, MD_CellGeometryCode, MD_DimensionNameTypeCode, MD_PixelOrientationCode.&#xA;Geographic MetaData (GMD) extensible markup language is a component of the XML Schema Implementation of Geographic Information Metadata documented in ISO/TS 19139:2007. GMD includes all the definitions of http://www.isotc211.org/2005/gmd namespace. The root document of this namespace is the file gmd.xsd. This metadataExtension.xsd schema implements the UML conceptual schema defined in A.2.11 of ISO 19115:2003. It contains the implementation of the following classes: MD_ExtendedElementInformation, MD_MetadataExtensionInformation, MD_ObligationCode, MD_DatatypeCode.&#xA;Geographic MetaData (GMD) extensible markup language is a component of the XML Schema Implementation of Geographic Information Metadata documented in ISO/TS 19139:2007. GMD includes all the definitions of http://www.isotc211.org/2005/gmd namespace. The root document of this namespace is the file gmd.xsd. This content.xsd schema implements the UML conceptual schema defined in ISO 19115:2003, A.2.8. It contains the implementation of the following classes: MD_FeatureCatalogueDescription, MD_CoverageDescription,&#xA;MD_ImageDescription, MD_ContentInformation, MD_RangeDimension, MD_Band, MD_CoverageContentTypeCode, MD_ImagingConditionCode.&#xA;Geographic MetaData (GMD) extensible markup language is a component of the XML Schema Implementation of Geographic Information Metadata documented in ISO/TS 19139:2007. GMD includes all the definitions of http://www.isotc211.org/2005/gmd namespace. The root document of this namespace is the file gmd.xsd. This applicationSchema.xsd schema implements the UML conceptual schema defined in A.2.12 of ISO 19115:2003. It contains the implementation of the class MD_ApplicationSchemaInformation.&#xA;Geographic MetaData (GMD) extensible markup language is a component of the XML Schema Implementation of Geographic Information Metadata documented in ISO/TS 19139:2007. GMD includes all the definitions of http://www.isotc211.org/2005/gmd namespace. The root document of this namespace is the file gmd.xsd. This portrayalCatalogue.xsd schema implements the UML conceptual schema defined in A.2.9 of ISO 19115:2003. It contains the implementation of the class MD_PortrayalCatalogueReference.&#xA;Geographic MetaData (GMD) extensible markup language is a component of the XML Schema Implementation of Geographic Information Metadata documented in ISO/TS 19139:2007. GMD includes all the definitions of http://www.isotc211.org/2005/gmd namespace. The root document of this namespace is the file gmd.xsd. This dataQuality.xsd schema implements the UML conceptual schema defined in A.2.4 of ISO 19115:2003. It contains the implementation of the following classes: LI_ProcessStep, LI_Source, LI_Lineage,&#xA;DQ_ConformanceResult, DQ_QuantitativeResult, DQ_Result, DQ_TemporalValidity, DQ_AccuracyOfATimeMeasurement, DQ_QuantitativeAttributeAccuracy, DQ_NonQuantitativeAttributeAccuracy, DQ_ThematicClassificationCorrectness, DQ_RelativeInternalPositionalAccuracy, DQ_GriddedDataPositionalAccuracy, DQ_AbsoluteExternalPositionalAccuracy, DQ_TopologicalConsistency, DQ_FormatConsistency, DQ_DomainConsistency, DQ_ConceptualConsistency, DQ_CompletenessOmission, DQ_CompletenessCommission, DQ_TemporalAccuracy, DQ_ThematicAccuracy, DQ_PositionalAccuracy, DQ_LogicalConsistency, DQ_Completeness, DQ_Element, DQ_DataQuality.&#xA;Geographic MetaData (GMD) extensible markup language is a component of the XML Schema Implementation of Geographic Information Metadata documented in ISO/TS 19139:2007. GMD includes all the definitions of http://www.isotc211.org/2005/gmd namespace. The root document of this namespace is the file gmd.xsd. This freeText.xsd schema implements cultural and linguistic adaptability extensions defined in 7.3 of ISO/TS 19139:2007. This extension essentially formalizes the free text concept described in Annex J of ISO 19115:2003. For this reason, and in order to simplify the organization of overall geographic metadata XML schema, this schema has been included as part of the gmd namespace instead of the gmx namespace.&#xA;Geographic MetaData (GMD) extensible markup language is a component of the XML Schema Implementation of Geographic Information Metadata documented in ISO/TS 19139:2007. GMD includes all the definitions of http://www.isotc211.org/2005/gmd namespace. The root document of this namespace is the file gmd.xsd. This identification.xsd schema implements the UML conceptual schema defined in A.2.2 of ISO 19115:2003. It contains the implementation of the following classes: MD_Identification, MD_BrowseGraphic, MD_DataIdentification, MD_ServiceIdentification, MD_RepresentativeFraction, MD_Usage, MD_Keywords, DS_Association, MD_AggregateInformation, MD_CharacterSetCode, MD_SpatialRepresentationTypeCode, MD_TopicCategoryCode, MD_ProgressCode, MD_KeywordTypeCode, DS_AssociationTypeCode, DS_InitiativeTypeCode, MD_ResolutionType.&#xA;Geographic MetaData (GMD) extensible markup language is a component of the XML Schema Implementation of Geographic Information Metadata documented in ISO/TS 19139:2007. GMD includes all the definitions of http://www.isotc211.org/2005/gmd namespace. The root document of this namespace is the file gmd.xsd. This constraints.xsd schema implements the UML conceptual schema defined in A.2.3 of ISO 19115:2003. It contains the implementation of the following classes: MD_Constraints, MD_LegalConstraints, MD_SecurityConstraints, MD_ClassificationCode, MD_RestrictionCode.&#xA;Geographic MetaData (GMD) extensible markup language is a component of the XML Schema Implementation of Geographic Information Metadata documented in ISO/TS 19139:2007. GMD includes all the definitions of http://www.isotc211.org/2005/gmd namespace. The root document of this namespace is the file gmd.xsd. This distribution.xsd schema implements the UML conceptual schema defined in A.2.10 of ISO 19115:2003. It contains the implementation of the following classes: MD_Medium, MD_DigitalTransferOptions, MD_StandardOrderProcess, MD_Distributor, MD_Distribution, MD_Format, MD_MediumFormatCode, MD_MediumNameCode.&#xA;Geographic MetaData (GMD) extensible markup language is a component of the XML Schema Implementation of Geographic Information Metadata documented in ISO/TS 19139:2007. GMD includes all the definitions of http://www.isotc211.org/2005/gmd namespace. The root document of this namespace is the file gmd.xsd. This maintenance.xsd schema implements the UML conceptual schema defined in A.2.5 of ISO 19115:2003. It contains the implementation of the following classes: MD_MaintenanceInformation, MD_MaintenanceFrequencyCode, MD_ScopeCode, MD_ScopeDescription.&#xA;Geographic MetaData (GMD) extensible markup language is a component of the XML Schema Implementation of Geographic Information Metadata documented in ISO/TS 19139:2007. GMD includes all the definitions of http://www.isotc211.org/2005/gmd namespace. The root document of this namespace is the file gmd.xsd. This citation.xsd schema implements the UML conceptual schema defined in A.3.2 of ISO 19115:2003. It contains the implementation of the following classes: CI_ResponsibleParty, CI_Citation, CI_Address, CI_OnlineResource, CI_Contact, CI_Telephone, URL, CI_Date, CI_Series, CI_RoleCode, CI_PresentationFormCode, CI_OnLineFunctionCode, CI_DateTypeCode.&#xA;Geographic MetaData (GMD) extensible markup language is a component of the XML Schema Implementation of Geographic Information Metadata documented in ISO/TS 19139:2007. GMD includes all the definitions of http://www.isotc211.org/2005/gmd namespace. The root document of this namespace is the file gmd.xsd. This referenceSystem.xsd schema implements the UML conceptual schema defined in A.2.7 of ISO 19115:2003 and ISO 19115:2003/Cor. 1:2006. It contains the implementation of the following classes: RS_Identifier, MD_ReferenceSystem, MD_Identifier and RS_Reference System.&#xA;Geographic Temporal Schema (GTS) extensible markup language is a component of the XML Schema Implementation of Geographic Information Metadata documented in ISO/TS 19139:2007. GTS includes all the definitions of http://www.isotc211.org/2005/gts namespace. The root document of this namespace is the file gts.xsd.&#xA;Geographic Temporal Schema (GTS) extensible markup language is a component of the XML Schema Implementation of Geographic Information Metadata documented in ISO/TS 19139:2007. GTS includes all the definitions of http://www.isotc211.org/2005/gts namespace. The root document of this namespace is the file gts.xsd. The temporalObjects.xsd schema contains the XML implementation of TM_Object, TM_Primitive and TM_PeriodDuration from ISO 19108. The encoding of these classes is mapped to ISO 19136 temporal types and W3C built-in types.&#xA;Geographic Spatial Schema (GSS) extensible markup language is a component of the XML Schema Implementation of Geographic Information Metadata documented in ISO/TS 19139:2007. GSS includes all the definitions of http://www.isotc211.org/2005/gss namespace. The root document of this namespace is the file gss.xsd.&#xA;Geographic Spatial Schema (GSS) extensible markup language is a component of the XML Schema Implementation of Geographic Information Metadata documented in ISO/TS 19139:2007. GSS includes all the definitions of http://www.isotc211.org/2005/gss namespace. The root document of this namespace is the file gss.xsd. This geometry.xsd schema contains the implementation of GM_Object and GM_Point. The encoding of these classes is mapped to ISO 19136 geometric types.&#xA;Geographic MetaData (GMD) extensible markup language is a component of the XML Schema Implementation of Geographic Information Metadata documented in ISO/TS 19139:2007. GMD includes all the definitions of http://www.isotc211.org/2005/gmd namespace. The root document of this namespace is the file gmd.xsd. This extent.xsd schema implements the UML conceptual schema defined in A.3.1 of ISO 19115:2003 and the associated corrigendum. It contains the implementation of the following classes: EX_TemporalExtent, EX_VerticalExtent, EX_BoundingPolygon, EX_Extent, EX_GeographicExtent, EX_GeographicBoundingBox, EX_SpatialTemporalExtent, EX_GeographicDescription.&#xA;Geographic Spatial Referencing (GSR) extensible markup language is a component of the XML Schema Implementation of Geographic Information Metadata documented in ISO/TS 19139:2007. GSR includes all the definitions of http://www.isotc211.org/2005/gsr namespace. The root document of this namespace is the file gsr.xsd.&#xA;Geographic Spatial Referencing (GSR) extensible markup language is a component of the XML Schema Implementation of Geographic Information Metadata documented in ISO/TS 19139:2007. GSR includes all the definitions of http://www.isotc211.org/2005/gsr namespace. The root document of this namespace is the file gsr.xsd. This spatialReferencing.xsd schema contains the implementation of SC_CRS. The encoding of this class is mapped to an ISO 19136 XML type.&#xA;See ISO/DIS 19136 20.2.&#xA;An implicit description of geometry is one in which the items of the geometry do not explicitly appear in the encoding.  Instead, a compact notation records a set of parameters, and a set of objects may be generated using a rule with these parameters.  This Clause provides grid geometries that are used in the description of gridded coverages and other applications.&#xA;In GML two grid structures are defined, namely gml:Grid and gml:RectifiedGrid.&#xA;&#xA;GML is an OGC Standard.&#xA;Copyright (c) 2007,2010 Open Geospatial Consortium.&#xA;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;See ISO/DIS 19136 12.3.&#xA;Geometric aggregates (i.e. instances of a subtype of gml:AbstractGeometricAggregateType) are arbitrary aggregations of geometry elements. They are not assumed to have any additional internal structure and are used to &quot;collect&quot; pieces of geometry of a specified type. Application schemas may use aggregates for features that use multiple geometric objects in their representations.&#xA;&#xA;GML is an OGC Standard.&#xA;Copyright (c) 2007,2010 Open Geospatial Consortium.&#xA;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;See ISO/DIS 19136 Clause 11.&#xA;Beside the &quot;simple&quot; geometric primitives specified in the previous Clause, this Clause specifies additional primitives to describe real world situations which require a more expressive geometry model.&#xA;&#xA;GML is an OGC Standard.&#xA;Copyright (c) 2007,2010 Open Geospatial Consortium.&#xA;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;See ISO/DIS 19136 12.2.&#xA;Geometric complexes (i.e. instances of gml:GeometricComplexType) are closed collections of geometric primitives, i.e. they will contain their boundaries.&#xA;A geometric complex (gml:GeometricComplex) is defined by ISO 19107:2003, 6.6.1 as &quot;a set of primitive geometric objects (in a common coordinate system) whose interiors are disjoint. Further, if a primitive is in a geometric complex, then there exists a set of primitives in that complex whose point-wise union is the boundary of this first primitive.&quot;&#xA;A geometric composite (gml:CompositeCurve, gml:CompositeSurface and gml:CompositeSolid) represents a geometric complex with an underlying core geometry that is isomorphic to a primitive, i.e. it can be viewed as a primitive and as a complex. See ISO 19107:2003, 6.1 and 6.6.3 for more details on the nature of composite geometries.&#xA;Geometric complexes and composites are intended to be used in application schemas where the sharing of geometry is important.&#xA;&#xA;GML is an OGC Standard.&#xA;Copyright (c) 2007,2010 Open Geospatial Consortium.&#xA;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;See ISO/DIS 19136 8.2.&#xA;W3C XML Schema provides a set of built-in &quot;simple&quot; types which define methods for representing values as literals without internal markup.  These are described in W3C XML Schema Part 2:2001.  Because GML is an XML encoding in which instances are described using XML Schema, these simple types shall be used as far as possible and practical for the representation of data types.  W3C XML Schema also provides methods for defining&#xA;-&#x9;new simple types by restriction and combination of the built-in types, and&#xA;-&#x9;complex types, with simple content, but which also have XML attributes.&#xA;In many places where a suitable built-in simple type is not available, simple content types derived using the XML Schema mechanisms are used for the representation of data types in GML.&#xA;A set of these simple content types that are required by several GML components are defined in the basicTypes schema, as well as some elements based on them. These are primarily based around components needed to record amounts, counts, flags and terms, together with support for exceptions or null values.&#xA;&#xA;GML is an OGC Standard.&#xA;Copyright (c) 2007,2010 Open Geospatial Consortium.&#xA;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;See ISO/DIS 19136 Clause 10.&#xA;&#xA;&#x9;&#x9;&#x9;GML is an OGC Standard.&#xA;&#x9;&#x9;&#x9;Copyright (c) 2007,2010 Open Geospatial Consortium.&#xA;&#x9;&#x9;&#x9;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;All-components schema for the SWE Common Data Model namespace. See Conformance Class urn:ogc:spec:SWECommonDataModel:2.0:XXX of the SWE Common Data Model 2.0 specification&#xA;&#xA;        SWE Common is an OGC Standard.&#xA;        Copyright (c) 2010 Open Geospatial Consortium.&#xA;        To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;SWE Common Data Model schema for record data components. See requirements class http://www.opengis.net/spec/SWE/2.0/req/xsd-record-components/&#xA;&#xA;        SWE Common is an OGC Standard.&#xA;        Copyright (c) 2010 Open Geospatial Consortium.&#xA;        To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;SWE Common Data Model schema for data arrays and data stream descriptors. See requirements class http://www.opengis.net/spec/SWE/2.0/req/xsd-block-components/&#xA;&#xA;        SWE Common is an OGC Standard.&#xA;        Copyright (c) 2010 Open Geospatial Consortium.&#xA;        To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;SWE Common Data Model schema for specifying parameters of advanced encoding methods (Raw Binary, Base64 Binary, Compressed Binary). See requirements class http://www.opengis.net/spec/SWE/2.0/req/xsd-advanced-encodings/&#xA;&#xA;        SWE Common is an OGC Standard.&#xA;        Copyright (c) 2010 Open Geospatial Consortium.&#xA;        To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;SWE Common Data Model schema for choice data components (i.e. disjoint unions). See requirements class http://www.opengis.net/spec/SWE/2.0/req/xsd-choice-components/&#xA;&#xA;        SWE Common is an OGC Standard.&#xA;        Copyright (c) 2010 Open Geospatial Consortium.&#xA;        To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;SWE Common Data Model schema for simple data components (i.e. without descendants). See requirements class http://www.opengis.net/spec/SWE/2.0/req/xsd-simple-components/&#xA;&#xA;        SWE Common is an OGC Standard.&#xA;        Copyright (c) 2010 Open Geospatial Consortium.&#xA;        To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;SWE Common Data Model schema for specifying parameters of simple encoding methods (Text, XML). See requirements class http://www.opengis.net/spec/SWE/2.0/req/xsd-simple-encodings/&#xA;&#xA;        SWE Common is an OGC Standard.&#xA;        Copyright (c) 2010 Open Geospatial Consortium.&#xA;        To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;Schema of simple basic types used in various places in the SWE Common Data Model.&#xA;&#xA;&#x9;&#x9;SWE Common is an OGC Standard.&#xA;&#x9;&#x9;Copyright (c) 2010 Open Geospatial Consortium.&#xA;&#x9;&#x9;To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;This XML Schema Document includes and imports, directly or&#xA;      indirectly, all the XML Schemas defined by the OWS Common Implemetation&#xA;      Specification.&#xA;&#xA;      OWS is an OGC Standard.&#xA;      Copyright (c) 2009 Open Geospatial Consortium.&#xA;      To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;This XML Schema Document encodes the GetResourceByID&#xA;    operation request message. This typical operation is specified as a base&#xA;    for profiling in specific OWS specifications. For information on the&#xA;    allowed changes and limitations in such profiling, see Subclause 9.4.1 of&#xA;    the OWS Common specification.&#xA;&#xA;    OWS is an OGC Standard.&#xA;    Copyright (c) 2009 Open Geospatial Consortium.&#xA;    To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;This XML Schema Document encodes the Exception Report&#xA;    response to all OWS operations.&#xA;&#xA;    OWS is an OGC Standard.&#xA;    Copyright (c) 2009 Open Geospatial Consortium.&#xA;    To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;This XML Schema Document encodes the allowed values (or&#xA;    domain) of a quantity, often for an input or output parameter to an OWS.&#xA;    Such a parameter is sometimes called a variable, quantity, literal, or&#xA;    typed literal. Such a parameter can use one of many data types, including&#xA;    double, integer, boolean, string, or URI. The allowed values can also be&#xA;    encoded for a quantity that is not explicit or not transferred, but is&#xA;    constrained by a server implementation.&#xA;&#xA;    OWS is an OGC Standard.&#xA;    Copyright (c) 2009 Open Geospatial Consortium.&#xA;    To obtain additional rights of use, visit http://www.opengeospatial.org/legal/&#xA;&#xA;This XML Schema Document encodes the typical Contents&#xA;    section of an OWS service metadata (Capabilities) document. This Schema&#xA;    can be built upon to define the Contents section for a specific OWS. If&#xA;    the ContentsBaseType in this XML Schema cannot be restricted and extended&#xA;    to define the Contents section for a specific OWS, all other relevant&#xA;    parts defined in owsContents.xsd shall be used by the &quot;ContentsType&quot; in&#xA;    the wxsContents.xsd prepared for the specific OWS.&#xA;&#xA;    OWS is an OGC Standard.&#xA;    Copyright (c) 2009 Open Geospatial Consortium.&#xA;    To obtain additional rights of use, visit http://www.opengeospatial.org/legal/&#xA;&#xA;This XML Schema Document specifies types and elements for&#xA;    input and output of operation data, allowing including multiple data items&#xA;    with each data item either included or referenced. The contents of each&#xA;    type and element specified here can be restricted and/or extended for each&#xA;    use in a specific OWS specification.&#xA;&#xA;    OWS is an OGC Standard.&#xA;    Copyright (c) 2009 Open Geospatial Consortium.&#xA;    To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;This XML Schema Document encodes a new AdditionalParameters&#xA;    element that contains one or more AdditionalParameter elements, which each&#xA;    contain a specific parameter name and one or more values of that parameter.&#xA;    This AdditionalParameters element is substitutable for ows:Metadata,&#xA;    anywhere that element is allowed. The document also encodes a new nilValue&#xA;    element of a newly defined NilValue type that allows the specification of&#xA;    a nilReason attribute.&#xA;&#xA;   OWS is an OGC Standard.&#xA;   Copyright (c) 2009 Open Geospatial Consortium.&#xA;   To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;This XML Schema Document encodes various parameters and&#xA;    parameter types that can be used in OWS operation requests and responses.&#xA;&#xA;    OWS is an OGC Standard.&#xA;    Copyright (c) 2009 Open Geospatial Consortium.&#xA;    To obtain additional rights of use, visit http://www.opengeospatial.org/legal/&#xA;&#xA;This XML Schema Document encodes the parts of ISO 19115 used&#xA;    by the common &quot;ServiceIdentification&quot; and &quot;ServiceProvider&quot; sections of the&#xA;    GetCapabilities operation response, known as the service metadata XML&#xA;    document. The parts encoded here are the MD_Keywords, CI_ResponsibleParty,&#xA;    and related classes. The UML package prefixes were omitted from XML names,&#xA;    and the XML element names were all capitalized, for consistency with other&#xA;    OWS Schemas. This document also provides a simple coding of text in&#xA;    multiple languages, simplified from Annex J of ISO 19115.&#xA;&#xA;    OWS is an OGC Standard.&#xA;    Copyright (c) 2009 Open Geospatial Consortium.&#xA;    To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;This XML Schema Document specifies types and elements for&#xA;    document or resource references and for package manifests that contain&#xA;    multiple references. The contents of each type and element specified here&#xA;    can be restricted and/or extended for each use in a specific OWS&#xA;    specification.&#xA;&#xA;    OWS is an OGC Standard.&#xA;    Copyright (c) 2009 Open Geospatial Consortium.&#xA;    To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;This XML Schema Document encodes the parts of the&#xA;    MD_DataIdentification class of ISO 19115 (OGC Abstract Specification Topic&#xA;    11) which are expected to be used for most datasets. This Schema also&#xA;    encodes the parts of this class that are expected to be useful for other&#xA;    metadata. Both may be used within the Contents section of OWS service&#xA;    metadata (Capabilities) documents.&#xA;&#xA;    OWS is an OGC Standard.&#xA;    Copyright (c) 2009 Open Geospatial Consortium.&#xA;    To obtain additional rights of use, visit http://www.opengeospatial.org/legal/&#xA;&#xA;This XML Schema Document defines the GetCapabilities&#xA;    operation request and response XML elements and types, which are common to&#xA;    all OWSs. This XML Schema shall be edited by each OWS, for example, to&#xA;    specify a specific value for the &quot;service&quot; attribute.&#xA;&#xA;    OWS is an OGC Standard.&#xA;    Copyright (c) 2009 Open Geospatial Consortium.&#xA;    To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;This XML Schema Document encodes the common&#xA;    &quot;ServiceIdentification&quot; section of the GetCapabilities operation response,&#xA;    known as the Capabilities XML document. This section encodes the&#xA;    SV_ServiceIdentification class of ISO 19119 (OGC Abstract Specification&#xA;    Topic 12).&#xA;&#xA;    OWS is an OGC Standard.&#xA;    Copyright (c) 2009 Open Geospatial Consortium.&#xA;    To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;This XML Schema Document encodes the common&#xA;    &quot;ServiceProvider&quot; section of the GetCapabilities operation response, known&#xA;    as the Capabilities XML document. This section encodes the&#xA;    SV_ServiceProvider class of ISO 19119 (OGC Abstract Specification Topic 12).&#xA;&#xA;    OWS is an OGC Standard.&#xA;    Copyright (c) 2009 Open Geospatial Consortium.&#xA;    To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .&#xA;&#xA;This XML Schema Document encodes the basic contents of the&#xA;    &quot;OperationsMetadata&quot; section of the GetCapabilities operation response,&#xA;    also known as the Capabilities XML document.&#xA;&#xA;    OWS is an OGC Standard.&#xA;    Copyright (c) 2009 Open Geospatial Consortium.&#xA;    To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ ."/>
+  </eAnnotations>
+  <eClassifiers xsi:type="ecore:EClass" name="CapabilitiesType" eSuperTypes="../net.opengis.ows/ows20.ecore#//CapabilitiesBaseType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="CapabilitiesType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="serviceMetadata" eType="#//ServiceMetadataType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="ServiceMetadata"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Despite its name this element should not be confuse with the OWSServiceMetadata defined in OWS Common."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contents" eType="#//ContentsType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Contents"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="This element redefines the OWS Common [OGC 06-121r9] Contents section with a CoverageSummary, in accordance with the rules for modification laid down there. In addition it allows WCS extensions or application profiles to extend its content."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ContentsType" eSuperTypes="../net.opengis.ows/ows20.ecore#//ContentsBaseType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ContentsType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="coverageSummary" upperBound="-1"
+        eType="#//CoverageSummaryType" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="CoverageSummary"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="A CoverageSummary contains information essential for accessing a coverage served by a WCS. The CoverageId is the identifier used to address a particular coverage. The CoverageSubtype is the name of the root of this coverage when expressed in XML."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="extension" eType="#//ExtensionType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Extension"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Extension element used to hook in additional content e.g. in extensions or application profiles."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CoverageDescriptionsType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="CoverageDescriptionsType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="coverageDescription" upperBound="-1"
+        eType="#//CoverageDescriptionType" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="CoverageDescription"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Description of a coverage available from a WCS server. This description shall include sufficient information to allow all valid GetCoverage operation requests to be prepared by a WCS client."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CoverageDescriptionType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="CoverageDescriptionType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="coverageId" lowerBound="1"
+        eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/XMLType.ecore#//NCName">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="CoverageId"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="This element represents coverage identifiers. It uses the same type as gml:id to allow for identifier values to be used in both contexts."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="coverageFunction" eType="#//Object"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="coverageFunction"/>
+        <details key="namespace" value="http://www.opengis.net/gml/3.2"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The gml:coverageFunction property describes the mapping function from the domain to the range of the coverage.&#xA;The value of the CoverageFunction is one of gml:CoverageMappingRule and gml:GridFunction.&#xA;If the gml:coverageFunction property is omitted for a gridded coverage (including rectified gridded coverages) the gml:startPoint is assumed to be the value of the gml:low property in the gml:Grid geometry, and the gml:sequenceRule is assumed to be linear and the gml:axisOrder property is assumed to be &quot;+1 +2&quot;."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="metadata" upperBound="-1"
+        eType="#//Object" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="metadata"/>
+        <details key="namespace" value="http://www.opengis.net/gmlcov/1.0"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="This is a hook for adding any further information to a coverage, such as domain-specific metadata. Recommended use is to use the XML extension mechanism, such as in a WCS extension or Application Profile, to define the desired metadata structure."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="domainSet" lowerBound="1"
+        eType="#//Object" volatile="true" transient="true" derived="true" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="domainSet"/>
+        <details key="namespace" value="http://www.opengis.net/gml/3.2"/>
+        <details key="group" value="http://www.opengis.net/gml/3.2#domainSet:group"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The gml:domainSet property element describes the spatio-temporal region of interest, within which the coverage is defined. Its content model is given by gml:DomainSetType.&#xA;The value of the domain is thus a choice between a gml:AbstractGeometry and a gml:AbstractTimeObject.  In the instance these abstract elements will normally be substituted by a geometry complex or temporal complex, to represent spatial coverages and time-series, respectively.&#xA;The presence of the gml:AssociationAttributeGroup means that domainSet follows the usual GML property model and may use the xlink:href attribute to point to the domain, as an alternative to describing the domain inline. Ownership semantics may be provided using the gml:OwnershipAttributeGroup."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rangeType" lowerBound="1"
+        eType="#//Object" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="rangeType"/>
+        <details key="namespace" value="http://www.opengis.net/gmlcov/1.0"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The rangeType element describes the structure of a coverage's range values, introduced for coverage definitions used, e.g., by WCS 2.0."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="serviceParameters" lowerBound="1"
+        eType="#//ServiceParametersType" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="ServiceParameters"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="ServiceParameters further define how the corresponding coverage is accessible. CoverageSubtype helps identifying the type of coverage on hand, in particular with respect to the potential size of its domainSet and rangeSet components. Extension elements allow WCS extensions to plug in their particular coverage-specific service information."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CoverageOfferingsType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="CoverageOfferingsType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="serviceMetadata" lowerBound="1"
+        eType="#//ServiceMetadataType" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="ServiceMetadata"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="ServiceMetadata contains information describing the WCS service on hand. Extension elements allow WCS extension standards to define their individual extra service metadata."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="offeredCoverage" upperBound="-1"
+        eType="#//OfferedCoverageType" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="OfferedCoverage"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="An OfferedCoverage is the information set about a specific coverage offered by the WCS service on hand. It consists of a coverage, as defined in the GML Application Schema for Coverages [OGC 09-146r2] and coverage specific service parameters. Like CoverageOfferings, an OfferedCoverage element is never delivered to the client, but defines the response of coverage access requests."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CoverageSubtypeParentType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="CoverageSubtypeParentType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="coverageSubtype" lowerBound="1"
+        eType="#//QName">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="CoverageSubtype"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="CoverageSubtype characterizes the type of a coverage. This element shall contain the name of the XML root element that would be delivered if a GML encoded result were requested from the GetCoverage operation. The content model of the named element shall be described by a schema that is either normatively referenced by the WCS core specification or by a requirement in a WCS extension, the associated conformance class for which has been included in the ows:Profiles of the server's GetCapabilities response.&#xA;This CoverageSubtype is delivered in GetCapabilities and DescribeCoverage to allow clients an estimation of the amount of data to be expected in the domain and range set. For example, a GridCoverage has a small domain set structure, but typically a large range set; a MultiSolidCoverage, on the other hand, tends to have large domain sets and small range sets."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="coverageSubtypeParent"
+        eType="#//CoverageSubtypeParentType" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="CoverageSubtypeParent"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value=""/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CoverageSummaryType" eSuperTypes="../net.opengis.ows/ows20.ecore#//DescriptionType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="CoverageSummaryType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="wGS84BoundingBox" upperBound="-1"
+        eType="ecore:EClass ../net.opengis.ows/ows20.ecore#//WGS84BoundingBoxType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="WGS84BoundingBox"/>
+        <details key="namespace" value="http://www.opengis.net/ows/2.0"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="coverageId" lowerBound="1"
+        eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/XMLType.ecore#//NCName">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="CoverageId"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="This element represents coverage identifiers. It uses the same type as gml:id to allow for identifier values to be used in both contexts."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="coverageSubtype" lowerBound="1"
+        eType="#//QName">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="CoverageSubtype"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="CoverageSubtype characterizes the type of a coverage. This element shall contain the name of the XML root element that would be delivered if a GML encoded result were requested from the GetCoverage operation. The content model of the named element shall be described by a schema that is either normatively referenced by the WCS core specification or by a requirement in a WCS extension, the associated conformance class for which has been included in the ows:Profiles of the server's GetCapabilities response.&#xA;This CoverageSubtype is delivered in GetCapabilities and DescribeCoverage to allow clients an estimation of the amount of data to be expected in the domain and range set. For example, a GridCoverage has a small domain set structure, but typically a large range set; a MultiSolidCoverage, on the other hand, tends to have large domain sets and small range sets."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="coverageSubtypeParent"
+        eType="#//CoverageSubtypeParentType" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="CoverageSubtypeParent"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value=""/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="boundingBoxGroup" unique="false"
+        upperBound="-1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EFeatureMapEntry">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="group"/>
+        <details key="name" value="BoundingBox:group"/>
+        <details key="namespace" value="http://www.opengis.net/ows/2.0"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="boundingBox" upperBound="-1"
+        eType="ecore:EClass ../net.opengis.ows/ows20.ecore#//BoundingBoxType" volatile="true"
+        transient="true" derived="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="BoundingBox"/>
+        <details key="namespace" value="http://www.opengis.net/ows/2.0"/>
+        <details key="group" value="http://www.opengis.net/ows/2.0#BoundingBox:group"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="metadataGroup" unique="false"
+        upperBound="-1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EFeatureMapEntry">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="group"/>
+        <details key="name" value="Metadata:group"/>
+        <details key="namespace" value="http://www.opengis.net/ows/2.0"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="metadata" upperBound="-1"
+        eType="ecore:EClass ../net.opengis.ows/ows20.ecore#//MetadataType" volatile="true"
+        transient="true" derived="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Metadata"/>
+        <details key="namespace" value="http://www.opengis.net/ows/2.0"/>
+        <details key="group" value="http://www.opengis.net/ows/2.0#Metadata:group"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DescribeCoverageType" eSuperTypes="#//RequestBaseType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="DescribeCoverageType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="coverageId" unique="false"
+        lowerBound="1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/XMLType.ecore#//NCName">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="CoverageId"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Unordered list of identifiers of desired coverages. A client can obtain identifiers by a prior GetCapabilities request, or from a third-party source."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DimensionSliceType" eSuperTypes="#//DimensionSubsetType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="DimensionSliceType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="slicePoint" lowerBound="1"
+        eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/XMLType.ecore#//String">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="SlicePoint"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DimensionSubsetType" abstract="true">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="DimensionSubsetType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dimension" lowerBound="1"
+        eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/XMLType.ecore#//NCName">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Dimension"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DimensionTrimType" eSuperTypes="#//DimensionSubsetType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="DimensionTrimType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="trimLow" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/XMLType.ecore#//String">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="TrimLow"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="trimHigh" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/XMLType.ecore#//String">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="TrimHigh"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DocumentRoot">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value=""/>
+      <details key="kind" value="mixed"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="xMLNSPrefixMap" upperBound="-1"
+        eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EStringToStringMapEntry"
+        transient="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="xmlns:prefix"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="xSISchemaLocation" upperBound="-1"
+        eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EStringToStringMapEntry"
+        transient="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="xsi:schemaLocation"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="capabilities" upperBound="-2"
+        eType="#//CapabilitiesType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Capabilities"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="XML encoded WCS GetCapabilities operation response. The Capabilities document provides clients with service metadata about a specific service instance, including metadata about the coverages served. If the server does not implement the updateSequence parameter, the server shall always return the Capabilities document, without the updateSequence parameter. When the server implements the updateSequence parameter and the GetCapabilities operation request included the updateSequence parameter with the current value, the server shall return this element with only the &quot;version&quot; and &quot;updateSequence&quot; attributes. Otherwise, all optional sections shall be included or not depending on the actual value of the Contents parameter in the GetCapabilities operation request."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contents" upperBound="-2"
+        eType="#//ContentsType" volatile="true" transient="true" derived="true" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Contents"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="This element redefines the OWS Common [OGC 06-121r9] Contents section with a CoverageSummary, in accordance with the rules for modification laid down there. In addition it allows WCS extensions or application profiles to extend its content."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="coverageDescription" upperBound="-2"
+        eType="#//CoverageDescriptionType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="CoverageDescription"/>
+        <details key="namespace" value="##targetNamespace"/>
+        <details key="affiliation" value="http://www.opengis.net/gml/3.2#AbstractFeature"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Description of a coverage available from a WCS server. This description shall include sufficient information to allow all valid GetCoverage operation requests to be prepared by a WCS client."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="coverageDescriptions" upperBound="-2"
+        eType="#//CoverageDescriptionsType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="CoverageDescriptions"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Response from a WCS DescribeCoverage operation, containing one or more coverage descriptions."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="coverageId" unique="false"
+        upperBound="-2" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/XMLType.ecore#//NCName"
+        volatile="true" transient="true" derived="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="CoverageId"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="This element represents coverage identifiers. It uses the same type as gml:id to allow for identifier values to be used in both contexts."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="coverageOfferings" upperBound="-2"
+        eType="#//CoverageOfferingsType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="CoverageOfferings"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="CoverageOfferings is the virtual document that a WCS offers. It consists of service metadata and a set of offered coverages. The CoverageOfferings element is never delivered to the client, however, responses of WCS requests are composed of constituents of the CoverageOfferings tree. Hence, CoverageOfferings serves to define responses."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="coverageSubtype" unique="false"
+        eType="#//QName" volatile="true" transient="true" derived="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="CoverageSubtype"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="CoverageSubtype characterizes the type of a coverage. This element shall contain the name of the XML root element that would be delivered if a GML encoded result were requested from the GetCoverage operation. The content model of the named element shall be described by a schema that is either normatively referenced by the WCS core specification or by a requirement in a WCS extension, the associated conformance class for which has been included in the ows:Profiles of the server's GetCapabilities response.&#xA;This CoverageSubtype is delivered in GetCapabilities and DescribeCoverage to allow clients an estimation of the amount of data to be expected in the domain and range set. For example, a GridCoverage has a small domain set structure, but typically a large range set; a MultiSolidCoverage, on the other hand, tends to have large domain sets and small range sets."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="coverageSubtypeParent"
+        upperBound="-2" eType="#//CoverageSubtypeParentType" volatile="true" transient="true"
+        derived="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="CoverageSubtypeParent"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value=""/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="coverageSummary" upperBound="-2"
+        eType="#//CoverageSummaryType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="CoverageSummary"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="A CoverageSummary contains information essential for accessing a coverage served by a WCS. The CoverageId is the identifier used to address a particular coverage. The CoverageSubtype is the name of the root of this coverage when expressed in XML."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="describeCoverage" upperBound="-2"
+        eType="#//DescribeCoverageType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="DescribeCoverage"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Request to a WCS to perform the DescribeCoverage operation. This operation allows a client to retrieve descriptions of one or more coverages. In this XML encoding, no &quot;request&quot; parameter is included, since the element name specifies the specific operation."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dimensionSlice" upperBound="-2"
+        eType="#//DimensionSliceType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="DimensionSlice"/>
+        <details key="namespace" value="##targetNamespace"/>
+        <details key="affiliation" value="DimensionSubset"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Describes the slicing of a coverage's domain axis at a particular point."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dimensionSubset" upperBound="-2"
+        eType="#//DimensionSubsetType" changeable="false" volatile="true" transient="true"
+        derived="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="DimensionSubset"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Definition of the desired subset of the domain of the coverage. This is either a Trim operation, or a Slice operation."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dimensionTrim" upperBound="-2"
+        eType="#//DimensionTrimType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="DimensionTrim"/>
+        <details key="namespace" value="##targetNamespace"/>
+        <details key="affiliation" value="DimensionSubset"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Describes the trimming of a coverage's domain axis, between two values."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="extension" upperBound="-2"
+        eType="#//ExtensionType" volatile="true" transient="true" derived="true" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Extension"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Extension element used to hook in additional content e.g. in extensions or application profiles."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="getCapabilities" upperBound="-2"
+        eType="#//GetCapabilitiesType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="GetCapabilities"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Request to a WCS server to perform the GetCapabilities operation. This operation allows a client to retrieve a Capabilities XML document providing metadata for the specific WCS server. In this XML encoding, no &quot;request&quot; parameter is included, since the element name specifies the specific operation."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="getCoverage" upperBound="-2"
+        eType="#//GetCoverageType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="GetCoverage"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Request to a WCS to perform the GetCoverage operation. This operation allows a client to retrieve a subset of one coverage."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="offeredCoverage" upperBound="-2"
+        eType="#//OfferedCoverageType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="OfferedCoverage"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="An OfferedCoverage is the information set about a specific coverage offered by the WCS service on hand. It consists of a coverage, as defined in the GML Application Schema for Coverages [OGC 09-146r2] and coverage specific service parameters. Like CoverageOfferings, an OfferedCoverage element is never delivered to the client, but defines the response of coverage access requests."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="serviceMetadata" upperBound="-2"
+        eType="#//ServiceMetadataType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="ServiceMetadata"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="ServiceMetadata contains information describing the WCS service on hand. Extension elements allow WCS extension standards to define their individual extra service metadata."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="serviceParameters" upperBound="-2"
+        eType="#//ServiceParametersType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="ServiceParameters"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="ServiceParameters further define how the corresponding coverage is accessible. CoverageSubtype helps identifying the type of coverage on hand, in particular with respect to the potential size of its domainSet and rangeSet components. Extension elements allow WCS extensions to plug in their particular coverage-specific service information."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExtensionType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ExtensionType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="any" unique="false" upperBound="-1"
+        eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EFeatureMapEntry">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="elementWildcard"/>
+        <details key="wildcards" value="##other"/>
+        <details key="name" value=":0"/>
+        <details key="processing" value="lax"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GetCapabilitiesType" eSuperTypes="../net.opengis.ows/ows20.ecore#//GetCapabilitiesType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="GetCapabilitiesType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="service" lowerBound="1"
+        eType="ecore:EDataType ../net.opengis.ows/ows20.ecore#//ServiceType" defaultValueLiteral="WCS"
+        unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="service"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GetCoverageType" eSuperTypes="#//RequestBaseType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="GetCoverageType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="coverageId" lowerBound="1"
+        eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/XMLType.ecore#//NCName">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="CoverageId"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Identifier of the coverage that this GetCoverage operation request shall draw from."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dimensionSubsetGroup" unique="false"
+        upperBound="-1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EFeatureMapEntry">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="group"/>
+        <details key="name" value="DimensionSubset:group"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Definition of the desired subset of the domain of the coverage. This is either a Trim operation, or a Slice operation."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dimensionSubset" upperBound="-1"
+        eType="#//DimensionSubsetType" changeable="false" volatile="true" transient="true"
+        derived="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="DimensionSubset"/>
+        <details key="namespace" value="##targetNamespace"/>
+        <details key="group" value="DimensionSubset:group"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Definition of the desired subset of the domain of the coverage. This is either a Trim operation, or a Slice operation."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="format" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/XMLType.ecore#//AnyURI">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="format"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="MimeType of the format the resulting coverage shall be encoded in. Dafault is the coverage's native format. Type is anyURI because of the type of the element &quot;mimeType&quot; in &quot;gml:FileType&quot;."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mediaType" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/XMLType.ecore#//AnyURI">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="mediaType"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Optional element indicating the MimeType of the response of a GetCoverage request. Only currently allowed valued is &quot;multipart/related&quot;."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OfferedCoverageType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="OfferedCoverageType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="abstractCoverage" lowerBound="1"
+        eType="#//Object" changeable="false" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="AbstractCoverage"/>
+        <details key="namespace" value="http://www.opengis.net/gmlcov/1.0"/>
+        <details key="group" value="http://www.opengis.net/gmlcov/1.0#AbstractCoverage:group"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Like its role model gml:AbstractCoverageType in GML 3.2.1, this element serves as the head of a substitution group which may contain any coverage whose type is derived, however, from gmlcov:AbstractCoverageType (rather than gml:AbstractCoverageType).  It may act as a variable in the definition of content models where it is required to permit any coverage to be valid."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="serviceParameters" lowerBound="1"
+        eType="#//ServiceParametersType" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="ServiceParameters"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="ServiceParameters further define how the corresponding coverage is accessible. CoverageSubtype helps identifying the type of coverage on hand, in particular with respect to the potential size of its domainSet and rangeSet components. Extension elements allow WCS extensions to plug in their particular coverage-specific service information."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RequestBaseType" abstract="true">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="RequestBaseType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="XML encoded WCS operation request base, for all operations except GetCapabilities. In this XML encoding, no &quot;request&quot; parameter is included, since the element name specifies the specific operation. 'Extension' elements allow WCS extension standards to define their individual extra request parameters."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="extension" eType="#//ExtensionType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Extension"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Extension element used to hook in additional content e.g. in extensions or application profiles."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="service" lowerBound="1"
+        eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/XMLType.ecore#//String"
+        defaultValueLiteral="WCS" unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="service"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Service type identifier, where the value is the OWS type abbreviation. For WCS operation requests, the value is &quot;WCS&quot;."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" lowerBound="1"
+        eType="#//VersionStringType_1">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="version"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Specification version for WCS version and operation. See Version parameter Subclause 7.3.1 of OWS Common for more information."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ServiceMetadataType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ServiceMetadataType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="formatSupported" unique="false"
+        lowerBound="1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/XMLType.ecore#//AnyURI">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="formatSupported"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="extension" eType="#//ExtensionType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Extension"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Extension element used to hook in additional content e.g. in extensions or application profiles."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ServiceParametersType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ServiceParametersType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="coverageSubtype" lowerBound="1"
+        eType="#//QName">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="CoverageSubtype"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="CoverageSubtype characterizes the type of a coverage. This element shall contain the name of the XML root element that would be delivered if a GML encoded result were requested from the GetCoverage operation. The content model of the named element shall be described by a schema that is either normatively referenced by the WCS core specification or by a requirement in a WCS extension, the associated conformance class for which has been included in the ows:Profiles of the server's GetCapabilities response.&#xA;This CoverageSubtype is delivered in GetCapabilities and DescribeCoverage to allow clients an estimation of the amount of data to be expected in the domain and range set. For example, a GridCoverage has a small domain set structure, but typically a large range set; a MultiSolidCoverage, on the other hand, tends to have large domain sets and small range sets."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="coverageSubtypeParent"
+        eType="#//CoverageSubtypeParentType" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="CoverageSubtypeParent"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value=""/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="nativeFormat" lowerBound="1"
+        eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/XMLType.ecore#//AnyURI">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="nativeFormat"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="extension" eType="#//ExtensionType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Extension"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Extension element used to hook in additional content e.g. in extensions or application profiles."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Object" instanceClassName="java.lang.Object"
+      abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="VersionStringType" instanceClassName="java.lang.String">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="VersionStringType"/>
+      <details key="baseType" value="http://www.eclipse.org/emf/2003/XMLType#string"/>
+      <details key="pattern" value="2\.0\.\d+"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="VersionStringType_1" instanceClassName="java.lang.String"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="QName" instanceClassName="javax.xml.namespace.QName"/>
+</ecore:EPackage>

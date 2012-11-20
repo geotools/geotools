@@ -82,6 +82,8 @@ public class PointStackerProcess implements VectorProcess {
     public static final String ATTR_GEOM = "geom";
     public static final String ATTR_COUNT = "count";
     public static final String ATTR_COUNT_UNIQUE = "countunique";
+    public static final String ATTR_PROPORTION = "proportion";
+    public static final String ATTR_PROPORTION_UNIQUE = "proportionunique";
     
     //TODO: add ability to pick index point selection strategy
     //TODO: add ability to set attribute name containing value to be aggregated
@@ -100,11 +102,13 @@ public class PointStackerProcess implements VectorProcess {
 
             // process parameters
             @DescribeParameter(name = "cellSize", description = "Grid cell size to aggregate to, in pixels") Integer cellSize,
+            @DescribeParameter(name = "stretch", description = "Add normalized fields where the largest stack is 1.0. Default false.", min=0, max=1) Boolean argStretch,
 
             // output image parameters
             @DescribeParameter(name = "outputBBOX", description = "Bounding box for target image extent") ReferencedEnvelope outputEnv,
             @DescribeParameter(name = "outputWidth", description = "Target image width in pixels") Integer outputWidth,
             @DescribeParameter(name = "outputHeight", description = "Target image height in pixels") Integer outputHeight,
+            
 
             ProgressListener monitor) throws ProcessException, TransformException {
 
@@ -118,6 +122,11 @@ public class PointStackerProcess implements VectorProcess {
         } catch (FactoryException e) {
             throw new ProcessException(e);
         }
+        
+        boolean stretch = false;
+        if(argStretch!=null){
+            stretch = argStretch;
+        }
 
         // TODO: allow output CRS to be different to data CRS 
         // assume same CRS for now...
@@ -126,7 +135,7 @@ public class PointStackerProcess implements VectorProcess {
         Collection<StackedPoint> stackedPts = stackPoints(data, crsTransform, cellSizeSrc,
                 outputEnv.getMinX(), outputEnv.getMinY());
 
-        SimpleFeatureType schema = createType(srcCRS);
+        SimpleFeatureType schema = createType(srcCRS, stretch);
         ListFeatureCollection result = new ListFeatureCollection(schema);
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(schema);
 
@@ -135,6 +144,15 @@ public class PointStackerProcess implements VectorProcess {
         double[] srcPt = new double[2];
         double[] dstPt = new double[2];
 
+        // Find maxima of the point stacks if needed.
+        int maxCount = 0;
+        int maxCountUnique = 0;
+        if(stretch){
+            for (StackedPoint sp : stackedPts) {
+                if(maxCount<sp.getCount()) maxCount = sp.getCount();
+                if(maxCountUnique<sp.getCount()) maxCountUnique = sp.getCountUnique();
+            }
+        }
 
         for (StackedPoint sp : stackedPts) {
             // create feature for stacked point
@@ -150,6 +168,10 @@ public class PointStackerProcess implements VectorProcess {
             fb.add(point);
             fb.add(sp.getCount());
             fb.add(sp.getCountUnique());
+            if(stretch){
+                fb.add(((float)sp.getCount())/maxCount);
+                fb.add(((float)sp.getCountUnique())/maxCountUnique);
+            }
             
             result.add(fb.buildFeature(null));
         }
@@ -257,11 +279,15 @@ public class PointStackerProcess implements VectorProcess {
         griddedPt.y = iy;
     }
 
-    private SimpleFeatureType createType(CoordinateReferenceSystem crs) {
+    private SimpleFeatureType createType(CoordinateReferenceSystem crs, boolean stretch) {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.add(ATTR_GEOM, Point.class, crs);
         tb.add(ATTR_COUNT, Integer.class);
         tb.add(ATTR_COUNT_UNIQUE, Integer.class);
+        if(stretch){
+            tb.add(ATTR_PROPORTION, Float.class);
+            tb.add(ATTR_PROPORTION_UNIQUE, Float.class);
+        }
         tb.setName("stackedPoint");
         SimpleFeatureType sfType = tb.buildFeatureType();
         return sfType;

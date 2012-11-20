@@ -66,6 +66,7 @@ public class PointStackerProcessTest {
 
         PointStackerProcess psp = new PointStackerProcess();
         SimpleFeatureCollection result = psp.execute(fc, 100, // cellSize
+                null, //stretch
                 bounds, // outputBBOX
                 1000, // outputWidth
                 1000, // outputHeight
@@ -105,6 +106,7 @@ public class PointStackerProcessTest {
 
         PointStackerProcess psp = new PointStackerProcess();
         SimpleFeatureCollection result = psp.execute(fc, 100, // cellSize
+                null, // stretch
                 outBounds, // outputBBOX
                 1810, // outputWidth
                 768, // outputHeight

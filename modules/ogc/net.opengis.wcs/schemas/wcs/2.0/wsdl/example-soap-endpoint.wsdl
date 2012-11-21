@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+    targetNamespace="http://www.myservice.com/wcs"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+    <wsdl:documentation xmlns:dc="http://purl.org/dc/elements/1.1/">
+        <dc:date>2010-apr-14</dc:date>
+        <dc:description>
+            This WSDL document specifies, by way of an example, the service-specific
+            properties of a WCS service based on the generic definitions provided
+            with the WCS WSDL specification imported below.
+
+            Copyright (c) 2010 Open Geospatial Consortium.
+            To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.
+        </dc:description>
+    </wsdl:documentation>
+
+    <wsdl:import namespace="http://www.opengis.net/wcs/wsdl" location="./wcs-soap-binding.wsdl"/>
+
+    <!-- ============================================================== -->
+    <!-- sample WCS service, relying on the standard SOAP binding       -->
+    <!-- ============================================================== -->
+    <!-- adapt this below to your particular service:                   -->
+
+    <wsdl:service name="MyFabulousWCS">
+        <wsdl:documentation>
+            A WCS 2.0 service instance which implements the WCS SOAP protocol binding extension.
+        </wsdl:documentation>
+        <wsdl:port name="WcsSoapPort" binding="WcsSoapBinding">
+            <soap:address location="http://www.myservice.com/wcs-soap"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

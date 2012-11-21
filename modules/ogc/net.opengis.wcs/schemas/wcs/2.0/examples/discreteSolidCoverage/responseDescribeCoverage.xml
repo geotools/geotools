@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wcs:CoverageDescriptions
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns='http://www.opengis.net/gml/3.2'
+    xmlns:gml='http://www.opengis.net/gml/3.2'
+    xmlns:gmlcov='http://www.opengis.net/gmlcov/1.0'
+    xmlns:swe='http://www.opengis.net/swe/2.0'
+    xsi:schemaLocation='http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd
+                        http://www.opengis.net/wcs/2.0 http://schemas.opengis.net/wcs/2.0/wcsAll.xsd'
+    xmlns:wcs='http://www.opengis.net/wcs/2.0'>
+    <wcs:CoverageDescription gml:id="CD0005">
+        <gml:boundedBy>
+            <gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/4979" axisLabels="Lat Long h" uomLabels="deg deg m" srsDimension="3">
+                <gml:lowerCorner>0 0 0</gml:lowerCorner>
+                <gml:upperCorner>1 1 1</gml:upperCorner>
+            </gml:Envelope>
+        </gml:boundedBy>
+        <wcs:CoverageId>C0005</wcs:CoverageId>
+        <gml:domainSet>
+            <gml:Solid gml:id="so0001_C0005">
+                <description>This example represents a Tetrahedron</description>
+            </gml:Solid>
+        </gml:domainSet>
+        <gmlcov:rangeType>
+            <swe:DataRecord>
+                <swe:field name="Temperature">
+                    <swe:Quantity definition="http://www.opengis.net/def/property/OGC/0/Temperature">
+                        <swe:description>Temperature</swe:description>
+                        <swe:uom code="Cel"/>
+                        <swe:constraint>
+                            <swe:AllowedValues>
+                                <swe:interval>0 100</swe:interval>
+                            </swe:AllowedValues>
+                        </swe:constraint>
+                    </swe:Quantity>
+                </swe:field>
+            </swe:DataRecord>
+        </gmlcov:rangeType>
+        <wcs:ServiceParameters>
+            <wcs:CoverageSubtype>MultiSolidCoverage</wcs:CoverageSubtype>
+            <wcs:nativeFormat>application/gml+xml</wcs:nativeFormat>
+        </wcs:ServiceParameters>
+    </wcs:CoverageDescription>
+</wcs:CoverageDescriptions>

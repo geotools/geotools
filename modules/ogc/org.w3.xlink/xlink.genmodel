@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<genmodel:GenModel xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.w3.xlink/src"
-    editDirectory="/org.w3.xlink.edit/src" editorDirectory="/org.w3.xlink.editor/src" modelPluginID="org.w3.xlink"
-    modelName="Xlink" importerID="org.eclipse.emf.importer.java" copyrightFields="false"
-    usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore platform:/plugin/org.eclipse.emf.ecore/model/XMLType.genmodel#//type">
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.w3.xlink/src" editDirectory="/org.w3.xlink.edit/src"
+    editorDirectory="/org.w3.xlink.editor/src" modelPluginID="org.w3.xlink" modelName="Xlink"
+    importerID="org.eclipse.emf.importer.java" copyrightFields="false" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore platform:/plugin/org.eclipse.emf.ecore/model/XMLNamespace.genmodel#//namespace">
   <foreignModel>@model</foreignModel>
   <genPackages prefix="Xlink" basePackage="org.w3" disposableProviderFactory="true"
       adapterFactory="false" ecorePackage="xlink.ecore#/">
@@ -21,12 +19,43 @@
       <genEnumLiterals ecoreEnumLiteral="xlink.ecore#//ShowType/other"/>
       <genEnumLiterals ecoreEnumLiteral="xlink.ecore#//ShowType/none"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="xlink.ecore#//TypeType">
+      <genEnumLiterals ecoreEnumLiteral="xlink.ecore#//TypeType/simple"/>
+      <genEnumLiterals ecoreEnumLiteral="xlink.ecore#//TypeType/extended"/>
+      <genEnumLiterals ecoreEnumLiteral="xlink.ecore#//TypeType/title"/>
+      <genEnumLiterals ecoreEnumLiteral="xlink.ecore#//TypeType/resource"/>
+      <genEnumLiterals ecoreEnumLiteral="xlink.ecore#//TypeType/locator"/>
+      <genEnumLiterals ecoreEnumLiteral="xlink.ecore#//TypeType/arc"/>
+    </genEnums>
     <genDataTypes ecoreDataType="xlink.ecore#//ActuateTypeObject"/>
+    <genDataTypes ecoreDataType="xlink.ecore#//ArcroleType"/>
+    <genDataTypes ecoreDataType="xlink.ecore#//FromType"/>
+    <genDataTypes ecoreDataType="xlink.ecore#//HrefType"/>
+    <genDataTypes ecoreDataType="xlink.ecore#//LabelType"/>
+    <genDataTypes ecoreDataType="xlink.ecore#//RoleType"/>
     <genDataTypes ecoreDataType="xlink.ecore#//ShowTypeObject"/>
+    <genDataTypes ecoreDataType="xlink.ecore#//TitleAttrType"/>
+    <genDataTypes ecoreDataType="xlink.ecore#//ToType"/>
+    <genDataTypes ecoreDataType="xlink.ecore#//TypeTypeObject"/>
+    <genClasses ecoreClass="xlink.ecore#//ArcType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute xlink.ecore#//ArcType/titleGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference xlink.ecore#//ArcType/title"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//ArcType/actuate"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//ArcType/arcrole"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//ArcType/from"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//ArcType/show"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//ArcType/title1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//ArcType/to"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//ArcType/type"/>
+    </genClasses>
     <genClasses ecoreClass="xlink.ecore#//DocumentRoot">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//DocumentRoot/mixed"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference xlink.ecore#//DocumentRoot/xMLNSPrefixMap"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference xlink.ecore#//DocumentRoot/xSISchemaLocation"/>
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference xlink.ecore#//DocumentRoot/arc"/>
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference xlink.ecore#//DocumentRoot/locator"/>
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference xlink.ecore#//DocumentRoot/resource"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference xlink.ecore#//DocumentRoot/title"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//DocumentRoot/actuate"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//DocumentRoot/arcrole"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//DocumentRoot/from"/>
@@ -34,8 +63,50 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//DocumentRoot/label"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//DocumentRoot/role"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//DocumentRoot/show"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//DocumentRoot/title"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//DocumentRoot/title1"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//DocumentRoot/to"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//DocumentRoot/type"/>
     </genClasses>
+    <genClasses ecoreClass="xlink.ecore#//Extended">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference xlink.ecore#//Extended/title"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference xlink.ecore#//Extended/resource"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference xlink.ecore#//Extended/locator"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference xlink.ecore#//Extended/arc"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//Extended/role"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//Extended/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//Extended/titleAttribute"/>
+    </genClasses>
+    <genClasses ecoreClass="xlink.ecore#//LocatorType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute xlink.ecore#//LocatorType/titleGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference xlink.ecore#//LocatorType/title"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//LocatorType/href"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//LocatorType/label"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//LocatorType/role"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//LocatorType/title1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//LocatorType/type"/>
+    </genClasses>
+    <genClasses ecoreClass="xlink.ecore#//ResourceType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//ResourceType/label"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//ResourceType/role"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//ResourceType/title"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//ResourceType/type"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference xlink.ecore#//ResourceType/contents"/>
+    </genClasses>
+    <genClasses ecoreClass="xlink.ecore#//Simple">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//Simple/actuate"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//Simple/arcrole"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//Simple/href"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//Simple/role"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//Simple/show"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//Simple/title"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//Simple/type"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference xlink.ecore#//Simple/contents"/>
+    </genClasses>
+    <genClasses ecoreClass="xlink.ecore#//TitleEltType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//TitleEltType/lang"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//TitleEltType/type"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference xlink.ecore#//TitleEltType/contents"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="xlink.ecore#//Object"/>
   </genPackages>
 </genmodel:GenModel>

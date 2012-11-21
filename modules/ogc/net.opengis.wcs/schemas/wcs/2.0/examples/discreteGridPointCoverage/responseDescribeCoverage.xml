@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wcs:CoverageDescriptions  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns:wcs='http://www.opengis.net/wcs/2.0'
+    xmlns='http://www.opengis.net/gml/3.2'
+    xmlns:gml='http://www.opengis.net/gml/3.2'
+    xmlns:gmlcov='http://www.opengis.net/gmlcov/1.0'
+    xmlns:swe='http://www.opengis.net/swe/2.0'
+    xsi:schemaLocation='http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd
+                        http://www.opengis.net/wcs/2.0 http://schemas.opengis.net/wcs/2.0/wcsAll.xsd'>
+    <wcs:CoverageDescription gml:id="CD0001">
+        <gml:boundedBy>
+            <gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/4326" axisLabels="Lat Long" uomLabels="deg deg" srsDimension="2"> 
+                <gml:lowerCorner>1 1</gml:lowerCorner>
+                <gml:upperCorner>5 3</gml:upperCorner>
+            </gml:Envelope>        
+        </gml:boundedBy>
+        <wcs:CoverageId>C0001</wcs:CoverageId>
+        <gml:domainSet>
+            <gml:Grid gml:id="gr0001_C0001" dimension="2">
+                <gml:limits>
+                    <gml:GridEnvelope>
+                        <gml:low>1 1</gml:low>
+                        <gml:high>5 3</gml:high>
+                    </gml:GridEnvelope>
+                </gml:limits>
+                <gml:axisLabels>Lat Long</gml:axisLabels>
+            </gml:Grid>
+        </gml:domainSet>
+        <gmlcov:rangeType>
+            <swe:DataRecord>
+                <swe:field name="singleBand">
+                   <swe:Quantity definition="http://www.opengis.net/def/property/OGC/0/Radiance">
+                       <swe:description>Panchromatic Channel</swe:description>
+                       <swe:uom code="W/cm2"/>
+                       <swe:constraint>
+                           <swe:AllowedValues>
+                               <swe:interval>0 255</swe:interval>
+                               <swe:significantFigures>3</swe:significantFigures>
+                           </swe:AllowedValues>
+                       </swe:constraint>
+                   </swe:Quantity>
+                </swe:field>
+            </swe:DataRecord>
+        </gmlcov:rangeType>
+        <wcs:ServiceParameters>
+            <wcs:CoverageSubtype>GridCoverage</wcs:CoverageSubtype>
+            <wcs:nativeFormat>application/gml+xml</wcs:nativeFormat>
+        </wcs:ServiceParameters>
+    </wcs:CoverageDescription>
+</wcs:CoverageDescriptions>

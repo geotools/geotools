@@ -72,10 +72,36 @@ public class PointStackerProcessTest {
                 1000, // outputHeight
                 monitor);
         
-        checkSchemaCorrect(result.getSchema());
+        checkSchemaCorrect(result.getSchema(), false);
         assertEquals(2, result.size());
-        checkResultPoint(result, new Coordinate(4, 4), 3, 2);
-        checkResultPoint(result, new Coordinate(8, 8), 1, 1);
+        checkResultPoint(result, new Coordinate(4, 4), 3, 2, null, null);
+        checkResultPoint(result, new Coordinate(8, 8), 1, 1, null, null);
+    }
+    
+    @Test
+    public void testStretched() throws ProcessException, TransformException {
+        ReferencedEnvelope bounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
+        
+        // Simple dataset with some coincident points
+        Coordinate[] data = new Coordinate[] { new Coordinate(4, 4), new Coordinate(4.1, 4.1),
+                new Coordinate(4.1, 4.1), new Coordinate(8, 8) };
+        
+        
+        SimpleFeatureCollection fc = createPoints(data, bounds);
+        ProgressListener monitor = null;
+
+        PointStackerProcess psp = new PointStackerProcess();
+        SimpleFeatureCollection result = psp.execute(fc, 100, // cellSize
+                true, //stretch
+                bounds, // outputBBOX
+                1000, // outputWidth
+                1000, // outputHeight
+                monitor);
+        
+        checkSchemaCorrect(result.getSchema(), true);
+        assertEquals(2, result.size());
+        checkResultPoint(result, new Coordinate(4, 4), 3, 2, 1.0f, 1.0f);
+        checkResultPoint(result, new Coordinate(8, 8), 1, 1, 1.0f/3, 1.0f/2);
     }
 
     /**
@@ -112,10 +138,10 @@ public class PointStackerProcessTest {
                 768, // outputHeight
                 monitor);
         
-        checkSchemaCorrect(result.getSchema());
+        checkSchemaCorrect(result.getSchema(), false);
         assertEquals(1, result.size());
         assertEquals(inBounds.getCoordinateReferenceSystem(), result.getBounds().getCoordinateReferenceSystem());
-        checkResultPoint(result, new Coordinate(-121.813201, 48.777343), 2, 2);
+        checkResultPoint(result, new Coordinate(-121.813201, 48.777343), 2, 2, null, null);
     }
 
     /**
@@ -129,13 +155,15 @@ public class PointStackerProcessTest {
      * @param j
      */
     private void checkResultPoint(SimpleFeatureCollection result, Coordinate testPt,
-            int expectedCount, int expectedCountUnique) {
+            int expectedCount, int expectedCountUnique, Float expectedProportion, Float expectedProportionUnique) {
         /**
          * Find closest point to loc pt, then check that the attributes match
          */
         double minDist = Double.MAX_VALUE;
         int count = -1;
         int countunique = -1;
+        float proportion = Float.NaN;
+        float proportionUnique = Float.NaN;
 
         // find nearest result to testPt
         for (SimpleFeatureIterator it = result.features(); it.hasNext();) {
@@ -146,10 +174,16 @@ public class PointStackerProcessTest {
                 minDist = dist;
                 count = (Integer) f.getAttribute(PointStackerProcess.ATTR_COUNT);
                 countunique = (Integer) f.getAttribute(PointStackerProcess.ATTR_COUNT_UNIQUE);
+                if(expectedProportion!=null){
+                    proportion = (Float) f.getAttribute(PointStackerProcess.ATTR_PROPORTION);
+                    proportionUnique = (Float) f.getAttribute(PointStackerProcess.ATTR_PROPORTION_UNIQUE);
+                }
             }
         }
         assertEquals(expectedCount, count);
         assertEquals(expectedCountUnique, countunique);
+        if(expectedProportion!=null) assertEquals(expectedProportion, proportion, 0.0001);
+        if(expectedProportionUnique!=null) assertEquals(expectedProportionUnique, proportionUnique, 0.0001);
     }
 
     private void checkResultBounds(SimpleFeatureCollection result, ReferencedEnvelope bounds) {
@@ -165,13 +199,24 @@ public class PointStackerProcessTest {
         assertTrue(isInBounds);
     }
 
-    private void checkSchemaCorrect(SimpleFeatureType ft) {
-        assertEquals(3, ft.getAttributeCount());
+    private void checkSchemaCorrect(SimpleFeatureType ft, boolean includeProportionColumns) {
+        if(includeProportionColumns){
+            assertEquals(5, ft.getAttributeCount());
+        } else {
+            assertEquals(3, ft.getAttributeCount());
+        }
         assertEquals(Point.class, ft.getGeometryDescriptor().getType().getBinding());
         assertEquals(Integer.class, ft.getDescriptor(PointStackerProcess.ATTR_COUNT).getType()
                 .getBinding());
         assertEquals(Integer.class, ft.getDescriptor(PointStackerProcess.ATTR_COUNT_UNIQUE)
                 .getType().getBinding());
+        if(includeProportionColumns){
+            assertEquals(Float.class, ft.getDescriptor(PointStackerProcess.ATTR_PROPORTION)
+                    .getType().getBinding());
+            assertEquals(Float.class, ft.getDescriptor(PointStackerProcess.ATTR_PROPORTION_UNIQUE)
+                    .getType().getBinding());
+        }
+
 
     }
 

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wcs:GetCoverage xmlns:wcs="http://www.opengis.net/wcs/2.0"
+    xmlns:gml="http://www.opengis.net/gml/3.2"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.opengis.net/wcs/2.0 http://schemas.opengis.net/wcs/2.0/wcsAll.xsd"
+    service="WCS" version="2.0.1">
+    <wcs:CoverageId>C0001</wcs:CoverageId>
+    <wcs:DimensionTrim>
+        <wcs:Dimension>Long</wcs:Dimension>
+        <wcs:TrimLow>20</wcs:TrimLow>
+        <wcs:TrimHigh>29</wcs:TrimHigh>
+    </wcs:DimensionTrim>
+    <wcs:DimensionSlice>
+        <wcs:Dimension>Lat</wcs:Dimension>
+        <wcs:SlicePoint>1</wcs:SlicePoint>
+    </wcs:DimensionSlice>
+    <wcs:format>application/gml+xml</wcs:format>
+    <wcs:mediaType>multipart/related</wcs:mediaType>
+</wcs:GetCoverage>
+

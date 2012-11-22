@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gmlcov:MultiPointCoverage  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns:gml='http://www.opengis.net/gml/3.2'
+    xmlns='http://www.opengis.net/gml/3.2'
+    xmlns:swe='http://www.opengis.net/swe/2.0'
+    xmlns:gmlcov='http://www.opengis.net/gmlcov/1.0'
+    xmlns:gmlwcs='http://www.opengis.net/gmlcov/1.0'
+    xsi:schemaLocation='http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd
+                        http://www.opengis.net/gmlcov/1.0 http://schemas.opengis.net/gmlcov/1.0/gmlcovAll.xsd'
+    gml:id="C0043">
+    <gml:boundedBy>
+        <gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/4979" axisLabels="Lat Long h" uomLabels="deg deg m" srsDimension="3"> 
+            <gml:lowerCorner>1 1 1</gml:lowerCorner>
+            <gml:upperCorner>3 3 3</gml:upperCorner>
+        </gml:Envelope>
+    </gml:boundedBy>
+    <gml:domainSet>
+        <gml:MultiPoint gml:id="mp0001_C0043" srsName="http://www.opengis.net/def/crs/EPSG/0/4979">
+            <gml:pointMember>
+                <gml:Point gml:id="p0001_C0043">
+                    <gml:pos>1 1 2</gml:pos>
+                </gml:Point>
+            </gml:pointMember>
+            <gml:pointMember>
+                <gml:Point gml:id="p0002_C0043">
+                    <gml:pos>2 2 1</gml:pos>
+                </gml:Point>
+            </gml:pointMember>
+            <gml:pointMember>
+                <gml:Point gml:id="p0003_C0043">
+                    <gml:pos>3 3 1</gml:pos>
+                </gml:Point>
+            </gml:pointMember>
+        </gml:MultiPoint>
+    </gml:domainSet>
+    <gml:rangeSet>
+        <gml:QuantityList uom="urn:x-si:v1999:uom:degreesC">40 50 45</gml:QuantityList>
+    </gml:rangeSet>    
+    <gmlcov:rangeType>
+        <swe:DataRecord>        
+            <swe:field name="Temperature">
+                <swe:Quantity definition="http://www.opengis.net/def/property/OGC/1.0/temperature">
+                    <swe:uom code="Cel"/>
+                </swe:Quantity>
+            </swe:field>
+        </swe:DataRecord>
+    </gmlcov:rangeType>
+</gmlcov:MultiPointCoverage>

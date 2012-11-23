@@ -5,12 +5,12 @@
     <parent>
         <artifactId>unsupported</artifactId>
         <groupId>org.geotools</groupId>
-        <version>8-SNAPSHOT</version>
+        <version>8.4</version>
     </parent>
     <groupId>org.geotools</groupId>
     <artifactId>gt-couchdb</artifactId>
     <packaging>jar</packaging>
-    <version>8-SNAPSHOT</version>
+    <version>8.4</version>
     <name>Couchdb Data Store</name>
     <url>http://maven.apache.org</url>
     <description>CouchDB DataStore</description>
@@ -28,7 +28,7 @@
         <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-geojson</artifactId>
-            <version>8-SNAPSHOT</version>
+            <version>8.4</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>

@@ -75,24 +75,14 @@ public class OracleTestSetup extends JDBCTestSetup {
             run("DROP TRIGGER ft1_pkey_trigger");
         } catch (Exception e) {
         }
-        try {
-            run("DROP TABLE ft1 purge");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        
         try {
             run("DROP SEQUENCE ft1_pkey_seq");
         } catch (Exception e) {
         }
      
-        run("DELETE FROM USER_SDO_GEOM_METADATA WHERE TABLE_NAME = 'FT1'");
-        
-        try {
-            run("DROP TABLE ft2 purge");
-        } catch (Exception e) {
-        }
-        run("DELETE FROM USER_SDO_GEOM_METADATA WHERE TABLE_NAME = 'FT2'");
-        
+        deleteSpatialTable("FT1");
+        deleteSpatialTable("FT2");
 
         String sql = "CREATE TABLE ft1 (" 
             + "id INT, geometry MDSYS.SDO_GEOMETRY, intProperty INT, "
@@ -111,17 +101,26 @@ public class OracleTestSetup extends JDBCTestSetup {
                         + " PARAMETERS ('SDO_INDX_DIMS=2 LAYER_GTYPE=\"POINT\"')";
         run(sql);
         
-        sql = "INSERT INTO ft1 VALUES (0," +
-            "MDSYS.SDO_GEOMETRY(2001,4326,SDO_POINT_TYPE(0.0,0.0,NULL),NULL,NULL), 0, 0.0,'zero')";
+        sql = "INSERT INTO ft1 VALUES (0," + pointSql(4326, 0, 0) + ", 0, 0.0,'zero')";
         run(sql);
-        sql = "INSERT INTO ft1 VALUES (1," + 
-            "MDSYS.SDO_GEOMETRY(2001,4326,SDO_POINT_TYPE(1.0,1.0,NULL),NULL,NULL), 1, 1.1,'one')";
+        sql = "INSERT INTO ft1 VALUES (1," + pointSql(4326, 1, 1) + ", 1, 1.1,'one')";
         run(sql);
 
-        sql = "INSERT INTO ft1 VALUES (2," + 
-            "MDSYS.SDO_GEOMETRY(2001,4326,SDO_POINT_TYPE(2.0,2.0,NULL),NULL,NULL), 2, 2.2,'two')";
+        sql = "INSERT INTO ft1 VALUES (2," + pointSql(4326, 2, 2) + ", 2, 2.2,'two')";
         run(sql);
     }
     
+    protected void deleteSpatialTable(String name) throws Exception {
+        try {
+            run("DROP TABLE " + name + " purge");
+        } catch (Exception e) {
+        }
 
+        run("DELETE FROM USER_SDO_GEOM_METADATA WHERE TABLE_NAME = '" + name + "'");
+    }
+
+    protected String pointSql(int srid, double x, double y) {
+        return "MDSYS.SDO_GEOMETRY(2001," + srid + ",SDO_POINT_TYPE(" + x + "," + y
+                + ",NULL),NULL,NULL)";
+    }
 }

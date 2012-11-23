@@ -53,8 +53,10 @@ fi
 set -e
 
 # deploy the release to maven repo
-mvn deploy -DskipTests -Dall
-mvn -P deploy.opengeo deploy -DskipTests -Dall
+if [ -z $SKIP_DEPLOY ]; then
+  mvn deploy -DskipTests -Dall
+  mvn -P deploy.opengeo deploy -DskipTests -Dall
+fi
 
 # get <major.minor> for sf release dir
 if [ "$( echo $str | egrep "[0-9]+\.[0-9]+((\.|-).*)?" )" != "$str" ]; then

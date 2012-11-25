@@ -49,7 +49,7 @@ import com.vividsolutions.jts.geom.Polygon;
 @DescribeProcess(title = "Grid", description = "Generates a georeferenced regular grid of cells.  Output contains the attributes: cell - the cell polygon; id - a unique identifier; centerX and centerY - the ordinates of the cell center.")
 public class GridProcess implements VectorProcess {
 
-    enum GridMode {
+    public enum GridMode {
         Rectangular, HexagonFlat, HexagonAngled
     };
 

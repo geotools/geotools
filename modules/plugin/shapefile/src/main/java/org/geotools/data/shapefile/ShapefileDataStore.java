@@ -38,6 +38,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -393,7 +394,7 @@ public class ShapefileDataStore extends AbstractFileDataStore {
     public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader() throws IOException {
         try {
             return createFeatureReader(getSchema().getTypeName(),
-                    getAttributesReader(true, null), schema);
+                    getAttributesReader(true, null, null), schema);
         } catch (SchemaException se) {
             throw new DataSourceException("Error creating schema", se);
         }
@@ -431,19 +432,43 @@ public class ShapefileDataStore extends AbstractFileDataStore {
                         schema, propertyNames);
 
                 return createFeatureReader(typeName,
-                        getAttributesReader(false, query), newSchema);
+                        getAttributesReader(false, query, propertyNames), newSchema);
             } catch (SchemaException se) {
                 throw new DataSourceException("Error creating schema", se);
             }
         }
 
         try {
-            return createFeatureReader(getSchema().getTypeName(),
-                    getAttributesReader(true, query), schema);
+            String[] requiredProperties = null;
+            SimpleFeatureType newSchema = schema;
+            if (propertyNames != null) {
+                Set<String> props = new HashSet<String>();
+                props.addAll(Arrays.asList(propertyNames));
+                if (filterAttnames != null) {
+                    props.addAll(Arrays.asList(filterAttnames));
+                }
+                requiredProperties = getPropertiesInOrder(props);
+                newSchema = DataUtilities.createSubType(
+                        schema, requiredProperties);
+            }
+            return createFeatureReader(typeName,
+                    getAttributesReader(true, query, requiredProperties), newSchema);
         } catch (SchemaException se) {
             throw new DataSourceException("Error creating schema", se);
         }
     }
+
+    private String[] getPropertiesInOrder(Set<String> props) {
+        String[] properties = new String[props.size()];
+        int idx = 0;
+        for (AttributeDescriptor descriptor : schema.getAttributeDescriptors()) {
+            if (props.contains(descriptor.getLocalName())) {
+                properties[idx++] = descriptor.getLocalName();
+            }
+        }
+        return properties;
+    }
+
 
     /**
      * Builds the most appropriate geometry factory depending on the available query hints
@@ -492,11 +517,12 @@ public class ShapefileDataStore extends AbstractFileDataStore {
      * 
      * @throws IOException
      */
-    protected ShapefileAttributeReader getAttributesReader(boolean readDbf, Query q)
+    protected ShapefileAttributeReader getAttributesReader(boolean readDbf, Query q, String[] properties)
             throws IOException {
 
         List<AttributeDescriptor> atts = (schema == null) ? readAttributes()
                 : schema.getAttributeDescriptors();
+        atts = retainDescriptors(atts, properties);
         
         GeometryFactory geometryFactory;
         if(q != null) {
@@ -543,6 +569,21 @@ public class ShapefileDataStore extends AbstractFileDataStore {
         
         
         return result;
+    }
+
+    private static List<AttributeDescriptor> retainDescriptors(List<AttributeDescriptor> atts,
+                                                               String[] properties) {
+        if (properties == null || properties.length == atts.size()) {
+            return atts;
+        }
+        List<AttributeDescriptor> descriptors = new ArrayList<AttributeDescriptor>(properties.length);
+        Set<String> names = new HashSet<String>(Arrays.asList(properties));
+        for (AttributeDescriptor att : atts) {
+            if (names.contains(att.getLocalName())) {
+                descriptors.add(att);
+            }
+        }
+        return descriptors;
     }
 
     /**
@@ -702,7 +743,7 @@ public class ShapefileDataStore extends AbstractFileDataStore {
         typeCheck(typeName);
 
         FeatureReader<SimpleFeatureType, SimpleFeature> featureReader;
-        ShapefileAttributeReader attReader = getAttributesReader(true, null);
+        ShapefileAttributeReader attReader = getAttributesReader(true, null, null);
         try {
             SimpleFeatureType schema = getSchema();
             if (schema == null) {

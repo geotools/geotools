@@ -798,7 +798,22 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         query = new DefaultQuery(s.getSchema().getTypeName(), cf,
                 new String[] { "the_geom" });
         reader = s.getFeatureReader(s.getSchema().getTypeName(), query);
-        assertEquals(s.getSchema(), reader.getFeatureType());
+        assertEquals(2, reader.getFeatureType().getAttributeCount());
+        assertNotNull(reader.getFeatureType().getDescriptor("the_geom"));
+        assertNotNull(reader.getFeatureType().getDescriptor("STATE_NAME"));
+        reader.close();
+        s.dispose();
+    }
+    
+    public void testReadOnlyRequiredAttributes() throws Exception {
+        URL url = TestData.url(STATE_POP);
+        ShapefileDataStore s = new ShapefileDataStore(url);
+
+        Filter cf = ff.equals(ff.property("STATE_NAME"), ff.literal("Illinois"));
+        Query query = new Query(s.getSchema().getTypeName(), cf, Query.NO_PROPERTIES);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader = s.getFeatureReader(s.getSchema().getTypeName(), query);
+        assertEquals(1, reader.getFeatureType().getAttributeCount());
+        assertNotNull(reader.getFeatureType().getDescriptor("STATE_NAME"));
         reader.close();
         s.dispose();
     }

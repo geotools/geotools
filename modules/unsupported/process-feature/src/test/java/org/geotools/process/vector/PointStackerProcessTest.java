@@ -66,7 +66,7 @@ public class PointStackerProcessTest {
 
         PointStackerProcess psp = new PointStackerProcess();
         SimpleFeatureCollection result = psp.execute(fc, 100, // cellSize
-                null, //stretch
+                null, // normalize
                 bounds, // outputBBOX
                 1000, // outputWidth
                 1000, // outputHeight
@@ -79,7 +79,7 @@ public class PointStackerProcessTest {
     }
     
     @Test
-    public void testStretched() throws ProcessException, TransformException {
+    public void testNormal() throws ProcessException, TransformException {
         ReferencedEnvelope bounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
         
         // Simple dataset with some coincident points
@@ -92,7 +92,7 @@ public class PointStackerProcessTest {
 
         PointStackerProcess psp = new PointStackerProcess();
         SimpleFeatureCollection result = psp.execute(fc, 100, // cellSize
-                true, //stretch
+                true, // normalize
                 bounds, // outputBBOX
                 1000, // outputWidth
                 1000, // outputHeight
@@ -100,8 +100,8 @@ public class PointStackerProcessTest {
         
         checkSchemaCorrect(result.getSchema(), true);
         assertEquals(2, result.size());
-        checkResultPoint(result, new Coordinate(4, 4), 3, 2, 1.0f, 1.0f);
-        checkResultPoint(result, new Coordinate(8, 8), 1, 1, 1.0f/3, 1.0f/2);
+        checkResultPoint(result, new Coordinate(4, 4), 3, 2, 1.0d, 1.0d);
+        checkResultPoint(result, new Coordinate(8, 8), 1, 1, 1.0d/3, 1.0d/2);
     }
 
     /**
@@ -132,7 +132,7 @@ public class PointStackerProcessTest {
 
         PointStackerProcess psp = new PointStackerProcess();
         SimpleFeatureCollection result = psp.execute(fc, 100, // cellSize
-                null, // stretch
+                null, // normalize
                 outBounds, // outputBBOX
                 1810, // outputWidth
                 768, // outputHeight
@@ -155,15 +155,15 @@ public class PointStackerProcessTest {
      * @param j
      */
     private void checkResultPoint(SimpleFeatureCollection result, Coordinate testPt,
-            int expectedCount, int expectedCountUnique, Float expectedProportion, Float expectedProportionUnique) {
+            int expectedCount, int expectedCountUnique, Double expectedProportion, Double expectedProportionUnique) {
         /**
          * Find closest point to loc pt, then check that the attributes match
          */
         double minDist = Double.MAX_VALUE;
         int count = -1;
         int countunique = -1;
-        float proportion = Float.NaN;
-        float proportionUnique = Float.NaN;
+        double normCount = Double.NaN;
+        double normCountUnique = Double.NaN;
 
         // find nearest result to testPt
         for (SimpleFeatureIterator it = result.features(); it.hasNext();) {
@@ -175,15 +175,15 @@ public class PointStackerProcessTest {
                 count = (Integer) f.getAttribute(PointStackerProcess.ATTR_COUNT);
                 countunique = (Integer) f.getAttribute(PointStackerProcess.ATTR_COUNT_UNIQUE);
                 if(expectedProportion!=null){
-                    proportion = (Float) f.getAttribute(PointStackerProcess.ATTR_PROPORTION);
-                    proportionUnique = (Float) f.getAttribute(PointStackerProcess.ATTR_PROPORTION_UNIQUE);
+                    normCount = (Double) f.getAttribute(PointStackerProcess.ATTR_NORM_COUNT);
+                    normCountUnique = (Double) f.getAttribute(PointStackerProcess.ATTR_NORM_COUNT_UNIQUE);
                 }
             }
         }
         assertEquals(expectedCount, count);
         assertEquals(expectedCountUnique, countunique);
-        if(expectedProportion!=null) assertEquals(expectedProportion, proportion, 0.0001);
-        if(expectedProportionUnique!=null) assertEquals(expectedProportionUnique, proportionUnique, 0.0001);
+        if(expectedProportion!=null) assertEquals(expectedProportion, normCount, 0.0001);
+        if(expectedProportionUnique!=null) assertEquals(expectedProportionUnique, normCountUnique, 0.0001);
     }
 
     private void checkResultBounds(SimpleFeatureCollection result, ReferencedEnvelope bounds) {
@@ -211,9 +211,9 @@ public class PointStackerProcessTest {
         assertEquals(Integer.class, ft.getDescriptor(PointStackerProcess.ATTR_COUNT_UNIQUE)
                 .getType().getBinding());
         if(includeProportionColumns){
-            assertEquals(Float.class, ft.getDescriptor(PointStackerProcess.ATTR_PROPORTION)
+            assertEquals(Double.class, ft.getDescriptor(PointStackerProcess.ATTR_NORM_COUNT)
                     .getType().getBinding());
-            assertEquals(Float.class, ft.getDescriptor(PointStackerProcess.ATTR_PROPORTION_UNIQUE)
+            assertEquals(Double.class, ft.getDescriptor(PointStackerProcess.ATTR_NORM_COUNT_UNIQUE)
                     .getType().getBinding());
         }
 

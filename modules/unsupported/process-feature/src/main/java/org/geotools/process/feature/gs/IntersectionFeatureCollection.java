@@ -79,10 +79,10 @@ public class IntersectionFeatureCollection implements GSProcess {
 
     @DescribeResult(description = "Output feature collection")
     public SimpleFeatureCollection execute(
-            @DescribeParameter(name = "first feature collection", description = "First feature collection") SimpleFeatureCollection firstFeatures,
-            @DescribeParameter(name = "second feature collection", description = "Second feature collection") SimpleFeatureCollection secondFeatures,
-            @DescribeParameter(name = "first attributes to retain", collectionType = String.class, min = 0, description = "First feature collection attribute to include") List<String> firstAttributes,
-            @DescribeParameter(name = "second attributes to retain", collectionType = String.class, min = 0, description = "Second feature collection attribute to include") List<String> sndAttributes,
+            @DescribeParameter(name = "firstFeatures", description = "First feature collection") SimpleFeatureCollection firstFeatures,
+            @DescribeParameter(name = "secondFeatures", description = "Second feature collection") SimpleFeatureCollection secondFeatures,
+            @DescribeParameter(name = "firstAttrs", collectionType = String.class, min = 0, description = "First feature collection attribute to include") List<String> firstAttributes,
+            @DescribeParameter(name = "secondAttrs", collectionType = String.class, min = 0, description = "Second feature collection attribute to include") List<String> sndAttributes,
             @DescribeParameter(name = "intersectionMode", min = 0, description = "Specifies geometry computed for intersecting features.  INTERSECTION (default) computes the spatial intersection of the inputs. FIRST copies geometry A.  SECOND copies geometry B.") IntersectionMode intersectionMode,
             @DescribeParameter(name = "percentagesEnabled", min = 0, description = "Indicates whether to output feature area percentages (attributes percentageA and percentageB)") Boolean percentagesEnabled,
             @DescribeParameter(name = "areasEnabled", min = 0, description = "Indicates whether to output feature areas (attributes areaA and areaB)") Boolean areasEnabled) {

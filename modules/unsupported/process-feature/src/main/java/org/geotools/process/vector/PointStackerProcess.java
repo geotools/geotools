@@ -82,8 +82,8 @@ public class PointStackerProcess implements VectorProcess {
     public static final String ATTR_GEOM = "geom";
     public static final String ATTR_COUNT = "count";
     public static final String ATTR_COUNT_UNIQUE = "countunique";
-    public static final String ATTR_PROPORTION = "proportion";
-    public static final String ATTR_PROPORTION_UNIQUE = "proportionunique";
+    public static final String ATTR_NORM_COUNT = "normCount";
+    public static final String ATTR_NORM_COUNT_UNIQUE = "normCountUnique";
     
     //TODO: add ability to pick index point selection strategy
     //TODO: add ability to set attribute name containing value to be aggregated
@@ -102,7 +102,7 @@ public class PointStackerProcess implements VectorProcess {
 
             // process parameters
             @DescribeParameter(name = "cellSize", description = "Grid cell size to aggregate to, in pixels") Integer cellSize,
-            @DescribeParameter(name = "stretch", description = "Add normalized fields where the largest stack is 1.0. Default false.", min=0, max=1) Boolean argStretch,
+            @DescribeParameter(name = "normalize", description = "Indicates whether to add fields normalized to the range 0-1.", defaultValue="false") Boolean argNormalize,
 
             // output image parameters
             @DescribeParameter(name = "outputBBOX", description = "Bounding box for target image extent") ReferencedEnvelope outputEnv,
@@ -123,9 +123,9 @@ public class PointStackerProcess implements VectorProcess {
             throw new ProcessException(e);
         }
         
-        boolean stretch = false;
-        if(argStretch!=null){
-            stretch = argStretch;
+        boolean normalize = false;
+        if(argNormalize!=null){
+            normalize = argNormalize;
         }
 
         // TODO: allow output CRS to be different to data CRS 
@@ -135,7 +135,7 @@ public class PointStackerProcess implements VectorProcess {
         Collection<StackedPoint> stackedPts = stackPoints(data, crsTransform, cellSizeSrc,
                 outputEnv.getMinX(), outputEnv.getMinY());
 
-        SimpleFeatureType schema = createType(srcCRS, stretch);
+        SimpleFeatureType schema = createType(srcCRS, normalize);
         ListFeatureCollection result = new ListFeatureCollection(schema);
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(schema);
 
@@ -147,7 +147,7 @@ public class PointStackerProcess implements VectorProcess {
         // Find maxima of the point stacks if needed.
         int maxCount = 0;
         int maxCountUnique = 0;
-        if(stretch){
+        if(normalize){
             for (StackedPoint sp : stackedPts) {
                 if(maxCount<sp.getCount()) maxCount = sp.getCount();
                 if(maxCountUnique<sp.getCount()) maxCountUnique = sp.getCountUnique();
@@ -168,9 +168,9 @@ public class PointStackerProcess implements VectorProcess {
             fb.add(point);
             fb.add(sp.getCount());
             fb.add(sp.getCountUnique());
-            if(stretch){
-                fb.add(((float)sp.getCount())/maxCount);
-                fb.add(((float)sp.getCountUnique())/maxCountUnique);
+            if(normalize){
+                fb.add(((double)sp.getCount())/maxCount);
+                fb.add(((double)sp.getCountUnique())/maxCountUnique);
             }
             
             result.add(fb.buildFeature(null));
@@ -285,8 +285,8 @@ public class PointStackerProcess implements VectorProcess {
         tb.add(ATTR_COUNT, Integer.class);
         tb.add(ATTR_COUNT_UNIQUE, Integer.class);
         if(stretch){
-            tb.add(ATTR_PROPORTION, Float.class);
-            tb.add(ATTR_PROPORTION_UNIQUE, Float.class);
+            tb.add(ATTR_NORM_COUNT, Double.class);
+            tb.add(ATTR_NORM_COUNT_UNIQUE, Double.class);
         }
         tb.setName("stackedPoint");
         SimpleFeatureType sfType = tb.buildFeatureType();

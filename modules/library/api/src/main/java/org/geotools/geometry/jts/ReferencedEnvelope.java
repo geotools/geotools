@@ -284,9 +284,11 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
             final int expected = getDimension();
             final int dimension = crs.getCoordinateSystem().getDimension();
             if (dimension > expected) {
+                // check dimensions and choose ReferencedEnvelope or ReferencedEnvelope3D
+                // or the factory method ReferencedEnvelope.reference( CoordinateReferenceSystem )
                 throw new MismatchedDimensionException(Errors.format(
-                        ErrorKeys.MISMATCHED_DIMENSION_$3, crs.getName().getCode(),
-                        new Integer(dimension), new Integer(expected)));
+                    ErrorKeys.MISMATCHED_DIMENSION_$3, crs.getName().getCode(),
+                    new Integer(dimension), new Integer(expected)));
             }
         }
     }
@@ -836,4 +838,17 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
     	return new ReferencedEnvelope(reference(env), crs);
     }
     
+    /**
+     * Utility method to create a ReferencedEnvelope from an opengis Envelope class,
+     * supporting 2d as well as 3d envelopes (returning the right class).
+     * 
+     * @param env The opgenis Envelope object
+     * @return ReferencedEnvelope, ReferencedEnvelope3D if it is 3d
+     */
+    public static ReferencedEnvelope reference(CoordinateReferenceSystem crs) {
+        if (crs != null && crs.getCoordinateSystem().getDimension() > 2 ){
+            return new ReferencedEnvelope3D(crs);
+        }
+        return new ReferencedEnvelope(crs);
+    }
 }

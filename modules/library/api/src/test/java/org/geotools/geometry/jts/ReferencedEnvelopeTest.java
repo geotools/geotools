@@ -2,10 +2,12 @@ package org.geotools.geometry.jts;
 
 import static org.junit.Assert.*;
 
+import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
 import org.opengis.geometry.MismatchedReferenceSystemException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import java.awt.geom.Rectangle2D;
@@ -135,6 +137,19 @@ public class ReferencedEnvelopeTest {
 
         assertFalse(env1.boundsEquals2D(env2, eps));
 
+    }
+    
+    @Test
+    public void testFactoryMethod() throws Exception {
+        try {
+            ReferencedEnvelope bounds = new ReferencedEnvelope( DefaultGeographicCRS.WGS84_3D );
+            fail("ReferencedEnvelope should not be able to represent 3D CRS such as GDA94");
+        }
+        catch (Exception expected){
+        }
+        
+        ReferencedEnvelope bounds2 = ReferencedEnvelope.reference( DefaultGeographicCRS.WGS84_3D );
+        assertNotNull( bounds2 );
     }
 
 }

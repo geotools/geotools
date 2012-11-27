@@ -73,9 +73,9 @@
     <!-- To use for real:                                          -->
     <!--   Download the ojdbc14.jar driver from oracle and install -->
     <!--   into maven:                                             
-            mvn install:install-file -Dfile=ojdbc14.jar         
-                -DgroupId=com.oracle -DartifactId=ojdbc14       
-                -Dversion=10.2.0.3.0 -Dpackaging=jar                
+            mvn install:install-file -Dfile=ojdbc14.jar \
+                -DgroupId=com.oracle -DartifactId=ojdbc14 \
+                -Dversion=10.2.0.3.0 -Dpackaging=jar -DgeneratePom=true
                                                                    -->
     <!--   You can then supply -Doracle=true on the command line   -->
     <profile>

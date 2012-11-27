@@ -7,11 +7,11 @@ Your First Build
 ^^^^^^^^^^^^^^^^
 
 1. Start by going to where you have the source code::
-     
+
      cd C:\java\geotools\trunk
-     
+
 2. And check that we actually have the source code::
-     
+
      C:\java\geotools\trunk>dir
       Volume in drive C is INTERNAL
       Volume Serial Number is 3CA5-71DD
@@ -31,12 +31,12 @@ Your First Build
 
 3. Make sure you are connected to the internet
 4. Start your first build::
-     
+
      C:\java\geotools\trunk>mvn install
 
 5. If all is well, Maven should download the required .jar files and build GeoTools modules.
 6. At the end of this process it will display a list of all the modules which were built and installed correctly.::
-     
+
       [INFO] ------------------------------------------------------------------------
       [INFO] BUILD SUCCESSFUL
       [INFO] ------------------------------------------------------------------------
@@ -55,7 +55,7 @@ Build Failure
 It is all well and good to recognise a successful build, but how do you recognise a build that has failed?
 
 1. If your build fails you will get feedback like this::
-     
+
      [INFO] ------------------------------------------------------------------------
      [ERROR] BUILD FAILURE
      [INFO] ------------------------------------------------------------------------
@@ -68,10 +68,10 @@ It is all well and good to recognise a successful build, but how do you recognis
      [INFO] Final Memory: 23M/42M
      [INFO] ------------------------------------------------------------------------
 2. You need to scan back through the output and find the "<<< FAILURE!"::
-     
+
      Running org.geotools.data.mif.MIFDataStoreTest
      Tests run: 9, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 6.703 sec <<< FAILURE!
-   
+
 3. You can open the test results of the indicated failure in order to see what went wrong.
    Test results are contained in the target directory.
 
@@ -93,116 +93,6 @@ Tips to speed up a build:
 * Update your "settings.xml" file to point to a "mirror" in your country - allowing you to download closer to home
 * Build offline (when everything is downloaded to your local repository)
 
-Really Building All Modules
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-GeoTools plays host to a number of experiment "unsupported" modules; if you would like to help out on any of these modules (or get a preview of new features)::
-   
-   mvn install -Dall
-
-The "-Dall" acts as a switch to part engages several profiles; you can also do this by hand with -P
-
-The following "profiles" are included by the "-Dall":
-
-=================== ========== ===================================================================
-Profile             \-Dall     Builds
-=================== ========== ===================================================================
-``-Pgdal``          included   include modules that depend on having gdal installed into your JRE
-``-Ppending``       included   several experimental modules
-``-Praster``        included   
-``-Pswing``         included   
-``-Pworkflow``      included   process and wps support
-``-Parchive``                  modules that no longer work
-=================== ========== ===================================================================
-
-Parallel Builds
-^^^^^^^^^^^^^^^
-
-Maven 3 allows you to control your computing resources a bit more::
-  
-  mvn install -Dall -T 2C
-
-The above command builds using two threads for each cpu core available.
-
-You can also set an exact number of threads to use::
-  
-  mvn install -Dall -T 3
-  
-You can experiment with different settings to determine what works best for your machine.
-
-Building Offline
-^^^^^^^^^^^^^^^^
-
-When working offline, you can bypass the checking of md5 and downloading files.
-
-To do this use the following::
-   
-   C:\java\geotools\trunk>mvn -o install
-
-By avoiding the check of md5 files you can take drastically reduce build time.
-
-Building an Individual module
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Provided you have done at least one complete build you should be able to build individual modules one-at-a-time.
-
-1. Change to the modules home directory::
-     
-     cd modules/library/cql
-     
-2. Use maven to compile - it should do a complete build::
-     
-      mvn compile
-
-3. Use maven to update the local repository - it should run the test cases and install the jar in the local
-   repository for other modules (or applications) to use when they build.::
-     
-     mvn install
-
-If you have not done a full build yet then the build may fail because it can't find the jar for a module it depends on.
-
-* An error caused by not having another GT2 module installed can be a little misleading::
-    
-    Error: unable to download main-2.1.x.jar
-  
-* Maven failed to find main-2.1,x.jar in the local repository where a full build should have put it
-* Maven tried to download the file from the internet (and failed)
-* If you see an error like that, either do a full build or change into the module which is missing (main in this case) and type.::
-   
-   maven install
-
-Avoiding Tests
-^^^^^^^^^^^^^^
-
-You may also notice that running the tests takes a fair amount of time. While these tests need to be run before you commit for the day, you may want to forgo the wait while experimenting.
-
-The following will build the tests - but not run them::
-   
-   mvn -DskipTests install
-
-This is useful for installing the postgis module test jar; which is used by the postgis-version module as a dependency.
-
-The following will not even build the tests::
-   
-   mvn -Dmaven.test.skip=true install
-
-Resuming After a Failure
-^^^^^^^^^^^^^^^^^^^^^^^^
-
-When doing a full build of GeoTools it can be disheartening when a build fails 90% of the way through causing you to fix and start again.
-
-The -rf (resume from) parameter of is useful in these cases. It is used to resume a multi-module build such as GeoTools from a specific location to avoid rebuilding those modules you have already successfully build.
-
-1. For instance, consider quickly building offline::
-     
-     mvn install -o -Dall
-
-2. If **modules/library/data** failed due to a missing jar you can resume the build in online mode::
-     
-     mvn install -rf modules/library/data
-
-This same technique can be used to restart a build after fixing a failed test in a module.
-
 Common Build Problems
 ^^^^^^^^^^^^^^^^^^^^^
 
@@ -217,11 +107,11 @@ We have a little of a chicken-and-the-egg problem here when building a tag for t
 To fix you need to build the javadoc jar by hand.
 
 1. Change to the module directory::
-      
+
       cd build/maven/javadoc
 
 2. Build the javadoc module
-     
+
       mvn install
 
 3. You can now return to the root of the project and restart your build.
@@ -232,7 +122,7 @@ Failure of Metadata RangeSetTest
 ''''''''''''''''''''''''''''''''
 
 This looks like the following::
-   
+
    [INFO] ----------------------------------------------------------------------------
    [INFO] Building Metadata
    [INFO]    task-segment: [clean, install]
@@ -243,7 +133,7 @@ This looks like the following::
    Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.031 sec <<< FAILURE!
 
 Navigating into the directory to look at the actual error::
-   
+
    C:\java\geotools\trunk\modules\library\metadata\target\surefire-reports>more *RangeSetTest.txt
    -------------------------------------------------------------------------------
    Test set: org.geotools.util.RangeSetTest
@@ -256,14 +146,14 @@ Navigating into the directory to look at the actual error::
 This indicates that Java Advanced Imaging has not been installed into the JRE (please see the dependencies section and try again).
 
 On GeoTools trunk you can try the following experimental option. This will download and use just the JAI jar files, you wont get native performance - but for a build do you even care?::
-   
+
    mvn install -Pnojai
 
 Failure of GridCoverageRendererTest
 '''''''''''''''''''''''''''''''''''
 
 This looks like the following::
-   
+
    [INFO] ----------------------------------------------------------------------------
    [INFO] Building Render
    [INFO]    task-segment: [install]
@@ -272,7 +162,7 @@ This looks like the following::
    Running org.geotools.renderer.lite.GridCoverageRendererTest
    Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.062 sec <<< FAILURE!
    Details:
-   
+
    C:\java\geotools\trunk\modules\library\render\target\surefire-reports>more *GridCoverageRendererTest.txt
    -------------------------------------------------------------------------------
    Test set: org.geotools.renderer.lite.GridCoverageRendererTest
@@ -282,7 +172,7 @@ This looks like the following::
    java.lang.NullPointerException
         at org.geotools.renderer.lite.GridCoverageRendererTest.getGC(GridCoverageRendererTest.java:103)
         at org.geotools.renderer.lite.GridCoverageRendererTest.testPaint(GridCoverageRendererTest.java:163)
-   
+
    testReproject(org.geotools.renderer.lite.GridCoverageRendererTest)  Time elapsed: 0 sec  <<< ERROR!
    java.lang.NullPointerException
         at org.geotools.renderer.lite.GridCoverageRendererTest.getGC(GridCoverageRendererTest.java:103)

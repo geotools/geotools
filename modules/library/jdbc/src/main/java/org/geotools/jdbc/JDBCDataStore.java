@@ -1120,7 +1120,7 @@ public final class JDBCDataStore extends ContentDataStore
 
         Statement st = null;
         ResultSet rs = null;
-        ReferencedEnvelope bounds = new ReferencedEnvelope(featureType
+        ReferencedEnvelope bounds = ReferencedEnvelope.reference(featureType
                 .getCoordinateReferenceSystem());
         try {
             // try optimized bounds computation only if we're targeting the entire table

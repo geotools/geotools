@@ -18,6 +18,7 @@ package org.geotools.xml.impl;
 
 import org.eclipse.xsd.XSDAttributeDeclaration;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
+import org.eclipse.xsd.XSDComponent;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDFactory;
 import org.eclipse.xsd.XSDSchemaContent;
@@ -189,6 +190,11 @@ public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
             node.addAttribute(new NodeImpl(attribute, parsed));
         }
 
+
+        // trigger the leading edge initialize callback
+        ElementInitializer initer = new ElementInitializer(element, node, parent.getContext());
+        parser.getBindingWalker().walk(element.getElementDeclaration(), initer, container(), parent.getContext());
+
         //create context for children 
         //TODO: this should only be done if the element is complex, this class
         // needs to be split into two, one for complex, other for simple
@@ -222,16 +228,10 @@ public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
             ((NodeImpl)node).collapseWhitespace();
         }
         
-        //get the containing type (we do this for anonymous complex types)
-        XSDTypeDefinition container = null;
-        if (getParentHandler().getComponent() != null) {
-            container = getParentHandler().getComponent().getTypeDefinition();
-        }
-
         ParseExecutor executor = new ParseExecutor(element, node, getParentHandler().getContext(),
                 parser);
         parser.getBindingWalker()
-              .walk(element.getElementDeclaration(), executor, container,
+              .walk(element.getElementDeclaration(), executor, container(),
             getParentHandler().getContext());
 
         //cache the parsed value
@@ -301,6 +301,15 @@ public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
         return null;
     }
 
+    private XSDTypeDefinition container() {
+      //get the containing type (we do this for anonymous complex types)
+        XSDTypeDefinition container = null;
+        if (getParentHandler().getComponent() != null) {
+            container = getParentHandler().getComponent().getTypeDefinition();
+        }
+        return container;
+    }
+
     //    public List getChildHandlers() {
     //        return childHandlers;
     //    }
@@ -311,15 +320,10 @@ public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
         //initialize the context for the handler
         if (child instanceof ElementHandler) {
             //get the containing type (we do this for anonymous complex types)
-            XSDTypeDefinition container = null;
-            if (getParentHandler().getComponent() != null) {
-                container = getParentHandler().getComponent().getTypeDefinition();
-            }
-
             ElementInstance childInstance = (ElementInstance) child.getComponent();
             ContextInitializer initer = new ContextInitializer(childInstance, node,
                     child.getContext());
-            parser.getBindingWalker().walk(element.getElementDeclaration(), initer, container, getContext());
+            parser.getBindingWalker().walk(element.getElementDeclaration(), initer, container(), getContext());
         }
     }
 

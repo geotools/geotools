@@ -1088,5 +1088,33 @@ public final class JTS {
 
         return factory.createGeometryCollection(smoothed);
     }
-
+    /**
+     * Replacement for geometry.getEnvelopeInternal() that returns ReferencedEnvelope or ReferencedEnvelope3D
+     * as appropriate for the provided CRS.
+     * 
+     * @param geometry
+     * @param crs
+     * @return ReferencedEnvelope (or ReferencedEnvelope3D) as appropriate
+     */
+    public static ReferencedEnvelope bounds( Geometry geometry, CoordinateReferenceSystem crs ){
+        if( geometry == null ){
+            return null;
+        }
+        if( crs == null ){
+            return new ReferencedEnvelope( geometry.getEnvelopeInternal(), null ); // CRS is not known
+        }
+        else if( crs.getCoordinateSystem().getDimension() >= 3 ){
+            ReferencedEnvelope bounds = new ReferencedEnvelope3D( crs );
+            
+            // Note we are visiting all coordinates (rather than just the outer rings
+            // polygons) as holes may contribute to the min / max bounds.
+            for( Coordinate coordinate : geometry.getCoordinates() ){
+                bounds.expandToInclude( coordinate );
+            }
+            return bounds;
+        }
+        else {
+            return new ReferencedEnvelope( geometry.getEnvelopeInternal(), crs );
+        }
+    }
 }

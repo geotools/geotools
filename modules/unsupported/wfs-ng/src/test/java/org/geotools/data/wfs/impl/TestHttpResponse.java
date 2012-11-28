@@ -75,4 +75,9 @@ public class TestHttpResponse implements HTTPResponse {
         }
         throw new IllegalStateException();
     }
+
+    @Override
+    public String getResponseCharset() {
+        return charset;
+    }
 }

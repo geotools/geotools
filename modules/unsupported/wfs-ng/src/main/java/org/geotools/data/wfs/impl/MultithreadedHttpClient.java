@@ -26,6 +26,7 @@ import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.HttpMethodBase;
 import org.apache.commons.httpclient.HttpState;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
@@ -64,6 +65,8 @@ public class MultithreadedHttpClient implements HTTPClient {
     private String user;
 
     private String password;
+
+    private boolean tryGzip;
 
     public MultithreadedHttpClient() {
         connectionManager = new MultiThreadedHttpConnectionManager();
@@ -259,5 +262,24 @@ public class MultithreadedHttpClient implements HTTPClient {
             return responseBodyAsStream;
         }
 
+        @Override
+        public String getResponseCharset() {
+            String responseCharSet = null;
+            if (methodResponse instanceof HttpMethodBase) {
+                responseCharSet = ((HttpMethodBase) methodResponse).getResponseCharSet();
+            }
+            return responseCharSet;
+        }
+
+    }
+
+    @Override
+    public void setTryGzip(boolean tryGZIP) {
+        this.tryGzip = tryGZIP;
+    }
+
+    @Override
+    public boolean isTryGzip() {
+        return tryGzip;
     }
 }

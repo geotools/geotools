@@ -759,7 +759,17 @@ O:          for (int i = 0; i < schemas.length; i++) {
     }
 
     public Object getValue() {
-        return documentHandler.getParseNode().getValue();
+        if (documentHandler != null) {
+            return documentHandler.getParseNode().getValue(); 
+        }
+
+        //grab handler on top of stack
+        if (!handlers.isEmpty()) {
+            Handler h = (Handler) handlers.peek();
+            return h.getParseNode().getValue();
+        }
+
+        return null;
     }
 
     protected void configure(Configuration config) {

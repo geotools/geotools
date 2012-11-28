@@ -82,6 +82,12 @@ public class CRSTest extends TestCase {
         super(name);
     }
 
+    protected void tearDown() throws Exception {
+        System.clearProperty("org.geotools.referencing.forceXY");
+        Hints.removeSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
+        CRS.reset("all");
+    }    
+    
     /**
      * Tests the (latitude, longitude) axis order for EPSG:4326.
      */

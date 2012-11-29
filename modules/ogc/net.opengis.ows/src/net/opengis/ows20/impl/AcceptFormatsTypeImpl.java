@@ -32,23 +32,14 @@ import org.eclipse.emf.ecore.util.EDataTypeEList;
  */
 public class AcceptFormatsTypeImpl extends EObjectImpl implements AcceptFormatsType {
     /**
-     * The default value of the '{@link #getOutputFormat() <em>Output Format</em>}' attribute.
+     * The cached value of the '{@link #getOutputFormat() <em>Output Format</em>}' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @see #getOutputFormat()
      * @generated
      * @ordered
      */
-    protected static final String OUTPUT_FORMAT_EDEFAULT = null;
-    /**
-     * The cached value of the '{@link #getOutputFormat() <em>Output Format</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getOutputFormat()
-     * @generated
-     * @ordered
-     */
-    protected String outputFormat = OUTPUT_FORMAT_EDEFAULT;
+    protected EList<String> outputFormat;
 
     /**
      * <!-- begin-user-doc -->
@@ -74,20 +65,11 @@ public class AcceptFormatsTypeImpl extends EObjectImpl implements AcceptFormatsT
      * <!-- end-user-doc -->
      * @generated
      */
-    public String getOutputFormat() {
+    public EList<String> getOutputFormat() {
+        if (outputFormat == null) {
+            outputFormat = new EDataTypeEList<String>(String.class, this, Ows20Package.ACCEPT_FORMATS_TYPE__OUTPUT_FORMAT);
+        }
         return outputFormat;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setOutputFormat(String newOutputFormat) {
-        String oldOutputFormat = outputFormat;
-        outputFormat = newOutputFormat;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Ows20Package.ACCEPT_FORMATS_TYPE__OUTPUT_FORMAT, oldOutputFormat, outputFormat));
     }
 
     /**
@@ -114,7 +96,8 @@ public class AcceptFormatsTypeImpl extends EObjectImpl implements AcceptFormatsT
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Ows20Package.ACCEPT_FORMATS_TYPE__OUTPUT_FORMAT:
-                setOutputFormat((String)newValue);
+                getOutputFormat().clear();
+                getOutputFormat().addAll((Collection<? extends String>)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -129,7 +112,7 @@ public class AcceptFormatsTypeImpl extends EObjectImpl implements AcceptFormatsT
     public void eUnset(int featureID) {
         switch (featureID) {
             case Ows20Package.ACCEPT_FORMATS_TYPE__OUTPUT_FORMAT:
-                setOutputFormat(OUTPUT_FORMAT_EDEFAULT);
+                getOutputFormat().clear();
                 return;
         }
         super.eUnset(featureID);
@@ -144,7 +127,7 @@ public class AcceptFormatsTypeImpl extends EObjectImpl implements AcceptFormatsT
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case Ows20Package.ACCEPT_FORMATS_TYPE__OUTPUT_FORMAT:
-                return OUTPUT_FORMAT_EDEFAULT == null ? outputFormat != null : !OUTPUT_FORMAT_EDEFAULT.equals(outputFormat);
+                return outputFormat != null && !outputFormat.isEmpty();
         }
         return super.eIsSet(featureID);
     }

@@ -3,7 +3,6 @@
 package net.opengis.ows20;
 
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -39,20 +38,9 @@ public interface AcceptLanguagesType extends EObject {
      * @return the value of the '<em>Language</em>' attribute.
      * @see #setLanguage(String)
      * @see net.opengis.ows20.Ows20Package#getAcceptLanguagesType_Language()
-     * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.Language" required="true"
+     * @model unique="false" required="true"
      *        extendedMetaData="kind='element' name='Language' namespace='##targetNamespace'"
-     * @generated
      */
-    String getLanguage();
-
-    /**
-     * Sets the value of the '{@link net.opengis.ows20.AcceptLanguagesType#getLanguage <em>Language</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Language</em>' attribute.
-     * @see #getLanguage()
-     * @generated
-     */
-    void setLanguage(String value);
+    EList<String> getLanguage();
 
 } // AcceptLanguagesType

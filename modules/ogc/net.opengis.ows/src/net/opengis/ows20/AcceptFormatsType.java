@@ -3,6 +3,7 @@
 package net.opengis.ows20;
 
 import org.eclipse.emf.common.util.EList;
+import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -42,20 +43,9 @@ public interface AcceptFormatsType extends EObject {
      * @return the value of the '<em>Output Format</em>' attribute.
      * @see #setOutputFormat(String)
      * @see net.opengis.ows20.Ows20Package#getAcceptFormatsType_OutputFormat()
-     * @model unique="false" dataType="net.opengis.ows20.MimeType"
+     * @model unique="false" 
      *        extendedMetaData="kind='element' name='OutputFormat' namespace='##targetNamespace'"
-     * @generated
      */
-    String getOutputFormat();
-
-    /**
-     * Sets the value of the '{@link net.opengis.ows20.AcceptFormatsType#getOutputFormat <em>Output Format</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Output Format</em>' attribute.
-     * @see #getOutputFormat()
-     * @generated
-     */
-    void setOutputFormat(String value);
+    EList<String> getOutputFormat();
 
 } // AcceptFormatsType

@@ -81,9 +81,8 @@
         <groupId>org.geotools.maven</groupId>
         <artifactId>xmlcodegen</artifactId>
         <configuration>
-          <schemaLocation>kml21.xsd</schemaLocation>
-  	  <schemaSourceDirectory>${basedir}/src/main/resources/org/geotools/kml//</schemaSourceDirectory>
-          <destinationPackage>org.geotools.kml</destinationPackage>
+          <schemaLocation>ogckml22.xsd</schemaLocation>
+  	      <schemaSourceDirectory>${basedir}/src/main/resources/org/geotools/kml/v22</schemaSourceDirectory>
         </configuration>
       </plugin>
     </plugins>

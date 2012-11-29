@@ -17,19 +17,29 @@
 package org.geotools.kml.bindings;
 
 import java.net.URI;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import javax.xml.namespace.QName;
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
+
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.kml.FolderStack;
 import org.geotools.kml.KML;
+import org.geotools.kml.StyleMap;
+import org.geotools.kml.v22.SchemaRegistry;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
+
+import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.Point;
 
 
 /**
@@ -72,9 +82,13 @@ import org.geotools.xml.Node;
  */
 public class FeatureTypeBinding extends AbstractComplexBinding {
     /**
-     * base feature type for kml features
+     * base feature type for kml features, used when no Schema element is specified
      */
-    protected static final SimpleFeatureType featureType;
+    protected static final SimpleFeatureType FeatureType;
+
+    StyleMap styleMap;
+    private final FolderStack folderStack;
+    private SchemaRegistry schemaRegistry;
 
     static {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
@@ -96,7 +110,7 @@ public class FeatureTypeBinding extends AbstractComplexBinding {
         //&lt;element minOccurs="0" name="description" type="string"/&gt;
         tb.add("description", String.class);
         //&lt;element minOccurs="0" ref="kml:LookAt"/&gt;
-        tb.add("LookAt", Coordinate.class);
+        tb.add("LookAt", Point.class);
         //&lt;element minOccurs="0" ref="kml:TimePrimitive"/&gt;
         //tb.add("TimePrimitive", ...);
         //&lt;element minOccurs="0" ref="kml:styleUrl"/&gt;
@@ -104,15 +118,16 @@ public class FeatureTypeBinding extends AbstractComplexBinding {
         //&lt;element maxOccurs="unbounded" minOccurs="0" ref="kml:StyleSelector"/&gt;
 
         //&lt;element minOccurs="0" ref="kml:Region"/&gt;
-        tb.add("Region", Envelope.class);
+        tb.add("Region", LinearRing.class);
 
-        featureType = tb.buildFeatureType();
+        FeatureType = tb.buildFeatureType();
     }
 
-    StyleMap styleMap;
-
-    public FeatureTypeBinding(StyleMap styleMap) {
+    public FeatureTypeBinding(StyleMap styleMap, FolderStack folderStack,
+            SchemaRegistry schemaRegistry) {
         this.styleMap = styleMap;
+        this.folderStack = folderStack;
+        this.schemaRegistry = schemaRegistry;
     }
 
     /**
@@ -132,6 +147,21 @@ public class FeatureTypeBinding extends AbstractComplexBinding {
         return SimpleFeature.class;
     }
 
+    private SimpleFeatureType appendAttributes(SimpleFeatureType acc, SimpleFeatureType typeToAppend) {
+        if (typeToAppend == null) {
+            return acc;
+        }
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        tb.init(acc);
+        for (AttributeDescriptor ad : typeToAppend.getAttributeDescriptors()) {
+            // only add attributes that we don't already have
+            if (acc.getDescriptor(ad.getLocalName()) == null) {
+                tb.add(ad);
+            }
+        }
+        return tb.buildFeatureType();
+    }
+
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -140,6 +170,29 @@ public class FeatureTypeBinding extends AbstractComplexBinding {
      */
     public Object parse(ElementInstance instance, Node node, Object value)
         throws Exception {
+
+        // start off with the default feature type, and retype as necessary
+        SimpleFeatureType featureType = FeatureType;
+
+        // retype based on schema if we have extended data pointing to a url
+        @SuppressWarnings("unchecked")
+        Map<String, Object> extData = (Map<String, Object>) node.getChildValue("ExtendedData");
+        if (extData != null) {
+            @SuppressWarnings("unchecked")
+            List<URI> schemaURI = (List<URI>) extData.get("schemas");
+            if (schemaURI != null) {
+                for (URI uri : schemaURI) {
+                    String normalizedSchemaName = normalizeSchemaName(uri);
+                    SimpleFeatureType schemaType = schemaRegistry.get(normalizedSchemaName);
+                    featureType = appendAttributes(featureType, schemaType);
+                }
+            }
+        }
+
+        // if we are a custom schema element, add the attributes to the type
+        SimpleFeatureType customFeatureType = schemaRegistry.get(instance.getName());
+        featureType = appendAttributes(featureType, customFeatureType);
+
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(featureType);
 
         //&lt;element minOccurs="0" name="name" type="string"/&gt;
@@ -183,10 +236,47 @@ public class FeatureTypeBinding extends AbstractComplexBinding {
         //&lt;element minOccurs="0" ref="kml:Region"/&gt;
         b.set("Region", node.getChildValue("Region"));
 
+        // stick extended data in feature user data
+        if (extData != null) {
+            b.featureUserData("UntypedExtendedData", extData.get("untyped"));
+            @SuppressWarnings("unchecked")
+            Map<String, Object> typedUserData = (Map<String, Object>) extData.get("typed");
+            if (typedUserData != null) {
+                for (Entry<String, Object> entry : typedUserData.entrySet()) {
+                    String attrName = entry.getKey();
+                    if (featureType.getDescriptor(attrName) != null) {
+                        b.set(attrName, entry.getValue());
+                    }
+                }
+            }
+        }
+
+        // if we are a custom schema type
+        // add in any attributes from that type onto the feature
+        if (customFeatureType != null) {
+            for (AttributeDescriptor ad : customFeatureType.getAttributeDescriptors()) {
+                String attrName = ad.getLocalName();
+                Object childValue = node.getChildValue(attrName);
+                if (childValue != null) {
+                    b.set(attrName, childValue);
+                }
+            }
+        }
+
+        // stick folder stack in feature user data
+        b.featureUserData("Folder", folderStack.asList());
+
         //&lt;element minOccurs="0" name="Metadata" type="kml:MetadataType"/&gt;
         return b.buildFeature((String) node.getAttributeValue("id"));
     }
     
+    private String normalizeSchemaName(URI schemaURI) {
+        if (schemaURI.getFragment() != null) {
+            return schemaURI.getFragment();
+        }
+        return schemaURI.getPath();
+    }
+
     public Object getProperty(Object object, QName name) throws Exception {
     	if( object instanceof FeatureCollection){
     		FeatureCollection features = (FeatureCollection) object;

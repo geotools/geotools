@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.kml.bindings;
+package org.geotools.kml;
 
 import java.net.URI;
 import java.util.Collections;
@@ -31,19 +31,16 @@ import org.geotools.styling.FeatureTypeStyle;
  * </p>
  * @author Justin Deoliveira, The Open Planning Project
  *
- *
- *
- *
  * @source $URL$
  */
 public class StyleMap {
     protected Map map = Collections.synchronizedMap(new HashMap());
 
-    protected void put(URI uri, FeatureTypeStyle style) {
+    public void put(URI uri, FeatureTypeStyle style) {
         map.put(uri, style);
     }
 
-    protected FeatureTypeStyle get(URI uri) {
+    public FeatureTypeStyle get(URI uri) {
         return (FeatureTypeStyle) map.get(uri);
     }
 }

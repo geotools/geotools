@@ -21,41 +21,35 @@ import org.geotools.kml.KMLTestSupport;
 import org.geotools.xml.Binding;
 
 import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Point;
-
+import com.vividsolutions.jts.geom.LinearRing;
 
 /**
  * 
- *
+ * 
  * @source $URL$
  */
-public class LookAtTypeBindingTest extends KMLTestSupport {
-
+public class RegionTypeBindingTest extends KMLTestSupport {
     public void testType() {
-        assertEquals(Point.class, binding(KML.LookAtType).getType());
+        assertEquals(LinearRing.class, binding(KML.RegionType).getType());
     }
 
     public void testExecutionMode() {
-        assertEquals(Binding.OVERRIDE, binding(KML.LookAtType).getExecutionMode());
+        assertEquals(Binding.OVERRIDE, binding(KML.RegionType).getExecutionMode());
     }
 
     public void testParse() throws Exception {
-        String xml = "<LookAt>" + "<longitude>1</longitude>" + "<latitude>2</latitude>"
-            + "<altitude>3</altitude>" + "</LookAt>";
+        String xml = "<Region>" + "<LatLonAltBox>" + "<north>1</north>" + "<south>-1</south>"
+                + "<east>1</east>" + "<west>-1</west>" + "</LatLonAltBox>" + "</Region>";
+
         buildDocument(xml);
 
-        Point p = (Point) parse();
-        Coordinate c = p.getCoordinate();
-        assertEquals(1d, c.y, 0.1);
-        assertEquals(2d, c.x, 0.1);
-        assertEquals(3d, c.z, 0.1);
-
-        xml = "<LookAt/>";
-        buildDocument(xml);
-        p = (Point) parse();
-        c = p.getCoordinate();
-        assertEquals(0d, c.y, 0.1);
-        assertEquals(0d, c.x, 0.1);
-        assertEquals(0d, c.z, 0.1);
+        LinearRing box = (LinearRing) parse();
+        Coordinate[] coordinates = box.getCoordinates();
+        assertEquals("Invalid number of coordinates", 5, coordinates.length);
+        assertEquals(coordinates[0], new Coordinate(-1, -1));
+        assertEquals(coordinates[1], new Coordinate(-1, 1));
+        assertEquals(coordinates[2], new Coordinate(1, 1));
+        assertEquals(coordinates[3], new Coordinate(1, -1));
+        assertEquals("Last and first coordinates should be equal", coordinates[0], coordinates[4]);
     }
 }

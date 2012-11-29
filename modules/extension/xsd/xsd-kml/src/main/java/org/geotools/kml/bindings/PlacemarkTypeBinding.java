@@ -17,9 +17,7 @@
 package org.geotools.kml.bindings;
 
 import javax.xml.namespace.QName;
-import com.vividsolutions.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
+
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.kml.KML;
@@ -27,6 +25,10 @@ import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.Binding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
+
+import com.vividsolutions.jts.geom.Geometry;
 
 
 /**
@@ -56,20 +58,6 @@ import org.geotools.xml.Node;
  * @source $URL$
  */
 public class PlacemarkTypeBinding extends AbstractComplexBinding {
-    static final SimpleFeatureType featureType;
-
-    static {
-        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
-
-        //TODO: use inheiretance when our feature model works
-        tb.init(FeatureTypeBinding.featureType);
-        tb.setName("placemark");
-
-        //&lt;element minOccurs="0" ref="kml:Geometry"/&gt;
-        tb.add("Geometry", Geometry.class);
-
-        featureType = tb.buildFeatureType();
-    }
 
     /**
      * @generated
@@ -84,6 +72,7 @@ public class PlacemarkTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @SuppressWarnings("rawtypes")
     public Class getType() {
         return SimpleFeature.class;
     }
@@ -100,9 +89,19 @@ public class PlacemarkTypeBinding extends AbstractComplexBinding {
      */
     public Object parse(ElementInstance instance, Node node, Object value)
         throws Exception {
-        SimpleFeatureBuilder b = new SimpleFeatureBuilder(featureType);
-
+        // retype from the abstract feature type, since extended data could have altered the schema
+        // placemarks add an additional geometry field
         SimpleFeature feature = (SimpleFeature) value;
+        SimpleFeatureType abstractFeatureType = feature.getFeatureType();
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        tb.init(abstractFeatureType);
+        tb.setName("placemark");
+        tb.add("Geometry", Geometry.class);
+        tb.setDefaultGeometry("Geometry");
+        SimpleFeatureType placemarkFeatureType = tb.buildFeatureType();
+
+        SimpleFeatureBuilder b = new SimpleFeatureBuilder(placemarkFeatureType);
+
         b.init(feature);
 
         //&lt;element minOccurs="0" ref="kml:Geometry"/&gt;

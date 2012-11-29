@@ -17,11 +17,15 @@
 package org.geotools.kml.bindings;
 
 import javax.xml.namespace.QName;
-import com.vividsolutions.jts.geom.Coordinate;
+
 import org.geotools.kml.KML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
 
 
 /**
@@ -58,6 +62,9 @@ import org.geotools.xml.Node;
  * @source $URL$
  */
 public class LookAtTypeBinding extends AbstractComplexBinding {
+
+    private GeometryFactory geometryFactory;
+
     /**
      * @generated
      */
@@ -72,7 +79,11 @@ public class LookAtTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Class getType() {
-        return Coordinate.class;
+        return Point.class;
+    }
+
+    public LookAtTypeBinding(GeometryFactory geometryFactory) {
+        this.geometryFactory = geometryFactory;
     }
 
     /**
@@ -94,6 +105,8 @@ public class LookAtTypeBinding extends AbstractComplexBinding {
         //&lt;element default="0" minOccurs="0" name="altitude" type="double"/&gt;
         c.z = ((Double) node.getChildValue("altitude", Double.valueOf(0d))).doubleValue();
 
-        return c;
+        Point p = geometryFactory.createPoint(c);
+
+        return p;
     }
 }

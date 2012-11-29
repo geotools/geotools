@@ -32,23 +32,14 @@ import org.eclipse.emf.ecore.util.EDataTypeEList;
  */
 public class AcceptLanguagesTypeImpl extends EObjectImpl implements AcceptLanguagesType {
     /**
-     * The default value of the '{@link #getLanguage() <em>Language</em>}' attribute.
+     * The cached value of the '{@link #getLanguage() <em>Language</em>}' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @see #getLanguage()
      * @generated
      * @ordered
      */
-    protected static final String LANGUAGE_EDEFAULT = null;
-    /**
-     * The cached value of the '{@link #getLanguage() <em>Language</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getLanguage()
-     * @generated
-     * @ordered
-     */
-    protected String language = LANGUAGE_EDEFAULT;
+    protected EList<String> language;
 
     /**
      * <!-- begin-user-doc -->
@@ -74,20 +65,11 @@ public class AcceptLanguagesTypeImpl extends EObjectImpl implements AcceptLangua
      * <!-- end-user-doc -->
      * @generated
      */
-    public String getLanguage() {
+    public EList<String> getLanguage() {
+        if (language == null) {
+            language = new EDataTypeEList<String>(String.class, this, Ows20Package.ACCEPT_LANGUAGES_TYPE__LANGUAGE);
+        }
         return language;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setLanguage(String newLanguage) {
-        String oldLanguage = language;
-        language = newLanguage;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Ows20Package.ACCEPT_LANGUAGES_TYPE__LANGUAGE, oldLanguage, language));
     }
 
     /**
@@ -114,7 +96,8 @@ public class AcceptLanguagesTypeImpl extends EObjectImpl implements AcceptLangua
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Ows20Package.ACCEPT_LANGUAGES_TYPE__LANGUAGE:
-                setLanguage((String)newValue);
+                getLanguage().clear();
+                getLanguage().addAll((Collection<? extends String>)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -129,7 +112,7 @@ public class AcceptLanguagesTypeImpl extends EObjectImpl implements AcceptLangua
     public void eUnset(int featureID) {
         switch (featureID) {
             case Ows20Package.ACCEPT_LANGUAGES_TYPE__LANGUAGE:
-                setLanguage(LANGUAGE_EDEFAULT);
+                getLanguage().clear();
                 return;
         }
         super.eUnset(featureID);
@@ -144,7 +127,7 @@ public class AcceptLanguagesTypeImpl extends EObjectImpl implements AcceptLangua
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case Ows20Package.ACCEPT_LANGUAGES_TYPE__LANGUAGE:
-                return LANGUAGE_EDEFAULT == null ? language != null : !LANGUAGE_EDEFAULT.equals(language);
+                return language != null && !language.isEmpty();
         }
         return super.eIsSet(featureID);
     }

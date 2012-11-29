@@ -59,6 +59,7 @@ import net.opengis.ows20.UnNamedDomainType;
 import net.opengis.ows20.ValueType;
 import net.opengis.ows20.ValuesReferenceType;
 import net.opengis.ows20.WGS84BoundingBoxType;
+import net.opengis.ows20.util.Ows20Validator;
 import net.opengis.ows20.Ows20Factory;
 import net.opengis.ows20.Ows20Package;
 
@@ -684,6 +685,15 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
 
         // Initialize created meta-data
         theOws20Package.initializePackageContents();
+
+        // Register package validator
+        EValidator.Registry.INSTANCE.put
+            (theOws20Package, 
+             new EValidator.Descriptor() {
+                 public EValidator getEValidator() {
+                     return Ows20Validator.INSTANCE;
+                 }
+             });
 
         // Mark meta-data to indicate it can't be changed
         theOws20Package.freeze();
@@ -3879,10 +3889,10 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
         initEAttribute(getAbstractReferenceBaseType_Type(), theXMLTypePackage.getString(), "type", "simple", 0, 1, AbstractReferenceBaseType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(acceptFormatsTypeEClass, AcceptFormatsType.class, "AcceptFormatsType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getAcceptFormatsType_OutputFormat(), this.getMimeType(), "outputFormat", null, 0, 1, AcceptFormatsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getAcceptFormatsType_OutputFormat(), ecorePackage.getEString(), "outputFormat", null, 0, -1, AcceptFormatsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(acceptLanguagesTypeEClass, AcceptLanguagesType.class, "AcceptLanguagesType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getAcceptLanguagesType_Language(), theXMLTypePackage.getLanguage(), "language", null, 1, 1, AcceptLanguagesType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getAcceptLanguagesType_Language(), ecorePackage.getEString(), "language", null, 1, -1, AcceptLanguagesType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(acceptVersionsTypeEClass, AcceptVersionsType.class, "AcceptVersionsType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getAcceptVersionsType_Version(), this.getVersionType(), "version", null, 1, 1, AcceptVersionsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

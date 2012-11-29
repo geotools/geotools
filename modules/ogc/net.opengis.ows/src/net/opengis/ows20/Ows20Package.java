@@ -413,7 +413,7 @@ public interface Ows20Package extends EPackage {
     int ACCEPT_FORMATS_TYPE = 1;
 
     /**
-     * The feature id for the '<em><b>Output Format</b></em>' attribute.
+     * The feature id for the '<em><b>Output Format</b></em>' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -441,7 +441,7 @@ public interface Ows20Package extends EPackage {
     int ACCEPT_LANGUAGES_TYPE = 2;
 
     /**
-     * The feature id for the '<em><b>Language</b></em>' attribute.
+     * The feature id for the '<em><b>Language</b></em>' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -4529,10 +4529,10 @@ public interface Ows20Package extends EPackage {
     EClass getAcceptFormatsType();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.ows20.AcceptFormatsType#getOutputFormat <em>Output Format</em>}'.
+     * Returns the meta object for the attribute list '{@link net.opengis.ows20.AcceptFormatsType#getOutputFormat <em>Output Format</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Output Format</em>'.
+     * @return the meta object for the attribute list '<em>Output Format</em>'.
      * @see net.opengis.ows20.AcceptFormatsType#getOutputFormat()
      * @see #getAcceptFormatsType()
      * @generated
@@ -4550,10 +4550,10 @@ public interface Ows20Package extends EPackage {
     EClass getAcceptLanguagesType();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.ows20.AcceptLanguagesType#getLanguage <em>Language</em>}'.
+     * Returns the meta object for the attribute list '{@link net.opengis.ows20.AcceptLanguagesType#getLanguage <em>Language</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Language</em>'.
+     * @return the meta object for the attribute list '<em>Language</em>'.
      * @see net.opengis.ows20.AcceptLanguagesType#getLanguage()
      * @see #getAcceptLanguagesType()
      * @generated
@@ -7828,7 +7828,7 @@ public interface Ows20Package extends EPackage {
         EClass ACCEPT_FORMATS_TYPE = eINSTANCE.getAcceptFormatsType();
 
         /**
-         * The meta object literal for the '<em><b>Output Format</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Output Format</b></em>' attribute list feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
@@ -7846,7 +7846,7 @@ public interface Ows20Package extends EPackage {
         EClass ACCEPT_LANGUAGES_TYPE = eINSTANCE.getAcceptLanguagesType();
 
         /**
-         * The meta object literal for the '<em><b>Language</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Language</b></em>' attribute list feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated

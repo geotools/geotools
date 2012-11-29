@@ -69,16 +69,19 @@ import org.geotools.xml.Node;
  * @source $URL$
  */
 public class DocumentTypeBinding extends AbstractComplexBinding {
-    public static final SimpleFeatureType featureType;
+    public static final SimpleFeatureType FeatureType;
     static {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
-        tb.init(FeatureTypeBinding.featureType);
+        tb.init(FeatureTypeBinding.FeatureType);
         tb.setName("document");
+
+        tb.add("name", String.class);
+        tb.add("description", String.class);
 
         //&lt;element maxOccurs="unbounded" minOccurs="0" ref="kml:Feature"/&gt;
         tb.add("Feature", FeatureCollection.class);
 
-        featureType = tb.buildFeatureType();
+        FeatureType = tb.buildFeatureType();
     }
 
     /**
@@ -110,10 +113,13 @@ public class DocumentTypeBinding extends AbstractComplexBinding {
      */
     public Object parse(ElementInstance instance, Node node, Object value)
         throws Exception {
-        SimpleFeatureBuilder b = new SimpleFeatureBuilder(featureType);
+        SimpleFeatureBuilder b = new SimpleFeatureBuilder(FeatureType);
 
         SimpleFeature feature = (SimpleFeature) value;
         b.init(feature);
+
+        b.set("name", node.getChildValue("name"));
+        b.set("description", node.getChildValue("description"));
 
         //&lt;element maxOccurs="unbounded" minOccurs="0" ref="kml:Feature"/&gt;
         b.set("Feature", node.getChildValues(SimpleFeature.class));

@@ -2,7 +2,6 @@ package org.geotools.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -16,8 +15,6 @@ import org.geotools.xml.impl.ElementHandler;
 import org.geotools.xml.impl.NodeImpl;
 import org.geotools.xml.impl.ParserHandler;
 import org.xml.sax.SAXException;
-
-import com.sun.xml.internal.ws.api.streaming.XMLStreamReaderFactory;
 
 /**
  * XML pull parser capable of streaming.

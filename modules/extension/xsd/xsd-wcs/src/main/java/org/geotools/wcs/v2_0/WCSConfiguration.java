@@ -74,12 +74,12 @@ public class WCSConfiguration extends Configuration {
         bindings.put(WCS.CoverageSubtypeParent, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.CoverageSubtypeParent));
         bindings.put(WCS.CoverageSummary, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.CoverageSummary));
         // bindings.put(WCS.DescribeCoverage, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.DescribeCoverage));
-        bindings.put(WCS.DimensionSlice, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.DimensionSlice));
+        // bindings.put(WCS.DimensionSlice, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.DimensionSlice));
         bindings.put(WCS.DimensionSubset, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.DimensionSubset));
-        bindings.put(WCS.DimensionTrim, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.DimensionTrim));
-        bindings.put(WCS.Extension, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.Extension));
+        // bindings.put(WCS.DimensionTrim, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.DimensionTrim));
+        // bindings.put(WCS.Extension, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.Extension));
         // bindings.put(WCS.GetCapabilities, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.GetCapabilities));
-        bindings.put(WCS.GetCoverage, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.GetCoverage));
+        // bindings.put(WCS.GetCoverage, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.GetCoverage));
         bindings.put(WCS.OfferedCoverage, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.OfferedCoverage));
         bindings.put(WCS.ServiceMetadata, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.ServiceMetadata));
         bindings.put(WCS.ServiceParameters, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.ServiceParameters));

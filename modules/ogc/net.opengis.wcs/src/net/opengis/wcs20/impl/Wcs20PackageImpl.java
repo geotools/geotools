@@ -29,6 +29,7 @@ import net.opengis.wcs20.ServiceParametersType;
 import net.opengis.wcs20.Wcs20Factory;
 import net.opengis.wcs20.Wcs20Package;
 
+import net.opengis.wcs20.util.Wcs20Validator;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -265,9 +266,19 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
         // Initialize created meta-data
         theWcs20Package.initializePackageContents();
 
+        // Register package validator
+        EValidator.Registry.INSTANCE.put
+            (theWcs20Package, 
+             new EValidator.Descriptor() {
+                 public EValidator getEValidator() {
+                     return Wcs20Validator.INSTANCE;
+                 }
+             });
+
         // Mark meta-data to indicate it can't be changed
         theWcs20Package.freeze();
 
+  
         // Update the registry and return the package
         EPackage.Registry.INSTANCE.put(Wcs20Package.eNS_URI, theWcs20Package);
         return theWcs20Package;
@@ -1305,7 +1316,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
         initEReference(getCoverageSummaryType_Metadata(), theOws20Package.getMetadataType(), null, "metadata", null, 0, -1, CoverageSummaryType.class, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 
         initEClass(describeCoverageTypeEClass, DescribeCoverageType.class, "DescribeCoverageType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getDescribeCoverageType_CoverageId(), theXMLTypePackage.getNCName(), "coverageId", null, 1, 1, DescribeCoverageType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getDescribeCoverageType_CoverageId(), ecorePackage.getEString(), "coverageId", null, 1, -1, DescribeCoverageType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(dimensionSliceTypeEClass, DimensionSliceType.class, "DimensionSliceType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getDimensionSliceType_SlicePoint(), theXMLTypePackage.getString(), "slicePoint", null, 1, 1, DimensionSliceType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

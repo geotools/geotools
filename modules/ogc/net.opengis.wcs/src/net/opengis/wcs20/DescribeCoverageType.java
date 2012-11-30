@@ -2,6 +2,8 @@
  */
 package net.opengis.wcs20;
 
+import java.util.List;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -30,20 +32,9 @@ public interface DescribeCoverageType extends RequestBaseType {
      * @return the value of the '<em>Coverage Id</em>' attribute.
      * @see #setCoverageId(String)
      * @see net.opengis.wcs20.Wcs20Package#getDescribeCoverageType_CoverageId()
-     * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.NCName" required="true"
+     * @model unique="false" required="true"
      *        extendedMetaData="kind='element' name='CoverageId' namespace='##targetNamespace'"
-     * @generated
      */
-    String getCoverageId();
-
-    /**
-     * Sets the value of the '{@link net.opengis.wcs20.DescribeCoverageType#getCoverageId <em>Coverage Id</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Coverage Id</em>' attribute.
-     * @see #getCoverageId()
-     * @generated
-     */
-    void setCoverageId(String value);
+    List<String> getCoverageId();
 
 } // DescribeCoverageType

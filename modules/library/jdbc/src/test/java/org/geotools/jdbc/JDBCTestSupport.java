@@ -46,7 +46,7 @@ import com.vividsolutions.jts.geom.Geometry;
 /**
  * Test support class for jdbc test cases.
  * <p>
- * This test class fires up a live instance of an h2 database to provide a
+ * This test class fires up a live instance of a jdbc database to provide a
  * live database to work with.
  * </p>
  *

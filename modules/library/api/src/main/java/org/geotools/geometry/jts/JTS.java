@@ -44,7 +44,10 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
+import org.opengis.referencing.operation.CoordinateOperation;
+import org.opengis.referencing.operation.CoordinateOperationFactory;
 import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.OperationNotFoundException;
 import org.opengis.referencing.operation.TransformException;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -222,6 +225,184 @@ public final class JTS {
     }
     
     /**
+     * Transform from D up to 3D.
+     * <p>
+     * This method transforms each ordinate into WGS84, manually converts this to WGS84_3D with
+     * the addition of a Double.NaN, and then transforms to the final 3D position.
+     * 
+     * @param sourceEnvelope
+     * @param targetEnvelope
+     * @param transform
+     * @param npoints
+     * @return ReferencedEnvelope3D in targetCRS describing the sourceEnvelope bounds
+     * @throws TransformException
+     * @throws FactoryException If operationis unavailable from source CRS to WGS84, to from WGS84_3D to targetCRS
+     * @throws OperationNotFoundException 
+     */ // JTS.transformUp(this, targetCRS, numPointsForTransformation );
+    public static ReferencedEnvelope3D transformUp(final ReferencedEnvelope sourceEnvelope,
+            CoordinateReferenceSystem targetCRS, boolean lenient, int npoints)
+            throws TransformException, OperationNotFoundException, FactoryException {
+        final double xmin = sourceEnvelope.getMinX();
+        final double xmax = sourceEnvelope.getMaxX();
+        final double ymin = sourceEnvelope.getMinY();
+        final double ymax = sourceEnvelope.getMaxY();
+        final double scaleX = (xmax - xmin) / npoints;
+        final double scaleY = (ymax - ymin) / npoints;
+        ReferencedEnvelope3D targetEnvelope = new ReferencedEnvelope3D(targetCRS);
+        
+        /*
+         * Gets a first estimation using an algorithm capable to take singularity in account
+         * (North pole, South pole, 180ï¿½ longitude). We will expand this initial box later.
+         */
+        CoordinateOperationFactory coordinateOperationFactory = CRS
+                .getCoordinateOperationFactory(lenient);
+        CoordinateOperation operation1 = coordinateOperationFactory.createOperation(
+                sourceEnvelope.getCoordinateReferenceSystem(), DefaultGeographicCRS.WGS84);
+        MathTransform transform1 = operation1.getMathTransform();
+        final CoordinateOperation operation2 = coordinateOperationFactory.createOperation(
+                DefaultGeographicCRS.WGS84_3D, targetCRS);
+        MathTransform transform2 = operation2.getMathTransform();
+
+        for( int t = 0; t < npoints; t++ ){
+            double dx = scaleX * t;
+            double dy = scaleY * t;
+            
+            GeneralDirectPosition left = new GeneralDirectPosition( xmin, ymin+dy);
+            DirectPosition pt = transformUp( left, transform1, transform2 );
+            targetEnvelope.expandToInclude(pt);
+            
+            GeneralDirectPosition top = new GeneralDirectPosition( xmin+dx, ymax);
+            pt = transformUp( top, transform1, transform2 );
+            targetEnvelope.expandToInclude(pt);
+            
+            GeneralDirectPosition right = new GeneralDirectPosition( xmax, ymin-dy);
+            pt = transformUp( right, transform1, transform2 );
+            targetEnvelope.expandToInclude(pt);
+            
+            GeneralDirectPosition bottom = new GeneralDirectPosition( xmax-dx, ymax);
+            pt = transformUp( bottom, transform1, transform2 );
+            targetEnvelope.expandToInclude(pt);
+        }
+        return targetEnvelope;
+    }
+    /**
+     * Transform from 3D down to 2D.
+     * <p>
+     * This method transforms each ordinate into WGS84, manually converts this to WGS84_3D with
+     * the addition of a Double.NaN, and then transforms to the final 3D position.
+     * 
+     * @param sourceEnvelope
+     * @param targetEnvelope
+     * @param transform
+     * @param npoints
+     * @return ReferencedEnvelope matching provided 2D TargetCRS
+     * @throws TransformException
+     */
+    public static ReferencedEnvelope transformDown(final ReferencedEnvelope sourceEnvelope,
+            CoordinateReferenceSystem targetCRS, boolean lenient, int npoints)
+            throws TransformException, OperationNotFoundException, FactoryException {
+        final double xmin = sourceEnvelope.getMinX();
+        final double xmax = sourceEnvelope.getMaxX();
+        final double ymin = sourceEnvelope.getMinY();
+        final double ymax = sourceEnvelope.getMaxY();
+        final double scaleX = (xmax - xmin) / npoints;
+        final double scaleY = (ymax - ymin) / npoints;
+        
+        final double zmin = sourceEnvelope.getMinimum(2);
+        final double zmax = sourceEnvelope.getMaximum(2);
+        final double z = (zmax-zmin) / 2; // just average is fine as we are trying to remove height
+        
+        ReferencedEnvelope targetEnvelope = new ReferencedEnvelope( targetCRS );
+        
+        /*
+         * Gets a first estimation using an algorithm capable to take singularity in account
+         * (North pole, South pole, 180ï¿½ longitude). We will expand this initial box later.
+         */
+        CoordinateOperationFactory coordinateOperationFactory = CRS
+                .getCoordinateOperationFactory(lenient);
+        CoordinateOperation operation1 = coordinateOperationFactory.createOperation(
+                sourceEnvelope.getCoordinateReferenceSystem(), DefaultGeographicCRS.WGS84);
+        MathTransform transform1 = operation1.getMathTransform();
+        final CoordinateOperation operation2 = coordinateOperationFactory.createOperation(
+                DefaultGeographicCRS.WGS84, targetCRS);
+        MathTransform transform2 = operation2.getMathTransform();
+    
+        for( int t = 0; t < npoints; t++ ){
+            double dx = scaleX * t;
+            double dy = scaleY * t;
+            
+            GeneralDirectPosition position = new GeneralDirectPosition( sourceEnvelope.getCoordinateReferenceSystem());
+            position.setOrdinate(0, xmin );
+            position.setOrdinate(1, ymin+dy);
+            position.setOrdinate(2, z );
+            
+            DirectPosition pt = transformDown( position, transform1, transform2 );
+            targetEnvelope.expandToInclude(pt);
+            
+            GeneralDirectPosition top = new GeneralDirectPosition( xmin+dx, ymax, z);
+            pt = transformDown( top, transform1, transform2 );
+            targetEnvelope.expandToInclude(pt);
+            
+            GeneralDirectPosition right = new GeneralDirectPosition( xmax, ymin-dy, z);
+            pt = transformDown( right, transform1, transform2 );
+            targetEnvelope.expandToInclude(pt);
+            
+            GeneralDirectPosition bottom = new GeneralDirectPosition( xmax-dx, ymax, z);
+            pt = transformDown( bottom, transform1, transform2 );
+            targetEnvelope.expandToInclude(pt);
+        }
+        return targetEnvelope;
+    }
+
+    /**
+     * Transform the provided 2D direct position into 3D (0 Ellipsoidal height assumed when
+     * converting from {@link DefaultGeographicCRS#WGS84} to {@link DefaultGeographicCRS#WGS84_3D}).
+     * 
+     * @param srcPosition Source 2D position
+     * @param transform1 From source CRS to To WGS84
+     * @param transform2 From WGS84_3D to target CRS
+     * @return Position in target CRS as calculated by transform2
+     * @throws TransformException 
+     * @throws MismatchedDimensionException 
+     */
+    private static DirectPosition transformUp(GeneralDirectPosition srcPosition, MathTransform transform1,
+            MathTransform transform2) throws MismatchedDimensionException, TransformException {
+        DirectPosition world2D = transform1.transform(srcPosition, null );
+        
+        DirectPosition world3D = new GeneralDirectPosition( DefaultGeographicCRS.WGS84_3D);
+        world3D.setOrdinate(0, world2D.getOrdinate(0));
+        world3D.setOrdinate(1, world2D.getOrdinate(1));
+        world3D.setOrdinate(2, 0.0 ); // 0 elliposial height is assumed 
+        
+        DirectPosition targetPosition = transform2.transform(world3D, null );
+        return targetPosition;
+    }
+
+    /**
+     * Transform the provided 3D direct position into 2D (Ellipsoidal height is ignored when
+     * converting from {@link DefaultGeographicCRS#WGS84_3D} to {@link DefaultGeographicCRS#WGS84}).
+     * 
+     * @param srcPosition Source 3D position
+     * @param transform1 From source CRS to To WGS84_3D
+     * @param transform2 From WGS84 to target CRS
+     * @return Position in target CRS as calculated by transform2
+     * @throws TransformException 
+     * @throws MismatchedDimensionException 
+     */
+    private static DirectPosition transformDown(GeneralDirectPosition srcPosition, MathTransform transform1,
+            MathTransform transform2) throws MismatchedDimensionException, TransformException {
+        DirectPosition world3D = transform1.transform(srcPosition, null );
+        
+        DirectPosition world2D = new GeneralDirectPosition( DefaultGeographicCRS.WGS84);
+        world2D.setOrdinate(0, world3D.getOrdinate(0));
+        world2D.setOrdinate(1, world3D.getOrdinate(1));
+        
+        DirectPosition targetPosition = transform2.transform(world2D, null );
+        return targetPosition;
+    }
+
+    
+    /**
      * Transforms the geometry using the default transformer.
      * 
      * @param geom
@@ -242,6 +423,7 @@ public final class JTS {
         return transformer.transform(geom);
     }
 
+    
     /**
      * Transforms the coordinate using the provided math transform.
      * 

@@ -152,4 +152,32 @@ public class ReferencedEnvelopeTest {
         assertNotNull( bounds2 );
     }
 
+    @Test
+    public void testTransformToWGS84() throws Exception {
+        String wkt = "GEOGCS[\"GDA94\","
+                + " DATUM[\"Geocentric Datum of Australia 1994\","
+                + "  SPHEROID[\"GRS 1980\", 6378137.0, 298.257222101, AUTHORITY[\"EPSG\",\"7019\"]],"
+                + "  TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "
+                + " AUTHORITY[\"EPSG\",\"6283\"]], "
+                + " PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],"
+                + " UNIT[\"degree\", 0.017453292519943295], "
+                + " AXIS[\"Geodetic longitude\", EAST], " + " AXIS[\"Geodetic latitude\", NORTH], "
+                + " AXIS[\"Ellipsoidal height\", UP], " + " AUTHORITY[\"EPSG\",\"4939\"]]";
+
+        CoordinateReferenceSystem gda94 = CRS.parseWKT(wkt);
+
+        ReferencedEnvelope bounds = new ReferencedEnvelope(130.875825803896, 130.898939990319,
+                -16.4491956225999, -16.4338185791628, DefaultGeographicCRS.WGS84 );
+                
+        ReferencedEnvelope worldBounds2D = bounds.transform( DefaultGeographicCRS.WGS84, true );
+        assertEquals( DefaultGeographicCRS.WGS84, worldBounds2D.getCoordinateReferenceSystem() );
+        
+        ReferencedEnvelope worldBounds3D = bounds.transform( DefaultGeographicCRS.WGS84_3D, true );
+        assertEquals( DefaultGeographicCRS.WGS84_3D, worldBounds3D.getCoordinateReferenceSystem() );
+
+        ReferencedEnvelope gda94Bounds3D = bounds.transform( gda94, true );
+        assertEquals( gda94, gda94Bounds3D.getCoordinateReferenceSystem() );
+        
+        
+    }
 }

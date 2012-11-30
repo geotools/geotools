@@ -32,23 +32,14 @@ import org.eclipse.emf.ecore.util.EDataTypeEList;
  */
 public class AcceptVersionsTypeImpl extends EObjectImpl implements AcceptVersionsType {
     /**
-     * The default value of the '{@link #getVersion() <em>Version</em>}' attribute.
+     * The cached value of the '{@link #getVersion() <em>Version</em>}' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @see #getVersion()
      * @generated
      * @ordered
      */
-    protected static final String VERSION_EDEFAULT = null;
-    /**
-     * The cached value of the '{@link #getVersion() <em>Version</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getVersion()
-     * @generated
-     * @ordered
-     */
-    protected String version = VERSION_EDEFAULT;
+    protected EList<String> version;
 
     /**
      * <!-- begin-user-doc -->
@@ -74,20 +65,11 @@ public class AcceptVersionsTypeImpl extends EObjectImpl implements AcceptVersion
      * <!-- end-user-doc -->
      * @generated
      */
-    public String getVersion() {
+    public EList<String> getVersion() {
+        if (version == null) {
+            version = new EDataTypeEList<String>(String.class, this, Ows20Package.ACCEPT_VERSIONS_TYPE__VERSION);
+        }
         return version;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setVersion(String newVersion) {
-        String oldVersion = version;
-        version = newVersion;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Ows20Package.ACCEPT_VERSIONS_TYPE__VERSION, oldVersion, version));
     }
 
     /**
@@ -114,7 +96,8 @@ public class AcceptVersionsTypeImpl extends EObjectImpl implements AcceptVersion
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Ows20Package.ACCEPT_VERSIONS_TYPE__VERSION:
-                setVersion((String)newValue);
+                getVersion().clear();
+                getVersion().addAll((Collection<? extends String>)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -129,7 +112,7 @@ public class AcceptVersionsTypeImpl extends EObjectImpl implements AcceptVersion
     public void eUnset(int featureID) {
         switch (featureID) {
             case Ows20Package.ACCEPT_VERSIONS_TYPE__VERSION:
-                setVersion(VERSION_EDEFAULT);
+                getVersion().clear();
                 return;
         }
         super.eUnset(featureID);
@@ -144,7 +127,7 @@ public class AcceptVersionsTypeImpl extends EObjectImpl implements AcceptVersion
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case Ows20Package.ACCEPT_VERSIONS_TYPE__VERSION:
-                return VERSION_EDEFAULT == null ? version != null : !VERSION_EDEFAULT.equals(version);
+                return version != null && !version.isEmpty();
         }
         return super.eIsSet(featureID);
     }

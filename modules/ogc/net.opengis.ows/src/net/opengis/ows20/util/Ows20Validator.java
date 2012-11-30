@@ -75,14 +75,6 @@ public class Ows20Validator extends EObjectValidator {
     protected XMLTypeValidator xmlTypeValidator;
 
     /**
-     * The cached base package validator.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    protected XMLTypeValidator xmlType_1Validator;
-
-    /**
      * Creates an instance of the switch.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -91,7 +83,6 @@ public class Ows20Validator extends EObjectValidator {
     public Ows20Validator() {
         super();
         xmlTypeValidator = XMLTypeValidator.INSTANCE;
-        xmlType_1Validator = XMLTypeValidator.INSTANCE;
     }
 
     /**

@@ -469,7 +469,7 @@ public interface Ows20Package extends EPackage {
     int ACCEPT_VERSIONS_TYPE = 3;
 
     /**
-     * The feature id for the '<em><b>Version</b></em>' attribute.
+     * The feature id for the '<em><b>Version</b></em>' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -3733,7 +3733,7 @@ public interface Ows20Package extends EPackage {
     int SECTIONS_TYPE = 44;
 
     /**
-     * The feature id for the '<em><b>Section</b></em>' attribute.
+     * The feature id for the '<em><b>Section</b></em>' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -4571,10 +4571,10 @@ public interface Ows20Package extends EPackage {
     EClass getAcceptVersionsType();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.ows20.AcceptVersionsType#getVersion <em>Version</em>}'.
+     * Returns the meta object for the attribute list '{@link net.opengis.ows20.AcceptVersionsType#getVersion <em>Version</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Version</em>'.
+     * @return the meta object for the attribute list '<em>Version</em>'.
      * @see net.opengis.ows20.AcceptVersionsType#getVersion()
      * @see #getAcceptVersionsType()
      * @generated
@@ -7082,10 +7082,10 @@ public interface Ows20Package extends EPackage {
     EClass getSectionsType();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.ows20.SectionsType#getSection <em>Section</em>}'.
+     * Returns the meta object for the attribute list '{@link net.opengis.ows20.SectionsType#getSection <em>Section</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Section</em>'.
+     * @return the meta object for the attribute list '<em>Section</em>'.
      * @see net.opengis.ows20.SectionsType#getSection()
      * @see #getSectionsType()
      * @generated
@@ -7864,7 +7864,7 @@ public interface Ows20Package extends EPackage {
         EClass ACCEPT_VERSIONS_TYPE = eINSTANCE.getAcceptVersionsType();
 
         /**
-         * The meta object literal for the '<em><b>Version</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Version</b></em>' attribute list feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
@@ -9802,7 +9802,7 @@ public interface Ows20Package extends EPackage {
         EClass SECTIONS_TYPE = eINSTANCE.getSectionsType();
 
         /**
-         * The meta object literal for the '<em><b>Section</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Section</b></em>' attribute list feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated

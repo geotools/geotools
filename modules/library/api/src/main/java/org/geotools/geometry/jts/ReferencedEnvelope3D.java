@@ -345,7 +345,13 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
 			}
 		}
 	}
-
+	@Override
+        public void expandToInclude(DirectPosition pt ){
+            double x = pt.getOrdinate(0);
+            double y = pt.getOrdinate(1);
+            double z = pt.getDimension()>=3 ? pt.getOrdinate(2) : Double.NaN;
+            expandToInclude(x,y,z);
+        }
 	/**
 	 * Translates this envelope by given amounts in the X and Y direction.
 	 * 
@@ -994,7 +1000,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
      * method.
      *
      */
-    public BoundingBox3D toBounds(final CoordinateReferenceSystem targetCRS)
+    public BoundingBox toBounds(final CoordinateReferenceSystem targetCRS)
         throws TransformException {
         try {
             return transform(targetCRS, true);
@@ -1019,7 +1025,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
      *
      * @see CRS#transform(CoordinateOperation, org.opengis.geometry.Envelope)
      */
-    public ReferencedEnvelope3D transform(CoordinateReferenceSystem targetCRS, boolean lenient)
+    public ReferencedEnvelope transform(CoordinateReferenceSystem targetCRS, boolean lenient)
         throws TransformException, FactoryException {
         return transform(targetCRS, lenient, 5);
     }
@@ -1043,7 +1049,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
      * @see CRS#transform(CoordinateOperation, org.opengis.geometry.Envelope)
      *
      */
-    public ReferencedEnvelope3D transform(final CoordinateReferenceSystem targetCRS,
+    public ReferencedEnvelope transform(final CoordinateReferenceSystem targetCRS,
         final boolean lenient, final int numPointsForTransformation)
         throws TransformException, FactoryException {
     	//TODO: implement 3D behaviour for this method
@@ -1060,7 +1066,9 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
                 throw new NullPointerException("Unable to transform referenced envelope, crs has not yet been provided.");
             }
         }
-
+        if( getDimension() != targetCRS.getCoordinateSystem().getDimension()){
+            return JTS.transformDown(this, targetCRS, lenient, numPointsForTransformation );
+        }
         // Gets a first estimation using an algorithm capable to take singularity in account
         // (North pole, South pole, 180ï¿½ longitude). We will expand this initial box later.
         

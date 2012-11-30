@@ -3895,7 +3895,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
         initEAttribute(getAcceptLanguagesType_Language(), ecorePackage.getEString(), "language", null, 1, -1, AcceptLanguagesType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(acceptVersionsTypeEClass, AcceptVersionsType.class, "AcceptVersionsType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getAcceptVersionsType_Version(), this.getVersionType(), "version", null, 1, 1, AcceptVersionsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getAcceptVersionsType_Version(), ecorePackage.getEString(), "version", null, 1, -1, AcceptVersionsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(additionalParametersBaseTypeEClass, AdditionalParametersBaseType.class, "AdditionalParametersBaseType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getAdditionalParametersBaseType_AdditionalParameter(), this.getAdditionalParameterType(), null, "additionalParameter", null, 1, 1, AdditionalParametersBaseType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -4168,7 +4168,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
         initEReference(getResponsiblePartyType_Role(), this.getCodeType(), null, "role", null, 1, 1, ResponsiblePartyType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(sectionsTypeEClass, SectionsType.class, "SectionsType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getSectionsType_Section(), theXMLTypePackage.getString(), "section", null, 0, 1, SectionsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getSectionsType_Section(), ecorePackage.getEString(), "section", null, 0, -1, SectionsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(serviceIdentificationTypeEClass, ServiceIdentificationType.class, "ServiceIdentificationType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getServiceIdentificationType_ServiceType(), this.getCodeType(), null, "serviceType", null, 1, 1, ServiceIdentificationType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

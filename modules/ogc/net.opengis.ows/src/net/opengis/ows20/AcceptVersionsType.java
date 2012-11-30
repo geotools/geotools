@@ -2,6 +2,7 @@
  */
 package net.opengis.ows20;
 
+import org.eclipse.emf.common.util.EList;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
@@ -40,19 +41,9 @@ public interface AcceptVersionsType extends EObject {
      * @return the value of the '<em>Version</em>' attribute.
      * @see #setVersion(String)
      * @see net.opengis.ows20.Ows20Package#getAcceptVersionsType_Version()
-     * @model unique="false" dataType="net.opengis.ows20.VersionType" required="true"
+     * @model unique="false" required="true"
      *        extendedMetaData="kind='element' name='Version' namespace='##targetNamespace'"
      */
-     String getVersion();
-
-    /**
-     * Sets the value of the '{@link net.opengis.ows20.AcceptVersionsType#getVersion <em>Version</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Version</em>' attribute.
-     * @see #getVersion()
-     * @generated
-     */
-    void setVersion(String value);
+     EList<String> getVersion();
 
 } // AcceptVersionsType

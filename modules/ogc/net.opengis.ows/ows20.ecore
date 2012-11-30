@@ -129,7 +129,7 @@
       <details key="documentation" value="Prioritized sequence of one or more specification&#xA;      versions accepted by client, with preferred versions listed first. See&#xA;      Version negotiation subclause for more information."/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" unique="false"
-        lowerBound="1" eType="#//VersionType">
+        lowerBound="1" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="element"/>
         <details key="name" value="Version"/>
@@ -2435,7 +2435,7 @@
       <details key="documentation" value="Unordered list of zero or more names of requested&#xA;      sections in complete service metadata document. Each Section value shall&#xA;      contain an allowed section name as specified by each OWS specification.&#xA;      See Sections parameter subclause for more information."/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="section" unique="false"
-        eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/XMLType.ecore#//String">
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="element"/>
         <details key="name" value="Section"/>

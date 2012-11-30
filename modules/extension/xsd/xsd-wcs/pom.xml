@@ -123,43 +123,40 @@
     </dependency>
   </dependencies>
 
-	<build>
-	  <plugins>
-		  <plugin>
-		     <groupId>org.apache.maven.plugins</groupId>
-		     <artifactId>maven-compiler-plugin</artifactId>
-		     <configuration>
-		       <source>1.5</source>  <!-- The -source argument for the Java compiler. -->
-		       <target>1.5</target>  <!-- The -target argument for the Java compiler. -->
-		       <debug>true</debug>   <!-- Whether to include debugging information.   -->
-		       <encoding>UTF-8</encoding> <!-- The -encoding argument for the Java compiler. -->
-		     </configuration>
-		  </plugin>
-
-	    <plugin>
-				<groupId>org.geotools.maven</groupId>
-		  	<artifactId>xmlcodegen</artifactId>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <schemaLocation>getCapabilites.xsd</schemaLocation>
-          <schemaSourceDirectory>${basedir}/src/main/resources/org/geotools/wcs/</schemaSourceDirectory>
-          <schemaLookupDirectories>
-            <schemaLookupDirectory>${basedir}/../ows/src/main/resources/org/geotools/ows/</schemaLookupDirectory>
-          </schemaLookupDirectories>
-          <sourceLocation>src\main\java</sourceLocation>  
-          <testLocation>src\main\test</testLocation>  
-          <resourceLocation>src\main\resources</resourceLocation>  
-          <destinationPackage>org.geotools.wcs10.bindings</destinationPackage>
+          <source>1.5</source>  <!-- The -source argument for the Java compiler. -->
+          <target>1.5</target>  <!-- The -target argument for the Java compiler. -->
+          <debug>true</debug>   <!-- Whether to include debugging information. -->
+          <encoding>UTF-8</encoding> <!-- The -encoding argument for the Java compiler. -->
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.geotools.maven</groupId>
+        <artifactId>xmlcodegen</artifactId>
+        <configuration>
+          <schemaLocation>wcsAll.xsd</schemaLocation>
+          <schemaSourceDirectory>${basedir}/src/main/resources/org/geotools/wcs/v2_0</schemaSourceDirectory>
+          <destinationPackage>org.geotools.wcs.v2_0</destinationPackage>
           <complexBindingBaseClass>org.geotools.xml.AbstractComplexEMFBinding</complexBindingBaseClass>
           <bindingConstructorArguments>
             <bindingConstructorArgument>
               <name>factory</name>
-              <type>net.opengis.wfs.WfsFactory</type>
+              <type>net.opengis.wcs20.Wcs20Factory</type>
               <mode>parent</mode>
             </bindingConstructorArgument>
           </bindingConstructorArguments>
+          <includes>
+            <include>LanguageStringType</include>
+          </includes>
         </configuration>
       </plugin>
-	  </plugins>
-	</build>
+    </plugins>
+  </build>
 
 </project>

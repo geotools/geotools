@@ -20,7 +20,6 @@ import net.opengis.ows10.OperationsMetadataType;
 import net.opengis.ows10.Ows10Factory;
 import net.opengis.ows10.RequestMethodType;
 import net.opengis.ows10.ResponsiblePartySubsetType;
-import net.opengis.ows10.SectionsType;
 import net.opengis.ows10.ServiceIdentificationType;
 import net.opengis.ows10.ServiceProviderType;
 
@@ -30,7 +29,6 @@ import org.custommonkey.xmlunit.XMLUnit;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.gml2.GML;
 import org.geotools.ows.OWS;
-import org.geotools.xlink.XLINK;
 import org.geotools.xml.Encoder;
 import org.geotools.xml.EncoderDelegate;
 import org.geotools.xml.Parser;

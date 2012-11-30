@@ -2,13 +2,16 @@
  */
 package net.opengis.wcs20.impl;
 
+import java.util.Collection;
 import net.opengis.wcs20.DescribeCoverageType;
 import net.opengis.wcs20.Wcs20Package;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
 
+import org.eclipse.emf.ecore.util.EDataTypeEList;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
@@ -26,24 +29,14 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class DescribeCoverageTypeImpl extends RequestBaseTypeImpl implements DescribeCoverageType {
     /**
-     * The default value of the '{@link #getCoverageId() <em>Coverage Id</em>}' attribute.
+     * The cached value of the '{@link #getCoverageId() <em>Coverage Id</em>}' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @see #getCoverageId()
      * @generated
      * @ordered
      */
-    protected static final String COVERAGE_ID_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getCoverageId() <em>Coverage Id</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getCoverageId()
-     * @generated
-     * @ordered
-     */
-    protected String coverageId = COVERAGE_ID_EDEFAULT;
+    protected EList<String> coverageId;
 
     /**
      * <!-- begin-user-doc -->
@@ -69,20 +62,11 @@ public class DescribeCoverageTypeImpl extends RequestBaseTypeImpl implements Des
      * <!-- end-user-doc -->
      * @generated
      */
-    public String getCoverageId() {
+    public EList<String> getCoverageId() {
+        if (coverageId == null) {
+            coverageId = new EDataTypeEList<String>(String.class, this, Wcs20Package.DESCRIBE_COVERAGE_TYPE__COVERAGE_ID);
+        }
         return coverageId;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setCoverageId(String newCoverageId) {
-        String oldCoverageId = coverageId;
-        coverageId = newCoverageId;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.DESCRIBE_COVERAGE_TYPE__COVERAGE_ID, oldCoverageId, coverageId));
     }
 
     /**
@@ -104,11 +88,13 @@ public class DescribeCoverageTypeImpl extends RequestBaseTypeImpl implements Des
      * <!-- end-user-doc -->
      * @generated
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Wcs20Package.DESCRIBE_COVERAGE_TYPE__COVERAGE_ID:
-                setCoverageId((String)newValue);
+                getCoverageId().clear();
+                getCoverageId().addAll((Collection<? extends String>)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -123,7 +109,7 @@ public class DescribeCoverageTypeImpl extends RequestBaseTypeImpl implements Des
     public void eUnset(int featureID) {
         switch (featureID) {
             case Wcs20Package.DESCRIBE_COVERAGE_TYPE__COVERAGE_ID:
-                setCoverageId(COVERAGE_ID_EDEFAULT);
+                getCoverageId().clear();
                 return;
         }
         super.eUnset(featureID);
@@ -138,7 +124,7 @@ public class DescribeCoverageTypeImpl extends RequestBaseTypeImpl implements Des
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case Wcs20Package.DESCRIBE_COVERAGE_TYPE__COVERAGE_ID:
-                return COVERAGE_ID_EDEFAULT == null ? coverageId != null : !COVERAGE_ID_EDEFAULT.equals(coverageId);
+                return coverageId != null && !coverageId.isEmpty();
         }
         return super.eIsSet(featureID);
     }

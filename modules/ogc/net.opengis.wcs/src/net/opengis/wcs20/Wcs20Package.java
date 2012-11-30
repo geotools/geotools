@@ -1303,7 +1303,7 @@ public interface Wcs20Package extends EPackage {
     int DESCRIBE_COVERAGE_TYPE__VERSION = REQUEST_BASE_TYPE__VERSION;
 
     /**
-     * The feature id for the '<em><b>Coverage Id</b></em>' attribute.
+     * The feature id for the '<em><b>Coverage Id</b></em>' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -2346,10 +2346,10 @@ public interface Wcs20Package extends EPackage {
     EClass getDescribeCoverageType();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.wcs20.DescribeCoverageType#getCoverageId <em>Coverage Id</em>}'.
+     * Returns the meta object for the attribute list '{@link net.opengis.wcs20.DescribeCoverageType#getCoverageId <em>Coverage Id</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Coverage Id</em>'.
+     * @return the meta object for the attribute list '<em>Coverage Id</em>'.
      * @see net.opengis.wcs20.DescribeCoverageType#getCoverageId()
      * @see #getDescribeCoverageType()
      * @generated
@@ -3271,7 +3271,7 @@ public interface Wcs20Package extends EPackage {
         EClass DESCRIBE_COVERAGE_TYPE = eINSTANCE.getDescribeCoverageType();
 
         /**
-         * The meta object literal for the '<em><b>Coverage Id</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Coverage Id</b></em>' attribute list feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated

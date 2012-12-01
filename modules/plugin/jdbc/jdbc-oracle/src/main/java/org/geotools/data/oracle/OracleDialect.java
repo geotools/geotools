@@ -41,7 +41,9 @@ import org.geotools.data.oracle.sdo.GeometryConverter;
 import org.geotools.data.oracle.sdo.SDOSqlDumper;
 import org.geotools.data.oracle.sdo.TT;
 import org.geotools.factory.Hints;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
@@ -54,6 +56,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.CoordinateSystem;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
@@ -733,13 +736,15 @@ public class OracleDialect extends PreparedStatementSQLDialect {
 
                     if (rs.next()) {
                         // decode the geometry
-                        Envelope env = decodeGeometryEnvelope(rs, 1, cx);
+                        GeometryDescriptor descriptor = (GeometryDescriptor) att;
+                        Geometry geometry = readGeometry(rs, 1, new GeometryFactory(), cx);
+                        
+                        // Either a ReferencedEnvelope or ReferencedEnvelope3D will be generated here
+                        ReferencedEnvelope env = JTS.bounds(geometry, descriptor.getCoordinateReferenceSystem() );
 
                         // reproject and merge
                         if (env != null && !env.isNull()) {
-                            CoordinateReferenceSystem crs = ((GeometryDescriptor) att)
-                                    .getCoordinateReferenceSystem();
-                            result.add(new ReferencedEnvelope(env, crs));
+                            result.add(env);
                         }
                     }
                     rs.close();

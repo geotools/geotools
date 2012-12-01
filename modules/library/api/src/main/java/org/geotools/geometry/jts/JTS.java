@@ -481,21 +481,34 @@ public final class JTS {
     public static Envelope toGeographic(final Envelope envelope, final CoordinateReferenceSystem crs)
             throws TransformException {
         if (CRS.equalsIgnoreMetadata(crs, DefaultGeographicCRS.WGS84)) {
-            return envelope;
+            if( envelope instanceof ReferencedEnvelope){
+                return envelope;
+            }
+            return ReferencedEnvelope.reference( envelope,  DefaultGeographicCRS.WGS84 );
         }
-
-        final MathTransform transform;
-
+        ReferencedEnvelope initial = ReferencedEnvelope.reference( envelope, crs );
+        return toGeographic( initial );
+    }
+    /**
+     * Transforms the envelope to {@link DefaultGeographicCRS#WGS84}.
+     * <p>
+     * This method will transform to {@link DefaultGeographicCRS#WGS84_3D} if necessary
+     * (and then drop the height axis).
+     * <p>
+     * This method is identical to calling: envelope.transform(DefaultGeographicCRS.WGS84,true)
+     * 
+     * @param envelope The envelope to transform
+     * @return The envelope transformed to be in WGS84 CRS
+     */
+    public static ReferencedEnvelope toGeographic(final ReferencedEnvelope envelope)
+            throws TransformException {
         try {
-            transform = CRS.findMathTransform(crs, DefaultGeographicCRS.WGS84, true);
+            return envelope.transform(DefaultGeographicCRS.WGS84, true);
         } catch (FactoryException exception) {
             throw new TransformPathNotFoundException(Errors.format(
                     ErrorKeys.CANT_TRANSFORM_ENVELOPE, exception));
         }
-
-        return transform(envelope, transform);
     }
-
     /**
      * Like a transform but eXtreme!
      * 

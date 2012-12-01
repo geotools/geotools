@@ -39,6 +39,7 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import static org.junit.Assert.*;
+
 import org.opengis.referencing.operation.MathTransform;
 
 /**
@@ -192,5 +193,33 @@ public class JTSTest extends JTSTestBase {
         assertEquals(dest0.x, -dest180.x, TOL);
         assertEquals(dest0.y, dest180.y, TOL);
         assertEquals(dest0.z, dest180.z, TOL);
+    }
+    
+    @Test
+    public void testTransformToWGS84() throws Exception {
+        String wkt = "GEOGCS[\"GDA94\","
+                + " DATUM[\"Geocentric Datum of Australia 1994\","
+                + "  SPHEROID[\"GRS 1980\", 6378137.0, 298.257222101, AUTHORITY[\"EPSG\",\"7019\"]],"
+                + "  TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "
+                + " AUTHORITY[\"EPSG\",\"6283\"]], "
+                + " PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],"
+                + " UNIT[\"degree\", 0.017453292519943295], "
+                + " AXIS[\"Geodetic longitude\", EAST], " + " AXIS[\"Geodetic latitude\", NORTH], "
+                + " AXIS[\"Ellipsoidal height\", UP], " + " AUTHORITY[\"EPSG\",\"4939\"]]";
+
+        CoordinateReferenceSystem gda94 = CRS.parseWKT(wkt);
+        ReferencedEnvelope bounds = new ReferencedEnvelope3D(130.875825803896, 130.898939990319,
+                -16.4491956225999, -16.4338185791628, 0.0, 0.0, gda94 );
+
+        ReferencedEnvelope worldBounds = JTS.toGeographic( bounds );
+        assertEquals( DefaultGeographicCRS.WGS84, worldBounds.getCoordinateReferenceSystem() );
+        
+        Envelope envelope = new Envelope(130.875825803896, 130.898939990319,
+                -16.4491956225999, -16.4338185791628);
+        
+        Envelope worldBounds2 = JTS.toGeographic( envelope, gda94 );
+        if( worldBounds2 instanceof BoundingBox){
+            assertEquals( DefaultGeographicCRS.WGS84, ((BoundingBox)worldBounds2).getCoordinateReferenceSystem() );
+        }
     }
 }

@@ -148,7 +148,7 @@ public class ReferencedEnvelopeTest {
         catch (Exception expected){
         }
         
-        ReferencedEnvelope bounds2 = ReferencedEnvelope.reference( DefaultGeographicCRS.WGS84_3D );
+        ReferencedEnvelope bounds2 = ReferencedEnvelope.create( DefaultGeographicCRS.WGS84_3D );
         assertNotNull( bounds2 );
     }
 

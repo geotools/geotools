@@ -178,3 +178,8 @@ with ojdbc14 driver.                                               -->
 
    The eclipse .project and .classpath generated now includes a reference to the ojdbc oracle
    driver.
+
+5. Or when running online tests::
+
+      cd modules/plugin/jdbc/jdbc-oracle/
+      mvn test -Doracle=true -P online

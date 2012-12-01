@@ -651,7 +651,7 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
         }
         if( getDimension() != targetCRS.getCoordinateSystem().getDimension()){
             if( lenient ){
-                return JTS.transformUp(this, targetCRS, lenient, numPointsForTransformation );
+                return JTS.transformTo3D(this, targetCRS, lenient, numPointsForTransformation );
             }
             else {
                 throw new MismatchedDimensionException(Errors.format(

@@ -21,6 +21,7 @@ import java.awt.geom.Rectangle2D;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.operation.TransformPathNotFoundException;
 import org.geotools.resources.Classes;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
@@ -649,7 +650,14 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
             }
         }
         if( getDimension() != targetCRS.getCoordinateSystem().getDimension()){
-            return JTS.transformUp(this, targetCRS, lenient, numPointsForTransformation );
+            if( lenient ){
+                return JTS.transformUp(this, targetCRS, lenient, numPointsForTransformation );
+            }
+            else {
+                throw new MismatchedDimensionException(Errors.format(
+                        ErrorKeys.MISMATCHED_DIMENSION_$3, crs.getName().getCode(),
+                        new Integer(getDimension()), new Integer(targetCRS.getCoordinateSystem().getDimension())));
+            }
         }
         /*
          * Gets a first estimation using an algorithm capable to take singularity in account
@@ -841,18 +849,17 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
             return null;
         }
     	   	  	    	
-    	if (env.getDimension() > 2) {
+    	if (env.getDimension() >= 3) {
     		return new ReferencedEnvelope3D((ReferencedEnvelope3D) reference(env), crs);
     	}
     	
     	return new ReferencedEnvelope(reference(env), crs);
     }
-    
     /**
-     * Utility method to create a ReferencedEnvelope from an opengis Envelope class,
-     * supporting 2d as well as 3d envelopes (returning the right class).
+     * Factory method to create the correct ReferencedEnvelope implementation
+     * for the provided CoordinateReferenceSystem.
      * 
-     * @param env The opgenis Envelope object
+     * @param crs CoordinateReferenceSystem used to select ReferencedEnvelope implementation
      * @return ReferencedEnvelope, ReferencedEnvelope3D if it is 3d
      */
     public static ReferencedEnvelope reference(CoordinateReferenceSystem crs) {
@@ -860,5 +867,27 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
             return new ReferencedEnvelope3D(crs);
         }
         return new ReferencedEnvelope(crs);
+    }
+
+    /**
+     * Utility method to create a ReferencedEnvelope from an JTS Envelope class,
+     * supporting 2d as well as 3d envelopes (returning the right class).
+     * 
+     * @param env The JTS Envelope object
+     * @return ReferencedEnvelope, ReferencedEnvelope3D if it is 3d
+     */
+    public static ReferencedEnvelope reference(Envelope env, CoordinateReferenceSystem crs) {
+        if (env == null) {
+            return null;
+        }
+        if( env instanceof ReferencedEnvelope ){
+            
+        }
+        
+        if (crs.getCoordinateSystem().getDimension() >= 3) {
+            return new ReferencedEnvelope3D( env.getMinX(), env.getMaxX(), env.getMinY(), env.getMaxY(), Double.NaN, Double.NaN, crs );
+        }
+        
+        return new ReferencedEnvelope( env, crs );
     }
 }

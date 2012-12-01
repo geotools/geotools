@@ -239,7 +239,7 @@ public final class JTS {
      * @throws FactoryException If operationis unavailable from source CRS to WGS84, to from WGS84_3D to targetCRS
      * @throws OperationNotFoundException 
      */ // JTS.transformUp(this, targetCRS, numPointsForTransformation );
-    public static ReferencedEnvelope3D transformUp(final ReferencedEnvelope sourceEnvelope,
+    public static ReferencedEnvelope3D transformTo3D(final ReferencedEnvelope sourceEnvelope,
             CoordinateReferenceSystem targetCRS, boolean lenient, int npoints)
             throws TransformException, OperationNotFoundException, FactoryException {
         final double xmin = sourceEnvelope.getMinX();
@@ -268,19 +268,19 @@ public final class JTS {
             double dy = scaleY * t;
             
             GeneralDirectPosition left = new GeneralDirectPosition( xmin, ymin+dy);
-            DirectPosition pt = transformUp( left, transform1, transform2 );
+            DirectPosition pt = transformTo3D( left, transform1, transform2 );
             targetEnvelope.expandToInclude(pt);
             
             GeneralDirectPosition top = new GeneralDirectPosition( xmin+dx, ymax);
-            pt = transformUp( top, transform1, transform2 );
+            pt = transformTo3D( top, transform1, transform2 );
             targetEnvelope.expandToInclude(pt);
             
             GeneralDirectPosition right = new GeneralDirectPosition( xmax, ymin-dy);
-            pt = transformUp( right, transform1, transform2 );
+            pt = transformTo3D( right, transform1, transform2 );
             targetEnvelope.expandToInclude(pt);
             
             GeneralDirectPosition bottom = new GeneralDirectPosition( xmax-dx, ymax);
-            pt = transformUp( bottom, transform1, transform2 );
+            pt = transformTo3D( bottom, transform1, transform2 );
             targetEnvelope.expandToInclude(pt);
         }
         return targetEnvelope;
@@ -298,7 +298,7 @@ public final class JTS {
      * @return ReferencedEnvelope matching provided 2D TargetCRS
      * @throws TransformException
      */
-    public static ReferencedEnvelope transformDown(final ReferencedEnvelope sourceEnvelope,
+    public static ReferencedEnvelope transformTo2D(final ReferencedEnvelope sourceEnvelope,
             CoordinateReferenceSystem targetCRS, boolean lenient, int npoints)
             throws TransformException, OperationNotFoundException, FactoryException {
         final double xmin = sourceEnvelope.getMinX();
@@ -336,19 +336,19 @@ public final class JTS {
             position.setOrdinate(1, ymin+dy);
             position.setOrdinate(2, z );
             
-            DirectPosition pt = transformDown( position, transform1, transform2 );
+            DirectPosition pt = transformTo2D( position, transform1, transform2 );
             targetEnvelope.expandToInclude(pt);
             
             GeneralDirectPosition top = new GeneralDirectPosition( xmin+dx, ymax, z);
-            pt = transformDown( top, transform1, transform2 );
+            pt = transformTo2D( top, transform1, transform2 );
             targetEnvelope.expandToInclude(pt);
             
             GeneralDirectPosition right = new GeneralDirectPosition( xmax, ymin-dy, z);
-            pt = transformDown( right, transform1, transform2 );
+            pt = transformTo2D( right, transform1, transform2 );
             targetEnvelope.expandToInclude(pt);
             
             GeneralDirectPosition bottom = new GeneralDirectPosition( xmax-dx, ymax, z);
-            pt = transformDown( bottom, transform1, transform2 );
+            pt = transformTo2D( bottom, transform1, transform2 );
             targetEnvelope.expandToInclude(pt);
         }
         return targetEnvelope;
@@ -359,22 +359,21 @@ public final class JTS {
      * converting from {@link DefaultGeographicCRS#WGS84} to {@link DefaultGeographicCRS#WGS84_3D}).
      * 
      * @param srcPosition Source 2D position
-     * @param transform1 From source CRS to To WGS84
-     * @param transform2 From WGS84_3D to target CRS
+     * @param transformToWGS84 From source CRS to To WGS84
+     * @param transformFromWGS84_3D From WGS84_3D to target CRS
      * @return Position in target CRS as calculated by transform2
-     * @throws TransformException 
-     * @throws MismatchedDimensionException 
+     * @throws TransformException
      */
-    private static DirectPosition transformUp(GeneralDirectPosition srcPosition, MathTransform transform1,
-            MathTransform transform2) throws MismatchedDimensionException, TransformException {
-        DirectPosition world2D = transform1.transform(srcPosition, null );
+    private static DirectPosition transformTo3D(GeneralDirectPosition srcPosition, MathTransform transformToWGS84,
+            MathTransform transformFromWGS84_3D) throws TransformException {
+        DirectPosition world2D = transformToWGS84.transform(srcPosition, null );
         
         DirectPosition world3D = new GeneralDirectPosition( DefaultGeographicCRS.WGS84_3D);
         world3D.setOrdinate(0, world2D.getOrdinate(0));
         world3D.setOrdinate(1, world2D.getOrdinate(1));
         world3D.setOrdinate(2, 0.0 ); // 0 elliposial height is assumed 
         
-        DirectPosition targetPosition = transform2.transform(world3D, null );
+        DirectPosition targetPosition = transformFromWGS84_3D.transform(world3D, null );
         return targetPosition;
     }
 
@@ -383,21 +382,23 @@ public final class JTS {
      * converting from {@link DefaultGeographicCRS#WGS84_3D} to {@link DefaultGeographicCRS#WGS84}).
      * 
      * @param srcPosition Source 3D position
-     * @param transform1 From source CRS to To WGS84_3D
-     * @param transform2 From WGS84 to target CRS
+     * @param transformToWGS84_3D From source CRS to To WGS84_3D
+     * @param transformFromWGS84 From WGS84 to target CRS
      * @return Position in target CRS as calculated by transform2
      * @throws TransformException 
-     * @throws MismatchedDimensionException 
      */
-    private static DirectPosition transformDown(GeneralDirectPosition srcPosition, MathTransform transform1,
-            MathTransform transform2) throws MismatchedDimensionException, TransformException {
-        DirectPosition world3D = transform1.transform(srcPosition, null );
+    private static DirectPosition transformTo2D(GeneralDirectPosition srcPosition, MathTransform transformToWGS84_3D,
+            MathTransform transformFromWGS84) throws TransformException {
+        if( Double.isNaN( srcPosition.getOrdinate(2)) ){
+            srcPosition.setOrdinate(2, 0.0 ); // lazy add 3rd ordinate if not provided to prevent failure
+        }
+        DirectPosition world3D = transformToWGS84_3D.transform(srcPosition, null );
         
         DirectPosition world2D = new GeneralDirectPosition( DefaultGeographicCRS.WGS84);
         world2D.setOrdinate(0, world3D.getOrdinate(0));
         world2D.setOrdinate(1, world3D.getOrdinate(1));
         
-        DirectPosition targetPosition = transform2.transform(world2D, null );
+        DirectPosition targetPosition = transformFromWGS84.transform(world2D, null );
         return targetPosition;
     }
 

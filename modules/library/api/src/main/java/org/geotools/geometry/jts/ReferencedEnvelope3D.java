@@ -1086,7 +1086,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
         }
         if( getDimension() != targetCRS.getCoordinateSystem().getDimension()){
             if( lenient ){
-                return JTS.transformDown(this, targetCRS, lenient, numPointsForTransformation );
+                return JTS.transformTo2D(this, targetCRS, lenient, numPointsForTransformation );
             }
             else {
                 throw new MismatchedDimensionException(Errors.format(

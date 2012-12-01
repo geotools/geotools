@@ -537,7 +537,15 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
         }
         super.expandToInclude(getJTSEnvelope(bbox));        
     }
-
+    /**
+     * Expand to include the provided DirectPosition
+     * 
+     * @param pt
+     */
+    public void expandToInclude(DirectPosition pt ){
+        Coordinate coordinate = new Coordinate(pt.getOrdinate(0),pt.getOrdinate(1));
+        expandToInclude(coordinate);
+    }
     /**
      * Include the provided envelope, expanding as necessary.
      */
@@ -640,7 +648,9 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
                 throw new NullPointerException("Unable to transform referenced envelope, crs has not yet been provided.");
             }
         }
-
+        if( getDimension() != targetCRS.getCoordinateSystem().getDimension()){
+            return JTS.transformUp(this, targetCRS, lenient, numPointsForTransformation );
+        }
         /*
          * Gets a first estimation using an algorithm capable to take singularity in account
          * (North pole, South pole, 180ï¿½ longitude). We will expand this initial box later.

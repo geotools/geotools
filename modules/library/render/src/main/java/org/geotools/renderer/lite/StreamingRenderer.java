@@ -83,6 +83,7 @@ import org.geotools.filter.visitor.SpatialFilterVisitor;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.Decimator;
 import org.geotools.geometry.jts.GeometryClipper;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.geometry.jts.LiteShape2;
@@ -95,6 +96,7 @@ import org.geotools.map.MapLayer;
 import org.geotools.map.StyleLayer;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
@@ -1150,8 +1152,12 @@ public final class StreamingRenderer implements GTRenderer {
     }
 
     /**
-     * Builds a full transform going from the source CRS to the denstionan CRS
-     * and from there to the screen
+     * Builds a full transform going from the source CRS to the destination CRS
+     * and from there to the screen.
+     * <p>
+     * Although we ask for 2D content (via {@link Hints#FEATURE_2D} ) not all DataStore implementations
+     * are capable. In this event we will manually stage the information into
+     * {@link DefaultGeographicCRS#WGS84}) and before using this transform.
      */
     private MathTransform2D buildFullTransform(CoordinateReferenceSystem sourceCRS,
             CoordinateReferenceSystem destCRS, AffineTransform worldToScreenTransform)
@@ -1170,21 +1176,34 @@ public final class StreamingRenderer implements GTRenderer {
     }
 
     /**
-     * Builds the transform from sourceCRS to destCRS
+     * Builds the transform from sourceCRS to destCRS/
+     * <p>
+     * Although we ask for 2D content (via {@link Hints#FEATURE_2D} ) not all DataStore implementations
+     * are capable. With that in mind if the provided soruceCRS is not 2D we are going to manually
+     * post-process the Geomtries into {@link DefaultGeographicCRS#WGS84} - and the {@link MathTransform2D}
+     * returned here will transition from WGS84 to the requested destCRS.
+     * 
      * @param sourceCRS
      * @param destCRS
      * @return the transform, or null if any of the crs is null, or if the the two crs are equal
-     * @throws FactoryException
+     * @throws FactoryException If no transform is available to the destCRS
      */
     private MathTransform2D buildTransform(CoordinateReferenceSystem sourceCRS,
             CoordinateReferenceSystem destCRS) throws FactoryException {
+        if( sourceCRS != null && sourceCRS.getCoordinateSystem().getDimension() >= 3 ){
+            // We are going to transform over to DefaultGeographic.WGS84 on the fly
+            // so we will set up our math transform to take it from there
+            sourceCRS = DefaultGeographicCRS.WGS84;
+        }
         // the basic crs transformation, if any
         MathTransform2D mt;
         if (sourceCRS == null || destCRS == null || CRS.equalsIgnoreMetadata(sourceCRS,
-                destCRS))
+                destCRS)){
             mt = null;
-        else
+        }
+        else {
             mt = (MathTransform2D) CRS.findMathTransform(sourceCRS, destCRS, true);
+        }
         return mt;
     }
 
@@ -3131,6 +3150,7 @@ public final class StreamingRenderer implements GTRenderer {
                 if (sa == null) {
                     sa = new SymbolizerAssociation();
                     sa.crs = (findGeometryCS(layer, content, symbolizer));
+                    sa.forceWGS84 = sa.crs != null ? sa.crs.getCoordinateSystem().getDimension() >= 3 : false;
                     try {
                         crsTransform = buildTransform(sa.crs, destinationCrs);
                         atTransform = (MathTransform2D) ProjectiveTransform.create(worldToScreenTransform);
@@ -3198,6 +3218,12 @@ public final class StreamingRenderer implements GTRenderer {
 
             // we need to clone if the clone flag is high or if the coordinate sequence is not the one we asked for
             Geometry geom = originalGeom;
+            if( sa != null && sa.forceWGS84 != null && sa.forceWGS84 ){
+                // We have been asked to force this intoDefaultGeographicCRS.WGS84
+                // the remaining transforms are set up using WGS84 as a starting point
+                // (since we are limited to MathTransform2D
+                geom = JTS.toGeographic( geom, sa.crs );
+            }
             if(clone || !(geom.getFactory().getCoordinateSequenceFactory() instanceof LiteCoordinateSequenceFactory)) {
                 geom = LiteCoordinateSequence.cloneGeometry(geom);
             }

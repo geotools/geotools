@@ -131,7 +131,7 @@ public class PropertyFeatureStore extends AbstractFeatureLocking {
     ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
         SimpleFeatureCollection fc = getFeatures(query);
         SimpleFeatureIterator fi = null;
-        ReferencedEnvelope result = new ReferencedEnvelope(getSchema().getCoordinateReferenceSystem());
+        ReferencedEnvelope result = ReferencedEnvelope.create(getSchema().getCoordinateReferenceSystem());
         try {
             fi = fc.features();
             while(fi.hasNext()) {

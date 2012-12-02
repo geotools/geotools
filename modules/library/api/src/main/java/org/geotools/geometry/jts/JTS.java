@@ -37,6 +37,8 @@ import org.geotools.resources.Classes;
 import org.geotools.resources.geometry.ShapeUtilities;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
+import org.opengis.annotation.Specification;
+import org.opengis.annotation.UML;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -47,6 +49,8 @@ import org.opengis.referencing.cs.CoordinateSystemAxis;
 import org.opengis.referencing.operation.CoordinateOperation;
 import org.opengis.referencing.operation.CoordinateOperationFactory;
 import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.Matrix;
+import org.opengis.referencing.operation.NoninvertibleTransformException;
 import org.opengis.referencing.operation.OperationNotFoundException;
 import org.opengis.referencing.operation.TransformException;
 
@@ -320,8 +324,9 @@ public final class JTS {
          */
         CoordinateOperationFactory coordinateOperationFactory = CRS
                 .getCoordinateOperationFactory(lenient);
+        CoordinateReferenceSystem sourceCRS = sourceEnvelope.getCoordinateReferenceSystem();
         CoordinateOperation operation1 = coordinateOperationFactory.createOperation(
-                sourceEnvelope.getCoordinateReferenceSystem(), DefaultGeographicCRS.WGS84);
+                sourceCRS, DefaultGeographicCRS.WGS84_3D);
         MathTransform transform1 = operation1.getMathTransform();
         final CoordinateOperation operation2 = coordinateOperationFactory.createOperation(
                 DefaultGeographicCRS.WGS84, targetCRS);
@@ -331,7 +336,7 @@ public final class JTS {
             double dx = scaleX * t;
             double dy = scaleY * t;
             
-            GeneralDirectPosition position = new GeneralDirectPosition( sourceEnvelope.getCoordinateReferenceSystem());
+            GeneralDirectPosition position = new GeneralDirectPosition( sourceCRS);
             position.setOrdinate(0, xmin );
             position.setOrdinate(1, ymin+dy);
             position.setOrdinate(2, z );
@@ -1047,7 +1052,35 @@ public final class JTS {
 
         return factory.createPolygon(factory.createLinearRing(coordinates), null);
     }
-
+    
+    public static Geometry toGeographic( Geometry geom, final CoordinateReferenceSystem crs ) throws TransformException {
+        if( crs == null ){
+            return geom;
+        }
+        if( crs.getCoordinateSystem().getDimension() >= 3 ){
+            try {
+                MathTransform transform = CRS.findMathTransform( crs,  DefaultGeographicCRS.WGS84_3D );
+                Geometry geometry = transform( geom, transform );
+                
+                return geometry; // The extra Z values will be ignored
+            } catch (FactoryException exception) {
+                throw new TransformException(Errors.format(
+                        ErrorKeys.CANT_REPROJECT_$1, crs));
+            }
+        }
+        else if ( CRS.equalsIgnoreMetadata( crs,  DefaultGeographicCRS.WGS84 ) ){
+            return geom;
+        }
+        else {
+            try {
+                MathTransform transform = CRS.findMathTransform( crs,  DefaultGeographicCRS.WGS84 );
+                return transform( geom, transform );
+            } catch (FactoryException exception) {
+                throw new TransformException(Errors.format(
+                        ErrorKeys.CANT_REPROJECT_$1, crs));
+            }
+        }
+    }
     /**
      * Converts a {@link BoundingBox} to a JTS polygon.
      * <p>

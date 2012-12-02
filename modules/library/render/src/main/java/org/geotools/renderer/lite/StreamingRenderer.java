@@ -2190,6 +2190,7 @@ public final class StreamingRenderer implements GTRenderer {
                  Envelope bounds = (Envelope) renderingQuery.getFilter().accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, null);
                  Filter bbox = new FastBBOX(filterFactory.property(""), bounds, filterFactory);
                  optimizedQuery = new Query(null, bbox);
+                 optimizedQuery.setHints(layerQuery.getHints());
             }
             
             // grab the original features

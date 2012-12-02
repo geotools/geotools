@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2012, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -19,14 +19,13 @@ package org.geotools.filter.visitor;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
 import org.geotools.filter.Capabilities;
-import org.geotools.filter.capability.FilterCapabilitiesImpl;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
 import org.opengis.filter.Or;
@@ -369,5 +368,39 @@ public class CapabilitiesFilterSplitterTest extends AbstractCapabilitiesFilterSp
         
         assertEquals(f2, visitor.getFilterPre());
         assertEquals(f1, visitor.getFilterPost());
+    }
+    
+    @Test
+    public void testAndOptimization() throws Exception {
+        Capabilities caps = new Capabilities();
+        // no logical operator capabilities
+        caps.addAll(Capabilities.SIMPLE_COMPARISONS_OPENGIS);
+        
+        visitor = newVisitor(caps);
+
+        // try with two filters
+        Filter f1 = ff.greater(ff.property("foo"), ff.literal(42));
+        Filter f2 = ff.less(ff.property("bar"), ff.literal(21));
+        
+        Filter andFilter = ff.and(f1, f2);
+
+        // visit filter
+        andFilter.accept(visitor, null);
+
+        // test
+        assertEquals(f1, visitor.getFilterPre());
+        assertEquals(f2, visitor.getFilterPost());
+        
+        // try with a third filter
+        Filter f3 = ff.greater(ff.property("height"), ff.literal(84));
+        
+        andFilter = ff.and(Arrays.asList(new Filter[] { f1, f2, f3 }));
+        
+        // visit filter
+        andFilter.accept(visitor, null);
+
+        // test
+        assertEquals(f1, visitor.getFilterPre());
+        assertEquals(ff.and(f2, f3), visitor.getFilterPost());
     }
 }

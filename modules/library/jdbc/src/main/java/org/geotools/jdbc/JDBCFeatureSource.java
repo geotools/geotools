@@ -705,7 +705,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
          * "YES" means the column might allow NULL values. An empty string means nobody knows.
          * </UL>
          */
-        ResultSet columns = metaData.getColumns(null, databaseSchema, tableName, "%");
+        ResultSet columns = metaData.getColumns(cx.getCatalog(), databaseSchema, tableName, "%");
         if(getDataStore().getFetchSize() > 0) {
             columns.setFetchSize(getDataStore().getFetchSize());
         }

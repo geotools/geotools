@@ -40,7 +40,7 @@ public class DefaultCRSFilterVisitor extends DuplicatingFilterVisitor {
             return super.visit(filter, extraData);
 
         try {  
-        	return getFactory(extraData).bbox(filter.getExpression1(), ReferencedEnvelope.reference(filter.getBounds(),defaultCrs));
+        	return getFactory(extraData).bbox(filter.getExpression1(), ReferencedEnvelope.create(filter.getBounds(),defaultCrs));
         } catch (Exception e) {
             throw new RuntimeException("Could not decode srs '" + srs + "'", e);
         }

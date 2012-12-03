@@ -35,6 +35,7 @@ public class NodeImpl implements Node {
     private Object value;
     List children;
     List attributes;
+    Node parent;
 
     public NodeImpl(InstanceComponent component) {
         this.component = component;
@@ -454,20 +455,33 @@ public class NodeImpl implements Node {
     //additional methods, not part of public api
     public void addChild(Node child) {
         children.add(child);
+        child.setParent(this);
     }
 
     public Node removeChild(String name) {
         Node child = getChild(name);
 
         if (child != null) {
-            children.remove(child);
+            if (children.remove(child)) {
+                child.setParent(null);
+            }
         }
 
         return child;
     }
 
     public void removeChild(Node child) {
-        children.remove(child);
+        if (children.remove(child)) {
+            child.setParent(null);
+        }
+    }
+
+    public Node getParent() {
+        return parent;
+    }
+
+    public void setParent(Node parent) {
+        this.parent = parent;
     }
 
     public void addAttribute(Node attribute) {

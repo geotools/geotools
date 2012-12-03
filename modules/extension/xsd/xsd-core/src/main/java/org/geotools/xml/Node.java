@@ -354,4 +354,18 @@ public interface Node {
      * <code>clazz</code>, or an empty list.
      */
     List getAttributeValues(Class clazz);
+
+    /**
+     * Returns the parent node for this node
+     *
+     * @return The parent node. Returns null if no parent exists.
+     */
+    Node getParent();
+
+    /**
+     * Sets the parent pointer for this node. Call with a null parameter to clear the parent pointer
+     *
+     * @param node The new parent node. Passing null will clear the parent pointer.
+     */
+    void setParent(Node node);
 }

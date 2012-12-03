@@ -78,7 +78,7 @@ public class KMLParsingTest extends TestCase {
             FeatureTypeStyle style = (FeatureTypeStyle) f.getAttribute("Style");
             assertNotNull(style);
 
-            Symbolizer[] syms = style.getRules()[0].getSymbolizers();
+            Symbolizer[] syms = style.rules().get(0).getSymbolizers();
             assertEquals(3, syms.length);
 
             count++;
@@ -143,7 +143,7 @@ public class KMLParsingTest extends TestCase {
         sb.add( gf.createPoint( new Coordinate(2, 2) ) ) ;
         features.add( sb.buildFeature("2"));
         
-        sb = new SimpleFeatureBuilder(DocumentTypeBinding.featureType);
+        sb = new SimpleFeatureBuilder(DocumentTypeBinding.FeatureType);
         sb.set( "Feature", features );
         SimpleFeature f = sb.buildFeature("kml");
         

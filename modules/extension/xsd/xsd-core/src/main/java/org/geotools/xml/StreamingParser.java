@@ -112,7 +112,7 @@ import org.geotools.xml.impl.TypeStreamingParserHandler;
  * </p>
  *
  * @author Justin Deoliveira, The Open Planning Project
- *
+ * @deprecated {@link PullParser} is meant as a better replacement. 
  *
  *
  * @source $URL$

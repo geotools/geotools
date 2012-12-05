@@ -12,15 +12,19 @@ import javax.imageio.ImageIO;
 
 import junit.framework.TestCase;
 
+import org.geotools.data.FeatureSource;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.factory.GeoTools;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.map.DefaultMapContext;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.Style;
 import org.geotools.test.TestData;
@@ -40,14 +44,18 @@ public class GeographicTransformPointTest extends TestCase {
     
     private static final long TIME = 4000;
     SimpleFeatureSource point_test;
+    SimpleFeatureSource point_test_strict;
     SimpleFeatureSource point_test_2d;
     
     @Override
     protected void setUp() throws Exception {
+        System.setProperty( GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER, "true" );
+        CRS.reset("all");
         // setup data
         File property = new File(TestData.getResource(this, "point_test.properties").toURI());
         PropertyDataStore ds = new PropertyDataStore(property.getParentFile());
         point_test = ds.getFeatureSource("point_test");
+        point_test_strict = ds.getFeatureSource("point_test_strict");
         point_test_2d = ds.getFeatureSource("point_test_2d");
     }
     
@@ -57,7 +65,20 @@ public class GeographicTransformPointTest extends TestCase {
     }
     
     public void testPointData() throws Exception {
+        CoordinateReferenceSystem crs = point_test.getSchema().getCoordinateReferenceSystem();
+        
         ReferencedEnvelope pointTestBounds = point_test.getBounds();
+        assertEquals( crs, pointTestBounds.getCoordinateReferenceSystem() );
+        
+        System.out.print( pointTestBounds );
+        System.out.print( ": " );
+        System.out.println( CRS.getAxisOrder( point_test.getSchema().getCoordinateReferenceSystem() ));
+        
+        GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
+        Point point = gf.createPoint( new Coordinate( -16.4463909341494,130.882672103999, 97.009018073082));
+        
+        JTS.toGeographic( point, CRS.decode("EPSG:4939"));
+        
         ReferencedEnvelope geographic1 = pointTestBounds.transform( DefaultGeographicCRS.WGS84, true );
         ReferencedEnvelope geographic2 = JTS.toGeographic( pointTestBounds );
         
@@ -70,50 +91,64 @@ public class GeographicTransformPointTest extends TestCase {
     @Test
     public void testToGeographicGeometry() throws Exception {
         // This time we are in north / east order
-        CoordinateReferenceSystem gda94 = CRS.decode("EPSG:4939");
+        CoordinateReferenceSystem gda94 = CRS.decode("urn:x-ogc:def:crs:EPSG::4939");
         
         GeometryFactory gf = new GeometryFactory();
-        Point point = gf.createPoint( new Coordinate( -16.4463909341494,130.882672103999, 97.009018073082));
+        Point point = gf.createPoint( new Coordinate( 130.882672103999, -16.4463909341494, 97.009018073082));
         
         Point world = (Point) JTS.toGeographic( point, gda94 );
-        assertEquals( point.getX(), world.getY(), 0.00000005 );
-        assertEquals( point.getY(), world.getX(), 0.00000005 );
+        assertEquals( point.getX(), world.getX(), 0.00000005 );
+        assertEquals( point.getY(), world.getY(), 0.00000005 );
     }
     
     public void testGDA94Points() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "markTriangle.sld");
-        
-        MapContent content = new MapContent();
-        ReferencedEnvelope bounds = JTS.toGeographic(point_test.getBounds());
-        
-        content.getViewport().setBounds( bounds );
-        content.addLayer( new FeatureLayer( point_test, style ));
-        
-        StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setMapContent(content);
-        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        
+        System.setProperty("org.geotools.image.test.interactive","true");
         System.setProperty("org.geotools.test.interactive", "true");
-        BufferedImage image = RendererBaseTest.showRender("GDA94 points with markTriangle stroke", renderer, TIME, bounds);
-        assertNotNull( image );
-        // ImageAssert.assertEquals(file("circle"), image, 10);
+        
+        Style style = RendererBaseTest.loadStyle(this, "markCircle.sld");
+        BufferedImage reference = toImage( point_test_2d, style );
+        BufferedImage actual = null;
+        if( CRS.getAxisOrder( point_test_strict.getSchema().getCoordinateReferenceSystem() ) == AxisOrder.NORTH_EAST  ){
+            actual = toImage( point_test_strict, style );
+        }
+        if( CRS.getAxisOrder( point_test.getSchema().getCoordinateReferenceSystem() ) == AxisOrder.EAST_NORTH ){
+            actual = toImage( point_test, style );
+        }
+        ImageAssert.assertEquals( reference, actual, 10 );
     }
 
-    public void XtestWGS84Points() throws Exception {
-        Style style = RendererBaseTest.loadStyle(this, "markCircle.sld");
+    private BufferedImage toImage(SimpleFeatureSource featuerSource, Style style) throws Exception {
+        String typeName = featuerSource.getSchema().getTypeName();
         
         MapContent content = new MapContent();
-        content.getViewport().setBounds( point_test_2d.getBounds() );
-        content.addLayer( new FeatureLayer( point_test_2d, style ));
+        ReferencedEnvelope dataBounds = featuerSource.getBounds();
+        assertNotNull( typeName+" bounds",dataBounds);
+        assertFalse( typeName+" bounds empty",dataBounds.isEmpty() );
+        assertFalse( typeName+" bounds null",dataBounds.isNull() );
+        
+        ReferencedEnvelope bounds = JTS.toGeographic(dataBounds);
+        assertNotNull(typeName + " world", bounds);
+        assertTrue(
+                typeName + " world WGS84",
+                CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84,
+                        bounds.getCoordinateReferenceSystem()));
+        assertFalse(typeName + " world empty", bounds.isEmpty());
+        assertFalse(typeName + " world null", bounds.isNull());
+        
+        content.getViewport().setBounds(bounds);
+        assertTrue(CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84, content.getViewport()
+                .getCoordinateReferenceSystem()));
+        
+        content.addLayer( new FeatureLayer( featuerSource, style ));
         
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(content);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
         
-        System.setProperty("org.geotools.test.interactive", "true");
-        BufferedImage image = RendererBaseTest.showRender("WGS84 points with circle stroke", renderer, TIME, point_test_2d.getBounds());
+        BufferedImage image = RendererBaseTest.showRender( typeName, renderer, TIME, bounds);
         assertNotNull( image );
-        // ImageAssert.assertEquals(file("circle"), image, 10);
+        
+        return image;
     }
-    
+
 }

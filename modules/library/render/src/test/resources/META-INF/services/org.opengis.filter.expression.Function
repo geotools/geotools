@@ -1,2 +1,3 @@
 org.geotools.renderer.lite.CoverageCenterFunction
+org.geotools.renderer.lite.AttributeRenameFunction
 org.geotools.renderer.lite.BufferTestFunction

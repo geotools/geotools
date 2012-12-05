@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * <ul>
  *   <li>{@link net.opengis.wcs20.DimensionSubsetType#getDimension <em>Dimension</em>}</li>
+ *   <li>{@link net.opengis.wcs20.DimensionSubsetType#getCRS <em>CRS</em>}</li>
  * </ul>
  * </p>
  *
@@ -48,5 +49,23 @@ public interface DimensionSubsetType extends EObject {
      * @generated
      */
     void setDimension(String value);
+    
+    /**
+     * The CRS, which can only be specified in the WCS 2.0 KVP protocol (but not in the POST one!!!)
+     * @model  
+     */
+    String getCRS();
+
+    /**
+     * Sets the value of the '{@link net.opengis.wcs20.DimensionSubsetType#getCRS <em>CRS</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>CRS</em>' attribute.
+     * @see #getCRS()
+     * @generated
+     */
+    void setCRS(String value);
+    
+    
 
 } // DimensionSubsetType

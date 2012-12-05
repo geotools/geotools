@@ -613,6 +613,15 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EAttribute getDimensionSubsetType_CRS() {
+        return (EAttribute)dimensionSubsetTypeEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getDimensionTrimType() {
         return dimensionTrimTypeEClass;
     }
@@ -1167,6 +1176,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
 
         dimensionSubsetTypeEClass = createEClass(DIMENSION_SUBSET_TYPE);
         createEAttribute(dimensionSubsetTypeEClass, DIMENSION_SUBSET_TYPE__DIMENSION);
+        createEAttribute(dimensionSubsetTypeEClass, DIMENSION_SUBSET_TYPE__CRS);
 
         dimensionTrimTypeEClass = createEClass(DIMENSION_TRIM_TYPE);
         createEAttribute(dimensionTrimTypeEClass, DIMENSION_TRIM_TYPE__TRIM_LOW);
@@ -1323,6 +1333,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
 
         initEClass(dimensionSubsetTypeEClass, DimensionSubsetType.class, "DimensionSubsetType", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getDimensionSubsetType_Dimension(), theXMLTypePackage.getNCName(), "dimension", null, 1, 1, DimensionSubsetType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getDimensionSubsetType_CRS(), ecorePackage.getEString(), "cRS", null, 0, 1, DimensionSubsetType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(dimensionTrimTypeEClass, DimensionTrimType.class, "DimensionTrimType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getDimensionTrimType_TrimLow(), theXMLTypePackage.getString(), "trimLow", null, 0, 1, DimensionTrimType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

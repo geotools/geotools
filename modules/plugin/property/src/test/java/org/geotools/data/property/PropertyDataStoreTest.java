@@ -430,9 +430,9 @@ public class PropertyDataStoreTest extends TestCase {
         Query q = new Query("road");
         q.setMaxFeatures(2);
         assertEquals(2, road.getCount(q));
-        assertTrue(road.getBounds(Query.ALL).isNull());
+        assertFalse(road.getBounds(Query.ALL).isNull());
         assertEquals(5, features.size());
-        assertTrue(features.getBounds().isNull());
+        assertFalse(features.getBounds().isNull());
         assertEquals(5, features.size());
 
     }

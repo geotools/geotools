@@ -54,6 +54,7 @@
     </genClasses>
     <genClasses image="false" ecoreClass="wcs20.ecore#//DimensionSubsetType">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//DimensionSubsetType/dimension"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//DimensionSubsetType/cRS"/>
     </genClasses>
     <genClasses ecoreClass="wcs20.ecore#//DimensionTrimType">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//DimensionTrimType/trimLow"/>

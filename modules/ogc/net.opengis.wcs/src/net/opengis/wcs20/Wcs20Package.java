@@ -1340,13 +1340,22 @@ public interface Wcs20Package extends EPackage {
     int DIMENSION_SUBSET_TYPE__DIMENSION = 0;
 
     /**
+     * The feature id for the '<em><b>CRS</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DIMENSION_SUBSET_TYPE__CRS = 1;
+
+    /**
      * The number of structural features of the '<em>Dimension Subset Type</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int DIMENSION_SUBSET_TYPE_FEATURE_COUNT = 1;
+    int DIMENSION_SUBSET_TYPE_FEATURE_COUNT = 2;
 
     /**
      * The meta object id for the '{@link net.opengis.wcs20.impl.DimensionSliceTypeImpl <em>Dimension Slice Type</em>}' class.
@@ -1366,6 +1375,15 @@ public interface Wcs20Package extends EPackage {
      * @ordered
      */
     int DIMENSION_SLICE_TYPE__DIMENSION = DIMENSION_SUBSET_TYPE__DIMENSION;
+
+    /**
+     * The feature id for the '<em><b>CRS</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DIMENSION_SLICE_TYPE__CRS = DIMENSION_SUBSET_TYPE__CRS;
 
     /**
      * The feature id for the '<em><b>Slice Point</b></em>' attribute.
@@ -1403,6 +1421,15 @@ public interface Wcs20Package extends EPackage {
      * @ordered
      */
     int DIMENSION_TRIM_TYPE__DIMENSION = DIMENSION_SUBSET_TYPE__DIMENSION;
+
+    /**
+     * The feature id for the '<em><b>CRS</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DIMENSION_TRIM_TYPE__CRS = DIMENSION_SUBSET_TYPE__CRS;
 
     /**
      * The feature id for the '<em><b>Trim Low</b></em>' attribute.
@@ -2399,6 +2426,17 @@ public interface Wcs20Package extends EPackage {
     EAttribute getDimensionSubsetType_Dimension();
 
     /**
+     * Returns the meta object for the attribute '{@link net.opengis.wcs20.DimensionSubsetType#getCRS <em>CRS</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>CRS</em>'.
+     * @see net.opengis.wcs20.DimensionSubsetType#getCRS()
+     * @see #getDimensionSubsetType()
+     * @generated
+     */
+    EAttribute getDimensionSubsetType_CRS();
+
+    /**
      * Returns the meta object for class '{@link net.opengis.wcs20.DimensionTrimType <em>Dimension Trim Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3313,6 +3351,14 @@ public interface Wcs20Package extends EPackage {
          * @generated
          */
         EAttribute DIMENSION_SUBSET_TYPE__DIMENSION = eINSTANCE.getDimensionSubsetType_Dimension();
+
+        /**
+         * The meta object literal for the '<em><b>CRS</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute DIMENSION_SUBSET_TYPE__CRS = eINSTANCE.getDimensionSubsetType_CRS();
 
         /**
          * The meta object literal for the '{@link net.opengis.wcs20.impl.DimensionTrimTypeImpl <em>Dimension Trim Type</em>}' class.

@@ -3167,6 +3167,12 @@ public final class StreamingRenderer implements GTRenderer {
                     symbolizerAssociationHT.put(symbolizer, sa);
                 }
 
+                if( sa != null && sa.forceWGS84 != null && sa.forceWGS84 ){
+                    // We have been asked to force this intoDefaultGeographicCRS.WGS84
+                    // the remaining transforms are set up using WGS84 as a starting point
+                    // (since we are limited to MathTransform2D
+                    g = JTS.toGeographic( g, sa.crs );
+                }
                 // some shapes may be too close to projection boundaries to
                 // get transformed, try to be lenient
                 if (symbolizer instanceof PointSymbolizer) {
@@ -3219,12 +3225,6 @@ public final class StreamingRenderer implements GTRenderer {
 
             // we need to clone if the clone flag is high or if the coordinate sequence is not the one we asked for
             Geometry geom = originalGeom;
-            if( sa != null && sa.forceWGS84 != null && sa.forceWGS84 ){
-                // We have been asked to force this intoDefaultGeographicCRS.WGS84
-                // the remaining transforms are set up using WGS84 as a starting point
-                // (since we are limited to MathTransform2D
-                geom = JTS.toGeographic( geom, sa.crs );
-            }
             if(clone || !(geom.getFactory().getCoordinateSequenceFactory() instanceof LiteCoordinateSequenceFactory)) {
                 geom = LiteCoordinateSequence.cloneGeometry(geom);
             }

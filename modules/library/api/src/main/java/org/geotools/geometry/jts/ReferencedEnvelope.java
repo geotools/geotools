@@ -555,8 +555,13 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
         if( other instanceof BoundingBox ){
             BoundingBox bbox = (BoundingBox) other;
             ensureCompatibleReferenceSystem( bbox );
+            
+            expandToInclude( bbox.getLowerCorner() );
+            expandToInclude( bbox.getUpperCorner() );
         }
-        super.expandToInclude(other);
+        else {
+            super.expandToInclude(other);
+        }
     }
     
     /**

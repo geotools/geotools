@@ -15,6 +15,7 @@ import org.geotools.TestData;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.property.PropertyDataStore;
+import org.geotools.factory.GeoTools;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.gce.geotiff.GeoTiffReader;
@@ -39,6 +40,8 @@ public class RenderingTransformationTest {
     @Before
     public void setup() {
         // System.setProperty("org.geotools.test.interactive", "true");
+        System.setProperty( GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER, "false" );
+        CRS.reset("all");
     }
 
     @Test

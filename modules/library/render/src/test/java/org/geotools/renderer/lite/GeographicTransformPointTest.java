@@ -64,34 +64,10 @@ public class GeographicTransformPointTest extends TestCase {
                 + ".png");
     }
     
-    public void testPointData() throws Exception {
-        CoordinateReferenceSystem crs = point_test.getSchema().getCoordinateReferenceSystem();
-        
-        ReferencedEnvelope pointTestBounds = point_test.getBounds();
-        assertEquals( crs, pointTestBounds.getCoordinateReferenceSystem() );
-        
-        System.out.print( pointTestBounds );
-        System.out.print( ": " );
-        System.out.println( CRS.getAxisOrder( point_test.getSchema().getCoordinateReferenceSystem() ));
-        
-        GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
-        Point point = gf.createPoint( new Coordinate( -16.4463909341494,130.882672103999, 97.009018073082));
-        
-        JTS.toGeographic( point, CRS.decode("EPSG:4939"));
-        
-        ReferencedEnvelope geographic1 = pointTestBounds.transform( DefaultGeographicCRS.WGS84, true );
-        ReferencedEnvelope geographic2 = JTS.toGeographic( pointTestBounds );
-        
-        assertEquals( geographic1.getMinX(), geographic2.getMinX(), 0.000005 );
-        assertEquals( geographic1.getMinY(), geographic2.getMinY(), 0.000005 );
-        assertEquals( geographic1.getMaxX(), geographic2.getMaxX(), 0.000005 );
-        assertEquals( geographic1.getMaxY(), geographic2.getMaxY(), 0.000005 );
-    }
-    
     @Test
     public void testToGeographicGeometry() throws Exception {
         // This time we are in north / east order
-        CoordinateReferenceSystem gda94 = CRS.decode("urn:x-ogc:def:crs:EPSG::4939");
+        CoordinateReferenceSystem gda94 = CRS.decode("EPSG:4939");
         
         GeometryFactory gf = new GeometryFactory();
         Point point = gf.createPoint( new Coordinate( 130.882672103999, -16.4463909341494, 97.009018073082));
@@ -102,9 +78,6 @@ public class GeographicTransformPointTest extends TestCase {
     }
     
     public void testGDA94Points() throws Exception {
-        System.setProperty("org.geotools.image.test.interactive","true");
-        System.setProperty("org.geotools.test.interactive", "true");
-        
         Style style = RendererBaseTest.loadStyle(this, "markCircle.sld");
         BufferedImage reference = toImage( point_test_2d, style );
         BufferedImage actual = null;

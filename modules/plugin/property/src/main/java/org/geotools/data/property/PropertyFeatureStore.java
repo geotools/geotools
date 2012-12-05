@@ -35,6 +35,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
+import org.opengis.geometry.BoundingBox;
 
 /**
  * Implementation used for writeable property files.
@@ -131,13 +132,15 @@ public class PropertyFeatureStore extends AbstractFeatureLocking {
     ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
         SimpleFeatureCollection fc = getFeatures(query);
         SimpleFeatureIterator fi = null;
-        ReferencedEnvelope result = new ReferencedEnvelope(getSchema().getCoordinateReferenceSystem());
+        ReferencedEnvelope result = ReferencedEnvelope.create(getSchema().getCoordinateReferenceSystem());
         try {
             fi = fc.features();
             while(fi.hasNext()) {
                 SimpleFeature f = fi.next();
-                if(f != null && f.getBounds() != null) {
-                    result.expandToInclude(ReferencedEnvelope.reference(f.getBounds()));
+                BoundingBox featureBoundingBox = f.getBounds();
+                if(f != null && featureBoundingBox != null) {
+                    ReferencedEnvelope featureBounds = ReferencedEnvelope.reference(featureBoundingBox);
+                    result.expandToInclude(featureBounds);
                 }
             }
         } catch(Exception e) {

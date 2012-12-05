@@ -242,6 +242,6 @@ public class StreamingRendererTest extends TestCase {
                 screen.height / 2) == 0);
         assertTrue("Pixel should be drawn at image max corner ", image.getRGB(screen.width - 1,
                 screen.height - 1) != 0);
-
     }
+    
 }

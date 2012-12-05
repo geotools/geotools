@@ -29,7 +29,10 @@ import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
 
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.factory.GeoTools;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.referencing.CRS;
@@ -221,5 +224,47 @@ public class JTSTest extends JTSTestBase {
         if( worldBounds2 instanceof BoundingBox){
             assertEquals( DefaultGeographicCRS.WGS84, ((BoundingBox)worldBounds2).getCoordinateReferenceSystem() );
         }
+    }
+    
+    @Test
+    public void testToGeographic() throws Exception {
+        String wkt = "GEOGCS[\"GDA94\","
+                + " DATUM[\"Geocentric Datum of Australia 1994\","
+                + "  SPHEROID[\"GRS 1980\", 6378137.0, 298.257222101, AUTHORITY[\"EPSG\",\"7019\"]],"
+                + "  TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "
+                + " AUTHORITY[\"EPSG\",\"6283\"]], "
+                + " PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],"
+                + " UNIT[\"degree\", 0.017453292519943295], "
+                + " AXIS[\"Geodetic longitude\", EAST], " + " AXIS[\"Geodetic latitude\", NORTH], "
+                + " AXIS[\"Ellipsoidal height\", UP], " + " AUTHORITY[\"EPSG\",\"4939\"]]";
+
+        CoordinateReferenceSystem gda94 = CRS.parseWKT(wkt);
+        GeometryFactory gf = new GeometryFactory();
+        Point point = gf.createPoint( new Coordinate( 130.875825803896, -16.4491956225999, 0.0 ) );
+        
+        Geometry worldPoint = JTS.toGeographic( point,  gda94 );
+        assertTrue( worldPoint instanceof Point );
+        assertEquals( point.getX(), worldPoint.getCoordinate().x,0.00000001);
+    }
+    @Test
+    public void testToGeographicGeometry() throws Exception {
+        // This time we are in north / east order
+        String wkt = "GEOGCS[\"GDA94\","
+                + " DATUM[\"Geocentric Datum of Australia 1994\","
+                + "  SPHEROID[\"GRS 1980\", 6378137.0, 298.257222101, AUTHORITY[\"EPSG\",\"7019\"]],"
+                + "  TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "
+                + " AUTHORITY[\"EPSG\",\"6283\"]], "
+                + " PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],"
+                + " UNIT[\"degree\", 0.017453292519943295], "
+                + " AXIS[\"Geodetic latitude\", NORTH], " + " AXIS[\"Geodetic longitude\", EAST], "
+                + " AXIS[\"Ellipsoidal height\", UP], " + " AUTHORITY[\"EPSG\",\"4939\"]]";
+        CoordinateReferenceSystem gda94 = CRS.parseWKT(wkt);
+        
+        GeometryFactory gf = new GeometryFactory();
+        Point point = gf.createPoint( new Coordinate( -16.4463909341494,130.882672103999, 97.009018073082));
+        
+        Point world = (Point) JTS.toGeographic( point, gda94 );
+        assertEquals( point.getX(), world.getY(), 0.00000005 );
+        assertEquals( point.getY(), world.getX(), 0.00000005 );
     }
 }

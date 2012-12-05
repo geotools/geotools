@@ -31,6 +31,7 @@ import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.PropertyImpl;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.Types;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.util.Converters;
@@ -47,6 +48,7 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.identity.Identifier;
 import org.opengis.geometry.BoundingBox;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -272,15 +274,8 @@ public class SimpleFeatureImpl implements SimpleFeature {
 
     public BoundingBox getBounds() {
         //TODO: cache this value
-    	Envelope bounds;
-    	
-    	if (featureType.getCoordinateReferenceSystem()!= null && featureType.getCoordinateReferenceSystem().getCoordinateSystem().getDimension() == 3) {
-    		//supporting 3D envelopes for 3D geometries
-    		bounds = new ReferencedEnvelope3D( featureType.getCoordinateReferenceSystem() );	        
-    	}
-    	else {
-	        bounds = new ReferencedEnvelope( featureType.getCoordinateReferenceSystem() );	        
-    	}
+    	CoordinateReferenceSystem crs = featureType.getCoordinateReferenceSystem();
+        Envelope bounds = ReferencedEnvelope.create( crs );
     	
     	for ( Object o : values ) {
             if ( o instanceof Geometry ) {
@@ -288,10 +283,10 @@ public class SimpleFeatureImpl implements SimpleFeature {
                 //TODO: check userData for crs... and ensure its of the same 
                 // crs as the feature type
                 if ( bounds.isNull() ) {
-                    bounds.init(g.getEnvelopeInternal());
+                    bounds.init(JTS.bounds( g, crs ));
                 }
                 else {
-                    bounds.expandToInclude(g.getEnvelopeInternal());
+                    bounds.expandToInclude(JTS.bounds( g, crs ));
                 }
             }
         }

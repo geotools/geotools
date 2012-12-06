@@ -426,13 +426,31 @@ public interface Csw20Package extends EPackage {
     int REQUEST_BASE_TYPE__VERSION = 1;
 
     /**
+     * The feature id for the '<em><b>Base Url</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REQUEST_BASE_TYPE__BASE_URL = 2;
+
+    /**
+     * The feature id for the '<em><b>Extended Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int REQUEST_BASE_TYPE__EXTENDED_PROPERTIES = 3;
+
+    /**
      * The number of structural features of the '<em>Request Base Type</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int REQUEST_BASE_TYPE_FEATURE_COUNT = 2;
+    int REQUEST_BASE_TYPE_FEATURE_COUNT = 4;
 
     /**
      * The meta object id for the '{@link net.opengis.cat.csw20.impl.DescribeRecordTypeImpl <em>Describe Record Type</em>}' class.
@@ -463,7 +481,25 @@ public interface Csw20Package extends EPackage {
     int DESCRIBE_RECORD_TYPE__VERSION = REQUEST_BASE_TYPE__VERSION;
 
     /**
-     * The feature id for the '<em><b>Type Name</b></em>' attribute.
+     * The feature id for the '<em><b>Base Url</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DESCRIBE_RECORD_TYPE__BASE_URL = REQUEST_BASE_TYPE__BASE_URL;
+
+    /**
+     * The feature id for the '<em><b>Extended Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int DESCRIBE_RECORD_TYPE__EXTENDED_PROPERTIES = REQUEST_BASE_TYPE__EXTENDED_PROPERTIES;
+
+    /**
+     * The feature id for the '<em><b>Type Name</b></em>' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -840,6 +876,24 @@ public interface Csw20Package extends EPackage {
     int GET_DOMAIN_TYPE__VERSION = REQUEST_BASE_TYPE__VERSION;
 
     /**
+     * The feature id for the '<em><b>Base Url</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int GET_DOMAIN_TYPE__BASE_URL = REQUEST_BASE_TYPE__BASE_URL;
+
+    /**
+     * The feature id for the '<em><b>Extended Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int GET_DOMAIN_TYPE__EXTENDED_PROPERTIES = REQUEST_BASE_TYPE__EXTENDED_PROPERTIES;
+
+    /**
      * The feature id for the '<em><b>Property Name</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -893,6 +947,24 @@ public interface Csw20Package extends EPackage {
      * @ordered
      */
     int GET_RECORD_BY_ID_TYPE__VERSION = REQUEST_BASE_TYPE__VERSION;
+
+    /**
+     * The feature id for the '<em><b>Base Url</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int GET_RECORD_BY_ID_TYPE__BASE_URL = REQUEST_BASE_TYPE__BASE_URL;
+
+    /**
+     * The feature id for the '<em><b>Extended Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int GET_RECORD_BY_ID_TYPE__EXTENDED_PROPERTIES = REQUEST_BASE_TYPE__EXTENDED_PROPERTIES;
 
     /**
      * The feature id for the '<em><b>Id</b></em>' attribute list.
@@ -1021,6 +1093,24 @@ public interface Csw20Package extends EPackage {
      * @ordered
      */
     int GET_RECORDS_TYPE__VERSION = REQUEST_BASE_TYPE__VERSION;
+
+    /**
+     * The feature id for the '<em><b>Base Url</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int GET_RECORDS_TYPE__BASE_URL = REQUEST_BASE_TYPE__BASE_URL;
+
+    /**
+     * The feature id for the '<em><b>Extended Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int GET_RECORDS_TYPE__EXTENDED_PROPERTIES = REQUEST_BASE_TYPE__EXTENDED_PROPERTIES;
 
     /**
      * The feature id for the '<em><b>Distributed Search</b></em>' containment reference.
@@ -1185,6 +1275,24 @@ public interface Csw20Package extends EPackage {
      * @ordered
      */
     int HARVEST_TYPE__VERSION = REQUEST_BASE_TYPE__VERSION;
+
+    /**
+     * The feature id for the '<em><b>Base Url</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int HARVEST_TYPE__BASE_URL = REQUEST_BASE_TYPE__BASE_URL;
+
+    /**
+     * The feature id for the '<em><b>Extended Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int HARVEST_TYPE__EXTENDED_PROPERTIES = REQUEST_BASE_TYPE__EXTENDED_PROPERTIES;
 
     /**
      * The feature id for the '<em><b>Source</b></em>' attribute.
@@ -1417,7 +1525,7 @@ public interface Csw20Package extends EPackage {
     int QUERY_TYPE__ELEMENT_SET_NAME = ABSTRACT_QUERY_TYPE_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Element Name</b></em>' attribute.
+     * The feature id for the '<em><b>Element Name</b></em>' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -1435,7 +1543,7 @@ public interface Csw20Package extends EPackage {
     int QUERY_TYPE__CONSTRAINT = ABSTRACT_QUERY_TYPE_FEATURE_COUNT + 2;
 
     /**
-     * The feature id for the '<em><b>Sort By</b></em>' containment reference.
+     * The feature id for the '<em><b>Sort By</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -1866,6 +1974,24 @@ public interface Csw20Package extends EPackage {
     int TRANSACTION_TYPE__VERSION = REQUEST_BASE_TYPE__VERSION;
 
     /**
+     * The feature id for the '<em><b>Base Url</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TRANSACTION_TYPE__BASE_URL = REQUEST_BASE_TYPE__BASE_URL;
+
+    /**
+     * The feature id for the '<em><b>Extended Properties</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TRANSACTION_TYPE__EXTENDED_PROPERTIES = REQUEST_BASE_TYPE__EXTENDED_PROPERTIES;
+
+    /**
      * The feature id for the '<em><b>Group</b></em>' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2289,6 +2415,52 @@ public interface Csw20Package extends EPackage {
     int SUMMARY_RECORD_TYPE_FEATURE_COUNT = ABSTRACT_RECORD_TYPE_FEATURE_COUNT + 10;
 
     /**
+     * The meta object id for the '{@link net.opengis.cat.csw20.impl.GetRecordByIdResponseTypeImpl <em>Get Record By Id Response Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see net.opengis.cat.csw20.impl.GetRecordByIdResponseTypeImpl
+     * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getGetRecordByIdResponseType()
+     * @generated
+     */
+    int GET_RECORD_BY_ID_RESPONSE_TYPE = 45;
+
+    /**
+     * The feature id for the '<em><b>Abstract Record Group</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int GET_RECORD_BY_ID_RESPONSE_TYPE__ABSTRACT_RECORD_GROUP = 0;
+
+    /**
+     * The feature id for the '<em><b>Abstract Record</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int GET_RECORD_BY_ID_RESPONSE_TYPE__ABSTRACT_RECORD = 1;
+
+    /**
+     * The feature id for the '<em><b>Any</b></em>' attribute list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int GET_RECORD_BY_ID_RESPONSE_TYPE__ANY = 2;
+
+    /**
+     * The number of structural features of the '<em>Get Record By Id Response Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int GET_RECORD_BY_ID_RESPONSE_TYPE_FEATURE_COUNT = 3;
+
+    /**
      * The meta object id for the '{@link net.opengis.cat.csw20.ElementSetType <em>Element Set Type</em>}' enum.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2296,7 +2468,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getElementSetType()
      * @generated
      */
-    int ELEMENT_SET_TYPE = 45;
+    int ELEMENT_SET_TYPE = 46;
 
     /**
      * The meta object id for the '{@link net.opengis.cat.csw20.ResultType <em>Result Type</em>}' enum.
@@ -2306,7 +2478,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getResultType()
      * @generated
      */
-    int RESULT_TYPE = 46;
+    int RESULT_TYPE = 47;
 
     /**
      * The meta object id for the '<em>Type Name List Type</em>' data type.
@@ -2316,7 +2488,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getTypeNameListType()
      * @generated
      */
-    int TYPE_NAME_LIST_TYPE = 47;
+    int TYPE_NAME_LIST_TYPE = 48;
 
     /**
      * The meta object id for the '<em>Service Type</em>' data type.
@@ -2326,7 +2498,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getServiceType()
      * @generated
      */
-    int SERVICE_TYPE = 48;
+    int SERVICE_TYPE = 49;
 
     /**
      * The meta object id for the '<em>Type Name List Type 1</em>' data type.
@@ -2336,7 +2508,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getTypeNameListType_1()
      * @generated
      */
-    int TYPE_NAME_LIST_TYPE_1 = 49;
+    int TYPE_NAME_LIST_TYPE_1 = 50;
 
     /**
      * The meta object id for the '<em>Service Type 1</em>' data type.
@@ -2346,7 +2518,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getServiceType_1()
      * @generated
      */
-    int SERVICE_TYPE_1 = 50;
+    int SERVICE_TYPE_1 = 51;
 
     /**
      * The meta object id for the '<em>Version Type</em>' data type.
@@ -2356,7 +2528,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getVersionType()
      * @generated
      */
-    int VERSION_TYPE = 51;
+    int VERSION_TYPE = 52;
 
 
     /**
@@ -2367,7 +2539,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getCalendar()
      * @generated
      */
-    int CALENDAR = 52;
+    int CALENDAR = 53;
 
 
     /**
@@ -2378,7 +2550,7 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getSet()
      * @generated
      */
-    int SET = 53;
+    int SET = 54;
 
 
     /**
@@ -2389,7 +2561,50 @@ public interface Csw20Package extends EPackage {
      * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getURI()
      * @generated
      */
-    int URI = 54;
+    int URI = 55;
+
+
+    /**
+     * The meta object id for the '<em>QName</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.xml.namespace.QName
+     * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getQName()
+     * @generated
+     */
+    int QNAME = 56;
+
+
+    /**
+     * The meta object id for the '<em>Duration</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see javax.xml.datatype.Duration
+     * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getDuration()
+     * @generated
+     */
+    int DURATION = 57;
+
+
+    /**
+     * The meta object id for the '<em>Map</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see java.util.Map
+     * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getMap()
+     * @generated
+     */
+    int MAP = 58;
+
+
+    /**
+     * The meta object id for the '<em>Sort By Array</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getSortByArray()
+     * @generated
+     */
+    int SORT_BY_ARRAY = 59;
 
 
     /**
@@ -2648,10 +2863,10 @@ public interface Csw20Package extends EPackage {
     EClass getDescribeRecordType();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.cat.csw20.DescribeRecordType#getTypeName <em>Type Name</em>}'.
+     * Returns the meta object for the attribute list '{@link net.opengis.cat.csw20.DescribeRecordType#getTypeName <em>Type Name</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Type Name</em>'.
+     * @return the meta object for the attribute list '<em>Type Name</em>'.
      * @see net.opengis.cat.csw20.DescribeRecordType#getTypeName()
      * @see #getDescribeRecordType()
      * @generated
@@ -3411,10 +3626,10 @@ public interface Csw20Package extends EPackage {
     EReference getQueryType_ElementSetName();
 
     /**
-     * Returns the meta object for the attribute '{@link net.opengis.cat.csw20.QueryType#getElementName <em>Element Name</em>}'.
+     * Returns the meta object for the attribute list '{@link net.opengis.cat.csw20.QueryType#getElementName <em>Element Name</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute '<em>Element Name</em>'.
+     * @return the meta object for the attribute list '<em>Element Name</em>'.
      * @see net.opengis.cat.csw20.QueryType#getElementName()
      * @see #getQueryType()
      * @generated
@@ -3433,15 +3648,15 @@ public interface Csw20Package extends EPackage {
     EReference getQueryType_Constraint();
 
     /**
-     * Returns the meta object for the containment reference '{@link net.opengis.cat.csw20.QueryType#getSortBy <em>Sort By</em>}'.
+     * Returns the meta object for the attribute '{@link net.opengis.cat.csw20.QueryType#getSortBy <em>Sort By</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the containment reference '<em>Sort By</em>'.
+     * @return the meta object for the attribute '<em>Sort By</em>'.
      * @see net.opengis.cat.csw20.QueryType#getSortBy()
      * @see #getQueryType()
      * @generated
      */
-    EReference getQueryType_SortBy();
+    EAttribute getQueryType_SortBy();
 
     /**
      * Returns the meta object for the attribute '{@link net.opengis.cat.csw20.QueryType#getTypeNames <em>Type Names</em>}'.
@@ -3549,6 +3764,28 @@ public interface Csw20Package extends EPackage {
      * @generated
      */
     EAttribute getRequestBaseType_Version();
+
+    /**
+     * Returns the meta object for the attribute '{@link net.opengis.cat.csw20.RequestBaseType#getBaseUrl <em>Base Url</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Base Url</em>'.
+     * @see net.opengis.cat.csw20.RequestBaseType#getBaseUrl()
+     * @see #getRequestBaseType()
+     * @generated
+     */
+    EAttribute getRequestBaseType_BaseUrl();
+
+    /**
+     * Returns the meta object for the attribute '{@link net.opengis.cat.csw20.RequestBaseType#getExtendedProperties <em>Extended Properties</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Extended Properties</em>'.
+     * @see net.opengis.cat.csw20.RequestBaseType#getExtendedProperties()
+     * @see #getRequestBaseType()
+     * @generated
+     */
+    EAttribute getRequestBaseType_ExtendedProperties();
 
     /**
      * Returns the meta object for class '{@link net.opengis.cat.csw20.RequestStatusType <em>Request Status Type</em>}'.
@@ -4244,6 +4481,49 @@ public interface Csw20Package extends EPackage {
     EReference getSummaryRecordType_BoundingBox();
 
     /**
+     * Returns the meta object for class '{@link net.opengis.cat.csw20.GetRecordByIdResponseType <em>Get Record By Id Response Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Get Record By Id Response Type</em>'.
+     * @see net.opengis.cat.csw20.GetRecordByIdResponseType
+     * @generated
+     */
+    EClass getGetRecordByIdResponseType();
+
+    /**
+     * Returns the meta object for the attribute list '{@link net.opengis.cat.csw20.GetRecordByIdResponseType#getAbstractRecordGroup <em>Abstract Record Group</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute list '<em>Abstract Record Group</em>'.
+     * @see net.opengis.cat.csw20.GetRecordByIdResponseType#getAbstractRecordGroup()
+     * @see #getGetRecordByIdResponseType()
+     * @generated
+     */
+    EAttribute getGetRecordByIdResponseType_AbstractRecordGroup();
+
+    /**
+     * Returns the meta object for the containment reference list '{@link net.opengis.cat.csw20.GetRecordByIdResponseType#getAbstractRecord <em>Abstract Record</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference list '<em>Abstract Record</em>'.
+     * @see net.opengis.cat.csw20.GetRecordByIdResponseType#getAbstractRecord()
+     * @see #getGetRecordByIdResponseType()
+     * @generated
+     */
+    EReference getGetRecordByIdResponseType_AbstractRecord();
+
+    /**
+     * Returns the meta object for the attribute list '{@link net.opengis.cat.csw20.GetRecordByIdResponseType#getAny <em>Any</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute list '<em>Any</em>'.
+     * @see net.opengis.cat.csw20.GetRecordByIdResponseType#getAny()
+     * @see #getGetRecordByIdResponseType()
+     * @generated
+     */
+    EAttribute getGetRecordByIdResponseType_Any();
+
+    /**
      * Returns the meta object for enum '{@link net.opengis.cat.csw20.ElementSetType <em>Element Set Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4350,6 +4630,49 @@ public interface Csw20Package extends EPackage {
      * @generated
      */
     EDataType getURI();
+
+    /**
+     * Returns the meta object for data type '{@link javax.xml.namespace.QName <em>QName</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for data type '<em>QName</em>'.
+     * @see javax.xml.namespace.QName
+     * @model instanceClass="javax.xml.namespace.QName"
+     * @generated
+     */
+    EDataType getQName();
+
+    /**
+     * Returns the meta object for data type '{@link javax.xml.datatype.Duration <em>Duration</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for data type '<em>Duration</em>'.
+     * @see javax.xml.datatype.Duration
+     * @model instanceClass="javax.xml.datatype.Duration"
+     * @generated
+     */
+    EDataType getDuration();
+
+    /**
+     * Returns the meta object for data type '{@link java.util.Map <em>Map</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for data type '<em>Map</em>'.
+     * @see java.util.Map
+     * @model instanceClass="java.util.Map"
+     * @generated
+     */
+    EDataType getMap();
+
+    /**
+     * Returns the meta object for data type '<em>Sort By Array</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for data type '<em>Sort By Array</em>'.
+     * @model instanceClass="org.opengis.filter.sort.SortBy[]"
+     * @generated
+     */
+    EDataType getSortByArray();
 
     /**
      * Returns the factory that creates the instances of the model.
@@ -4584,7 +4907,7 @@ public interface Csw20Package extends EPackage {
         EClass DESCRIBE_RECORD_TYPE = eINSTANCE.getDescribeRecordType();
 
         /**
-         * The meta object literal for the '<em><b>Type Name</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Type Name</b></em>' attribute list feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
@@ -5188,7 +5511,7 @@ public interface Csw20Package extends EPackage {
         EReference QUERY_TYPE__ELEMENT_SET_NAME = eINSTANCE.getQueryType_ElementSetName();
 
         /**
-         * The meta object literal for the '<em><b>Element Name</b></em>' attribute feature.
+         * The meta object literal for the '<em><b>Element Name</b></em>' attribute list feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
@@ -5204,12 +5527,12 @@ public interface Csw20Package extends EPackage {
         EReference QUERY_TYPE__CONSTRAINT = eINSTANCE.getQueryType_Constraint();
 
         /**
-         * The meta object literal for the '<em><b>Sort By</b></em>' containment reference feature.
+         * The meta object literal for the '<em><b>Sort By</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EReference QUERY_TYPE__SORT_BY = eINSTANCE.getQueryType_SortBy();
+        EAttribute QUERY_TYPE__SORT_BY = eINSTANCE.getQueryType_SortBy();
 
         /**
          * The meta object literal for the '<em><b>Type Names</b></em>' attribute feature.
@@ -5296,6 +5619,22 @@ public interface Csw20Package extends EPackage {
          * @generated
          */
         EAttribute REQUEST_BASE_TYPE__VERSION = eINSTANCE.getRequestBaseType_Version();
+
+        /**
+         * The meta object literal for the '<em><b>Base Url</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute REQUEST_BASE_TYPE__BASE_URL = eINSTANCE.getRequestBaseType_BaseUrl();
+
+        /**
+         * The meta object literal for the '<em><b>Extended Properties</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute REQUEST_BASE_TYPE__EXTENDED_PROPERTIES = eINSTANCE.getRequestBaseType_ExtendedProperties();
 
         /**
          * The meta object literal for the '{@link net.opengis.cat.csw20.impl.RequestStatusTypeImpl <em>Request Status Type</em>}' class.
@@ -5840,6 +6179,40 @@ public interface Csw20Package extends EPackage {
         EReference SUMMARY_RECORD_TYPE__BOUNDING_BOX = eINSTANCE.getSummaryRecordType_BoundingBox();
 
         /**
+         * The meta object literal for the '{@link net.opengis.cat.csw20.impl.GetRecordByIdResponseTypeImpl <em>Get Record By Id Response Type</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see net.opengis.cat.csw20.impl.GetRecordByIdResponseTypeImpl
+         * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getGetRecordByIdResponseType()
+         * @generated
+         */
+        EClass GET_RECORD_BY_ID_RESPONSE_TYPE = eINSTANCE.getGetRecordByIdResponseType();
+
+        /**
+         * The meta object literal for the '<em><b>Abstract Record Group</b></em>' attribute list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute GET_RECORD_BY_ID_RESPONSE_TYPE__ABSTRACT_RECORD_GROUP = eINSTANCE.getGetRecordByIdResponseType_AbstractRecordGroup();
+
+        /**
+         * The meta object literal for the '<em><b>Abstract Record</b></em>' containment reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference GET_RECORD_BY_ID_RESPONSE_TYPE__ABSTRACT_RECORD = eINSTANCE.getGetRecordByIdResponseType_AbstractRecord();
+
+        /**
+         * The meta object literal for the '<em><b>Any</b></em>' attribute list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute GET_RECORD_BY_ID_RESPONSE_TYPE__ANY = eINSTANCE.getGetRecordByIdResponseType_Any();
+
+        /**
          * The meta object literal for the '{@link net.opengis.cat.csw20.ElementSetType <em>Element Set Type</em>}' enum.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -5938,6 +6311,45 @@ public interface Csw20Package extends EPackage {
          * @generated
          */
         EDataType URI = eINSTANCE.getURI();
+
+        /**
+         * The meta object literal for the '<em>QName</em>' data type.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see javax.xml.namespace.QName
+         * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getQName()
+         * @generated
+         */
+        EDataType QNAME = eINSTANCE.getQName();
+
+        /**
+         * The meta object literal for the '<em>Duration</em>' data type.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see javax.xml.datatype.Duration
+         * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getDuration()
+         * @generated
+         */
+        EDataType DURATION = eINSTANCE.getDuration();
+
+        /**
+         * The meta object literal for the '<em>Map</em>' data type.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see java.util.Map
+         * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getMap()
+         * @generated
+         */
+        EDataType MAP = eINSTANCE.getMap();
+
+        /**
+         * The meta object literal for the '<em>Sort By Array</em>' data type.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see net.opengis.cat.csw20.impl.Csw20PackageImpl#getSortByArray()
+         * @generated
+         */
+        EDataType SORT_BY_ARRAY = eINSTANCE.getSortByArray();
 
     }
 

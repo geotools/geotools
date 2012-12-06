@@ -6,6 +6,7 @@
  */
 package net.opengis.cat.csw20.impl;
 
+import java.util.Calendar;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import net.opengis.cat.csw20.Csw20Package;
@@ -40,7 +41,7 @@ public class RequestStatusTypeImpl extends EObjectImpl implements RequestStatusT
      * @generated
      * @ordered
      */
-    protected static final XMLGregorianCalendar TIMESTAMP_EDEFAULT = null;
+    protected static final Calendar TIMESTAMP_EDEFAULT = null;
 
     /**
      * The cached value of the '{@link #getTimestamp() <em>Timestamp</em>}' attribute.
@@ -50,7 +51,7 @@ public class RequestStatusTypeImpl extends EObjectImpl implements RequestStatusT
      * @generated
      * @ordered
      */
-    protected XMLGregorianCalendar timestamp = TIMESTAMP_EDEFAULT;
+    protected Calendar timestamp = TIMESTAMP_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -76,7 +77,7 @@ public class RequestStatusTypeImpl extends EObjectImpl implements RequestStatusT
      * <!-- end-user-doc -->
      * @generated
      */
-    public XMLGregorianCalendar getTimestamp() {
+    public Calendar getTimestamp() {
         return timestamp;
     }
 
@@ -85,8 +86,8 @@ public class RequestStatusTypeImpl extends EObjectImpl implements RequestStatusT
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setTimestamp(XMLGregorianCalendar newTimestamp) {
-        XMLGregorianCalendar oldTimestamp = timestamp;
+    public void setTimestamp(Calendar newTimestamp) {
+        Calendar oldTimestamp = timestamp;
         timestamp = newTimestamp;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, Csw20Package.REQUEST_STATUS_TYPE__TIMESTAMP, oldTimestamp, timestamp));
@@ -115,7 +116,7 @@ public class RequestStatusTypeImpl extends EObjectImpl implements RequestStatusT
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Csw20Package.REQUEST_STATUS_TYPE__TIMESTAMP:
-                setTimestamp((XMLGregorianCalendar) newValue);
+                setTimestamp((Calendar)newValue);
                 return;
         }
         super.eSet(featureID, newValue);

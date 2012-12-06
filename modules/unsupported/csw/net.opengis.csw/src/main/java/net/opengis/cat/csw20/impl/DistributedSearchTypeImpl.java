@@ -40,7 +40,7 @@ public class DistributedSearchTypeImpl extends EObjectImpl implements Distribute
      * @generated
      * @ordered
      */
-    protected static final BigInteger HOP_COUNT_EDEFAULT = new BigInteger("2");
+    protected static final Integer HOP_COUNT_EDEFAULT = new Integer(2);
 
     /**
      * The cached value of the '{@link #getHopCount() <em>Hop Count</em>}' attribute.
@@ -50,16 +50,7 @@ public class DistributedSearchTypeImpl extends EObjectImpl implements Distribute
      * @generated
      * @ordered
      */
-    protected BigInteger hopCount = HOP_COUNT_EDEFAULT;
-
-    /**
-     * This is true if the Hop Count attribute has been set.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    protected boolean hopCountESet;
+    protected Integer hopCount = HOP_COUNT_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -85,7 +76,7 @@ public class DistributedSearchTypeImpl extends EObjectImpl implements Distribute
      * <!-- end-user-doc -->
      * @generated
      */
-    public BigInteger getHopCount() {
+    public Integer getHopCount() {
         return hopCount;
     }
 
@@ -94,36 +85,11 @@ public class DistributedSearchTypeImpl extends EObjectImpl implements Distribute
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setHopCount(BigInteger newHopCount) {
-        BigInteger oldHopCount = hopCount;
+    public void setHopCount(Integer newHopCount) {
+        Integer oldHopCount = hopCount;
         hopCount = newHopCount;
-        boolean oldHopCountESet = hopCountESet;
-        hopCountESet = true;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Csw20Package.DISTRIBUTED_SEARCH_TYPE__HOP_COUNT, oldHopCount, hopCount, !oldHopCountESet));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void unsetHopCount() {
-        BigInteger oldHopCount = hopCount;
-        boolean oldHopCountESet = hopCountESet;
-        hopCount = HOP_COUNT_EDEFAULT;
-        hopCountESet = false;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.UNSET, Csw20Package.DISTRIBUTED_SEARCH_TYPE__HOP_COUNT, oldHopCount, HOP_COUNT_EDEFAULT, oldHopCountESet));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public boolean isSetHopCount() {
-        return hopCountESet;
+            eNotify(new ENotificationImpl(this, Notification.SET, Csw20Package.DISTRIBUTED_SEARCH_TYPE__HOP_COUNT, oldHopCount, hopCount));
     }
 
     /**
@@ -149,7 +115,7 @@ public class DistributedSearchTypeImpl extends EObjectImpl implements Distribute
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Csw20Package.DISTRIBUTED_SEARCH_TYPE__HOP_COUNT:
-                setHopCount((BigInteger)newValue);
+                setHopCount((Integer)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -164,7 +130,7 @@ public class DistributedSearchTypeImpl extends EObjectImpl implements Distribute
     public void eUnset(int featureID) {
         switch (featureID) {
             case Csw20Package.DISTRIBUTED_SEARCH_TYPE__HOP_COUNT:
-                unsetHopCount();
+                setHopCount(HOP_COUNT_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -179,7 +145,7 @@ public class DistributedSearchTypeImpl extends EObjectImpl implements Distribute
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case Csw20Package.DISTRIBUTED_SEARCH_TYPE__HOP_COUNT:
-                return isSetHopCount();
+                return HOP_COUNT_EDEFAULT == null ? hopCount != null : !HOP_COUNT_EDEFAULT.equals(hopCount);
         }
         return super.eIsSet(featureID);
     }
@@ -195,7 +161,7 @@ public class DistributedSearchTypeImpl extends EObjectImpl implements Distribute
 
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (hopCount: ");
-        if (hopCountESet) result.append(hopCount); else result.append("<unset>");
+        result.append(hopCount);
         result.append(')');
         return result.toString();
     }

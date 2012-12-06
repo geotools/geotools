@@ -2,25 +2,30 @@ package org.geotools.csw;
 
 import static org.junit.Assert.*;
 
-import java.math.BigInteger;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import net.opengis.cat.csw20.AbstractRecordType;
 import net.opengis.cat.csw20.ElementSetNameType;
 import net.opengis.cat.csw20.ElementSetType;
+import net.opengis.cat.csw20.GetRecordByIdResponseType;
 import net.opengis.cat.csw20.GetRecordByIdType;
 import net.opengis.cat.csw20.GetRecordsType;
 import net.opengis.cat.csw20.QueryConstraintType;
 import net.opengis.cat.csw20.QueryType;
+import net.opengis.cat.csw20.RecordType;
 import net.opengis.cat.csw20.ResultType;
 
+import org.eclipse.emf.common.util.EList;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.xml.Parser;
 import org.junit.Test;
 import org.opengis.filter.Filter;
+import org.opengis.filter.sort.SortBy;
+import org.opengis.filter.sort.SortOrder;
 
 public class CSWGetRecordsTest {
 
@@ -52,6 +57,14 @@ public class CSWGetRecordsTest {
         expected.add(new QName(rimNamespace, "Service"));
         assertEquals(expected, esn.getTypeNames());
         assertEquals(ElementSetType.BRIEF, esn.getValue());
+        
+        // the sort by properties
+        SortBy[] sorts = query.getSortBy();
+        assertEquals(2, sorts.length);
+        assertEquals("rim:foo", sorts[0].getPropertyName().getPropertyName());
+        assertEquals(SortOrder.ASCENDING, sorts[0].getSortOrder());
+        assertEquals("rim:bar", sorts[1].getPropertyName().getPropertyName());
+        assertEquals(SortOrder.DESCENDING, sorts[1].getSortOrder());
     }
 
     @Test
@@ -64,8 +77,8 @@ public class CSWGetRecordsTest {
         assertEquals("2.0.2", gr.getVersion());
         assertEquals("application/xml", gr.getOutputFormat());
         assertEquals("http://www.opengis.net/cat/csw/2.0.2", gr.getOutputSchema());
-        assertEquals(new BigInteger("1"), gr.getStartPosition());
-        assertEquals(new BigInteger("5"), gr.getMaxRecords());
+        assertEquals(new Integer(1), gr.getStartPosition());
+        assertEquals(new Integer(5), gr.getMaxRecords());
         assertEquals(ResultType.RESULTS, gr.getResultType());
 
         // the query
@@ -74,16 +87,17 @@ public class CSWGetRecordsTest {
         expected.add(new QName("http://www.opengis.net/cat/csw/2.0.2", "Record"));
         assertEquals(expected, query.getTypeNames());
 
-        // the element set name
-        ElementSetNameType esn = query.getElementSetName();
-        assertEquals(ElementSetType.BRIEF, esn.getValue());
+        // the element names
+        List<QName> names = query.getElementName();
+        assertEquals(2, names.size());
+        assertEquals(new QName("http://purl.org/dc/terms/", "abstract"), names.get(0));
+        assertEquals(new QName("http://purl.org/dc/elements/1.1/", "title"), names.get(1));
 
         // The filter
         QueryConstraintType constraint = query.getConstraint();
         assertEquals("1.1.0", constraint.getVersion());
         Filter filter = CQL.toFilter("AnyText like '%polution%'");
-        // NOT WORKING, IT DOES NOT GET PARSED!
-        // assertEquals(filter, constraint.getFilter());
+        assertEquals(filter, constraint.getFilter());
     }
 
     @Test
@@ -105,5 +119,15 @@ public class CSWGetRecordsTest {
         assertEquals(new URI("REC-10"), ids.get(0));
         assertEquals(new URI("REC-11"), ids.get(1));
         assertEquals(new URI("REC-12"), ids.get(2));
+    }
+    
+    @Test 
+    public void testParseGetRecordsByIdResponse() throws Exception {
+        GetRecordByIdResponseType response = (GetRecordByIdResponseType) parser.parse(getClass().getResourceAsStream(
+                "GetRecordByIdResponse.xml"));
+        assertNotNull(response);
+        EList<AbstractRecordType> records = response.getAbstractRecord();
+        assertEquals(1, records.size());
+        RecordType record = (RecordType) records.get(0);
     }
 }

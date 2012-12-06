@@ -29,6 +29,7 @@ import org.geotools.feature.type.ComplexFeatureTypeImpl;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GMLConfiguration;
 import org.geotools.test.AppSchemaTestSupport;
+import org.geotools.xml.AppSchemaCatalog;
 import org.geotools.xml.AppSchemaConfiguration;
 import org.geotools.xml.AppSchemaResolver;
 import org.geotools.xml.Configuration;
@@ -274,5 +275,23 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
         Assert.assertNotNull(gmlConfiguration);
         Assert.assertEquals(new org.geotools.gml3.v3_2.GMLConfiguration(), gmlConfiguration);
     }
+    
+    /**
+     * Test when secondary schemaUri contains non GML schema used in anyType from primary schema.
+     */
+    @Test
+	public void testNonGMLConfiguration() {
+		AppSchemaCatalog catalog = AppSchemaCatalog.build(getClass()
+				.getResource("/test-data/mappedPolygons.oasis.xml"));
+		AppSchemaConfiguration configuration = new AppSchemaConfiguration(
+				"http://www.opengis.net/swe/2.0",
+				"http://schemas.opengis.net/sweCommon/2.0/swe.xsd",
+				new AppSchemaResolver(catalog));
+		Configuration gmlConfiguration = EmfAppSchemaReader
+				.findGmlConfiguration(configuration);
+		// Null should be returned, not exception
+		// Warning message should be in the log
+		Assert.assertNull(gmlConfiguration);
+	}
 
 }

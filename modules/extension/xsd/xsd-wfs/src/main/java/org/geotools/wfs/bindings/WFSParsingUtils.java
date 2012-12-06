@@ -19,6 +19,7 @@ package org.geotools.wfs.bindings;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -28,6 +29,7 @@ import net.opengis.wfs20.FeatureCollectionType;
 import net.opengis.wfs20.Wfs20Factory;
 
 import org.eclipse.emf.ecore.EObject;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
@@ -55,15 +57,16 @@ public class WFSParsingUtils {
         //check for an array
         SimpleFeature[] featureMembers = (SimpleFeature[]) node.getChildValue(SimpleFeature[].class);
         if (featureMembers != null) {
+            Collection<SimpleFeature> collection = DataUtilities.collectionCast( fc );
             for (int i = 0; i < featureMembers.length; i++) {
-                fc.add(featureMembers[i]);
+                collection.add(featureMembers[i]);
             }
         }
         else {
-            //gml:featureMember
+            Collection<SimpleFeature> collection = DataUtilities.collectionCast( fc );
             List<SimpleFeature> featureMember = node.getChildValues( SimpleFeature.class );
             for (SimpleFeature f : featureMember ) {
-                fc.add( f );
+                collection.add( f );
             }
         }
         

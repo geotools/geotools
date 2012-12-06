@@ -423,7 +423,8 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
         double miny = requestEnvelope.getMinY();
         double maxx = requestEnvelope.getMaxX();
         double maxy = requestEnvelope.getMaxY();
-        requestEnvelope = new ReferencedEnvelope(miny, maxy, minx, maxx, requestCRS);
+        CoordinateReferenceSystem crs = requestEnvelope.getCoordinateReferenceSystem();
+        requestEnvelope = new ReferencedEnvelope(miny, maxy, minx, maxx, requestCRS != null ? requestCRS : crs );
         return requestEnvelope;
     }
 

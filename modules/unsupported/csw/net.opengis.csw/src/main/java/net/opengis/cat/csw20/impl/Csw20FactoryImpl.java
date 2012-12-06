@@ -10,7 +10,10 @@ import java.net.URI;
 import java.util.Calendar;
 import java.util.List;
 
+import java.util.Map;
 import java.util.Set;
+import javax.xml.datatype.Duration;
+import javax.xml.namespace.QName;
 import net.opengis.cat.csw20.AcknowledgementType;
 import net.opengis.cat.csw20.BriefRecordType;
 import net.opengis.cat.csw20.CapabilitiesType;
@@ -30,6 +33,7 @@ import net.opengis.cat.csw20.EmptyType;
 import net.opengis.cat.csw20.GetCapabilitiesType;
 import net.opengis.cat.csw20.GetDomainResponseType;
 import net.opengis.cat.csw20.GetDomainType;
+import net.opengis.cat.csw20.GetRecordByIdResponseType;
 import net.opengis.cat.csw20.GetRecordByIdType;
 import net.opengis.cat.csw20.GetRecordsResponseType;
 import net.opengis.cat.csw20.GetRecordsType;
@@ -62,6 +66,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+import org.opengis.filter.sort.SortBy;
 
 /**
  * <!-- begin-user-doc -->
@@ -145,6 +150,7 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
             case Csw20Package.RECORD_TYPE: return createRecordType();
             case Csw20Package.SIMPLE_LITERAL: return createSimpleLiteral();
             case Csw20Package.SUMMARY_RECORD_TYPE: return createSummaryRecordType();
+            case Csw20Package.GET_RECORD_BY_ID_RESPONSE_TYPE: return createGetRecordByIdResponseType();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -178,6 +184,14 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
                 return createSetFromString(eDataType, initialValue);
             case Csw20Package.URI:
                 return createURIFromString(eDataType, initialValue);
+            case Csw20Package.QNAME:
+                return createQNameFromString(eDataType, initialValue);
+            case Csw20Package.DURATION:
+                return createDurationFromString(eDataType, initialValue);
+            case Csw20Package.MAP:
+                return createMapFromString(eDataType, initialValue);
+            case Csw20Package.SORT_BY_ARRAY:
+                return createSortByArrayFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -211,6 +225,14 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
                 return convertSetToString(eDataType, instanceValue);
             case Csw20Package.URI:
                 return convertURIToString(eDataType, instanceValue);
+            case Csw20Package.QNAME:
+                return convertQNameToString(eDataType, instanceValue);
+            case Csw20Package.DURATION:
+                return convertDurationToString(eDataType, instanceValue);
+            case Csw20Package.MAP:
+                return convertMapToString(eDataType, instanceValue);
+            case Csw20Package.SORT_BY_ARRAY:
+                return convertSortByArrayToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -601,6 +623,16 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * <!-- end-user-doc -->
      * @generated
      */
+    public GetRecordByIdResponseType createGetRecordByIdResponseType() {
+        GetRecordByIdResponseTypeImpl getRecordByIdResponseType = new GetRecordByIdResponseTypeImpl();
+        return getRecordByIdResponseType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public ElementSetType createElementSetTypeFromString(EDataType eDataType, String initialValue) {
         ElementSetType result = ElementSetType.get(initialValue);
         if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
@@ -642,8 +674,8 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * @generated
      */
     @SuppressWarnings("unchecked")
-    public List createTypeNameListTypeFromString(EDataType eDataType, String initialValue) {
-        return (List)super.createFromString(initialValue);
+    public List<QName> createTypeNameListTypeFromString(EDataType eDataType, String initialValue) {
+        return (List<QName>)super.createFromString(initialValue);
     }
 
     /**
@@ -679,8 +711,8 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      * @generated
      */
     @SuppressWarnings("unchecked")
-    public List createTypeNameListType_1FromString(EDataType eDataType, String initialValue) {
-        return (List)super.createFromString(initialValue);
+    public List<QName> createTypeNameListType_1FromString(EDataType eDataType, String initialValue) {
+        return (List<QName>)super.createFromString(initialValue);
     }
 
     /**
@@ -780,6 +812,78 @@ public class Csw20FactoryImpl extends EFactoryImpl implements Csw20Factory {
      */
     public String convertURIToString(EDataType eDataType, Object instanceValue) {
         return super.convertToString(eDataType, instanceValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public QName createQNameFromString(EDataType eDataType, String initialValue) {
+        return (QName)super.createFromString(eDataType, initialValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertQNameToString(EDataType eDataType, Object instanceValue) {
+        return super.convertToString(eDataType, instanceValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public Duration createDurationFromString(EDataType eDataType, String initialValue) {
+        return (Duration)super.createFromString(eDataType, initialValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertDurationToString(EDataType eDataType, Object instanceValue) {
+        return super.convertToString(eDataType, instanceValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public Map createMapFromString(EDataType eDataType, String initialValue) {
+        return (Map)super.createFromString(eDataType, initialValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertMapToString(EDataType eDataType, Object instanceValue) {
+        return super.convertToString(eDataType, instanceValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public SortBy[] createSortByArrayFromString(EDataType eDataType, String initialValue) {
+        return (SortBy[])super.createFromString(initialValue);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String convertSortByArrayToString(EDataType eDataType, Object instanceValue) {
+        return super.convertToString(instanceValue);
     }
 
     /**

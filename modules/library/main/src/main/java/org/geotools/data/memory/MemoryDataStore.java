@@ -593,6 +593,12 @@ public class MemoryDataStore extends AbstractDataStore {
         Iterator<SimpleFeature> iterator = contents.values().iterator();
 
         CoordinateReferenceSystem coordinateSystem = query.getCoordinateSystem();
+        if (coordinateSystem == null) {
+            SimpleFeatureType type = schema.get(typeName);
+            if (type != null) {
+                coordinateSystem = type.getCoordinateReferenceSystem();
+            }
+        }
         ReferencedEnvelope envelope = null;
         
         Filter filter = query.getFilter();
@@ -603,11 +609,14 @@ public class MemoryDataStore extends AbstractDataStore {
             SimpleFeature feature = iterator.next();
             if(filter.evaluate(feature)) {
                 count++;
-                Envelope env = ((Geometry) feature.getDefaultGeometry()).getEnvelopeInternal();
                 if (null == envelope) {
                     envelope = new ReferencedEnvelope(coordinateSystem);
                 }
-                envelope.expandToInclude(env);
+                Geometry geom = (Geometry) feature.getDefaultGeometry();
+                Envelope env = geom != null ? geom.getEnvelopeInternal() : null;
+                if (env != null) {
+                    envelope.expandToInclude(env);
+                }
             }
         }
 

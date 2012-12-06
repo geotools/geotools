@@ -180,78 +180,89 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
         final int HEADER_BYTES = 96;
         final int SEPARATOR_BYTES = 4;
         final int DESCRIPTION_LENGTH = 64;
-        ReadableByteChannel latChannel;
-        ReadableByteChannel longChannel;
+        ReadableByteChannel latChannel = null;
+        ReadableByteChannel longChannel = null;
+        NADConGridShift gridShift = null;
         ByteBuffer latBuffer;
         ByteBuffer longBuffer;
 
-        // //////////////////////
-        // setup
-        // //////////////////////
-        latChannel = getReadChannel(latGridUrl);
-        latBuffer = fillBuffer(latChannel, HEADER_BYTES);
-
-        longChannel = getReadChannel(longGridUrl);
-        longBuffer = fillBuffer(longChannel, HEADER_BYTES);
-
-        // //////////////////////
-        // read header info
-        // //////////////////////
-        // skip the header description
-        latBuffer.position(latBuffer.position() + DESCRIPTION_LENGTH);
-
-        int nc = latBuffer.getInt();
-        int nr = latBuffer.getInt();
-        int nz = latBuffer.getInt();
-
-        float xmin = latBuffer.getFloat();
-        float dx = latBuffer.getFloat();
-        float ymin = latBuffer.getFloat();
-        float dy = latBuffer.getFloat();
-
-        float angle = latBuffer.getFloat();
-        float xmax = xmin + ((nc - 1) * dx);
-        float ymax = ymin + ((nr - 1) * dy);
-
-        // skip the longitude header description
-        longBuffer.position(longBuffer.position() + DESCRIPTION_LENGTH);
-
-        // check that latitude grid header is the same as for latitude grid
-        if ((nc != longBuffer.getInt()) || (nr != longBuffer.getInt())
-                || (nz != longBuffer.getInt()) || (xmin != longBuffer.getFloat())
-                || (dx != longBuffer.getFloat()) || (ymin != longBuffer.getFloat())
-                || (dy != longBuffer.getFloat()) || (angle != longBuffer.getFloat())) {
-            throw new FactoryException(Errors.format(ErrorKeys.GRID_LOCATIONS_UNEQUAL));
+        try {
+	        // //////////////////////
+	        // setup
+	        // //////////////////////
+	        latChannel = getReadChannel(latGridUrl);
+	        latBuffer = fillBuffer(latChannel, HEADER_BYTES);
+	
+	        longChannel = getReadChannel(longGridUrl);
+	        longBuffer = fillBuffer(longChannel, HEADER_BYTES);
+	
+	        // //////////////////////
+	        // read header info
+	        // //////////////////////
+	        // skip the header description
+	        latBuffer.position(latBuffer.position() + DESCRIPTION_LENGTH);
+	
+	        int nc = latBuffer.getInt();
+	        int nr = latBuffer.getInt();
+	        int nz = latBuffer.getInt();
+	
+	        float xmin = latBuffer.getFloat();
+	        float dx = latBuffer.getFloat();
+	        float ymin = latBuffer.getFloat();
+	        float dy = latBuffer.getFloat();
+	
+	        float angle = latBuffer.getFloat();
+	        float xmax = xmin + ((nc - 1) * dx);
+	        float ymax = ymin + ((nr - 1) * dy);
+	
+	        // skip the longitude header description
+	        longBuffer.position(longBuffer.position() + DESCRIPTION_LENGTH);
+	
+	        // check that latitude grid header is the same as for latitude grid
+	        if ((nc != longBuffer.getInt()) || (nr != longBuffer.getInt())
+	                || (nz != longBuffer.getInt()) || (xmin != longBuffer.getFloat())
+	                || (dx != longBuffer.getFloat()) || (ymin != longBuffer.getFloat())
+	                || (dy != longBuffer.getFloat()) || (angle != longBuffer.getFloat())) {
+	            throw new FactoryException(Errors.format(ErrorKeys.GRID_LOCATIONS_UNEQUAL));
+	        }
+	
+	        // //////////////////////
+	        // read grid shift data into LocalizationGrid
+	        // //////////////////////
+	        final int RECORD_LENGTH = (nc * 4) + SEPARATOR_BYTES;
+	        final int NUM_BYTES_LEFT = ((nr + 1) * RECORD_LENGTH) - HEADER_BYTES;
+	        final int START_OF_DATA = RECORD_LENGTH - HEADER_BYTES;
+	
+	        latBuffer = fillBuffer(latChannel, NUM_BYTES_LEFT);
+	        latBuffer.position(START_OF_DATA); // start of second record (data)
+	
+	        longBuffer = fillBuffer(longChannel, NUM_BYTES_LEFT);
+	        longBuffer.position(START_OF_DATA);
+	
+	        gridShift = new NADConGridShift(xmin, ymin, xmax, ymax, dx, dy, nc, nr);
+	
+	        int i = 0;
+	        int j = 0;
+	        for (i = 0; i < nr; i++) {
+	            latBuffer.position(latBuffer.position() + SEPARATOR_BYTES); // skip record separator
+	            longBuffer.position(longBuffer.position() + SEPARATOR_BYTES);
+	
+	            for (j = 0; j < nc; j++) {
+	                gridShift.setLocalizationPoint(j, i, longBuffer.getFloat(), latBuffer.getFloat());
+	            }
+	        }
+	
+	        assert i == nr : i;
+	        assert j == nc : j;
+        } finally {
+        	if(latChannel != null) {
+                latChannel.close();
+        	}
+        	if(longChannel != null) {
+        		longChannel.close();
+        	}
         }
-
-        // //////////////////////
-        // read grid shift data into LocalizationGrid
-        // //////////////////////
-        final int RECORD_LENGTH = (nc * 4) + SEPARATOR_BYTES;
-        final int NUM_BYTES_LEFT = ((nr + 1) * RECORD_LENGTH) - HEADER_BYTES;
-        final int START_OF_DATA = RECORD_LENGTH - HEADER_BYTES;
-
-        latBuffer = fillBuffer(latChannel, NUM_BYTES_LEFT);
-        latBuffer.position(START_OF_DATA); // start of second record (data)
-
-        longBuffer = fillBuffer(longChannel, NUM_BYTES_LEFT);
-        longBuffer.position(START_OF_DATA);
-
-        NADConGridShift gridShift = new NADConGridShift(xmin, ymin, xmax, ymax, dx, dy, nc, nr);
-
-        int i = 0;
-        int j = 0;
-        for (i = 0; i < nr; i++) {
-            latBuffer.position(latBuffer.position() + SEPARATOR_BYTES); // skip record separator
-            longBuffer.position(longBuffer.position() + SEPARATOR_BYTES);
-
-            for (j = 0; j < nc; j++) {
-                gridShift.setLocalizationPoint(j, i, longBuffer.getFloat(), latBuffer.getFloat());
-            }
-        }
-
-        assert i == nr : i;
-        assert j == nc : j;
+        
 
         return gridShift;
     }

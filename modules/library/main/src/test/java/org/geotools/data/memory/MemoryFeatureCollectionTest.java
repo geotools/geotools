@@ -16,12 +16,17 @@
  */
 package org.geotools.data.memory;
 
+import java.io.Closeable;
 import java.util.Arrays;
 import java.util.Iterator;
 
 import org.geotools.data.DataTestCase;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.collection.FilteredIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * 
@@ -55,22 +60,28 @@ public class MemoryFeatureCollectionTest extends DataTestCase {
     }
     public void testResources(){
         Object[] array = roads.toArray();
-        roads.purge();        
         assertEquals( roads.size(), array.length );
         
-        Iterator i=roads.iterator();
-        assertTrue( i.hasNext() );
-        roads.close( i );
+        SimpleFeatureIterator i = roads.features();
+        try {
+            assertTrue( i.hasNext() );
+        }
+        finally {
+            i.close();
+        }
         try {
             assertFalse( i.hasNext() );
             fail("should be closed");
         }
         catch( IllegalStateException closed ){            
         }
-        
-        i=roads.iterator();
-        assertTrue( i.hasNext() );
-        roads.purge();        
+        i=roads.features();
+        try {
+            assertTrue( i.hasNext() );
+        }
+        finally {
+            i.close();
+        }
         try {
             assertFalse( i.hasNext() );
             fail("should be closed");
@@ -78,8 +89,7 @@ public class MemoryFeatureCollectionTest extends DataTestCase {
         catch( IllegalStateException closed ){            
         }        
     }
-
-
+    
     public void testBounds() {
         MemoryFeatureCollection rivers = new MemoryFeatureCollection(riverType);
         ReferencedEnvelope expected = new ReferencedEnvelope();
@@ -94,10 +104,52 @@ public class MemoryFeatureCollectionTest extends DataTestCase {
         assertEquals( expected, rivers.getBounds() );
     }
 
+    /**
+     * This feature collection is still implementing Collection so we best check it works
+     */
+    public void testIterator() throws Exception {
+        int count=0;
+        Iterator<SimpleFeature> it = roads.iterator();
+        try {
+            while( it.hasNext() ){
+                @SuppressWarnings("unused")
+                SimpleFeature feature = it.next();
+                count++;
+            }
+        } finally {
+            DataUtilities.close( it );
+        }
+        assertEquals( roads.size(), count );
+        
+        count=0;
+        FilteredIterator<SimpleFeature> filteredIterator = new FilteredIterator<SimpleFeature>( roads, rd12Filter );
+        try {
+            while( filteredIterator.hasNext() ){
+                @SuppressWarnings("unused")
+                SimpleFeature feature = filteredIterator.next();
+                count++;
+            }
+        } finally {
+            filteredIterator.close();
+        }
+        assertEquals( expected( rd12Filter) , count );
+    }
     
     public void testSubCollection(){
+        int count = 0;
+        SimpleFeatureIterator it = roads.features();
+        try {
+            while( it.hasNext() ){
+                SimpleFeature feature = it.next();
+                if( rd12Filter.evaluate( feature )){
+                    count++;
+                }
+            }
+        } finally {
+            it.close();
+        }
         SimpleFeatureCollection sub = roads.subCollection( rd12Filter );
-        assertEquals( 2, sub.size() );
+        assertEquals( count, sub.size() );
     }
     public void testSubSubCollection(){
         SimpleFeatureCollection sub = roads.subCollection( rd12Filter );        

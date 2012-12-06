@@ -87,6 +87,7 @@ public class FeatureJSON {
     boolean encodeFeatureCollectionBounds = false;
     boolean encodeFeatureCRS = false;
     boolean encodeFeatureCollectionCRS = false;
+    boolean encodeNullValues = false;
     
     public FeatureJSON() {
         this(new GeometryJSON());
@@ -194,6 +195,25 @@ public class FeatureJSON {
         return encodeFeatureCollectionCRS;
     }
     
+    /**
+     * Sets the flag controlling whether properties with null values are encoded.
+     *
+     * @see #isEncodeNullValues()
+     */
+    public void setEncodeNullValues(boolean encodeNullValues) {
+        this.encodeNullValues = encodeNullValues;
+    }
+
+    /**
+     * The flag controlling whether properties with null values are encoded.
+     * <p>
+     * When set, properties with null values are encoded as null in the GeoJSON document.
+     * </p>
+     */
+    public boolean isEncodeNullValues() {
+        return encodeNullValues;
+    }
+
     /**
      * Writes a feature as GeoJSON.
      * 
@@ -311,7 +331,7 @@ public class FeatureJSON {
      * @throws IOException In the event of a parsing error or if the input json is invalid.
      */
     public FeatureCollection readFeatureCollection(Object input) throws IOException {
-        FeatureCollection features = new DefaultFeatureCollection(null, null);
+        DefaultFeatureCollection features = new DefaultFeatureCollection(null, null);
         FeatureCollectionIterator it = (FeatureCollectionIterator) streamFeatureCollection(input);
         while(it.hasNext()) {
             features.add(it.next());
@@ -321,7 +341,7 @@ public class FeatureJSON {
         if (features.getSchema().getCoordinateReferenceSystem() == null 
                 && it.getHandler().getCRS() != null ) {
             try {
-                features = new ForceCoordinateSystemFeatureResults(features, it.getHandler().getCRS());
+                return new ForceCoordinateSystemFeatureResults(features, it.getHandler().getCRS());
             } catch (SchemaException e) {
                 throw (IOException) new IOException().initCause(e);
             }
@@ -523,7 +543,8 @@ public class FeatureJSON {
                 }
                 
                 Object value = feature.getAttribute(i);
-                if (value == null) {
+
+                if (!encodeNullValues && value == null) {
                     //skip
                     continue;
                 }
@@ -590,7 +611,9 @@ public class FeatureJSON {
                 }
             }
             finally {
-                features.close(i);
+                if( i != null ){
+                    i.close();
+                }
             }
             out.write("]");
             out.flush();

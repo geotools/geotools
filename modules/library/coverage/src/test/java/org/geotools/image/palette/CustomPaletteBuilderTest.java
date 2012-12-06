@@ -19,36 +19,28 @@ package org.geotools.image.palette;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
-import java.awt.image.SampleModel;
 
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.OperationDescriptor;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.PlanarImage;
-import javax.media.jai.TiledImage;
 
-import junit.framework.TestCase;
+import junit.framework.Assert;
 
 import org.geotools.image.ImageWorker;
 import org.junit.Test;
-
-import com.sun.media.jai.codecimpl.util.RasterFactory;
 
 /**
  * Testing custom code for color reduction.
  * 
  * @author Simone Giannecchini, GeoSolutions SAS
  *
- *
- *
- * @source $URL$
  */
-public class CustomPaletteBuilderTest extends TestCase {
-
+public class CustomPaletteBuilderTest extends Assert {
+ 
     @Test
     public void test2BandsBug() {
         // build a transparent image
@@ -57,7 +49,7 @@ public class CustomPaletteBuilderTest extends TestCase {
         
         
         // create a palette out of it
-        CustomPaletteBuilder builder = new CustomPaletteBuilder(image, 256, 1,1, 1);
+        CustomPaletteBuilder builder = new CustomPaletteBuilder(image, 256, 2,2, 1);
         builder.buildPalette();
         RenderedImage indexed = builder.getIndexedImage();
         assertTrue(indexed.getColorModel() instanceof IndexColorModel);
@@ -74,7 +66,7 @@ public class CustomPaletteBuilderTest extends TestCase {
                 BufferedImage.TYPE_4BYTE_ABGR);
         
         // create a palette out of it
-        CustomPaletteBuilder builder = new CustomPaletteBuilder(image, 256, 1,1, 1);
+        CustomPaletteBuilder builder = new CustomPaletteBuilder(image, 256, 2,2, 1);
         builder.buildPalette();
         RenderedImage indexed = builder.getIndexedImage();
         assertTrue(indexed.getColorModel() instanceof IndexColorModel);
@@ -105,21 +97,31 @@ public class CustomPaletteBuilderTest extends TestCase {
 	
 	@Test
     public void testTranslatedImage() {
-	    BufferedImage bi = new BufferedImage(256, 256, BufferedImage.TYPE_BYTE_GRAY);
-        TiledImage image = new TiledImage(0, 0, 256, 256, 1, 1, bi.getSampleModel().createCompatibleSampleModel(256, 256), bi.getColorModel());
+	    BufferedImage image = new BufferedImage(256, 256, BufferedImage.TYPE_BYTE_GRAY);
         Graphics g = image.createGraphics();
         g.setColor(Color.WHITE);
-        g.fillRect(0, 0, 20, 20);
-        g.setColor(new Color(20, 20, 20)); // A dark gray
-        g.fillRect(20, 20, 20, 20);
+        g.fillRect(236, 236, 20, 20);
+        g.setColor(new Color(80, 80, 80)); // A dark gray
+        g.fillRect(216, 216, 20, 20);
         g.setColor(new Color(200, 200, 200)); // A light gray
-        g.fillRect(0, 20, 20, 20);
+        g.fillRect(216, 236, 20, 20);
         g.dispose();
+        image=image.getSubimage(128, 128, 128, 128);
         CustomPaletteBuilder builder = new CustomPaletteBuilder(image, 256, 1, 1, 1);
         RenderedImage indexed =  builder.buildPalette().getIndexedImage();
         assertTrue(indexed.getColorModel() instanceof IndexColorModel);
         IndexColorModel icm = (IndexColorModel) indexed.getColorModel();
         assertEquals(4, icm.getMapSize()); //Black background, white fill, light gray fill, dark gray fill = 4 colors
+        
+        // check image not black
+        ImageWorker iw = new ImageWorker(indexed).forceComponentColorModel().intensity();
+        double[] mins = iw.getMinimums();
+        double[] maxs = iw.getMaximums();
+        boolean result=true;
+        for(int i=0;i<mins.length;i++){
+        	result=mins[i]==maxs[i]?false:result;
+        }
+        assertTrue(result);
         
     }
 	
@@ -167,7 +169,7 @@ public class CustomPaletteBuilderTest extends TestCase {
         							 new ImageLayout(image).setTileGridXOffset(0).setTileGridYOffset(0).setTileHeight(64).setTileWidth(64)
         		).tile().getRenderedImage()
         );
-        pbj.setParameter( "numColors", 255);
+        pbj.setParameter("numColors", 255);
         pbj.setParameter("alphaThreshold", 1);
         pbj.setParameter("subsampleX", 1);
         pbj.setParameter("subsampleY", 1);

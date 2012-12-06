@@ -17,9 +17,12 @@
 package org.geotools.styling.visitor;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
 import java.net.URL;
 import java.util.Collections;
 
+import javax.swing.Icon;
 import javax.xml.transform.TransformerException;
 
 import junit.framework.TestCase;
@@ -522,6 +525,37 @@ public class DuplicatorStyleVisitorTest extends TestCase {
 
         // make sure it works for different format, same url
         ExternalGraphic notEq2 = visitor.copy( clone);
+        notEq2.setFormat("image/jpeg");
+        assertEqualsContract(clone, notEq2, exGraphic);
+    }
+    
+    public void testExternalGraphicWithInlineContent() {
+        Icon icon = new Icon() {
+            @Override
+            public void paintIcon(Component c, Graphics g, int x, int y) {
+            }
+
+            @Override
+            public int getIconWidth() {
+                return 16;
+            }
+
+            @Override
+            public int getIconHeight() {
+                return 16;
+            }
+        };
+
+        ExternalGraphic exGraphic = sf.createExternalGraphic(icon, "image/png");
+        ExternalGraphic clone = visitor.copy(exGraphic);
+        assertCopy(exGraphic, clone);
+        assertSame(exGraphic.getInlineContent(), clone.getInlineContent());
+
+        ExternalGraphic notEq = sf.createExternalGraphic(icon, "image/jpeg");
+        assertEqualsContract(clone, notEq, exGraphic);
+
+        // make sure it works for different format, same content
+        ExternalGraphic notEq2 = visitor.copy(clone);
         notEq2.setFormat("image/jpeg");
         assertEqualsContract(clone, notEq2, exGraphic);
     }

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/net.opengis.wcs/src" modelPluginID="net.opengis.wcs"
+    modelName="Wcs20" importerID="org.eclipse.emf.importer.java" complianceLevel="6.0"
+    copyrightFields="false" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/XMLType.genmodel#//type platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore ../org.w3.xlink/xlink.genmodel#//xlink platform:/plugin/org.eclipse.emf.ecore/model/XMLNamespace.genmodel#//namespace ../net.opengis.ows/ows11.genmodel#//ows11 ../net.opengis.ows/ows20.genmodel#//ows20">
+  <foreignModel>@model</foreignModel>
+  <genPackages prefix="Wcs20" basePackage="net.opengis" resource="XML" disposableProviderFactory="true"
+      ecorePackage="wcs20.ecore#/">
+    <genDataTypes ecoreDataType="wcs20.ecore#//VersionStringType"/>
+    <genDataTypes ecoreDataType="wcs20.ecore#//VersionStringType_1"/>
+    <genDataTypes ecoreDataType="wcs20.ecore#//QName"/>
+    <genClasses ecoreClass="wcs20.ecore#//CapabilitiesType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//CapabilitiesType/serviceMetadata"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//CapabilitiesType/contents"/>
+    </genClasses>
+    <genClasses ecoreClass="wcs20.ecore#//ContentsType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//ContentsType/coverageSummary"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//ContentsType/extension"/>
+    </genClasses>
+    <genClasses ecoreClass="wcs20.ecore#//CoverageDescriptionsType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//CoverageDescriptionsType/coverageDescription"/>
+    </genClasses>
+    <genClasses ecoreClass="wcs20.ecore#//CoverageDescriptionType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//CoverageDescriptionType/coverageId"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//CoverageDescriptionType/coverageFunction"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//CoverageDescriptionType/metadata"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//CoverageDescriptionType/domainSet"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//CoverageDescriptionType/rangeType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//CoverageDescriptionType/serviceParameters"/>
+    </genClasses>
+    <genClasses ecoreClass="wcs20.ecore#//CoverageOfferingsType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//CoverageOfferingsType/serviceMetadata"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//CoverageOfferingsType/offeredCoverage"/>
+    </genClasses>
+    <genClasses ecoreClass="wcs20.ecore#//CoverageSubtypeParentType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//CoverageSubtypeParentType/coverageSubtype"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//CoverageSubtypeParentType/coverageSubtypeParent"/>
+    </genClasses>
+    <genClasses ecoreClass="wcs20.ecore#//CoverageSummaryType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//CoverageSummaryType/wGS84BoundingBox"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//CoverageSummaryType/coverageId"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//CoverageSummaryType/coverageSubtype"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//CoverageSummaryType/coverageSubtypeParent"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wcs20.ecore#//CoverageSummaryType/boundingBoxGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wcs20.ecore#//CoverageSummaryType/boundingBox"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wcs20.ecore#//CoverageSummaryType/metadataGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wcs20.ecore#//CoverageSummaryType/metadata"/>
+    </genClasses>
+    <genClasses ecoreClass="wcs20.ecore#//DescribeCoverageType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//DescribeCoverageType/coverageId"/>
+    </genClasses>
+    <genClasses ecoreClass="wcs20.ecore#//DimensionSliceType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//DimensionSliceType/slicePoint"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="wcs20.ecore#//DimensionSubsetType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//DimensionSubsetType/dimension"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//DimensionSubsetType/cRS"/>
+    </genClasses>
+    <genClasses ecoreClass="wcs20.ecore#//DimensionTrimType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//DimensionTrimType/trimLow"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//DimensionTrimType/trimHigh"/>
+    </genClasses>
+    <genClasses ecoreClass="wcs20.ecore#//DocumentRoot">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wcs20.ecore#//DocumentRoot/xMLNSPrefixMap"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wcs20.ecore#//DocumentRoot/xSISchemaLocation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//DocumentRoot/capabilities"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//DocumentRoot/contents"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//DocumentRoot/coverageDescription"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//DocumentRoot/coverageDescriptions"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//DocumentRoot/coverageId"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//DocumentRoot/coverageOfferings"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//DocumentRoot/coverageSubtype"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//DocumentRoot/coverageSubtypeParent"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//DocumentRoot/coverageSummary"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//DocumentRoot/describeCoverage"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//DocumentRoot/dimensionSlice"/>
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference wcs20.ecore#//DocumentRoot/dimensionSubset"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//DocumentRoot/dimensionTrim"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//DocumentRoot/extension"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//DocumentRoot/getCapabilities"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//DocumentRoot/getCoverage"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//DocumentRoot/offeredCoverage"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//DocumentRoot/serviceMetadata"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//DocumentRoot/serviceParameters"/>
+    </genClasses>
+    <genClasses ecoreClass="wcs20.ecore#//ExtensionType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wcs20.ecore#//ExtensionType/any"/>
+    </genClasses>
+    <genClasses ecoreClass="wcs20.ecore#//GetCapabilitiesType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//GetCapabilitiesType/service"/>
+    </genClasses>
+    <genClasses ecoreClass="wcs20.ecore#//GetCoverageType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//GetCoverageType/coverageId"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wcs20.ecore#//GetCoverageType/dimensionSubsetGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wcs20.ecore#//GetCoverageType/dimensionSubset"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//GetCoverageType/format"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//GetCoverageType/mediaType"/>
+    </genClasses>
+    <genClasses ecoreClass="wcs20.ecore#//OfferedCoverageType">
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference wcs20.ecore#//OfferedCoverageType/abstractCoverage"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//OfferedCoverageType/serviceParameters"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="wcs20.ecore#//RequestBaseType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//RequestBaseType/extension"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//RequestBaseType/service"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//RequestBaseType/version"/>
+    </genClasses>
+    <genClasses ecoreClass="wcs20.ecore#//ServiceMetadataType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//ServiceMetadataType/formatSupported"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//ServiceMetadataType/extension"/>
+    </genClasses>
+    <genClasses ecoreClass="wcs20.ecore#//ServiceParametersType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//ServiceParametersType/coverageSubtype"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//ServiceParametersType/coverageSubtypeParent"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//ServiceParametersType/nativeFormat"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//ServiceParametersType/extension"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="wcs20.ecore#//Object"/>
+  </genPackages>
+</genmodel:GenModel>

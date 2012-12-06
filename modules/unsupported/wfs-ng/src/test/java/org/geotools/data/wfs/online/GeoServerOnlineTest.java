@@ -189,17 +189,15 @@ public class GeoServerOnlineTest {
             Query query = new Query(typeName, Filter.INCLUDE, 20, Query.ALL_NAMES, "work already");
             features = source.getFeatures(query);
             features.size();
-            Iterator reader = features.iterator();
-            while (reader.hasNext()) {
-                SimpleFeature feature = (SimpleFeature) reader.next();
-            }
-            features.close(reader);
 
             SimpleFeatureIterator iterator = features.features();
-            while (iterator.hasNext()) {
-                SimpleFeature feature = iterator.next();
+            try {
+                while (iterator.hasNext()) {
+                    SimpleFeature feature = iterator.next();
+                }
+            } finally {
+                iterator.close();
             }
-            features.close(iterator);
         }
     }
 
@@ -234,18 +232,14 @@ public class GeoServerOnlineTest {
         features = source.getFeatures(query);
         features.size();
 
-        Iterator reader = features.iterator();
-        while (reader.hasNext()) {
-            SimpleFeature feature = (SimpleFeature) reader.next();
-            System.out.println(feature);
-        }
-        features.close(reader);
-
         SimpleFeatureIterator iterator = features.features();
-        while (iterator.hasNext()) {
-            SimpleFeature feature = iterator.next();
+        try {
+            while (iterator.hasNext()) {
+                SimpleFeature feature = iterator.next();
+            }
+        } finally {
+            iterator.close();
         }
-        features.close(iterator);
     }
 
 //    public void XtestFeatureType() throws NoSuchElementException, IOException, SAXException {

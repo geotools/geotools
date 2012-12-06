@@ -268,6 +268,7 @@ public class WFSParsingTest extends TestCase {
         SimpleFeatureCollection featureCollection;
         featureCollection = (SimpleFeatureCollection) featureCollections.get(0);
         assertEquals(5, featureCollection.size());
+        assertNotNull(featureCollection.getBounds().getCoordinateReferenceSystem());
 
         SimpleFeatureIterator features = featureCollection.features();
 
@@ -295,7 +296,9 @@ public class WFSParsingTest extends TestCase {
             assertTrue(f.getAttribute("dateProperty") instanceof Date);
             assertEquals(BigDecimal.valueOf(5.03), f.getAttribute("decimalProperty"));
         } finally {
-            featureCollection.close(features);
+            if( features != null ){
+                features.close();
+            }
         }
     }
 

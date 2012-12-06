@@ -46,7 +46,7 @@ public class StyleTypeBindingTest extends KMLTestSupport {
         buildDocument(xml);
 
         FeatureTypeStyle style = (FeatureTypeStyle) parse();
-        Symbolizer[] syms = style.getRules()[0].getSymbolizers();
+        Symbolizer[] syms = style.rules().get(0).getSymbolizers();
 
         assertEquals(3, syms.length);
         assertTrue(syms[0] instanceof LineSymbolizer);

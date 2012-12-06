@@ -17,15 +17,18 @@
 
 package org.geotools.grid;
 
-import com.vividsolutions.jts.geom.Polygon;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
-import static org.junit.Assert.*;
+
+import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * Unit tests for the Grids class.

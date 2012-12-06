@@ -16,34 +16,26 @@
  */
 package org.geotools.xml.impl;
 
-import org.picocontainer.MutablePicoContainer;
-import org.geotools.xml.Binding;
 import org.geotools.xml.ComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-import org.geotools.xml.impl.BindingWalker.Visitor;
+import org.picocontainer.MutablePicoContainer;
 
 
 /**
- * 
+ * Invokes the {@link ComplexBinding#initializeChildContext(ElementInstance, Node, MutablePicoContainer)} 
+ * event/callback.
  *
  * @source $URL$
  */
-public class ContextInitializer implements Visitor {
-    ElementInstance childInstance;
-    Node node;
-    MutablePicoContainer context;
+public class ContextInitializer extends ComplexBindingCallback {
 
-    public ContextInitializer(ElementInstance childInstance, Node node, MutablePicoContainer context) {
-        this.childInstance = childInstance;
-        this.node = node;
-        this.context = context;
+    public ContextInitializer(ElementInstance instance, Node node, MutablePicoContainer context) {
+        super(instance, node, context);
     }
 
-    public void visit(Binding binding) {
-        if (binding instanceof ComplexBinding) {
-            ComplexBinding cStrategy = (ComplexBinding) binding;
-            cStrategy.initializeChildContext(childInstance, node, context);
-        }
+    @Override
+    protected void doCallback(ComplexBinding binding) {
+        binding.initializeChildContext(instance, node, context);
     }
 }

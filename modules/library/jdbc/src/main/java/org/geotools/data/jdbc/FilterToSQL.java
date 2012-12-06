@@ -1517,7 +1517,9 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         if(params == null || params.size() <= idx) {
             if(mandatory) {
                 throw new IllegalArgumentException("Missing parameter number " + (idx + 1) 
-                        + "for function " + function.getName() + ", cannot encode in SQL");
+                        + " for function " + function.getName() + ", cannot encode in SQL");
+            } else {
+            	return null;
             }
         }
         return params.get(idx);

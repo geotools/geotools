@@ -8,6 +8,7 @@ package net.opengis.cat.csw20.impl;
 
 import java.lang.String;
 
+import java.util.Collection;
 import javax.xml.namespace.QName;
 
 import net.opengis.cat.csw20.Csw20Package;
@@ -15,9 +16,11 @@ import net.opengis.cat.csw20.DescribeRecordType;
 
 import org.eclipse.emf.common.notify.Notification;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -36,24 +39,14 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class DescribeRecordTypeImpl extends RequestBaseTypeImpl implements DescribeRecordType {
     /**
-     * The default value of the '{@link #getTypeName() <em>Type Name</em>}' attribute.
+     * The cached value of the '{@link #getTypeName() <em>Type Name</em>}' attribute list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @see #getTypeName()
      * @generated
      * @ordered
      */
-    protected static final QName TYPE_NAME_EDEFAULT = null;
-
-    /**
-     * The cached value of the '{@link #getTypeName() <em>Type Name</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getTypeName()
-     * @generated
-     * @ordered
-     */
-    protected QName typeName = TYPE_NAME_EDEFAULT;
+    protected EList<QName> typeName;
 
     /**
      * The default value of the '{@link #getOutputFormat() <em>Output Format</em>}' attribute.
@@ -137,20 +130,11 @@ public class DescribeRecordTypeImpl extends RequestBaseTypeImpl implements Descr
      * <!-- end-user-doc -->
      * @generated
      */
-    public QName getTypeName() {
+    public EList<QName> getTypeName() {
+        if (typeName == null) {
+            typeName = new EDataTypeUniqueEList<QName>(QName.class, this, Csw20Package.DESCRIBE_RECORD_TYPE__TYPE_NAME);
+        }
         return typeName;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setTypeName(QName newTypeName) {
-        QName oldTypeName = typeName;
-        typeName = newTypeName;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Csw20Package.DESCRIBE_RECORD_TYPE__TYPE_NAME, oldTypeName, typeName));
     }
 
     /**
@@ -268,11 +252,13 @@ public class DescribeRecordTypeImpl extends RequestBaseTypeImpl implements Descr
      * <!-- end-user-doc -->
      * @generated
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case Csw20Package.DESCRIBE_RECORD_TYPE__TYPE_NAME:
-                setTypeName((QName) newValue);
+                getTypeName().clear();
+                getTypeName().addAll((Collection<? extends QName>)newValue);
                 return;
             case Csw20Package.DESCRIBE_RECORD_TYPE__OUTPUT_FORMAT:
                 setOutputFormat((String)newValue);
@@ -293,7 +279,7 @@ public class DescribeRecordTypeImpl extends RequestBaseTypeImpl implements Descr
     public void eUnset(int featureID) {
         switch (featureID) {
             case Csw20Package.DESCRIBE_RECORD_TYPE__TYPE_NAME:
-                setTypeName(TYPE_NAME_EDEFAULT);
+                getTypeName().clear();
                 return;
             case Csw20Package.DESCRIBE_RECORD_TYPE__OUTPUT_FORMAT:
                 unsetOutputFormat();
@@ -314,7 +300,7 @@ public class DescribeRecordTypeImpl extends RequestBaseTypeImpl implements Descr
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case Csw20Package.DESCRIBE_RECORD_TYPE__TYPE_NAME:
-                return TYPE_NAME_EDEFAULT == null ? typeName != null : !TYPE_NAME_EDEFAULT.equals(typeName);
+                return typeName != null && !typeName.isEmpty();
             case Csw20Package.DESCRIBE_RECORD_TYPE__OUTPUT_FORMAT:
                 return isSetOutputFormat();
             case Csw20Package.DESCRIBE_RECORD_TYPE__SCHEMA_LANGUAGE:

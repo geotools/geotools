@@ -58,7 +58,7 @@ Before posting a question, check to see if it is already answered in the followi
 
    - `Tutorials <http://docs.geotools.org/latest/userguide/tutorial/>`_.
 
-   - `User list archives <http://osgeo-org.1803224.n2.nabble.com/geotools-gt2-users-f1936685.html>`_.
+   - `User list archives <http://osgeo-org.1560.n6.nabble.com/geotools-gt2-users-f4317834.html>`_.
 
 Post enough (but not too much)
 ------------------------------

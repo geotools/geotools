@@ -5,11 +5,11 @@ With a library as old as GeoTools you will occasionally run into a project from 
 needs to be upgraded. This page collects the upgrade notes for each release change; highlighting any
 fundemental changes with code examples showing how to upgrade your code.
 
-But first to upgrade - change your dependency to 8-SNAPSHOT (or an appropriate stable version)::
-
+But first to upgrade - change your dependency to |release| (or an appropriate stable version)::
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <geotools.version>8-SNAPSHOT</geotools.version>
+        <geotools.version>|release|</geotools.version>
     </properties>
     ....
     <dependencies>
@@ -26,13 +26,165 @@ But first to upgrade - change your dependency to 8-SNAPSHOT (or an appropriate s
         ....
     </dependencies>
 
+GeoTools 9.0
+------------
+
+.. sidebar:: Wiki
+
+   * `GeoTools 9.0 <http://docs.codehaus.org/display/GEOTOOLS/9.x>`_
+
+   For background details on any API changes review the change proposals above.
+
+GeoTools 9 has resolved a long standing conflict between FeatureCollection acting as a "result" set capable of
+streaming large datasets vs. acting as a familiar Java Collection. The Java 5 "for each" syntax prevents
+the safe use of Iterator (as we cannot ensure it will be closed). As a result FeatureCollection no longer
+can extend java Collection and is acting as a pure "result set" with streaming access provided by FeatureIterator.
+
+FeatureCollection Add
+^^^^^^^^^^^^^^^^^^^^^
+
+With the FeatureCollection.add method being removed, you will need to use an explicit instance that supports
+adding content.
+
+BEFORE::
+
+    SimpleFeatureCollection features = FeatureCollections.newCollection();
+
+    for( SimpleFeature feature : list ){
+       features.add( feature );
+    }
+
+AFTER::
+
+    DefaultFeatureCollection features = new DefaultFeatureCollection();
+    for( SimpleFeature feature : list ){
+       features.add( feature );
+    }
+
+ALTERNATE (will throw exception if FeatureCollection does not implement java.util.Collection)::
+
+    Collection<SimpleFeature> collection = DataUtilities.collectionCast( featureCollection );
+    collection.addAll( list );
+
+ALTERNATE DETAIL::
+
+    SimpleFeatureCollection features = FeatureCollections.newCollection();
+    if( features instanceof Collection ){
+        Collection<SimpleFeature> collection = (Collection) features;
+        collection.addAll( list );
+    }
+    else {
+        throw new IllegalStateException("FeatureCollections configured with immutbale implementation");
+    }
+    
+SPECIFIC::
+
+    ListFeatureCollection features = new ListFeatureCollection( schema, list );
+
+FeatureCollection Iterator
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The deprecated FeatureCollection.iterator() method is no longer available, please use FeatureCollection.features()
+as shown below.
+
+BEFORE::
+
+  Iterator i=featureCollection.iterator();
+  try {
+      while( i.hasNext(); ){
+         SimpleFeature feature = i.next();
+         ...
+      }
+  }
+  finally {
+      featureCollection.close( i );
+  }
+
+
+AFTER::
+
+    FeatureIterator i=featureCollection.features();
+    try {
+         while( i.hasNext(); ){
+             SimpleFeature feature = i.next();
+             ...
+         }
+    }
+    finally {
+         i.close();
+    }
+
+JAVA7::
+
+    try ( FeatureIterator i=featureCollection.features()){
+        while( i.hasNext() ){
+             SimpleFeature feature = i.next();
+             ...
+        }
+    }
+
+How to Close an Iterator
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+We have made FeatureIterator implement Closable (for Java 7 try-with-resource compatibility). This
+also provides an excellent replacement for FeatureCollection.close( Iterator ).
+
+If you are using any wrapping Iterators that still require the ability to close()
+please consider the following approach.
+
+BEFORE::
+
+    Iterator iterator = collection.iterator();
+    try {
+       ...
+    } finally {
+        if (collection instanceof SimpleFeatureCollection) {
+            ((SimpleFeatureCollection) collection).close(iterator);
+        }
+    }
+
+QUICK::
+
+    Iterator iterator = collection.iterator();
+    try {
+       ...
+    } finally {
+        DataUtilities.close( iterator );
+    }
+
+DETAIL::
+
+    Iterator iterator = collection.iterator();
+    try {
+       ...
+    } finally {
+        if (iterator instanceof Closeable) {
+            try {
+               ((Closeable)iterator).close();
+            }
+            catch( IOException e){
+                Logger log = Logger.getLogger( collection.getClass().getPackage().toString() );
+                log.log(Level.FINE, e.getMessage(), e );
+            }
+        }
+    }
+
+JAVA7 using try-with-resource syntax for Iterator that implements Closeable::
+
+    try ( Iterator i=collection.features()){
+        while( i.hasNext() ){
+             Object object = i.next();
+             ...
+        }
+    }
+    
 GeoTools 8.0
 ------------
 
 .. sidebar:: Wiki
-   
+
    * `GeoTools 8.0 <http://docs.codehaus.org/display/GEOTOOLS/8.x>`_
-   
+
    You are encourged to review the change proposals for GeoTools 8.0 for background information
    on the following changes.
 
@@ -70,22 +222,22 @@ Filter
 The filter system was upgrade to match Filter 2.0 resulting in a few additions. This mostly
 effects people writing their own functions (as now we need to know about parameter types).
 
-FeatureId 
+FeatureId
 ''''''''''
 
 * BEFORE::
 
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
     Filter filter;
-    
+
     Set<FeatureId> selected = new HashSet<FeatureId>();
     selected.add(ff.featureId("CITY.98734597823459687235"));
     selected.add(ff.featureId("CITY.98734592345235823474"));
-    
+
     filter = ff.id(selected);
-        
+
 * AFTER
-  
+
   .. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
      :language: java
      :start-after: // id start
@@ -128,7 +280,7 @@ interface (it has returned an empty set for several releases now):
 * AFTER::
 
         Set<String> proposals = new TreeSet<String>();
-        
+
         FunctionFinder functionFinder = new FunctionFinder(null);
         for( FunctionName function : functionFinder.getAllFunctionDescriptions() ){
             proposals.add(function.getName().toLowerCase());
@@ -158,11 +310,11 @@ NumberRange
 The **gt-metadata** NumberRange class is finally sheading some of its deprecated methods.
 
 ** BEFORE::
-      
+
       NumberRange before = new NumberRange( 0.0, 5.0 );
 
 ** AFTER::
-      
+
       NumberRange<Double> after1 = new NumberRange( Double.class, 0.0, 5.0 );
       NumberRange<Double> after2 = NumberRage.create( 0.0, 5.0 );
 
@@ -170,12 +322,12 @@ GeoTools 2.7
 ------------
 
 .. sidebar:: Wiki
-   
+
    * `GeoTools 2.7.0 <http://docs.codehaus.org/display/GEOTOOLS/2.7.x>`_
-   
+
    You are encourged to review the change proposals for GeoTools 2.7.0 for background information
    on the following changes.
-   
+
 The changes from GeoTools 2.6 to GeoTools 2.7 focus on making your code more readible; you will
 find a number of optional changes (such as using Query rather than DefaultQuery) which will
 simplify make your code easier to follow.
@@ -187,11 +339,11 @@ Query
 The *gt-api** module has been updated to make **Query** a concrete class rather than an interface.
 
 * BEFORE::
-        
+
         Query query = new DefaultQuery( typeName, filter );
 
 * AFTER::
-        
+
         Query query = new Query( typeName, filter );
 
 Tips:
@@ -212,14 +364,14 @@ primary example of this is the introduction of **SimpleFeatureCollection** (whic
 typing in **FeatureCollection<SimpleFeatureType,SimpleFeature>** each time).
 
 * BEFORE::
-    
+
     FeatureSource<SimpleFeatureType,SimpleFeature> source =
             (FeatureSource<SimpleFeatureType,SimpleFeature>) dataStore.getFeatureSource( typeName );
     Query query = new DefaultQuery( typeName, filter );
     FeatureCollection<SimpleFeatureType,SimpleFeature> featureCollection = source.getFeatures( query );
 
 * AFTER::
-    
+
     SimpleFeatureSource source = dataStore.getFeatureSource( typeName );
     Query query = new Query( typeName, filter );
     SimpleFeatureCollection featureCollection = source.getFeatures( query );
@@ -229,21 +381,21 @@ Tips:
 * You can do a search and replace on this one; but you need to be very careful with any
   implementations you have that accept a FeatureCollection<SimpleFeatureType,SimpleFeature>
   as a method parameter!
-  
+
 * Be careful if you have your own FeatureStore implementation; a search and replace will change
   several of your methods so they no longer "override" the default implementation provided by
   AbstractFeatureStore.::
-  
+
        @Override // this would fail; you do use Override right?
        public Set addFeatures( SimpleFeatureCollection features ){
           ... your implementation goes here ...
-  
+
   To fix this code you will need to "undo" your search and replace for this method parameter::
 
        @Override
        public Set addFeatures( FeatureCollection<SimpleFeatureType,SimpleFeature> features ){
           ... your implementation goes here ...
-  
+
   Note: If you use the @Override annotation in your code you will get a proper error; since your
   new method would no longer override anything.
 
@@ -260,7 +412,7 @@ can update your code for readability.
            (FeatureSource<SimpleFeatureType,SimpleFeature>) dataStore.getFeatureSource( typeName );
 
 * AFTER:
-    
+
     SimpleFeatureSource source =  dataStore.getFeatureSource( typeName );
 
 Tips:
@@ -272,7 +424,7 @@ SimpleFeatureStore
 In a similar fashion returns a SimpleFeatureCollection; it also has a couple of its own tricks:
 
 * BEFORE::
-  
+
     FeatureSource<SimpleFeatureType,SimpleFeature> source =
         (FeatureSource<SimpleFeatureType,SimpleFeature>) dataStore.getFeatureSource( typeName );
     if( source instanceof FeatureStore){
@@ -283,7 +435,7 @@ In a similar fashion returns a SimpleFeatureCollection; it also has a couple of 
        ...
 
 * AFTER::
-  
+
     SimpleFeatureSource source =  dataStore.getFeatureSource( typeName );
     if( source instanceof SimpleFeatureStore){
        // read write access
@@ -303,20 +455,20 @@ FeatureStore modifyFeatures by Name
 The **FeatureStore** method modifyFeatures now allows you to modify features by name.
 
 * BEFORE::
-    
+
     FeatureSource<SimpleFeatureType,SimpleFeature> source =
         (FeatureSource<SimpleFeatureType,SimpleFeature>) dataStore.getFeatureSource( typeName );
     if( source instanceof FeatureStore){
        // read write access
        FeatureStore<SimpleFeatureType,SimpleFeature> store =
             (FeatureStore<SimpleFeatureType,SimpleFeature>) source;
-       
+
        SimpleFeatureType schema = store.getSchema();
        AttributeDescriptor attribute = schema.getDescriptor( attributeName );
        store.modifyFeatures( attribute, attributeValue, filter );
 
 * AFTER::
-    
+
     SimpleFeatureSource source =  dataStore.getFeatureSource( typeName );
     if( source instanceof SimpleFeatureStore){
        // read write access
@@ -335,15 +487,15 @@ The DefaultProcessor and AbstractProcessor classes have been merged into a singl
 **CoverageProcessor**.
 
 * BEFORE::
-    
+
     final DefaultProcessor processor= new DefaultProcessor(hints)
 
 * AFTER::
-    
+
     final CoverageProcessor processor= new CoverageProcessor(hints)
-  
+
   Or better::
-  
+
       final CoverageProcessor processor= CoverageProcessor.getInstace(hints);
 
 Tips:
@@ -368,9 +520,9 @@ GeoTools 2.6
 ------------
 
 .. sidebar:: Wiki
-   
+
    * `GeoTools 2.6.0 <http://docs.codehaus.org/display/GEOTOOLS/2.6.x>`_
-   
+
    You are encourged to review the change proposals for GeoTools 2.6.0 for background information
    on the following changes.
 
@@ -397,7 +549,7 @@ This is shown in the code example below with the maxx variable.
 As far as switching over to the new classes, the equivalence are as follows:
 
 1. Replace **GridRange2D** with **GridEnvelope2D**
-   
+
    Notice that now GridEnvelope2D is a Java2D rectangle and that it is also mutable!
 2. Replace **GeneralGridRange** with **GeneralGridEnvelope**
 
@@ -408,7 +560,7 @@ BEFORE:
 1. Use getSpan where getLength was used
 2. Be EXTREMELY careful with the convetions for the inclusion/exclusion of the maximum coordinates.
 3. GridRange2D IS a Ractangle and is mutable now!
-   
+
    BEFORE::
 
         import org.geotools.coverage.grid.GeneralGridRange;
@@ -416,7 +568,7 @@ BEFORE:
         final GeneralGridRange originalGridRange = new GeneralGridRange(actualDim);
         final int w = originalGridRange.getLength(0);
         final int maxx = originalGridRange.getUpper(0);
-        
+
         ...
         import org.geotools.coverage.grid.GridRange2D;
         final Rectangle actualDim = new Rectangle(0, 0, hrWidth, hrHeight);
@@ -425,15 +577,15 @@ BEFORE:
         final int maxx = originalGridRange2D.getUpper(0);
         final Rectangle rect = (Rectangle)originalGridRange2D.clone();
     {code}
-   
+
    AFTER::
-   
+
         import org.geotools.coverage.grid.GeneralGridEnvelope;
         final Rectangle actualDim = new Rectangle(0, 0, hrWidth, hrHeight);
         final GeneralGridEnvelope originalGridRange=new GeneralGridEnvelope (actualDim,2);
         final int w = originalGridRange.getSpan(0);
         final int maxx = originalGridRange.getHigh(0)+1;
-        
+
         import org.geotools.coverage.grid.GridEnvelope2D;
         final Rectangle actualDim = new Rectangle(0, 0, hrWidth, hrHeight);
         final GridEnvelope2D originalGridRange2D = new GridEnvelope2D(actualDim);
@@ -486,13 +638,13 @@ We have removed deprecated methods from classes:
 Existing code should change as follows:
 
 * BEFORE::
-    
+
     final FeatureCollection<SimpleFeatureType, SimpleFeature> fc=FeatureUtilities.wrapGridCoverageReader(reader)
 
 * AFTER::
-    
+
     final GeneralParameterValue[] params=...
-    
+
     final FeatureCollection<SimpleFeatureType, SimpleFeature> fc=FeatureUtilities.wrapGridCoverageReader(reader,params)
 
 Hints:
@@ -532,29 +684,29 @@ Here is what that looks like in code:
     }
 
 * BEFORE::
-        
+
         recolor(final GridCoverage source, final Map[] colorMaps)
 
 * AFTER::
-        
+
         recolor(final GridCoverage source, final ColorMap[] colorMaps);
         // scale(GridCoverage, double, double, double, double, Interpolation, BorderExtender) has been removed
 
 * BEFORE::
-        
+
         scale(GridCoverage, double, double, double, double, Interpolation, BorderExtender)
 
 * AFTER::
-        
+
         scale(GridCoverage,double,double,double,double,Interpolation)
         // scale(GridCoverage, double, double, double, double, Interpolation, BorderExtender) has been removedBEFORE:
 
 * BEFORE::
-        
+
         scale(GridCoverage, double, double, double, double, Interpolation, BorderExtender)
 
 * AFTER::
-        
+
         scale(GridCoverage,double,double,double,double,Interpolation)
 
 DefaultParameterDescriptor and Parameter
@@ -576,7 +728,7 @@ Removed deprecated constructors from DefaultParameterDescriptor and Parameter cl
     Parameter(name, value)
 
 * AFTER::
-    
+
     DefaultParameterDescriptor.create(...)
     Parameter.create(...)
 
@@ -584,9 +736,9 @@ GeoTools 2.5
 ------------
 
 .. sidebar:: Wiki
-   
+
    * `GeoTools 2.5.0 <http://docs.codehaus.org/display/GEOTOOLS/2.5.x>`_
-   
+
    You are encourged to review the change proposals for GeoTools 2.5.0 for background information
    on the following changes.
 
@@ -603,7 +755,7 @@ Due to this restriction (of not using *for each* loop construct we have had to m
 no longer Colection.
 
 * Example (GeoTools 2.5 code)::
-    
+
     FeatureCollection<SimpleFeatureType,SimpleFeature> featureCollection = feaureSource.getFeatures();
     Iterator<SimpleFeature> iterator = featureCollection.iterator();
     try {
@@ -617,9 +769,9 @@ no longer Colection.
     }
 
 * Example (GeoTools 2.7 code)
-  
+
   We have removed the need for the use of generics to minimize typing::
-  
+
     SimpleFeatureCollection featureCollection = feaureSource.getFeatures();
     SimpleFeatureIterator iterator = featureCollection.features();
     try {
@@ -639,11 +791,11 @@ We are cutting down on "anonymous" FactoryFinder use; creating JTSFactory to all
 entire GeoTools library to share a JTS GeometryFactory.
 
 * BEFORE (GeoTools 2.4 code)::
-  
+
      GeometryFactory factory = new FactoryFinder().getGeometryFactory( null );
 
 * AFTER (GeoTools 2.5 code)::
-    
+
     GeometryFactory factory = JTSFactoryFinder.getGeometryFactory( null );
 
 ProgressListener
@@ -652,21 +804,21 @@ ProgressListener
 Transition to gt-opengis ProgressListener.
 
 * Before (GeoTools 2.2 Code)::
-    
+
     progress.setDescription( message );
 
 * After (GeoTools 2.4 Code)::
-    
+
     progress.setTask( new SimpleInternationalString( message ) );
 
 To upgrade:
 
 1. Search: import org.geotools.util.ProgressListener
-   
+
    Replace: import org.opengis.util.ProgressListener
 
 2. Update::
-     
+
      setTask( new SimpleInternationalString( message ) ); // was setDescription( message );
 
 SimpleFeature
@@ -686,12 +838,12 @@ place to extend SimpleFeature.
             AttributeTypeFactory.newAttributeType("Location",Point.class,true, null,null,crs );
         final AttributeType NAME =
             AttributeTypeFactory.newAttributeType("Name",String.class, true );
-        
+
         final FeatureType FLAG =
             FeatureTypeFactory.newFeatureType(new AttributeType[] { GEOM, NAME },"Flag");
-        
+
         Feature flag1 = FLAG.create( "flag.1", new Object[]{ point, "Here" } );
-        
+
         AttributeType attributes[] = FLAG.getAttributeTypes();
         AttributeType location = FLAG.getAttribute("Location");
         String label = location.getName();
@@ -708,11 +860,11 @@ place to extend SimpleFeature.
         builder.setCRS( "EPSG:4326" );
         builder.add( "Location", Point.class );
         builder.add( "Name", String.class );
-        
+
         SimpleFeatureType FLAG = builder.buildFeatureType();
-        
+
         SimpleFeature flag1 = SimpleFeatureBuilder.build( FLAG, new Object[]{ point, "Here"}, "flag.1" );
-        
+
         List<AttributeDescriptor> attributes = FLAG.getAttributes();
         AttributeDescriptor location = FLAG.getAttribute("Location");
         String label = location.getLocationName();
@@ -722,23 +874,23 @@ place to extend SimpleFeature.
 Here are some steps to start you off updating your code:
 
 1. Search Replace
-   
+
    * Search: **Feature** replace with **SimpleFeature**
    * Search: **FeatureType** replace with **SimpleFeatureType**
 
 2. Fix the imports
-   
+
    * Control-Shift-O in Eclipse IDE
    * Add casts as required for getDefaultGeometry()
 
 3. FeatureType.create has been replaced with SimpleFeatureBuilder
-   
+
    There is a static method to make the transition easier::
-      
+
       SimpleFeatureFeatureBuilder.build( schema, attributes, fid );
 
 4. For more code examples please see:
-   
+
    * :doc:`/library/main/feature`
 
 AttributeDescriptor and AttributeType
@@ -747,7 +899,7 @@ AttributeDescriptor and AttributeType
 The concept of an AttributeType has been split into two now (allowing you to reuse common types).
 
 * BEFORE (GeoTools 2.4 Code)::
-    
+
     import org.geotools.feature.AttributeType;
     ...
     GeometryAttributeType att =
@@ -790,7 +942,7 @@ throughout the library: example FeatureSource.getName().
 
     import org.opengis.feature.type.Name;
     ...
-    
+
     DataStore ds = ...
     List<Name> featureNames = ds.getNames();
     SimpleFeatureType type = ds.getSchema(featureNames.get(0));
@@ -803,7 +955,7 @@ DataStore
 Transition to use of Java 5 Generics with DataStore API.
 
 .. tip
-   
+
    We have removed the need to use Generics in GeoTools 2.7 allowing the use of
    SimpleFeatureSource, SimpleFeatureCollection, SimpleFeatureStore etc.
 
@@ -813,13 +965,13 @@ Transition to use of Java 5 Generics with DataStore API.
     FeatureSource source = ds.getSource(typeName);
     FeatureStore store = (FeatureStore)source;
     FeatureLocking locking = (FeatureLocking)source;
-    
+
     FeatureCollection collection = source.getFeatures();
     FeatureIterator features = collection.features();
     while(features.hasNext){
       SimpleFeature feature = features.next();
     }
-    
+
     Transaction transaction = Transaction.AUTO_COMMIT;
     FeatureReader reader = ds.getFeatureReader(new DefaultQuery(typeName), transaction);
     FeatureWriter writer = ds.getFeatureWriter(typeName, transaction);
@@ -830,7 +982,7 @@ Transition to use of Java 5 Generics with DataStore API.
     FeatureSource<SimpleFeatureType,SimpleFeature> source = ds.getSource(typeName);
     FeatureStore<SimpleFeatureType,SimpleFeature> store = (FeatureStore<SimpleFeatureType,SimpleFeature>)source;
     FeatureLocking<SimpleFeatureType,SimpleFeature> locking = (FeatureLocking<SimpleFeatureType,SimpleFeature>)source;
-    
+
     FeatureCollection<SimpleFeatureType,SimpleFeature> collection = source.getFeatures();
     FeatureIterator<SimpleFeatureType,SimpleFeature> features = collection.features();
     while(features.hasNext){
@@ -846,7 +998,7 @@ Transition to use of Java 5 Generics with DataStore API.
     SimpleFeatureSource<SimpleFeatureType,SimpleFeature> source = ds.getSource(typeName);
     SimpleFeatureStore store = (SimpleFeatureStore) source;
     SimpleFeatureLocking locking = (SimpleFeatureLocking) source;
-    
+
     SimpleFeatureCollection collection = source.getFeatures();
     SimpleFeatureIterator features = collection.features();
     while(features.hasNext){
@@ -864,20 +1016,20 @@ DataAccess and DataStore
 
     import org.opengis.feature.type.Name;
     ...
-    
+
     java.util.Map paramsMap = ...
     DataStore ds = DataStoreFinder.getDataStore(paramsMap);
     Name featureName = new org.geotools.feature.Name(namespace, localName);
     FeatureSource<SimpleFeatureType, SimpleFeature> source = ds.getSource(featureName);
     FeatureStore<SimpleFeatureType, SimpleFeature> store = (FeatureStore)source;
     FeatureLocking<SimpleFeatureType, SimpleFeature> locking = (FeatureLocking)source;
-    
+
     FeatureCollection<SimpleFeatureType, SimpleFeature> collection = source.getFeatures();
     FeatureIterator<SimpleFeature> features = collection.features();
     while(features.hasNext){
      SimpleFeature feature = features.next();
     }
-    
+
     Transaction transaction = Transaction.AUTO_COMMIT;
     FeatureReader<SimpleFeatureType, SimpleFeature> reader = ds.getFeatureReader(new DefaultQuery(typeName), transaction);
     FeatureWriter<SimpleFeatureType, SimpleFeature> writer = ds.getFeatureWriter(typeName, transaction);
@@ -888,14 +1040,14 @@ DataAccess and DataStore
     import org.opengis.feature.Feature;
     import org.opengis.feature.type.Name;
     ...
-    
+
     java.util.Map paramsMap = ...
     DataAccess<FeatureType, Feature> ds = DataAccessFinder.getDataAccess(paramsMap);
     Name featureName = new org.geotools.feature.Name(namespace, localName);
     FeatureSource<FeatureType, Feature> source = ds.getSource(featureName);
     FeatureStore<FeatureType, Feature> store = (FeatureStore)source;
     FeatureLocking<FeatureType, Feature> locking = (FeatureLocking)source;
-    
+
     FeatureCollection<FeatureType, Feature> collection = source.getFeatures();
     FeatureIterator<Feature> features = collection.features();
     while(features.hasNext){
@@ -907,9 +1059,9 @@ GeoTools 2.4
 ------------
 
 .. sidebar:: Wiki
-   
+
    * `GeoTools 2.4.0 <http://docs.codehaus.org/display/GEOTOOLS/2.4.x>`_
-   
+
    You are encourged to review the change proposals for GeoTools 2.4.0 for background information
    on the following changes.
 
@@ -925,11 +1077,11 @@ ReferencingFactoryFinder
 Rename FactoryFinder to ReferencingFactoryFinder
 
 * BEFORE (GeoTools 2.2 Code)::
-    
+
     CRSFactory factory = FactoryFinder.getCSFactory( null );
 
 * AFTER (GeoTools 2.4 Code)::
-    
+
     CRSFactory factory = ReferencingFactoryFinder.getCSFactory( null );
 
 FeatureStore addFeatures
@@ -938,7 +1090,7 @@ FeatureStore addFeatures
 The use of FeatureReader has been revmoved from the FeatureStore API.
 
 * Before (GeoTools 2.2 Code)::
-    
+
     featureStore.addFeatures( DataUtilities.reader( collection )); // add FeatureCollection
     featureStore.addFeatures( DataUtilities.reader(array)); // add Feature[]
     featureStore.addFeatures( DataUtilities.reader(feature )); // add Feature
@@ -999,22 +1151,22 @@ We have completed the transition to GeoAPI Filter.
 * Before (GeoTools 2.2 Code)::
 
     package org.geotools.filter;
-    
+
     import junit.framework.TestCase;
-    
+
     import org.geotools.filter.LogicFilter;
     import org.geotools.filter.FilterFactory;
     import org.geotools.filter.Filter;
-    
+
     public class FilterFactoryBeforeTest extends TestCase {
-    
+
         public void testBefore() throws Exception {
             FilterFactory ff = FilterFactoryFinder.createFilterFactory();
-    
+
             CompareFilter filter = ff.createCompareFilter(Filter.COMPARE_GREATER_THAN);
             filter.addLeftValue( ff.createLiteralExpression(2));
             filter.addRightValue( ff.createLiteralExpression(1));
-    
+
             assertTrue( filter.contrains( null ) );
             assertTrue( filter.getFilterType() == FilterType.COMPARE_GREATER_THAN );
             assertTrue( Filter.NONE != filter );
@@ -1038,7 +1190,7 @@ We have completed the transition to GeoAPI Filter.
 Here are the steps to follow to update your own code:
 
 1. Substitute.
-   
+
    =================================== =================================================
    Search                              Replace
    =================================== =================================================
@@ -1053,84 +1205,84 @@ Here are the steps to follow to update your own code:
    =================================== =================================================
 
 2. FilterType is no longer supported directly.
-   
+
    BEFORE:
-      
+
       int type = filter.getFilterType();
-   
+
    AFTER:
-      
+
       int type = Filters.getFilterType( filter );
 
 3. You can no longer chain filters together.
-   
+
    BEFORE::
-     
+
      filter = filter.and( other )
-   
+
    AFTER::
-     
+
      filter = filterFactory.and( filter, other );
 
 4. We have provided an adaptor for your old filter visitors.
-   
+
    BEFORE::
-     
+
      filter.accept( visitor )
-     
+
    AFTER::
-     
+
      Filters.accept( filter, visitor );
 
 3. Update your code to use the new factory methods.
-   
+
    BEFORE::
-     
+
      filter = filterFactory.createCompareFilter(FilterType.COMPARE_EQUALS)
      filter.setLeftGeoemtry( expr1 );
      filter.setRightGeometry( expr3 );
-   
+
    AFTER::
-   
+
      filter = FilterFactory.equals(expr1,expr);
 
 4. Literals cannot be modified once created.
-   
+
    BEFORE::
-     
+
      Literal literal = filterFactory.createLiteral();
      literal.setLiteral( obj );
-   
+
    AFTER::
-     
+
      Filter filter = filterFactory.literal( obj );
 
 5. Property name support.
-   
+
    BEFORE::
-   
+
      filter = = filterFac.createAttributeExpression(schema, "name");
-   
+
    AFTER::
-   
+
      Filter filter = filterFactory.property(name);
 
 h4. After (GeoTools 2.4 Code)::
-  
+
         public void testAfter() throws Exception {
             FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-        
+
             Expression left = ff.literal(2);
             Expression right = ff.literal(2);
             PropertyIsGreaterThan filter = ff.greater( left, right );
-        
+
             assertTrue( filter.evaluate( null ) );
             assertTrue( Fitler.INCLUDE != filter );
         }
 
 1. Substitute
-   
-   
+
+
    =============================================== ===================================================
    Search                                          Replace
    =============================================== ===================================================
@@ -1142,25 +1294,25 @@ h4. After (GeoTools 2.4 Code)::
    =============================================== ===================================================
 
 2. Update code to use evaulate.
-   
+
    BEFORE::
-      
+
       if( filter.contains( feature ){
-   
+
    AFTER::
-   
+
       if( filter.evaluate( feature ){
-   
+
 3. Update code to use instanceof checks.
-   
+
    BEFORE::
-       
+
        if( filter.getFilterType() == FilterType.GEOMETRY_CONTAIN ) {
-       
+
    AFTER::
-       
+
        if( filter instanceof Contains ){
-       
+
 
 Note regarding different Geometries
 
@@ -1168,7 +1320,7 @@ Note regarding different Geometries
 * GeoTools filter nows can take either JTS Geometry or ISO Geometry
 
 * If you need to convert from one to the other::
-  
+
      JTSUtils.jtsToGo1(p, CRS.decode("EPSG:4326"));
 
 Feature.getParent removed
@@ -1235,25 +1387,25 @@ The biggest user of the feature.getParent() mistake was the implementation of cl
 functions. You will now need to split up these expressions into two parts.
 
 * BEFORE (GeoTools 2.3):
-  
+
   1. equal_interval( SPEED, 12 )
   2. uses getParent() internally to produce classification on feature collection;
   3. then checks which category each feature falls into
 
   Notes:
-  
+
   * please note the above code depends on getParent(), so it is not safe even for GeoTools 2.3 (as some features have a null parent).
 
 * AFTER (GeoTools 2.4):
 
   Apply the aggregation function to the feature collection:
-  
+
   1. equalInterval( SPEED, 12 )
   2. produce classification on provided feature collection
   3. Construct a slot expression using the resulting literal::
-     
+
         classify( SPEED, {0} )
-     
+
   4. uses literal classification from step one
 
 GTRenderer
@@ -1264,32 +1416,32 @@ LiteRenderer and LiteRenderer2 are asked to move to the implementation of GTRend
 StreamingRenderer.
 
 * BEFORE (GeoTools 2.1):
-  
+
   How to paint to an *outputArea* Rectangle::
-    
+
     LiteRenderer2 draw = new LiteRenderer2(map);
-    
+
     Envelope dataArea = map.getLayerBounds();
     AffineTransform transform = renderer.worldToScreenTransform(dataArea, outputArea);
-    
+
     draw.paint(g2d, outputArea, transform);
 
 * QUICK (GeoTools 2.2)
-  
+
   How to paint to an *outputArea* Rectangle::
 
     StreamingRenderer draw = new StreamingRenderer();
     draw.setContext(map);
-    
+
     draw.paint(g2d, outputArea, map.getLayerBounds() );
 
 * BEST PRACTICE (GeoTools 2.2)::
 
     GTRenderer draw = new StreamingRenderer();
     draw.setContext(map);
-    
+
     draw.paint(g2d, outputArea, map.getLayerBounds() );
-  
+
   By letting your code depend only on the GTRenderer interface you can experiment with
   alternative implementations to find the best fit.
 
@@ -1299,7 +1451,7 @@ JTS
 Swap moved to JTS utility class.
 
 * BEFORE (GeoTools 2.1)::
-  
+
     import org.geotools.geometry.JTS;
     import org.geotools.geometry.JTS.ReferencedEnvelope
 
@@ -1354,7 +1506,7 @@ Swap to moved Coverage utility classes.
 
     import org.geotools.data.coverage.grid.*
     import org.geotools.image.imageio.*
-  
+
   Wrapping a GridCoverage into a feature in 2.3::
 
     org.geotools.data.DataUtilities#wrapGc(GridCoverage gridCoverage)
@@ -1380,21 +1532,21 @@ Swap to moved Coverage utility classes.
 
     import org.geotools.coverage.grid.io.*
     import  org.geotools.coverage.grid.io.imageio.*
-  
+
   Wrapping a GridCoverage into a feature in 2.4::
-  
+
     org.geotools.resources.coverage.CoverageUtilities #wrapGc(GridCoverage gridCoverage)
     org.geotools.resources.coverage.CoverageUtilities #wrapGcReader(
                 AbstractGridCoverage2DReader gridCoverageReader,
                 GeneralParameterValue[] params)
-  
+
   GridCoverageExchange Utility classes in 2.4.
-  
+
   The classes have been dismissed since apparently nobody was using. If needed
   we can reintroduce them as deprecated.
-  
+
   org.geotools.coverage.io classes in 2.4.
-  
+
   These classes have been moved to spike/exoreferenced waiting for Martin to review and merge into
   org.geotools.coverage.grid.io package
 
@@ -1404,7 +1556,7 @@ spatialschema
 Renamed spatialschema to geometry.
 
 * Do you know what **spatialschema** was? We did not find it clear either.
-  
+
   Renamed to **geometry**?
 
 * BEFORE::
@@ -1433,7 +1585,7 @@ Repackage arcsde datastore.
     import org.geotools.data.arcsde.ArcSDEDataStoreFactory;
 
 * AFTER::
-  
+
     import org.geotools.arcsde.ArcSDEDataStoreFactory;
 
 WorldImage

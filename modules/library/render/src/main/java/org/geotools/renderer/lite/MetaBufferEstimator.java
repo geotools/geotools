@@ -273,12 +273,24 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
     public void visit(Graphic gr) {
         try {
             Expression grSize = gr.getSize();
-            if (!isNull(grSize)) {
-                evaluateWidth(grSize);
-            } else {
-                for (GraphicalSymbol gs : gr.graphicalSymbols()) {
-                    if(gs instanceof ExternalGraphic) {
-                        ExternalGraphic eg = (ExternalGraphic) gs;
+            int imageSize = -1;
+            boolean isSizeLiteral = false;
+
+            if (grSize instanceof Literal) {
+                isSizeLiteral = true;
+                imageSize = (int) Math.ceil(grSize.evaluate(null, Double.class));
+            } else if(!(grSize == null || grSize instanceof NilExpression)) {
+                estimateAccurate = false;
+                return;
+            }
+
+            for (GraphicalSymbol gs : gr.graphicalSymbols()) {
+                if(gs instanceof ExternalGraphic) {
+                    ExternalGraphic eg = (ExternalGraphic) gs;
+                    Icon icon = null;
+                    if(eg.getInlineContent() != null) {
+                        icon = eg.getInlineContent();
+                    } else {
                         String location = eg.getLocation().toExternalForm();
                         // expand embedded cql expression
                         Expression expanded = ExpressionExtractor.extractCqlExpressions(location);
@@ -291,25 +303,34 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
                         Iterator<ExternalGraphicFactory> it  = DynamicSymbolFactoryFinder.getExternalGraphicFactories();
                         while(it.hasNext()) {
                             try {
-                                Icon icon = it.next().getIcon(null, expanded, eg.getFormat(), -1);
-                                if(icon != null) {
-                                    int size = Math.max(icon.getIconHeight(), icon.getIconWidth());
-                                    if(size > buffer) {
-                                        buffer = size;
-                                    }
-                                    return;
-                                }
+                                icon = it.next().getIcon(null, expanded, eg.getFormat(), imageSize);
                             } catch(Exception e) {
                                 LOGGER.log(Level.FINE, "Error occurred evaluating external graphic", e);
                             }
                         }
-                    } else if(gs instanceof Mark) {
-                        // Mark is assumed to be 16 pixels by the SLD specification
-                        // (although our factory traditionally used 6 pixels)
+                    }
+                    // evaluate the icon if found, if not SLD asks us to go to the next one
+                    if(icon != null) {
+                        if(icon != null) {
+                            int size = Math.max(icon.getIconHeight(), icon.getIconWidth());
+                            if(size > buffer) {
+                                buffer = size;
+                            }
+                            return;
+                        }
+                    }
+                } else if(gs instanceof Mark) {
+                    if(isSizeLiteral) {
+                        if(imageSize > buffer) {
+                            buffer = imageSize;
+                        }
+                        return;
+                    } else {
                         estimateAccurate = false;
                         return;
                     }
-                } 
+                }
+
                 // if we got here we could not find a way to actually estimate the graphic size
                 estimateAccurate = false;
             }
@@ -319,7 +340,7 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
         } catch (Exception e) {
             estimateAccurate = false;
             LOGGER.log(Level.INFO, "Error occured during the graphic size estimation, " +
-            		"meta buffer estimate cannot be performed", e);
+                    "meta buffer estimate cannot be performed", e);
         }
     }
 

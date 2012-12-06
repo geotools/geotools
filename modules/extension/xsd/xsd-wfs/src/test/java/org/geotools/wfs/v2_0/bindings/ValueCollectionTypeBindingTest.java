@@ -52,7 +52,9 @@ public class ValueCollectionTypeBindingTest extends WFSTestSupport {
         
         registerNamespaceMapping("gt", "http://geotools.org");
     }
-
+    public void testNothing(){
+        // just to prevent build failure
+    }
     public void testEncode() throws Exception {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("feature");
@@ -80,7 +82,8 @@ public class ValueCollectionTypeBindingTest extends WFSTestSupport {
         features.add(b.buildFeature(null));
 
         ValueCollectionType vc = Wfs20Factory.eINSTANCE.createValueCollectionType();
-        vc.getMember().add(new PropertyValueCollection(features, featureType.getDescriptor("geom")));
+        PropertyValueCollection valueCollection = new PropertyValueCollection(features, featureType.getDescriptor("geom"));
+        vc.getMember().add(valueCollection);
 
         Document doc = encode(vc, WFS.ValueCollection);
         assertEquals("wfs:ValueCollection", doc.getDocumentElement().getNodeName());

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wcs:CoverageDescriptions
+    xmlns:wcs='http://www.opengis.net/wcs/2.0'
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns='http://www.opengis.net/gml/3.2'
+    xmlns:gml='http://www.opengis.net/gml/3.2'
+    xmlns:gmlcov='http://www.opengis.net/gmlcov/1.0'
+    xmlns:swe='http://www.opengis.net/swe/2.0'
+    xsi:schemaLocation='http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd
+                        http://www.opengis.net/wcs/2.0 http://schemas.opengis.net/wcs/2.0/wcsAll.xsd'>
+    <wcs:CoverageDescription gml:id="CD0002">
+        <gml:boundedBy>
+            <gml:Envelope srsName="http://www.opengis.net/def/crs/EPSG/0/4979" axisLabels="Lat Long h" uomLabels="deg deg m" srsDimension="3"> 
+                <gml:lowerCorner>1 1 1</gml:lowerCorner>
+                <gml:upperCorner>4 4 4</gml:upperCorner>
+            </gml:Envelope>
+        </gml:boundedBy>
+        <wcs:CoverageId>C0002</wcs:CoverageId>
+        <gml:domainSet>
+            <gml:MultiPoint gml:id="mp0001_C0002" srsName="http://www.opengis.net/def/crs/EPSG/0/4979">
+                <gml:pointMember>
+                    <gml:Point gml:id="p0001_C0002">
+                        <gml:pos>1 1 2</gml:pos>
+                    </gml:Point>
+                </gml:pointMember>
+                <gml:pointMember>
+                    <gml:Point gml:id="p0002_C0002">
+                        <gml:pos>2 2 1</gml:pos>
+                    </gml:Point>
+                </gml:pointMember>
+                <gml:pointMember>
+                    <gml:Point gml:id="p0003_C0002">
+                        <gml:pos>3 3 1</gml:pos>
+                    </gml:Point>
+                </gml:pointMember>
+                <gml:pointMember>
+                    <gml:Point gml:id="p0004_C0002">
+                        <gml:pos>4 4 4</gml:pos>
+                    </gml:Point>
+                </gml:pointMember>
+            </gml:MultiPoint>
+        </gml:domainSet>
+        <gmlcov:rangeType>
+            <swe:DataRecord>
+                <swe:field name="Temperature">
+                    <swe:Quantity definition="http://www.opengis.net/def/property/OGC/1.0/temperature">
+                        <swe:uom code="Cel"/>
+                    </swe:Quantity>
+                </swe:field>
+            </swe:DataRecord>
+        </gmlcov:rangeType>
+        <wcs:ServiceParameters>
+            <wcs:CoverageSubtype>MultiPointCoverage</wcs:CoverageSubtype>
+            <wcs:nativeFormat>application/gml+xml</wcs:nativeFormat>
+        </wcs:ServiceParameters>
+    </wcs:CoverageDescription>
+</wcs:CoverageDescriptions>

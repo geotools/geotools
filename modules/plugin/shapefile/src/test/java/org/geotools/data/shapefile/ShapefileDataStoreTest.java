@@ -47,6 +47,7 @@ import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -520,7 +521,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         SimpleFeatureType featureType = createExampleSchema();
         SimpleFeatureBuilder build = new SimpleFeatureBuilder(featureType);
 
-        SimpleFeatureCollection features = FeatureCollections.newCollection();
+        DefaultFeatureCollection features = new DefaultFeatureCollection();
         for (int i = 0, ii = 20; i < ii; i++) {
 
             build.add(new GeometryFactory().createPoint(new Coordinate(1, -1)));
@@ -581,7 +582,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         // create feature type
         SimpleFeatureType type = DataUtilities.createType("junk",
                 "a:Point,b:java.math.BigDecimal,c:java.math.BigInteger");
-        SimpleFeatureCollection features = FeatureCollections.newCollection();
+        DefaultFeatureCollection features = new DefaultFeatureCollection();
 
         BigInteger bigInteger = new BigInteger("1234567890123456789");
         BigDecimal bigDecimal = new BigDecimal(bigInteger, 2);
@@ -671,7 +672,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         ftb.add("a", geom.getClass());
         SimpleFeatureType type = ftb.buildFeatureType();
 
-        SimpleFeatureCollection features = FeatureCollections.newCollection();
+        DefaultFeatureCollection features = new DefaultFeatureCollection();
         SimpleFeatureBuilder build = new SimpleFeatureBuilder(type);
         for (int i = 0, ii = 20; i < ii; i++) {
             build.set(0, (Geometry) geom.clone());
@@ -798,7 +799,22 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         query = new DefaultQuery(s.getSchema().getTypeName(), cf,
                 new String[] { "the_geom" });
         reader = s.getFeatureReader(s.getSchema().getTypeName(), query);
-        assertEquals(s.getSchema(), reader.getFeatureType());
+        assertEquals(2, reader.getFeatureType().getAttributeCount());
+        assertNotNull(reader.getFeatureType().getDescriptor("the_geom"));
+        assertNotNull(reader.getFeatureType().getDescriptor("STATE_NAME"));
+        reader.close();
+        s.dispose();
+    }
+    
+    public void testReadOnlyRequiredAttributes() throws Exception {
+        URL url = TestData.url(STATE_POP);
+        ShapefileDataStore s = new ShapefileDataStore(url);
+
+        Filter cf = ff.equals(ff.property("STATE_NAME"), ff.literal("Illinois"));
+        Query query = new Query(s.getSchema().getTypeName(), cf, Query.NO_PROPERTIES);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader = s.getFeatureReader(s.getSchema().getTypeName(), query);
+        assertEquals(1, reader.getFeatureType().getAttributeCount());
+        assertNotNull(reader.getFeatureType().getDescriptor("STATE_NAME"));
         reader.close();
         s.dispose();
     }

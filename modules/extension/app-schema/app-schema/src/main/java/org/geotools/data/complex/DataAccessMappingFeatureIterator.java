@@ -502,6 +502,10 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         }
         boolean isHRefLink = isByReference(clientPropsMappings, isNestedFeature);
         if (isNestedFeature) {
+        	if (values == null) {
+                // polymorphism use case, if the value doesn't match anything, don't encode
+                return null;
+            }
             // get built feature based on link value
             if (values instanceof Collection) {
                 ArrayList<Attribute> nestedFeatures = new ArrayList<Attribute>(((Collection) values)
@@ -542,12 +546,6 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             if (isHRefLink) {
                 // only need to set the href link value, not the nested feature properties
                 setXlinkReference(target, clientPropsMappings, values, xpath, targetNodeType);
-                return null;
-            }
-        }
-        if (isNestedFeature) {
-            if (values == null) {
-                // polymorphism use case, if the value doesn't match anything, don't encode
                 return null;
             }
         }

@@ -6,6 +6,6 @@
    xmlns:csw="http://www.opengis.net/cat/csw/2.0.2"
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xsi:schemaLocation="http://www.opengis.net/cat/csw/2.0.2
-                       ../../../csw/2.0.2/CSW-discovery.xsd">
+                       http://schemas.opengis.net/csw/2.0.2/csw.xsd">
    <PropertyName>foo</PropertyName>
 </GetDomain>

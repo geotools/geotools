@@ -171,11 +171,10 @@ public interface HarvestType extends RequestBaseType {
      * @return the value of the '<em>Harvest Interval</em>' attribute.
      * @see #setHarvestInterval(Duration)
      * @see net.opengis.cat.csw20.Csw20Package#getHarvestType_HarvestInterval()
-     * @model dataType="org.eclipse.emf.ecore.xml.type.Duration"
-     *        extendedMetaData="kind='element' name='HarvestInterval' namespace='##targetNamespace'"
-     * @generated
+     * @model 
      */
     Duration getHarvestInterval();
+
 
     /**
      * Sets the value of the '{@link net.opengis.cat.csw20.HarvestType#getHarvestInterval <em>Harvest Interval</em>}' attribute.

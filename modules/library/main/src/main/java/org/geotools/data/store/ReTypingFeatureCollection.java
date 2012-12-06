@@ -17,7 +17,6 @@
 package org.geotools.data.store;
 
 import java.io.IOException;
-import java.util.Iterator;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
@@ -26,7 +25,6 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.collection.DecoratingSimpleFeatureCollection;
-import org.geotools.feature.collection.DelegateSimpleFeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -35,10 +33,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * its schema based on attributes specified in a query.
  * 
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
- *
- *
  * @source $URL$
  */
 public class ReTypingFeatureCollection extends DecoratingSimpleFeatureCollection {
@@ -62,19 +56,7 @@ public class ReTypingFeatureCollection extends DecoratingSimpleFeatureCollection
 	}
 	
 	public SimpleFeatureIterator features() {
-		return new DelegateSimpleFeatureIterator( this, iterator() );
-	}
-
-	public void close(SimpleFeatureIterator close) {
-		close.close();
-	}
-
-	public Iterator<SimpleFeature> iterator() {
-		return new ReTypingIterator( delegate.iterator(), delegate.getSchema(), featureType );
+		return new ReTypingFeatureIterator( delegate.features(), delegate.getSchema(), featureType );
 	}
 	
-	public void close(Iterator close) {
-		ReTypingIterator reType = (ReTypingIterator) close;
-		delegate.close( reType.getDelegate() );
-	}
 }

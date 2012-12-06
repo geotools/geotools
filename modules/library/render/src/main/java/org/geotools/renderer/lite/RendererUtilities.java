@@ -58,6 +58,9 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
@@ -531,106 +534,26 @@ public final class RendererUtilities {
 			throws TransformException, FactoryException {
 
 		final double diagonalGroundDistance;
-		if (!(envelope.getCoordinateReferenceSystem() instanceof EngineeringCRS)) { // geographic or cad?
-			// //
-			//
-			// get CRS2D for this referenced envelope, check that its 2d
-			//
-			// //
-			final CoordinateReferenceSystem tempCRS = CRS.getHorizontalCRS(envelope.getCoordinateReferenceSystem());
-	        if(tempCRS==null)
-	            throw new TransformException(Errors.format(
-	                      ErrorKeys.CANT_REDUCE_TO_TWO_DIMENSIONS_$1,
-	                      envelope.getCoordinateReferenceSystem()));
-			// make sure the crs is 2d
-			envelope = new ReferencedEnvelope((Envelope) envelope, tempCRS);
-			final MathTransform toWGS84 = CRS.findMathTransform(tempCRS, DefaultGeographicCRS.WGS84, true);
-
-			// //
-			// Try to compute the source crs envelope, either by asking CRS or
-			// by trying to project the WGS84 envelope (world) to the specified
-			// CRS
-			// //
-			GeneralEnvelope sourceCRSEnvelope = (GeneralEnvelope) CRS
-					.getEnvelope(tempCRS);
-			if (sourceCRSEnvelope == null) {
-				try {
-					// try to compute the envelope by reprojecting the WGS84
-					// envelope
-					sourceCRSEnvelope = CRS.transform(toWGS84
-							.inverse(), CRS.getEnvelope(DefaultGeographicCRS.WGS84));
-				} catch (TransformException e) {
-					// for some transformations this is normal, it's not possible
-					// to project the whole WGS84 envelope in many transforms,
-					// such as Mercator or Gauss (the transform does diverge)
-				}catch ( AssertionError ae){
-                                    // same reason as above basically.  For some 
-                                    // projections the assertion will complain.  Nothing can be done about this
-                                }
-			}
-
-			// //
-			//
-			// Make sure it intersect the world in the source projection by
-			// intersecting the provided envelope with the envelope of its crs.
-			//
-			// This will also prevent us from having problems with requests for
-			// images bigger than the world (thanks Dave!!!)
-			//
-			// It is important to note that I also have to update the image
-			// width in case the provided envelope is bigger than the envelope of the
-			// source crs.
-			// //
-			final GeneralEnvelope intersectedEnvelope = new GeneralEnvelope(
-					envelope);
-			if (sourceCRSEnvelope != null) {
-				intersectedEnvelope.intersect(sourceCRSEnvelope);
-				if (intersectedEnvelope.isEmpty())
-					throw new IllegalArgumentException(
-							"The provided envelope is outside the source CRS definition area");
-				if (!intersectedEnvelope.equals(envelope)) {
-					final double scale0 = intersectedEnvelope.getSpan(0)
-							/ envelope.getSpan(0);
-					final double scale1 = intersectedEnvelope.getSpan(1)
-							/ envelope.getSpan(1);
-					imageWidth *= scale0;
-					imageHeight *= scale1;
-				}
-			}
-
-			// //
-			//
-			// Go to WGS84 in order to see how things are there
-			//
-			// //
-			final GeneralEnvelope geographicEnvelope = CRS.transform(
-					toWGS84, intersectedEnvelope);
-			geographicEnvelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
-
-			// //
-			//
-			// Instantiate a geodetic calculator for GCS WGS84 and get the
-			// orthodromic distance between LLC and UC of the geographic
-			// envelope.
-			//
-			// //
-			final GeodeticCalculator calculator = new GeodeticCalculator(
-					DefaultGeographicCRS.WGS84);
-			final DirectPosition lowerLeftCorner = geographicEnvelope
-					.getLowerCorner();
-			final DirectPosition upperRightCorner = geographicEnvelope
-					.getUpperCorner();
-			calculator.setStartingGeographicPoint(lowerLeftCorner
-					.getOrdinate(0), lowerLeftCorner.getOrdinate(1));
-			calculator.setDestinationGeographicPoint(upperRightCorner
-					.getOrdinate(0), upperRightCorner.getOrdinate(1));
-			diagonalGroundDistance = calculator
-					.getOrthodromicDistance();
-		} else {
-			// if it's an engineering crs, compute only the graphical scale, assuming a CAD space
-			diagonalGroundDistance = Math.sqrt(envelope.getWidth() * envelope.getWidth()
-					+ envelope.getHeight() * envelope.getHeight());
-		}
+        if (!(envelope.getCoordinateReferenceSystem() instanceof EngineeringCRS)) { 
+            // //
+            //
+            // get CRS2D for this referenced envelope, check that its 2d
+            //
+            // //
+            final CoordinateReferenceSystem tempCRS = CRS.getHorizontalCRS(envelope
+                    .getCoordinateReferenceSystem());
+            if (tempCRS == null) {
+                throw new TransformException(Errors.format(
+                        ErrorKeys.CANT_REDUCE_TO_TWO_DIMENSIONS_$1,
+                        envelope.getCoordinateReferenceSystem()));
+            }
+            ReferencedEnvelope envelopeWGS84 = envelope.transform(DefaultGeographicCRS.WGS84, true);
+            diagonalGroundDistance = geodeticDiagonalDistance(envelopeWGS84);
+        } else {
+            // if it's an engineering crs, compute only the graphical scale, assuming a CAD space
+            diagonalGroundDistance = Math.sqrt(envelope.getWidth() * envelope.getWidth()
+                    + envelope.getHeight() * envelope.getHeight());
+        }
 
 		// //
 		//
@@ -645,6 +568,81 @@ public final class RendererUtilities {
 		return diagonalGroundDistance / diagonalPixelDistanceMeters;
 		// remember, this is the denominator, not the actual scale;
 	}
+
+    private static double geodeticDiagonalDistance(Envelope env) {
+        if(env.getWidth() < 180 && env.getHeight() < 180) {
+            return getGeodeticSegmentLength(env.getMinX(), env.getMinY(), env.getMaxX(), env.getMaxY());
+        } else {
+            // we cannot compute geodetic distance for distances longer than a hemisphere,
+            // we have to build a set of lines connecting the two points that are smaller to
+            // get a value that makes any sense rendering wise by crossing the original line with
+            // a set of quadrants that are 180x180
+            double distance = 0;
+            GeometryFactory gf = new GeometryFactory();
+            LineString ls = gf.createLineString(new Coordinate[] {new Coordinate(env.getMinX(), env.getMinY()), 
+                    new Coordinate(env.getMaxX(), env.getMaxY())});
+            int qMinX = (int) (Math.signum(env.getMinX()) * Math.ceil(Math.abs(env.getMinX() / 180.0)));
+            int qMaxX = (int) (Math.signum(env.getMaxX()) * Math.ceil(Math.abs(env.getMaxX() / 180.0)));
+            int qMinY = (int) (Math.signum(env.getMinY()) * Math.ceil(Math.abs((env.getMinY() + 90) / 180.0)));
+            int qMaxY = (int) (Math.signum(env.getMaxY()) * Math.ceil(Math.abs((env.getMaxY() + 90) / 180.0)));
+            for (int i = qMinX; i < qMaxX; i++) {
+                for (int j = qMinY; j < qMaxY; j++) {
+                    double minX = i * 180.0;
+                    double minY = j * 180.0 - 90;
+                    double maxX = minX + 180;
+                    double maxY = minY + 180;
+                    LinearRing ring = gf.createLinearRing(new Coordinate[] {new Coordinate(minX, minY), 
+                            new Coordinate(minX, maxY), new Coordinate(maxX, maxY), new Coordinate(maxX, minY),
+                            new Coordinate(minX, minY)});
+                    Polygon p = gf.createPolygon(ring, null);
+                    Geometry intersection = p.intersection(ls);
+                    if(intersection instanceof LineString) {
+                        LineString ils = ((LineString) intersection);
+                        double d = getGeodeticSegmentLength(ils);
+                        distance += d;
+                    } else if(intersection instanceof GeometryCollection) {
+                        GeometryCollection igc = ((GeometryCollection) intersection);
+                        for (int k = 0; k < igc.getNumGeometries(); k++) {
+                            Geometry child = igc.getGeometryN(k);
+                            if(child instanceof LineString) {
+                                double d = getGeodeticSegmentLength((LineString) child);
+                                distance += d;
+                            }
+                        }
+                    }
+                }   
+            }
+            
+            return distance;
+        }
+    }
+
+    private static double getGeodeticSegmentLength(LineString ls) {
+        Coordinate start = ls.getCoordinateN(0);
+        Coordinate end = ls.getCoordinateN(1);
+        return getGeodeticSegmentLength(start.x, start.y, end.x, end.y);
+    }
+
+    private static double getGeodeticSegmentLength(double minx, double miny, double maxx, double maxy) {
+        final GeodeticCalculator calculator = new GeodeticCalculator(DefaultGeographicCRS.WGS84);
+        double rminx = rollLongitude(minx);
+        double rminy = rollLatitude(miny);
+        double rmaxx = rollLongitude(maxx);
+        double rmaxy = rollLatitude(maxy);
+        calculator.setStartingGeographicPoint(rminx, rminy);
+        calculator.setDestinationGeographicPoint(rmaxx, rmaxy);
+        return calculator.getOrthodromicDistance();
+    }
+    
+    protected static double rollLongitude(final double x) {
+        double rolled = x - (((int) (x + Math.signum(x) * 180)) / 360) * 360.0;
+        return rolled;
+    }
+    
+    protected static double rollLatitude(final double x) {
+        double rolled = x - (((int) (x + Math.signum(x) * 90)) / 180) * 180.0;
+        return rolled;
+    }
 
 	
 	/**

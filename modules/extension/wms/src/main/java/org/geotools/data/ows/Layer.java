@@ -39,6 +39,7 @@ import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 
@@ -89,7 +90,8 @@ public class Layer implements Comparable<Layer> {
     private List<CRSEnvelope> boundingBoxes = new ArrayList<CRSEnvelope>();
 
     /**
-     * A BoundingBox containing the minimum rectangle of the map data in EPSG:4326
+     * A BoundingBox containing the minimum rectangle of the map data in CRS:84
+     * (Prior to WMS 1.3.3 this was EPSG:4326)
      */
     private CRSEnvelope latLonBoundingBox = null;
 
@@ -313,7 +315,7 @@ public class Layer implements Comparable<Layer> {
      * The Extents contributed by this Layer.
      * <p>
      * Please note that for the complete list of Extents valid for this layer
-     * you should use the getExtents() mehtod which will consider extents defined
+     * you should use the getExtents() method which will consider extents defined
      * as part of a Dimension and all those contributed by Parent layers.
      * <p>
      * This is an accessor; if you modify the provided list please call clearCache().
@@ -580,6 +582,12 @@ public class Layer implements Comparable<Layer> {
     }
 
     public void setLatLonBoundingBox(CRSEnvelope latLonBoundingBox) {
+        if( latLonBoundingBox.getSRSName() != null ){
+            String srsName = latLonBoundingBox.getSRSName();
+            if( !srsName.equals("CRS:84")){
+                throw new IllegalStateException("Layer LatLonBoundingBox srsName required to be null or CRS:84");
+            }
+        }
         this.latLonBoundingBox = latLonBoundingBox;
     }
 
@@ -788,7 +796,7 @@ public class Layer implements Comparable<Layer> {
     /**
      * Look up an envelope for the provided CoordianteReferenceSystem.
      * <p>
-     * Please note that the lookup is preformed based on the SRS Name of the provided
+     * Please note that the lookup is performed based on the SRS Name of the provided
      * CRS which is assumed to be one of its identifiers.
      * </p>
      * This method returns the first envelope found; this may not be valid for
@@ -796,7 +804,7 @@ public class Layer implements Comparable<Layer> {
      * a provided CRS.
      * 
      * @param crs
-     * @return GeneralEnvelope matching the provided crs; or null if unavaialble.
+     * @return GeneralEnvelope matching the provided crs; or null if unavailable.
      */
     public GeneralEnvelope getEnvelope(CoordinateReferenceSystem crs) {
         if( crs == null ){
@@ -806,115 +814,58 @@ public class Layer implements Comparable<Layer> {
         GeneralEnvelope found = (GeneralEnvelope) envelopeCache.get(crs);
         if (found != null){
             return found;
-        }      
-        Collection<Object> identifiers = new ArrayList<Object>();
-        identifiers.addAll( crs.getIdentifiers() );
-        if (crs == DefaultGeographicCRS.WGS84 || crs == DefaultGeographicCRS.WGS84_3D) {
-            identifiers.add( "EPSG:4326" );
         }
-        for (Object identifier : identifiers ) {
+        Collection<String> identifiers = new ArrayList<String>();
+        for( ReferenceIdentifier identifier : crs.getIdentifiers() ){
             String srsName = identifier.toString();
-            
-            CRSEnvelope tempBBox = null;
-            Layer layer = this;
-
-            // Locate an exact bounding box if we can
-            Map<String, CRSEnvelope> boxes = layer.getBoundingBoxes(); // extents for layer and parents
+            identifiers.add( srsName );
+            if( srsName.startsWith("EPSG:")){
+                String urn = srsName.replace("EPSG:", "urn:ogc:def:crs:EPSG::");
+                identifiers.add( urn );
+            }
+        }
+        if (crs == DefaultGeographicCRS.WGS84 || crs == DefaultGeographicCRS.WGS84_3D) {
+            identifiers.add( "CRS:84" );
+        }
+        // first pass look for an exact match
+        CRSEnvelope tempBBox = null;
+        for (String srsName : identifiers ) {
+            // Locate an exact bounding box if we can (searches all bounding boxes associated with layer)
+            Map<String, CRSEnvelope> boxes = Layer.this.getBoundingBoxes(); // extents for layer and parents
             tempBBox = (CRSEnvelope) boxes.get(srsName);
-
+            if( tempBBox != null ){
+                break;
+            }
             // Otherwise, locate a LatLon bounding box ... if applicable
-            if (tempBBox == null && ("EPSG:4326".equals(srsName.toUpperCase()))) {
-                CRSEnvelope latLonBBox = null;
-
-                layer = this;
-                while (latLonBBox == null && layer != null) {
-                    latLonBBox = layer.getLatLonBoundingBox();
-                    if (latLonBBox != null) {
-                        try {
-                            new GeneralEnvelope(new double[] { latLonBBox.getMinX(),
-                                    latLonBBox.getMinY() }, new double[] { latLonBBox.getMaxX(),
-                                    latLonBBox.getMaxY() });
-                            break;
-                        } catch (IllegalArgumentException e) {
-                            // TODO LOG here
-                            // log("Layer "+layer.getName()+" has invalid bbox declared: "+tempBbox.toString());
-                            latLonBBox = null;
-                        }
-                    }
-                    layer = layer.getParent();
-                }
-
-                if (latLonBBox == null) {
-                    // TODO could convert another bbox to latlon?
-                    tempBBox = new CRSEnvelope("EPSG:4326", -180, -90, 180, 90);
-                } else {
-                    tempBBox = new CRSEnvelope("EPSG:4326", latLonBBox.getMinX(), latLonBBox
-                            .getMinY(), latLonBBox.getMaxX(), latLonBBox.getMaxY());
-                }
+            if ("CRS:84".equals(srsName.toUpperCase()) || "EPSG:4326".equals(srsName.toUpperCase())){
+                tempBBox = Layer.this.getLatLonBoundingBox(); // checks parents
+                break;
             }
-
-            if (tempBBox == null) {
-                // Haven't found a bbox in the requested CRS. Attempt to transform another bbox
-
-                String epsg = null;
-                if (getLatLonBoundingBox() != null) {
-                    CRSEnvelope latLonBBox = getLatLonBoundingBox();
-                    tempBBox = new CRSEnvelope("EPSG:4326", latLonBBox.getMinX(), latLonBBox
-                            .getMinY(), latLonBBox.getMaxX(), latLonBBox.getMaxY());
-                    epsg = "EPSG:4326";
-                }
-
-                if (tempBBox == null && getBoundingBoxes() != null && getBoundingBoxes().size() > 0) {
-                    tempBBox = (CRSEnvelope) getBoundingBoxes().values().iterator().next();
-                    epsg = tempBBox.getEPSGCode();
-                }
-
-                if (tempBBox == null) {
-                    continue;
-                }
-
-                GeneralEnvelope env = new GeneralEnvelope(new double[] { tempBBox.getMinX(),
-                        tempBBox.getMinY() },
-                        new double[] { tempBBox.getMaxX(), tempBBox.getMaxY() });
-
-                CoordinateReferenceSystem fromCRS = null;
-                try {
-                    fromCRS = CRS.decode(epsg);
-
-                    ReferencedEnvelope oldEnv = new ReferencedEnvelope(env.getMinimum(0), env
-                            .getMaximum(0), env.getMinimum(1), env.getMaximum(1), fromCRS);
-                    ReferencedEnvelope newEnv = oldEnv.transform(crs, true);
-
-                    env = new GeneralEnvelope(new double[] { newEnv.getMinimum(0),
-                            newEnv.getMinimum(1) }, new double[] { newEnv.getMaximum(0),
-                            newEnv.getMaximum(1) });
-                    env.setCoordinateReferenceSystem(crs);
-
-                    // success!!
-                    envelopeCache.put(crs, env);
-                    return env;
-
-                } catch (NoSuchAuthorityCodeException e) {
-                    // TODO Catch e
-                } catch (FactoryException e) {
-                    // TODO Catch e
-                } catch (MismatchedDimensionException e) {
-                    // TODO Catch e
-                } catch (TransformException e) {
-                    // TODO Catch e
-                }
-            }
-
-            // TODO Attempt to figure out the valid area of the CRS and use that.
-
-            if (tempBBox != null) {
-                GeneralEnvelope env = new GeneralEnvelope(new double[] { tempBBox.getMinX(),
-                        tempBBox.getMinY() },
+        }
+        // second pass just get a latLonBoundingox (and we will transform it)
+        if( tempBBox == null ){
+            tempBBox = Layer.this.getLatLonBoundingBox(); // checks parents
+        }
+        // TODO Attempt to figure out the valid area of the CRS and use that.
+        
+        // last attempt grab the first thing (and we will transform it)
+        if (tempBBox == null && getBoundingBoxes() != null && getBoundingBoxes().size() > 0) {
+            tempBBox = (CRSEnvelope) getBoundingBoxes().values().iterator().next();
+        }
+        
+        if (tempBBox != null) {
+            GeneralEnvelope env;
+            try {
+                Envelope fixed = CRS.transform( tempBBox, crs );
+                env = new GeneralEnvelope( fixed );
+            } catch (TransformException e) {
+                env = new GeneralEnvelope(new double[] { tempBBox.getMinX(),tempBBox.getMinY() },
                         new double[] { tempBBox.getMaxX(), tempBBox.getMaxY() });
                 env.setCoordinateReferenceSystem(crs);
-                return env;
             }
-
+            // success!!
+            envelopeCache.put(crs, env);
+            return env;
         }
         return null;
     }

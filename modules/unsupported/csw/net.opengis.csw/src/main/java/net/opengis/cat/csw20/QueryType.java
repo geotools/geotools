@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.eclipse.emf.common.util.EList;
 import org.opengis.filter.sort.SortBy;
 
 /**
@@ -83,21 +84,9 @@ public interface QueryType extends AbstractQueryType {
      * @return the value of the '<em>Element Name</em>' attribute.
      * @see #setElementName(QName)
      * @see net.opengis.cat.csw20.Csw20Package#getQueryType_ElementName()
-     * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.QName"
-     *        extendedMetaData="kind='element' name='ElementName' namespace='##targetNamespace'"
-     * @generated
+     * @model 
      */
-    QName getElementName();
-
-    /**
-     * Sets the value of the '{@link net.opengis.cat.csw20.QueryType#getElementName <em>Element Name</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Element Name</em>' attribute.
-     * @see #getElementName()
-     * @generated
-     */
-    void setElementName(QName value);
+    EList<QName> getElementName();
 
     /**
      * Returns the value of the '<em><b>Constraint</b></em>' containment reference.
@@ -137,21 +126,19 @@ public interface QueryType extends AbstractQueryType {
      * @return the value of the '<em>Sort By</em>' containment reference.
      * @see #setSortBy(SortBy)
      * @see net.opengis.cat.csw20.Csw20Package#getQueryType_SortBy()
-     * @model type="net.opengis.cat.csw20.SortBy" containment="true"
-     *        extendedMetaData="kind='element' name='SortBy' namespace='http://www.opengis.net/ogc'"
-     * @generated
+     * @model 
      */
-    SortBy getSortBy();
+    SortBy[] getSortBy();
 
     /**
-     * Sets the value of the '{@link net.opengis.cat.csw20.QueryType#getSortBy <em>Sort By</em>}' containment reference.
+     * Sets the value of the '{@link net.opengis.cat.csw20.QueryType#getSortBy <em>Sort By</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Sort By</em>' containment reference.
+     * @param value the new value of the '<em>Sort By</em>' attribute.
      * @see #getSortBy()
      * @generated
      */
-    void setSortBy(SortBy value);
+    void setSortBy(SortBy[] value);
 
     /**
      * Returns the value of the '<em><b>Type Names</b></em>' attribute.

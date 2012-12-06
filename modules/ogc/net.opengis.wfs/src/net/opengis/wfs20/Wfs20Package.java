@@ -4881,6 +4881,17 @@ public interface Wfs20Package extends EPackage {
 
 
     /**
+     * The meta object id for the '<em>Collection</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see java.util.Collection
+     * @see net.opengis.wfs20.impl.Wfs20PackageImpl#getCollection()
+     * @generated
+     */
+    int COLLECTION = 91;
+
+
+    /**
      * Returns the meta object for class '{@link net.opengis.wfs20.AbstractTransactionActionType <em>Abstract Transaction Action Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -8587,6 +8598,17 @@ public interface Wfs20Package extends EPackage {
     EDataType getFeatureId();
 
     /**
+     * Returns the meta object for data type '{@link java.util.Collection <em>Collection</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for data type '<em>Collection</em>'.
+     * @see java.util.Collection
+     * @model instanceClass="java.util.Collection"
+     * @generated
+     */
+    EDataType getCollection();
+
+    /**
      * Returns the factory that creates the instances of the model.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -11525,6 +11547,16 @@ public interface Wfs20Package extends EPackage {
          * @generated
          */
         EDataType FEATURE_ID = eINSTANCE.getFeatureId();
+
+        /**
+         * The meta object literal for the '<em>Collection</em>' data type.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see java.util.Collection
+         * @see net.opengis.wfs20.impl.Wfs20PackageImpl#getCollection()
+         * @generated
+         */
+        EDataType COLLECTION = eINSTANCE.getCollection();
 
     }
 

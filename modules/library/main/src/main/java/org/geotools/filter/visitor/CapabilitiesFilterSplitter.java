@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2012, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -644,8 +644,45 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
             original = filter;
 
         if (!fcs.supports(filter)) {
-            postStack.push(filter);
-            return;
+            // logical operators aren't supported
+            
+            // if the logical operator is AND            
+            if (filter instanceof And) {
+                // test if one of its children is supported
+                Iterator<Filter> it = ((And) filter).getChildren().iterator();
+                Filter supportedChild = null;
+                List<Filter> otherChildren = new ArrayList<Filter>();
+                while (it.hasNext()) {
+                    Filter child = (Filter) it.next();
+                    if (supportedChild == null && fcs.supports(child)) {
+                        supportedChild = child;
+                    } else {
+                        otherChildren.add(child);
+                    }
+                }
+                
+                if (supportedChild == null) {
+                    // no child supported
+                    postStack.push(filter);
+                    return;                                    
+                } else {
+                    // found at least one child supported
+                    
+                    // push the first supported child on preStack
+                    preStack.push(supportedChild);
+                    
+                    // push other children on postStack
+                    if (otherChildren.size() == 1) {
+                        postStack.push(otherChildren.get(0));
+                    } else {
+                        postStack.push(ff.and(otherChildren));
+                    }
+                    return;
+                }
+            } else {
+                postStack.push(filter);
+                return;                
+            }
         }
 
         int i = postStack.size();
@@ -790,13 +827,13 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
     public Object visit(Id filter, Object notUsed) {
         if (original == null)
             original = filter;
-
-        // figure out how to check that this is top level.
-        // otherwise this is fine
-        if (!postStack.isEmpty()) {
+        
+        if (!fcs.supports(filter)) {
             postStack.push(filter);
+        } else {
+            preStack.push(filter);            
         }
-        preStack.push(filter);
+
         return null;
     }
 

@@ -157,46 +157,19 @@ public interface GetRecordsType extends RequestBaseType {
      * @see #unsetMaxRecords()
      * @see #setMaxRecords(BigInteger)
      * @see net.opengis.cat.csw20.Csw20Package#getGetRecordsType_MaxRecords()
-     * @model default="10" unsettable="true" dataType="org.eclipse.emf.ecore.xml.type.NonNegativeInteger"
-     *        extendedMetaData="kind='attribute' name='maxRecords'"
-     * @generated
+     * @model default="10"
      */
-    BigInteger getMaxRecords();
+    Integer getMaxRecords();
 
     /**
      * Sets the value of the '{@link net.opengis.cat.csw20.GetRecordsType#getMaxRecords <em>Max Records</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @param value the new value of the '<em>Max Records</em>' attribute.
-     * @see #isSetMaxRecords()
-     * @see #unsetMaxRecords()
      * @see #getMaxRecords()
      * @generated
      */
-    void setMaxRecords(BigInteger value);
-
-    /**
-     * Unsets the value of the '{@link net.opengis.cat.csw20.GetRecordsType#getMaxRecords <em>Max Records</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #isSetMaxRecords()
-     * @see #getMaxRecords()
-     * @see #setMaxRecords(BigInteger)
-     * @generated
-     */
-    void unsetMaxRecords();
-
-    /**
-     * Returns whether the value of the '{@link net.opengis.cat.csw20.GetRecordsType#getMaxRecords <em>Max Records</em>}' attribute is set.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return whether the value of the '<em>Max Records</em>' attribute is set.
-     * @see #unsetMaxRecords()
-     * @see #getMaxRecords()
-     * @see #setMaxRecords(BigInteger)
-     * @generated
-     */
-    boolean isSetMaxRecords();
+    void setMaxRecords(Integer value);
 
     /**
      * Returns the value of the '<em><b>Output Format</b></em>' attribute.
@@ -375,49 +348,25 @@ public interface GetRecordsType extends RequestBaseType {
      * </p>
      * <!-- end-user-doc -->
      * @return the value of the '<em>Start Position</em>' attribute.
-     * @see #isSetStartPosition()
-     * @see #unsetStartPosition()
-     * @see #setStartPosition(BigInteger)
+     * @see #setStartPosition(Integer)
      * @see net.opengis.cat.csw20.Csw20Package#getGetRecordsType_StartPosition()
-     * @model default="1" unsettable="true" dataType="org.eclipse.emf.ecore.xml.type.PositiveInteger"
-     *        extendedMetaData="kind='attribute' name='startPosition'"
+     * @model default="1"
      * @generated
      */
-    BigInteger getStartPosition();
+    Integer getStartPosition();
 
     /**
      * Sets the value of the '{@link net.opengis.cat.csw20.GetRecordsType#getStartPosition <em>Start Position</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @param value the new value of the '<em>Start Position</em>' attribute.
-     * @see #isSetStartPosition()
-     * @see #unsetStartPosition()
      * @see #getStartPosition()
      * @generated
      */
-    void setStartPosition(BigInteger value);
+    void setStartPosition(Integer value);
 
-    /**
-     * Unsets the value of the '{@link net.opengis.cat.csw20.GetRecordsType#getStartPosition <em>Start Position</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #isSetStartPosition()
-     * @see #getStartPosition()
-     * @see #setStartPosition(BigInteger)
-     * @generated
-     */
-    void unsetStartPosition();
+  
 
-    /**
-     * Returns whether the value of the '{@link net.opengis.cat.csw20.GetRecordsType#getStartPosition <em>Start Position</em>}' attribute is set.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return whether the value of the '<em>Start Position</em>' attribute is set.
-     * @see #unsetStartPosition()
-     * @see #getStartPosition()
-     * @see #setStartPosition(BigInteger)
-     * @generated
-     */
-    boolean isSetStartPosition();
+   
 
 } // GetRecordsType

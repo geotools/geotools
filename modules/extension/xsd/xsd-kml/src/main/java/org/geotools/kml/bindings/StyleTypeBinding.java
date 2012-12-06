@@ -20,6 +20,7 @@ import java.net.URI;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.kml.KML;
+import org.geotools.kml.StyleMap;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.Symbolizer;

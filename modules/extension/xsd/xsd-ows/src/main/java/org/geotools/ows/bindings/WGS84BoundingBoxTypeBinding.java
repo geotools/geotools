@@ -16,6 +16,8 @@
  */
 package org.geotools.ows.bindings;
 
+import java.util.List;
+
 import net.opengis.ows10.Ows10Factory;
 import net.opengis.ows10.WGS84BoundingBoxType;
 import javax.xml.namespace.QName;
@@ -106,5 +108,20 @@ public class WGS84BoundingBoxTypeBinding extends AbstractComplexEMFBinding {
         throws Exception {
         //TODO: implement and remove call to super
         return super.parse(instance, node, value);
+    }
+    
+    @Override
+    public Object getProperty(Object object, QName name) throws Exception {
+        if ("LowerCorner".equals(name.getLocalPart()) || "UpperCorner".equals(name.getLocalPart())) {
+            //JD: this is a hack to get around the fact that the encoder won't match up simple list
+            // types with a binding
+            Object value = super.getProperty(object, name);
+            if (value instanceof List) {
+                return new PositionTypeBinding().encode(value, value.toString());
+            }
+        }
+        
+        return super.getProperty(object, name);    
+        
     }
 }

@@ -45,49 +45,22 @@ public interface DistributedSearchType extends EObject {
      * </p>
      * <!-- end-user-doc -->
      * @return the value of the '<em>Hop Count</em>' attribute.
-     * @see #isSetHopCount()
-     * @see #unsetHopCount()
-     * @see #setHopCount(BigInteger)
+     * @see #setHopCount(Integer)
      * @see net.opengis.cat.csw20.Csw20Package#getDistributedSearchType_HopCount()
-     * @model default="2" unsettable="true" dataType="org.eclipse.emf.ecore.xml.type.PositiveInteger"
-     *        extendedMetaData="kind='attribute' name='hopCount'"
+     * @model default="2"
      * @generated
      */
-    BigInteger getHopCount();
+    Integer getHopCount();
 
     /**
      * Sets the value of the '{@link net.opengis.cat.csw20.DistributedSearchType#getHopCount <em>Hop Count</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @param value the new value of the '<em>Hop Count</em>' attribute.
-     * @see #isSetHopCount()
-     * @see #unsetHopCount()
      * @see #getHopCount()
      * @generated
      */
-    void setHopCount(BigInteger value);
+    void setHopCount(Integer value);
 
-    /**
-     * Unsets the value of the '{@link net.opengis.cat.csw20.DistributedSearchType#getHopCount <em>Hop Count</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #isSetHopCount()
-     * @see #getHopCount()
-     * @see #setHopCount(BigInteger)
-     * @generated
-     */
-    void unsetHopCount();
-
-    /**
-     * Returns whether the value of the '{@link net.opengis.cat.csw20.DistributedSearchType#getHopCount <em>Hop Count</em>}' attribute is set.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @return whether the value of the '<em>Hop Count</em>' attribute is set.
-     * @see #unsetHopCount()
-     * @see #getHopCount()
-     * @see #setHopCount(BigInteger)
-     * @generated
-     */
-    boolean isSetHopCount();
 
 } // DistributedSearchType

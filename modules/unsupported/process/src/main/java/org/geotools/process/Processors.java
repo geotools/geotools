@@ -112,8 +112,12 @@ public class Processors extends FactoryFinder {
      * @return ProcessFactory capable of creating an instanceof the named process
      */
     public static synchronized ProcessFactory createProcessFactory(Name name){
-        if( lastFactory != null && lastFactory.getNames().contains(name)){
-            return lastFactory;
+        //store a local reference to last factory, since it could change if this method is called 
+        //within the factories getNames() method, which could happen if a factory delegates in some
+        // way
+        ProcessFactory last = lastFactory;
+        if( last != null && last.getNames().contains(name)){
+            return last;
         }
         for( ProcessFactory factory : getProcessFactories() ) {
             if(factory.getNames().contains(name)) {
@@ -187,6 +191,20 @@ public class Processors extends FactoryFinder {
         if( threadFactory == null ) threadFactory = Executors.defaultThreadFactory();
         
         return new ThreadPoolProcessExecutor( nThreads, threadFactory);
+    }
+
+    /**
+     * Reinitializes all static state, including the ProcessFactory service registry and reference
+     * to the last used ProcessFactory
+     */
+    public synchronized static void reset() {
+        if (registry == null) {
+            //nothing to do
+            return;
+        }
+        registry.deregisterAll();
+        registry.scanForPlugins();
+        lastFactory = null;
     }
 
     /**

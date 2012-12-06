@@ -11,7 +11,10 @@ import java.lang.String;
 import java.util.Calendar;
 import java.util.List;
 
+import java.util.Map;
 import java.util.Set;
+import javax.xml.datatype.Duration;
+import javax.xml.namespace.QName;
 import net.opengis.cat.csw20.AbstractQueryType;
 import net.opengis.cat.csw20.AbstractRecordType;
 import net.opengis.cat.csw20.AcknowledgementType;
@@ -33,6 +36,7 @@ import net.opengis.cat.csw20.EmptyType;
 import net.opengis.cat.csw20.GetCapabilitiesType;
 import net.opengis.cat.csw20.GetDomainResponseType;
 import net.opengis.cat.csw20.GetDomainType;
+import net.opengis.cat.csw20.GetRecordByIdResponseType;
 import net.opengis.cat.csw20.GetRecordByIdType;
 import net.opengis.cat.csw20.GetRecordsResponseType;
 import net.opengis.cat.csw20.GetRecordsType;
@@ -406,6 +410,13 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    private EClass getRecordByIdResponseTypeEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     private EEnum elementSetTypeEEnum = null;
 
     /**
@@ -470,6 +481,34 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * @generated
      */
     private EDataType uriEDataType = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EDataType qNameEDataType = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EDataType durationEDataType = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EDataType mapEDataType = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EDataType sortByArrayEDataType = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -1413,8 +1452,8 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EReference getQueryType_SortBy() {
-        return (EReference)queryTypeEClass.getEStructuralFeatures().get(3);
+    public EAttribute getQueryType_SortBy() {
+        return (EAttribute)queryTypeEClass.getEStructuralFeatures().get(3);
     }
 
     /**
@@ -1505,6 +1544,24 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      */
     public EAttribute getRequestBaseType_Version() {
         return (EAttribute)requestBaseTypeEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getRequestBaseType_BaseUrl() {
+        return (EAttribute)requestBaseTypeEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getRequestBaseType_ExtendedProperties() {
+        return (EAttribute)requestBaseTypeEClass.getEStructuralFeatures().get(3);
     }
 
     /**
@@ -2088,6 +2145,42 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EClass getGetRecordByIdResponseType() {
+        return getRecordByIdResponseTypeEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getGetRecordByIdResponseType_AbstractRecordGroup() {
+        return (EAttribute)getRecordByIdResponseTypeEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getGetRecordByIdResponseType_AbstractRecord() {
+        return (EReference)getRecordByIdResponseTypeEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getGetRecordByIdResponseType_Any() {
+        return (EAttribute)getRecordByIdResponseTypeEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EEnum getElementSetType() {
         return elementSetTypeEEnum;
     }
@@ -2171,6 +2264,42 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
      */
     public EDataType getURI() {
         return uriEDataType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EDataType getQName() {
+        return qNameEDataType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EDataType getDuration() {
+        return durationEDataType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EDataType getMap() {
+        return mapEDataType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EDataType getSortByArray() {
+        return sortByArrayEDataType;
     }
 
     /**
@@ -2324,7 +2453,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         createEReference(queryTypeEClass, QUERY_TYPE__ELEMENT_SET_NAME);
         createEAttribute(queryTypeEClass, QUERY_TYPE__ELEMENT_NAME);
         createEReference(queryTypeEClass, QUERY_TYPE__CONSTRAINT);
-        createEReference(queryTypeEClass, QUERY_TYPE__SORT_BY);
+        createEAttribute(queryTypeEClass, QUERY_TYPE__SORT_BY);
         createEAttribute(queryTypeEClass, QUERY_TYPE__TYPE_NAMES);
 
         rangeOfValuesTypeEClass = createEClass(RANGE_OF_VALUES_TYPE);
@@ -2338,6 +2467,8 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         requestBaseTypeEClass = createEClass(REQUEST_BASE_TYPE);
         createEAttribute(requestBaseTypeEClass, REQUEST_BASE_TYPE__SERVICE);
         createEAttribute(requestBaseTypeEClass, REQUEST_BASE_TYPE__VERSION);
+        createEAttribute(requestBaseTypeEClass, REQUEST_BASE_TYPE__BASE_URL);
+        createEAttribute(requestBaseTypeEClass, REQUEST_BASE_TYPE__EXTENDED_PROPERTIES);
 
         requestStatusTypeEClass = createEClass(REQUEST_STATUS_TYPE);
         createEAttribute(requestStatusTypeEClass, REQUEST_STATUS_TYPE__TIMESTAMP);
@@ -2418,6 +2549,11 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         createEReference(summaryRecordTypeEClass, SUMMARY_RECORD_TYPE__SPATIAL);
         createEReference(summaryRecordTypeEClass, SUMMARY_RECORD_TYPE__BOUNDING_BOX);
 
+        getRecordByIdResponseTypeEClass = createEClass(GET_RECORD_BY_ID_RESPONSE_TYPE);
+        createEAttribute(getRecordByIdResponseTypeEClass, GET_RECORD_BY_ID_RESPONSE_TYPE__ABSTRACT_RECORD_GROUP);
+        createEReference(getRecordByIdResponseTypeEClass, GET_RECORD_BY_ID_RESPONSE_TYPE__ABSTRACT_RECORD);
+        createEAttribute(getRecordByIdResponseTypeEClass, GET_RECORD_BY_ID_RESPONSE_TYPE__ANY);
+
         // Create enums
         elementSetTypeEEnum = createEEnum(ELEMENT_SET_TYPE);
         resultTypeEEnum = createEEnum(RESULT_TYPE);
@@ -2431,6 +2567,10 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         calendarEDataType = createEDataType(CALENDAR);
         setEDataType = createEDataType(SET);
         uriEDataType = createEDataType(URI);
+        qNameEDataType = createEDataType(QNAME);
+        durationEDataType = createEDataType(DURATION);
+        mapEDataType = createEDataType(MAP);
+        sortByArrayEDataType = createEDataType(SORT_BY_ARRAY);
     }
 
     /**
@@ -2514,12 +2654,12 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         initEReference(getDescribeRecordResponseType_SchemaComponent(), this.getSchemaComponentType(), null, "schemaComponent", null, 0, -1, DescribeRecordResponseType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(describeRecordTypeEClass, DescribeRecordType.class, "DescribeRecordType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getDescribeRecordType_TypeName(), theXMLTypePackage.getQName(), "typeName", null, 0, 1, DescribeRecordType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getDescribeRecordType_TypeName(), this.getQName(), "typeName", null, 0, -1, DescribeRecordType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getDescribeRecordType_OutputFormat(), theXMLTypePackage.getString(), "outputFormat", "application/xml", 0, 1, DescribeRecordType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getDescribeRecordType_SchemaLanguage(), theXMLTypePackage.getAnyURI(), "schemaLanguage", "http://www.w3.org/XML/Schema", 0, 1, DescribeRecordType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(distributedSearchTypeEClass, DistributedSearchType.class, "DistributedSearchType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getDistributedSearchType_HopCount(), theXMLTypePackage.getPositiveInteger(), "hopCount", "2", 0, 1, DistributedSearchType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getDistributedSearchType_HopCount(), ecorePackage.getEIntegerObject(), "hopCount", "2", 0, 1, DistributedSearchType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(domainValuesTypeEClass, DomainValuesType.class, "DomainValuesType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getDomainValuesType_PropertyName(), theXMLTypePackage.getAnyURI(), "propertyName", null, 0, 1, DomainValuesType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2527,7 +2667,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         initEReference(getDomainValuesType_ListOfValues(), this.getListOfValuesType(), null, "listOfValues", null, 0, 1, DomainValuesType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getDomainValuesType_ConceptualScheme(), this.getConceptualSchemeType(), null, "conceptualScheme", null, 0, 1, DomainValuesType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getDomainValuesType_RangeOfValues(), this.getRangeOfValuesType(), null, "rangeOfValues", null, 0, 1, DomainValuesType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getDomainValuesType_Type(), theXMLTypePackage.getQName(), "type", null, 1, 1, DomainValuesType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getDomainValuesType_Type(), this.getQName(), "type", null, 0, 1, DomainValuesType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getDomainValuesType_Uom(), theXMLTypePackage.getAnyURI(), "uom", null, 0, 1, DomainValuesType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(echoedRequestTypeEClass, EchoedRequestType.class, "EchoedRequestType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2565,12 +2705,12 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         initEReference(getGetRecordsType_DistributedSearch(), this.getDistributedSearchType(), null, "distributedSearch", null, 0, 1, GetRecordsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getGetRecordsType_ResponseHandler(), theXMLTypePackage.getAnyURI(), "responseHandler", null, 0, 1, GetRecordsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getGetRecordsType_Any(), theEcorePackage.getEFeatureMapEntry(), "any", null, 0, 1, GetRecordsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getGetRecordsType_MaxRecords(), theXMLTypePackage.getNonNegativeInteger(), "maxRecords", "10", 0, 1, GetRecordsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getGetRecordsType_MaxRecords(), ecorePackage.getEIntegerObject(), "maxRecords", "10", 0, 1, GetRecordsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getGetRecordsType_OutputFormat(), theXMLTypePackage.getString(), "outputFormat", "application/xml", 0, 1, GetRecordsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getGetRecordsType_OutputSchema(), theXMLTypePackage.getAnyURI(), "outputSchema", null, 0, 1, GetRecordsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getGetRecordsType_RequestId(), theXMLTypePackage.getAnyURI(), "requestId", null, 0, 1, GetRecordsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getGetRecordsType_ResultType(), this.getResultType(), "resultType", "hits", 0, 1, GetRecordsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getGetRecordsType_StartPosition(), theXMLTypePackage.getPositiveInteger(), "startPosition", "1", 0, 1, GetRecordsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getGetRecordsType_StartPosition(), ecorePackage.getEIntegerObject(), "startPosition", "1", 0, 1, GetRecordsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getGetRecordsType_Query(), ecorePackage.getEJavaObject(), "query", null, 0, 1, GetRecordsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(harvestResponseTypeEClass, HarvestResponseType.class, "HarvestResponseType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2581,7 +2721,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         initEAttribute(getHarvestType_Source(), theXMLTypePackage.getAnyURI(), "source", null, 1, 1, HarvestType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getHarvestType_ResourceType(), theXMLTypePackage.getString(), "resourceType", null, 1, 1, HarvestType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getHarvestType_ResourceFormat(), theXMLTypePackage.getString(), "resourceFormat", "application/xml", 0, 1, HarvestType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getHarvestType_HarvestInterval(), theXMLTypePackage.getDuration(), "harvestInterval", null, 0, 1, HarvestType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getHarvestType_HarvestInterval(), this.getDuration(), "harvestInterval", null, 0, 1, HarvestType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getHarvestType_ResponseHandler(), theXMLTypePackage.getAnyURI(), "responseHandler", null, 0, 1, HarvestType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(insertResultTypeEClass, InsertResultType.class, "InsertResultType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2603,9 +2743,9 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
 
         initEClass(queryTypeEClass, QueryType.class, "QueryType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getQueryType_ElementSetName(), this.getElementSetNameType(), null, "elementSetName", null, 0, 1, QueryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getQueryType_ElementName(), theXMLTypePackage.getQName(), "elementName", null, 0, 1, QueryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getQueryType_ElementName(), this.getQName(), "elementName", null, 0, -1, QueryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getQueryType_Constraint(), this.getQueryConstraintType(), null, "constraint", null, 0, 1, QueryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getQueryType_SortBy(), this.getSortBy(), null, "sortBy", null, 0, 1, QueryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getQueryType_SortBy(), this.getSortByArray(), "sortBy", null, 0, 1, QueryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getQueryType_TypeNames(), this.getTypeNameListType_1(), "typeNames", null, 1, 1, QueryType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(rangeOfValuesTypeEClass, RangeOfValuesType.class, "RangeOfValuesType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2619,9 +2759,11 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         initEClass(requestBaseTypeEClass, RequestBaseType.class, "RequestBaseType", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getRequestBaseType_Service(), this.getServiceType_1(), "service", "CSW", 1, 1, RequestBaseType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getRequestBaseType_Version(), this.getVersionType(), "version", "2.0.2", 1, 1, RequestBaseType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getRequestBaseType_BaseUrl(), theXMLTypePackage.getString(), "baseUrl", null, 0, 1, RequestBaseType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getRequestBaseType_ExtendedProperties(), this.getMap(), "extendedProperties", null, 0, 1, RequestBaseType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(requestStatusTypeEClass, RequestStatusType.class, "RequestStatusType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getRequestStatusType_Timestamp(), theXMLTypePackage.getDateTime(), "timestamp", null, 0, 1, RequestStatusType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getRequestStatusType_Timestamp(), this.getCalendar(), "timestamp", null, 0, 1, RequestStatusType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(schemaComponentTypeEClass, SchemaComponentType.class, "SchemaComponentType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getSchemaComponentType_Mixed(), theEcorePackage.getEFeatureMapEntry(), "mixed", null, 0, -1, SchemaComponentType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2635,7 +2777,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         initEReference(getSearchResultsType_AbstractRecord(), this.getAbstractRecordType(), null, "abstractRecord", null, 0, -1, SearchResultsType.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
         initEAttribute(getSearchResultsType_Any(), theEcorePackage.getEFeatureMapEntry(), "any", null, 0, -1, SearchResultsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getSearchResultsType_ElementSet(), this.getElementSetType(), "elementSet", null, 0, 1, SearchResultsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getSearchResultsType_Expires(), theXMLTypePackage.getDateTime(), "expires", null, 0, 1, SearchResultsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getSearchResultsType_Expires(), this.getCalendar(), "expires", null, 0, 1, SearchResultsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getSearchResultsType_NextRecord(), theXMLTypePackage.getNonNegativeInteger(), "nextRecord", null, 0, 1, SearchResultsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getSearchResultsType_NumberOfRecordsMatched(), theXMLTypePackage.getNonNegativeInteger(), "numberOfRecordsMatched", null, 1, 1, SearchResultsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getSearchResultsType_NumberOfRecordsReturned(), theXMLTypePackage.getNonNegativeInteger(), "numberOfRecordsReturned", null, 1, 1, SearchResultsType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2684,7 +2826,7 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
 
         initEClass(simpleLiteralEClass, SimpleLiteral.class, "SimpleLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getSimpleLiteral_Value(), ecorePackage.getEJavaObject(), "value", null, 0, 1, SimpleLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getSimpleLiteral_Scheme(), theXMLTypePackage.getAnyURI(), "scheme", null, 0, 1, SimpleLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getSimpleLiteral_Scheme(), this.getURI(), "scheme", null, 0, 1, SimpleLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getSimpleLiteral_Name(), this.getString(), null, "name", null, 0, 1, SimpleLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(summaryRecordTypeEClass, SummaryRecordType.class, "SummaryRecordType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2698,6 +2840,11 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         initEReference(getSummaryRecordType_Abstract(), this.getSimpleLiteral(), null, "abstract", null, 0, -1, SummaryRecordType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getSummaryRecordType_Spatial(), this.getSimpleLiteral(), null, "spatial", null, 0, -1, SummaryRecordType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getSummaryRecordType_BoundingBox(), theOws10Package.getBoundingBoxType(), null, "boundingBox", null, 0, -1, SummaryRecordType.class, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+
+        initEClass(getRecordByIdResponseTypeEClass, GetRecordByIdResponseType.class, "GetRecordByIdResponseType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getGetRecordByIdResponseType_AbstractRecordGroup(), theEcorePackage.getEFeatureMapEntry(), "abstractRecordGroup", null, 0, -1, GetRecordByIdResponseType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getGetRecordByIdResponseType_AbstractRecord(), this.getAbstractRecordType(), null, "abstractRecord", null, 0, -1, GetRecordByIdResponseType.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+        initEAttribute(getGetRecordByIdResponseType_Any(), theEcorePackage.getEFeatureMapEntry(), "any", null, 0, -1, GetRecordByIdResponseType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize enums and add enum literals
         initEEnum(elementSetTypeEEnum, ElementSetType.class, "ElementSetType");
@@ -2719,6 +2866,10 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
         initEDataType(calendarEDataType, Calendar.class, "Calendar", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(setEDataType, Set.class, "Set", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(uriEDataType, java.net.URI.class, "URI", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(qNameEDataType, QName.class, "QName", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(durationEDataType, Duration.class, "Duration", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(mapEDataType, Map.class, "Map", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(sortByArrayEDataType, SortBy[].class, "SortByArray", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
         // Create resource
         createResource(eNS_URI);
@@ -2887,14 +3038,6 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
              "kind", "elementOnly"
            });			
         addAnnotation
-          (getDescribeRecordType_TypeName(), 
-           source, 
-           new String[] {
-             "kind", "element",
-             "name", "TypeName",
-             "namespace", "##targetNamespace"
-           });		
-        addAnnotation
           (getDescribeRecordType_OutputFormat(), 
            source, 
            new String[] {
@@ -2915,13 +3058,6 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
              "name", "DistributedSearchType",
              "kind", "empty"
            });			
-        addAnnotation
-          (getDistributedSearchType_HopCount(), 
-           source, 
-           new String[] {
-             "kind", "attribute",
-             "name", "hopCount"
-           });		
         addAnnotation
           (domainValuesTypeEClass, 
            source, 
@@ -2968,13 +3104,6 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
              "kind", "element",
              "name", "RangeOfValues",
              "namespace", "##targetNamespace"
-           });		
-        addAnnotation
-          (getDomainValuesType_Type(), 
-           source, 
-           new String[] {
-             "kind", "attribute",
-             "name", "type"
            });		
         addAnnotation
           (getDomainValuesType_Uom(), 
@@ -3179,13 +3308,6 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
              "processing", "strict"
            });		
         addAnnotation
-          (getGetRecordsType_MaxRecords(), 
-           source, 
-           new String[] {
-             "kind", "attribute",
-             "name", "maxRecords"
-           });		
-        addAnnotation
           (getGetRecordsType_OutputFormat(), 
            source, 
            new String[] {
@@ -3212,13 +3334,6 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
            new String[] {
              "kind", "attribute",
              "name", "resultType"
-           });		
-        addAnnotation
-          (getGetRecordsType_StartPosition(), 
-           source, 
-           new String[] {
-             "kind", "attribute",
-             "name", "startPosition"
            });		
         addAnnotation
           (harvestResponseTypeEClass, 
@@ -3272,14 +3387,6 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
            new String[] {
              "kind", "element",
              "name", "ResourceFormat",
-             "namespace", "##targetNamespace"
-           });		
-        addAnnotation
-          (getHarvestType_HarvestInterval(), 
-           source, 
-           new String[] {
-             "kind", "element",
-             "name", "HarvestInterval",
              "namespace", "##targetNamespace"
            });		
         addAnnotation
@@ -3403,28 +3510,12 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
              "namespace", "##targetNamespace"
            });		
         addAnnotation
-          (getQueryType_ElementName(), 
-           source, 
-           new String[] {
-             "kind", "element",
-             "name", "ElementName",
-             "namespace", "##targetNamespace"
-           });		
-        addAnnotation
           (getQueryType_Constraint(), 
            source, 
            new String[] {
              "kind", "element",
              "name", "Constraint",
              "namespace", "##targetNamespace"
-           });		
-        addAnnotation
-          (getQueryType_SortBy(), 
-           source, 
-           new String[] {
-             "kind", "element",
-             "name", "SortBy",
-             "namespace", "http://www.opengis.net/ogc"
            });		
         addAnnotation
           (getQueryType_TypeNames(), 
@@ -3508,13 +3599,6 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
              "kind", "empty"
            });			
         addAnnotation
-          (getRequestStatusType_Timestamp(), 
-           source, 
-           new String[] {
-             "kind", "attribute",
-             "name", "timestamp"
-           });		
-        addAnnotation
           (schemaComponentTypeEClass, 
            source, 
            new String[] {
@@ -3597,13 +3681,6 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
            new String[] {
              "kind", "attribute",
              "name", "elementSet"
-           });		
-        addAnnotation
-          (getSearchResultsType_Expires(), 
-           source, 
-           new String[] {
-             "kind", "attribute",
-             "name", "expires"
            });		
         addAnnotation
           (getSearchResultsType_NextRecord(), 
@@ -3850,13 +3927,6 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
              "kind", "elementOnly"
            });		
         addAnnotation
-          (getSimpleLiteral_Scheme(), 
-           source, 
-           new String[] {
-             "kind", "attribute",
-             "name", "scheme"
-           });		
-        addAnnotation
           (summaryRecordTypeEClass, 
            source, 
            new String[] {
@@ -3951,7 +4021,40 @@ public class Csw20PackageImpl extends EPackageImpl implements Csw20Package {
            source, 
            new String[] {
              "name", "ResultType"
-           });			
+           });					
+        addAnnotation
+          (getRecordByIdResponseTypeEClass, 
+           source, 
+           new String[] {
+             "name", "GetRecordsByIdType",
+             "kind", "elementOnly"
+           });		
+        addAnnotation
+          (getGetRecordByIdResponseType_AbstractRecordGroup(), 
+           source, 
+           new String[] {
+             "kind", "group",
+             "name", "AbstractRecord:group",
+             "namespace", "##targetNamespace"
+           });		
+        addAnnotation
+          (getGetRecordByIdResponseType_AbstractRecord(), 
+           source, 
+           new String[] {
+             "kind", "element",
+             "name", "AbstractRecord",
+             "namespace", "##targetNamespace",
+             "group", "AbstractRecord:group"
+           });		
+        addAnnotation
+          (getGetRecordByIdResponseType_Any(), 
+           source, 
+           new String[] {
+             "kind", "elementWildcard",
+             "wildcards", "##other",
+             "name", ":2",
+             "processing", "strict"
+           });
     }
 
 } //Csw20PackageImpl

@@ -7,8 +7,10 @@
 package net.opengis.cat.csw20;
 
 import java.lang.String;
+import java.util.List;
 
 import javax.xml.namespace.QName;
+import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
@@ -49,23 +51,10 @@ public interface DescribeRecordType extends RequestBaseType {
      * </p>
      * <!-- end-user-doc -->
      * @return the value of the '<em>Type Name</em>' attribute.
-     * @see #setTypeName(QName)
      * @see net.opengis.cat.csw20.Csw20Package#getDescribeRecordType_TypeName()
-     * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.QName"
-     *        extendedMetaData="kind='element' name='TypeName' namespace='##targetNamespace'"
-     * @generated
+     * @model 
      */
-    QName getTypeName();
-
-    /**
-     * Sets the value of the '{@link net.opengis.cat.csw20.DescribeRecordType#getTypeName <em>Type Name</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Type Name</em>' attribute.
-     * @see #getTypeName()
-     * @generated
-     */
-    void setTypeName(QName value);
+    EList<QName> getTypeName();
 
     /**
      * Returns the value of the '<em><b>Output Format</b></em>' attribute.

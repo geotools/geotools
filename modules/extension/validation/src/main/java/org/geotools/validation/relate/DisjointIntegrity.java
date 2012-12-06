@@ -152,8 +152,8 @@ public class DisjointIntegrity extends RelationIntegrity {
 			}
 		}
         finally	{
-            FeatureCollectionA.close( fr1 );
-            FeatureCollectionB.close( fr2 );            
+            fr1.close();
+            fr2.close();
 		}
 				
 		return success;
@@ -233,8 +233,8 @@ public class DisjointIntegrity extends RelationIntegrity {
 			}
 		}finally
 		{
-            collection.close( fr1 );
-            collection.close( fr2 );                        
+		    fr1.close();
+		    fr2.close();
 		}
 		
 		return success;

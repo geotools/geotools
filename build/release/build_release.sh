@@ -86,9 +86,7 @@ pushd ../../ > /dev/null
 # clear out any changes
 git reset --hard HEAD
 
-# checkout and update primary / release branches
-git checkout rel_$branch
-git pull origin rel_$branch
+# checkout and update primary branch
 git checkout $branch
 git pull origin $branch
 
@@ -127,12 +125,11 @@ popd > /dev/null
 # build the release
 if [ -z $SKIP_BUILD ]; then
   echo "building release"
-  mvn $MAVEN_FLAGS -Dall clean
-  mvn $MAVEN_FLAGS -DskipTests -P process clean install
+  mvn $MAVEN_FLAGS -DskipTests -Dall clean install
   mvn $MAVEN_FLAGS -DskipTests assembly:assembly
 fi
 
-# sanitize the bin artifact
+# sanitize the bin artifact 
 pushd target > /dev/null
 bin=geotools-$tag-bin.zip
 unzip $bin
@@ -145,6 +142,19 @@ zip -r $bin geotools-$tag
 rm -rf geotools-$tag
 popd > /dev/null
 
+# sanitize the src artifact 
+pushd target > /dev/null
+src=geotools-$tag-project.zip
+unzip $src
+cd geotools-$tag
+rm -rf .git
+cd ..
+rm $src
+zip -r $src geotools-$tag
+rm -rf geotools-$tag
+popd > /dev/null
+
+
 target=`pwd`/target
 
 # build the javadocs
@@ -152,14 +162,6 @@ pushd modules > /dev/null
 mvn javadoc:aggregate
 pushd target/site > /dev/null
 zip -r $target/geotools-$tag-doc.zip apidocs
-popd > /dev/null
-popd > /dev/null
-
-# build the user docs
-pushd docs > /dev/null
-mvn $MAVEN_FLAGS install
-pushd target/user > /dev/null
-zip -r $target/geotools-$tag-userguide.zip html
 popd > /dev/null
 popd > /dev/null
 

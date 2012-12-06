@@ -16,6 +16,7 @@
  */
 package org.geotools.jdbc;
 
+import java.lang.reflect.Method;
 import java.sql.Array;
 import java.sql.Blob;
 import java.sql.CallableStatement;
@@ -34,6 +35,11 @@ import java.sql.Struct;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.Executor;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.geotools.util.logging.Logging;
 
 /**
  * Calls the {@link ConnectionLifecycleListener#onBorrow(Connection)} method on construction and
@@ -44,6 +50,8 @@ import java.util.Properties;
  * @author Andrea Aime - GeoSolutions
  */
 class LifecycleConnection implements Connection {
+    
+    static final Logger LOGGER = Logging.getLogger(LifecycleConnection.class);
 
     Connection delegate;
     
@@ -278,6 +286,39 @@ class LifecycleConnection implements Connection {
         return delegate.createStruct(typeName, attributes);
     }
 
- 
+    public void setSchema(String schema) throws SQLException {
+        invokeMethodQuietly("setSchema", new Class[] {String.class}, new Object[] {schema}, null);
+    }
+
+    public String getSchema() throws SQLException {
+        return (String) invokeMethodQuietly("getSchema", null, null, null);
+    }
+
+    public void abort(Executor executor) throws SQLException {
+        invokeMethodQuietly("abort", new Class[] {Executor.class}, new Object[] {executor}, null);
+    }
+
+    public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException {
+        invokeMethodQuietly("setNetworkTimeout", new Class[] {Executor.class, int.class}, new Object[] {executor, milliseconds}, null);
+    }
+
+    public int getNetworkTimeout() throws SQLException {
+        return (Integer) invokeMethodQuietly("getNetworkTimeout", null, null, 0);
+    }
+
+    private Object invokeMethodQuietly(String methodName, Class[] paramTypes, Object[] params, Object defaultValue) {
+        try {
+            if(paramTypes == null) {
+                Method method = delegate.getClass().getDeclaredMethod(methodName);
+                return method.invoke(delegate);
+            } else {
+                Method method = delegate.getClass().getDeclaredMethod(methodName, paramTypes);
+                return method.invoke(delegate, params);
+            }
+        } catch (Exception e) {
+            LOGGER.log(Level.FINER, "Failed to invoke delegate method", e);
+            return defaultValue;
+        }
+    }
 
 }

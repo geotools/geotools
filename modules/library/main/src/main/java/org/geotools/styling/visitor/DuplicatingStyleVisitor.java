@@ -59,7 +59,6 @@ import org.geotools.styling.ShadedRelief;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyleFactoryImpl;
 import org.geotools.styling.StyleVisitor;
 import org.geotools.styling.StyledLayer;
 import org.geotools.styling.StyledLayerDescriptor;
@@ -72,6 +71,8 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.Description;
+
+import javax.swing.Icon;
 
 /**
  * Creates a deep copy of a Style, this class is *NOT THREAD SAFE*.
@@ -833,7 +834,13 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
             
         }
         String format = exgr.getFormat();
-        ExternalGraphic copy = sf.createExternalGraphic(uri, format);
+        Icon inlineContent = exgr.getInlineContent();
+        ExternalGraphic copy;
+        if (inlineContent != null) {
+            copy = sf.createExternalGraphic(inlineContent, format);
+        } else {
+            copy = sf.createExternalGraphic(uri, format);
+        }
         copy.setCustomProperties( copy(exgr.getCustomProperties()));
         
         if( STRICT && !copy.equals( exgr )){

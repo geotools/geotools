@@ -6,6 +6,8 @@
  */
 package net.opengis.cat.csw20;
 
+import java.util.Calendar;
+
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.eclipse.emf.ecore.EObject;
@@ -48,11 +50,9 @@ public interface RequestStatusType extends EObject {
      * @return the value of the '<em>Timestamp</em>' attribute.
      * @see #setTimestamp(XMLGregorianCalendar)
      * @see net.opengis.cat.csw20.Csw20Package#getRequestStatusType_Timestamp()
-     * @model dataType="org.eclipse.emf.ecore.xml.type.DateTime"
-     *        extendedMetaData="kind='attribute' name='timestamp'"
-     * @generated
+     * @model
      */
-    XMLGregorianCalendar getTimestamp();
+    Calendar getTimestamp();
 
     /**
      * Sets the value of the '{@link net.opengis.cat.csw20.RequestStatusType#getTimestamp <em>Timestamp</em>}' attribute.
@@ -62,6 +62,7 @@ public interface RequestStatusType extends EObject {
      * @see #getTimestamp()
      * @generated
      */
-    void setTimestamp(XMLGregorianCalendar value);
+    void setTimestamp(Calendar value);
 
+   
 } // RequestStatusType

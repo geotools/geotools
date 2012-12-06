@@ -371,7 +371,7 @@ public class WFS_1_0_0_ParsingTest extends TestCase {
             assertTrue(f.getAttribute("dateProperty") instanceof Date);
             assertEquals(BigDecimal.valueOf(5.03), f.getAttribute("decimalProperty"));
         } finally {
-            featureCollection.close(features);
+            features.close();
         }
     }
 

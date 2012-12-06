@@ -17,6 +17,16 @@ public class MetaBufferEstimatorTest {
     }
     
     @Test
+    public void testExternalGraphicRectangleResized() throws Exception {
+        Style style = RendererBaseTest.loadStyle(this, "externalGraphicRectImage.sld");
+        MetaBufferEstimator estimator = new MetaBufferEstimator();
+        style.accept(estimator);
+        assertTrue(estimator.isEstimateAccurate());
+        // 32x64 image to size 16x32 should give the max. of width/height
+        assertEquals(32, estimator.getBuffer());
+    }
+    
+    @Test
     public void testExternalGraphicNoSize() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "externalGraphicNoSize.sld");
         MetaBufferEstimator estimator = new MetaBufferEstimator();
@@ -77,6 +87,23 @@ public class MetaBufferEstimatorTest {
         style.accept(estimator);
         assertTrue(estimator.isEstimateAccurate());
         assertEquals(32, estimator.getBuffer());
+    }
+    
+    @Test
+    public void testDynamicSize() throws Exception {
+        Style style = RendererBaseTest.loadStyle(this, "externalGraphicDynamicSize.sld");
+        MetaBufferEstimator estimator = new MetaBufferEstimator();
+        style.accept(estimator);
+        assertFalse(estimator.isEstimateAccurate());
+    }
+    
+    @Test
+    public void testInlineContent() throws Exception {
+        Style style = RendererBaseTest.loadStyle(this, "base64.sld");
+        MetaBufferEstimator estimator = new MetaBufferEstimator();
+        style.accept(estimator);
+        assertTrue(estimator.isEstimateAccurate());
+        assertEquals(16, estimator.getBuffer());
     }
 
 }

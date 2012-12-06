@@ -23,7 +23,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 
@@ -33,7 +35,7 @@ import java.util.TimeZone;
  *
  * @author Simone Giannecchini, GeoSolutions SAS
  */
-class TimeParser {
+public class TimeParser {
     /**
      * All patterns that are correct regarding the ISO-8601 norm.
      */
@@ -80,6 +82,28 @@ class TimeParser {
         
         "yyyy"     
     };
+
+    private static final Map<Integer, List<String>> SPLITTED_PATTERNS;
+    static {
+        Map<Integer, List<String>> tmpPatterns = new HashMap<Integer, List<String>>();
+
+        for (String pattern : PATTERNS) {
+            int escapeCount = 0;
+            
+            for (char c : pattern.toCharArray()) {
+                if (c == '\'')
+                    escapeCount++;
+            }
+            int len = pattern.length() - escapeCount;
+            List<String> list = tmpPatterns.get(len);
+            if (list == null) {
+                list = new ArrayList<String>();
+                tmpPatterns.put(len, list);
+            }
+            list.add(pattern);
+        }
+        SPLITTED_PATTERNS = Collections.unmodifiableMap(tmpPatterns);
+    }
 
     /**
      * UTC timezone to serve as reference
@@ -132,11 +156,11 @@ class TimeParser {
         String[] period = value.split("/");
         // Only one date given.
         if (period.length == 1) {
-        	if(value.equals("current")) {
-        	        dates.add(Calendar.getInstance(UTC_TZ).getTime());
-        	} else {
-        	        dates.add(getDate(value));
-        	}
+                if(value.equals("current")) {
+                        dates.add(Calendar.getInstance(UTC_TZ).getTime());
+                } else {
+                        dates.add(getDate(value));
+                }
             return dates;
         }
         // Period like : yyyy-MM-ddTHH:mm:ssZ/yyyy-MM-ddTHH:mm:ssZ/P1D
@@ -168,10 +192,12 @@ class TimeParser {
      * @throws ParseException if the string can not be parsed.
      */
     private static Date getDate(final String value) throws ParseException {
-        for (int i=0; i<PATTERNS.length; i++) {
+        List<String> suitablePattern = SPLITTED_PATTERNS.get(value.length());
+        final int size=suitablePattern.size();
+        for (int i=0; i<size; i++) {
             // rebuild formats at each parse, date formats are not thread safe
-            SimpleDateFormat format = new SimpleDateFormat(PATTERNS[i]);
-            format.setLenient(true);
+            final SimpleDateFormat format = new SimpleDateFormat(suitablePattern.get(i));
+            format.setLenient(false);
             format.setTimeZone(TimeZone.getTimeZone("Zulu"));
 
             
@@ -180,7 +206,7 @@ class TimeParser {
              * no exception is thrown. So we have to ensure that the whole string is correct for
              * the format.
              */
-            ParsePosition pos = new ParsePosition(0);
+            final ParsePosition pos = new ParsePosition(0);
             Date time = format.parse(value, pos);
             if (pos.getIndex() == value.length()) {
                 return time;

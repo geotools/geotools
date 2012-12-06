@@ -54,7 +54,9 @@ public class TreeSetFeatureCollectionTest extends org.geotools.data.collection.F
     public TreeSetFeatureCollectionTest(String testName) {
         super(testName);
     }
-    protected SimpleFeatureCollection newCollection(SimpleFeatureType schema ) {
-        return new TreeSetFeatureCollection( null, null);
+    protected TreeSetFeatureCollection newCollection(SimpleFeatureType schema, List<SimpleFeature> list ) {
+        TreeSetFeatureCollection treeset = new TreeSetFeatureCollection( null, null);
+        treeset.addAll( list );
+        return treeset;
     }
 }

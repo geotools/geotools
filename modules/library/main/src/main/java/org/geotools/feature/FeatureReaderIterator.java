@@ -17,6 +17,7 @@
  */
 package org.geotools.feature;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -44,7 +45,7 @@ import org.opengis.feature.type.FeatureType;
  *
  * @source $URL$
  */
-public class FeatureReaderIterator<F extends Feature> implements Iterator<F> {
+public class FeatureReaderIterator<F extends Feature> implements Iterator<F>, Closeable {
 
     FeatureReader<? extends FeatureType, F> reader;
 

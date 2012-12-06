@@ -183,7 +183,7 @@ Creating a new project
    :menuselection:`Project --> Update All Maven Dependencies`.
     
    If it really cannot connect you can switch to edit the `geotools.version` property in your
-   pom.xml to |version|-SNAPSHOT (GeoTools development version) and then add a reference to the snapshot
+   pom.xml to |branch|-SNAPSHOT (GeoTools development version) and then add a reference to the snapshot
    repository as shown below:
     
    .. literalinclude:: artifacts/pom2.xml
@@ -297,7 +297,7 @@ Things to Try
 * Important: GeoTools is an active open source project - you can quickly use maven to try out the
   latest nightly build by changing your pom.xml file to use a "SNAPSHOT" release.
   
-  At the time of writing |version|-SNAPSHOT is under active development.
+  At the time of writing |branch|-SNAPSHOT is under active development.
 
   .. literalinclude:: artifacts/pom2.xml
    :language: xml

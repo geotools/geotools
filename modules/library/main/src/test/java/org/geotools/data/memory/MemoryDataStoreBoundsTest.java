@@ -17,11 +17,21 @@
 package org.geotools.data.memory;
 
 import org.geotools.data.DataTestCase;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultQuery;
 import org.geotools.data.Query;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.crs.DefaultEngineeringCRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * @author Frank Gasdorf, fgdrf@users.sourceforge.net
+ * @author Sebastian Graca, ISPiK S.A.
  *
  *
  *
@@ -42,6 +52,9 @@ public class MemoryDataStoreBoundsTest extends DataTestCase {
         super.setUp();
         data = new MemoryDataStore();
         data.addFeatures(roadFeatures);
+        
+        SimpleFeatureType riverTypeWithCrs = SimpleFeatureTypeBuilder.retype(riverType, DefaultGeographicCRS.WGS84);
+        data.addFeature(SimpleFeatureBuilder.retype(riverFeatures[0], riverTypeWithCrs));
     }
 
     /*
@@ -58,5 +71,47 @@ public class MemoryDataStoreBoundsTest extends DataTestCase {
         Query query = new DefaultQuery("road", rd2Filter);
         assertEquals(roadFeatures[1].getBounds(), data.getBounds(query));
     }
+    
+    public void testNoCrs() throws Exception {
+        Query query = new Query(roadType.getTypeName());
+        ReferencedEnvelope envelope = data.getBounds(query);
+        assertNull(envelope.getCoordinateReferenceSystem());
+    }
 
+    public void testSetsEnvelopeCrsFromQuery() throws Exception {
+        Query query = new Query(riverType.getTypeName());
+        query.setCoordinateSystem(DefaultEngineeringCRS.CARTESIAN_2D);
+        ReferencedEnvelope envelope = data.getBounds(query);
+        assertEquals(DefaultEngineeringCRS.CARTESIAN_2D, envelope.getCoordinateReferenceSystem());
+    }
+
+    public void testSetsEnvelopeCrsFromFeatureType() throws Exception {
+        Query query = new Query(riverType.getTypeName());
+        ReferencedEnvelope envelope = data.getBounds(query);
+        assertEquals(DefaultGeographicCRS.WGS84, envelope.getCoordinateReferenceSystem());
+    }
+
+    public void testGetBoundsSupportsFeaturesWithoutGeometry() throws Exception {
+        SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(data.getSchema("road"));
+        featureBuilder.init(roadFeatures[0]);
+        featureBuilder.set("geom", null);
+        SimpleFeature feature = featureBuilder.buildFeature("road.rd0");
+        data.addFeature(feature);
+
+        SimpleFeatureSource road = data.getFeatureSource("road");
+        assertEquals(roadBounds, road.getBounds(Query.ALL));
+    }
+
+    public void testGetBoundsSupportsEmptyBounds() throws Exception {
+        SimpleFeatureType type = DataUtilities.createType(getName() + ".test",
+                "id:0,geom:LineString,name:String");
+        SimpleFeature[] features = new SimpleFeature[3];
+        features[0] = SimpleFeatureBuilder.build(type, new Object[] {1, null, "r1"}, "test.f1");
+        features[1] = SimpleFeatureBuilder.build(type, new Object[] {2, null, "r2"}, "test.f2");
+        features[2] = SimpleFeatureBuilder.build(type, new Object[] {3, null, "r3"}, "test.f3");
+        data.addFeatures(features);
+
+        SimpleFeatureSource featureSource = data.getFeatureSource("test");
+        assertTrue(featureSource.getBounds(Query.ALL).isEmpty());
+    }
 }

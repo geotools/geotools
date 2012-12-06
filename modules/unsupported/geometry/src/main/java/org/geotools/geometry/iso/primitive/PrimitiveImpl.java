@@ -16,8 +16,9 @@
  */
 package org.geotools.geometry.iso.primitive;
 
+import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
+import java.util.HashSet;
 
 import org.geotools.geometry.iso.complex.ComplexImpl;
 import org.geotools.geometry.iso.root.GeometryImpl;
@@ -173,7 +174,7 @@ public abstract class PrimitiveImpl extends GeometryImpl implements Primitive {
 	 */
 	public void addContainingPrimitive(PrimitiveImpl newSubelement) {
 		if (this.containingPrimitive == null)
-			this.containingPrimitive = new TreeSet<Primitive>();
+			this.containingPrimitive = new HashSet<Primitive>();
 		this.containingPrimitive.add(newSubelement);
 	}
 
@@ -184,7 +185,7 @@ public abstract class PrimitiveImpl extends GeometryImpl implements Primitive {
 	 */
 	public void addContainedPrimitive(PrimitiveImpl newSuperelement) {
 		if (this.containedPrimitive == null)
-			this.containedPrimitive = new TreeSet<Primitive>();
+			this.containedPrimitive = new HashSet<Primitive>();
 		this.containedPrimitive.add(newSuperelement);
 	}
 
@@ -195,7 +196,7 @@ public abstract class PrimitiveImpl extends GeometryImpl implements Primitive {
 	 */
 	public void addComplex(ComplexImpl newComplex) {
 		if (this.complex == null)
-			this.complex = new TreeSet<Complex>();
+			this.complex = new HashSet<Complex>();
 		this.complex.add(newComplex);
 	}
 
@@ -230,7 +231,7 @@ public abstract class PrimitiveImpl extends GeometryImpl implements Primitive {
 	public Set<Complex> getMaximalComplex() {
 		if (this.complex == null)
 			return null;
-		TreeSet<Complex> result = new TreeSet<Complex>();
+		HashSet<Complex> result = new HashSet<Complex>();
 		for (Complex c : this.complex) {
 			result.addAll(c.getMaximalComplex());
 		}

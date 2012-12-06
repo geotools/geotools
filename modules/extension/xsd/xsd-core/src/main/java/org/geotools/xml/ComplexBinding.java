@@ -43,26 +43,21 @@ import javax.xml.namespace.QName;
  */
 public interface ComplexBinding extends Binding {
     /**
-     * Initializes the context to be used while parsing child elements of the
-     * complex type.
+     * Callback for the binding to initialize itself.
      *
      * <p>
      * This method is called when the leading edge of the associated element is
-     * reached. It is used to create context in which child elements will be
-     * parsed in. The context is in the form of a pico container. For types that
-     * do not need to create context for children this method should do nothing.
+     * reached, before any children have been processed.
      * </p>
      *
      * @param instance The element being parsed.
      * @param node The node in the parse tree representing the element being
      * parsed. It is important to note that at the time this method is called
      * the node contains no child element nodes, only child attribute nodes.
-     * @param context The container to be used as context for child strategies.
+     * @param context The container to be used as context for child binding.
      *
      */
-
-    //    void initialize(ElementInstance instance, Node node,
-    //        MutablePicoContainer context);
+    void initialize(ElementInstance instance, Node node, MutablePicoContainer context);
 
     /**
      * Initializes the context for a child element.

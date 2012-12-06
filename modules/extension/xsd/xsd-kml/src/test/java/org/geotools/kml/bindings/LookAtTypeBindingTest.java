@@ -16,10 +16,12 @@
  */
 package org.geotools.kml.bindings;
 
-import com.vividsolutions.jts.geom.Coordinate;
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
 import org.geotools.xml.Binding;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Point;
 
 
 /**
@@ -28,8 +30,9 @@ import org.geotools.xml.Binding;
  * @source $URL$
  */
 public class LookAtTypeBindingTest extends KMLTestSupport {
+
     public void testType() {
-        assertEquals(Coordinate.class, binding(KML.LookAtType).getType());
+        assertEquals(Point.class, binding(KML.LookAtType).getType());
     }
 
     public void testExecutionMode() {
@@ -41,14 +44,16 @@ public class LookAtTypeBindingTest extends KMLTestSupport {
             + "<altitude>3</altitude>" + "</LookAt>";
         buildDocument(xml);
 
-        Coordinate c = (Coordinate) parse();
+        Point p = (Point) parse();
+        Coordinate c = p.getCoordinate();
         assertEquals(1d, c.y, 0.1);
         assertEquals(2d, c.x, 0.1);
         assertEquals(3d, c.z, 0.1);
 
         xml = "<LookAt/>";
         buildDocument(xml);
-        c = (Coordinate) parse();
+        p = (Point) parse();
+        c = p.getCoordinate();
         assertEquals(0d, c.y, 0.1);
         assertEquals(0d, c.x, 0.1);
         assertEquals(0d, c.z, 0.1);

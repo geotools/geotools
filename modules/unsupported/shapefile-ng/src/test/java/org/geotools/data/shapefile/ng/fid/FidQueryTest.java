@@ -30,6 +30,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.opengis.feature.simple.SimpleFeature;
@@ -108,7 +109,7 @@ public class FidQueryTest extends FIDTestCase {
         build.add(new Long(0));
         build.add("Hey");
         SimpleFeature newFeature = build.buildFeature(null);
-        SimpleFeatureCollection collection = FeatureCollections.newCollection();
+        DefaultFeatureCollection collection = new DefaultFeatureCollection();
         collection.add(newFeature);
 
         List<FeatureId> newFids = featureStore.addFeatures(collection);
@@ -182,8 +183,9 @@ public class FidQueryTest extends FIDTestCase {
         try {
             assertFalse(features.hasNext());
         } finally {
-            if (features != null)
+            if (features != null) {
                 features.close();
+            }
         }
 
         this.assertFidsMatch();
@@ -203,15 +205,17 @@ public class FidQueryTest extends FIDTestCase {
             FeatureId id = fac.featureId(fid);
             Filter filter = fac.id(Collections.singleton(id));
             query.setFilter(filter);
-            SimpleFeatureIterator features = featureStore.getFeatures(query).features();
+            SimpleFeatureIterator features = null;
             try {
+            	features = featureStore.getFeatures(query).features();
                 assertTrue("Missing feature for fid " + fid, features.hasNext());
                 SimpleFeature feature = features.next();
                 assertFalse("More than one feature with fid " + fid, features.hasNext());
                 assertEquals(i + "th feature", entry.getValue(), feature);
             } finally {
-                if (features != null)
+                if (features != null) {
                     features.close();
+                }
             }
 
         }

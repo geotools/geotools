@@ -23,6 +23,7 @@ package org.geotools.process.gs;
  * @author Andrea Aime - OpenGeo
  *
  * @source $URL$
+ * @deprecated Not longer needed.
  */
 public interface GSProcess {
 

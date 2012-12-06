@@ -45,6 +45,8 @@ public class SimpleHttpClient implements HTTPClient {
 
     private int readTimeout = DEFAULT_TIMEOUT;
 
+    private boolean tryGzip = true;
+
     @Override
     public String getUser() {
         return user;
@@ -133,12 +135,18 @@ public class SimpleHttpClient implements HTTPClient {
         return new SimpleHTTPResponse(connection);
     }
 
-    private URLConnection openConnection(URL finalURL) throws IOException {
-        URLConnection connection = finalURL.openConnection();
-        connection.addRequestProperty("Accept-Encoding", "gzip");
+    private HttpURLConnection openConnection(URL finalURL) throws IOException {
+        HttpURLConnection connection = (HttpURLConnection) finalURL.openConnection();
+        if(tryGzip){
+            connection.addRequestProperty("Accept-Encoding", "gzip");
+        }
         // mind, connect timeout is in seconds
-        connection.setConnectTimeout(1000 * getConnectTimeout());
-        connection.setReadTimeout(1000 * getReadTimeout());
+        if (getConnectTimeout() > 0) {
+            connection.setConnectTimeout(1000 * getConnectTimeout());
+        }
+        if (getReadTimeout() > 0) {
+            connection.setReadTimeout(1000 * getReadTimeout());
+        }
 
         final String username = getUser();
         final String password = getPassword();
@@ -209,5 +217,44 @@ public class SimpleHttpClient implements HTTPClient {
         public InputStream getResponseStream() throws IOException {
             return responseStream;
         }
+
+        /**
+         * @see org.geotools.data.ows.HTTPResponse#getResponseCharset()
+         */
+        @Override
+        public String getResponseCharset() {
+            String contentType = getContentType();
+            if (null == contentType) {
+                return null;
+            }
+            String[] split = contentType.split(";");
+
+            for (int i = 1; i < split.length; i++) {
+                String[] mimeParam = split[i].split("=");
+                if (mimeParam.length == 2 && "charset".equalsIgnoreCase(mimeParam[0])) {
+                    String charset = mimeParam[1];
+                    return charset.trim();
+                }
+            }
+            return null;
+        }
+    }
+
+    /**
+     * @param tryGZIP
+     * @see org.geotools.data.ows.HTTPClient#setTryGzip(boolean)
+     */
+    @Override
+    public void setTryGzip(boolean tryGZIP) {
+        this.tryGzip = tryGZIP;
+    }
+
+    /**
+     * @return
+     * @see org.geotools.data.ows.HTTPClient#isTryGzip()
+     */
+    @Override
+    public boolean isTryGzip() {
+        return tryGzip;
     }
 }

@@ -184,4 +184,23 @@ public class SimpleFeatureBuilderTest extends TestCase {
 	    }
 	    
     }
+
+    public void testUserData() throws Exception {
+        GeometryFactory gf = new GeometryFactory();
+        builder.add( gf.createPoint( new Coordinate( 0, 0 ) ) );
+        builder.add( new Integer( 1 ) );
+        builder.add( new Float( 2.0 ) );
+        builder.featureUserData("foo", "bar");
+        
+        SimpleFeature feature = builder.buildFeature( "fid" );
+        assertNotNull( feature );
+        assertEquals("bar", feature.getUserData().get("foo"));
+
+        builder = new SimpleFeatureBuilder(feature.getFeatureType());
+        builder.init(feature);
+        feature = builder.buildFeature( "fid" );
+        assertNotNull( feature );
+        assertEquals("bar", feature.getUserData().get("foo"));
+    }
+	
 }

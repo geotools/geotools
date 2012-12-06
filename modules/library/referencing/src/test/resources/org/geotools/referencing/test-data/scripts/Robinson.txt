@@ -49,3 +49,26 @@ target pt = (2720933.27, 3208557.61)
 
 source pt = (-180, 90)
 target pt = (-9050503.94, 8625154.47)
+
+source pt = (-180, 0)
+target pt = (-17005833.33, 0.00)
+
+source crs = _robinson_
+target crs = _WGS84_
+
+test tolerance = (0.0001, 0.0001)
+
+source pt = (0, 0)
+target pt = (0, 0)
+
+source pt = (-1000000, 1000000)
+target pt = (-10.627948, 9.349973)
+
+source pt = (2720933.27, 3208557.61)
+target pt = (30, 30)
+
+source pt = (-9050503.94, 8625154.47)
+target pt = (-180, 90)
+
+source pt = (-17005833.33, 0.00)
+target pt = (-180, 0)

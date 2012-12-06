@@ -5,10 +5,10 @@ Using Maven
 
 .. toctree::
    :maxdepth: 1
-   
+
    build
-   testing
    tips
+   testing
    snapshots
    javadocs
    eclipse
@@ -30,7 +30,7 @@ Use of Notepad
 The windows implementation of notepad messes up **pom.xml** byte order - causing trouble for mac developers working on our project. Please consider using a notepad replacement such as notepad2.
 
 Trouble looks like::
-   
+
    Reason: Parse error
    reading POM. Reason: only whitespace content allowed before start tag
    and not \ud4 (position: START_DOCUMENT seen \ud4... @1:1)

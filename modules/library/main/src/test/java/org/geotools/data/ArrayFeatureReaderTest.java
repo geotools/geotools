@@ -23,7 +23,7 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.feature.FeatureCollections;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.opengis.feature.simple.SimpleFeature;
@@ -56,12 +56,12 @@ public class ArrayFeatureReaderTest extends TestCase {
             SimpleFeatureBuilder.build( type, new Object[] { null }, "f6" )
         };
 
-        SimpleFeatureCollection collection = FeatureCollections.newCollection();
-        List list = Arrays.asList(features);
+        DefaultFeatureCollection collection = new DefaultFeatureCollection();
+        List<SimpleFeature> list = Arrays.asList(features);
         collection.addAll(list);
         arrayReader = new CollectionFeatureReader(features);
         collectionReader = new CollectionFeatureReader(list, type);
-        featureCollectionReader = new CollectionFeatureReader(collection, type);
+        featureCollectionReader = new CollectionFeatureReader((SimpleFeatureCollection)collection, type);
     }
 
     /**

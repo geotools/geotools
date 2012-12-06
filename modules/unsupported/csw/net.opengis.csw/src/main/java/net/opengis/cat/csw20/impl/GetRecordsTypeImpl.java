@@ -98,7 +98,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * @generated
      * @ordered
      */
-    protected static final BigInteger MAX_RECORDS_EDEFAULT = new BigInteger("10");
+    protected static final Integer MAX_RECORDS_EDEFAULT = new Integer(10);
 
     /**
      * The cached value of the '{@link #getMaxRecords() <em>Max Records</em>}' attribute.
@@ -108,16 +108,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * @generated
      * @ordered
      */
-    protected BigInteger maxRecords = MAX_RECORDS_EDEFAULT;
-
-    /**
-     * This is true if the Max Records attribute has been set.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    protected boolean maxRecordsESet;
+    protected Integer maxRecords = MAX_RECORDS_EDEFAULT;
 
     /**
      * The default value of the '{@link #getOutputFormat() <em>Output Format</em>}' attribute.
@@ -225,7 +216,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * @generated
      * @ordered
      */
-    protected static final BigInteger START_POSITION_EDEFAULT = new BigInteger("1");
+    protected static final Integer START_POSITION_EDEFAULT = new Integer(1);
 
     /**
      * The cached value of the '{@link #getStartPosition() <em>Start Position</em>}' attribute.
@@ -235,16 +226,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * @generated
      * @ordered
      */
-    protected BigInteger startPosition = START_POSITION_EDEFAULT;
-
-    /**
-     * This is true if the Start Position attribute has been set.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    protected boolean startPositionESet;
+    protected Integer startPosition = START_POSITION_EDEFAULT;
 
     /**
      * The default value of the '{@link #getQuery() <em>Query</em>}' attribute.
@@ -366,7 +348,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
-    public BigInteger getMaxRecords() {
+    public Integer getMaxRecords() {
         return maxRecords;
     }
 
@@ -375,36 +357,11 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setMaxRecords(BigInteger newMaxRecords) {
-        BigInteger oldMaxRecords = maxRecords;
+    public void setMaxRecords(Integer newMaxRecords) {
+        Integer oldMaxRecords = maxRecords;
         maxRecords = newMaxRecords;
-        boolean oldMaxRecordsESet = maxRecordsESet;
-        maxRecordsESet = true;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Csw20Package.GET_RECORDS_TYPE__MAX_RECORDS, oldMaxRecords, maxRecords, !oldMaxRecordsESet));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void unsetMaxRecords() {
-        BigInteger oldMaxRecords = maxRecords;
-        boolean oldMaxRecordsESet = maxRecordsESet;
-        maxRecords = MAX_RECORDS_EDEFAULT;
-        maxRecordsESet = false;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.UNSET, Csw20Package.GET_RECORDS_TYPE__MAX_RECORDS, oldMaxRecords, MAX_RECORDS_EDEFAULT, oldMaxRecordsESet));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public boolean isSetMaxRecords() {
-        return maxRecordsESet;
+            eNotify(new ENotificationImpl(this, Notification.SET, Csw20Package.GET_RECORDS_TYPE__MAX_RECORDS, oldMaxRecords, maxRecords));
     }
 
     /**
@@ -546,7 +503,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
-    public BigInteger getStartPosition() {
+    public Integer getStartPosition() {
         return startPosition;
     }
 
@@ -555,36 +512,11 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setStartPosition(BigInteger newStartPosition) {
-        BigInteger oldStartPosition = startPosition;
+    public void setStartPosition(Integer newStartPosition) {
+        Integer oldStartPosition = startPosition;
         startPosition = newStartPosition;
-        boolean oldStartPositionESet = startPositionESet;
-        startPositionESet = true;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Csw20Package.GET_RECORDS_TYPE__START_POSITION, oldStartPosition, startPosition, !oldStartPositionESet));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void unsetStartPosition() {
-        BigInteger oldStartPosition = startPosition;
-        boolean oldStartPositionESet = startPositionESet;
-        startPosition = START_POSITION_EDEFAULT;
-        startPositionESet = false;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.UNSET, Csw20Package.GET_RECORDS_TYPE__START_POSITION, oldStartPosition, START_POSITION_EDEFAULT, oldStartPositionESet));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public boolean isSetStartPosition() {
-        return startPositionESet;
+            eNotify(new ENotificationImpl(this, Notification.SET, Csw20Package.GET_RECORDS_TYPE__START_POSITION, oldStartPosition, startPosition));
     }
 
     /**
@@ -675,7 +607,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
                 ((FeatureMap.Internal)getAny()).set(newValue);
                 return;
             case Csw20Package.GET_RECORDS_TYPE__MAX_RECORDS:
-                setMaxRecords((BigInteger)newValue);
+                setMaxRecords((Integer)newValue);
                 return;
             case Csw20Package.GET_RECORDS_TYPE__OUTPUT_FORMAT:
                 setOutputFormat((String)newValue);
@@ -690,7 +622,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
                 setResultType((ResultType)newValue);
                 return;
             case Csw20Package.GET_RECORDS_TYPE__START_POSITION:
-                setStartPosition((BigInteger)newValue);
+                setStartPosition((Integer)newValue);
                 return;
             case Csw20Package.GET_RECORDS_TYPE__QUERY:
                 setQuery(newValue);
@@ -717,7 +649,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
                 getAny().clear();
                 return;
             case Csw20Package.GET_RECORDS_TYPE__MAX_RECORDS:
-                unsetMaxRecords();
+                setMaxRecords(MAX_RECORDS_EDEFAULT);
                 return;
             case Csw20Package.GET_RECORDS_TYPE__OUTPUT_FORMAT:
                 unsetOutputFormat();
@@ -732,7 +664,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
                 unsetResultType();
                 return;
             case Csw20Package.GET_RECORDS_TYPE__START_POSITION:
-                unsetStartPosition();
+                setStartPosition(START_POSITION_EDEFAULT);
                 return;
             case Csw20Package.GET_RECORDS_TYPE__QUERY:
                 setQuery(QUERY_EDEFAULT);
@@ -756,7 +688,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
             case Csw20Package.GET_RECORDS_TYPE__ANY:
                 return any != null && !any.isEmpty();
             case Csw20Package.GET_RECORDS_TYPE__MAX_RECORDS:
-                return isSetMaxRecords();
+                return MAX_RECORDS_EDEFAULT == null ? maxRecords != null : !MAX_RECORDS_EDEFAULT.equals(maxRecords);
             case Csw20Package.GET_RECORDS_TYPE__OUTPUT_FORMAT:
                 return isSetOutputFormat();
             case Csw20Package.GET_RECORDS_TYPE__OUTPUT_SCHEMA:
@@ -766,7 +698,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
             case Csw20Package.GET_RECORDS_TYPE__RESULT_TYPE:
                 return isSetResultType();
             case Csw20Package.GET_RECORDS_TYPE__START_POSITION:
-                return isSetStartPosition();
+                return START_POSITION_EDEFAULT == null ? startPosition != null : !START_POSITION_EDEFAULT.equals(startPosition);
             case Csw20Package.GET_RECORDS_TYPE__QUERY:
                 return QUERY_EDEFAULT == null ? query != null : !QUERY_EDEFAULT.equals(query);
         }
@@ -788,7 +720,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
         result.append(", any: ");
         result.append(any);
         result.append(", maxRecords: ");
-        if (maxRecordsESet) result.append(maxRecords); else result.append("<unset>");
+        result.append(maxRecords);
         result.append(", outputFormat: ");
         if (outputFormatESet) result.append(outputFormat); else result.append("<unset>");
         result.append(", outputSchema: ");
@@ -798,7 +730,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
         result.append(", resultType: ");
         if (resultTypeESet) result.append(resultType); else result.append("<unset>");
         result.append(", startPosition: ");
-        if (startPositionESet) result.append(startPosition); else result.append("<unset>");
+        result.append(startPosition);
         result.append(", query: ");
         result.append(query);
         result.append(')');

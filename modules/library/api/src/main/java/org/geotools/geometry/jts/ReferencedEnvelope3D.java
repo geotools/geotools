@@ -19,6 +19,8 @@ package org.geotools.geometry.jts;
 import org.geotools.geometry.DirectPosition3D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.BoundingBox3D;
 import org.opengis.geometry.DirectPosition;
@@ -345,7 +347,13 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
 			}
 		}
 	}
-
+	@Override
+        public void expandToInclude(DirectPosition pt ){
+            double x = pt.getOrdinate(0);
+            double y = pt.getOrdinate(1);
+            double z = pt.getDimension()>=3 ? pt.getOrdinate(2) : Double.NaN;
+            expandToInclude(x,y,z);
+        }
 	/**
 	 * Translates this envelope by given amounts in the X and Y direction.
 	 * 
@@ -714,6 +722,22 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
     }
 
     /**
+     * Creates a new envelope from an existing JTS envelope.
+     *
+     * @param envelope The envelope to initialize from.
+     * @param crs The coordinate reference system.
+     * @throws MismatchedDimensionExceptionif the CRS dimension is not valid.
+     */
+    public ReferencedEnvelope3D(final Envelope envelope, final CoordinateReferenceSystem crs)
+        throws MismatchedDimensionException {
+        super(envelope, crs );
+        if( envelope instanceof ReferencedEnvelope3D ){
+            this.minz = ((ReferencedEnvelope3D)envelope).getMinZ();
+            this.maxz = ((ReferencedEnvelope3D)envelope).getMaxZ();
+        }
+    }
+    
+    /**
      * Creates a new envelope from an existing OGC envelope.
      *
      * @param envelope The envelope to initialize from.
@@ -994,7 +1018,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
      * method.
      *
      */
-    public BoundingBox3D toBounds(final CoordinateReferenceSystem targetCRS)
+    public BoundingBox toBounds(final CoordinateReferenceSystem targetCRS)
         throws TransformException {
         try {
             return transform(targetCRS, true);
@@ -1019,7 +1043,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
      *
      * @see CRS#transform(CoordinateOperation, org.opengis.geometry.Envelope)
      */
-    public ReferencedEnvelope3D transform(CoordinateReferenceSystem targetCRS, boolean lenient)
+    public ReferencedEnvelope transform(CoordinateReferenceSystem targetCRS, boolean lenient)
         throws TransformException, FactoryException {
         return transform(targetCRS, lenient, 5);
     }
@@ -1043,7 +1067,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
      * @see CRS#transform(CoordinateOperation, org.opengis.geometry.Envelope)
      *
      */
-    public ReferencedEnvelope3D transform(final CoordinateReferenceSystem targetCRS,
+    public ReferencedEnvelope transform(final CoordinateReferenceSystem targetCRS,
         final boolean lenient, final int numPointsForTransformation)
         throws TransformException, FactoryException {
     	//TODO: implement 3D behaviour for this method
@@ -1060,7 +1084,16 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
                 throw new NullPointerException("Unable to transform referenced envelope, crs has not yet been provided.");
             }
         }
-
+        if( getDimension() != targetCRS.getCoordinateSystem().getDimension()){
+            if( lenient ){
+                return JTS.transformTo2D(this, targetCRS, lenient, numPointsForTransformation );
+            }
+            else {
+                throw new MismatchedDimensionException(Errors.format(
+                        ErrorKeys.MISMATCHED_DIMENSION_$3, crs.getName().getCode(),
+                        new Integer(getDimension()), new Integer(targetCRS.getCoordinateSystem().getDimension())));
+            }
+        }
         // Gets a first estimation using an algorithm capable to take singularity in account
         // (North pole, South pole, 180ï¿½ longitude). We will expand this initial box later.
         

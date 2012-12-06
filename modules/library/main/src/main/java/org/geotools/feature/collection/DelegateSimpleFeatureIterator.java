@@ -40,6 +40,16 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @source $URL$
  */
 public class DelegateSimpleFeatureIterator extends DelegateFeatureIterator<SimpleFeature> implements SimpleFeatureIterator {
+
+	/**
+	 * Wrap the provided iterator up as a FeatureIterator.
+	 * 
+	 * @param iterator Iterator to be used as a delegate.
+	 */
+	public DelegateSimpleFeatureIterator( Iterator<SimpleFeature> iterator ){
+		super( iterator );
+	}
+	
 	/**
 	 * Wrap the provided iterator up as a FeatureIterator.
 	 * 

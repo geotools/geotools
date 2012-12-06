@@ -22,6 +22,11 @@ import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LinearRing;
+
 
 /**
  * Binding object for the type http://earth.google.com/kml/2.1:RegionType.
@@ -51,6 +56,9 @@ import org.geotools.xml.Node;
  * @source $URL$
  */
 public class RegionTypeBinding extends AbstractComplexBinding {
+
+    private final GeometryFactory geometryFactory;
+
     /**
      * @generated
      */
@@ -65,7 +73,11 @@ public class RegionTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Class getType() {
-        return null;
+        return LinearRing.class;
+    }
+
+    public RegionTypeBinding(GeometryFactory geometryFactory) {
+        this.geometryFactory = geometryFactory;
     }
 
     /**
@@ -76,7 +88,17 @@ public class RegionTypeBinding extends AbstractComplexBinding {
      */
     public Object parse(ElementInstance instance, Node node, Object value)
         throws Exception {
-        //TODO: implement
-        return null;
+        Object latLonChildElement = node.getChildValue("LatLonAltBox");
+        if (latLonChildElement == null) {
+            return null;
+        }
+        Envelope e = (Envelope) latLonChildElement;
+        Coordinate bottomLeft = new Coordinate(e.getMinX(), e.getMinY());
+        Coordinate topLeft = new Coordinate(e.getMinX(), e.getMaxY());
+        Coordinate topRight = new Coordinate(e.getMaxX(), e.getMaxY());
+        Coordinate bottomRight = new Coordinate(e.getMaxX(), e.getMinY());
+        Coordinate[] cs = new Coordinate[] { bottomLeft, topLeft, topRight, bottomRight, bottomLeft };
+        LinearRing linearRing = geometryFactory.createLinearRing(cs);
+        return linearRing;
     }
 }

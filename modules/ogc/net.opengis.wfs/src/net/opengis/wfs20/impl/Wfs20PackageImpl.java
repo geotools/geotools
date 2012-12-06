@@ -9,6 +9,7 @@ package net.opengis.wfs20.impl;
 import java.math.BigInteger;
 
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 
 import java.util.Map;
@@ -757,6 +758,13 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
      * @generated
      */
     private EDataType featureIdEDataType = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EDataType collectionEDataType = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with
@@ -3916,6 +3924,15 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EDataType getCollection() {
+        return collectionEDataType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public Wfs20Factory getWfs20Factory() {
         return (Wfs20Factory)getEFactoryInstance();
     }
@@ -4346,6 +4363,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
         featureCollectionEDataType = createEDataType(FEATURE_COLLECTION);
         propertyNameEDataType = createEDataType(PROPERTY_NAME);
         featureIdEDataType = createEDataType(FEATURE_ID);
+        collectionEDataType = createEDataType(COLLECTION);
     }
 
     /**
@@ -4751,7 +4769,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
         initEAttribute(getUpdateType_TypeName(), theXMLTypePackage.getQName(), "typeName", null, 1, 1, UpdateType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(valueCollectionTypeEClass, ValueCollectionType.class, "ValueCollectionType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getValueCollectionType_Member(), this.getFeatureCollection(), "member", null, 0, -1, ValueCollectionType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getValueCollectionType_Member(), this.getCollection(), "member", null, 0, -1, ValueCollectionType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getValueCollectionType_AdditionalValues(), this.getAdditionalValuesType(), null, "additionalValues", null, 0, 1, ValueCollectionType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getValueCollectionType_TruncatedResponse(), this.getTruncatedResponseType(), null, "truncatedResponse", null, 0, 1, ValueCollectionType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getValueCollectionType_Next(), theXMLTypePackage.getAnyURI(), "next", null, 0, 1, ValueCollectionType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -4838,6 +4856,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
         initEDataType(featureCollectionEDataType, FeatureCollection.class, "FeatureCollection", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(propertyNameEDataType, PropertyName.class, "PropertyName", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
         initEDataType(featureIdEDataType, FeatureId.class, "FeatureId", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(collectionEDataType, Collection.class, "Collection", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
         // Create resource
         createResource(eNS_URI);

@@ -16,17 +16,17 @@
  */
 package org.geotools.ows.bindings;
 
-import java.math.BigInteger;
 import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import net.opengis.ows11.BoundingBoxType;
-import net.opengis.ows11.Ows11Factory;
+import net.opengis.ows10.Ows10Factory;
 
 import org.eclipse.emf.ecore.EFactory;
+import org.eclipse.emf.ecore.EObject;
 import org.geotools.ows.OWS;
-import org.geotools.xml.AbstractComplexEMFBinding;
+import org.geotools.xml.ComplexEMFBinding;
+import org.geotools.xml.EMFUtils;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
@@ -78,7 +78,15 @@ import org.geotools.xml.Node;
  *
  * @source $URL$
  */
-public class BoundingBoxTypeBinding extends AbstractComplexEMFBinding {
+public class BoundingBoxTypeBinding extends ComplexEMFBinding {
+
+    public BoundingBoxTypeBinding() {
+        this(Ows10Factory.eINSTANCE, OWS.BoundingBoxType);
+    }
+
+    public BoundingBoxTypeBinding(EFactory owsFactory, QName target) {
+        super(owsFactory, target);
+    }
 
     /**
      * @generated
@@ -93,26 +101,18 @@ public class BoundingBoxTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
-    public Class getType() {
-        return BoundingBoxType.class;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @generated modifiable
-     */
     public Object parse(ElementInstance instance, Node node, Object value)
         throws Exception {
-        BoundingBoxType bbox = Ows11Factory.eINSTANCE.createBoundingBoxType();
-        bbox.setLowerCorner((List) node.getChildValue("LowerCorner"));
-        bbox.setUpperCorner((List) node.getChildValue("UpperCorner"));
+
+        //BoundingBoxType bbox = Ows11Factory.eINSTANCE.createBoundingBoxType();
+        EObject bbox = createEObject(value);
+        EMFUtils.set(bbox, "lowerCorner", node.getChildValue("LowerCorner"));
+        EMFUtils.set(bbox, "upperCorner", node.getChildValue("UpperCorner"));
         if(node.getAttributeValue("crs") != null) {
-            bbox.setCrs(node.getAttributeValue("crs").toString());
+            EMFUtils.set(bbox, "crs", node.getAttributeValue("crs").toString());
         }
         if(node.getAttributeValue("dimensions") != null) {
-            bbox.setDimensions((BigInteger) node.getAttributeValue("dimensions"));
+            EMFUtils.set(bbox, "dimensions", node.getAttributeValue("dimensions"));
         }
         
         return bbox;

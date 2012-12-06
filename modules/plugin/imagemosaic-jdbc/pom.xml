@@ -145,7 +145,6 @@
     <dependency>
       <groupId>postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <!-- The version number is specified in the parent POM. -->
       <scope>test</scope>      
     </dependency>
     

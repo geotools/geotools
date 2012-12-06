@@ -81,4 +81,11 @@ public class ComplexEMFBinding extends AbstractComplexEMFBinding
         return target;
     }
 
+    @Override
+    public String toString() {
+        return "ComplexEMFBinding [target=" + target + ", factory=" + factory + ", type=" + type
+                + "]";
+    }
+
+    
 }

@@ -27,23 +27,20 @@ import org.geotools.data.FeatureReader;
 import org.geotools.data.collection.DelegateFeatureReader;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.data.store.FilteringIterator;
+import org.geotools.data.store.FilteringFeatureIterator;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.sort.SortBy;
 
 /**
  * Decorates a feature collection with one that filters content.
  * 
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
- *
- *
  * @source $URL$
  */
 public class FilteringSimpleFeatureCollection extends DecoratingSimpleFeatureCollection  {
@@ -68,24 +65,18 @@ public class FilteringSimpleFeatureCollection extends DecoratingSimpleFeatureCol
 	}
 	
 	public SimpleFeatureIterator features() {
-		return new DelegateSimpleFeatureIterator( this, iterator() );
+	    return new FilteringSimpleFeatureIterator( delegate.features(), filter );
 	}
 
 	public void close(SimpleFeatureIterator close) {
 		close.close();
 	}
 
-	public Iterator<SimpleFeature> iterator() {
-		return new FilteringIterator<SimpleFeature>( delegate.iterator(), filter );
-	}
-	
-	public void close(Iterator<SimpleFeature> close) {
-		FilteringIterator<SimpleFeature> filtering = (FilteringIterator<SimpleFeature>) close;
-		delegate.close( filtering.getDelegate() );
-	}
-
 	public SimpleFeatureCollection subCollection(Filter filter) {
-		throw new UnsupportedOperationException();
+	    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+	    Filter subFilter = ff.and( this.filter, filter );
+	    
+	    return new FilteringSimpleFeatureCollection( delegate, subFilter );
 	}
 
 	public SimpleFeatureCollection sort(SortBy order) {
@@ -94,7 +85,7 @@ public class FilteringSimpleFeatureCollection extends DecoratingSimpleFeatureCol
 
 	public int size() {
 		int count = 0;
-		Iterator<SimpleFeature> i = iterator();
+		SimpleFeatureIterator i = features();
 		try {
 			while( i.hasNext() ) {
 				count++; i.next();
@@ -103,7 +94,7 @@ public class FilteringSimpleFeatureCollection extends DecoratingSimpleFeatureCol
 			return count;
 		}
 		finally {
-			close( i );
+		    i.close();
 		}
 	}
 
@@ -115,9 +106,9 @@ public class FilteringSimpleFeatureCollection extends DecoratingSimpleFeatureCol
 		return toArray( new Object[ size() ] );
 	}
 
-	public Object[] toArray(Object[] a) {
-		List list = new ArrayList();
-		Iterator i = iterator();
+	public <T> T[] toArray(T[] a) {
+		List<SimpleFeature> list = new ArrayList<SimpleFeature>();
+		SimpleFeatureIterator i = features();
 		try {
 			while( i.hasNext() ) {
 				list.add( i.next() );
@@ -126,34 +117,16 @@ public class FilteringSimpleFeatureCollection extends DecoratingSimpleFeatureCol
 			return list.toArray( a );
 		}
 		finally {
-			close( i );
+			i.close();
 		}
-	}
-	
-	public boolean add(SimpleFeature o) {
-		if ( !filter.evaluate( o ) ) {
-			return false;
-		}
-		
-		return delegate.add( o );
 	}
 
 	public boolean contains(Object o) {
 		return delegate.contains( o ) && filter.evaluate( o );
 	}
 
-	public boolean addAll(Collection c) {
-		boolean changed = false;
-		
-		for ( Iterator<SimpleFeature> i = c.iterator(); i.hasNext(); ) {
-			changed = changed | add( i.next() );
-		}
-		
-		return changed;
-	}
-
-	public boolean containsAll(Collection c) {
-		for ( Iterator i = c.iterator(); i.hasNext(); ) {
+	public boolean containsAll(Collection<?> c) {
+		for ( Iterator<?> i = c.iterator(); i.hasNext(); ) {
 			if ( !contains( i.next() ) ) {
 				return false;
 			}

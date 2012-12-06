@@ -156,9 +156,6 @@
      </profile>
      <profile>
        <id>geogit-versioned</id>
-       <activation>
-         <property><name>all</name></property>
-       </activation>
        <modules>
          <module>geogit-versioned</module>
        </modules>
@@ -197,7 +194,6 @@
          <module>csv</module>
          <module>epsg-oracle</module>
          <module>jdbc-ng</module>
-         <module>postgis-versioned</module>
          <module>vpf</module>
          <module>matfile5</module>
          <module>sfs</module>

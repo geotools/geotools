@@ -38,8 +38,8 @@ import org.geotools.arcsde.session.ISessionPoolFactory;
 import org.geotools.arcsde.session.SessionPoolFactory;
 import org.geotools.arcsde.session.UnavailableConnectionException;
 import org.geotools.data.DataSourceException;
+import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.feature.simple.SimpleFeature;
@@ -706,8 +706,8 @@ public class TestData {
      */
     public SimpleFeatureCollection createTestFeatures(Class<? extends Geometry> jtsGeomType,
             int numFeatures) throws IOException, SeException {
-        SimpleFeatureCollection col = FeatureCollections.newCollection();
         SimpleFeatureType type = getDataStore().getSchema(getTempTableName());
+        ListFeatureCollection col = new ListFeatureCollection( type );
         Object[] values = new Object[type.getAttributeCount()];
 
         for (int i = 0; i < numFeatures; i++) {
@@ -728,7 +728,6 @@ public class TestData {
             SimpleFeature f = SimpleFeatureBuilder.build(type, values, null);
             col.add(f);
         }
-
         return col;
     }
 

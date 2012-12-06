@@ -71,4 +71,13 @@ public class MockHttpResponse implements HTTPResponse {
         return new ByteArrayInputStream(response);
     }
 
+    /**
+     * @return {@code null}
+     * @see org.geotools.data.ows.HTTPResponse#getResponseCharset()
+     */
+    @Override
+    public String getResponseCharset() {
+        return null;
+    }
+
 }

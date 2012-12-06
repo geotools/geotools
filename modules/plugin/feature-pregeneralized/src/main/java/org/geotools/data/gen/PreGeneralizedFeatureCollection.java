@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.CollectionListener;
@@ -62,9 +63,7 @@ public class PreGeneralizedFeatureCollection implements
     protected String geomPropertyName, backendGeomPropertyName;
 
     protected int[] indexMapping;
-
-    List<CollectionListener> listeners = new ArrayList<CollectionListener>();
-
+    
     public PreGeneralizedFeatureCollection(
             SimpleFeatureCollection backendCollection,
             SimpleFeatureType featureType, int[] indexMapping, String geomPropertyName,
@@ -77,11 +76,6 @@ public class PreGeneralizedFeatureCollection implements
         this.indexMapping = indexMapping;
     }
 
-    protected UnsupportedOperationException unsupported() {
-        return new UnsupportedOperationException(
-                "Cannot modify a pregeneralized feature collection");
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -89,77 +83,8 @@ public class PreGeneralizedFeatureCollection implements
      *      org.opengis.util.ProgressListener) Logic copied from DefaultFeatureCollection class
      */
     public void accepts(FeatureVisitor visitor, ProgressListener progress) throws IOException {
-        Iterator iterator = null;
-        if (progress == null)
-            progress = new NullProgressListener();
-        try {
-            float size = size();
-            float position = 0;
-            progress.started();
-            for (iterator = iterator(); !progress.isCanceled() && iterator.hasNext(); progress
-                    .progress(position++ / size)) {
-                try {
-                    SimpleFeature feature = (SimpleFeature) iterator.next();
-                    visitor.visit(feature);
-                } catch (Exception erp) {
-                    progress.exceptionOccurred(erp);
-                }
-            }
-        } finally {
-            progress.complete();
-            close(iterator);
-        }
+        DataUtilities.visit(this, visitor, progress);
     }
-
-    public boolean add(SimpleFeature arg0) {
-        throw unsupported();
-
-    }
-
-    public boolean addAll(Collection arg0) {
-        throw unsupported();
-
-    }
-
-    public boolean addAll(FeatureCollection arg0) {
-        throw unsupported();
-
-    }
-
-    public void addListener(CollectionListener listener) throws NullPointerException {
-        listeners.add(listener);
-
-    }
-
-    public void clear() {
-        throw unsupported();
-    }
-
-    public void close(FeatureIterator<SimpleFeature> it) {
-        it.close();
-
-    }
-
-        
-   public void close(Iterator it) {                                                                                    
-       if (it==null) return;                                                                                           
-                                                                                                                       
-       try {   // check for a possible close method                                                                    
-           Method closeMethod = it.getClass().getMethod("close", new Class[]{});
-   
-               if (closeMethod!=null) {
-                   int mod = closeMethod.getModifiers();
-                   if (Modifier.isPublic(mod) && (Modifier.isStatic(mod)==false))
-                       closeMethod.invoke(it, new Object[]{});
-               }
-           } catch (SecurityException e) {
-               return;
-           } catch (NoSuchMethodException e) {
-               return;
-           } catch (Exception e) {
-               throw new RuntimeException("Error calling close method for "+it.getClass().getName());
-       }
-   }
 
     public boolean contains(Object feature) {
         if (feature instanceof PreGeneralizedSimpleFeature)
@@ -202,55 +127,6 @@ public class PreGeneralizedFeatureCollection implements
 
     public boolean isEmpty() {
         return backendCollection.isEmpty();
-
-    }
-
-    public Iterator<SimpleFeature> iterator() {
-        final Iterator<SimpleFeature> iterator = backendCollection.iterator();
-
-        return new Iterator<SimpleFeature>() {
-
-            public boolean hasNext() {
-                return iterator.hasNext();
-            }
-
-            public SimpleFeature next() {
-                SimpleFeature feature = (SimpleFeature) iterator.next();
-                return new PreGeneralizedSimpleFeature(featureType, indexMapping, feature,
-                        geomPropertyName, backendGeomPropertyName);
-            }
-
-            public void remove() {
-                throw unsupported();
-            }
-            public void close() {
-                backendCollection.close(iterator);
-            }
-        };
-    }
-
-    public void purge() {
-        throw unsupported();
-
-    }
-
-    public boolean remove(Object arg0) {
-        throw unsupported();
-
-    }
-
-    public boolean removeAll(Collection arg0) {
-        throw unsupported();
-
-    }
-
-    public void removeListener(CollectionListener listener) throws NullPointerException {
-        listeners.remove(listener);
-
-    }
-
-    public boolean retainAll(Collection arg0) {
-        throw unsupported();
 
     }
 

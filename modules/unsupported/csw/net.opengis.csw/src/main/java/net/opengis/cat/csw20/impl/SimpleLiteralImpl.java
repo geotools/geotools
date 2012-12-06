@@ -8,6 +8,7 @@ package net.opengis.cat.csw20.impl;
 
 import java.lang.String;
 
+import java.net.URI;
 import net.opengis.cat.csw20.Csw20Package;
 import net.opengis.cat.csw20.SimpleLiteral;
 
@@ -64,7 +65,7 @@ public class SimpleLiteralImpl extends EObjectImpl implements SimpleLiteral {
      * @generated
      * @ordered
      */
-    protected static final String SCHEME_EDEFAULT = null;
+    protected static final URI SCHEME_EDEFAULT = null;
 
     /**
      * The cached value of the '{@link #getScheme() <em>Scheme</em>}' attribute.
@@ -74,7 +75,7 @@ public class SimpleLiteralImpl extends EObjectImpl implements SimpleLiteral {
      * @generated
      * @ordered
      */
-    protected String scheme = SCHEME_EDEFAULT;
+    protected URI scheme = SCHEME_EDEFAULT;
 
     /**
      * The cached value of the '{@link #getName() <em>Name</em>}' reference.
@@ -131,7 +132,7 @@ public class SimpleLiteralImpl extends EObjectImpl implements SimpleLiteral {
      * <!-- end-user-doc -->
      * @generated
      */
-    public String getScheme() {
+    public URI getScheme() {
         return scheme;
     }
 
@@ -140,8 +141,8 @@ public class SimpleLiteralImpl extends EObjectImpl implements SimpleLiteral {
      * <!-- end-user-doc -->
      * @generated
      */
-    public void setScheme(String newScheme) {
-        String oldScheme = scheme;
+    public void setScheme(URI newScheme) {
+        URI oldScheme = scheme;
         scheme = newScheme;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, Csw20Package.SIMPLE_LITERAL__SCHEME, oldScheme, scheme));
@@ -207,7 +208,7 @@ public class SimpleLiteralImpl extends EObjectImpl implements SimpleLiteral {
                 setValue(newValue);
                 return;
             case Csw20Package.SIMPLE_LITERAL__SCHEME:
-                setScheme((String)newValue);
+                setScheme((URI)newValue);
                 return;
             case Csw20Package.SIMPLE_LITERAL__NAME:
                 setName((String)newValue);

@@ -27,6 +27,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.collection.DelegateFeatureReader;
@@ -368,12 +369,12 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
         return toArray( new SimpleFeature[ size() ]);
     }
 
-    public Object[] toArray( Object[] array ) {
-        List list = new ArrayList();
+    public <T> T[] toArray( T[] array ) {
+        List<T> list = new ArrayList<T>();
         Iterator i = iterator();
         try {
             while( i.hasNext() ){
-                list.add( i.next() );
+                list.add( (T) i.next() );
             }
         }
         finally {
@@ -453,27 +454,8 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
     public void clear() {        
     }
     
-    public void accepts(org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress) {
-    	Iterator iterator = null;
-        if (progress == null) progress = new NullProgressListener();
-        try{
-            float size = size();
-            float position = 0;            
-            progress.started();
-        	for( iterator = iterator(); !progress.isCanceled() && iterator.hasNext(); progress.progress( 100.0f * position++ / size )){
-                try {
-                    SimpleFeature feature = (SimpleFeature) iterator.next();
-                    visitor.visit(feature);
-                }
-                catch( Exception erp ){
-                    progress.exceptionOccurred( erp );
-                }
-	        }            
-        }
-        finally {
-            progress.complete();            
-        	close( iterator );
-        }
+    public void accepts(org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress) throws IOException {
+        DataUtilities.visit(this, visitor, progress);
     }
     
     /**

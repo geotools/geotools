@@ -18,47 +18,48 @@ package org.geotools.data.store;
 
 import java.util.Iterator;
 
+import org.geotools.feature.FeatureIterator;
+import org.geotools.feature.collection.DelegateFeatureIterator;
 import org.opengis.feature.Feature;
 
 /**
- * Iterator wrapper which caps the number of returned features;
+ * Iterator wrapper which caps the number of returned features.
  * 
  * @author Justin Deoliveira, The Open Planning Project
- * 
- * 
- *
  *
  * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/
  *         data/store/MaxFeaturesIterator.java $
  */
-public class MaxFeaturesIterator<F extends Feature> implements Iterator<F> {
+public class MaxFeaturesIterator<F extends Feature> implements FeatureIterator<F> {
 
-    Iterator<F> delegate;
+    FeatureIterator<F> delegate;
 
     long start;
-
     long end;
-
     long counter;
 
-    public MaxFeaturesIterator(Iterator<F> delegate, long max) {
+    public MaxFeaturesIterator(Iterator<F> iterator, long max) {
+        this( new DelegateFeatureIterator<F>(iterator), 0, max);
+    }
+
+    public MaxFeaturesIterator(Iterator<F> iterator, long start, long max) {
+        this( new DelegateFeatureIterator<F>(iterator), start, max);
+    }
+    
+    public MaxFeaturesIterator(FeatureIterator<F> delegate, long max) {
         this(delegate, 0, max);
     }
 
-    public MaxFeaturesIterator(Iterator<F> delegate, long start, long max) {
+    public MaxFeaturesIterator(FeatureIterator<F> delegate, long start, long max) {
         this.delegate = delegate;
         this.start = start;
         this.end = start + max;
         counter = 0;
     }
 
-    public Iterator<F> getDelegate() {
+    public FeatureIterator<F> getDelegate() {
         return delegate;
-    }
-
-    public void remove() {
-        delegate.remove();
     }
 
     public boolean hasNext() {
@@ -91,4 +92,8 @@ public class MaxFeaturesIterator<F extends Feature> implements Iterator<F> {
         }
     }
 
+    @Override
+    public void close() {
+        delegate.close();
+    }
 }

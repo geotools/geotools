@@ -82,6 +82,12 @@ public class CRSTest extends TestCase {
         super(name);
     }
 
+    protected void tearDown() throws Exception {
+        System.clearProperty("org.geotools.referencing.forceXY");
+        Hints.removeSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
+        CRS.reset("all");
+    }    
+    
     /**
      * Tests the (latitude, longitude) axis order for EPSG:4326.
      */
@@ -485,5 +491,66 @@ public class CRSTest extends TestCase {
         mt.transform(src, 0, p, 0, 1);
         assertEquals(expected[0], p[0], 1e-6);
         assertEquals(expected[1], p[1], 1e-6);
+    }
+    
+    /**
+     * Testing the handling of toSRS method; used to translate from
+     * CoordinateReferenceSystem identifiers to the spatial reference system
+     * name used by OGC web services. There are a number of options here
+     * depending on the specification used.
+     */
+    public void testSRS() throws Exception {
+        try {
+            CRS.reset("all");
+            System.setProperty("org.geotools.referencing.forceXY", "true");
+            
+            assertEquals( "CRS:84", CRS.toSRS( DefaultGeographicCRS.WGS84 ));
+            CoordinateReferenceSystem WORLD = (CoordinateReferenceSystem) CRS.decode("EPSG:4326",false);
+            assertEquals( "4326", CRS.toSRS( WORLD, true ) );
+            String srs = CRS.toSRS( WORLD, false );
+            assertTrue( "EPSG:4326", srs.contains("EPSG") && srs.contains("4326") );
+            
+            CoordinateReferenceSystem WORLD2 = (CoordinateReferenceSystem) CRS.decode("EPSG:4326",true);
+            srs = CRS.toSRS( WORLD2, false );
+            assertTrue( "EPSG:4326", srs.contains("EPSG") && srs.contains("4326") );
+            
+            CoordinateReferenceSystem WORLD3 = (CoordinateReferenceSystem) CRS.decode("urn:x-ogc:def:crs:EPSG::4326",false);
+            srs = CRS.toSRS( WORLD3, false );
+            assertTrue( "EPSG:4326", srs.contains("EPSG") && srs.contains("4326") );
+            
+            CoordinateReferenceSystem WORLD4 = (CoordinateReferenceSystem) CRS.decode("urn:x-ogc:def:crs:EPSG::4326",true);
+            srs = CRS.toSRS( WORLD4, false );
+            assertTrue( "EPSG:4326", srs.contains("EPSG") && srs.contains("4326") );
+        } finally {
+            System.getProperties().remove("org.geotools.referencing.forceXY");
+        }
+        try {
+            CRS.reset("all");
+            Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
+            assertEquals( AxisOrder.EAST_NORTH, CRS.getAxisOrder(CRS.decode("EPSG:4326",false)));
+            assertEquals( AxisOrder.EAST_NORTH, CRS.getAxisOrder(CRS.decode("EPSG:4326",true)));
+            assertEquals( AxisOrder.NORTH_EAST, CRS.getAxisOrder(CRS.decode("urn:x-ogc:def:crs:EPSG::4326",false)));
+            assertEquals( AxisOrder.NORTH_EAST, CRS.getAxisOrder(CRS.decode("urn:x-ogc:def:crs:EPSG::4326",true)));
+        } finally {
+            Hints.removeSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
+        }
+        try {
+            CRS.reset("all");
+            assertEquals( AxisOrder.NORTH_EAST, CRS.getAxisOrder(CRS.decode("EPSG:4326",false)));
+            assertEquals( AxisOrder.EAST_NORTH, CRS.getAxisOrder(CRS.decode("EPSG:4326",true)));
+            assertEquals( AxisOrder.NORTH_EAST, CRS.getAxisOrder(CRS.decode("urn:x-ogc:def:crs:EPSG::4326",false)));
+            assertEquals( AxisOrder.NORTH_EAST, CRS.getAxisOrder(CRS.decode("urn:x-ogc:def:crs:EPSG::4326",true)));
+        } finally {
+        }
+        try {
+            CRS.reset("all");
+            System.setProperty("org.geotools.referencing.forceXY", "true");
+            assertEquals( AxisOrder.EAST_NORTH, CRS.getAxisOrder(CRS.decode("EPSG:4326",false)));
+            assertEquals( AxisOrder.EAST_NORTH, CRS.getAxisOrder(CRS.decode("EPSG:4326",true)));
+            assertEquals( AxisOrder.NORTH_EAST, CRS.getAxisOrder(CRS.decode("urn:x-ogc:def:crs:EPSG::4326",false)));
+            assertEquals( AxisOrder.NORTH_EAST, CRS.getAxisOrder(CRS.decode("urn:x-ogc:def:crs:EPSG::4326",true)));
+        } finally {
+            System.getProperties().remove("org.geotools.referencing.forceXY");
+        }
     }
 }

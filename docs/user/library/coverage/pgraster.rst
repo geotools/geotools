@@ -26,15 +26,15 @@ This plugin expects the following table layout:
 
 .. warning::
 
-   At the time of developing this module, Postgis 2.0 was not a final version.
-   The support for OUT-DB rasters is not working, IN-DB rasters work fine.
+   For Postgis JDBC drivers < version 9 it is necessary to set a property in the database:
+
+   ALTER DATABASE dbname SET bytea_output TO 'escape'
+
 
 Prepare the tiles and overviews using the gdal tool box http://www.gdal.org. 
 A good candidate is http://www.gdal.org/gdal_retile.html.
 
-The utility for importing the tiles is described here 
-http://postgis.refractions.net/documentation/manual-svn/RT_reference.html#RT_Loading_Rasters
-and is included in Postgis 2.0
+The utility for importing the tiles is described here http://postgis.refractions.net/docs/using_raster.xml.html and is included in Postgis 2.0.
 
 
 An example setup assumes the existense of 3 tables, **rtable1**, **rtable2** **rtable3**. **rtable1** is populated with the tiles from the base image,

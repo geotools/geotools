@@ -460,6 +460,8 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                 }
                 String lastTableName = query.getQueryJoins() == null || query.getQueryJoins().size()== 0 ? query.getTypeName() :
                     query.getQueryJoins().get(query.getQueryJoins().size()-1).getJoiningTypeName();
+                String lastTableAlias = query.getQueryJoins() == null || query.getQueryJoins().size()== 0 ? query.getTypeName() :
+                    aliases[query.getQueryJoins().size()-1] == null? lastTableName : aliases[query.getQueryJoins().size()-1];
                 
                 toSQL = createFilterToSQL(getDataStore().getSchema(lastTableName));
                 
@@ -480,7 +482,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                     sql.append(" ) " + TEMP_FILTER_ALIAS);
                     sql.append(" ON ( ");
                     for (int i=0; i < lastSortBy.length; i++) {
-                        encodeColumnName(lastSortBy[i].getPropertyName().getPropertyName(), lastTableName , sql, null);            
+                        encodeColumnName2(lastSortBy[i].getPropertyName().getPropertyName(), lastTableAlias , sql, null);            
                         sql.append(" = ");
                         encodeColumnName2(lastSortBy[i].getPropertyName().getPropertyName(), TEMP_FILTER_ALIAS , sql, null);
                         if (i < lastSortBy.length-1) sql.append(" AND ");

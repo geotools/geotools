@@ -28,7 +28,6 @@ import org.geotools.data.collection.DelegateFeatureReader;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.collection.DecoratingFeatureCollection;
-import org.geotools.feature.collection.DelegateFeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
@@ -39,9 +38,6 @@ import org.opengis.filter.sort.SortBy;
  * SimpleFeatureCollection wrapper which limits the number of features returned.
  * 
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
- *
  *
  * @source $URL$
  */
@@ -62,20 +58,7 @@ public class MaxFeaturesFeatureCollection<T extends FeatureType, F extends Featu
 	}
 	
 	public FeatureIterator<F> features() {
-		return new DelegateFeatureIterator<F>( this, iterator() );
-	}
-
-	public void close(FeatureIterator<F> close) {
-		close.close();
-	}
-
-	public Iterator<F> iterator() {
-		return new MaxFeaturesIterator<F>( delegate.iterator(), max );
-	}
-	
-	public void close(Iterator<F> close) {
-		Iterator<F> iterator = ((MaxFeaturesIterator<F>)close).getDelegate();
-		delegate.close( iterator );
+		return new MaxFeaturesIterator<F>( delegate.features(), max );
 	}
 
 	public FeatureCollection<T, F> subCollection(Filter filter) {
@@ -98,47 +81,26 @@ public class MaxFeaturesFeatureCollection<T extends FeatureType, F extends Featu
 		return toArray( new Object[ size() ] );
 	}
 
-	public Object[] toArray(Object[] a) {
-		List list = new ArrayList();
-		Iterator i = iterator();
+	public <O> O[] toArray(O[] a) {
+		List<F> list = new ArrayList<F>();
+		FeatureIterator<F> i = features();
 		try {
 			while( i.hasNext() ) {
 				list.add( i.next() );
 			}
-			
 			return list.toArray( a );
 		}
 		finally {
-			close( i );
+			i.close();
 		}
 	}
 	
-	public boolean add(F o) {
-		long size = delegate.size();
-		if ( size < max ) {
-			return delegate.add( o );	
-		}
-		
-		return false;
-	}
-
-	public boolean addAll(Collection c) {
-		boolean changed = false;
-		
-		for ( Iterator<F> i = c.iterator(); i.hasNext(); ) {
-			changed = changed | add( i.next() );
-		}
-		
-		return changed;
-	}
-
-	public boolean containsAll(Collection c) {
-		for ( Iterator i = c.iterator(); i.hasNext(); ) {
+	public boolean containsAll(Collection<?>c) {
+		for ( Iterator<?> i = c.iterator(); i.hasNext(); ) {
 			if ( !contains( i.next() ) ) {
 				return false;
 			}
-		}
-		
+		}		
 		return true;
 	}
 

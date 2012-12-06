@@ -16,6 +16,7 @@
  */
 package org.geotools.data;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 
@@ -82,7 +83,7 @@ import org.opengis.feature.type.FeatureType;
  * @source $URL$
  * @version $Id$
  */
-public interface FeatureReader<T extends FeatureType, F extends Feature> {
+public interface FeatureReader<T extends FeatureType, F extends Feature> extends Closeable {
     /**
      * Return the FeatureType this reader has been configured to create.
      *
@@ -118,7 +119,7 @@ public interface FeatureReader<T extends FeatureType, F extends Feature> {
     /**
      * Release the underlying resources associated with this stream.
      *
-     * @throws IOException DOCUMENT ME!
+     * @throws IOException if an I/O error occurs
      */
     void close() throws IOException;
 }

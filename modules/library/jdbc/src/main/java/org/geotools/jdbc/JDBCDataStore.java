@@ -775,7 +775,7 @@ public final class JDBCDataStore extends ContentDataStore
                 }
             }
             finally {
-                features.close( fi );
+                fi.close();
             }
         }
         
@@ -853,7 +853,7 @@ public final class JDBCDataStore extends ContentDataStore
 
         try {
             DatabaseMetaData metaData = cx.getMetaData();
-            ResultSet tables = metaData.getTables(null, databaseSchema, "%",
+            ResultSet tables = metaData.getTables(cx.getCatalog(), databaseSchema, "%",
                     new String[] { "TABLE", "VIEW" });
             if(fetchSize > 1) {
                 tables.setFetchSize(fetchSize);
@@ -1120,7 +1120,7 @@ public final class JDBCDataStore extends ContentDataStore
 
         Statement st = null;
         ResultSet rs = null;
-        ReferencedEnvelope bounds = new ReferencedEnvelope(featureType
+        ReferencedEnvelope bounds = ReferencedEnvelope.create(featureType
                 .getCoordinateReferenceSystem());
         try {
             // try optimized bounds computation only if we're targeting the entire table

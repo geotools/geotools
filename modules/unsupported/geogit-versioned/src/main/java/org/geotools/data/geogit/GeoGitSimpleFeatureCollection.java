@@ -31,12 +31,10 @@ import org.geogit.api.SpatialRef;
 import org.geogit.storage.ObjectDatabase;
 import org.geogit.storage.ObjectReader;
 import org.geogit.storage.WrappedSerialisingFactory;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.Hints;
-import org.geotools.feature.CollectionListener;
-import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -108,10 +106,10 @@ public class GeoGitSimpleFeatureCollection implements SimpleFeatureCollection {
 
         private final GeometryDescriptor[] geometryDescriptors;
 
-        private GeometryDescriptor mainGeometry;
+        //private GeometryDescriptor mainGeometry;
 
         public FeatureReprojector(final SimpleFeatureType type) {
-            this.mainGeometry = type.getGeometryDescriptor();
+            // this.mainGeometry = type.getGeometryDescriptor();
 
             List<GeometryDescriptor> list = new ArrayList<GeometryDescriptor>(2);
             for (AttributeDescriptor att : type.getAttributeDescriptors()) {
@@ -195,13 +193,6 @@ public class GeoGitSimpleFeatureCollection implements SimpleFeatureCollection {
     }
 
     /**
-     * @see org.geotools.feature.FeatureCollection#purge()
-     */
-    @Override
-    public void purge() {
-    }
-
-    /**
      * @see org.geotools.feature.FeatureCollection#getBounds()
      */
     @Override
@@ -276,26 +267,18 @@ public class GeoGitSimpleFeatureCollection implements SimpleFeatureCollection {
     }
 
     /**
-     * @see org.geotools.feature.FeatureCollection#iterator()
+     * @see org.geotools.data.simple.SimpleFeatureCollection#features()
+     * @see #iterator()
      */
     @Override
-    public Iterator<SimpleFeature> iterator() {
+    public SimpleFeatureIterator features() {
         final FeatureRefIterator refs = new FeatureRefIterator(typeTree, filter);
         Iterator<SimpleFeature> features = new GeoGitFeatureIterator(refs,
                 type, filter, odb);
         if (maxFeatures != null) {
             features = Iterators.limit(features, maxFeatures.intValue());
         }
-        return features;
-    }
-
-    /**
-     * @see org.geotools.data.simple.SimpleFeatureCollection#features()
-     * @see #iterator()
-     */
-    @Override
-    public SimpleFeatureIterator features() {
-        final Iterator<SimpleFeature> iterator = iterator();
+        final Iterator<SimpleFeature> iterator = features;
         return new SimpleFeatureIterator() {
 
             @Override
@@ -466,40 +449,7 @@ public class GeoGitSimpleFeatureCollection implements SimpleFeatureCollection {
     @Override
     public void accepts(FeatureVisitor visitor, ProgressListener progress)
             throws IOException {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void close(FeatureIterator<SimpleFeature> close) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void close(Iterator<SimpleFeature> close) {
-        // TODO Auto-generated method stub
-
-    }
-
-    /**
-     * @see org.geotools.feature.FeatureCollection#addListener(org.geotools.feature.CollectionListener)
-     */
-    @Override
-    public void addListener(CollectionListener listener)
-            throws NullPointerException {
-        // TODO Auto-generated method stub
-
-    }
-
-    /**
-     * @see org.geotools.feature.FeatureCollection#removeListener(org.geotools.feature.CollectionListener)
-     */
-    @Override
-    public void removeListener(CollectionListener listener)
-            throws NullPointerException {
-        // TODO Auto-generated method stub
-
+        DataUtilities.visit(this, visitor, progress);
     }
 
     /**
@@ -508,27 +458,6 @@ public class GeoGitSimpleFeatureCollection implements SimpleFeatureCollection {
     @Override
     public boolean isEmpty() {
         return false;
-    }
-
-    @Override
-    public boolean add(SimpleFeature obj) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean addAll(Collection<? extends SimpleFeature> collection) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean addAll(
-            FeatureCollection<? extends SimpleFeatureType, ? extends SimpleFeature> resource) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void clear() {
-        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -541,20 +470,6 @@ public class GeoGitSimpleFeatureCollection implements SimpleFeatureCollection {
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    public boolean remove(Object o) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean removeAll(Collection<?> c) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean retainAll(Collection<?> c) {
-        throw new UnsupportedOperationException();
-    }
 
     @Override
     public Object[] toArray() {

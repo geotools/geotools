@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ * 
+ *    (C) 2012, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.wcs.v2_0;
 
 import java.lang.reflect.Field;
@@ -10,6 +26,7 @@ import net.opengis.ows20.Ows20Factory;
 import net.opengis.wcs20.Wcs20Factory;
 
 import org.geotools.ows.v2_0.OWSConfiguration;
+import org.geotools.wcs.bindings.ExtensionTypeBinding;
 import org.geotools.xml.ComplexEMFBinding;
 import org.geotools.xml.Configuration;
 import org.picocontainer.MutablePicoContainer;
@@ -43,6 +60,8 @@ public class WCSConfiguration extends Configuration {
      */
     @SuppressWarnings("unchecked")
     protected final void registerBindings(Map bindings) {
+        // manually setup bindings
+        bindings.put(WCS.ExtensionType, new ExtensionTypeBinding());
         
         // "automatic" bindings
         bindings.put(WCS.CapabilitiesType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.CapabilitiesType));
@@ -56,7 +75,6 @@ public class WCSConfiguration extends Configuration {
         bindings.put(WCS.DimensionSliceType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.DimensionSliceType));
         bindings.put(WCS.DimensionSubsetType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.DimensionSubsetType));
         bindings.put(WCS.DimensionTrimType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.DimensionTrimType));
-        bindings.put(WCS.ExtensionType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.ExtensionType));
         bindings.put(WCS.GetCapabilitiesType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.GetCapabilitiesType));
         bindings.put(WCS.GetCoverageType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.GetCoverageType));
         bindings.put(WCS.OfferedCoverageType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.OfferedCoverageType));

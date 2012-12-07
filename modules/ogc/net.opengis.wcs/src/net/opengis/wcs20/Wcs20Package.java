@@ -1677,13 +1677,13 @@ public interface Wcs20Package extends EPackage {
     int EXTENSION_TYPE = 12;
 
     /**
-     * The feature id for the '<em><b>Any</b></em>' attribute list.
+     * The feature id for the '<em><b>Contents</b></em>' reference list.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int EXTENSION_TYPE__ANY = 0;
+    int EXTENSION_TYPE__CONTENTS = 0;
 
     /**
      * The number of structural features of the '<em>Extension Type</em>' class.
@@ -2007,6 +2007,61 @@ public interface Wcs20Package extends EPackage {
     int OBJECT_FEATURE_COUNT = 0;
 
     /**
+     * The meta object id for the '{@link net.opengis.wcs20.impl.ExtensionItemTypeImpl <em>Extension Item Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see net.opengis.wcs20.impl.ExtensionItemTypeImpl
+     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getExtensionItemType()
+     * @generated
+     */
+    int EXTENSION_ITEM_TYPE = 20;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int EXTENSION_ITEM_TYPE__NAME = 0;
+
+    /**
+     * The feature id for the '<em><b>Namespace</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int EXTENSION_ITEM_TYPE__NAMESPACE = 1;
+
+    /**
+     * The feature id for the '<em><b>Simple Content</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int EXTENSION_ITEM_TYPE__SIMPLE_CONTENT = 2;
+
+    /**
+     * The feature id for the '<em><b>Object Content</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int EXTENSION_ITEM_TYPE__OBJECT_CONTENT = 3;
+
+    /**
+     * The number of structural features of the '<em>Extension Item Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int EXTENSION_ITEM_TYPE_FEATURE_COUNT = 4;
+
+    /**
      * The meta object id for the '<em>Version String Type</em>' data type.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2014,7 +2069,7 @@ public interface Wcs20Package extends EPackage {
      * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getVersionStringType()
      * @generated
      */
-    int VERSION_STRING_TYPE = 20;
+    int VERSION_STRING_TYPE = 21;
 
 
     /**
@@ -2025,7 +2080,7 @@ public interface Wcs20Package extends EPackage {
      * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getVersionStringType_1()
      * @generated
      */
-    int VERSION_STRING_TYPE_1 = 21;
+    int VERSION_STRING_TYPE_1 = 22;
 
 
     /**
@@ -2036,7 +2091,7 @@ public interface Wcs20Package extends EPackage {
      * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getQName()
      * @generated
      */
-    int QNAME = 22;
+    int QNAME = 23;
 
 
     /**
@@ -2720,15 +2775,15 @@ public interface Wcs20Package extends EPackage {
     EClass getExtensionType();
 
     /**
-     * Returns the meta object for the attribute list '{@link net.opengis.wcs20.ExtensionType#getAny <em>Any</em>}'.
+     * Returns the meta object for the reference list '{@link net.opengis.wcs20.ExtensionType#getContents <em>Contents</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @return the meta object for the attribute list '<em>Any</em>'.
-     * @see net.opengis.wcs20.ExtensionType#getAny()
+     * @return the meta object for the reference list '<em>Contents</em>'.
+     * @see net.opengis.wcs20.ExtensionType#getContents()
      * @see #getExtensionType()
      * @generated
      */
-    EAttribute getExtensionType_Any();
+    EReference getExtensionType_Contents();
 
     /**
      * Returns the meta object for class '{@link net.opengis.wcs20.GetCapabilitiesType <em>Get Capabilities Type</em>}'.
@@ -2987,6 +3042,60 @@ public interface Wcs20Package extends EPackage {
      * @generated
      */
     EClass getObject();
+
+    /**
+     * Returns the meta object for class '{@link net.opengis.wcs20.ExtensionItemType <em>Extension Item Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Extension Item Type</em>'.
+     * @see net.opengis.wcs20.ExtensionItemType
+     * @generated
+     */
+    EClass getExtensionItemType();
+
+    /**
+     * Returns the meta object for the attribute '{@link net.opengis.wcs20.ExtensionItemType#getName <em>Name</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Name</em>'.
+     * @see net.opengis.wcs20.ExtensionItemType#getName()
+     * @see #getExtensionItemType()
+     * @generated
+     */
+    EAttribute getExtensionItemType_Name();
+
+    /**
+     * Returns the meta object for the attribute '{@link net.opengis.wcs20.ExtensionItemType#getNamespace <em>Namespace</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Namespace</em>'.
+     * @see net.opengis.wcs20.ExtensionItemType#getNamespace()
+     * @see #getExtensionItemType()
+     * @generated
+     */
+    EAttribute getExtensionItemType_Namespace();
+
+    /**
+     * Returns the meta object for the attribute '{@link net.opengis.wcs20.ExtensionItemType#getSimpleContent <em>Simple Content</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Simple Content</em>'.
+     * @see net.opengis.wcs20.ExtensionItemType#getSimpleContent()
+     * @see #getExtensionItemType()
+     * @generated
+     */
+    EAttribute getExtensionItemType_SimpleContent();
+
+    /**
+     * Returns the meta object for the reference '{@link net.opengis.wcs20.ExtensionItemType#getObjectContent <em>Object Content</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference '<em>Object Content</em>'.
+     * @see net.opengis.wcs20.ExtensionItemType#getObjectContent()
+     * @see #getExtensionItemType()
+     * @generated
+     */
+    EReference getExtensionItemType_ObjectContent();
 
     /**
      * Returns the meta object for data type '{@link java.lang.String <em>Version String Type</em>}'.
@@ -3575,12 +3684,12 @@ public interface Wcs20Package extends EPackage {
         EClass EXTENSION_TYPE = eINSTANCE.getExtensionType();
 
         /**
-         * The meta object literal for the '<em><b>Any</b></em>' attribute list feature.
+         * The meta object literal for the '<em><b>Contents</b></em>' reference list feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          * @generated
          */
-        EAttribute EXTENSION_TYPE__ANY = eINSTANCE.getExtensionType_Any();
+        EReference EXTENSION_TYPE__CONTENTS = eINSTANCE.getExtensionType_Contents();
 
         /**
          * The meta object literal for the '{@link net.opengis.wcs20.impl.GetCapabilitiesTypeImpl <em>Get Capabilities Type</em>}' class.
@@ -3787,6 +3896,48 @@ public interface Wcs20Package extends EPackage {
          * @generated
          */
         EClass OBJECT = eINSTANCE.getObject();
+
+        /**
+         * The meta object literal for the '{@link net.opengis.wcs20.impl.ExtensionItemTypeImpl <em>Extension Item Type</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see net.opengis.wcs20.impl.ExtensionItemTypeImpl
+         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getExtensionItemType()
+         * @generated
+         */
+        EClass EXTENSION_ITEM_TYPE = eINSTANCE.getExtensionItemType();
+
+        /**
+         * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute EXTENSION_ITEM_TYPE__NAME = eINSTANCE.getExtensionItemType_Name();
+
+        /**
+         * The meta object literal for the '<em><b>Namespace</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute EXTENSION_ITEM_TYPE__NAMESPACE = eINSTANCE.getExtensionItemType_Namespace();
+
+        /**
+         * The meta object literal for the '<em><b>Simple Content</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute EXTENSION_ITEM_TYPE__SIMPLE_CONTENT = eINSTANCE.getExtensionItemType_SimpleContent();
+
+        /**
+         * The meta object literal for the '<em><b>Object Content</b></em>' reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference EXTENSION_ITEM_TYPE__OBJECT_CONTENT = eINSTANCE.getExtensionItemType_ObjectContent();
 
         /**
          * The meta object literal for the '<em>Version String Type</em>' data type.

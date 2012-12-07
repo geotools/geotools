@@ -14,6 +14,7 @@ import net.opengis.wcs20.DescribeCoverageType;
 import net.opengis.wcs20.DimensionSliceType;
 import net.opengis.wcs20.DimensionTrimType;
 import net.opengis.wcs20.DocumentRoot;
+import net.opengis.wcs20.ExtensionItemType;
 import net.opengis.wcs20.ExtensionType;
 import net.opengis.wcs20.GetCapabilitiesType;
 import net.opengis.wcs20.GetCoverageType;
@@ -96,6 +97,7 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
             case Wcs20Package.OFFERED_COVERAGE_TYPE: return createOfferedCoverageType();
             case Wcs20Package.SERVICE_METADATA_TYPE: return createServiceMetadataType();
             case Wcs20Package.SERVICE_PARAMETERS_TYPE: return createServiceParametersType();
+            case Wcs20Package.EXTENSION_ITEM_TYPE: return createExtensionItemType();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -307,6 +309,16 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
     public ServiceParametersType createServiceParametersType() {
         ServiceParametersTypeImpl serviceParametersType = new ServiceParametersTypeImpl();
         return serviceParametersType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public ExtensionItemType createExtensionItemType() {
+        ExtensionItemTypeImpl extensionItemType = new ExtensionItemTypeImpl();
+        return extensionItemType;
     }
 
     /**

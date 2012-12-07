@@ -175,6 +175,15 @@ public interface Wcs20Factory extends EFactory {
     ServiceParametersType createServiceParametersType();
 
     /**
+     * Returns a new object of class '<em>Extension Item Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Extension Item Type</em>'.
+     * @generated
+     */
+    ExtensionItemType createExtensionItemType();
+
+    /**
      * Returns the package supported by this factory.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

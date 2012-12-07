@@ -2,6 +2,7 @@
  */
 package net.opengis.wcs20;
 
+import org.eclipse.emf.common.util.EList;
 import java.util.List;
 
 
@@ -35,6 +36,6 @@ public interface DescribeCoverageType extends RequestBaseType {
      * @model unique="false" required="true"
      *        extendedMetaData="kind='element' name='CoverageId' namespace='##targetNamespace'"
      */
-    List<String> getCoverageId();
+    EList<String> getCoverageId();
 
 } // DescribeCoverageType

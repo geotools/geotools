@@ -79,7 +79,7 @@ public interface GetCoverageType extends RequestBaseType {
      * <!-- end-model-doc -->
      * @return the value of the '<em>Dimension Subset</em>' containment reference list.
      * @see net.opengis.wcs20.Wcs20Package#getGetCoverageType_DimensionSubset()
-     * @model containment="true" transient="true" changeable="false" volatile="true" derived="true"
+     * @model containment="true" transient="true" volatile="true" derived="true"
      *        extendedMetaData="kind='element' name='DimensionSubset' namespace='##targetNamespace' group='DimensionSubset:group'"
      * @generated
      */

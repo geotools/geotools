@@ -753,8 +753,8 @@
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="dimensionSubset" upperBound="-1"
-        eType="#//DimensionSubsetType" changeable="false" volatile="true" transient="true"
-        derived="true" containment="true" resolveProxies="false">
+        eType="#//DimensionSubsetType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="element"/>
         <details key="name" value="DimensionSubset"/>

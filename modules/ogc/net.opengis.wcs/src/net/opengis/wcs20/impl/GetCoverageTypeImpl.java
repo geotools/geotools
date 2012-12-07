@@ -2,6 +2,7 @@
  */
 package net.opengis.wcs20.impl;
 
+import java.util.Collection;
 import net.opengis.wcs20.DimensionSubsetType;
 import net.opengis.wcs20.GetCoverageType;
 import net.opengis.wcs20.Wcs20Package;
@@ -255,6 +256,7 @@ public class GetCoverageTypeImpl extends RequestBaseTypeImpl implements GetCover
      * <!-- end-user-doc -->
      * @generated
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
@@ -263,6 +265,10 @@ public class GetCoverageTypeImpl extends RequestBaseTypeImpl implements GetCover
                 return;
             case Wcs20Package.GET_COVERAGE_TYPE__DIMENSION_SUBSET_GROUP:
                 ((FeatureMap.Internal)getDimensionSubsetGroup()).set(newValue);
+                return;
+            case Wcs20Package.GET_COVERAGE_TYPE__DIMENSION_SUBSET:
+                getDimensionSubset().clear();
+                getDimensionSubset().addAll((Collection<? extends DimensionSubsetType>)newValue);
                 return;
             case Wcs20Package.GET_COVERAGE_TYPE__FORMAT:
                 setFormat((String)newValue);
@@ -287,6 +293,9 @@ public class GetCoverageTypeImpl extends RequestBaseTypeImpl implements GetCover
                 return;
             case Wcs20Package.GET_COVERAGE_TYPE__DIMENSION_SUBSET_GROUP:
                 getDimensionSubsetGroup().clear();
+                return;
+            case Wcs20Package.GET_COVERAGE_TYPE__DIMENSION_SUBSET:
+                getDimensionSubset().clear();
                 return;
             case Wcs20Package.GET_COVERAGE_TYPE__FORMAT:
                 setFormat(FORMAT_EDEFAULT);

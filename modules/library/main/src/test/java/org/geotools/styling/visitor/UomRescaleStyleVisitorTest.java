@@ -32,6 +32,7 @@ import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
+import org.geotools.styling.Graphic;
 import org.geotools.styling.LinePlacement;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.LineSymbolizerImpl;
@@ -41,17 +42,15 @@ import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PointSymbolizerImpl;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.PolygonSymbolizerImpl;
-import org.geotools.styling.Rule;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizerImpl;
+import org.geotools.util.Converters;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
-import org.opengis.style.GraphicalSymbol;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
@@ -127,7 +126,7 @@ public class UomRescaleStyleVisitorTest extends TestCase
 
             PointSymbolizerImpl pointSymb = (PointSymbolizerImpl) styleBuilder.createPointSymbolizer();
             pointSymb.setUnitOfMeasure(uom);
-
+            
             FilterFactory2 filterFactory  = new FilterFactoryImpl();
             pointSymb.getGraphic().setSize(filterFactory.literal(size));
 
@@ -219,9 +218,11 @@ public class UomRescaleStyleVisitorTest extends TestCase
             int fontSize = 100;
             double displacementX = 13;
             double displacementY = 17;
+            int maxDisplacement = 10;
             double expectedRescaledFontSize = computeExpectedRescaleSize(fontSize, scaleMetersToPixel, uom);
             double expectedRescaledDisplacementXSize = computeExpectedRescaleSize(displacementX, scaleMetersToPixel, uom);
             double expectedRescaledDisplacementYSize = computeExpectedRescaleSize(displacementY, scaleMetersToPixel, uom);
+            int expectedMaxDisplacement = (int) computeExpectedRescaleSize(maxDisplacement, scaleMetersToPixel, uom);
             
             StyleBuilder styleBuilder = new StyleBuilder();
 
@@ -233,6 +234,9 @@ public class UomRescaleStyleVisitorTest extends TestCase
             
             PointPlacement placement = styleBuilder.createPointPlacement(0.3, 0.3, displacementX, displacementY, 10);
             textSymb.setLabelPlacement(placement);
+            
+            // check we can rescale properly also vendor options
+            textSymb.addToOptions("maxDisplacement", String.valueOf(maxDisplacement));
 
             visitor = new UomRescaleStyleVisitor(scaleMetersToPixel);
 
@@ -248,6 +252,9 @@ public class UomRescaleStyleVisitorTest extends TestCase
             Assert.assertEquals(Math.round(expectedRescaledDisplacementXSize), Math.round(rescaledDisplacementXSize));
             Assert.assertEquals(Math.round(expectedRescaledDisplacementYSize), Math.round(rescaledDisplacementYSize));
             Assert.assertNotSame(rescaledTextSymb, textSymb);
+            
+            int rescaledMaxDisplacement = Converters.convert(rescaledTextSymb.getOptions().get("maxDisplacement"), Integer.class).intValue();
+            assertEquals(rescaledMaxDisplacement, expectedMaxDisplacement);
         }
         catch (Exception e2)
         {
@@ -621,4 +628,37 @@ public class UomRescaleStyleVisitorTest extends TestCase
         rm = (Mark) lps.getStroke().getGraphicStroke().graphicalSymbols().get(0);
         assertEquals(10.0, rm.getStroke().getWidth().evaluate(null));
     }
+
+    public void testRescaleGraphicPointSymbolizer() {
+        // create a graphic that needs rescaling
+        StyleBuilder sb = new StyleBuilder();
+        
+        // create a circle
+        Mark circle = sb.createMark("circle", null, sb.createStroke(500));
+        Graphic g = sb.createGraphic(null, circle, null);
+        
+        // a point symbolizer with the specified circle
+        PointSymbolizer ps = sb.createPointSymbolizer(g);
+        
+        // first see it in feet
+        ps.setUnitOfMeasure(NonSI.FOOT);
+        
+        // rescale it
+        UomRescaleStyleVisitor visitor = new UomRescaleStyleVisitor(10);
+        ps.accept(visitor);
+        PointSymbolizer rps = (PointSymbolizer) visitor.getCopy();
+        Mark rm = (Mark) rps.getGraphic().graphicalSymbols().get(0);
+        assertEquals(1524.0, rm.getStroke().getWidth().evaluate(null));
+        
+        // now let's see the same in meters
+        ps.setUnitOfMeasure(SI.METER);
+        
+        // rescale it
+        visitor = new UomRescaleStyleVisitor(10);
+        ps.accept(visitor);
+        rps = (PointSymbolizer) visitor.getCopy();
+        rm = (Mark) rps.getGraphic().graphicalSymbols().get(0);
+        assertEquals(5000.0, rm.getStroke().getWidth().evaluate(null));
+    }
+
 }

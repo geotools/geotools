@@ -101,7 +101,7 @@ public class LabelObstacleTest {
         loadData(mem, "polys");
         loadData(mem, "lines2");
     }
-
+    
     static void loadData(MemoryDataStore mem, String name) throws Exception {
         WKTReader wkt = new WKTReader();
 

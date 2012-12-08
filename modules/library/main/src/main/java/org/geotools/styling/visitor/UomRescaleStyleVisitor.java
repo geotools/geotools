@@ -16,6 +16,8 @@
  */
 package org.geotools.styling.visitor;
 
+import java.util.Map;
+
 import javax.measure.converter.UnitConverter;
 import javax.measure.quantity.Length;
 import javax.measure.unit.NonSI;
@@ -23,7 +25,6 @@ import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
 
 import org.geotools.styling.Displacement;
-import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
 import org.geotools.styling.Graphic;
@@ -36,6 +37,7 @@ import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.TextSymbolizer2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.style.GraphicalSymbol;
@@ -196,7 +198,16 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
     private void rescale(Graphic graphic, double mapScale, Unit<Length> unit) {
         if(graphic != null) {
             graphic.setSize(rescale(graphic.getSize(), mapScale, unit));
-            if(graphic.graphicalSymbols() != null) {
+            graphic.setGap(rescale(graphic.getGap(), mapScale, unit));
+            
+            Displacement disp = graphic.getDisplacement();
+            if (disp != null) {
+                disp.setDisplacementX(rescale(disp.getDisplacementX(), mapScale, unit));
+                disp.setDisplacementY(rescale(disp.getDisplacementY(), mapScale, unit));
+                graphic.setDisplacement(disp);                    
+            }
+            
+            if (graphic.graphicalSymbols() != null) {
                 for (GraphicalSymbol gs : graphic.graphicalSymbols()) {
                     if(gs instanceof Mark) {
                         Mark mark = (Mark) gs;
@@ -275,6 +286,30 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
             copy.getHalo().setRadius(rescale(copy.getHalo().getRadius(), mapScale, uom));
         }
         
+        if (copy instanceof TextSymbolizer2) {
+            TextSymbolizer2 copy2 = (TextSymbolizer2) copy;
+            
+            rescale(copy2.getGraphic(), mapScale, uom);
+        }
+
+        // scale various options as well
+        Map<String,String> options = copy.getOptions();
+        scaleIntOption(options, TextSymbolizer.MAX_DISPLACEMENT_KEY, uom);
+        scaleIntOption(options, TextSymbolizer.SPACE_AROUND_KEY, uom);
+        scaleIntOption(options, TextSymbolizer.MIN_GROUP_DISTANCE_KEY, uom);
+        scaleIntOption(options, TextSymbolizer.LABEL_REPEAT_KEY, uom);
+        scaleIntOption(options, TextSymbolizer.GRAPHIC_MARGIN_KEY, uom);
+        
         copy.setUnitOfMeasure(NonSI.PIXEL);
+    }
+
+    private void scaleIntOption(Map<String, String>   options,
+                                  String              optionName,
+                                  Unit<Length>        uom) {
+        if (options.containsKey(optionName)) {
+            double v = rescale(Double.parseDouble(options.get(optionName)), mapScale, uom);
+            
+            options.put(optionName, Integer.toString((int) v));
+        }
     }
 }

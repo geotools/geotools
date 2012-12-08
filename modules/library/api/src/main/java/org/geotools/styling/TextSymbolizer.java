@@ -250,6 +250,18 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer,Symboli
      * Option overriding manual rotation to align label rotation automatically for polygons.
      */
     public static String POLYGONALIGN_KEY = "polygonAlign";
+
+    /**
+     * Pixels between the stretched graphic and the text, applies when graphic stretching is in use
+     */
+    public static String GRAPHIC_MARGIN_KEY = "graphic-margin";
+    
+    /**
+     * Stretches the graphic below a label to fit the label size. Possible values are 'stretch',
+     * 'proportional'.
+     */
+    public static String GRAPHIC_RESIZE_KEY = "graphic-resize";
+
     
     /**
      * Enumerated options that can be used with polygonAlign.

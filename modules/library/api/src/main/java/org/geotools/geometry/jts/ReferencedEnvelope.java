@@ -553,6 +553,10 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
     @Override
     public void expandToInclude(Envelope other) {
         if( other instanceof BoundingBox ){
+            if (other.isNull()) {
+                return;
+            }
+            
             BoundingBox bbox = (BoundingBox) other;
             ensureCompatibleReferenceSystem( bbox );
             

@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 
 import junit.framework.TestCase;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -63,7 +64,23 @@ public class GeographicTransformPointTest extends TestCase {
         return new File("src/test/resources/org/geotools/renderer/lite/test-data/line/" + name
                 + ".png");
     }
-    
+    @Test
+    public void testBounds() throws Exception {
+        ReferencedEnvelope bounds2d = point_test_2d.getBounds();
+        ReferencedEnvelope bounds3d = point_test.getBounds();
+        double aspect2d = bounds2d.getWidth() / bounds2d.getHeight();
+        double aspect3d = bounds3d.getWidth() / bounds3d.getHeight();
+        assertEquals( aspect2d, aspect3d, 0.0005 );
+        
+        ReferencedEnvelope bbox2d = JTS.toGeographic( bounds2d );
+        ReferencedEnvelope bbox3d = JTS.toGeographic( bounds3d );
+        
+        aspect2d = bbox2d.getWidth() / bbox2d.getHeight();
+        aspect3d = bbox3d.getWidth() / bbox3d.getHeight();
+        assertEquals( aspect2d, aspect3d, 0.0005 );
+        
+        
+    }
     @Test
     public void testToGeographicGeometry() throws Exception {
         // This time we are in north / east order
@@ -77,8 +94,10 @@ public class GeographicTransformPointTest extends TestCase {
         assertEquals( point.getY(), world.getY(), 0.00000005 );
     }
     
+    @Test
     public void testGDA94Points() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "markCircle.sld");
+        
         BufferedImage reference = toImage( point_test_2d, style );
         BufferedImage actual = null;
         if( CRS.getAxisOrder( point_test_strict.getSchema().getCoordinateReferenceSystem() ) == AxisOrder.NORTH_EAST  ){
@@ -108,7 +127,9 @@ public class GeographicTransformPointTest extends TestCase {
         assertFalse(typeName + " world empty", bounds.isEmpty());
         assertFalse(typeName + " world null", bounds.isNull());
         
-        content.getViewport().setBounds(bounds);
+        ReferencedEnvelope reference = point_test_2d.getBounds();
+        
+        content.getViewport().setBounds(reference);
         assertTrue(CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84, content.getViewport()
                 .getCoordinateReferenceSystem()));
         

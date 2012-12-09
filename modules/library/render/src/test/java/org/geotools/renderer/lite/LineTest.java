@@ -86,7 +86,7 @@ public class LineTest extends TestCase {
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
         
         BufferedImage image = RendererBaseTest.showRender("Lines with circl stroke", renderer, TIME, bounds);
-        ImageAssert.assertEquals(file("dotstar"), image, 10);
+        ImageAssert.assertEquals(file("dotstar"), image, 200);
     }
 
     public void testRenderingTransform() throws Exception {

@@ -215,12 +215,12 @@ public class WPS1_0_0 extends WPSSpecification
 
         protected void initRequest()
         {
-            setProperty("REQUEST", "getCapabilities");
+            setProperty("REQUEST", "GetCapabilities");
         }
 
         protected void initService()
         {
-            // The 1.0.0 specification does not use the service property
+            setProperty("SERVICE", "WPS");
         }
 
         protected String processKey(String key)

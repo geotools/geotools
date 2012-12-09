@@ -707,7 +707,7 @@ public final class RendererUtilities {
      * @param g
      */
     public static Geometry getCentroid(Geometry g) {
-        if(g instanceof MultiPoint) {
+        if(g instanceof Point || g instanceof MultiPoint) {
             return g;
         } else if (g instanceof GeometryCollection) {
             final GeometryCollection gc = (GeometryCollection) g;

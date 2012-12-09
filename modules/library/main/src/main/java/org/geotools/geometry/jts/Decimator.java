@@ -331,7 +331,7 @@ public final class Decimator {
 			MathTransform transform, boolean ring) throws TransformException {
 		// decimates before XFORM
 		int ncoords = seq.size();
-		double coords[] = seq.getXYArray(); // 2*#of points
+		double coords[] = seq.getOrdinateArray(transform.getSourceDimensions());
 
 		if (ncoords < 2) {
 			if (ncoords == 1) // 1 coordinate -- just xform it

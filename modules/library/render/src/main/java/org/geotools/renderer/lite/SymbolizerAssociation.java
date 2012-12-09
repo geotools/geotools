@@ -19,7 +19,7 @@ package org.geotools.renderer.lite;
 
 import org.geotools.factory.Hints;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform2D;
+import org.opengis.referencing.operation.MathTransform;
 
 /**
  * Cache of context information associated with the Symbolizer.
@@ -34,12 +34,12 @@ class SymbolizerAssociation{
      * Full transform from data {@link #crs} through to viewport CRS followed throug
      * to the screen.
      */
-     public MathTransform2D  xform = null;
+     public MathTransform  xform = null;
      
      /**
       * Initial transform between data {@link #crs} and viewport CRS.
       */
-     public MathTransform2D  crsxform = null;
+     public MathTransform  crsxform = null;
      
      /**
       * The source CooridinateReferenceSystem used for the individual Geometries.
@@ -53,18 +53,5 @@ class SymbolizerAssociation{
      /**
       * Transform used between viewport CRS through to the screen.
       */
-     public MathTransform2D axform;
-     
-     /**
-      * Post-process geometry to be 2D only.
-      * 
-      * This flag is employed to reproduce the functionality
-      * of {@link Hints#FEATURE_2D}.
-      * <ul>
-      * <li>null: Feature results have not yet been checked, unknown if post processing is required.</li>
-      * <li>True: Feature content is expected to be forced into WGS84 prior to use</li>
-      * <li>False: Feature content is known to be 2D only and can be used as provided</li>
-      * </ul>
-      */
-     public Boolean forceWGS84 = null;
+     public MathTransform axform;
 }

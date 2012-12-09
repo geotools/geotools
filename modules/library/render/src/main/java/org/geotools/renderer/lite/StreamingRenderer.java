@@ -28,7 +28,6 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
-import java.io.Closeable;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -65,7 +64,6 @@ import org.geotools.data.Query;
 import org.geotools.data.crs.ForceCoordinateSystemFeatureResults;
 import org.geotools.data.memory.CollectionSource;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
@@ -83,7 +81,6 @@ import org.geotools.filter.visitor.SpatialFilterVisitor;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.Decimator;
 import org.geotools.geometry.jts.GeometryClipper;
-import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.geometry.jts.LiteShape2;
@@ -144,6 +141,7 @@ import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.crs.SingleCRS;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
@@ -1096,7 +1094,8 @@ public class StreamingRenderer implements GTRenderer {
             if(crs != null) {
                 Set<RenderingHints.Key> fsHints = source.getSupportedHints();
                 
-                MathTransform mt = buildFullTransform(crs, mapCRS, worldToScreenTransform);
+                SingleCRS crs2D = crs == null ? null : CRS.getHorizontalCRS(crs);
+                MathTransform mt = buildFullTransform(crs2D, mapCRS, worldToScreenTransform);
                 double[] spans = Decimator.computeGeneralizationDistances(mt.inverse(), screenSize, generalizationDistance);
                 double distance = spans[0] < spans[1] ? spans[0] : spans[1];
                 for (LiteFeatureTypeStyle fts : styles) {
@@ -1188,17 +1187,17 @@ public class StreamingRenderer implements GTRenderer {
      * are capable. In this event we will manually stage the information into
      * {@link DefaultGeographicCRS#WGS84}) and before using this transform.
      */
-    private MathTransform2D buildFullTransform(CoordinateReferenceSystem sourceCRS,
+    private MathTransform buildFullTransform(CoordinateReferenceSystem sourceCRS,
             CoordinateReferenceSystem destCRS, AffineTransform worldToScreenTransform)
     throws FactoryException {
-        MathTransform2D mt = buildTransform(sourceCRS, destCRS);
+        MathTransform mt = buildTransform(sourceCRS, destCRS);
 
         // concatenate from world to screen
         if (mt != null && !mt.isIdentity()) {
-            mt = (MathTransform2D) ConcatenatedTransform
+            mt = ConcatenatedTransform
             .create(mt, ProjectiveTransform.create(worldToScreenTransform));
         } else {
-            mt = (MathTransform2D) ProjectiveTransform.create(worldToScreenTransform);
+            mt = ProjectiveTransform.create(worldToScreenTransform);
         }
 
         return mt;
@@ -1217,11 +1216,15 @@ public class StreamingRenderer implements GTRenderer {
      * @return the transform, or null if any of the crs is null, or if the the two crs are equal
      * @throws FactoryException If no transform is available to the destCRS
      */
-    private MathTransform2D buildTransform(CoordinateReferenceSystem sourceCRS,
+    private MathTransform buildTransform(CoordinateReferenceSystem sourceCRS,
             CoordinateReferenceSystem destCRS) throws FactoryException {
+        MathTransform transform = null;
         if( sourceCRS != null && sourceCRS.getCoordinateSystem().getDimension() >= 3 ){
             // We are going to transform over to DefaultGeographic.WGS84 on the fly
             // so we will set up our math transform to take it from there
+            MathTransform toWgs84_3d = CRS.findMathTransform( sourceCRS,  DefaultGeographicCRS.WGS84_3D );
+            MathTransform toWgs84_2d = CRS.findMathTransform( DefaultGeographicCRS.WGS84_3D, DefaultGeographicCRS.WGS84);
+            transform = ConcatenatedTransform.create(toWgs84_3d, toWgs84_2d);
             sourceCRS = DefaultGeographicCRS.WGS84;
         }
         // the basic crs transformation, if any
@@ -1233,7 +1236,16 @@ public class StreamingRenderer implements GTRenderer {
         else {
             mt = (MathTransform2D) CRS.findMathTransform(sourceCRS, destCRS, true);
         }
-        return mt;
+        
+        if(transform != null) {
+            if(mt == null) {
+                return transform;
+            } else {
+                return ConcatenatedTransform.create(transform, mt);
+            }
+        } else {
+            return mt;
+        }
     }
 
     /**
@@ -3174,13 +3186,12 @@ public class StreamingRenderer implements GTRenderer {
     
                 SymbolizerAssociation sa = (SymbolizerAssociation) symbolizerAssociationHT
                 .get(symbolizer);
-                MathTransform2D crsTransform = null;
-                MathTransform2D atTransform = null;
-                MathTransform2D fullTransform = null;
+                MathTransform crsTransform = null;
+                MathTransform atTransform = null;
+                MathTransform fullTransform = null;
                 if (sa == null) {
                     sa = new SymbolizerAssociation();
                     sa.crs = (findGeometryCS(layer, content, symbolizer));
-                    sa.forceWGS84 = sa.crs != null ? sa.crs.getCoordinateSystem().getDimension() >= 3 : false;
                     try {
                         crsTransform = buildTransform(sa.crs, destinationCrs);
                         atTransform = (MathTransform2D) ProjectiveTransform.create(worldToScreenTransform);
@@ -3196,12 +3207,6 @@ public class StreamingRenderer implements GTRenderer {
                     symbolizerAssociationHT.put(symbolizer, sa);
                 }
 
-                if( sa != null && sa.forceWGS84 != null && sa.forceWGS84 ){
-                    // We have been asked to force this intoDefaultGeographicCRS.WGS84
-                    // the remaining transforms are set up using WGS84 as a starting point
-                    // (since we are limited to MathTransform2D
-                    g = JTS.toGeographic( g, sa.crs );
-                }
                 // some shapes may be too close to projection boundaries to
                 // get transformed, try to be lenient
                 if (symbolizer instanceof PointSymbolizer) {
@@ -3255,7 +3260,8 @@ public class StreamingRenderer implements GTRenderer {
             // we need to clone if the clone flag is high or if the coordinate sequence is not the one we asked for
             Geometry geom = originalGeom;
             if(clone || !(geom.getFactory().getCoordinateSequenceFactory() instanceof LiteCoordinateSequenceFactory)) {
-                geom = LiteCoordinateSequence.cloneGeometry(geom);
+                int dim = sa.crs != null ? sa.crs.getCoordinateSystem().getDimension() : 2; 
+                geom = LiteCoordinateSequence.cloneGeometry(geom, dim);
             }
 
             LiteShape2 shape;
@@ -3285,7 +3291,7 @@ public class StreamingRenderer implements GTRenderer {
                     }
                 } 
             } else {
-                MathTransform2D xform = null;
+                MathTransform xform = null;
                 if(sa != null)
                     xform = sa.xform;
                 shape = new LiteShape2(geom, xform, getDecimator(xform), false, false);
@@ -3302,7 +3308,7 @@ public class StreamingRenderer implements GTRenderer {
         /**
          * @throws org.opengis.referencing.operation.NoninvertibleTransformException
          */
-        private Decimator getDecimator(MathTransform2D mathTransform) {
+        private Decimator getDecimator(MathTransform mathTransform) {
             // returns a decimator that does nothing if the currently set generalization
             // distance is zero (no generalization desired) or if the datastore has
             // already done full generalization at the desired level

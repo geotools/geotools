@@ -67,7 +67,7 @@ public class GeographicTransformPointTest extends TestCase {
     @Test
     public void testToGeographicGeometry() throws Exception {
         // This time we are in north / east order
-        CoordinateReferenceSystem gda94 = CRS.decode("EPSG:4939");
+        CoordinateReferenceSystem gda94 = CRS.decode("EPSG:4939", true);
         
         GeometryFactory gf = new GeometryFactory();
         Point point = gf.createPoint( new Coordinate( 130.882672103999, -16.4463909341494, 97.009018073082));

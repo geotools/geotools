@@ -1229,11 +1229,9 @@ public class StreamingRenderer implements GTRenderer {
         }
         // the basic crs transformation, if any
         MathTransform2D mt;
-        if (sourceCRS == null || destCRS == null || CRS.equalsIgnoreMetadata(sourceCRS,
-                destCRS)){
+        if (sourceCRS == null || destCRS == null || CRS.equalsIgnoreMetadata(sourceCRS, destCRS)) {
             mt = null;
-        }
-        else {
+        } else {
             mt = (MathTransform2D) CRS.findMathTransform(sourceCRS, destCRS, true);
         }
         

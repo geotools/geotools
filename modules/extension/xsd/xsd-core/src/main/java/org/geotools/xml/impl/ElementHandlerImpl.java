@@ -228,23 +228,28 @@ public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
             ((NodeImpl)node).collapseWhitespace();
         }
         
-        ParseExecutor executor = new ParseExecutor(element, node, getParentHandler().getContext(),
-                parser);
-        parser.getBindingWalker()
-              .walk(element.getElementDeclaration(), executor, container(),
-            getParentHandler().getContext());
-
-        //cache the parsed value
-        value = executor.getValue();
-
-        if (value == null) {
-            //TODO: instead of continuuing, just remove the element from 
-            // the parent, or figure out if the element is 'optional' and 
-            // remove
-            if (parser.getLogger().isLoggable(Level.FINE)) {
-                parser.getLogger().fine("Binding for " + element.getName() + " returned null");
+        if(isNil(element)) {
+            value = null;
+        } else {
+            ParseExecutor executor = new ParseExecutor(element, node, getParentHandler().getContext(),
+                    parser);
+            parser.getBindingWalker()
+                  .walk(element.getElementDeclaration(), executor, container(),
+                getParentHandler().getContext());
+        
+            //cache the parsed value
+            value = executor.getValue();
+        
+            if (value == null) {
+                //TODO: instead of continuing, just remove the element from 
+                // the parent, or figure out if the element is 'optional' and 
+                // remove
+                if (parser.getLogger().isLoggable(Level.FINE)) {
+                    parser.getLogger().fine("Binding for " + element.getName() + " returned null");
+                }
             }
         }
+        
 
         //set the value for this node in the parse tree
         node.setValue(value);
@@ -254,6 +259,21 @@ public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
 
         //kill the context
         parent.getContext().removeChildContainer(getContext());
+    }
+
+    /**
+     * Checks if a certain attribute is nil
+     * @param element
+     * @return
+     */
+    private boolean isNil(ElementImpl element) {
+        for(AttributeInstance att : element.getAttributes()) {
+            if("nil".equals(att.getName()) && "http://www.w3.org/2001/XMLSchema-instance".equals(att.getNamespace())) {
+                return "true".equals(att.getText());
+            }
+        }
+        
+        return false;
     }
 
     public Handler createChildHandler(QName qName) {

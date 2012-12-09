@@ -177,7 +177,15 @@ public class ReferencedEnvelopeTest {
 
         ReferencedEnvelope gda94Bounds3D = bounds.transform( gda94, true );
         assertEquals( gda94, gda94Bounds3D.getCoordinateReferenceSystem() );
-        
-        
+    }
+    
+    @Test
+    public void testExpandToIncludeNull() throws Exception {
+        ReferencedEnvelope r1 = new ReferencedEnvelope(DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope r2 = new ReferencedEnvelope(DefaultGeographicCRS.WGS84);
+        assertTrue(r1.isNull());
+        assertTrue(r2.isNull());
+        r1.expandToInclude(r2);
+        assertTrue(r1.isNull());
     }
 }

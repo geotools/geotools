@@ -97,4 +97,17 @@ public class SimpleTypeBuilderTest extends TestCase {
 		assertNull( type.getGeometryDescriptor().getType().getCoordinateReferenceSystem() );
 		assertEquals( DefaultGeographicCRS.WGS84, ((GeometryType)type.getType("point2")).getCoordinateReferenceSystem());
 	}
+	
+	
+	public void testAttributeDefaultValue() {
+	    SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+	    builder.setName("buggy");
+	    builder.nillable(false).defaultValue(12).add("attrWithDefault", Integer.class);
+	    builder.nillable(true).defaultValue(null).add("attrWithoutDefault", Integer.class);
+	    SimpleFeatureType featureType = builder.buildFeatureType();
+	    assertFalse(featureType.getDescriptor("attrWithDefault").isNillable());
+	    assertEquals(12, featureType.getDescriptor("attrWithDefault").getDefaultValue());
+	    assertTrue(featureType.getDescriptor("attrWithoutDefault").isNillable());
+	    assertNull(featureType.getDescriptor("attrWithoutDefault").getDefaultValue());
+	}
 }

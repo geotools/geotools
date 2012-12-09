@@ -960,13 +960,13 @@ public class DataUtilities {
             return UUID.fromString("00000000-0000-0000-0000-000000000000");
         }        
         if (type == Timestamp.class)
-            return new Timestamp(System.currentTimeMillis());
+            return new Timestamp(0);
         if (type == java.sql.Date.class)
-            return new java.sql.Date(System.currentTimeMillis());
+            return new java.sql.Date(0);
         if (type == java.sql.Time.class)
-            return new java.sql.Time(System.currentTimeMillis());
+            return new java.sql.Time(0);
         if (type == java.util.Date.class)
-            return new java.util.Date();
+            return new java.util.Date(0);
 
         GeometryFactory fac = new GeometryFactory();
         Coordinate coordinate = new Coordinate(0, 0);
@@ -978,17 +978,17 @@ public class DataUtilities {
         if (type == MultiPoint.class) {
             return fac.createMultiPoint(new Point[] { point });
         }
+        LineString lineString = fac.createLineString(new Coordinate[] { new Coordinate(0, 0), new Coordinate(0, 1) });
         if (type == LineString.class) {
-            return fac.createLineString(new Coordinate[] { coordinate, coordinate, coordinate,
-                    coordinate });
+            return lineString;
         }
-        LinearRing linearRing = fac.createLinearRing(new Coordinate[] { coordinate, coordinate,
-                coordinate, coordinate });
+        LinearRing linearRing = fac.createLinearRing(new Coordinate[] { new Coordinate(0, 0), new Coordinate(0, 1),
+                new Coordinate(1, 1), new Coordinate(1, 0), new Coordinate(0, 0)});
         if (type == LinearRing.class) {
             return linearRing;
         }
         if (type == MultiLineString.class) {
-            return fac.createMultiLineString(new LineString[] { linearRing });
+            return fac.createMultiLineString(new LineString[] { lineString });
         }
         Polygon polygon = fac.createPolygon(linearRing, new LinearRing[0]);
         if (type == Polygon.class) {

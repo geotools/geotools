@@ -224,6 +224,20 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         return super.visit(function, extraData);
     }
 
+    private String getPrimaryKeyColumnsAsCommaSeparatedList(List<PrimaryKeyColumn> pkColumns) {
+        StringBuffer sb = new StringBuffer();
+        boolean first = true;
+        for (PrimaryKeyColumn c : pkColumns) {
+            if (first) {
+                first = false;
+            } else {
+                sb.append(",");
+            }
+            dialect.encodeColumnName(c.getName(), sb);
+        }
+        return sb.toString();
+    }
+    
     private Object visit(FilterFunction_sdonn sdoNnQuery, Object extraData) {
         Expression geometryExp = getParameter(sdoNnQuery, 0, true);
         Expression sdoNumResExp = getParameter(sdoNnQuery, 1, true);
@@ -232,17 +246,16 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
 
         try {
             List<PrimaryKeyColumn> pkColumns = getPrimaryKey().getColumns();
-            if (pkColumns == null || pkColumns.size() != 1) {
+            if (pkColumns == null || pkColumns.size() == 0) {
                 throw new UnsupportedOperationException(
-                        "Unsupported usage of SDO_NN Oracle function: table with no primary key or with composite primary key");
+                        "Unsupported usage of SDO_NN Oracle function: table with no primary key");
             }
-            PrimaryKeyColumn pkColumn = pkColumns.get(0);
 
+            String pkColumnsAsString = getPrimaryKeyColumnsAsCommaSeparatedList(pkColumns);
+            
             StringBuffer sb = new StringBuffer();
-            dialect.encodeColumnName(pkColumn.getName(), sb);
-            sb.append(" in (select ");
-            dialect.encodeColumnName(pkColumn.getName(), sb);
-            sb.append(" from ");
+            sb.append(" (").append(pkColumnsAsString).append(")")
+                .append(" in (select ").append(pkColumnsAsString).append(" from ");
 
             if (getDatabaseSchema() != null) {
                 dialect.encodeSchemaName(getDatabaseSchema(), sb);

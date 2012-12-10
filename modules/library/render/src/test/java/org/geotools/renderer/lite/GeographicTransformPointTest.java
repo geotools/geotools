@@ -70,7 +70,9 @@ public class GeographicTransformPointTest extends TestCase {
         return new File("src/test/resources/org/geotools/renderer/lite/test-data/line/" + name
                 + ".png");
     }
-    @Ignore
+
+
+    @Test
     public void testBounds() throws Exception {
         ReferencedEnvelope bounds2d = point_test_2d.getBounds();
         ReferencedEnvelope bounds3d = point_test.getBounds();

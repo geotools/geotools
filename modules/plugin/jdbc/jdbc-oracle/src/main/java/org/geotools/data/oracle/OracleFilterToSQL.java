@@ -232,9 +232,9 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
 
         try {
             List<PrimaryKeyColumn> pkColumns = getPrimaryKey().getColumns();
-            if (pkColumns.size() > 1) {
+            if (pkColumns == null || pkColumns.size() != 1) {
                 throw new UnsupportedOperationException(
-                        "Unsupported usage of SDO_NN Oracle function: table with composite primary key");
+                        "Unsupported usage of SDO_NN Oracle function: table with no primary key or with composite primary key");
             }
             PrimaryKeyColumn pkColumn = pkColumns.get(0);
 

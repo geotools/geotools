@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  *   <li>{@link net.opengis.wcs20.impl.RequestBaseTypeImpl#getExtension <em>Extension</em>}</li>
  *   <li>{@link net.opengis.wcs20.impl.RequestBaseTypeImpl#getService <em>Service</em>}</li>
  *   <li>{@link net.opengis.wcs20.impl.RequestBaseTypeImpl#getVersion <em>Version</em>}</li>
+ *   <li>{@link net.opengis.wcs20.impl.RequestBaseTypeImpl#getBaseUrl <em>Base Url</em>}</li>
  * </ul>
  * </p>
  *
@@ -89,6 +90,26 @@ public abstract class RequestBaseTypeImpl extends EObjectImpl implements Request
      * @ordered
      */
     protected String version = VERSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getBaseUrl() <em>Base Url</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getBaseUrl()
+     * @generated
+     * @ordered
+     */
+    protected static final String BASE_URL_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getBaseUrl() <em>Base Url</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getBaseUrl()
+     * @generated
+     * @ordered
+     */
+    protected String baseUrl = BASE_URL_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -224,6 +245,27 @@ public abstract class RequestBaseTypeImpl extends EObjectImpl implements Request
      * <!-- end-user-doc -->
      * @generated
      */
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setBaseUrl(String newBaseUrl) {
+        String oldBaseUrl = baseUrl;
+        baseUrl = newBaseUrl;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.REQUEST_BASE_TYPE__BASE_URL, oldBaseUrl, baseUrl));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
@@ -247,6 +289,8 @@ public abstract class RequestBaseTypeImpl extends EObjectImpl implements Request
                 return getService();
             case Wcs20Package.REQUEST_BASE_TYPE__VERSION:
                 return getVersion();
+            case Wcs20Package.REQUEST_BASE_TYPE__BASE_URL:
+                return getBaseUrl();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -267,6 +311,9 @@ public abstract class RequestBaseTypeImpl extends EObjectImpl implements Request
                 return;
             case Wcs20Package.REQUEST_BASE_TYPE__VERSION:
                 setVersion((String)newValue);
+                return;
+            case Wcs20Package.REQUEST_BASE_TYPE__BASE_URL:
+                setBaseUrl((String)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -289,6 +336,9 @@ public abstract class RequestBaseTypeImpl extends EObjectImpl implements Request
             case Wcs20Package.REQUEST_BASE_TYPE__VERSION:
                 setVersion(VERSION_EDEFAULT);
                 return;
+            case Wcs20Package.REQUEST_BASE_TYPE__BASE_URL:
+                setBaseUrl(BASE_URL_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -307,6 +357,8 @@ public abstract class RequestBaseTypeImpl extends EObjectImpl implements Request
                 return isSetService();
             case Wcs20Package.REQUEST_BASE_TYPE__VERSION:
                 return VERSION_EDEFAULT == null ? version != null : !VERSION_EDEFAULT.equals(version);
+            case Wcs20Package.REQUEST_BASE_TYPE__BASE_URL:
+                return BASE_URL_EDEFAULT == null ? baseUrl != null : !BASE_URL_EDEFAULT.equals(baseUrl);
         }
         return super.eIsSet(featureID);
     }
@@ -325,6 +377,8 @@ public abstract class RequestBaseTypeImpl extends EObjectImpl implements Request
         if (serviceESet) result.append(service); else result.append("<unset>");
         result.append(", version: ");
         result.append(version);
+        result.append(", baseUrl: ");
+        result.append(baseUrl);
         result.append(')');
         return result.toString();
     }

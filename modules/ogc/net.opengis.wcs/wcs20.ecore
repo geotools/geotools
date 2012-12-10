@@ -856,6 +856,7 @@
         <details key="documentation" value="Specification version for WCS version and operation. See Version parameter Subclause 7.3.1 of OWS Common for more information."/>
       </eAnnotations>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="baseUrl" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/XMLType.ecore#//String"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ServiceMetadataType">
     <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">

@@ -2131,6 +2131,15 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EAttribute getGetCapabilitiesType_BaseUrl() {
+        return (EAttribute)getCapabilitiesTypeEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getGetResourceByIdType() {
         return getResourceByIdTypeEClass;
     }
@@ -3650,6 +3659,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
         createEReference(getCapabilitiesTypeEClass, GET_CAPABILITIES_TYPE__ACCEPT_FORMATS);
         createEReference(getCapabilitiesTypeEClass, GET_CAPABILITIES_TYPE__ACCEPT_LANGUAGES);
         createEAttribute(getCapabilitiesTypeEClass, GET_CAPABILITIES_TYPE__UPDATE_SEQUENCE);
+        createEAttribute(getCapabilitiesTypeEClass, GET_CAPABILITIES_TYPE__BASE_URL);
 
         getResourceByIdTypeEClass = createEClass(GET_RESOURCE_BY_ID_TYPE);
         createEAttribute(getResourceByIdTypeEClass, GET_RESOURCE_BY_ID_TYPE__RESOURCE_ID);
@@ -4061,6 +4071,7 @@ public class Ows20PackageImpl extends EPackageImpl implements Ows20Package {
         initEReference(getGetCapabilitiesType_AcceptFormats(), this.getAcceptFormatsType(), null, "acceptFormats", null, 0, 1, GetCapabilitiesType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getGetCapabilitiesType_AcceptLanguages(), this.getAcceptLanguagesType(), null, "acceptLanguages", null, 0, 1, GetCapabilitiesType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getGetCapabilitiesType_UpdateSequence(), this.getUpdateSequenceType(), "updateSequence", null, 0, 1, GetCapabilitiesType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getGetCapabilitiesType_BaseUrl(), theXMLTypePackage.getString(), "baseUrl", null, 0, 1, GetCapabilitiesType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(getResourceByIdTypeEClass, GetResourceByIdType.class, "GetResourceByIdType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getGetResourceByIdType_ResourceID(), theXMLTypePackage.getAnyURI(), "resourceID", null, 0, 1, GetResourceByIdType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

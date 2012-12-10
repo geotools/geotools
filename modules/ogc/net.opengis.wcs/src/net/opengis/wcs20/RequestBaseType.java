@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link net.opengis.wcs20.RequestBaseType#getExtension <em>Extension</em>}</li>
  *   <li>{@link net.opengis.wcs20.RequestBaseType#getService <em>Service</em>}</li>
  *   <li>{@link net.opengis.wcs20.RequestBaseType#getVersion <em>Version</em>}</li>
+ *   <li>{@link net.opengis.wcs20.RequestBaseType#getBaseUrl <em>Base Url</em>}</li>
  * </ul>
  * </p>
  *
@@ -133,5 +134,28 @@ public interface RequestBaseType extends EObject {
      * @generated
      */
     void setVersion(String value);
+    
+    /**
+     * Returns the value of the '<em><b>Base Url</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Base Url</em>' attribute isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Base Url</em>' attribute.
+     * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+     */
+    String getBaseUrl();
+
+    /**
+     * Sets the value of the '{@link net.opengis.wcs20.RequestBaseType#getBaseUrl <em>Base Url</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Base Url</em>' attribute.
+     * @see #getBaseUrl()
+     * @generated
+     */
+    void setBaseUrl(String value);
 
 } // RequestBaseType

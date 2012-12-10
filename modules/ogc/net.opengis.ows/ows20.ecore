@@ -1614,6 +1614,7 @@
         <details key="documentation" value="When omitted or not supported by server, server shall&#xA;        return latest complete service metadata document."/>
       </eAnnotations>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="baseUrl" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/XMLType.ecore#//String"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GetResourceByIdType">
     <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">

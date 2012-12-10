@@ -2553,13 +2553,22 @@ public interface Ows20Package extends EPackage {
     int GET_CAPABILITIES_TYPE__UPDATE_SEQUENCE = 4;
 
     /**
+     * The feature id for the '<em><b>Base Url</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int GET_CAPABILITIES_TYPE__BASE_URL = 5;
+
+    /**
      * The number of structural features of the '<em>Get Capabilities Type</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int GET_CAPABILITIES_TYPE_FEATURE_COUNT = 5;
+    int GET_CAPABILITIES_TYPE_FEATURE_COUNT = 6;
 
     /**
      * The meta object id for the '{@link net.opengis.ows20.impl.GetResourceByIdTypeImpl <em>Get Resource By Id Type</em>}' class.
@@ -6145,6 +6154,17 @@ public interface Ows20Package extends EPackage {
     EAttribute getGetCapabilitiesType_UpdateSequence();
 
     /**
+     * Returns the meta object for the attribute '{@link net.opengis.ows20.GetCapabilitiesType#getBaseUrl <em>Base Url</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Base Url</em>'.
+     * @see net.opengis.ows20.GetCapabilitiesType#getBaseUrl()
+     * @see #getGetCapabilitiesType()
+     * @generated
+     */
+    EAttribute getGetCapabilitiesType_BaseUrl();
+
+    /**
      * Returns the meta object for class '{@link net.opengis.ows20.GetResourceByIdType <em>Get Resource By Id Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -9064,6 +9084,14 @@ public interface Ows20Package extends EPackage {
          * @generated
          */
         EAttribute GET_CAPABILITIES_TYPE__UPDATE_SEQUENCE = eINSTANCE.getGetCapabilitiesType_UpdateSequence();
+
+        /**
+         * The meta object literal for the '<em><b>Base Url</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute GET_CAPABILITIES_TYPE__BASE_URL = eINSTANCE.getGetCapabilitiesType_BaseUrl();
 
         /**
          * The meta object literal for the '{@link net.opengis.ows20.impl.GetResourceByIdTypeImpl <em>Get Resource By Id Type</em>}' class.

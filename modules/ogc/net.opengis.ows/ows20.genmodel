@@ -216,6 +216,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows20.ecore#//GetCapabilitiesType/acceptFormats"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows20.ecore#//GetCapabilitiesType/acceptLanguages"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows20.ecore#//GetCapabilitiesType/updateSequence"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows20.ecore#//GetCapabilitiesType/baseUrl"/>
     </genClasses>
     <genClasses ecoreClass="ows20.ecore#//GetResourceByIdType">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows20.ecore#//GetResourceByIdType/resourceID"/>

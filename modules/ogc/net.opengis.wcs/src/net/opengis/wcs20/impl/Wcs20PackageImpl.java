@@ -1008,6 +1008,15 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EAttribute getRequestBaseType_BaseUrl() {
+        return (EAttribute)requestBaseTypeEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getServiceMetadataType() {
         return serviceMetadataTypeEClass;
     }
@@ -1279,6 +1288,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
         createEReference(requestBaseTypeEClass, REQUEST_BASE_TYPE__EXTENSION);
         createEAttribute(requestBaseTypeEClass, REQUEST_BASE_TYPE__SERVICE);
         createEAttribute(requestBaseTypeEClass, REQUEST_BASE_TYPE__VERSION);
+        createEAttribute(requestBaseTypeEClass, REQUEST_BASE_TYPE__BASE_URL);
 
         serviceMetadataTypeEClass = createEClass(SERVICE_METADATA_TYPE);
         createEAttribute(serviceMetadataTypeEClass, SERVICE_METADATA_TYPE__FORMAT_SUPPORTED);
@@ -1442,6 +1452,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
         initEReference(getRequestBaseType_Extension(), this.getExtensionType(), null, "extension", null, 0, 1, RequestBaseType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getRequestBaseType_Service(), theXMLTypePackage.getString(), "service", "WCS", 1, 1, RequestBaseType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getRequestBaseType_Version(), this.getVersionStringType_1(), "version", null, 1, 1, RequestBaseType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getRequestBaseType_BaseUrl(), theXMLTypePackage.getString(), "baseUrl", null, 0, 1, RequestBaseType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(serviceMetadataTypeEClass, ServiceMetadataType.class, "ServiceMetadataType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getServiceMetadataType_FormatSupported(), theXMLTypePackage.getAnyURI(), "formatSupported", null, 1, 1, ServiceMetadataType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

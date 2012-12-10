@@ -104,6 +104,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//RequestBaseType/extension"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//RequestBaseType/service"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//RequestBaseType/version"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//RequestBaseType/baseUrl"/>
     </genClasses>
     <genClasses ecoreClass="wcs20.ecore#//ServiceMetadataType">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//ServiceMetadataType/formatSupported"/>

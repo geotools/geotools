@@ -30,6 +30,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  *   <li>{@link net.opengis.ows20.impl.GetCapabilitiesTypeImpl#getAcceptFormats <em>Accept Formats</em>}</li>
  *   <li>{@link net.opengis.ows20.impl.GetCapabilitiesTypeImpl#getAcceptLanguages <em>Accept Languages</em>}</li>
  *   <li>{@link net.opengis.ows20.impl.GetCapabilitiesTypeImpl#getUpdateSequence <em>Update Sequence</em>}</li>
+ *   <li>{@link net.opengis.ows20.impl.GetCapabilitiesTypeImpl#getBaseUrl <em>Base Url</em>}</li>
  * </ul>
  * </p>
  *
@@ -95,6 +96,26 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * @ordered
      */
     protected String updateSequence = UPDATE_SEQUENCE_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getBaseUrl() <em>Base Url</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getBaseUrl()
+     * @generated
+     * @ordered
+     */
+    protected static final String BASE_URL_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getBaseUrl() <em>Base Url</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getBaseUrl()
+     * @generated
+     * @ordered
+     */
+    protected String baseUrl = BASE_URL_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -313,6 +334,27 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
      * <!-- end-user-doc -->
      * @generated
      */
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setBaseUrl(String newBaseUrl) {
+        String oldBaseUrl = baseUrl;
+        baseUrl = newBaseUrl;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, Ows20Package.GET_CAPABILITIES_TYPE__BASE_URL, oldBaseUrl, baseUrl));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
@@ -346,6 +388,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
                 return getAcceptLanguages();
             case Ows20Package.GET_CAPABILITIES_TYPE__UPDATE_SEQUENCE:
                 return getUpdateSequence();
+            case Ows20Package.GET_CAPABILITIES_TYPE__BASE_URL:
+                return getBaseUrl();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -372,6 +416,9 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
                 return;
             case Ows20Package.GET_CAPABILITIES_TYPE__UPDATE_SEQUENCE:
                 setUpdateSequence((String)newValue);
+                return;
+            case Ows20Package.GET_CAPABILITIES_TYPE__BASE_URL:
+                setBaseUrl((String)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -400,6 +447,9 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
             case Ows20Package.GET_CAPABILITIES_TYPE__UPDATE_SEQUENCE:
                 setUpdateSequence(UPDATE_SEQUENCE_EDEFAULT);
                 return;
+            case Ows20Package.GET_CAPABILITIES_TYPE__BASE_URL:
+                setBaseUrl(BASE_URL_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -422,6 +472,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
                 return acceptLanguages != null;
             case Ows20Package.GET_CAPABILITIES_TYPE__UPDATE_SEQUENCE:
                 return UPDATE_SEQUENCE_EDEFAULT == null ? updateSequence != null : !UPDATE_SEQUENCE_EDEFAULT.equals(updateSequence);
+            case Ows20Package.GET_CAPABILITIES_TYPE__BASE_URL:
+                return BASE_URL_EDEFAULT == null ? baseUrl != null : !BASE_URL_EDEFAULT.equals(baseUrl);
         }
         return super.eIsSet(featureID);
     }
@@ -438,6 +490,8 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (updateSequence: ");
         result.append(updateSequence);
+        result.append(", baseUrl: ");
+        result.append(baseUrl);
         result.append(')');
         return result.toString();
     }

@@ -29,6 +29,7 @@ import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.Style;
 import org.geotools.test.TestData;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -56,15 +57,20 @@ public class GeographicTransformPointTest extends TestCase {
         File property = new File(TestData.getResource(this, "point_test.properties").toURI());
         PropertyDataStore ds = new PropertyDataStore(property.getParentFile());
         point_test = ds.getFeatureSource("point_test");
+        assertNotNull( "point_test data available", point_test );
+        
         point_test_strict = ds.getFeatureSource("point_test_strict");
+        assertNotNull( "point_test_strict data available", point_test_strict );
+        
         point_test_2d = ds.getFeatureSource("point_test_2d");
+        assertNotNull( "point_test_2d data available", point_test_2d );
     }
     
     File file(String name) {
         return new File("src/test/resources/org/geotools/renderer/lite/test-data/line/" + name
                 + ".png");
     }
-    @Test
+    @Ignore
     public void testBounds() throws Exception {
         ReferencedEnvelope bounds2d = point_test_2d.getBounds();
         ReferencedEnvelope bounds3d = point_test.getBounds();
@@ -77,9 +83,7 @@ public class GeographicTransformPointTest extends TestCase {
         
         aspect2d = bbox2d.getWidth() / bbox2d.getHeight();
         aspect3d = bbox3d.getWidth() / bbox3d.getHeight();
-        assertEquals( aspect2d, aspect3d, 0.0005 );
-        
-        
+        assertEquals( aspect2d, aspect3d, 0.000005 );
     }
     @Test
     public void testToGeographicGeometry() throws Exception {
@@ -127,11 +131,17 @@ public class GeographicTransformPointTest extends TestCase {
         assertFalse(typeName + " world empty", bounds.isEmpty());
         assertFalse(typeName + " world null", bounds.isNull());
         
-        ReferencedEnvelope reference = point_test_2d.getBounds();
-        
+        ReferencedEnvelope reference = JTS.toGeographic( point_test_2d.getBounds() );
+        assertNotNull( "reference point_test_2d bounds", reference );
+        assertTrue( "reference point_test_2d bounds available", !reference.isEmpty() && !reference.isNull() );
+        assertTrue(
+                "bounds WGS84",
+                CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84,reference.getCoordinateReferenceSystem()));
+
         content.getViewport().setBounds(reference);
-        assertTrue(CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84, content.getViewport()
-                .getCoordinateReferenceSystem()));
+        assertEquals( "map viewport set", reference, content.getViewport().getBounds() );
+        assertTrue( "map viewport WGS84", 
+                CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84,content.getCoordinateReferenceSystem()) );
         
         content.addLayer( new FeatureLayer( featuerSource, style ));
         

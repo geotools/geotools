@@ -85,7 +85,7 @@ public class GeographicTransformPointTest extends TestCase {
         aspect3d = bbox3d.getWidth() / bbox3d.getHeight();
         assertEquals( aspect2d, aspect3d, 0.000005 );
     }
-    @Ignore
+    @Test
     public void testToGeographicGeometry() throws Exception {
         // This time we are in north / east order
         CoordinateReferenceSystem gda94 = CRS.decode("EPSG:4939", true);

@@ -17,18 +17,41 @@
 package org.geotools.renderer.lite;
 
 
+import org.geotools.factory.Hints;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform2D;
+import org.opengis.referencing.operation.MathTransform;
 
 /**
- * Seems to be a cache of fun information associated with the Symbolizer.
+ * Cache of context information associated with the Symbolizer.
+ * <p>
+ * Examples of context information include the transformations
+ * employed at different stages of the rendering pileline.
  * 
  * @source $URL$
  */
-class SymbolizerAssociation
-{
-     public MathTransform2D  xform = null;
-     public MathTransform2D  crsxform = null;
+class SymbolizerAssociation{
+    /**
+     * Full transform from data {@link #crs} through to viewport CRS followed throug
+     * to the screen.
+     */
+     public MathTransform  xform = null;
+     
+     /**
+      * Initial transform between data {@link #crs} and viewport CRS.
+      */
+     public MathTransform  crsxform = null;
+     
+     /**
+      * The source CooridinateReferenceSystem used for the individual Geometries.
+      * <p>
+      * Although we request Geometry information with {@link Hints#FEATURE_2D} the
+      * geometry may still be provided with with 3D ordinates. In this case
+      * we will need to post process the information into 2D for rendering.
+      */
      public CoordinateReferenceSystem crs = null;
-	 public MathTransform2D axform;
+     
+     /**
+      * Transform used between viewport CRS through to the screen.
+      */
+     public MathTransform axform;
 }

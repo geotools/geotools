@@ -430,8 +430,10 @@ public class PropertyDataStoreTest extends TestCase {
         Query q = new Query("road");
         q.setMaxFeatures(2);
         assertEquals(2, road.getCount(q));
+        // the feature type is geometryless!
         assertTrue(road.getBounds(Query.ALL).isNull());
         assertEquals(5, features.size());
+        // the feature type is geometryless!
         assertTrue(features.getBounds().isNull());
         assertEquals(5, features.size());
 

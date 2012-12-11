@@ -15,7 +15,8 @@
  <xsd:complexType name="mailType">
   <xsd:sequence>
    <xsd:element name="envelope" type="ml:envelopeType"/>
-   <xsd:element name="body" type="ml:bodyType"/>
+   <xsd:element name="body" type="ml:bodyType" nillable="true"/>
+   <xsd:element name="sequenceNumber" type="xsd:int" nillable="true" minOccurs="0"/>
    <xsd:element maxOccurs="unbounded" minOccurs="0" name="attachment" type="ml:attachmentType"/>
   </xsd:sequence>
   <xsd:attribute name="id" type="xsd:integer" use="required"/>

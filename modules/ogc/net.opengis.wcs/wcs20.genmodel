@@ -84,7 +84,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//DocumentRoot/serviceParameters"/>
     </genClasses>
     <genClasses ecoreClass="wcs20.ecore#//ExtensionType">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wcs20.ecore#//ExtensionType/any"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wcs20.ecore#//ExtensionType/contents"/>
     </genClasses>
     <genClasses ecoreClass="wcs20.ecore#//GetCapabilitiesType">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//GetCapabilitiesType/service"/>
@@ -116,5 +116,11 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wcs20.ecore#//ServiceParametersType/extension"/>
     </genClasses>
     <genClasses image="false" ecoreClass="wcs20.ecore#//Object"/>
+    <genClasses ecoreClass="wcs20.ecore#//ExtensionItemType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//ExtensionItemType/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//ExtensionItemType/namespace"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EAttribute wcs20.ecore#//ExtensionItemType/simpleContent"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wcs20.ecore#//ExtensionItemType/objectContent"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

@@ -1,9 +1,14 @@
 package org.geotools.wcs.v2_0;
 
 import static org.junit.Assert.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import net.opengis.wcs20.DimensionSliceType;
 import net.opengis.wcs20.DimensionSubsetType;
 import net.opengis.wcs20.DimensionTrimType;
+import net.opengis.wcs20.ExtensionItemType;
 import net.opengis.wcs20.GetCoverageType;
 
 import org.eclipse.emf.common.util.EList;
@@ -92,6 +97,29 @@ public class GetCoverageTest {
         // format
         assertEquals("application/gml+xml", gc.getFormat());
         assertEquals("multipart/related", gc.getMediaType());
+    }
+    
+    @Test
+    public void testParseGetCoverageGeotiff() throws Exception {
+        String capRequestPath = "requestGetCoverageGeotiff.xml";
+        GetCoverageType gc = (GetCoverageType) parser.parse(getClass()
+                .getResourceAsStream(capRequestPath));
+        
+        // collect extensions
+        Map<String, Object> extensions = new HashMap<String, Object>();
+        for (ExtensionItemType item : gc.getExtension().getContents()) {
+            assertEquals("http://www.opengis.net/wcs/geotiff/1.0", item.getNamespace());
+            extensions.put(item.getName(), item.getSimpleContent());
+        }
+        
+        // check values
+        assertEquals("JPEG", extensions.get("compression"));
+        assertEquals("75", extensions.get("jpeg_quality"));
+        assertEquals("None", extensions.get("predictor"));
+        assertEquals("pixel", extensions.get("interleave"));
+        assertEquals("true", extensions.get("tiling"));
+        assertEquals("256", extensions.get("tileheight"));
+        assertEquals("256", extensions.get("tilewidth"));
     }
 
 

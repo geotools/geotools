@@ -18,6 +18,7 @@ import net.opengis.wcs20.DimensionSliceType;
 import net.opengis.wcs20.DimensionSubsetType;
 import net.opengis.wcs20.DimensionTrimType;
 import net.opengis.wcs20.DocumentRoot;
+import net.opengis.wcs20.ExtensionItemType;
 import net.opengis.wcs20.ExtensionType;
 import net.opengis.wcs20.GetCapabilitiesType;
 import net.opengis.wcs20.GetCoverageType;
@@ -159,6 +160,8 @@ public class Wcs20Validator extends EObjectValidator {
                 return validateServiceParametersType((ServiceParametersType)value, diagnostics, context);
             case Wcs20Package.OBJECT:
                 return validateObject((Object)value, diagnostics, context);
+            case Wcs20Package.EXTENSION_ITEM_TYPE:
+                return validateExtensionItemType((ExtensionItemType)value, diagnostics, context);
             case Wcs20Package.VERSION_STRING_TYPE:
                 return validateVersionStringType((String)value, diagnostics, context);
             case Wcs20Package.VERSION_STRING_TYPE_1:
@@ -348,6 +351,15 @@ public class Wcs20Validator extends EObjectValidator {
      */
     public boolean validateObject(Object object, DiagnosticChain diagnostics, Map<Object, Object> context) {
         return validate_EveryDefaultConstraint((EObject)object, diagnostics, context);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateExtensionItemType(ExtensionItemType extensionItemType, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validate_EveryDefaultConstraint(extensionItemType, diagnostics, context);
     }
 
     /**

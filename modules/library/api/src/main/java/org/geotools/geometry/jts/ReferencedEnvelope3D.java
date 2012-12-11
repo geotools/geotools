@@ -186,7 +186,15 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
 	public void init(Coordinate p) {
 		init(p.x, p.x, p.y, p.y, p.z, p.z);
 	}
-
+	@Override
+	public void init(Envelope env) {
+	    super.init(env);
+	    if( env instanceof BoundingBox3D ){
+	        this.minz = ((BoundingBox3D)env).getMinZ();
+	        this.maxz = ((BoundingBox3D)env).getMaxZ();
+	    }
+	}
+	
 	/**
 	 * Initialize an <code>Envelope</code> from an existing 3D Envelope.
 	 * 

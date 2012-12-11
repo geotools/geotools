@@ -16,6 +16,7 @@
  */
 package org.geotools.data.shapefile;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
@@ -99,5 +100,50 @@ public class ShapefileDataStoreFactoryTest extends TestCaseSupport {
         
         sortBy[0] = ff.sort( "the_geom", SortOrder.ASCENDING );
         assertFalse( "Cannot sort the_geom", caps.supportsSorting( sortBy ));
+    }
+    
+    @Test
+    public void testEnableIndexParameter() throws Exception {
+       KVP params;
+       DataStore ds;
+
+       // remote (jar file) shapefiles
+       URL remoteUrl  = TestData.url(STATE_POP);
+       
+       // local shapefiles (copied out of jar)
+       File f = copyShapefiles(STATE_POP);
+       URL localUrl  = f.toURI().toURL();
+       
+       // test remote file has spatial index disabled even if requested
+       params = new KVP(URLP.key, remoteUrl, ENABLE_SPATIAL_INDEX.key, true);
+       ds = factory.createDataStore(params);
+       assertNotNull("Null datastore should not be returned", ds);
+       assertTrue("should be a non indexed shapefile", 
+               ds instanceof org.geotools.data.shapefile.ShapefileDataStore);
+       ds.dispose();      
+
+       // test default has spatial index enabled
+       params = new KVP(URLP.key, localUrl);
+       ds = factory.createDataStore(params);
+       assertNotNull("Null datastore should not be returned", ds);
+       assertTrue("should be a indexed shapefile", 
+               ds instanceof org.geotools.data.shapefile.indexed.IndexedShapefileDataStore);
+       ds.dispose();     
+       
+       // test disable works
+       params = new KVP(URLP.key, localUrl, ENABLE_SPATIAL_INDEX.key, false);
+       ds =factory.createDataStore(params);
+       assertNotNull("Null datastore should not be returned", ds);
+       assertTrue("should be a non indexed shapefile", 
+               ds instanceof org.geotools.data.shapefile.ShapefileDataStore);
+       ds.dispose();
+       
+       // text explicit enable works
+       params = new KVP(URLP.key, localUrl, ENABLE_SPATIAL_INDEX.key, true);
+       ds =factory.createDataStore(params);
+       assertNotNull("Null datastore should not be returned", ds);
+       assertTrue("should be a indexed shapefile", 
+               ds instanceof org.geotools.data.shapefile.indexed.IndexedShapefileDataStore);
+       ds.dispose();       
     }
 }

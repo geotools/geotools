@@ -1,6 +1,6 @@
 package org.geotools.renderer.lite;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -15,6 +15,8 @@ import org.geotools.TestData;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.property.PropertyDataStore;
+import org.geotools.factory.GeoTools;
+import org.geotools.factory.Hints;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.gce.geotiff.GeoTiffReader;
@@ -26,6 +28,7 @@ import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
 import org.geotools.renderer.RenderListener;
 import org.geotools.styling.Style;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
@@ -39,6 +42,13 @@ public class RenderingTransformationTest {
     @Before
     public void setup() {
         // System.setProperty("org.geotools.test.interactive", "true");
+        System.setProperty( GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER, "false" );
+        CRS.reset("all");
+    }
+
+    @After
+    public void tearDown() {
+        Hints.removeSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
     }
 
     @Test

@@ -235,19 +235,20 @@ public class AttributeTypeBuilder {
 		description = null;
 		isIdentifiable = false;
 		binding = null;
-		defaultValue = null;
 		superType = null;
 		crs = null;
 		length = null;
 		isCrsSet = false;
-		isDefaultValueSet = false;
 	}
 	
 	protected void resetDescriptorState() {
+	        resetTypeState();
 		minOccurs = null;
 		maxOccurs = null;
 		isNillable = true;
 		userData = new HashMap();
+		defaultValue = null; 
+		isDefaultValueSet = false; 
 	}
 	
 	public AttributeTypeBuilder setFactory(FeatureTypeFactory factory) {
@@ -295,17 +296,6 @@ public class AttributeTypeBuilder {
 	
 	public void setBinding(Class binding) {
 		this.binding = binding;
-		
-		//JD: tidbit here
-		if ( !isDefaultValueSet ) {
-		    //genereate a good default value based on class
-		    try {
-		        defaultValue = DataUtilities.defaultValue(binding);
-		    }
-		    catch( Exception e ) {
-		        //do nothing
-		    }
-		}
 	}
 
 	public void setName(String name) {

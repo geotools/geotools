@@ -2,9 +2,11 @@
  */
 package net.opengis.wcs20;
 
-import org.eclipse.emf.ecore.EObject;
+import java.lang.Object;
+import org.eclipse.emf.common.util.EList;
+import java.util.List;
 
-import org.eclipse.emf.ecore.util.FeatureMap;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -14,7 +16,7 @@ import org.eclipse.emf.ecore.util.FeatureMap;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link net.opengis.wcs20.ExtensionType#getAny <em>Any</em>}</li>
+ *   <li>{@link net.opengis.wcs20.ExtensionType#getContents <em>Contents</em>}</li>
  * </ul>
  * </p>
  *
@@ -24,20 +26,18 @@ import org.eclipse.emf.ecore.util.FeatureMap;
  */
 public interface ExtensionType extends EObject {
     /**
-     * Returns the value of the '<em><b>Any</b></em>' attribute list.
-     * The list contents are of type {@link org.eclipse.emf.ecore.util.FeatureMap.Entry}.
+     * Returns the value of the '<em><b>Contents</b></em>' reference list.
+     * The list contents are of type {@link java.lang.Object}.
      * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Any</em>' attribute list isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Any</em>' attribute list.
-     * @see net.opengis.wcs20.Wcs20Package#getExtensionType_Any()
-     * @model unique="false" dataType="org.eclipse.emf.ecore.EFeatureMapEntry" many="true"
-     *        extendedMetaData="kind='elementWildcard' wildcards='##other' name=':0' processing='lax'"
-     * @generated
+     * @return the value of the '<em>Contents</em>' reference list.
+     * @see net.opengis.wcs20.Wcs20Package#getExtensionType_Contents()
+     * @model extendedMetaData="kind='elementWildcard' wildcards='##other' name=':0' processing='lax'"
      */
-    FeatureMap getAny();
+    EList<ExtensionItemType> getContents();
 
 } // ExtensionType

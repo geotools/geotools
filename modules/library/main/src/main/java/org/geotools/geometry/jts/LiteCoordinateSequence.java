@@ -19,6 +19,7 @@ package org.geotools.geometry.jts;
 import java.util.ArrayList;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
@@ -160,6 +161,26 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence {
         
     }
 
+    public LiteCoordinateSequence(CoordinateSequence cs, int dimension) {
+        this.size = cs.size();
+        this.dimension = dimension;
+        
+        if(cs instanceof LiteCoordinateSequence) {
+            double[] orig = ((LiteCoordinateSequence) cs).getOrdinateArray(dimension);
+            this.coords = new double[orig.length];
+            System.arraycopy(orig, 0, coords, 0, coords.length);
+        } else {
+            this.coords = new double[size * dimension];
+            int minDimension = Math.min(dimension, cs.getDimension());
+            for (int i = 0; i < size; i++) {
+                for (int j = 0; j < minDimension; j++) {
+                    coords[i * dimension + j] = cs.getOrdinate(i, j);
+                }
+            }
+        }
+        
+    }
+
     /**
      * @see com.vividsolutions.jts.geom.CoordinateSequence#getCoordinate(int)
      */
@@ -270,8 +291,9 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence {
 	 */
 	public double[] getXYArray()
 	{
-		if (dimension==2)  //this is always true
+		if (dimension == 2) {  
 			return coords;
+		}
 		// this should never run, but its here for the future...
 		int n = size();
 		double[] result = new double[n*2];
@@ -283,123 +305,84 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence {
 		return result;
 	}
 	
+	public double[] getOrdinateArray(int dimensions) {
+        if(dimensions == this.dimension) {
+            return coords;
+        }
+        
+        int n = size();
+        double[] result = new double[n * dimensions];
+        int minDimensions = Math.min(dimensions, this.dimension);
+        for (int t = 0; t < n; t++) {
+            for (int d = 0; d < minDimensions; d++) {
+                result[t * 2 + d] = getOrdinate(t, d);
+            }
+        }
+        return result;
+    }
+	
+	/**
+	 * Clones the specified geometry using {@link LiteCoordinateSequence} in the result, with the
+	 * specified number of dimensions
+	 * 
+	 * @param geom
+	 * @param dimension
+	 * @return
+	 */
+	public static Geometry cloneGeometry(Geometry geom, int dimension) {
+	    if(dimension < 2) {
+	        throw new IllegalArgumentException("Invalid dimension value, must be >= 2");
+	    }
+	    
+	    if(geom == null)
+            return null;
+        
+        if (geom instanceof LineString) {
+            return cloneGeometry((LineString) geom, dimension);
+        } else if (geom instanceof Polygon) {
+            return cloneGeometry((Polygon) geom, dimension);
+        } else if (geom instanceof Point) {
+            return cloneGeometry((Point) geom, dimension);
+        } else {
+            return cloneGeometry((GeometryCollection) geom, dimension);
+        }
+    }
+	
 	/**
 	 * Clones the specified geometry using {@link LiteCoordinateSequence} in the result
 	 * @param geom
 	 * @return
 	 */
     public static final Geometry cloneGeometry(Geometry geom) {
-        if(geom == null)
-            return null;
-        
-        if (geom.getFactory().getCoordinateSequenceFactory() instanceof LiteCoordinateSequenceFactory) {
-            if (geom instanceof LineString)
-                return cloneGeometryLCS((LineString) geom);
-            else if (geom instanceof Polygon)
-                return cloneGeometryLCS((Polygon) geom);
-            else if (geom instanceof Point)
-                return cloneGeometryLCS((Point) geom);
-            else
-                return cloneGeometryLCS((GeometryCollection) geom);
-        } else {
-            if (geom instanceof LineString)
-                return cloneGeometry((LineString) geom);
-            else if (geom instanceof Polygon)
-                return cloneGeometry((Polygon) geom);
-            else if (geom instanceof Point)
-                return cloneGeometry((Point) geom);
-            else
-                return cloneGeometry((GeometryCollection) geom);
-        }
+        return cloneGeometry(geom, 2);
     }
-
     /**
      * changes this to a new CSF -- more efficient than the JTS way
      * 
      * @param geom
      */
-    private static final Geometry cloneGeometryLCS(Polygon geom) {
-        LinearRing lr = (LinearRing) cloneGeometryLCS((LinearRing) geom.getExteriorRing());
+    private static final Geometry cloneGeometry(Polygon geom, int dimension) {
+        LinearRing lr = (LinearRing) cloneGeometry((LinearRing) geom.getExteriorRing(), dimension);
         LinearRing[] rings = new LinearRing[geom.getNumInteriorRing()];
         for (int t = 0; t < rings.length; t++) {
-            rings[t] = (LinearRing) cloneGeometryLCS((LinearRing) geom.getInteriorRingN(t));
+            rings[t] = (LinearRing) cloneGeometry((LinearRing) geom.getInteriorRingN(t), dimension);
         }
         return geomFac.createPolygon(lr, rings);
     }
 
-    private static final Geometry cloneGeometryLCS(Point geom) {
-        return geomFac.createPoint(new LiteCoordinateSequence((LiteCoordinateSequence) geom
-                .getCoordinateSequence()));
+    private static final Geometry cloneGeometry(Point geom, int dimension) {
+        return geomFac.createPoint(new LiteCoordinateSequence(geom.getCoordinateSequence(), dimension));
     }
 
-    private static final Geometry cloneGeometryLCS(LineString geom) {
-        return geomFac.createLineString(new LiteCoordinateSequence((LiteCoordinateSequence) geom
-                .getCoordinateSequence()));
+    private static final Geometry cloneGeometry(LineString geom, int dimension) {
+        return geomFac.createLineString(new LiteCoordinateSequence(geom.getCoordinateSequence(), dimension));
     }
 
-    private static final Geometry cloneGeometryLCS(LinearRing geom) {
-        return geomFac.createLinearRing(new LiteCoordinateSequence((LiteCoordinateSequence) geom
-                .getCoordinateSequence()));
+    private static final Geometry cloneGeometry(LinearRing geom, int dimension) {
+        return geomFac.createLinearRing(new LiteCoordinateSequence(geom.getCoordinateSequence(), dimension));
     }
 
-    private static final Geometry cloneGeometryLCS(GeometryCollection geom) {
-        if (geom.getNumGeometries() == 0) {
-            Geometry[] gs = new Geometry[0];
-            return geomFac.createGeometryCollection(gs);
-        }
-
-        ArrayList gs = new ArrayList(geom.getNumGeometries());
-        int n = geom.getNumGeometries();
-        Class geomType = geom.getGeometryN(0).getClass();
-        for (int t = 0; t < n; t++) {
-            Geometry clone = cloneGeometry(geom.getGeometryN(t));
-            if(clone.getClass() != geomType) {
-                geomType = null;
-            }
-            gs.add(t, clone);
-        }
-        
-        if(geomType == Point.class) {
-            return geomFac.createMultiPoint((Point[]) gs.toArray(new Point[gs.size()]));
-        } else if(geomType == LineString.class) {
-            return geomFac.createMultiLineString((LineString[]) gs.toArray(new LineString[gs.size()]));
-        } else if(geomType == Polygon.class) {
-            return geomFac.createMultiPolygon((Polygon[]) gs.toArray(new Polygon[gs.size()]));
-        } else {
-            return geomFac.buildGeometry(gs);
-        }
-    }
-
-    /**
-     * changes this to a new CSF -- more efficient than the JTS way
-     * 
-     * @param geom
-     */
-    private static final Geometry cloneGeometry(Polygon geom) {
-        LinearRing lr = (LinearRing) cloneGeometry((LinearRing) geom.getExteriorRing());
-        LinearRing[] rings = new LinearRing[geom.getNumInteriorRing()];
-        for (int t = 0; t < rings.length; t++) {
-            rings[t] = (LinearRing) cloneGeometry((LinearRing) geom.getInteriorRingN(t));
-        }
-        return geomFac.createPolygon(lr, rings);
-    }
-
-    private static final Geometry cloneGeometry(Point geom) {
-        return geomFac
-                .createPoint(new LiteCoordinateSequence((Coordinate[]) geom.getCoordinates()));
-    }
-
-    private static final Geometry cloneGeometry(LineString geom) {
-        return geomFac.createLineString(new LiteCoordinateSequence((Coordinate[]) geom
-                .getCoordinates()));
-    }
-
-    private static final Geometry cloneGeometry(LinearRing geom) {
-        return geomFac.createLinearRing(new LiteCoordinateSequence((Coordinate[]) geom
-                .getCoordinates()));
-    }
-
-    private static final Geometry cloneGeometry(GeometryCollection geom) {
+    private static final Geometry cloneGeometry(GeometryCollection geom, int dimension) {
         if (geom.getNumGeometries() == 0) {
             Geometry[] gs = new Geometry[0];
             return geomFac.createGeometryCollection(gs);
@@ -408,9 +391,33 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence {
         ArrayList gs = new ArrayList(geom.getNumGeometries());
         int n = geom.getNumGeometries();
         for (int t = 0; t < n; t++) {
-            gs.add(cloneGeometry(geom.getGeometryN(t)));
+            gs.add(cloneGeometry(geom.getGeometryN(t), dimension));
         }
         return geomFac.buildGeometry(gs);
     }
-	
+
+    
+    public String toString() {
+      if (size > 0) {
+        StringBuffer strBuf = new StringBuffer((9 * dimension)  * size);
+        strBuf.append('(');
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < dimension; j++) {
+                strBuf.append(coords[i * dimension + j]);
+                if(j < dimension - 1) {
+                    strBuf.append(" ");
+                }
+            }
+            if(i < size - 1) {
+                strBuf.append(", ");
+            }
+        }
+        strBuf.append(')');
+        return strBuf.toString();
+      } else {
+        return "()";
+      }
+    }
+    
+
 }

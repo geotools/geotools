@@ -104,7 +104,7 @@ public class SpatialFilterTest {
     
     @After
     public void tearDown() {
-        Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE);
+        Hints.removeSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
     }
 
     @Test

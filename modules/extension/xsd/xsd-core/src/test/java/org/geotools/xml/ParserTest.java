@@ -57,6 +57,19 @@ public class ParserTest extends TestCase {
 
         assertEquals(0, parser.getValidationErrors().size());
     }
+    
+    public void testParseNull() throws Exception {
+        Parser parser = new Parser(new MLConfiguration());
+        parser.setValidating(true);
+        List mails = (List) parser.parse(MLSchemaLocationResolver.class.getResourceAsStream("null-mail.xml"));
+
+        assertEquals(0, parser.getValidationErrors().size());
+        assertEquals(1, mails.size());
+        
+        Mail mail = (Mail) mails.get(0);
+        assertNull(mail.getBody());
+    }
+
 
     public void testParseInValid() throws Exception {
         Parser parser = new Parser(new MLConfiguration());

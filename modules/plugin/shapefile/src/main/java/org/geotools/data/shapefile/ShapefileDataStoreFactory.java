@@ -104,6 +104,14 @@ public class ShapefileDataStoreFactory extends AbstractDataStoreFactory implemen
             new KVP(Param.LEVEL,"advanced") );
 
     /**
+     * Optional - enable spatial index for local files
+     */
+    public static final Param ENABLE_SPATIAL_INDEX = new Param(
+            "enable spatial index", Boolean.class,
+            "enable/disable the use of spatial index for local shapefiles", false, true,
+            new KVP(Param.LEVEL, "advanced") );
+    
+    /**
      * Optional - Enable/disable the automatic creation of spatial index
      */
     public static final Param CREATE_SPATIAL_INDEX = new Param(
@@ -157,7 +165,7 @@ public class ShapefileDataStoreFactory extends AbstractDataStoreFactory implemen
     public static final Param FSTYPE = new Param("fstype",
             String.class, "Enable 'shape' or 'index'.", false, "shape",
             new KVP(Param.LEVEL, "advanced", Param.OPTIONS, Arrays.asList(new String[]{"shape","index"})));
-
+    
     /**
      * Takes a map of parameters which describes how to access a DataStore and
      * determines if it can be read by the ShapefileDataStore or
@@ -243,8 +251,12 @@ public class ShapefileDataStoreFactory extends AbstractDataStoreFactory implemen
         URI namespace = (URI) NAMESPACEP.lookUp(params);
         Charset dbfCharset = (Charset) DBFCHARSET.lookUp(params);
         TimeZone dbfTimeZone = (TimeZone) DBFTIMEZONE.lookUp(params);
-        Boolean isCreateSpatialIndex = (Boolean) CREATE_SPATIAL_INDEX
-                .lookUp(params);
+        Boolean isCreateSpatialIndex = (Boolean) CREATE_SPATIAL_INDEX.lookUp(params);
+        Boolean isEnableSpatialIndex = (Boolean) ENABLE_SPATIAL_INDEX.lookUp(params);
+        if (isEnableSpatialIndex == null) {
+            // should not be needed as default is TRUE
+            isEnableSpatialIndex = Boolean.TRUE;
+        }
         if (isCreateSpatialIndex == null) {
             // should not be needed as default is TRUE
             assert (true);
@@ -278,13 +290,14 @@ public class ShapefileDataStoreFactory extends AbstractDataStoreFactory implemen
             boolean isLocal = shpFiles.isLocal();
             boolean useMemoryMappedBuffer = isLocal
                     && isMemoryMapped.booleanValue();
+            boolean enableIndex = isEnableSpatialIndex.booleanValue() && isLocal;
             boolean createIndex = isCreateSpatialIndex.booleanValue() && isLocal;
     
             try {
             	ShapefileDataStore store;
-                if (createIndex) {
+                if (enableIndex) {
                     store = new IndexedShapefileDataStore(url, namespace,
-                            useMemoryMappedBuffer, cacheMemoryMaps, true, IndexType.QIX, dbfCharset);
+                            useMemoryMappedBuffer, cacheMemoryMaps, createIndex, IndexType.QIX, dbfCharset);
                 } else {
                     store = new ShapefileDataStore(url, namespace,
                             useMemoryMappedBuffer, cacheMemoryMaps, dbfCharset);
@@ -361,7 +374,7 @@ public class ShapefileDataStoreFactory extends AbstractDataStoreFactory implemen
      * @see org.geotools.data.DataStoreFactorySpi#getParametersInfo()
      */
     public Param[] getParametersInfo() {
-        return new Param[] { URLP, NAMESPACEP, CREATE_SPATIAL_INDEX,
+        return new Param[] { URLP, NAMESPACEP, ENABLE_SPATIAL_INDEX, CREATE_SPATIAL_INDEX,
                 DBFCHARSET, DBFTIMEZONE, MEMORY_MAPPED, CACHE_MEMORY_MAPS, FILE_TYPE, FSTYPE };
     }
 

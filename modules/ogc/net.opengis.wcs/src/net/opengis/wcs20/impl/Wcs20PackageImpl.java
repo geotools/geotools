@@ -19,6 +19,7 @@ import net.opengis.wcs20.DimensionSliceType;
 import net.opengis.wcs20.DimensionSubsetType;
 import net.opengis.wcs20.DimensionTrimType;
 import net.opengis.wcs20.DocumentRoot;
+import net.opengis.wcs20.ExtensionItemType;
 import net.opengis.wcs20.ExtensionType;
 import net.opengis.wcs20.GetCapabilitiesType;
 import net.opengis.wcs20.GetCoverageType;
@@ -187,6 +188,13 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * @generated
      */
     private EClass objectEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass extensionItemTypeEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -856,8 +864,8 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getExtensionType_Any() {
-        return (EAttribute)extensionTypeEClass.getEStructuralFeatures().get(0);
+    public EReference getExtensionType_Contents() {
+        return (EReference)extensionTypeEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -1081,6 +1089,51 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EClass getExtensionItemType() {
+        return extensionItemTypeEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getExtensionItemType_Name() {
+        return (EAttribute)extensionItemTypeEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getExtensionItemType_Namespace() {
+        return (EAttribute)extensionItemTypeEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getExtensionItemType_SimpleContent() {
+        return (EAttribute)extensionItemTypeEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getExtensionItemType_ObjectContent() {
+        return (EReference)extensionItemTypeEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EDataType getVersionStringType() {
         return versionStringTypeEDataType;
     }
@@ -1206,7 +1259,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
         createEReference(documentRootEClass, DOCUMENT_ROOT__SERVICE_PARAMETERS);
 
         extensionTypeEClass = createEClass(EXTENSION_TYPE);
-        createEAttribute(extensionTypeEClass, EXTENSION_TYPE__ANY);
+        createEReference(extensionTypeEClass, EXTENSION_TYPE__CONTENTS);
 
         getCapabilitiesTypeEClass = createEClass(GET_CAPABILITIES_TYPE);
         createEAttribute(getCapabilitiesTypeEClass, GET_CAPABILITIES_TYPE__SERVICE);
@@ -1238,6 +1291,12 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
         createEReference(serviceParametersTypeEClass, SERVICE_PARAMETERS_TYPE__EXTENSION);
 
         objectEClass = createEClass(OBJECT);
+
+        extensionItemTypeEClass = createEClass(EXTENSION_ITEM_TYPE);
+        createEAttribute(extensionItemTypeEClass, EXTENSION_ITEM_TYPE__NAME);
+        createEAttribute(extensionItemTypeEClass, EXTENSION_ITEM_TYPE__NAMESPACE);
+        createEAttribute(extensionItemTypeEClass, EXTENSION_ITEM_TYPE__SIMPLE_CONTENT);
+        createEReference(extensionItemTypeEClass, EXTENSION_ITEM_TYPE__OBJECT_CONTENT);
 
         // Create data types
         versionStringTypeEDataType = createEDataType(VERSION_STRING_TYPE);
@@ -1363,7 +1422,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
         initEReference(getDocumentRoot_ServiceParameters(), this.getServiceParametersType(), null, "serviceParameters", null, 0, -2, null, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 
         initEClass(extensionTypeEClass, ExtensionType.class, "ExtensionType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getExtensionType_Any(), theEcorePackage.getEFeatureMapEntry(), "any", null, 0, -1, ExtensionType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getExtensionType_Contents(), this.getExtensionItemType(), null, "contents", null, 0, -1, ExtensionType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(getCapabilitiesTypeEClass, GetCapabilitiesType.class, "GetCapabilitiesType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getGetCapabilitiesType_Service(), theOws20Package.getServiceType(), "service", "WCS", 1, 1, GetCapabilitiesType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1371,7 +1430,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
         initEClass(getCoverageTypeEClass, GetCoverageType.class, "GetCoverageType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getGetCoverageType_CoverageId(), theXMLTypePackage.getNCName(), "coverageId", null, 1, 1, GetCoverageType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getGetCoverageType_DimensionSubsetGroup(), theEcorePackage.getEFeatureMapEntry(), "dimensionSubsetGroup", null, 0, -1, GetCoverageType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getGetCoverageType_DimensionSubset(), this.getDimensionSubsetType(), null, "dimensionSubset", null, 0, -1, GetCoverageType.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+        initEReference(getGetCoverageType_DimensionSubset(), this.getDimensionSubsetType(), null, "dimensionSubset", null, 0, -1, GetCoverageType.class, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
         initEAttribute(getGetCoverageType_Format(), theXMLTypePackage.getAnyURI(), "format", null, 0, 1, GetCoverageType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getGetCoverageType_MediaType(), theXMLTypePackage.getAnyURI(), "mediaType", null, 0, 1, GetCoverageType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -1395,6 +1454,12 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
         initEReference(getServiceParametersType_Extension(), this.getExtensionType(), null, "extension", null, 0, 1, ServiceParametersType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(objectEClass, Object.class, "Object", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+
+        initEClass(extensionItemTypeEClass, ExtensionItemType.class, "ExtensionItemType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getExtensionItemType_Name(), ecorePackage.getEString(), "name", null, 0, 1, ExtensionItemType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getExtensionItemType_Namespace(), ecorePackage.getEString(), "namespace", null, 0, 1, ExtensionItemType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getExtensionItemType_SimpleContent(), ecorePackage.getEString(), "simpleContent", null, 0, 1, ExtensionItemType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getExtensionItemType_ObjectContent(), this.getObject(), null, "objectContent", null, 0, 1, ExtensionItemType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize data types
         initEDataType(versionStringTypeEDataType, String.class, "VersionStringType", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
@@ -2427,7 +2492,7 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
              "kind", "elementOnly"
            });		
         addAnnotation
-          (getExtensionType_Any(), 
+          (getExtensionType_Contents(), 
            source, 
            new String[] {
              "kind", "elementWildcard",

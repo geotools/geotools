@@ -37,6 +37,8 @@ import org.geotools.resources.Classes;
 import org.geotools.resources.geometry.ShapeUtilities;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
+import org.opengis.annotation.Specification;
+import org.opengis.annotation.UML;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -47,6 +49,8 @@ import org.opengis.referencing.cs.CoordinateSystemAxis;
 import org.opengis.referencing.operation.CoordinateOperation;
 import org.opengis.referencing.operation.CoordinateOperationFactory;
 import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.Matrix;
+import org.opengis.referencing.operation.NoninvertibleTransformException;
 import org.opengis.referencing.operation.OperationNotFoundException;
 import org.opengis.referencing.operation.TransformException;
 
@@ -310,7 +314,9 @@ public final class JTS {
         
         final double zmin = sourceEnvelope.getMinimum(2);
         final double zmax = sourceEnvelope.getMaximum(2);
-        final double z = (zmax-zmin) / 2; // just average is fine as we are trying to remove height
+        final double scaleZ = (zmax - zmin) / npoints;
+        
+        //final double z = (zmax-zmin) / 2; // just average is fine as we are trying to remove height
         
         ReferencedEnvelope targetEnvelope = new ReferencedEnvelope( targetCRS );
         
@@ -320,8 +326,9 @@ public final class JTS {
          */
         CoordinateOperationFactory coordinateOperationFactory = CRS
                 .getCoordinateOperationFactory(lenient);
+        CoordinateReferenceSystem sourceCRS = sourceEnvelope.getCoordinateReferenceSystem();
         CoordinateOperation operation1 = coordinateOperationFactory.createOperation(
-                sourceEnvelope.getCoordinateReferenceSystem(), DefaultGeographicCRS.WGS84);
+                sourceCRS, DefaultGeographicCRS.WGS84_3D);
         MathTransform transform1 = operation1.getMathTransform();
         final CoordinateOperation operation2 = coordinateOperationFactory.createOperation(
                 DefaultGeographicCRS.WGS84, targetCRS);
@@ -330,26 +337,31 @@ public final class JTS {
         for( int t = 0; t < npoints; t++ ){
             double dx = scaleX * t;
             double dy = scaleY * t;
-            
-            GeneralDirectPosition position = new GeneralDirectPosition( sourceEnvelope.getCoordinateReferenceSystem());
-            position.setOrdinate(0, xmin );
-            position.setOrdinate(1, ymin+dy);
-            position.setOrdinate(2, z );
-            
-            DirectPosition pt = transformTo2D( position, transform1, transform2 );
-            targetEnvelope.expandToInclude(pt);
-            
-            GeneralDirectPosition top = new GeneralDirectPosition( xmin+dx, ymax, z);
-            pt = transformTo2D( top, transform1, transform2 );
-            targetEnvelope.expandToInclude(pt);
-            
-            GeneralDirectPosition right = new GeneralDirectPosition( xmax, ymin-dy, z);
-            pt = transformTo2D( right, transform1, transform2 );
-            targetEnvelope.expandToInclude(pt);
-            
-            GeneralDirectPosition bottom = new GeneralDirectPosition( xmax-dx, ymax, z);
-            pt = transformTo2D( bottom, transform1, transform2 );
-            targetEnvelope.expandToInclude(pt);
+            for( int u = 0; u < npoints; u++ ){
+                double dz = scaleZ * u;
+                double z = zmin+dz;
+
+                GeneralDirectPosition left = new GeneralDirectPosition(xmin, ymin+dy, z );
+                
+                DirectPosition pt = transformTo2D( left, transform1, transform2 );
+                targetEnvelope.expandToInclude(pt);
+                
+                GeneralDirectPosition top = new GeneralDirectPosition( xmin+dx, ymax, z );
+                pt = transformTo2D( top, transform1, transform2 );
+                targetEnvelope.expandToInclude(pt);
+                
+                GeneralDirectPosition right = new GeneralDirectPosition( xmax, ymax-dy, z);
+                pt = transformTo2D( right, transform1, transform2 );
+                targetEnvelope.expandToInclude(pt);
+                
+                GeneralDirectPosition bottom = new GeneralDirectPosition( xmax-dx, ymax, z);
+                pt = transformTo2D( bottom, transform1, transform2 );
+                targetEnvelope.expandToInclude(pt);
+                
+                if (zmin == zmax) {
+                    break; // only need one z sample
+                }
+            }
         }
         return targetEnvelope;
     }
@@ -468,14 +480,17 @@ public final class JTS {
     }
 
     /**
-     * Transforms the envelope from its current crs to WGS84 coordinate reference system. If the
+     * Transforms the envelope from its current crs to {@link DefaultGeographicCRS#WGS84}. If the
      * specified envelope is already in WGS84, then it is returned unchanged.
-     * 
+     * <p>
+     * The method {@link CRS#equalsIgnoreMetadata(Object, Object)} is used to compare the numeric values
+     * and axis order (so {@code CRS.decode("CRS.84")} or {@code CRS.decode("4326",true)} 
+     * provide an appropriate match).
      * @param envelope
      *            The envelope to transform.
      * @param crs
      *            The CRS the envelope is currently in.
-     * @return The envelope transformed to be in WGS84 CRS.
+     * @return The envelope transformed to be in {@link DefaultGeographicCRS#WGS84}.
      * @throws TransformException
      *             If at least one coordinate can't be transformed.
      */
@@ -1047,7 +1062,50 @@ public final class JTS {
 
         return factory.createPolygon(factory.createLinearRing(coordinates), null);
     }
-
+    
+    /**
+     * Transforms the geometry from its current crs to {@link DefaultGeographicCRS#WGS84}. If the
+     * specified geometry is already in WGS84, then it is returned unchanged.
+     * <p>
+     * The method {@link CRS#equalsIgnoreMetadata(Object, Object)} is used to compare the numeric values
+     * and axis order (so {@code CRS.decode("CRS.84")} or {@code CRS.decode("4326",true)} 
+     * provide an appropriate match).
+     * @param geom
+     *            The geometry to transform.
+     * @param crs
+     *            The CRS the geometry is currently in.
+     * @return The geometry transformed to be in {@link DefaultGeographicCRS#WGS84}.
+     * @throws TransformException
+     *             If at least one coordinate can't be transformed.
+     */
+    public static Geometry toGeographic( Geometry geom, final CoordinateReferenceSystem crs ) throws TransformException {
+        if( crs == null ){
+            return geom;
+        }
+        if( crs.getCoordinateSystem().getDimension() >= 3 ){
+            try {
+                MathTransform transform = CRS.findMathTransform( crs,  DefaultGeographicCRS.WGS84_3D );
+                Geometry geometry = transform( geom, transform );
+                
+                return geometry; // The extra Z values will be ignored
+            } catch (FactoryException exception) {
+                throw new TransformException(Errors.format(
+                        ErrorKeys.CANT_REPROJECT_$1, crs));
+            }
+        }
+        else if ( CRS.equalsIgnoreMetadata( crs,  DefaultGeographicCRS.WGS84 ) ){
+            return geom;
+        }
+        else {
+            try {
+                MathTransform transform = CRS.findMathTransform( crs,  DefaultGeographicCRS.WGS84 );
+                return transform( geom, transform );
+            } catch (FactoryException exception) {
+                throw new TransformException(Errors.format(
+                        ErrorKeys.CANT_REPROJECT_$1, crs));
+            }
+        }
+    }
     /**
      * Converts a {@link BoundingBox} to a JTS polygon.
      * <p>

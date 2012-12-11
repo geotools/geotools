@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2012, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -21,16 +21,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.FilterFactoryImpl;
+import org.geotools.filter.function.FilterFunction_sdonn;
+import org.geotools.filter.text.cql2.CQL;
+import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
+import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.jdbc.SQLDialect;
 import org.opengis.filter.Filter;
+import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
@@ -66,21 +72,17 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
+
 /**
  * Oracle specific filter encoder.
  * 
  * @author Justin Deoliveira, OpenGEO
  * @author Andrea Aime, OpenGEO
- *
- *
+ * @author Davide Savazzi, GeoSolutions
  *
  * @source $URL$
  */
 public class OracleFilterToSQL extends PreparedFilterToSQL {
-    
-    /** Logger - for logging */
-    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(
-            "org.geotools.filter.SQLEncoderOracle");
 
     /** Contains filter type to SDO_RELATE mask type mappings */
     private static final Map<Class, String> SDO_RELATE_MASK_MAP = new HashMap<Class, String>() {
@@ -157,6 +159,8 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         caps.addType(DWithin.class);
         caps.addType(Beyond.class);
         
+        caps.addType(FilterFunction_sdonn.class);
+        
         //temporal filters
         caps.addType(After.class);
         caps.addType(Before.class);
@@ -169,6 +173,180 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         caps.addType(TEquals.class);
         
         return caps;
+    }
+    
+    @Override 
+    public Object visit(PropertyIsEqualTo filter, Object extraData) {
+        FilterFunction_sdonn sdoNnQuery = getSDO_NN_Query(filter);
+        if (sdoNnQuery != null) {
+            return visit(sdoNnQuery, extraData);
+        } else {
+            return super.visit(filter, extraData);
+        }
+    }
+
+    private FilterFunction_sdonn getSDO_NN_Query(PropertyIsEqualTo filter) {
+        Expression expr1 = filter.getExpression1();
+        Expression expr2 = filter.getExpression2();
+
+        if (expr2 instanceof FilterFunction_sdonn) {
+            // switch position
+            Expression tmp = expr1;
+            expr1 = expr2;
+            expr2 = tmp;
+        }
+
+        if (expr1 instanceof FilterFunction_sdonn) {
+            if (!(expr2 instanceof Literal)) {
+                throw new UnsupportedOperationException(
+                        "Unsupported usage of SDO_NN Oracle function: property must be TRUE");
+            }
+
+            Boolean nearest = (Boolean) evaluateLiteral((Literal) expr2, Boolean.class);
+            if (nearest == null || !nearest.booleanValue()) {
+                throw new UnsupportedOperationException(
+                        "Unsupported usage of SDO_NN Oracle function: property must be TRUE");
+            }
+
+            return (FilterFunction_sdonn) expr1;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public Object visit(Function function, Object extraData) {
+        if (function instanceof FilterFunction_sdonn) {
+            throw new UnsupportedOperationException(
+                    "Unsupported usage of SDO_NN Oracle function: must be used in a Equals Filter");
+        }
+
+        return super.visit(function, extraData);
+    }
+
+    private String getPrimaryKeyColumnsAsCommaSeparatedList(List<PrimaryKeyColumn> pkColumns) {
+        StringBuffer sb = new StringBuffer();
+        boolean first = true;
+        for (PrimaryKeyColumn c : pkColumns) {
+            if (first) {
+                first = false;
+            } else {
+                sb.append(",");
+            }
+            dialect.encodeColumnName(c.getName(), sb);
+        }
+        return sb.toString();
+    }
+    
+    private Object visit(FilterFunction_sdonn sdoNnQuery, Object extraData) {
+        Expression geometryExp = getParameter(sdoNnQuery, 0, true);
+        Expression sdoNumResExp = getParameter(sdoNnQuery, 1, true);
+        Expression cqlLiteralExp = getParameter(sdoNnQuery, 2, false);
+        Expression sdoBatchSizeExp = getParameter(sdoNnQuery, 3, false);
+
+        try {
+            List<PrimaryKeyColumn> pkColumns = getPrimaryKey().getColumns();
+            if (pkColumns == null || pkColumns.size() == 0) {
+                throw new UnsupportedOperationException(
+                        "Unsupported usage of SDO_NN Oracle function: table with no primary key");
+            }
+
+            String pkColumnsAsString = getPrimaryKeyColumnsAsCommaSeparatedList(pkColumns);
+            
+            StringBuffer sb = new StringBuffer();
+            sb.append(" (").append(pkColumnsAsString).append(")")
+                .append(" in (select ").append(pkColumnsAsString).append(" from ");
+
+            if (getDatabaseSchema() != null) {
+                dialect.encodeSchemaName(getDatabaseSchema(), sb);
+                sb.append(".");
+            }
+
+            dialect.encodeTableName(getPrimaryKey().getTableName(), sb);
+
+            sb.append(" where SDO_NN(");
+
+            // geometry column name
+            dialect.encodeColumnName(featureType.getGeometryDescriptor().getLocalName(), sb);
+            sb.append(",");
+
+            // reference geometry
+            Geometry geomValue = (Geometry) evaluateLiteral((Literal) geometryExp, Geometry.class);
+            sb.append("?");
+            literalValues.add(clipToWorldFeatureTypeGeometry(geomValue));
+            literalTypes.add(Geometry.class);
+            SRIDs.add(getFeatureTypeGeometrySRID());
+
+            int sdo_num_res = getIntFromLiteral((Literal) sdoNumResExp);
+            if (sdoBatchSizeExp != null) {
+                // if sdo_batch_size is specified, sdo_num_res keyword is ignored
+                int sdo_batch_size = getIntFromLiteral((Literal) sdoBatchSizeExp); 
+                sb.append(",'sdo_batch_size=" + sdo_batch_size + "'");
+            } else if (cqlLiteralExp == null) {
+                sb.append(",'sdo_num_res=" + sdo_num_res + "'");
+            }
+
+            sb.append(") = 'TRUE' ");
+
+            if (cqlLiteralExp != null) {
+                try {
+                    sb.append("AND ");
+                    
+                    // flush
+                    out.write(sb.toString());
+                    sb.setLength(0);
+
+                    Filter cqlExp = CQL.toFilter((String) evaluateLiteral((Literal) cqlLiteralExp, String.class));
+                    cqlExp.accept(this, extraData);
+                } catch (CQLException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+
+            // if sdo_batch_size is specified, sdo_num_res keyword is ignored by SDO_NN function
+            // if cqlExp is specified, we can't use sdo_num_res
+            if (sdoBatchSizeExp != null || cqlLiteralExp != null) {
+                sb.append(" AND ROWNUM <= " + sdo_num_res);
+            }
+
+            sb.append(")");
+
+            out.write(sb.toString());
+
+        } catch (IOException ioe) {
+            throw new RuntimeException(IO_ERROR, ioe);
+        }
+
+        return extraData;
+    }
+
+    private int getIntFromLiteral(Literal literal) {
+        return ((Number) evaluateLiteral(literal, Number.class)).intValue();
+    }
+    
+    private Geometry clipToWorldFeatureTypeGeometry(Geometry geom) {
+        // Oracle cannot deal with filters using geometries that span beyond the whole world
+        if (isFeatureTypeGeometryGeodetic() && !WORLD.contains(geom.getEnvelopeInternal())) {
+            Geometry result = geom.intersection(JTS.toGeometry(WORLD));
+            if (result != null && !result.isEmpty()) {
+                if (result instanceof GeometryCollection) {
+                    result = distillSameTypeGeometries((GeometryCollection) result, geom);
+                } 
+                return result;
+            }
+        }
+        return geom;
+    }    
+    
+    private Integer getFeatureTypeGeometrySRID() {
+        return (Integer) featureType.getGeometryDescriptor().getUserData()
+                .get(JDBCDataStore.JDBC_NATIVE_SRID);
+    }
+	
+    private boolean isFeatureTypeGeometryGeodetic() {
+        Boolean geodetic = (Boolean) featureType.getGeometryDescriptor().getUserData()
+                .get(OracleDialect.GEODETIC);
+        return geodetic != null && geodetic;
     }
     
     @Override
@@ -222,7 +400,7 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         }
         return e;
     }
-
+    
     /**
      * Returns true if the current geometry has the geodetic marker raised
      * @return

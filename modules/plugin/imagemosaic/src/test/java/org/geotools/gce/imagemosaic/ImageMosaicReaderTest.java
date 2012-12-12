@@ -111,7 +111,7 @@ public class ImageMosaicReaderTest extends Assert{
 
 	private URL timeURL;
 	
-	private URL timeDimensionsURL;
+	private URL timeAdditionalDomainsURL;
 
 	private URL imposedEnvelopeURL;
 	
@@ -601,7 +601,6 @@ public class ImageMosaicReaderTest extends Assert{
 	}	
 	
 	/**
-         * 
          * @throws IOException
          * @throws FactoryException 
          * @throws NoSuchAuthorityCodeException 
@@ -613,45 +612,32 @@ public class ImageMosaicReaderTest extends Assert{
 //      @Ignore
         public void timeAdditionalDim() throws IOException, NoSuchAuthorityCodeException, FactoryException, ParseException {
                
-                final AbstractGridFormat format = TestUtils.getFormat(timeDimensionsURL);
-                ImageMosaicReader reader = TestUtils.getReader(timeDimensionsURL, format);
-            
+                final AbstractGridFormat format = TestUtils.getFormat(timeAdditionalDomainsURL);
+                ImageMosaicReader reader = TestUtils.getReader(timeAdditionalDomainsURL, format);
+
                 final String[] metadataNames = reader.getMetadataNames();
                 assertNotNull(metadataNames);
                 assertEquals(metadataNames.length,14);
                 assertEquals("true", reader.getMetadataValue("HAS_DATE_DOMAIN"));
-                assertEquals("20081031T,20081101T", reader.getMetadataValue("DATE_DOMAIN"));
+                assertEquals("20081031T000000,20081101T000000", reader.getMetadataValue("DATE_DOMAIN"));
                 assertEquals("true", reader.getMetadataValue("HAS_WAVELENGTH_DOMAIN"));
-                assertEquals("20081031T000000,20081101T000000", reader.getMetadataValue("WAVELENGTH_DOMAIN"));
-                
-                // limit yourself to reading just a bit of it
-                final ParameterValue<GridGeometry2D> gg =  AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-                final GeneralEnvelope envelope = reader.getOriginalEnvelope();
-                final Dimension dim= new Dimension();
-                dim.setSize(reader.getOriginalGridRange().getSpan(0)/2.0, reader.getOriginalGridRange().getSpan(1)/2.0);
-                final Rectangle rasterArea=(( GridEnvelope2D)reader.getOriginalGridRange());
-                rasterArea.setSize(dim);
-                final GridEnvelope2D range= new GridEnvelope2D(rasterArea);
-                gg.setValue(new GridGeometry2D(range,envelope));
-                
+                assertEquals("false", reader.getMetadataValue("HAS_ELEVATION_DOMAIN"));
+                assertEquals("020,100", reader.getMetadataValue("WAVELENGTH_DOMAIN"));
+
                 // use imageio with defined tiles
                 final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
                 useJai.setValue(false);
                 final ParameterValue<String> tileSize = AbstractGridFormat.SUGGESTED_TILE_SIZE.createValue();
                 tileSize.setValue("128,128");
-                
+
                 // specify time
-                final ParameterValue<List> dimension = ImageMosaicFormat.ADDITIONAL_DOMAIN.createValue();
-                
-                dimension.setValue(new ArrayList(){{add("date=20081031T");}});
-                
+                final ParameterValue<List> domain = ImageMosaicFormat.ADDITIONAL_DOMAIN.createValue();
+                List<String> domains = new ArrayList<String>(2);
+                domains.add("date=20081031T000000");
+                domains.add("wavelength=020");
+                domain.setValue(domains);
                 // Test the output coverage
-                TestUtils.checkCoverage(reader, new GeneralParameterValue[] {gg,useJai ,tileSize, dimension}, "domain test");
-                
-                // specify time range
-                // Test the output coverage
-                reader = TestUtils.getReader(timeURL, format);
-                
+                TestUtils.checkCoverage(reader, new GeneralParameterValue[] {useJai ,tileSize, domain}, "domain test");
         }
 	
 	
@@ -1000,7 +986,7 @@ public class ImageMosaicReaderTest extends Assert{
 		heterogeneousGranulesURL = TestData.url(this, "heterogeneous");
 		timeURL = TestData.url(this, "time_geotiff");
 		
-		timeDimensionsURL = TestData.url(this, "timeDimgeotiff");
+		timeAdditionalDomainsURL = TestData.url(this, "time_additionaldomains");
 		
 		overviewURL = TestData.url(this, "overview/");
 		rgbAURL = TestData.url(this, "rgba/");

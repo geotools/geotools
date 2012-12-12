@@ -870,7 +870,7 @@ class RasterLayerResponse{
 			final MosaicBuilder visitor = new MosaicBuilder(request);
 			final List times = request.getRequestedTimes();
 			final List elevations=request.getElevation();
-			final List additionalDomains = request.getAdditionalDomain();
+			final List additionalDomains = request.getRequestedAdditionalDomains();
 			final Filter filter = request.getFilter();
 			final boolean hasTime=(times!=null&&times.size()>0);
 			final boolean hasElevation=(elevations!=null && elevations.size()>0);
@@ -963,8 +963,8 @@ class RasterLayerResponse{
                                                                 FeatureUtilities.DEFAULT_FILTER_FACTORY.greaterOrEqual(
                                                                         FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.timeAttribute), 
                                                                         FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(range.getMinValue()))
-                                                        )); 
-                                            }                                                
+                                                        ));
+                                            }
 
                                         }
                                         final int sizeTime=timeFilter.size();
@@ -976,22 +976,21 @@ class RasterLayerResponse{
                                             if(sizeTime==1)
                                                 query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.and(query.getFilter(), timeFilter.get(0)));
                                 }
-                                
+
                                 if (hasAdditionalDomains){
-                                    
                                     final List<Filter> additionalFilter=new ArrayList<Filter>();
-                                    for( Object domain: additionalDomains){
-                                        if(domain==null){
+                                    for (Object domain: additionalDomains){
+                                        if (domain == null){
                                             if(LOGGER.isLoggable(Level.INFO))
                                                 LOGGER.info("Ignoring null domain for the additional domain filter");
                                             continue;
                                         }
-                                        //TODO: Add support for more types
+                                        //TODO: Add support for more types (currently only Strings are supported)
                                         additionalFilter.add(rasterManager.parent.additionalDomainManager.createFilter((String)domain));
-                                        
+
                                     }
-                                    //TODO: add support for more than one dimension
-                                    query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.and(query.getFilter(), additionalFilter.get(0)));        
+                                    //TODO: add support for more values for each domain
+                                    query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.and(query.getFilter(), FeatureUtilities.DEFAULT_FILTER_FACTORY.and(additionalFilter)));
                             }
 
                         }

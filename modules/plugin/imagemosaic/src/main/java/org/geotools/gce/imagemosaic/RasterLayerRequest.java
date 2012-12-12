@@ -159,7 +159,7 @@ class RasterLayerRequest {
 
 	private List<?> elevation;
 	
-	private List<?> additionalDomain; // For the moment, only support single element values
+	private List<?> requestedAdditionalDomains; // For the moment, only support single element values
 	
 	private Filter filter;
 
@@ -170,8 +170,8 @@ class RasterLayerRequest {
 		return elevation;
 	}
 
-	public List<?> getAdditionalDomain() {
-        return additionalDomain;
+	public List<?> getRequestedAdditionalDomains() {
+        return requestedAdditionalDomains;
     }
 
     public String getSortClause() {
@@ -739,7 +739,7 @@ class RasterLayerRequest {
             final Object value = param.getValue();
             if(value==null)
                     return;
-            additionalDomain = (List<?>) value;
+            requestedAdditionalDomains = (List<?>) value;
             return;
         }            
 

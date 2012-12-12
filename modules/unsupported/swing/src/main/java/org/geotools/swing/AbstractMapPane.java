@@ -815,7 +815,7 @@ public abstract class AbstractMapPane extends JPanel
             Layer layer = event.getElement();
 
             if (layer instanceof ComponentListener) {
-                addComponentListener((ComponentListener) layer);
+                removeComponentListener((ComponentListener) layer);
             }
 
             if (mapContent.layers().isEmpty()) {

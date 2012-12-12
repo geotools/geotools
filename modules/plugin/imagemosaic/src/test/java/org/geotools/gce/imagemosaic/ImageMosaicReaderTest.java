@@ -110,6 +110,8 @@ public class ImageMosaicReaderTest extends Assert{
 	static boolean INTERACTIVE;
 
 	private URL timeURL;
+	
+	private URL timeDimensionsURL;
 
 	private URL imposedEnvelopeURL;
 	
@@ -598,6 +600,61 @@ public class ImageMosaicReaderTest extends Assert{
 		
 	}	
 	
+	/**
+         * 
+         * @throws IOException
+         * @throws FactoryException 
+         * @throws NoSuchAuthorityCodeException 
+         * @throws MismatchedDimensionException
+         * @throws NoSuchAuthorityCodeException
+         * @throws ParseException 
+         */
+        @Test
+//      @Ignore
+        public void timeAdditionalDim() throws IOException, NoSuchAuthorityCodeException, FactoryException, ParseException {
+               
+                final AbstractGridFormat format = TestUtils.getFormat(timeDimensionsURL);
+                ImageMosaicReader reader = TestUtils.getReader(timeDimensionsURL, format);
+            
+                final String[] metadataNames = reader.getMetadataNames();
+                assertNotNull(metadataNames);
+                assertEquals(metadataNames.length,14);
+                assertEquals("true", reader.getMetadataValue("HAS_DATE_DOMAIN"));
+                assertEquals("20081031T,20081101T", reader.getMetadataValue("DATE_DOMAIN"));
+                assertEquals("true", reader.getMetadataValue("HAS_WAVELENGTH_DOMAIN"));
+                assertEquals("20081031T000000,20081101T000000", reader.getMetadataValue("WAVELENGTH_DOMAIN"));
+                
+                // limit yourself to reading just a bit of it
+                final ParameterValue<GridGeometry2D> gg =  AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+                final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+                final Dimension dim= new Dimension();
+                dim.setSize(reader.getOriginalGridRange().getSpan(0)/2.0, reader.getOriginalGridRange().getSpan(1)/2.0);
+                final Rectangle rasterArea=(( GridEnvelope2D)reader.getOriginalGridRange());
+                rasterArea.setSize(dim);
+                final GridEnvelope2D range= new GridEnvelope2D(rasterArea);
+                gg.setValue(new GridGeometry2D(range,envelope));
+                
+                // use imageio with defined tiles
+                final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
+                useJai.setValue(false);
+                final ParameterValue<String> tileSize = AbstractGridFormat.SUGGESTED_TILE_SIZE.createValue();
+                tileSize.setValue("128,128");
+                
+                // specify time
+                final ParameterValue<List> dimension = ImageMosaicFormat.ADDITIONAL_DOMAIN.createValue();
+                
+                dimension.setValue(new ArrayList(){{add("date=20081031T");}});
+                
+                // Test the output coverage
+                TestUtils.checkCoverage(reader, new GeneralParameterValue[] {gg,useJai ,tileSize, dimension}, "domain test");
+                
+                // specify time range
+                // Test the output coverage
+                reader = TestUtils.getReader(timeURL, format);
+                
+        }
+	
+	
     /**
      * Tests the {@link ImageMosaicReader} with support for different
      * resolutions/different number of overviews.
@@ -942,6 +999,8 @@ public class ImageMosaicReaderTest extends Assert{
 		rgbURL = TestData.url(this, "rgb");
 		heterogeneousGranulesURL = TestData.url(this, "heterogeneous");
 		timeURL = TestData.url(this, "time_geotiff");
+		
+		timeDimensionsURL = TestData.url(this, "timeDimgeotiff");
 		
 		overviewURL = TestData.url(this, "overview/");
 		rgbAURL = TestData.url(this, "rgba/");

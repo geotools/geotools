@@ -45,6 +45,8 @@ public class CatalogBuilderConfiguration {
 	private String elevationAttribute;
 
 	private String runtimeAttribute;
+	
+	private String additionalDomainAttribute;
 
 	private boolean absolute = Utils.DEFAULT_PATH_BEHAVIOR;
 	
@@ -201,7 +203,16 @@ public class CatalogBuilderConfiguration {
 		this.runtimeAttribute = runtimeAttribute;
 	}
 
-	private List<String> indexingDirectories;
+	public String getAdditionalDomainAttribute() {
+        return additionalDomainAttribute;
+    }
+
+    public void setAdditionalDomainAttribute(
+            String additionalDomainAttribute) {
+        this.additionalDomainAttribute = additionalDomainAttribute;
+    }
+
+    private List<String> indexingDirectories;
 
 	public List<String> getIndexingDirectories() {
 		return indexingDirectories;

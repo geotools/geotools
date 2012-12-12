@@ -159,6 +159,8 @@ class RasterLayerRequest {
 
 	private List<?> elevation;
 	
+	private List<?> additionalDomain; // For the moment, only support single element values
+	
 	private Filter filter;
 
 	/** Sort clause on shapefile attributes.*/
@@ -168,7 +170,11 @@ class RasterLayerRequest {
 		return elevation;
 	}
 
-	public String getSortClause() {
+	public List<?> getAdditionalDomain() {
+        return additionalDomain;
+    }
+
+    public String getSortClause() {
 		return sortClause;
 	}
 
@@ -721,6 +727,19 @@ class RasterLayerRequest {
         	if(value==null)
         		return;
             elevation = (List<?>) value;
+            return;
+        }
+
+        // //
+        //
+        // Additional dimension parameter
+        //
+        // //
+        if (name.equals(ImageMosaicFormat.ADDITIONAL_DOMAIN.getName())) {
+            final Object value = param.getValue();
+            if(value==null)
+                    return;
+            additionalDomain = (List<?>) value;
             return;
         }            
 

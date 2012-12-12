@@ -870,9 +870,11 @@ class RasterLayerResponse{
 			final MosaicBuilder visitor = new MosaicBuilder(request);
 			final List times = request.getRequestedTimes();
 			final List elevations=request.getElevation();
+			final List additionalDomains = request.getAdditionalDomain();
 			final Filter filter = request.getFilter();
 			final boolean hasTime=(times!=null&&times.size()>0);
 			final boolean hasElevation=(elevations!=null && elevations.size()>0);
+			final boolean hasAdditionalDomains = (additionalDomains != null && additionalDomains.size()>0);
 			final boolean hasFilter = filter != null && !Filter.INCLUDE.equals(filter);
 
 			// create query
@@ -888,7 +890,7 @@ class RasterLayerResponse{
 
 			
 			// prepare eventual filter for filtering granules
-                        if(hasTime||hasElevation||hasFilter )
+                        if(hasTime||hasElevation||hasFilter||hasAdditionalDomains)
                         {
                                 //handle elevation indexing first since we then combine this with the max in case we are asking for current in time
                                 if (hasElevation){
@@ -974,6 +976,23 @@ class RasterLayerResponse{
                                             if(sizeTime==1)
                                                 query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.and(query.getFilter(), timeFilter.get(0)));
                                 }
+                                
+                                if (hasAdditionalDomains){
+                                    
+                                    final List<Filter> additionalFilter=new ArrayList<Filter>();
+                                    for( Object domain: additionalDomains){
+                                        if(domain==null){
+                                            if(LOGGER.isLoggable(Level.INFO))
+                                                LOGGER.info("Ignoring null domain for the additional domain filter");
+                                            continue;
+                                        }
+                                        //TODO: Add support for more types
+                                        additionalFilter.add(rasterManager.parent.additionalDomainManager.createFilter((String)domain));
+                                        
+                                    }
+                                    //TODO: add support for more than one dimension
+                                    query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.and(query.getFilter(), additionalFilter.get(0)));        
+                            }
 
                         }
 

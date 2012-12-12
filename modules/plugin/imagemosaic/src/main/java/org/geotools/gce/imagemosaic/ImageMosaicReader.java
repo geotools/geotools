@@ -28,8 +28,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
@@ -59,10 +62,12 @@ import org.geotools.gce.imagemosaic.catalog.GranuleCatalogFactory;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
+import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.util.Utilities;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.Filter;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
@@ -99,6 +104,155 @@ import org.opengis.referencing.operation.MathTransform;
  */
 public class ImageMosaicReader extends AbstractGridCoverage2DReader implements GridCoverageReader {
 
+
+    /**
+     * An {@link AdditionalDomainManager} class which allows to deal with additional domains
+     * (if any) defined in the mosaic. It provides DOMAIN_ALIAS to original attribute mapping
+     * capabilities, metadata retrieval, and filter creation
+     * @author Daniele Romagnoli
+     *
+     */
+    class AdditionalDomainManager {
+
+        private static final String DOMAIN_SUFFIX = "_DOMAIN";
+
+        private static final String HAS_PREFIX = "HAS_";
+
+        /**
+         * build an AdditionalDomainManager on top of the provided additionalDomainAttributes.
+         *
+         * @param additionalDomainAttributes
+         */
+        AdditionalDomainManager (String additionalDomainAttributes) {
+            this.additionalDomainAttributes = additionalDomainAttributes;
+            final String[] additionalDomainsNames = additionalDomainAttributes.split(",");
+            final int numDomains = additionalDomainsNames.length;
+            if (numDomains <= 0)
+                throw new IllegalArgumentException("NumDomains should be > 0");
+            additionalDomains = new HashSet<String>(numDomains);
+            hasAdditionalDomains = new HashSet<String>(numDomains);
+            domainToOriginalAttribute = new HashMap<String,String>(numDomains);
+            for (String domain : additionalDomainsNames) {
+                addDomain(domain);
+            }
+        }
+
+        // Consider using arrays for dimensions checks
+        // Set of supported additional domains
+        private Set<String> additionalDomains;
+
+        // Set of additional domains availability (is it really needed?)
+        private Set<String> hasAdditionalDomains;
+
+        // Mapping between domain (usually, an UPPER CASE naming) and related original attribute
+        private Map<String, String> domainToOriginalAttribute;
+
+        // comma separated additional domain attributes
+        private String additionalDomainAttributes;
+
+        public void dispose() {
+            if (domainToOriginalAttribute != null) {
+                domainToOriginalAttribute.clear();
+                domainToOriginalAttribute = null;
+            }
+            if (additionalDomains != null) {
+                additionalDomains.clear();
+                additionalDomains = null;
+            }
+            if (hasAdditionalDomains != null) {
+                hasAdditionalDomains.clear();
+                hasAdditionalDomains = null;
+            }
+        }
+
+        /**
+         * Add a domain to the manager
+         * @param domain
+         */
+        public void addDomain(String domain) {
+            String domainMetadata = domain.toUpperCase() + DOMAIN_SUFFIX;
+            additionalDomains.add(domainMetadata);
+            hasAdditionalDomains.add(HAS_PREFIX + domainMetadata);
+            domainToOriginalAttribute.put(domainMetadata, domain);
+        }
+
+        /**
+         * Check whether a specific domain is supported by this manager.
+         * It can be useful to check a domain specified in the request.
+         * @param domain
+         * @return
+         */
+        public boolean isDomainSupported(String domain) {
+            String domainValue = domain.toUpperCase() + DOMAIN_SUFFIX;
+            return !additionalDomains.isEmpty() && additionalDomains.contains(domainValue);
+        }
+
+        /**
+         * Setup the List of metadataNames for this additional domain manager
+         *
+         * @return
+         */
+        public List<String> getMetadataNames() {
+            final List<String> metadataNames = new ArrayList<String>();
+            if (additionalDomains != null && !additionalDomains.isEmpty()) {
+                for (String domain: additionalDomains) {
+                    metadataNames.add(domain);
+                }
+            }
+            if (hasAdditionalDomains!= null && !hasAdditionalDomains.isEmpty()) {
+                for (String hasDomain: hasAdditionalDomains) {
+                    metadataNames.add(hasDomain);
+                }
+            }
+            return metadataNames;
+        }
+
+        /**
+         * Return the value of a specific metadata by parsing the requested name as a Domain Name
+         * @param name
+         * @return
+         */
+        public String getMetadataValue(String name) {
+            String value = null;
+            if (additionalDomainAttributes != null) {
+                String domainName = name.toUpperCase();
+                if (additionalDomains.contains(domainName)) {
+                    value = extractAdditionalDomain(domainToOriginalAttribute.get(domainName));
+                }
+
+                if (hasAdditionalDomains.contains(domainName)) {
+                    String extractDomain = domainName.length() > 4 ? domainName.substring(HAS_PREFIX.length()) : "";
+                    value = String.valueOf(additionalDomains.contains(extractDomain));
+                }
+            }
+            return value;
+        }
+
+        /**
+         * Setup a Filter on top of the specified domainRequest which is in the form "key=value"
+         * @param domainRequest
+         * @return
+         */
+        public Filter createFilter(String domainRequest) {
+            if (domainRequest == null || domainRequest.isEmpty())
+                throw new IllegalArgumentException("Null domain requested");
+
+            String[] keyValuePair = domainRequest.split("=");
+            if (keyValuePair.length != 2) {
+                throw new IllegalArgumentException("requested domains should be in the form \"name=value\"");
+            }
+            String domainName = keyValuePair[0];
+            String domainValue = keyValuePair[1];
+
+            if (!isDomainSupported(domainName)) {
+                throw new IllegalArgumentException("requested domain is not supported: " + domainName);
+            }
+            return  FeatureUtilities.DEFAULT_FILTER_FACTORY.equal(
+                    FeatureUtilities.DEFAULT_FILTER_FACTORY.property(domainName),
+                    FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(domainValue),true);
+        }
+    }
+
 		/** Logger. */
 	private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ImageMosaicReader.class);
 
@@ -117,6 +271,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
 	String locationAttributeName="location";
 
 	RasterManager rasterManager;
+
+	AdditionalDomainManager additionalDomainManager;
 
 	int maxAllowedTiles=ImageMosaicFormat.MAX_ALLOWED_TILES.getDefaultValue();
 
@@ -345,6 +501,17 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
 				rasterManager=null;
 			}
 			
+			try {
+                            if(additionalDomainManager!=null)
+                                additionalDomainManager.dispose();
+                    } catch (Throwable e1) {
+                            if (LOGGER.isLoggable(Level.FINEST))
+                                    LOGGER.log(Level.FINEST, e1.getLocalizedMessage(), e1);
+                    }
+                    finally{
+                        additionalDomainManager=null;
+                    }
+			
 			throw new  DataSourceException(e);
 		}
 
@@ -464,7 +631,12 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
 		// elevation param
 		final String elevationAttribute = configuration.getElevationAttribute();
 		if(elevationAttribute != null)
-			this.elevationAttribute = elevationAttribute;				
+			this.elevationAttribute = elevationAttribute;		
+		
+		final String additionalDomainAttribute = configuration.getAdditionalDomainAttribute();
+		if (additionalDomainAttribute != null) {
+		    additionalDomainManager = new AdditionalDomainManager(additionalDomainAttribute);
+		}
 
 
 		// caching for the index
@@ -666,6 +838,10 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
             metadataNames.add(ELEVATION_DOMAIN_MAXIMUM);
             metadataNames.add(HAS_ELEVATION_DOMAIN);
             metadataNames.add(ELEVATION_DOMAIN_RESOLUTION);
+            if (additionalDomainManager != null) {
+                metadataNames.addAll(additionalDomainManager.getMetadataNames());
+            }
+
             if(parentNames!=null)
                 metadataNames.addAll(Arrays.asList(parentNames));
             return metadataNames.toArray(new String[metadataNames.size()]);
@@ -702,17 +878,22 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
             final boolean getElevationAttribute = (elevationAttribute != null && name.equalsIgnoreCase("elevation_domain"));
             if (getElevationAttribute) {
                 return extractElevationDomain();
-    
+
             }
-    
+
             final boolean getElevationExtrema = elevationAttribute != null
                     && (name.equalsIgnoreCase("elevation_domain_minimum") || name.equalsIgnoreCase("elevation_domain_maximum"));
             if (getElevationExtrema) {
                 return extractElevationExtrema(name);
-    
-            }
-        		
 
+            }
+
+            if (additionalDomainManager != null) {
+                String value = additionalDomainManager.getMetadataValue(name);
+                if (value != null) {
+                    return value;
+                }
+            }
 		return super.getMetadataValue(name);
 	}
 
@@ -822,6 +1003,31 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
         }
     }
 
+    /**
+     * Extract the elevation domain as a comma separated list of string values.
+     * @return a {@link String} that contains a comma separated list of values.
+     */
+    private String extractAdditionalDomain(String domain) {
+        try {
+            final Set<String> result = extractDomain(domain);          
+            // check result
+            if(result.size()<=0)
+                    return "";
+            
+            final StringBuilder buff= new StringBuilder();
+            for(Iterator<String> it= result.iterator(); it.hasNext();){
+                buff.append(((String) it.next()));
+                if(it.hasNext())
+                   buff.append(",");
+            }
+            return buff.toString();
+        } catch (IOException e) {
+            if(LOGGER.isLoggable(Level.WARNING))
+                    LOGGER.log(Level.WARNING,"Unable to parse attribute: " + domain ,e);
+            return "";
+        }
+    }
+    
     /**
      * Extract the domain of a dimension as a set of unique values.
      * 

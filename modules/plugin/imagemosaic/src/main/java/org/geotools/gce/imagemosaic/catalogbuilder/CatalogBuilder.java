@@ -76,6 +76,7 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.filter.expression.AddImpl;
 import org.geotools.gce.image.WorldImageFormat;
 import org.geotools.gce.imagemosaic.MosaicConfigurationBean;
 import org.geotools.gce.imagemosaic.Utils;
@@ -1078,12 +1079,15 @@ public class CatalogBuilder implements Runnable {
                         // time attr
                         if (props.containsKey(Prop.TIME_ATTRIBUTE))
                                 configuration.setTimeAttribute(props.getProperty(Prop.TIME_ATTRIBUTE));
-                        
+
                         // elevation attr
                         if (props.containsKey(Prop.ELEVATION_ATTRIBUTE))
                                 configuration.setElevationAttribute(props.getProperty(Prop.ELEVATION_ATTRIBUTE));                       
-        
-                        
+
+                        // Additional domain attr
+                        if (props.containsKey(Prop.ADDITIONAL_DOMAIN_ATTRIBUTE))
+                            configuration.setAdditionalDomainAttribute(props.getProperty(Prop.ADDITIONAL_DOMAIN_ATTRIBUTE));                       
+
                         // imposed BBOX
                         if (props.containsKey(Prop.ENVELOPE2D))
                                 configuration.setEnvelope2D(props.getProperty(Prop.ENVELOPE2D));        
@@ -1442,6 +1446,10 @@ public class CatalogBuilder implements Runnable {
         			if (elevationAttribute != null) {
         				mosaicConfiguration.setElevationAttribute(runConfiguration.getElevationAttribute());
         			}
+        			final String additionalDomainAttribute= runConfiguration.getAdditionalDomainAttribute();
+                                if (additionalDomainAttribute != null) {
+                                        mosaicConfiguration.setAdditionalDomainAttribute(runConfiguration.getAdditionalDomainAttribute());
+                                }
         			createPropertiesFiles();
         			
         			// processing information
@@ -1505,14 +1513,21 @@ public class CatalogBuilder implements Runnable {
 		final Properties properties = new Properties();
 		properties.setProperty(Utils.Prop.ABSOLUTE_PATH, Boolean.toString(mosaicConfiguration.isAbsolutePath()));
 		properties.setProperty(Utils.Prop.LOCATION_ATTRIBUTE, mosaicConfiguration.getLocationAttribute());
+		
 		final String timeAttribute=mosaicConfiguration.getTimeAttribute();
 		if (timeAttribute != null) {
 			properties.setProperty(Utils.Prop.TIME_ATTRIBUTE, mosaicConfiguration.getTimeAttribute());
 		}
+		
 		final String elevationAttribute=mosaicConfiguration.getElevationAttribute();
 		if (elevationAttribute != null) {
 			properties.setProperty(Utils.Prop.ELEVATION_ATTRIBUTE, mosaicConfiguration.getElevationAttribute());
 		}
+		
+		final String additionalDomainAttribute=mosaicConfiguration.getAdditionalDomainAttribute();
+                if (additionalDomainAttribute!= null) {
+                        properties.setProperty(Utils.Prop.ADDITIONAL_DOMAIN_ATTRIBUTE, mosaicConfiguration.getAdditionalDomainAttribute());
+                }
 		
 		final int numberOfLevels=mosaicConfiguration.getLevelsNum();
 		final double[][] resolutionLevels=mosaicConfiguration.getLevels();

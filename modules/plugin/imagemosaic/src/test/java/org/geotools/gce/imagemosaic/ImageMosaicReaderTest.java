@@ -33,7 +33,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.TimeZone;
 import java.util.logging.Logger;
 
@@ -67,6 +69,7 @@ import org.junit.Test;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.parameter.GeneralParameterValue;
+import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
@@ -631,13 +634,20 @@ public class ImageMosaicReaderTest extends Assert{
                 tileSize.setValue("128,128");
 
                 // specify time
-                final ParameterValue<List> domain = ImageMosaicFormat.ADDITIONAL_DOMAIN.createValue();
-                List<String> domains = new ArrayList<String>(2);
-                domains.add("date=20081031T000000");
-                domains.add("wavelength=020");
-                domain.setValue(domains);
+                Set<ParameterDescriptor> params = reader.getDynamicParameters();
+                ParameterValue dateValue = null;
+                ParameterValue waveLengthValue = null;
+                for (ParameterDescriptor param: params) {
+                    if (param.getName().getCode().equalsIgnoreCase("date")) {
+                        dateValue = param.createValue();
+                        dateValue.setValue("20081031T000000");
+                    } else if (param.getName().getCode().equalsIgnoreCase("wavelength")) {
+                        waveLengthValue = param.createValue();
+                        waveLengthValue.setValue("020");
+                    }
+                }
                 // Test the output coverage
-                TestUtils.checkCoverage(reader, new GeneralParameterValue[] {useJai ,tileSize, domain}, "domain test");
+                TestUtils.checkCoverage(reader, new GeneralParameterValue[] {useJai ,tileSize, dateValue, waveLengthValue}, "domain test");
         }
 	
 	

@@ -61,6 +61,7 @@ import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogFactory;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.util.Utilities;
@@ -69,7 +70,9 @@ import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.geometry.BoundingBox;
+import org.opengis.metadata.Identifier;
 import org.opengis.parameter.GeneralParameterValue;
+import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
@@ -114,9 +117,13 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
      */
     class AdditionalDomainManager {
 
-        private static final String DOMAIN_SUFFIX = "_DOMAIN";
+        static final String DOMAIN_SUFFIX = "_DOMAIN";
 
         private static final String HAS_PREFIX = "HAS_";
+
+        private Set<ParameterDescriptor> dynamicParameters = null;
+
+        private Set<Identifier> supportedParameters = null;
 
         /**
          * build an AdditionalDomainManager on top of the provided additionalDomainAttributes.
@@ -129,6 +136,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
             final int numDomains = additionalDomainsNames.length;
             if (numDomains <= 0)
                 throw new IllegalArgumentException("NumDomains should be > 0");
+            dynamicParameters = new HashSet<ParameterDescriptor>(numDomains);
+            supportedParameters = new HashSet<Identifier>(numDomains);
             additionalDomains = new HashSet<String>(numDomains);
             hasAdditionalDomains = new HashSet<String>(numDomains);
             domainToOriginalAttribute = new HashMap<String,String>(numDomains);
@@ -174,6 +183,10 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
             additionalDomains.add(domainMetadata);
             hasAdditionalDomains.add(HAS_PREFIX + domainMetadata);
             domainToOriginalAttribute.put(domainMetadata, domain);
+            // currently supporting only strings
+            DefaultParameterDescriptor<String> parameter = DefaultParameterDescriptor.create(domain, "An additional " + domain + " domain", String.class, null, false);
+            dynamicParameters.add(parameter);
+            supportedParameters.add(parameter.getName());
         }
 
         /**
@@ -250,6 +263,14 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
             return  FeatureUtilities.DEFAULT_FILTER_FACTORY.equal(
                     FeatureUtilities.DEFAULT_FILTER_FACTORY.property(domainName),
                     FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(domainValue),true);
+        }
+
+        public Set<ParameterDescriptor> getDynamicParameters() {
+            return dynamicParameters;
+        }
+
+        public boolean supportsParam(Identifier name) {
+            return supportedParameters.contains(name);
         }
     }
 
@@ -1092,5 +1113,10 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
                     LOGGER.log(Level.WARNING,"Unable to parse attribute:TIME_DOMAIN",e);
             return "";
         }
+    }
+
+    @Override
+    public Set<ParameterDescriptor> getDynamicParameters() {
+        return additionalDomainManager.getDynamicParameters();
     }
 }

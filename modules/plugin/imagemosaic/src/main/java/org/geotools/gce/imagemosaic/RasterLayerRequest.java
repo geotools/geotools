@@ -20,6 +20,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,6 +37,7 @@ import org.geotools.coverage.grid.io.DecimationPolicy;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
 import org.geotools.factory.Hints;
+import org.geotools.gce.imagemosaic.ImageMosaicReader.AdditionalDomainManager;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.metadata.iso.spatial.PixelTranslation;
@@ -76,6 +79,8 @@ class RasterLayerRequest {
 
 	/** Logger. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(RasterLayerRequest.class);
+
+    private static final int DEFAULT_DOMAINS_NUMBER = 3;
 
     private ReadType readType = AbstractGridFormat.USE_JAI_IMAGEREAD.getDefaultValue()?ReadType.JAI_IMAGEREAD:ReadType.DIRECT_READ;
 
@@ -159,7 +164,7 @@ class RasterLayerRequest {
 
 	private List<?> elevation;
 	
-	private List<?> requestedAdditionalDomains; // For the moment, only support single element values
+	private List<String> requestedAdditionalDomains; // For the moment, only support single element values
 	
 	private Filter filter;
 
@@ -489,6 +494,7 @@ class RasterLayerRequest {
         // Requested GridGeometry2D parameter
         //
         // //
+        String paramName = name.getCode(); 
         if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName())) {
         	final Object value = param.getValue();
         	if (value == null)
@@ -732,19 +738,6 @@ class RasterLayerRequest {
 
         // //
         //
-        // Additional dimension parameter
-        //
-        // //
-        if (name.equals(ImageMosaicFormat.ADDITIONAL_DOMAIN.getName())) {
-            final Object value = param.getValue();
-            if(value==null)
-                    return;
-            requestedAdditionalDomains = (List<?>) value;
-            return;
-        }            
-
-        // //
-        //
         // Runtime parameter
         //
         // //
@@ -754,7 +747,29 @@ class RasterLayerRequest {
         		return;
             filter = (Filter) value;
             return;
-        }            
+        }
+        
+        // //
+        //
+        // Additional dimension parameter
+        //
+        // //
+        if (rasterManager.parent.additionalDomainManager.supportsParam(name)) {
+            final Object value = param.getValue();
+            if (value == null)
+                return;
+//            requestedAdditionalDomains = (List<String>) value; //Old behaviour.
+            if (value instanceof String) {
+                // Only String support at the moment
+                if (requestedAdditionalDomains == null) {
+                    requestedAdditionalDomains = new ArrayList<String>(DEFAULT_DOMAINS_NUMBER);
+                }
+                
+                requestedAdditionalDomains.add(paramName + "=" + (String)value);
+            }
+            return;
+        }
+
 
     }
 

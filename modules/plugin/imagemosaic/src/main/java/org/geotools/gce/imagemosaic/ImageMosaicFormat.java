@@ -161,8 +161,8 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
     /** Optional Elevation value for this mosaic. */
     public static final ParameterDescriptor<List> ELEVATION = DefaultParameterDescriptor.create("ELEVATION", "An elevation value",List.class, null,false);
 
-    public static final ParameterDescriptor<List> ADDITIONAL_DOMAIN = DefaultParameterDescriptor.create("ADDITIONAL_DOMAIN",
-            "An additional dimension (Key=value) pair", List.class, null, false);
+//    public static final ParameterDescriptor<List> ADDITIONAL_DOMAIN = DefaultParameterDescriptor.create("ADDITIONAL_DOMAIN",
+//            "An additional dimension (Key=value) pair", List.class, null, false);
 
     /** Optional Sorting for the granules of the mosaic.
      * 
@@ -202,7 +202,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                 MAX_ALLOWED_TILES,
                 TIME,
                 ELEVATION,
-                ADDITIONAL_DOMAIN,
+//                ADDITIONAL_DOMAIN,
                 FILTER,
                 SORT_BY
         }));

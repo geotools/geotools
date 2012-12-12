@@ -265,10 +265,20 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
                     FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(domainValue),true);
         }
 
+        /** 
+         * Return the set of dynamic parameterDescriptors (the ones related to domains) for this reader 
+         * @return
+         */
         public Set<ParameterDescriptor> getDynamicParameters() {
             return dynamicParameters;
         }
 
+        /**
+         * Check whether a specific parameter (identified by the {@link Identifier} name) is supported by 
+         * this reader.
+         * @param name
+         * @return
+         */
         public boolean supportsParam(Identifier name) {
             return supportedParameters.contains(name);
         }

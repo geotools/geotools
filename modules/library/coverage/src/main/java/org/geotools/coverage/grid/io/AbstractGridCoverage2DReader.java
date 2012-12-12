@@ -969,6 +969,12 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverageReader
 		super.finalize();
 	}
 
+    /**
+     * Return the set of dynamic parameterDescriptors (the ones related to domains)
+     * for this reader
+     * 
+     * @return
+     */
     public Set<ParameterDescriptor> getDynamicParameters() {
         return Collections.emptySet();
     }

@@ -184,6 +184,33 @@ public interface Wcs20Factory extends EFactory {
     ExtensionItemType createExtensionItemType();
 
     /**
+     * Returns a new object of class '<em>Range Interval Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Range Interval Type</em>'.
+     * @generated
+     */
+    RangeIntervalType createRangeIntervalType();
+
+    /**
+     * Returns a new object of class '<em>Range Item Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Range Item Type</em>'.
+     * @generated
+     */
+    RangeItemType createRangeItemType();
+
+    /**
+     * Returns a new object of class '<em>Range Subset Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Range Subset Type</em>'.
+     * @generated
+     */
+    RangeSubsetType createRangeSubsetType();
+
+    /**
      * Returns the package supported by this factory.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

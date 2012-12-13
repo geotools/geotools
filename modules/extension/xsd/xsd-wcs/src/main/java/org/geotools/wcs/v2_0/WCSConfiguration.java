@@ -29,6 +29,7 @@ import org.geotools.ows.v2_0.OWSConfiguration;
 import org.geotools.wcs.bindings.ExtensionTypeBinding;
 import org.geotools.xml.ComplexEMFBinding;
 import org.geotools.xml.Configuration;
+import org.geotools.xml.XSDParserDelegate;
 import org.picocontainer.MutablePicoContainer;
 
 /**
@@ -51,7 +52,11 @@ public class WCSConfiguration extends Configuration {
     
     protected void configureContext(MutablePicoContainer container) {
         container.registerComponentInstance(Ows20Factory.eINSTANCE);
+        
+        // register parser delegate for extension schemas
+        container.registerComponentInstance(new XSDParserDelegate(new RangeSubsetConfiguration()));
     }
+    
     
     /**
      * Registers the bindings for the configuration.
@@ -82,6 +87,7 @@ public class WCSConfiguration extends Configuration {
         bindings.put(WCS.ServiceMetadataType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.ServiceMetadataType));
         bindings.put(WCS.ServiceParametersType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.ServiceParametersType));
         // bindings.put(WCS.VersionStringType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.VersionStringType));
+        /*
         bindings.put(WCS.Capabilities, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.Capabilities));
         bindings.put(WCS.Contents, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.Contents));
         bindings.put(WCS.CoverageDescription, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.CoverageDescription));
@@ -101,7 +107,7 @@ public class WCSConfiguration extends Configuration {
         bindings.put(WCS.OfferedCoverage, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.OfferedCoverage));
         bindings.put(WCS.ServiceMetadata, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.ServiceMetadata));
         bindings.put(WCS.ServiceParameters, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.ServiceParameters));
-
+        */
     }
 
     /**

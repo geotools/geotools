@@ -10,6 +10,8 @@ import net.opengis.wcs20.DimensionSubsetType;
 import net.opengis.wcs20.DimensionTrimType;
 import net.opengis.wcs20.ExtensionItemType;
 import net.opengis.wcs20.GetCoverageType;
+import net.opengis.wcs20.RangeItemType;
+import net.opengis.wcs20.RangeSubsetType;
 
 import org.eclipse.emf.common.util.EList;
 import org.geotools.xml.Parser;
@@ -105,21 +107,46 @@ public class GetCoverageTest {
         GetCoverageType gc = (GetCoverageType) parser.parse(getClass()
                 .getResourceAsStream(capRequestPath));
         
+        Map<String, Object> extensions = getExtensionsMap(gc);
+        
+        // check values
+        assertEquals("JPEG", extensions.get("http://www.opengis.net/wcs/geotiff/1.0:compression"));
+        assertEquals("75", extensions.get("http://www.opengis.net/wcs/geotiff/1.0:jpeg_quality"));
+        assertEquals("None", extensions.get("http://www.opengis.net/wcs/geotiff/1.0:predictor"));
+        assertEquals("pixel", extensions.get("http://www.opengis.net/wcs/geotiff/1.0:interleave"));
+        assertEquals("true", extensions.get("http://www.opengis.net/wcs/geotiff/1.0:tiling"));
+        assertEquals("256", extensions.get("http://www.opengis.net/wcs/geotiff/1.0:tileheight"));
+        assertEquals("256", extensions.get("http://www.opengis.net/wcs/geotiff/1.0:tilewidth"));
+    }
+
+    private Map<String, Object> getExtensionsMap(GetCoverageType gc) {
         // collect extensions
         Map<String, Object> extensions = new HashMap<String, Object>();
         for (ExtensionItemType item : gc.getExtension().getContents()) {
-            assertEquals("http://www.opengis.net/wcs/geotiff/1.0", item.getNamespace());
-            extensions.put(item.getName(), item.getSimpleContent());
+            Object value = item.getSimpleContent() != null ? item.getSimpleContent() : item.getObjectContent();
+            extensions.put(item.getNamespace() + ":" + item.getName(), value);
         }
+        return extensions;
+    }
+    
+    @Test
+    public void testParseGetCoverageRangeSubset() throws Exception {
+        String capRequestPath = "requestGetCoverageRangeSubsetting.xml";
+        GetCoverageType gc = (GetCoverageType) parser.parse(getClass()
+                .getResourceAsStream(capRequestPath));
+        
+        Map<String, Object> extensions = getExtensionsMap(gc);
+        assertEquals(1, extensions.size());
+        
+        RangeSubsetType rangeSubset = (RangeSubsetType) extensions.get("http://www.opengis.net/wcs/range-subsetting/1.0:rangeSubset");
         
         // check values
-        assertEquals("JPEG", extensions.get("compression"));
-        assertEquals("75", extensions.get("jpeg_quality"));
-        assertEquals("None", extensions.get("predictor"));
-        assertEquals("pixel", extensions.get("interleave"));
-        assertEquals("true", extensions.get("tiling"));
-        assertEquals("256", extensions.get("tileheight"));
-        assertEquals("256", extensions.get("tilewidth"));
+        assertEquals(2, rangeSubset.getRangeItems().size());
+        RangeItemType first = rangeSubset.getRangeItems().get(0);
+        assertEquals("band1", first.getRangeComponent());
+        RangeItemType second = rangeSubset.getRangeItems().get(1);
+        assertEquals("band3", second.getRangeInterval().getStartComponent());
+        assertEquals("band5", second.getRangeInterval().getEndComponent());
     }
 
 

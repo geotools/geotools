@@ -23,6 +23,9 @@ import net.opengis.wcs20.ExtensionType;
 import net.opengis.wcs20.GetCapabilitiesType;
 import net.opengis.wcs20.GetCoverageType;
 import net.opengis.wcs20.OfferedCoverageType;
+import net.opengis.wcs20.RangeIntervalType;
+import net.opengis.wcs20.RangeItemType;
+import net.opengis.wcs20.RangeSubsetType;
 import net.opengis.wcs20.RequestBaseType;
 import net.opengis.wcs20.ServiceMetadataType;
 import net.opengis.wcs20.ServiceParametersType;
@@ -162,6 +165,12 @@ public class Wcs20Validator extends EObjectValidator {
                 return validateObject((Object)value, diagnostics, context);
             case Wcs20Package.EXTENSION_ITEM_TYPE:
                 return validateExtensionItemType((ExtensionItemType)value, diagnostics, context);
+            case Wcs20Package.RANGE_INTERVAL_TYPE:
+                return validateRangeIntervalType((RangeIntervalType)value, diagnostics, context);
+            case Wcs20Package.RANGE_ITEM_TYPE:
+                return validateRangeItemType((RangeItemType)value, diagnostics, context);
+            case Wcs20Package.RANGE_SUBSET_TYPE:
+                return validateRangeSubsetType((RangeSubsetType)value, diagnostics, context);
             case Wcs20Package.VERSION_STRING_TYPE:
                 return validateVersionStringType((String)value, diagnostics, context);
             case Wcs20Package.VERSION_STRING_TYPE_1:
@@ -360,6 +369,33 @@ public class Wcs20Validator extends EObjectValidator {
      */
     public boolean validateExtensionItemType(ExtensionItemType extensionItemType, DiagnosticChain diagnostics, Map<Object, Object> context) {
         return validate_EveryDefaultConstraint(extensionItemType, diagnostics, context);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateRangeIntervalType(RangeIntervalType rangeIntervalType, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validate_EveryDefaultConstraint(rangeIntervalType, diagnostics, context);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateRangeItemType(RangeItemType rangeItemType, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validate_EveryDefaultConstraint(rangeItemType, diagnostics, context);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateRangeSubsetType(RangeSubsetType rangeSubsetType, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validate_EveryDefaultConstraint(rangeSubsetType, diagnostics, context);
     }
 
     /**

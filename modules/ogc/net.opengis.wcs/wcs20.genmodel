@@ -123,5 +123,16 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EAttribute wcs20.ecore#//ExtensionItemType/simpleContent"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wcs20.ecore#//ExtensionItemType/objectContent"/>
     </genClasses>
+    <genClasses ecoreClass="wcs20.ecore#//RangeIntervalType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//RangeIntervalType/startComponent"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//RangeIntervalType/endComponent"/>
+    </genClasses>
+    <genClasses ecoreClass="wcs20.ecore#//RangeItemType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//RangeItemType/rangeComponent"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wcs20.ecore#//RangeItemType/rangeInterval"/>
+    </genClasses>
+    <genClasses ecoreClass="wcs20.ecore#//RangeSubsetType">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wcs20.ecore#//RangeSubsetType/rangeItems"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

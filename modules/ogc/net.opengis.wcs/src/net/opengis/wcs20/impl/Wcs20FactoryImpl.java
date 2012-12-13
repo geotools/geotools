@@ -19,6 +19,9 @@ import net.opengis.wcs20.ExtensionType;
 import net.opengis.wcs20.GetCapabilitiesType;
 import net.opengis.wcs20.GetCoverageType;
 import net.opengis.wcs20.OfferedCoverageType;
+import net.opengis.wcs20.RangeIntervalType;
+import net.opengis.wcs20.RangeItemType;
+import net.opengis.wcs20.RangeSubsetType;
 import net.opengis.wcs20.ServiceMetadataType;
 import net.opengis.wcs20.ServiceParametersType;
 import net.opengis.wcs20.Wcs20Factory;
@@ -98,6 +101,9 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
             case Wcs20Package.SERVICE_METADATA_TYPE: return createServiceMetadataType();
             case Wcs20Package.SERVICE_PARAMETERS_TYPE: return createServiceParametersType();
             case Wcs20Package.EXTENSION_ITEM_TYPE: return createExtensionItemType();
+            case Wcs20Package.RANGE_INTERVAL_TYPE: return createRangeIntervalType();
+            case Wcs20Package.RANGE_ITEM_TYPE: return createRangeItemType();
+            case Wcs20Package.RANGE_SUBSET_TYPE: return createRangeSubsetType();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -319,6 +325,36 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
     public ExtensionItemType createExtensionItemType() {
         ExtensionItemTypeImpl extensionItemType = new ExtensionItemTypeImpl();
         return extensionItemType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public RangeIntervalType createRangeIntervalType() {
+        RangeIntervalTypeImpl rangeIntervalType = new RangeIntervalTypeImpl();
+        return rangeIntervalType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public RangeItemType createRangeItemType() {
+        RangeItemTypeImpl rangeItemType = new RangeItemTypeImpl();
+        return rangeItemType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public RangeSubsetType createRangeSubsetType() {
+        RangeSubsetTypeImpl rangeSubsetType = new RangeSubsetTypeImpl();
+        return rangeSubsetType;
     }
 
     /**

@@ -111,19 +111,21 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
 
     /**
      * An {@link AdditionalDomainManager} class which allows to deal with additional domains
-     * (if any) defined in the mosaic. It provides DOMAIN_ALIAS to original attribute mapping
-     * capabilities, metadata retrieval, and filter creation
-     * @author Daniele Romagnoli
+     * (if any) defined inside the mosaic. It provides DOMAIN_ALIAS <--to--> original attribute mapping
+     * capabilities, metadata retrieval, filter creation, and domain support check
+     * 
+     * @author Daniele Romagnoli, GeoSolutions S.a.S.
      *
      */
     class AdditionalDomainManager {
 
-        static final String DOMAIN_SUFFIX = "_DOMAIN";
+        private static final String DOMAIN_SUFFIX = "_DOMAIN";
 
         private static final String HAS_PREFIX = "HAS_";
 
         /**
-         * build an AdditionalDomainManager on top of the provided additionalDomainAttributes.
+         * build an AdditionalDomainManager on top of the provided additionalDomainAttributes 
+         * (a comma separated list of attribute names).
          *
          * @param additionalDomainAttributes
          */
@@ -132,7 +134,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
             final String[] additionalDomainsNames = additionalDomainAttributes.split(",");
             final int numDomains = additionalDomainsNames.length;
             if (numDomains <= 0)
-                throw new IllegalArgumentException("NumDomains should be > 0");
+                throw new IllegalArgumentException("Number of Domains should be > 0");
             dynamicParameters = new HashSet<ParameterDescriptor<List>>(numDomains);
             supportedParameters = new HashSet<Identifier>(numDomains);
             additionalDomains = new HashSet<String>(numDomains);
@@ -150,10 +152,10 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
         // Set of additional domains availability (is it really needed?)
         private Set<String> hasAdditionalDomains;
 
-        // Mapping between domain (usually, an UPPER CASE naming) and related original attribute
+        // Mapping between domain (usually, an UPPER CASE name) and related original attribute
         private Map<String, String> domainToOriginalAttribute;
 
-        // comma separated additional domain attributes
+        // comma separated String of additional domain attributes
         private String additionalDomainAttributes;
 
         // Set of supported dynamic parameters (depending on the available domains) 
@@ -161,7 +163,6 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
 
         // Quick access set to look for supported parameters by ID
         private Set<Identifier> supportedParameters = null;
-
 
         /**
          * Clean up mappings
@@ -191,33 +192,43 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
 
         /**
          * Add a domain to the manager
-         * @param domain
+         * @param domain the name of the domain
          */
-        public void addDomain(String domain) {
-            String domainMetadata = domain.toUpperCase() + DOMAIN_SUFFIX;
+        public void addDomain(final String domain) {
+            final String domainMetadata = domain.toUpperCase() + DOMAIN_SUFFIX;
             additionalDomains.add(domainMetadata);
             hasAdditionalDomains.add(HAS_PREFIX + domainMetadata);
             domainToOriginalAttribute.put(domainMetadata, domain);
 
-            // currently supporting only strings
-            DefaultParameterDescriptor<List> parameter = DefaultParameterDescriptor.create(domain, "An additional " + domain + " domain", List.class, null, false);
+            // currently supporting only List of strings
+            final DefaultParameterDescriptor<List> parameter = DefaultParameterDescriptor.create(domain, "Additional " + domain + " domain", List.class, null, false);
             dynamicParameters.add(parameter);
             supportedParameters.add(parameter.getName());
         }
 
         /**
          * Check whether a specific domain is supported by this manager.
-         * It can be useful to check a domain specified in the request.
+         * It can be useful to check wheter a domain specified in the request is supported by this reader.
          * @param domain
-         * @return
+         * @return 
          */
-        public boolean isDomainSupported(String domain) {
-            String domainValue = domain.toUpperCase() + DOMAIN_SUFFIX;
+        public boolean isDomainSupported(final String domain) {
+            final String domainValue = domain.toUpperCase() + DOMAIN_SUFFIX;
             return !additionalDomains.isEmpty() && additionalDomains.contains(domainValue);
         }
 
         /**
-         * Setup the List of metadataNames for this additional domain manager
+         * Check whether a specific parameter (identified by the {@link Identifier} name) is supported by 
+         * this manager (and therefore, by the reader).
+         * @param name
+         * @return
+         */
+        public boolean isParameterSupported(final Identifier name) {
+            return supportedParameters.contains(name);
+        }
+
+        /**
+         * Setup the List of metadataNames for this additional domains manager
          *
          * @return
          */
@@ -270,11 +281,14 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
             if (keyValuePair.length != 2) {
                 throw new IllegalArgumentException("requested domains should be in the form \"name=value\"");
             }
+
+            // Update this code if we move to support multiple values for the same domain (we can additionally
+            // split the domainValue on ",")
             String domainName = keyValuePair[0];
             String domainValue = keyValuePair[1];
 
             if (!isDomainSupported(domainName)) {
-                throw new IllegalArgumentException("requested domain is not supported: " + domainName);
+                throw new IllegalArgumentException("requested domain is not supported by this mosaic: " + domainName);
             }
             return  FeatureUtilities.DEFAULT_FILTER_FACTORY.equal(
                     FeatureUtilities.DEFAULT_FILTER_FACTORY.property(domainName),
@@ -289,15 +303,6 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
             return dynamicParameters;
         }
 
-        /**
-         * Check whether a specific parameter (identified by the {@link Identifier} name) is supported by 
-         * this reader.
-         * @param name
-         * @return
-         */
-        public boolean supportsParam(Identifier name) {
-            return supportedParameters.contains(name);
-        }
     }
 
 		/** Logger. */
@@ -319,7 +324,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
 
 	RasterManager rasterManager;
 
-	AdditionalDomainManager additionalDomainManager;
+        /** The inner {@link AdditionalDomainManager} instance which allows to manage custom dimensions */
+        AdditionalDomainManager additionalDomainManager;
 
 	int maxAllowedTiles=ImageMosaicFormat.MAX_ALLOWED_TILES.getDefaultValue();
 
@@ -549,14 +555,15 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
 			}
 			
 			try {
-                            if(additionalDomainManager!=null)
+                            // dispose the additional domains manager
+                            if(additionalDomainManager != null)
                                 additionalDomainManager.dispose();
                     } catch (Throwable e1) {
                             if (LOGGER.isLoggable(Level.FINEST))
                                     LOGGER.log(Level.FINEST, e1.getLocalizedMessage(), e1);
                     }
                     finally{
-                        additionalDomainManager=null;
+                        additionalDomainManager = null;
                     }
 			
 			throw new  DataSourceException(e);
@@ -680,7 +687,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
 		if(elevationAttribute != null)
 			this.elevationAttribute = elevationAttribute;		
 		
-		final String additionalDomainAttribute = configuration.getAdditionalDomainAttribute();
+		final String additionalDomainAttribute = configuration.getAdditionalDomainAttributes();
 		if (additionalDomainAttribute != null) {
 		    additionalDomainManager = new AdditionalDomainManager(additionalDomainAttribute);
 		}

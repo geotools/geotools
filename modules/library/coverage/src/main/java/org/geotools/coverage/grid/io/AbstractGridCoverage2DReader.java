@@ -972,8 +972,8 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverageReader
 
     /**
      * Return the set of dynamic parameterDescriptors (the ones related to domains)
-     * for this reader
-     * 
+     * for this reader. Default implementation returns an empty set of parameters
+     *
      * @return
      */
     @SuppressWarnings("rawtypes")

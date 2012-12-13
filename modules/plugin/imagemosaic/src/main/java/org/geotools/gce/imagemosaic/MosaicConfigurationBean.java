@@ -86,8 +86,8 @@ public class MosaicConfigurationBean {
 	/** elevation attribute name. <code>null</code> if absent.*/
 	private String elevationAttribute;
 
-        /** additional domain attribute name. <code>null</code> if absent.*/
-        private String additionalDomainAttribute;
+        /** additional domain attributes names. <code>null</code> if absent.*/
+        private String additionalDomainAttributes;
 	
 	/** The typename to use for the mosaic index*/
 	private String typeName;
@@ -134,12 +134,12 @@ public class MosaicConfigurationBean {
 		this.elevationAttribute = elevationAttribute;
 	}
 
-	public String getAdditionalDomainAttribute() {
-        return additionalDomainAttribute;
+	public String getAdditionalDomainAttributes() {
+        return additionalDomainAttributes;
     }
 
-    public void setAdditionalDomainAttribute(String additionalDomainAttribute) {
-        this.additionalDomainAttribute = additionalDomainAttribute;
+    public void setAdditionalDomainAttributes(String additionalDomainAttributes) {
+        this.additionalDomainAttributes = additionalDomainAttributes;
     }
 
     /** we want to use caching for our index.*/

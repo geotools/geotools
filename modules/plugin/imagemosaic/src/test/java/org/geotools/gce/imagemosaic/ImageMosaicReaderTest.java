@@ -33,7 +33,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
@@ -603,16 +602,17 @@ public class ImageMosaicReaderTest extends Assert{
 		
 	}	
 	
-	/**
+        /**
+         * Simple test method accessing time and 2 custom dimensions for the sample dataset.
+         * 
          * @throws IOException
          * @throws FactoryException 
          * @throws NoSuchAuthorityCodeException 
-         * @throws MismatchedDimensionException
-         * @throws NoSuchAuthorityCodeException
          * @throws ParseException 
          */
         @Test
 //      @Ignore
+        @SuppressWarnings("rawtypes")
         public void timeAdditionalDim() throws IOException, NoSuchAuthorityCodeException, FactoryException, ParseException {
                
                 final AbstractGridFormat format = TestUtils.getFormat(timeAdditionalDomainsURL);
@@ -633,10 +633,17 @@ public class ImageMosaicReaderTest extends Assert{
                 final ParameterValue<String> tileSize = AbstractGridFormat.SUGGESTED_TILE_SIZE.createValue();
                 tileSize.setValue("128,128");
 
-                // specify time
+               // specify time
+                final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
+                final SimpleDateFormat formatD = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                formatD.setTimeZone(TimeZone.getTimeZone("GMT"));
+                final Date timeD=formatD.parse("2008-10-31T00:00:00.000Z");
+                time.setValue(new ArrayList(){{add(timeD);}});
+
+                // specify additional Dimensions
                 Set<ParameterDescriptor<List>> params = reader.getDynamicParameters();
                 ParameterValue<List<String>> dateValue = null;
-                ParameterValue waveLengthValue = null;
+                ParameterValue<List<String>> waveLengthValue = null;
                 for (ParameterDescriptor param: params) {
                     if (param.getName().getCode().equalsIgnoreCase("date")) {
                         dateValue = param.createValue();
@@ -647,7 +654,7 @@ public class ImageMosaicReaderTest extends Assert{
                     }
                 }
                 // Test the output coverage
-                TestUtils.checkCoverage(reader, new GeneralParameterValue[] {useJai ,tileSize, dateValue, waveLengthValue}, "domain test");
+                TestUtils.checkCoverage(reader, new GeneralParameterValue[] {useJai ,tileSize, time, dateValue, waveLengthValue}, "domain test");
         }
 	
 	

@@ -1084,8 +1084,8 @@ public class CatalogBuilder implements Runnable {
                                 configuration.setElevationAttribute(props.getProperty(Prop.ELEVATION_ATTRIBUTE));                       
 
                         // Additional domain attr
-                        if (props.containsKey(Prop.ADDITIONAL_DOMAIN_ATTRIBUTE))
-                            configuration.setAdditionalDomainAttribute(props.getProperty(Prop.ADDITIONAL_DOMAIN_ATTRIBUTE));                       
+                        if (props.containsKey(Prop.ADDITIONAL_DOMAIN_ATTRIBUTES))
+                            configuration.setAdditionalDomainAttribute(props.getProperty(Prop.ADDITIONAL_DOMAIN_ATTRIBUTES));                       
 
                         // imposed BBOX
                         if (props.containsKey(Prop.ENVELOPE2D))
@@ -1447,7 +1447,7 @@ public class CatalogBuilder implements Runnable {
         			}
         			final String additionalDomainAttribute= runConfiguration.getAdditionalDomainAttribute();
                                 if (additionalDomainAttribute != null) {
-                                        mosaicConfiguration.setAdditionalDomainAttribute(runConfiguration.getAdditionalDomainAttribute());
+                                        mosaicConfiguration.setAdditionalDomainAttributes(runConfiguration.getAdditionalDomainAttribute());
                                 }
         			createPropertiesFiles();
         			
@@ -1523,9 +1523,9 @@ public class CatalogBuilder implements Runnable {
 			properties.setProperty(Utils.Prop.ELEVATION_ATTRIBUTE, mosaicConfiguration.getElevationAttribute());
 		}
 		
-		final String additionalDomainAttribute=mosaicConfiguration.getAdditionalDomainAttribute();
+		final String additionalDomainAttribute=mosaicConfiguration.getAdditionalDomainAttributes();
                 if (additionalDomainAttribute!= null) {
-                        properties.setProperty(Utils.Prop.ADDITIONAL_DOMAIN_ATTRIBUTE, mosaicConfiguration.getAdditionalDomainAttribute());
+                        properties.setProperty(Utils.Prop.ADDITIONAL_DOMAIN_ATTRIBUTES, mosaicConfiguration.getAdditionalDomainAttributes());
                 }
 		
 		final int numberOfLevels=mosaicConfiguration.getLevelsNum();

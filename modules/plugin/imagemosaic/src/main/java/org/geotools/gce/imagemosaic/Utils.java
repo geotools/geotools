@@ -137,7 +137,7 @@ public class Utils {
         public final static String HETEROGENEOUS = "Heterogeneous";
         public static final String TIME_ATTRIBUTE = "TimeAttribute";
         public static final String ELEVATION_ATTRIBUTE = "ElevationAttribute";
-        public static final String ADDITIONAL_DOMAIN_ATTRIBUTE = "AdditionalDomainAttribute";
+        public static final String ADDITIONAL_DOMAIN_ATTRIBUTES = "AdditionalDomainAttributes";
         public final static String TYPENAME= "TypeName";
         public final static String PATH_TYPE=  "PathType";
         public final static String PARENT_LOCATION=  "ParentLocation";
@@ -383,9 +383,9 @@ public class Utils {
                 //
                 // additional domain attribute is optional
                 //
-                if (properties.containsKey(Prop.ADDITIONAL_DOMAIN_ATTRIBUTE)) {
-                        final String additionalDomainAttribute = properties.getProperty(Prop.ADDITIONAL_DOMAIN_ATTRIBUTE).trim();
-                        retValue.setAdditionalDomainAttribute(additionalDomainAttribute);
+                if (properties.containsKey(Prop.ADDITIONAL_DOMAIN_ATTRIBUTES)) {
+                        final String additionalDomainAttributes = properties.getProperty(Prop.ADDITIONAL_DOMAIN_ATTRIBUTES).trim();
+                        retValue.setAdditionalDomainAttributes(additionalDomainAttributes);
                 }
 
 

@@ -751,10 +751,10 @@ class RasterLayerRequest {
         
         // //
         //
-        // Additional dimension parameter
+        // Additional dimension parameter check
         //
         // //
-        if (rasterManager.parent.additionalDomainManager.isParameterSupported(name)) {
+        if (rasterManager.parent.isParameterSupported(name)) {
             final Object value = param.getValue();
             if (value == null)
                 return;

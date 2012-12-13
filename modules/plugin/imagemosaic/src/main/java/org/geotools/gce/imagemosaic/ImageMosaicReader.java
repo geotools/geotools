@@ -1150,6 +1150,10 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
 
     @Override
     public Set<ParameterDescriptor<List>> getDynamicParameters() {
-        return additionalDomainManager.getDynamicParameters();
+        return additionalDomainManager != null ? additionalDomainManager.getDynamicParameters() : super.getDynamicParameters();
+    }
+
+    public boolean isParameterSupported(Identifier name) {
+        return additionalDomainManager != null ? additionalDomainManager.isParameterSupported(name) : false;
     }
 }

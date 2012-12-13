@@ -947,4 +947,16 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="VersionStringType_1" instanceClassName="java.lang.String"/>
   <eClassifiers xsi:type="ecore:EDataType" name="QName" instanceClassName="javax.xml.namespace.QName"/>
+  <eClassifiers xsi:type="ecore:EClass" name="RangeIntervalType">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="startComponent" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="endComponent" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RangeItemType">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="rangeComponent" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rangeInterval" eType="#//RangeIntervalType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RangeSubsetType">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rangeItems" upperBound="-1"
+        eType="#//RangeItemType"/>
+  </eClassifiers>
 </ecore:EPackage>

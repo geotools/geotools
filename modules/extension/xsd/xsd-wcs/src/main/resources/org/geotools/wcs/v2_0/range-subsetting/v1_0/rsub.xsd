@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://www.opengis.net/wcs/range-subsetting/1.0" 
+    xmlns:rsub="http://www.opengis.net/wcs/range-subsetting/1.0"
+    xmlns="http://www.w3.org/2001/XMLSchema" 
+    elementFormDefault="qualified" version="1.0.0" xml:lang="en">
+    <annotation>
+        <appinfo>wcsRsub.xsd</appinfo>
+        <documentation>This XML Schema Document is part of the WCS Range Subsetting Extension [OGC 12-040]. It encodes the elements and types that allow expressing Range Subsetting in WCS client/server communication.
+            Last updated: 2012-August-24
+            Copyright (c) 2012 Open Geospatial Consortium, Inc. All Rights Reserved.
+            To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.
+        </documentation>
+    </annotation>
+
+    <!-- ============================================================== -->
+    <!-- includes and imports                                           -->
+    <!-- ============================================================== -->
+        <import namespace="http://www.opengis.net/wcs/2.0" schemaLocation="http://schemas.opengis.net/wcs/2.0/wcsAll.xsd"/>
+    <!-- ============================================================== -->
+    <!-- elements and types                                             -->
+    <!-- ============================================================== -->
+    <element name="rangeSubset" type="rsub:rangeSubsetType"/>
+    <complexType name="rangeSubsetType">
+        <annotation>
+            <documentation>rangeSubset for GetCoverageWithRangeSubsetting.</documentation>
+        </annotation>
+        <sequence>
+            <element name="rangeItem" type="rsub:rangeItemType" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>    
+    <!-- ============================================================== -->        
+    <complexType name="rangeItemType">
+        <annotation>
+            <documentation>Single RangeItem for the rangeSubset.</documentation>
+        </annotation>
+        <choice>
+            <element name="rangeComponent" type="NCName"/>
+            <element name="rangeInterval" type="rsub:rangeIntervalType"/>
+        </choice>
+    </complexType>
+    <!-- ============================================================== -->     
+    <complexType name="rangeIntervalType">
+        <annotation>
+            <documentation>Lower and upper bounds of a range interval (i.e., names of first and last range type component to be considered, following the component order given by the coverage range type). </documentation>
+        </annotation>
+        <sequence>
+            <element name="startComponent" type="NCName"/>
+            <element name="endComponent" type="NCName"/>	    
+        </sequence>
+    </complexType>
+</schema>

@@ -24,6 +24,9 @@ import net.opengis.wcs20.ExtensionType;
 import net.opengis.wcs20.GetCapabilitiesType;
 import net.opengis.wcs20.GetCoverageType;
 import net.opengis.wcs20.OfferedCoverageType;
+import net.opengis.wcs20.RangeIntervalType;
+import net.opengis.wcs20.RangeItemType;
+import net.opengis.wcs20.RangeSubsetType;
 import net.opengis.wcs20.RequestBaseType;
 import net.opengis.wcs20.ServiceMetadataType;
 import net.opengis.wcs20.ServiceParametersType;
@@ -195,6 +198,27 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * @generated
      */
     private EClass extensionItemTypeEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass rangeIntervalTypeEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass rangeItemTypeEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass rangeSubsetTypeEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -1143,6 +1167,78 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EClass getRangeIntervalType() {
+        return rangeIntervalTypeEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getRangeIntervalType_StartComponent() {
+        return (EAttribute)rangeIntervalTypeEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getRangeIntervalType_EndComponent() {
+        return (EAttribute)rangeIntervalTypeEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getRangeItemType() {
+        return rangeItemTypeEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getRangeItemType_RangeComponent() {
+        return (EAttribute)rangeItemTypeEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getRangeItemType_RangeInterval() {
+        return (EReference)rangeItemTypeEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getRangeSubsetType() {
+        return rangeSubsetTypeEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getRangeSubsetType_RangeItems() {
+        return (EReference)rangeSubsetTypeEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EDataType getVersionStringType() {
         return versionStringTypeEDataType;
     }
@@ -1308,6 +1404,17 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
         createEAttribute(extensionItemTypeEClass, EXTENSION_ITEM_TYPE__SIMPLE_CONTENT);
         createEReference(extensionItemTypeEClass, EXTENSION_ITEM_TYPE__OBJECT_CONTENT);
 
+        rangeIntervalTypeEClass = createEClass(RANGE_INTERVAL_TYPE);
+        createEAttribute(rangeIntervalTypeEClass, RANGE_INTERVAL_TYPE__START_COMPONENT);
+        createEAttribute(rangeIntervalTypeEClass, RANGE_INTERVAL_TYPE__END_COMPONENT);
+
+        rangeItemTypeEClass = createEClass(RANGE_ITEM_TYPE);
+        createEAttribute(rangeItemTypeEClass, RANGE_ITEM_TYPE__RANGE_COMPONENT);
+        createEReference(rangeItemTypeEClass, RANGE_ITEM_TYPE__RANGE_INTERVAL);
+
+        rangeSubsetTypeEClass = createEClass(RANGE_SUBSET_TYPE);
+        createEReference(rangeSubsetTypeEClass, RANGE_SUBSET_TYPE__RANGE_ITEMS);
+
         // Create data types
         versionStringTypeEDataType = createEDataType(VERSION_STRING_TYPE);
         versionStringType_1EDataType = createEDataType(VERSION_STRING_TYPE_1);
@@ -1471,6 +1578,17 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
         initEAttribute(getExtensionItemType_Namespace(), ecorePackage.getEString(), "namespace", null, 0, 1, ExtensionItemType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getExtensionItemType_SimpleContent(), ecorePackage.getEString(), "simpleContent", null, 0, 1, ExtensionItemType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getExtensionItemType_ObjectContent(), this.getObject(), null, "objectContent", null, 0, 1, ExtensionItemType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(rangeIntervalTypeEClass, RangeIntervalType.class, "RangeIntervalType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getRangeIntervalType_StartComponent(), ecorePackage.getEString(), "startComponent", null, 0, 1, RangeIntervalType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getRangeIntervalType_EndComponent(), ecorePackage.getEString(), "endComponent", null, 0, 1, RangeIntervalType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(rangeItemTypeEClass, RangeItemType.class, "RangeItemType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getRangeItemType_RangeComponent(), ecorePackage.getEString(), "rangeComponent", null, 0, 1, RangeItemType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getRangeItemType_RangeInterval(), this.getRangeIntervalType(), null, "rangeInterval", null, 0, 1, RangeItemType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(rangeSubsetTypeEClass, RangeSubsetType.class, "RangeSubsetType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEReference(getRangeSubsetType_RangeItems(), this.getRangeItemType(), null, "rangeItems", null, 0, -1, RangeSubsetType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize data types
         initEDataType(versionStringTypeEDataType, String.class, "VersionStringType", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

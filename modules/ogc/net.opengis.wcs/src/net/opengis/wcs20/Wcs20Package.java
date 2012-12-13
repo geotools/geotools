@@ -2098,6 +2098,108 @@ public interface Wcs20Package extends EPackage {
     int EXTENSION_ITEM_TYPE_FEATURE_COUNT = 4;
 
     /**
+     * The meta object id for the '{@link net.opengis.wcs20.impl.RangeIntervalTypeImpl <em>Range Interval Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see net.opengis.wcs20.impl.RangeIntervalTypeImpl
+     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getRangeIntervalType()
+     * @generated
+     */
+    int RANGE_INTERVAL_TYPE = 21;
+
+    /**
+     * The feature id for the '<em><b>Start Component</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int RANGE_INTERVAL_TYPE__START_COMPONENT = 0;
+
+    /**
+     * The feature id for the '<em><b>End Component</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int RANGE_INTERVAL_TYPE__END_COMPONENT = 1;
+
+    /**
+     * The number of structural features of the '<em>Range Interval Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int RANGE_INTERVAL_TYPE_FEATURE_COUNT = 2;
+
+    /**
+     * The meta object id for the '{@link net.opengis.wcs20.impl.RangeItemTypeImpl <em>Range Item Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see net.opengis.wcs20.impl.RangeItemTypeImpl
+     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getRangeItemType()
+     * @generated
+     */
+    int RANGE_ITEM_TYPE = 22;
+
+    /**
+     * The feature id for the '<em><b>Range Component</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int RANGE_ITEM_TYPE__RANGE_COMPONENT = 0;
+
+    /**
+     * The feature id for the '<em><b>Range Interval</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int RANGE_ITEM_TYPE__RANGE_INTERVAL = 1;
+
+    /**
+     * The number of structural features of the '<em>Range Item Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int RANGE_ITEM_TYPE_FEATURE_COUNT = 2;
+
+    /**
+     * The meta object id for the '{@link net.opengis.wcs20.impl.RangeSubsetTypeImpl <em>Range Subset Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see net.opengis.wcs20.impl.RangeSubsetTypeImpl
+     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getRangeSubsetType()
+     * @generated
+     */
+    int RANGE_SUBSET_TYPE = 23;
+
+    /**
+     * The feature id for the '<em><b>Range Items</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int RANGE_SUBSET_TYPE__RANGE_ITEMS = 0;
+
+    /**
+     * The number of structural features of the '<em>Range Subset Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int RANGE_SUBSET_TYPE_FEATURE_COUNT = 1;
+
+    /**
      * The meta object id for the '<em>Version String Type</em>' data type.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2105,7 +2207,7 @@ public interface Wcs20Package extends EPackage {
      * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getVersionStringType()
      * @generated
      */
-    int VERSION_STRING_TYPE = 21;
+    int VERSION_STRING_TYPE = 24;
 
 
     /**
@@ -2116,7 +2218,7 @@ public interface Wcs20Package extends EPackage {
      * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getVersionStringType_1()
      * @generated
      */
-    int VERSION_STRING_TYPE_1 = 22;
+    int VERSION_STRING_TYPE_1 = 25;
 
 
     /**
@@ -2127,7 +2229,7 @@ public interface Wcs20Package extends EPackage {
      * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getQName()
      * @generated
      */
-    int QNAME = 23;
+    int QNAME = 26;
 
 
     /**
@@ -3145,6 +3247,91 @@ public interface Wcs20Package extends EPackage {
     EReference getExtensionItemType_ObjectContent();
 
     /**
+     * Returns the meta object for class '{@link net.opengis.wcs20.RangeIntervalType <em>Range Interval Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Range Interval Type</em>'.
+     * @see net.opengis.wcs20.RangeIntervalType
+     * @generated
+     */
+    EClass getRangeIntervalType();
+
+    /**
+     * Returns the meta object for the attribute '{@link net.opengis.wcs20.RangeIntervalType#getStartComponent <em>Start Component</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Start Component</em>'.
+     * @see net.opengis.wcs20.RangeIntervalType#getStartComponent()
+     * @see #getRangeIntervalType()
+     * @generated
+     */
+    EAttribute getRangeIntervalType_StartComponent();
+
+    /**
+     * Returns the meta object for the attribute '{@link net.opengis.wcs20.RangeIntervalType#getEndComponent <em>End Component</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>End Component</em>'.
+     * @see net.opengis.wcs20.RangeIntervalType#getEndComponent()
+     * @see #getRangeIntervalType()
+     * @generated
+     */
+    EAttribute getRangeIntervalType_EndComponent();
+
+    /**
+     * Returns the meta object for class '{@link net.opengis.wcs20.RangeItemType <em>Range Item Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Range Item Type</em>'.
+     * @see net.opengis.wcs20.RangeItemType
+     * @generated
+     */
+    EClass getRangeItemType();
+
+    /**
+     * Returns the meta object for the attribute '{@link net.opengis.wcs20.RangeItemType#getRangeComponent <em>Range Component</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Range Component</em>'.
+     * @see net.opengis.wcs20.RangeItemType#getRangeComponent()
+     * @see #getRangeItemType()
+     * @generated
+     */
+    EAttribute getRangeItemType_RangeComponent();
+
+    /**
+     * Returns the meta object for the reference '{@link net.opengis.wcs20.RangeItemType#getRangeInterval <em>Range Interval</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference '<em>Range Interval</em>'.
+     * @see net.opengis.wcs20.RangeItemType#getRangeInterval()
+     * @see #getRangeItemType()
+     * @generated
+     */
+    EReference getRangeItemType_RangeInterval();
+
+    /**
+     * Returns the meta object for class '{@link net.opengis.wcs20.RangeSubsetType <em>Range Subset Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Range Subset Type</em>'.
+     * @see net.opengis.wcs20.RangeSubsetType
+     * @generated
+     */
+    EClass getRangeSubsetType();
+
+    /**
+     * Returns the meta object for the reference list '{@link net.opengis.wcs20.RangeSubsetType#getRangeItems <em>Range Items</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference list '<em>Range Items</em>'.
+     * @see net.opengis.wcs20.RangeSubsetType#getRangeItems()
+     * @see #getRangeSubsetType()
+     * @generated
+     */
+    EReference getRangeSubsetType_RangeItems();
+
+    /**
      * Returns the meta object for data type '{@link java.lang.String <em>Version String Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3993,6 +4180,76 @@ public interface Wcs20Package extends EPackage {
          * @generated
          */
         EReference EXTENSION_ITEM_TYPE__OBJECT_CONTENT = eINSTANCE.getExtensionItemType_ObjectContent();
+
+        /**
+         * The meta object literal for the '{@link net.opengis.wcs20.impl.RangeIntervalTypeImpl <em>Range Interval Type</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see net.opengis.wcs20.impl.RangeIntervalTypeImpl
+         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getRangeIntervalType()
+         * @generated
+         */
+        EClass RANGE_INTERVAL_TYPE = eINSTANCE.getRangeIntervalType();
+
+        /**
+         * The meta object literal for the '<em><b>Start Component</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute RANGE_INTERVAL_TYPE__START_COMPONENT = eINSTANCE.getRangeIntervalType_StartComponent();
+
+        /**
+         * The meta object literal for the '<em><b>End Component</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute RANGE_INTERVAL_TYPE__END_COMPONENT = eINSTANCE.getRangeIntervalType_EndComponent();
+
+        /**
+         * The meta object literal for the '{@link net.opengis.wcs20.impl.RangeItemTypeImpl <em>Range Item Type</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see net.opengis.wcs20.impl.RangeItemTypeImpl
+         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getRangeItemType()
+         * @generated
+         */
+        EClass RANGE_ITEM_TYPE = eINSTANCE.getRangeItemType();
+
+        /**
+         * The meta object literal for the '<em><b>Range Component</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute RANGE_ITEM_TYPE__RANGE_COMPONENT = eINSTANCE.getRangeItemType_RangeComponent();
+
+        /**
+         * The meta object literal for the '<em><b>Range Interval</b></em>' reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference RANGE_ITEM_TYPE__RANGE_INTERVAL = eINSTANCE.getRangeItemType_RangeInterval();
+
+        /**
+         * The meta object literal for the '{@link net.opengis.wcs20.impl.RangeSubsetTypeImpl <em>Range Subset Type</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see net.opengis.wcs20.impl.RangeSubsetTypeImpl
+         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getRangeSubsetType()
+         * @generated
+         */
+        EClass RANGE_SUBSET_TYPE = eINSTANCE.getRangeSubsetType();
+
+        /**
+         * The meta object literal for the '<em><b>Range Items</b></em>' reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference RANGE_SUBSET_TYPE__RANGE_ITEMS = eINSTANCE.getRangeSubsetType_RangeItems();
 
         /**
          * The meta object literal for the '<em>Version String Type</em>' data type.

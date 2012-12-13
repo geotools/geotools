@@ -634,16 +634,16 @@ public class ImageMosaicReaderTest extends Assert{
                 tileSize.setValue("128,128");
 
                 // specify time
-                Set<ParameterDescriptor> params = reader.getDynamicParameters();
-                ParameterValue dateValue = null;
+                Set<ParameterDescriptor<List>> params = reader.getDynamicParameters();
+                ParameterValue<List<String>> dateValue = null;
                 ParameterValue waveLengthValue = null;
                 for (ParameterDescriptor param: params) {
                     if (param.getName().getCode().equalsIgnoreCase("date")) {
                         dateValue = param.createValue();
-                        dateValue.setValue("20081031T000000");
+                        dateValue.setValue(new ArrayList<String>(){{add("20081031T000000");}});
                     } else if (param.getName().getCode().equalsIgnoreCase("wavelength")) {
                         waveLengthValue = param.createValue();
-                        waveLengthValue.setValue("020");
+                        waveLengthValue.setValue(new ArrayList<String>(){{add("020");}});
                     }
                 }
                 // Test the output coverage

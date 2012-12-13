@@ -28,6 +28,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -975,7 +976,8 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverageReader
      * 
      * @return
      */
-    public Set<ParameterDescriptor> getDynamicParameters() {
+    @SuppressWarnings("rawtypes")
+    public Set<ParameterDescriptor<List>> getDynamicParameters() {
         return Collections.emptySet();
     }
 }

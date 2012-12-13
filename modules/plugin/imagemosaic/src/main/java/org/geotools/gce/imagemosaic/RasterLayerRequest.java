@@ -80,7 +80,7 @@ class RasterLayerRequest {
 	/** Logger. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(RasterLayerRequest.class);
 
-    private static final int DEFAULT_DOMAINS_NUMBER = 3;
+    private static final int INIT_DOMAINS_NUMBER = 3;
 
     private ReadType readType = AbstractGridFormat.USE_JAI_IMAGEREAD.getDefaultValue()?ReadType.JAI_IMAGEREAD:ReadType.DIRECT_READ;
 
@@ -759,13 +759,13 @@ class RasterLayerRequest {
             if (value == null)
                 return;
 //            requestedAdditionalDomains = (List<String>) value; //Old behaviour.
-            if (value instanceof String) {
-                // Only String support at the moment
+            if (value instanceof List) {
+                List<String> values = (List<String>) value;
                 if (requestedAdditionalDomains == null) {
-                    requestedAdditionalDomains = new ArrayList<String>(DEFAULT_DOMAINS_NUMBER);
+                    requestedAdditionalDomains = new ArrayList<String>(INIT_DOMAINS_NUMBER);
                 }
-                
-                requestedAdditionalDomains.add(paramName + "=" + (String)value);
+                // Only 1 String element supported at the moment
+                requestedAdditionalDomains.add(paramName + "=" + (String)values.get(0));
             }
             return;
         }

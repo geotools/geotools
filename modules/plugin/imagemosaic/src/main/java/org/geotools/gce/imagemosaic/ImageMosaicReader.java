@@ -105,6 +105,7 @@ import org.opengis.referencing.operation.MathTransform;
  *
  * @source $URL$
  */
+@SuppressWarnings("rawtypes")
 public class ImageMosaicReader extends AbstractGridCoverage2DReader implements GridCoverageReader {
 
 
@@ -121,10 +122,6 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
 
         private static final String HAS_PREFIX = "HAS_";
 
-        private Set<ParameterDescriptor> dynamicParameters = null;
-
-        private Set<Identifier> supportedParameters = null;
-
         /**
          * build an AdditionalDomainManager on top of the provided additionalDomainAttributes.
          *
@@ -136,7 +133,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
             final int numDomains = additionalDomainsNames.length;
             if (numDomains <= 0)
                 throw new IllegalArgumentException("NumDomains should be > 0");
-            dynamicParameters = new HashSet<ParameterDescriptor>(numDomains);
+            dynamicParameters = new HashSet<ParameterDescriptor<List>>(numDomains);
             supportedParameters = new HashSet<Identifier>(numDomains);
             additionalDomains = new HashSet<String>(numDomains);
             hasAdditionalDomains = new HashSet<String>(numDomains);
@@ -159,6 +156,16 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
         // comma separated additional domain attributes
         private String additionalDomainAttributes;
 
+        // Set of supported dynamic parameters (depending on the available domains) 
+        private Set<ParameterDescriptor<List>> dynamicParameters = null;
+
+        // Quick access set to look for supported parameters by ID
+        private Set<Identifier> supportedParameters = null;
+
+
+        /**
+         * Clean up mappings
+         */
         public void dispose() {
             if (domainToOriginalAttribute != null) {
                 domainToOriginalAttribute.clear();
@@ -172,6 +179,14 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
                 hasAdditionalDomains.clear();
                 hasAdditionalDomains = null;
             }
+            if (supportedParameters != null) {
+                supportedParameters.clear();
+                supportedParameters = null;
+            }
+            if (dynamicParameters != null) {
+                dynamicParameters.clear();
+                dynamicParameters = null;
+            }
         }
 
         /**
@@ -183,8 +198,9 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
             additionalDomains.add(domainMetadata);
             hasAdditionalDomains.add(HAS_PREFIX + domainMetadata);
             domainToOriginalAttribute.put(domainMetadata, domain);
+
             // currently supporting only strings
-            DefaultParameterDescriptor<String> parameter = DefaultParameterDescriptor.create(domain, "An additional " + domain + " domain", String.class, null, false);
+            DefaultParameterDescriptor<List> parameter = DefaultParameterDescriptor.create(domain, "An additional " + domain + " domain", List.class, null, false);
             dynamicParameters.add(parameter);
             supportedParameters.add(parameter.getName());
         }
@@ -269,7 +285,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
          * Return the set of dynamic parameterDescriptors (the ones related to domains) for this reader 
          * @return
          */
-        public Set<ParameterDescriptor> getDynamicParameters() {
+        public Set<ParameterDescriptor<List>> getDynamicParameters() {
             return dynamicParameters;
         }
 
@@ -1126,7 +1142,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
     }
 
     @Override
-    public Set<ParameterDescriptor> getDynamicParameters() {
+    public Set<ParameterDescriptor<List>> getDynamicParameters() {
         return additionalDomainManager.getDynamicParameters();
     }
 }

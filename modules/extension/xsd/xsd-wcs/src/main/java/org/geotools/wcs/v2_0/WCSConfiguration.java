@@ -54,7 +54,8 @@ public class WCSConfiguration extends Configuration {
         container.registerComponentInstance(Ows20Factory.eINSTANCE);
         
         // register parser delegate for extension schemas
-        container.registerComponentInstance(new XSDParserDelegate(new RangeSubsetConfiguration()));
+        container.registerComponentInstance(new RangeSubsetParserDelegate());
+        container.registerComponentInstance(new ScalingParserDelegate());
     }
     
     

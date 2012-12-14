@@ -22,8 +22,16 @@ import net.opengis.wcs20.OfferedCoverageType;
 import net.opengis.wcs20.RangeIntervalType;
 import net.opengis.wcs20.RangeItemType;
 import net.opengis.wcs20.RangeSubsetType;
+import net.opengis.wcs20.ScaleAxisByFactorType;
+import net.opengis.wcs20.ScaleAxisType;
+import net.opengis.wcs20.ScaleByFactorType;
+import net.opengis.wcs20.ScaleToExtentType;
+import net.opengis.wcs20.ScaleToSizeType;
+import net.opengis.wcs20.ScalingType;
 import net.opengis.wcs20.ServiceMetadataType;
 import net.opengis.wcs20.ServiceParametersType;
+import net.opengis.wcs20.TargetAxisExtentType;
+import net.opengis.wcs20.TargetAxisSizeType;
 import net.opengis.wcs20.Wcs20Factory;
 import net.opengis.wcs20.Wcs20Package;
 
@@ -104,6 +112,14 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
             case Wcs20Package.RANGE_INTERVAL_TYPE: return createRangeIntervalType();
             case Wcs20Package.RANGE_ITEM_TYPE: return createRangeItemType();
             case Wcs20Package.RANGE_SUBSET_TYPE: return createRangeSubsetType();
+            case Wcs20Package.SCALE_AXIS_BY_FACTOR_TYPE: return createScaleAxisByFactorType();
+            case Wcs20Package.SCALE_AXIS_TYPE: return createScaleAxisType();
+            case Wcs20Package.SCALE_BY_FACTOR_TYPE: return createScaleByFactorType();
+            case Wcs20Package.SCALE_TO_EXTENT_TYPE: return createScaleToExtentType();
+            case Wcs20Package.SCALE_TO_SIZE_TYPE: return createScaleToSizeType();
+            case Wcs20Package.SCALING_TYPE: return createScalingType();
+            case Wcs20Package.TARGET_AXIS_EXTENT_TYPE: return createTargetAxisExtentType();
+            case Wcs20Package.TARGET_AXIS_SIZE_TYPE: return createTargetAxisSizeType();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -355,6 +371,86 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
     public RangeSubsetType createRangeSubsetType() {
         RangeSubsetTypeImpl rangeSubsetType = new RangeSubsetTypeImpl();
         return rangeSubsetType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public ScaleAxisByFactorType createScaleAxisByFactorType() {
+        ScaleAxisByFactorTypeImpl scaleAxisByFactorType = new ScaleAxisByFactorTypeImpl();
+        return scaleAxisByFactorType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public ScaleAxisType createScaleAxisType() {
+        ScaleAxisTypeImpl scaleAxisType = new ScaleAxisTypeImpl();
+        return scaleAxisType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public ScaleByFactorType createScaleByFactorType() {
+        ScaleByFactorTypeImpl scaleByFactorType = new ScaleByFactorTypeImpl();
+        return scaleByFactorType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public ScaleToExtentType createScaleToExtentType() {
+        ScaleToExtentTypeImpl scaleToExtentType = new ScaleToExtentTypeImpl();
+        return scaleToExtentType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public ScaleToSizeType createScaleToSizeType() {
+        ScaleToSizeTypeImpl scaleToSizeType = new ScaleToSizeTypeImpl();
+        return scaleToSizeType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public ScalingType createScalingType() {
+        ScalingTypeImpl scalingType = new ScalingTypeImpl();
+        return scalingType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public TargetAxisExtentType createTargetAxisExtentType() {
+        TargetAxisExtentTypeImpl targetAxisExtentType = new TargetAxisExtentTypeImpl();
+        return targetAxisExtentType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public TargetAxisSizeType createTargetAxisSizeType() {
+        TargetAxisSizeTypeImpl targetAxisSizeType = new TargetAxisSizeTypeImpl();
+        return targetAxisSizeType;
     }
 
     /**

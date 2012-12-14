@@ -186,14 +186,6 @@ public final class WCS extends XSD {
     /** @generated */
     public static final QName ServiceParameters = 
         new QName(NAMESPACE,"ServiceParameters");
-
-    /** Range subset extension **/
-    public static final QName rangeSubsetType = new QName(NAMESPACE_RANGESUBSET, "rangeSubsetType");
-
-    public static final QName rangeItemType = new QName(NAMESPACE_RANGESUBSET, "rangeItemType");
-
-    public static final QName rangeIntervalType = new QName(NAMESPACE_RANGESUBSET,
-            "rangeIntervalType");
     
 
 }

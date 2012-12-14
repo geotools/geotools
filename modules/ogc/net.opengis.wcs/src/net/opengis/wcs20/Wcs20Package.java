@@ -2200,6 +2200,293 @@ public interface Wcs20Package extends EPackage {
     int RANGE_SUBSET_TYPE_FEATURE_COUNT = 1;
 
     /**
+     * The meta object id for the '{@link net.opengis.wcs20.impl.ScaleAxisByFactorTypeImpl <em>Scale Axis By Factor Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see net.opengis.wcs20.impl.ScaleAxisByFactorTypeImpl
+     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleAxisByFactorType()
+     * @generated
+     */
+    int SCALE_AXIS_BY_FACTOR_TYPE = 24;
+
+    /**
+     * The feature id for the '<em><b>Scale Axis</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SCALE_AXIS_BY_FACTOR_TYPE__SCALE_AXIS = 0;
+
+    /**
+     * The number of structural features of the '<em>Scale Axis By Factor Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SCALE_AXIS_BY_FACTOR_TYPE_FEATURE_COUNT = 1;
+
+    /**
+     * The meta object id for the '{@link net.opengis.wcs20.impl.ScaleAxisTypeImpl <em>Scale Axis Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see net.opengis.wcs20.impl.ScaleAxisTypeImpl
+     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleAxisType()
+     * @generated
+     */
+    int SCALE_AXIS_TYPE = 25;
+
+    /**
+     * The feature id for the '<em><b>Axis</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SCALE_AXIS_TYPE__AXIS = 0;
+
+    /**
+     * The feature id for the '<em><b>Scale Factor</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SCALE_AXIS_TYPE__SCALE_FACTOR = 1;
+
+    /**
+     * The number of structural features of the '<em>Scale Axis Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SCALE_AXIS_TYPE_FEATURE_COUNT = 2;
+
+    /**
+     * The meta object id for the '{@link net.opengis.wcs20.impl.ScaleByFactorTypeImpl <em>Scale By Factor Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see net.opengis.wcs20.impl.ScaleByFactorTypeImpl
+     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleByFactorType()
+     * @generated
+     */
+    int SCALE_BY_FACTOR_TYPE = 26;
+
+    /**
+     * The feature id for the '<em><b>Scale Factor</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SCALE_BY_FACTOR_TYPE__SCALE_FACTOR = 0;
+
+    /**
+     * The number of structural features of the '<em>Scale By Factor Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SCALE_BY_FACTOR_TYPE_FEATURE_COUNT = 1;
+
+    /**
+     * The meta object id for the '{@link net.opengis.wcs20.impl.ScaleToExtentTypeImpl <em>Scale To Extent Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see net.opengis.wcs20.impl.ScaleToExtentTypeImpl
+     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleToExtentType()
+     * @generated
+     */
+    int SCALE_TO_EXTENT_TYPE = 27;
+
+    /**
+     * The feature id for the '<em><b>Target Axis Extent</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SCALE_TO_EXTENT_TYPE__TARGET_AXIS_EXTENT = 0;
+
+    /**
+     * The number of structural features of the '<em>Scale To Extent Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SCALE_TO_EXTENT_TYPE_FEATURE_COUNT = 1;
+
+    /**
+     * The meta object id for the '{@link net.opengis.wcs20.impl.ScaleToSizeTypeImpl <em>Scale To Size Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see net.opengis.wcs20.impl.ScaleToSizeTypeImpl
+     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleToSizeType()
+     * @generated
+     */
+    int SCALE_TO_SIZE_TYPE = 28;
+
+    /**
+     * The feature id for the '<em><b>Target Axis Size</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SCALE_TO_SIZE_TYPE__TARGET_AXIS_SIZE = 0;
+
+    /**
+     * The number of structural features of the '<em>Scale To Size Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SCALE_TO_SIZE_TYPE_FEATURE_COUNT = 1;
+
+    /**
+     * The meta object id for the '{@link net.opengis.wcs20.impl.ScalingTypeImpl <em>Scaling Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see net.opengis.wcs20.impl.ScalingTypeImpl
+     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScalingType()
+     * @generated
+     */
+    int SCALING_TYPE = 29;
+
+    /**
+     * The feature id for the '<em><b>Scale By Factor</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SCALING_TYPE__SCALE_BY_FACTOR = 0;
+
+    /**
+     * The feature id for the '<em><b>Scale Axes By Factor</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SCALING_TYPE__SCALE_AXES_BY_FACTOR = 1;
+
+    /**
+     * The feature id for the '<em><b>Scale To Size</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SCALING_TYPE__SCALE_TO_SIZE = 2;
+
+    /**
+     * The feature id for the '<em><b>Scale To Extent</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SCALING_TYPE__SCALE_TO_EXTENT = 3;
+
+    /**
+     * The number of structural features of the '<em>Scaling Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SCALING_TYPE_FEATURE_COUNT = 4;
+
+    /**
+     * The meta object id for the '{@link net.opengis.wcs20.impl.TargetAxisExtentTypeImpl <em>Target Axis Extent Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see net.opengis.wcs20.impl.TargetAxisExtentTypeImpl
+     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getTargetAxisExtentType()
+     * @generated
+     */
+    int TARGET_AXIS_EXTENT_TYPE = 30;
+
+    /**
+     * The feature id for the '<em><b>Axis</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TARGET_AXIS_EXTENT_TYPE__AXIS = 0;
+
+    /**
+     * The feature id for the '<em><b>Low</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TARGET_AXIS_EXTENT_TYPE__LOW = 1;
+
+    /**
+     * The feature id for the '<em><b>High</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TARGET_AXIS_EXTENT_TYPE__HIGH = 2;
+
+    /**
+     * The number of structural features of the '<em>Target Axis Extent Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TARGET_AXIS_EXTENT_TYPE_FEATURE_COUNT = 3;
+
+    /**
+     * The meta object id for the '{@link net.opengis.wcs20.impl.TargetAxisSizeTypeImpl <em>Target Axis Size Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see net.opengis.wcs20.impl.TargetAxisSizeTypeImpl
+     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getTargetAxisSizeType()
+     * @generated
+     */
+    int TARGET_AXIS_SIZE_TYPE = 31;
+
+    /**
+     * The feature id for the '<em><b>Axis</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TARGET_AXIS_SIZE_TYPE__AXIS = 0;
+
+    /**
+     * The feature id for the '<em><b>Target Size</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TARGET_AXIS_SIZE_TYPE__TARGET_SIZE = 1;
+
+    /**
+     * The number of structural features of the '<em>Target Axis Size Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int TARGET_AXIS_SIZE_TYPE_FEATURE_COUNT = 2;
+
+    /**
      * The meta object id for the '<em>Version String Type</em>' data type.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2207,7 +2494,7 @@ public interface Wcs20Package extends EPackage {
      * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getVersionStringType()
      * @generated
      */
-    int VERSION_STRING_TYPE = 24;
+    int VERSION_STRING_TYPE = 32;
 
 
     /**
@@ -2218,7 +2505,7 @@ public interface Wcs20Package extends EPackage {
      * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getVersionStringType_1()
      * @generated
      */
-    int VERSION_STRING_TYPE_1 = 25;
+    int VERSION_STRING_TYPE_1 = 33;
 
 
     /**
@@ -2229,7 +2516,7 @@ public interface Wcs20Package extends EPackage {
      * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getQName()
      * @generated
      */
-    int QNAME = 26;
+    int QNAME = 34;
 
 
     /**
@@ -3332,6 +3619,251 @@ public interface Wcs20Package extends EPackage {
     EReference getRangeSubsetType_RangeItems();
 
     /**
+     * Returns the meta object for class '{@link net.opengis.wcs20.ScaleAxisByFactorType <em>Scale Axis By Factor Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Scale Axis By Factor Type</em>'.
+     * @see net.opengis.wcs20.ScaleAxisByFactorType
+     * @generated
+     */
+    EClass getScaleAxisByFactorType();
+
+    /**
+     * Returns the meta object for the reference list '{@link net.opengis.wcs20.ScaleAxisByFactorType#getScaleAxis <em>Scale Axis</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference list '<em>Scale Axis</em>'.
+     * @see net.opengis.wcs20.ScaleAxisByFactorType#getScaleAxis()
+     * @see #getScaleAxisByFactorType()
+     * @generated
+     */
+    EReference getScaleAxisByFactorType_ScaleAxis();
+
+    /**
+     * Returns the meta object for class '{@link net.opengis.wcs20.ScaleAxisType <em>Scale Axis Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Scale Axis Type</em>'.
+     * @see net.opengis.wcs20.ScaleAxisType
+     * @generated
+     */
+    EClass getScaleAxisType();
+
+    /**
+     * Returns the meta object for the attribute '{@link net.opengis.wcs20.ScaleAxisType#getAxis <em>Axis</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Axis</em>'.
+     * @see net.opengis.wcs20.ScaleAxisType#getAxis()
+     * @see #getScaleAxisType()
+     * @generated
+     */
+    EAttribute getScaleAxisType_Axis();
+
+    /**
+     * Returns the meta object for the attribute '{@link net.opengis.wcs20.ScaleAxisType#getScaleFactor <em>Scale Factor</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Scale Factor</em>'.
+     * @see net.opengis.wcs20.ScaleAxisType#getScaleFactor()
+     * @see #getScaleAxisType()
+     * @generated
+     */
+    EAttribute getScaleAxisType_ScaleFactor();
+
+    /**
+     * Returns the meta object for class '{@link net.opengis.wcs20.ScaleByFactorType <em>Scale By Factor Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Scale By Factor Type</em>'.
+     * @see net.opengis.wcs20.ScaleByFactorType
+     * @generated
+     */
+    EClass getScaleByFactorType();
+
+    /**
+     * Returns the meta object for the attribute '{@link net.opengis.wcs20.ScaleByFactorType#getScaleFactor <em>Scale Factor</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Scale Factor</em>'.
+     * @see net.opengis.wcs20.ScaleByFactorType#getScaleFactor()
+     * @see #getScaleByFactorType()
+     * @generated
+     */
+    EAttribute getScaleByFactorType_ScaleFactor();
+
+    /**
+     * Returns the meta object for class '{@link net.opengis.wcs20.ScaleToExtentType <em>Scale To Extent Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Scale To Extent Type</em>'.
+     * @see net.opengis.wcs20.ScaleToExtentType
+     * @generated
+     */
+    EClass getScaleToExtentType();
+
+    /**
+     * Returns the meta object for the reference list '{@link net.opengis.wcs20.ScaleToExtentType#getTargetAxisExtent <em>Target Axis Extent</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference list '<em>Target Axis Extent</em>'.
+     * @see net.opengis.wcs20.ScaleToExtentType#getTargetAxisExtent()
+     * @see #getScaleToExtentType()
+     * @generated
+     */
+    EReference getScaleToExtentType_TargetAxisExtent();
+
+    /**
+     * Returns the meta object for class '{@link net.opengis.wcs20.ScaleToSizeType <em>Scale To Size Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Scale To Size Type</em>'.
+     * @see net.opengis.wcs20.ScaleToSizeType
+     * @generated
+     */
+    EClass getScaleToSizeType();
+
+    /**
+     * Returns the meta object for the reference list '{@link net.opengis.wcs20.ScaleToSizeType#getTargetAxisSize <em>Target Axis Size</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference list '<em>Target Axis Size</em>'.
+     * @see net.opengis.wcs20.ScaleToSizeType#getTargetAxisSize()
+     * @see #getScaleToSizeType()
+     * @generated
+     */
+    EReference getScaleToSizeType_TargetAxisSize();
+
+    /**
+     * Returns the meta object for class '{@link net.opengis.wcs20.ScalingType <em>Scaling Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Scaling Type</em>'.
+     * @see net.opengis.wcs20.ScalingType
+     * @generated
+     */
+    EClass getScalingType();
+
+    /**
+     * Returns the meta object for the reference '{@link net.opengis.wcs20.ScalingType#getScaleByFactor <em>Scale By Factor</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference '<em>Scale By Factor</em>'.
+     * @see net.opengis.wcs20.ScalingType#getScaleByFactor()
+     * @see #getScalingType()
+     * @generated
+     */
+    EReference getScalingType_ScaleByFactor();
+
+    /**
+     * Returns the meta object for the reference '{@link net.opengis.wcs20.ScalingType#getScaleAxesByFactor <em>Scale Axes By Factor</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference '<em>Scale Axes By Factor</em>'.
+     * @see net.opengis.wcs20.ScalingType#getScaleAxesByFactor()
+     * @see #getScalingType()
+     * @generated
+     */
+    EReference getScalingType_ScaleAxesByFactor();
+
+    /**
+     * Returns the meta object for the reference '{@link net.opengis.wcs20.ScalingType#getScaleToSize <em>Scale To Size</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference '<em>Scale To Size</em>'.
+     * @see net.opengis.wcs20.ScalingType#getScaleToSize()
+     * @see #getScalingType()
+     * @generated
+     */
+    EReference getScalingType_ScaleToSize();
+
+    /**
+     * Returns the meta object for the reference '{@link net.opengis.wcs20.ScalingType#getScaleToExtent <em>Scale To Extent</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference '<em>Scale To Extent</em>'.
+     * @see net.opengis.wcs20.ScalingType#getScaleToExtent()
+     * @see #getScalingType()
+     * @generated
+     */
+    EReference getScalingType_ScaleToExtent();
+
+    /**
+     * Returns the meta object for class '{@link net.opengis.wcs20.TargetAxisExtentType <em>Target Axis Extent Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Target Axis Extent Type</em>'.
+     * @see net.opengis.wcs20.TargetAxisExtentType
+     * @generated
+     */
+    EClass getTargetAxisExtentType();
+
+    /**
+     * Returns the meta object for the attribute '{@link net.opengis.wcs20.TargetAxisExtentType#getAxis <em>Axis</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Axis</em>'.
+     * @see net.opengis.wcs20.TargetAxisExtentType#getAxis()
+     * @see #getTargetAxisExtentType()
+     * @generated
+     */
+    EAttribute getTargetAxisExtentType_Axis();
+
+    /**
+     * Returns the meta object for the attribute '{@link net.opengis.wcs20.TargetAxisExtentType#getLow <em>Low</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Low</em>'.
+     * @see net.opengis.wcs20.TargetAxisExtentType#getLow()
+     * @see #getTargetAxisExtentType()
+     * @generated
+     */
+    EAttribute getTargetAxisExtentType_Low();
+
+    /**
+     * Returns the meta object for the attribute '{@link net.opengis.wcs20.TargetAxisExtentType#getHigh <em>High</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>High</em>'.
+     * @see net.opengis.wcs20.TargetAxisExtentType#getHigh()
+     * @see #getTargetAxisExtentType()
+     * @generated
+     */
+    EAttribute getTargetAxisExtentType_High();
+
+    /**
+     * Returns the meta object for class '{@link net.opengis.wcs20.TargetAxisSizeType <em>Target Axis Size Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Target Axis Size Type</em>'.
+     * @see net.opengis.wcs20.TargetAxisSizeType
+     * @generated
+     */
+    EClass getTargetAxisSizeType();
+
+    /**
+     * Returns the meta object for the attribute '{@link net.opengis.wcs20.TargetAxisSizeType#getAxis <em>Axis</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Axis</em>'.
+     * @see net.opengis.wcs20.TargetAxisSizeType#getAxis()
+     * @see #getTargetAxisSizeType()
+     * @generated
+     */
+    EAttribute getTargetAxisSizeType_Axis();
+
+    /**
+     * Returns the meta object for the attribute '{@link net.opengis.wcs20.TargetAxisSizeType#getTargetSize <em>Target Size</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Target Size</em>'.
+     * @see net.opengis.wcs20.TargetAxisSizeType#getTargetSize()
+     * @see #getTargetAxisSizeType()
+     * @generated
+     */
+    EAttribute getTargetAxisSizeType_TargetSize();
+
+    /**
      * Returns the meta object for data type '{@link java.lang.String <em>Version String Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4250,6 +4782,206 @@ public interface Wcs20Package extends EPackage {
          * @generated
          */
         EReference RANGE_SUBSET_TYPE__RANGE_ITEMS = eINSTANCE.getRangeSubsetType_RangeItems();
+
+        /**
+         * The meta object literal for the '{@link net.opengis.wcs20.impl.ScaleAxisByFactorTypeImpl <em>Scale Axis By Factor Type</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see net.opengis.wcs20.impl.ScaleAxisByFactorTypeImpl
+         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleAxisByFactorType()
+         * @generated
+         */
+        EClass SCALE_AXIS_BY_FACTOR_TYPE = eINSTANCE.getScaleAxisByFactorType();
+
+        /**
+         * The meta object literal for the '<em><b>Scale Axis</b></em>' reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference SCALE_AXIS_BY_FACTOR_TYPE__SCALE_AXIS = eINSTANCE.getScaleAxisByFactorType_ScaleAxis();
+
+        /**
+         * The meta object literal for the '{@link net.opengis.wcs20.impl.ScaleAxisTypeImpl <em>Scale Axis Type</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see net.opengis.wcs20.impl.ScaleAxisTypeImpl
+         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleAxisType()
+         * @generated
+         */
+        EClass SCALE_AXIS_TYPE = eINSTANCE.getScaleAxisType();
+
+        /**
+         * The meta object literal for the '<em><b>Axis</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute SCALE_AXIS_TYPE__AXIS = eINSTANCE.getScaleAxisType_Axis();
+
+        /**
+         * The meta object literal for the '<em><b>Scale Factor</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute SCALE_AXIS_TYPE__SCALE_FACTOR = eINSTANCE.getScaleAxisType_ScaleFactor();
+
+        /**
+         * The meta object literal for the '{@link net.opengis.wcs20.impl.ScaleByFactorTypeImpl <em>Scale By Factor Type</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see net.opengis.wcs20.impl.ScaleByFactorTypeImpl
+         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleByFactorType()
+         * @generated
+         */
+        EClass SCALE_BY_FACTOR_TYPE = eINSTANCE.getScaleByFactorType();
+
+        /**
+         * The meta object literal for the '<em><b>Scale Factor</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute SCALE_BY_FACTOR_TYPE__SCALE_FACTOR = eINSTANCE.getScaleByFactorType_ScaleFactor();
+
+        /**
+         * The meta object literal for the '{@link net.opengis.wcs20.impl.ScaleToExtentTypeImpl <em>Scale To Extent Type</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see net.opengis.wcs20.impl.ScaleToExtentTypeImpl
+         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleToExtentType()
+         * @generated
+         */
+        EClass SCALE_TO_EXTENT_TYPE = eINSTANCE.getScaleToExtentType();
+
+        /**
+         * The meta object literal for the '<em><b>Target Axis Extent</b></em>' reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference SCALE_TO_EXTENT_TYPE__TARGET_AXIS_EXTENT = eINSTANCE.getScaleToExtentType_TargetAxisExtent();
+
+        /**
+         * The meta object literal for the '{@link net.opengis.wcs20.impl.ScaleToSizeTypeImpl <em>Scale To Size Type</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see net.opengis.wcs20.impl.ScaleToSizeTypeImpl
+         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScaleToSizeType()
+         * @generated
+         */
+        EClass SCALE_TO_SIZE_TYPE = eINSTANCE.getScaleToSizeType();
+
+        /**
+         * The meta object literal for the '<em><b>Target Axis Size</b></em>' reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference SCALE_TO_SIZE_TYPE__TARGET_AXIS_SIZE = eINSTANCE.getScaleToSizeType_TargetAxisSize();
+
+        /**
+         * The meta object literal for the '{@link net.opengis.wcs20.impl.ScalingTypeImpl <em>Scaling Type</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see net.opengis.wcs20.impl.ScalingTypeImpl
+         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getScalingType()
+         * @generated
+         */
+        EClass SCALING_TYPE = eINSTANCE.getScalingType();
+
+        /**
+         * The meta object literal for the '<em><b>Scale By Factor</b></em>' reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference SCALING_TYPE__SCALE_BY_FACTOR = eINSTANCE.getScalingType_ScaleByFactor();
+
+        /**
+         * The meta object literal for the '<em><b>Scale Axes By Factor</b></em>' reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference SCALING_TYPE__SCALE_AXES_BY_FACTOR = eINSTANCE.getScalingType_ScaleAxesByFactor();
+
+        /**
+         * The meta object literal for the '<em><b>Scale To Size</b></em>' reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference SCALING_TYPE__SCALE_TO_SIZE = eINSTANCE.getScalingType_ScaleToSize();
+
+        /**
+         * The meta object literal for the '<em><b>Scale To Extent</b></em>' reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference SCALING_TYPE__SCALE_TO_EXTENT = eINSTANCE.getScalingType_ScaleToExtent();
+
+        /**
+         * The meta object literal for the '{@link net.opengis.wcs20.impl.TargetAxisExtentTypeImpl <em>Target Axis Extent Type</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see net.opengis.wcs20.impl.TargetAxisExtentTypeImpl
+         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getTargetAxisExtentType()
+         * @generated
+         */
+        EClass TARGET_AXIS_EXTENT_TYPE = eINSTANCE.getTargetAxisExtentType();
+
+        /**
+         * The meta object literal for the '<em><b>Axis</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute TARGET_AXIS_EXTENT_TYPE__AXIS = eINSTANCE.getTargetAxisExtentType_Axis();
+
+        /**
+         * The meta object literal for the '<em><b>Low</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute TARGET_AXIS_EXTENT_TYPE__LOW = eINSTANCE.getTargetAxisExtentType_Low();
+
+        /**
+         * The meta object literal for the '<em><b>High</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute TARGET_AXIS_EXTENT_TYPE__HIGH = eINSTANCE.getTargetAxisExtentType_High();
+
+        /**
+         * The meta object literal for the '{@link net.opengis.wcs20.impl.TargetAxisSizeTypeImpl <em>Target Axis Size Type</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see net.opengis.wcs20.impl.TargetAxisSizeTypeImpl
+         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getTargetAxisSizeType()
+         * @generated
+         */
+        EClass TARGET_AXIS_SIZE_TYPE = eINSTANCE.getTargetAxisSizeType();
+
+        /**
+         * The meta object literal for the '<em><b>Axis</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute TARGET_AXIS_SIZE_TYPE__AXIS = eINSTANCE.getTargetAxisSizeType_Axis();
+
+        /**
+         * The meta object literal for the '<em><b>Target Size</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute TARGET_AXIS_SIZE_TYPE__TARGET_SIZE = eINSTANCE.getTargetAxisSizeType_TargetSize();
 
         /**
          * The meta object literal for the '<em>Version String Type</em>' data type.

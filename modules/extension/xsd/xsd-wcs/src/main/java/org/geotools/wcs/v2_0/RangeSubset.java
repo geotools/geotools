@@ -62,7 +62,7 @@ public final class RangeSubset extends XSD {
      * Returns the location of 'rsub.xsd.'.
      */
     public String getSchemaLocation() {
-       return getClass().getResource("./range_subsetting/v1_0/rsub.xsd").toString();
+       return getClass().getResource("range_subsetting/v1_0/rsub.xsd").toString();
     }
     
     public static final String NAMESPACE = "http://www.opengis.net/wcs/range-subsetting/1.0";

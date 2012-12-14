@@ -27,19 +27,20 @@ import javax.media.jai.Interpolation;
 import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
 import javax.media.jai.OperationDescriptor;
+import javax.media.jai.PlanarImage;
 
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.grid.GridEnvelope2D;
+import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.ViewType;
-import org.geotools.metadata.iso.spatial.PixelTranslation;
-import org.geotools.referencing.operation.LinearTransform;
+import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
-import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.image.ImageUtilities;
 import org.opengis.coverage.processing.OperationNotFoundException;
-import org.opengis.metadata.spatial.PixelOrientation;
 import org.opengis.parameter.ParameterDescriptorGroup;
+import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.util.InternationalString;
 
@@ -59,7 +60,7 @@ import org.opengis.util.InternationalString;
  * @source $URL$
  * @since 2.5
  */
-public class BaseScaleOperationJAI extends OperationJAI {
+public abstract class BaseScaleOperationJAI extends OperationJAI {
 
 	/**
 	 * Serial number for interoperability with different versions.
@@ -99,16 +100,13 @@ public class BaseScaleOperationJAI extends OperationJAI {
 	@Override
 	protected GridCoverage2D deriveGridCoverage(GridCoverage2D[] sources, Parameters parameters) {
 		
-		
-		// /////////////////////////////////////////////////////////////////////
 		//
 		// Getting the input parameters we might need
 		//
-		// /////////////////////////////////////////////////////////////////////
 		int indexOfInterpolationParam;
 		try{
 			indexOfInterpolationParam=parameters.parameters
-				.indexOfParam("Interpolation");
+				.indexOfParam("interpolation");
 		}
 		catch (IllegalArgumentException e) {
 			indexOfInterpolationParam=-1;
@@ -125,7 +123,7 @@ public class BaseScaleOperationJAI extends OperationJAI {
 
 		final Interpolation interpolation =(Interpolation) (indexOfInterpolationParam==-1?
 					new InterpolationNearest():
-						parameters.parameters.getObjectParameter("Interpolation")); ;
+						parameters.parameters.getObjectParameter("interpolation")); ;
 		final BorderExtender borderExtender= 
 			(BorderExtender) (indexOfBorderExtenderParam!=-1? 
 					parameters.parameters.getObjectParameter("BorderExtender"):
@@ -137,10 +135,6 @@ public class BaseScaleOperationJAI extends OperationJAI {
 		//
 		// /////////////////////////////////////////////////////////////////////
 		GridCoverage2D sourceCoverage = sources[PRIMARY_SOURCE_INDEX];
-		// map to upper left to avoid loosing too much precision due to the fact
-		// that the internal grid tow world maps from pixel centre.
-		final MathTransform sourceG2W = (sourceCoverage.getGridGeometry())
-				.getGridToCRS2D(PixelOrientation.UPPER_LEFT);
 		RenderedImage sourceImage = sourceCoverage.getRenderedImage();
 	
 		// /////////////////////////////////////////////////////////////////////
@@ -179,11 +173,11 @@ public class BaseScaleOperationJAI extends OperationJAI {
 		// Managing Hints, especially for output coverage's layout purposes.
 		//
 		// It is worthwhile to point out that layout hints for minx, miny, width
-		// and height are NOT honored by the scale operation. The other
-		// ImageLayout hints, like tileWidth and tileHeight, however are
+		// and height are honored by the warp operation. The other
+		// ImageLayout hints, like tileWidth and tileHeight, are also
 		// honored.
 		// /////////////////////////////////////////////////////////////////////
-		RenderingHints targetHints = ImageUtilities.getRenderingHints(sourceImage);
+		RenderingHints targetHints = parameters.hints!=null?parameters.hints:ImageUtilities.getRenderingHints(sourceImage);
 		if (targetHints == null) 
 			targetHints = new RenderingHints(null);
 		if (parameters.hints != null) 
@@ -252,19 +246,28 @@ public class BaseScaleOperationJAI extends OperationJAI {
 		// transformation that takes into account the scaling we just performed.
 		//
 		// /////////////////////////////////////////////////////////////////////
-		//concatenate and remap to pixel centre
-		final PixelTranslation translationValue = PixelTranslation.getPixelTranslation(PixelOrientation.LOWER_RIGHT);
-		final LinearTransform translation = ProjectiveTransform.create(AffineTransform.getTranslateInstance(translationValue.dx, translationValue.dy));
-		final LinearTransform scale = ProjectiveTransform.create(
-				AffineTransform.getScaleInstance(
-						sourceImage.getWidth()/ (1.0 * image.getWidth()),
-						sourceImage.getHeight()/ (1.0 * image.getHeight())
-				)
-		);
-		final MathTransform finalTransform= ConcatenatedTransform.create(translation,ConcatenatedTransform.create(scale,sourceG2W));
+		final double scaleX=image.getWidth()/ (1.0 * sourceImage.getWidth());
+		final double scaleY=image.getHeight()/ (1.0 * sourceImage.getHeight());
+		final double tX=image.getMinX()-sourceImage.getMinX()*scaleX;
+		final double tY=image.getMinY()-sourceImage.getMinY()*scaleY;
+		final AffineTransform scaleTranslate= new AffineTransform(
+		        scaleX, 
+		        0, 
+		        0, 
+		        scaleY, 
+		        tX, 
+		        tY);
+		final MathTransform finalTransform;
+		try{	
+		    scaleTranslate.invert();
+		    scaleTranslate.preConcatenate(CoverageUtilities.CENTER_TO_CORNER);
+		    final AffineTransform2D tr= new AffineTransform2D(scaleTranslate);
+		    finalTransform= ConcatenatedTransform.create(tr,sourceCoverage.getGridGeometry().getGridToCRS2D());
+		} catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
 		
-	
-		// /////////////////////////////////////////////////////////////////////
+			
 		//
 		// Preparing the resulting coverage
 		//
@@ -278,11 +281,16 @@ public class BaseScaleOperationJAI extends OperationJAI {
 	     */
 	    final InternationalString      name = deriveName(sources, 0, parameters);
 	    final Map<String,?>       properties = getProperties(image,parameters.crs,name,finalTransform,sources,parameters);
+	    final GridGeometry2D gg2D = new GridGeometry2D(
+	            new GridEnvelope2D(PlanarImage.wrapRenderedImage(image).getBounds()), 
+	            PixelInCell.CELL_CORNER, 
+	            finalTransform, 
+	            parameters.crs, 
+	            null);
 	    final GridCoverage2D result = getFactory(parameters.hints)
 	            .create(name,        // The grid coverage name
 	                    image,        // The underlying data
-	                    parameters.crs,         // The coordinate system (may not be 2D).
-	                    finalTransform,       // The grid transform (may not be 2D).
+	                    gg2D,
 	                    (GridSampleDimension[]) (strategy == ViewType.PHOTOGRAPHIC ? null
 	    						: sourceCoverage.getSampleDimensions().clone()),  // The sample dimensions
 	                    sources,     // The source grid coverage.

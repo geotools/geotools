@@ -33,9 +33,7 @@ import org.geotools.image.jai.Registry;
 
 /**
  * This operation is simply a wrapper for the JAI scale operation which allows
- * me to arbitrarly scale and translate a rendered image.
- *
- *
+ * me to arbitrarily scale and translate a rendered image.
  *
  * @source $URL$
  * @version $Id$
@@ -68,8 +66,8 @@ public class Scale extends BaseScaleOperationJAI {
 	protected RenderedImage createRenderedImage(ParameterBlockJAI parameters, RenderingHints hints) {
 		final RenderedImage source = (RenderedImage) parameters.getSource(0);
 		final Interpolation interpolation;
-		if(parameters.getObjectParameter("Interpolation")!=null)
-			interpolation=(Interpolation) parameters.getObjectParameter("Interpolation");
+		if(parameters.getObjectParameter("interpolation")!=null)
+			interpolation=(Interpolation) parameters.getObjectParameter("interpolation");
 		else
 			if(hints.get(JAI.KEY_INTERPOLATION)!=null)
 				interpolation=(Interpolation) hints.get(JAI.KEY_INTERPOLATION);

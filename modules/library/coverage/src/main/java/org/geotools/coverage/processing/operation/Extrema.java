@@ -29,7 +29,7 @@ import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.ExtremaDescriptor;
 
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverage.processing.AbstractStatisticsOperationJAI;
+import org.geotools.coverage.processing.BaseStatisticsOperationJAI;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.processing.OperationNotFoundException;
 import org.opengis.parameter.ParameterValueGroup;
@@ -80,7 +80,7 @@ import org.opengis.util.InternationalString;
  *
  * @source $URL$
  */
-public class Extrema extends AbstractStatisticsOperationJAI {
+public class Extrema extends BaseStatisticsOperationJAI {
 
 	/**
 	 * Serial number for interoperability with different versions.

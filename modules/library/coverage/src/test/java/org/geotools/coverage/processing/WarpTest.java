@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2012, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,34 +16,39 @@
  */
 package org.geotools.coverage.processing;
 
+import static org.geotools.coverage.grid.ViewType.GEOPHYSICS;
+import static org.geotools.coverage.grid.ViewType.PACKED;
+import static org.geotools.coverage.grid.ViewType.PHOTOGRAPHIC;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
+
 import javax.media.jai.Interpolation;
-import javax.media.jai.PlanarImage;
+import javax.media.jai.JAI;
+import javax.media.jai.WarpAffine;
 
-import org.opengis.parameter.ParameterValueGroup;
-
-import org.geotools.factory.Hints;
-import org.geotools.coverage.grid.Viewer;
 import org.geotools.coverage.grid.GridCoverage2D;
-import static org.geotools.coverage.grid.ViewType.*;
-
-import org.junit.*;
-import static org.junit.Assert.*;
+import org.geotools.coverage.grid.Viewer;
+import org.geotools.coverage.processing.operation.Warp;
+import org.geotools.factory.Hints;
+import org.jaitools.imageutils.ImageLayout2;
+import org.junit.Before;
+import org.junit.Test;
+import org.opengis.parameter.ParameterValueGroup;
 
 
 /**
- * Tests the scale operation.
- *
- *
+ * Tests the {@link Warp} operation.
  *
  * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini (GeoSolutions)
- * @author Martin Desruisseaux (Geomatys)
  *
- * @since 2.3
+ * @since 9.0
  */
-public class ScaleTest extends GridProcessingTestBase {
+public class WarpTest extends GridProcessingTestBase {
     /**
      * The processor to be used for all tests.
      */
@@ -64,7 +69,7 @@ public class ScaleTest extends GridProcessingTestBase {
      * @todo Disabled for now because seems to be trapped in a never ending loop.
      */
     @Test
-    public void testScale() {
+    public void testWarp() {
         final GridCoverage2D originallyIndexedCoverage       = EXAMPLES.get(0);
         final GridCoverage2D indexedCoverage                 = EXAMPLES.get(2);
         final GridCoverage2D indexedCoverageWithTransparency = EXAMPLES.get(3);
@@ -76,18 +81,18 @@ public class ScaleTest extends GridProcessingTestBase {
         //
         ///////////////////////////////////////////////////////////////////////
         Interpolation interp = Interpolation.getInstance(Interpolation.INTERP_NEAREST);
-        scale(originallyIndexedCoverage      .view(PACKED), interp);
-        scale(indexedCoverage                .view(PACKED), interp);
-        scale(indexedCoverageWithTransparency.view(PACKED), interp);
+        warp(originallyIndexedCoverage      .view(PACKED), interp);
+        warp(indexedCoverage                .view(PACKED), interp);
+        warp(indexedCoverageWithTransparency.view(PACKED), interp);
 
         ///////////////////////////////////////////////////////////////////////
         //
         // Nearest neighbor interpolation and geophysics view.
         //
         ///////////////////////////////////////////////////////////////////////
-        scale(originallyIndexedCoverage      .view(GEOPHYSICS), interp);
-        scale(indexedCoverage                .view(GEOPHYSICS), interp);
-        scale(indexedCoverageWithTransparency.view(GEOPHYSICS), interp);
+        warp(originallyIndexedCoverage      .view(GEOPHYSICS), interp);
+        warp(indexedCoverage                .view(GEOPHYSICS), interp);
+        warp(indexedCoverageWithTransparency.view(GEOPHYSICS), interp);
 
         ///////////////////////////////////////////////////////////////////////
         //
@@ -95,18 +100,18 @@ public class ScaleTest extends GridProcessingTestBase {
         //
         ///////////////////////////////////////////////////////////////////////
         interp = Interpolation.getInstance(Interpolation.INTERP_BILINEAR);
-//        scale(originallyIndexedCoverage      .view(PACKED), interp);
-        scale(indexedCoverage                .view(PACKED), interp);
-        scale(indexedCoverageWithTransparency.view(PACKED), interp);
+        warp(originallyIndexedCoverage      .view(PACKED), interp);
+        warp(indexedCoverage                .view(PACKED), interp);
+//        warp(indexedCoverageWithTransparency.view(PACKED), interp);
 
         ///////////////////////////////////////////////////////////////////////
         //
         // Bilinear interpolation and geo view
         //
         ///////////////////////////////////////////////////////////////////////
-//        scale(originallyIndexedCoverage      .view(GEOPHYSICS), interp);
-        scale(indexedCoverage                .view(GEOPHYSICS), interp);
-        scale(indexedCoverageWithTransparency.view(GEOPHYSICS), interp);
+        warp(originallyIndexedCoverage      .view(GEOPHYSICS), interp);
+        warp(indexedCoverage                .view(GEOPHYSICS), interp);
+//        warp(indexedCoverageWithTransparency.view(GEOPHYSICS), interp);
 
         ///////////////////////////////////////////////////////////////////////
         //
@@ -115,7 +120,7 @@ public class ScaleTest extends GridProcessingTestBase {
         ///////////////////////////////////////////////////////////////////////
         // on this one the subsample average should NOT go back to the
         // geophysiscs view before being applied
-//        scale(floatCoverage.view(PACKED), interp);
+        warp(floatCoverage.view(PACKED), interp);
 
         ///////////////////////////////////////////////////////////////////////
         //
@@ -125,10 +130,10 @@ public class ScaleTest extends GridProcessingTestBase {
         // on this one the subsample average should NOT go back to the
         // geophysiscs view before being applied
         interp = Interpolation.getInstance(Interpolation.INTERP_NEAREST);
-        scale(floatCoverage.view(PACKED), interp);
+        warp(floatCoverage.view(PACKED), interp);
 
         // Play with a rotated coverage
-        scale(rotate(floatCoverage.view(GEOPHYSICS), Math.PI/4), null);
+        warp(rotate(floatCoverage.view(GEOPHYSICS), Math.PI/4), null);
     }
 
     /**
@@ -137,23 +142,21 @@ public class ScaleTest extends GridProcessingTestBase {
      * @param coverage The coverage to scale.
      * @param interp The interpolation to use.
      */
-    private void scale(final GridCoverage2D coverage, final Interpolation interp) {
+    private void warp(final GridCoverage2D coverage, final Interpolation interp) {
         // Caching initial properties.
         final RenderedImage originalImage = coverage.getRenderedImage();
         final int w = originalImage.getWidth();
         final int h = originalImage.getHeight();
 
         // Getting parameters for doing a scale.
-        final ParameterValueGroup param = processor.getOperation("Scale").getParameters();
+        final ParameterValueGroup param = processor.getOperation("Warp").getParameters();
         param.parameter("Source").setValue(coverage);
-        param.parameter("xScale").setValue(Float.valueOf(0.5f));
-        param.parameter("yScale").setValue(Float.valueOf(0.5f));
-        param.parameter("xTrans").setValue(Float.valueOf(0.0f));
-        param.parameter("yTrans").setValue(Float.valueOf(0.0f));
+        param.parameter("warp").setValue(new WarpAffine(AffineTransform.getScaleInstance(2, 2)));
         param.parameter("Interpolation").setValue(interp);
 
         // Doing a first scale.
-        GridCoverage2D scaled = (GridCoverage2D) processor.doOperation(param);
+        final ImageLayout2 layout= new ImageLayout2(0,0,(int)(w / 2.0),(int)(h / 2.0));
+        GridCoverage2D scaled = (GridCoverage2D) processor.doOperation(param, new Hints(JAI.KEY_IMAGE_LAYOUT,layout));
         assertEnvelopeEquals(coverage, scaled);
         RenderedImage scaledImage = scaled.getRenderedImage();
         assertEquals(w / 2.0, scaledImage.getWidth(),  EPS);
@@ -163,21 +166,21 @@ public class ScaleTest extends GridProcessingTestBase {
             Viewer.show(scaled);
         } else {
             // Force computation
-            assertNotNull(PlanarImage.wrapRenderedImage(coverage.getRenderedImage()).getTiles());
-            assertNotNull(PlanarImage.wrapRenderedImage(scaledImage).getTiles());
-        }
-
-        // Doing another scale using the default processor.
-        scaled = (GridCoverage2D) Operations.DEFAULT.scale(scaled, 3, 3, 0, 0, interp);
-        scaledImage = scaled.getRenderedImage();
-        assertEnvelopeEquals(coverage, scaled);
-        assertEquals(w * 1.5, scaledImage.getWidth(),  EPS);
-        assertEquals(h * 1.5, scaledImage.getHeight(), EPS);
-        if (SHOW) {
-            Viewer.show(scaled);
-        } else {
-            // Force computation
+            assertNotNull(coverage.getRenderedImage().getData());
             assertNotNull(scaledImage.getData());
         }
+
+//        // Doing another scale using the default processor.
+//        scaled = (GridCoverage2D) Operations.DEFAULT.scale(scaled, 3, 3, 0, 0, interp);
+//        scaledImage = scaled.getRenderedImage();
+//        assertEnvelopeEquals(coverage, scaled);
+//        assertEquals(w * 1.5, scaledImage.getWidth(),  EPS);
+//        assertEquals(h * 1.5, scaledImage.getHeight(), EPS);
+//        if (SHOW) {
+//            Viewer.show(scaled);
+//        } else {
+//            // Force computation
+//            assertNotNull(scaledImage.getData());
+//        }
     }
 }

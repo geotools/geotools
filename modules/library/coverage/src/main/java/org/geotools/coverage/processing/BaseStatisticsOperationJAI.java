@@ -69,7 +69,7 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  * @source $URL$
  */
-public abstract class AbstractStatisticsOperationJAI extends
+public abstract class BaseStatisticsOperationJAI extends
 		OperationJAI {
 	
 	/**
@@ -127,19 +127,19 @@ public abstract class AbstractStatisticsOperationJAI extends
 	}
 
 	/**
-	 * Constructor for {@link AbstractStatisticsOperationJAI}.
+	 * Constructor for {@link BaseStatisticsOperationJAI}.
 	 * 
 	 * @param operationDescriptor
 	 *            {@link OperationDescriptor} for the underlying JAI operation.
 	 */
-	public AbstractStatisticsOperationJAI(OperationDescriptor operationDescriptor) {
+	public BaseStatisticsOperationJAI(OperationDescriptor operationDescriptor) {
 		super(operationDescriptor, new ImagingParameterDescriptors(
 				getOperationDescriptor(operationDescriptor.getName()),
 				REPLACED_DESCRIPTORS));
 	}
 
 	/**
-	 * Constructor for {@link AbstractStatisticsOperationJAI}.
+	 * Constructor for {@link BaseStatisticsOperationJAI}.
 	 * 
 	 * @param operationDescriptor
 	 *            {@link OperationDescriptor} for the underlying JAI operation.
@@ -148,7 +148,7 @@ public abstract class AbstractStatisticsOperationJAI extends
 	 *            correspondent {@link ImagingParameters} in order to change the
 	 *            default behavior they have inside JAI.
 	 */
-	public AbstractStatisticsOperationJAI(
+	public BaseStatisticsOperationJAI(
 			OperationDescriptor operationDescriptor,
 			ImagingParameterDescriptors replacements) {
 		super(operationDescriptor, new ImagingParameterDescriptors(
@@ -157,10 +157,10 @@ public abstract class AbstractStatisticsOperationJAI extends
 				ImagingParameterDescriptors.DEFAULT_SOURCE_TYPE_MAP, REPLACED_DESCRIPTORS));
 	}
     /**
-	 * Constructor for {@link AbstractStatisticsOperationJAI}.
+	 * Constructor for {@link BaseStatisticsOperationJAI}.
 	 * @param name of the underlying JAI operation.
 	 */
-	public AbstractStatisticsOperationJAI(String name) {
+	public BaseStatisticsOperationJAI(String name) {
 		super(getOperationDescriptor(name),new ImagingParameterDescriptors(
 				getOperationDescriptor(name),
 				new HashSet<ParameterDescriptor>(REPLACED_DESCRIPTORS)));

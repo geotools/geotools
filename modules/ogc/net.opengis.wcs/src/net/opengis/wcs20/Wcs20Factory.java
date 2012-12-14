@@ -211,6 +211,78 @@ public interface Wcs20Factory extends EFactory {
     RangeSubsetType createRangeSubsetType();
 
     /**
+     * Returns a new object of class '<em>Scale Axis By Factor Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Scale Axis By Factor Type</em>'.
+     * @generated
+     */
+    ScaleAxisByFactorType createScaleAxisByFactorType();
+
+    /**
+     * Returns a new object of class '<em>Scale Axis Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Scale Axis Type</em>'.
+     * @generated
+     */
+    ScaleAxisType createScaleAxisType();
+
+    /**
+     * Returns a new object of class '<em>Scale By Factor Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Scale By Factor Type</em>'.
+     * @generated
+     */
+    ScaleByFactorType createScaleByFactorType();
+
+    /**
+     * Returns a new object of class '<em>Scale To Extent Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Scale To Extent Type</em>'.
+     * @generated
+     */
+    ScaleToExtentType createScaleToExtentType();
+
+    /**
+     * Returns a new object of class '<em>Scale To Size Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Scale To Size Type</em>'.
+     * @generated
+     */
+    ScaleToSizeType createScaleToSizeType();
+
+    /**
+     * Returns a new object of class '<em>Scaling Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Scaling Type</em>'.
+     * @generated
+     */
+    ScalingType createScalingType();
+
+    /**
+     * Returns a new object of class '<em>Target Axis Extent Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Target Axis Extent Type</em>'.
+     * @generated
+     */
+    TargetAxisExtentType createTargetAxisExtentType();
+
+    /**
+     * Returns a new object of class '<em>Target Axis Size Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Target Axis Size Type</em>'.
+     * @generated
+     */
+    TargetAxisSizeType createTargetAxisSizeType();
+
+    /**
      * Returns the package supported by this factory.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

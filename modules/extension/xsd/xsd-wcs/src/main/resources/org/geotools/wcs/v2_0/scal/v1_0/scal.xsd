@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://www.opengis.net/WCS_service-extension_scaling/1.0" 
+    xmlns:scal="http://www.opengis.net/WCS_service-extension_scaling/1.0"
+    xmlns="http://www.w3.org/2001/XMLSchema" 
+    elementFormDefault="qualified" version="1.0.0" xml:lang="en">
+    <annotation>
+        <appinfo>scal.xsd</appinfo>
+        <documentation>This XML Schema Document is part of the WCS Scaling Extension [OGC 12-039]. It encodes the elements and types that allow expressing Scaling in WCS client/server communication.
+            Last updated: 2012-Dec-07
+            Copyright (c) 2012 Open Geospatial Consortium, Inc. All Rights Reserved.
+            To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.
+        </documentation>
+    </annotation>
+
+    <!-- ============================================================== -->
+    <!-- includes and imports                                           -->
+    <!-- ============================================================== -->
+    <import namespace="http://www.opengis.net/wcs/2.0" schemaLocation="http://schemas.opengis.net/wcs/2.0/wcsAll.xsd"/>
+    <!-- ============================================================== -->
+    <!-- elements and types                                             -->
+    <!-- ============================================================== -->
+    <element name="Scaling" type="scal:ScalingType"/>
+    <complexType name="ScalingType">
+        <annotation>
+            <documentation> GetCoverage reqest with Scaling.</documentation>
+        </annotation>
+        <choice>
+            <element name="ScaleByFactor" type="scal:ScaleByFactorType"/>
+	    <element name="ScaleAxesByFactor" type="scal:ScaleAxesByFactorType"/>
+	    <element name="ScaleToSize" type="scal:ScaleToSizeType"/>
+	    <element name="ScaleToExtent" type="scal:ScaleToExtentType"/>
+        </choice>
+    </complexType>
+    <!-- ============================================================== -->    
+    <complexType name="ScaleByFactorType">
+        <sequence>
+            <element name="scaleFactor" type="decimal"/>
+        </sequence>   
+    </complexType>    
+    <!-- ============================================================== -->
+    <complexType name="ScaleAxesByFactorType">
+        <annotation>
+            <documentation> ScaleAxes for the Scaling.</documentation>
+        </annotation>
+        <sequence>
+            <element name="ScaleAxis" type="scal:ScaleAxisType" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>    
+    <!-- ============================================================== -->        
+    <complexType name="ScaleAxisType">
+        <annotation>
+            <documentation> ScaleAxis for the ScaleAxes.</documentation>
+        </annotation>
+        <sequence>
+	    <element name="axis" type="anyURI"/>
+            <element name="scaleFactor" type="decimal"/>
+        </sequence>
+    </complexType>
+    <!-- ============================================================== -->     
+    <complexType name="ScaleToSizeType">
+        <annotation>
+            <documentation>Target size of the coverage in the axis indicated for the Scaling. </documentation>
+        </annotation>
+        <sequence>
+            <element name="TargetAxisSize" type="scal:TargetAxisSizeType" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <!-- ============================================================== -->        
+    <complexType name="TargetAxisSizeType">
+        <annotation>
+            <documentation> TargetAxisSize for the ScaleDomain.</documentation>
+        </annotation>
+        <sequence>
+	    <element name="axis" type="anyURI"/>
+            <element name="targetSize" type="decimal"/>
+        </sequence>	
+    </complexType>    
+    <!-- ============================================================== -->     
+    <complexType name="ScaleToExtentType">
+        <annotation>
+            <documentation>ScaleToExtent for the Scaling. </documentation>
+        </annotation>
+        <sequence>
+            <element name="TargetAxisExtent" type="scal:TargetAxisExtentType" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <!-- ============================================================== -->        
+    <complexType name="TargetAxisExtentType">
+        <annotation>
+            <documentation> TargetAxisSize for the ScaleDomain.</documentation>
+        </annotation>
+        <sequence>
+	    <element name="axis" type="anyURI"/>
+            <element name="low" type="decimal"/>
+	    <element name="high" type="decimal"/>
+        </sequence>	
+    </complexType>      
+    
+</schema>

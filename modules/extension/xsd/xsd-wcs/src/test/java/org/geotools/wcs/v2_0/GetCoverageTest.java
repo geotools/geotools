@@ -12,6 +12,14 @@ import net.opengis.wcs20.ExtensionItemType;
 import net.opengis.wcs20.GetCoverageType;
 import net.opengis.wcs20.RangeItemType;
 import net.opengis.wcs20.RangeSubsetType;
+import net.opengis.wcs20.ScaleAxisByFactorType;
+import net.opengis.wcs20.ScaleAxisType;
+import net.opengis.wcs20.ScaleByFactorType;
+import net.opengis.wcs20.ScaleToExtentType;
+import net.opengis.wcs20.ScaleToSizeType;
+import net.opengis.wcs20.ScalingType;
+import net.opengis.wcs20.TargetAxisExtentType;
+import net.opengis.wcs20.TargetAxisSizeType;
 
 import org.eclipse.emf.common.util.EList;
 import org.geotools.xml.Parser;
@@ -147,6 +155,108 @@ public class GetCoverageTest {
         RangeItemType second = rangeSubset.getRangeItems().get(1);
         assertEquals("band3", second.getRangeInterval().getStartComponent());
         assertEquals("band5", second.getRangeInterval().getEndComponent());
+    }
+    
+    @Test
+    public void testParseGetCoverageScaleByFactor() throws Exception {
+        String capRequestPath = "requestGetCoverageScaleByFactor.xml";
+        GetCoverageType gc = (GetCoverageType) parser.parse(getClass()
+                .getResourceAsStream(capRequestPath));
+        
+        Map<String, Object> extensions = getExtensionsMap(gc);
+        assertEquals(1, extensions.size());
+        
+        ScalingType scaling = (ScalingType) extensions.get("http://www.opengis.net/WCS_service-extension_scaling/1.0:Scaling");
+        
+        assertNull(scaling.getScaleAxesByFactor());
+        assertNull(scaling.getScaleToSize());
+        assertNull(scaling.getScaleToExtent());
+        
+        ScaleByFactorType scaleByFactor = scaling.getScaleByFactor();
+        assertEquals(2.5, scaleByFactor.getScaleFactor(), 1e-9d);
+    }
+    
+    @Test
+    public void testParseGetCoverageScaleAxesByFactor() throws Exception {
+        String capRequestPath = "requestGetCoverageScaleAxesByFactor.xml";
+        GetCoverageType gc = (GetCoverageType) parser.parse(getClass()
+                .getResourceAsStream(capRequestPath));
+        
+        Map<String, Object> extensions = getExtensionsMap(gc);
+        assertEquals(1, extensions.size());
+        
+        ScalingType scaling = (ScalingType) extensions.get("http://www.opengis.net/WCS_service-extension_scaling/1.0:Scaling");
+        
+        assertNull(scaling.getScaleByFactor());
+        assertNull(scaling.getScaleToSize());
+        assertNull(scaling.getScaleToExtent());
+        
+        ScaleAxisByFactorType sa = scaling.getScaleAxesByFactor();
+        assertEquals(3, sa.getScaleAxis().size());
+        ScaleAxisType sa1 = sa.getScaleAxis().get(0);
+        assertEquals("http://www.opengis.net/def/axis/OGC/1/i", sa1.getAxis());
+        assertEquals(3.5, sa1.getScaleFactor(), 1e-9);
+        ScaleAxisType sa2 = sa.getScaleAxis().get(1);
+        assertEquals("http://www.opengis.net/def/axis/OGC/1/j", sa2.getAxis());
+        assertEquals(3.5, sa2.getScaleFactor(), 1e-9);
+        ScaleAxisType sa3 = sa.getScaleAxis().get(2);
+        assertEquals("http://www.opengis.net/def/axis/OGC/1/k", sa3.getAxis());
+        assertEquals(2.0, sa3.getScaleFactor(), 1e-9);
+    }
+    
+    @Test
+    public void testParseGetCoverageScaleToSize() throws Exception {
+        String capRequestPath = "requestGetCoverageScaleToSize.xml";
+        GetCoverageType gc = (GetCoverageType) parser.parse(getClass()
+                .getResourceAsStream(capRequestPath));
+        
+        Map<String, Object> extensions = getExtensionsMap(gc);
+        assertEquals(1, extensions.size());
+        
+        ScalingType scaling = (ScalingType) extensions.get("http://www.opengis.net/WCS_service-extension_scaling/1.0:Scaling");
+        
+        assertNull(scaling.getScaleByFactor());
+        assertNull(scaling.getScaleAxesByFactor());
+        assertNull(scaling.getScaleToExtent());
+        
+        ScaleToSizeType sa = scaling.getScaleToSize();
+        assertEquals(3, sa.getTargetAxisSize().size());
+        TargetAxisSizeType sa1 = sa.getTargetAxisSize().get(0);
+        assertEquals("http://www.opengis.net/def/axis/OGC/1/i", sa1.getAxis());
+        assertEquals(1000.0, sa1.getTargetSize(), 1e-9);
+        TargetAxisSizeType sa2 = sa.getTargetAxisSize().get(1);
+        assertEquals("http://www.opengis.net/def/axis/OGC/1/j", sa2.getAxis());
+        assertEquals(1000.0, sa2.getTargetSize(), 1e-9);
+        TargetAxisSizeType sa3 = sa.getTargetAxisSize().get(2);
+        assertEquals("http://www.opengis.net/def/axis/OGC/1/k", sa3.getAxis());
+        assertEquals(10.0, sa3.getTargetSize(), 1e-9);
+    }
+    
+    @Test
+    public void testParseGetCoverageScaleToExtend() throws Exception {
+        String capRequestPath = "requestGetCoverageScaleToExtent.xml";
+        GetCoverageType gc = (GetCoverageType) parser.parse(getClass()
+                .getResourceAsStream(capRequestPath));
+        
+        Map<String, Object> extensions = getExtensionsMap(gc);
+        assertEquals(1, extensions.size());
+        
+        ScalingType scaling = (ScalingType) extensions.get("http://www.opengis.net/WCS_service-extension_scaling/1.0:Scaling");
+        
+        assertNull(scaling.getScaleByFactor());
+        assertNull(scaling.getScaleAxesByFactor());
+        assertNull(scaling.getScaleToSize());
+        
+        ScaleToExtentType se = scaling.getScaleToExtent();
+        assertEquals(2, se.getTargetAxisExtent().size());
+        TargetAxisExtentType sa1 = se.getTargetAxisExtent().get(0);
+        assertEquals("http://www.opengis.net/def/axis/OGC/1/i", sa1.getAxis());
+        assertEquals(10.0, sa1.getLow(), 1e-9);
+        assertEquals(20.0, sa1.getHigh(), 1e-9);
+        TargetAxisExtentType sa2 = se.getTargetAxisExtent().get(1);
+        assertEquals("http://www.opengis.net/def/axis/OGC/1/j", sa2.getAxis());
+        assertEquals(20.0, sa2.getLow(), 1e-9);
+        assertEquals(30.0, sa2.getHigh(), 1e-9);
     }
 
 

@@ -25,26 +25,26 @@ import org.geotools.xml.XSD;
 
 /**
  * This interface contains the qualified names of all the types,elements, and 
- * attributes in the http://www.opengis.net/wcs/range-subsetting/1.0 schema.
+ * attributes in the http://www.opengis.net/WCS_service-extension_scaling/1.0 schema.
  *
  * @generated
  */
-public final class RangeSubset extends XSD {
+public final class Scaling extends XSD {
 
     /** singleton instance */
-    private static final RangeSubset instance = new RangeSubset();
+    private static final Scaling instance = new Scaling();
     
     /**
      * Returns the singleton instance.
      */
-    public static final RangeSubset getInstance() {
+    public static final Scaling getInstance() {
        return instance;
     }
     
     /**
      * private constructor
      */
-    private RangeSubset() {
+    private Scaling() {
     }
     
     protected void addDependencies(Set dependencies) {
@@ -52,7 +52,7 @@ public final class RangeSubset extends XSD {
     }
     
     /**
-     * Returns 'http://www.opengis.net/wcs/range-subsetting/1.0'.
+     * Returns 'http://www.opengis.net/WCS_service-extension_scaling/1.0'.
      */
     public String getNamespaceURI() {
        return NAMESPACE;
@@ -62,20 +62,27 @@ public final class RangeSubset extends XSD {
      * Returns the location of 'rsub.xsd.'.
      */
     public String getSchemaLocation() {
-       return getClass().getResource("./range_subsetting/v1_0/rsub.xsd").toString();
+       return getClass().getResource("./scal/v1_0/scal.xsd").toString();
     }
     
-    public static final String NAMESPACE = "http://www.opengis.net/wcs/range-subsetting/1.0";
+    public static final String NAMESPACE = "http://www.opengis.net/WCS_service-extension_scaling/1.0";
 
 
-    /** Range subset extension **/
-    public static final QName rangeSubsetType = new QName(NAMESPACE, "rangeSubsetType");
+    public static final QName ScalingType = new QName(NAMESPACE, "ScalingType");
 
-    public static final QName rangeItemType = new QName(NAMESPACE, "rangeItemType");
-
-    public static final QName rangeIntervalType = new QName(NAMESPACE,
-            "rangeIntervalType");
+    public static final QName ScaleByFactorType = new QName(NAMESPACE, "ScaleByFactorType");
     
+    public static final QName ScaleAxesByFactorType = new QName(NAMESPACE, "ScaleAxesByFactorType");
+    
+    public static final QName ScaleAxisType = new QName(NAMESPACE, "ScaleAxisType");
+    
+    public static final QName ScaleToSizeType = new QName(NAMESPACE, "ScaleToSizeType");
+    
+    public static final QName TargetAxisSizeType = new QName(NAMESPACE, "TargetAxisSizeType");
+    
+    public static final QName ScaleToExtentType = new QName(NAMESPACE, "ScaleToExtentType");
+    
+    public static final QName TargetAxisExtentType = new QName(NAMESPACE, "TargetAxisExtentType");
 
 }
     

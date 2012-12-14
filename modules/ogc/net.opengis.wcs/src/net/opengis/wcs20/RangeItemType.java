@@ -1,7 +1,5 @@
 package net.opengis.wcs20;
 
-import java.util.List;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**

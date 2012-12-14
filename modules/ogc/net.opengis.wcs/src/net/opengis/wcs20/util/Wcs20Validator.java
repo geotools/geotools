@@ -27,8 +27,16 @@ import net.opengis.wcs20.RangeIntervalType;
 import net.opengis.wcs20.RangeItemType;
 import net.opengis.wcs20.RangeSubsetType;
 import net.opengis.wcs20.RequestBaseType;
+import net.opengis.wcs20.ScaleAxisByFactorType;
+import net.opengis.wcs20.ScaleAxisType;
+import net.opengis.wcs20.ScaleByFactorType;
+import net.opengis.wcs20.ScaleToExtentType;
+import net.opengis.wcs20.ScaleToSizeType;
+import net.opengis.wcs20.ScalingType;
 import net.opengis.wcs20.ServiceMetadataType;
 import net.opengis.wcs20.ServiceParametersType;
+import net.opengis.wcs20.TargetAxisExtentType;
+import net.opengis.wcs20.TargetAxisSizeType;
 import net.opengis.wcs20.Wcs20Package;
 
 import org.eclipse.emf.common.util.DiagnosticChain;
@@ -171,6 +179,22 @@ public class Wcs20Validator extends EObjectValidator {
                 return validateRangeItemType((RangeItemType)value, diagnostics, context);
             case Wcs20Package.RANGE_SUBSET_TYPE:
                 return validateRangeSubsetType((RangeSubsetType)value, diagnostics, context);
+            case Wcs20Package.SCALE_AXIS_BY_FACTOR_TYPE:
+                return validateScaleAxisByFactorType((ScaleAxisByFactorType)value, diagnostics, context);
+            case Wcs20Package.SCALE_AXIS_TYPE:
+                return validateScaleAxisType((ScaleAxisType)value, diagnostics, context);
+            case Wcs20Package.SCALE_BY_FACTOR_TYPE:
+                return validateScaleByFactorType((ScaleByFactorType)value, diagnostics, context);
+            case Wcs20Package.SCALE_TO_EXTENT_TYPE:
+                return validateScaleToExtentType((ScaleToExtentType)value, diagnostics, context);
+            case Wcs20Package.SCALE_TO_SIZE_TYPE:
+                return validateScaleToSizeType((ScaleToSizeType)value, diagnostics, context);
+            case Wcs20Package.SCALING_TYPE:
+                return validateScalingType((ScalingType)value, diagnostics, context);
+            case Wcs20Package.TARGET_AXIS_EXTENT_TYPE:
+                return validateTargetAxisExtentType((TargetAxisExtentType)value, diagnostics, context);
+            case Wcs20Package.TARGET_AXIS_SIZE_TYPE:
+                return validateTargetAxisSizeType((TargetAxisSizeType)value, diagnostics, context);
             case Wcs20Package.VERSION_STRING_TYPE:
                 return validateVersionStringType((String)value, diagnostics, context);
             case Wcs20Package.VERSION_STRING_TYPE_1:
@@ -396,6 +420,78 @@ public class Wcs20Validator extends EObjectValidator {
      */
     public boolean validateRangeSubsetType(RangeSubsetType rangeSubsetType, DiagnosticChain diagnostics, Map<Object, Object> context) {
         return validate_EveryDefaultConstraint(rangeSubsetType, diagnostics, context);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateScaleAxisByFactorType(ScaleAxisByFactorType scaleAxisByFactorType, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validate_EveryDefaultConstraint(scaleAxisByFactorType, diagnostics, context);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateScaleAxisType(ScaleAxisType scaleAxisType, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validate_EveryDefaultConstraint(scaleAxisType, diagnostics, context);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateScaleByFactorType(ScaleByFactorType scaleByFactorType, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validate_EveryDefaultConstraint(scaleByFactorType, diagnostics, context);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateScaleToExtentType(ScaleToExtentType scaleToExtentType, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validate_EveryDefaultConstraint(scaleToExtentType, diagnostics, context);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateScaleToSizeType(ScaleToSizeType scaleToSizeType, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validate_EveryDefaultConstraint(scaleToSizeType, diagnostics, context);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateScalingType(ScalingType scalingType, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validate_EveryDefaultConstraint(scalingType, diagnostics, context);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateTargetAxisExtentType(TargetAxisExtentType targetAxisExtentType, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validate_EveryDefaultConstraint(targetAxisExtentType, diagnostics, context);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateTargetAxisSizeType(TargetAxisSizeType targetAxisSizeType, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validate_EveryDefaultConstraint(targetAxisSizeType, diagnostics, context);
     }
 
     /**

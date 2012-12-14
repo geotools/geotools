@@ -938,15 +938,6 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="simpleContent" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="objectContent" eType="#//Object"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EDataType" name="VersionStringType" instanceClassName="java.lang.String">
-    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
-      <details key="name" value="VersionStringType"/>
-      <details key="baseType" value="http://www.eclipse.org/emf/2003/XMLType#string"/>
-      <details key="pattern" value="2\.0\.\d+"/>
-    </eAnnotations>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EDataType" name="VersionStringType_1" instanceClassName="java.lang.String"/>
-  <eClassifiers xsi:type="ecore:EDataType" name="QName" instanceClassName="javax.xml.namespace.QName"/>
   <eClassifiers xsi:type="ecore:EClass" name="RangeIntervalType">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="startComponent" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="endComponent" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -959,4 +950,47 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="rangeItems" upperBound="-1"
         eType="#//RangeItemType"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaleAxisByFactorType">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="scaleAxis" upperBound="-1"
+        eType="#//ScaleAxisType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaleAxisType">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="axis" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="scaleFactor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaleByFactorType">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="scaleFactor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaleToExtentType">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="targetAxisExtent" upperBound="-1"
+        eType="#//TargetAxisExtentType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaleToSizeType">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="targetAxisSize" upperBound="-1"
+        eType="#//TargetAxisSizeType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScalingType">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="scaleByFactor" eType="#//ScaleByFactorType"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="scaleAxesByFactor" eType="#//ScaleAxisByFactorType"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="scaleToSize" eType="#//ScaleToSizeType"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="scaleToExtent" eType="#//ScaleToExtentType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TargetAxisExtentType">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="axis" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="low" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="high" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TargetAxisSizeType">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="axis" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetSize" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="VersionStringType" instanceClassName="java.lang.String">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="VersionStringType"/>
+      <details key="baseType" value="http://www.eclipse.org/emf/2003/XMLType#string"/>
+      <details key="pattern" value="2\.0\.\d+"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="VersionStringType_1" instanceClassName="java.lang.String"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="QName" instanceClassName="javax.xml.namespace.QName"/>
 </ecore:EPackage>

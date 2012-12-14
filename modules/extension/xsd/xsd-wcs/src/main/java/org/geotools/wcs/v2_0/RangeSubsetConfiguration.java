@@ -32,6 +32,8 @@ import org.geotools.xml.Configuration;
  * @generated
  */
 public class RangeSubsetConfiguration extends Configuration {
+    
+    
 
     /**
      * Creates a new configuration.
@@ -50,12 +52,12 @@ public class RangeSubsetConfiguration extends Configuration {
     @SuppressWarnings("unchecked")
     protected final void registerBindings(Map bindings) {
         // manually setup bindings
-        bindings.put(WCS.rangeSubsetType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE,
-                WCS.rangeSubsetType, RangeSubsetType.class));
-        bindings.put(WCS.rangeIntervalType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE,
-                WCS.rangeIntervalType, RangeIntervalType.class));
-        bindings.put(WCS.rangeItemType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE,
-                WCS.rangeItemType, RangeItemType.class));
+        bindings.put(RangeSubset.rangeSubsetType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE,
+                RangeSubset.rangeSubsetType, RangeSubsetType.class));
+        bindings.put(RangeSubset.rangeIntervalType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE,
+                RangeSubset.rangeIntervalType, RangeIntervalType.class));
+        bindings.put(RangeSubset.rangeItemType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE,
+                RangeSubset.rangeItemType, RangeItemType.class));
     }
 
 }

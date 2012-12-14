@@ -33,8 +33,10 @@ import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -67,6 +69,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
@@ -395,12 +398,17 @@ class RasterLayerResponse{
 			// execute them all
 			boolean firstGranule=true;
 			int[] alphaIndex=null;
+			StringBuilder paths = new StringBuilder();
 			
 			for (Future<GranuleLoadingResult> future :tasks) {
 				
 				
 				final RenderedImage loadedImage;
 				final GranuleLoadingResult result;
+				final URL url;
+				final File inputFile;
+				final String canonicalPath;
+
 				boolean doFiltering;
 				try {
 					if(!multithreadingAllowed || rasterManager.parent.multiThreadedLoader == null)
@@ -418,6 +426,10 @@ class RasterLayerResponse{
                                         }
 					loadedImage = result.getRaster();
 					doFiltering = result.isDoFiltering();
+					url = result.granuleUrl;
+					inputFile = DataUtilities.urlToFile(url);
+					canonicalPath = inputFile.getCanonicalPath();
+
 					if(loadedImage==null)
 					{
 						if(LOGGER.isLoggable(Level.FINE))
@@ -472,7 +484,11 @@ class RasterLayerResponse{
 					if (LOGGER.isLoggable(Level.FINE))
 						LOGGER.fine("Adding to mosaic image number " + granuleIndex+ " failed, original request was "+request);
 					continue;
-				}
+				} catch (IOException e) {
+            if (LOGGER.isLoggable(Level.FINE))
+                LOGGER.fine("Adding to mosaic image number " + granuleIndex + " failed, original request was " + request);
+            continue;
+                }
 
 
 				if (LOGGER.isLoggable(Level.FINER)) {
@@ -509,15 +525,12 @@ class RasterLayerResponse{
                                 if (defaultArtifactsFilterThreshold != Integer.MIN_VALUE && doFiltering){
                                     int artifactThreshold = defaultArtifactsFilterThreshold; 
                                     if (artifactsFilterPTileThreshold != -1){
-                                        final URL url = result.getGranuleUrl();
                                         
                                         //Looking for a histogram for that granule in order to 
                                         //setup dynamic threshold 
                                         if (url != null){
-                                            final File inputFile = DataUtilities.urlToFile(url);
-                                            final String inputFileName = inputFile.getPath();
-                                            final String path = FilenameUtils.getFullPath(inputFileName);
-                                            final String baseName = FilenameUtils.getBaseName(inputFileName);
+                                            final String path = FilenameUtils.getFullPath(canonicalPath);
+                                            final String baseName = FilenameUtils.getBaseName(canonicalPath);
                                             final String histogramPath = path + baseName + "." + "histogram";
                                             final Histogram histogram = Utils.getHistogram(histogramPath);
                                             if (histogram != null) {
@@ -537,9 +550,10 @@ class RasterLayerResponse{
 				// add to mosaic
                                 sources.add(raster);
                                 
-			
+                                paths.append(granuleIndex > 0 ? "," : "").append(canonicalPath);
 				//increment index 
 				granuleIndex++;
+				
 			}
 
 			granulesNumber=granuleIndex;
@@ -549,7 +563,7 @@ class RasterLayerResponse{
 					LOGGER.log(Level.FINE,"Unable to load any granuleDescriptor ");
 				return;
 			}
-			
+			granulesPaths = paths.toString();
 	                sourceRoi = rois.toArray(new ROI[rois.size()]);
 		}
 		
@@ -611,6 +625,8 @@ class RasterLayerResponse{
 	private double[] backgroundValues;
 	
 	private Hints hints;
+	
+	private String granulesPaths;
 	
 	/**
 	 * Construct a {@code RasterLayerResponse} given a specific
@@ -1436,6 +1452,17 @@ class RasterLayerResponse{
 	        		null
 	        		).geophysics(true);
 		}
+		
+		
+		
+
+        // creating the final coverage by keeping into account the fact that we
+        Map <String, String> properties = null;
+        if (granulesPaths != null) {
+            properties = new HashMap<String,String>();
+            properties.put(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY, granulesPaths);
+        }
+        
         return coverageFactory.create(
                 rasterManager.getCoverageIdentifier(),
                 image,
@@ -1447,7 +1474,7 @@ class RasterLayerResponse{
                         hints),
                 bands,
                 null, 
-                null);		
+                properties);		
 
 	}
 

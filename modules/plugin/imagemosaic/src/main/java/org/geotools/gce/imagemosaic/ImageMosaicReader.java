@@ -123,6 +123,25 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
 
         private static final String HAS_PREFIX = "HAS_";
 
+        // Consider using arrays for dimensions checks
+        // Set of supported additional domains
+        private Set<String> additionalDomains;
+
+        // Set of additional domains availability (is it really needed?)
+        private Set<String> hasAdditionalDomains;
+
+        // Mapping between domain (usually, an UPPER CASE name) and related original attribute
+        private Map<String, String> domainToOriginalAttribute;
+
+        // comma separated String of additional domain attributes
+        private String additionalDomainAttributes;
+
+        // Set of supported dynamic parameters (depending on the available domains) 
+        private Set<ParameterDescriptor<List>> dynamicParameters = null;
+
+        // Quick access set to look for supported parameters by ID
+        private Set<Identifier> supportedParameters = null;
+
         /**
          * build an AdditionalDomainManager on top of the provided additionalDomainAttributes 
          * (a comma separated list of attribute names).
@@ -144,25 +163,6 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
                 addDomain(domain);
             }
         }
-
-        // Consider using arrays for dimensions checks
-        // Set of supported additional domains
-        private Set<String> additionalDomains;
-
-        // Set of additional domains availability (is it really needed?)
-        private Set<String> hasAdditionalDomains;
-
-        // Mapping between domain (usually, an UPPER CASE name) and related original attribute
-        private Map<String, String> domainToOriginalAttribute;
-
-        // comma separated String of additional domain attributes
-        private String additionalDomainAttributes;
-
-        // Set of supported dynamic parameters (depending on the available domains) 
-        private Set<ParameterDescriptor<List>> dynamicParameters = null;
-
-        // Quick access set to look for supported parameters by ID
-        private Set<Identifier> supportedParameters = null;
 
         /**
          * Clean up mappings

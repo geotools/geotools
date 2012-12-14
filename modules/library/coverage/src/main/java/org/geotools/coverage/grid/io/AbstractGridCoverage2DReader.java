@@ -28,6 +28,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -65,6 +67,7 @@ import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.InvalidParameterNameException;
 import org.opengis.parameter.InvalidParameterValueException;
+import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterNotFoundException;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -966,4 +969,15 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverageReader
 		dispose();
 		super.finalize();
 	}
+
+    /**
+     * Return the set of dynamic parameterDescriptors (the ones related to domains)
+     * for this reader. Default implementation returns an empty set of parameters
+     *
+     * @return
+     */
+    @SuppressWarnings("rawtypes")
+    public Set<ParameterDescriptor<List>> getDynamicParameters() {
+        return Collections.emptySet();
+    }
 }

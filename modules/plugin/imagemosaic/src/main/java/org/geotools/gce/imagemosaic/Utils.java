@@ -84,7 +84,6 @@ import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Converters;
 import org.geotools.util.Utilities;
-import org.opengis.filter.sort.SortOrder;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -138,6 +137,7 @@ public class Utils {
         public final static String HETEROGENEOUS = "Heterogeneous";
         public static final String TIME_ATTRIBUTE = "TimeAttribute";
         public static final String ELEVATION_ATTRIBUTE = "ElevationAttribute";
+        public static final String ADDITIONAL_DOMAIN_ATTRIBUTES = "AdditionalDomainAttributes";
         public final static String TYPENAME= "TypeName";
         public final static String PATH_TYPE=  "PathType";
         public final static String PARENT_LOCATION=  "ParentLocation";
@@ -169,7 +169,6 @@ public class Utils {
 	 * Default behavior with respect to index caching.
 	 */
 	private static final boolean DEFAULT_CACHING_BEHAVIOR = false;
-	
 	
 	/**
 	 * Creates a mosaic for the provided input parameters.
@@ -380,6 +379,14 @@ public class Utils {
 		        final String elevationAttribute = properties.getProperty(Prop.ELEVATION_ATTRIBUTE).trim();
 			retValue.setElevationAttribute(elevationAttribute);
 		}
+
+                //
+                // additional domain attribute is optional
+                //
+                if (properties.containsKey(Prop.ADDITIONAL_DOMAIN_ATTRIBUTES)) {
+                        final String additionalDomainAttributes = properties.getProperty(Prop.ADDITIONAL_DOMAIN_ATTRIBUTES).trim();
+                        retValue.setAdditionalDomainAttributes(additionalDomainAttributes);
+                }
 
 
 		//

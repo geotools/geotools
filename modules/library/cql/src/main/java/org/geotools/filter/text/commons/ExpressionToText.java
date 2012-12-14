@@ -18,9 +18,13 @@ package org.geotools.filter.text.commons;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
+import java.util.SimpleTimeZone;
+import java.util.TimeZone;
 
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Divide;
@@ -32,6 +36,7 @@ import org.opengis.filter.expression.Multiply;
 import org.opengis.filter.expression.NilExpression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.Subtract;
+import org.opengis.temporal.Period;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.WKTWriter;
@@ -51,9 +56,6 @@ import com.vividsolutions.jts.io.WKTWriter;
  */
 public class ExpressionToText implements ExpressionVisitor {
 	
-    private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-	
-
     static private  StringBuilder asStringBuilder( Object extraData){
         if( extraData instanceof StringBuilder){
             return (StringBuilder) extraData;
@@ -61,19 +63,24 @@ public class ExpressionToText implements ExpressionVisitor {
         return new StringBuilder();
     }
     /**
-     * Uses the format <code>yyyy-MM-dd'T'HH:mm:ss'Z'</code> for
+     * Uses the format <code>yyyy-MM-dd'T'HH:mm:ss'[+|-]##:##'</code> for
      * output the provided date.
      * @param date
      * @param output
-     * @return output
+     * @return output 
      */
-    public StringBuilder date( Date date, StringBuilder output ){
+    public StringBuilder dateToText( Date date, StringBuilder output ){
         
-        DateFormat dateFormatter = new SimpleDateFormat(DATE_FORMAT);
-        
-        String text = dateFormatter.format( date );
-        output.append( text );        
-        return output;
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
+        formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
+		String text = formatter.format(date);
+		
+		// GMT is not part of CQL syntax so it is removed 
+		text = text.replace("GMT", "");
+
+		output.append( text );        
+
+		return output;
     }
     
 	
@@ -160,7 +167,17 @@ public class ExpressionToText implements ExpressionVisitor {
                 output.append( literal );
         }
         else if (literal instanceof Date ){
-            return date( (Date) literal, output );
+            return dateToText( (Date) literal, output );
+        }
+        else if (literal instanceof Period){
+
+            Period period = (Period) literal;
+            
+            output = dateToText( period.getBeginning().getPosition().getDate(), output );
+            output.append("/");
+    		output = dateToText( period.getEnding().getPosition().getDate(), output );
+    		
+    		return output;
         }
         else {
             String escaped = literal.toString().replaceAll("'", "''");

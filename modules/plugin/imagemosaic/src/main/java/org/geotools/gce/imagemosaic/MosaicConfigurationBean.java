@@ -85,8 +85,11 @@ public class MosaicConfigurationBean {
 	
 	/** elevation attribute name. <code>null</code> if absent.*/
 	private String elevationAttribute;
-	
-	/** The typename to use for the mosaic index*/
+
+        /** additional domain attributes names. <code>null</code> if absent.*/
+        private String additionalDomainAttributes;
+
+        /** The typename to use for the mosaic index*/
 	private String typeName;
 	
     public String getTypeName() {
@@ -143,6 +146,14 @@ public class MosaicConfigurationBean {
 	public void setTimeAttribute(final String timeAttribute) {
 		this.timeAttribute = timeAttribute;
 	}
+	
+    public String getAdditionalDomainAttributes() {
+        return additionalDomainAttributes;
+    }
+
+    public void setAdditionalDomainAttributes(String additionalDomainAttributes) {
+        this.additionalDomainAttributes = additionalDomainAttributes;
+    }
 	/**
 	 * @return the suggestedSPI
 	 */

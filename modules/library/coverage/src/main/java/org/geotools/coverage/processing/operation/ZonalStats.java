@@ -33,7 +33,7 @@ import javax.media.jai.RenderedOp;
 import javax.media.jai.registry.RIFRegistry;
 
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverage.processing.AbstractStatisticsOperationJAI;
+import org.geotools.coverage.processing.BaseStatisticsOperationJAI;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.processing.OperationNotFoundException;
 import org.opengis.parameter.ParameterValueGroup;
@@ -52,7 +52,7 @@ import org.opengis.util.InternationalString;
  *
  * @source $URL$
  */
-public class ZonalStats extends AbstractStatisticsOperationJAI {
+public class ZonalStats extends BaseStatisticsOperationJAI {
     
     static {
         try {

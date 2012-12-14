@@ -387,7 +387,7 @@ public abstract class AbstractFilterBuilder {
 			TimeZone tz = null;
 			String timeZoneOffset = "";
 			if(! "".equals(timeZone)){
-				if("Z".equals(timeZone)){ // it is Zulu or 0000 zone (old semantic)
+				if("Z".equals(timeZone)){ // it is Zulu or 0000 zone (old syntax)
 					timeZoneOffset = "GMT+00:00";
 					tz = TimeZone.getTimeZone("GMT+00:00");
 				} else { // GMT zone [+|-]0000 // new semantic
@@ -395,15 +395,12 @@ public abstract class AbstractFilterBuilder {
 					tz = TimeZone.getTimeZone(timeZoneOffset);
 				}
 			    format.append("z");
+			} else { // the time zone offset wasn't specified then the tz provided by the host is used
+				tz = TimeZone.getDefault();
 			}
 			SimpleDateFormat formatter = new SimpleDateFormat(format.toString());
-			Date date = null;
-			if(tz != null){
-				formatter.setTimeZone(tz);
-				date = formatter.parse(strDate + " " + strTime + " " +  timeZoneOffset);
-			} else {
-				date = formatter.parse(strDate + " " + strTime );
-			}
+			formatter.setTimeZone(tz);
+			Date date = formatter.parse(strDate + " " + strTime + " " + timeZoneOffset); 
 
 			Literal literalDate = filterFactory.literal(date);
 

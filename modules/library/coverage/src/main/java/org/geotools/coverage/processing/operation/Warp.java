@@ -18,17 +18,16 @@ package org.geotools.coverage.processing.operation;
 
 import java.awt.RenderingHints;
 import java.awt.image.RenderedImage;
-import java.util.Map;
 
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.operator.WarpDescriptor;
 
-import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.BaseScaleOperationJAI;
+import org.geotools.coverage.processing.CoverageProcessingException;
+import org.geotools.factory.Hints;
+import org.opengis.coverage.Coverage;
+import org.opengis.parameter.ParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.util.InternationalString;
 
 
 /**
@@ -43,6 +42,13 @@ import org.opengis.util.InternationalString;
  */
 public class Warp extends BaseScaleOperationJAI {
 
+        @Override
+    public Coverage doOperation(ParameterValueGroup parameters, Hints hints)
+            throws CoverageProcessingException {
+        // TODO Auto-generated method stub
+        return super.doOperation(parameters, hints);
+    }
+
         /** serialVersionUID */
     private static final long serialVersionUID = -9077795909705065389L;
 
@@ -55,16 +61,9 @@ public class Warp extends BaseScaleOperationJAI {
 
     @Override
     protected ParameterBlockJAI prepareParameters(ParameterValueGroup parameters) {
-        // TODO Auto-generated method stub
+        // look for background values 
+        final ParameterValue<?> parameter = parameters.parameter("backgroundValues");
         return super.prepareParameters(parameters);
-    }
-
-    @Override
-    protected Map<String, ?> getProperties(RenderedImage data, CoordinateReferenceSystem crs,
-            InternationalString name, MathTransform gridToCRS, GridCoverage2D[] sources,
-            Parameters parameters) {
-        // TODO Auto-generated method stub
-        return super.getProperties(data, crs, name, gridToCRS, sources, parameters);
     }
 
     @Override

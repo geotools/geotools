@@ -36,7 +36,6 @@ import javax.xml.namespace.QName;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.EmptyFeatureReader;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
@@ -49,18 +48,16 @@ import org.geotools.data.SchemaNotFoundException;
 import org.geotools.data.Transaction;
 import org.geotools.data.crs.ReprojectFeatureReader;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.data.view.DefaultView;
 import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.WFSServiceInfo;
 import org.geotools.data.wfs.protocol.wfs.GetFeature;
+import org.geotools.data.wfs.protocol.wfs.GetFeature.ResultType;
 import org.geotools.data.wfs.protocol.wfs.GetFeatureParser;
 import org.geotools.data.wfs.protocol.wfs.WFSException;
 import org.geotools.data.wfs.protocol.wfs.WFSExtensions;
 import org.geotools.data.wfs.protocol.wfs.WFSOperationType;
 import org.geotools.data.wfs.protocol.wfs.WFSProtocol;
 import org.geotools.data.wfs.protocol.wfs.WFSResponse;
-import org.geotools.data.wfs.protocol.wfs.GetFeature.ResultType;
-import org.geotools.data.wfs.v1_1_0.parsers.EmfAppSchemaParser;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.SchemaException;
@@ -70,7 +67,6 @@ import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.util.logging.Logging;
-import org.geotools.xml.Configuration;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
@@ -296,7 +292,7 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
         // TODO: handle output format preferences
         final String outputFormat = wfs.getDefaultOutputFormat(GET_FEATURE);
 
-        String srsName = adaptQueryForSupportedCrs((DefaultQuery) query);
+        String srsName = adaptQueryForSupportedCrs(query);
 
         GetFeature request = new GetFeatureQueryAdapter(query, outputFormat, srsName, resultType);
 
@@ -304,6 +300,13 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
         return response;
     }
 
+    private Query createNewQuery(Query model, Filter filter) {
+        Query query = new Query(model);
+        query.setFilter(filter);
+        query.setMaxFeatures(getMaxFeatures(query));
+        return query;
+    }
+    
     /**
      * @see org.geotools.data.DataStore#getFeatureReader(org.geotools.data.Query,
      *      org.geotools.data.Transaction)
@@ -315,14 +318,14 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
             return new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(getQueryType(query));
         }
 
-        query = new DefaultQuery(query);
         Filter[] filters = wfs.splitFilters(query.getFilter());
         Filter supportedFilter = filters[0];
         Filter postFilter = filters[1];
-        LOGGER.fine("Supported filter:  " + supportedFilter);
-        LOGGER.fine("Unupported filter: " + postFilter);
-        ((DefaultQuery) query).setFilter(supportedFilter);
-        ((DefaultQuery) query).setMaxFeatures(getMaxFeatures(query));
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine("Supported filter:  " + supportedFilter);
+            LOGGER.fine("Unupported filter: " + postFilter);
+        }
+        query = createNewQuery(query, supportedFilter);
 
         final CoordinateReferenceSystem queryCrs = query.getCoordinateSystem();
 
@@ -725,7 +728,7 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
      * @return the number of features returned by a GetFeature?resultType=hits request, or {@code
      *         -1} if not supported
      */
-    public int getCount(final Query query) throws IOException {
+    public int getCount(Query query) throws IOException {
         Filter[] filters = wfs.splitFilters(query.getFilter());
         Filter postFilter = filters[1];
         if (!Filter.INCLUDE.equals(postFilter)) {
@@ -733,6 +736,10 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
             return -1;
         }
 
+        // WFSProtocol.splitFilter has simplified and validated my filters
+        // so I create a new Query using these supported filters
+        query = createNewQuery(query, filters[0]);
+        
         WFSResponse response = executeGetFeatures(query, Transaction.AUTO_COMMIT, ResultType.HITS);
 
         Object process = WFSExtensions.process(this, response);
@@ -793,7 +800,7 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
      * @return
      * @throws IOException
      */
-    private String adaptQueryForSupportedCrs(DefaultQuery query) throws IOException {
+    private String adaptQueryForSupportedCrs(Query query) throws IOException {
         // The CRS the query is performed in
         final String typeName = query.getTypeName();
         final CoordinateReferenceSystem queryCrs = query.getCoordinateSystem();

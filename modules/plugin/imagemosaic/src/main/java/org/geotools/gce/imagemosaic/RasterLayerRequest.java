@@ -20,6 +20,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -73,6 +74,8 @@ import org.opengis.referencing.operation.TransformException;
  */
 @SuppressWarnings("rawtypes")
 class RasterLayerRequest {
+
+    private static final int INIT_DOMAINS_NUMBER = 3;
 
 	/** Logger. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(RasterLayerRequest.class);
@@ -160,6 +163,8 @@ class RasterLayerRequest {
 	private List<?> elevation;
 	
 	private Filter filter;
+	
+    private List<String> requestedAdditionalDomains; // For the moment, only support single element values
 
 	/** Sort clause on shapefile attributes.*/
 	private String sortClause;
@@ -206,6 +211,10 @@ class RasterLayerRequest {
 
     RasterManager getRasterManager() {
         return rasterManager;
+    }
+    
+    public List<?> getRequestedAdditionalDomains() {
+        return requestedAdditionalDomains;
     }
 
 	 
@@ -463,7 +472,8 @@ class RasterLayerRequest {
 	                    }
 	                }
 	            }
-	        }	
+	        }
+	        
     	}
 		
 	}
@@ -737,6 +747,28 @@ class RasterLayerRequest {
             return;
         }            
 
+        // //
+        //
+        // Additional dimension parameter check
+        //
+        // //
+        String paramName = name.getCode();
+        if (rasterManager.parent.isParameterSupported(name)) {
+            final Object value = param.getValue();
+            if (value == null)
+                return;
+            if (value instanceof List) {
+                List<String> values = (List<String>) value;
+                if (requestedAdditionalDomains == null) {
+                    requestedAdditionalDomains = new ArrayList<String>(
+                            INIT_DOMAINS_NUMBER);
+                }
+                // Only 1 String element supported at the moment
+                requestedAdditionalDomains.add(paramName + "="
+                        + (String) values.get(0));
+            }
+            return;
+        }
     }
 
     /**

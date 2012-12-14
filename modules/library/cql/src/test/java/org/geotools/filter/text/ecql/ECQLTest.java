@@ -133,24 +133,6 @@ public final class ECQLTest  {
         
         Assert.assertTrue(filter instanceof PropertyIsLessThan);
     }
-// TODO the syntax is under debate. It will be eliminate from release    
-//    /**
-//     * Spatial relate like Intersection Matrix (DE-9IM)
-//     * 
-//     * @see ECQLRelateLikePatternTest
-//     * 
-//     * @throws Exception
-//     */
-//    @Test
-//    public void relateLikePattern() throws Exception{
-//        
-//        Filter filter = ECQL.toFilter("relate( the_geom1,the_geom2) like 'T**F*****'");
-//
-//        Assert.assertTrue(filter instanceof PropertyIsEqualTo );
-//        
-//        PropertyIsEqualTo eq = (PropertyIsEqualTo) filter;
-//        Assert.assertTrue(eq.getExpression1()  instanceof FilterFunction_relatePattern);
-//    }
 
     @Test
     public void relateFuncion() throws Exception{

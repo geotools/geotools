@@ -20,6 +20,7 @@ package org.geotools.filter.text.cql2;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.Language;
@@ -182,6 +183,7 @@ public class CQLTemporalPredicateTest {
         final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
         
         final DateFormat dateFormatter = new SimpleDateFormat(DATE_FORMAT);
+        dateFormatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
 
         Date expectedDate = dateFormatter.parse(cqlDateTime);
         Date actualDate = (Date) literalDate.getValue();
@@ -211,6 +213,7 @@ public class CQLTemporalPredicateTest {
         final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
         
         final DateFormat dateFormatter = new SimpleDateFormat(DATE_FORMAT);
+        dateFormatter.setTimeZone(TimeZone.getDefault());
 
 		Date expectedDate = dateFormatter.parse(localTime);
         Date actualDate = (Date) literalDate.getValue();
@@ -226,39 +229,48 @@ public class CQLTemporalPredicateTest {
      */
     @Test 
     public void dateTimeWithOffset() throws Exception{
-                
-        String expectedTime = "2008-09-09T17:00:00+01:00";
 
-        Filter resultFilter = CompilerUtil.parseFilter(this.language, "ZONE_VALID_FROM BEFORE " + expectedTime);
+		{
+			// test offset GMT+01:00
+			final DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssz");
+			final String offset = "GMT+01:00";
+			TimeZone tz = TimeZone.getTimeZone(offset);
+			dateFormatter.setTimeZone(tz);
 
-        Before comparation = (Before) resultFilter;
+			Filter resultFilter = CompilerUtil.parseFilter(this.language,"ZONE_VALID_FROM BEFORE 2008-09-09T17:00:00+01:00");
 
-        // date test 
-        Expression expr2 = comparation.getExpression2();
-        Literal literalDate = (Literal)expr2;
+			Before comparation = (Before) resultFilter;
+
+			Expression expr2 = comparation.getExpression2();
+			Literal literalDate = (Literal) expr2;
+			Date actualDate = (Date) literalDate.getValue();
+
+			Date expectedDate = dateFormatter.parse("2008-09-09 17:00:00 " +  offset);
+
+			Assert.assertEquals(expectedDate, actualDate);
+
+		}
+
+		{
+			// test offset GMT-01:00
+	        final DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssz");
+			final String offset = "GMT+01:00";
+	        TimeZone tz = TimeZone.getTimeZone(offset);
+	        dateFormatter.setTimeZone(tz);
+
+	        Filter resultFilter = CompilerUtil.parseFilter(this.language, "ZONE_VALID_FROM BEFORE 2008-09-09T17:00:00-01:00");
+
+
+			Before comparation = (Before) resultFilter;
+
+			Expression expr2 = comparation.getExpression2();
+			Literal literalDate = (Literal) expr2;
+			Date actualDate = (Date) literalDate.getValue();
         
-        final DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-		Date expectedDate = dateFormatter.parse("2008-09-09T17:00:00+0100");
+			Date expectedDate = dateFormatter.parse("2008-09-09 17:00:00 " +  offset);
 
-		Date actualDate =  (Date) literalDate.getValue();
-        
-        Assert.assertEquals(expectedDate, actualDate);
-
-        expectedTime = "2008-09-09T17:00:00-01:00";
-
-        resultFilter = CompilerUtil.parseFilter(this.language, "ZONE_VALID_FROM BEFORE " + expectedTime);
-
-        comparation = (Before) resultFilter;
-
-        // date test 
-        expr2 = comparation.getExpression2();
-        literalDate = (Literal)expr2;
-        
-		expectedDate = dateFormatter.parse("2008-09-09T17:00:00-0100");
-
-		actualDate =  (Date) literalDate.getValue();
-        
-        Assert.assertEquals(expectedDate, actualDate);
+			Assert.assertEquals(expectedDate, actualDate);
+		}
     }
 
     /**

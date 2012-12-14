@@ -19,11 +19,12 @@ package org.geotools.filter.text.commons;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.TimeZone;
 
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.text.cql2.CQLException;
@@ -375,26 +376,33 @@ public abstract class AbstractFilterBuilder {
 	private Literal asLiteralDate(final String cqlDateTime) throws CQLException {
 		try {
 			
-			final String date = extractDate(cqlDateTime);
-			final String time = extractTime(cqlDateTime);
+			final String strDate = extractDate(cqlDateTime);
+			final String strTime = extractTime(cqlDateTime);
 			final String timeZone = extractTimeZone(cqlDateTime);
 			
 			StringBuilder format = new StringBuilder( "yyyy-MM-dd" );
-			if(! "".equals(time)){
-			    format.append("'T'HH:mm:ss"); 
+			if(! "".equals(strTime)){
+			    format.append("' 'HH:mm:ss");
 			}
+			TimeZone tz = null;
+			String timeZoneOffset = "";
 			if(! "".equals(timeZone)){
-				if("Z".equals(timeZone)){ // it is Zulu or 0000 zone (old semantic)
-					format.append("'Z'");
+				if("Z".equals(timeZone)){ // it is Zulu or 0000 zone (old syntax)
+					timeZoneOffset = "GMT+00:00";
+					tz = TimeZone.getTimeZone("GMT+00:00");
 				} else { // GMT zone [+|-]0000 // new semantic
-					format.append("Z");
+					timeZoneOffset = "GMT" + timeZone;
+					tz = TimeZone.getTimeZone(timeZoneOffset);
 				}
+			    format.append("z");
+			} else { // the time zone offset wasn't specified then the tz provided by the host is used
+				tz = TimeZone.getDefault();
 			}
-			String dateTimeFormat = format.toString();
-			DateFormat formatter = new SimpleDateFormat(dateTimeFormat);
+			SimpleDateFormat formatter = new SimpleDateFormat(format.toString());
+			formatter.setTimeZone(tz);
+			Date date = formatter.parse(strDate + " " + strTime + " " + timeZoneOffset); 
 
-			Date dateTime = formatter.parse(date + "T"+ time + timeZone);
-			Literal literalDate = filterFactory.literal(dateTime);
+			Literal literalDate = filterFactory.literal(date);
 
 			return literalDate;
 		} catch (java.text.ParseException e) {
@@ -422,11 +430,11 @@ public abstract class AbstractFilterBuilder {
 		} 
 		index = time.indexOf("+");
 		if(index != -1 ){
-			return toTimeZone(time.substring(index));
+			return time.substring(index);
 		}
 		index = time.indexOf("-");
 		if(index != -1 ){
-			return toTimeZone(time.substring(index));
+			return time.substring(index);
 		} else {
 			return ""; // it will use the locale zone
 		}

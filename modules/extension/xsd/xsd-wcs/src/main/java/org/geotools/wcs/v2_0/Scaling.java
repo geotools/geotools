@@ -62,7 +62,7 @@ public final class Scaling extends XSD {
      * Returns the location of 'rsub.xsd.'.
      */
     public String getSchemaLocation() {
-       return getClass().getResource("./scal/v1_0/scal.xsd").toString();
+       return getClass().getResource("scal/v1_0/scal.xsd").toString();
     }
     
     public static final String NAMESPACE = "http://www.opengis.net/WCS_service-extension_scaling/1.0";

@@ -61,7 +61,7 @@ public final class Interpolation extends XSD {
      * Returns the location of 'rsub.xsd.'.
      */
     public String getSchemaLocation() {
-        return getClass().getResource("./int/v1_0/int.xsd").toString();
+        return getClass().getResource("int/v1_0/int.xsd").toString();
     }
 
     public static final String NAMESPACE = "http://www.opengis.net/WCS_service-extension_interpolation/1.0";

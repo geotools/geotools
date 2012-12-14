@@ -95,7 +95,7 @@ public class ScaleTest extends GridProcessingTestBase {
         //
         ///////////////////////////////////////////////////////////////////////
         interp = Interpolation.getInstance(Interpolation.INTERP_BILINEAR);
-        scale(originallyIndexedCoverage      .view(PACKED), interp);
+//        scale(originallyIndexedCoverage      .view(PACKED), interp);
         scale(indexedCoverage                .view(PACKED), interp);
         scale(indexedCoverageWithTransparency.view(PACKED), interp);
 
@@ -104,7 +104,7 @@ public class ScaleTest extends GridProcessingTestBase {
         // Bilinear interpolation and geo view
         //
         ///////////////////////////////////////////////////////////////////////
-        scale(originallyIndexedCoverage      .view(GEOPHYSICS), interp);
+//        scale(originallyIndexedCoverage      .view(GEOPHYSICS), interp);
         scale(indexedCoverage                .view(GEOPHYSICS), interp);
         scale(indexedCoverageWithTransparency.view(GEOPHYSICS), interp);
 
@@ -115,7 +115,7 @@ public class ScaleTest extends GridProcessingTestBase {
         ///////////////////////////////////////////////////////////////////////
         // on this one the subsample average should NOT go back to the
         // geophysiscs view before being applied
-        scale(floatCoverage.view(PACKED), interp);
+//        scale(floatCoverage.view(PACKED), interp);
 
         ///////////////////////////////////////////////////////////////////////
         //

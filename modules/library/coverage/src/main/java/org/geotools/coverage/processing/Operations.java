@@ -20,6 +20,7 @@ import java.awt.RenderingHints;
 
 import javax.media.jai.Interpolation;
 import javax.media.jai.KernelJAI;
+import javax.media.jai.Warp;
 
 import org.geotools.coverage.processing.operation.Resample;
 import org.geotools.factory.Hints;
@@ -78,8 +79,9 @@ public class Operations {
     public Operations(final RenderingHints hints) {
         if (hints != null && !hints.isEmpty()) {
             processor = CoverageProcessor.getInstance(new Hints(hints));
+        } else {
+            processor = CoverageProcessor.getInstance();            
         }
-        // Otherwise, will creates the processor only when first needed.
     }
 
 
@@ -523,6 +525,25 @@ public class Operations {
         return scale(source, xScale, yScale, xTrans, yTrans,
                 Interpolation.getInstance(Interpolation.INTERP_NEAREST));
     }
+    
+    /**
+     * Warps an image.
+     *
+     * @param source   The source coverage.
+     * @param warp   The {@link Warp}object for this class.
+     * @throws CoverageProcessingException if the operation can't be applied.
+     *
+     * @see org.geotools.coverage.processing.operation.Scale
+     *
+     * @since 2.3
+     */
+    public GridCoverage warp(final GridCoverage source,
+                              final Warp warp)
+            throws CoverageProcessingException
+    {
+        return warp(source, warp,
+                Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+    }
 
     /**
      * Translates and resizes an image.
@@ -551,6 +572,29 @@ public class Operations {
                 "xTrans", Float.valueOf((float) xTrans),
                 "yTrans", Float.valueOf((float) yTrans),
                 "Interpolation", interpolation);
+    }
+    
+    /**
+     * Translates and resizes an image.
+     *
+     * @param source   The source coverage.
+     * @param warp   The scale factor along the <var>x</var> axis.
+     * @param interpolation   The scale factor along the <var>y</var> axis.
+     * @param interpolation The interpolation to use, or {@code null} for the default.
+     * @throws CoverageProcessingException if the operation can't be applied.
+     *
+     * @see org.geotools.coverage.processing.operation.Scale
+     *
+     * @since 2.3
+     */
+    public GridCoverage warp(final GridCoverage source,
+                              final Warp warp,
+                              final Interpolation interpolation)
+            throws CoverageProcessingException
+    {
+        return (GridCoverage) doOperation("Warp", source,
+                "warp", warp,
+                "interpolation", interpolation);
     }
 
     /////////////////////////////////////////////////////////////////////////////////
@@ -693,17 +737,6 @@ public class Operations {
     /////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Returns the processor, creating one if needed.
-     */
-    private CoverageProcessor getProcessor() {
-        // No need to synchronize.
-        if (processor == null) {
-            processor = CoverageProcessor.getInstance();
-        }
-        return processor;
-    }
-
-    /**
      * Applies a process operation with default parameters.
      * This is a helper method for implementation of various convenience methods in this class.
      *
@@ -716,7 +749,6 @@ public class Operations {
     protected final Coverage doOperation(final String operationName, final Coverage source)
             throws OperationNotFoundException, CoverageProcessingException
     {
-        final CoverageProcessor processor = getProcessor();
         final Operation operation = processor.getOperation(operationName);
         final ParameterValueGroup parameters = operation.getParameters();
         parameters.parameter("Source").setValue(source);
@@ -738,7 +770,6 @@ public class Operations {
     protected final Coverage doOperation(final String operationName, final Coverage source0, final Coverage source1)
             throws OperationNotFoundException, CoverageProcessingException
     {
-        final CoverageProcessor processor = getProcessor();
         final Operation operation = processor.getOperation(operationName);
         final ParameterValueGroup parameters = operation.getParameters();
         parameters.parameter("Source0").setValue(source0);
@@ -764,7 +795,6 @@ public class Operations {
             throws OperationNotFoundException, InvalidParameterNameException,
                    CoverageProcessingException
     {
-        final CoverageProcessor processor = getProcessor();
         final Operation operation = processor.getOperation(operationName);
         final ParameterValueGroup parameters = operation.getParameters();
         parameters.parameter("Source").setValue(source);
@@ -793,7 +823,6 @@ public class Operations {
             throws OperationNotFoundException, InvalidParameterNameException,
                    CoverageProcessingException
     {
-        final CoverageProcessor processor = getProcessor();
         final Operation operation = processor.getOperation(operationName);
         final ParameterValueGroup parameters = operation.getParameters();
         parameters.parameter("Source").setValue(source);
@@ -826,7 +855,6 @@ public class Operations {
             throws OperationNotFoundException, InvalidParameterNameException,
                    CoverageProcessingException
     {
-        final CoverageProcessor processor = getProcessor();
         final Operation operation = processor.getOperation(operationName);
         final ParameterValueGroup parameters = operation.getParameters();
         parameters.parameter("Source").setValue(source);
@@ -857,7 +885,6 @@ public class Operations {
             throws OperationNotFoundException, InvalidParameterNameException,
                    CoverageProcessingException
     {
-        final CoverageProcessor processor = getProcessor();
         final Operation operation = processor.getOperation(operationName);
         final ParameterValueGroup parameters = operation.getParameters();
         parameters.parameter("Source").setValue(source);
@@ -890,7 +917,6 @@ public class Operations {
             throws OperationNotFoundException, InvalidParameterNameException,
                    CoverageProcessingException
     {
-        final CoverageProcessor processor = getProcessor();
         final Operation operation = processor.getOperation(operationName);
         final ParameterValueGroup parameters = operation.getParameters();
         parameters.parameter("Source").setValue(source);
@@ -925,7 +951,6 @@ public class Operations {
             throws OperationNotFoundException, InvalidParameterNameException,
                    CoverageProcessingException
     {
-        final CoverageProcessor processor = getProcessor();
         final Operation operation = processor.getOperation(operationName);
         final ParameterValueGroup parameters = operation.getParameters();
         parameters.parameter("Source").setValue(source);

@@ -132,13 +132,14 @@ public class CoverageTestBase {
         final double scaleB = getScale(actual);
         final double tolerance;
         if (scaleA <= scaleB) {
-            tolerance = scaleA;
+            tolerance = scaleA*1E-1;
         } else if (!Double.isNaN(scaleB)) {
-            tolerance = scaleB;
+            tolerance = scaleB*1E-1;
         } else {
             tolerance = EPS;
         }
         assertTrue(getGeneralEnvelope(expected).equals(actual.getEnvelope(), tolerance, false));
+
     }
 
     /**

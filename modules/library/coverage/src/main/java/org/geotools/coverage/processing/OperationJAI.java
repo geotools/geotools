@@ -20,22 +20,45 @@ import java.awt.RenderingHints;
 import java.awt.image.ColorModel;
 import java.awt.image.RenderedImage;
 import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
 import java.util.Arrays;
-import java.util.Locale;
 import java.util.Collections;
-import javax.measure.unit.Unit;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
+import javax.measure.unit.Unit;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
-import javax.media.jai.OperationRegistry;
 import javax.media.jai.OperationDescriptor;
+import javax.media.jai.OperationRegistry;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.registry.RenderedRegistryMode;
 
+import org.geotools.coverage.Category;
+import org.geotools.coverage.GridSampleDimension;
+import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.coverage.grid.InvalidGridGeometryException;
+import org.geotools.coverage.grid.ViewType;
+import org.geotools.factory.Hints;
+import org.geotools.parameter.ImagingParameterDescriptors;
+import org.geotools.parameter.ImagingParameters;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.referencing.operation.transform.DimensionFilter;
+import org.geotools.resources.CRSUtilities;
+import org.geotools.resources.XArray;
+import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
+import org.geotools.resources.image.ImageUtilities;
+import org.geotools.util.AbstractInternationalString;
+import org.geotools.util.NumberRange;
+import org.geotools.util.Utilities;
 import org.opengis.coverage.Coverage;
 import org.opengis.coverage.processing.OperationNotFoundException;
+import org.opengis.parameter.ParameterDescriptorGroup;
+import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -43,33 +66,7 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.MathTransformFactory;
 import org.opengis.referencing.operation.TransformException;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.util.InternationalString;
-
-import org.geotools.coverage.Category;
-import org.geotools.coverage.GridSampleDimension;
-import org.geotools.coverage.grid.ViewType;
-import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.InvalidGridGeometryException;
-import org.geotools.factory.Hints;
-import org.geotools.parameter.ImagingParameters;
-import org.geotools.parameter.ImagingParameterDescriptors;
-import org.geotools.referencing.CRS;
-import org.geotools.referencing.ReferencingFactoryFinder;
-import org.geotools.referencing.operation.transform.DimensionFilter;
-import org.geotools.image.jai.Registry;
-import org.geotools.resources.XArray;
-import org.geotools.resources.CRSUtilities;
-import org.geotools.resources.coverage.CoverageUtilities;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.image.ImageUtilities;
-import org.geotools.util.AbstractInternationalString;
-import org.geotools.util.Utilities;
-import org.geotools.util.NumberRange;
-import org.geotools.util.logging.Logging;
 
 
 /**
@@ -998,39 +995,6 @@ public class OperationJAI extends Operation2D {
         }
         return JAI.getDefaultInstance();
     }
-
-//    /**
-//	 *
-//	 * @param polygon
-//	 * @param worldToGridTransform
-//	 * @return
-//	 * @throws FactoryException
-//	 * @throws TransformException
-//	 */
-//	public final static ROI polygonToRoi(final Polygon polygon,
-//			final MathTransform worldToGridTransform) throws TransformException,
-//			FactoryException {
-//
-//		return new ROIShape(new LiteShape2(polygon, worldToGridTransform, null, false));
-//	}
-//
-//    /**
-//	 *
-//	 * @param polygon
-//	 * @param transform
-//	 * @return
-//	 * @throws FactoryException
-//	 * @throws TransformException
-//	 */
-//	public final static ROI polygonToRoi(final Polygon polygon,
-//			final AffineTransform worldToGridTransform) throws TransformException,
-//			FactoryException {
-//
-//		return polygonToRoi(polygon, ProjectiveTransform.create(worldToGridTransform));
-//	}
-//
-
-
 
     /**
      * Compares the specified object with this operation for equality.

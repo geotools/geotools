@@ -20,6 +20,7 @@ import javax.media.jai.operator.ConstantDescriptor;
 import javax.media.jai.operator.WarpDescriptor;
 
 import org.geotools.factory.Hints;
+import org.jaitools.imageutils.ImageLayout2;
 
 import com.sun.media.jai.util.PropertyGeneratorImpl;
  

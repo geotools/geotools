@@ -18,6 +18,10 @@ import net.opengis.wcs20.ExtensionItemType;
 import net.opengis.wcs20.ExtensionType;
 import net.opengis.wcs20.GetCapabilitiesType;
 import net.opengis.wcs20.GetCoverageType;
+import net.opengis.wcs20.InterpolationAxesType;
+import net.opengis.wcs20.InterpolationAxisType;
+import net.opengis.wcs20.InterpolationMethodType;
+import net.opengis.wcs20.InterpolationType;
 import net.opengis.wcs20.OfferedCoverageType;
 import net.opengis.wcs20.RangeIntervalType;
 import net.opengis.wcs20.RangeItemType;
@@ -120,6 +124,10 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
             case Wcs20Package.SCALING_TYPE: return createScalingType();
             case Wcs20Package.TARGET_AXIS_EXTENT_TYPE: return createTargetAxisExtentType();
             case Wcs20Package.TARGET_AXIS_SIZE_TYPE: return createTargetAxisSizeType();
+            case Wcs20Package.INTERPOLATION_AXES_TYPE: return createInterpolationAxesType();
+            case Wcs20Package.INTERPOLATION_AXIS_TYPE: return createInterpolationAxisType();
+            case Wcs20Package.INTERPOLATION_METHOD_TYPE: return createInterpolationMethodType();
+            case Wcs20Package.INTERPOLATION_TYPE: return createInterpolationType();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -451,6 +459,46 @@ public class Wcs20FactoryImpl extends EFactoryImpl implements Wcs20Factory {
     public TargetAxisSizeType createTargetAxisSizeType() {
         TargetAxisSizeTypeImpl targetAxisSizeType = new TargetAxisSizeTypeImpl();
         return targetAxisSizeType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public InterpolationAxesType createInterpolationAxesType() {
+        InterpolationAxesTypeImpl interpolationAxesType = new InterpolationAxesTypeImpl();
+        return interpolationAxesType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public InterpolationAxisType createInterpolationAxisType() {
+        InterpolationAxisTypeImpl interpolationAxisType = new InterpolationAxisTypeImpl();
+        return interpolationAxisType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public InterpolationMethodType createInterpolationMethodType() {
+        InterpolationMethodTypeImpl interpolationMethodType = new InterpolationMethodTypeImpl();
+        return interpolationMethodType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public InterpolationType createInterpolationType() {
+        InterpolationTypeImpl interpolationType = new InterpolationTypeImpl();
+        return interpolationType;
     }
 
     /**

@@ -2487,6 +2487,136 @@ public interface Wcs20Package extends EPackage {
     int TARGET_AXIS_SIZE_TYPE_FEATURE_COUNT = 2;
 
     /**
+     * The meta object id for the '{@link net.opengis.wcs20.impl.InterpolationAxesTypeImpl <em>Interpolation Axes Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see net.opengis.wcs20.impl.InterpolationAxesTypeImpl
+     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getInterpolationAxesType()
+     * @generated
+     */
+    int INTERPOLATION_AXES_TYPE = 32;
+
+    /**
+     * The feature id for the '<em><b>Interpolation Axis</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int INTERPOLATION_AXES_TYPE__INTERPOLATION_AXIS = 0;
+
+    /**
+     * The number of structural features of the '<em>Interpolation Axes Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int INTERPOLATION_AXES_TYPE_FEATURE_COUNT = 1;
+
+    /**
+     * The meta object id for the '{@link net.opengis.wcs20.impl.InterpolationAxisTypeImpl <em>Interpolation Axis Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see net.opengis.wcs20.impl.InterpolationAxisTypeImpl
+     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getInterpolationAxisType()
+     * @generated
+     */
+    int INTERPOLATION_AXIS_TYPE = 33;
+
+    /**
+     * The feature id for the '<em><b>Axis</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int INTERPOLATION_AXIS_TYPE__AXIS = 0;
+
+    /**
+     * The feature id for the '<em><b>Interpolation Method</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int INTERPOLATION_AXIS_TYPE__INTERPOLATION_METHOD = 1;
+
+    /**
+     * The number of structural features of the '<em>Interpolation Axis Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int INTERPOLATION_AXIS_TYPE_FEATURE_COUNT = 2;
+
+    /**
+     * The meta object id for the '{@link net.opengis.wcs20.impl.InterpolationMethodTypeImpl <em>Interpolation Method Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see net.opengis.wcs20.impl.InterpolationMethodTypeImpl
+     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getInterpolationMethodType()
+     * @generated
+     */
+    int INTERPOLATION_METHOD_TYPE = 34;
+
+    /**
+     * The feature id for the '<em><b>Interpolation Method</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int INTERPOLATION_METHOD_TYPE__INTERPOLATION_METHOD = 0;
+
+    /**
+     * The number of structural features of the '<em>Interpolation Method Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int INTERPOLATION_METHOD_TYPE_FEATURE_COUNT = 1;
+
+    /**
+     * The meta object id for the '{@link net.opengis.wcs20.impl.InterpolationTypeImpl <em>Interpolation Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see net.opengis.wcs20.impl.InterpolationTypeImpl
+     * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getInterpolationType()
+     * @generated
+     */
+    int INTERPOLATION_TYPE = 35;
+
+    /**
+     * The feature id for the '<em><b>Interpolation Method</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int INTERPOLATION_TYPE__INTERPOLATION_METHOD = 0;
+
+    /**
+     * The feature id for the '<em><b>Interpolation Axes</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int INTERPOLATION_TYPE__INTERPOLATION_AXES = 1;
+
+    /**
+     * The number of structural features of the '<em>Interpolation Type</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int INTERPOLATION_TYPE_FEATURE_COUNT = 2;
+
+    /**
      * The meta object id for the '<em>Version String Type</em>' data type.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2494,7 +2624,7 @@ public interface Wcs20Package extends EPackage {
      * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getVersionStringType()
      * @generated
      */
-    int VERSION_STRING_TYPE = 32;
+    int VERSION_STRING_TYPE = 36;
 
 
     /**
@@ -2505,7 +2635,7 @@ public interface Wcs20Package extends EPackage {
      * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getVersionStringType_1()
      * @generated
      */
-    int VERSION_STRING_TYPE_1 = 33;
+    int VERSION_STRING_TYPE_1 = 37;
 
 
     /**
@@ -2516,7 +2646,7 @@ public interface Wcs20Package extends EPackage {
      * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getQName()
      * @generated
      */
-    int QNAME = 34;
+    int QNAME = 38;
 
 
     /**
@@ -3864,6 +3994,112 @@ public interface Wcs20Package extends EPackage {
     EAttribute getTargetAxisSizeType_TargetSize();
 
     /**
+     * Returns the meta object for class '{@link net.opengis.wcs20.InterpolationAxesType <em>Interpolation Axes Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Interpolation Axes Type</em>'.
+     * @see net.opengis.wcs20.InterpolationAxesType
+     * @generated
+     */
+    EClass getInterpolationAxesType();
+
+    /**
+     * Returns the meta object for the reference list '{@link net.opengis.wcs20.InterpolationAxesType#getInterpolationAxis <em>Interpolation Axis</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference list '<em>Interpolation Axis</em>'.
+     * @see net.opengis.wcs20.InterpolationAxesType#getInterpolationAxis()
+     * @see #getInterpolationAxesType()
+     * @generated
+     */
+    EReference getInterpolationAxesType_InterpolationAxis();
+
+    /**
+     * Returns the meta object for class '{@link net.opengis.wcs20.InterpolationAxisType <em>Interpolation Axis Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Interpolation Axis Type</em>'.
+     * @see net.opengis.wcs20.InterpolationAxisType
+     * @generated
+     */
+    EClass getInterpolationAxisType();
+
+    /**
+     * Returns the meta object for the attribute '{@link net.opengis.wcs20.InterpolationAxisType#getAxis <em>Axis</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Axis</em>'.
+     * @see net.opengis.wcs20.InterpolationAxisType#getAxis()
+     * @see #getInterpolationAxisType()
+     * @generated
+     */
+    EAttribute getInterpolationAxisType_Axis();
+
+    /**
+     * Returns the meta object for the attribute '{@link net.opengis.wcs20.InterpolationAxisType#getInterpolationMethod <em>Interpolation Method</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Interpolation Method</em>'.
+     * @see net.opengis.wcs20.InterpolationAxisType#getInterpolationMethod()
+     * @see #getInterpolationAxisType()
+     * @generated
+     */
+    EAttribute getInterpolationAxisType_InterpolationMethod();
+
+    /**
+     * Returns the meta object for class '{@link net.opengis.wcs20.InterpolationMethodType <em>Interpolation Method Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Interpolation Method Type</em>'.
+     * @see net.opengis.wcs20.InterpolationMethodType
+     * @generated
+     */
+    EClass getInterpolationMethodType();
+
+    /**
+     * Returns the meta object for the attribute '{@link net.opengis.wcs20.InterpolationMethodType#getInterpolationMethod <em>Interpolation Method</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Interpolation Method</em>'.
+     * @see net.opengis.wcs20.InterpolationMethodType#getInterpolationMethod()
+     * @see #getInterpolationMethodType()
+     * @generated
+     */
+    EAttribute getInterpolationMethodType_InterpolationMethod();
+
+    /**
+     * Returns the meta object for class '{@link net.opengis.wcs20.InterpolationType <em>Interpolation Type</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Interpolation Type</em>'.
+     * @see net.opengis.wcs20.InterpolationType
+     * @generated
+     */
+    EClass getInterpolationType();
+
+    /**
+     * Returns the meta object for the reference '{@link net.opengis.wcs20.InterpolationType#getInterpolationMethod <em>Interpolation Method</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference '<em>Interpolation Method</em>'.
+     * @see net.opengis.wcs20.InterpolationType#getInterpolationMethod()
+     * @see #getInterpolationType()
+     * @generated
+     */
+    EReference getInterpolationType_InterpolationMethod();
+
+    /**
+     * Returns the meta object for the reference '{@link net.opengis.wcs20.InterpolationType#getInterpolationAxes <em>Interpolation Axes</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference '<em>Interpolation Axes</em>'.
+     * @see net.opengis.wcs20.InterpolationType#getInterpolationAxes()
+     * @see #getInterpolationType()
+     * @generated
+     */
+    EReference getInterpolationType_InterpolationAxes();
+
+    /**
      * Returns the meta object for data type '{@link java.lang.String <em>Version String Type</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4982,6 +5218,94 @@ public interface Wcs20Package extends EPackage {
          * @generated
          */
         EAttribute TARGET_AXIS_SIZE_TYPE__TARGET_SIZE = eINSTANCE.getTargetAxisSizeType_TargetSize();
+
+        /**
+         * The meta object literal for the '{@link net.opengis.wcs20.impl.InterpolationAxesTypeImpl <em>Interpolation Axes Type</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see net.opengis.wcs20.impl.InterpolationAxesTypeImpl
+         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getInterpolationAxesType()
+         * @generated
+         */
+        EClass INTERPOLATION_AXES_TYPE = eINSTANCE.getInterpolationAxesType();
+
+        /**
+         * The meta object literal for the '<em><b>Interpolation Axis</b></em>' reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference INTERPOLATION_AXES_TYPE__INTERPOLATION_AXIS = eINSTANCE.getInterpolationAxesType_InterpolationAxis();
+
+        /**
+         * The meta object literal for the '{@link net.opengis.wcs20.impl.InterpolationAxisTypeImpl <em>Interpolation Axis Type</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see net.opengis.wcs20.impl.InterpolationAxisTypeImpl
+         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getInterpolationAxisType()
+         * @generated
+         */
+        EClass INTERPOLATION_AXIS_TYPE = eINSTANCE.getInterpolationAxisType();
+
+        /**
+         * The meta object literal for the '<em><b>Axis</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute INTERPOLATION_AXIS_TYPE__AXIS = eINSTANCE.getInterpolationAxisType_Axis();
+
+        /**
+         * The meta object literal for the '<em><b>Interpolation Method</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute INTERPOLATION_AXIS_TYPE__INTERPOLATION_METHOD = eINSTANCE.getInterpolationAxisType_InterpolationMethod();
+
+        /**
+         * The meta object literal for the '{@link net.opengis.wcs20.impl.InterpolationMethodTypeImpl <em>Interpolation Method Type</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see net.opengis.wcs20.impl.InterpolationMethodTypeImpl
+         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getInterpolationMethodType()
+         * @generated
+         */
+        EClass INTERPOLATION_METHOD_TYPE = eINSTANCE.getInterpolationMethodType();
+
+        /**
+         * The meta object literal for the '<em><b>Interpolation Method</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute INTERPOLATION_METHOD_TYPE__INTERPOLATION_METHOD = eINSTANCE.getInterpolationMethodType_InterpolationMethod();
+
+        /**
+         * The meta object literal for the '{@link net.opengis.wcs20.impl.InterpolationTypeImpl <em>Interpolation Type</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see net.opengis.wcs20.impl.InterpolationTypeImpl
+         * @see net.opengis.wcs20.impl.Wcs20PackageImpl#getInterpolationType()
+         * @generated
+         */
+        EClass INTERPOLATION_TYPE = eINSTANCE.getInterpolationType();
+
+        /**
+         * The meta object literal for the '<em><b>Interpolation Method</b></em>' reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference INTERPOLATION_TYPE__INTERPOLATION_METHOD = eINSTANCE.getInterpolationType_InterpolationMethod();
+
+        /**
+         * The meta object literal for the '<em><b>Interpolation Axes</b></em>' reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference INTERPOLATION_TYPE__INTERPOLATION_AXES = eINSTANCE.getInterpolationType_InterpolationAxes();
 
         /**
          * The meta object literal for the '<em>Version String Type</em>' data type.

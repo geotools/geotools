@@ -23,6 +23,10 @@ import net.opengis.wcs20.ExtensionItemType;
 import net.opengis.wcs20.ExtensionType;
 import net.opengis.wcs20.GetCapabilitiesType;
 import net.opengis.wcs20.GetCoverageType;
+import net.opengis.wcs20.InterpolationAxesType;
+import net.opengis.wcs20.InterpolationAxisType;
+import net.opengis.wcs20.InterpolationMethodType;
+import net.opengis.wcs20.InterpolationType;
 import net.opengis.wcs20.OfferedCoverageType;
 import net.opengis.wcs20.RangeIntervalType;
 import net.opengis.wcs20.RangeItemType;
@@ -283,6 +287,34 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * @generated
      */
     private EClass targetAxisSizeTypeEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass interpolationAxesTypeEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass interpolationAxisTypeEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass interpolationMethodTypeEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass interpolationTypeEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -1510,6 +1542,96 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EClass getInterpolationAxesType() {
+        return interpolationAxesTypeEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getInterpolationAxesType_InterpolationAxis() {
+        return (EReference)interpolationAxesTypeEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getInterpolationAxisType() {
+        return interpolationAxisTypeEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getInterpolationAxisType_Axis() {
+        return (EAttribute)interpolationAxisTypeEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getInterpolationAxisType_InterpolationMethod() {
+        return (EAttribute)interpolationAxisTypeEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getInterpolationMethodType() {
+        return interpolationMethodTypeEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getInterpolationMethodType_InterpolationMethod() {
+        return (EAttribute)interpolationMethodTypeEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getInterpolationType() {
+        return interpolationTypeEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getInterpolationType_InterpolationMethod() {
+        return (EReference)interpolationTypeEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getInterpolationType_InterpolationAxes() {
+        return (EReference)interpolationTypeEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EDataType getVersionStringType() {
         return versionStringTypeEDataType;
     }
@@ -1717,6 +1839,20 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
         createEAttribute(targetAxisSizeTypeEClass, TARGET_AXIS_SIZE_TYPE__AXIS);
         createEAttribute(targetAxisSizeTypeEClass, TARGET_AXIS_SIZE_TYPE__TARGET_SIZE);
 
+        interpolationAxesTypeEClass = createEClass(INTERPOLATION_AXES_TYPE);
+        createEReference(interpolationAxesTypeEClass, INTERPOLATION_AXES_TYPE__INTERPOLATION_AXIS);
+
+        interpolationAxisTypeEClass = createEClass(INTERPOLATION_AXIS_TYPE);
+        createEAttribute(interpolationAxisTypeEClass, INTERPOLATION_AXIS_TYPE__AXIS);
+        createEAttribute(interpolationAxisTypeEClass, INTERPOLATION_AXIS_TYPE__INTERPOLATION_METHOD);
+
+        interpolationMethodTypeEClass = createEClass(INTERPOLATION_METHOD_TYPE);
+        createEAttribute(interpolationMethodTypeEClass, INTERPOLATION_METHOD_TYPE__INTERPOLATION_METHOD);
+
+        interpolationTypeEClass = createEClass(INTERPOLATION_TYPE);
+        createEReference(interpolationTypeEClass, INTERPOLATION_TYPE__INTERPOLATION_METHOD);
+        createEReference(interpolationTypeEClass, INTERPOLATION_TYPE__INTERPOLATION_AXES);
+
         // Create data types
         versionStringTypeEDataType = createEDataType(VERSION_STRING_TYPE);
         versionStringType_1EDataType = createEDataType(VERSION_STRING_TYPE_1);
@@ -1922,6 +2058,20 @@ public class Wcs20PackageImpl extends EPackageImpl implements Wcs20Package {
         initEClass(targetAxisSizeTypeEClass, TargetAxisSizeType.class, "TargetAxisSizeType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getTargetAxisSizeType_Axis(), ecorePackage.getEString(), "axis", null, 0, 1, TargetAxisSizeType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getTargetAxisSizeType_TargetSize(), ecorePackage.getEDouble(), "targetSize", null, 0, 1, TargetAxisSizeType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(interpolationAxesTypeEClass, InterpolationAxesType.class, "InterpolationAxesType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEReference(getInterpolationAxesType_InterpolationAxis(), this.getInterpolationAxisType(), null, "interpolationAxis", null, 0, -1, InterpolationAxesType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(interpolationAxisTypeEClass, InterpolationAxisType.class, "InterpolationAxisType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getInterpolationAxisType_Axis(), ecorePackage.getEString(), "axis", null, 0, 1, InterpolationAxisType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getInterpolationAxisType_InterpolationMethod(), ecorePackage.getEString(), "interpolationMethod", null, 0, 1, InterpolationAxisType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(interpolationMethodTypeEClass, InterpolationMethodType.class, "InterpolationMethodType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getInterpolationMethodType_InterpolationMethod(), ecorePackage.getEString(), "interpolationMethod", null, 0, 1, InterpolationMethodType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(interpolationTypeEClass, InterpolationType.class, "InterpolationType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEReference(getInterpolationType_InterpolationMethod(), this.getInterpolationMethodType(), null, "interpolationMethod", null, 0, 1, InterpolationType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getInterpolationType_InterpolationAxes(), this.getInterpolationAxesType(), null, "interpolationAxes", null, 0, 1, InterpolationType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize data types
         initEDataType(versionStringTypeEDataType, String.class, "VersionStringType", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

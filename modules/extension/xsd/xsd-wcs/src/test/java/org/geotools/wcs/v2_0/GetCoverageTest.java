@@ -5,11 +5,17 @@ import static org.junit.Assert.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.media.jai.InterpolationTable;
+
 import net.opengis.wcs20.DimensionSliceType;
 import net.opengis.wcs20.DimensionSubsetType;
 import net.opengis.wcs20.DimensionTrimType;
 import net.opengis.wcs20.ExtensionItemType;
 import net.opengis.wcs20.GetCoverageType;
+import net.opengis.wcs20.InterpolationAxesType;
+import net.opengis.wcs20.InterpolationAxisType;
+import net.opengis.wcs20.InterpolationMethodType;
+import net.opengis.wcs20.InterpolationType;
 import net.opengis.wcs20.RangeItemType;
 import net.opengis.wcs20.RangeSubsetType;
 import net.opengis.wcs20.ScaleAxisByFactorType;
@@ -257,6 +263,46 @@ public class GetCoverageTest {
         assertEquals("http://www.opengis.net/def/axis/OGC/1/j", sa2.getAxis());
         assertEquals(20.0, sa2.getLow(), 1e-9);
         assertEquals(30.0, sa2.getHigh(), 1e-9);
+    }
+    
+    @Test
+    public void testParseGetCoverageInterpolationLinear() throws Exception {
+        String capRequestPath = "requestGetCoverageInterpolationLinear.xml";
+        GetCoverageType gc = (GetCoverageType) parser.parse(getClass()
+                .getResourceAsStream(capRequestPath));
+        
+        Map<String, Object> extensions = getExtensionsMap(gc);
+        assertEquals(1, extensions.size());
+        
+        InterpolationType interpolation = (InterpolationType) extensions.get("http://www.opengis.net/WCS_service-extension_interpolation/1.0:Interpolation");
+        
+        assertNull(interpolation.getInterpolationAxes());
+        
+        InterpolationMethodType method = interpolation.getInterpolationMethod();
+        assertEquals("http://www.opengis.net/def/interpolation/OGC/1/linear", method.getInterpolationMethod());
+    }
+    
+    @Test
+    public void testParseGetCoverageInterpolationMixed() throws Exception {
+        String capRequestPath = "requestGetCoverageInterpolationMixed.xml";
+        GetCoverageType gc = (GetCoverageType) parser.parse(getClass()
+                .getResourceAsStream(capRequestPath));
+        
+        Map<String, Object> extensions = getExtensionsMap(gc);
+        assertEquals(1, extensions.size());
+        
+        InterpolationType interpolation = (InterpolationType) extensions.get("http://www.opengis.net/WCS_service-extension_interpolation/1.0:Interpolation");
+        
+        assertNull(interpolation.getInterpolationMethod());
+        
+        EList<InterpolationAxisType> axes = interpolation.getInterpolationAxes().getInterpolationAxis();
+        assertEquals(3, axes.size());
+        assertEquals("http://www.opengis.net/def/axis/OGC/1/latitude", axes.get(0).getAxis());
+        assertEquals("http://www.opengis.net/def/interpolation/OGC/1/quadratic", axes.get(0).getInterpolationMethod());
+        assertEquals("http://www.opengis.net/def/axis/OGC/1/longitude", axes.get(1).getAxis());
+        assertEquals("http://www.opengis.net/def/interpolation/OGC/1/quadratic", axes.get(1).getInterpolationMethod());
+        assertEquals("http://www.opengis.net/def/axis/OGC/1/time", axes.get(2).getAxis());
+        assertEquals("http://www.opengis.net/def/interpolation/OGC/1/nearest-neighbor", axes.get(2).getInterpolationMethod());
     }
 
 

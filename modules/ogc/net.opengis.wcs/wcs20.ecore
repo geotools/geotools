@@ -984,6 +984,21 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="axis" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetSize" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="InterpolationAxesType">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="interpolationAxis" upperBound="-1"
+        eType="#//InterpolationAxisType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="InterpolationAxisType">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="axis" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="interpolationMethod" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="InterpolationMethodType">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="interpolationMethod" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="InterpolationType">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="interpolationMethod" eType="#//InterpolationMethodType"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="interpolationAxes" eType="#//InterpolationAxesType"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="VersionStringType" instanceClassName="java.lang.String">
     <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
       <details key="name" value="VersionStringType"/>

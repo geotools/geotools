@@ -46,6 +46,8 @@ public class CatalogBuilderConfiguration {
 
 	private String runtimeAttribute;
 
+	private String additionalDomainAttribute;
+
 	private boolean absolute = Utils.DEFAULT_PATH_BEHAVIOR;
 	
 	private boolean caching = Utils.DEFAULT_CONFIGURATION_CACHING;
@@ -72,6 +74,9 @@ public class CatalogBuilderConfiguration {
 	private String schema;
 
 	private String propertyCollectors;
+	
+        private List<String> indexingDirectories;
+
 	
 	/**
 	 * Imposed BBOX
@@ -201,7 +206,13 @@ public class CatalogBuilderConfiguration {
 		this.runtimeAttribute = runtimeAttribute;
 	}
 
-	private List<String> indexingDirectories;
+    public String getAdditionalDomainAttribute() {
+        return additionalDomainAttribute;
+    }
+    
+    public void setAdditionalDomainAttribute(String additionalDomainAttribute) {
+        this.additionalDomainAttribute = additionalDomainAttribute;
+    }
 
 	public List<String> getIndexingDirectories() {
 		return indexingDirectories;

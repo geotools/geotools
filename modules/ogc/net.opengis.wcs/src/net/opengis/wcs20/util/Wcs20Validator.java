@@ -22,6 +22,10 @@ import net.opengis.wcs20.ExtensionItemType;
 import net.opengis.wcs20.ExtensionType;
 import net.opengis.wcs20.GetCapabilitiesType;
 import net.opengis.wcs20.GetCoverageType;
+import net.opengis.wcs20.InterpolationAxesType;
+import net.opengis.wcs20.InterpolationAxisType;
+import net.opengis.wcs20.InterpolationMethodType;
+import net.opengis.wcs20.InterpolationType;
 import net.opengis.wcs20.OfferedCoverageType;
 import net.opengis.wcs20.RangeIntervalType;
 import net.opengis.wcs20.RangeItemType;
@@ -195,6 +199,14 @@ public class Wcs20Validator extends EObjectValidator {
                 return validateTargetAxisExtentType((TargetAxisExtentType)value, diagnostics, context);
             case Wcs20Package.TARGET_AXIS_SIZE_TYPE:
                 return validateTargetAxisSizeType((TargetAxisSizeType)value, diagnostics, context);
+            case Wcs20Package.INTERPOLATION_AXES_TYPE:
+                return validateInterpolationAxesType((InterpolationAxesType)value, diagnostics, context);
+            case Wcs20Package.INTERPOLATION_AXIS_TYPE:
+                return validateInterpolationAxisType((InterpolationAxisType)value, diagnostics, context);
+            case Wcs20Package.INTERPOLATION_METHOD_TYPE:
+                return validateInterpolationMethodType((InterpolationMethodType)value, diagnostics, context);
+            case Wcs20Package.INTERPOLATION_TYPE:
+                return validateInterpolationType((InterpolationType)value, diagnostics, context);
             case Wcs20Package.VERSION_STRING_TYPE:
                 return validateVersionStringType((String)value, diagnostics, context);
             case Wcs20Package.VERSION_STRING_TYPE_1:
@@ -492,6 +504,42 @@ public class Wcs20Validator extends EObjectValidator {
      */
     public boolean validateTargetAxisSizeType(TargetAxisSizeType targetAxisSizeType, DiagnosticChain diagnostics, Map<Object, Object> context) {
         return validate_EveryDefaultConstraint(targetAxisSizeType, diagnostics, context);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateInterpolationAxesType(InterpolationAxesType interpolationAxesType, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validate_EveryDefaultConstraint(interpolationAxesType, diagnostics, context);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateInterpolationAxisType(InterpolationAxisType interpolationAxisType, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validate_EveryDefaultConstraint(interpolationAxisType, diagnostics, context);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateInterpolationMethodType(InterpolationMethodType interpolationMethodType, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validate_EveryDefaultConstraint(interpolationMethodType, diagnostics, context);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public boolean validateInterpolationType(InterpolationType interpolationType, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        return validate_EveryDefaultConstraint(interpolationType, diagnostics, context);
     }
 
     /**

@@ -165,5 +165,19 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//TargetAxisSizeType/axis"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//TargetAxisSizeType/targetSize"/>
     </genClasses>
+    <genClasses ecoreClass="wcs20.ecore#//InterpolationAxesType">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wcs20.ecore#//InterpolationAxesType/interpolationAxis"/>
+    </genClasses>
+    <genClasses ecoreClass="wcs20.ecore#//InterpolationAxisType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//InterpolationAxisType/axis"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//InterpolationAxisType/interpolationMethod"/>
+    </genClasses>
+    <genClasses ecoreClass="wcs20.ecore#//InterpolationMethodType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wcs20.ecore#//InterpolationMethodType/interpolationMethod"/>
+    </genClasses>
+    <genClasses ecoreClass="wcs20.ecore#//InterpolationType">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wcs20.ecore#//InterpolationType/interpolationMethod"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wcs20.ecore#//InterpolationType/interpolationAxes"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

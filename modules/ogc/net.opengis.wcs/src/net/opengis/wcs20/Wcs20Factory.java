@@ -283,6 +283,42 @@ public interface Wcs20Factory extends EFactory {
     TargetAxisSizeType createTargetAxisSizeType();
 
     /**
+     * Returns a new object of class '<em>Interpolation Axes Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Interpolation Axes Type</em>'.
+     * @generated
+     */
+    InterpolationAxesType createInterpolationAxesType();
+
+    /**
+     * Returns a new object of class '<em>Interpolation Axis Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Interpolation Axis Type</em>'.
+     * @generated
+     */
+    InterpolationAxisType createInterpolationAxisType();
+
+    /**
+     * Returns a new object of class '<em>Interpolation Method Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Interpolation Method Type</em>'.
+     * @generated
+     */
+    InterpolationMethodType createInterpolationMethodType();
+
+    /**
+     * Returns a new object of class '<em>Interpolation Type</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Interpolation Type</em>'.
+     * @generated
+     */
+    InterpolationType createInterpolationType();
+
+    /**
      * Returns the package supported by this factory.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

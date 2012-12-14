@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://www.opengis.net/WCS_service-extension_interpolation/1.0" 
+    xmlns:int="http://www.opengis.net/WCS_service-extension_interpolation/1.0"
+    xmlns="http://www.w3.org/2001/XMLSchema" 
+    elementFormDefault="qualified" version="1.0.0" xml:lang="en">
+    <annotation>
+        <appinfo>int.xsd</appinfo>
+        <documentation>This XML Schema Document is part of the WCS Interpolation Extension [OGC 12-049]. It encodes the elements and types that allow expressing Range Subsetting in WCS client/server communication.
+            Last updated: 2012-Dec-03
+            Copyright (c) 2012 Open Geospatial Consortium, Inc. All Rights Reserved.
+            To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.
+        </documentation>
+    </annotation>
+    <!-- ============================================================== -->
+    <!-- includes and imports                                           -->
+    <!-- ============================================================== -->
+
+    <!-- ============================================================== -->
+    <!-- elements and types                                             -->
+    <!-- ============================================================== -->
+    <element name="extensionInterpolation" type="int:extensionInterpolationType"/>
+    <complexType name="extensionInterpolationType">
+        <annotation>
+            <documentation> WCS interpolation metadata.</documentation>
+        </annotation>
+        <sequence>
+            <element name="interpolationMetadata" type="int:interpolationMetadataType"/>
+        </sequence>
+    </complexType>
+    <!-- ============================================================== -->
+    <complexType name="interpolationMetadataType">
+        <annotation>
+            <documentation> supported interpolations for the interpolationMetadata.</documentation>
+        </annotation>
+        <sequence>
+            <element name="interpolationSupported" type="anyURI" minOccurs="0"/>
+        </sequence>
+    </complexType>    
+    <!-- ============================================================== -->        
+    <element name="Interpolation" type="int:InterpolationType"/>  
+    <complexType name="InterpolationType">
+        <annotation>
+            <documentation> Interpolation for the GetCoverage request.</documentation>
+        </annotation>
+        <choice>
+            <element name="InterpolationMethod" type="int:InterpolationMethodType"/>
+            <element name="InterpolationAxes" type="int:InterpolationAxesType"/>
+        </choice>
+    </complexType>
+    <!-- ============================================================== -->    
+    <complexType name="InterpolationMethodType">
+      <attribute name="interpolationMethod" type="anyURI" use="required"/>
+    </complexType>     
+    <!-- ============================================================== -->         
+    <complexType name="InterpolationAxesType">
+        <sequence>
+            <element name="InterpolationAxis" type="int:InterpolationAxisType" maxOccurs="unbounded"/>	    
+        </sequence>
+    </complexType>
+    <!-- ============================================================== -->     
+    <complexType name="InterpolationAxisType">
+            <attribute name="axis" type="anyURI" use="required"/>	   
+    	    <attribute name="interpolationMethod" type="anyURI" use="required"/> 
+    </complexType>    
+</schema>

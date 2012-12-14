@@ -56,6 +56,7 @@ public class WCSConfiguration extends Configuration {
         // register parser delegate for extension schemas
         container.registerComponentInstance(new RangeSubsetParserDelegate());
         container.registerComponentInstance(new ScalingParserDelegate());
+        container.registerComponentInstance(new InterpolationParserDelegate());
     }
     
     

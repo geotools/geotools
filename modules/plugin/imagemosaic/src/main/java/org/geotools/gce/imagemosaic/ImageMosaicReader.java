@@ -28,8 +28,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
@@ -58,13 +61,18 @@ import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogFactory;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
+import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.util.Utilities;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.Filter;
 import org.opengis.geometry.BoundingBox;
+import org.opengis.metadata.Identifier;
 import org.opengis.parameter.GeneralParameterValue;
+import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
@@ -97,7 +105,229 @@ import org.opengis.referencing.operation.MathTransform;
  *
  * @source $URL$
  */
+@SuppressWarnings("rawtypes")
 public class ImageMosaicReader extends AbstractGridCoverage2DReader implements GridCoverageReader {
+
+
+    /**
+     * An {@link AdditionalDomainManager} class which allows to deal with additional domains
+     * (if any) defined inside the mosaic. It provides DOMAIN_ALIAS <--to--> original attribute mapping
+     * capabilities, metadata retrieval, filter creation, and domain support check
+     * 
+     * @author Daniele Romagnoli, GeoSolutions S.a.S.
+     *
+     */
+    class AdditionalDomainManager {
+
+        private static final String DOMAIN_SUFFIX = "_DOMAIN";
+
+        private static final String HAS_PREFIX = "HAS_";
+
+        // Consider using arrays for dimensions checks
+        // Set of supported additional domains
+        private Set<String> additionalDomains;
+
+        // Set of additional domains availability (is it really needed?)
+        private Set<String> hasAdditionalDomains;
+
+        // Mapping between domain (usually, an UPPER CASE name) and related original attribute
+        private Map<String, String> domainToOriginalAttribute;
+
+        // comma separated String of additional domain attributes
+        private String additionalDomainAttributes;
+
+        // Set of supported dynamic parameters (depending on the available domains) 
+        private Set<ParameterDescriptor<List>> dynamicParameters = null;
+
+        // Quick access set to look for supported parameters by ID
+        private Set<Identifier> supportedParameters = null;
+
+        /**
+         * build an AdditionalDomainManager on top of the provided additionalDomainAttributes 
+         * (a comma separated list of attribute names).
+         *
+         * @param additionalDomainAttributes
+         */
+        AdditionalDomainManager (String additionalDomainAttributes) {
+            this.additionalDomainAttributes = additionalDomainAttributes;
+            final String[] additionalDomainsNames = additionalDomainAttributes.split(",");
+            final int numDomains = additionalDomainsNames.length;
+            if (numDomains <= 0)
+                throw new IllegalArgumentException("Number of Domains should be > 0");
+            dynamicParameters = new HashSet<ParameterDescriptor<List>>(numDomains);
+            supportedParameters = new HashSet<Identifier>(numDomains);
+            additionalDomains = new HashSet<String>(numDomains);
+            hasAdditionalDomains = new HashSet<String>(numDomains);
+            domainToOriginalAttribute = new HashMap<String,String>(numDomains);
+            for (String domain : additionalDomainsNames) {
+                addDomain(domain);
+            }
+        }
+
+        /**
+         * Clean up mappings
+         */
+        public void dispose() {
+            if (domainToOriginalAttribute != null) {
+                domainToOriginalAttribute.clear();
+                domainToOriginalAttribute = null;
+            }
+            if (additionalDomains != null) {
+                additionalDomains.clear();
+                additionalDomains = null;
+            }
+            if (hasAdditionalDomains != null) {
+                hasAdditionalDomains.clear();
+                hasAdditionalDomains = null;
+            }
+            if (supportedParameters != null) {
+                supportedParameters.clear();
+                supportedParameters = null;
+            }
+            if (dynamicParameters != null) {
+                dynamicParameters.clear();
+                dynamicParameters = null;
+            }
+        }
+
+        /**
+         * Add a domain to the manager
+         * @param domain the name of the domain
+         */
+        public void addDomain(final String domain) {
+            final String domainMetadata = domain.toUpperCase() + DOMAIN_SUFFIX;
+            additionalDomains.add(domainMetadata);
+            hasAdditionalDomains.add(HAS_PREFIX + domainMetadata);
+            domainToOriginalAttribute.put(domainMetadata, domain);
+
+            // currently supporting only List of strings
+            final DefaultParameterDescriptor<List> parameter = DefaultParameterDescriptor.create(domain, "Additional " + domain + " domain", List.class, null, false);
+            dynamicParameters.add(parameter);
+            supportedParameters.add(parameter.getName());
+        }
+
+        /**
+         * Check whether a specific domain is supported by this manager.
+         * It can be useful to check wheter a domain specified in the request is supported by this reader.
+         * @param domain
+         * @return 
+         */
+        public boolean isDomainSupported(final String domain) {
+            final String domainValue = domain.toUpperCase() + DOMAIN_SUFFIX;
+            return !additionalDomains.isEmpty() && additionalDomains.contains(domainValue);
+        }
+        /**
+         * Check whether a specific parameter (identified by the {@link Identifier} name) is supported by 
+         * this manager (and therefore, by the reader).
+         * @param name
+         * @return
+         */
+        public boolean isParameterSupported(final Identifier name) {
+            return supportedParameters.contains(name);
+        }
+
+        /**
+         * Setup the List of metadataNames for this additional domains manager
+         *
+         * @return
+         */
+        public List<String> getMetadataNames() {
+            final List<String> metadataNames = new ArrayList<String>();
+            if (additionalDomains != null && !additionalDomains.isEmpty()) {
+                for (String domain: additionalDomains) {
+                    metadataNames.add(domain);
+                }
+            }
+            if (hasAdditionalDomains!= null && !hasAdditionalDomains.isEmpty()) {
+                for (String hasDomain: hasAdditionalDomains) {
+                    metadataNames.add(hasDomain);
+                }
+            }
+            return metadataNames;
+        }
+
+        /**
+         * Return the value of a specific metadata by parsing the requested name as a Domain Name
+         * @param name
+         * @return
+         */
+        public String getMetadataValue(String name) {
+            String value = null;
+            if (additionalDomainAttributes != null) {
+                String domainName = name.toUpperCase();
+                if (additionalDomains.contains(domainName)) {
+                    value = extractAdditionalDomain(domainToOriginalAttribute.get(domainName));
+                }
+
+                if (hasAdditionalDomains.contains(domainName)) {
+                    String extractDomain = domainName.length() > 4 ? domainName.substring(HAS_PREFIX.length()) : "";
+                    value = String.valueOf(additionalDomains.contains(extractDomain));
+                }
+            }
+            return value;
+        }
+        
+    /**
+     * Extract the elevation domain as a comma separated list of string values.
+     * @return a {@link String} that contains a comma separated list of values.
+     */
+    private String extractAdditionalDomain(String domain) {
+        try {
+            final Set<String> result = extractDomain(domain);          
+            // check result
+            if(result.size()<=0)
+                    return "";
+            
+            final StringBuilder buff= new StringBuilder();
+            for(Iterator<String> it= result.iterator(); it.hasNext();){
+                buff.append(((String) it.next()));
+                if(it.hasNext())
+                   buff.append(",");
+            }
+            return buff.toString();
+        } catch (IOException e) {
+            if(LOGGER.isLoggable(Level.WARNING))
+                    LOGGER.log(Level.WARNING,"Unable to parse attribute: " + domain ,e);
+            return "";
+        }
+    }
+
+        /**
+         * Setup a Filter on top of the specified domainRequest which is in the form "key=value"
+         * @param domainRequest
+         * @return
+         */
+        public Filter createFilter(String domainRequest) {
+            if (domainRequest == null || domainRequest.isEmpty())
+                throw new IllegalArgumentException("Null domain requested");
+
+            String[] keyValuePair = domainRequest.split("=");
+            if (keyValuePair.length != 2) {
+                throw new IllegalArgumentException("requested domains should be in the form \"name=value\"");
+            }
+
+           // Update this code if we move to support multiple values for the same domain (we can additionally
+            // split the domainValue on ",")
+            String domainName = keyValuePair[0];
+            String domainValue = keyValuePair[1];
+
+            if (!isDomainSupported(domainName)) {
+                throw new IllegalArgumentException("requested domain is not supported by this mosaic: " + domainName);
+            }
+            return  FeatureUtilities.DEFAULT_FILTER_FACTORY.equal(
+                    FeatureUtilities.DEFAULT_FILTER_FACTORY.property(domainName),
+                   FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(domainValue),true);
+        }
+
+       /** 
++         * Return the set of dynamic parameterDescriptors (the ones related to domains) for this reader 
+         * @return
+         */
+        public Set<ParameterDescriptor<List>> getDynamicParameters() {
+           return dynamicParameters;
+        }
+
+    }
 
 		/** Logger. */
 	private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ImageMosaicReader.class);
@@ -117,6 +347,9 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
 	String locationAttributeName="location";
 
 	RasterManager rasterManager;
+
+        /** The inner {@link AdditionalDomainManager} instance which allows to manage custom dimensions */
+        AdditionalDomainManager additionalDomainManager;
 
 	int maxAllowedTiles=ImageMosaicFormat.MAX_ALLOWED_TILES.getDefaultValue();
 
@@ -345,6 +578,19 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
 				rasterManager=null;
 			}
 			
+                       try {
+                            // dispose the additional domains manager
+                            if(additionalDomainManager != null)
+                                additionalDomainManager.dispose();
+                    } catch (Throwable e1) {
+                            if (LOGGER.isLoggable(Level.FINEST))
+                                    LOGGER.log(Level.FINEST, e1.getLocalizedMessage(), e1);
+                    }
+                    finally{
+                        additionalDomainManager = null;
+                    }
+                       			
+			
 			throw new  DataSourceException(e);
 		}
 
@@ -466,6 +712,10 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
 		if(elevationAttribute != null)
 			this.elevationAttribute = elevationAttribute;				
 
+               final String additionalDomainAttribute = configuration.getAdditionalDomainAttributes();
+               if (additionalDomainAttribute != null) {
+                   additionalDomainManager = new AdditionalDomainManager(additionalDomainAttribute);
+               }
 
 		// caching for the index
 		cachingIndex = configuration.isCaching();
@@ -666,6 +916,9 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
             metadataNames.add(ELEVATION_DOMAIN_MAXIMUM);
             metadataNames.add(HAS_ELEVATION_DOMAIN);
             metadataNames.add(ELEVATION_DOMAIN_RESOLUTION);
+            if (additionalDomainManager != null) {
+                metadataNames.addAll(additionalDomainManager.getMetadataNames());
+            }
             if(parentNames!=null)
                 metadataNames.addAll(Arrays.asList(parentNames));
             return metadataNames.toArray(new String[metadataNames.size()]);
@@ -712,7 +965,13 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
     
             }
         		
-
+            if (additionalDomainManager != null) {
+                String value = additionalDomainManager.getMetadataValue(name);
+                if (value != null) {
+                    return value;
+                }
+            }
+            
 		return super.getMetadataValue(name);
 	}
 
@@ -886,5 +1145,14 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
                     LOGGER.log(Level.WARNING,"Unable to parse attribute:TIME_DOMAIN",e);
             return "";
         }
+    }
+
+    @Override
+    public Set<ParameterDescriptor<List>> getDynamicParameters() {
+        return additionalDomainManager != null ? additionalDomainManager.getDynamicParameters() : super.getDynamicParameters();
+    }
+
+    public boolean isParameterSupported(Identifier name) {
+        return additionalDomainManager != null ? additionalDomainManager.isParameterSupported(name) : false;
     }
 }

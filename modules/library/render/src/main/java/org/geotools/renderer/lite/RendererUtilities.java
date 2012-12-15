@@ -596,17 +596,19 @@ public final class RendererUtilities {
                             new Coordinate(minX, minY)});
                     Polygon p = gf.createPolygon(ring, null);
                     Geometry intersection = p.intersection(ls);
-                    if(intersection instanceof LineString) {
-                        LineString ils = ((LineString) intersection);
-                        double d = getGeodeticSegmentLength(ils);
-                        distance += d;
-                    } else if(intersection instanceof GeometryCollection) {
-                        GeometryCollection igc = ((GeometryCollection) intersection);
-                        for (int k = 0; k < igc.getNumGeometries(); k++) {
-                            Geometry child = igc.getGeometryN(k);
-                            if(child instanceof LineString) {
-                                double d = getGeodeticSegmentLength((LineString) child);
-                                distance += d;
+                    if (!intersection.isEmpty()) {
+                        if (intersection instanceof LineString) {
+                            LineString ils = ((LineString) intersection);
+                            double d = getGeodeticSegmentLength(ils);
+                            distance += d;
+                        } else if (intersection instanceof GeometryCollection) {
+                            GeometryCollection igc = ((GeometryCollection) intersection);
+                            for (int k = 0; k < igc.getNumGeometries(); k++) {
+                                Geometry child = igc.getGeometryN(k);
+                                if (child instanceof LineString) {
+                                    double d = getGeodeticSegmentLength((LineString) child);
+                                    distance += d;
+                                }
                             }
                         }
                     }

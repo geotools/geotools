@@ -304,6 +304,18 @@ public class GetCoverageTest {
         assertEquals("http://www.opengis.net/def/axis/OGC/1/time", axes.get(2).getAxis());
         assertEquals("http://www.opengis.net/def/interpolation/OGC/1/nearest-neighbor", axes.get(2).getInterpolationMethod());
     }
-
+    
+    @Test
+    public void testParseGetCoverageCRS() throws Exception {
+        String capRequestPath = "requestGetCoverageCRS.xml";
+        GetCoverageType gc = (GetCoverageType) parser.parse(getClass()
+                .getResourceAsStream(capRequestPath));
+        
+        Map<String, Object> extensions = getExtensionsMap(gc);
+        assertEquals(2, extensions.size());
+        
+        assertEquals("http://www.opengis.net/def/crs/EPSG/0/4326", extensions.get("http://www.opengis.net/wcs/service-extension/crs/1.0:subsettingCrs"));
+        assertEquals("http://www.opengis.net/def/crs/EPSG/0/32632", extensions.get("http://www.opengis.net/wcs/service-extension/crs/1.0:outputCrs"));
+    }
 
 }

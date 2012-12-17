@@ -190,7 +190,7 @@ public class ArcSdeSimplifyingFilterVisitor extends SimplifyingFilterVisitor {
         Literal geometry = FF.literal(united);
         
         // rebuild the filter
-        Class operation = ops.get(0).operation;
+        Class<?> operation = ops.get(0).operation;
         if(BBOX.class.isAssignableFrom(operation) || Intersects.class.isAssignableFrom(operation)) {
             return FF.intersects(property, geometry);
         } else if(Crosses.class.isAssignableFrom(operation)) {
@@ -207,12 +207,12 @@ public class ArcSdeSimplifyingFilterVisitor extends SimplifyingFilterVisitor {
 
     static class SpatialOperation {
         BinarySpatialOperator op;
-        Class operation;
+        Class<?> operation;
         Geometry geometry;
         
         public SpatialOperation(BinarySpatialOperator op) {
             this.op = op;
-            for (Class iface : op.getClass().getInterfaces()) {
+            for (Class<?> iface : op.getClass().getInterfaces()) {
                 if(SPATIAL_OPERATIONS.contains(iface)) {
                     operation = iface;
                     break;

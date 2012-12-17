@@ -627,20 +627,21 @@ class ArcSDEQuery {
                              * codebase is plagued of FeatureCollection.size() calls depending on
                              * actual result counts or some operations don't work at all. return -1;
                              */
-                        }
 
-                        query.prepareQueryInfo(queryInfo);
-                        query.execute();
-                        int count = 0;
-                        while (query.fetch() != null) {
-                            count++;
+                            query.prepareQueryInfo(queryInfo);
+                            query.execute();
+                            int count = 0;
+                            while (query.fetch() != null) {
+                                count++;
+                            }
+                            return count;
                         }
-                        return count;
                     }
 
                     final int defaultMaxDistinctValues = 0;
                     final SeTable.SeTableStats tableStats;
-                    tableStats = query.calculateTableStatistics(colNames.get(0),
+                    final String statsCol = colNames.get(0);
+                    tableStats = query.calculateTableStatistics(statsCol,
                             SeTable.SeTableStats.SE_COUNT_STATS, queryInfo, defaultMaxDistinctValues);
 
                     int actualCount = tableStats.getCount();

@@ -33,6 +33,7 @@ import org.opengis.geometry.DirectPosition;
 
 import org.geotools.geometry.DirectPosition1D;
 import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.referencing.CRS;
 import org.geotools.referencing.WKT;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -572,5 +573,52 @@ public final class MathTransformTest {
                 assertEquals(buffer.toString(), expected[i], actual[i], delta[i % dimension]);
             }
         }
+    }
+    
+    /**
+     * The following test case is similar to the transform constructed
+     * by Streaming Renderer to convert from 3D data to 2D data for display.
+     * <p>
+     * While the resulting {@link ConcatendatedTransform} works, it does
+     * not currently provide an inerse().
+     */
+    @Test
+    public void testWGS84toWGS843D() throws Exception {
+        String wkt = "GEOGCS[\"GDA94\","
+                + " DATUM[\"Geocentric Datum of Australia 1994\","
+                + "  SPHEROID[\"GRS 1980\", 6378137.0, 298.257222101, AUTHORITY[\"EPSG\",\"7019\"]],"
+                + "  TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "
+                + " AUTHORITY[\"EPSG\",\"6283\"]], "
+                + " PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],"
+                + " UNIT[\"degree\", 0.017453292519943295], "
+                + " AXIS[\"Geodetic latitude\", NORTH], " + " AXIS[\"Geodetic longitude\", EAST], "
+                + " AXIS[\"Ellipsoidal height\", UP], " + " AUTHORITY[\"EPSG\",\"4939\"]]";
+        CoordinateReferenceSystem gda94 = CRS.parseWKT(wkt);
+        CoordinateReferenceSystem world = DefaultGeographicCRS.WGS84;
+        
+        MathTransform toWgs84_3d = CRS.findMathTransform( gda94,  DefaultGeographicCRS.WGS84_3D );
+        MathTransform toWgs84_2d = CRS.findMathTransform( DefaultGeographicCRS.WGS84_3D, DefaultGeographicCRS.WGS84);
+        MathTransform transform = ConcatenatedTransform.create(toWgs84_3d, toWgs84_2d);
+        assertNotNull( transform );
+        assertEquals( 3, transform.getSourceDimensions() );
+        assertEquals( 2, transform.getTargetDimensions() );
+        
+        // review transformation stages
+        ConcatenatedTransform concatenated = (ConcatenatedTransform) transform;
+        assertEquals( 3, concatenated.transform1.getSourceDimensions() );
+        assertEquals( 3, concatenated.transform1.getTargetDimensions() );
+        assertEquals( 3, concatenated.transform2.getSourceDimensions() );
+        assertEquals( 2, concatenated.transform2.getTargetDimensions() );
+        try {
+            MathTransform inverse = transform.inverse();
+            assertNotNull( inverse );
+            assertEquals( 2, inverse.getSourceDimensions() );
+            assertEquals( 3, inverse.getTargetDimensions() );
+            fail("Inverse of gda94 to WGS84 not expected to work at this time");
+        }
+        catch (NoninvertibleTransformException nope){
+            // expected
+        }
+        
     }
 }

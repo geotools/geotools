@@ -31,7 +31,7 @@ import org.opengis.referencing.operation.MathTransform;
  */
 class SymbolizerAssociation{
     /**
-     * Full transform from data {@link #crs} through to viewport CRS followed throug
+     * Full transform from data {@link #crs} through to viewport CRS followed through
      * to the screen.
      */
      public MathTransform  xform = null;

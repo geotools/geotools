@@ -17,6 +17,7 @@
  */
 package org.geotools.arcsde.data;
 
+import static org.geotools.filter.text.ecql.ECQL.toFilter;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -40,7 +41,6 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -58,7 +58,6 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
-import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsGreaterThan;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.identity.Identifier;
@@ -71,8 +70,8 @@ import com.vividsolutions.jts.geom.Envelope;
  * Test suite for the {@link ArcSDEQuery} query wrapper
  * 
  * @author Gabriel Roldan
- *
- *
+ * 
+ * 
  * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
  *         /org/geotools/arcsde/data/ArcSDEQueryTest.java $
@@ -172,7 +171,7 @@ public class ArcSDEQueryTest {
     @Test
     public void testSimplifiesFilters() throws IOException, CQLException {
 
-        Filter filter = CQL
+        Filter filter = ECQL
                 .toFilter("STRING_COL = strConcat('string', STRING_COL) AND STRING_COL > 'String2' AND BBOX(SHAPE, 10.0,20.0,30.0,40.0)");
         filteringQuery = new Query(typeName, filter);
         // filteringQuery based on the above filter...
@@ -194,8 +193,9 @@ public class ArcSDEQueryTest {
 
         assertTrue(geometryFilter instanceof BBOX);
         assertTrue(sqlFilter instanceof PropertyIsGreaterThan);
-        //commented out, assertion changed by commit 504f04fb
-        //assertTrue(String.valueOf(unsupportedFilter), unsupportedFilter instanceof PropertyIsEqualTo);
+        // commented out, assertion changed by commit 504f04fb
+        // assertTrue(String.valueOf(unsupportedFilter), unsupportedFilter instanceof
+        // PropertyIsEqualTo);
 
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         // @id = 'DELETEME.1' AND STRING_COL = 'test'
@@ -333,7 +333,7 @@ public class ArcSDEQueryTest {
     public void testGetSchemaUnsupportedFilterProperty() throws Exception {
         String[] requestProperties = { "SHAPE" };
 
-        Filter filter = ECQL.toFilter("Min(INT32_COL, 5) = 5");// we don't support the Min function
+        Filter filter = toFilter("Min(INT32_COL, 5) = 5");// we don't support the Min function
         // natively
 
         SimpleFeatureType resultingSchema = testGetSchema(requestProperties, filter);
@@ -473,7 +473,7 @@ public class ArcSDEQueryTest {
         FeatureTypeInfo fti = ArcSDEAdapter.fetchSchema(typeName, null, session);
 
         // same filter than ArcSDEJavaApiTest.testCalculateCountSpatialFilter
-        Filter filter = CQL.toFilter("BBOX(SHAPE, -180, -90, -170, -80)");
+        Filter filter = toFilter("BBOX(SHAPE, -180, -90, -170, -80)");
         filteringQuery = new Query(typeName, filter);
         ArcSDEQuery q = ArcSDEQuery.createQuery(session, ftype, filteringQuery, fti
                 .getFidStrategy(), new AutoCommitVersionHandler(
@@ -493,7 +493,7 @@ public class ArcSDEQueryTest {
         ISession session = dstore.getSession(Transaction.AUTO_COMMIT);
         FeatureTypeInfo fti = ArcSDEAdapter.fetchSchema(typeName, null, session);
 
-        Filter filter = CQL.toFilter("INT32_COL < 5 AND BBOX(SHAPE, -180, -90, -170, -80)");
+        Filter filter = toFilter("INT32_COL < 5 AND BBOX(SHAPE, -180, -90, -170, -80)");
         filteringQuery = new Query(typeName, filter);
         ArcSDEQuery q = ArcSDEQuery.createQuery(session, ftype, filteringQuery, fti
                 .getFidStrategy(), new AutoCommitVersionHandler(
@@ -562,6 +562,43 @@ public class ArcSDEQueryTest {
             Envelope expected = new Envelope(real);
             assertEquals(expected, actual);
         }
+    }
+
+    @Test
+    public void testArithmeticExpressions() throws Exception {
+        testSupportedArithmeticExpression(toFilter("(INT32_COL + 1) = 9"), 1);
+        testSupportedArithmeticExpression(toFilter("(INT32_COL + INT32_COL) > 13"), 2);
+
+        testSupportedArithmeticExpression(toFilter("(INT32_COL - 2) = -1"), 1);
+        testSupportedArithmeticExpression(toFilter("(INT32_COL * 2) = 4"), 1);
+        testSupportedArithmeticExpression(toFilter("(INT32_COL * INT32_COL) = 64"), 1);
+
+        testSupportedArithmeticExpression(toFilter("(INT32_COL / 2) < 3"), 5);
+    }
+
+    private void testSupportedArithmeticExpression(Filter filter, int expectedCount)
+            throws IOException {
+        ISession session = dstore.getSession(Transaction.AUTO_COMMIT);
+        FeatureTypeInfo fti = ArcSDEAdapter.fetchSchema(typeName, null, session);
+        filteringQuery = new Query(typeName, filter);
+        ArcSDEQuery q = ArcSDEQuery.createQuery(session, ftype, filteringQuery, fti
+                .getFidStrategy(), new AutoCommitVersionHandler(
+                SeVersion.SE_QUALIFIED_DEFAULT_VERSION_NAME));
+
+        Envelope queryExtent = q.calculateQueryExtent();
+        assertFalse(queryExtent.isNull());
+
+        Filter supportedFilter = q.getFilters().getSqlFilter();
+        Assert.assertEquals(filter, supportedFilter);
+
+        int count;
+        try {
+            count = q.calculateResultCount();
+        } finally {
+            q.session.dispose();
+            q.close();
+        }
+        Assert.assertEquals(expectedCount, count);
     }
 
     private void assertEquals(Envelope e1, Envelope e2) {

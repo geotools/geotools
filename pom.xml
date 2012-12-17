@@ -989,12 +989,6 @@
         <version>2.6.0</version>
       </dependency>
 
-      <!-- GeoGIT -->
-      <dependency>
-        <groupId>org.geogit</groupId>
-        <artifactId>geogit-core</artifactId>
-        <version>0.1-SNAPSHOT</version>
-      </dependency>
       <dependency>
         <groupId>com.sleepycat</groupId>
         <artifactId>je</artifactId>

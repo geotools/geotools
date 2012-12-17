@@ -155,12 +155,6 @@
        </modules>
      </profile>
      <profile>
-       <id>geogit-versioned</id>
-       <modules>
-         <module>geogit-versioned</module>
-       </modules>
-     </profile>
-     <profile>
        <id>wfs-ng</id>
        <modules>
          <module>wfs-ng</module>

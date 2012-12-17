@@ -22,7 +22,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -35,7 +34,6 @@ import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.SelectExpressionItem;
 import net.sf.jsqlparser.statement.select.SelectItem;
 
-import org.geotools.arcsde.ArcSdeException;
 import org.geotools.arcsde.data.ArcSDEAdapter;
 import org.geotools.arcsde.session.Command;
 import org.geotools.arcsde.session.ISession;
@@ -73,16 +71,15 @@ import com.esri.sde.sdk.client.SeException;
  * @author Gabriel Roldan
  * @see org.geotools.data.sde.GeometryEncoderSDE
  * 
- *
+ * 
  * @source $URL$
  *         http://gtsvn.refractions.net/geotools/branches/2.4.x/modules/unsupported/arcsde/datastore
  *         /src/main/java/org/geotools/arcsde/filter/FilterToSQLSDE.java $
  */
+@SuppressWarnings("deprecation")
 public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
     /** Standard java logger */
     private static Logger LOGGER = Logging.getLogger(FilterToSQLSDE.class.getName());
-
-    private final String layerQualifiedName;
 
     private final String layerFidFieldName;
 
@@ -91,38 +88,32 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
     /**
      * If definitionQuery != null, holds alias/unaliased attribute names from the sql query
      */
-    private Map attributeNames = Collections.EMPTY_MAP;
+    private Map<String, SelectExpressionItem> attributeNames = Collections.emptyMap();
 
     private final ISession conn;
 
     /**
-     * @param layerQName
-     *            full qualified name of the ArcSDE layer
-     * @param layerFidColName
-     *            name of the column that holds fids
+     * @param layerQName full qualified name of the ArcSDE layer
+     * @param layerFidColName name of the column that holds fids
      * @param ft
      * @param definitionQuery
-     * @param conn2
-     *            only used to encode date literals in a RDBMS specific format according to
-     *            {@link SeDate#toWhereStr(SeConnection)}
+     * @param conn2 only used to encode date literals in a RDBMS specific format according to
+     *        {@link SeDate#toWhereStr(SeConnection)}
      */
     public FilterToSQLSDE(String layerQName, String layerFidColName, SimpleFeatureType ft,
             PlainSelect definitionQuery, ISession session) {
-        this.layerQualifiedName = layerQName;
         this.layerFidFieldName = layerFidColName;
         this.featureType = ft;
         this.definitionQuery = definitionQuery;
         this.conn = session;
 
         if (definitionQuery != null) {
-            attributeNames = new HashMap();
+            attributeNames = new HashMap<String, SelectExpressionItem>();
 
-            List selectItems = definitionQuery.getSelectItems();
-            SelectItem item;
+            @SuppressWarnings("unchecked")
+            List<SelectItem> selectItems = definitionQuery.getSelectItems();
 
-            for (Iterator it = selectItems.iterator(); it.hasNext();) {
-                item = (SelectItem) it.next();
-
+            for (SelectItem item : selectItems) {
                 if (!(item instanceof SelectExpressionItem)) {
                     String msg = "for item '"
                             + item
@@ -174,7 +165,7 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
             }
             // commented out, this produces some sql queries to fail, not sure why.
             // ArcSDEQueryTest.testCalculateQueryExtent for example
-            //encodedColumnDefinition = layerQualifiedName + "." + nonNsPrefixedAlias;
+            // encodedColumnDefinition = layerQualifiedName + "." + nonNsPrefixedAlias;
             encodedColumnDefinition = nonNsPrefixedAlias;
         }
         return encodedColumnDefinition;
@@ -191,6 +182,7 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
 
         capabilities.addAll(FilterCapabilities.LOGICAL_OPENGIS);
         capabilities.addAll(FilterCapabilities.SIMPLE_COMPARISONS_OPENGIS);
+        capabilities.addType(FilterCapabilities.SIMPLE_ARITHMETIC);
         capabilities.addType(PropertyIsNull.class);
         capabilities.addType(PropertyIsBetween.class);
         capabilities.addType(Id.class);
@@ -218,8 +210,7 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
      * This only exists the fulfill the interface - unless There is a way of determining the FID
      * column in the database...
      * 
-     * @param filter
-     *            the Fid Filter.
+     * @param filter the Fid Filter.
      */
     @Override
     public Object visit(final Id filter, final Object unused) {
@@ -237,7 +228,7 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
         }
 
         try {
-            String sql = buildFidFilter(fids, layerFidFieldName,  " IN(", ")", ",", 1000, " OR ");
+            String sql = buildFidFilter(fids, layerFidFieldName, " IN(", ")", ",", 1000, " OR ");
 
             if (LOGGER.isLoggable(Level.FINER)) {
                 LOGGER.finer("added fid filter: " + sql);
@@ -257,9 +248,9 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
         final int groups = count / groupSize;
         final int remainder = count % groupSize;
         final StringBuilder sql = new StringBuilder();
-        
+
         final String encodedFidAttribute = getColumnDefinition(fidAttribute);
-        
+
         for (int i = 0; i < groups; i++) {
             if (i > 0) {
                 sql.append(groupSeparator);
@@ -294,10 +285,8 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
      * in process sql query, the attribute name encoded will be the actual one, not the alias (if
      * any) used in the sql query.
      * 
-     * @param expression
-     *            the attribute to turn to SQL.
-     * @throws RuntimeException
-     *             for io exception with writer
+     * @param expression the attribute to turn to SQL.
+     * @throws RuntimeException for io exception with writer
      */
     @Override
     public Object visit(PropertyName expression, Object extraData) throws RuntimeException {
@@ -330,8 +319,7 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
     /**
      * @see {@link FilterVisitor#visit(ExcludeFilter, Object)} Writes the SQL for the IncludeFilter
      *      by writing "FALSE".
-     * @param the
-     *            filter to be visited
+     * @param the filter to be visited
      */
     @Override
     public Object visit(ExcludeFilter filter, Object extraData) {
@@ -346,8 +334,7 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
     /**
      * @see {@link FilterVisitor#visit(IncludeFilter, Object)} Writes the SQL for the IncludeFilter
      *      by writing "TRUE".
-     * @param the
-     *            filter to be visited
+     * @param the filter to be visited
      */
     @Override
     public Object visit(IncludeFilter filter, Object extraData) {

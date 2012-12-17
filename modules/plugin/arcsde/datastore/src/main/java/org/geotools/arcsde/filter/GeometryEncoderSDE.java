@@ -23,26 +23,18 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.geotools.arcsde.data.ArcSDEGeometryBuilder;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
+import org.geotools.filter.visitor.DefaultFilterVisitor;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.And;
-import org.opengis.filter.ExcludeFilter;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.Id;
-import org.opengis.filter.IncludeFilter;
 import org.opengis.filter.Not;
 import org.opengis.filter.Or;
-import org.opengis.filter.PropertyIsBetween;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.PropertyIsGreaterThan;
-import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
-import org.opengis.filter.PropertyIsLessThan;
-import org.opengis.filter.PropertyIsLessThanOrEqualTo;
-import org.opengis.filter.PropertyIsLike;
-import org.opengis.filter.PropertyIsNil;
-import org.opengis.filter.PropertyIsNotEqualTo;
-import org.opengis.filter.PropertyIsNull;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
@@ -52,26 +44,12 @@ import org.opengis.filter.spatial.Contains;
 import org.opengis.filter.spatial.Crosses;
 import org.opengis.filter.spatial.DWithin;
 import org.opengis.filter.spatial.Disjoint;
+import org.opengis.filter.spatial.DistanceBufferOperator;
 import org.opengis.filter.spatial.Equals;
 import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
-import org.opengis.filter.temporal.After;
-import org.opengis.filter.temporal.AnyInteracts;
-import org.opengis.filter.temporal.Before;
-import org.opengis.filter.temporal.Begins;
-import org.opengis.filter.temporal.BegunBy;
-import org.opengis.filter.temporal.BinaryTemporalOperator;
-import org.opengis.filter.temporal.During;
-import org.opengis.filter.temporal.EndedBy;
-import org.opengis.filter.temporal.Ends;
-import org.opengis.filter.temporal.Meets;
-import org.opengis.filter.temporal.MetBy;
-import org.opengis.filter.temporal.OverlappedBy;
-import org.opengis.filter.temporal.TContains;
-import org.opengis.filter.temporal.TEquals;
-import org.opengis.filter.temporal.TOverlaps;
 
 import com.esri.sde.sdk.client.SeException;
 import com.esri.sde.sdk.client.SeExtent;
@@ -97,12 +75,13 @@ import com.vividsolutions.jts.geom.Polygon;
  * 
  * @author Gabriel Rold?n
  * 
- *
+ * 
  * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
  *         /org/geotools/arcsde/filter/GeometryEncoderSDE.java $
  */
-public class GeometryEncoderSDE implements FilterVisitor {
+@SuppressWarnings("deprecation")
+public class GeometryEncoderSDE extends DefaultFilterVisitor implements FilterVisitor {
     /** Standard java logger */
     private static Logger log = org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
 
@@ -123,9 +102,12 @@ public class GeometryEncoderSDE implements FilterVisitor {
         capabilities.addType(Intersects.class);
         capabilities.addType(Overlaps.class);
         capabilities.addType(Within.class);
+        capabilities.addType(DWithin.class);
+        capabilities.addType(Beyond.class);
+        capabilities.addType(Touches.class);
     }
 
-    private List sdeSpatialFilters = null;
+    private List<SeShapeFilter> sdeSpatialFilters;
 
     private SeLayer sdeLayer;
 
@@ -165,7 +147,7 @@ public class GeometryEncoderSDE implements FilterVisitor {
      * overrides just to avoid the "WHERE" keyword
      */
     public void encode(Filter filter) throws GeometryEncoderException {
-        this.sdeSpatialFilters = new ArrayList();
+        this.sdeSpatialFilters = new ArrayList<SeShapeFilter>();
         if (Filter.INCLUDE.equals(filter)) {
             return;
         }
@@ -180,12 +162,10 @@ public class GeometryEncoderSDE implements FilterVisitor {
     /**
      * @param filter
      * @param sdeMethod
-     * @param truth
-     *            de default truth value for <code>sdeMethod</code>
-     * @param extraData
-     *            if an instanceof java.lang.Boolean, <code>truth</code> is and'ed with its boolean
-     *            value. May have been set by {@link #visit(Not, Object)} to revert the logical
-     *            evaluation criteria.
+     * @param truth de default truth value for <code>sdeMethod</code>
+     * @param extraData if an instanceof java.lang.Boolean, <code>truth</code> is and'ed with its
+     *        boolean value. May have been set by {@link #visit(Not, Object)} to revert the logical
+     *        evaluation criteria.
      */
     private void addSpatialFilter(final BinarySpatialOperator filter, final int sdeMethod,
             final boolean truth, final Object extraData) {
@@ -313,23 +293,18 @@ public class GeometryEncoderSDE implements FilterVisitor {
     }
 
     // The Spatial Operator methods (these call to the above visit() method
+    @Override
     public Object visit(BBOX filter, Object extraData) {
         addSpatialFilter(filter, SeFilter.METHOD_ENVP, true, extraData);
         return extraData;
     }
 
-    public Object visit(Beyond filter, Object extraData) {
-        // This shouldn't happen since we will have pulled out
-        // the unsupported parts before invoking this method
-        String msg = "unsupported filter type: " + filter.getClass().getName();
-        log.warning(msg);
-        return extraData;
-    }
-
+    @Override
     public Object visit(Contains filter, Object extraData) {
         // SDE can assert only one way, we need to invert from contains to within in case the
         // assertion is the other way around
-        if (filter.getExpression1() instanceof PropertyName && filter.getExpression2() instanceof Literal) {
+        if (filter.getExpression1() instanceof PropertyName
+                && filter.getExpression2() instanceof Literal) {
             addSpatialFilter(filter, SeFilter.METHOD_PC, true, extraData);
         } else {
             addSpatialFilter(filter, SeFilter.METHOD_SC, true, extraData);
@@ -337,38 +312,95 @@ public class GeometryEncoderSDE implements FilterVisitor {
         return extraData;
     }
 
+    @Override
     public Object visit(Crosses filter, Object extraData) {
         addSpatialFilter(filter, SeFilter.METHOD_LCROSS_OR_CP, true, extraData);
         return extraData;
     }
 
+    @Override
     public Object visit(Disjoint filter, Object extraData) {
         addSpatialFilter(filter, SeFilter.METHOD_II_OR_ET, false, extraData);
         return extraData;
     }
 
-    public Object visit(DWithin filter, Object extraData) {
-        // This shouldn't happen since we will have pulled out
-        // the unsupported parts before invoking this method
-        String msg = "unsupported filter type: " + filter.getClass().getName();
-        log.warning(msg);
+    @Override
+    public Object visit(Touches filter, Object extraData) {
+        // SFS definition of Touches says that two geometries 'a' and 'b' touch each other if the
+        // intersection of the interiors of 'a' and 'b' is empty and if the intersection of 'a' and
+        // 'b' is nonempty.
+        // Hence we use a negated METHOD_II_NO_ET (Interior intersect and no edge touch search
+        // method.)
+
+        addSpatialFilter(filter, SeFilter.METHOD_II_NO_ET, false, extraData);
         return extraData;
     }
 
+    @Override
+    public Object visit(DWithin filter, Object extraData) {
+        return visitDistanceBufferOperator(filter, true, extraData);
+    }
+
+    @Override
+    public Object visit(Beyond filter, Object extraData) {
+        return visitDistanceBufferOperator(filter, false, extraData);
+    }
+
+    /**
+     * Converts a distance buffer op to an intersects againt the buffered input geometry
+     */
+    private Object visitDistanceBufferOperator(DistanceBufferOperator filter, boolean truth,
+            Object extraData) {
+        // SDE can assert only one way, we need to invert from contains to within in case the
+        // assertion is the other way around
+        PropertyName property;
+        Literal literal;
+        {
+            Expression expression1 = filter.getExpression1();
+            Expression expression2 = filter.getExpression2();
+
+            if (expression1 instanceof PropertyName && expression2 instanceof Literal) {
+                property = (PropertyName) expression1;
+                literal = (Literal) expression2;
+            } else if (expression2 instanceof PropertyName && expression1 instanceof Literal) {
+                property = (PropertyName) expression2;
+                literal = (Literal) expression1;
+            } else {
+                // not supported
+                throw new IllegalArgumentException("expected propertyname/literal, got "
+                        + expression1 + "/" + expression2);
+            }
+        }
+
+        final Geometry geom = literal.evaluate(null, Geometry.class);
+        final double distance = filter.getDistance();
+        final Geometry buffer = geom.buffer(distance);
+
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        BinarySpatialOperator intersects = ff.intersects(property, ff.literal(buffer));
+
+        addSpatialFilter(intersects, SeFilter.METHOD_II_OR_ET, truth, extraData);
+
+        return extraData;
+    }
+
+    @Override
     public Object visit(Equals filter, Object extraData) {
         addSpatialFilter(filter, SeFilter.METHOD_IDENTICAL, true, extraData);
         return extraData;
     }
 
+    @Override
     public Object visit(Intersects filter, Object extraData) {
         addSpatialFilter(filter, SeFilter.METHOD_II_OR_ET, true, extraData);
         return extraData;
     }
 
+    @Override
     public Object visit(Overlaps filter, Object extraData) {
         addSpatialFilter(filter, SeFilter.METHOD_II, true, extraData);
-        // AA: nope, Overlaps definition is The geometries have some but not all points in common, 
-        // they have the same dimension, and the intersection of the interiors of the two geometries 
+        // AA: nope, Overlaps definition is The geometries have some but not all points in common,
+        // they have the same dimension, and the intersection of the interiors of the two geometries
         // has the same dimension as the geometries themselves.
         // --> that is, one can be contained in the other and they still overlap
         // addSpatialFilter(filter, SeFilter.METHOD_PC, false, extraData);
@@ -376,10 +408,12 @@ public class GeometryEncoderSDE implements FilterVisitor {
         return extraData;
     }
 
+    @Override
     public Object visit(Within filter, Object extraData) {
         // SDE can assert only one way, we need to invert from contains to within in case the
         // assertion is the other way around
-        if (filter.getExpression1() instanceof PropertyName && filter.getExpression2() instanceof Literal) {
+        if (filter.getExpression1() instanceof PropertyName
+                && filter.getExpression2() instanceof Literal) {
             addSpatialFilter(filter, SeFilter.METHOD_SC, true, extraData);
         } else {
             addSpatialFilter(filter, SeFilter.METHOD_PC, true, extraData);
@@ -387,19 +421,7 @@ public class GeometryEncoderSDE implements FilterVisitor {
         return extraData;
     }
 
-    public Object visit(Touches filter, Object extraData) {
-        // This shouldn't happen since we will have pulled out
-        // the unsupported parts before invoking this method
-        String msg = "unsupported filter type: " + filter.getClass().getName();
-        log.warning(msg);
-        return extraData;
-    }
-
-    // These are the 'just to implement the interface' methods.
-    public Object visit(Id filter, Object extraData) {
-        return extraData;
-    }
-
+    @Override
     public Object visit(And filter, Object extraData) {
         List<Filter> children = filter.getChildren();
         for (Filter child : children) {
@@ -408,6 +430,7 @@ public class GeometryEncoderSDE implements FilterVisitor {
         return extraData;
     }
 
+    @Override
     public Object visit(Or filter, Object extraData) {
         List<Filter> children = filter.getChildren();
         for (Filter child : children) {
@@ -420,117 +443,10 @@ public class GeometryEncoderSDE implements FilterVisitor {
      * Sets <code>extraData</code> to Boolean.FALSE to revert the truth value of the spatial filter
      * contained, if any.
      */
+    @Override
     public Object visit(Not filter, Object extraData) {
         Boolean truth = Boolean.FALSE;
         Filter negated = filter.getFilter();
         return negated.accept(this, truth);
-    }
-
-    public Object visit(ExcludeFilter filter, Object extraData) {
-        return extraData;
-    }
-
-    public Object visit(IncludeFilter filter, Object extraData) {
-        return extraData;
-    }
-
-    public Object visit(PropertyIsBetween filter, Object extraData) {
-        return extraData;
-    }
-
-    public Object visit(PropertyIsEqualTo filter, Object extraData) {
-        return extraData;
-    }
-
-    public Object visit(PropertyIsGreaterThan filter, Object extraData) {
-        return extraData;
-    }
-
-    public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object extraData) {
-        return extraData;
-    }
-
-    public Object visit(PropertyIsLessThan filter, Object extraData) {
-        return extraData;
-    }
-
-    public Object visit(PropertyIsLessThanOrEqualTo filter, Object extraData) {
-        return extraData;
-    }
-
-    public Object visit(PropertyIsLike filter, Object extraData) {
-        return extraData;
-    }
-
-    public Object visit(PropertyIsNotEqualTo filter, Object extraData) {
-        return extraData;
-    }
-
-    public Object visit(PropertyIsNull filter, Object extraData) {
-        return extraData;
-    }
-
-    public Object visit(PropertyIsNil filter, Object extraData) {
-        return extraData;
-    }
-
-    public Object visitNullFilter(Object arg0) {
-        return arg0;
-    }
-
-    public Object visit(After after, Object extraData) {
-        return extraData;
-    }
-
-    public Object visit(AnyInteracts anyInteracts, Object extraData) {
-        return extraData;
-    }
-
-    public Object visit(Before before, Object extraData) {
-        return extraData;
-    }
-
-    public Object visit(Begins begins, Object extraData) {
-        return extraData;
-    }
-
-    public Object visit(BegunBy begunBy, Object extraData) {
-        return extraData;
-    }
-
-    public Object visit(During during, Object extraData) {
-        return extraData;
-    }
-
-    public Object visit(EndedBy endedBy, Object extraData) {
-        return extraData;
-    }
-
-    public Object visit(Ends ends, Object extraData) {
-        return extraData;
-    }
-
-    public Object visit(Meets meets, Object extraData) {
-        return extraData;
-    }
-
-    public Object visit(MetBy metBy, Object extraData) {
-        return extraData;
-    }
-
-    public Object visit(OverlappedBy overlappedBy, Object extraData) {
-        return extraData;
-    }
-
-    public Object visit(TContains contains, Object extraData) {
-        return extraData;
-    }
-
-    public Object visit(TEquals equals, Object extraData) {
-        return extraData;
-    }
-
-    public Object visit(TOverlaps contains, Object extraData) {
-        return extraData;
     }
 }

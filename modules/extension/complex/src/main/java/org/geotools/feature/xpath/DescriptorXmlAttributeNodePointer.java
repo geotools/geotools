@@ -17,12 +17,16 @@
 
 package org.geotools.feature.xpath;
 
-import java.util.Map;
+import java.util.Iterator;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
-import org.opengis.feature.Attribute;
+import org.eclipse.xsd.XSDAttributeDeclaration;
+import org.eclipse.xsd.XSDElementDeclaration;
+import org.geotools.xml.Schemas;
+import org.opengis.feature.type.ComplexType;
 import org.opengis.feature.type.Name;
-import org.xml.sax.Attributes;
+import org.opengis.feature.type.PropertyDescriptor;
+import org.opengis.feature.type.PropertyType;
 
 /**
  * Special node pointer for an XML-attribute inside an attribute.
@@ -35,27 +39,27 @@ import org.xml.sax.Attributes;
  *
  * @source $URL$
  */
-public class XmlAttributeNodePointer extends NodePointer {
+public class DescriptorXmlAttributeNodePointer extends NodePointer {
 
     /**
      * 
      */
-    private static final long serialVersionUID = 3315524792964171784L;
+    private static final long serialVersionUID = 8096170689141331692L;
 
     /**
-     * The name of hte node.
+     * The name of the node.
      */
     Name name;
 
     /**
-     * The underlying feature
+     * The underlying descriptor
      */
-    Attribute feature;
+    PropertyDescriptor descriptor;
 
-    protected XmlAttributeNodePointer(NodePointer parent, Attribute feature, Name name) {
+    protected DescriptorXmlAttributeNodePointer(NodePointer parent, PropertyDescriptor descriptor, Name name) {
         super(parent);
         this.name = name;
-        this.feature = feature;
+        this.descriptor = descriptor;
     }
 
     public boolean isLeaf() {
@@ -78,30 +82,35 @@ public class XmlAttributeNodePointer extends NodePointer {
         return null;
     }
 
-    @SuppressWarnings("unchecked")    
     public Object getImmediateNode() {
-        //FIXME - better id checking
-        if (name.getLocalPart().equals("id")) {
-            return feature.getIdentifier().getID();
-        }
-        else {
-            Map<Name, Object> map = (Map<Name, Object>) feature.getUserData().get(Attributes.class);
-            if (map != null) {
-                return map.get(name);
-            } else {
-                return null;
+
+        //first try regular way
+        PropertyType pt = descriptor.getType();
+        if (pt instanceof ComplexType) {
+            ComplexType ct = (ComplexType) pt;
+            PropertyDescriptor ad = ct.getDescriptor("@" + name.getLocalPart());
+            if (ad != null) {
+                return ad;
             }
         }
+
+        XSDElementDeclaration decl = (XSDElementDeclaration) descriptor.getUserData().get(
+                XSDElementDeclaration.class);
+
+        Iterator it = Schemas.getAttributeDeclarations(decl).iterator();
+        while (it.hasNext()) {
+            XSDAttributeDeclaration attDecl = ((XSDAttributeDeclaration) it.next());
+            if (attDecl.getURI().equals(
+                    (name.getNamespaceURI() == null ? "" : name.getNamespaceURI()) + "#"
+                            + name.getLocalPart())) {
+                return name;
+            }
+        }
+        return null;
     }
 
-    @SuppressWarnings("unchecked")    
     public void setValue(Object value) {
-       if (!name.getLocalPart().equals("id")) {
-           Map<Name, Object> map = (Map<Name, Object>) feature.getUserData().get(Attributes.class);
-           if (map != null) {
-              map.put(name, value);
-           }
-       }
+        throw new UnsupportedOperationException("Feature types are immutable");
     }
 
     @Override

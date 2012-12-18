@@ -37,8 +37,8 @@ import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.complex.config.NonFeatureTypeProxy;
 import org.geotools.data.complex.filter.XPath;
-import org.geotools.data.complex.filter.XPath.Step;
-import org.geotools.data.complex.filter.XPath.StepList;
+import org.geotools.data.complex.filter.XPathUtil.Step;
+import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.geotools.data.joining.JoiningNestedAttributeMapping;
 import org.geotools.data.joining.JoiningQuery;
 import org.geotools.feature.AttributeBuilder;
@@ -1076,7 +1076,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     protected boolean skipTopElement(Name topElement, AttributeMapping attMapping,
             AttributeType type) {
         // don't skip if there's OCQL
-		return Types.equals(topElement, attMapping.getTargetXPath())
+		return XPath.equals(topElement, attMapping.getTargetXPath())
 				&& (attMapping.getSourceExpression() == null || Expression.NIL
 						.equals(attMapping.getSourceExpression()));
     }

@@ -19,15 +19,14 @@ package org.geotools.feature;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
-import org.geotools.data.complex.ComplexFeatureConstants;
-import org.geotools.data.complex.config.NonFeatureTypeProxy;
 import org.geotools.feature.type.AttributeDescriptorImpl;
-import org.geotools.feature.type.GeometryDescriptorImpl;
+import org.geotools.feature.type.ComplexTypeImpl;
+import org.geotools.feature.type.Types;
 import org.opengis.feature.Association;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
@@ -60,8 +59,10 @@ import com.vividsolutions.jts.geom.Geometry;
  * @source $URL$
  */
 public class AttributeBuilder {
-    private static final Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(AttributeBuilder.class.getPackage().getName());
+    
+    protected static final ComplexType ANYTYPE_TYPE = new ComplexTypeImpl(new NameImpl(
+            "http://www.w3.org/2001/XMLSchema", "anyType"), null, false,
+        true, Collections.EMPTY_LIST, null, null);      
 
     /**
      * Factory used to create attributes
@@ -344,71 +345,7 @@ public class AttributeBuilder {
     public void associate(Attribute attribute, String name, String namespaceURI) {
         associate(attribute, Types.typeName(namespaceURI, name));
     }
-
-    /**
-     * Adds an attribute to the complex attribute being built overriding the type of the declared
-     * attribute descriptor by a subtype of it. <br>
-     * <p>
-     * This method uses the type supplied in {@link #setType(AttributeType)} in order to determine
-     * the attribute type.
-     * </p>
-     * 
-     * @param id
-     *                the attribtue id
-     * @param value
-     *                The value of the attribute.
-     * 
-     * @param name
-     *                The name of the attribute.
-     * @param type
-     *                the actual type of the attribute, which might be the same as the declared type
-     *                for the given AttributeDescriptor or a derived type.
-     * 
-     */
-    public Attribute add(final String id, final Object value, final Name name,
-            final AttributeType type) {
-        // existence check
-        AttributeDescriptor descriptor = attributeDescriptor(name);
-        AttributeType declaredType = (AttributeType) descriptor.getType();
-        if (!declaredType.equals(type)) {
-            boolean argIsSubType = Types.isSuperType(type, declaredType);
-            if (!argIsSubType) {
-                /*
-                 * commented out since we got community schemas where the required instance type is
-                 * not a subtype of the declared one throw new
-                 * IllegalArgumentException(type.getName() + " is not a subtype of " +
-                 * declaredType.getName());
-                 */
-                LOGGER.fine("Adding attribute " + name + " of type " + type.getName()
-                        + " which is not a subtype of " + declaredType.getName());
-            }
-            int minOccurs = descriptor.getMinOccurs();
-            int maxOccurs = descriptor.getMaxOccurs();
-            boolean nillable = descriptor.isNillable();
-            // TODO: handle default value
-            Object defaultValue = null;
-            if (type instanceof GeometryType) {
-                descriptor = new GeometryDescriptorImpl((GeometryType) type, name, minOccurs,
-                        maxOccurs, nillable, defaultValue);
-            } else {
-                descriptor = new AttributeDescriptorImpl(type, name, minOccurs, maxOccurs,
-                        nillable, defaultValue);
-            }
-        }
-        Attribute attribute;
-        if (descriptor != null && descriptor.getType() instanceof NonFeatureTypeProxy) {
-            // we don't want a feature. NonFeatureTypeProxy is used to make non feature types
-            // a fake feature type, so it can be created as top level feature in app-schema
-            // mapping file. When created inside other features, it should be encoded as
-            // complex features though.
-            attribute = createComplexAttribute(value, null, descriptor, id);
-        } else {
-            attribute = create(value, null, descriptor, id);
-        }
-        properties().add(attribute);
-        return attribute;
-    }
-
+    
     /**
      * Adds an attribute to the complex attribute being built. <br>
      * <p>
@@ -685,10 +622,40 @@ public class AttributeBuilder {
         // need to create a complex attribute for any type, so we can have client properties
         // for xlink:href and so we chain features etc.
         Map<Object, Object> userData = descriptor.getUserData();
-        descriptor = new AttributeDescriptorImpl(ComplexFeatureConstants.ANYTYPE_TYPE, descriptor
+        descriptor = new AttributeDescriptorImpl(ANYTYPE_TYPE, descriptor
                 .getName(), descriptor.getMinOccurs(), descriptor.getMaxOccurs(), descriptor
                 .isNillable(), descriptor.getDefaultValue());
         descriptor.getUserData().putAll(userData);
-        return createComplexAttribute(value, ComplexFeatureConstants.ANYTYPE_TYPE, descriptor, id);
+        return createComplexAttribute(value, ANYTYPE_TYPE, descriptor, id);
     }
+    
+    /**
+     * @return The descriptor of the attribute being built or null there is no descriptor (this occurs if setType() was used).
+     */
+    public AttributeDescriptor getDescriptor() {
+        return this.descriptor;
+    }
+
+   /**
+     * @return The coordinate reference system of the feature, or null if not set.
+     */
+    public CoordinateReferenceSystem getCRS() {
+        return crs;
+    }
+
+    /**
+     * Convenience accessor for properties list which does the null check.
+     */
+    protected List getProperties() {
+        if (this.properties == null) {
+            this.properties = new ArrayList();
+        }
+
+        return this.properties;
+    }
+
+    public Attribute buildSimple(String id, Object value) {
+        return create(value, type, descriptor, id);
+    }
+
 }

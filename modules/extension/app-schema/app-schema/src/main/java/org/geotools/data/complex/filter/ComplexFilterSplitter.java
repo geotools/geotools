@@ -20,7 +20,7 @@ package org.geotools.data.complex.filter;
 import java.util.List;
 
 import org.geotools.data.complex.FeatureTypeMapping;
-import org.geotools.data.complex.filter.XPath.StepList;
+import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.opengis.filter.Id;

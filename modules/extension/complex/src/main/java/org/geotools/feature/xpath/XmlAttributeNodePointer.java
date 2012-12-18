@@ -17,14 +17,14 @@
 
 package org.geotools.feature.xpath;
 
-import java.util.Iterator;
+import java.util.Map;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
-import org.eclipse.xsd.XSDAttributeDeclaration;
-import org.eclipse.xsd.XSDElementDeclaration;
-import org.geotools.xml.Schemas;
+import org.opengis.feature.Attribute;
+import org.opengis.feature.ComplexAttribute;
+import org.opengis.feature.Property;
 import org.opengis.feature.type.Name;
-import org.opengis.feature.type.PropertyDescriptor;
+import org.xml.sax.Attributes;
 
 /**
  * Special node pointer for an XML-attribute inside an attribute.
@@ -37,27 +37,27 @@ import org.opengis.feature.type.PropertyDescriptor;
  *
  * @source $URL$
  */
-public class DescriptorXmlAttributeNodePointer extends NodePointer {
+public class XmlAttributeNodePointer extends NodePointer {
 
     /**
      * 
      */
-    private static final long serialVersionUID = 8096170689141331692L;
+    private static final long serialVersionUID = 3315524792964171784L;
 
     /**
-     * The name of the node.
+     * The name of hte node.
      */
     Name name;
 
     /**
-     * The underlying descriptor
+     * The underlying feature
      */
-    PropertyDescriptor descriptor;
+    Attribute feature;
 
-    protected DescriptorXmlAttributeNodePointer(NodePointer parent, PropertyDescriptor descriptor, Name name) {
+    protected XmlAttributeNodePointer(NodePointer parent, Attribute feature, Name name) {
         super(parent);
         this.name = name;
-        this.descriptor = descriptor;
+        this.feature = feature;
     }
 
     public boolean isLeaf() {
@@ -80,21 +80,40 @@ public class DescriptorXmlAttributeNodePointer extends NodePointer {
         return null;
     }
 
+    @SuppressWarnings("unchecked")    
     public Object getImmediateNode() {
-         XSDElementDeclaration decl = (XSDElementDeclaration) descriptor.getUserData().get(XSDElementDeclaration.class);
-            
-         Iterator it = Schemas.getAttributeDeclarations(decl).iterator();
-         while (it.hasNext()) {
-            XSDAttributeDeclaration attDecl = ((XSDAttributeDeclaration) it.next());
-            if ( attDecl.getURI().equals((name.getNamespaceURI()==null?"":name.getNamespaceURI())  + "#" + name.getLocalPart() ))   {
-               return name;
-            }            
-         }    
-         return null;
+        
+        //first try regular way
+        if (feature instanceof ComplexAttribute) {
+            ComplexAttribute ca = (ComplexAttribute) feature;
+            Property p = ca.getProperty("@" + name.getLocalPart());
+            if (p != null) {
+                return p;
+            }
+        }
+        
+        //FIXME - better id checking
+        if (name.getLocalPart().equals("id")) {
+            return feature.getIdentifier().getID();
+        }
+        else {
+            Map<Name, Object> map = (Map<Name, Object>) feature.getUserData().get(Attributes.class);
+            if (map != null) {
+                return map.get(name);
+            } else {
+                return null;
+            }
+        }
     }
 
+    @SuppressWarnings("unchecked")    
     public void setValue(Object value) {
-        throw new UnsupportedOperationException("Feature types are immutable");
+       if (!name.getLocalPart().equals("id")) {
+           Map<Name, Object> map = (Map<Name, Object>) feature.getUserData().get(Attributes.class);
+           if (map != null) {
+              map.put(name, value);
+           }
+       }
     }
 
     @Override

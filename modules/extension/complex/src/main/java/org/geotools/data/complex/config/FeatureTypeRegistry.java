@@ -23,9 +23,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Stack;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,24 +33,17 @@ import javax.xml.namespace.QName;
 
 import org.eclipse.xsd.XSDAttributeDeclaration;
 import org.eclipse.xsd.XSDAttributeUse;
-import org.eclipse.xsd.XSDAttributeUseCategory;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.geotools.feature.NameImpl;
-import org.geotools.feature.Types;
 import org.geotools.feature.type.AbstractLazyComplexTypeImpl;
-import org.geotools.feature.type.ComplexFeatureTypeFactoryImpl;
 import org.geotools.feature.type.GeometryTypeImpl;
-import org.geotools.gml3.GMLConfiguration;
-import org.geotools.gml3.GMLSchema;
-import org.geotools.gml3.smil.SMIL20LANGSchema;
-import org.geotools.gml3.smil.SMIL20Schema;
+import org.geotools.feature.type.Types;
 import org.geotools.util.logging.Logging;
 import org.geotools.xml.SchemaIndex;
 import org.geotools.xml.Schemas;
-import org.geotools.xs.XS;
 import org.geotools.xs.XSSchema;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
@@ -68,55 +61,21 @@ import org.xml.sax.helpers.NamespaceSupport;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
- * A registry of GeoTools {@link AttributeType} and {@link AttributeDescriptor} lazily parsed from
- * the EMF {@link XSDTypeDefinition} and {@link XSDElementDeclaration} added through
- * {@link #addSchemas(SchemaIndex)}.
+ * A registry of GeoTools {@link AttributeType} and {@link AttributeDescriptor} lazily parsed from the EMF {@link XSDTypeDefinition} and
+ * {@link XSDElementDeclaration} added through {@link #addSchemas(SchemaIndex)}.
  * <p>
- * This class is meant to be used in conjunction with {@link EmfAppSchemaReader}. See
- * {@link AppSchemaDataAccessConfigurator}
- * </p>
- * <p>
- * Usage:
- * 
- * <pre>
- * <code>
- * FeatureTypeRegistry registry = new FeatureTypeRegistry();
- * EmfAppSchemaReader schemaParser = EmfAppSchemaReader.newInstance();
- * URL schemaLocation1 = ...
- * SchemaIndex schemas = schemaParser.parse(schemaLocation1, null);
- * registry.addSchemas(schemas);
- * URL schemaLocation2 = ...
- * schemas = schemaParser.parse(schemaLocation1, null);
- * registry.addSchemas(schemas);
- * 
- * Name typeName = ...
- * FeatureType ft = (FeatureType)registry.getAttributeType(typeName);
+ * This class is meant to be used in conjunction with {@link EmfComplexFeatureReader}. 
  * </p>
  * 
  * @author Gabriel Roldan
+ * @author Niels Charlier
  * 
- *
- *
- *
- * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
- *         /java/org/geotools/data/complex/config/FeatureTypeRegistry.java $
- * @version $Id$
+ * 
  * 
  */
 public class FeatureTypeRegistry {
 
     private static final Logger LOGGER = Logging.getLogger("org.geotools.data.complex");
-
-    /**
-     * Caches the GML 3.1.1 types and its dependencies
-     */
-    private static Map<Name, AttributeType> FOUNDATION_TYPES = new HashMap<Name, AttributeType>();
-
-    /**
-     * Caches the GML 3.1.1 top level descriptors and its dependencies
-     */
-    private static Map<Name, AttributeDescriptor> FOUNDATION_DESCRIPTORS = new HashMap<Name, AttributeDescriptor>();
 
     private List<SchemaIndex> schemas;
 
@@ -128,53 +87,49 @@ public class FeatureTypeRegistry {
 
     private FeatureTypeFactory typeFactory;
 
-    private GMLHandler GML;
+    private FeatureTypeRegistryHelper helper;
+    
+    private boolean includeAttributes;
+    
+    private static AttributeType XMLATTRIBUTE_TYPE;
+    
     /**
-     * stack of currently being built type names, used by
-     * {@link #createType(Name, XSDTypeDefinition)} to prevent recursive type definitions by
-     * proxy'ing a type that appears to be already being constructed and thus still not in the type
-     * registry.
+     * stack of currently being built type names, used by {@link #createType(Name, XSDTypeDefinition)} to prevent recursive type definitions by
+     * proxy'ing a type that appears to be already being constructed and thus still not in the type registry.
      */
     private Stack<Name> processingTypes;
 
-    public FeatureTypeRegistry() {
-        this(null);
+    public FeatureTypeRegistry(FeatureTypeFactory typeFactory, FeatureTypeRegistryHelper helper) {
+        this(null, typeFactory,helper);
+    }
+    
+    public FeatureTypeRegistry(NamespaceSupport namespaces, FeatureTypeFactory typeFactory, FeatureTypeRegistryHelper helper) {
+        this(namespaces, typeFactory, helper, false);
     }
 
-    public FeatureTypeRegistry(NamespaceSupport namespaces) {
-        if (namespaces != null) {
-            GML = new GMLHandler(namespaces.getURI("gml"));
-        } else {
-            GML = new GMLHandler(null);
-        }
+    public FeatureTypeRegistry(NamespaceSupport namespaces, FeatureTypeFactory typeFactory, FeatureTypeRegistryHelper helper, boolean includeAttributes) {
 
         schemas = new ArrayList<SchemaIndex>();
-        typeFactory = new ComplexFeatureTypeFactoryImpl();
+        this.typeFactory = typeFactory;
         descriptorRegistry = new HashMap<Name, AttributeDescriptor>();
         typeRegistry = new HashMap<Name, AttributeType>();
         anonTypeRegistry = new HashMap<Name, AttributeType>();
         processingTypes = new Stack<Name>();
+        this.helper = helper;
+        this.includeAttributes = includeAttributes;
         
-        if (FOUNDATION_TYPES.isEmpty()) {
-            createFoundationTypes();
-        }
-
-        typeRegistry.putAll(FOUNDATION_TYPES);
-
-        descriptorRegistry.putAll(FOUNDATION_DESCRIPTORS);
-
+        createFoundationTypes();
     }
 
     public void addSchemas(final SchemaIndex schemaIndex) {
         schemas.add(schemaIndex);
     }
-    
+
     /**
-     * Destroy all schema Indexes. VERY important to that this is called
-     * to avoid memory leaks, because schema indexes are kept alive otherwise
-     * by static schema's and in this way keep other schema's alive
+     * Destroy all schema Indexes. VERY important to that this is called to avoid memory leaks, because schema indexes are kept alive otherwise by
+     * static schema's and in this way keep other schema's alive
      */
-    public void disposeSchemaIndexes(){
+    public void disposeSchemaIndexes() {
         for (SchemaIndex schemaIndex : schemas) {
             schemaIndex.destroy();
         }
@@ -212,7 +167,7 @@ public class FeatureTypeRegistry {
         }
         return elemDecl;
     }
-    
+
     public AttributeType getAttributeType(final Name typeName) {
         return getAttributeType(typeName, null, null);
     }
@@ -229,10 +184,10 @@ public class FeatureTypeRegistry {
             LOGGER.finest("Creating attribute type " + typeName);
             type = createType(typeName, xsdType, crs, false);
             LOGGER.finest("Registering attribute type " + typeName);
-        } 
+        }
         return type;
     }
-    
+
     private void setSubstitutionGroup(XSDComplexTypeDefinition container,
             XSDElementDeclaration elemDecl, PropertyDescriptor descriptor,
             CoordinateReferenceSystem crs) {
@@ -313,7 +268,7 @@ public class FeatureTypeRegistry {
             }
         }
     }
-    
+
     private XSDTypeDefinition getTypeDefinition(Name typeName) {
         QName qName = Types.toQName(typeName);
         XSDTypeDefinition typeDefinition = null;
@@ -346,14 +301,19 @@ public class FeatureTypeRegistry {
             LOGGER.fine(type.getName() + " replaced by new value.");
         }
     }
+    
+    public void register(AttributeType type) {
+        register(type, false);
+    }
 
     private AttributeDescriptor createAttributeDescriptor(final XSDComplexTypeDefinition container,
             final XSDElementDeclaration elemDecl, CoordinateReferenceSystem crs) {
         int minOccurs = container == null ? 0 : Schemas.getMinOccurs(container, elemDecl);
-        int maxOccurs = container == null ? Integer.MAX_VALUE : Schemas.getMaxOccurs(container, elemDecl);
-                
+        int maxOccurs = container == null ? Integer.MAX_VALUE : Schemas.getMaxOccurs(container,
+                elemDecl);
+
         return createAttributeDescriptor(elemDecl, minOccurs, maxOccurs, crs);
-        
+
     }
 
     private AttributeDescriptor createAttributeDescriptor(AttributeType type,
@@ -380,8 +340,8 @@ public class FeatureTypeRegistry {
         return descriptor;
     }
 
-    private AttributeDescriptor createAttributeDescriptor(
-            final XSDElementDeclaration elemDecl, int minOccurs, int maxOccurs, CoordinateReferenceSystem crs) {
+    private AttributeDescriptor createAttributeDescriptor(final XSDElementDeclaration elemDecl,
+            int minOccurs, int maxOccurs, CoordinateReferenceSystem crs) {
         String targetNamespace = elemDecl.getTargetNamespace();
         String name = elemDecl.getName();
         Name elemName = Types.typeName(targetNamespace, name);
@@ -391,14 +351,13 @@ public class FeatureTypeRegistry {
         AttributeDescriptor descriptor = createAttributeDescriptor(type, crs, elemName, minOccurs,
                 maxOccurs, nillable, defaultValue);
         descriptor.getUserData().put(XSDElementDeclaration.class, elemDecl);
-        
+
         return descriptor;
     }
 
     /**
-     * If the type of elemDecl is annonymous creates a new type with the same name than the
-     * atrribute and returns it. If it is not anonymous, looks it up on the registry and in case the
-     * type does not exists in the registry uses a proxy.
+     * If the type of elemDecl is annonymous creates a new type with the same name than the atrribute and returns it. If it is not anonymous, looks it
+     * up on the registry and in case the type does not exists in the registry uses a proxy.
      * 
      * @param elemDecl
      * @return
@@ -415,12 +374,12 @@ public class FeatureTypeRegistry {
         boolean hasToBeRegistered = false;
         typeDefinition = elemDecl.getAnonymousTypeDefinition();
         if (typeDefinition == null) {
-        	// anonymous types already has type definition inline in the element
-        	// so the handling is different
-        	hasToBeRegistered = true;
+            // anonymous types already has type definition inline in the element
+            // so the handling is different
+            hasToBeRegistered = true;
             typeDefinition = elemDecl.getTypeDefinition();
         }
-        
+
         if (typeDefinition == null) {
             // last resort.. look in the lazy schemas
             QName qname = Types.toQName(Types.typeName(elemDecl.getTargetNamespace(),
@@ -443,8 +402,8 @@ public class FeatureTypeRegistry {
         }
 
         if (typeDefinition == null) {
-            String msg = "The element declaration "
-                    + elemDecl.getTargetNamespace() + "#" + elemDecl.getName()
+            String msg = "The element declaration " + elemDecl.getTargetNamespace() + "#"
+                    + elemDecl.getName()
                     + " has a null type definition, can't continue, fix it on the schema";
             LOGGER.warning(msg);
             throw new NoSuchElementException(msg);
@@ -465,9 +424,9 @@ public class FeatureTypeRegistry {
             Name overrideName = Types.typeName(targetNamespace, name);
             type = createType(overrideName, typeDefinition, crs, true);
         }
-        
+
         return type;
-        
+
     }
 
     private AttributeType createProxiedType(final Name assignedName,
@@ -475,15 +434,13 @@ public class FeatureTypeRegistry {
         AttributeType type;
         if (null == typeDefinition.getSimpleType()
                 && typeDefinition instanceof XSDComplexTypeDefinition) {
-            boolean isFeatureType = isDerivedFrom(typeDefinition, GML.getAbstractFeatureType());
-            if (isFeatureType) {
+            if (helper.isFeatureType(typeDefinition)) {
                 type = new FeatureTypeProxy(assignedName, typeRegistry);
             } else {
                 type = new ComplexTypeProxy(assignedName, typeRegistry);
             }
         } else {
-            boolean isGeometryType = isDerivedFrom(typeDefinition, GML.getAbstractGeometryType());
-            if (isGeometryType) {
+            if (helper.isGeometryType(typeDefinition)) {
                 type = new GeometryTypeProxy(assignedName, typeRegistry);
             } else {
                 type = new AttributeTypeProxy(assignedName, typeRegistry);
@@ -493,31 +450,14 @@ public class FeatureTypeRegistry {
     }
 
     /**
-     * Returns whether <code>typeDefinition</code> has an ancestor named <code>baseTypeName</code>.
-     * 
-     * @param typeDefinition
-     * @param baseTypeName
-     * @return
-     */
-    private boolean isDerivedFrom(final XSDTypeDefinition typeDefinition, final QName baseTypeName) {
-        Name typeName = Types.toTypeName(baseTypeName);
-        // XSDTypeDefinition baseTypeDefinition = Schemas.getBaseTypeDefinition(
-        // typeDefinition, baseTypeName);
-        // boolean isFeatureType = baseTypeDefinition != null;
-        // return isFeatureType;
-        return isDerivedFrom(typeDefinition, typeName);
-    }
-
-    /**
      * Creates an {@link AttributeType} that matches the xsd type definition as much as possible.
      * <p>
-     * The original type definition given by the {@link XSDTypeDefinition} is kept as
-     * AttributeType's metadata stored as a "user data" property using
+     * The original type definition given by the {@link XSDTypeDefinition} is kept as AttributeType's metadata stored as a "user data" property using
      * <code>XSDTypeDefinition.class</code> as key.
      * </p>
      * <p>
-     * If it is a complex attribute, it will contain all the properties declared in the
-     * <code>typeDefinition</code>, as well as all the properties declared in its super types.
+     * If it is a complex attribute, it will contain all the properties declared in the <code>typeDefinition</code>, as well as all the properties
+     * declared in its super types.
      * </p>
      * TODO: handle the case where the extension mechanism is restriction.
      * 
@@ -526,8 +466,7 @@ public class FeatureTypeRegistry {
      * @return
      */
     private AttributeType createType(final Name assignedName,
-            final XSDTypeDefinition typeDefinition, CoordinateReferenceSystem crs,
-            boolean anonymous) {
+            final XSDTypeDefinition typeDefinition, CoordinateReferenceSystem crs, boolean anonymous) {
 
         AttributeType attType;
         // /////////
@@ -560,7 +499,8 @@ public class FeatureTypeRegistry {
             XSDComplexTypeDefinition complexTypeDef;
             complexTypeDef = (XSDComplexTypeDefinition) typeDefinition;
             boolean includeParents = true;
-            List<XSDElementDeclaration> children = Schemas.getChildElementDeclarations(typeDefinition, includeParents);
+            List<XSDElementDeclaration> children = Schemas.getChildElementDeclarations(
+                    typeDefinition, includeParents);
 
             final Collection<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>(
                     children.size());
@@ -570,19 +510,27 @@ public class FeatureTypeRegistry {
             for (Iterator it = children.iterator(); it.hasNext();) {
                 childDecl = (XSDElementDeclaration) it.next();
                 try {
-                    descriptor = createAttributeDescriptor(complexTypeDef, childDecl, crs);                
+                    descriptor = createAttributeDescriptor(complexTypeDef, childDecl, crs);
                 } catch (NoSuchElementException e) {
                     String msg = "Failed to create descriptor for '"
-                            + childDecl.getTargetNamespace() + "#" + childDecl.getName() 
-                            + " from container '" + typeDefinition.getTargetNamespace() + "#" + typeDefinition.getName()
-                            + "'";
+                            + childDecl.getTargetNamespace() + "#" + childDecl.getName()
+                            + " from container '" + typeDefinition.getTargetNamespace() + "#"
+                            + typeDefinition.getName() + "'";
                     NoSuchElementException nse = new NoSuchElementException(msg);
                     nse.initCause(e);
                     throw nse;
                 }
                 schema.add(descriptor);
             }
-                        
+            
+            if (includeAttributes) {
+                for (XSDAttributeUse attgcontent : complexTypeDef.getAttributeUses()) {
+                    XSDAttributeDeclaration att = attgcontent.getContent();
+                    descriptor = createAttributeDescriptor (getXmlAttributeType(), null, new NameImpl(null, "@" + att.getName()), 0,1, false,null);
+                    schema.add(descriptor);
+                }
+            }
+
             // set substitution group for descriptors here
             for (XSDElementDeclaration elemDecl : children) {
                 if (elemDecl.isElementDeclarationReference()) {
@@ -638,148 +586,51 @@ public class FeatureTypeRegistry {
             final Collection<PropertyDescriptor> schema,
             final XSDComplexTypeDefinition typeDefinition, final AttributeType superType) {
 
-        AttributeType abstractFType = getType(GML.getNameSpace(), GML.getAbstractFeatureType().getLocalPart());
-        assert abstractFType != null;
-
-        boolean isFeatureType = isDerivedFrom(typeDefinition, abstractFType.getName());
-
         boolean isAbstract = false;// TODO
         List<Filter> restrictions = Collections.emptyList();
         InternationalString description = null; // TODO
 
         AttributeType type;
-        if (isFeatureType) {
+        if (helper.isFeatureType(typeDefinition)) {
             type = typeFactory.createFeatureType(assignedName, schema, null, isAbstract,
                     restrictions, superType, description);
         } else {
-            boolean isIdentifiable = isIdentifiable((XSDComplexTypeDefinition) typeDefinition);
+            boolean isIdentifiable = helper
+                    .isIdentifiable((XSDComplexTypeDefinition) typeDefinition);
             type = typeFactory.createComplexType(assignedName, schema, isIdentifiable, isAbstract,
                     restrictions, superType, description);
         }
         return type;
     }
-
+      
     /**
-     * Determines if elements of the given complex type definition are required to have an
-     * identifier by looking for a child element of <code>typeDefinition</code> of the form
-     * <code>&lt;xs:attribute ref=&quot;gml:id&quot; use=&quot;required&quot; /&gt;</code>
-     * 
-     * @param typeDefinition
-     * @return
+     * Caches the basic types
      */
-    private boolean isIdentifiable(XSDComplexTypeDefinition typeDefinition) {
-        List attributeUses = typeDefinition.getAttributeUses();
-
-        final String idAttName = GML.getId().getLocalPart();
-
-        for (Iterator it = attributeUses.iterator(); it.hasNext();) {
-            XSDAttributeUse use = (XSDAttributeUse) it.next();
-            XSDAttributeUseCategory useCategory = use.getUse();
-
-            XSDAttributeDeclaration idAtt = use.getAttributeDeclaration();
-
-            String targetNamespace = idAtt.getTargetNamespace();
-            String name = idAtt.getName();
-            if (GML.getNameSpace().equals(targetNamespace) && idAttName.equals(name)) {
-                if (XSDAttributeUseCategory.REQUIRED_LITERAL.equals(useCategory)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Returns <code>true</code> if <code>typeDefinition</code> is derived from a type named
-     * <code>superTypeName</code>
-     * 
-     * @param typeDefinition
-     * @param superTypeName
-     * @return
-     */
-    private boolean isDerivedFrom(XSDTypeDefinition typeDefinition, final Name superTypeName) {
-
-        XSDTypeDefinition baseType;
-        final String superNS = superTypeName.getNamespaceURI();
-        final String superName = superTypeName.getLocalPart();
-
-        String targetNamespace;
-        String name;
-        while ((baseType = typeDefinition.getBaseType()) != null) {
-            targetNamespace = baseType.getTargetNamespace();
-            name = baseType.getName();
-            if (XS.NAMESPACE.equals(targetNamespace) && XS.ANYTYPE.getLocalPart().equals(name)) {
-                return false;
-            }
-            if (superNS.equals(targetNamespace) && superName.equals(name)) {
-                return true;
-            }
-            typeDefinition = baseType;
-        }
-        return false;
-    }
-
-    private AttributeType getType(String namespace, String name) {
-        Name typeName = Types.typeName(namespace, name);
-        return getAttributeType(typeName);
-    }
-
+    private static Map<Name, AttributeType> FOUNDATION_TYPES = new HashMap<Name, AttributeType>();
+    
     private void createFoundationTypes() {
         synchronized (FOUNDATION_TYPES) {
             if (!FOUNDATION_TYPES.isEmpty()) {
+                typeRegistry.putAll(FOUNDATION_TYPES);
                 return;
             }
+            
             Schema schema;
             schema = new XSSchema();
             importSchema(schema);
-
-            schema = new SMIL20Schema();
-            importSchema(schema);
-
-            schema = new SMIL20LANGSchema();
-            importSchema(schema);
-
-            schema = new GMLSchema();
-            importSchema(schema);
-
-            schema = new org.geotools.gml3.v3_2.GMLSchema();
-            importSchema(schema);
-
-            schema = new org.geotools.gml3.v3_2.gco.GCOSchema();
-            importSchema(schema);
-
-            schema = new org.geotools.gml3.v3_2.gmd.GMDSchema();
-            importSchema(schema);
-
-            schema = new org.geotools.gml3.v3_2.gmx.GMXSchema();
-            importSchema(schema);
-
-            schema = new org.geotools.gml3.v3_2.gsr.GSRSchema();
-            importSchema(schema);
+            
+            onCreateFoundationTypes();
            
-            schema = new org.geotools.gml3.v3_2.gss.GSSSchema();
-            importSchema(schema);
-            
-            schema = new org.geotools.gml3.v3_2.gts.GTSSchema();
-            importSchema(schema);
-
-            // schedule the gml schemas to be lazily loaded for any type missing from the above
-            // import of prebuilt types
-            
-            //GML 3.1
-            addSchemas(Schemas.findSchemas(new GMLConfiguration()));
-            // GML 3.2
-            addSchemas(Schemas.findSchemas(new org.geotools.gml3.v3_2.GMLConfiguration()));
-
             FOUNDATION_TYPES.putAll(typeRegistry);
-            FOUNDATION_DESCRIPTORS.putAll(descriptorRegistry);
-            typeRegistry.clear();
-            descriptorRegistry.clear();
         }
+    }
+    
+    protected void onCreateFoundationTypes(){
+        
     }
 
     @SuppressWarnings("unchecked")
-    private void importSchema(Schema schema) {
+    protected void importSchema(Schema schema) {
         for (Iterator it = schema.entrySet().iterator(); it.hasNext();) {
             Map.Entry entry = (Entry) it.next();
             Name key = (Name) entry.getKey();
@@ -801,57 +652,14 @@ public class FeatureTypeRegistry {
         LOGGER.fine("Schema " + schema.getURI() + " imported successfully");
     }
     
-    /**
-     * Private inner glass for handling any request made to GML. Depending on the schema type
-     * different version of GML class may be called upon. eg {@link org.geotools.gml3.v3_2.GML} or
-     * {@link org.geotools.gml3.GML}
-     * 
-     * @author Victor Tey, CSIRO Exploration and Mining
-     *
-     */
+    
 
-    private class GMLHandler {
-        String namespace;
-
-        public GMLHandler(String uri) {
-            if (uri != null) {
-                namespace = uri;
-            } else {
-                namespace = "";
-            }
+    public AttributeType getXmlAttributeType() {        
+        if (XMLATTRIBUTE_TYPE == null) {
+            XMLATTRIBUTE_TYPE = typeFactory.createAttributeType(new NameImpl(null, "@attribute"), String.class, false,
+                false, Collections.<Filter>emptyList(), null, null);
         }
-
-        public QName getAbstractFeatureType() {
-            if (namespace.equals(org.geotools.gml3.v3_2.GML.NAMESPACE)) {
-                return org.geotools.gml3.v3_2.GML.AbstractFeatureType;
-            } else {
-                return org.geotools.gml3.GML.AbstractFeatureType;
-            }
-        }
-
-        public QName getAbstractGeometryType() {
-            if (namespace.equals(org.geotools.gml3.v3_2.GML.NAMESPACE)) {
-                return org.geotools.gml3.v3_2.GML.AbstractGeometryType;
-            } else {
-                return org.geotools.gml3.GML.AbstractGeometryType;
-            }
-        }
-
-        public String getNameSpace() {
-            if (namespace.equals(org.geotools.gml3.v3_2.GML.NAMESPACE)) {
-                return org.geotools.gml3.v3_2.GML.NAMESPACE;
-            } else {
-                return org.geotools.gml3.GML.NAMESPACE;
-            }
-        }
-
-        public QName getId() {
-            if (namespace.equals(org.geotools.gml3.v3_2.GML.NAMESPACE)) {
-                return org.geotools.gml3.v3_2.GML.id;
-            } else {
-                return org.geotools.gml3.GML.id;
-            }
-        }
+        return XMLATTRIBUTE_TYPE;
     }
 
 }

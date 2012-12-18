@@ -20,7 +20,6 @@ package org.geotools.feature.type;
 import java.util.Collection;
 import java.util.List;
 
-import org.geotools.gml2.FeatureTypeCache;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.GeometryDescriptor;

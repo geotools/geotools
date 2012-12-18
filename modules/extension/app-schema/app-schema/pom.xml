@@ -46,7 +46,18 @@
         </developer>
     </developers>
 
-    <dependencies>
+    <dependencies>      
+	<dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-complex</artifactId>
+            <version>${project.version}</version>
+        </dependency> 
+	<dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-complex</artifactId>
+            <version>${project.version}</version>
+	    <classifier>tests</classifier>
+        </dependency>
         <dependency>
             <groupId>commons-digester</groupId>
             <artifactId>commons-digester</artifactId>

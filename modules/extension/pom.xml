@@ -50,6 +50,7 @@
     <module>validation</module>
     <module>xsd</module>
     <module>wms</module>
+    <module>complex</module>
   </modules>
 </project>
 

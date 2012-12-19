@@ -1,6 +1,9 @@
 package org.geotools.process.factory;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Rectangle;
 import java.util.Collections;
@@ -9,7 +12,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.geotools.coverage.processing.DefaultProcessor;
 import org.geotools.data.Parameter;
 import org.geotools.data.Query;
 import org.geotools.data.collection.ListFeatureCollection;

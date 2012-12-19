@@ -81,6 +81,7 @@ import org.geotools.filter.visitor.SpatialFilterVisitor;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.Decimator;
 import org.geotools.geometry.jts.GeometryClipper;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.geometry.jts.LiteShape2;
@@ -3152,9 +3153,18 @@ public class StreamingRenderer implements GTRenderer {
                         // fact we're modifing the geometry coordinates directly, if we don't get
                         // the reprojected and decimated geometry we risk of transforming it twice
                         // when computing the centroid
-                        Shape first = getTransformedShape(g, sa);
+                        LiteShape2 first = getTransformedShape(g, sa);
                         if(first != null) {
+                            if(projectionHandler != null) {
+                                // at the same time, we cannot keep the geometry in screen space because
+                                // that would prevent the advanced projection handling to do its work,
+                                // to replicate the geometries across the datelines, so we transform
+                                // it back to the original
+                                Geometry tx = JTS.transform(first.getGeometry(), sa.xform.inverse());
+                                return getTransformedShape(RendererUtilities.getCentroid(tx), sa);
+                            } else {
                                 return getTransformedShape(RendererUtilities.getCentroid(g), null);
+                            }
                         } else {
                                 return null;
                         }

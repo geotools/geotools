@@ -52,8 +52,8 @@ import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.FeatureTypeMappingFactory;
 import org.geotools.data.complex.NestedAttributeMapping;
 import org.geotools.data.complex.filter.XPath;
-import org.geotools.data.complex.filter.XPath.Step;
-import org.geotools.data.complex.filter.XPath.StepList;
+import org.geotools.data.complex.filter.XPathUtil.Step;
+import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.geotools.data.complex.xml.XmlFeatureSource;
 import org.geotools.data.joining.JoiningNestedAttributeMapping;
 import org.geotools.factory.Hints;
@@ -104,7 +104,7 @@ public class AppSchemaDataAccessConfigurator {
     /** DOCUMENT ME! */
     private AppSchemaDataAccessDTO config;
 
-    private FeatureTypeRegistry typeRegistry;
+    private AppSchemaFeatureTypeRegistry typeRegistry;
     
     private FilterFactory ff = new FilterFactoryImplReportInvalidProperty();
 
@@ -539,7 +539,7 @@ public class AppSchemaDataAccessConfigurator {
         schemaParser.setResolver(buildResolver());
 
         // create a single type registry for all the schemas in the config
-        typeRegistry = new FeatureTypeRegistry(namespaces);
+        typeRegistry = new AppSchemaFeatureTypeRegistry(namespaces);
 
         schemaURIs = new HashMap<String, String>(schemaFiles.size());
         String nameSpace;

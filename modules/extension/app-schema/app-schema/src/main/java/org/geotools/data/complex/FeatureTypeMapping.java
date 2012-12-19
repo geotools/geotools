@@ -28,8 +28,8 @@ import javax.xml.namespace.QName;
 
 import org.geotools.data.FeatureSource;
 import org.geotools.data.complex.filter.XPath;
-import org.geotools.data.complex.filter.XPath.Step;
-import org.geotools.data.complex.filter.XPath.StepList;
+import org.geotools.data.complex.filter.XPathUtil.Step;
+import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.geotools.data.joining.JoiningNestedAttributeMapping;
 import org.geotools.feature.Types;
 import org.geotools.gml3.GML;

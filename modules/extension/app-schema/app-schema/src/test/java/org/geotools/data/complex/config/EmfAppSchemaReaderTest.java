@@ -73,7 +73,7 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
 
         SchemaIndex schemaIndex = EmfAppSchemaReader.newInstance().parse(resource);
 
-        FeatureTypeRegistry parsedTypes = new FeatureTypeRegistry();
+        AppSchemaFeatureTypeRegistry parsedTypes = new AppSchemaFeatureTypeRegistry();
         
         try {
             parsedTypes.addSchemas(schemaIndex);
@@ -145,7 +145,7 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
         URL resource = getClass().getResource(res);
         SchemaIndex schemaIndex = EmfAppSchemaReader.newInstance().parse(resource);
         
-        FeatureTypeRegistry typeRegistry = new FeatureTypeRegistry();
+        AppSchemaFeatureTypeRegistry typeRegistry = new AppSchemaFeatureTypeRegistry();
         try {
             typeRegistry.addSchemas(schemaIndex);
             
@@ -227,7 +227,7 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
         URL resource = getClass().getResource(res);
         SchemaIndex schemaIndex = EmfAppSchemaReader.newInstance().parse(resource);
 
-        FeatureTypeRegistry registry = new FeatureTypeRegistry();
+        AppSchemaFeatureTypeRegistry registry = new AppSchemaFeatureTypeRegistry();
         try {
             registry.addSchemas(schemaIndex);
     

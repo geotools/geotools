@@ -16,9 +16,6 @@
  */
 package org.geotools.feature.xpath;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.compiler.NodeNameTest;
@@ -26,8 +23,7 @@ import org.apache.commons.jxpath.ri.compiler.NodeTest;
 import org.apache.commons.jxpath.ri.compiler.NodeTypeTest;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
-import org.geotools.feature.Types;
-import org.opengis.feature.type.AttributeDescriptor;
+import org.geotools.feature.type.Types;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.ComplexType;
 import org.opengis.feature.type.Name;

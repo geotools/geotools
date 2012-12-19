@@ -17,16 +17,12 @@
 
 package org.geotools.data.complex;
 
-import java.util.Collections;
-
 import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
-import org.geotools.feature.Types;
 import org.geotools.feature.type.AttributeDescriptorImpl;
-import org.geotools.feature.type.ComplexTypeImpl;
+import org.geotools.feature.type.Types;
 import org.geotools.xlink.XLINK;
 import org.geotools.xs.XSSchema;
-import org.opengis.feature.type.ComplexType;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
 
@@ -60,15 +56,7 @@ public class ComplexFeatureConstants {
      */
     public static final Name XLINK_HREF_NAME = Types.toTypeName(XLINK.HREF);
     
-    /**
-     * Definition of xs:anyType as a complex type to get their client properties encoded.
-     */
-    @SuppressWarnings("unchecked")
-    public static final ComplexType ANYTYPE_TYPE = new ComplexTypeImpl(new NameImpl(
-            "http://www.w3.org/2001/XMLSchema", "anyType"), null, false,
-        true, Collections.EMPTY_LIST, null, null);      
-
-    /**
+   /**
      * Hints key for xlink:href used in ToXlinkHrefFunction
      */
     public static final Hints.Key STRING_KEY = new Hints.Key(String.class);

@@ -72,6 +72,8 @@ public class ComplexFeatureTypeImpl extends UniqueNameFeatureTypeImpl {
             GeometryDescriptor defaultGeometry, boolean isAbstract, List<Filter> restrictions,
             AttributeType superType, InternationalString description) {
         super(name, new ArrayList<PropertyDescriptor>(schema) {
+            private static final long serialVersionUID = 1L;
+
             {
                 add(ComplexFeatureConstants.FEATURE_CHAINING_LINK);
             };

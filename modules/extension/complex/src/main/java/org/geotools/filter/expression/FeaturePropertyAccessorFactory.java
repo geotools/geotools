@@ -23,21 +23,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 import org.geotools.factory.Hints;
-import org.geotools.feature.AttributeImpl;
-import org.geotools.feature.ComplexAttributeImpl;
-import org.geotools.feature.FeatureImpl;
-import org.geotools.feature.GeometryAttributeImpl;
-import org.geotools.feature.IllegalAttributeException;
-import org.geotools.feature.simple.SimpleFeatureImpl;
-import org.geotools.feature.type.AttributeDescriptorImpl;
-import org.geotools.feature.type.FeatureTypeImpl;
-import org.geotools.feature.type.UniqueNameFeatureTypeImpl;
-import org.geotools.feature.xpath.AttributeDescriptorPropertyHandler;
+import org.opengis.feature.IllegalAttributeException;
 import org.geotools.feature.xpath.AttributeNodePointerFactory;
-import org.geotools.feature.xpath.AttributePropertyHandler;
+import org.geotools.filter.expression.PropertyAccessor;
+import org.geotools.filter.expression.PropertyAccessorFactory;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Feature;
@@ -206,13 +197,13 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
                 }
             }
             if (object instanceof FeatureType) {
-                throw new IllegalAttributeException("feature type is immutable");
+                throw new IllegalAttributeException(null, "feature type is immutable");
             }
         }
     }
 
     static class FeaturePropertyAccessor implements PropertyAccessor {
-        static {
+        /*static {
             // TODO: use a wrapper public class for Feature in order to
             // support any implementation. Reason being that JXPath works
             // over concrete classes and hence we cannot set it up over the
@@ -242,7 +233,7 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
                     AttributeDescriptorPropertyHandler.class);
             JXPathIntrospector.registerDynamicClass(UniqueNameFeatureTypeImpl.class,
                     AttributeDescriptorPropertyHandler.class);
-        }
+        }*/
 
         private NamespaceSupport namespaces;
 
@@ -289,7 +280,7 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
                 throws IllegalAttributeException {
 
             if (object instanceof FeatureType) {
-                throw new IllegalAttributeException("feature type is immutable");
+                throw new IllegalAttributeException(null, "feature type is immutable");
             }
 
             JXPathContext context = JXPathContext.newContext(object);

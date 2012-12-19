@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
-import org.geotools.feature.Types;
+import org.geotools.feature.type.Types;
 import org.opengis.feature.type.ComplexType;
 import org.opengis.feature.type.PropertyDescriptor;
 

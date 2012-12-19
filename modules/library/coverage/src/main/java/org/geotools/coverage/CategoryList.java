@@ -598,8 +598,9 @@ class CategoryList extends AbstractList<Category>
         final NumberRange<?> range = getRange();
         final Class<?> rt = range.getElementClass();
         if (Byte.class.equals(rt) || Short.class.equals(rt) || Integer.class.equals(rt)) {
-            final int min = range.getMinValue().intValue();
-            final int max = range.getMaxValue().intValue();
+            // TODO: remove the cast when we will be allowed to compile for Java 6.
+            final int min = ((Number) range.getMinValue()).intValue();
+            final int max = ((Number) range.getMaxValue()).intValue();
             if (min >= 0) {
                 if (max < 0x100) {
                     type = DataBuffer.TYPE_BYTE;

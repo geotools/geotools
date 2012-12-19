@@ -16,8 +16,6 @@
  */
 package org.geotools.coverage.processing.operation;
 
-import it.geosolutions.imageio.utilities.ImageIOUtilities;
-
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
@@ -26,8 +24,6 @@ import java.awt.image.renderable.ParameterBlock;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
-import javax.media.jai.operator.FormatDescriptor;
-import javax.media.jai.operator.NullDescriptor;
 
 import org.opengis.parameter.ParameterValueGroup;
 
@@ -49,12 +45,9 @@ import org.geotools.resources.image.ColorUtilities;
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
- * @author Andrea Aime, GeoSolutions SAS
+ * @author Andrea Aimes
  */
 final class BandSelector2D extends GridCoverage2D {
-    
-    /** serialVersionUID */
-    private static final long serialVersionUID = -2833594454437021628L;
     /**
      * The mapping to bands in the source grid coverage.
      * May be {@code null} if all bands were keept.
@@ -222,7 +215,7 @@ final class BandSelector2D extends GridCoverage2D {
              */
             if (colors != null) {
                 layout.setColorModel(colors);
-            } 
+            }
             if (hints != null) {
                 hints = hints.clone();
                 hints.put(JAI.KEY_IMAGE_LAYOUT, layout);
@@ -238,19 +231,7 @@ final class BandSelector2D extends GridCoverage2D {
             operation = "BandSelect";
             params = params.add(bandIndices);
         }
-        PlanarImage image = OperationJAI.getJAI(hints).createNS(operation, params, hints);
-        // do we have a color model available?
-        if(image.getColorModel()==null){
-            layout=(ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT);
-            final ColorModel tempCM=ImageIOUtilities.createColorModel(image.getSampleModel());
-            
-            // did we manage to create one?
-            if(tempCM!=null){
-                layout.setColorModel(tempCM);
-                image= FormatDescriptor.create(image,image.getSampleModel().getDataType(), hints);
-            }
-            
-        }
+        final PlanarImage image = OperationJAI.getJAI(hints).createNS(operation, params, hints);
         image.setProperty("GC_VisibleBand", visibleBand);
         return new BandSelector2D(source, image, targetBands, bandIndices, hints);
     }

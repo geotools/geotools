@@ -51,7 +51,6 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @since 2.5
  */
-@SuppressWarnings("deprecation")
 public final class BandSelectTest extends GridProcessingTestBase {
 
     /**
@@ -126,7 +125,7 @@ public final class BandSelectTest extends GridProcessingTestBase {
         assertTrue(newCoverage.getNumSampleDimensions()==3);
         
         /*
-         * Do the crop without conserving the envelope.
+         * Do the band select on band 0
          */
         ParameterValueGroup param = processor.getOperation("SelectSampleDimension").getParameters();
         param.parameter("Source").setValue(newCoverage);
@@ -162,6 +161,43 @@ public final class BandSelectTest extends GridProcessingTestBase {
         assertEquals(1, raster.getSampleModel().getNumBands());
         assertNotNull(raster.getColorModel());        
 
+
+    }
+
+
+    /**
+     * Tests the "SelectSampleDimension" operation in a simple way.
+     *
+     */
+    @Test
+    public void testBandSelectMultiple() {
+        final CoverageProcessor processor = CoverageProcessor.getInstance();
+        /*
+         * Get the source coverage and build the cropped envelope.
+         */
+        final GridCoverage2D source = EXAMPLES.get(4).view(ViewType.NATIVE);
+        final Envelope envelope = source.getEnvelope();
+        final RenderedImage rgbImage= new ImageWorker(source.getRenderedImage()).forceComponentColorModel().getRenderedImage();
+        final GridCoverage2D newCoverage=CoverageFactoryFinder.getGridCoverageFactory(null).create("sample", rgbImage, envelope);
+        assertEquals(1,newCoverage.getNumSampleDimensions());
+        
+        /*
+         * Do the crop without conserving the envelope.
+         */
+        ParameterValueGroup param = processor.getOperation("SelectSampleDimension").getParameters();
+        param.parameter("Source").setValue(newCoverage);
+        param.parameter("SampleDimensions").setValue(new int[]{0,0,0,0,0});
+        GridCoverage2D rgb = (GridCoverage2D) processor.doOperation(param);
+        if (SHOW) {
+        	Viewer.show(source);
+            Viewer.show(rgb);
+        } else {
+            // Force computation
+            assertNotNull(PlanarImage.wrapRenderedImage(rgb.getRenderedImage()).getTiles());
+        }
+        RenderedImage raster = rgb.getRenderedImage();
+        assertEquals(5, raster.getSampleModel().getNumBands());
+        assertNotNull(raster.getColorModel());
 
     }    
 }

@@ -28,7 +28,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.Raster;
 import java.io.IOException;
+
+import junit.framework.Assert;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -102,6 +106,23 @@ public abstract class RendererBaseTest {
         }
         final BufferedImage image = mergeImages(images);
 
+        showImage(testName, timeOut, image);
+        boolean hasData = false; // All I can seem to check reliably.
+
+        for (int y = 0; y < image.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth(); x++) {
+                if (image.getRGB(x, y) != 0) {
+                    hasData = true;
+                }
+            }
+        }
+
+        assert (hasData);
+        return image;
+    }
+
+    public static void showImage(String testName, long timeOut, final BufferedImage image)
+            throws InterruptedException {
         final String headless = System.getProperty("java.awt.headless", "false");
         if (!headless.equalsIgnoreCase("true") && TestData.isInteractiveTest()) {
             try {
@@ -136,21 +157,8 @@ public abstract class RendererBaseTest {
                 frame.dispose();
             } catch (HeadlessException exception) {
                 // The test is running on a machine without X11 display. Ignore.
-                return image;
             }
         }
-        boolean hasData = false; // All I can seem to check reliably.
-
-        for (int y = 0; y < image.getHeight(); y++) {
-            for (int x = 0; x < image.getWidth(); x++) {
-                if (image.getRGB(x, y) != 0) {
-                    hasData = true;
-                }
-            }
-        }
-
-        assert (hasData);
-        return image;
     }
 
     public static BufferedImage renderImage(GTRenderer renderer, ReferencedEnvelope bounds,
@@ -248,5 +256,40 @@ public abstract class RendererBaseTest {
 
         Style style = stylereader.readXML()[0];
         return style;
+    }
+    
+    /**
+     * Checks the pixel i/j has the specified color
+     * @param image
+     * @param i
+     * @param j
+     * @param color
+     */
+    public static void assertPixel(BufferedImage image, int i, int j, Color color) {
+        Color actual = getPixelColor(image, i, j);
+        
+        Assert.assertEquals(color, actual);
+    }
+
+    /**
+     * Gets a specific pixel color from the specified buffered image
+     * @param image
+     * @param i
+     * @param j
+     * @param color
+     * @return
+     */
+    private static Color getPixelColor(BufferedImage image, int i, int j) {
+        ColorModel cm = image.getColorModel();
+        Raster raster = image.getRaster();
+        Object pixel = raster.getDataElements(i, j, null);
+        
+        Color actual;
+        if(cm.hasAlpha()) {
+            actual = new Color(cm.getRed(pixel), cm.getGreen(pixel), cm.getBlue(pixel), cm.getAlpha(pixel));
+        } else {
+            actual = new Color(cm.getRed(pixel), cm.getGreen(pixel), cm.getBlue(pixel), 255);
+        }
+        return actual;
     }
 }

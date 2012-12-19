@@ -16,6 +16,8 @@
  */
 package org.geotools.coverage.processing.operation;
 
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
+
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
@@ -24,6 +26,8 @@ import java.awt.image.renderable.ParameterBlock;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
+import javax.media.jai.operator.FormatDescriptor;
+import javax.media.jai.operator.NullDescriptor;
 
 import org.opengis.parameter.ParameterValueGroup;
 
@@ -45,9 +49,12 @@ import org.geotools.resources.image.ColorUtilities;
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
- * @author Andrea Aimes
+ * @author Andrea Aime, GeoSolutions SAS
  */
 final class BandSelector2D extends GridCoverage2D {
+    
+    /** serialVersionUID */
+    private static final long serialVersionUID = -2833594454437021628L;
     /**
      * The mapping to bands in the source grid coverage.
      * May be {@code null} if all bands were keept.
@@ -142,7 +149,7 @@ final class BandSelector2D extends GridCoverage2D {
                 if (visibleSourceBand < 0) {
                     // TODO: localize
                     throw new IllegalArgumentException("Visible sample dimension is " +
-                    		"not among the ones specified in SampleDimensions param");
+                                "not among the ones specified in SampleDimensions param");
                 }
             } else {
                 // Try to keep the original one, if it hasn't been selected, fall
@@ -215,7 +222,7 @@ final class BandSelector2D extends GridCoverage2D {
              */
             if (colors != null) {
                 layout.setColorModel(colors);
-            }
+            } 
             if (hints != null) {
                 hints = hints.clone();
                 hints.put(JAI.KEY_IMAGE_LAYOUT, layout);
@@ -231,7 +238,19 @@ final class BandSelector2D extends GridCoverage2D {
             operation = "BandSelect";
             params = params.add(bandIndices);
         }
-        final PlanarImage image = OperationJAI.getJAI(hints).createNS(operation, params, hints);
+        PlanarImage image = OperationJAI.getJAI(hints).createNS(operation, params, hints);
+        // do we have a color model available?
+        if(image.getColorModel()==null){
+            layout=(ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT);
+            final ColorModel tempCM=ImageIOUtilities.createColorModel(image.getSampleModel());
+            
+            // did we manage to create one?
+            if(tempCM!=null){
+                layout.setColorModel(tempCM);
+                image= FormatDescriptor.create(image,image.getSampleModel().getDataType(), hints);
+            }
+            
+        }
         image.setProperty("GC_VisibleBand", visibleBand);
         return new BandSelector2D(source, image, targetBands, bandIndices, hints);
     }

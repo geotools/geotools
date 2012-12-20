@@ -49,6 +49,8 @@ import org.opengis.filter.spatial.Disjoint;
 import org.opengis.filter.spatial.DistanceBufferOperator;
 import org.opengis.filter.temporal.Before;
 
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
+
 
 
 /**

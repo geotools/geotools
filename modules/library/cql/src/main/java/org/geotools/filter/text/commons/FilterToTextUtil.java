@@ -289,8 +289,9 @@ public final class FilterToTextUtil {
 	}
 
 	public static Object buildDuring(During during, Object extraData) {
+
         LOGGER.finer("exporting DURING" );
-		
+
     	StringBuilder output = asStringBuilder(extraData);
 
         PropertyName propertyName = (PropertyName) during.getExpression1();

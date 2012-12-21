@@ -374,34 +374,34 @@ public abstract class AbstractFilterBuilder {
 	 * @throws CQLException
 	 */
 	private Literal asLiteralDate(final String cqlDateTime) throws CQLException {
+
 		try {
-			
 			final String strDate = extractDate(cqlDateTime);
 			final String strTime = extractTime(cqlDateTime);
-			final String timeZone = extractTimeZone(cqlDateTime);
-			
-			StringBuilder format = new StringBuilder( "yyyy-MM-dd" );
-			if(! "".equals(strTime)){
-			    format.append("' 'HH:mm:ss");
+			String timeZoneOffset = extractTimeZone(cqlDateTime);
+
+			StringBuilder format = new StringBuilder("yyyy-MM-dd");
+			if (!"".equals(strTime)) {
+				format.append(" HH:mm:ss");
 			}
 			TimeZone tz = null;
-			String timeZoneOffset = "";
-			if(! "".equals(timeZone)){
-				if("Z".equals(timeZone)){ // it is Zulu or 0000 zone (old syntax)
+			if (!"".equals(timeZoneOffset)) {
+				if ("Z".equals(timeZoneOffset)) { // it is Zulu or 0000 zone (old syntax)
 					timeZoneOffset = "GMT+00:00";
-					tz = TimeZone.getTimeZone("GMT+00:00");
-				} else { // GMT zone [+|-]0000 // new semantic
-					timeZoneOffset = "GMT" + timeZone;
-					tz = TimeZone.getTimeZone(timeZoneOffset);
 				}
-			    format.append("z");
-			} else { // the time zone offset wasn't specified then the tz provided by the host is used
+				tz = TimeZone.getTimeZone(timeZoneOffset);
+			} else { // the time zone offset wasn't specified then the time zone is that provided by the host
 				tz = TimeZone.getDefault();
 			}
-			SimpleDateFormat formatter = new SimpleDateFormat(format.toString());
+			DateFormat formatter = new SimpleDateFormat(format.toString());
 			formatter.setTimeZone(tz);
-			Date date = formatter.parse(strDate + " " + strTime + " " + timeZoneOffset); 
 
+			Date date;
+			if (!"".equals(strTime)) {
+				date = formatter.parse(strDate + " " + strTime);
+			} else {
+				date = formatter.parse(strDate);
+			}
 			Literal literalDate = filterFactory.literal(date);
 
 			return literalDate;
@@ -409,7 +409,11 @@ public abstract class AbstractFilterBuilder {
 			throw new CQLException("Unsupported date time format: "
 					+ e.getMessage(), this.cqlSource);
 		}
+		
 	}
+	
+	
+	
 
 	/**
 	 * Extracts the time zone from the parameter

@@ -386,13 +386,11 @@ public abstract class AbstractFilterBuilder {
 			}
 			TimeZone tz = null;
 			if (!"".equals(timeZoneOffset)) {
-				if ("Z".equals(timeZoneOffset)) { // it is Zulu or 0000 zone
-													// (old syntax)
+				if ("Z".equals(timeZoneOffset)) { // it is Zulu or 0000 zone (old syntax)
 					timeZoneOffset = "GMT+00:00";
 				}
 				tz = TimeZone.getTimeZone(timeZoneOffset);
-			} else { // the time zone offset wasn't specified then the time zone
-						// is that provided by the host
+			} else { // the time zone offset wasn't specified then the time zone is that provided by the host
 				tz = TimeZone.getDefault();
 			}
 			DateFormat formatter = new SimpleDateFormat(format.toString());

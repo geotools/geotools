@@ -196,8 +196,8 @@ public class FilterToCQLTest{
 
     protected Literal newSampleDate() throws ParseException{
 
-    	SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        Date dateTime = dateFormatter.parse("2006-11-30T01:30:00Z");
+    	SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date dateTime = dateFormatter.parse("2006-11-30T01:30:00");
     	FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
 
     	return ff.literal(dateTime);

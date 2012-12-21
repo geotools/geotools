@@ -267,27 +267,6 @@ public class CQLTemporalPredicateTest {
 			Assert.assertEquals(expectedDate, actualDate);
 		}
 	}    
-    
-//    @Test 
-//    public void dateTimeWithOffset() throws Exception{
-//                
-//        String expectedTime = "2008-09-09T17:00:00+01:00";
-//
-//        Filter resultFilter = CompilerUtil.parseFilter(this.language, "ZONE_VALID_FROM BEFORE " + expectedTime);
-//
-//        Before comparation = (Before) resultFilter;
-//
-//        // date test 
-//        Expression expr2 = comparation.getExpression2();
-//        Literal literalDate = (Literal)expr2;
-//        
-//        final DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-//		Date expectedDate = dateFormatter.parse("2008-09-09T17:00:00+0100");
-//
-//		Date actualDate =  (Date) literalDate.getValue();
-//        
-//        Assert.assertEquals(expectedDate, actualDate);
-//    }
     /**
      * before with compound attribute
      * 

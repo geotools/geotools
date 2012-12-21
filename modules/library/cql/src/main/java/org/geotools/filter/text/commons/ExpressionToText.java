@@ -18,9 +18,12 @@ package org.geotools.filter.text.commons;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Divide;
@@ -32,6 +35,10 @@ import org.opengis.filter.expression.Multiply;
 import org.opengis.filter.expression.NilExpression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.Subtract;
+import org.opengis.temporal.Period;
+
+import sun.util.calendar.CalendarSystem;
+import sun.util.calendar.Gregorian;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.WKTWriter;
@@ -51,7 +58,6 @@ import com.vividsolutions.jts.io.WKTWriter;
  */
 public class ExpressionToText implements ExpressionVisitor {
 	
-    private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 	
 
     static private  StringBuilder asStringBuilder( Object extraData){
@@ -67,11 +73,11 @@ public class ExpressionToText implements ExpressionVisitor {
      * @param output
      * @return output
      */
-    public StringBuilder date( Date date, StringBuilder output ){
+    public StringBuilder dateToText( Date date, StringBuilder output ){
         
-        DateFormat dateFormatter = new SimpleDateFormat(DATE_FORMAT);
-        
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         String text = dateFormatter.format( date );
+        
         output.append( text );        
         return output;
     }
@@ -160,7 +166,17 @@ public class ExpressionToText implements ExpressionVisitor {
                 output.append( literal );
         }
         else if (literal instanceof Date ){
-            return date( (Date) literal, output );
+            return dateToText( (Date) literal, output );
+        }
+        else if (literal instanceof Period){
+
+            Period period = (Period) literal;
+            
+            output = dateToText( period.getBeginning().getPosition().getDate(), output );
+            output.append("/");
+    		output = dateToText( period.getEnding().getPosition().getDate(), output );
+    		
+    		return output;
         }
         else {
             String escaped = literal.toString().replaceAll("'", "''");

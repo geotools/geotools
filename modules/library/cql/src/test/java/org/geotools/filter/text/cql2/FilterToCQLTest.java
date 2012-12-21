@@ -90,25 +90,25 @@ public class FilterToCQLTest{
     @Test 
     public void testAfter() throws Exception{
     	
-    	cqlTest("attr AFTER 2006-12-31T01:30:00Z");
+    	cqlTest("attr AFTER 2006-12-31T01:30:00");
     }
     
     @Test 
     public void testBefore() throws Exception{
     	
-    	cqlTest("attr BEFORE 2006-12-31T01:30:00Z");
+    	cqlTest("attr BEFORE 2006-12-31T01:30:00");
     }
 
     @Test
     public void testBeforeAndAfter() throws Exception{
     	
-    	cqlTest("(dateAttr AFTER 2006-10-10T01:30:00Z AND dateAttr BEFORE 2010-12-31T01:30:00Z)");
+    	cqlTest("(dateAttr AFTER 2006-10-10T01:30:00 AND dateAttr BEFORE 2010-12-31T01:30:00)");
     }
 
     @Test
     public void testDuring() throws Exception{
     	
-    	cqlTest("dateAttr DURING 2006-10-10T01:30:00Z/2010-12-31T01:30:00Z");
+    	cqlTest("dateAttr DURING 2006-10-10T01:30:00/2010-12-31T01:30:00");
     }
     
     @Test (expected=UnsupportedOperationException.class) 

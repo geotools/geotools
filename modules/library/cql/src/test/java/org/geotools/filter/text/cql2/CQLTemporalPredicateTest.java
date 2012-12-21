@@ -183,6 +183,7 @@ public class CQLTemporalPredicateTest {
         final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
         
         final DateFormat dateFormatter = new SimpleDateFormat(DATE_FORMAT);
+        dateFormatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
 
         Date expectedDate = dateFormatter.parse(cqlDateTime);
         Date actualDate = (Date) literalDate.getValue();

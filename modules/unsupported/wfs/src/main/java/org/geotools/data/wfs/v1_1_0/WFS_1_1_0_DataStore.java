@@ -297,7 +297,7 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
         // TODO: handle output format preferences
         final String outputFormat = wfs.getDefaultOutputFormat(GET_FEATURE);
 
-        String srsName = adaptQueryForSupportedCrs((Query) query);
+        String srsName = adaptQueryForSupportedCrs(query);
 
         GetFeature request = new GetFeatureQueryAdapter(query, outputFormat, srsName, resultType);
 
@@ -305,6 +305,13 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
         return response;
     }
 
+    private Query createNewQuery(Query model, Filter filter) {
+        Query query = new Query(model);
+        query.setFilter(filter);
+        query.setMaxFeatures(getMaxFeatures(query));
+        return query;
+    }
+    
     /**
      * @see org.geotools.data.DataStore#getFeatureReader(org.geotools.data.Query,
      *      org.geotools.data.Transaction)
@@ -316,14 +323,14 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
             return new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(getQueryType(query));
         }
 
-        query = new Query(query);
         Filter[] filters = wfs.splitFilters(query.getFilter());
         Filter supportedFilter = filters[0];
         Filter postFilter = filters[1];
-        LOGGER.fine("Supported filter:  " + supportedFilter);
-        LOGGER.fine("Unupported filter: " + postFilter);
-        ((Query) query).setFilter(supportedFilter);
-        ((Query) query).setMaxFeatures(getMaxFeatures(query));
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine("Supported filter:  " + supportedFilter);
+            LOGGER.fine("Unupported filter: " + postFilter);
+        }
+        query = createNewQuery(query, supportedFilter);
 
         final CoordinateReferenceSystem queryCrs = query.getCoordinateSystem();
 
@@ -730,7 +737,7 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
      * @return the number of features returned by a GetFeature?resultType=hits request, or
      *         {@code -1} if not supported
      */
-    public int getCount(final Query query) throws IOException {
+    public int getCount(Query query) throws IOException {
         Filter[] filters = wfs.splitFilters(query.getFilter());
         Filter postFilter = filters[1];
         if (!Filter.INCLUDE.equals(postFilter)) {
@@ -738,6 +745,10 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
             return -1;
         }
 
+        // WFSProtocol.splitFilter has simplified and validated my filters
+        // so I create a new Query using these supported filters
+        query = createNewQuery(query, filters[0]);
+        
         WFSResponse response = executeGetFeatures(query, Transaction.AUTO_COMMIT, ResultType.HITS);
 
         Object process = WFSExtensions.process(this, response);

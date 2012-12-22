@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>ogc</artifactId>
-    <version>8-SNAPSHOT</version>
+    <version>8.5</version>
   </parent>
 
   <groupId>org.geotools.ogc</groupId>

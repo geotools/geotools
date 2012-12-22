@@ -124,6 +124,10 @@ org.geotools.filter.function.FilterFunction_vertices
 org.geotools.filter.function.FilterFunction_offset
 org.geotools.filter.function.FilterFunction_isometric
 org.geotools.filter.function.FilterFunction_property
+org.geotools.filter.function.FilterFunction_distance3D
+org.geotools.filter.function.FilterFunction_isWithinDistance3D
+org.geotools.filter.function.FilterFunction_intersects3D
+org.geotools.filter.function.FilterFunction_disjoint3D
 org.geotools.filter.function.IDFunction
 org.geotools.filter.function.InterpolateFunction
 org.geotools.filter.function.RecodeFunction

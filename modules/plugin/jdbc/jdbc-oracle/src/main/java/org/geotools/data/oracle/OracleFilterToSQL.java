@@ -199,13 +199,13 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         if (expr1 instanceof FilterFunction_sdonn) {
             if (!(expr2 instanceof Literal)) {
                 throw new UnsupportedOperationException(
-                        "Unsupported usage of SDO_NN Oracle function: property must be TRUE");
+                        "Unsupported usage of SDO_NN Oracle function: it can be compared only to a Boolean \"true\" value");
             }
 
             Boolean nearest = (Boolean) evaluateLiteral((Literal) expr2, Boolean.class);
             if (nearest == null || !nearest.booleanValue()) {
                 throw new UnsupportedOperationException(
-                        "Unsupported usage of SDO_NN Oracle function: property must be TRUE");
+                        "Unsupported usage of SDO_NN Oracle function: it can be compared only to a Boolean \"true\" value");
             }
 
             return (FilterFunction_sdonn) expr1;

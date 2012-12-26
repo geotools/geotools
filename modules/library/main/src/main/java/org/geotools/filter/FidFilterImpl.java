@@ -58,7 +58,8 @@ public class FidFilterImpl extends AbstractFilterImpl implements FidFilter {
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.core");
 
     /** List of the Identifer. */
-    private Set fids = new HashSet();
+    private Set<Identifier> fids = new HashSet<Identifier>();
+    private Set<String> ids = new HashSet<String>();
 
     /**
      * Empty constructor.
@@ -99,6 +100,9 @@ public class FidFilterImpl extends AbstractFilterImpl implements FidFilter {
                         + next.getClass() + " does not");
         }
         this.fids = fids;
+        for (Identifier identifier : this.fids) {
+            ids.add(identifier.getID().toString());
+        }
     }
 
     /**
@@ -149,13 +153,7 @@ public class FidFilterImpl extends AbstractFilterImpl implements FidFilter {
      * @return
      */
     private Set fids() {
-        Set set = new TreeSet();
-        for (Iterator i = fids.iterator(); i.hasNext();) {
-            Identifier id = (Identifier) i.next();
-            set.add(id.getID().toString());
-        }
-
-        return set;
+        return new HashSet<String>(ids);
     }
 
     /**
@@ -168,6 +166,7 @@ public class FidFilterImpl extends AbstractFilterImpl implements FidFilter {
     public final void addFid(String fid) {
         LOGGER.finest("got fid: " + fid);
         fids.add(factory.featureId(fid));
+        ids.add(fid);
     }
 
     /**
@@ -201,6 +200,7 @@ public class FidFilterImpl extends AbstractFilterImpl implements FidFilter {
             Identifier featureId = (Identifier) f.next();
             if (fid.equals(featureId.getID().toString())) {
                 f.remove();
+                ids.remove(fid);
             }
         }
 
@@ -248,13 +248,7 @@ public class FidFilterImpl extends AbstractFilterImpl implements FidFilter {
         if(evaluate == null) {
             return false;		
         } else {
-            for(Object identifier : fids) {
-                Identifier fid = (Identifier) identifier;
-                if(fid.getID().equals(evaluate)) {
-                    return true;
-                }
-            }
-            return false;
+            return ids.contains(evaluate);
         }
 	}
 	

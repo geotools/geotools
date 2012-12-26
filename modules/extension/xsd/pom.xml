@@ -91,9 +91,10 @@
     <module>xsd-kml</module>
     <module>xsd-ows</module>
     <module>xsd-wfs</module>
-	<module>xsd-wcs</module>
+    <module>xsd-wcs</module>
     <module>xsd-wps</module>
     <module>xsd-wms</module>
+    <module>xsd-csw</module>
   </modules>
 
 </project>

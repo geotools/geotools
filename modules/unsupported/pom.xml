@@ -171,15 +171,6 @@
        </modules>
      </profile>
      <profile>
-       <id>csw</id>
-       <activation>
-         <property><name>all</name></property>
-       </activation>
-       <modules>
-         <module>csw</module>
-       </modules>
-     </profile>
-     <profile>
        <id>unsupported</id>
        <activation>
          <property><name>all</name></property>
@@ -196,7 +187,6 @@
          <module>mongodb</module>
          <module>property-ng</module>
          <module>shapefile-ng</module>
-         <module>csw</module>
        </modules>
      </profile>
   </profiles>

@@ -13,9 +13,9 @@
                                http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>org.geotools</groupId>
-    <artifactId>gt-csw</artifactId>
+ <parent>
+    <groupId>org.geotools.xsd</groupId>
+    <artifactId>xsd</artifactId>
     <version>9-SNAPSHOT</version>
   </parent>
   

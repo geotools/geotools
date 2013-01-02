@@ -30,6 +30,7 @@ import javax.media.jai.PlanarImage;
 
 import junit.framework.Assert;
 
+import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
@@ -41,11 +42,11 @@ import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.Operations;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
-import org.geotools.image.io.GridCoverageWriterProgressAdapter;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
+import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.test.TestData;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.coverage.grid.GridCoverageWriter;
@@ -521,71 +522,134 @@ public class GeoTiffWriterTest extends Assert {
     
     @Test
 //    @Ignore
-    public void testWriteBigTiff() throws Exception {
+    public void testWriteLatLon() throws Exception {
 
-        String files[] = new String[]{"geo.tiff", "no_crs_no_envelope.tif"};
+        String file = "latlon.tiff";
         
-        int i=0;
-        for (String file : files){
-            final File input = TestData.file(GeoTiffReaderTest.class, file);
-            final AbstractGridFormat format = new GeoTiffFormat();
-            assertTrue(format.accepts(input));
+        final File input = TestData.file(GeoTiffReaderTest.class, file);
+        final AbstractGridFormat format = new GeoTiffFormat();
+        assertTrue(format.accepts(input));
+
+        // getting a reader
+        GeoTiffReader reader = new GeoTiffReader(input);
+
+        // reading the coverage
+        GridCoverage2D coverage = (GridCoverage2D) reader.read(null);
+
+        // check coverage and crs
+        assertNotNull(coverage);
+        assertNotNull(coverage.getCoordinateReferenceSystem());
+        reader.dispose();
+
+        // get a writer
+        final File output = new File(TestData.file(GeoTiffReaderTest.class, "."), "target.tif");
+        GeoTiffWriter writer = new GeoTiffWriter(output);
+
+
+        ParameterValue<Boolean> value = GeoTiffFormat.RETAIN_AXES_ORDER.createValue();
+        value.setValue(true);
+        
+        // switching axes
+        final CoordinateReferenceSystem latLon4326=CRS.decode("EPSG:4326");
+        assertEquals(CRS.getAxisOrder(latLon4326), AxisOrder.NORTH_EAST);
+        final GeneralEnvelope envelope = (GeneralEnvelope) CRS.transform(coverage.getEnvelope(), latLon4326);
+        envelope.setCoordinateReferenceSystem(latLon4326);
+        
+        coverage=CoverageFactoryFinder.getGridCoverageFactory(null).create(
+                coverage.getName(),
+                coverage.getRenderedImage(),
+                envelope
+                );
+        
+        
+        
+        writer.write(coverage, new GeneralParameterValue[] { value });
+        writer.dispose();
+        coverage.dispose(true);
+
+        // getting a reader
+        reader = new GeoTiffReader(output);
+        final GridCoverage2D gc= reader.read(null);
+        final MathTransform g2w_ = gc.getGridGeometry().getGridToCRS();
+        assertTrue(g2w_ instanceof AffineTransform2D);
+        AffineTransform2D g2w = (AffineTransform2D) g2w_;
+        assertTrue(XAffineTransform.getSwapXY(g2w)==-1);
+        assertEquals(AxisOrder.NORTH_EAST,CRS.getAxisOrder(gc.getCoordinateReferenceSystem()));
+        RenderedImage ri = gc.getRenderedImage();
+        assertEquals(ri.getWidth(), 120 );
+        assertEquals(ri.getHeight(), 121 );
+        reader.dispose();
+
+       
+    }
+
+    @Test
+    //    @Ignore
+        public void testWriteBigTiff() throws Exception {
     
-            // getting a reader
-            GeoTiffReader reader = new GeoTiffReader(input);
-    
-            // reading the coverage
-            GridCoverage2D coverage = (GridCoverage2D) reader.read(null);
-    
-            // check coverage and crs
-            assertNotNull(coverage);
-            assertNotNull(coverage.getCoordinateReferenceSystem());
-            reader.dispose();
-    
-            // get a writer
-            final File output = new File(TestData.file(GeoTiffReaderTest.class, "."), "bigtiff" + i + ".tif");
-            GeoTiffWriter writer = new GeoTiffWriter(output);
+            String files[] = new String[]{"geo.tiff", "no_crs_no_envelope.tif"};
             
-            GeoTiffWriteParams params = new GeoTiffWriteParams();
-            params.setForceToBigTIFF(true);
-            ParameterValue<GeoToolsWriteParams> value = GeoTiffFormat.GEOTOOLS_WRITE_PARAMS.createValue();
-            value.setValue(params);
-            
-            writer.write(coverage, new GeneralParameterValue[]{value});
-            writer.dispose();
-            coverage.dispose(true);
-            
-            // getting a reader
-            reader = new GeoTiffReader(output);
-            RenderedImage ri = reader.read(null).getRenderedImage();
-            assertEquals(ri.getWidth(), i == 0 ? 120 : 12);
-            assertEquals(ri.getHeight(), i == 0 ? 120 : 12);
-            reader.dispose();
-            
-            FileInputStream fis = null;
-            try {
-                fis = new FileInputStream(output);
-            
-                byte[] bytes = new byte[6];
-                fis.read(bytes);
-                if (bytes[0] == 77 && bytes[1] == 77){
-                    //Big Endian Case
-                    assertEquals(bytes[3], 43); //43 is the magic number of BigTiff
-                } else {
-                    //Little Endian Case
-                    assertEquals(bytes[4], 43); //43 is the magic number of BigTiff
-                }
-            } finally {
-                if (fis != null){
-                    try {
-                        fis.close();
-                    } catch (Throwable t){
-                        
+            int i=0;
+            for (String file : files){
+                final File input = TestData.file(GeoTiffReaderTest.class, file);
+                final AbstractGridFormat format = new GeoTiffFormat();
+                assertTrue(format.accepts(input));
+        
+                // getting a reader
+                GeoTiffReader reader = new GeoTiffReader(input);
+        
+                // reading the coverage
+                GridCoverage2D coverage = (GridCoverage2D) reader.read(null);
+        
+                // check coverage and crs
+                assertNotNull(coverage);
+                assertNotNull(coverage.getCoordinateReferenceSystem());
+                reader.dispose();
+        
+                // get a writer
+                final File output = new File(TestData.file(GeoTiffReaderTest.class, "."), "bigtiff" + i + ".tif");
+                GeoTiffWriter writer = new GeoTiffWriter(output);
+                
+                GeoTiffWriteParams params = new GeoTiffWriteParams();
+                params.setForceToBigTIFF(true);
+                ParameterValue<GeoToolsWriteParams> value = GeoTiffFormat.GEOTOOLS_WRITE_PARAMS.createValue();
+                value.setValue(params);
+                
+                writer.write(coverage, new GeneralParameterValue[]{value});
+                writer.dispose();
+                coverage.dispose(true);
+                
+                // getting a reader
+                reader = new GeoTiffReader(output);
+                RenderedImage ri = reader.read(null).getRenderedImage();
+                assertEquals(ri.getWidth(), i == 0 ? 120 : 12);
+                assertEquals(ri.getHeight(), i == 0 ? 120 : 12);
+                reader.dispose();
+                
+                FileInputStream fis = null;
+                try {
+                    fis = new FileInputStream(output);
+                
+                    byte[] bytes = new byte[6];
+                    fis.read(bytes);
+                    if (bytes[0] == 77 && bytes[1] == 77){
+                        //Big Endian Case
+                        assertEquals(bytes[3], 43); //43 is the magic number of BigTiff
+                    } else {
+                        //Little Endian Case
+                        assertEquals(bytes[4], 43); //43 is the magic number of BigTiff
+                    }
+                } finally {
+                    if (fis != null){
+                        try {
+                            fis.close();
+                        } catch (Throwable t){
+                            
+                        }
                     }
                 }
+                i++;
             }
-            i++;
         }
-    }
     
 }

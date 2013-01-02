@@ -309,8 +309,7 @@ public final class GeoTiffMetadata2CRSAdapter {
 				projCode.insert(0, "EPSG:");
 			}
 			// it is an EPSG crs let's create it.
-			final ProjectedCRS pcrs = (ProjectedCRS) CRS.decode(projCode
-					.toString(), true);
+			final ProjectedCRS pcrs = (ProjectedCRS) CRS.decode(projCode.toString());
 			// //
 			//
 			// We have nothing to do with the unit of measure
@@ -406,7 +405,7 @@ public final class GeoTiffMetadata2CRSAdapter {
 						&& !tempCode.startsWith("epsg")) {
 					geogCode.insert(0, "EPSG:");
 				}
-				gcs = (GeographicCRS) CRS.decode(geogCode.toString(), true);
+				gcs = (GeographicCRS) CRS.decode(geogCode.toString());
 				if (angularUnit != null
 						&& !angularUnit.equals(gcs.getCoordinateSystem()
 								.getAxis(0).getUnit())) {

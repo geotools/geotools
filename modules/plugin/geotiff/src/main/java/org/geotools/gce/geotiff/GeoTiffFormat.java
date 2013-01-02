@@ -35,6 +35,7 @@
 package org.geotools.gce.geotiff;
 
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
+import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageWriterSpi;
 
 import java.io.File;
 import java.io.IOException;
@@ -76,8 +77,6 @@ import org.opengis.referencing.operation.MathTransform;
  * @source $URL$
  */
 public class GeoTiffFormat extends AbstractGridFormat implements Format {
-    /** SPI for the writer. */
-    private final static TIFFImageReaderSpi spi = new TIFFImageReaderSpi();
 
     /** Logger. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging
@@ -91,6 +90,21 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
     public static final DefaultParameterDescriptor<Boolean> WRITE_TFW = new DefaultParameterDescriptor<Boolean>(
                     "WRITE_TFW", Boolean.class, new Boolean[] {
                                     Boolean.TRUE, Boolean.FALSE }, Boolean.FALSE);
+    
+    /**
+     * This {@link GeneralParameterValue} can be provided to the
+     * {@link GeoTiffWriter}s in order
+     * to force the writer to retain the axes order.
+     */
+    public static final DefaultParameterDescriptor<Boolean> RETAIN_AXES_ORDER = new DefaultParameterDescriptor<Boolean>(
+                    "RETAIN_AXES_ORDER", Boolean.class, new Boolean[] {
+                                    Boolean.TRUE, Boolean.FALSE }, Boolean.FALSE);
+    
+    /** factory for getting tiff writers. */
+    final static TIFFImageWriterSpi IMAGEIO_WRITER_FACTORY = new TIFFImageWriterSpi();
+    
+    /** SPI for the reader. */
+    private final static TIFFImageReaderSpi IMAGEIO_READER_FACTORY = new TIFFImageReaderSpi();
 
 	/**
 	 * Creates a new instance of GeoTiffFormat
@@ -114,7 +128,7 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
 		writeParameters = new ParameterGroup(
 				new DefaultParameterDescriptorGroup(
 						mInfo,
-						new GeneralParameterDescriptor[] { AbstractGridFormat.GEOTOOLS_WRITE_PARAMS,AbstractGridFormat.PROGRESS_LISTENER }));
+						new GeneralParameterDescriptor[] {RETAIN_AXES_ORDER,AbstractGridFormat.GEOTOOLS_WRITE_PARAMS,AbstractGridFormat.PROGRESS_LISTENER }));
 
 	}
 
@@ -164,9 +178,9 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
 			}
 
 			// get a reader
-			if (!spi.canDecodeInput(inputStream))
+			if (!IMAGEIO_READER_FACTORY.canDecodeInput(inputStream))
 				return false;
-			reader = spi.createReaderInstance();
+			reader = IMAGEIO_READER_FACTORY.createReaderInstance();
 			
 
 			inputStream.mark();

@@ -79,7 +79,7 @@ public class GeoTiffDeadlockTest {
                             + Arrays.toString(deadlockedThreads));
                 }
                 // sleep for a bit
-                Thread.currentThread().sleep(10);
+                Thread.sleep(10);
             }
         } finally {
             // kill all the threads

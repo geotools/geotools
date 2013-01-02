@@ -258,7 +258,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverageReader
         if (hints == null)
             this.hints = new Hints();
         if (hints != null) {
-            this.hints.add(hints);
+            this.hints=hints.clone();
 
         }
 

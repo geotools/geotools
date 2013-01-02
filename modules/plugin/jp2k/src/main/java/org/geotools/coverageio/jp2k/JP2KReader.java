@@ -389,22 +389,7 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements
                  setCoverageEnvelope(envelope);
              }
 
-         } catch (FactoryException e) {
-             if (LOGGER.isLoggable(Level.FINE))
-                 LOGGER.log(Level.FINE,
-                         "Unable to parse CRS from underlying TIFF", e);
-             coordinateReferenceSystem = null;
-         } catch (TransformException e) {
-             if (LOGGER.isLoggable(Level.FINE))
-                 LOGGER.log(Level.FINE,
-                         "Unable to parse CRS from underlying TIFF", e);
-             coordinateReferenceSystem = null;
-         } catch (UnsupportedOperationException e) {
-             if (LOGGER.isLoggable(Level.FINE))
-                 LOGGER.log(Level.FINE,
-                         "Unable to parse CRS from underlying TIFF", e);
-             coordinateReferenceSystem = null;
-         } catch (IllegalArgumentException e) {
+         } catch (Exception e) {
              if (LOGGER.isLoggable(Level.FINE))
                  LOGGER.log(Level.FINE,
                          "Unable to parse CRS from underlying TIFF", e);

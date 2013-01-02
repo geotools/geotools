@@ -36,7 +36,7 @@ public final class GeoTiffConstants {
     
 	public static final short GTUserDefinedGeoKey = 32767;
 
-	static public final String GTUserDefinedGeoKey_String = "32767".intern();
+	static public final String GTUserDefinedGeoKey_String = "32767";
 
 	public static final short ARRAY_ELEM_INCREMENT = 5;
 
@@ -82,62 +82,62 @@ public final class GeoTiffConstants {
 	/**
 	 * The DOM element ID (tag) for a single TIFF Ascii value
 	 */
-	public static final String GEOTIFF_ASCII_TAG = "TIFFAscii".intern();
+	public static final String GEOTIFF_ASCII_TAG = "TIFFAscii";
 
 	/**
 	 * The DOM element ID (tag) for a set of TIFF Ascii values
 	 */
-	public static final String GEOTIFF_ASCIIS_TAG = "TIFFAsciis".intern();
+	public static final String GEOTIFF_ASCIIS_TAG = "TIFFAsciis";
 
 	/**
 	 * The DOM element ID (tag) for a single TIFF double. The value is stored in
 	 * an attribute named "value"
 	 */
-	public static final String GEOTIFF_DOUBLE_TAG = "TIFFDouble".intern();
+	public static final String GEOTIFF_DOUBLE_TAG = "TIFFDouble";
 
 	/**
 	 * The DOM element ID (tag) for a set of TIFF Double values
 	 */
-	public static final String GEOTIFF_DOUBLES_TAG = "TIFFDoubles".intern();
+	public static final String GEOTIFF_DOUBLES_TAG = "TIFFDoubles";
 
 	/**
 	 * The DOM element ID (tag) for a TIFF Field
 	 */
-	public static final String GEOTIFF_FIELD_TAG = "TIFFField".intern();
+	public static final String GEOTIFF_FIELD_TAG = "TIFFField";
 
 	/**
 	 * The DOM element ID (tag) for a TIFF Image File Directory
 	 */
-	public static final String GEOTIFF_IFD_TAG = "TIFFIFD".intern();
+	public static final String GEOTIFF_IFD_TAG = "TIFFIFD";
 
 	/**
 	 * The DOM element ID (tag) for a single TIFF Short value. The value is
 	 * stored in an attribute named "value"
 	 */
-	public static final String GEOTIFF_SHORT_TAG = "TIFFShort".intern();
+	public static final String GEOTIFF_SHORT_TAG = "TIFFShort";
 
 	/**
 	 * The DOM element ID (tag) for a set of TIFF Short values
 	 */
-	public static final String GEOTIFF_SHORTS_TAG = "TIFFShorts".intern();
+	public static final String GEOTIFF_SHORTS_TAG = "TIFFShorts";
 
 	/**
 	 * The DOM attribute name for a TIFF Entry value (whether Short, Double, or
 	 * Ascii)
 	 */
-	public static final String VALUE_ATTRIBUTE = "value".intern();
+	public static final String VALUE_ATTRIBUTE = "value";
 
 	/**
 	 * The DOM attribute name for a TIFF Field Tag (number)
 	 */
-	public static final String NUMBER_ATTRIBUTE = "number".intern();
+	public static final String NUMBER_ATTRIBUTE = "number";
 
 	/**
 	 * The DOM attribute name for a TIFF Field Tag (name)
 	 */
 	public static final String NAME_ATTRIBUTE = "name";
 
-	public static final String GEOTIFF_TAGSETS_ATT_NAME = "tagSets".intern();
+	public static final String GEOTIFF_TAGSETS_ATT_NAME = "tagSets";
 
 	public static final int DEFAULT_GEOTIFF_VERSION = 1;
 

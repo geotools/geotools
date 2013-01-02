@@ -43,6 +43,7 @@ import org.geotools.geometry.Envelope2D;
 import org.geotools.metadata.iso.spatial.PixelTranslation;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
+import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.resources.CRSUtilities;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
@@ -81,7 +82,15 @@ public final class CoverageUtilities {
 	 */
 	public static final InternationalString NODATA=Vocabulary.formatInternational(VocabularyKeys.NODATA);
 	
-    public static final AffineTransform IDENTITY_TRANSFORM = new AffineTransform();
+	
+    /**
+     * Axes transposition for swapping Lat and Lon axes.
+     */
+    public static final AffineTransform AXES_SWAP= new AffineTransform2D(0,1,1,0,0,0);
+	
+    /** Identity affine transformation.*/
+    public static final AffineTransform IDENTITY_TRANSFORM = new AffineTransform2D(AffineTransform.getRotateInstance(0));
+    
     /**
      * {@link AffineTransform} that can be used to go from an image datum placed
      * at the center of pixels to one that is placed at ULC.

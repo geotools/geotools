@@ -51,6 +51,9 @@ import org.jdom.Element;
  */
 public class GeoTiffIIOMetadataEncoder {
 
+    /** ASCII_SEPARATOR */
+    public static final String ASCII_SEPARATOR = "|";
+
     public enum TagSet {
         BASELINE {
             @Override
@@ -90,7 +93,7 @@ public class GeoTiffIIOMetadataEncoder {
 
 	private int numGeoTiffAsciiParams;
 	
-	private StringBuffer geoTiffAsciiParams;
+	private StringBuilder geoTiffAsciiParams;
 	
 	private double noData;
 	
@@ -112,7 +115,7 @@ public class GeoTiffIIOMetadataEncoder {
 			final int keyRevisionMajor, final int keyRevisionMinor) {
 		geoTiffEntries = new KeySortedList<Integer, GeoKeyEntry>();
 		geoTiffDoubleParams = new double[GeoTiffConstants.ARRAY_ELEM_INCREMENT];
-		geoTiffAsciiParams = new StringBuffer();
+		geoTiffAsciiParams = new StringBuilder();
 		modelTiePoints = new TiePoint[GeoTiffConstants.ARRAY_ELEM_INCREMENT];
 		modelPixelScale = new PixelScale();
 		modelTransformation = new double[16];
@@ -231,9 +234,13 @@ public class GeoTiffIIOMetadataEncoder {
 
 	public GeoKeyEntry getGeoKeyEntry(int keyID) {
 		GeoKeyEntry retVal = null;
-		final Object o = geoTiffEntries.first(Integer.valueOf(keyID));
-		if (o != null)
-			retVal = (GeoKeyEntry) o;
+		if(geoTiffEntries.count(keyID)<=0){
+		    return null;
+		}
+		final Object o = geoTiffEntries.first(keyID);
+		if (o != null){
+		    retVal = (GeoKeyEntry) o;
+		}
 
 		return retVal;
 	}
@@ -243,7 +250,7 @@ public class GeoTiffIIOMetadataEncoder {
 	}
 
 	public int getGeoShortParam(int keyID) {
-		final GeoKeyEntry entry = getNonNullKeyEntry(keyID);
+		final GeoKeyEntry entry = getNonNullGeoKeyEntry(keyID);
 		final int tag = entry.getTiffTagLocation();
 		final int value = entry.getValueOffset();
 		checkParamTag(tag, 0);
@@ -252,7 +259,7 @@ public class GeoTiffIIOMetadataEncoder {
 	}
 
 	public double getGeoDoubleParam(int keyID) {
-		final GeoKeyEntry entry = getNonNullKeyEntry(keyID);
+		final GeoKeyEntry entry = getNonNullGeoKeyEntry(keyID);
 		final int tag = entry.getTiffTagLocation();
 		final int offset = entry.getValueOffset();
 		checkParamTag(tag, getGeoDoubleParamsTag().getNumber());
@@ -265,7 +272,7 @@ public class GeoTiffIIOMetadataEncoder {
 	}
 
 	public double[] getGeoDoubleParams(int keyID, double[] values) {
-		final GeoKeyEntry entry = getNonNullKeyEntry(keyID);
+		final GeoKeyEntry entry = getNonNullGeoKeyEntry(keyID);
 		final int tag = entry.getTiffTagLocation();
 		final int count = entry.getCount();
 		final int offset = entry.getValueOffset();
@@ -280,18 +287,31 @@ public class GeoTiffIIOMetadataEncoder {
 		return values;
 	}
 
+	/**
+	 * Gives access to the GeoAscii tiff  content for the specified GeoKey metatag.
+	 * 
+	 * <p>
+	 * Returns <code>null</code> in case the ascii params is not present.
+	 * 
+	 * @param keyID the MetaTag to look for.
+	 * 
+	 * @return <code>null</code> in case the ascii params is not present, otherwise the metatag content.
+	 */
 	public String getGeoAsciiParam(int keyID) {
-		final GeoKeyEntry entry = getNonNullKeyEntry(keyID);
+		final GeoKeyEntry entry = getGeoKeyEntry(keyID);
+		if(entry==null){
+		    return null;
+		}
 		final int tag = entry.getTiffTagLocation();
 		final int count = entry.getCount();
 		final int offset = entry.getValueOffset();
 		checkParamTag(tag, getGeoAsciiParamsTag().getNumber());
 
-		return geoTiffAsciiParams.substring(offset, (offset + count) - 1);
+		return geoTiffAsciiParams.substring(offset, (offset + count));
 	}
 
-	public void addGeoShortParam(int keyID, int value) {
-		addGeoKeyEntry(keyID, 0, 1, value);
+	public GeoKeyEntry addGeoShortParam(int keyID, int value) {
+	    return addGeoKeyEntry(keyID, 0, 1, value);
 	}
 
 	public void addGeoDoubleParam(int keyID, double value) {
@@ -307,12 +327,84 @@ public class GeoTiffIIOMetadataEncoder {
 	}
 
 	public void addGeoAscii(int keyID, String value) {
-		addGeoAsciiParamsRef(keyID, value.length() + 1);
-		// +1 for the '|' character to be appended
-		addAsciiParam(value);
-	}
+	    // check whether or not this is the first geoascii element
+            GeoKeyEntry currentEntry = getGeoKeyEntry(keyID);
+            if(currentEntry!=null){
+                // get old value
+                final String currentGeoAscii=getGeoAsciiParam(keyID);
+                assert currentGeoAscii!=null;
+                
+                // store old length
+                final int currentLength=currentGeoAscii.length();
+                assert currentEntry.getCount()==currentLength;
+                
+                // update value
+                final StringBuilder newValue= new StringBuilder(currentGeoAscii);
+                if(!currentGeoAscii.endsWith(ASCII_SEPARATOR)){
+                    newValue.append(ASCII_SEPARATOR);
+                }
+                newValue.append(value).append(ASCII_SEPARATOR);
+                
+                // now add to the geoascii metatag
+                GeoKeyEntry newEntry = updateGeoAsciiParamsRef(keyID, newValue.length(),currentEntry.getValueOffset());
+                
+                // +1 for the '|' character to be appended
+                replaceAsciiParam(newValue.toString(), currentEntry.getValueOffset(), currentEntry.getValueOffset()+currentLength);
+            } else {
+                // now add to the geoascii metatag
+                addGeoAsciiParamsRef(keyID, value.length());
+                
+                // +1 for the '|' character to be appended
+                appendAsciiParam(value);
+            }
+            
+            
 
-	private void addGeoKeyEntry(int keyID, int tag, int count, int offset) {
+	}
+	/**
+         * Updates the provided metatag to the GeoKey directory.
+         * 
+         * @param keyID the GeoTiff metatag id
+         * @param tag the TIFF tag to which this points to
+         * @param count the new count value
+         * @param offset the new offset value inside the tiff tag or 0 if the value is embeeded
+         * @return the updated {@link GeoKeyEntry}.
+         */
+        private GeoKeyEntry updateGeoKeyEntry(int keyID, int tag, int count, int offset) {
+                if (!isTiffUShort(keyID)) {
+                        throw new IllegalArgumentException("keyID is not a TIFF USHORT");
+                }
+
+                if (!isTiffUShort(tag)) {
+                        throw new IllegalArgumentException("tag is not a TIFF USHORT");
+                }
+
+                if (!isTiffUShort(count)) {
+                        throw new IllegalArgumentException("count is not a TIFF USHORT");
+                }
+
+                if (!isTiffUShort(offset)) {
+                        throw new IllegalArgumentException("offset is not a TIFF USHORT");
+                }
+
+                final GeoKeyEntry element = new GeoKeyEntry(keyID, tag,count, offset);
+                // replacing
+                final int valuesRemoved=geoTiffEntries.removeAll(keyID); // purge old values for this tag
+                assert valuesRemoved==1;
+                geoTiffEntries.add(Integer.valueOf(keyID), element);
+                return element;
+        }
+        
+	/**
+	 * Adds the provided metatag to the GeoKey directory.
+	 * 
+	 * @param keyID the GeoTiff metatag id
+	 * @param tag the TIFF tag to which this points to
+	 * @param count the new count value
+	 * @param offset the new offset value inside the tiff tag or 0 if the value is embeeded
+	 * @return the added {@link GeoKeyEntry}.
+	 */
+	private GeoKeyEntry addGeoKeyEntry(int keyID, int tag, int count, int offset) {
 		if (!isTiffUShort(keyID)) {
 			throw new IllegalArgumentException("keyID is not a TIFF USHORT");
 		}
@@ -330,15 +422,16 @@ public class GeoTiffIIOMetadataEncoder {
 		}
 
 		final int numKeyEntries = numGeoTiffEntries;
-		geoTiffEntries.add(Integer.valueOf(keyID), new GeoKeyEntry(keyID, tag,
-				count, offset));
+		final GeoKeyEntry element = new GeoKeyEntry(keyID, tag,count, offset);
+                numGeoTiffEntries++;
+                geoTiffEntries.add(Integer.valueOf(keyID), element);
+		
 		getGeoKeyEntryAt(0).setCount(numKeyEntries);
-		numGeoTiffEntries++;
+		return element;
 	}
 
 	public void assignTo(Element element) {
-		if (!element.getName().equals(
-				GeoTiffConstants.GEOTIFF_IIO_ROOT_ELEMENT_NAME)) {
+		if (!element.getName().equals(GeoTiffConstants.GEOTIFF_IIO_ROOT_ELEMENT_NAME)) {
 			throw new IllegalArgumentException("root not found: "
 					+ GeoTiffConstants.GEOTIFF_IIO_ROOT_ELEMENT_NAME);
 		}
@@ -346,16 +439,13 @@ public class GeoTiffIIOMetadataEncoder {
 		final Element ifd1 = element.getChild(GeoTiffConstants.GEOTIFF_IFD_TAG);
 
 		if (ifd1 == null) {
-			throw new IllegalArgumentException("Unable to find child "
-					+ GeoTiffConstants.GEOTIFF_IFD_TAG);
+			throw new IllegalArgumentException("Unable to find child "+ GeoTiffConstants.GEOTIFF_IFD_TAG);
 		}
 
 		final Element ifd2 = createIFD();
-		ifd1.setAttribute(GeoTiffConstants.GEOTIFF_TAGSETS_ATT_NAME, ifd2
-				.getAttributeValue(GeoTiffConstants.GEOTIFF_TAGSETS_ATT_NAME));
+		ifd1.setAttribute(GeoTiffConstants.GEOTIFF_TAGSETS_ATT_NAME, ifd2.getAttributeValue(GeoTiffConstants.GEOTIFF_TAGSETS_ATT_NAME));
 
-		final Element[] childElems = (Element[]) ifd2.getChildren().toArray(
-				new Element[0]);
+		final Element[] childElems = (Element[]) ifd2.getChildren().toArray(new Element[0]);
 		for (int i = 0; i < childElems.length; i++) {
 			final Element child = childElems[i];
 			ifd2.removeContent(child);
@@ -364,41 +454,34 @@ public class GeoTiffIIOMetadataEncoder {
 	}
 
 	public Element createRootTree() {
-		final Element rootElement = new Element(
-				GeoTiffConstants.GEOTIFF_IIO_ROOT_ELEMENT_NAME);
+		final Element rootElement = new Element(GeoTiffConstants.GEOTIFF_IIO_ROOT_ELEMENT_NAME);
 		rootElement.addContent(createIFD());
 
 		return rootElement;
 	}
 
 	protected static TIFFTag getGeoKeyDirectoryTag() {
-		return GeoTIFFTagSet.getInstance().getTag(
-				GeoTIFFTagSet.TAG_GEO_KEY_DIRECTORY);
+		return GeoTIFFTagSet.getInstance().getTag(GeoTIFFTagSet.TAG_GEO_KEY_DIRECTORY);
 	}
 
 	protected static TIFFTag getGeoDoubleParamsTag() {
-		return GeoTIFFTagSet.getInstance().getTag(
-				GeoTIFFTagSet.TAG_GEO_DOUBLE_PARAMS);
+		return GeoTIFFTagSet.getInstance().getTag(GeoTIFFTagSet.TAG_GEO_DOUBLE_PARAMS);
 	}
 
 	protected static TIFFTag getGeoAsciiParamsTag() {
-		return GeoTIFFTagSet.getInstance().getTag(
-				GeoTIFFTagSet.TAG_GEO_ASCII_PARAMS);
+		return GeoTIFFTagSet.getInstance().getTag(GeoTIFFTagSet.TAG_GEO_ASCII_PARAMS);
 	}
 
 	protected static TIFFTag getModelPixelScaleTag() {
-		return GeoTIFFTagSet.getInstance().getTag(
-				GeoTIFFTagSet.TAG_MODEL_PIXEL_SCALE);
+		return GeoTIFFTagSet.getInstance().getTag(GeoTIFFTagSet.TAG_MODEL_PIXEL_SCALE);
 	}
 
 	protected static TIFFTag getModelTiePointTag() {
-		return GeoTIFFTagSet.getInstance().getTag(
-				GeoTIFFTagSet.TAG_MODEL_TIE_POINT);
+		return GeoTIFFTagSet.getInstance().getTag(GeoTIFFTagSet.TAG_MODEL_TIE_POINT);
 	}
 
 	protected static TIFFTag getModelTransformationTag() {
-		return GeoTIFFTagSet.getInstance().getTag(
-				GeoTIFFTagSet.TAG_MODEL_TRANSFORMATION);
+		return GeoTIFFTagSet.getInstance().getTag(GeoTIFFTagSet.TAG_MODEL_TRANSFORMATION);
 	}
 	
 	protected static TIFFTag getAsciiTag(String set, int tagID) {
@@ -420,12 +503,11 @@ public class GeoTiffIIOMetadataEncoder {
 	        return GeoTiffConstants.NODATA_TAG;
         }
 
-	private GeoKeyEntry getNonNullKeyEntry(int keyID) {
+	private GeoKeyEntry getNonNullGeoKeyEntry(int keyID) {
 		final GeoKeyEntry entry = getGeoKeyEntry(keyID);
 
 		if (entry == null) {
-			throw new IllegalArgumentException(
-					"Unable to find an entry for the provided geo key " + keyID);
+			throw new IllegalArgumentException("Unable to find an entry for the provided geo key " + keyID);
 		}
 
 		return entry;
@@ -434,14 +516,11 @@ public class GeoTiffIIOMetadataEncoder {
 	private void checkParamTag(final int tag, final int expectedTag) {
 		if (tag != expectedTag) {
 			if (expectedTag == 0) {
-				throw new IllegalArgumentException(
-						"invalid key access, not a GeoTIFF SHORT parameter");
+				throw new IllegalArgumentException("invalid key access, not a GeoTIFF SHORT parameter");
 			} else if (expectedTag == getGeoDoubleParamsTag().getNumber()) {
-				throw new IllegalArgumentException(
-						"invalid key access, not a GeoTIFF DOUBLE parameter");
+				throw new IllegalArgumentException("invalid key access, not a GeoTIFF DOUBLE parameter");
 			} else if (expectedTag == getGeoAsciiParamsTag().getNumber()) {
-				throw new IllegalArgumentException(
-						"invalid key access, not a GeoTIFF ASCII parameter");
+				throw new IllegalArgumentException("invalid key access, not a GeoTIFF ASCII parameter");
 			} else {
 				throw new IllegalStateException();
 			}
@@ -452,10 +531,8 @@ public class GeoTiffIIOMetadataEncoder {
 		final int numDoubleParams = numGeoTiffDoubleParams;
 
 		if (numDoubleParams >= (geoTiffDoubleParams.length - 1)) {
-			final double[] doubleParams = new double[numDoubleParams
-					+ GeoTiffConstants.ARRAY_ELEM_INCREMENT];
-			System.arraycopy(geoTiffDoubleParams, 0, doubleParams, 0,
-					numDoubleParams);
+			final double[] doubleParams = new double[numDoubleParams+ GeoTiffConstants.ARRAY_ELEM_INCREMENT];
+			System.arraycopy(geoTiffDoubleParams, 0, doubleParams, 0,numDoubleParams);
 			geoTiffDoubleParams = doubleParams;
 		}
 
@@ -463,21 +540,38 @@ public class GeoTiffIIOMetadataEncoder {
 		numGeoTiffDoubleParams++;
 	}
 
-	private void addAsciiParam(String param) {
+	/**
+         * Replaces part of the ascii params with the provided elements
+         * 
+         * @param str the {@link String} for the replacement.
+         */
+        private void replaceAsciiParam(String str, int start, int end) {
+                geoTiffAsciiParams.replace(start, end, str);
+        }
+        
+	/**
+	 * Appends a new ascii params at the current list of elements, incrementing the size and appending a new separator
+	 * "|"
+	 * 
+	 * @param param the {@link String} to be appended.
+	 */
+	private void appendAsciiParam(String param) {
 		geoTiffAsciiParams.append(param);
 		geoTiffAsciiParams.append('|');
 		numGeoTiffAsciiParams++;
 	}
 
-	private void addGeoDoubleParamsRef(int keyID, int count) {
-		addGeoKeyEntry(keyID, getGeoDoubleParamsTag().getNumber(), count,
-				getCurrentGeoDoublesOffset());
+	private GeoKeyEntry addGeoDoubleParamsRef(int keyID, int count) {
+		return addGeoKeyEntry(keyID, getGeoDoubleParamsTag().getNumber(), count,getCurrentGeoDoublesOffset());
 	}
 
-	private void addGeoAsciiParamsRef(int keyID, int length) {
-		addGeoKeyEntry(keyID, getGeoAsciiParamsTag().getNumber(), length,
-				getCurrentGeoAsciisOffset());
+	private GeoKeyEntry addGeoAsciiParamsRef(int keyID, int length) {
+	        return addGeoKeyEntry(keyID, getGeoAsciiParamsTag().getNumber(), length,getCurrentGeoAsciisOffset());
 	}
+	
+        private GeoKeyEntry updateGeoAsciiParamsRef(int keyID, int length,int offset) {
+            return updateGeoKeyEntry(keyID, getGeoAsciiParamsTag().getNumber(), length, offset);
+        }
 
 	private int getCurrentGeoDoublesOffset() {
 		return numGeoTiffDoubleParams;
@@ -489,9 +583,7 @@ public class GeoTiffIIOMetadataEncoder {
 
 	private Element createIFD() {
 		Element ifd = new Element(GeoTiffConstants.GEOTIFF_IFD_TAG);
-		ifd.setAttribute(GeoTiffConstants.GEOTIFF_TAGSETS_ATT_NAME,
-				BaselineTIFFTagSet.class.getName() + ","
-						+ GeoTIFFTagSet.class.getName());
+		ifd.setAttribute(GeoTiffConstants.GEOTIFF_TAGSETS_ATT_NAME,BaselineTIFFTagSet.class.getName() + ","+ GeoTIFFTagSet.class.getName());
 
 		if (modelPixelScale.isSet()) {
 			ifd.addContent(createModelPixelScaleElement());
@@ -542,11 +634,9 @@ public class GeoTiffIIOMetadataEncoder {
 
 	public void setModelTransformation(final AffineTransform rasterToModel) {
 		if (modelPixelScale!=null&&modelPixelScale.isSet())
-			throw new IllegalStateException(
-					"ModelPixelScaleTag already set. It is not possible to set the ModelTransformation.");
+			throw new IllegalStateException("ModelPixelScaleTag already set. It is not possible to set the ModelTransformation.");
 		if (isModelTiePointsSet())
-			throw new IllegalStateException(
-					"ModelTiePointsTag already set. It is not possible to set the ModelTransformation.");
+			throw new IllegalStateException("ModelTiePointsTag already set. It is not possible to set the ModelTransformation.");
 
 		// //
 		//
@@ -701,8 +791,7 @@ public class GeoTiffIIOMetadataEncoder {
 
 	private Element createFieldElement(final TIFFTag tag) {
 		Element field = new Element(GeoTiffConstants.GEOTIFF_FIELD_TAG);
-		field.setAttribute(GeoTiffConstants.NUMBER_ATTRIBUTE, String.valueOf(tag
-				.getNumber()));
+		field.setAttribute(GeoTiffConstants.NUMBER_ATTRIBUTE, String.valueOf(tag.getNumber()));
 		field.setAttribute(GeoTiffConstants.NAME_ATTRIBUTE, tag.getName());
 
 		return field;
@@ -710,8 +799,7 @@ public class GeoTiffIIOMetadataEncoder {
 
 	private Element createShortElement(final int value) {
 		Element GeoKeyRecord = new Element(GeoTiffConstants.GEOTIFF_SHORT_TAG);
-		GeoKeyRecord.setAttribute(GeoTiffConstants.VALUE_ATTRIBUTE, String
-				.valueOf(value));
+		GeoKeyRecord.setAttribute(GeoTiffConstants.VALUE_ATTRIBUTE, String.valueOf(value));
 
 		return GeoKeyRecord;
 	}

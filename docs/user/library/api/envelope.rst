@@ -9,9 +9,9 @@ GeoTools, through virtue of reusing code, has two "Envelope" implementations to 
 
 * Java Rectangle2D - we have **Envelope2D** which is spatial extension of the Java Rectangle2D class. Our implementation makes use of doubles to store coordinates and holds on to a CoordinateReferenceSystem allowing us to tell where the coordinates are located.
 
-* JTS Envelope - we have *ReferencedEnvelope* which is adds a CoordinateReferenceSystem to a traditional JTS Envelope.
+* JTS Envelope - we have *ReferencedEnvelope* which is adds a CoordinateReferenceSystem to a traditional JTS Envelope. A subclass of ReferencedEnvelope is *ReferencedEnvelope3D* which supports a third dimension on top of the regular two dimensions. 
 
-As you can see **ReferencedEnvelope** is a bit of a olive branch between the JTS Geometry model and ISO Geometry model.
+As you can see **ReferencedEnvelope** and **ReferencedEnvelope3D** are a bit of a olive branch between the JTS Geometry model and ISO Geometry model.
 
 You will find other "Rectangles" around as you make use of GeoTools in a real world application.
 
@@ -31,13 +31,15 @@ You will find other "Rectangles" around as you make use of GeoTools in a real wo
 ReferencedEnvelope
 ^^^^^^^^^^^^^^^^^^
 
-ReferencedEnvelope is both:
+ReferencedEnvelope is all of these:
 
-* **Envelope** - as defined by the JTS Topology System ( a Simple Feature for SQL concept)
-* **BoundingBox** - 2D bounds as defined by the ISO 19107 Geometry
-* **Envelope** - captures 3D bounds as defined by ISO 19107 Geometry.
+* **com.vividsolutions.jts.geom.Envelope** - as defined by the JTS Topology System ( a Simple Feature for SQL concept)
+* **org.opengis.geometry.BoundingBox** - 2D bounds as defined by the ISO 19107 Geometry
+* **org.opengis.geometry.Envelope** - captures 3D bounds as defined by ISO 19107 Geometry.
 
-In short this is the class to use when you want to represent a bounds in GeoTools. The only other thing of note is the that the constructor expects the input in xMin,xMax,yMin,yMax order and expects a crs.:
+Note that in order to support 3D bounds (and use a 3D Coordinate Reference System) we must create an instance of the child class **ReferencedEnvelope3D** (see below).
+
+In short this is the class to use when you want to represent a bounds in GeoTools. The only other thing of note is the that the constructor expects the input in xMin,xMax,yMin,yMax order and expects a (2D) crs:
 
 .. literalinclude:: /../src/main/java/org/geotools/api/APIExamples.java
    :language: java
@@ -72,6 +74,29 @@ CoordinateReferenceSystem for a returned Envelope.
    
    CoordinateReferenceSystem crs = bounds.getCoordinateReferenceSystem();
 
+ReferencedEnvelope3D
+^^^^^^^^^^^^^^^^^^^^
+
+ReferencedEnvelope3D is all of these:
+
+* **ReferencedEnvelope** including all parent classes and interfaces
+* **org.opengis.geometry.BoundingBox3D** - 3D bounds as defined by the ISO 19107 Geometry
+
+This is the class to use when you want to represent a 3D bounds in GeoTools. The constructor expects the input in xMin,xMax,yMin,yMax,zMin,zMax order and expects a 3D crs:
+
+.. literalinclude:: /../src/main/java/org/geotools/api/APIExamples.java
+   :language: java
+   :start-after: // exampleReferencedEnvelope3D start
+   :end-before: // exampleReferencedEnvelope3D end
+   
+As explained above, when using a 3D CRS we must create an instance of ReferencedEnvelope3D and not of its parent class. If we are not sure what dimension we are dealing with,
+there are safe ways to create, copy, convert or reference ReferencedEnvelope instances:
+
+.. literalinclude:: /../src/main/java/org/geotools/api/APIExamples.java
+   :language: java
+   :start-after: // exampleReferencedEnvelopeStaticMethods start
+   :end-before: // exampleReferencedEnvelopeStaticMethods end
+
 OpenGIS Envelope
 ^^^^^^^^^^^^^^^^
 
@@ -101,7 +126,7 @@ for this example:
      :language: java
      :start-after: // exampleBoundingBox start
      :end-before: // exampleBoundingBox end
-
+     
 JTS Envelope
 ^^^^^^^^^^^^
 

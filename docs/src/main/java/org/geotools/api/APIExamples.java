@@ -2,8 +2,10 @@ package org.geotools.api;
 
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
@@ -157,6 +159,86 @@ private void exampleReferencedEnvelope() throws Exception {
     envelope.setToNull();
     
     // exampleReferencedEnvelope end
+}
+
+//
+//Referenced Envelope 3D Examples
+//
+private void exampleReferencedEnvelope3D() throws Exception {
+ // exampleReferencedEnvelope3D start
+ ReferencedEnvelope3D envelope = new ReferencedEnvelope3D(0, 10, 0, 20, 0, 30, DefaultGeographicCRS.WGS84_3D);
+ 
+ double xMin = envelope.getMinX();
+ double yMin = envelope.getMinY();
+ double zMin = envelope.getMinZ();
+ 
+ double xMax = envelope.getMaxX();
+ double yMax = envelope.getMaxY();
+ double zMax = envelope.getMaxZ();
+ 
+ double width = envelope.getWidth();
+ double height = envelope.getHeight();
+ double depth = envelope.getDepth();
+ 
+ double xCenter = envelope.getMedian(0);
+ double yCenter = envelope.getMedian(1);
+ double zCenter = envelope.getMedian(2);
+ 
+ CoordinateReferenceSystem crs = envelope.getCoordinateReferenceSystem();
+ int dimension = envelope.getDimension();
+ 
+ // Direct access to internal upper and lower positions
+ DirectPosition lower = envelope.getLowerCorner();
+ DirectPosition upper = envelope.getUpperCorner();
+ 
+ // expand to include 15, 30, 40
+ envelope.include(15, 30, 40);
+ 
+ envelope.isEmpty(); // check if storing width and height are 0
+ 
+ envelope.isNull(); // check if "null" (not storing anything)
+ envelope.setToNull();
+ 
+ // exampleReferencedEnvelope3D end
+}
+
+//
+//Referenced Envelope Static Methods Examples
+//
+private void exampleReferencedEnvelopeStaticMethods() throws Exception {
+// exampleReferencedEnvelopeStaticMethods start
+    ReferencedEnvelope env; // can hold both regular ReferencedEnvelope as well as ReferencedEnvelope3D
+    ReferencedEnvelope original = null; // can be instance of ReferencedEnvelope3D;    
+    CoordinateReferenceSystem crs = null; //can be 2D or 3D
+    org.opengis.geometry.Envelope opengis_env = null; //can be instance of ReferencedEnvelope(3D)
+    com.vividsolutions.jts.geom.Envelope jts_env = null; //can be instance of ReferencedEnvelope(3D)
+    BoundingBox bbox = null; //can be instance of ReferencedEnvelope(3D)
+        
+    //safely copy ReferencedEnvelope, uses type of original to determine type
+    env = ReferencedEnvelope.create( original );
+    
+    //safely create ReferencedEnvelope from CRS, uses dimension to determine type
+    env = ReferencedEnvelope.create( crs );
+    
+    //safely create ReferencedEnvelope from org.opengis.geometry.Envelope, uses dimension in Envelope to determine type
+    env = ReferencedEnvelope.create( opengis_env, crs );
+    
+    //safely create ReferencedEnvelope from com.vividsolutions.jts.geom.Envelope, uses dimension in Envelope to determine type
+    env = ReferencedEnvelope.create( jts_env, crs );
+    
+    //safely reference org.opengis.geometry.Envelope as ReferencedEnvelope
+    //--> if it is a ReferencedEnvelope(3D), simply cast it; if not, create a conversion
+    env = ReferencedEnvelope.reference ( opengis_env);
+    
+    //safely reference com.vividsolutions.jts.geom.Envelope as ReferencedEnvelope
+    //--> if it is a ReferencedEnvelope(3D), simply cast it; if not, create a conversion
+    env = ReferencedEnvelope.reference ( jts_env);
+    
+    //safely reference BoundingBox as ReferencedEnvelope
+    //--> if it is a ReferencedEnvelope(3D), simply cast it; if not, create a conversion
+    env = ReferencedEnvelope.reference ( bbox);
+
+// exampleReferencedEnvelopeStaticMethods end
 }
 
 private void transformReferencedEnvelope() throws Exception {

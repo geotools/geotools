@@ -732,6 +732,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
                     sql.append("', '");
                     sql.append(att.getName().getLocalPart());
                     sql.append("') FROM DUAL");
+                    LOGGER.log(Level.FINE, "Getting the full extent of the table using optimized search: {0}", sql);
                     rs = st.executeQuery(sql.toString());
 
                     if (rs.next()) {

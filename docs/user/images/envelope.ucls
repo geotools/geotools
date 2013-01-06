@@ -1,25 +1,25 @@
-<class-diagram version="1.0.1" icons="true" automaticImage="PNG" always-add-relationships="true" generalizations="true" 
+<class-diagram version="1.0.11" icons="true" automaticImage="PNG" always-add-relationships="true" generalizations="true" 
   realizations="true" associations="true" dependencies="true" nesting-relationships="true">  
   <class id="1" corner="BOTTOM_RIGHT" language="java" name="com.vividsolutions.jts.geom.Envelope" project="docs" 
-    file="/Users/jody/.m2/repository/com/vividsolutions/jts/1.11/jts-1.11.jar" binary="true">    
+    file="/home/niels/.m2/repository/com/vividsolutions/jts/1.13/jts-1.13.jar" binary="true">    
     <position x="127" y="132" width="-1" height="-1"/>    
-    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </class>  
   <interface id="2" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.Envelope" project="gt-opengis" 
     file="/gt-opengis/src/main/java/org/opengis/geometry/Envelope.java" binary="false">    
-    <position x="311" y="134" width="-1" height="-1"/>    
-    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+    <position x="372" y="137" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </interface>  
   <interface id="3" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.BoundingBox" project="gt-opengis" 
     file="/gt-opengis/src/main/java/org/opengis/geometry/BoundingBox.java" binary="false">    
-    <position x="319" y="242" width="-1" height="-1"/>    
-    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+    <position x="373" y="244" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
@@ -27,52 +27,117 @@
   <class id="4" corner="BOTTOM_RIGHT" language="java" name="org.geotools.geometry.jts.ReferencedEnvelope" 
     project="gt-api" file="/gt-api/src/main/java/org/geotools/geometry/jts/ReferencedEnvelope.java" binary="false">    
     <position x="126" y="240" width="-1" height="-1"/>    
-    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </class>  
   <class id="5" corner="BOTTOM_RIGHT" language="java" name="org.geotools.geometry.Envelope2D" project="gt-referencing" 
     file="/gt-referencing/src/main/java/org/geotools/geometry/Envelope2D.java" binary="false">    
-    <position x="456" y="242" width="-1" height="-1"/>    
-    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+    <position x="531" y="243" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </class>  
-  <class id="7" corner="BOTTOM_RIGHT" language="java" name="java.awt.geom.Rectangle2D" project="gt-referencing" 
-    file="/System/Library/Frameworks/JavaVM.framework/Versions/1.5.0/Classes/classes.jar" binary="true">    
-    <position x="458" y="134" width="-1" height="-1"/>    
-    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+  <class id="6" corner="BOTTOM_RIGHT" language="java" name="java.awt.geom.Rectangle2D" project="gt-referencing" 
+    file="/usr/lib/jvm/jdk1.6.0_32/jre/lib/rt.jar" binary="true">    
+    <position x="525" y="136" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </class>  
-  <generalization>    
-    <end type="SOURCE" nodeId="3"/>    
-    <end type="TARGET" nodeId="2"/>  
-  </generalization>  
-  <generalization>    
-    <end type="SOURCE" nodeId="4"/>    
-    <end type="TARGET" nodeId="1"/>  
-  </generalization>  
-  <realization>    
-    <end type="SOURCE" nodeId="4"/>    
-    <end type="TARGET" nodeId="3"/>  
-  </realization>  
-  <realization>    
-    <end type="SOURCE" nodeId="4"/>    
-    <end type="TARGET" nodeId="2"/>  
-  </realization>  
-  <dependency>    
-    <end type="SOURCE" nodeId="5"/>    
-    <end type="TARGET" nodeId="7"/>  
+  <interface id="7" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.BoundingBox3D" project="gt-opengis" 
+    file="/gt-opengis/src/main/java/org/opengis/geometry/BoundingBox3D.java" binary="false">    
+    <position x="378" y="362" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <class id="8" corner="BOTTOM_RIGHT" language="java" name="org.geotools.geometry.jts.ReferencedEnvelope3D" 
+    project="gt-api" file="/gt-api/src/main/java/org/geotools/geometry/jts/ReferencedEnvelope3D.java" binary="false">    
+    <position x="124" y="359" width="-1" height="-1"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <dependency id="9">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="6"/>  
   </dependency>  
-  <realization>    
-    <end type="SOURCE" nodeId="5"/>    
-    <end type="TARGET" nodeId="2"/>  
+  <generalization id="10">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <generalization id="11">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <realization id="12">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="3"/>  
   </realization>  
-  <classifier-display autosize="true" package="false" initial-value="false" signature="true" visibility="true">    
+  <realization id="13">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="7"/>  
+  </realization>  
+  <generalization id="14">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <dependency id="15">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <realization id="16">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="3"/>  
+  </realization>  
+  <generalization id="17">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <dependency id="18">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <association id="19">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="20" name="EVERYTHING"/>      
+      <multiplicity id="21" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="22">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <realization id="23">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="2"/>  
+  </realization>  
+  <dependency id="24">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="2"/>  
+  </dependency>  
+  <association id="25">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="26" name="EVERYTHING"/>      
+      <multiplicity id="27" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="28">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="2"/>  
+  </realization>  
+  <classifier-display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+    visibility="true">    
     <attributes public="false" package="false" protected="false" private="false"/>    
     <operations public="false" package="false" protected="false" private="false"/>  
   </classifier-display>  

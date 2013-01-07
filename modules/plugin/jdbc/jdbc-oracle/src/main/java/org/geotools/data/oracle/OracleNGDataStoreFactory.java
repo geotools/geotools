@@ -138,11 +138,7 @@ public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {
       String host = (String) HOST.lookUp(params);        
       Integer port =(Integer) PORT.lookUp(params);
 
-    	if(db.startsWith("(") || db.startsWith("ldap://"))
-    		// for Oracle LDAP:
-    		// ldap://[host]/[db],cn=OracleContext,dc=[oracle_ldap_context]
-    		// for Oracle RAC
-    		// (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=[host])(PORT=[port, often 1521]))(LOAD_BALANCE=YES)(CONNECT_DATA=(SERVICE_NAME=[oracle_service_name])))
+    	if(db.startsWith("("))
     		return JDBC_PATH + db;  
     	else if(db.startsWith("/") && host != null && port != null)
     		return JDBC_PATH + "//" + host + ":" + port + db;

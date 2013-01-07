@@ -21,18 +21,11 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.RenderedImage;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 import javax.media.jai.JAI;
 import javax.media.jai.ROI;
-
-import org.geotools.process.ProcessException;
-import org.geotools.process.factory.DescribeParameter;
-import org.geotools.process.factory.DescribeProcess;
-import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.gs.WrappingIterator;
 
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
@@ -49,6 +42,10 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.jai.Registry;
+import org.geotools.process.ProcessException;
+import org.geotools.process.factory.DescribeParameter;
+import org.geotools.process.factory.DescribeProcess;
+import org.geotools.process.factory.DescribeResult;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.util.NumberRange;
@@ -91,14 +88,6 @@ public class RasterZonalStatistics implements RasterProcess {
 
     private final static Operation CROPOPERATION = PROCESSOR.getOperation("CoverageCrop");
     
-    static {
-        try{
-            Registry.registerRIF(JAI.getDefaultInstance(), new ZonalStatsDescriptor(), new ZonalStatsRIF(), Registry.JAI_TOOLS_PRODUCT);
-        } catch (Throwable e) {
-            // swallow exception in case the op has already been registered.
-        }
-    }
-
     @DescribeResult(name = "statistics", description = "A feature collection with the attributes of the zone layer (prefixed by 'z_') and the statistics fields count,min,max,sum,avg,stddev")
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "data", description = "Input raster to compute statistics for") GridCoverage2D coverage,

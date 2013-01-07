@@ -2030,19 +2030,25 @@ public final class SDO {
      * D: Dimension of ordinates
      * </li>
      * <li>
-     * L: Dimension of LRS measures
+     * L: Ordinate that represents the LRS measure
      * </li>
      * </ul>
      * </p>
      * 
      * <p>
-     * The number of ordinates per coordinate are taken to be L+D, and the
+     * The number of ordinates per coordinate are taken to be D, and the
      * number of ordinates should be a multiple of this value.
      * </p>
      * 
      * <p>
      * In the Special case of GTYPE 2001 and a three ordinates are interpreted
      * as a single Coordinate rather than an error.
+     * </p>
+     * 
+     * <p>
+     * For 3-dimensional coordinates we assume z to be the third ordinate. If
+     * the LRS measure value is stored in the third ordinate (L=3) we assume a
+     * 2-dimensional coordinate.
      * </p>
      *
      * @param f CoordinateSequenceFactory used to encode ordiantes for JTS 
@@ -2071,15 +2077,22 @@ public final class SDO {
             return cs;
         }
 
-        final int LEN = D + L;
+        final int LEN = D; // bugfix 20121231-BK: LEN = D instead of LEN = D + L as Oracle supports only one LRS ordinate!
 
         if ((ordinates.length % LEN) != 0) {
-            throw new IllegalArgumentException("Dimension D:" + D + " and L:"
-                + L + " denote Coordiantes " + "of " + LEN
+            // bugfix 20121231-BK: LEN is D instead of D + L
+            throw new IllegalArgumentException("Dimension D:" + D 
+                + " denote Coordiantes " + "of " + LEN
                 + " ordinates. This cannot be resolved with"
                 + "an ordinate array of length " + ordinates.length);
         }
         
+        // bugfix 20121231-BK: throw exception if L > D (4 lines added)
+        if (L != 0 && L > D) {
+            throw new IllegalArgumentException("Dimension D:" + D
+                + " and LRS with L: " + L + " is not supported at a position > D");
+        }
+
         // special optimization for faster 2D rendering
         if(D == 2 && L == 0 && f instanceof LiteCoordinateSequenceFactory) {
             return ((LiteCoordinateSequenceFactory) f).create(ordinates);
@@ -2091,17 +2104,16 @@ public final class SDO {
         OrdinateList y = new OrdinateList(ordinates, 1, LEN);
         OrdinateList z = null;
 
-        if (D == 3) {
+        // bugfix 20121231-BK: add z-Coordinate just if D >= 3 and L != 3
+        if (D >= 3 && L != 3) {
             z = new OrdinateList(ordinates, 2, LEN);
         }
 
         if (L != 0) {
-            OrdinateList[] m = new OrdinateList[L];
+            // bugfix 20121231-BK: Oracle supports only one LRS ordinate! (removed 6 lines, added 2)
+            OrdinateList m = new OrdinateList(ordinates, L - 1, LEN);
 
-            for (int i = 0; i < L; i++) {
-                m[i] = new OrdinateList(ordinates, D + i, LEN);
-            }
-
+            // TODO org.geotools.geometry.jts.CoordinateSequenceFactory does not support 4 dimensions - thus we will get only 3 dimensions!
             return coordiantes(f, x, y, z, m);
         } else {
             return coordiantes(f, x, y, z);
@@ -2180,6 +2192,49 @@ public final class SDO {
     }
 
     /**
+     * bugfix 20121231-BK: added:
+     * TODO org.geotools.geometry.jts.CoordinateSequenceFactory does not support 4 dimensions!
+     * Construct CoordinateSequence with LRS measures.
+     *
+     * <p>
+     * To produce three dimension Coordiantes pass in <code>null</code> for z
+     * </p>
+     *
+     * @param f {@link CoordinateSequenceFactory}
+     * @param x x-ordinates
+     * @param y y-ordinates
+     * @param z z-ordinates, <code>null</code> for 2D
+     * @param m m-ordinates
+     *
+     * @return {@link CoordinateSequence}
+     */
+    public static CoordinateSequence coordiantes(CoordinateSequenceFactory f,
+        OrdinateList x, OrdinateList y, OrdinateList z, OrdinateList m) {
+        final int LENGTH = x.size();
+        // TODO org.geotools.geometry.jts.LiteCoordinateSequenceFactory does not support 4 dimensions!
+        // CoordinateSequence cs = f.create(LENGTH, z == null ? 3: 4);
+        CoordinateSequence cs = f.create(LENGTH, z == null ? 2: 3);
+
+        if (z != null) {
+            for (int i = 0; i < LENGTH; i++) {
+                cs.setOrdinate(i, 0, x.getDouble(i));
+                cs.setOrdinate(i, 1, y.getDouble(i));
+                cs.setOrdinate(i, 2, z.getDouble(i));
+                // cs.setOrdinate(i, 3, m.getDouble(i));
+            }
+        } else {
+            for (int i = 0; i < LENGTH; i++) {
+                cs.setOrdinate(i, 0, x.getDouble(i));
+                cs.setOrdinate(i, 1, y.getDouble(i));
+                // cs.setOrdinate(i, 2, m.getDouble(i));
+            }
+        }
+
+        return cs;
+    }
+
+    /**
+     * @deprecated bugfix 20121231-BK: Oracle supports only one LRS measure information! use {@link SDO#coordiantes(CoordinateSequenceFactory, OrdinateList, OrdinateList, OrdinateList, OrdinateList) coordiantes() with just a OrdinateList of measures}!
      * Construct SpatialCoordiantes, with LRS measure information.
      * 
      * <p>
@@ -2194,6 +2249,7 @@ public final class SDO {
      *
      * @return DOCUMENT ME!
      */
+    @Deprecated
     public static CoordinateSequence coordiantes(CoordinateSequenceFactory f,
         OrdinateList x, OrdinateList y, OrdinateList z, OrdinateList[] m) {
         final int D = (z != null) ? 3 : 2;
@@ -2222,6 +2278,7 @@ public final class SDO {
     }
 
     /**
+     * @deprecated bugfix 20121231-BK: Oracle supports only one LRS measure information! use {@link SDO#coordiantes(CoordinateSequenceFactory, OrdinateList, OrdinateList, OrdinateList, OrdinateList) coordiantes() with just a OrdinateList of measures}!
      * Construct SpatialCoordiantes, with LRS measure information.
      * 
      * <p>
@@ -2236,6 +2293,7 @@ public final class SDO {
      *
      * @return DOCUMENT ME!
      */
+    @Deprecated
     public static CoordinateSequence coordiantes(CoordinateSequenceFactory f,
                                                  AttributeList x, 
                                                  AttributeList y, 

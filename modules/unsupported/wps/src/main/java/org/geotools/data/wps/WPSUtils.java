@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.vividsolutions.jts.geom.Geometry;
+import java.util.logging.Logger;
 
 import net.opengis.wps10.ComplexDataCombinationsType;
 import net.opengis.wps10.ComplexDataDescriptionType;
@@ -47,6 +48,7 @@ import org.eclipse.emf.common.util.EList;
 import org.geotools.data.Parameter;
 import org.geotools.text.Text;
 import org.geotools.util.Converters;
+import org.geotools.util.logging.LoggerFactory;
 import org.opengis.util.InternationalString;
 
 
@@ -62,6 +64,7 @@ import org.opengis.util.InternationalString;
  */
 public class WPSUtils
 {
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.data.wps");
 
     /**
      * static ints representing the input types
@@ -309,8 +312,18 @@ public class WPSUtils
             Class type = Object.class;
             if (literalOutput != null)
             {
-                String reference = literalOutput.getDataType().getReference();
-                type = getLiteralTypeFromReference(reference);
+                if(literalOutput.getDataType() != null)
+                {
+                    String reference = literalOutput.getDataType().getReference();
+                    type = getLiteralTypeFromReference(reference);
+                }
+                else
+                {
+                    // datatype is null => character string (OGC 05-007r7, Table 37, DataType)
+                    type = String.class;
+                }
+
+                // TODO: handle UOM
             }
             else if (complexOutput != null)
             {

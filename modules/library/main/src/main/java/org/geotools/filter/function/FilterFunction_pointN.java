@@ -54,7 +54,7 @@ public class FilterFunction_pointN extends FunctionExpressionImpl {
         }
 
         try { // attempt to get value and perform conversion
-            arg1 = ((Number) getExpression(1).evaluate(feature)).intValue();
+            arg1 = getExpression(1).evaluate(feature, Integer.class).intValue();
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(

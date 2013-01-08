@@ -50,18 +50,18 @@ public class FilterFunction_Test extends TestCase {
         super.setUp();
         ff = (FilterFactoryImpl) CommonFactoryFinder.getFilterFactory2(null);
 
-        literal_1 = ff.literal(new Double(1));
-        literal_m1 = ff.literal(new Double(-1));
-        literal_2 = ff.literal(new Double(2));
-        literal_m2 = ff.literal(new Double(-2));
-        literal_pi = ff.literal(new Double(Math.PI));
-        literal_05pi = ff.literal(new Double(0.5 * Math.PI));
+        literal_1 = ff.literal("1");
+        literal_m1 = ff.literal("-1");
+        literal_2 = ff.literal("2");
+        literal_m2 = ff.literal("-2");
+        literal_pi = ff.literal(String.valueOf(Math.PI));
+        literal_05pi = ff.literal(String.valueOf(0.5 * Math.PI));
         assertEquals("Literal Expression 0.0", new Double(1.0), literal_1
-                .evaluate(null));
+                .evaluate(null, Double.class));
         assertEquals("Literal Expression pi", new Double(Math.PI), literal_pi
-                .evaluate(null));
+                .evaluate(null, Double.class));
         assertEquals("Literal Expression 05pi", new Double(0.5 * Math.PI),
-                literal_05pi.evaluate(null));
+                literal_05pi.evaluate(null, Double.class));
 
     }
 

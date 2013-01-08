@@ -952,7 +952,15 @@ public class Schemas {
                     }
 
                     if (decl == fElement) {
-                        minOccurs.add(new Integer(particle.getMinOccurs()));
+                        if (particle.isSetMinOccurs()) {
+                            minOccurs.add(new Integer(particle.getMinOccurs()));
+                        } else if (particle.getContainer() instanceof XSDModelGroup
+                                && particle.getContainer().getContainer() instanceof XSDParticle) {
+                            particle = (XSDParticle) particle.getContainer().getContainer();
+                            minOccurs.add(new Integer(particle.getMinOccurs()));
+                        } else {
+                            minOccurs.add(1);
+                        }
                     }
                 }
             };
@@ -993,7 +1001,15 @@ public class Schemas {
                     }
 
                     if (decl == fElement) {
-                        maxOccurs.add(new Integer(particle.getMaxOccurs()));
+                        if (particle.isSetMaxOccurs()) {
+                            maxOccurs.add(new Integer(particle.getMaxOccurs()));
+                        } else if (particle.getContainer() instanceof XSDModelGroup
+                                && particle.getContainer().getContainer() instanceof XSDParticle) {
+                            particle = (XSDParticle) particle.getContainer().getContainer();
+                            maxOccurs.add(new Integer(particle.getMaxOccurs()));
+                        } else {
+                            maxOccurs.add(1);
+                        }
                     }
                 }
             };

@@ -28,8 +28,9 @@ import org.geotools.data.complex.AppSchemaDataAccessRegistry;
 import org.geotools.data.complex.AttributeMapping;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.NestedAttributeMapping;
-import org.geotools.data.complex.filter.XPath.Step;
-import org.geotools.data.complex.filter.XPath.StepList;
+import org.geotools.data.complex.filter.XPath;
+import org.geotools.data.complex.filter.XPathUtil.Step;
+import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.Types;
 import org.geotools.filter.AttributeExpressionImpl;
@@ -348,7 +349,7 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
             if (clientProperties.containsKey(lastStepName)) {
                 // end NC - added
                 exp = (Expression) clientProperties.get(lastStepName);
-            } else if (lastStep.isId()) {
+            } else if (XPath.isId(lastStep)) {
                 if (mapping.getIdentifierExpression() == Expression.NIL) {
                     // no specific attribute mapping or that idExpression is not mapped
                     // use primary key

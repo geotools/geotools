@@ -42,7 +42,7 @@ import org.geotools.data.FeatureSource;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
 import org.geotools.data.complex.config.EmfAppSchemaReader;
-import org.geotools.data.complex.config.FeatureTypeRegistry;
+import org.geotools.data.complex.config.AppSchemaFeatureTypeRegistry;
 import org.geotools.data.complex.config.XMLConfigDigester;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -152,7 +152,7 @@ public class TimeSeriesTest extends AppSchemaTestSupport {
             throw e;
         }
 
-        final FeatureTypeRegistry typeRegistry = new FeatureTypeRegistry();
+        final AppSchemaFeatureTypeRegistry typeRegistry = new AppSchemaFeatureTypeRegistry();
         try {
             typeRegistry.addSchemas(schemaIndex);
     

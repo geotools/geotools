@@ -527,11 +527,7 @@ public class OnlineWPSFactoryTest extends OnlineTestCase
     }
 
     /**
-     * Do some more local process tests, such as double addition
-     *
-     * @throws ServiceException
-     * @throws IOException
-     * @throws ParseException
+     * GEOT-4364: parsing LiteralOutput with null DataType
      */
     @Test
     public void testDescribeProcessNullDatatype() throws ServiceException, IOException, ParseException, ProcessException

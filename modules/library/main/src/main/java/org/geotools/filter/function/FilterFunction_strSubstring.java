@@ -58,7 +58,7 @@ public class FilterFunction_strSubstring extends FunctionExpressionImpl {
         }
 
         try { // attempt to get value and perform conversion
-            arg1 = ((Number) getExpression(1).evaluate(feature)).intValue();
+            arg1 = getExpression(1).evaluate(feature, Integer.class).intValue();
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(
@@ -66,7 +66,7 @@ public class FilterFunction_strSubstring extends FunctionExpressionImpl {
         }
 
         try { // attempt to get value and perform conversion
-            arg2 = ((Number) getExpression(2).evaluate(feature)).intValue();
+            arg2 = getExpression(2).evaluate(feature, Integer.class).intValue();
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(

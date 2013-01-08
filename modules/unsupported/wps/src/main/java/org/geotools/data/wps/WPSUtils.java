@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-12, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -24,6 +24,7 @@ import java.util.TreeMap;
 
 import com.vividsolutions.jts.geom.Geometry;
 import java.util.logging.Logger;
+import net.opengis.ows11.DomainMetadataType;
 
 import net.opengis.wps10.ComplexDataCombinationsType;
 import net.opengis.wps10.ComplexDataDescriptionType;
@@ -56,6 +57,7 @@ import org.opengis.util.InternationalString;
  * Contains helpful static util methods for the WPS module
  *
  * @author gdavis
+ * @author etj
  *
  *
  *
@@ -142,7 +144,7 @@ public class WPSUtils
     {
         return createInputDataType(obj, type, schema, null);
     }
-    
+
     /**
      * Creates a DataType input object from the given object, schema and type (complex or literal).
      *
@@ -312,10 +314,23 @@ public class WPSUtils
             Class type = Object.class;
             if (literalOutput != null)
             {
-                if(literalOutput.getDataType() != null)
+                DomainMetadataType dataType = literalOutput.getDataType();
+                if(dataType != null)
                 {
-                    String reference = literalOutput.getDataType().getReference();
-                    type = getLiteralTypeFromReference(reference);
+                    // try and parse the type
+                    Class literalType = null;
+                    
+                    if(dataType.getReference() != null) { // reference is 0..1
+                        literalType = guessLiteralType(dataType.getReference());
+                        if(literalType == null) {
+                            LOGGER.warning("Unparsable ows:reference " + dataType.getReference());
+                        }
+                    }
+                    if(literalType == null) { // no parsable reference
+                        literalType = guessLiteralType(dataType.getValue()); // value is mandatory
+                    }
+
+                    type = literalType != null? literalType : String.class;
                 }
                 else
                 {
@@ -380,39 +395,53 @@ public class WPSUtils
     /**
      * Take a reference string and determine the literal type based from that
      *
-     * @param reference
-     *            string
-     * @return class type it maps to
+     * @param ref (OGC suggests a URN starting with urn:ogc:def:dataType:OGC)
+     * 
+     * @return class type it maps to, or String.class if no match was found
      */
-    private static Class getLiteralTypeFromReference(String reference)
+    private static Class getLiteralTypeFromReference(String ref)
     {
-        if ((reference.toUpperCase()).contains("DOUBLE"))
+        Class guess = guessLiteralType(ref);
+        
+        return guess != null? guess : String.class; // default to string
+    }
+
+    /**
+     * Try and parse a literaltype.
+     * If nothing matched, return null.
+     * 
+     * @return class type it maps to, or null if no match was found
+     */
+    private static Class guessLiteralType(String s)
+    {
+        final String u = s.toUpperCase();
+
+        if (u.contains("DOUBLE"))
         {
             return Double.class;
         }
-        else if ((reference.toUpperCase()).contains("INTEGER"))
+        else if ( u.contains("INTEGER"))
         {
             return Integer.class;
         }
-        else if ((reference.toUpperCase()).contains("FLOAT"))
+        else if ( u.contains("FLOAT"))
         {
             return Float.class;
         }
-        else if ((reference.toUpperCase()).contains("BOOLEAN"))
+        else if ( u.contains("BOOLEAN"))
         {
             return boolean.class;
         }
-        else if ((reference.toUpperCase()).contains("CHAR"))
+        else if ( u.contains("CHAR"))
         {
             return Character.class;
         }
-        else if ((reference.toUpperCase()).contains("STRING"))
+        else if ( u.contains("STRING"))
         {
             return String.class;
         }
 
-        // default to string
-        return String.class;
+        return null;
     }
 
     /**

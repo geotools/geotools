@@ -132,6 +132,9 @@ import com.sun.media.jai.util.ImageUtil;
  */
 public class ImageWorker {
     
+    /** CS_PYCC */
+    private static final ColorSpace CS_PYCC = ColorSpace.getInstance(ColorSpace.CS_PYCC);
+    
     /**
      * Raster space epsilon
      */
@@ -760,9 +763,38 @@ public class ImageWorker {
      */
     public final boolean isColorSpaceRGB() {
     	final ColorModel cm = image.getColorModel();
-    	if(cm==null)
-    		return false;
+    	if(cm==null){
+    	    return false;
+    	}
         return cm.getColorSpace().getType() == ColorSpace.TYPE_RGB;
+    }
+    
+    /**
+     * Returns {@code true} if the {@linkplain #image} uses a YCbCr {@linkplain ColorSpace color
+     * space}. 
+     *
+     * @see #forceColorSpaceYCbCr()
+     */
+    public final boolean isColorSpaceYCbCr() {
+        final ColorModel cm = image.getColorModel();
+        if(cm==null){
+            return false;
+        }
+        return cm.getColorSpace().getType() == ColorSpace.TYPE_YCbCr||cm.getColorSpace().equals(CS_PYCC);
+    }
+    
+    /**
+     * Returns {@code true} if the {@linkplain #image} uses a IHA {@linkplain ColorSpace color
+     * space}. 
+     *
+     * @see #forceColorSpaceIHS()
+     */
+    public final boolean isColorSpaceIHS() {
+        final ColorModel cm = image.getColorModel();
+        if(cm==null){
+            return false;
+        }
+        return cm.getColorSpace() instanceof IHSColorSpace;
     }
 
     /**
@@ -775,8 +807,9 @@ public class ImageWorker {
      */
     public final boolean isColorSpaceGRAYScale() {
     	final ColorModel cm = image.getColorModel();
-    	if(cm==null)
-    		return false;
+    	if(cm==null){
+    	    return false;
+    	}
         return cm.getColorSpace().getType() == ColorSpace.TYPE_GRAY;
     }
 
@@ -1240,11 +1273,6 @@ public class ImageWorker {
 				throw new IllegalArgumentException(
 								Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2,"datatype", datatype));
 			}
-
-            //did we initialized the LUT?
-            if(lut==null)
-            	throw new IllegalStateException(
-						Errors.format(ErrorKeys.NULL_ARGUMENT_$1,"lut"));
             /*
              * Get the default hints, which usually contains only informations
              * about tiling. If the user override the rendering hints with an
@@ -1327,48 +1355,101 @@ public class ImageWorker {
     public final ImageWorker forceColorSpaceRGB() {
         if (!isColorSpaceRGB()) {
             final ColorModel cm = new ComponentColorModel(
-                    ColorSpace.getInstance(ColorSpace.CS_sRGB), false, false,
-                    Transparency.OPAQUE, DataBuffer.TYPE_BYTE);
-            image = ColorConvertDescriptor.create(image, cm, getRenderingHints());
-            invalidateStatistics();
+                    ColorSpace.getInstance(ColorSpace.CS_sRGB), 
+                    false, 
+                    false,
+                    Transparency.OPAQUE, 
+                    image.getSampleModel().getDataType());
+            
+            // force computation of the new colormodel
+            forceColorModel(cm);
         }
         // All post conditions for this method contract.
         assert isColorSpaceRGB();
         return this;
     }
 
-	/**
-	 * Forces the {@linkplain #image} color model to the
-	 *  IHS color space. If the current color
-	 * space is already of IHS type, then this
-	 * method does nothing. This operation may loose the alpha channel.
-	 *
-	 * @return this {@link ImageWorker}.
-	 *
-	 * @see ColorConvertDescriptor
-	 */
-	public final ImageWorker forceColorSpaceIHS() {
-		if (!(image.getColorModel().getColorSpace() instanceof IHSColorSpace)) {
-			forceComponentColorModel();
-			 // Create a ColorModel to convert the image to IHS.
-			final IHSColorSpace ihs = IHSColorSpace.getInstance();
-			final int numBits=image.getColorModel().getComponentSize(0);
-			final ColorModel ihsColorModel = new ComponentColorModel(ihs, new int[] {
-					numBits, numBits, numBits }, false, false, Transparency.OPAQUE,
-					image.getSampleModel().getDataType());
-			// Create a ParameterBlock for the conversion.
-			final ParameterBlock pb = new ParameterBlock();
-			pb.addSource(image);
-			pb.add(ihsColorModel);
-			// Do the conversion.
-			image = JAI.create("colorconvert", pb);
-			invalidateStatistics();
-		}
+    /**
+     * Forces the {@linkplain #image} color model to the
+     * {@linkplain ColorSpace#CS_PYCC YCbCr color space}. If the current color
+     * space is already of {@linkplain ColorSpace#CS_PYCC YCbCr}, then this
+     * method does nothing. 
+     *
+     * @return this {@link ImageWorker}.
+     *
+     * @see #isColorSpaceRGB
+     * @see ColorConvertDescriptor
+     */
+    public final ImageWorker forceColorSpaceYCbCr() {
+        if (!isColorSpaceYCbCr()) {
+            // go to component model
+            forceComponentColorModel();
+            
+            // Create a ColorModel to convert the image to YCbCr.
+            final ColorModel cm = new ComponentColorModel(
+                    CS_PYCC, 
+                    false, 
+                    false, 
+                    Transparency.OPAQUE,
+                    this.image.getSampleModel().getDataType()
+            );
+            
+            // force computation of the new colormodel
+            forceColorModel(cm);
+        }
+        // All post conditions for this method contract.
+        assert isColorSpaceYCbCr();
+        return this;
+    }  
 
-		// All post conditions for this method contract.
-		assert image.getColorModel().getColorSpace() instanceof IHSColorSpace;
-		return this;
-	}
+    /**
+     * Forces the {@linkplain #image} color model to the
+     *  IHS color space. If the current color
+     * space is already of IHS type, then this
+     * method does nothing. This operation may loose the alpha channel.
+     *
+     * @return this {@link ImageWorker}.
+     *
+     * @see ColorConvertDescriptor
+     */
+    public final ImageWorker forceColorSpaceIHS() {
+            if (!isColorSpaceIHS()) {
+                    forceComponentColorModel();
+                    
+                     // Create a ColorModel to convert the image to IHS.
+                    final IHSColorSpace ihs = IHSColorSpace.getInstance();
+                    final int numBits=image.getColorModel().getComponentSize(0);
+                    final ColorModel ihsColorModel = new ComponentColorModel(ihs, new int[] {
+                                    numBits, numBits, numBits }, false, false, Transparency.OPAQUE,
+                                    image.getSampleModel().getDataType());
+
+                    // compute
+                    forceColorModel(ihsColorModel);
+            }
+
+            // All post conditions for this method contract.
+            assert isColorSpaceIHS();
+            return this;
+    }
+    
+        
+        /** Forces the provided {@link ColorModel} via the JAI ColorConvert operation.*/
+        private void forceColorModel(final ColorModel cm){
+                    
+            final org.jaitools.imageutils.ImageLayout2 il = new org.jaitools.imageutils.ImageLayout2(image);
+            il.setColorModel(cm);
+            il.setSampleModel(cm.createCompatibleSampleModel(image.getWidth(), image.getHeight()));
+            final RenderingHints oldRi = this.getRenderingHints();
+            final RenderingHints newRi = (RenderingHints) oldRi.clone();
+            newRi.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, il));
+            image = ColorConvertDescriptor.create(image, cm, getRenderingHints());
+    
+            // restore RI
+            this.setRenderingHints(oldRi);
+    
+            // invalidate stats
+            invalidateStatistics();
+        }
 
 	/**
 	 * Add the bands to the Component Color Model

@@ -1465,6 +1465,7 @@ public class ImageWorker {
             final RenderingHints oldRi = this.getRenderingHints();
             final RenderingHints newRi = (RenderingHints) oldRi.clone();
             newRi.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, il));
+            setRenderingHints(newRi);
             image = ColorConvertDescriptor.create(image, cm, getRenderingHints());
     
             // restore RI

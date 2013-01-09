@@ -790,6 +790,56 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         testAlphaRGB(true);
     }
     
+    @Test
+    public void testYCbCr() {
+        assertTrue("Assertions should be enabled.", ImageWorker.class.desiredAssertionStatus());
+        
+        // RGB component color model
+        ImageWorker worker = new ImageWorker(getSyntheticRGB(false));
+        
+        RenderedImage image = worker.getRenderedImage();
+        assertTrue(image.getColorModel() instanceof ComponentColorModel);
+        assertTrue(!image.getColorModel().hasAlpha());
+        int sample = image.getTile(0, 0).getSample(0, 0, 2);
+        assertEquals(0, sample);
+        
+        assertFalse(worker.isColorSpaceYCbCr());
+        worker.forceColorSpaceYCbCr();
+        assertTrue(worker.isColorSpaceYCbCr());
+        worker.forceColorSpaceRGB();
+        assertFalse(worker.isColorSpaceYCbCr());
+        assertTrue(worker.isColorSpaceRGB());
+        
+        // RGB Palette
+        worker.forceBitmaskIndexColorModel();
+        image = worker.getRenderedImage();
+        assertTrue(image.getColorModel() instanceof IndexColorModel);
+        assertTrue(!image.getColorModel().hasAlpha());
+        
+        assertFalse(worker.isColorSpaceYCbCr());
+        worker.forceColorSpaceYCbCr();
+        assertTrue(worker.isColorSpaceYCbCr());   
+        worker.forceColorSpaceRGB();
+        assertFalse(worker.isColorSpaceYCbCr());
+        assertTrue(worker.isColorSpaceRGB());     
+        
+        // RGB DirectColorModel
+        worker = new ImageWorker(getSyntheticRGB(true));        
+        image = worker.getRenderedImage();
+        assertTrue(image.getColorModel() instanceof DirectColorModel);
+        assertTrue(!image.getColorModel().hasAlpha());
+        sample = image.getTile(0, 0).getSample(0, 0, 2);
+        assertEquals(0, sample);
+        
+        assertFalse(worker.isColorSpaceYCbCr());
+        worker.forceColorSpaceYCbCr();
+        assertTrue(worker.isColorSpaceYCbCr()); 
+        worker.forceColorSpaceRGB();
+        assertFalse(worker.isColorSpaceYCbCr());
+        assertTrue(worker.isColorSpaceRGB());       
+        
+    }
+    
     private void testAlphaRGB(boolean direct) {
         assertTrue("Assertions should be enabled.", ImageWorker.class.desiredAssertionStatus());
         ImageWorker worker = new ImageWorker(getSyntheticRGB(direct));

@@ -710,6 +710,10 @@ class RasterLayerResponse{
 		
 		// assemble granules
 		final RenderedImage mosaic = prepareResponse();
+		if (mosaic == null) {
+		    this.gridCoverage = null;
+		    return;
+		}
 		
 		//postproc
 		RenderedImage finalRaster = postProcessRaster(mosaic);
@@ -893,9 +897,10 @@ class RasterLayerResponse{
 			// create query
 			final SimpleFeatureType type = rasterManager.granuleCatalog.getType();
 			Query query = null;
+			Filter bbox = null;
 			if (type != null){
 			    query= new Query(rasterManager.granuleCatalog.getType().getTypeName());
-			    final Filter bbox=FeatureUtilities.DEFAULT_FILTER_FACTORY.bbox(FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.granuleCatalog.getType().getGeometryDescriptor().getName()),mosaicBBox);
+			    bbox=FeatureUtilities.DEFAULT_FILTER_FACTORY.bbox(FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.granuleCatalog.getType().getGeometryDescriptor().getName()),mosaicBBox);
 			    query.setFilter( bbox);
 			} else {
 				throw new IllegalStateException("GranuleCatalog feature type was null!!!");
@@ -1101,7 +1106,24 @@ class RasterLayerResponse{
 				}
 			
 			}
-                        if (LOGGER.isLoggable(Level.FINE))
+			
+			
+			
+                        // Redo the query without filter to check whether we got no granules due
+                        // to a filter. In that case we need to return null
+                        if (hasTime || hasElevation || hasFilter || hasAdditionalDomains) {
+                            query.setFilter(bbox);
+                            rasterManager.getGranules(query, visitor);
+                            // get those granules
+                            visitor.produce();
+                            if (visitor.granulesNumber >= 1) {
+                                // It means the previous lack of granule was due to a filter excluding all the results. Then we return null
+                                return null;
+                            }
+                        }
+                        
+			
+			if (LOGGER.isLoggable(Level.FINE))
                             LOGGER.fine("Creating constant image for area with no data");
                         
                         // if we get here that means that we do not have anything to load

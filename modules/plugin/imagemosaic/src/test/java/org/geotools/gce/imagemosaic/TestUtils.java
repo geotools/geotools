@@ -108,14 +108,16 @@ final class TestUtils extends Assert {
 	static void checkCoverage(final ImageMosaicReader reader,
 			GeneralParameterValue[] values, String title, Rectangle rect) throws IOException {
 		// Test the coverage
-		final GridCoverage2D coverage = getCoverage(reader, values);
+		final GridCoverage2D coverage = getCoverage(reader, values, true);
 		testCoverage(reader, values, title, coverage, rect);
 	}
 
 	static GridCoverage2D getCoverage(final ImageMosaicReader reader,
-			GeneralParameterValue[] values) throws IOException {
+			GeneralParameterValue[] values, final boolean checkForNull) throws IOException {
 		final GridCoverage2D coverage = (GridCoverage2D) reader.read(values);
-		Assert.assertNotNull(coverage);
+		if (checkForNull) {
+		    Assert.assertNotNull(coverage);
+		}
 		return coverage;
 	}
 

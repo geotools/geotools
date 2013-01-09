@@ -956,6 +956,88 @@ public class RasterSymbolizerTest  extends org.junit.Assert{
 		
 		
 	}
+        @org.junit.Test
+        public void colorMap() throws IOException, TransformerException {
+                ////
+                //
+                // Test using an SLD file
+                //
+                ////
+                final URL sldURL = TestData.url(this, "colormap.sld");
+                final SLDParser stylereader = new SLDParser(sf, sldURL);
+                final StyledLayerDescriptor sld = stylereader.parseSLD();
+
+                // get a coverage
+                GridCoverage2D gc = CoverageFactoryFinder
+                                .getGridCoverageFactory(null)
+                                .create(
+                                                "name",
+                                                PlanarImage.wrapRenderedImage(getSynthetic(Double.NaN)),
+                                                new GeneralEnvelope(new double[] { -90, -180 },
+                                                                new double[] { 90, 180 }),
+                                                new GridSampleDimension[] { new GridSampleDimension(
+                                                                "sd", new Category[] { new Category("",
+                                                                                Color.BLACK, 0) }, null) }, null, null);
+
+        
+                SubchainStyleVisitorCoverageProcessingAdapter rsh = new RasterSymbolizerHelper(gc, null);
+                RasterSymbolizer rs = extractRasterSymbolizer(sld);
+
+                // visit the RasterSymbolizer
+                rsh.visit(rs);
+                IndexColorModel icm1 = (IndexColorModel) ((GridCoverage2D)rsh.getOutput()).getRenderedImage().getColorModel();
+                testRasterSymbolizerHelper(rsh);
+                
+                
+                ////
+                //
+                // Test using StyleBuilder
+                //
+                ////
+                // get a coverage
+                gc = CoverageFactoryFinder
+                                .getGridCoverageFactory(null)
+                                .create(
+                                                "name",
+                                                PlanarImage.wrapRenderedImage(getSynthetic(Double.NaN)),
+                                                new GeneralEnvelope(new double[] { -90, -180 },
+                                                                new double[] { 90, 180 }),
+                                                new GridSampleDimension[] { new GridSampleDimension(
+                                                                "sd", new Category[] { new Category("",
+                                                                                Color.BLACK, 0) }, null) }, null, null);
+
+                // build the RasterSymbolizer
+                StyleBuilder sldBuilder = new StyleBuilder();
+                rsh = new RasterSymbolizerHelper(gc, null);
+                rs = sldBuilder.createRasterSymbolizer();
+                final ColorMap cm = sldBuilder.createColorMap(
+                                new String[] { // labels
+                                        "category0",
+                                        "category1",
+                                        "category2"
+                                },
+                                new double[] { // quantities
+                                        100.0,
+                                        500.0,
+                                        900.0
+                                },
+                                new Color[] { // colors
+                                        new Color(255,0,0,255),
+                                        new Color(0,255,0,(int) (255*0.8)),
+                                        new Color(0,0,255,(int) (255*0.2))
+                                },
+                                ColorMap.TYPE_RAMP);
+                cm.setExtendedColors(true);
+                rs.setColorMap(cm);
+
+                // visit the RasterSymbolizer
+                rsh.visit(rs);
+                IndexColorModel icm2 = (IndexColorModel) ((GridCoverage2D)rsh.getOutput()).getRenderedImage().getColorModel();
+                testRasterSymbolizerHelper(rsh);
+                //check that the two color models are equals!
+                Assert.assertTrue(icm1.equals(icm2));
+
+        }	
 	@org.junit.Test
 	public void rgb() throws IOException, TransformerException {
 		java.net.URL surl = TestData.url(this, "testrgb.sld");

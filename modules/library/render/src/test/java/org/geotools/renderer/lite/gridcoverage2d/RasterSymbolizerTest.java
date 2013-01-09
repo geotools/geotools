@@ -16,8 +16,10 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
+
 import java.awt.Color;
-import java.awt.HeadlessException;
+import java.awt.Rectangle;
 import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
@@ -33,11 +35,11 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Random;
 
+import javax.media.jai.InterpolationBilinear;
+import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.RasterFactory;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 import javax.xml.transform.TransformerException;
 
 import junit.framework.Assert;
@@ -46,10 +48,14 @@ import org.geotools.coverage.Category;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.FactoryRegistryException;
 import org.geotools.factory.GeoTools;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.resources.image.ComponentColorModelJAI;
 import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.ChannelSelectionImpl;
@@ -69,9 +75,8 @@ import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.UserLayer;
 import org.geotools.test.TestData;
 import org.junit.Test;
+import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.style.ContrastMethod;
-
-import com.sun.media.jai.widget.DisplayJAI;
 
 /**
  * @author  Simone Giannecchini, GeoSolutions.
@@ -80,7 +85,7 @@ import com.sun.media.jai.widget.DisplayJAI;
  *
  * @source $URL$
  */
-public class RasterSymbolizerTest  {
+public class RasterSymbolizerTest  extends org.junit.Assert{
 
 	private final static StyleFactory sf = CommonFactoryFinder.getStyleFactory(GeoTools.getDefaultHints());
 
@@ -117,12 +122,13 @@ public class RasterSymbolizerTest  {
 	@org.junit.Test
 	public void contrastEnhancementMethods() throws IOException, TransformerException, FactoryRegistryException, IllegalArgumentException, URISyntaxException {
 		// the GridCoverage
+	    GeneralEnvelope envelope = new GeneralEnvelope(new double[] { -180,-90 },new double[] { 180,90 });
+            envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);  	    
 		GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
 				.create(
 						"name",
 						JAI.create("ImageRead", new File(TestData.url(this, "hs.tif").toURI())),
-						new GeneralEnvelope(new double[] { -90, -180 },
-								new double[] { 90, 180 }),new GridSampleDimension[]{new GridSampleDimension("test1BandByte_SLD")},null,null);
+						envelope,new GridSampleDimension[]{new GridSampleDimension("test1BandByte_SLD")},null,null);
 
 		// ////////////////////////////////////////////////////////////////////
 		//
@@ -328,12 +334,13 @@ public class RasterSymbolizerTest  {
 	@org.junit.Test
 	public void bandFloat32_SLD() throws IOException, TransformerException, FactoryRegistryException, IllegalArgumentException, URISyntaxException {
 		// the GridCoverage
+	    GeneralEnvelope envelope = new GeneralEnvelope(new double[] { -180,-90 },new double[] { 180,90 });
+            envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);  	    
 		GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
 				.create(
 						"name",
 						JAI.create("ImageRead", new File(TestData.url(this, "small_1band_Float32.tif").toURI())),
-						new GeneralEnvelope(new double[] { -90, -180 },
-								new double[] { 90, 180 }),new GridSampleDimension[]{new GridSampleDimension("test1BandByte_SLD")},null,null);
+						envelope,new GridSampleDimension[]{new GridSampleDimension("test1BandByte_SLD")},null,null);
 		// ////////////////////////////////////////////////////////////////////
 		//
 		// Test #1: [SLD]
@@ -401,12 +408,13 @@ public class RasterSymbolizerTest  {
 	@Test
 	public void test1BandFloat32_ColorMap_SLD() throws IOException, TransformerException, FactoryRegistryException, IllegalArgumentException, URISyntaxException {
 		// the GridCoverage
+            GeneralEnvelope envelope = new GeneralEnvelope(new double[] { -180,-90 },new double[] { 180,90 });
+            envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);  	    
 		GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
 				.create(
 						"name",
 						JAI.create("ImageRead", new File(TestData.url(this, "small_1band_Float32.tif").toURI())),
-						new GeneralEnvelope(new double[] { -90, -180 },
-								new double[] { 90, 180 }),new GridSampleDimension[]{new GridSampleDimension("test1BandByte_SLD")},null,null);
+						envelope,new GridSampleDimension[]{new GridSampleDimension("test1BandByte_SLD")},null,null);
 
 		// ////////////////////////////////////////////////////////////////////
 		//
@@ -509,11 +517,13 @@ public class RasterSymbolizerTest  {
 		final GridSampleDimension[] gsd={
 				new GridSampleDimension("test1BandByte_SLD1"),
 		};
+		GeneralEnvelope envelope = new GeneralEnvelope(new double[] { -180,-90 },new double[] { 180,90 });
+	            envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);  		
 		GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
 				.create(
 						"name",
 						JAI.create("ImageRead", new File(TestData.url(this, "test.tif").toURI())),
-						new GeneralEnvelope(new double[] { -90, -180 },new double[] { 90, 180 }),
+						envelope,
 						gsd,
 						null,
 						null);
@@ -600,6 +610,8 @@ public class RasterSymbolizerTest  {
 	@org.junit.Test
 	public void bandsByte_SLD() throws IOException, TransformerException, FactoryRegistryException, IllegalArgumentException, URISyntaxException {
 		// the GridCoverage
+	    GeneralEnvelope envelope = new GeneralEnvelope(new double[] { -180,-90 },new double[] { 180,90 });
+            envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);  	    
 		final GridSampleDimension[] gsd={
 				new GridSampleDimension("test1BandByte_SLD1"),
 				new GridSampleDimension("test1BandByte_SLD2"),
@@ -609,8 +621,7 @@ public class RasterSymbolizerTest  {
 				.create(
 						"name",
 						JAI.create("ImageRead", new File(TestData.url(this, "small_3bands_Byte.tif").toURI())),
-						new GeneralEnvelope(new double[] { -90, -180 },
-								new double[] { 90, 180 }),gsd,null,null);
+						envelope,gsd,null,null);
 
 		// ////////////////////////////////////////////////////////////////////
 		//
@@ -683,6 +694,8 @@ public class RasterSymbolizerTest  {
 	@org.junit.Test
 	public void bandsByte_ColorMap_SLD() throws IOException, TransformerException, FactoryRegistryException, IllegalArgumentException, URISyntaxException {
 		// the GridCoverage
+	    GeneralEnvelope envelope = new GeneralEnvelope(new double[] { -180,-90 },new double[] { 180,90 });
+            envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);  	    
 		final GridSampleDimension[] gsd={
 				new GridSampleDimension("test1BandByte_SLD1"),
 				new GridSampleDimension("test1BandByte_SLD2"),
@@ -692,8 +705,7 @@ public class RasterSymbolizerTest  {
 				.create(
 						"name",
 						JAI.create("ImageRead", new File(TestData.url(this, "small_3bands_Byte.tif").toURI())),
-						new GeneralEnvelope(new double[] { -90, -180 },
-								new double[] { 90, 180 }),gsd,null,null);
+						envelope,gsd,null,null);
 
 		// ////////////////////////////////////////////////////////////////////
 		//
@@ -788,12 +800,13 @@ public class RasterSymbolizerTest  {
 	@org.junit.Test
 	public void BandByte_SLD() throws IOException, TransformerException, FactoryRegistryException, IllegalArgumentException, URISyntaxException {
 		// the GridCoverage
+            GeneralEnvelope envelope = new GeneralEnvelope(new double[] { -180,-90 },new double[] { 180,90 });
+            envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);	    
 		GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
 				.create(
 						"name",
 						JAI.create("ImageRead", new File(TestData.url(this, "small_1band_Byte.tif").toURI())),
-						new GeneralEnvelope(new double[] { -90, -180 },
-								new double[] { 90, 180 }),new GridSampleDimension[]{new GridSampleDimension("test1BandByte_SLD")},null,null);
+						envelope,new GridSampleDimension[]{new GridSampleDimension("test1BandByte_SLD")},null,null);
 		
 
 		// ////////////////////////////////////////////////////////////////////
@@ -891,8 +904,8 @@ public class RasterSymbolizerTest  {
  
 
  
-	@org.junit.Test
-	public void colorMap() throws IOException, TransformerException {
+	@Test
+	public void colorColorMaInterpolation() throws Exception {
 		////
 		//
 		// Test using an SLD file
@@ -903,75 +916,45 @@ public class RasterSymbolizerTest  {
 		final StyledLayerDescriptor sld = stylereader.parseSLD();
 
 		// get a coverage
-		GridCoverage2D gc = CoverageFactoryFinder
+		GeneralEnvelope envelope = new GeneralEnvelope(new double[] { -180,-90 },new double[] { 180,90 });
+		envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
+	        GridCoverage2D gc = CoverageFactoryFinder
 				.getGridCoverageFactory(null)
 				.create(
 						"name",
 						PlanarImage.wrapRenderedImage(getSynthetic(Double.NaN)),
-						new GeneralEnvelope(new double[] { -90, -180 },
-								new double[] { 90, 180 }),
+						envelope,
 						new GridSampleDimension[] { new GridSampleDimension(
 								"sd", new Category[] { new Category("",
 										Color.BLACK, 0) }, null) }, null, null);
 
-	
-		SubchainStyleVisitorCoverageProcessingAdapter rsh = new RasterSymbolizerHelper(gc, null);
+
 		RasterSymbolizer rs = extractRasterSymbolizer(sld);
 
-		// visit the RasterSymbolizer
-		rsh.visit(rs);
-		IndexColorModel icm1 = (IndexColorModel) ((GridCoverage2D)rsh.getOutput()).getRenderedImage().getColorModel();
-		testRasterSymbolizerHelper(rsh);
+                // do the rendering and check the final color model
+		GridToEnvelopeMapper gtoem = new GridToEnvelopeMapper();
+		gtoem.setEnvelope(envelope);
+		gtoem.setGridRange(new GridEnvelope2D(0, 0, 50, 50));
+		gtoem.setPixelAnchor(PixelInCell.CELL_CORNER);
+		final GridCoverageRenderer renderer= new GridCoverageRenderer(
+		        DefaultGeographicCRS.WGS84, 
+		        ReferencedEnvelope.reference(envelope), 
+		        new Rectangle(0,0,50,50), 
+		        gtoem.createAffineTransform().createInverse());
+		
+		// bilinear
+		RenderedImage image = renderer.renderImage(gc, rs, new InterpolationBilinear(), null, 256, 256);
+		assertNotNull(image);
+		assertNotNull(PlanarImage.wrapRenderedImage(image));
+		assertFalse(image.getColorModel() instanceof IndexColorModel);
+		
+		// nearest
+                image = renderer.renderImage(gc, rs, new InterpolationNearest(), null, 256, 256);
+                assertNotNull(image);
+                assertNotNull(PlanarImage.wrapRenderedImage(image));
+                assertTrue(image.getColorModel() instanceof IndexColorModel);		
 		
 		
-		////
-		//
-		// Test using StyleBuilder
-		//
-		////
-		// get a coverage
-		gc = CoverageFactoryFinder
-				.getGridCoverageFactory(null)
-				.create(
-						"name",
-						PlanarImage.wrapRenderedImage(getSynthetic(Double.NaN)),
-						new GeneralEnvelope(new double[] { -90, -180 },
-								new double[] { 90, 180 }),
-						new GridSampleDimension[] { new GridSampleDimension(
-								"sd", new Category[] { new Category("",
-										Color.BLACK, 0) }, null) }, null, null);
-
-		// build the RasterSymbolizer
-		StyleBuilder sldBuilder = new StyleBuilder();
-		rsh = new RasterSymbolizerHelper(gc, null);
-		rs = sldBuilder.createRasterSymbolizer();
-		final ColorMap cm = sldBuilder.createColorMap(
-				new String[] { // labels
-					"category0",
-					"category1",
-					"category2"
-				},
-				new double[] { // quantities
-					100.0,
-					500.0,
-					900.0
-				},
-				new Color[] { // colors
-					new Color(255,0,0,255),
-					new Color(0,255,0,(int) (255*0.8)),
-					new Color(0,0,255,(int) (255*0.2))
-				},
-				ColorMap.TYPE_RAMP);
-		cm.setExtendedColors(true);
-		rs.setColorMap(cm);
-
-		// visit the RasterSymbolizer
-		rsh.visit(rs);
-		IndexColorModel icm2 = (IndexColorModel) ((GridCoverage2D)rsh.getOutput()).getRenderedImage().getColorModel();
-		testRasterSymbolizerHelper(rsh);
-		//check that the two color models are equals!
-		Assert.assertTrue(icm1.equals(icm2));
-
 	}
 	@org.junit.Test
 	public void rgb() throws IOException, TransformerException {
@@ -985,13 +968,14 @@ public class RasterSymbolizerTest  {
 				new GridSampleDimension("test1BandByte_SLD3"),
 		};
 		// get a coverage
+		GeneralEnvelope envelope = new GeneralEnvelope(new double[] { -180,-90 },new double[] { 180,90 });
+	        envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);  		
 		final GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
 				.create(
 						"name",
 						JAI.create("ImageRead", 
 								TestData.file(this,"bahamas_hires.jpg")),
-						new GeneralEnvelope(new double[] { -90, -180 },
-								new double[] { 90, 180 }),gsd,null,null);
+						envelope,gsd,null,null);
 
 		// build the RasterSymbolizer
 		final SubchainStyleVisitorCoverageProcessingAdapter rsh = new RasterSymbolizerHelper(gc, null);
@@ -1019,9 +1003,11 @@ public class RasterSymbolizerTest  {
     
             final GridSampleDimension[] gsd = { new GridSampleDimension("test1BandByte_SLD1")};
             // get a coverage
+            GeneralEnvelope envelope = new GeneralEnvelope(new double[] { -180,-90 },new double[] { 180,90 });
+            envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);              
             final GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null).create("name",
                     JAI.create("ImageRead", TestData.file(this, "toc.tif")),
-                    new GeneralEnvelope(new double[] { -90, -180 }, new double[] { 90, 180 }), gsd,
+                    envelope, gsd,
                     null, null);
     
             // build the RasterSymbolizer
@@ -1043,6 +1029,8 @@ public class RasterSymbolizerTest  {
 		// Test using an SLD file
 		//
 		////
+	    GeneralEnvelope envelope = new GeneralEnvelope(new double[] { -180,-90 },new double[] { 180,90 });
+            envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);  	    
 		java.net.URL surl = TestData.url(this, "raster_dem.sld");
 		SLDParser stylereader = new SLDParser(sf, surl);
 		StyledLayerDescriptor sld = stylereader.parseSLD();
@@ -1052,8 +1040,7 @@ public class RasterSymbolizerTest  {
 				.create(
 						"name",
 						JAI.create("ImageRead", TestData.file(this,"smalldem.tif")),
-						new GeneralEnvelope(new double[] { -90, -180 },
-								new double[] { 90, 180 }),new GridSampleDimension[]{new GridSampleDimension("dem")},null,null);
+						envelope,new GridSampleDimension[]{new GridSampleDimension("dem")},null,null);
 		SubchainStyleVisitorCoverageProcessingAdapter rsh = new RasterSymbolizerHelper(gc, null);
 		final RasterSymbolizer rs = extractRasterSymbolizer(sld);
 		rsh.visit(rs);
@@ -1124,12 +1111,13 @@ public class RasterSymbolizerTest  {
 			new GridSampleDimension("test1BandByte_SLD")
 		};
 		// get a coverage
+		GeneralEnvelope envelope = new GeneralEnvelope(new double[] { -180,-90 },new double[] { 180,90 });
+	        envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);  		
 		final GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
 				.create(
 						"name",
 						JAI.create("ImageRead", TestData.file(this,"landsat.tiff")),
-						new GeneralEnvelope(new double[] { -90, -180 },
-								new double[] { 90, 180 }),gsd,null,null);
+						envelope,gsd,null,null);
 		final SubchainStyleVisitorCoverageProcessingAdapter rsh = new RasterSymbolizerHelper(gc, null);
 		final RasterSymbolizer rs = extractRasterSymbolizer(sld);
 		rsh.visit(rs);
@@ -1143,7 +1131,7 @@ public class RasterSymbolizerTest  {
 
 	private static void testRasterSymbolizerHelper(final SubchainStyleVisitorCoverageProcessingAdapter rsh) {
 		if (TestData.isInteractiveTest()) {
-			visualize(((GridCoverage2D)rsh.getOutput()).getRenderedImage(), rsh.getName()
+			ImageIOUtilities.visualize(((GridCoverage2D)rsh.getOutput()).getRenderedImage(), rsh.getName()
 					.toString());
 
 		} else {
@@ -1153,32 +1141,6 @@ public class RasterSymbolizerTest  {
 		}
 	}
 
-	/**
-	 * @param rsh
-	 * @throws HeadlessException
-	 */
-	public static void visualize(
-			RenderedImage ri, 
-			final String name)
-			throws HeadlessException {
-		
-		//actually shows this image.
-		final JFrame jf= new JFrame(name);
-		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		jf.getContentPane().add(new DisplayJAI(ri));
-		SwingUtilities.invokeLater(new Runnable(){
-
-			public void run() {
-				jf.pack();
-				jf.setVisible(true);
-				
-			}
-
-		});
-
-
-	}
-
 	@Test
 	public void twoColorsTest() throws IOException{
 		java.net.URL surl = TestData.url(this, "raster_discretecolors.sld");
@@ -1186,12 +1148,13 @@ public class RasterSymbolizerTest  {
 		StyledLayerDescriptor sld = stylereader.parseSLD();
 
 		// get a coverage
+                GeneralEnvelope envelope = new GeneralEnvelope(new double[] { -180,-90 },new double[] { 180,90 });
+                envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);  		
 		GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null)
 				.create(
 						"name",
 						JAI.create("ImageRead", TestData.file(this,"smalldem.tif")),
-						new GeneralEnvelope(new double[] { -90, -180 },
-								new double[] { 90, 180 }),new GridSampleDimension[]{new GridSampleDimension("dem")},null,null);
+						envelope,new GridSampleDimension[]{new GridSampleDimension("dem")},null,null);
 		SubchainStyleVisitorCoverageProcessingAdapter rsh = new RasterSymbolizerHelper(gc, null);
 		final RasterSymbolizer rs = extractRasterSymbolizer(sld);
 		rsh.visit(rs);

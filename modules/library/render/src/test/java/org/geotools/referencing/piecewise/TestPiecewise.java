@@ -18,6 +18,7 @@ package org.geotools.referencing.piecewise;
 
 import it.geosolutions.imageio.plugins.arcgrid.AsciiGridsImageReader;
 import it.geosolutions.imageio.plugins.arcgrid.spi.AsciiGridsImageReaderSpi;
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
@@ -39,7 +40,6 @@ import org.geotools.geometry.DirectPosition1D;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.image.ImageWorker;
 import org.geotools.referencing.operation.transform.LinearTransform1D;
-import org.geotools.renderer.lite.gridcoverage2d.RasterSymbolizerTest;
 import org.geotools.util.NumberRange;
 import org.junit.Before;
 import org.junit.Test;
@@ -782,7 +782,7 @@ public class TestPiecewise  {
 				final RenderedImage image = new ImageWorker(JAI.create("ImageRead", TestData.file(this,
 						"usa.png"))).forceComponentColorModel().retainFirstBand().getRenderedImage();
 				if (TestData.isInteractiveTest())
-					RasterSymbolizerTest.visualize(image, "testLookupByte");
+				    ImageIOUtilities.visualize(image, "testLookupByte");
 		
 				// /////////////////////////////////////////////////////////////////////
 				//
@@ -806,7 +806,7 @@ public class TestPiecewise  {
 						GenericPiecewise.OPERATION_NAME, pbj);
 		
 				if (TestData.isInteractiveTest())
-					RasterSymbolizerTest.visualize(finalimage, "testLookupByte");
+					ImageIOUtilities.visualize(finalimage, "testLookupByte");
 				else
 					finalimage.getTiles();
 		
@@ -825,7 +825,7 @@ public class TestPiecewise  {
 			// /////////////////////////////////////////////////////////////////////
 			final RenderedImage image = getSWAN();
 			if (TestData.isInteractiveTest())
-				RasterSymbolizerTest.visualize(image, "testSWANLOGARITHMIC");
+			    ImageIOUtilities.visualize(image, "testSWANLOGARITHMIC");
 			final RenderedOp statistics = ExtremaDescriptor.create(image, new ROI(new ImageWorker(image).binarize(0).getRenderedImage()),
 					new Integer(1), new Integer(1), Boolean.FALSE, new Integer(1),
 					null);
@@ -887,7 +887,7 @@ public class TestPiecewise  {
 				final RenderedOp finalImage = JAI.create(
 						GenericPiecewise.OPERATION_NAME, pbj);
 				if (TestData.isInteractiveTest())
-					RasterSymbolizerTest.visualize(finalImage, "testSWANLOGARITHMIC");
+					ImageIOUtilities.visualize(finalImage, "testSWANLOGARITHMIC");
 				else
 					finalImage.getTiles();
 				finalImage.dispose();

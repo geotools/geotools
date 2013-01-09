@@ -27,6 +27,7 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImagingOpException;
+import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -35,7 +36,6 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.media.jai.BorderExtender;
-import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
 import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
@@ -63,6 +63,7 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.styling.RasterSymbolizer;
+import org.jaitools.imageutils.ImageLayout2;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.filter.expression.Expression;
 import org.opengis.metadata.spatial.PixelOrientation;
@@ -803,15 +804,22 @@ public final class GridCoverageRenderer {
         }
 
         // final transformation
-        final ImageLayout layout = new ImageLayout(finalImage);
+        final ImageLayout2 layout = new ImageLayout2(finalImage);
         layout.setTileGridXOffset(0).setTileGridYOffset(0).setTileHeight(tileSizeY).setTileWidth(tileSizeX);
         final RenderingHints localHints = this.hints.clone(); 
         localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+        
+        // === interpolation management
         if (interpolation instanceof InterpolationNearest) {
+            // nearest 
             localHints.add(new RenderingHints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE));
             localHints.add(new RenderingHints(JAI.KEY_TRANSFORM_ON_COLORMAP, Boolean.TRUE));
+        } else {
+            // others, make sure we don't force the colormodel if it is indexed with layout as it might lead to NO color expansion 
+            if(finalImage.getColorModel() instanceof IndexColorModel){
+                layout.unsetValid(ImageLayout2.COLOR_MODEL_MASK).unsetValid(ImageLayout2.SAMPLE_MODEL_MASK);
+            }
         }
-
         //SG add hints for the border extender
         localHints.add(new RenderingHints(JAI.KEY_BORDER_EXTENDER,BorderExtender.createInstance(BorderExtender.BORDER_COPY)));
     	RenderedImage im=null;

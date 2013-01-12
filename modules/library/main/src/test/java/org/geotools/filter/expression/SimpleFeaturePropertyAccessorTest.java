@@ -36,7 +36,8 @@ import com.vividsolutions.jts.geom.Point;
  */
 public class SimpleFeaturePropertyAccessorTest extends TestCase {
 
-	SimpleFeatureType type;
+	private static final String COMPLEX_PROPERTY = "pro.per.ty-G\\u00e9n\\\\u00e9rique";
+    SimpleFeatureType type;
 	SimpleFeature feature;
 	PropertyAccessor accessor = SimpleFeaturePropertyAccessorFactory.ATTRIBUTE_ACCESS;
 	
@@ -47,12 +48,14 @@ public class SimpleFeaturePropertyAccessorTest extends TestCase {
 		typeBuilder.setNamespaceURI( "http://www.geotools.org/test" );
 		typeBuilder.add( "foo", Integer.class );
 		typeBuilder.add( "bar", Double.class );
+		typeBuilder.add( COMPLEX_PROPERTY, Double.class );
 		
 		type = (SimpleFeatureType) typeBuilder.buildFeatureType();
 		
 		SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
 		builder.add( new Integer( 1 ) );
 		builder.add( new Double( 2.0 ) );
+		builder.add( new Double( 3.0 ) );
 
 		feature = (SimpleFeature) builder.buildFeature( "fid" );
 		accessor = SimpleFeaturePropertyAccessorFactory.ATTRIBUTE_ACCESS;
@@ -68,14 +71,24 @@ public class SimpleFeaturePropertyAccessorTest extends TestCase {
 	
 	public void testCanHandleType() {
 		assertTrue( accessor.canHandle( type, "foo", null ) );
+		assertTrue( accessor.canHandle( type, "sf:foo", null ) );
+		assertTrue( accessor.canHandle( type, "foo[1]", null ) );
+		assertTrue( accessor.canHandle( type, "sf:foo[1]", null ) );
 		assertTrue( accessor.canHandle( type, "bar", null ) );
+		assertTrue( accessor.canHandle( type, COMPLEX_PROPERTY, null ) );
 		
 		assertFalse( accessor.canHandle( type, "illegal", null ) );
+        assertFalse( accessor.canHandle( type, "sf:foo[0]", null ) );
+        assertFalse( accessor.canHandle( type, "sf:foo[2]", null ) );
 	}
 	
 	public void testGet() {
 		assertEquals( new Integer( 1 ), accessor.get( feature, "foo", null ) );
+		assertEquals( new Integer( 1 ), accessor.get( feature, "sf:foo", null ) );
+		assertEquals( new Integer( 1 ), accessor.get( feature, "foo[1]", null ) );
+		assertEquals( new Integer( 1 ), accessor.get( feature, "sf:foo[1]", null ) );
 		assertEquals( new Double( 2.0 ), accessor.get( feature, "bar", null ) );
+		assertEquals( new Double( 3.0 ), accessor.get( feature, COMPLEX_PROPERTY, null ) );
 		assertEquals( "fid", SimpleFeaturePropertyAccessorFactory.FID_ACCESS.get( feature, "@id", null) );
 		assertEquals( "fid", SimpleFeaturePropertyAccessorFactory.FID_ACCESS.get( feature, "@gml:id", null) );
                 assertFalse( accessor.canHandle( feature, "illegal", null ) );

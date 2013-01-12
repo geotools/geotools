@@ -55,7 +55,18 @@ public class SimpleFeaturePropertyAccessorFactory implements
     static PropertyAccessor DEFAULT_GEOMETRY_ACCESS = new DefaultGeometrySimpleFeaturePropertyAccessor();
     static PropertyAccessor FID_ACCESS = new FidSimpleFeaturePropertyAccessor();
     static Pattern idPattern = Pattern.compile("@(\\w+:)?id");
-    static Pattern propertyPattern = Pattern.compile("(\\w+:)?(\\w+)");
+
+    /**
+     * Based on definition of valid xml element name at http://www.w3.org/TR/xml/#NT-Name,
+     * eventually inclusive of namespace, plus an optional [1] at the end and no @ anywhere in the string
+     */
+    static final Pattern propertyPattern = Pattern.compile("^(?!@)([:A-Z_a-z\\u00C0\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02ff\\u0370-\\u037d"
+            + "\\u037f-\\u1fff\\u200c\\u200d\\u2070-\\u218f\\u2c00-\\u2fef\\u3001-\\ud7ff"
+            + "\\uf900-\\ufdcf\\ufdf0-\\ufffd\\x10000-\\xEFFFF]"
+            + "[:A-Z_a-z\\u00C0\\u00D6\\u00D8-\\u00F6"
+            + "\\u00F8-\\u02ff\\u0370-\\u037d\\u037f-\\u1fff\\u200c\\u200d\\u2070-\\u218f"
+            + "\\u2c00-\\u2fef\\u3001-\\udfff\\uf900-\\ufdcf\\ufdf0-\\ufffd\\\\x10000-\\\\xEFFFF\\-\\.0-9"
+            + "\\u00b7\\u0300-\\u036f\\u203f-\\u2040]*)(\\[1\\])?$");
 
     public PropertyAccessor createPropertyAccessor(Class type, String xpath,
             Class target, Hints hints) {
@@ -93,10 +104,13 @@ public class SimpleFeaturePropertyAccessorFactory implements
      * @param xpath
      * @return xpath with any XML prefixes removed
      */
-    static String stripPrefix(String xpath) {
+    static String stripPrefixIndex(String xpath) {
         int split = xpath.indexOf(":");
         if (split != -1) {
-            return xpath.substring(split + 1);
+            xpath = xpath.substring(split + 1);
+        }
+        if(xpath.endsWith("[1]")) {
+            xpath = xpath.substring(0, xpath.length() - 3);
         }
         return xpath;
     }
@@ -189,7 +203,7 @@ public class SimpleFeaturePropertyAccessorFactory implements
 
     static class SimpleFeaturePropertyAccessor implements PropertyAccessor {
         public boolean canHandle(Object object, String xpath, Class target) {
-        	xpath = stripPrefix(xpath);
+        	xpath = stripPrefixIndex(xpath);
         	
         	if ( object instanceof SimpleFeature ) {
         		return ((SimpleFeature) object).getType().getDescriptor(xpath) != null;
@@ -203,7 +217,7 @@ public class SimpleFeaturePropertyAccessorFactory implements
         }
         
         public Object get(Object object, String xpath, Class target) {
-        	xpath = stripPrefix(xpath);
+        	xpath = stripPrefixIndex(xpath);
         	
         	if ( object instanceof SimpleFeature ) {
         		return ((SimpleFeature) object).getAttribute( xpath );
@@ -218,7 +232,7 @@ public class SimpleFeaturePropertyAccessorFactory implements
 
         public void set(Object object, String xpath, Object value, Class target)
                 throws IllegalAttributeException {
-        	xpath = stripPrefix(xpath);
+        	xpath = stripPrefixIndex(xpath);
         	
         	if ( object instanceof SimpleFeature ) {
         		((SimpleFeature) object).setAttribute( xpath, value );

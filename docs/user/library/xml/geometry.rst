@@ -3,11 +3,11 @@ Geometry
 
 XML Documents come in two parts an XSD file representing the FeatureType; and an XML file with the actual features.
 
-Here is that that looks like with a simple example:
+Here is what that looks like with a simple example:
 
 .. image:: /images/gml_xml_xsd.png
 
-If it helps you can think of the XSD file as being similar to the header of a shapefile; it documents what the contents mean. The XML file is the actual contents. Why are the separate? Because you may have several documents that contain the same kind of data.
+If it helps you can think of the XSD file as being similar to the header of a shapefile; it documents what the contents mean. The XML file is the actual contents. Why are they separate? Because you may have several documents that contain the same kind of data.
 
 References:
 
@@ -122,7 +122,7 @@ access to this class using the GML Utility class::
   encode.setLegacy(true);
   encode.encode(out, collection);
 
-This method depends on you doing everything exactly right as it blindly writes out a document referring to xsd file that may or may not exist. It is a good choice when encoding content against a WFS DescribeFeatureType URL for example.
+This method depends on you doing everything exactly right as it blindly writes out a document referring to an XSD file that may or may not exist. It is a good choice when encoding content against a WFS DescribeFeatureType URL for example.
 
 Internally you can use the GMLTransform code directly for greater control
 over this process:
@@ -134,14 +134,14 @@ over this process:
 
 .. note::
    
-   While this method is fast; but you do have to set things up exactly or the output will be invalid.
+   While this method is fast; you do have to set things up exactly or the output will be invalid.
 
 Notes:
 
 * Application Schema
   
   There is no such thing as a "GML" document; you need to created your own XML
-  Schema. Your XML Schema will extends GML concepts like AbstractFeature and define
+  Schema. Your XML Schema will extend GML concepts like AbstractFeature and define
   specific concepts from your application - like ROAD, RIVER, CITY etc...
   
   This line is where you tell the Transform about your XML Schema::
@@ -343,8 +343,8 @@ Here is what that looks like as a UML diagram:
 
 .. note::
    
-   While we cannot parse a gml2 document - nobody can! Since GML2 documents do not exist as a
-   file format. The parser is able to parse an xml file defined by test.xsd above.
+   While we cannot parse a GML2 document - nobody can! Since GML2 documents do not exist as a
+   file format. The parser is able to parse an XML file defined by test.xsd above.
 
 Here is an example to parse against the above schema::
   
@@ -423,7 +423,7 @@ You can encode an XML schema representing your feature type using the GML utilit
 FeatureCollection
 '''''''''''''''''
 
-HEre is an example using GML3::
+Here is an example using GML3::
 
   GML encode = new GML(Version.GML3);
   encode.setNamespace("geotools", "http://geotools.org");
@@ -469,7 +469,7 @@ Parsing out an entire FeatureCollection::
         SimpleFeatureCollection featureCollection = gml.decodeFeatureCollection(in);
 
 
-Streaming content our of a GML3 file is handled in the same manner as above::
+Streaming content out of a GML3 file is handled in the same manner as above::
   
         URL url = TestData.getResource(this, "states.xml");
         InputStream in = url.openStream();
@@ -485,7 +485,7 @@ Streaming content our of a GML3 file is handled in the same manner as above::
         }
 
 You can also ask for your geometry element by name, it will be wrapped
-up a small feature for you::
+up as a small feature for you::
 
         URL url = TestData.getResource(this, "states.xml");
         InputStream in = url.openStream();
@@ -505,7 +505,7 @@ up a small feature for you::
 GML3 Parsing TestSchema Example
 '''''''''''''''''''''''''''''''
 
-Parsing GML3 works the Works in the same way as for GML2 – just choose a different configuration.
+Parsing GML3 works in the same way as for GML2 – just choose a different configuration.
 
 Here is an example XSD extending GML3::
   
@@ -613,13 +613,13 @@ And this time when you parse you can refer to the GML3 configuration::
 KML
 ^^^
 
-The also have support at the Parser / Encoder level for KML.
+There is also support at the Parser / Encoder level for KML.
 
 References:
 
 * :doc:`/extension/xsd/kml`
 
-KML is handled in a little bit of an unusall fashion as it defines a data structure of nested features
+KML is handled in a little bit of an unusual fashion as it defines a data structure of nested features
 that also includes style information.
 
 
@@ -732,7 +732,7 @@ The above TestSchema examples makes reference to an application schema with the 
 
 Unfortunately, this is rarely the case. GML documents are often encountered in the wild with no schemaLocation attribute attached, or it is inaccurate.
 
-If you do not have an xsd file you are likely to get warnings like the following::
+If you do not have an XSD file you are likely to get warnings like the following::
   
   Apr 11, 2009 7:29:06 PM org.geotools.xml.impl.ParserHandler startElement
   INFO: Could not find declaration for: {http://ogr.maptools.org/}FeatureCollection. Creating a mock element declaration and parsing anyways...
@@ -744,7 +744,7 @@ Fortunately there are a number of alternatives.
   This method can be used if the application schema to be parsed is known before
   hand. The org.geotools.xml.Configuration class is used to configure the parser
   with the information for a particular schema. The org.geotools.gml.ApplicationSchemaConfiguration can be used to create a
-  configuraion from a namespace,schemaLocation pair.::
+  configuration from a namespace,schemaLocation pair.::
     
     //create the parser with the filter 1.0 configuration
     
@@ -761,12 +761,12 @@ Fortunately there are a number of alternatives.
    SimpleFeatureCollection fc = (SimpleFeatureCollection) parser.parse( xml );
   
   In this case we are manually configuring the parser by hand prior to use;
-  normally the xml document itself is supposed to refer to "test.xsd" after all.
+  normally the XML document itself is supposed to refer to "test.xsd" after all.
   The above technique allows you to correct the mistake.
 
 * Alternative 2: Ignoring the Application Schema
   
-  This method can be used if the application is not known before hand. This
+  This method can be used if the application is not known beforehand. This
   alternative is to tell the parser to ignore the application schema. This can be
   done with a parser property. The following instructs the parser to ignore the
   application schema::

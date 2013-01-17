@@ -17,6 +17,7 @@
 package org.geotools.coverageio.gdal;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -92,11 +93,13 @@ public class GDALTestCase  {
         JAI.getDefaultInstance().getTileCache().setMemoryThreshold(1.0f);
         try {
             final File file = TestData.file(this, "test.zip");
-            if(file!=null&&file.exists()&&file.canRead())
+            if (file != null && file.exists() && file.canRead())
                 // unzip it
                 TestData.unzipFile(this, "test.zip");
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
+        } catch (FileNotFoundException e) {
+            LOGGER.log(Level.SEVERE, "can not locate test-data for \"test.zip\"");
+        } catch (Exception e1) {
+        	LOGGER.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
         }
        
     }

@@ -24,6 +24,8 @@ import net.opengis.wps10.DefaultType2;
 import net.opengis.wps10.ProcessOutputsType1;
 import net.opengis.wps10.Wps10Factory;
 
+import org.geotools.filter.v1_1.FilterParserDelegate;
+import org.geotools.filter.v2_0.FESParserDelegate;
 import org.geotools.gml3.GMLParserDelegate;
 import org.geotools.ows.v1_1.OWSConfiguration;
 import org.geotools.wfs.WFSParserDelegate;
@@ -123,5 +125,7 @@ public class WPSConfiguration extends Configuration {
         //register parser delegates for parsing schemas we do not know about
         container.registerComponentInstance( new GMLParserDelegate() );
         container.registerComponentInstance( new WFSParserDelegate() );
+        container.registerComponentInstance( new FilterParserDelegate() );
+        container.registerComponentInstance( new FESParserDelegate() );
     }
 }

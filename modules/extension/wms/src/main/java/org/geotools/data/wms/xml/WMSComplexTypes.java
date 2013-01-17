@@ -4170,7 +4170,7 @@ public class WMSComplexTypes {
 				}
 				
 				if (sameName(elems[3], value[i])) {
-					legendURLS.add((String)value[2].getValue());
+					legendURLS.add((String)value[i].getValue());
 				}
 				
 				if (sameName(elems[4], value[i])) {

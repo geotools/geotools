@@ -18,6 +18,7 @@
 package org.geotools.coverageio.gdal.mrsid;
 
 import it.geosolutions.imageio.stream.input.FileImageInputStreamExtImpl;
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
 
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
@@ -124,6 +125,7 @@ public final class MrSIDTest extends GDALTestCase {
         GridCoverage2D gc = (GridCoverage2D) reader.read(null);
         forceDataLoading(gc);
 
+
         // /////////////////////////////////////////////////////////////////////
         //
         // read again with subsampling and crop
@@ -162,21 +164,12 @@ public final class MrSIDTest extends GDALTestCase {
         // /////////////////////////////////////////////////////////////////////
         //
         // Read ignoring overviews with subsampling and crop, using Jai,
-        // multithreading and customized tilesize
+        // and customized tilesize
         //
         // /////////////////////////////////////////////////////////////////////
         final ParameterValue policy = (ParameterValue) ((AbstractGridFormat) reader
                 .getFormat()).OVERVIEW_POLICY.createValue();
         policy.setValue(OverviewPolicy.IGNORE);
-        
-        // //
-        //
-        // Enable multithreading read
-        //
-        // //
-        final ParameterValue mt = (ParameterValue) ((BaseGDALGridFormat) reader
-                .getFormat()).USE_MULTITHREADING.createValue();
-        mt.setValue(true);
         
         // //
         //
@@ -197,7 +190,7 @@ public final class MrSIDTest extends GDALTestCase {
         useJaiRead.setValue(true);
 
         gc = (GridCoverage2D) reader.read(new GeneralParameterValue[] { gg,
-                policy, mt, tilesize, useJaiRead });
+                policy, tilesize, useJaiRead });
         
         Assert.assertNotNull(gc);
         // NOTE: in some cases might be too restrictive

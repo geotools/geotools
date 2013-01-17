@@ -32,13 +32,12 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 import java.util.logging.Level;
@@ -78,6 +77,8 @@ import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.SortByImpl;
 import org.geotools.gce.imagemosaic.GranuleDescriptor.GranuleLoadingResult;
+import org.geotools.gce.imagemosaic.ImageMosaicReader.DomainDescriptor;
+import org.geotools.gce.imagemosaic.ImageMosaicReader.DomainManager;
 import org.geotools.gce.imagemosaic.OverviewsController.OverviewLevel;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
 import org.geotools.gce.imagemosaic.processing.ArtifactsFilterDescriptor;
@@ -95,7 +96,6 @@ import org.geotools.resources.geometry.XRectangle2D;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.resources.image.ImageUtilities;
-import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.SimpleInternationalString;
 import org.jaitools.imageutils.ImageLayout2;
@@ -115,10 +115,8 @@ import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform1D;
 import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.TransformException;
 import org.opengis.util.InternationalString;
 
-import com.sun.media.jai.codecimpl.util.ImagingException;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 /**
@@ -463,26 +461,7 @@ class RasterLayerResponse{
 										
 					}					
 					
-				} catch (InterruptedException e) {
-					if(LOGGER.isLoggable(Level.SEVERE))
-						LOGGER.log(Level.SEVERE,"Unable to load the raster for granuleDescriptor " +granuleIndex,e);
-					continue;
-				} catch (ExecutionException e) {
-					if(LOGGER.isLoggable(Level.SEVERE))
-						LOGGER.log(Level.SEVERE,"Unable to load the raster for granuleDescriptor " +granuleIndex,e);
-					continue;
-				}
-
-				catch (ImagingException e) {
-					if (LOGGER.isLoggable(Level.FINE))
-						LOGGER.fine("Adding to mosaic image number " + granuleIndex+ " failed, original request was "+request);
-					continue;
-				}
-				catch (javax.media.jai.util.ImagingException e) {
-					if (LOGGER.isLoggable(Level.FINE))
-						LOGGER.fine("Adding to mosaic image number " + granuleIndex+ " failed, original request was "+request);
-					continue;
-				} catch (IOException e) {
+				} catch (Exception e) {
 				            if (LOGGER.isLoggable(Level.FINE))
 				                LOGGER.fine("Adding to mosaic image number " + granuleIndex + " failed, original request was " + request);
 				            continue;
@@ -887,11 +866,11 @@ class RasterLayerResponse{
 			final MosaicBuilder visitor = new MosaicBuilder(request);
 			final List times = request.getRequestedTimes();
 			final List elevations=request.getElevation();
-			final List additionalDomains = request.getRequestedAdditionalDomains();
+			final Map<String, List> additionalDomains = request.getRequestedAdditionalDomains();
 			final Filter filter = request.getFilter();
 			final boolean hasTime=(times!=null&&times.size()>0);
 			final boolean hasElevation=(elevations!=null && elevations.size()>0);
-			final boolean hasAdditionalDomains = (additionalDomains != null && additionalDomains.size() > 0);
+			final boolean hasAdditionalDomains = additionalDomains.size() > 0;
 			final boolean hasFilter = filter != null && !Filter.INCLUDE.equals(filter);
 
 			// create query
@@ -900,7 +879,9 @@ class RasterLayerResponse{
 			Filter bbox = null;
 			if (type != null){
 			    query= new Query(rasterManager.granuleCatalog.getType().getTypeName());
-			    bbox=FeatureUtilities.DEFAULT_FILTER_FACTORY.bbox(FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.granuleCatalog.getType().getGeometryDescriptor().getName()),mosaicBBox);
+			    bbox=FeatureUtilities.DEFAULT_FILTER_FACTORY.bbox(
+			            FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.granuleCatalog.getType().getGeometryDescriptor().getName()),
+			            mosaicBBox);
 			    query.setFilter( bbox);
 			} else {
 				throw new IllegalStateException("GranuleCatalog feature type was null!!!");
@@ -908,110 +889,44 @@ class RasterLayerResponse{
 
 			
 			// prepare eventual filter for filtering granules
-                        if(hasTime||hasElevation||hasFilter||hasAdditionalDomains )
-                        {
-                                //handle elevation indexing first since we then combine this with the max in case we are asking for current in time
-                                if (hasElevation){
-                                        
-                                        final List<Filter> elevationF=new ArrayList<Filter>();
-                                        for( Object elevation: elevations){
-                                            if(elevation==null){
-                                                if(LOGGER.isLoggable(Level.INFO))
-                                                    LOGGER.info("Ignoring null elevation for the elevation filter");
-                                                continue;
-                                            }
-                                            if(elevation instanceof Number){
-                                                elevationF.add( FeatureUtilities.DEFAULT_FILTER_FACTORY.equal(
-                                                    FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.elevationAttribute), 
-                                                    FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(elevation),
-                                                    true)); 
-                                            } else {
-                                                // convert to range and create a correct range filter
-                                                final NumberRange range= (NumberRange)elevation;
-                                                elevationF.add( 
-                                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.and(
-                                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.lessOrEqual(
-                                                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.elevationAttribute), 
-                                                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(range.getMaximum())),
-                                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.greaterOrEqual(
-                                                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.elevationAttribute), 
-                                                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(range.getMinimum()))
-                                                        )); 
-                                            }
-                                            
-                                        }
-                                        final int elevationSize=elevationF.size();
-                                        if(elevationSize>1)//should not happen
-                                            query.setFilter(
-                                                    FeatureUtilities.DEFAULT_FILTER_FACTORY.and(query.getFilter(),
-                                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.or(elevationF))
-                                                            );  
-                                        else
-                                            if(elevationSize==1)
-                                                query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.and(query.getFilter(), elevationF.get(0)));        
-                                }
-
-                                //handle generic filter since we then combine this with the max in case we are asking for current in time
-                                if (hasFilter){
-                                        query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.and(query.getFilter(), filter));        
-                                }
-                                
-                                // fuse time query with the bbox query
-                                if(hasTime){
-                                        final List<Filter> timeFilter=new ArrayList<Filter>();
-                                        for( Object datetime: times){
-                                            if(datetime==null){
-                                                if(LOGGER.isLoggable(Level.INFO))
-                                                    LOGGER.info("Ignoring null date for the time filter");
-                                                continue;
-                                            }
-                                            if(datetime instanceof Date){
-                                                timeFilter.add(
-                                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.equal(
-                                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.timeAttribute), 
-                                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(datetime),true));
-                                            }else {
-                                                // convert to range and create a correct range filter
-                                                final DateRange range= (DateRange)datetime;
-                                                timeFilter.add( 
-                                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.and(
-                                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.lessOrEqual(
-                                                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.timeAttribute), 
-                                                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(range.getMaxValue())),
-                                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.greaterOrEqual(
-                                                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.timeAttribute), 
-                                                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(range.getMinValue()))
-                                                        )); 
-                                            }                                                
-
-                                        }
-                                        final int sizeTime=timeFilter.size();
-                                        if(sizeTime>1)//should not happen
-                                            query.setFilter(
-                                                    FeatureUtilities.DEFAULT_FILTER_FACTORY.and(
-                                                            query.getFilter(), FeatureUtilities.DEFAULT_FILTER_FACTORY.or(timeFilter)));
-                                        else
-                                            if(sizeTime==1)
-                                                query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.and(query.getFilter(), timeFilter.get(0)));
-                                }
-                                
-                                if (hasAdditionalDomains){
-                                    final List<Filter> additionalFilter=new ArrayList<Filter>();
-                                    for (Object domain: additionalDomains){
-                                        if (domain == null){
-                                            if(LOGGER.isLoggable(Level.INFO))
-                                                LOGGER.info("Ignoring null domain for the additional domain filter");
-                                            continue;
-                                        }
-                                        //TODO: Add support for more types (currently only Strings are supported)
-                                        additionalFilter.add(rasterManager.parent.additionalDomainManager.createFilter((String)domain));
-
-                                    }
-                                    //TODO: add support for more values for each domain
-                                    query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.and(query.getFilter(), FeatureUtilities.DEFAULT_FILTER_FACTORY.and(additionalFilter)));
-                            }
-
+                        // handle elevation indexing first since we then combine this with the max in case we are asking for current in time
+                        if (hasElevation) {
+            
+                            final Filter elevationF = rasterManager.parent.elevationDomainManager.createFilter(
+                                    ImageMosaicReader.ELEVATION_DOMAIN, elevations);
+                            query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.and(query.getFilter(),
+                                    elevationF));
                         }
+            
+                        // handle generic filter since we then combine this with the max in case we are asking for current in time
+                        if (hasFilter) {
+                            query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.and(query.getFilter(),
+                                    filter));
+                        }
+            
+                        // fuse time query with the bbox query
+                        if (hasTime) {
+                            final Filter timeFilter = this.rasterManager.parent.timeDomainManager.createFilter(
+                                    ImageMosaicReader.TIME_DOMAIN, times);
+                            query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.and(query.getFilter(),
+                                    timeFilter));
+                        }
+            
+                        if (hasAdditionalDomains) {
+                            final List<Filter> additionalFilter = new ArrayList<Filter>();
+                            for (Entry<String, List> entry : additionalDomains.entrySet()) {
+            
+                                // build a filter for each dimension
+                                final String domainName = entry.getKey()+DomainDescriptor.DOMAIN_SUFFIX;
+                                additionalFilter.add(rasterManager.parent.domainsManager.createFilter(
+                                        domainName, (List) entry.getValue()));
+            
+                            }
+                            // merge with existing ones
+                            query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.and(query.getFilter(),
+                                    FeatureUtilities.DEFAULT_FILTER_FACTORY.and(additionalFilter)));
+                        }
+
 
             //
             // handle secondary query parameters
@@ -1159,9 +1074,7 @@ class RasterLayerResponse{
                         return finalImage;
 			
 
-		} catch (IOException e) {
-			throw new DataSourceException("Unable to create this mosaic", e);
-		} catch (TransformException e) {
+		} catch (Exception e) {
 			throw new DataSourceException("Unable to create this mosaic", e);
 		} 
 	}
@@ -1254,8 +1167,9 @@ class RasterLayerResponse{
 		
                 //prepare hints
                 final Dimension tileDimensions=request.getTileDimensions();
-                if(tileDimensions!=null)
-                        layout.setTileHeight(tileDimensions.width).setTileWidth(tileDimensions.height);
+                if(tileDimensions!=null){
+                    layout.setTileHeight(tileDimensions.width).setTileWidth(tileDimensions.height);
+                }
                 final RenderingHints localHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT,layout);
                 if (hints != null && !hints.isEmpty()){
                     if (hints.containsKey(JAI.KEY_TILE_CACHE)){
@@ -1284,58 +1198,63 @@ class RasterLayerResponse{
 		//
 		// SPECIAL CASE
 		// 1 single tile, we try not do a mosaic.
-        final ROI[] sourceRoi = visitor.sourceRoi;
+                final ROI[] sourceRoi = visitor.sourceRoi;
 		if(visitor.granulesNumber==1 && Utils.OPTIMIZE_CROP){
 		    // the roi is exactly equal to the 
 		    final ROI roi = visitor.rois.get(0);
 		    Rectangle bounds = Utils.toRectangle(roi.getAsShape());
-	        if (bounds != null) {
-	            RenderedImage image= visitor.getSourcesAsArray()[0];
-	            Rectangle imageBounds= PlanarImage.wrapRenderedImage(image).getBounds();
-	            if(imageBounds.equals(bounds)){
-	                
-	                // do we need to crop? (image is bigger than requested?)
-	                if(!rasterBounds.contains(imageBounds)){
-	                    // we have to crop
-	                    XRectangle2D.intersect(imageBounds, rasterBounds, imageBounds);
-	                    
-	                    if(imageBounds.isEmpty()){
-	                        // return back a constant image
-	                        return null;
-	                    }
-	                    // crop
-	                    ImageWorker iw = new ImageWorker(image);
-	                    iw.setRenderingHints(localHints);
-	                    iw.crop(imageBounds.x, imageBounds.y, imageBounds.width, imageBounds.height);
-	                    
-	                    image = iw.getRenderedImage();
-	                    imageBounds = PlanarImage.wrapRenderedImage(image).getBounds();
-	                }
-	                
-	                // and, do we need to add a border around the image?
-	                if(!imageBounds.contains(rasterBounds)) {
-	                    image = MosaicDescriptor.create(
-	                            new RenderedImage[] {image}, 
-	                            request.isBlend()? MosaicDescriptor.MOSAIC_TYPE_BLEND: MosaicDescriptor.MOSAIC_TYPE_OVERLAY, 
-	                            (alphaIn || visitor.doInputTransparency) ? visitor.alphaChannels : null, sourceRoi, 
-	                            visitor.sourceThreshold, 
-	                            backgroundValues, 
-	                            localHints);
-	                }
-	                
-	                return image;
-	            }
-	        }
+        	        if (bounds != null) {
+        	            RenderedImage image= visitor.getSourcesAsArray()[0];
+        	            Rectangle imageBounds= PlanarImage.wrapRenderedImage(image).getBounds();
+        	            if(imageBounds.equals(bounds)){
+        	                
+        	                // do we need to crop? (image is bigger than requested?)
+        	                if(!rasterBounds.contains(imageBounds)){
+        	                    // we have to crop
+        	                    XRectangle2D.intersect(imageBounds, rasterBounds, imageBounds);
+        	                    
+        	                    if(imageBounds.isEmpty()){
+        	                        // return back a constant image
+        	                        return null;
+        	                    }
+        	                    // crop
+        	                    ImageWorker iw = new ImageWorker(image);
+        	                    iw.setRenderingHints(localHints);
+        	                    iw.crop(imageBounds.x, imageBounds.y, imageBounds.width, imageBounds.height);
+        	                    
+        	                    image = iw.getRenderedImage();
+        	                    imageBounds = PlanarImage.wrapRenderedImage(image).getBounds();
+        	                }
+        	                
+        	                // and, do we need to add a border around the image?
+        	                if(!imageBounds.contains(rasterBounds)) {
+        	                    image = MosaicDescriptor.create(
+        	                            new RenderedImage[] {image}, 
+        	                            request.isBlend()? MosaicDescriptor.MOSAIC_TYPE_BLEND: MosaicDescriptor.MOSAIC_TYPE_OVERLAY, 
+        	                            (alphaIn || visitor.doInputTransparency) ? visitor.alphaChannels : null, sourceRoi, 
+        	                            visitor.sourceThreshold, 
+        	                            backgroundValues, 
+        	                            localHints);
+        	                }
+        	                
+        	                return image;
+        	            }
+        	        }
 		}
+	                
+		// 
+		// Final Merge
+		// 
+		// I can even do a stacking merge or a flat merge
+		final RenderedImage mosaic=request.getMergeBehavior().process(
+	                        visitor.getSourcesAsArray(), 
+	                        backgroundValues, 
+	                        visitor.sourceThreshold, 
+	                        (alphaIn || visitor.doInputTransparency) ? visitor.alphaChannels : null, 
+	                        sourceRoi, 
+	                        request.isBlend()? MosaicDescriptor.MOSAIC_TYPE_BLEND: MosaicDescriptor.MOSAIC_TYPE_OVERLAY, 
+	                        localHints);
 
-
-		final RenderedImage mosaic = MosaicDescriptor.create(
-		        visitor.getSourcesAsArray(), 
-		        request.isBlend()? MosaicDescriptor.MOSAIC_TYPE_BLEND: MosaicDescriptor.MOSAIC_TYPE_OVERLAY, 
-		        (alphaIn || visitor.doInputTransparency) ? visitor.alphaChannels : null, sourceRoi, 
-		        visitor.sourceThreshold, 
-		        backgroundValues, 
-		        localHints);
 		
 		if (setRoiProperty) {
 		    
@@ -1372,22 +1291,31 @@ class RasterLayerResponse{
 	private GridCoverage2D prepareCoverage(RenderedImage image) throws IOException {
 		
 		// creating bands
-        final SampleModel sm=image.getSampleModel();
-        final ColorModel cm=image.getColorModel();
+                final SampleModel sm=image.getSampleModel();
+                final ColorModel cm=image.getColorModel();
 		final int numBands = sm.getNumBands();
 		final GridSampleDimension[] bands = new GridSampleDimension[numBands];
 	        Set<String> bandNames = new HashSet<String>();		
 		// setting bands names.
 		for (int i = 0; i < numBands; i++) {
-			// color interpretation
-	        final ColorInterpretation colorInterpretation=TypeMap.getColorInterpretation(cm, i);
-	        if(colorInterpretation==null)
-	               throw new IOException("Unrecognized sample dimension type");
-                // make sure we create no duplicate band names
-	        String bandName = colorInterpretation.name();	        
-                if(colorInterpretation == ColorInterpretation.UNDEFINED || bandNames.contains(bandName)) {
-                    bandName = "Band" + (i + 1);
-                } 	        
+		        ColorInterpretation colorInterpretation=null;
+		        String bandName=null;
+		        if(cm!=null){
+	                        // === color interpretation
+		                colorInterpretation=TypeMap.getColorInterpretation(cm, i);
+                	        if(colorInterpretation==null){
+                	            throw new IOException("Unrecognized sample dimension type");
+                	        }
+                	        
+                	        bandName = colorInterpretation.name();
+                                if(bandNames.contains(bandName)) {// make sure we create no duplicate band names
+                                    bandName = "Band" + (i + 1);
+                                }
+        	        } else { // no color model
+        	            bandName = "Band" + (i + 1);
+        	            colorInterpretation=ColorInterpretation.UNDEFINED;
+        	        }
+ 	        
 	        
 	        // sample dimension type
 	        final SampleDimensionType st=TypeMap.getSampleDimensionType(sm, i);

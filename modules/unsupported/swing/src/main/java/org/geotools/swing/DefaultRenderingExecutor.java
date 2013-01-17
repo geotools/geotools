@@ -301,8 +301,8 @@ public class DefaultRenderingExecutor implements RenderingExecutor {
                 } else {
                     tasksLatch.countDown();
                     if (tasksLatch.getCount() == 0) {
+                        currentTasks.remove(info);
                         info.listener.onRenderingCompleted(event);
-                        currentTasks.clear();
                         break;
                     }
                 }

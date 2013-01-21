@@ -24,8 +24,11 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.ref.SoftReference;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,6 +43,10 @@ import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.factory.Hints;
+import org.geotools.feature.visitor.FeatureCalc;
+import org.geotools.feature.visitor.MaxVisitor;
+import org.geotools.feature.visitor.MinVisitor;
+import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.gce.imagemosaic.OverviewsController.OverviewLevel;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
@@ -185,10 +192,6 @@ class RasterManager {
 
 	/** {@link SoftReference} to the index holding the tiles' envelopes. */
 	final GranuleCatalog granuleCatalog;
-
-	String timeAttribute;
-	
-	String elevationAttribute;
 	
 	ImageLayout defaultImageLayout;
 
@@ -203,9 +206,7 @@ class RasterManager {
         //take ownership of the index
         granuleCatalog = parent.catalog;
         parent.catalog = null;
-		
-        timeAttribute=parent.timeAttribute;
-        elevationAttribute=parent.elevationAttribute;
+        
         coverageIdentifier=reader.getName();
         hints = reader.getHints();
         this.coverageIdentifier =reader.getName();
@@ -419,5 +420,56 @@ class RasterManager {
 	public GridCoverageFactory getCoverageFactory() {
 		return coverageFactory;
 	}
+
+    /**
+     * @param metadataName
+     * @param attributeName 
+     * @return
+     * @throws IOException
+     */
+    FeatureCalc createExtremaQuery(String metadataName, String attributeName) throws IOException {
+        final Query query = new Query(granuleCatalog.getType().getTypeName());
+        query.setPropertyNames(Arrays.asList(attributeName));
+                              
+        final FeatureCalc visitor= 
+            metadataName.toLowerCase().endsWith("maximum")?
+                new MaxVisitor(attributeName):new MinVisitor(attributeName);
+        granuleCatalog.computeAggregateFunction(query, visitor);
+        return visitor;
+    }
+
+        /**
+         * Extract the domain of a dimension as a set of unique values.
+         * 
+         * <p>
+         * It retrieves a comma separated list of values as a {@link String}.
+         * 
+         * @return a comma separated list of values as a {@link String}.
+         * @throws IOException
+         */
+        Set extractDomain(final String attribute)
+                throws IOException {
+    
+    //        final QueryCapabilities queryCapabilities = rasterManager.granuleCatalog.getQueryCapabilities();
+    //        boolean manualSort=false;        
+            Query query = new Query(granuleCatalog.getType().getTypeName());
+            query.setPropertyNames(Arrays.asList(attribute));
+    //        final SortBy[] sortBy=new SortBy[]{
+    //                	new SortByImpl(
+    //                			FeatureUtilities.DEFAULT_FILTER_FACTORY.property(attribute),
+    //                			SortOrder.ASCENDING
+    //                	)};
+    //        if(queryCapabilities.supportsSorting(sortBy))
+    //                query.setSortBy(sortBy);
+    //        else
+    //                manualSort=true;	
+            final UniqueVisitor visitor= new UniqueVisitor(attribute);
+            granuleCatalog.computeAggregateFunction(query, visitor);
+            
+            // check result
+    //        final Set result =manualSort? new TreeSet(visitor.getUnique()):visitor.getUnique();
+            // 17052012 SG MANUAL ORDERING as there is not guarantee that the ordering with an aggregation would work
+            return new TreeSet(visitor.getUnique());
+        }
 
 }

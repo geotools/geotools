@@ -168,6 +168,13 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
     public static final ParameterDescriptor<String> SORT_BY = new DefaultParameterDescriptor<String>("SORTING",String.class, null, null);
     
     /**
+     * Merging behavior for the various granules of the mosaic we are going to produce.
+     * 
+     * <p>
+     * This parameter controls whether we want to merge in a single mosaic or stack all the bands into the final mosaic.
+     */
+    public static final ParameterDescriptor<String> MERGE_BEHAVIOR = new DefaultParameterDescriptor<String>("MergeBehavior",String.class,MergeBehavior.valuesAsStrings(), MergeBehavior.getDefault().toString());
+    /**
      * Creates an instance and sets the metadata.
      */
     public ImageMosaicFormat() {
@@ -200,7 +207,8 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                 TIME,
                 ELEVATION,
                 FILTER,
-                SORT_BY
+                SORT_BY,
+                MERGE_BEHAVIOR
         }));
 
         // reading parameters

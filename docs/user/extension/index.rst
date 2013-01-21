@@ -8,6 +8,7 @@ Extensions build additional functionality on top of the core services of the Geo
 
    app-schema
    brewer/index
+   complex
    graph/index
    grid
    ogc/index

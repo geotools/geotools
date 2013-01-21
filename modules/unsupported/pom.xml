@@ -198,7 +198,6 @@
     <module>process</module>
     <module>wfs</module>
     <module>geojson</module>
-    <module>grid</module>
   </modules>
 
 </project>

@@ -46,11 +46,12 @@
   <modules>
     <module>app-schema</module>
     <module>brewer</module>
-    <module>graph</module>
-    <module>validation</module>
-    <module>xsd</module>
-    <module>wms</module>
     <module>complex</module>
+    <module>graph</module>
+    <module>grid</module>
+    <module>validation</module>
+    <module>wms</module>
+    <module>xsd</module>
   </modules>
 </project>
 

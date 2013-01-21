@@ -19,7 +19,6 @@ Research and Development:
 
    efeature/index
    geojson
-   grid
    geometry/index
    jts-wrapper
    process/index
@@ -33,7 +32,6 @@ Modules under active development:
 * :doc:`process/index` - API for working with GeoSpatial processes and annotations to make defining additional processes easy
 * :doc:`swing/index` - collection of GUI components and utilities based on the Swing framework
 * :doc:`swt/index` - collection of GUI components and utilities based on the SWT framework
-* :doc:`grid` - generates vector grids (lattices) of polygons or lines
 
 Modules for which volunteers are needed:
 

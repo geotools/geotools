@@ -318,7 +318,7 @@ public class GeometryBuilder {
         double rx = Math.abs(x2 - x1) / 2;
         double ry = Math.abs(y2 - y1) / 2;
         double cx = Math.min(x1, x2) + rx;
-        double cy = Math.min(x1, x2) + ry;
+        double cy = Math.min(y1, y2) + ry;
     
         double[] ord = new double[2 * nsides + 2];
         double angInc = 2 * Math.PI / nsides;

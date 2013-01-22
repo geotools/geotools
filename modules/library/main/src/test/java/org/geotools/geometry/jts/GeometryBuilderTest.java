@@ -205,8 +205,19 @@ public class GeometryBuilderTest {
         for (int i = 0; i < expectedOrdinates.length; i += dim) {
             Coordinate c = coords[i / dim];
             for (int j = 0; j < dim; j++) {
-                assertEquals(expectedOrdinates[i + j], c.getOrdinate(j), EPS);
+                assertEquals(expectedOrdinates[i + j], getOrdinate(c, j), EPS);
             }
+        }
+    }
+    
+    // JTS 1.12 does not have Coordinate.getOrdinate
+    private double getOrdinate(Coordinate c, int index) {
+        switch (index) {
+            case 0: return c.x;
+            case 1: return c.y;
+            case 2: return c.z;
+            default:
+                throw new IllegalArgumentException();
         }
     }
 }

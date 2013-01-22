@@ -438,8 +438,7 @@ public class GeometryBuilder {
         double[] ord2 = new double[ord.length + dim];
         System.arraycopy(ord, 0, ord2, 0, ord.length);
         // copy first coord to last
-        int n = ord2.length / dim;
-        int lastPos = dim * n;
+        int lastPos = ord.length;
         for (int i = 0; i < dim; i++) {
             ord2[lastPos + i] = ord2[i];
         }

@@ -35,7 +35,9 @@ import org.opengis.feature.simple.SimpleFeature;
 public abstract class PropertiesCollector  {
 	
 	private List<String> propertyNames;
+	
 	private PropertiesCollectorSPI spi;
+	
 	private List<String> matches= new ArrayList<String>();
 	
 	

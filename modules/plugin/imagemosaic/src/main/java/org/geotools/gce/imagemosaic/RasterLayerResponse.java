@@ -77,9 +77,8 @@ import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.SortByImpl;
 import org.geotools.gce.imagemosaic.GranuleDescriptor.GranuleLoadingResult;
-import org.geotools.gce.imagemosaic.ImageMosaicReader.DomainDescriptor;
-import org.geotools.gce.imagemosaic.ImageMosaicReader.DomainManager;
 import org.geotools.gce.imagemosaic.OverviewsController.OverviewLevel;
+import org.geotools.gce.imagemosaic.RasterManager.DomainDescriptor;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
 import org.geotools.gce.imagemosaic.processing.ArtifactsFilterDescriptor;
 import org.geotools.geometry.Envelope2D;
@@ -327,6 +326,7 @@ class RasterLayerResponse{
 		
 
                 private final int maxNumberOfGranules;
+                
 		private final List<Future<GranuleLoadingResult>> tasks= new ArrayList<Future<GranuleLoadingResult>>();
 		private int   granulesNumber;
 		private List<ROI> rois = new ArrayList<ROI>();
@@ -892,7 +892,7 @@ class RasterLayerResponse{
                         // handle elevation indexing first since we then combine this with the max in case we are asking for current in time
                         if (hasElevation) {
             
-                            final Filter elevationF = rasterManager.parent.elevationDomainManager.createFilter(
+                            final Filter elevationF = rasterManager.elevationDomainManager.createFilter(
                                     ImageMosaicReader.ELEVATION_DOMAIN, elevations);
                             query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.and(query.getFilter(),
                                     elevationF));
@@ -906,7 +906,7 @@ class RasterLayerResponse{
             
                         // fuse time query with the bbox query
                         if (hasTime) {
-                            final Filter timeFilter = this.rasterManager.parent.timeDomainManager.createFilter(
+                            final Filter timeFilter = this.rasterManager.timeDomainManager.createFilter(
                                     ImageMosaicReader.TIME_DOMAIN, times);
                             query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.and(query.getFilter(),
                                     timeFilter));
@@ -918,7 +918,7 @@ class RasterLayerResponse{
             
                                 // build a filter for each dimension
                                 final String domainName = entry.getKey()+DomainDescriptor.DOMAIN_SUFFIX;
-                                additionalFilter.add(rasterManager.parent.domainsManager.createFilter(
+                                additionalFilter.add(rasterManager.domainsManager.createFilter(
                                         domainName, (List) entry.getValue()));
             
                             }

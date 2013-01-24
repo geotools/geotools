@@ -25,11 +25,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -48,27 +44,20 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
-import org.geotools.feature.visitor.CalcResult;
-import org.geotools.feature.visitor.FeatureCalc;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogFactory;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
-import org.geotools.resources.coverage.FeatureUtilities;
-import org.geotools.util.Range;
 import org.geotools.util.Utilities;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.Filter;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.metadata.Identifier;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValue;
-import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 /**
@@ -104,398 +93,7 @@ import org.opengis.referencing.operation.MathTransform;
 public class ImageMosaicReader extends AbstractGridCoverage2DReader implements GridCoverageReader {
 
 
-    /**
-     * {@link DomainDescriptor} describe a single domain in terms of name and {@link ParameterDescriptor} 
-     * that can be used to filter values during a read operation.
-     * 
-     * <p> Notice that there is no caching of values for the domain itself right now.
-     * 
-     * <p>
-     * The domain must have unique identifiers.
-     * 
-     * @author Simone Giannecchini, GeoSolutions SAS
-     *
-     */
-    class DomainDescriptor{
-
-        static final String DOMAIN_SUFFIX = "_DOMAIN";
-
-        static final String HAS_PREFIX = "HAS_";
-        
-        
-        /** Unique identifier for this domain.*/
-        private final String identifier;
-                
-        /** propertyName for this domain that tells me which Property from the underlying catalog provides values for it.*/
-        private final String propertyName;
-        
-        /** The {@link ParameterDescriptor} that can be used to filter on this domain during a read operation.*/
-        private final DefaultParameterDescriptor<List> domainParameterDescriptor;
-        
-
-        /**
-         * @return the identifier
-         */
-        private String getIdentifier() {
-            return identifier;
-        }
-
-        /**
-         * @return the propertyName
-         */
-        private String getPropertyName() {
-            return propertyName;
-        }
-
-        /**
-         * @return the domainaParameterDescriptor
-         */
-        private DefaultParameterDescriptor<List> getDomainaParameterDescriptor() {
-            return domainParameterDescriptor;
-        }
-
-        private DomainDescriptor(String identifier, String propertyName) {
-            this.identifier = identifier;
-            this.propertyName = propertyName;
-            final String name = identifier.toUpperCase();
-            this.domainParameterDescriptor=
-                    DefaultParameterDescriptor.create(
-                            name, 
-                            "Additional " + identifier + " domain", 
-                            List.class, 
-                            null, 
-                            false); 
-        }
-        /**
-         * Extract the time domain extrema.
-         * 
-         * @param extrema a {@link String} either TIME_DOMAIN_MAXIMUM or TIME_DOMAIN_MINIMUM.
-         * 
-         * @return either TIME_DOMAIN_MAXIMUM or TIME_DOMAIN_MINIMUM as a {@link String}.
-         * TODO use num for extrema
-         */
-        private String getExtrema(String extrema) {
-            try {
-                final FeatureCalc visitor = rasterManager.createExtremaQuery(extrema,propertyName);
-                
-                // check result
-                CalcResult tempRes = visitor.getResult();
-                if(tempRes==null){
-                    throw new IllegalStateException("Unable to compute extrema value:"+extrema);
-                }
-                final Object result=tempRes.getValue();
-                if(result==null){
-                    throw new IllegalStateException("Unable to compute extrema value:"+extrema);
-                }                
-                return ConvertersHack.convert(result, String.class);
-            } catch (IOException e) {
-                if(LOGGER.isLoggable(Level.WARNING))
-                        LOGGER.log(Level.WARNING,"Unable to compute extrema for TIME_DOMAIN",e);
-                return null;
-            }
-        }
-        
-        /**
-         * Retrieves the values for this domain
-         * @return
-         */
-        private String getValues(){
-            try {            
-                final Set result = rasterManager.extractDomain(propertyName);          
-                // check result
-                if(result.size()<=0){
-                    return "";
-                }
-                
-                final StringBuilder buff= new StringBuilder();
-                for(Iterator it= result.iterator(); it.hasNext();){
-                    buff.append(ConvertersHack.convert(it.next(), String.class));
-                    if(it.hasNext()){
-                        buff.append(",");
-                    }
-                }
-                return buff.toString();
-
-            } catch (IOException e) {
-                if(LOGGER.isLoggable(Level.WARNING))
-                        LOGGER.log(Level.WARNING,"Unable to parse attribute: " + identifier ,e);
-                return "";
-            }
-        }
-    }
-    /**
-     * An {@link DomainManager} class which allows to deal with additional domains
-     * (if any) defined inside the mosaic. It provides DOMAIN_ALIAS <--to--> original attribute mapping
-     * capabilities, metadata retrieval, filter creation, and domain support check
-     * 
-     * @author Daniele Romagnoli, GeoSolutions S.a.S.
-     * TODO move to {@link RasterManager}
-     */
-    class DomainManager {
-        
-        private final Map<String, DomainDescriptor> domainsMap= new HashMap<String, ImageMosaicReader.DomainDescriptor>();
-
-
-        DomainManager (Map<String,String> additionalDomainAttributes, SimpleFeatureType simpleFeatureType){
-            Utilities.ensureNonNull("additionalDomainAttributes", additionalDomainAttributes);
-            Utilities.ensureNonNull("simpleFeatureType", simpleFeatureType);   
-            init(additionalDomainAttributes, simpleFeatureType);
-        }
-
-        /**
-         * @param additionalDomainAttributes
-         * @param simpleFeatureType
-         * @throws IllegalArgumentException
-         */
-        private void init(Map<String, String> additionalDomainAttributes,
-                SimpleFeatureType simpleFeatureType) throws IllegalArgumentException {
-            for(java.util.Map.Entry<String,String> entry:additionalDomainAttributes.entrySet()){
-                
-                final String domainName=entry.getKey();
-                String propertyName=entry.getValue();
-                // is the name equals to the propertyname?
-                try{
-                    if(simpleFeatureType.getDescriptor(propertyName) != null){
-                        // add
-                        addDomain(domainName,propertyName);    
-                        
-                        // continue
-                        continue;
-                    }
-                    
-                }catch (Exception e) {
-                    if(LOGGER.isLoggable(Level.FINE)){
-                        LOGGER.log(Level.FINE,e.getLocalizedMessage(),e);
-                    }
-                }
-                
-                // ok why we don't have it? Maybe shapefile name truncation?
-                if(propertyName.length()>10){
-                    // hakc for shapes
-                    propertyName= propertyName.substring(0,10);
-                    // alias in provided type
-                    try{
-                        if(simpleFeatureType.getDescriptor(propertyName) != null){
-                            // add
-                            addDomain(domainName,propertyName);    
-                            
-                            // continue
-                            continue;
-                        }
-                        
-                    }catch (Exception e) {
-                        if(LOGGER.isLoggable(Level.FINE)){
-                            LOGGER.log(Level.FINE,e.getLocalizedMessage(),e);
-                        }
-                    }                    
-                }
-                
-                // if I got here, we are in trouble. No way to add this param
-                throw new IllegalArgumentException("Unable to add this domain:"+domainName+"-"+propertyName);
-
-            }
-        }
-        
-        /**
-         * build an AdditionalDomainManager on top of the provided additionalDomainAttributes 
-         * (a comma separated list of attribute names).
-         *
-         * @param additionalDomainAttributes
-         * @param simpleFeatureType 
-         */
-        DomainManager (String additionalDomainAttributes, SimpleFeatureType simpleFeatureType) {
-            Utilities.ensureNonNull("additionalDomainAttributes", additionalDomainAttributes);
-            Utilities.ensureNonNull("simpleFeatureType", simpleFeatureType);
-            
-            final Map<String,String> domainPairs= new HashMap<String, String>();
-            
-            // split, looking for multiple values
-            final String[] additionalDomainsNames = additionalDomainAttributes.split(",");
-            if (additionalDomainsNames.length <= 0){
-                throw new IllegalArgumentException("Number of Domains should be > 0");
-            }
-
-            // add al the provided domain
-            for (String domainName : additionalDomainsNames) {
-                domainPairs.put(domainName, domainName);
-            }
-            init(domainPairs, simpleFeatureType);
-            
-        }
-
-        /**
-         * Add a domain to the manager
-         * @param domain the name of the domain
-         * @param propertyName 
-         */
-        private void addDomain(String name, String propertyName) {
-            Utilities.ensureNonNull("name", name);
-            Utilities.ensureNonNull("propertyName", propertyName);
-            
-            // === checks
-            // existing!
-            if(domainsMap.containsKey(name)){
-                throw new IllegalArgumentException("Trying to add a domain with an existing name"+name);
-            }
-                   
-            // ad with uppercase and with suffix, the parameter that describes it will match this
-            final String upperCase = name.toUpperCase();
-            domainsMap.put(
-                    upperCase+DomainDescriptor.DOMAIN_SUFFIX,
-                    new DomainDescriptor(name, propertyName)
-            );
-
-        }
-
-        /**
-         * Check whether a specific parameter (identified by the {@link Identifier} name) is supported by 
-         * this manager (and therefore, by the reader).
-         * @param name
-         * @return
-         */
-        public boolean isParameterSupported(final Identifier name) {
-            if (!domainsMap.isEmpty()) {
-                for(DomainDescriptor domain:domainsMap.values()){
-                    final ReferenceIdentifier nameLoc = domain.getDomainaParameterDescriptor().getName();
-                    if(nameLoc.equals(name)){
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        /**
-         * Setup the List of metadataNames for this additional domains manager
-         *
-         * @return
-         */
-        public List<String> getMetadataNames() {
-            final List<String> metadataNames = new ArrayList<String>();
-            if (!domainsMap.isEmpty()) {
-                for(DomainDescriptor domain:domainsMap.values()){
-                    String domainName = domain.getIdentifier().toUpperCase();
-                    metadataNames.add(domainName+DomainDescriptor.DOMAIN_SUFFIX);
-                    metadataNames.add(DomainDescriptor.HAS_PREFIX+domainName+DomainDescriptor.DOMAIN_SUFFIX);                        
-                }
-            }
-            return metadataNames;
-        }
-
-        /**
-         * Return the value of a specific metadata by parsing the requested name as a Domain Name
-         * @param name
-         * @return
-         */
-        public String getMetadataValue(String name) {
-            Utilities.ensureNonNull("name", name);
-            
-            String value = null;
-            if (domainsMap.size()>0) {
-                // is a domain?
-                if(domainsMap.containsKey(name)){
-                    final DomainDescriptor domainDescriptor = domainsMap.get(name);
-                    value = domainDescriptor.getValues();
-                } else {
-                    // is a simple Has domain query?
-                    if(name.startsWith(DomainDescriptor.HAS_PREFIX)){
-                        final String substring = name.substring(DomainDescriptor.HAS_PREFIX.length(),name.length());
-                        if(domainsMap.containsKey(substring)){
-                            return Boolean.toString(Boolean.TRUE);
-                        } else {
-                            return Boolean.toString(Boolean.FALSE);                        
-                        }
-                    } else {
-                        // MINUM or MAXIMUM
-                        if(name.endsWith("MINIMUM")||name.endsWith("MAXIMUM")){
-                            return domainsMap.get(name.substring(0, name.lastIndexOf("_"))).getExtrema(name);
-                        }
-                    }
-                }
-            }
-            return value;
-        }
-        
-        /**
-         * Setup a Filter on top of the specified domainRequest which is in the form "key=value"
-         * 
-         * @param domain
-         * @param values
-         * @return
-         */
-        public Filter createFilter(String domain, List values) {
-            // === checks
-            if (domain == null || domain.isEmpty()){
-                throw new IllegalArgumentException("Null domain requested");
-            }
-            if (values == null || values.isEmpty()){
-                throw new IllegalArgumentException("Null domain values provided");
-            }
-            if (domainsMap.isEmpty() || !domainsMap.containsKey(domain)) {
-                throw new IllegalArgumentException("requested domain is not supported by this mosaic: " + domain);
-            }
-            
-            
-            // get the property name
-            DomainDescriptor domainDescriptor = domainsMap.get(domain);
-            final String propertyName=domainDescriptor.getPropertyName();
-            
-            // === create the filter
-            // loop values and AND them
-            final int size = values.size();
-            final List<Filter> filters= new ArrayList<Filter>();
-            for(int i=0;i<size;i++){
-                // checks
-                final Object value = values.get(i);
-                if(value==null){
-                    if(LOGGER.isLoggable(Level.INFO)){
-                        LOGGER.info("Ignoring null date for the filter:"+domain);
-                    }
-                    continue;
-                }                    
-                if(value instanceof Range){
-                    // RANGE                        
-                    final Range range= (Range)value;
-                    filters.add( 
-                            FeatureUtilities.DEFAULT_FILTER_FACTORY.and(
-                                    FeatureUtilities.DEFAULT_FILTER_FACTORY.lessOrEqual(
-                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.property(propertyName), 
-                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(range.getMaxValue())),
-                                    FeatureUtilities.DEFAULT_FILTER_FACTORY.greaterOrEqual(
-                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.property(propertyName), 
-                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(range.getMinValue()))
-                            ));                                
-                    continue;
-                }  
-                // SINGLE value
-                filters.add( 
-                        FeatureUtilities.DEFAULT_FILTER_FACTORY.equal(
-                                FeatureUtilities.DEFAULT_FILTER_FACTORY.property(propertyName),
-                                FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(value),true)
-                            );                    
-            }
-            return FeatureUtilities.DEFAULT_FILTER_FACTORY.or(filters);
-            
-        }
-        
-       /** 
-         * Return the set of dynamic parameterDescriptors (the ones related to domains) for this reader 
-         * @return
-         */
-        public Set<ParameterDescriptor<List>> getDynamicParameters() {
-            Set<ParameterDescriptor<List>> dynamicParameters= new HashSet<ParameterDescriptor<List>>();
-            if (!domainsMap.isEmpty()) {
-                for(DomainDescriptor domain:domainsMap.values()){
-                    dynamicParameters.add(domain.getDomainaParameterDescriptor());
-                }
-            }
-           // return
-           return dynamicParameters;
-        }
-
-    }
-
-		/** Logger. */
+    /** Logger. */
 	private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ImageMosaicReader.class);
 
 	/**
@@ -514,10 +112,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
 
 	RasterManager rasterManager;
 
-        /** The inner {@link DomainManager} instance which allows to manage custom dimensions */
-        DomainManager domainsManager;
-
-	int maxAllowedTiles=ImageMosaicFormat.MAX_ALLOWED_TILES.getDefaultValue();
+        int maxAllowedTiles=ImageMosaicFormat.MAX_ALLOWED_TILES.getDefaultValue();
 
 	/** The suggested SPI to avoid SPI lookup*/
 	ImageReaderSpi suggestedSPI;
@@ -532,11 +127,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
 
 	String typeName;
 
-        DomainManager timeDomainManager;
-
-        DomainManager elevationDomainManager;
-	
-	/**
+        /**
 	 * Constructor.
 	 * 
 	 * @param source
@@ -605,29 +196,13 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
         if (schema == null) {
             throw new DataSourceException("Unable to create reader for this mosaic since the inner catalog schema is null.");
         }
-        
-        if (configuration.getAdditionalDomainAttributes() != null) {
-            domainsManager = new DomainManager(configuration.getAdditionalDomainAttributes(),schema);
-        }
-        
-        // time attribute
-        if(configuration.getTimeAttribute()!=null){
-            final HashMap<String, String> init=new HashMap<String, String>();
-            init.put("TIME", configuration.getTimeAttribute());
-            timeDomainManager= new DomainManager(init,schema);
-        }
-        // elevation attribute
-        if(configuration.getElevationAttribute()!=null){
-            final HashMap<String, String> init=new HashMap<String, String>();
-            init.put("ELEVATION", configuration.getElevationAttribute());
-            elevationDomainManager= new DomainManager(init,schema);
-        }
+       
 
         // grid geometry
         setGridGeometry();
         
         // raster manager
-        rasterManager = new RasterManager(this);
+        rasterManager = new RasterManager(this,configuration);
         rasterManager.defaultSM = configuration.getSampleModel();
         
         
@@ -703,26 +278,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
                             throw new IllegalArgumentException("Problems when opening the index, no typenames for the schema are defined");
                         }
                         
-                        
-			// additional domain properties
-		        SimpleFeatureType schema = catalog.getType();
-                        if (configuration.getAdditionalDomainAttributes() != null) {
-		            domainsManager = new DomainManager(configuration.getAdditionalDomainAttributes(),schema);
-		        }
-		        // time attribute
-		        if(configuration.getTimeAttribute()!=null){
-                            final HashMap<String, String> init=new HashMap<String, String>();
-                            init.put("TIME", configuration.getTimeAttribute());
-		            timeDomainManager= new DomainManager(init,schema);
-		        }
-                        // elevation attribute
-                        if(configuration.getElevationAttribute()!=null){
-                            final HashMap<String, String> init=new HashMap<String, String>();
-                            init.put("ELEVATION", configuration.getElevationAttribute());
-                            elevationDomainManager= new DomainManager(init,schema);
-                        }
-
-			
+		
 			// everything is fine
 			if (LOGGER.isLoggable(Level.FINE))
 				LOGGER.fine("Connected mosaic reader to its index "
@@ -765,7 +321,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
 			}
 			
 			// creating the raster manager
-			rasterManager = new RasterManager(this);
+			rasterManager = new RasterManager(this,configuration);
 		}
 		catch (Throwable e) {
 			try {
@@ -1094,8 +650,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
             metadataNames.add(ELEVATION_DOMAIN_MAXIMUM);
             metadataNames.add(HAS_ELEVATION_DOMAIN);
             metadataNames.add(ELEVATION_DOMAIN_RESOLUTION);
-            if (domainsManager != null) {
-                metadataNames.addAll(domainsManager.getMetadataNames());
+            if (rasterManager.domainsManager != null) {
+                metadataNames.addAll(rasterManager.domainsManager.getMetadataNames());
             }
             if(parentNames!=null)
                 metadataNames.addAll(Arrays.asList(parentNames));
@@ -1108,8 +664,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
 	    if(value!=null){
 	        return value;
 	    }
-	    final boolean hasTimeDomain = timeDomainManager!=null;
-	    final boolean hasElevationDomain = elevationDomainManager!=null;
+	    final boolean hasTimeDomain = rasterManager.timeDomainManager!=null;
+	    final boolean hasElevationDomain = rasterManager.elevationDomainManager!=null;
 	    
             if (name.equalsIgnoreCase(HAS_ELEVATION_DOMAIN))
                 return String.valueOf(hasElevationDomain);
@@ -1130,29 +686,29 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
             
             if (hasTimeDomain){
                 if(name.equalsIgnoreCase("time_domain")) {
-                    return timeDomainManager.getMetadataValue(name);    
+                    return rasterManager.timeDomainManager.getMetadataValue(name);    
                 }
                 if ((name.equalsIgnoreCase("time_domain_minimum") || name.equalsIgnoreCase("time_domain_maximum"))) {
-                    return timeDomainManager.getMetadataValue(name);
+                    return rasterManager.timeDomainManager.getMetadataValue(name);
                 }
             }
             
             
             if (hasElevationDomain) {
                 if(name.equalsIgnoreCase("elevation_domain")){
-                    return elevationDomainManager.getMetadataValue(name);
+                    return rasterManager.elevationDomainManager.getMetadataValue(name);
                 }
                 
                 if(name.equalsIgnoreCase("elevation_domain_minimum") || name.equalsIgnoreCase("elevation_domain_maximum")){
-                    return elevationDomainManager.getMetadataValue(name);
+                    return rasterManager.elevationDomainManager.getMetadataValue(name);
                 }
     
             }
  
         		
             // check additional domains
-            if (domainsManager != null) {
-                return domainsManager.getMetadataValue(name);
+            if (rasterManager.domainsManager != null) {
+                return rasterManager.domainsManager.getMetadataValue(name);
             } 
 
             // 
@@ -1163,10 +719,10 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
 
     @Override
     public Set<ParameterDescriptor<List>> getDynamicParameters() {
-        return domainsManager != null ? domainsManager.getDynamicParameters() : super.getDynamicParameters();
+        return rasterManager.domainsManager != null ? rasterManager.domainsManager.getDynamicParameters() : super.getDynamicParameters();
     }
 
     public boolean isParameterSupported(Identifier name) {
-        return domainsManager != null ? domainsManager.isParameterSupported(name) : false;
+        return rasterManager.domainsManager != null ? rasterManager.domainsManager.isParameterSupported(name) : false;
     }
 }

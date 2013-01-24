@@ -201,8 +201,9 @@ class GTDataStoreGranuleCatalog extends AbstractGranuleCatalog {
 			}
 
 			// is this a new store? If so we do not set any properties
-			if(create)
-				return;
+			if(create){
+			    return;
+			}
 				
 			// if this is not a new store let's extract basic properties from it
 			if(params.containsKey("TypeName")){
@@ -663,7 +664,9 @@ class GTDataStoreGranuleCatalog extends AbstractGranuleCatalog {
 		try{
 			lock.lock();
 			checkStore();
-			
+			if(typeName==null){
+			    return null;
+			}
 			return tileIndexStore.getSchema(typeName);
 		}finally{
 			lock.unlock();

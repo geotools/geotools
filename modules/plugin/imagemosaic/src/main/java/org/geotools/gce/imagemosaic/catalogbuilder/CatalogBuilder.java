@@ -74,6 +74,7 @@ import org.geotools.coverage.grid.io.UnknownFormat;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
+import org.geotools.data.Query;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gce.image.WorldImageFormat;
@@ -93,6 +94,7 @@ import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.Utilities;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.Filter;
 import org.opengis.geometry.Envelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
@@ -500,12 +502,22 @@ public class CatalogBuilder implements Runnable {
 						featureBuilder.add(runConfiguration.getLocationAttribute().trim(), String.class);
 						featureBuilder.add("the_geom", Polygon.class,actualCRS);
 						featureBuilder.setDefaultGeometry("the_geom");
-						if(runConfiguration.getTimeAttribute()!=null)
-							featureBuilder.add(runConfiguration.getTimeAttribute().trim(), Date.class);
+						if(runConfiguration.getTimeAttribute()!=null){
+						    featureBuilder.add(runConfiguration.getTimeAttribute(), Date.class);
+						}
 						indexSchema = featureBuilder.buildFeatureType();
 					}
+					
 					// create the schema for the new shape file
-					catalog.createType(indexSchema);
+					final SimpleFeatureType type = catalog.getType();
+                                        if(type==null){
+					    catalog.createType(indexSchema);
+					} else {
+					    // remove them all, assuming the schema has not changed
+					    final Query query = new Query(type.getTypeName());
+					    query.setFilter(Filter.INCLUDE);
+					    catalog.removeGranules(query);
+					}
 					
 				} else {
 				    if (!mosaicConfiguration.isHeterogeneous()){

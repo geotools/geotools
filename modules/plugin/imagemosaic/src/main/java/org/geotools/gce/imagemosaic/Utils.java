@@ -736,13 +736,7 @@ public class Utils {
 			// create a datastore as instructed
 			final DataStoreFactorySpi spi = (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
 			return createDataStoreParamsFromPropertiesFile(properties, spi);
-		} catch (ClassNotFoundException e) {
-			final IOException ioe = new IOException();
-			throw (IOException) ioe.initCause(e);
-		} catch (InstantiationException e) {
-			final IOException ioe = new IOException();
-			throw (IOException) ioe.initCause(e);
-		} catch (IllegalAccessException e) {
+		} catch (Exception e) {
 			final IOException ioe = new IOException();
 			throw (IOException) ioe.initCause(e);
 		}

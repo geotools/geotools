@@ -208,7 +208,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
      * is written its id is obtained and added to the returned set.
      * </p>
      */
-    public final List<FeatureId> addFeatures(Collection collection)
+    public List<FeatureId> addFeatures(Collection collection)
         throws IOException {
         
         // gather up id's
@@ -234,7 +234,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
      * </p>
      * @param featureCollection
      */
-    public final List<FeatureId> addFeatures(FeatureCollection<SimpleFeatureType,SimpleFeature> featureCollection)
+    public List<FeatureId> addFeatures(FeatureCollection<SimpleFeatureType,SimpleFeature> featureCollection)
         throws IOException {
         // gather up id's
         List<FeatureId> ids = new LinkedList<FeatureId>();

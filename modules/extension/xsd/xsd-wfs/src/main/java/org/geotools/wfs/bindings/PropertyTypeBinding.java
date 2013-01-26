@@ -81,9 +81,9 @@ public class PropertyTypeBinding extends AbstractComplexEMFBinding {
      *
      * @generated modifiable
      */
-    public Class getType() {
-        return null;
-    }
+//    public Class getType() {
+//        return null;
+//    }
 
     /**
      * <!-- begin-user-doc -->

@@ -1,4 +1,4 @@
-/* Copyright (c) 2001 - 2007 TOPP - www.openplans.org. All rights reserved.
+/* Copyright (c) 2001 - 2013 TOPP - www.openplans.org. All rights reserved.
  * This code is licensed under the GPL 2.0 license, available at the root
  * application directory.
  */
@@ -294,6 +294,15 @@ public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
                 return ff.equal(ex1, ex2);
             }
         }.transform(filter, extraData);
+    }
+    
+    public Object visit(Literal expression, Object extraData) {
+        Object value = expression.getValue();
+        if (value instanceof Geometry) {
+            value = reproject((Geometry) value, featureType.getCoordinateReferenceSystem());            
+        }
+        
+        return getFactory(extraData).literal(value);
     }
     
     /**

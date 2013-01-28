@@ -152,7 +152,7 @@ public class ReprojectingFilterVisitorTest extends TestCase {
         assertEquals(original, clone);
     }
     
-    public void testIntersectsUnreferencedProperty() throws Exception {
+    public void testIntersectsReferencedGeometry() throws Exception {
         GeometryFactory gf = new GeometryFactory();
         LineString ls = gf.createLineString(new Coordinate[] {new Coordinate(10, 15), new Coordinate(20, 25)});
         ls.setUserData(CRS.decode("urn:x-ogc:def:crs:EPSG:6.11.2:4326"));
@@ -160,8 +160,16 @@ public class ReprojectingFilterVisitorTest extends TestCase {
         // see if coordinates gets flipped, urn forces lat/lon interpretation
         Intersects original = ff.intersects(ff.property("line"), ff.literal(ls));
         Filter clone = (Filter) original.accept(reprojector, null);
+        
         assertNotSame(original, clone);
-        assertEquals(original, clone);
+        Intersects isClone = (Intersects) clone;
+        assertEquals(isClone.getExpression1(), original.getExpression1());
+        LineString clonedLs = (LineString) isClone.getExpression2().evaluate(null);
+        assertTrue(15 == clonedLs.getCoordinateN(0).x);
+        assertTrue(10 == clonedLs.getCoordinateN(0).y);
+        assertTrue(25 == clonedLs.getCoordinateN(1).x);
+        assertTrue(20 == clonedLs.getCoordinateN(1).y);
+        assertEquals(CRS.decode("EPSG:4326"), clonedLs.getUserData());
     }
     
     public void testPropertyEqualsFirstArgumentNotPropertyName() throws Exception {
@@ -215,11 +223,37 @@ public class ReprojectingFilterVisitorTest extends TestCase {
         assertTrue(20 == clonedLs.getCoordinateN(1).y);
         assertEquals(CRS.decode("EPSG:4326"), clonedLs.getUserData());
     }
+
+    public void testIntersectsFilterFunctionUnreferencedGeometry() throws Exception {
+        GeometryFactory gf = new GeometryFactory();
+        LineString ls = gf.createLineString(new Coordinate[] {new Coordinate(10, 15), new Coordinate(20, 25)});
+        
+        Function intersects = ff.function("intersects", ff.property("geom"), ff.literal(ls));
+        Function clone = (Function) intersects.accept(reprojector, null);
+        assertNotSame(intersects, clone);
+        assertEquals(clone.getParameters().get(0), intersects.getParameters().get(0));
+        assertEquals(clone.getParameters().get(1), intersects.getParameters().get(1));
+    }      
     
-    
-    
-    
-    
+    public void testIntersectsFilterFunctionReferencedGeometry() throws Exception {
+        GeometryFactory gf = new GeometryFactory();
+        LineString ls = gf.createLineString(new Coordinate[] {new Coordinate(10, 15), new Coordinate(20, 25)});
+        ls.setUserData(CRS.decode("urn:x-ogc:def:crs:EPSG:6.11.2:4326"));
+        
+        Function intersects = ff.function("intersects", ff.property("geom"), ff.literal(ls));
+        Function clone = (Function) intersects.accept(reprojector, null);
+        
+        assertNotSame(intersects, clone);
+        assertEquals(clone.getParameters().get(0), intersects.getParameters().get(0));
+        assertFalse(clone.getParameters().get(1).equals(intersects.getParameters().get(1)));
+        
+        LineString clonedLs = (LineString) ((Literal) clone.getParameters().get(1)).getValue();
+        assertTrue(15 == clonedLs.getCoordinateN(0).x);
+        assertTrue(10 == clonedLs.getCoordinateN(0).y);
+        assertTrue(25 == clonedLs.getCoordinateN(1).x);
+        assertTrue(20 == clonedLs.getCoordinateN(1).y);
+        assertEquals(CRS.decode("EPSG:4326"), clonedLs.getUserData());
+    }      
 
     private final class GeometryFunction implements Function {
         final LineString ls;

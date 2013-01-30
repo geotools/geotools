@@ -743,7 +743,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
                     
                     //look up the spatial index table
                     tables = cx.getMetaData().getTables(
-                        null, schemaName, tableName+"_"+columnName+"_idx", new String[]{"TABLE"});
+                        null, schemaName, tableName+"_"+columnName+"_idx", new String[]{"TABLE","VIEW"});
                     try {
                         if (tables.next()) {
                             tinfo.setIndexTableName(tables.getString("TABLE_NAME"));

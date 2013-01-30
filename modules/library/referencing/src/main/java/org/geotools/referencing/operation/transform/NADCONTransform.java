@@ -18,11 +18,8 @@ package org.geotools.referencing.operation.transform;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.PrintWriter;
 import java.io.Serializable;
-import java.net.URI;
 import java.net.URL;
-import java.util.prefs.Preferences;
 
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
@@ -30,6 +27,7 @@ import org.geotools.parameter.Parameter;
 import org.geotools.parameter.ParameterGroup;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.referencing.factory.gridshift.DataUtilities;
 import org.geotools.referencing.factory.gridshift.GridShiftLocator;
 import org.geotools.referencing.factory.gridshift.NADCONGridShiftFactory;
 import org.geotools.referencing.factory.gridshift.NADConGridShift;
@@ -86,8 +84,8 @@ import org.opengis.referencing.operation.Transformation;
  *
  * Grid shift files come in two formats: binary and text. The files from the NGS are
  * binary and have {@code .las} (latitude shift) and {@code .los} (longitude shift)
- * extentions. Text grids may be created with the <cite>NGS nadgrd</cite> program and have
- * {@code .laa} (latitude shift) and {@code .loa} (longitude shift) file extentions.
+ * extensions. Text grids may be created with the <cite>NGS nadgrd</cite> program and have
+ * {@code .laa} (latitude shift) and {@code .loa} (longitude shift) file extensions.
  * Both types of  files may be used here.
  * <p>
  *
@@ -123,7 +121,6 @@ import org.opengis.referencing.operation.Transformation;
  *
  *
  * @source $URL$
- * @version $Id$
  * @author Rueben Schulz
  *
  * @todo the transform code does not deal with the case where grids cross +- 180 degrees.
@@ -133,21 +130,11 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
      * Serial number for interoperability with different versions.
      */
     private static final long serialVersionUID = -4707304160205218546L;
-    
+
     /**
      * The factory that loads the NADCON grids
      */
     private static NADCONGridShiftFactory FACTORY = new NADCONGridShiftFactory();
-
-    /**
-     * Preference node for the grid shift file location.
-     */
-    private static final String GRID_LOCATION = "Grid location";
-
-    /**
-     * The default value for the grid shift file location.
-     */
-    private static final String DEFAULT_GRID_LOCATION = ".";
 
     /**
      * Difference allowed in iterative computations. This is half the value
@@ -168,26 +155,19 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
     /**
      * Latitude grid shift file names. Output in WKT.
      */
-    private final URI latGridName;
+    private final URL latGridURL;
 
     /**
      * Longitude grid shift file names. Output in WKT.
      */
-    private final URI longGridName;
+    private final URL longGridURL;
 
-   
-    /**
-     * Longitude and latitude grid shift values. Values are organized from low
-     * to high longitude (low x index to high) and low to high latitude (low y
-     * index to high).
-     */
-    private LocalizationGrid gridShift;
 
     /**
      * The {@link #gridShift} values as a {@code LocalizationGridTransform2D}.
      * Used for interpolating shift values.
      */
-    private MathTransform gridShiftTransform;
+    private final MathTransform gridShiftTransform;
 
     /**
      * The inverse of this transform. Will be created only when needed.
@@ -197,54 +177,70 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
     /**
      * The grid driving this transform
      */
-    NADConGridShift grid;
+    private final NADConGridShift grid;
 
 
     /**
      * Constructs a {@code NADCONTransform} from the specified grid shift files.
+     * Parameters are used as identifiers that are passed to any available
+     * {@code GridShiftLocator} classes.
      *
-     * @param latGridName path and name (or just name if {@link #GRID_LOCATION}
-     *        is set) to the latitude difference file. This will have a {@code .las} or
-     *        {@code .laa} file extention.
-     * @param longGridName path and name (or just name if {@link #GRID_LOCATION}
-     *        is set) to the longitude difference file. This will have a {@code .los}
-     *        or {@code .loa} file extention.
+     * @param latGridName identifier specifying path and name to the latitude difference
+     *        file. This will have a {@code .las} or {@code .laa} file extension.
+     * @param longGridName identifier specifying path and name to the longitude difference
+     *        file. This will have a {@code .los} or {@code .loa} file extension.
      *
-     * @throws ParameterNotFoundException if a math transform parameter cannot be found.
+     * @throws NullPointerException if parameters are omitted.
      * @throws FactoryException if there is a problem creating this math transform
-     *         (ie file extentions are unknown or there is an error reading the
+     *         (ie file extensions are unknown or there is an error reading the
      *          grid files)
      */
-    public NADCONTransform(final URI latGridName, final URI longGridName)
-            throws ParameterNotFoundException, FactoryException
+    public NADCONTransform(final String latGridName, final String longGridName)
+            throws NullPointerException, FactoryException
     {
-        if(latGridName == null) {
-            throw new NoSuchIdentifierException("Latitud grid shift file name is null", null);
+        this(locateGrid(latGridName), locateGrid(longGridName));
+    }
+
+    /**
+     * Constructs a {@code NADCONTransform} from the specified grid shift files
+     * located at the given URLs.
+     *
+     * @param latGridURL URL specifying path and name to the latitude difference
+     *        file. This will have a {@code .las} or {@code .laa} file extension.
+     * @param longGridURL URL specifying path and name to the longitude difference
+     *        file. This will have a {@code .los} or {@code .loa} file extension.
+     *
+     * @throws NullPointerException if parameters are omitted.
+     * @throws FactoryException if there is a problem creating this math transform
+     *         (ie file extensions are unknown or there is an error reading the
+     *          grid files)
+     */
+    public NADCONTransform(final URL latGridURL, final URL longGridURL)
+            throws NullPointerException, FactoryException
+    {
+        if(latGridURL == null || longGridURL == null) {
+            throw new NullPointerException("Grid shift resource URL is null");
         }
-        
-        if(longGridName == null) {
-            throw new NoSuchIdentifierException("Latitud grid shift file name is null", null);
-        }
-        
-        this.latGridName  = latGridName;
-        this.longGridName = longGridName;
-        
-        URL latGridURL = locateGrid(latGridName);
-        URL longGridURL = locateGrid(longGridName);
-        
+
+        this.latGridURL  = latGridURL;
+        this.longGridURL = longGridURL;
+
         this.grid = FACTORY.loadGridShift(latGridURL, longGridURL);
         this.gridShiftTransform = grid.getMathTransform();
     }
-    
-    protected URL locateGrid(URI uri ) throws FactoryException {
-        String grid = uri.toString();
+
+    protected static URL locateGrid(String grid) throws FactoryException {
+        if (grid == null) {
+            throw new NullPointerException("Invalid null grid reference filename");
+        }
+
         for (GridShiftLocator locator : ReferencingFactoryFinder.getGridShiftLocators(null)) {
             URL result = locator.locateGrid(grid);
             if(result != null) {
                 return result;
             }
         };
-        
+
         throw new FactoryException("Could not locate grid file " + grid);
     }
 
@@ -264,10 +260,10 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
     @Override
     public ParameterValueGroup getParameterValues() {
         final ParameterValue lat_diff_file = new Parameter(Provider.LAT_DIFF_FILE);
-        lat_diff_file.setValue(latGridName);
+        lat_diff_file.setValue(DataUtilities.urlToFile(latGridURL).getName());
 
         final ParameterValue long_diff_file = new Parameter(Provider.LONG_DIFF_FILE);
-        long_diff_file.setValue(longGridName);
+        long_diff_file.setValue(DataUtilities.urlToFile(longGridURL).getName());
 
         return new ParameterGroup(getParameterDescriptors(),
             new GeneralParameterValue[] { lat_diff_file, long_diff_file }
@@ -434,7 +430,7 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
     public int hashCode() {
         return grid.hashCode();
     }
-    
+
     @Override
     public boolean equals(Object object) {
         if (object == this) {
@@ -444,7 +440,7 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
 
         if (super.equals(object)) {
             final NADCONTransform that = (NADCONTransform) object;
-            
+
             return this.grid.equals(that.grid);
         } else {
             return false;
@@ -452,55 +448,8 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
     }
 
     /**
-     * Used to set the preference for the default grid shift file location.
-     * This allows grids parameters to be specified by name only, without the
-     * full path. This needs to be done only once, by the user.
-     * Path values may be simple file system paths or more complex
-     * text representations of a url. A value of "default" resets this
-     * preference to its default value.
-     * <p>
-     *
-     * Example:
-     * <blockquote>
-     * <pre>
-     * java org.geotools.referencing.operation.transform.NADCONTransform file:///home/rschulz/GIS/NADCON/data
-     * </pre>
-     * </blockquote>
-     *
-     * @param args a single argument for the defualt location of grid shift
-     *        files
-     */
-    public static void main(String[] args) {
-        final Arguments arguments = new Arguments(args);
-        final PrintWriter out = arguments.out;
-        final Preferences prefs = Preferences.userNodeForPackage(NADCONTransform.class);
-
-        if (args.length == 1) {
-            if (args[0].equalsIgnoreCase("default")) {
-                prefs.remove(GRID_LOCATION);
-            } else {
-                prefs.put(GRID_LOCATION, args[0]);
-            }
-
-            return;
-        } else {
-            final String location = prefs.get(GRID_LOCATION,
-                    DEFAULT_GRID_LOCATION);
-            out.println(
-                "Usage: java org.geotools.referencing.operation.transform.NADCONTransform "
-                + "<defalult grid file location (path)>");
-            out.print("Grid location: \"");
-            out.print(location);
-            out.println('"');
-
-            return;
-        }
-    }
-
-    /**
      * Inverse of a {@link NADCONTransform}.
      *
-     * @version $Id$
      * @author Rueben Schulz
      */
     private final class Inverse extends AbstractMathTransform.Inverse
@@ -573,7 +522,6 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
      * geographic} to {@linkplain org.geotools.referencing.crs.DefaultGeographicCRS
      * geographic} coordinate reference systems.
      *
-     * @version $Id$
      * @author Rueben Schulz
      */
     public static class Provider extends MathTransformProvider {
@@ -584,15 +532,15 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
          * The operation parameter descriptor for the "Latitude_difference_file"
          * parameter value. The default value is "conus.las".
          */
-        public static final ParameterDescriptor LAT_DIFF_FILE = new DefaultParameterDescriptor(
-                "Latitude difference file", URI.class, null, null);
+        public static final ParameterDescriptor<String> LAT_DIFF_FILE = new DefaultParameterDescriptor<String>(
+                "Latitude difference file", String.class, null, null);
 
         /**
          * The operation parameter descriptor for the "Longitude_difference_file"
          * parameter value. The default value is "conus.los".
          */
-        public static final ParameterDescriptor LONG_DIFF_FILE = new DefaultParameterDescriptor(
-                "Longitude difference file", URI.class, null, null);
+        public static final ParameterDescriptor<String> LONG_DIFF_FILE = new DefaultParameterDescriptor<String>(
+                "Longitude difference file", String.class, null, null);
 
         /**
          * The parameters group.
@@ -638,8 +586,8 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
                 throws ParameterNotFoundException, FactoryException
         {
             return new NADCONTransform(
-                    (URI) getParameter(LAT_DIFF_FILE, values).getValue(),
-                    (URI) getParameter(LONG_DIFF_FILE, values).getValue());
+                    getParameter(LAT_DIFF_FILE, values).getValue(),
+                    getParameter(LONG_DIFF_FILE, values).getValue());
         }
     }
 }

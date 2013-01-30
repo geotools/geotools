@@ -126,7 +126,7 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
                     return grid; // - Return
                 }
             }
-            throw new FactoryException("NTv2 Grid " + latGridURL + ", " + longGridURL
+            throw new FactoryException("NADCON Grid " + latGridURL + ", " + longGridURL
                     + " could not be created.");
         }
     }

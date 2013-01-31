@@ -33,6 +33,7 @@ import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
+import org.opengis.parameter.Parameter;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -191,11 +192,18 @@ public abstract class FunctionExpressionImpl
      *
      * @return the number of args.
      */
-    public int getArgCount(){
-        if( functionName != null && functionName.getArguments() != null){
-            return functionName.getArguments().size();
-        }
-        else {
+    public int getArgCount() {
+        if (functionName != null && functionName.getArguments() != null) {
+            int count = 0;
+            for (Parameter<?> argument : functionName.getArguments()) {
+                if (argument.getMinOccurs() != argument.getMaxOccurs()) {
+                    return -1;
+                } else {
+                    count += argument.getMinOccurs();
+                }
+            }
+            return count;
+        } else {
             return 0;
         }
     }

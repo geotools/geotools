@@ -93,7 +93,7 @@ public class PointTypeBinding extends AbstractComplexBinding {
     }
     
     public Object getProperty(Object object, QName name) throws Exception {
-        if ( KML.coordinates.equals( name ) ) {
+        if ( KML.coordinates.getLocalPart().equals( name.getLocalPart() ) ) {
             Point p = (Point) object;
             return p.getCoordinateSequence();
         }

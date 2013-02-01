@@ -76,7 +76,7 @@ public class BoundaryTypeBinding extends AbstractComplexBinding {
     }
     
     public Object getProperty(Object object, QName name) throws Exception {
-        if ( KML.LinearRing.equals( name ) ) {
+        if ( KML.LinearRing.getLocalPart().equals( name.getLocalPart() ) ) {
             return object;
         }
         

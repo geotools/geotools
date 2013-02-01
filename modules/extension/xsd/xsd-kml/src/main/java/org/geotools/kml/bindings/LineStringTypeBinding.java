@@ -92,7 +92,7 @@ public class LineStringTypeBinding extends AbstractComplexBinding {
     }
     
     public Object getProperty(Object object, QName name) throws Exception {
-        if ( KML.coordinates.equals( name ) ) {
+        if ( KML.coordinates.getLocalPart().equals( name.getLocalPart() ) ) {
             LineString l = (LineString) object;
             return l.getCoordinateSequence();
         }

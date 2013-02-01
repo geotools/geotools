@@ -92,7 +92,7 @@ public class LinearRingTypeBinding extends AbstractComplexBinding {
     }
     
     public Object getProperty(Object object, QName name) throws Exception {
-        if ( KML.coordinates.equals( name ) ) {
+        if ( KML.coordinates.getLocalPart().equals( name.getLocalPart() ) ) {
             LinearRing l = (LinearRing) object;
             return l.getCoordinateSequence();
         }

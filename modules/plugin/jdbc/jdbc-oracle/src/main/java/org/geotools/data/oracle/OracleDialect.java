@@ -717,7 +717,13 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         if (!estimatedExtentsEnabled || dataStore.getVirtualTables().get(featureType.getTypeName()) != null)
             return null;
 
-        String tableName = featureType.getTypeName();
+        String tableName;
+        if(schema != null && !"".equals(schema)) {
+            tableName = schema + "." + featureType.getTypeName();
+        } else {
+            tableName = featureType.getTypeName();
+        }
+
         
         Statement st = null;
         ResultSet rs = null;

@@ -16,15 +16,20 @@
  */
 package org.geotools.sld.v1_1;
 
+import java.io.InputStream;
+import java.net.URI;
+
 import junit.framework.TestCase;
 
 import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Graphic;
 import org.geotools.styling.NamedLayer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.xml.Parser;
+import org.opengis.style.ExternalGraphic;
 
 /**
  * 
@@ -89,8 +94,20 @@ public class SLDExampleTest extends TestCase {
         PolygonSymbolizer sym = (PolygonSymbolizer) r.symbolizers().get(0);
     }
     
+    public void testParseGraphicFill() throws Exception {
+        StyledLayerDescriptor sld = (StyledLayerDescriptor) parse("../graphicFill.xml");
+        NamedLayer layer = (NamedLayer) sld.getStyledLayers()[0];
+        PolygonSymbolizer ps = (PolygonSymbolizer) layer.getStyles()[0].featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
+        Graphic graphicFill = ps.getFill().getGraphicFill();
+        assertNotNull(graphicFill);
+        ExternalGraphic eg = (ExternalGraphic) graphicFill.graphicalSymbols().get(0);
+        assertEquals(new URI("http://maps.google.com/mapfiles/kml/pal2/icon4.png"), eg.getOnlineResource().getLinkage());
+        
+    }
+    
     Object parse(String filename) throws Exception {
         SLDConfiguration sld = new SLDConfiguration();
-        return new Parser(sld).parse(getClass().getResourceAsStream(filename));
+        InputStream location = getClass().getResourceAsStream(filename);
+        return new Parser(sld).parse(location);
     }
 }

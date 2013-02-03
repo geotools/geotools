@@ -144,6 +144,9 @@ public class SLDFillBinding extends AbstractComplexBinding {
         if (opacity != null) {
             fill.setOpacity(opacity);
         }
+        if(graphicFill != null) {
+            fill.setGraphicFill(graphicFill);
+        }
 
         return fill;
     }

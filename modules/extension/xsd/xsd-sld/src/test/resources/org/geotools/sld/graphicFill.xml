@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StyledLayerDescriptor version="1.1.0"
+xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd"
+xmlns="http://www.opengis.net/sld"
+xmlns:ogc="http://www.opengis.net/ogc"
+xmlns:se="http://www.opengis.net/se"
+xmlns:xlink="http://www.w3.org/1999/xlink"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <NamedLayer>
+    <se:Name>oge:natural</se:Name>
+    <UserStyle>
+      <se:FeatureTypeStyle>
+        <se:Rule>
+          <se:PolygonSymbolizer>
+            <se:Fill>
+              <se:GraphicFill>
+                <se:Graphic>
+                  <se:ExternalGraphic>
+                    <se:OnlineResource xlink:type="simple" xlink:href="http://maps.google.com/mapfiles/kml/pal2/icon4.png"/>
+                    <se:Format>image/png</se:Format>
+                  </se:ExternalGraphic>
+                  <se:Size>20</se:Size>
+                </se:Graphic>
+              </se:GraphicFill>
+            </se:Fill>
+          </se:PolygonSymbolizer>
+        </se:Rule>
+      </se:FeatureTypeStyle>
+    </UserStyle>
+  </NamedLayer>
+</StyledLayerDescriptor>

@@ -43,5 +43,6 @@ public class SQLServerJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
     protected void setupParameters(Map parameters) {
         super.setupParameters(parameters);
         parameters.put(INTSEC.key, INTSEC);
+        parameters.put(GEOMETRY_METADATA_TABLE.key, GEOMETRY_METADATA_TABLE);
     }
 }

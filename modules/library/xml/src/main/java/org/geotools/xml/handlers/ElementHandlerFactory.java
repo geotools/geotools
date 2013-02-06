@@ -209,11 +209,7 @@ public class ElementHandlerFactory {
     public XMLElementHandler createElementHandler(Element eth)
         throws SAXException {
         Type type = eth.getType();
-
-        if (type == null) {
-            throw new SAXException("Type not found for " + eth.getName() + " ");
-        }
-        
+                
         if (type instanceof SimpleType) {
             return new SimpleElementHandler(eth);
         }

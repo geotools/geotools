@@ -19,7 +19,6 @@ package org.geotools.data.sqlserver;
 import java.io.IOException;
 import java.util.Map;
 
-import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;

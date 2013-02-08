@@ -153,9 +153,6 @@ public class RecodeFunction implements Function {
                 
                 if(fastLookup != null && lookup.getClass() == lastKeyType && context == lastContextType) {
                     T result = (T) fastLookup.get(lookup);
-                    if(result == null) {
-                        System.out.println("humm");
-                    }
                     return result;
                 } 
             }

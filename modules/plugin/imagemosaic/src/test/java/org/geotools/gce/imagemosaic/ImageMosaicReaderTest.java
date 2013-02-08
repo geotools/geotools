@@ -69,7 +69,6 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -131,7 +130,7 @@ public class ImageMosaicReaderTest extends Assert{
 	 * @throws FactoryException
 	 */
 	@Test
-//        @Ignore	
+        //@Ignore	
 	public void crop() throws MismatchedDimensionException, IOException,
 			FactoryException {
 		imageMosaicCropTest(rgbURL, "crop-rgbURL");
@@ -159,7 +158,7 @@ public class ImageMosaicReaderTest extends Assert{
 	 * @throws FactoryException 
 	 */
 	@Test
-        @Ignore	
+        //@Ignore	
 	public void alpha() throws IOException,
 			MismatchedDimensionException, FactoryException {
 		
@@ -232,7 +231,7 @@ public class ImageMosaicReaderTest extends Assert{
 	 * @throws FactoryException 
 	 */
 	@Test
-//	@Ignore
+	//@Ignore
 	public void overviews() throws IOException,	
 			MismatchedDimensionException, FactoryException {
 		final AbstractGridFormat format = TestUtils.getFormat(overviewURL);
@@ -260,6 +259,7 @@ public class ImageMosaicReaderTest extends Assert{
 	}	
 	
 	@Test
+	    //@Ignore
 	public void timeElevationH2() throws Exception {
 	    
     	final File workDir=new File(TestData.file(this, "."),"water temp3");
@@ -357,8 +357,7 @@ public class ImageMosaicReaderTest extends Assert{
                 elevation.setValue(Arrays.asList(NumberRange.create(0.0,10.0)));
         
                 // Test the output coverage
-                TestUtils.checkCoverage(reader, new GeneralParameterValue[] { gg, time, bkg, elevation,direct },
-                        "Time-Elevation Test");
+                TestUtils.checkCoverage(reader, new GeneralParameterValue[] { gg, time, bkg, elevation,direct },"Time-Elevation Test");
                 
          // clean up
          if (!INTERACTIVE){        	
@@ -367,7 +366,7 @@ public class ImageMosaicReaderTest extends Assert{
 	}	
 
 	@Test
-//	@Ignore
+	//@Ignore
 	public void timeElevation() throws IOException, ParseException, NoSuchAuthorityCodeException, FactoryException {
     	final File workDir=new File(TestData.file(this, "."),"watertemp2");
     	if(!workDir.mkdir()){
@@ -460,7 +459,7 @@ public class ImageMosaicReaderTest extends Assert{
          * @throws NoSuchAuthorityCodeException
          */
         @Test
-//        @Ignore
+        //@Ignore
         public void timeDoubleElevation() throws IOException, ParseException, NoSuchAuthorityCodeException, FactoryException {
                 // Check we can have an integer elevation too 
         	final File workDir=new File(TestData.file(this, "."),"watertemp1");
@@ -521,7 +520,7 @@ public class ImageMosaicReaderTest extends Assert{
         }
 	
 	@Test
-//    @Ignore	
+    //@Ignore	
 	public void imposedBBox() throws IOException, NoSuchAuthorityCodeException, FactoryException {
 		final AbstractGridFormat format = TestUtils.getFormat(imposedEnvelopeURL);
 		final ImageMosaicReader reader = TestUtils.getReader(imposedEnvelopeURL, format);
@@ -564,7 +563,7 @@ public class ImageMosaicReaderTest extends Assert{
 	 * @throws ParseException 
 	 */
 	@Test
-//	@Ignore
+	//@Ignore
 	public void time() throws IOException, NoSuchAuthorityCodeException, FactoryException, ParseException {
 	       
 		final AbstractGridFormat format = TestUtils.getFormat(timeURL);
@@ -624,7 +623,7 @@ public class ImageMosaicReaderTest extends Assert{
      * @throws ParseException +
      */
     @Test
-    // @Ignore
+     //@Ignore
     @SuppressWarnings("rawtypes")
     public void timeAdditionalDim() throws Exception {
     
@@ -707,6 +706,7 @@ public class ImageMosaicReaderTest extends Assert{
      * @throws ParseException +
      */
     @Test
+    //@Ignore
     @SuppressWarnings("rawtypes")
     public void multipleDimensionsStacked() throws Exception {
     
@@ -765,7 +765,7 @@ public class ImageMosaicReaderTest extends Assert{
         
         // inspect reanderedImage
         final RenderedImage image= coverage.getRenderedImage();
-        assertEquals("wrong number of bands detected",2,image.getSampleModel().getNumBands());
+        assertEquals("wrong number of bands detected",1,image.getSampleModel().getNumBands());
     }
 
     /**
@@ -782,7 +782,7 @@ public class ImageMosaicReaderTest extends Assert{
      * @throws FactoryException
      */
     @Test
-//    @Ignore
+    //@Ignore
     public void testHeterogeneousGranules() throws IOException,
             MismatchedDimensionException, FactoryException {
 
@@ -838,7 +838,7 @@ public class ImageMosaicReaderTest extends Assert{
 	 * @throws FactoryException 
 	 */
 	@Test
-//  @Ignore	
+//  //@Ignore	
 	public void defaultParameterValue() throws IOException,	
 			MismatchedDimensionException, FactoryException {
 
@@ -853,7 +853,7 @@ public class ImageMosaicReaderTest extends Assert{
 	
 	
 	@Test
-//    @Ignore	
+    //@Ignore	
 	public void errors() throws NoSuchAuthorityCodeException, FactoryException {
 		final Hints hints= new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, CRS.decode("EPSG:4326", true));
 		
@@ -1026,7 +1026,7 @@ public class ImageMosaicReaderTest extends Assert{
 	}
 	
     @Test
-//    @Ignore
+    //@Ignore
     public void testRequestInHole() throws Exception {
         final AbstractGridFormat format = TestUtils.getFormat(rgbAURL);
         final ImageMosaicReader reader = TestUtils.getReader(rgbAURL, format);
@@ -1060,7 +1060,7 @@ public class ImageMosaicReaderTest extends Assert{
     }
     
     @Test
-//    @Ignore
+    //@Ignore
     public void testRequestInOut() throws Exception {
         final AbstractGridFormat format = TestUtils.getFormat(rgbAURL);
         final ImageMosaicReader reader = TestUtils.getReader(rgbAURL, format);
@@ -1196,6 +1196,7 @@ public class ImageMosaicReaderTest extends Assert{
      * @throws ParseException +
      */
     @Test
+    //@Ignore
     @SuppressWarnings("rawtypes")
     public void timeAdditionalDimNoResultsDueToWrongDim() throws IOException,
             NoSuchAuthorityCodeException, FactoryException, ParseException {
@@ -1272,6 +1273,7 @@ public class ImageMosaicReaderTest extends Assert{
      * @throws ParseException +
      */
     @Test
+    //@Ignore
     @SuppressWarnings("rawtypes")
     public void multipleDimensionsStackedSar() throws Exception {
     
@@ -1338,7 +1340,7 @@ public class ImageMosaicReaderTest extends Assert{
         final RenderedImage image= coverage.getRenderedImage();
         assertEquals("wrong number of bands detected",3,image.getSampleModel().getNumBands());
         assertEquals(DataBuffer.TYPE_SHORT, image.getSampleModel().getDataType());
-//        ImageIO.write(image, "TIFF", new File("C:\\test.tif"));
+        
     }
 
     @AfterClass

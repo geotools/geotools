@@ -106,7 +106,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
 	
 	PathType pathType;
 	
-	ExecutorService multiThreadedLoader = null;
+	ExecutorService multiThreadedLoader;
 
 	String locationAttributeName=Utils.DEFAULT_LOCATION_ATTRIBUTE;
 
@@ -157,21 +157,23 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader implements G
 	          }
 	      }
 	    }
-		if(this.hints.containsKey(Hints.MAX_ALLOWED_TILES))
-			this.maxAllowedTiles= ((Integer)this.hints.get(Hints.MAX_ALLOWED_TILES));		
-
-		//
-		// Check source
-		//
-		if (source instanceof ImageMosaicDescriptor) {
-		    initReaderFromDescriptor((ImageMosaicDescriptor) source, uHints);
-		} else {
-		    try {
-                        initReaderFromURL(source, uHints);
-                    } catch (Exception e) {
-                        throw new DataSourceException(e);
-                    }
-		}
+	    
+	    // max allowed tiles for a single request
+            if (this.hints.containsKey(Hints.MAX_ALLOWED_TILES))
+                this.maxAllowedTiles = ((Integer) this.hints.get(Hints.MAX_ALLOWED_TILES));
+    
+            //
+            // Check source
+            //
+            if (source instanceof ImageMosaicDescriptor) {
+                initReaderFromDescriptor((ImageMosaicDescriptor) source, uHints);
+            } else {
+                try {
+                    initReaderFromURL(source, uHints);
+                } catch (Exception e) {
+                    throw new DataSourceException(e);
+                }
+            }
 	}
 	
 	/**

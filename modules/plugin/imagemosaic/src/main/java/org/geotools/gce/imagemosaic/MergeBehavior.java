@@ -151,8 +151,8 @@ public enum MergeBehavior {
                 MosaicType mosaicType, 
                 RenderingHints localHints) {
             return MosaicDescriptor.create(
-                    sources, 
-                  MosaicDescriptor.MOSAIC_TYPE_OVERLAY, 
+                  sources, 
+                  mosaicType, 
                   sourceAlpha, 
                   sourceROI, 
                   inputThreshold, 

@@ -27,6 +27,7 @@ import org.geotools.data.crs.ForceCoordinateSystemFeatureReader;
 import org.geotools.data.wfs.protocol.http.HttpMethod;
 import org.geotools.feature.SchemaException;
 import org.geotools.filter.visitor.FixBBOXFilterVisitor;
+import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -99,6 +100,15 @@ class NonStrictWFSStrategy implements WFSStrategy {
     protected  FeatureReader<SimpleFeatureType, SimpleFeature> createFeatureReader(Transaction transaction, Query query)
             throws IOException {
         Data data;
+        
+        // simplify the filter, it may contain needless parts that cannot be encoded
+        // e.g., Filter.INCLUDE mixed with other filters
+        Filter filter = query.getFilter();
+        if(filter != Filter.INCLUDE) {
+            SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
+            Filter simplified = (Filter) filter.accept(visitor, null);
+            query.setFilter(simplified);
+        }
         
         if(store.preferredProtocol == HttpMethod.POST) {
             data = createFeatureReaderPOST(query, transaction);

@@ -17,7 +17,10 @@
  */
 package org.geotools.data.wfs.v1_0_0;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,9 +30,9 @@ import java.net.MalformedURLException;
 import java.net.NoRouteToHostException;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -498,6 +501,41 @@ public class GeoServerOnlineTest {
     @Test
     public void testVendorParametersPost() throws Exception {
         testVendorParameters(Boolean.TRUE);
+    }
+    
+    @Test
+    public void testSimplifyFilter() throws Exception {
+        if (url == null)
+            return;
+        Map m = new HashMap();
+        m.put(WFSDataStoreFactory.URL.key, url);
+        m.put(WFSDataStoreFactory.TIMEOUT.key, new Integer(100000));
+        WFS_1_0_0_DataStore wfs = (WFS_1_0_0_DataStore) (new WFSDataStoreFactory())
+                .createDataStore(m);
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
+
+        WFSFeatureSource fs = wfs.getFeatureSource("topp:states");
+        
+        // build a filter with bits that cannot be encoded in OGC filter, but can be simplified
+        // to one that can
+        Filter f = ff.or(Arrays.asList(Filter.EXCLUDE, ff.and(Filter.INCLUDE, ff.greater(ff.property("PERSONS"), ff.literal(10000000)))));
+        SimpleFeatureCollection fc = fs.getFeatures(f);
+        
+        // force calling a HITS query, it used to throw an exception
+        int size = fc.size();
+        
+        // force making a GetFeature, it used to blow up
+        SimpleFeatureIterator fi = null;
+        try {
+            fi = fc.features();
+            if(fi.hasNext()) {
+                fi.next();
+            }
+        } finally {
+            if(fi != null) {
+                fi.close();
+            }
+        }
     }
 
     private void testVendorParameters(Boolean usePost) throws IOException {

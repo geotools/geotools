@@ -40,6 +40,8 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.xml.resolver.SchemaCache;
+import org.geotools.xml.resolver.SchemaResolver;
 import org.geotools.xml.schema.Attribute;
 import org.geotools.xml.schema.AttributeGroup;
 import org.geotools.xml.schema.ComplexType;
@@ -85,7 +87,7 @@ public class SchemaFactory {
      * Schema Resolver: uses local versions of schemas or cached ones if available.
      */
     File cacheDir;    
-    private AppSchemaResolver resolver;
+    private SchemaResolver resolver;
 
     /*
      * The SAX parser to use if one is required ... isn't loaded until first
@@ -117,7 +119,7 @@ public class SchemaFactory {
                 cacheDir = new File(System.getProperty("schema.factory.cache"));
             }
             
-            resolver = new AppSchemaResolver(new AppSchemaCache(cacheDir, true));
+            resolver = new SchemaResolver(new SchemaCache(cacheDir, true));
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, e.getMessage(), e);
         }

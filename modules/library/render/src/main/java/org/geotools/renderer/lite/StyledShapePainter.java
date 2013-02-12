@@ -55,6 +55,14 @@ import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
+import java.io.IOException;
+import java.util.Iterator;
+import javax.imageio.ImageIO;
+import org.opengis.filter.expression.Literal;
+import org.opengis.style.ExternalGraphic;
+import org.opengis.style.GraphicLegend;
+import org.opengis.style.GraphicalSymbol;
+import org.opengis.style.Mark;
 
 /**
  * A simple class that knows how to paint a Shape object onto a Graphic given a
@@ -304,6 +312,59 @@ public final class StyledShapePainter {
             }
         }
     }
+    
+    /**
+     * Paints a GraphicLegend in the supplied graphics
+     * 
+     * @param graphics
+     *            The graphics in which to draw.
+     * @param shape
+     *            The shape to draw.
+     * @param legend
+     *            The legend to apply.
+     * @param scale
+     *            The scale denominator for the current zoom level
+     */
+    public void paint(final Graphics2D graphics, final LiteShape2 shape, final GraphicLegend legend, final double scale, boolean isLabelObstacle) {
+        if (legend == null) {
+            // TODO: what's going on? Should not be reached...
+            throw new NullPointerException("ShapePainter has been asked to paint a null legend!!");
+        }
+        Iterator<GraphicalSymbol> symbolIter = legend.graphicalSymbols().iterator();
+        
+        while(symbolIter.hasNext()) {
+        
+            GraphicalSymbol symbol = symbolIter.next();
+
+            if (symbol instanceof ExternalGraphic) {
+                float[] coords = new float[2];
+                PathIterator iter = getPathIterator(shape);
+                iter.currentSegment(coords);
+                
+                double rotation = Double.parseDouble(((Literal)legend.getRotation()).getValue().toString());
+                float opacity = Float.parseFloat(((Literal)legend.getOpacity()).getValue().toString());
+
+                ExternalGraphic graphic = (ExternalGraphic) symbol;
+
+                while (!(iter.isDone())) {
+                    iter.currentSegment(coords);
+                    try {
+                            renderImage(graphics, coords[0], coords[1],
+                                    // Doesn't seem to work with SVGs
+                                    // Looking at the SLDStyleFactory, they get the icon from an
+                                    // ExternalGraphicFactory. 
+                                    ImageIO.read(graphic.getOnlineResource().getLinkage().toURL()), 
+                                    rotation, 
+                                    opacity,
+                                    isLabelObstacle);
+                    } catch (IOException ex) {
+                            Logger.getLogger(StyledShapePainter.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    iter.next();
+                }
+            }
+        }
+    } 
 
     Shape dashShape(Shape shape, Stroke stroke) {
         if(!(stroke instanceof BasicStroke)) {

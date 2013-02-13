@@ -22,9 +22,9 @@ import static org.junit.Assert.assertTrue;
 import java.net.URL;
 
 import org.geotools.test.AppSchemaTestSupport;
-import org.geotools.xml.AppSchemaCatalog;
+import org.geotools.xml.resolver.SchemaCatalog;
 import org.geotools.xml.AppSchemaConfiguration;
-import org.geotools.xml.AppSchemaResolver;
+import org.geotools.xml.resolver.SchemaResolver;
 import org.geotools.xml.Configuration;
 import org.junit.Test;
 
@@ -50,7 +50,7 @@ public class CatalogApplicationSchemaConfigurationTest extends AppSchemaTestSupp
         String namespace = "http://www.cgi-iugs.org/xml/GeoSciML/2";
         String schemaLocation = "http://schemas.opengis.net/GeoSciML/geosciml.xsd";
         Configuration config = new AppSchemaConfiguration(namespace, schemaLocation,
-                new AppSchemaResolver(AppSchemaCatalog.build(catalogLocation)));
+                new SchemaResolver(SchemaCatalog.build(catalogLocation)));
         String resolvedSchemaLocation = config.getXSD().getSchemaLocation();
         assertTrue(resolvedSchemaLocation.startsWith("file:/"));
         assertTrue(resolvedSchemaLocation.endsWith(schemaBase

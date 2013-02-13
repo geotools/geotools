@@ -17,6 +17,8 @@
 
 package org.geotools.xml;
 
+import org.geotools.xml.resolver.SchemaResolver;
+
 /**
  * XML encoder {@link Configuration} that uses {@link AppSchemaResolver} to obtain schemas.
  * 
@@ -50,7 +52,7 @@ public class AppSchemaConfiguration extends Configuration {
      * @param resolver
      */
     public AppSchemaConfiguration(String namespace, String schemaLocation,
-            AppSchemaResolver resolver) {
+            SchemaResolver resolver) {
         super(new AppSchemaXSD(namespace, schemaLocation, resolver));
         originalSchemaLocation = schemaLocation;
         ((AppSchemaXSD) getXSD()).setConfiguration(this);

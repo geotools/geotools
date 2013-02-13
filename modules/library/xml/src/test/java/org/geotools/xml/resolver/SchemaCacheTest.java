@@ -19,7 +19,9 @@ package org.geotools.xml.resolver;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 import org.geotools.data.DataUtilities;
 import org.junit.Assert;
@@ -80,5 +82,7 @@ public class SchemaCacheTest {
                 DataUtilities.urlToFile((new URI(resolvedLocation)).toURL()).getCanonicalFile()
                         .toURI().toString());
     }
+    
+    
 
 }

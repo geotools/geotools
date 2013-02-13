@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 
 
 /**
- * Application schema resolver that maps absolute URLs to local URL resources.
+ * XML Schema resolver that maps absolute URLs to local URL resources.
  * 
  * <p>
  * 

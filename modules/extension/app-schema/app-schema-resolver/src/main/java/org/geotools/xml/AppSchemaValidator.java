@@ -30,6 +30,8 @@ import java.util.regex.Pattern;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.geotools.xml.resolver.SchemaCatalog;
+import org.geotools.xml.resolver.SchemaResolver;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -59,7 +61,7 @@ public class AppSchemaValidator {
     /**
      * The resolver used to find XML schemas.
      */
-    private final AppSchemaResolver resolver;
+    private final SchemaResolver resolver;
 
     /**
      * Failures found during parsing of an XML instance document.
@@ -77,7 +79,7 @@ public class AppSchemaValidator {
      * {@link AppSchemaResolver#getSimpleHttpResourcePath(java.net.URI)}.
      */
     private AppSchemaValidator() {
-        this(new AppSchemaResolver());
+        this(new SchemaResolver());
     }
 
     /**
@@ -87,7 +89,7 @@ public class AppSchemaValidator {
      * @param resolver
      *            resolver used to locate XML schemas
      */
-    private AppSchemaValidator(AppSchemaResolver resolver) {
+    private AppSchemaValidator(SchemaResolver resolver) {
         this.resolver = resolver;
     }
     
@@ -98,8 +100,8 @@ public class AppSchemaValidator {
      * @param catalog
      *            AppSchemaCatalog
      */
-    private AppSchemaValidator(AppSchemaCatalog catalog) {
-        this(new AppSchemaResolver(catalog));
+    private AppSchemaValidator(SchemaCatalog catalog) {
+        this(new SchemaResolver(catalog));
     }
 
     /**
@@ -202,7 +204,7 @@ public class AppSchemaValidator {
      * @param resolver
      *            the resolver used to find schemas
      */
-    public static AppSchemaValidator buildValidator(AppSchemaResolver resolver) {
+    public static AppSchemaValidator buildValidator(SchemaResolver resolver) {
         return new AppSchemaValidator(resolver);
     }
     
@@ -213,7 +215,7 @@ public class AppSchemaValidator {
      * @param catalog
      *            AppSchemaCatalog
      */
-    public static AppSchemaValidator buildValidator(AppSchemaCatalog catalog) {
+    public static AppSchemaValidator buildValidator(SchemaCatalog catalog) {
         return new AppSchemaValidator(catalog);
     }
 
@@ -232,7 +234,7 @@ public class AppSchemaValidator {
      * @param catalog 
      *            AppSchemaCatalog to aide local schema resolution or null
      */
-    public static void validateResource(String name, AppSchemaCatalog catalog) {
+    public static void validateResource(String name, SchemaCatalog catalog) {
         InputStream input = null;
         try {
             input = AppSchemaValidator.class.getResourceAsStream(name);
@@ -263,7 +265,7 @@ public class AppSchemaValidator {
      * @param catalog
      *            AppSchemaCatalog to aide local schema resolution or null
      */
-    public static void validate(String xml, AppSchemaCatalog catalog) {
+    public static void validate(String xml, SchemaCatalog catalog) {
         byte[] bytes = null;
         String encoding = getEncoding(xml);
         if (encoding != null) {
@@ -325,7 +327,7 @@ public class AppSchemaValidator {
      * @param catalog
      *            AppSchemaCatalog file to aide local schema resolution or null
      */
-    public static void validate(InputStream input, AppSchemaCatalog catalog) {
+    public static void validate(InputStream input, SchemaCatalog catalog) {
         AppSchemaValidator validator = buildValidator(catalog);
         validator.parse(input);
         validator.checkForFailures();

@@ -26,7 +26,7 @@ import org.apache.xml.resolver.Catalog;
 import org.apache.xml.resolver.CatalogManager;
 
 /**
- * Support for application schema resolution in an <a
+ * Support for XML schema resolution in an <a
  * href="http://www.oasis-open.org/committees/entity/spec-2001-08-06.html">OASIS Catalog</a> (with
  * URI resolution semantics).
  * 

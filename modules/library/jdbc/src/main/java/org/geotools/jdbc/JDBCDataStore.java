@@ -193,12 +193,6 @@ public final class JDBCDataStore extends ContentDataStore
     protected static final String FEATURE_ASSOCIATION_TABLE = "feature_associations";
     
     /**
-     * The default primary key finder, looks in the default metadata table first, uses heuristics later
-     */
-    protected static final PrimaryKeyFinder DEFAULT_PRIMARY_KEY_FINDER = new CompositePrimaryKeyFinder(
-            new MetadataTablePrimaryKeyFinder(), new HeuristicPrimaryKeyFinder());
-    
-    /**
      * The envelope returned when bounds is called against a geometryless feature type
      */
     protected static final ReferencedEnvelope EMPTY_ENVELOPE = new ReferencedEnvelope();  
@@ -262,9 +256,10 @@ public final class JDBCDataStore extends ContentDataStore
     protected boolean exposePrimaryKeyColumns = false;
     
     /**
-     * Finds the primary key definitions
+     * Finds the primary key definitions (instantiated here because the finders might keep state)
      */
-    protected PrimaryKeyFinder primaryKeyFinder = DEFAULT_PRIMARY_KEY_FINDER;
+    protected PrimaryKeyFinder primaryKeyFinder = new CompositePrimaryKeyFinder(
+            new MetadataTablePrimaryKeyFinder(), new HeuristicPrimaryKeyFinder());
     
     /**
      * Contains the SQL definition of the various virtual tables

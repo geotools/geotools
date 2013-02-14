@@ -478,11 +478,12 @@ public class CatalogBuilder implements Runnable {
 					// creating the schema
 					//
 					
-					final String schemaDef= runConfiguration.getSchema();
-					if(schemaDef!=null){
+					String schema = runConfiguration.getSchema();
+					if(schema!=null){
+					        schema=schema.trim();
 						// get the schema
 						try{
-							indexSchema=DataUtilities.createType(mosaicConfiguration.getName(), runConfiguration.getSchema());
+							indexSchema=DataUtilities.createType(mosaicConfiguration.getName(), schema);
 							//override the crs in case the provided one was wrong or absent
 							indexSchema=DataUtilities.createSubType(indexSchema, DataUtilities.attributeNames(indexSchema), actualCRS);
 						}
@@ -496,11 +497,11 @@ public class CatalogBuilder implements Runnable {
 						final SimpleFeatureTypeBuilder featureBuilder = new SimpleFeatureTypeBuilder();
 						featureBuilder.setName(runConfiguration.getIndexName());
 						featureBuilder.setNamespaceURI("http://www.geo-solutions.it/");
-						featureBuilder.add(runConfiguration.getLocationAttribute(), String.class);
+						featureBuilder.add(runConfiguration.getLocationAttribute().trim(), String.class);
 						featureBuilder.add("the_geom", Polygon.class,actualCRS);
 						featureBuilder.setDefaultGeometry("the_geom");
 						if(runConfiguration.getTimeAttribute()!=null)
-							featureBuilder.add(runConfiguration.getTimeAttribute(), Date.class);
+							featureBuilder.add(runConfiguration.getTimeAttribute().trim(), Date.class);
 						indexSchema = featureBuilder.buildFeatureType();
 					}
 					// create the schema for the new shape file

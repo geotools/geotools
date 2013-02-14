@@ -16,6 +16,8 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -39,6 +41,9 @@ import java.util.Set;
 import java.util.TimeZone;
 import java.util.logging.Logger;
 
+import javax.media.jai.PlanarImage;
+import javax.swing.JFrame;
+
 import junit.framework.JUnit4TestAdapter;
 import junit.textui.TestRunner;
 
@@ -53,9 +58,11 @@ import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.OverviewPolicy;
+import org.geotools.coverage.grid.io.UnknownFormat;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;
 import org.geotools.util.DateRange;
@@ -960,6 +967,20 @@ public class ImageMosaicReaderTest extends Assert{
 
 		// Test the output coverage
 		TestUtils.checkCoverage(reader, new GeneralParameterValue[] { inTransp, blendPV, outTransp }, title);
+	}
+
+	/**
+	 * Shows the provided {@link RenderedImage} ina {@link JFrame} using the
+	 * provided <code>title</code> as the frame's title.
+	 * 
+	 * @param image
+	 *            to show.
+	 * @param title
+	 *            to use.
+	 */
+	static void show(RenderedImage image, String title) {
+	    ImageIOUtilities.visualize(image,title);
+
 	}
 
 	/**

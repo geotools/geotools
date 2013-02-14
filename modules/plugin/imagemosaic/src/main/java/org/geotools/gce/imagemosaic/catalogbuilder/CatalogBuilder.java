@@ -478,11 +478,12 @@ public class CatalogBuilder implements Runnable {
 					// creating the schema
 					//
 					
-					final String schemaDef= runConfiguration.getSchema();
-					if(schemaDef!=null){
+					String schema = runConfiguration.getSchema();
+					if(schema!=null){
+					        schema=schema.trim();
 						// get the schema
 						try{
-							indexSchema=DataUtilities.createType(mosaicConfiguration.getName(), runConfiguration.getSchema());
+							indexSchema=DataUtilities.createType(mosaicConfiguration.getName(), schema);
 							//override the crs in case the provided one was wrong or absent
 							indexSchema=DataUtilities.createSubType(indexSchema, DataUtilities.attributeNames(indexSchema), actualCRS);
 						}
@@ -496,11 +497,11 @@ public class CatalogBuilder implements Runnable {
 						final SimpleFeatureTypeBuilder featureBuilder = new SimpleFeatureTypeBuilder();
 						featureBuilder.setName(runConfiguration.getIndexName());
 						featureBuilder.setNamespaceURI("http://www.geo-solutions.it/");
-						featureBuilder.add(runConfiguration.getLocationAttribute(), String.class);
+						featureBuilder.add(runConfiguration.getLocationAttribute().trim(), String.class);
 						featureBuilder.add("the_geom", Polygon.class,actualCRS);
 						featureBuilder.setDefaultGeometry("the_geom");
 						if(runConfiguration.getTimeAttribute()!=null)
-							featureBuilder.add(runConfiguration.getTimeAttribute(), Date.class);
+							featureBuilder.add(runConfiguration.getTimeAttribute().trim(), Date.class);
 						indexSchema = featureBuilder.buildFeatureType();
 					}
 					// create the schema for the new shape file
@@ -1351,14 +1352,15 @@ public class CatalogBuilder implements Runnable {
 
 	private void loadPropertyCollectors() {
 		// load property collectors
-		final String pcConfig = runConfiguration.getPropertyCollectors();
+		String pcConfig = runConfiguration.getPropertyCollectors();
 		if (pcConfig != null && pcConfig.length()>0){
+		    pcConfig=pcConfig.trim();
 			// load the SPI set
 			final Set<PropertiesCollectorSPI> pcSPIs = PropertiesCollectorFinder.getPropertiesCollectorSPI();
 			
 			// parse the string
 			final List<PropertiesCollector> pcs= new ArrayList<PropertiesCollector>();
-			final String[] pcsDefs=pcConfig.split(",");
+			final String[] pcsDefs=pcConfig.trim().split(",");
 			for (String pcDef: pcsDefs) {
 				// parse this def as NAME[CONFIG_FILE](PROPERTY;PROPERTY;....;PROPERTY)
 				final int squareLPos = pcDef.indexOf("[");
@@ -1367,23 +1369,55 @@ public class CatalogBuilder implements Runnable {
 				final int roundLPos = pcDef.indexOf("(");
 				final int roundRPos = pcDef.indexOf(")");
 				final int roundRPosLast = pcDef.lastIndexOf(")");				
-				if (squareRPos != squareRPosLast)
-					continue;
-				if (squareLPos == -1 || squareRPos == -1)
-					continue;
-				if (squareLPos == 0)
-					continue;
+				if (squareRPos != squareRPosLast){
+                                    if(LOGGER.isLoggable(Level.INFO)){
+                                        LOGGER.info("Skipping unparseable PropertyCollector definition: "+pcDef);
+                                    }				    
+				    continue;
+				}
+				if (squareLPos == -1 || squareRPos == -1){
+                                    if(LOGGER.isLoggable(Level.INFO)){
+                                        LOGGER.info("Skipping unparseable PropertyCollector definition: "+pcDef);
+                                    }   
+                                    continue;
+                                }
+				if (squareLPos == 0){
+                                    if(LOGGER.isLoggable(Level.INFO)){
+                                        LOGGER.info("Skipping unparseable PropertyCollector definition: "+pcDef);
+                                    }   
+                                    continue;
+                                }
 				
-				if (roundRPos != roundRPosLast)
-					continue;
-				if (roundLPos == -1 || roundRPos == -1)
-					continue;
-				if (roundLPos == 0)
-					continue;	
-				if (roundLPos != squareRPos + 1)//]( or exit
-					continue;		
-				if (roundRPos != (pcDef.length() - 1))// end with )
-					continue;	
+				if (roundRPos != roundRPosLast){
+                                    if(LOGGER.isLoggable(Level.INFO)){
+                                        LOGGER.info("Skipping unparseable PropertyCollector definition: "+pcDef);
+                                    }   
+                                    continue;
+                                }
+				if (roundLPos == -1 || roundRPos == -1){
+                                    if(LOGGER.isLoggable(Level.INFO)){
+                                        LOGGER.info("Skipping unparseable PropertyCollector definition: "+pcDef);
+                                    }   
+                                    continue;
+                                }
+				if (roundLPos == 0){
+                                    if(LOGGER.isLoggable(Level.INFO)){
+                                        LOGGER.info("Skipping unparseable PropertyCollector definition: "+pcDef);
+                                    }   
+                                    continue;
+                                }
+				if (roundLPos != squareRPos + 1){//]( or exit
+                                    if(LOGGER.isLoggable(Level.INFO)){
+                                        LOGGER.info("Skipping unparseable PropertyCollector definition: "+pcDef);
+                                    }   
+                                    continue;
+                                }
+				if (roundRPos != (pcDef.length() - 1)){// end with )
+                                    if(LOGGER.isLoggable(Level.INFO)){
+                                        LOGGER.info("Skipping unparseable PropertyCollector definition: "+pcDef);
+                                    }   
+                                    continue;
+                                }	
 				
 				// name
 				final String name=pcDef.substring(0,squareLPos);
@@ -1394,14 +1428,22 @@ public class CatalogBuilder implements Runnable {
 						break;
 					}
 				}
-				if (selectedSPI == null)
+				if (selectedSPI == null){
+                                    if(LOGGER.isLoggable(Level.INFO)){
+                                        LOGGER.info("Unable to find a PropertyCollector for this definition: "+pcDef);
+                                    }   
 					continue;
+				}
 				
 				// config
 				final String config=squareLPos<squareRPos?pcDef.substring(squareLPos+1,squareRPos):"";
 				final File configFile= new File(runConfiguration.getRootMosaicDirectory(),config+".properties");
-				if (!Utils.checkFileReadable(configFile))
-					continue;
+				if (!Utils.checkFileReadable(configFile)){
+                                    if(LOGGER.isLoggable(Level.INFO)){
+                                        LOGGER.info("Unable to access the file for this PropertyCollector: "+configFile.getAbsolutePath());
+                                    }   				    
+                                    continue;
+                                }
 				// it is readable
 				
 				// property names
@@ -1413,7 +1455,7 @@ public class CatalogBuilder implements Runnable {
 				    pcs.add(pc);
 				} else {
 				    if(LOGGER.isLoggable(Level.INFO)){
-				        LOGGER.info("Unable to create PropertyCollector from config file:"+configFile);
+				        LOGGER.info("Unable to create PropertyCollector "+ pcDef +" from config file:"+configFile);
 				    }
 				}
 				

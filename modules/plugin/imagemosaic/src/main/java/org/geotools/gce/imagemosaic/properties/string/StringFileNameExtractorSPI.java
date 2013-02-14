@@ -16,19 +16,11 @@
  */
 package org.geotools.gce.imagemosaic.properties.string;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
-import java.util.Properties;
 
-import org.geotools.data.DataUtilities;
-import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.properties.DefaultPropertiesCollectorSPI;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 /**
  * {@link PropertiesCollectorSPI} for a {@link PropertiesCollector} that is able to collect properties from a file name.
  * 
@@ -44,34 +36,11 @@ public class StringFileNameExtractorSPI extends
 		super("StringFileNameExtractorSPI");
 	}
 
-	@Override
-	public PropertiesCollector create(
-			final Object o,
-			final List<String> propertyNames) {
-		URL source = null;
-		if (o instanceof URL){
-		    source = (URL) o;
-		} else if (o instanceof File) {
-			source = DataUtilities.fileToURL((File) o);
-		} else if (o instanceof String) {
-				try {
-					source = new URL((String) o);
-				} catch (MalformedURLException e) {
-					return null;
-				}
-		} else {
-			return null;
-		}
-		// it is a url
-		final Properties properties = Utils.loadPropertiesFromURL(source);
-		if(properties == null){
-		    throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2,"Unable to load source for properties collector",source));
-		}
-		if(properties.containsKey("regex"))
-			return new StringFileNameExtractor(this,propertyNames,properties.getProperty("regex"));
-		
-		return null;
-		
-	}
+    @Override
+    protected PropertiesCollector createInternal(PropertiesCollectorSPI spi,
+            List<String> propertyNames, String regex) {
+
+        return new StringFileNameExtractor(spi, propertyNames, regex);
+    }
 
 }

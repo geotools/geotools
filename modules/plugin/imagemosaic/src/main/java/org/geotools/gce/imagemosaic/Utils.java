@@ -504,7 +504,7 @@ public class Utils {
 			IOFileFilter... filters) {
 		IOFileFilter retFilter = inputFilter;
 		for (IOFileFilter filter : filters) {
-			retFilter = FileFilterUtils.andFileFilter(retFilter,
+			retFilter = FileFilterUtils.and(retFilter,
 					FileFilterUtils.notFileFilter(filter));
 		}
 		return retFilter;

@@ -16,6 +16,8 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -38,6 +40,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.logging.Logger;
+
+import javax.swing.JFrame;
 
 import junit.framework.JUnit4TestAdapter;
 import junit.textui.TestRunner;
@@ -960,6 +964,22 @@ public class ImageMosaicReaderTest extends Assert{
 
 		// Test the output coverage
 		TestUtils.checkCoverage(reader, new GeneralParameterValue[] { inTransp, blendPV, outTransp }, title);
+	}
+
+	
+
+	/**
+	 * Shows the provided {@link RenderedImage} ina {@link JFrame} using the
+	 * provided <code>title</code> as the frame's title.
+	 * 
+	 * @param image
+	 *            to show.
+	 * @param title
+	 *            to use.
+	 */
+	static void show(RenderedImage image, String title) {
+	    ImageIOUtilities.visualize(image,title);
+
 	}
 
 	/**

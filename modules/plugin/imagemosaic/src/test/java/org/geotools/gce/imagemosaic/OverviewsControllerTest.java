@@ -320,8 +320,8 @@ public class OverviewsControllerTest extends Assert{
     private void cleanUp() throws FileNotFoundException, IOException {
         File dir = TestData.file(this, "heterogeneous/");
         File[] files = dir
-                .listFiles((FilenameFilter) FileFilterUtils.notFileFilter(FileFilterUtils.orFileFilter(
-                        FileFilterUtils.orFileFilter(
+                .listFiles((FilenameFilter) FileFilterUtils.notFileFilter(FileFilterUtils.or(
+                        FileFilterUtils.or(
                                 FileFilterUtils.suffixFileFilter("tif"),
                                 FileFilterUtils.suffixFileFilter("aux")),
                         FileFilterUtils.nameFileFilter("datastore.properties"))));

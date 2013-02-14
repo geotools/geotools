@@ -16,6 +16,8 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -37,9 +39,7 @@ import java.util.TimeZone;
 import java.util.logging.Logger;
 
 import javax.media.jai.PlanarImage;
-import javax.media.jai.widget.ScrollingImagePanel;
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 
 import junit.framework.JUnit4TestAdapter;
 import junit.textui.TestRunner;
@@ -769,17 +769,7 @@ public class ImageMosaicReaderTest extends Assert{
 	 *            to use.
 	 */
 	static void show(RenderedImage image, String title) {
-		final JFrame jf = new JFrame(title);
-		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		jf.getContentPane().add(new ScrollingImagePanel(image, 800, 800));
-		SwingUtilities.invokeLater(new Runnable() {
-
-			public void run() {
-				jf.pack();
-				jf.setVisible(true);
-
-			}
-		});
+	    ImageIOUtilities.visualize(image,title);
 
 	}
 

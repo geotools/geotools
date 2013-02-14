@@ -34,7 +34,7 @@ public final class IntegerFileNameExtractorSPI extends NumericFileNameExtractorS
     }
 
     @Override
-    protected PropertiesCollector createInternal(NumericFileNameExtractorSPI spi,
+    protected PropertiesCollector createInternal(PropertiesCollectorSPI spi,
             List<String> propertyNames, String regex) {
         return new NumericFileNameExtractor.IntegerFileNameExtractor(spi, propertyNames, regex);
     }

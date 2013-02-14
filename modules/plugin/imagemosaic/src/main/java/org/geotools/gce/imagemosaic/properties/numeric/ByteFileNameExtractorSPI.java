@@ -34,7 +34,7 @@ public final class ByteFileNameExtractorSPI extends NumericFileNameExtractorSPI 
 
     @Override
     protected PropertiesCollector createInternal(
-            NumericFileNameExtractorSPI spi,
+            PropertiesCollectorSPI spi,
             List<String> propertyNames, String regex) {
         return new NumericFileNameExtractor.ByteFileNameExtractor(spi, propertyNames, regex);
     }

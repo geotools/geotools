@@ -16,15 +16,15 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
+
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.net.URL;
 
 import javax.media.jai.PlanarImage;
-import javax.media.jai.widget.ScrollingImagePanel;
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -179,17 +179,7 @@ final class TestUtils extends Assert {
 	 *            to use.
 	 */
 	static void show(RenderedImage image, String title) {
-		final JFrame jf = new JFrame(title);
-		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		jf.getContentPane().add(new ScrollingImagePanel(image, 800, 800));
-		SwingUtilities.invokeLater(new Runnable() {
-	
-			public void run() {
-				jf.pack();
-				jf.setVisible(true);
-	
-			}
-		});
+		ImageIOUtilities.visualize(image, title);
 	
 	}
 

@@ -34,7 +34,7 @@ public final class ShortFileNameExtractorSPI extends NumericFileNameExtractorSPI
 
     @Override
     protected PropertiesCollector createInternal(
-            NumericFileNameExtractorSPI spi,
+            PropertiesCollectorSPI spi,
             List<String> propertyNames, String regex) {
         return new NumericFileNameExtractor.ShortFileNameExtractor(spi, propertyNames, regex);
     }

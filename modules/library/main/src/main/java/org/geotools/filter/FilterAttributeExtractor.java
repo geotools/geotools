@@ -20,10 +20,12 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.FilterFunction_property;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.VolatileFunction;
@@ -52,6 +54,8 @@ import org.opengis.filter.expression.VolatileFunction;
  * @source $URL$
  */
 public class FilterAttributeExtractor extends DefaultFilterVisitor {
+    
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
     
     /** Last set visited */
     protected Set<String> attributeNames = new HashSet<String>();
@@ -154,6 +158,7 @@ public class FilterAttributeExtractor extends DefaultFilterVisitor {
                     String name = firstParam.evaluate(null, String.class);
                     if(name != null) {
                         attributeNames.add(name);
+                        propertyNames.add(ff.property(name));
                         foundLiteral = true;
                     }
                 }

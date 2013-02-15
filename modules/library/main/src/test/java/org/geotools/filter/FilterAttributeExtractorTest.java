@@ -156,6 +156,16 @@ public class FilterAttributeExtractorTest extends TestCase {
         for (int i = 0; i < names.length; i++) {
             assertTrue(attNames.contains(names[i]));
         }
+        
+        // make sure the property name set is aligned
+        Set<PropertyName> propNames = fae.getPropertyNameSet();
+        assertNotNull(propNames);
+        assertEquals(attNames.size(), propNames.size());
+        
+        for (PropertyName pn : propNames) {
+            assertTrue(attNames.contains(pn.getPropertyName()));
+        }
+        
     }
 
     /**

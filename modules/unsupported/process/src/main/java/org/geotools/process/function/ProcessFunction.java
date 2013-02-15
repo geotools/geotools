@@ -51,7 +51,7 @@ import org.opengis.filter.expression.Literal;
  * 
  * @author Andrea Aime - GeoSolutions
  */
-class ProcessFunction implements Function {
+public class ProcessFunction implements Function {
 
     String name;
 
@@ -65,7 +65,7 @@ class ProcessFunction implements Function {
 
     Name processName;
     
-    ProcessFunction(String name, Name processName, List<Expression> inputExpressions,
+    public ProcessFunction(String name, Name processName, List<Expression> inputExpressions,
             Map<String, Parameter<?>> parameters, Process process, Literal fallbackValue) {
         super();
         this.name = name;
@@ -83,6 +83,11 @@ class ProcessFunction implements Function {
     public String getName() {
         return name;
     }
+    
+    public Name getProcessName() {
+        return processName;
+    }
+    
     public FunctionName getFunctionName() {
         return new FunctionNameImpl( name, inputExpressions.size() );
     }

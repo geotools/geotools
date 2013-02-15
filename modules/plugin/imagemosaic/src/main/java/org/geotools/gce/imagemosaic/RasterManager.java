@@ -48,12 +48,14 @@ import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.visitor.CalcResult;
 import org.geotools.feature.visitor.FeatureCalc;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.feature.visitor.MinVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
+import org.geotools.filter.SortByImpl;
 import org.geotools.gce.imagemosaic.OverviewsController.OverviewLevel;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
@@ -68,6 +70,9 @@ import org.geotools.util.Utilities;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.sort.SortOrder;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.metadata.Identifier;
 import org.opengis.parameter.GeneralParameterValue;
@@ -103,7 +108,7 @@ class RasterManager {
 	 */
 	static class SpatialDomainManager{
 
-		/** The base envelope 2D */
+	         /** The base envelope 2D */
 		ReferencedEnvelope coverageBBox;
 		
 		/** The CRS for the coverage */
@@ -181,57 +186,70 @@ class RasterManager {
                 // it is already a bbox
                 coverageBBox = new ReferencedEnvelope(coverageEnvelope);
             }
-
         }
-
     }
-	
-	/**
-     * {@link DomainDescriptor} describe a single domain in terms of name and {@link ParameterDescriptor} 
-     * that can be used to filter values during a read operation.
+
+    /**
+     * {@link DomainDescriptor} describe a single domain in terms of name and {@link ParameterDescriptor} that can be used to filter values during a
+     * read operation.
      * 
-     * <p> Notice that there is no caching of values for the domain itself right now.
+     * <p>
+     * Notice that there is no caching of values for the domain itself right now.
      * 
      * <p>
      * The domain must have unique identifiers.
      * 
      * @author Simone Giannecchini, GeoSolutions SAS
-     *
+     * 
      */
-    class DomainDescriptor{
-    
+    class DomainDescriptor {
+
         static final String DOMAIN_SUFFIX = "_DOMAIN";
-    
+
         static final String HAS_PREFIX = "HAS_";
-        
-        
-        /** Unique identifier for this domain.*/
+
+        static final String TIME_DOMAIN = "TIME";
+
+        static final String ELEVATION_DOMAIN = "ELEVATION";
+
+        private DomainType domainType = DomainType.SINGLE_VALUE;
+
+        /** Unique identifier for this domain. */
         private final String identifier;
-                
-        /** propertyName for this domain that tells me which Property from the underlying catalog provides values for it.*/
+
+        /** propertyName for this domain that tells me which Property from the underlying catalog provides values for it. */
         private final String propertyName;
-        
-        /** The {@link ParameterDescriptor} that can be used to filter on this domain during a read operation.*/
+
+        /** additionalPropertyName for this domain. It won't be null ONLY in case of ranged domains. */
+        private final String additionalPropertyName;
+
+        /** The {@link ParameterDescriptor} that can be used to filter on this domain during a read operation. */
         private final DefaultParameterDescriptor<List> domainParameterDescriptor;
-        
-    
+
         /**
          * @return the identifier
          */
         private String getIdentifier() {
             return identifier;
         }
-    
+
+        public boolean isHasRanges() {
+            return additionalPropertyName != null;
+        }
+
         /**
          * @return the domainaParameterDescriptor
          */
         private DefaultParameterDescriptor<List> getDomainaParameterDescriptor() {
             return domainParameterDescriptor;
         }
-    
-        private DomainDescriptor(String identifier, String propertyName) {
+
+        private DomainDescriptor(final String identifier, final DomainType domainType, 
+                final String propertyName, final String additionalPropertyName) {
             this.identifier = identifier;
             this.propertyName = propertyName;
+            this.domainType = domainType;
+            this.additionalPropertyName = additionalPropertyName;
             final String name = identifier.toUpperCase();
             this.domainParameterDescriptor=
                     DefaultParameterDescriptor.create(
@@ -241,6 +259,12 @@ class RasterManager {
                             null, 
                             false); 
         }
+        @Override
+        public String toString() {
+            return "DomainDescriptor [identifier=" + identifier + ", propertyName=" + propertyName
+                    + ", additionalPropertyName=" + (additionalPropertyName != null ? additionalPropertyName : "__UNAVAILABLE__") +  "]";
+        }
+
         /**
          * Extract the time domain extrema.
          * 
@@ -251,15 +275,21 @@ class RasterManager {
          */
         private String getExtrema(String extrema) {
             try {
-                final FeatureCalc visitor = createExtremaQuery(extrema,propertyName);
+                String attribute = propertyName;
+                // In case the domain has range, we will check the second element 
+                // in case we are looking for the maximum
+                if (domainType != DomainType.SINGLE_VALUE && extrema.toLowerCase().endsWith("maximum")) {
+                        attribute = additionalPropertyName;
+                }
+                final FeatureCalc visitor = createExtremaQuery(extrema, attribute);
                 
                 // check result
                 CalcResult tempRes = visitor.getResult();
-                if(tempRes==null){
+                if (tempRes == null){
                     throw new IllegalStateException("Unable to compute extrema value:"+extrema);
                 }
                 final Object result=tempRes.getValue();
-                if(result==null){
+                if (result == null){
                     throw new IllegalStateException("Unable to compute extrema value:"+extrema);
                 }                
                 return ConvertersHack.convert(result, String.class);
@@ -274,20 +304,57 @@ class RasterManager {
          * Retrieves the values for this domain
          * @return
          */
-        private String getValues(){
-            try {       
-                
-                // implicit ordering
-                final Set result = new TreeSet(extractDomain(propertyName));          
-                // check result
-                if(result.size()<=0){
+        private String getValues() {
+            if (domainType == DomainType.SINGLE_VALUE) {
+                return getSingleValues();
+            } 
+            return getRangeValues(); 
+        }
+        
+        /**
+         * Retrieves the Range values for this domain
+         * @return
+         */
+        private String getRangeValues() {
+            try {
+                Set<String> result = extractDomain(propertyName, additionalPropertyName, domainType);
+                if (result.size() <= 0){
                     return "";
                 }
                 
                 final StringBuilder buff= new StringBuilder();
-                for(Iterator it= result.iterator(); it.hasNext();){
+                for(Iterator it = result.iterator(); it.hasNext();){
                     buff.append(ConvertersHack.convert(it.next(), String.class));
-                    if(it.hasNext()){
+                    if (it.hasNext()) {
+                        buff.append(",");
+                    }
+                }
+                return buff.toString();
+            } catch (IOException e) {
+                if(LOGGER.isLoggable(Level.WARNING))
+                    LOGGER.log(Level.WARNING,"Unable to parse attribute: " + identifier ,e);
+            return "";
+            }
+        }
+
+        /**
+         * Retrieves the single values list of this domain (no ranges available)
+         * @return
+         */
+        private String getSingleValues(){
+            try {
+                
+                // implicit ordering
+                final Set result = new TreeSet(extractDomain(propertyName));          
+                // check result
+                if (result.size() <= 0){
+                    return "";
+                }
+                
+                final StringBuilder buff= new StringBuilder();
+                for(Iterator it = result.iterator(); it.hasNext();){
+                    buff.append(ConvertersHack.convert(it.next(), String.class));
+                    if (it.hasNext()) {
                         buff.append(",");
                     }
                 }
@@ -301,8 +368,12 @@ class RasterManager {
         }
     
         /**
-         * @param values
-         * @return
+         * This method is responsible for creating {@link Filter} that encompasses the
+         * provided {@link List} of values for this {@link DomainManager}.
+         * 
+         * @param values the {@link List} of values to use for building the containment {@link Filter}.
+         * @return a {@link Filter} that encompasses the
+         * provided {@link List} of values for this {@link DomainManager}.
          */
         private Filter createFilter(List values) {
             
@@ -318,27 +389,54 @@ class RasterManager {
                         LOGGER.info("Ignoring null date for the filter:"+this.identifier);
                     }
                     continue;
-                }                    
-                if(value instanceof Range){
-                    // RANGE                        
-                    final Range range= (Range)value;
+                }
+                if (domainType == DomainType.SINGLE_VALUE) {
+                    // Domain made of single values
+                    if(value instanceof Range){
+                        // RANGE                        
+                        final Range range= (Range)value;
+                        filters.add( 
+                                FeatureUtilities.DEFAULT_FILTER_FACTORY.and(
+                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.lessOrEqual(
+                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.property(propertyName), 
+                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(range.getMaxValue())),
+                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.greaterOrEqual(
+                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.property(propertyName), 
+                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(range.getMinValue()))
+                                ));
+                        continue;
+                    }  
+                    // SINGLE value
+                    filters.add( 
+                            FeatureUtilities.DEFAULT_FILTER_FACTORY.equal(
+                                    FeatureUtilities.DEFAULT_FILTER_FACTORY.property(propertyName),
+                                    FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(value),true)
+                                );
+                } else { //domainType == DomainType.RANGE
+                    // Domain made of ranges such as (beginTime,endTime) , (beginElevation,endElevation) , ...
+                    if(value instanceof Range){
+                        // RANGE                        
+                        final Range range= (Range)value;
+                        // NEED TO BE CHECKED 
+                        filters.add( 
+                                FeatureUtilities.DEFAULT_FILTER_FACTORY.and(
+                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.lessOrEqual(
+                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.property(additionalPropertyName), 
+                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(range.getMaxValue())),
+                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.greaterOrEqual(
+                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.property(propertyName), 
+                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(range.getMinValue()))));
+                        continue;
+                    }
                     filters.add( 
                             FeatureUtilities.DEFAULT_FILTER_FACTORY.and(
                                     FeatureUtilities.DEFAULT_FILTER_FACTORY.lessOrEqual(
                                             FeatureUtilities.DEFAULT_FILTER_FACTORY.property(propertyName), 
-                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(range.getMaxValue())),
+                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(value)),
                                     FeatureUtilities.DEFAULT_FILTER_FACTORY.greaterOrEqual(
-                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.property(propertyName), 
-                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(range.getMinValue()))
-                            ));                                
-                    continue;
-                }  
-                // SINGLE value
-                filters.add( 
-                        FeatureUtilities.DEFAULT_FILTER_FACTORY.equal(
-                                FeatureUtilities.DEFAULT_FILTER_FACTORY.property(propertyName),
-                                FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(value),true)
-                            );                    
+                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.property(additionalPropertyName), 
+                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(value))));
+                }
             }
             return FeatureUtilities.DEFAULT_FILTER_FACTORY.or(filters);
         }
@@ -352,190 +450,246 @@ class RasterManager {
      * @author Daniele Romagnoli, GeoSolutions S.a.S.
      */
     class DomainManager {
-        
-        private final Map<String, DomainDescriptor> domainsMap= new HashMap<String, DomainDescriptor>();
-    
-    
-        DomainManager (Map<String,String> additionalDomainAttributes, SimpleFeatureType simpleFeatureType){
+
+        private final Map<String, DomainDescriptor> domainsMap = new HashMap<String, DomainDescriptor>();
+
+        private final boolean attributeHasRange(String attribute) {
+            return attribute.contains(Utils.RANGE_SPLITTER_CHAR);
+        }
+
+        DomainManager(Map<String, String> additionalDomainAttributes,
+                SimpleFeatureType simpleFeatureType) {
             Utilities.ensureNonNull("additionalDomainAttributes", additionalDomainAttributes);
-            Utilities.ensureNonNull("simpleFeatureType", simpleFeatureType);   
+            Utilities.ensureNonNull("simpleFeatureType", simpleFeatureType);
             init(additionalDomainAttributes, simpleFeatureType);
         }
-    
+
         /**
-         * @param additionalDomainAttributes
+         * @param domainAttributes
          * @param simpleFeatureType
          * @throws IllegalArgumentException
          */
-        private void init(Map<String, String> additionalDomainAttributes,
-                SimpleFeatureType simpleFeatureType) throws IllegalArgumentException {
-            for(java.util.Map.Entry<String,String> entry:additionalDomainAttributes.entrySet()){
-                
-                final String domainName=entry.getKey();
-                String propertyName=entry.getValue();
+        private void init(Map<String, String> domainAttributes, SimpleFeatureType simpleFeatureType)
+                throws IllegalArgumentException {
+            for (java.util.Map.Entry<String, String> entry : domainAttributes.entrySet()) {
+
+                DomainType domainType = DomainType.SINGLE_VALUE;
+                final String domainName = entry.getKey();
+                String propertyName = entry.getValue();
                 // is the name equals to the propertyname?
-                try{
-                    if(simpleFeatureType.getDescriptor(propertyName) != null){
+                try {
+
+                    // Domain with ranges management
+                    if (attributeHasRange(propertyName)) {
+                        domainType = domainAttributes.containsKey(DomainDescriptor.TIME_DOMAIN) ? DomainType.TIME_RANGE
+                                : DomainType.NUMBER_RANGE;
+                        addDomain(domainName, propertyName, domainType);
+                        continue;
+                    } else if (simpleFeatureType.getDescriptor(propertyName) != null) {
                         // add
-                        addDomain(domainName,propertyName);    
-                        
+                        addDomain(domainName, propertyName, domainType);
+
                         // continue
                         continue;
                     }
-                    
-                }catch (Exception e) {
-                    if(LOGGER.isLoggable(Level.FINE)){
-                        LOGGER.log(Level.FINE,e.getLocalizedMessage(),e);
+
+                } catch (Exception e) {
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
                     }
                 }
-                
+
                 // ok why we don't have it? Maybe shapefile name truncation?
-                if(propertyName.length()>10){
+                if (propertyName.length() > 10) {
                     // hakc for shapes
-                    propertyName= propertyName.substring(0,10);
+                    propertyName = propertyName.substring(0, 10);
                     // alias in provided type
-                    try{
-                        if(simpleFeatureType.getDescriptor(propertyName) != null){
+                    try {
+                        if (simpleFeatureType.getDescriptor(propertyName) != null) {
                             // add
-                            addDomain(domainName,propertyName);    
-                            
+                            addDomain(domainName, propertyName, domainType);
+
                             // continue
                             continue;
                         }
-                        
-                    }catch (Exception e) {
-                        if(LOGGER.isLoggable(Level.FINE)){
-                            LOGGER.log(Level.FINE,e.getLocalizedMessage(),e);
+
+                    } catch (Exception e) {
+                        if (LOGGER.isLoggable(Level.FINE)) {
+                            LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
                         }
-                    }                    
+                    }
                 }
-                
+
                 // if I got here, we are in trouble. No way to add this param
-                throw new IllegalArgumentException("Unable to add this domain:"+domainName+"-"+propertyName);
-    
+                throw new IllegalArgumentException("Unable to add this domain:" + domainName + "-"
+                        + propertyName);
+
             }
         }
-        
+
         /**
-         * build an AdditionalDomainManager on top of the provided additionalDomainAttributes 
-         * (a comma separated list of attribute names).
-         *
+         * build an AdditionalDomainManager on top of the provided additionalDomainAttributes (a comma separated list of attribute names).
+         * 
          * @param additionalDomainAttributes
-         * @param simpleFeatureType 
+         * @param simpleFeatureType
          */
-        DomainManager (String additionalDomainAttributes, SimpleFeatureType simpleFeatureType) {
+        DomainManager(String additionalDomainAttributes, SimpleFeatureType simpleFeatureType) {
             Utilities.ensureNonNull("additionalDomainAttributes", additionalDomainAttributes);
             Utilities.ensureNonNull("simpleFeatureType", simpleFeatureType);
-            
-            final Map<String,String> domainPairs= new HashMap<String, String>();
-            
+
+            final Map<String, String> domainPairs = new HashMap<String, String>();
+
             // split, looking for multiple values
             final String[] additionalDomainsNames = additionalDomainAttributes.split(",");
-            if (additionalDomainsNames.length <= 0){
+            if (additionalDomainsNames.length <= 0) {
                 throw new IllegalArgumentException("Number of Domains should be > 0");
             }
-    
+
             // add al the provided domain
-            for (String domainName : additionalDomainsNames) {
-                domainPairs.put(domainName, domainName);
+            for (String propertyName : additionalDomainsNames) {
+                String domainName = cleanupDomainName(propertyName);
+                domainPairs.put(domainName, propertyName);
             }
             init(domainPairs, simpleFeatureType);
-            
         }
-    
+
+        /**
+         * 
+         * @param domainName
+         * @return
+         * 
+         * @TODO We can surely improve it by making use of Regular Expressions
+         */
+        private String cleanupDomainName(String domainName) {
+            if (attributeHasRange(domainName) && domainName.contains("(")
+                    && domainName.contains(")")) {
+                // Getting rid of the attributes definition to get only the domain name
+                domainName = domainName.substring(0, domainName.indexOf("("));
+            }
+            return domainName;
+        }
+
         /**
          * Add a domain to the manager
+         * 
          * @param domain the name of the domain
-         * @param propertyName 
+         * @param propertyName
          */
-        private void addDomain(String name, String propertyName) {
+        private void addDomain(String name, String propertyName, final DomainType domainType) {
             Utilities.ensureNonNull("name", name);
             Utilities.ensureNonNull("propertyName", propertyName);
-            
+
             // === checks
             // existing!
-            if(domainsMap.containsKey(name)){
-                throw new IllegalArgumentException("Trying to add a domain with an existing name"+name);
+            if (domainsMap.containsKey(name)) {
+                throw new IllegalArgumentException("Trying to add a domain with an existing name"
+                        + name);
             }
-                   
+
+            // === checks
+            // has Ranges
+            String basePropertyName = propertyName;
+            String additionalPropertyName = null;
+            if (domainType != DomainType.SINGLE_VALUE) {
+
+                // Deal with a case like this: time(begin,endtime)
+                if (propertyName.contains("(") && propertyName.contains(")")) {
+                    // extract the ranges attributes
+                    propertyName = propertyName.substring(propertyName.indexOf("("))
+                            .replace("(", "").replace(")", "");
+                }
+
+                // Getting 2 attributes for this domain
+                String properties[] = propertyName.split(Utils.RANGE_SPLITTER_CHAR);
+                if (properties == null || properties.length != 2) {
+                    throw new IllegalArgumentException(
+                            "Malformed domain with ranges: it should contain 2 attributes");
+                }
+
+                basePropertyName = properties[0];
+                additionalPropertyName = properties[1];
+            }
+
             // ad with uppercase and with suffix, the parameter that describes it will match this
             final String upperCase = name.toUpperCase();
-            domainsMap.put(
-                    upperCase+DomainDescriptor.DOMAIN_SUFFIX,
-                    new DomainDescriptor(name, propertyName)
-            );
-    
+            domainsMap.put(upperCase + DomainDescriptor.DOMAIN_SUFFIX, new DomainDescriptor(name,
+                    domainType, basePropertyName, additionalPropertyName));
         }
-    
+
         /**
-         * Check whether a specific parameter (identified by the {@link Identifier} name) is supported by 
-         * this manager (and therefore, by the reader).
+         * Check whether a specific parameter (identified by the {@link Identifier} name) is supported by this manager (and therefore, by the reader).
+         * 
          * @param name
          * @return
          */
         public boolean isParameterSupported(final Identifier name) {
             if (!domainsMap.isEmpty()) {
-                for(DomainDescriptor domain:domainsMap.values()){
-                    final ReferenceIdentifier nameLoc = domain.getDomainaParameterDescriptor().getName();
-                    if(nameLoc.equals(name)){
+                for (DomainDescriptor domain : domainsMap.values()) {
+                    final ReferenceIdentifier nameLoc = domain.getDomainaParameterDescriptor()
+                            .getName();
+                    if (nameLoc.equals(name)) {
                         return true;
                     }
                 }
             }
             return false;
         }
-    
+
         /**
          * Setup the List of metadataNames for this additional domains manager
-         *
+         * 
          * @return
          */
         public List<String> getMetadataNames() {
             final List<String> metadataNames = new ArrayList<String>();
             if (!domainsMap.isEmpty()) {
-                for(DomainDescriptor domain:domainsMap.values()){
+                for (DomainDescriptor domain : domainsMap.values()) {
                     String domainName = domain.getIdentifier().toUpperCase();
-                    metadataNames.add(domainName+DomainDescriptor.DOMAIN_SUFFIX);
-                    metadataNames.add(DomainDescriptor.HAS_PREFIX+domainName+DomainDescriptor.DOMAIN_SUFFIX);                        
+                    metadataNames.add(domainName + DomainDescriptor.DOMAIN_SUFFIX);
+                    metadataNames.add(DomainDescriptor.HAS_PREFIX + domainName
+                            + DomainDescriptor.DOMAIN_SUFFIX);
                 }
             }
             return metadataNames;
         }
-    
+
         /**
          * Return the value of a specific metadata by parsing the requested name as a Domain Name
+         * 
          * @param name
          * @return
          */
         public String getMetadataValue(String name) {
             Utilities.ensureNonNull("name", name);
-            
+
             String value = null;
-            if (domainsMap.size()>0) {
+            if (domainsMap.size() > 0) {
                 // is a domain?
-                if(domainsMap.containsKey(name)){
+                if (domainsMap.containsKey(name)) {
                     final DomainDescriptor domainDescriptor = domainsMap.get(name);
                     value = domainDescriptor.getValues();
                 } else {
                     // is a simple Has domain query?
-                    if(name.startsWith(DomainDescriptor.HAS_PREFIX)){
-                        final String substring = name.substring(DomainDescriptor.HAS_PREFIX.length(),name.length());
-                        if(domainsMap.containsKey(substring)){
+                    if (name.startsWith(DomainDescriptor.HAS_PREFIX)) {
+                        final String substring = name.substring(
+                                DomainDescriptor.HAS_PREFIX.length(), name.length());
+                        if (domainsMap.containsKey(substring)) {
                             return Boolean.toString(Boolean.TRUE);
                         } else {
-                            return Boolean.toString(Boolean.FALSE);                        
+                            return Boolean.toString(Boolean.FALSE);
                         }
                     } else {
                         // MINUM or MAXIMUM
-                        if(name.endsWith("MINIMUM")||name.endsWith("MAXIMUM")){
-                            return domainsMap.get(name.substring(0, name.lastIndexOf("_"))).getExtrema(name);
+                        if (name.endsWith("MINIMUM") || name.endsWith("MAXIMUM")) {
+                            return domainsMap.get(name.substring(0, name.lastIndexOf("_")))
+                                    .getExtrema(name);
                         }
                     }
                 }
             }
             return value;
         }
-        
+
         /**
          * Setup a Filter on top of the specified domainRequest which is in the form "key=value"
          * 
@@ -545,38 +699,43 @@ class RasterManager {
          */
         public Filter createFilter(String domain, List values) {
             // === checks
-            if (domain == null || domain.isEmpty()){
+            if (domain == null || domain.isEmpty()) {
                 throw new IllegalArgumentException("Null domain requested");
             }
-            if (values == null || values.isEmpty()){
+            if (values == null || values.isEmpty()) {
                 throw new IllegalArgumentException("Null domain values provided");
             }
             if (domainsMap.isEmpty() || !domainsMap.containsKey(domain)) {
-                throw new IllegalArgumentException("requested domain is not supported by this mosaic: " + domain);
+                throw new IllegalArgumentException(
+                        "requested domain is not supported by this mosaic: " + domain);
             }
-            
-            
+
             // get the property name
             DomainDescriptor domainDescriptor = domainsMap.get(domain);
-            return domainDescriptor.createFilter(values);            
+            return domainDescriptor.createFilter(values);
         }
-        
-       /** 
-         * Return the set of dynamic parameterDescriptors (the ones related to domains) for this reader 
+
+        /**
+         * Return the set of dynamic parameterDescriptors (the ones related to domains) for this reader
+         * 
          * @return
          */
         public Set<ParameterDescriptor<List>> getDynamicParameters() {
-            Set<ParameterDescriptor<List>> dynamicParameters= new HashSet<ParameterDescriptor<List>>();
+            Set<ParameterDescriptor<List>> dynamicParameters = new HashSet<ParameterDescriptor<List>>();
             if (!domainsMap.isEmpty()) {
-                for(DomainDescriptor domain:domainsMap.values()){
+                for (DomainDescriptor domain : domainsMap.values()) {
                     dynamicParameters.add(domain.getDomainaParameterDescriptor());
                 }
             }
-           // return
-           return dynamicParameters;
+            // return
+            return dynamicParameters;
         }
-    
+
     }
+
+    enum DomainType {
+         SINGLE_VALUE, TIME_RANGE, NUMBER_RANGE
+     }
 
     /** Default {@link ColorModel}.*/
 	ColorModel defaultCM;
@@ -671,13 +830,13 @@ class RasterManager {
             // time attribute
             if(configuration.getTimeAttribute()!=null){
                 final HashMap<String, String> init=new HashMap<String, String>();
-                init.put("TIME", configuration.getTimeAttribute());
+                init.put(DomainDescriptor.TIME_DOMAIN, configuration.getTimeAttribute());
                 timeDomainManager= new DomainManager(init,schema);
             }
             // elevation attribute
             if(configuration.getElevationAttribute()!=null){
                 final HashMap<String, String> init=new HashMap<String, String>();
-                init.put("ELEVATION", configuration.getElevationAttribute());
+                init.put(DomainDescriptor.ELEVATION_DOMAIN, configuration.getElevationAttribute());
                 elevationDomainManager= new DomainManager(init,schema);
             }        
         }
@@ -896,8 +1055,36 @@ class RasterManager {
             query.setPropertyNames(Arrays.asList(attribute));
             final UniqueVisitor visitor= new UniqueVisitor(attribute);
             granuleCatalog.computeAggregateFunction(query, visitor);
-            
             return visitor.getUnique();
+        }
+        
+        /**
+         * Extract the domain of a dimension (with Range) as a set of values.
+         * 
+         * <p>
+         * It retrieves a comma separated list of values as a {@link String}.
+         * @param domainType 
+         * 
+         * @return a comma separated list of values as a {@link String}.
+         * @throws IOException
+         */
+        private Set extractDomain(final String attribute, final String secondAttribute, final DomainType domainType)
+                throws IOException {
+            final Query query = new Query(granuleCatalog.getType().getTypeName());
+            final FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
+            final PropertyName propertyName = factory.property(attribute);
+            query.setPropertyNames(Arrays.asList(attribute, secondAttribute));
+            
+            final SortByImpl[] sb = new SortByImpl[]{new SortByImpl(propertyName, SortOrder.ASCENDING)};
+            // Checking whether it supports sorting capabilities
+            if(granuleCatalog.getQueryCapabilities().supportsSorting(sb)){
+                query.setSortBy(sb);
+            }
+            
+            final FeatureCalc visitor = domainType == DomainType.TIME_RANGE ? new DateRangeVisitor(attribute, secondAttribute) : new RangeVisitor(attribute, secondAttribute);
+            granuleCatalog.computeAggregateFunction(query, visitor);
+            return domainType == DomainType.TIME_RANGE ? ((DateRangeVisitor)visitor).getRange() : ((RangeVisitor)visitor).getRange() ;
+            
         }
 
 }

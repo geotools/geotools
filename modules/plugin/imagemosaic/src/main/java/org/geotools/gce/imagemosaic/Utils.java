@@ -89,6 +89,7 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Converters;
+import org.geotools.util.Range;
 import org.geotools.util.Utilities;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -105,12 +106,13 @@ import com.vividsolutions.jts.geom.Geometry;
  * @source $URL$
  */
 public class Utils {
+    
+    public static final String RANGE_SPLITTER_CHAR = ";";
 
     public final static String INDEXER_PROPERTIES = "indexer.properties";
     
     /** EHCache instance to cache histograms */ 
     private static Cache ehcache;    
-    
     
     /** RGB to GRAY coefficients (for Luminance computation) */
     public final static double RGB_TO_GRAY_MATRIX [][]= {{ 0.114, 0.587, 0.299, 0 }};
@@ -1346,5 +1348,33 @@ public class Utils {
         } else {
             return (TileScheduler) renderHints.get(JAI.KEY_TILE_SCHEDULER);
         }
+    }
+    
+    /**
+     * Create a Range of numbers from a couple of values.
+     * @param firstValue
+     * @param secondValue
+     * @return
+     */
+    public static Range<? extends Number> createRange(Object firstValue, Object secondValue) {
+        Class<? extends Object> targetClass = firstValue.getClass();
+        Class<? extends Object> target2Class = secondValue.getClass();
+        if (targetClass != target2Class) {
+            throw new IllegalArgumentException("The 2 values need to belong to the same class:\n"
+                    + "firstClass = " + targetClass.toString() + "; secondClass = " + targetClass.toString()); 
+        }
+        if (targetClass == Byte.class) {
+            return new Range<Byte>(Byte.class, (Byte) firstValue, (Byte) secondValue);
+        } else if (targetClass == Short.class) {
+            return new Range<Short>(Short.class, (Short) firstValue, (Short) secondValue);
+        } else if (targetClass == Integer.class) {
+            return new Range<Integer>(Integer.class, (Integer) firstValue, (Integer) secondValue);
+        } else if (targetClass == Long.class) {
+            return new Range<Long>(Long.class, (Long) firstValue, (Long) secondValue);
+        } else if (targetClass == Float.class) {
+            return new Range<Float>(Float.class, (Float) firstValue, (Float) secondValue);
+        } else if (targetClass == Double.class) {
+            return new Range<Double>(Double.class, (Double) firstValue, (Double) secondValue);
+        } else return null;
     }
 }

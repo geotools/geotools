@@ -275,10 +275,29 @@ class RasterLayerResponse{
         /** The final lists for granules to be computed, splitted per dimension value.*/
         private final List<List<Future<GranuleLoadingResult>>> granulesFutures = new ArrayList<List<Future<GranuleLoadingResult>>>();
 
+        /**We can request a dry run (no tasks are spawn) with this member.*/
+        private final boolean dryRun;
+
         /**
          * Default {@link Constructor}
          */
         public MosaicVisitor() {
+            this(false);
+        }
+        /**
+         * {@link MosaicVisitor} constructor.
+         * It can be used to specify that we want to perform a dry rin just to count the
+         * granules we would load with the specified query.
+         * 
+         * <p>
+         * A dry run means, no tasks are executed.
+         * 
+         * @param dryRun <code>true</code> for a dry run, <code>false</code> otherwise.
+         */
+        public MosaicVisitor(final boolean dryRun) {
+            
+            // is somene requesting a dry run?
+            this.dryRun=dryRun;
 
             // get merge behavior
             mergeBehavior = request.getMergeBehavior();
@@ -336,14 +355,16 @@ class RasterLayerResponse{
                 for (int i = dimensionValueFilters.size() - 1; i >= 0; i--) {
                     final Filter filter = dimensionValueFilters.get(i);
                     if (filter != null && filter.evaluate(granuleDescriptor.originator)) {
-                        if (multithreadingAllowed && rasterManager.parent.multiThreadedLoader != null) {
-                            // MULTITHREADED EXECUTION submitting the task
-                            granulesFutures.get(i).add(rasterManager.parent.multiThreadedLoader.submit(loader));
-                        } else {
-                            // SINGLE THREADED Execution, we defer the execution to when we have done the loading
-                            final FutureTask<GranuleLoadingResult> task = new FutureTask<GranuleLoadingResult>(loader);
-                            granulesFutures.get(i).add(task);
-                            task.run(); // run in current thread
+                        if(!dryRun){
+                            if (multithreadingAllowed && rasterManager.parent.multiThreadedLoader != null) {
+                                // MULTITHREADED EXECUTION submitting the task
+                                granulesFutures.get(i).add(rasterManager.parent.multiThreadedLoader.submit(loader));
+                            } else {
+                                // SINGLE THREADED Execution, we defer the execution to when we have done the loading
+                                final FutureTask<GranuleLoadingResult> task = new FutureTask<GranuleLoadingResult>(loader);
+                                granulesFutures.get(i).add(task);
+                                task.run(); // run in current thread
+                            }
                         }
                         granulesNumber++;
                         found = true;
@@ -1180,8 +1201,7 @@ class RasterLayerResponse{
 			
 			// prepare eventual filter for filtering granules
                         // handle elevation indexing first since we then combine this with the max in case we are asking for current in time
-                        if (hasElevation) {
-            
+                        if (hasElevation) {            
                             final Filter elevationF = rasterManager.elevationDomainManager.createFilter(
                                     ImageMosaicReader.ELEVATION_DOMAIN, elevations);
                             query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.and(query.getFilter(),
@@ -1311,11 +1331,14 @@ class RasterLayerResponse{
 
             // Redo the query without filter to check whether we got no granules due
             // to a filter. In that case we need to return null
+            // Notice that we are using a dryRun visitor to make sure we don't
+            // spawn any loading tasks
             if (hasTime || hasElevation || hasFilter || hasAdditionalDomains) {
+                final MosaicVisitor dryRunVisitor = new MosaicVisitor(true);
                 query.setFilter(bbox);
                 query.setMaxFeatures(1);
-                rasterManager.getGranules(query, visitor);
-                if (visitor.granulesNumber > 0) {
+                rasterManager.getGranules(query, dryRunVisitor);
+                if (dryRunVisitor.granulesNumber > 0) {
                     // It means the previous lack of granule was due to a filter excluding all the results. Then we return null
                     return null;
                 }

@@ -466,9 +466,10 @@ class GTDataStoreGranuleCatalog extends AbstractGranuleCatalog {
 			// reused
 			//
 			final SimpleFeatureSource featureSource = tileIndexStore.getFeatureSource(this.typeName);
-			if (featureSource == null) 
+			if (featureSource == null){
 				throw new NullPointerException(
-						"The provided SimpleFeatureSource is null, it's impossible to create an index!");			
+						"The provided SimpleFeatureSource is null, it's impossible to create an index!");	
+			}
 			final SimpleFeatureCollection features = featureSource.getFeatures( q );
 			if (features == null) 
 				throw new NullPointerException(

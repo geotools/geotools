@@ -99,6 +99,8 @@ import org.opengis.geometry.Envelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
 
+import sun.misc.Timeable;
+
 import com.sun.media.imageioimpl.common.BogusColorSpace;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Polygon;
@@ -269,7 +271,7 @@ public class CatalogBuilder implements Runnable {
 	 */
 	final class CatalogBuilderDirectoryWalker  extends DirectoryWalker{
 
-		private DefaultTransaction transaction;
+        private DefaultTransaction transaction;
                 private volatile boolean canceled;
 		
 		@Override
@@ -502,9 +504,8 @@ public class CatalogBuilder implements Runnable {
 						featureBuilder.add(runConfiguration.getLocationAttribute().trim(), String.class);
 						featureBuilder.add("the_geom", Polygon.class,actualCRS);
 						featureBuilder.setDefaultGeometry("the_geom");
-						if(runConfiguration.getTimeAttribute()!=null){
-						    featureBuilder.add(runConfiguration.getTimeAttribute(), Date.class);
-						}
+						String timeAttribute = runConfiguration.getTimeAttribute();
+						addAttributes(timeAttribute, featureBuilder, Date.class);
 						indexSchema = featureBuilder.buildFeatureType();
 					}
 					
@@ -645,6 +646,24 @@ public class CatalogBuilder implements Runnable {
 			
 			super.handleFile(fileBeingProcessed, depth, results);
 		}
+
+        private void addAttributes(String attribute, SimpleFeatureTypeBuilder featureBuilder, Class classType) {
+            if(attribute!=null){
+                if (!attribute.contains(Utils.RANGE_SPLITTER_CHAR)) {
+                    featureBuilder.add(attribute, classType);
+                } else {
+                    String[] ranges = attribute.split(Utils.RANGE_SPLITTER_CHAR);
+                    if (ranges.length != 2) {
+                        throw new IllegalArgumentException("All ranges attribute need to be composed of a maximum of 2 elements:\n"
+                                + "As an instance (min;max) or (low;high) or (begin;end) , ...");
+                    } else {
+                        featureBuilder.add(ranges[0], classType);
+                        featureBuilder.add(ranges[1], classType);
+                    }
+                }
+            }
+            
+        }
 
         private String prepareLocation(final File fileBeingProcessed) throws IOException {
 			//absolute

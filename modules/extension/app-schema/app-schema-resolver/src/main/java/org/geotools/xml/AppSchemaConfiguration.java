@@ -20,7 +20,7 @@ package org.geotools.xml;
 import org.geotools.xml.resolver.SchemaResolver;
 
 /**
- * XML encoder {@link Configuration} that uses {@link AppSchemaResolver} to obtain schemas.
+ * XML encoder {@link Configuration} that uses {@link SchemaResolver} to obtain schemas.
  * 
  * <p>
  * 

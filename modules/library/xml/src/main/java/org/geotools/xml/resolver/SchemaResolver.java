@@ -24,6 +24,7 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 
@@ -77,7 +78,7 @@ public class SchemaResolver {
      * import om in a schema, where one is supplied locally and the other must be downloaded and
      * cached. Another example is when the schemas are in different jar files.
      */
-    private Map<String, String> resolvedLocationToOriginalLocationMap = new HashMap<String, String>();
+    private Map<String, String> resolvedLocationToOriginalLocationMap = new ConcurrentHashMap<String, String>();
 
     /**
      * Constructor.
@@ -205,7 +206,11 @@ public class SchemaResolver {
         if (resolvedLocation == null) {
             throw new RuntimeException(String.format("Failed to resolve %s", location));
         }
-        resolvedLocationToOriginalLocationMap.put(resolvedLocation, location);
+        synchronized(this) {
+            if(!resolvedLocationToOriginalLocationMap.containsKey(resolvedLocation)) {
+                resolvedLocationToOriginalLocationMap.put(resolvedLocation, location);
+            }
+        }
         LOGGER.fine(String.format("Resolved %s -> %s", location, resolvedLocation));
         return resolvedLocation;
     }

@@ -161,45 +161,13 @@ Application Schema Resolver
 
 The ``gt-app-schema-resolver`` module supports resolution of GML application schemas obtained from an OASIS Catalog, the Java classpath, or cached network download, or all three.
 
-This module will resolve any resource type, but it is designed to aid relative imports between XML Schemas; to do this it keeps a reverse-lookup table to convert resolved locations back to their original locations, facilitating correct determination of relative imports and includes. To ensure that this works, use a single instance of ``AppSchemaResolver`` to resolve a schema and all its dependencies.
-
-Optional ``AppSchemaResolver`` constructors arguments allow configuration of permitted resolution methods.
-
-
-OASIS Catalog
-'''''''''''''
-
-The resolver can be configured to use an `OASIS Catalog <http://www.oasis-open.org/committees/entity/spec-2001-08-06.html>`_ to resolve application schema locations. The resolver uses catalog URI semantics to locate application schemas, so ``uri`` or ``rewriteURI`` entries should be present in your catalog.
-
-Example::
-
-    AppSchemaResolver resolver = new AppSchemaResolver(AppSchemaCatalog.build(DataUtilities.fileToURL(new File("/path/to/catalog.xml"))));
-
-
-Classpath
-'''''''''
-
-Schema resolution on the classpath is always enabled. For example, a schema ``http://schemas.example.org/exampleml/exml.xsd`` resolves to ``/org/example/schemas/exampleml/exml.xsd`` on the classpath. To create a resolver with only support for schemas on the classpath, use the default constructor::
-
-    AppSchemaResolver resolver = new AppSchemaResolver();
-
-
-Cache
-'''''
-
-If the resolver is configured to use a cache, schemas not resolved by other methods will be downloaded from the network and stored in the cache directory. For example, an application schema published at ``http://schemas.example.org/exampleml/exml.xsd`` would be downloaded and stored as ``org/example/schemas/exampleml/exml.xsd`` in the cache directory.
-
-Example::
-
-    AppSchemaResolver resolver = new AppSchemaResolver(new AppSchemaCache(new File("/path/to/app-schema-cache"), true));
-
-If downloads are not enabled, a prepopulated cache will still be used, but missing schemas will not be downloaded.
+This is done using classes from the ``gt-xml`` module, in particular: ``SchemaResolver``, ``SchemaCache`` and ``SchemaCatalog``.
 
 
 AppSchemaConfiguration
 ''''''''''''''''''''''
 
-Once you have configured your ``AppSchemaResolver``, you can use it to build an ``AppSchemaConfiguration`` that you can use to configure the GeoTools ``Encoder``::
+Once you have configured your ``SchemaResolver``, you can use it to build an ``AppSchemaConfiguration`` that you can use to configure the GeoTools ``Encoder``::
 
     Configuration configuration = new AppSchemaConfiguration(
         "urn:cgi:xmlns:CGI:GeoSciML:2.0",
@@ -233,6 +201,6 @@ The ``gt-sample-data-access`` module supports testing of complex feature support
 Application Schema Packages
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Application Schema Packages collection in ``app-schema-packages`` contains GML application schemas that have been packaged into Maven artifacts to support offline testing. These are manually published to the ``osgeo`` Maven repository. Configuring your Maven project to depend on one of these packages will cause ``AppSchemaResolver`` to resolve references to these schemas on the classpath.
+The Application Schema Packages collection in ``app-schema-packages`` contains GML application schemas that have been packaged into Maven artifacts to support offline testing. These are manually published to the ``osgeo`` Maven repository. Configuring your Maven project to depend on one of these packages will cause ``SchemaResolver`` to resolve references to these schemas on the classpath.
 
 

@@ -28,7 +28,7 @@ import org.geotools.xml.XSD;
 import org.geotools.xml.resolver.SchemaResolver;
 
 /**
- * {@link XSD} that uses {@link AppSchemaResolver} to locate schema resources in a catalog, on the
+ * {@link XSD} that uses {@link SchemaResolver} to locate schema resources in a catalog, on the
  * classpath, or in a cache.
  * 
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)

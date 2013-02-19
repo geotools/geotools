@@ -130,7 +130,7 @@ public class ContourProcess implements RasterProcess {
             @DescribeParameter(name = "data", description = "Input raster") GridCoverage2D gc2d,
             @DescribeParameter(name = "band", description = "Name of band to use for values to be contoured", min = 0, max = 1) Integer band,
             @DescribeParameter(name = "levels", description = "Values of levels at which to generate contours") double[] levels,
-            @DescribeParameter(name = "interval", description = "Interval between contour values (ignored if levels parameter is supplied)", min = 0) Double interval,
+            @DescribeParameter(name = "interval", description = "Interval between contour values (ignored if levels parameter is supplied)", min = 0, minValue = 0) Double interval,
             @DescribeParameter(name = "simplify", description = "Indicates whether contour lines are simplified", min = 0) Boolean simplify,
             @DescribeParameter(name = "smooth", description = "Indicates whether contour lines are smoothed using Bezier smoothing", min = 0) Boolean smooth,
             @DescribeParameter(name = "roi", description = "Geometry delineating the region of interest (in raster coordinate system)", min = 0) Geometry roi,

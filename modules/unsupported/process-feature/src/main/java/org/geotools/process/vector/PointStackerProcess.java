@@ -106,8 +106,8 @@ public class PointStackerProcess implements VectorProcess {
 
             // output image parameters
             @DescribeParameter(name = "outputBBOX", description = "Bounding box for target image extent") ReferencedEnvelope outputEnv,
-            @DescribeParameter(name = "outputWidth", description = "Target image width in pixels") Integer outputWidth,
-            @DescribeParameter(name = "outputHeight", description = "Target image height in pixels") Integer outputHeight,
+            @DescribeParameter(name = "outputWidth", description = "Target image width in pixels", minValue = 1) Integer outputWidth,
+            @DescribeParameter(name = "outputHeight", description = "Target image height in pixels", minValue = 1) Integer outputHeight,
             
 
             ProgressListener monitor) throws ProcessException, TransformException {

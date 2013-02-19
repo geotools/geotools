@@ -25,9 +25,10 @@ import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDSchemaLocator;
 import org.geotools.xml.SchemaLocationResolver;
 import org.geotools.xml.XSD;
+import org.geotools.xml.resolver.SchemaResolver;
 
 /**
- * {@link XSD} that uses {@link AppSchemaResolver} to locate schema resources in a catalog, on the
+ * {@link XSD} that uses {@link SchemaResolver} to locate schema resources in a catalog, on the
  * classpath, or in a cache.
  * 
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
@@ -46,7 +47,7 @@ public class AppSchemaXSD extends XSD {
     /**
      * The resolver used to locate resources.
      */
-    private final AppSchemaResolver resolver;
+    private final SchemaResolver resolver;
 
     /**
      * The {@link Configuration} used to encode documents with this schema.
@@ -58,7 +59,7 @@ public class AppSchemaXSD extends XSD {
      * @param schemaLocation
      * @param resolver
      */
-    public AppSchemaXSD(String namespaceUri, String schemaLocation, AppSchemaResolver resolver) {
+    public AppSchemaXSD(String namespaceUri, String schemaLocation, SchemaResolver resolver) {
         this.namespaceUri = namespaceUri;
         this.schemaLocation = resolver.resolve(schemaLocation);
         this.resolver = resolver;

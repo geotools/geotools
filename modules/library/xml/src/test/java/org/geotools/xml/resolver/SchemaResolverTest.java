@@ -15,30 +15,30 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.xml;
+package org.geotools.xml.resolver;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 
 /**
- * Tests for {@link AppSchemaResolver}.
+ * Tests for {@link SchemaResolver}.
  * 
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * 
  * @source $URL$
  */
-public class AppSchemaResolverTest {
+public class SchemaResolverTest {
 
     /**
      * Test GeoSciML 2.0 canonical URL is correctly converted into a classpath URL.
      */
     @Test
     public void geosciml20() {
-        String path = AppSchemaResolver
+        String path = SchemaResolver
                 .getSimpleHttpResourcePath("http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd");
         Assert.assertEquals(path, "/org/geosciml/www/geosciml/2.0/xsd/geosciml.xsd");
-        String classpathPath = AppSchemaResolver.class.getResource(path).toExternalForm();
+        String classpathPath = SchemaResolver.class.getResource(path).toExternalForm();
         Assert.assertTrue(classpathPath.startsWith("jar:file:/"));
         Assert.assertTrue(classpathPath
                 .endsWith("!/org/geosciml/www/geosciml/2.0/xsd/geosciml.xsd"));
@@ -46,11 +46,11 @@ public class AppSchemaResolverTest {
 
     /**
      * Test that the example in the javadoc for
-     * {@link AppSchemaResolver#getSimpleHttpResourcePath(java.net.URI)} does in fact work.
+     * {@link SchemaResolver#getSimpleHttpResourcePath(java.net.URI)} does in fact work.
      */
     @Test
     public void exampleHttp() {
-        String path = AppSchemaResolver
+        String path = SchemaResolver
                 .getSimpleHttpResourcePath("http://schemas.example.org/exampleml/exml.xsd");
         Assert.assertEquals("/org/example/schemas/exampleml/exml.xsd", path);
     }
@@ -60,7 +60,7 @@ public class AppSchemaResolverTest {
      */
     @Test
     public void exampleHttps() {
-        String path = AppSchemaResolver
+        String path = SchemaResolver
                 .getSimpleHttpResourcePath("https://schemas.example.org/exampleml/exml.xsd");
         Assert.assertEquals("/org/example/schemas/exampleml/exml.xsd", path);
     }
@@ -70,7 +70,7 @@ public class AppSchemaResolverTest {
      */
     @Test
     public void portIgnored() {
-        String path = AppSchemaResolver
+        String path = SchemaResolver
                 .getSimpleHttpResourcePath("http://schemas.example.org:8080/exampleml/exml.xsd");
         Assert.assertEquals("/org/example/schemas/exampleml/exml.xsd", path);
     }
@@ -80,7 +80,7 @@ public class AppSchemaResolverTest {
      */
     @Test
     public void queryIgnored() {
-        String path = AppSchemaResolver
+        String path = SchemaResolver
                 .getSimpleHttpResourcePath("http://schemas.example.org/exampleml/exml.xsd?q=ignored");
         Assert.assertEquals("/org/example/schemas/exampleml/exml.xsd", path);
     }
@@ -90,7 +90,7 @@ public class AppSchemaResolverTest {
      */
     @Test
     public void getSimpleHttpResourcePath_KeepQueryTrue_ReturnPathHasQueryComponent() {
-        String path = AppSchemaResolver
+        String path = SchemaResolver
                 .getSimpleHttpResourcePath(
                         "http://schemas.example.org/wfs?request=GetFeature&typename=sa:LocatedSpecimen&featureid=sa_LocatedSpecimen.2110193",
                         true);
@@ -102,7 +102,7 @@ public class AppSchemaResolverTest {
      */
     @Test
     public void ftpReturnsNull() {
-        Assert.assertNull(AppSchemaResolver
+        Assert.assertNull(SchemaResolver
                 .getSimpleHttpResourcePath("ftp://schemas.example.org/exampleml/exml.xsd"));
     }
 
@@ -111,7 +111,7 @@ public class AppSchemaResolverTest {
      */
     @Test
     public void jarReturnsNull() {
-        Assert.assertNull(AppSchemaResolver
+        Assert.assertNull(SchemaResolver
                 .getSimpleHttpResourcePath("jar:file:example.jar!/org/example/schemas/exampleml/exml.xsd"));
     }
 
@@ -120,7 +120,7 @@ public class AppSchemaResolverTest {
      */
     @Test
     public void badlyFormattedUrlReturnsNull() {
-        Assert.assertNull(AppSchemaResolver
+        Assert.assertNull(SchemaResolver
                 .getSimpleHttpResourcePath("http://schemas.example.org/exampleml/with spaces/exml.xsd"));
     }
 

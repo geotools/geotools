@@ -1,5 +1,5 @@
 The presence of the folder "app-schema-cache" triggers automatic configuration
-of the AppSchemaCache used by AppSchemaValidationDemo.
+of the SchemaCache used by AppSchemaValidationDemo.
 
 If you are looking for downloaded schemas, they should be in the copy of this
 folder in target/test-classes/test-data/validator-demo/app-schema-cache

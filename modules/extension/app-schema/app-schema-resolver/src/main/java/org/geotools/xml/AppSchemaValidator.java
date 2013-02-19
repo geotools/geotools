@@ -30,6 +30,8 @@ import java.util.regex.Pattern;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.geotools.xml.resolver.SchemaCatalog;
+import org.geotools.xml.resolver.SchemaResolver;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -38,7 +40,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.ext.EntityResolver2;
 
 /**
- * A class to perform XML schema validation against schemas found using an {@link AppSchemaResolver}
+ * A class to perform XML schema validation against schemas found using an {@link SchemaResolver}
  * .
  * 
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
@@ -59,7 +61,7 @@ public class AppSchemaValidator {
     /**
      * The resolver used to find XML schemas.
      */
-    private final AppSchemaResolver resolver;
+    private final SchemaResolver resolver;
 
     /**
      * Failures found during parsing of an XML instance document.
@@ -74,32 +76,32 @@ public class AppSchemaValidator {
     /**
      * Construct an {@link AppSchemaValidator} that performs schema validation against schemas found
      * on the classpath using the convention described in
-     * {@link AppSchemaResolver#getSimpleHttpResourcePath(java.net.URI)}.
+     * {@link SchemaResolver#getSimpleHttpResourcePath(java.net.URI)}.
      */
     private AppSchemaValidator() {
-        this(new AppSchemaResolver());
+        this(new SchemaResolver());
     }
 
     /**
      * Construct an {@link AppSchemaValidator} that performs schema validation against schemas found
-     * using an {@link AppSchemaResolver}.
+     * using an {@link SchemaResolver}.
      * 
      * @param resolver
      *            resolver used to locate XML schemas
      */
-    private AppSchemaValidator(AppSchemaResolver resolver) {
+    private AppSchemaValidator(SchemaResolver resolver) {
         this.resolver = resolver;
     }
     
     /**
      * Construct an {@link AppSchemaValidator} that performs schema validation against schemas found
-     * using an {@link AppSchemaResolver} with a {@link AppSchemaCatalog}.
+     * using an {@link SchemaResolver} with a {@link SchemaCatalog}.
      * 
      * @param catalog
-     *            AppSchemaCatalog
+     *            SchemaCatalog
      */
-    private AppSchemaValidator(AppSchemaCatalog catalog) {
-        this(new AppSchemaResolver(catalog));
+    private AppSchemaValidator(SchemaCatalog catalog) {
+        this(new SchemaResolver(catalog));
     }
 
     /**
@@ -189,7 +191,7 @@ public class AppSchemaValidator {
     /**
      * Construct an {@link AppSchemaValidator} that performs schema validation against schemas found
      * on the classpath using the convention described in
-     * {@link AppSchemaResolver#getSimpleHttpResourcePath(java.net.URI)}.
+     * {@link SchemaResolver#getSimpleHttpResourcePath(java.net.URI)}.
      */
     public static AppSchemaValidator buildValidator() {
         return new AppSchemaValidator();
@@ -197,23 +199,23 @@ public class AppSchemaValidator {
 
     /**
      * Construct an {@link AppSchemaValidator} that performs schema validation against schemas found
-     * using an {@link AppSchemaResolver}.
+     * using an {@link SchemaResolver}.
      * 
      * @param resolver
      *            the resolver used to find schemas
      */
-    public static AppSchemaValidator buildValidator(AppSchemaResolver resolver) {
+    public static AppSchemaValidator buildValidator(SchemaResolver resolver) {
         return new AppSchemaValidator(resolver);
     }
     
     /**
      * Construct an {@link AppSchemaValidator} that performs schema validation against schemas found
-     * using an {@link AppSchemaResolver} with a {@link AppSchemaCatalog}.
+     * using an {@link SchemaResolver} with a {@link SchemaCatalog}.
      * 
      * @param catalog
-     *            AppSchemaCatalog
+     *            SchemaCatalog
      */
-    public static AppSchemaValidator buildValidator(AppSchemaCatalog catalog) {
+    public static AppSchemaValidator buildValidator(SchemaCatalog catalog) {
         return new AppSchemaValidator(catalog);
     }
 
@@ -221,7 +223,7 @@ public class AppSchemaValidator {
      * 
      * Perform schema validation of an XML instance document read from a classpath resource against
      * schemas found on the classpath using the convention described in
-     * {@link AppSchemaResolver#getSimpleHttpResourcePath(java.net.URI)}.
+     * {@link SchemaResolver#getSimpleHttpResourcePath(java.net.URI)}.
      * 
      * <p>
      * 
@@ -230,9 +232,9 @@ public class AppSchemaValidator {
      * @param name
      *            resource name of XML instance document
      * @param catalog 
-     *            AppSchemaCatalog to aide local schema resolution or null
+     *            SchemaCatalog to aide local schema resolution or null
      */
-    public static void validateResource(String name, AppSchemaCatalog catalog) {
+    public static void validateResource(String name, SchemaCatalog catalog) {
         InputStream input = null;
         try {
             input = AppSchemaValidator.class.getResourceAsStream(name);
@@ -252,7 +254,7 @@ public class AppSchemaValidator {
      * 
      * Perform schema validation of an XML instance document in a string against schemas found on
      * the classpath using the convention described in
-     * {@link AppSchemaResolver#getSimpleHttpResourcePath(java.net.URI)}.
+     * {@link SchemaResolver#getSimpleHttpResourcePath(java.net.URI)}.
      * 
      * <p>
      * 
@@ -261,9 +263,9 @@ public class AppSchemaValidator {
      * @param xml
      *            string containing XML instance document
      * @param catalog
-     *            AppSchemaCatalog to aide local schema resolution or null
+     *            SchemaCatalog to aide local schema resolution or null
      */
-    public static void validate(String xml, AppSchemaCatalog catalog) {
+    public static void validate(String xml, SchemaCatalog catalog) {
         byte[] bytes = null;
         String encoding = getEncoding(xml);
         if (encoding != null) {
@@ -314,7 +316,7 @@ public class AppSchemaValidator {
      * 
      * Perform schema validation of an XML instance document read from an input stream against
      * schemas found on the classpath using the convention described in
-     * {@link AppSchemaResolver#getSimpleHttpResourcePath(java.net.URI)}.
+     * {@link SchemaResolver#getSimpleHttpResourcePath(java.net.URI)}.
      * 
      * <p>
      * 
@@ -323,16 +325,16 @@ public class AppSchemaValidator {
      * @param input
      *            stream providing XML instance document
      * @param catalog
-     *            AppSchemaCatalog file to aide local schema resolution or null
+     *            SchemaCatalog file to aide local schema resolution or null
      */
-    public static void validate(InputStream input, AppSchemaCatalog catalog) {
+    public static void validate(InputStream input, SchemaCatalog catalog) {
         AppSchemaValidator validator = buildValidator(catalog);
         validator.parse(input);
         validator.checkForFailures();
     }
 
     /**
-     * An {@link EntityResolver2} that uses the enclosing instance's {@link AppSchemaResolver} to look up XML entities (that is, XML schemas).
+     * An {@link EntityResolver2} that uses the enclosing instance's {@link SchemaResolver} to look up XML entities (that is, XML schemas).
      */
     private class AppSchemaEntityResolver implements EntityResolver2 {
 

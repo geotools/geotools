@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.xml;
+package org.geotools.xml.resolver;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -27,14 +27,16 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import org.geotools.data.DataUtilities;
 
 /**
- * Cache containing application schemas. (Should also work for other file types.)
+ * Cache containing XML schemas. (Should also work for other file types.)
  * 
  * <p>
  * 
@@ -46,7 +48,7 @@ import org.geotools.data.DataUtilities;
  * 
  * <p>
  * 
- * Files are stored according to the Simple HTTP Resource Path (see {@link AppSchemaResolver#getSimpleHttpResourcePath(URI))}.
+ * Files are stored according to the Simple HTTP Resource Path (see {@link SchemaResolver#getSimpleHttpResourcePath(URI))}.
  * 
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * 
@@ -54,10 +56,10 @@ import org.geotools.data.DataUtilities;
  * 
  * @source $URL$
  */
-public class AppSchemaCache {
+public class SchemaCache {
 
     private static final Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(AppSchemaCache.class.getPackage().getName());
+            .getLogger(SchemaCache.class.getPackage().getName());
 
     /**
      * The default block read size used when downloading a file.
@@ -65,7 +67,7 @@ public class AppSchemaCache {
     private static final int DEFAULT_DOWNLOAD_BLOCK_SIZE = 4096;
 
     /**
-     * This is the default value of the keep query flag used when building an automatically configured AppSchemaCache.
+     * This is the default value of the keep query flag used when building an automatically configured SchemaCache.
      */
     private static final boolean DEFAULT_KEEP_QUERY = true;
 
@@ -101,31 +103,37 @@ public class AppSchemaCache {
      * True if resources not found in the cache are downloaded from the net.
      */
     private final boolean download;
-
+    
+    /**
+     * Set of locations currently in download. Allows resolving a location
+     * to a partially downloaded file.
+     */
+    final static Set<String> locationsInDownload = new HashSet<String>();
+    
     /**
      * True if query string components should be part of the discriminator for
      */
     private final boolean keepQuery;
 
     /**
-     * A cache of application schemas (or other file types) rooted in the given directory, with optional downloading.
+     * A cache of XML schemas (or other file types) rooted in the given directory, with optional downloading.
      * 
      * @param directory the directory in which downloaded schemas are stored
      * @param download is downloading of schemas permitted. If false, only schemas already present in the cache will be resolved.
      */
-    public AppSchemaCache(File directory, boolean download) {
+    public SchemaCache(File directory, boolean download) {
         this(directory, download, false);
     }
 
     /**
-     * A cache of application schemas (or other file types) rooted in the given directory, with optional downloading.
+     * A cache of XML schemas (or other file types) rooted in the given directory, with optional downloading.
      * 
      * @param directory the directory in which downloaded schemas are stored
      * @param download is downloading of schemas permitted. If false, only schemas already present in the cache will be resolved.
      * @param keepQuery indicates whether or not the query components should be included in the path. If this is set to true then the query portion is
      *        converted to an MD5 message digest and that string is used to identify the file in the cache.
      */
-    public AppSchemaCache(File directory, boolean download, boolean keepQuery) {
+    public SchemaCache(File directory, boolean download, boolean keepQuery) {
         this.directory = directory;
         this.download = download;
         this.keepQuery = keepQuery;
@@ -136,6 +144,23 @@ public class AppSchemaCache {
      */
     public File getDirectory() {
         return directory;
+    }
+    
+    /**
+     * Return the temp directory for not cached downloads (those
+     * occurring during another download, to avoid conflicts among threads).
+     */
+    public File getTempDirectory() {
+        try {
+            File tempFolder = File.createTempFile("schema", "cache");
+            tempFolder.delete();
+            tempFolder.mkdirs();
+            return tempFolder;
+        } catch (IOException e) {
+            LOGGER.severe("Can't create temporary folder");
+            throw new RuntimeException(e);
+        }
+    
     }
 
     /**
@@ -192,7 +217,7 @@ public class AppSchemaCache {
      * @param location and absolute http/https URL.
      * @return the bytes contained by the resource, or null if it could not be downloaded
      */
-    static byte[] download(String location) {
+    static byte[] download(String location) {        
         URI locationUri;
         try {
             locationUri = new URI(location);
@@ -219,7 +244,7 @@ public class AppSchemaCache {
      * @param blockSize download block size
      * @return the bytes contained by the resource, or null if it could not be downloaded
      */
-    static byte[] download(URI location, int blockSize) {
+    static byte[] download(URI location, int blockSize) {        
         try {
             URL url = location.toURL();
             String protocol = url.getProtocol();
@@ -228,6 +253,8 @@ public class AppSchemaCache {
                 return null;
             }
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setConnectTimeout(10000);
+            connection.setReadTimeout(10000);
             connection.setUseCaches(false);
             connection.connect();
             if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
@@ -290,7 +317,7 @@ public class AppSchemaCache {
      * @return the canonical local file URL of the schema, or null if not found
      */
     public String resolveLocation(String location) {
-        String path = AppSchemaResolver.getSimpleHttpResourcePath(location, this.keepQuery);
+        String path = SchemaResolver.getSimpleHttpResourcePath(location, this.keepQuery);
         if (path == null) {
             return null;
         }
@@ -301,18 +328,84 @@ public class AppSchemaCache {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        if (file.exists()) {
-            return DataUtilities.fileToURL(file).toExternalForm();
-        } else if (isDownloadAllowed()) {
+        // if the location is already in download we start a temporary download 
+        // for the current thread and we won't cache it at the end
+        boolean isTemp = false;
+        synchronized (locationsInDownload) {
+            if (!locationsInDownload.contains(location)) {
+                if (file.exists()) {
+                    return DataUtilities.fileToURL(file).toExternalForm();
+                }
+            } else {
+                // the location is already in download, we can't wait for it to
+                // complete, so we download another (temporary) copy and return that
+                isTemp = true;
+                try {
+                    // new file in a temporary folder
+                    file = new File(getTempDirectory(), relativePath)
+                            .getCanonicalFile();
+                } catch (IOException e) {
+                    LOGGER.severe("Can't create temporary file: "
+                            + file.getAbsolutePath());
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        if (isDownloadAllowed()) {
+            // add location to downloading list
+            startDownload(location, file, isTemp);
+    
             byte[] bytes = download(location);
             if (bytes == null) {
+                endDownload(location, isTemp);
                 return null;
             }
             store(file, bytes);
-            LOGGER.info("Cached application schema: " + location);
+            LOGGER.info("Cached XML schema: " + location);
+            endDownload(location, isTemp);
+            if (isTemp) {
+                file.deleteOnExit();
+            }
+    
             return DataUtilities.fileToURL(file).toExternalForm();
         } else {
             return null;
+        }
+    }
+
+    /**
+     * @param location
+     * @param isTemp
+     */
+    private void endDownload(String location, boolean isTemp) {
+        if(!isTemp) {
+            synchronized(locationsInDownload) {
+                locationsInDownload.remove(location);                        
+            }
+        }
+    }
+
+    /**
+     * Adds the given file / location to the list of files in download.
+     * 
+     * @param location
+     * @param file
+     */
+    private void startDownload(String location, File file, boolean isTemp) {
+        if(!isTemp) {
+            synchronized(locationsInDownload) {
+                locationsInDownload.add(location);
+                try {
+                    // we create an empty placeholder to be sure the file exists
+                    // for other threads to check
+                    file.getParentFile().mkdirs();
+                    file.createNewFile();
+                } catch (IOException e) {
+                    locationsInDownload.remove(location);
+                    LOGGER.severe("Can't create cache file: "+file.getAbsolutePath());
+                    throw new RuntimeException(e);
+                }
+            }
         }
     }
 
@@ -323,7 +416,7 @@ public class AppSchemaCache {
      * @param url a URL for a file in a GeoServer data directory.
      * @return a cache in the "app-schema-cache" subdirectory or null if not found or automatic configuration disabled.
      */
-    public static AppSchemaCache buildAutomaticallyConfiguredUsingFileUrl(URL url) {
+    public static SchemaCache buildAutomaticallyConfiguredUsingFileUrl(URL url) {
         if (!automaticConfigurationEnabled) {
             return null;
         }
@@ -333,7 +426,7 @@ public class AppSchemaCache {
                 return null;
             }
             if (isSuitableDirectoryToContainCache(file)) {
-                return new AppSchemaCache(new File(file, CACHE_DIRECTORY_NAME), true,
+                return new SchemaCache(new File(file, CACHE_DIRECTORY_NAME), true,
                         DEFAULT_KEEP_QUERY);
             }
             file = file.getParentFile();
@@ -394,3 +487,4 @@ public class AppSchemaCache {
     }
 
 }
+

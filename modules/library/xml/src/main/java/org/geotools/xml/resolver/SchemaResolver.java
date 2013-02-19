@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.xml;
+package org.geotools.xml.resolver;
 
 import java.math.BigInteger;
 import java.net.URI;
@@ -24,10 +24,12 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
+
 /**
- * Application schema resolver that maps absolute URLs to local URL resources.
+ * XML Schema resolver that maps absolute URLs to local URL resources.
  * 
  * <p>
  * 
@@ -49,15 +51,15 @@ import java.util.logging.Logger;
  * 
  * @source $URL$
  */
-public class AppSchemaResolver {
+public class SchemaResolver {
 
     private static final Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(AppSchemaResolver.class.getPackage().getName());
+            .getLogger(SchemaResolver.class.getPackage().getName());
 
     /**
      * A local OASIS catalog (null if not present).
      */
-    private AppSchemaCatalog catalog;
+    private SchemaCatalog catalog;
 
     /**
      * True if schemas can be resolved on the classpath.
@@ -67,7 +69,7 @@ public class AppSchemaResolver {
     /**
      * Cache of schemas with optional downloading support(null if not present).
      */
-    private AppSchemaCache cache;
+    private SchemaCache cache;
 
     /**
      * Maps a resolved location (a URL used to obtain a schema from a file or the classpath) to the
@@ -76,7 +78,7 @@ public class AppSchemaResolver {
      * import om in a schema, where one is supplied locally and the other must be downloaded and
      * cached. Another example is when the schemas are in different jar files.
      */
-    private Map<String, String> resolvedLocationToOriginalLocationMap = new HashMap<String, String>();
+    private Map<String, String> resolvedLocationToOriginalLocationMap = new ConcurrentHashMap<String, String>();
 
     /**
      * Constructor.
@@ -86,7 +88,7 @@ public class AppSchemaResolver {
      *            whether schemas can be located on the classpath
      * @param cache
      */
-    public AppSchemaResolver(AppSchemaCatalog catalog, boolean classpath, AppSchemaCache cache) {
+    public SchemaResolver(SchemaCatalog catalog, boolean classpath, SchemaCache cache) {
         this.catalog = catalog;
         this.classpath = classpath;
         this.cache = cache;
@@ -98,14 +100,14 @@ public class AppSchemaResolver {
      * @param catalog
      * @param cache
      */
-    public AppSchemaResolver(AppSchemaCatalog catalog, AppSchemaCache cache) {
+    public SchemaResolver(SchemaCatalog catalog, SchemaCache cache) {
         this(catalog, true, cache);
     }
 
     /**
      * Convenience constructor for a resolver with neither catalog nor cache (just classpath).
      */
-    public AppSchemaResolver() {
+    public SchemaResolver() {
         this(null, null);
     }
 
@@ -114,7 +116,7 @@ public class AppSchemaResolver {
      * 
      * @param catalog
      */
-    public AppSchemaResolver(AppSchemaCatalog catalog) {
+    public SchemaResolver(SchemaCatalog catalog) {
         this(catalog, null);
     }
 
@@ -123,7 +125,7 @@ public class AppSchemaResolver {
      * 
      * @param cache
      */
-    public AppSchemaResolver(AppSchemaCache cache) {
+    public SchemaResolver(SchemaCache cache) {
         this(null, cache);
     }
 
@@ -204,7 +206,11 @@ public class AppSchemaResolver {
         if (resolvedLocation == null) {
             throw new RuntimeException(String.format("Failed to resolve %s", location));
         }
-        resolvedLocationToOriginalLocationMap.put(resolvedLocation, location);
+        synchronized(this) {
+            if(!resolvedLocationToOriginalLocationMap.containsKey(resolvedLocation)) {
+                resolvedLocationToOriginalLocationMap.put(resolvedLocation, location);
+            }
+        }
         LOGGER.fine(String.format("Resolved %s -> %s", location, resolvedLocation));
         return resolvedLocation;
     }
@@ -345,7 +351,7 @@ public class AppSchemaResolver {
         if (path == null) {
             return null;
         } else {
-            return AppSchemaResolver.class.getResource(path);
+            return SchemaResolver.class.getResource(path);
         }
     }
 
@@ -388,3 +394,4 @@ public class AppSchemaResolver {
     }
 
 }
+

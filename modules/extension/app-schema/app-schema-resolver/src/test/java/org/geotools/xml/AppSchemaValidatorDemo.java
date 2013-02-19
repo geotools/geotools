@@ -20,6 +20,9 @@ package org.geotools.xml;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.geotools.xml.resolver.SchemaCache;
+import org.geotools.xml.resolver.SchemaResolver;
+
 /**
  * <p>
  * A demonstration of schema-validation in which XML schemas are downloaded from the network.
@@ -66,11 +69,11 @@ public class AppSchemaValidatorDemo {
      */
     public static void main(String[] args) {
         // download and cache schemas using app-schema-cache discovered from resource path
-        AppSchemaCache cache = AppSchemaCache
+        SchemaCache cache = SchemaCache
                 .buildAutomaticallyConfiguredUsingFileUrl(AppSchemaValidatorDemo.class
                         .getResource(RESOURCE));
         // no classpath resolution of schemas; cached downloads only
-        AppSchemaResolver resolver = new AppSchemaResolver(null, false, cache);
+        SchemaResolver resolver = new SchemaResolver(null, false, cache);
         AppSchemaValidator validator = AppSchemaValidator.buildValidator(resolver);
         InputStream input = null;
         try {

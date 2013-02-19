@@ -17,6 +17,11 @@
     <description>Supporting utilities for complex features.</description>
 
     <dependencies>
+		<dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-xml</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-app-schema-resolver</artifactId>

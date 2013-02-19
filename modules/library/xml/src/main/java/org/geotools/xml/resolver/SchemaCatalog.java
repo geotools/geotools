@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.xml;
+package org.geotools.xml.resolver;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,7 +26,7 @@ import org.apache.xml.resolver.Catalog;
 import org.apache.xml.resolver.CatalogManager;
 
 /**
- * Support for application schema resolution in an <a
+ * Support for XML schema resolution in an <a
  * href="http://www.oasis-open.org/committees/entity/spec-2001-08-06.html">OASIS Catalog</a> (with
  * URI resolution semantics).
  * 
@@ -37,10 +37,10 @@ import org.apache.xml.resolver.CatalogManager;
  *
  * @source $URL$
  */
-public class AppSchemaCatalog {
+public class SchemaCatalog {
 
     private static final Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(AppSchemaCatalog.class.getPackage().getName());
+            .getLogger(SchemaCatalog.class.getPackage().getName());
 
     private final Catalog catalog;
 
@@ -49,7 +49,7 @@ public class AppSchemaCatalog {
      * 
      * @param catalog
      */
-    private AppSchemaCatalog(Catalog catalog) {
+    private SchemaCatalog(Catalog catalog) {
         this.catalog = catalog;
     }
 
@@ -132,8 +132,8 @@ public class AppSchemaCatalog {
      *            local file URL to an OASIS cCtalog
      * @return
      */
-    public static AppSchemaCatalog build(URL catalogLocation) {
-        return new AppSchemaCatalog(buildPrivateCatalog(catalogLocation));
+    public static SchemaCatalog build(URL catalogLocation) {
+        return new SchemaCatalog(buildPrivateCatalog(catalogLocation));
     }
 
 }

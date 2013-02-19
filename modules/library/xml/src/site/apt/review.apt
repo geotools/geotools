@@ -13,3 +13,50 @@ Module xml
       http://jira.codehaus.org/browse/GEOT-1877
 
   Original purpose and authors not known, left to Jody/Justin.
+  
+  KNOWN ISSUES:
+  
+    * src/test/resources/org/example/schemas/wfs20/DescribeFeatureType_Example01_Response.xsd
+    
+      Are taken from the OGC WFS 2.0 specification.
+      
+      [Ben: I added the OGC Software Notice at module root and prominent comments in the files with links and copyright notice.]
+  
+Contributor Review (taken from pom.xml and source code files):
+
+    * all code prvided by Ben Caradoc-Davies was done under LGPL, CSIRO code contribution agreement
+    
+    * Niels should be listed in the pom.xml [Ben: noted, but I disagree as he only contributed one file]
+    
+  CODE REVIEW
+  
+    * @author tags should not use "," as apaprenty that lists multiple authors
+      we tend to use:
+         
+      INCORRECT: @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
+      CORRECT: @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
+      
+      [FIXED]
+      
+  
+* test resources
+  ~~~~~~~~~~~~~~
+  
+    * org.example.schemas.wfs20 - known issue; content from wfs 2.0 specification. Add OGC license
+      to the base of the project folder and we should be good for this one [DONE; comments in files as well]
+    
+    * test-data/cache/org/example/schemas/cache-test attribution missing.
+    * test-data/cache/org/example/schemas/catalog-test attribution missing.    
+    * test-data attribution missing in general (Example01.xml handles attribtue well)
+
+* Clarification from Ben Caradoc-Davies
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+     
+    * All *.xsd files in src/test/resources/test-data are my original work.
+    
+    * OGC state that schemas and related docs (i.e. example response) can be treated under their software licence:
+      http://www.opengeospatial.org/ogc/legalfaq#DTD
+      We will apply this to schemas in documents as well.
+      
+    * Note that the OGC content is only used for automated testing and never supplied to users of app-schema-resolver.

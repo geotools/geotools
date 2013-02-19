@@ -20,9 +20,9 @@ package org.geotools.data.complex.config;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import org.geotools.xml.AppSchemaCatalog;
+import org.geotools.xml.resolver.SchemaCatalog;
 import org.geotools.xml.AppSchemaConfiguration;
-import org.geotools.xml.AppSchemaResolver;
+import org.geotools.xml.resolver.SchemaResolver;
 import org.geotools.xml.Binding;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.SchemaIndex;
@@ -57,17 +57,17 @@ public class EmfComplexFeatureReader {
      * The initial resolver has support for only file and classpath resolution. Anything more than a test should probably set this to something more
      * useful.
      */
-    private AppSchemaResolver resolver = new AppSchemaResolver();
+    private SchemaResolver resolver = new SchemaResolver();
 
     protected EmfComplexFeatureReader() {
         // do nothing
     }
 
-    public AppSchemaResolver getResolver() {
+    public SchemaResolver getResolver() {
         return resolver;
     }
 
-    public void setResolver(AppSchemaResolver resolver) {
+    public void setResolver(SchemaResolver resolver) {
         this.resolver = resolver;
     }
 
@@ -77,7 +77,7 @@ public class EmfComplexFeatureReader {
      * @param catalogLocation
      */
     public void setResolver(URL catalogLocation) {
-        this.resolver = new AppSchemaResolver(AppSchemaCatalog.build(catalogLocation));
+        this.resolver = new SchemaResolver(SchemaCatalog.build(catalogLocation));
     }
 
     /**

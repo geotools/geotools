@@ -15,28 +15,30 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.xml;
+package org.geotools.xml.resolver;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 import org.geotools.data.DataUtilities;
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Tests for {@link AppSchemaCache}.
+ * Tests for {@link SchemaCache}.
  * 
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  *
  *
  * @source $URL$
  */
-public class AppSchemaCacheTest {
+public class SchemaCacheTest {
 
     /**
-     * Test the {@link AppSchemaCache#delete(File) method.
+     * Test the {@link SchemaCache#delete(File) method.
      */
     @Test
     public void delete() throws Exception {
@@ -53,7 +55,7 @@ public class AppSchemaCacheTest {
             }
         }
         Assert.assertTrue((new File("target/test/a/b/d/e/f/temp.txt")).exists());
-        AppSchemaCache.delete(new File("target/test/a"));
+        SchemaCache.delete(new File("target/test/a"));
         Assert.assertFalse((new File("target/test/a")).exists());
     }
 
@@ -63,10 +65,10 @@ public class AppSchemaCacheTest {
     @Test
     public void resolve() throws Exception {
         // intentionally construct non-canonical cache directory
-        File cacheDirectory = new File(DataUtilities.urlToFile(AppSchemaCacheTest.class
+        File cacheDirectory = new File(DataUtilities.urlToFile(SchemaCacheTest.class
                 .getResource("/test-data/cache")), "../cache");
-        AppSchemaResolver resolver = new AppSchemaResolver(
-                new AppSchemaCache(cacheDirectory, false));
+        SchemaResolver resolver = new SchemaResolver(
+                new SchemaCache(cacheDirectory, false));
         String resolvedLocation = resolver
                 .resolve("http://schemas.example.org/cache-test/cache-test.xsd");
         Assert.assertTrue(resolvedLocation.startsWith("file:"));
@@ -80,5 +82,7 @@ public class AppSchemaCacheTest {
                 DataUtilities.urlToFile((new URI(resolvedLocation)).toURL()).getCanonicalFile()
                         .toURI().toString());
     }
+    
+    
 
 }

@@ -29,9 +29,9 @@ import org.geotools.feature.type.ComplexFeatureTypeImpl;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GMLConfiguration;
 import org.geotools.test.AppSchemaTestSupport;
-import org.geotools.xml.AppSchemaCatalog;
+import org.geotools.xml.resolver.SchemaCatalog;
 import org.geotools.xml.AppSchemaConfiguration;
-import org.geotools.xml.AppSchemaResolver;
+import org.geotools.xml.resolver.SchemaResolver;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.SchemaIndex;
 import org.geotools.xs.XS;
@@ -256,7 +256,7 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
     public void findGml31Configuration() {
         AppSchemaConfiguration configuration = new AppSchemaConfiguration(
                 "urn:cgi:xmlns:CGI:GeoSciML:2.0",
-                "http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd", new AppSchemaResolver());
+                "http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd", new SchemaResolver());
         Configuration gmlConfiguration = EmfAppSchemaReader.findGmlConfiguration(configuration);
         Assert.assertNotNull(gmlConfiguration);
         Assert.assertEquals(new GMLConfiguration(), gmlConfiguration);
@@ -270,7 +270,7 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
         AppSchemaConfiguration configuration = new AppSchemaConfiguration(
                 "urn:cgi:xmlns:CGI:GeoSciML-Core:3.0.0",
                 "https://www.seegrid.csiro.au/subversion/GeoSciML/branches/3.0.0_rc1_gml3.2/geosciml-core/3.0.0/xsd/geosciml-core.xsd",
-                new AppSchemaResolver());
+                new SchemaResolver());
         Configuration gmlConfiguration = EmfAppSchemaReader.findGmlConfiguration(configuration);
         Assert.assertNotNull(gmlConfiguration);
         Assert.assertEquals(new org.geotools.gml3.v3_2.GMLConfiguration(), gmlConfiguration);
@@ -281,12 +281,12 @@ public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {
      */
     @Test
 	public void testNonGMLConfiguration() {
-		AppSchemaCatalog catalog = AppSchemaCatalog.build(getClass()
+		SchemaCatalog catalog = SchemaCatalog.build(getClass()
 				.getResource("/test-data/mappedPolygons.oasis.xml"));
 		AppSchemaConfiguration configuration = new AppSchemaConfiguration(
 				"http://www.opengis.net/swe/2.0",
 				"http://schemas.opengis.net/sweCommon/2.0/swe.xsd",
-				new AppSchemaResolver(catalog));
+				new SchemaResolver(catalog));
 		Configuration gmlConfiguration = EmfAppSchemaReader
 				.findGmlConfiguration(configuration);
 		// Null should be returned, not exception

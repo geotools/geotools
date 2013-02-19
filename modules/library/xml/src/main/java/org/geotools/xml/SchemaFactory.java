@@ -17,6 +17,7 @@
 package org.geotools.xml;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -32,12 +33,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.xml.resolver.SchemaCache;
+import org.geotools.xml.resolver.SchemaResolver;
 import org.geotools.xml.schema.Attribute;
 import org.geotools.xml.schema.AttributeGroup;
 import org.geotools.xml.schema.ComplexType;
@@ -66,6 +70,9 @@ import org.xml.sax.SAXException;
  * @version $Id$
  */
 public class SchemaFactory {
+
+    private static final Logger LOGGER = Logger.getLogger(SchemaFactory.class.getName());
+
     protected static SchemaFactory is = new SchemaFactory();
 
     /*
@@ -75,12 +82,48 @@ public class SchemaFactory {
      * instances
      */
     private Map schemas = loadSchemas();
+    
+    /**
+     * Schema Resolver: uses local versions of schemas or cached ones if available.
+     */
+    File cacheDir;    
+    private SchemaResolver resolver;
 
     /*
      * The SAX parser to use if one is required ... isn't loaded until first
      * use.
      */
     private SAXParser parser;
+
+    
+    
+    /**
+     * Default constructor.
+     */
+    protected SchemaFactory() {
+        super();
+        initResolver();
+    }
+
+    /**
+     * Initialize the schema resolver.
+     */
+    private void initResolver() {
+        try {
+            if(System.getProperty("schema.factory.cache", null) == null) {
+                File tempFolder = File.createTempFile("schema", "cache");
+                tempFolder.delete();
+                tempFolder.mkdirs();
+                cacheDir = tempFolder;
+            } else {
+                cacheDir = new File(System.getProperty("schema.factory.cache"));
+            }
+            
+            resolver = new SchemaResolver(new SchemaCache(cacheDir, true));
+        } catch (IOException e) {
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
+        }
+    }
 
     protected static SchemaFactory getInstance() {
         return is;
@@ -277,10 +320,15 @@ public class SchemaFactory {
             XSISAXHandler.setLogLevel(level);
 
             try {
-                parser.parse(desiredSchema.toString(), contentHandler);
+                parser.parse(resolveSchema(desiredSchema), contentHandler);
             } catch (IOException e) {
-                // TODO error handler should be notified of a connectionexception: operation timed out.
-                throw new SAXException(e);
+                // tries to parse directly from original URL
+                try {
+                    parser.parse(desiredSchema.toString(), contentHandler);
+                } catch (IOException e1) {
+                    throw new SAXException(e1);
+                }
+                
             }
 
             Schema schema = contentHandler.getSchema();
@@ -303,7 +351,7 @@ public class SchemaFactory {
                 XSISAXHandler.setLogLevel(level);
 
                 try {
-                    parser.parse(desiredSchema.toString(), contentHandler);
+                    parser.parse(resolveSchema(desiredSchema), contentHandler);
                 } catch (IOException e) {
                     throw new SAXException(e);
                 }
@@ -314,6 +362,14 @@ public class SchemaFactory {
         }
 
         return (Schema) schemas.get(targetNamespace);
+    }
+
+    /**
+     * @param desiredSchema
+     * @return
+     */
+    private String resolveSchema(URI schema) {
+        return resolver.resolve(schema.toString());
     }
 
     protected XSISAXHandler getSAXHandler(URI uri) {

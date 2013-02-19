@@ -30,6 +30,9 @@ import junit.framework.Assert;
 
 import org.eclipse.xsd.XSDSchema;
 import org.geotools.data.DataUtilities;
+import org.geotools.xml.resolver.SchemaCache;
+import org.geotools.xml.resolver.SchemaCatalog;
+import org.geotools.xml.resolver.SchemaResolver;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -104,8 +107,8 @@ public class AppSchemaConfigurationTest {
     public void catalog() throws Exception {
         Configuration configuration = new AppSchemaConfiguration(
                 "http://schemas.example.org/catalog-test",
-                "http://schemas.example.org/catalog-test/catalog-test.xsd", new AppSchemaResolver(
-                        AppSchemaCatalog.build(getClass().getResource("/test-data/catalog.xml"))));
+                "http://schemas.example.org/catalog-test/catalog-test.xsd", new SchemaResolver(
+                        SchemaCatalog.build(getClass().getResource("/test-data/catalog.xml"))));
         SchemaIndex schemaIndex = null;
         try {
             schemaIndex = Schemas.findSchemas(configuration);
@@ -138,7 +141,7 @@ public class AppSchemaConfigurationTest {
     @Test
     public void classpath() {
         Configuration configuration = new AppSchemaConfiguration("urn:cgi:xmlns:CGI:GeoSciML:2.0",
-                "http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd", new AppSchemaResolver());
+                "http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd", new SchemaResolver());
         SchemaIndex schemaIndex = null;
         try {
             schemaIndex = Schemas.findSchemas(configuration);
@@ -167,8 +170,8 @@ public class AppSchemaConfigurationTest {
         // intentionally use a non-canonical cache path to ensure these handled correctly
         File cacheDirectory = new File(DataUtilities.urlToFile(AppSchemaConfigurationTest.class
                 .getResource("/test-data/cache")), "../cache");
-        AppSchemaResolver resolver = new AppSchemaResolver(
-                new AppSchemaCache(cacheDirectory, false));
+        SchemaResolver resolver = new SchemaResolver(
+                new SchemaCache(cacheDirectory, false));
         Configuration configuration = new AppSchemaConfiguration(
                 "http://schemas.example.org/cache-test",
                 "http://schemas.example.org/cache-test/cache-test.xsd", resolver);
@@ -208,10 +211,10 @@ public class AppSchemaConfigurationTest {
      */
     @Test
     public void catalogCache() throws Exception {
-        File cacheDirectory = DataUtilities.urlToFile(AppSchemaCacheTest.class
+        File cacheDirectory = DataUtilities.urlToFile(AppSchemaConfigurationTest.class
                 .getResource("/test-data/cache"));
-        AppSchemaResolver resolver = new AppSchemaResolver(AppSchemaCatalog.build(getClass()
-                .getResource("/test-data/catalog.xml")), new AppSchemaCache(cacheDirectory, false));
+        SchemaResolver resolver = new SchemaResolver(SchemaCatalog.build(getClass()
+                .getResource("/test-data/catalog.xml")), new SchemaCache(cacheDirectory, false));
         Configuration configuration = new AppSchemaConfiguration(
                 "http://schemas.example.org/catalog-test",
                 "http://schemas.example.org/catalog-test/catalog-cache-test.xsd", resolver);
@@ -247,7 +250,7 @@ public class AppSchemaConfigurationTest {
     @Test
     public void classpathGml32() {
         Configuration configuration = new AppSchemaConfiguration("http://www.opengis.net/gml/3.2",
-                "http://schemas.opengis.net/gml/3.2.1/gml.xsd", new AppSchemaResolver());
+                "http://schemas.opengis.net/gml/3.2.1/gml.xsd", new SchemaResolver());
         SchemaIndex schemaIndex = null;
         try {
             schemaIndex = Schemas.findSchemas(configuration);

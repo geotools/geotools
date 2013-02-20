@@ -28,6 +28,7 @@ public class H2UuidTestSetup extends JDBCUuidTestSetup {
 
     @Override
     protected void createUuidTable() throws Exception {
+        run("CREATE SCHEMA \"geotools\";");
         run( "CREATE TABLE \"geotools\".\"guid\" ( \"id\" serial PRIMARY KEY, \"uuidProperty\" uuid)" );
         run( "INSERT INTO \"geotools\".\"guid\" (\"uuidProperty\") VALUES ('" + uuid1 + "')");
         run( "INSERT INTO \"geotools\".\"guid\" (\"uuidProperty\") VALUES ('" + uuid2 + "')");
@@ -41,6 +42,7 @@ public class H2UuidTestSetup extends JDBCUuidTestSetup {
 
     @Override
     protected void dropUuidTable() throws Exception {
+       runSafe("DROP SCHEMA \"geotools\"; COMMIT;");
        run("DROP TABLE \"geotools\".\"guid\"");
        run("DROP TABLE \"geotools\".\"uuidt\"");
     }

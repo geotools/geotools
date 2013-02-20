@@ -392,4 +392,10 @@ public class StyleFactoryImplTest extends TestCase {
        Fill f2 = styleFactory.getDefaultFill();
        assertEquals(f1, f2);
     }
+    
+    public void testRasterSymbolizerNoGeometry() {
+        RasterSymbolizer rs = styleFactory.getDefaultRasterSymbolizer();
+        assertNull(rs.getGeometryPropertyName());
+        assertNull(rs.getGeometry());
+    }
 }   

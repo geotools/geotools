@@ -883,8 +883,8 @@ public class SLDTransformerTest {
         
         // check RasterSymbolizer just has the default geometry value 
         // (which is not a default in SLD, just in our builder)
-        assertXpathEvaluatesTo("1", "count(/sld:RasterSymbolizer/*)", doc);
-        assertXpathEvaluatesTo("grid", "/sld:RasterSymbolizer/sld:Geometry/ogc:PropertyName", doc);
+        assertXpathEvaluatesTo("1", "count(/sld:RasterSymbolizer)", doc);
+        assertXpathEvaluatesTo("", "/sld:RasterSymbolizer/sld:Geometry/ogc:PropertyName", doc);
     }
     
     @Test 

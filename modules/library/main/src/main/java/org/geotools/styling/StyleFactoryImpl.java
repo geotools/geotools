@@ -716,7 +716,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory
     }
 
     public RasterSymbolizer getDefaultRasterSymbolizer() {
-        return createRasterSymbolizer("geom",
+        return createRasterSymbolizer(null,
             filterFactory.literal(1.0), null, null, null, null,
             null, null);
     }

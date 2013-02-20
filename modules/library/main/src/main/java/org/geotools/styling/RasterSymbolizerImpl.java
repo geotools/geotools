@@ -47,7 +47,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer implements RasterSy
     private ColorMapImpl colorMap = new ColorMapImpl();
     private ContrastEnhancementImpl contrastEnhancement = new ContrastEnhancementImpl();
     private ShadedReliefImpl shadedRelief;
-    private String geometryName = "geom";
+    private String geometryName;
     private Symbolizer symbolizer;
     private Expression opacity;
     private Expression overlap;
@@ -61,7 +61,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer implements RasterSy
     }
     
     public RasterSymbolizerImpl(FilterFactory factory, Description desc, String name, Unit<Length> uom, OverlapBehavior behavior) {
-        super(name, desc, "grid", uom);
+        super(name, desc, (String) null, uom);
         this.filterFactory = factory;
         this.opacity = filterFactory.literal(1.0);
         this.overlap = filterFactory.literal(OverlapBehavior.RANDOM);

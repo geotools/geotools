@@ -18,6 +18,7 @@ package org.geotools.resources.coverage;
 
 import org.geotools.filter.FunctionExpressionImpl;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.filter.expression.VolatileFunction;
 
 
 /**
@@ -25,7 +26,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * 
  * @author Davide Savazzi - GeoSolutions
  */
-public class FilterFunction_isCoverage  extends FunctionExpressionImpl {
+public class FilterFunction_isCoverage  extends FunctionExpressionImpl implements VolatileFunction {
 
     public FilterFunction_isCoverage() {
         super("isCoverage");

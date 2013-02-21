@@ -16,20 +16,21 @@
  */
 package org.geotools.resources.coverage;
 
+import static org.junit.Assert.*;
+
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageTestBase;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.filter.text.ecql.ECQL;
+import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
-import com.vividsolutions.jts.util.Assert;
 
 
 /**
@@ -47,8 +48,8 @@ public class IsCoverageTest extends GridCoverageTestBase {
         GridCoverage2D coverage = getRandomCoverage(crs);
         SimpleFeatureCollection featureCollection = FeatureUtilities.wrapGridCoverage(coverage);
         SimpleFeature feature = featureCollection.features().next();
-        Assert.equals(true, isCoverage.evaluate(feature));
-        Assert.equals(false, isNotCoverage.evaluate(feature));
+        assertTrue(isCoverage.evaluate(feature));
+        assertFalse(isNotCoverage.evaluate(feature));
         
         // not a coverage
         SimpleFeatureType type = DataUtilities.createType("ns", "name:string,geom:Geometry");
@@ -56,7 +57,17 @@ public class IsCoverageTest extends GridCoverageTestBase {
         build.add("testName");
         build.add(null);
         feature = build.buildFeature(null);
-        Assert.equals(false, isCoverage.evaluate(feature));
-        Assert.equals(true, isNotCoverage.evaluate(feature));        
+        assertEquals(false, isCoverage.evaluate(feature));
+        assertEquals(true, isNotCoverage.evaluate(feature));        
+    }
+    
+    @Test 
+    public void testSimplify() throws Exception {
+        Filter isCoverage = ECQL.toFilter("isCoverage() = true");
+
+        SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
+        Filter result = (Filter) isCoverage.accept(visitor, null);
+        
+        assertEquals(isCoverage, result);
     }
 }

@@ -75,11 +75,11 @@ public class RangeLookupProcess implements RasterProcess {
     @DescribeResult(name = "reclassified", description = "The reclassified raster")
     public GridCoverage2D execute(
             @DescribeParameter(name = "coverage", description = "Input raster") GridCoverage2D coverage,
-            @DescribeParameter(name = "band", description = "Source band to use for classification (default is 0)", min = 0) Integer classificationBand,
+            @DescribeParameter(name = "band", description = "Source band to use for classification (default is 0)", min = 0, defaultValue = "0") Integer classificationBand,
             @DescribeParameter(name = "ranges", description = "Specifier for a value range in the format ( START ; END ).  START and END values are optional. [ and ] can also be used as brackets, to indicate inclusion of the relevant range endpoint.", 
             collectionType=Range.class) List<Range> classificationRanges,
             @DescribeParameter(name = "outputPixelValues", description = "Value to be assigned to corresponding range", min = 0 ) int[] outputPixelValues,
-            @DescribeParameter(name = "noData", description = "Value to be assigned to pixels outside any range (defaults to 0)", min = 0 ) Double noData,
+            @DescribeParameter(name = "noData", description = "Value to be assigned to pixels outside any range (defaults to 0)", min = 0, defaultValue = "0" ) Double noData,
             ProgressListener listener) throws ProcessException {
     	
     	//

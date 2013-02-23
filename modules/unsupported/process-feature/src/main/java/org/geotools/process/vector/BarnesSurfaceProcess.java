@@ -151,12 +151,12 @@ public class BarnesSurfaceProcess implements VectorProcess {
             
             // process parameters
             @DescribeParameter(name = "scale", description = "Length scale for the interpolation, in units of the source data CRS", min=1, max=1) Double argScale,
-            @DescribeParameter(name = "convergence", description = "Convergence factor for refinement (between 0 and 1, default 0.3)", min=0, max=1) Double argConvergence,
+            @DescribeParameter(name = "convergence", description = "Convergence factor for refinement (between 0 and 1, default 0.3)", min=0, max=1, defaultValue="0.3") Double argConvergence,
             @DescribeParameter(name = "passes", description = "Number of passes to compute (default = 2)", min=0, max=1) Integer argPasses,
-            @DescribeParameter(name = "minObservations", description = "Minimum number of observations required to support a grid cell (default = 2)", min=0, max=1) Integer argMinObsCount,
-            @DescribeParameter(name = "maxObservationDistance", description = "Maximum distance to an observation for it to support a grid cell, in units of the source CRS (default = 0, meaning all observations used)", min=0, max=1) Double argMaxObsDistance,
-            @DescribeParameter(name = "noDataValue", description = "Value to use for NO_DATA cells (default = -999)", min=0, max=1) Double argNoDataValue,
-            @DescribeParameter(name = "pixelsPerCell", description = "Resolution of the computed grid in pixels per grid cell (default = 1)", min=0, max=1) Integer argPixelsPerCell,
+            @DescribeParameter(name = "minObservations", description = "Minimum number of observations required to support a grid cell (default = 2)", min=0, max=1, defaultValue="2") Integer argMinObsCount,
+            @DescribeParameter(name = "maxObservationDistance", description = "Maximum distance to an observation for it to support a grid cell, in units of the source CRS (default = 0, meaning all observations used)", defaultValue="0", min=0, max=1) Double argMaxObsDistance,
+            @DescribeParameter(name = "noDataValue", description = "Value to use for NO_DATA cells (default = -999)", defaultValue="-999", min=0, max=1) Double argNoDataValue,
+            @DescribeParameter(name = "pixelsPerCell", description = "Resolution of the computed grid in pixels per grid cell (default = 1)", defaultValue="1", min=0, max=1) Integer argPixelsPerCell,
             
             // query modification parameters
             @DescribeParameter(name = "queryBuffer", description = "Distance to expand the query envelope by, in units of the source CRS (larger values provide a more stable surface)", min=0, max=1) Double argQueryBuffer,

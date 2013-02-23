@@ -91,7 +91,7 @@ public class RasterZonalStatistics implements RasterProcess {
     @DescribeResult(name = "statistics", description = "A feature collection with the attributes of the zone layer (prefixed by 'z_') and the statistics fields count,min,max,sum,avg,stddev")
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "data", description = "Input raster to compute statistics for") GridCoverage2D coverage,
-            @DescribeParameter(name = "band", description = "Source band used to compute statistics (default is 0)", min = 0) Integer band,
+            @DescribeParameter(name = "band", description = "Source band used to compute statistics (default is 0)", min = 0, defaultValue = "0") Integer band,
             @DescribeParameter(name = "zones", description = "Zone polygon features for which to compute statistics") SimpleFeatureCollection zones,
             @DescribeParameter(name = "classification", description = "Raster whose values will be used as classes for the statistical analysis. Each zone reports statistics partitioned by classes according to the values of the raster. Must be a single band raster with integer values.", 
             min = 0) GridCoverage2D classification) {

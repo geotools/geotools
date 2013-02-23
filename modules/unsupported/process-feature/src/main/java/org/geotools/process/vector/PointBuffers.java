@@ -59,7 +59,7 @@ public class PointBuffers implements VectorProcess {
             @DescribeParameter(name = "center", description = "Input point") Point center,
             @DescribeParameter(name = "crs", description = "Coordinate reference system of the point and the generated buffer polygons", min = 0) CoordinateReferenceSystem crs,
             @DescribeParameter(name = "distances", description = "Buffer radius distance, in meters") double[] distances,
-            @DescribeParameter(name = "quadrantSegments", description = "Number of line segments per quarter-circle to be generated.  Larger numbers produce smoother shapes but larger numbers of vertices. Default is 8", min = 0) Integer quadrantSegments,
+            @DescribeParameter(name = "quadrantSegments", description = "Number of line segments per quarter-circle to be generated.  Larger numbers produce smoother shapes but larger numbers of vertices. Default is 8", min = 0, defaultValue = "8") Integer quadrantSegments,
             ProgressListener listener) {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.add("geom", Polygon.class, crs);

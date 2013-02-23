@@ -128,7 +128,7 @@ public class HeatmapProcess implements VectorProcess {
             // process parameters
             @DescribeParameter(name = "radiusPixels", description = "Radius of the density kernel in pixels") Integer argRadiusPixels,
             @DescribeParameter(name = "weightAttr", description = "Name of the attribute to use for data point weight", min = 0, max = 1) String valueAttr,
-            @DescribeParameter(name = "pixelsPerCell", description = "Resolution at which to compute the heatmap (in pixels). Default = 1", min = 0, max = 1) Integer argPixelsPerCell,
+            @DescribeParameter(name = "pixelsPerCell", description = "Resolution at which to compute the heatmap (in pixels). Default = 1", defaultValue="1", min = 0, max = 1) Integer argPixelsPerCell,
 
             // output image parameters
             @DescribeParameter(name = "outputBBOX", description = "Bounding box of the output") ReferencedEnvelope argOutputEnv,

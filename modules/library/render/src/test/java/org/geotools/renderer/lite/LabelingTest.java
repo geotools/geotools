@@ -154,6 +154,31 @@ public class LabelingTest extends TestCase {
         RendererBaseTest.showRender("testLineLabeling", renderer, timout, env);
     }
 
+    /**
+     * This test tests for custom unit of measurement features, where the feature
+     * size translates to something 0 < size < 1. in this case, an infinite loop
+     * used to occur, see https://jira.codehaus.org/browse/GEOT-4284
+     * 
+     * @throws Exception
+     */
+    public void testLineLabelingUom() throws Exception {
+        FeatureCollection collection = createLineFeatureCollection();
+        Style style = loadStyle("LineStyleUom.sld");
+        assertNotNull(style);
+        MapContext map = new DefaultMapContext(DefaultGeographicCRS.WGS84);
+        map.addLayer(collection, style);
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setContext(map);
+        ReferencedEnvelope env = map.getLayerBounds();
+        int boundary = 10000;
+        env = new ReferencedEnvelope(env.getMinX() - boundary, env.getMaxX() + boundary, env
+                .getMinY()
+                - boundary, env.getMaxY() + boundary, null);
+        
+        RendererBaseTest.showRender("testLineLabeling", renderer, timout, env);
+    }
+
 	private SimpleFeatureCollection createLineFeatureCollection() throws Exception {
         AttributeDescriptor[] types = new AttributeDescriptor[2];
 

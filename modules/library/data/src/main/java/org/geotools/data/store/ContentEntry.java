@@ -18,6 +18,7 @@ package org.geotools.data.store;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 import org.geotools.data.FeatureEvent;
@@ -83,7 +84,7 @@ public final class ContentEntry {
         this.typeName = typeName;
         this.dataStore = dataStore;
 
-        this.state = new HashMap<Transaction, ContentState>();
+        this.state = new ConcurrentHashMap<Transaction, ContentState>();
 
         //create a state for the auto commit transaction
         ContentState autoState = dataStore.createContentState(this);
@@ -126,13 +127,14 @@ public final class ContentEntry {
      * @return The state for the transaction.
      */
     public ContentState getState(Transaction transaction) {
-        if (state.containsKey(transaction)) {
+        if (transaction != null && state.containsKey(transaction)) {
             return state.get(transaction);
         } else {
             ContentState auto = state.get(Transaction.AUTO_COMMIT);
             ContentState copy = (ContentState) auto.copy();
-            copy.setTransaction(transaction != null ? transaction : Transaction.AUTO_COMMIT);
-            state.put(transaction, copy);
+            Transaction t = (transaction != null ? transaction : Transaction.AUTO_COMMIT);
+            copy.setTransaction(t);
+            state.put(t, copy);
 
             return copy;
         }

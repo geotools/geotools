@@ -5,3 +5,5 @@ target
 *.patch
 *.class
 *.pyc
+nb-configuration.xml
+*.*~

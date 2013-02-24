@@ -531,16 +531,16 @@ public class LabelPainter {
             MarkStyle2D resized = (MarkStyle2D) mark.clone();
             if(mode == GraphicResize.PROPORTIONAL) {
                 if(width > height) {
-                    resized.setSize((int) Math.round(bounds.getHeight() * width / bounds.getWidth()));
+                    resized.setSize(Math.round(bounds.getHeight() * width / bounds.getWidth()));
                 } else {
-                    resized.setSize((int) height);
+                    resized.setSize(height);
                 }
             } else {
                 TransformedShape tss = new TransformedShape();
                 tss.shape = original;
                 tss.setTransform(AffineTransform.getScaleInstance(width / bounds.getWidth(), height / bounds.getHeight()));
                 resized.setShape(tss);
-                resized.setSize((int) height);
+                resized.setSize(height);
             }
             
             return resized;

@@ -644,7 +644,7 @@ public class SLDStyleFactory {
 				// to 16
 				if (size <= 0)
 					size = 16;
-				ms2d.setSize((int) size);
+				ms2d.setSize(size);
 				ms2d.setRotation(rotation);
 				retval = ms2d;
 

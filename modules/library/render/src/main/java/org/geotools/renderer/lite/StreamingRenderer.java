@@ -3514,6 +3514,8 @@ public class StreamingRenderer implements GTRenderer {
                     if(renderingStopRequested) {
                         done = true;
                     }
+                } catch(Throwable t) {
+                    fireErrorEvent(t);
                 }
                 
             }

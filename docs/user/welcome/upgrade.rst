@@ -40,6 +40,28 @@ streaming large datasets vs. acting as a familiar Java Collection. The Java 5 "f
 the safe use of Iterator (as we cannot ensure it will be closed). As a result FeatureCollection no longer
 can extend java Collection and is acting as a pure "result set" with streaming access provided by FeatureIterator.
 
+ReferencedEnvelope and CRS
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ReferencedEnvelope has in the past only supported 2D extents, we have introduced the subclass ReferencedEnvelope3D
+to support CoordianteReferenceSystems with three dimensions.
+
+There is now a new factory method to safely construct the appropriate implementation for a provided CoordinateReferenceSystem
+as shown below.
+
+BEFORE::
+
+  ReferencedEnvelope bbox = new ReferencedEnvelope( crs );
+  ReferencedEnvelope copy = new ReferencedEnvelope( bbox );
+  
+AFTER::
+  
+  ReferencedEnvelope bbox = ReferencedEnvelope.create( crs );
+  ReferencedEnvelope copy = ReferencedEnvelope.create( bbox );
+
+This represents an *incompatible API change*, existing code using "new ReferencedEnvelope" may now throw
+a RuntimeException when supplied with an incompatible CoordianteReferenceSystem.
+
 FeatureCollection Add
 ^^^^^^^^^^^^^^^^^^^^^
 
@@ -178,6 +200,7 @@ JAVA7 using try-with-resource syntax for Iterator that implements Closeable::
         }
     }
     
+
 GeoTools 8.0
 ------------
 

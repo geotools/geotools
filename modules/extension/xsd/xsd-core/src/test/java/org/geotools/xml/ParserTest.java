@@ -16,16 +16,23 @@
  */
 package org.geotools.xml;
 
-import junit.framework.TestCase;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.StringReader;
+import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Map;
 
 import javax.xml.namespace.QName;
 
+import junit.framework.TestCase;
+
 import org.geotools.ml.MLConfiguration;
 import org.geotools.ml.Mail;
 import org.geotools.ml.bindings.MLSchemaLocationResolver;
 import org.xml.sax.Attributes;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
@@ -247,4 +254,50 @@ public class ParserTest extends TestCase {
             return value;
         }
     }
+    
+    /**
+     * Test Parser with an XML document containing an external entity:
+     * <!ENTITY c SYSTEM "file:///this/file/does/not/exist">
+     */
+    public void testParseWithEntityResolver() throws Exception {
+        Parser parser = new Parser(new MLConfiguration());
+        
+        try {
+            parser.parse(MLSchemaLocationResolver.class.getResourceAsStream("mails-external-entities.xml"));
+            fail("parsing should throw an exception since referenced file does not exist");
+        } catch (FileNotFoundException e) {
+        }
+        
+        // Set an EntityResolver implementation to prevent usage of external entities.
+        // When parsing an XML entity, the empty InputSource returned by this resolver provokes 
+        // a java.net.MalformedURLException
+        parser.setEntityResolver(new EntityResolver() {
+            @Override
+            public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
+                return new InputSource();
+            }            
+        });
+
+        try {
+            parser.parse(MLSchemaLocationResolver.class.getResourceAsStream("mails-external-entities.xml"));
+            fail("parsing an XML with external entities should throw a MalformedURLException");
+        } catch (MalformedURLException e) {            
+        }
+
+        // Set another EntityResolver
+        parser.setEntityResolver(new EntityResolver() {
+            @Override
+            public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
+                if ("file:///this/file/does/not/exist".equals(systemId)) {
+                    return new InputSource(new StringReader("hello"));
+                } else {
+                    return new InputSource();
+                }
+            }            
+        });
+
+        // parsing shouldn't throw an exception
+        parser.parse(MLSchemaLocationResolver.class.getResourceAsStream("mails-external-entities.xml"));
+    }
+    
 }

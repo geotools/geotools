@@ -16,7 +16,8 @@
  */
 package org.geotools.styling;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -30,6 +31,11 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
+
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.geotools.data.Base64;
 import org.geotools.factory.CommonFactoryFinder;
@@ -49,11 +55,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
-
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
 /**
  * TODO: This really needs to be container ready
@@ -127,6 +130,9 @@ public class SLDParser {
     /** provides complete control for detecting relative onlineresources */
     private ResourceLocator onlineResourceLocator;
 
+    private EntityResolver entityResolver;
+    
+    
     /**
      * Create a Stylereader - use if you already have a dom to parse.
      * 
@@ -298,6 +304,16 @@ public class SLDParser {
     }
 
     /**
+     * Sets the EntityResolver implementation that will be used by DocumentBuilder to 
+     * resolve XML external entities.
+     * 
+     * @param entityResolver
+     */
+    public void setEntityResolver(EntityResolver entityResolver) {
+        this.entityResolver = entityResolver;
+    }
+    
+    /**
      * Internal setter for source url.
      */
     void setSourceUrl(URL sourceUrl) {
@@ -307,6 +323,18 @@ public class SLDParser {
         }
     }
 
+    protected javax.xml.parsers.DocumentBuilder newDocumentBuilder(boolean namespaceAware) throws ParserConfigurationException {
+        javax.xml.parsers.DocumentBuilderFactory dbf = javax.xml.parsers.DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(namespaceAware);        
+        javax.xml.parsers.DocumentBuilder db = dbf.newDocumentBuilder();
+        
+        if (entityResolver != null) {
+            db.setEntityResolver(entityResolver);
+        }
+        
+        return db;
+    }
+    
     /**
      * Read the xml inputsource provided and create a Style object for each user style found
      * 
@@ -316,12 +344,8 @@ public class SLDParser {
      *             if a parsing error occurs
      */
     public Style[] readXML() {
-        javax.xml.parsers.DocumentBuilderFactory dbf = javax.xml.parsers.DocumentBuilderFactory
-                .newInstance();
-        dbf.setNamespaceAware(true);
         try {
-            javax.xml.parsers.DocumentBuilder db = dbf.newDocumentBuilder();
-            dom = db.parse(source);
+            dom = newDocumentBuilder(true).parse(source);
         } catch (javax.xml.parsers.ParserConfigurationException pce) {
             throw new RuntimeException(pce);
         } catch (org.xml.sax.SAXException se) {
@@ -395,13 +419,8 @@ public class SLDParser {
     }
 
     public StyledLayerDescriptor parseSLD() {
-        javax.xml.parsers.DocumentBuilderFactory dbf = javax.xml.parsers.DocumentBuilderFactory
-                .newInstance();
-        dbf.setNamespaceAware(true);
-
         try {
-            javax.xml.parsers.DocumentBuilder db = dbf.newDocumentBuilder();
-            dom = db.parse(source);
+            dom = newDocumentBuilder(true).parse(source);
             // for our next trick do something with the dom.
 
             // NodeList nodes = findElements(dom, "StyledLayerDescriptor");
@@ -689,10 +708,7 @@ public class SLDParser {
     public NamedStyle parseNamedStyle(Node n) {
         if (dom == null) {
             try {
-                javax.xml.parsers.DocumentBuilderFactory dbf = javax.xml.parsers.DocumentBuilderFactory
-                        .newInstance();
-                javax.xml.parsers.DocumentBuilder db = dbf.newDocumentBuilder();
-                dom = db.newDocument();
+                dom = newDocumentBuilder(false).newDocument();
             } catch (javax.xml.parsers.ParserConfigurationException pce) {
                 throw new RuntimeException(pce);
             }
@@ -741,10 +757,7 @@ public class SLDParser {
     public Style parseStyle(Node n) {
         if (dom == null) {
             try {
-                javax.xml.parsers.DocumentBuilderFactory dbf = javax.xml.parsers.DocumentBuilderFactory
-                        .newInstance();
-                javax.xml.parsers.DocumentBuilder db = dbf.newDocumentBuilder();
-                dom = db.newDocument();
+                dom = newDocumentBuilder(false).newDocument();
             } catch (javax.xml.parsers.ParserConfigurationException pce) {
                 throw new RuntimeException(pce);
             }

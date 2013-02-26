@@ -80,6 +80,7 @@ import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.factory.Hints;
+import org.geotools.filter.visitor.DefaultFilterVisitor;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilder;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilder.ExceptionEvent;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilder.ProcessingEvent;
@@ -91,6 +92,7 @@ import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Converters;
 import org.geotools.util.Range;
 import org.geotools.util.Utilities;
+import org.opengis.filter.spatial.BBOX;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -157,6 +159,34 @@ public class Utils {
         public static final String RESOLUTION_LEVELS = "ResolutionLevels";
         public static final String PROPERTY_COLLECTORS = "PropertyCollectors";
         public final static String CACHING= "Caching";        
+    }
+        /**
+     * Extracts a bbox from a filter in case there is at least one.
+     * 
+     * I am simply looking for the BBOX filter but I am sure we could
+     * use other filters as well. I will leave this as a todo for the moment.
+     * 
+     * @author Simone Giannecchini, GeoSolutions SAS.
+     * @todo TODO use other spatial filters as well
+     */
+    public static class BBOXFilterExtractor extends DefaultFilterVisitor{
+    
+    	public ReferencedEnvelope getBBox() {
+    		return bbox;
+    	}
+    	private ReferencedEnvelope bbox;
+    	@Override
+    	public Object visit(BBOX filter, Object data) {
+    		final ReferencedEnvelope bbox= ReferencedEnvelope.reference(filter.getBounds());
+    		if(this.bbox!=null){
+    		    this.bbox=(ReferencedEnvelope) this.bbox.intersection(bbox);
+    		}
+    		else{
+    		    this.bbox=bbox;
+    		}
+    		return super.visit(filter, data);
+    	}
+    	
     }
         /**
 	 * Logger.

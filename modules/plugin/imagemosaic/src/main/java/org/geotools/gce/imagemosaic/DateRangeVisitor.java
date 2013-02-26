@@ -38,13 +38,13 @@ class DateRangeVisitor extends RangeVisitor {
     }
 
     public void visit(Feature feature) {
-        Object firstValue = expr1.evaluate(feature);
-        Object secondValue = expr2.evaluate(feature);
+        final Object firstValue = expr1.evaluate(feature);
+        final Object secondValue = expr2.evaluate(feature);
         if (firstValue != null && secondValue != null) {
-            long begin = ((Timestamp) firstValue).getTime();
-            long end = ((Timestamp) secondValue).getTime();
-            Date beginDate = new Date(begin);
-            Date endDate = new Date(end);
+            final long begin = ((Timestamp) firstValue).getTime();
+            final long end = ((Timestamp) secondValue).getTime();
+            final Date beginDate = new Date(begin);
+            final Date endDate = new Date(end);
             set.add(new DateRange(beginDate, endDate));
         }
     }
@@ -84,9 +84,9 @@ class DateRangeVisitor extends RangeVisitor {
      * @return
      */
     private String formatRange(DateRange range) {
-        StringBuilder builder = new StringBuilder();
-        String begin = ConvertersHack.convert(range.getMinValue(), String.class);
-        String end = ConvertersHack.convert(range.getMaxValue(), String.class);
+        final StringBuilder builder = new StringBuilder();
+        final String begin = ConvertersHack.convert(range.getMinValue(), String.class);
+        final String end = ConvertersHack.convert(range.getMaxValue(), String.class);
         builder.append(begin + "/" + end + "/PT1S");
         return builder.toString();
     }
@@ -103,14 +103,14 @@ class DateRangeVisitor extends RangeVisitor {
     private static DateRange merge(DateRange firstDateRange, DateRange secondDateRange) {
         Utilities.ensureNonNull("firstDateRange", firstDateRange);
         Utilities.ensureNonNull("secondDateRange", secondDateRange);
-        long beginFirst = firstDateRange.getMinValue().getTime();
-        long endFirst = firstDateRange.getMaxValue().getTime();
-        long beginSecond = secondDateRange.getMinValue().getTime();
-        long endSecond = secondDateRange.getMaxValue().getTime();
-        long max = Math.max(endFirst, endSecond);
-        long min = Math.min(beginFirst, beginSecond);
-        Date beginDate = new Date(min);
-        Date endDate = new Date(max);
+        final long beginFirst = firstDateRange.getMinValue().getTime();
+        final long endFirst = firstDateRange.getMaxValue().getTime();
+        final long beginSecond = secondDateRange.getMinValue().getTime();
+        final long endSecond = secondDateRange.getMaxValue().getTime();
+        final long max = Math.max(endFirst, endSecond);
+        final long min = Math.min(beginFirst, beginSecond);
+        final Date beginDate = new Date(min);
+        final Date endDate = new Date(max);
         return new DateRange(beginDate, endDate);
     }
 }

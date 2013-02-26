@@ -61,10 +61,10 @@ class RangeVisitor implements FeatureCalc {
         public int compare(DateRange firstDateRange, DateRange secondDateRange) {
             Utilities.ensureNonNull("firstDateRange", firstDateRange);
             Utilities.ensureNonNull("secondDateRange", secondDateRange);
-            long beginFirst = firstDateRange.getMinValue().getTime();
-            long endFirst = firstDateRange.getMaxValue().getTime();
-            long beginSecond = secondDateRange.getMinValue().getTime();
-            long endSecond = secondDateRange.getMaxValue().getTime();
+            final long beginFirst = firstDateRange.getMinValue().getTime();
+            final long endFirst = firstDateRange.getMaxValue().getTime();
+            final long beginSecond = secondDateRange.getMinValue().getTime();
+            final long endSecond = secondDateRange.getMaxValue().getTime();
             return NumberRangeComparator
                     .doubleCompare(beginFirst, endFirst, beginSecond, endSecond);
         }
@@ -79,10 +79,10 @@ class RangeVisitor implements FeatureCalc {
         public int compare(Range<? extends Number> firstRange, Range<? extends Number> secondRange) {
             Utilities.ensureNonNull("firstRange", firstRange);
             Utilities.ensureNonNull("secondRange", secondRange);
-            Number firstRangeMin = firstRange.getMinValue();
-            Number firstRangeMax = firstRange.getMaxValue();
-            Number secondRangeMin = secondRange.getMinValue();
-            Number secondRangeMax = secondRange.getMaxValue();
+            final Number firstRangeMin = firstRange.getMinValue();
+            final Number firstRangeMax = firstRange.getMaxValue();
+            final Number secondRangeMin = secondRange.getMinValue();
+            final Number secondRangeMax = secondRange.getMaxValue();
             return doubleCompare(firstRangeMin.doubleValue(), firstRangeMax.doubleValue(),
                     secondRangeMin.doubleValue(), secondRangeMax.doubleValue());
         }
@@ -171,8 +171,8 @@ class RangeVisitor implements FeatureCalc {
 
     public void visit(Feature feature) {
         // we ignore null attributes
-        Object firstValue = expr1.evaluate(feature);
-        Object secondValue = expr2.evaluate(feature);
+        final Object firstValue = expr1.evaluate(feature);
+        final Object secondValue = expr2.evaluate(feature);
         if (firstValue != null && secondValue != null) {
             set.add(Utils.createRange(firstValue, secondValue));
         }

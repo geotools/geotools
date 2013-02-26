@@ -359,7 +359,6 @@ class RasterManager {
                     }
                 }
                 return buff.toString();
-    
             } catch (IOException e) {
                 if(LOGGER.isLoggable(Level.WARNING))
                         LOGGER.log(Level.WARNING,"Unable to parse attribute: " + identifier ,e);
@@ -383,7 +382,7 @@ class RasterManager {
             final List<Filter> filters = new ArrayList<Filter>();
             for (int i = 0; i < size; i++) {
                 // checks
-                final Object value = values.get(i);
+                Object value = values.get(i);
                 if (value == null) {
                     if (LOGGER.isLoggable(Level.INFO)) {
                         LOGGER.info("Ignoring null date for the filter:" + this.identifier);
@@ -404,29 +403,56 @@ class RasterManager {
                                                 FeatureUtilities.DEFAULT_FILTER_FACTORY.property(propertyName), 
                                                 FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(range.getMinValue()))
                                 ));
-                        continue;
-                    }  
-                    // SINGLE value
-                    filters.add( 
-                            FeatureUtilities.DEFAULT_FILTER_FACTORY.equal(
-                                    FeatureUtilities.DEFAULT_FILTER_FACTORY.property(propertyName),
-                                    FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(value),true)
-                                );
+                    }  else {
+                        // SINGLE value
+                        filters.add( 
+                                FeatureUtilities.DEFAULT_FILTER_FACTORY.equal(
+                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.property(propertyName),
+                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(value),true)
+                                    );
+                    }
                 } else { //domainType == DomainType.RANGE
                     // Domain made of ranges such as (beginTime,endTime) , (beginElevation,endElevation) , ...
                     if(value instanceof Range){
                         // RANGE                        
                         final Range range= (Range)value;
-                        // NEED TO BE CHECKED 
-                        filters.add( 
-                                FeatureUtilities.DEFAULT_FILTER_FACTORY.and(
-                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.lessOrEqual(
-                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.property(additionalPropertyName), 
-                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(range.getMaxValue())),
-                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.greaterOrEqual(
-                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.property(propertyName), 
-                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(range.getMinValue()))));
-                        continue;
+                        final Comparable maxValue = range.getMaxValue();
+                        final Comparable minValue = range.getMinValue();
+                        if(maxValue.compareTo(minValue)!=0){
+                            // real period more conditions
+                            
+                            // provided range max falls within range
+                            Filter condition1=FeatureUtilities.DEFAULT_FILTER_FACTORY.and(
+                                    FeatureUtilities.DEFAULT_FILTER_FACTORY.greaterOrEqual(
+                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.property(additionalPropertyName), 
+                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(maxValue)),
+                                    FeatureUtilities.DEFAULT_FILTER_FACTORY.lessOrEqual(
+                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.property(propertyName), 
+                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(maxValue)));
+                            
+                            // provided range min falls within range
+                            Filter condition2=FeatureUtilities.DEFAULT_FILTER_FACTORY.and(
+                                    FeatureUtilities.DEFAULT_FILTER_FACTORY.lessOrEqual(
+                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.property(additionalPropertyName), 
+                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(minValue)),
+                                    FeatureUtilities.DEFAULT_FILTER_FACTORY.greaterOrEqual(
+                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.property(propertyName), 
+                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(minValue)));  
+
+                            // now wither provided range contains granule range or disjunct
+                            Filter condition3=FeatureUtilities.DEFAULT_FILTER_FACTORY.and(
+                                    FeatureUtilities.DEFAULT_FILTER_FACTORY.lessOrEqual(
+                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.property(additionalPropertyName), 
+                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(maxValue)),
+                                    FeatureUtilities.DEFAULT_FILTER_FACTORY.greaterOrEqual(
+                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.property(propertyName), 
+                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(minValue)));                            
+                            
+                            filters.add(FeatureUtilities.DEFAULT_FILTER_FACTORY.or(Arrays.asList(condition1,condition2,condition3)));
+                            continue;
+                        } else {
+                            value=maxValue;
+                        }
                     }
                     filters.add( 
                             FeatureUtilities.DEFAULT_FILTER_FACTORY.and(
@@ -1032,7 +1058,7 @@ class RasterManager {
     FeatureCalc createExtremaQuery(String metadataName, String attributeName) throws IOException {
         final Query query = new Query(granuleCatalog.getType().getTypeName());
         query.setPropertyNames(Arrays.asList(attributeName));
-                              
+
         final FeatureCalc visitor= 
             metadataName.toLowerCase().endsWith("maximum")?
                 new MaxVisitor(attributeName):new MinVisitor(attributeName);
@@ -1071,8 +1097,8 @@ class RasterManager {
         private Set extractDomain(final String attribute, final String secondAttribute, final DomainType domainType)
                 throws IOException {
             final Query query = new Query(granuleCatalog.getType().getTypeName());
-            final FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
-            final PropertyName propertyName = factory.property(attribute);
+            
+            final PropertyName propertyName = FeatureUtilities.DEFAULT_FILTER_FACTORY.property(attribute);
             query.setPropertyNames(Arrays.asList(attribute, secondAttribute));
             
             final SortByImpl[] sb = new SortByImpl[]{new SortByImpl(propertyName, SortOrder.ASCENDING)};

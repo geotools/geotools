@@ -50,7 +50,7 @@ public enum MergeBehavior {
                 RenderingHints hints) {
             
             // checks
-            if(sources.length==1){
+            if (sources.length == 1) {
                 return FLAT.process(sources, backgroundValues, inputThreshold, sourceAlpha, sourceROI, mosaicType, hints);
             }
 
@@ -58,16 +58,16 @@ public enum MergeBehavior {
             // Step 1 check if we need to create a background mosaic
             Rectangle union= new Rectangle(PlanarImage.wrapRenderedImage(sources[0]).getBounds());
             boolean performMosaic=false;
-            for(int i=1;i<sources.length;i++){
+            for (int i = 1; i < sources.length; i++) {
                 // current extent
                 Rectangle currentExtent = PlanarImage.wrapRenderedImage(sources[0]).getBounds();
-                if(!currentExtent.equals(union)){
-                    performMosaic=true;
-                    
+                if (!currentExtent.equals(union)) {
+                    performMosaic = true;
+
                     // union
-                    union=union.union(currentExtent);
+                    union = union.union(currentExtent);
                 }
-                
+
             }
             
             
@@ -75,10 +75,10 @@ public enum MergeBehavior {
             
             // needs to use mosaic ? DO we have ROIs?
             boolean border = true;
-                if(sourceROI!=null) {
-                for(ROI roi:sourceROI){
-                    if(roi!=null){
-                        border=false;
+            if (sourceROI != null) {
+                for (ROI roi : sourceROI) {
+                    if (roi != null) {
+                        border = false;
                         break;
                     }
                 }
@@ -87,8 +87,8 @@ public enum MergeBehavior {
                 // border extender
                 final BorderExtender borderExtenderConstant= new BorderExtenderConstant(backgroundValues);
                 // loop on sources
-                for(int i=0;i<sources.length;i++){
-                    if(border){
+                for (int i = 0; i < sources.length; i++) {
+                    if (border) {
                         // do we need to extend?
                         if(!PlanarImage.wrapRenderedImage(sources[i]).getBounds().equals(union)){
                             // current extent
@@ -131,12 +131,12 @@ public enum MergeBehavior {
             
             // Step 3, band merge the images
             // loop on sources
-            final ImageWorker worker= new ImageWorker(sources[0]);
+            final ImageWorker worker = new ImageWorker(sources[0]);
             worker.setRenderingHints(hints);
-            for(int i=1;i<sources.length;i++){
+            for (int i = 1; i < sources.length; i++) {
                 worker.addBand(sources[i], false);
             }
-            
+
             // return final image
             return worker.getRenderedImage();
         }
@@ -192,14 +192,14 @@ public enum MergeBehavior {
      * 
      * @return an arrays of {@link String} that contains the representation of each value.
      */
-    public static String[] valuesAsStrings(){
+    public static String[] valuesAsStrings() {
         final MergeBehavior[] values = MergeBehavior.values();
-        final String[] valuesS= new String[values.length];
-        for(int i=0;i<values.length;i++){
-            valuesS[i]=values[i].toString();
+        final String[] valuesS = new String[values.length];
+        for (int i = 0; i < values.length; i++) {
+            valuesS[i] = values[i].toString();
         }
         return null;
-        
+
     }
 
 }

@@ -380,13 +380,13 @@ class RasterManager {
             // === create the filter
             // loop values and AND them
             final int size = values.size();
-            final List<Filter> filters= new ArrayList<Filter>();
-            for(int i=0;i<size;i++){
+            final List<Filter> filters = new ArrayList<Filter>();
+            for (int i = 0; i < size; i++) {
                 // checks
                 final Object value = values.get(i);
-                if(value==null){
-                    if(LOGGER.isLoggable(Level.INFO)){
-                        LOGGER.info("Ignoring null date for the filter:"+this.identifier);
+                if (value == null) {
+                    if (LOGGER.isLoggable(Level.INFO)) {
+                        LOGGER.info("Ignoring null date for the filter:" + this.identifier);
                     }
                     continue;
                 }
@@ -447,7 +447,7 @@ class RasterManager {
      * (if any) defined inside the mosaic. It provides DOMAIN_ALIAS <--to--> original attribute mapping
      * capabilities, metadata retrieval, filter creation, and domain support check
      * 
-     * @author Daniele Romagnoli, GeoSolutions S.a.S.
+     * @author Daniele Romagnoli, GeoSolutions SAS.
      */
     class DomainManager {
 
@@ -1044,7 +1044,7 @@ class RasterManager {
          * Extract the domain of a dimension as a set of unique values.
          * 
          * <p>
-         * It retrieves a comma separated list of values as a {@link String}.
+         * It retrieves a comma separated list of values as a Set of {@link String}.
          * 
          * @return a comma separated list of values as a {@link String}.
          * @throws IOException
@@ -1062,10 +1062,10 @@ class RasterManager {
          * Extract the domain of a dimension (with Range) as a set of values.
          * 
          * <p>
-         * It retrieves a comma separated list of values as a {@link String}.
+         * It retrieves a comma separated list of values as a Set of {@link String}.
          * @param domainType 
          * 
-         * @return a comma separated list of values as a {@link String}.
+         * @return a comma separated list of values as a Set of {@link String}.
          * @throws IOException
          */
         private Set extractDomain(final String attribute, final String secondAttribute, final DomainType domainType)

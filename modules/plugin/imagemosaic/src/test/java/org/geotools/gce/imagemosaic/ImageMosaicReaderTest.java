@@ -720,20 +720,23 @@ public class ImageMosaicReaderTest extends Assert{
         assertNotNull(metadataNames);
         assertEquals(metadataNames.length, 14);
         assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
-        System.out.println(reader.getMetadataValue("TIME_DOMAIN"));
+        assertEquals("2008-10-31T00:00:00.000Z/2008-11-04T00:00:00.000Z/PT1S",reader.getMetadataValue("TIME_DOMAIN"));
         assertEquals("2008-10-31T00:00:00.000Z", reader.getMetadataValue("TIME_DOMAIN_MINIMUM"));
         assertEquals("2008-11-04T00:00:00.000Z", reader.getMetadataValue("TIME_DOMAIN_MAXIMUM"));
-  
+        
+        assertEquals("true", reader.getMetadataValue("HAS_ELEVATION_DOMAIN"));
+        assertEquals("20/99,100/150",reader.getMetadataValue("ELEVATION_DOMAIN"));
+        assertEquals("20", reader.getMetadataValue("ELEVATION_DOMAIN_MINIMUM"));
+        assertEquals("150", reader.getMetadataValue("ELEVATION_DOMAIN_MAXIMUM"));
         
         
         assertEquals("true", reader.getMetadataValue("HAS_DATE_DOMAIN"));
         assertEquals("20081031T000000,20081101T000000",reader.getMetadataValue("DATE_DOMAIN"));
-        assertEquals("true", reader.getMetadataValue("HAS_DEPTH_DOMAIN"));
-//        assertEquals("false", reader.getMetadataValue("HAS_ELEVATION_DOMAIN"));
-//        assertEquals("false", reader.getMetadataValue("HAS_XX_DOMAIN"));
-        assertEquals("20/20,100/100", reader.getMetadataValue("DEPTH_DOMAIN"));
-        assertEquals("20", reader.getMetadataValue("DEPTH_DOMAIN_MINIMUM"));
-        assertEquals("100", reader.getMetadataValue("DEPTH_DOMAIN_MAXIMUM"));
+
+        assertEquals("true", reader.getMetadataValue("HAS_WAVELENGTH_DOMAIN"));
+        assertEquals("12/24,25/80", reader.getMetadataValue("WAVELENGTH_DOMAIN"));
+        assertEquals("12", reader.getMetadataValue("WAVELENGTH_DOMAIN_MINIMUM"));
+        assertEquals("80", reader.getMetadataValue("WAVELENGTH_DOMAIN_MAXIMUM"));
     
         // use imageio with defined tiles
         final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD .createValue();
@@ -741,20 +744,26 @@ public class ImageMosaicReaderTest extends Assert{
     
         // specify time
         final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
-        final SimpleDateFormat formatD = new SimpleDateFormat(
-                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        final SimpleDateFormat formatD = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         formatD.setTimeZone(TimeZone.getTimeZone("GMT"));
-        final Date timeD = formatD.parse("2008-10-31T00:00:00.000Z");
+        final Date timeD = formatD.parse("2008-11-01T00:00:00.000Z");
         time.setValue(new ArrayList() {
             {
                 add(timeD);
             }
         });
     
+        final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
+        elevation.setValue(new ArrayList() {
+            {
+                add(34); // Elevation
+            }
+        });
+        
         // specify additional Dimensions
         Set<ParameterDescriptor<List>> params = reader.getDynamicParameters();
         ParameterValue<List<String>> dateValue = null;
-        ParameterValue<List<String>> depthValue = null;
+        ParameterValue<List<String>> waveLength = null;
         final String selectedWaveLength = "20";
         final String selectedDate = "20081031T000000";
         for (ParameterDescriptor param : params) {
@@ -765,30 +774,29 @@ public class ImageMosaicReaderTest extends Assert{
                         add(selectedDate);
                     }
                 });
-            } else if (param.getName().getCode().equalsIgnoreCase("DEPTH")) {
-                depthValue = param.createValue();
-                depthValue.setValue(new ArrayList<String>() {
+            } else if (param.getName().getCode().equalsIgnoreCase("WAVELENGTH")) {
+                waveLength = param.createValue();
+                waveLength.setValue(new ArrayList<String>() {
                     {
                         add(selectedWaveLength);
                     }
                 });
             }
         }
-        assertNotNull(depthValue);
+        assertNotNull(waveLength);
         assertNotNull(dateValue);
         
         // Test the output coverage
         
         //TODO: need to understand why the ranges filtering doesn't return any feature.
-        GeneralParameterValue[] values = new GeneralParameterValue[] { useJai, dateValue, time, depthValue};
+        GeneralParameterValue[] values = new GeneralParameterValue[] { useJai, dateValue, time, waveLength, elevation};
         final GridCoverage2D coverage = TestUtils.getCoverage(reader, values, true);
         final String fileSource = (String) coverage
                 .getProperty(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY);
     
         // Check the proper granule has been read
         final String baseName = FilenameUtils.getBaseName(fileSource);
-        assertEquals(baseName, "NCOM_wattemp_0" + selectedWaveLength + "_099_" + selectedDate +"_20081103T000000_12");
-        assertEquals(baseName, "NCOM_wattemp_020_099_20081031T000000_20081103T000000_12");
+        assertEquals(baseName, "temp_020_099_20081031T000000_20081103T000000_12_24");
         TestUtils.testCoverage(reader, values, "domain test", coverage, null);
     }
 

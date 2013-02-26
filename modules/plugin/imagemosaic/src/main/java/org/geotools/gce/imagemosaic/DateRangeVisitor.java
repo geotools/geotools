@@ -50,7 +50,7 @@ class DateRangeVisitor extends RangeVisitor {
     }
 
     /**
-     * Return the minimal set of dataRanges (intersecting ranges are merged together) as 
+     * Setup the minimal set of dataRanges (intersecting ranges are merged together) as 
      * a Set of ISO8601 String intervals with period.
      * 
      * @return
@@ -87,7 +87,7 @@ class DateRangeVisitor extends RangeVisitor {
         StringBuilder builder = new StringBuilder();
         String begin = ConvertersHack.convert(range.getMinValue(), String.class);
         String end = ConvertersHack.convert(range.getMaxValue(), String.class);
-        builder.append(begin + "/" + end + "/1");
+        builder.append(begin + "/" + end + "/PT1S");
         return builder.toString();
     }
 

@@ -79,37 +79,41 @@ class RangeVisitor implements FeatureCalc {
         public int compare(Range<? extends Number> firstRange, Range<? extends Number> secondRange) {
             Utilities.ensureNonNull("firstRange", firstRange);
             Utilities.ensureNonNull("secondRange", secondRange);
-            Number beginFirst = firstRange.getMinValue();
-            Number endFirst = firstRange.getMaxValue();
-            Number beginSecond = secondRange.getMinValue();
-            Number endSecond = secondRange.getMaxValue();
-            return doubleCompare(beginFirst.doubleValue(), endFirst.doubleValue(),
-                    beginSecond.doubleValue(), endSecond.doubleValue());
+            Number firstRangeMin = firstRange.getMinValue();
+            Number firstRangeMax = firstRange.getMaxValue();
+            Number secondRangeMin = secondRange.getMinValue();
+            Number secondRangeMax = secondRange.getMaxValue();
+            return doubleCompare(firstRangeMin.doubleValue(), firstRangeMax.doubleValue(),
+                    secondRangeMin.doubleValue(), secondRangeMax.doubleValue());
         }
 
         /**
+         * Given a set of 4 double representing the extrema of 2 ranges, compare the 2 ranges.
          * 
-         * @param beginFirst
-         * @param endFirst
-         * @param beginSecond
-         * @param endSecond
+         * @param firstRangeMin the min value of the first range
+         * @param firstRangeMax the max value of the first range
+         * @param secondRangeMin the min value of the second range
+         * @param secondRangeMax the max value of the second range
          * @return
          * 
-         *         TODO: Improve that logic to deal with special cases on intervals management
+         * TODO: Improve that logic to deal with special cases on intervals management
          */
-        public static int doubleCompare(double beginFirst, double endFirst, double beginSecond,
-                double endSecond) {
-            if (beginFirst == beginSecond && endFirst == endSecond) {
+        public static int doubleCompare(
+                final double firstRangeMin, 
+                final double firstRangeMax, 
+                final double secondRangeMin,
+                final double secondRangeMax) {
+            if (firstRangeMin == secondRangeMin && firstRangeMax == secondRangeMax) {
                 return 0;
             }
-            if (beginFirst > beginSecond) {
-                if (endFirst > endSecond) {
+            if (firstRangeMin > secondRangeMin) {
+                if (firstRangeMax > secondRangeMax) {
                     return +2;
                 } else {
                     return +1;
                 }
             } else {
-                if (endFirst <= endSecond) {
+                if (firstRangeMax <= secondRangeMax) {
                     return -2;
                 } else {
                     return -1;
@@ -128,10 +132,12 @@ class RangeVisitor implements FeatureCalc {
     /** The comparator instance to sort items inside the Tree set */
     private Comparator comparator;
 
+    /** The set containing the added ranges */
     Set<Range> set = null;
 
     /**
-     * A set of string representations of the returned ranges. Time ranges will be returned into a compact form so that intersecting ranges are merged
+     * A set of string representations of the returned ranges. 
+     * Time ranges will be returned into a compact form so that intersecting ranges are merged
      * together into a bigger time range.
      */
     Set<String> minimalRanges = null;
@@ -140,6 +146,12 @@ class RangeVisitor implements FeatureCalc {
         this(attributeTypeName1, attributeTypeName2, RangeType.NUMBER);
     }
 
+    /**
+     * Range visitor constructor. 
+     * @param attributeTypeName1 the name of the attribute to be related to the left side of the range
+     * @param attributeTypeName2 the name of the attribute to be related to the right side of the range
+     * @param rangeType the type of range, one of {@link RangeType#NUMBER},{@link RangeType#DATE} 
+     */
     public RangeVisitor(String attributeTypeName1, String attributeTypeName2, RangeType rangeType) {
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         expr1 = factory.property(attributeTypeName1);
@@ -180,10 +192,10 @@ class RangeVisitor implements FeatureCalc {
         }
     }
 
+    /**
+     * Reset the collected ranges
+     */
     public void reset() {
-        /**
-         * Reset the unique and current minimum for the features in the collection
-         */
         this.set = new TreeSet(comparator);
         this.minimalRanges = null;
     }
@@ -198,19 +210,18 @@ class RangeVisitor implements FeatureCalc {
             minimalRanges = new LinkedHashSet<String>();
             populateRange();
         }
-        /**
-         * Return a list of unique values from the collection
-         */
         return minimalRanges;
     }
 
+    /**
+     * Populate the set of minimal ranges as a set of Strings
+     */
     protected void populateRange() {
         Iterator<Range> iterator = set.iterator();
         while (iterator.hasNext()) {
             Range range = iterator.next();
             minimalRanges.add((range.getMinValue() + "/" + range.getMaxValue()));
         }
-
     }
 
     public CalcResult getResult() {

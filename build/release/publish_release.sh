@@ -54,8 +54,8 @@ set -e
 
 # deploy the release to maven repo
 if [ -z $SKIP_DEPLOY ]; then
-  mvn deploy -DskipTests -Dall
-  mvn -P deploy.opengeo deploy -DskipTests -Dall
+  mvn clean deploy -DskipTests -Dall
+  mvn clean -P deploy.opengeo deploy -DskipTests -Dall
 fi
 
 # get <major.minor> for sf release dir

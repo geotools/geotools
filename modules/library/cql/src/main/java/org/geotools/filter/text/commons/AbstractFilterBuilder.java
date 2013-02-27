@@ -17,6 +17,7 @@
 package org.geotools.filter.text.commons;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -25,6 +26,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.text.cql2.CQLException;
@@ -53,6 +56,7 @@ import org.opengis.filter.spatial.DistanceBufferOperator;
 import org.opengis.filter.temporal.After;
 import org.opengis.filter.temporal.Before;
 import org.opengis.filter.temporal.During;
+import org.opengis.filter.temporal.TEquals;
 import org.opengis.temporal.Period;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -86,6 +90,19 @@ import com.vividsolutions.jts.io.WKTReader;
  * @source $URL$
  */
 public abstract class AbstractFilterBuilder {
+
+    /**
+     * Pattern for matching date time strings with capturing groups for date, time, and timezone. 
+     */
+    static Pattern DATETIME_PATTERN = Pattern.compile(
+        "(\\d{4}-\\d{1,2}-\\d{1,2})?" +
+        "(?:T?(\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?))?" +
+        "(Z|(?:[+-]\\d{2}(?:\\:?\\d{2})?))?", Pattern.CASE_INSENSITIVE);
+
+    /**
+     * Pattern for matching if a time zone specified as offset.  
+     */
+    static Pattern TZOFFSET_PATTERN = Pattern.compile("[+-]\\d{2}(?:\\d{2})");
 
     private final FilterFactory filterFactory;
 
@@ -355,6 +372,10 @@ public abstract class AbstractFilterBuilder {
         return propExistsFilter;
     }
 
+    public Literal buildDateExpression(final IToken token) throws CQLException {
+        return asLiteralDate(token.toString());
+    }
+
 	/**
 	 * Creates a literal with date time
 	 * 
@@ -364,47 +385,35 @@ public abstract class AbstractFilterBuilder {
 	 */
 	public Literal buildDateTimeExpression(final IToken token)
 			throws CQLException {
-		return asLiteralDate(token.toString());
+		return asLiteralDateTime(token.toString());
 	}
 
+	private Literal asLiteralDate(final String cqlDate) throws CQLException {
+	    try {
+	        String strDate = extractDate(cqlDate);
+	        String strTimeZone = extractTimeZone(cqlDate);
+                return asLiteralTemporal(strDate, null, strTimeZone);
+                
+            } catch (java.text.ParseException e) {
+                    throw new CQLException("Unsupported date time format: "
+                                    + e.getMessage(), this.cqlSource);
+            }
+	}
 	/**
 	 * Transforms the cqlDateTime to a literal date. 
 	 * @param cqlDateTime a string with the format yyyy-MM-ddTHH:mm:ss.s[(+|-)HH:mm]
 	 * @return a literal Date
 	 * @throws CQLException
 	 */
-	private Literal asLiteralDate(final String cqlDateTime) throws CQLException {
+	private Literal asLiteralDateTime(final String cqlDateTime) throws CQLException {
 
 		try {
 			final String strDate = extractDate(cqlDateTime);
 			final String strTime = extractTime(cqlDateTime);
 			String timeZoneOffset = extractTimeZone(cqlDateTime);
 
-			StringBuilder format = new StringBuilder("yyyy-MM-dd");
-			if (!"".equals(strTime)) {
-				format.append(" HH:mm:ss");
-			}
-			TimeZone tz = null;
-			if (!"".equals(timeZoneOffset)) {
-				if ("Z".equals(timeZoneOffset)) { // it is Zulu or 0000 zone (old syntax)
-					timeZoneOffset = "GMT+00:00";
-				}
-				tz = TimeZone.getTimeZone(timeZoneOffset);
-			} else { // the time zone offset wasn't specified then the time zone is that provided by the host
-				tz = TimeZone.getDefault();
-			}
-			DateFormat formatter = new SimpleDateFormat(format.toString());
-			formatter.setTimeZone(tz);
-
-			Date date;
-			if (!"".equals(strTime)) {
-				date = formatter.parse(strDate + " " + strTime);
-			} else {
-				date = formatter.parse(strDate);
-			}
-			Literal literalDate = filterFactory.literal(date);
-
-			return literalDate;
+			return asLiteralTemporal(strDate, strTime, timeZoneOffset);
+			
 		} catch (java.text.ParseException e) {
 			throw new CQLException("Unsupported date time format: "
 					+ e.getMessage(), this.cqlSource);
@@ -414,35 +423,56 @@ public abstract class AbstractFilterBuilder {
 	
 	
 	
+	private Literal asLiteralTemporal(String strDate, String strTime, String timeZoneOffset) 
+	        throws ParseException {
+            StringBuilder format = new StringBuilder("yyyy-MM-dd");
+            if (strTime != null && !"".equals(strTime)) {
+                    format.append(" HH:mm:ss");
+                    if (strTime.contains(".")) {
+                        //includes milliseconds
+                        format.append(".SSS");
+                    }
+                    
+            }
+            TimeZone tz = null;
+            if (timeZoneOffset != null && !"".equals(timeZoneOffset)) {
+                    if ("Z".equals(timeZoneOffset)) { // it is Zulu or 0000 zone (old syntax)
+                            timeZoneOffset = "GMT+00:00";
+                    }
+                    else {
+                        timeZoneOffset = "GMT"+timeZoneOffset;
+                    }
+                    tz = TimeZone.getTimeZone(timeZoneOffset);
+            } else { // the time zone offset wasn't specified then the time zone is that provided by the host
+                    tz = TimeZone.getDefault();
+            }
+            DateFormat formatter = new SimpleDateFormat(format.toString());
+            formatter.setTimeZone(tz);
 
-	/**
-	 * Extracts the time zone from the parameter
-	 * @param cqlDateTime 
-	 * @return String with the time zone
-	 */
-    private String extractTimeZone(final String cqlDateTime) throws CQLException {
-    	
-		String strUpper = cqlDateTime.toUpperCase();
-		assert strUpper.indexOf("T") != 0: "the time is not optional in the date-time syntax rule"; 
-		
-		String time = strUpper.split("T")[1];
-		
-		int index;
-		index = time.indexOf("Z");
-		if(index != -1 ){
-			return "Z";
-		} 
-		index = time.indexOf("+");
-		if(index != -1 ){
-			return time.substring(index);
-		}
-		index = time.indexOf("-");
-		if(index != -1 ){
-			return time.substring(index);
-		} else {
-			return ""; // it will use the locale zone
-		}
+            Date date;
+            if (!"".equals(strTime)) {
+                    date = formatter.parse(strDate + " " + strTime);
+            } else {
+                    date = formatter.parse(strDate);
+            }
+            Literal literalDate = filterFactory.literal(date);
+
+            return literalDate;
 	}
+	
+    /**
+     * Extracts the time zone from the parameter
+     * 
+     * @param cqlDateTime
+     * @return String with the time zone
+     */
+    private String extractTimeZone(final String cqlDateTime) throws CQLException {
+        Matcher m = DATETIME_PATTERN.matcher(cqlDateTime);
+        if (m.matches()) {
+            return m.group(3) != null ? m.group(3).toUpperCase() : ""; 
+        }
+        return "";
+    }
 
     /**
      * Remove the ":". The Z format is [sign]hhmm 
@@ -462,30 +492,32 @@ public abstract class AbstractFilterBuilder {
      * @param cqlDateTime
      * @return the time or a null string
      */
-	private String extractTime(String cqlDateTime) {
-		
-		// splits dateTime to get the Time and time zone in the second array element
-		String strUpper = cqlDateTime.toUpperCase();
-		String[] dateTime = strUpper.split("T");
-		assert dateTime.length >= 2 : "date and time is required by the sintax rule";
-		
-		// splits the time and time zone 
-		String[] time = dateTime[1].split("[-+Z]");
-		
-		return time[0]; // the time
-	}
+    private String extractTime(String cqlDateTime) {
+        Matcher m = DATETIME_PATTERN.matcher(cqlDateTime);
+        if (m.matches()) {
+            assert m.group(2) != null;
+            return m.group(2);
+        }
 
-	/**
-	 * Extracts the Date from cql date time
-	 * @param cqlDateTime
-	 * @return String with the date
-	 */
-	private String extractDate(final String cqlDateTime) {
-		String strUpper = cqlDateTime.toUpperCase();
-		String[] dateTime = strUpper.split("T");
-		assert dateTime.length > 0 : "must have a date";
-		return dateTime[0];
-	}
+        assert false;
+        return null;
+    }
+
+    /**
+     * Extracts the Date from cql date time
+     * 
+     * @param cqlDateTime
+     * @return String with the date
+     */
+    private String extractDate(final String cqlDateTime) {
+        Matcher m = DATETIME_PATTERN.matcher(cqlDateTime);
+        if (m.matches()) {
+            assert m.group(1) != null;
+            return m.group(1);
+        }
+        assert false;
+        return null;
+    }
 
 	public Not buildNotFilter(Filter eq) {
         return filterFactory.not(eq);
@@ -515,7 +547,6 @@ public abstract class AbstractFilterBuilder {
         return filterFactory.literal(strLiteral);
     }
 
-    
     /**
      * Removes initial and final "'" from string. If some "''" is found
      * it will be changed by a single quote "'".
@@ -1297,6 +1328,16 @@ public abstract class AbstractFilterBuilder {
         }
 
         return function;
+    }
+
+    /**
+     * BUild a TEquals date filter.
+     */
+    public TEquals buildTEquals() throws CQLException {
+        Expression right = this.resultStack.popExpression();
+        Expression left = this.resultStack.popExpression();
+
+        return this.filterFactory.tequals(left, right);
     }
 
     /**

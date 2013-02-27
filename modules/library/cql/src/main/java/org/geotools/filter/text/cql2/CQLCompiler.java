@@ -323,6 +323,9 @@ public class CQLCompiler extends CQLParser implements ICompiler{
         case JJTPERIOD_WITH_DURATION_DATE_NODE:
             return this.builder.buildPeriodDurationAndDate();
 
+        case JJTTPTEQUALS_DATETIME_NODE:
+            return this.builder.buildTEquals();
+
         case JJTTPBEFORE_DATETIME_NODE:
             return buildBeforePredicate();
 

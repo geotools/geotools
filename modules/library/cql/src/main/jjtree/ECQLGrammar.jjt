@@ -173,6 +173,7 @@ TOKEN [IGNORE_CASE]: /* geometry markers */
 
 TOKEN [IGNORE_CASE]: /* temporal expression*/
 {
+	<TEQUALS: "tequals">  | 
 	<BEFORE: "before"> 	| 
 	<DURING: "during"> 	|
 	<AFTER:  "after">  	|
@@ -258,8 +259,9 @@ TOKEN [IGNORE_CASE]: /* Literals */
 	< DURATION:  ("P" <DUR_DATE> |  "T" <DUR_TIME>) > |
 	
 	< #FULL_DATE: <DIGIT><DIGIT><DIGIT><DIGIT> "-" <DIGIT><DIGIT> "-" <DIGIT><DIGIT> > |
-    < #TIME_ZONE: ("Z") | (("+"|"-") <DIGIT><DIGIT> ":" <DIGIT><DIGIT>) > | 
+    < #TIME_ZONE: ("Z") | (("+"|"-") <DIGIT><DIGIT> (":")? <DIGIT><DIGIT>) > | 
     < #UTC_TIME: <DIGIT><DIGIT> ":" <DIGIT><DIGIT> ":" <DIGIT><DIGIT> ("." (<DIGIT>)+)? (<TIME_ZONE>)? > |
+	< DATE : <FULL_DATE>(<TIME_ZONE>)? > |
 	< DATE_TIME : <FULL_DATE>"T"<UTC_TIME> > |
 
     < IDENTIFIER: (<LETTER> (<LETTER>|<DIGIT>)*) | <DOUBLE_QUOTE> (<ANY>)+ <DOUBLE_QUOTE> > |
@@ -729,7 +731,8 @@ void NullPredicate() :
  *   	<temporal predicate>
  * ---------------------------------------- *
  * <temporal predicate> ::= 
- *    <attribute_name> BEFORE <date-time expression>
+ *	  <attribute_name> TEQUALS <date-time expression>
+ *	| <attribute_name> BEFORE <date-time expression>
  *	| <attribute_name> BEFORE OR DURING <period>
  *	| <attribute_name> DURING <period>
  *	| <attribute_name> DURING OR AFTER <period>
@@ -753,9 +756,16 @@ void TemporalPredicateHead() #void:
 void TemporalPredicateTail() #void:
 {}
 {
-        <BEFORE> TemporalPredicateBefore()  
+        <TEQUALS> TemporalPredicateTEquals()  
+    |   <BEFORE> TemporalPredicateBefore()  
     |   <AFTER>  TemporalPredicateAfter()   
     |   <DURING> TemporalPredicateDuring()  
+}
+
+void TemporalPredicateTEquals()#TPTEQUALS_DateTime_Node:
+{}
+{
+    DateTimeExpression()  
 }
 
 void TemporalPredicateBefore()#void:
@@ -989,9 +999,18 @@ void AttributeTail() #Compound_Attribute_Node:
 void Literal() #void :
 {}
 {
-		NumericLiteral()
+		DateLiteral()
+	|  	NumericLiteral()
 	| 	GeneralLiteral()	
 }
+
+void DateLiteral() #void :
+{}
+{
+    <DATE> #Date_Node
+  | <DATE_TIME> #DateTime_Node
+}
+
 void NumericLiteral() #void :
 {}
 {

@@ -44,6 +44,7 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.temporal.After;
 import org.opengis.filter.temporal.Before;
 import org.opengis.filter.temporal.During;
+import org.opengis.filter.temporal.TEquals;
 import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
 
@@ -70,7 +71,7 @@ public class FilterCQLSample {
     private static final FilterFactory FACTORY = CommonFactoryFinder.getFilterFactory((Hints) null);
 
     private static final String DATE_TIME_FORMATTER = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-    
+
     private static final Calendar CALENDAR = Calendar.getInstance();
     public static final String LESS_FILTER_SAMPLE = "ATTR1 < 1";
     public static final String LESS_EQ_FILTER_SAMPLE = "ATTR1 <= 1";
@@ -84,6 +85,7 @@ public class FilterCQLSample {
     public static final String PROPERTY_IS_NOT_NULL = "ATTR1 IS NOT NULL";
     private static final String FIRST_DATE = "2006-11-30T01:30:00Z";
     private static final String LAST_DATE = "2006-12-31T01:30:00Z";
+    public static final String FILTER_EQUAL_DATETIME = "ATTR1 TEQUALS " + FIRST_DATE;
     public static final String FILTER_BEFORE_DATE = "ATTR1 BEFORE " + FIRST_DATE;
     public static final String FILTER_BEFORE_PERIOD_BETWEEN_DATES = "ATTR1 BEFORE " + FIRST_DATE
         + "/" + LAST_DATE;
@@ -220,7 +222,20 @@ public class FilterCQLSample {
 
             SAMPLES.put(PROPERTY_IS_NOT_NULL, notNullFilter);
         }
+        {
+            TEquals tEqualsFilter = null;
 
+            try {
+                SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_TIME_FORMATTER);
+                Date dateTime = dateFormatter.parse(FIRST_DATE);
+                tEqualsFilter = FACTORY.tequals(FACTORY.property("ATTR1"), FACTORY.literal(dateTime));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            // ATTR1 BEFORE 2006-12-31T01:30:00Z
+            SAMPLES.put(FILTER_EQUAL_DATETIME, tEqualsFilter);
+        }
         {
             // ---------------------------------------
             // Result filter for BEFORE tests

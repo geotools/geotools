@@ -203,6 +203,7 @@ TOKEN [IGNORE_CASE]: /* geometry markers */
 
 TOKEN [IGNORE_CASE]: /* temporal expression*/
 {
+	<TEQUALS: "tequals">  |
 	<BEFORE: "before"> 	| 
 	<DURING: "during"> 	|
 	<AFTER:  "after">  	|
@@ -288,7 +289,7 @@ TOKEN [IGNORE_CASE]: /* Literals */
 	< DURATION:  ("P" <DUR_DATE> |  "T" <DUR_TIME>) > |
 	
 	< #FULL_DATE: <DIGIT><DIGIT><DIGIT><DIGIT> "-" <DIGIT><DIGIT> "-" <DIGIT><DIGIT> > |
-    < #TIME_ZONE: ("Z") | (("+"|"-") <DIGIT><DIGIT> ":" <DIGIT><DIGIT>) > |	
+    < #TIME_ZONE: ("Z") | (("+"|"-") <DIGIT><DIGIT> (":")? <DIGIT><DIGIT>) > |	
 	< #UTC_TIME: <DIGIT><DIGIT> ":" <DIGIT><DIGIT> ":" <DIGIT><DIGIT> ("." (<DIGIT>)+)? (<TIME_ZONE>)? > |
 	< DATE_TIME : <FULL_DATE>"T"<UTC_TIME> > |
 
@@ -642,7 +643,8 @@ void NullPredicate() :
  *   	<temporal predicate>
  * ---------------------------------------- *
  * <temporal predicate> ::= 
- *    <attribute_name> BEFORE <date-time expression>
+ *	  <attribute_name> TEQUAL <date-time expression>
+ *	| <attribute_name> BEFORE <date-time expression>
  *	| <attribute_name> BEFORE OR DURING <period>
  *	| <attribute_name> DURING <period>
  *	| <attribute_name> DURING OR AFTER <period>
@@ -651,10 +653,17 @@ void NullPredicate() :
 void TemporalPredicate() #void:
 {}
 {
-		<BEFORE> TemporalPredicateBefore() 	
+		<TEQUALS> TemporalPredicateTEquals()  
+	|	<BEFORE> TemporalPredicateBefore() 	
 	|   <AFTER>	 TemporalPredicateAfter()	
 	|	<DURING> TemporalPredicateDuring()	
 	
+}
+
+void TemporalPredicateTEquals()#TPTEquals_DateTime_Node:
+{}
+{
+    DateTimeExpression()  
 }
 
 void TemporalPredicateBefore()#void:

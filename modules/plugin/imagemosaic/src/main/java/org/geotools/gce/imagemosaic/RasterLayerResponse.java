@@ -612,7 +612,6 @@ class RasterLayerResponse{
                 tileDimensions=(Dimension) JAI.getDefaultTileSize().clone();
             }
             layout.setTileHeight(tileDimensions.width).setTileWidth(tileDimensions.height);
-            layout.setSampleModel(rasterManager.defaultSM.createCompatibleSampleModel(tileDimensions.width, tileDimensions.height));    
             final RenderingHints localHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
             
             // look for additional hints for caching and tile scheduling

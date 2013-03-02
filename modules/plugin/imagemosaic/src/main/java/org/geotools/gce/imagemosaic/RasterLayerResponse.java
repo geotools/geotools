@@ -403,6 +403,7 @@ class RasterLayerResponse{
 				final RenderedImage loadedImage;
 				final GranuleLoadingResult result;
 				boolean doFiltering;
+				RenderedImage raster=null;
 				try {
 					if(!multithreadingAllowed || rasterManager.parent.multiThreadedLoader == null)
 					{
@@ -425,6 +426,24 @@ class RasterLayerResponse{
 							LOGGER.log(Level.FINE,"Unable to load the raster for granuleDescriptor " +granuleIndex+ " with request "+request.toString());
 						continue;
 					}
+					
+                    //
+                    // IGNORE COLOR MAP
+                    //
+                    //
+                    if (request.isIgnoreColorMap()) {
+                        try {
+                            raster = new ImageWorker(loadedImage).ignoreColorMap()
+                                    .getRenderedImage();
+                            // set no transparency
+                            doInputTransparency = false;
+                        } catch (IOException e) {
+                            LOGGER.log(Level.FINER, e.getMessage(), e);
+                        }
+                    } else {
+                        raster = loadedImage;
+                    }
+			                
 					if(firstGranule){
 						//
 						// We check here if the images have an alpha channel or some
@@ -483,8 +502,8 @@ class RasterLayerResponse{
 				//
 				// add to the mosaic collection, with preprocessing
 				//
-				RenderedImage raster = processGranuleRaster(
-						loadedImage,
+				raster = processGranuleRaster(
+						raster,
 						granuleIndex, 
 						alphaIndex,
 						alphaIn, 
@@ -1158,6 +1177,7 @@ class RasterLayerResponse{
 			granule = ImageUtilities.maskColor(transparentColor, granule);
 			alphaIndex[0]= granule.getColorModel().getNumComponents() - 1 ;
 		}
+		
 		//
 		// ROI
 		//

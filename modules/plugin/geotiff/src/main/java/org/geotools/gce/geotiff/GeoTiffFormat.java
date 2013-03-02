@@ -92,7 +92,7 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
                     "WRITE_TFW", Boolean.class, new Boolean[] {
                                     Boolean.TRUE, Boolean.FALSE }, Boolean.FALSE);
 
-	/**
+        /**
 	 * Creates a new instance of GeoTiffFormat
 	 */
 	public GeoTiffFormat() {
@@ -108,7 +108,7 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
 		readParameters = new ParameterGroup(
 				new DefaultParameterDescriptorGroup(
 						mInfo,
-						new GeneralParameterDescriptor[] { READ_GRIDGEOMETRY2D,INPUT_TRANSPARENT_COLOR,SUGGESTED_TILE_SIZE }));
+						new GeneralParameterDescriptor[] { READ_GRIDGEOMETRY2D,INPUT_TRANSPARENT_COLOR,SUGGESTED_TILE_SIZE,AbstractGridFormat.IGNORE_COLOR_MAP }));
 
 		// writing parameters
 		writeParameters = new ParameterGroup(

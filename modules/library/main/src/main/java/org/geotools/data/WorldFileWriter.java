@@ -26,7 +26,7 @@ import java.io.OutputStreamWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.geotools.referencing.operation.matrix.AffineTransform2D;
+import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.i18n.ErrorKeys;

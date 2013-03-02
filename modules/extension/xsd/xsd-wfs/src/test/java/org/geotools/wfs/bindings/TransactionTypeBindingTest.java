@@ -22,8 +22,6 @@ import java.util.List;
 
 import net.opengis.wfs.GetFeatureType;
 import net.opengis.wfs.PropertyType;
-import net.opengis.wfs.QueryType;
-import net.opengis.wfs.ResultTypeType;
 import net.opengis.wfs.TransactionType;
 import net.opengis.wfs.UpdateElementType;
 
@@ -35,15 +33,9 @@ import org.geotools.xml.Binding;
 import org.w3c.dom.Document;
 
 /**
- * Unit test suite for {@link GetFeatureTypeBinding}
+ * Unit test suite for {@link TransactionTypeBinding}
  * 
- * @author Justin Deoliveira
- * @version $Id: GetFeatureTypeBindingTest.java 27749 2007-11-05 09:51:33Z
- *          groldan $
- * @since 2.5.x
- *
- *
- * @source $URL$
+ * @author Daniel Leib
  */
 public class TransactionTypeBindingTest extends WFSTestSupport
 {

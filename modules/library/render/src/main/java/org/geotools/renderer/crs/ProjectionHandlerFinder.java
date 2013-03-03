@@ -18,8 +18,11 @@ package org.geotools.renderer.crs;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.logging.Logging;
 
 /**
  * Looks up the {@link ProjectionHandler} for the specified rendering area.
@@ -33,12 +36,39 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 public class ProjectionHandlerFinder {
 
     static List<ProjectionHandlerFactory> factories = new ArrayList<ProjectionHandlerFactory>();
+    
+    static final Logger LOGGER = Logging.getLogger(ProjectionHandlerFinder.class);
+    
+    public static final String WRAP_LIMIT_KEY = "org.geotools.render.wrapLimit";
+    
+    static int WRAP_LIMIT;
 
     static {
         factories.add(new GeographicHandlerFactory());
         factories.add(new MercatorHandlerFactory());
         factories.add(new TransverseMercatorHandlerFactory());
         factories.add(new PolarStereographicHandlerFactory());
+        
+        String wrapLimit = System.getProperty(WRAP_LIMIT_KEY);
+        int limit = 10;
+        try {
+            if(wrapLimit != null) {
+                limit = Integer.valueOf(wrapLimit);
+            }
+        } catch(NumberFormatException e) {
+            LOGGER.log(Level.SEVERE, WRAP_LIMIT_KEY + " has invalid value, it should be an integer number but it was: " + wrapLimit);
+        }
+        WRAP_LIMIT = limit;
+    }
+    
+    /**
+     * Programmatically sets the number of wraps per direction the wrapping projection handlers
+     * will apply
+     * 
+     * @param wrapLimit
+     */
+    public void setWrapLimit(int wrapLimit) {
+        ProjectionHandlerFinder.WRAP_LIMIT = wrapLimit;
     }
 
     /**
@@ -51,7 +81,7 @@ public class ProjectionHandlerFinder {
             return null;
 
         for (ProjectionHandlerFactory factory : factories) {
-            ProjectionHandler handler = factory.getHandler(renderingArea, wrap);
+            ProjectionHandler handler = factory.getHandler(renderingArea, wrap, WRAP_LIMIT);
             if (handler != null)
                 return handler;
         }

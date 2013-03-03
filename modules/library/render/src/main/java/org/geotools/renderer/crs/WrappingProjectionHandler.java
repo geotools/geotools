@@ -32,7 +32,6 @@ import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
-import org.opengis.referencing.operation.MathTransform2D;
 
 /**
  * A {@link ProjectionHandler} for projections that do warp in the East/West direction, it will
@@ -46,14 +45,16 @@ import org.opengis.referencing.operation.MathTransform2D;
 public class WrappingProjectionHandler extends ProjectionHandler {
 
     protected double radius;
+    private int maxWraps;
 
     /**
      * Provides the strategy with the area we want to render and its CRS (the SPI lookup will do
      * this step)
      */
     public WrappingProjectionHandler(ReferencedEnvelope renderingEnvelope,
-            ReferencedEnvelope validArea, double centralMeridian) {
+            ReferencedEnvelope validArea, double centralMeridian, int maxWraps) {
         super(renderingEnvelope, validArea);
+        this.maxWraps = maxWraps;
 
         try {
             CoordinateReferenceSystem targetCRS = renderingEnvelope.getCoordinateReferenceSystem();
@@ -111,18 +112,18 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         // (there may be many)
         double min = env.getMinX();
         double max = env.getMaxX();
-        while (min > renderingEnvelope.getMinX()) {
+        double lowLimit = Math.max(renderingEnvelope.getMinX(), renderingEnvelope.getMedian(0) - maxWraps * radius * 2); 
+        double highLimit = Math.min(renderingEnvelope.getMaxX(), renderingEnvelope.getMedian(0) + maxWraps * radius * 2);
+        while (min > lowLimit) {
             min -= radius * 2;
-            max -= radius * 2;
         }
-        while (max < renderingEnvelope.getMinX()) {
-            min += radius * 2;
+        while (max < highLimit) {
             max += radius * 2;
         }
 
         // clone and offset as necessary
         geomType = accumulate(geoms, geometry, geomType);
-        while (min <= renderingEnvelope.getMaxX()) {
+        while (min <= highLimit) {
             double offset = min - env.getMinX();
             if (Math.abs(offset) < radius) {
                 // in this case we can keep the original geometry, which is already in

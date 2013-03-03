@@ -34,7 +34,7 @@ import org.geotools.referencing.operation.projection.MapProjection.AbstractProvi
  */
 public class TransverseMercatorHandlerFactory implements ProjectionHandlerFactory {
 
-    public ProjectionHandler getHandler(ReferencedEnvelope renderingEnvelope, boolean wrap) {
+    public ProjectionHandler getHandler(ReferencedEnvelope renderingEnvelope, boolean wrap, int maxWraps) {
         MapProjection mapProjection = CRS.getMapProjection(renderingEnvelope
                 .getCoordinateReferenceSystem());
         if (renderingEnvelope != null && mapProjection instanceof TransverseMercator) {

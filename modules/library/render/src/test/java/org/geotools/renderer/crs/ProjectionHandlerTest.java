@@ -11,6 +11,7 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -285,6 +286,27 @@ public class ProjectionHandlerTest {
         double twentyDegWidth = mercatorEnvelope.getWidth() / 18;
         assertEquals(twentyDegWidth, mls.getGeometryN(0).getEnvelopeInternal().getWidth(), EPS);
         assertEquals(twentyDegWidth, mls.getGeometryN(1).getEnvelopeInternal().getWidth(), EPS);
+    }
+    
+    @Test
+    public void testLimitExcessiveDuplication() throws Exception {
+        // a veeeery large rendering envelope, enough to trigger whatever are the default 
+        // protection limits (yes, it's in degrees!)
+        ReferencedEnvelope renderingEnvelope = new ReferencedEnvelope(-1800000, 1800000, -50, 50, WGS84);
+
+        // the geometry that will be wrapped
+        Geometry g = new WKTReader().read("LINESTRING(-179 -89, 179 89)");
+
+        // make sure the geometry is not pre-processed
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(renderingEnvelope, true);
+        assertTrue(handler.requiresProcessing(WGS84, g));
+        Geometry preProcessed = handler.preProcess(WGS84, g);
+        assertEquals(g, preProcessed);
+        Geometry postProcessed = handler.postProcess(IdentityTransform.create(2), g);
+        // should have been copied several times, but not above the limit
+        assertTrue(postProcessed instanceof MultiLineString);
+        MultiLineString mls = (MultiLineString) postProcessed;
+        assertEquals(ProjectionHandlerFinder.WRAP_LIMIT * 2 + 1 , mls.getNumGeometries());
     }
 
     public void testCutGeometryUTM() throws Exception {

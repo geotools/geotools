@@ -28,13 +28,13 @@ import org.opengis.referencing.crs.GeographicCRS;
  */
 public class GeographicHandlerFactory implements ProjectionHandlerFactory {
     
-    public ProjectionHandler getHandler(ReferencedEnvelope renderingEnvelope, boolean wrap) {
+    public ProjectionHandler getHandler(ReferencedEnvelope renderingEnvelope, boolean wrap, int maxWraps) {
         CoordinateReferenceSystem crs = renderingEnvelope.getCoordinateReferenceSystem();
         if (renderingEnvelope != null  && crs instanceof GeographicCRS) {
             GeographicCRS  geogCrs = (GeographicCRS) crs;
-            if(wrap) {
+            if(wrap && maxWraps > 0) {
                 double centralMeridian = geogCrs.getDatum().getPrimeMeridian().getGreenwichLongitude();
-                return new WrappingProjectionHandler(renderingEnvelope, null, centralMeridian);
+                return new WrappingProjectionHandler(renderingEnvelope, null, centralMeridian, maxWraps);
             } else {
                 return new ProjectionHandler(renderingEnvelope, null);
             }

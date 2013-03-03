@@ -34,14 +34,14 @@ public class MercatorHandlerFactory implements ProjectionHandlerFactory {
     private static final ReferencedEnvelope VALID_AREA = new ReferencedEnvelope(-Double.MAX_VALUE, Double.MAX_VALUE, -89, 89,
             DefaultGeographicCRS.WGS84);
 
-    public ProjectionHandler getHandler(ReferencedEnvelope renderingEnvelope, boolean wrap) {
+    public ProjectionHandler getHandler(ReferencedEnvelope renderingEnvelope, boolean wrap, int maxWraps) {
         MapProjection mapProjection = CRS.getMapProjection(renderingEnvelope
                 .getCoordinateReferenceSystem());
         if (renderingEnvelope != null && mapProjection instanceof Mercator) {
-            if(wrap) {
+            if(wrap && maxWraps > 0) {
                 double centralMeridian = mapProjection.getParameterValues().parameter(
                         AbstractProvider.CENTRAL_MERIDIAN.getName().getCode()).doubleValue();
-                return new WrappingProjectionHandler(renderingEnvelope, VALID_AREA, centralMeridian);
+                return new WrappingProjectionHandler(renderingEnvelope, VALID_AREA, centralMeridian, maxWraps);
             } else {
                 return new ProjectionHandler(renderingEnvelope, VALID_AREA);
             }

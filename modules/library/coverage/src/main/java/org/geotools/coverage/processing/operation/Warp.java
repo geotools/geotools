@@ -16,18 +16,9 @@
  */
 package org.geotools.coverage.processing.operation;
 
-import java.awt.RenderingHints;
-import java.awt.image.RenderedImage;
-
-import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.operator.WarpDescriptor;
 
 import org.geotools.coverage.processing.BaseScaleOperationJAI;
-import org.geotools.coverage.processing.CoverageProcessingException;
-import org.geotools.factory.Hints;
-import org.opengis.coverage.Coverage;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.parameter.ParameterValueGroup;
 
 
 /**
@@ -42,14 +33,7 @@ import org.opengis.parameter.ParameterValueGroup;
  */
 public class Warp extends BaseScaleOperationJAI {
 
-        @Override
-    public Coverage doOperation(ParameterValueGroup parameters, Hints hints)
-            throws CoverageProcessingException {
-        // TODO Auto-generated method stub
-        return super.doOperation(parameters, hints);
-    }
-
-        /** serialVersionUID */
+    /** serialVersionUID */
     private static final long serialVersionUID = -9077795909705065389L;
 
     /**
@@ -57,19 +41,6 @@ public class Warp extends BaseScaleOperationJAI {
      */
     public Warp() {
         super("Warp");
-    }
-
-    @Override
-    protected ParameterBlockJAI prepareParameters(ParameterValueGroup parameters) {
-        // look for background values 
-        final ParameterValue<?> parameter = parameters.parameter("backgroundValues");
-        return super.prepareParameters(parameters);
-    }
-
-    @Override
-    protected RenderedImage createRenderedImage(ParameterBlockJAI parameters, RenderingHints hints) {
-        // TODO Auto-generated method stub
-        return super.createRenderedImage(parameters, hints);
     }
 
 }

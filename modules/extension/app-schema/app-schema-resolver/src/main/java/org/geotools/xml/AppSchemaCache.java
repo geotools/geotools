@@ -17,21 +17,11 @@
 
 package org.geotools.xml;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.logging.Logger;
 
-import org.geotools.data.DataUtilities;
+import org.geotools.xml.resolver.SchemaCache;
 
 /**
  * Cache containing application schemas. (Should also work for other file types.)
@@ -56,50 +46,9 @@ import org.geotools.data.DataUtilities;
  * 
  * @source $URL$
  */
-public class AppSchemaCache {
+public class AppSchemaCache extends SchemaCache {
 
-    private static final Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(AppSchemaCache.class.getPackage().getName());
-
-    /**
-     * The default block read size used when downloading a file.
-     */
-    private static final int DEFAULT_DOWNLOAD_BLOCK_SIZE = 4096;
-
-    /**
-     * Filenames used to recognise a GeoServer data directory if automatic configuration is enabled.
-     */
-    private static final String[] GEOSERVER_DATA_DIRECTORY_FILENAMES = { "global.xml", "wcs.xml",
-            "wfs.xml", "wms.xml" };
-
-    /**
-     * Subdirectories used to recognise a GeoServer data directory if automatic configuration is
-     * enabled.
-     */
-    private static final String[] GEOSERVER_DATA_DIRECTORY_SUBDIRECTORIES = { "styles",
-            "workspaces" };
-
-    /**
-     * Name of the subdirectory of a GeoServer data directory (or other directory) used for the
-     * cache if automatic configuration is enabled.
-     */
-    private static final String CACHE_DIRECTORY_NAME = "app-schema-cache";
-
-    /**
-     * Is support for automatic detection of GeoServer data directories or existing cache
-     * directories enabled? It is useful to disable this in tests, to prevent downloading.
-     */
-    private static boolean automaticConfigurationEnabled = true;
-
-    /**
-     * Root directory of the cache.
-     */
-    private final File directory;
-
-    /**
-     * True if resources not found in the cache are downloaded from the net.
-     */
-    private final boolean download;
+    
 
     /**
      * A cache of application schemas (or other file types) rooted in the given directory, with
@@ -112,36 +61,28 @@ public class AppSchemaCache {
      *            cache will be resolved.
      */
     public AppSchemaCache(File directory, boolean download) {
-        this.directory = directory;
-        this.download = download;
+        super(directory, download);        
     }
-
+    
     /**
-     * Return the root directory of the cache.
+     * A cache of XML schemas (or other file types) rooted in the given directory, with optional downloading.
+     * 
+     * @param directory the directory in which downloaded schemas are stored
+     * @param download is downloading of schemas permitted. If false, only schemas already present in the cache will be resolved.
+     * @param keepQuery indicates whether or not the query components should be included in the path. If this is set to true then the query portion is
+     *        converted to an MD5 message digest and that string is used to identify the file in the cache.
      */
-    public File getDirectory() {
-        return directory;
+    public AppSchemaCache(File directory, boolean download, boolean keepQuery) {
+        super(directory, download, keepQuery);        
     }
-
-    /**
-     * Are schemas not already present in the cache downloaded from the network?
-     */
-    public boolean isDownloadAllowed() {
-        return download;
-    }
-
+   
     /**
      * Recursively delete a directory or file.
      * 
      * @param file
      */
-    static void delete(File file) {
-        if (file.isDirectory()) {
-            for (File f : file.listFiles()) {
-                delete(f);
-            }
-        }
-        file.delete();
+    protected static void delete(File file) {
+        SchemaCache.delete(file);
     }
 
     /**
@@ -150,244 +91,55 @@ public class AppSchemaCache {
      * @param file
      * @param bytes
      */
-    static void store(File file, byte[] bytes) {
-        OutputStream output = null;
-        try {
-            if (file.getParentFile() != null && !file.getParentFile().exists()) {
-                file.getParentFile().mkdirs();
-            }
-            output = new BufferedOutputStream(new FileOutputStream(file));
-            output.write(bytes);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        } finally {
-            if (output != null) {
-                try {
-                    output.close();
-                } catch (Exception e) {
-                    // we tried
-                }
-            }
-        }
+    protected static void store(File file, byte[] bytes) {
+        SchemaCache.store(file, bytes);
+    }
+    
+    /**
+     * Retrieve the contents of a remote URL.
+     * 
+     * @param location and absolute http/https URL.
+     * @return the bytes contained by the resource, or null if it could not be downloaded
+     */
+    protected static byte[] download(String location) {        
+       return SchemaCache.download(location);
     }
 
     /**
      * Retrieve the contents of a remote URL.
      * 
-     * @param location
-     *            and absolute http/https URL.
+     * @param location and absolute http/https URL.
      * @return the bytes contained by the resource, or null if it could not be downloaded
      */
-    static byte[] download(String location) {
-        URI locationUri;
-        try {
-            locationUri = new URI(location);
-        } catch (URISyntaxException e) {
-            return null;
-        }
-        return download(locationUri);
+    protected static byte[] download(URI location) {
+        return SchemaCache.download(location);
     }
 
     /**
      * Retrieve the contents of a remote URL.
      * 
-     * @param location
-     *            and absolute http/https URL.
+     * @param location and absolute http/https URL.
+     * @param blockSize download block size
      * @return the bytes contained by the resource, or null if it could not be downloaded
      */
-    static byte[] download(URI location) {
-        return download(location, DEFAULT_DOWNLOAD_BLOCK_SIZE);
+    protected static byte[] download(URI location, int blockSize) {        
+        return SchemaCache.download(location, blockSize);
     }
-
+    
     /**
-     * Retrieve the contents of a remote URL.
+     * If automatic configuration is enabled, recursively search parent directories of file url for a GeoServer data directory or directory containing
+     * an existing cache. If found, use it to create a cache in the "app-schema-cache" subdirectory with downloading enabled.
      * 
-     * @param location
-     *            and absolute http/https URL.
-     * @param blockSize
-     *            download block size
-     * @return the bytes contained by the resource, or null if it could not be downloaded
-     */
-    static byte[] download(URI location, int blockSize) {
-        try {
-            URL url = location.toURL();
-            String protocol = url.getProtocol();
-            if (protocol == null || !(protocol.equals("http") || protocol.equals("https"))) {
-                LOGGER.warning("Unexpected download URL protocol: " + protocol);
-                return null;
-            }
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setUseCaches(false);
-            connection.connect();
-            if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                LOGGER.warning(String.format("Unexpected response \"%d %s\" while downloading %s",
-                        connection.getResponseCode(), connection.getResponseMessage(),
-                        location.toString()));
-                return null;
-            }
-            // read all the blocks into a list
-            InputStream input = null;
-            List<byte[]> blocks = new LinkedList<byte[]>();
-            try {
-                input = connection.getInputStream();
-                while (true) {
-                    byte[] block = new byte[blockSize];
-                    int count = input.read(block);
-                    if (count == -1) {
-                        // end-of-file
-                        break;
-                    } else if (count == blockSize) {
-                        // full block
-                        blocks.add(block);
-                    } else {
-                        // short block
-                        byte[] shortBlock = new byte[count];
-                        System.arraycopy(block, 0, shortBlock, 0, count);
-                        blocks.add(shortBlock);
-                    }
-                }
-            } finally {
-                if (input != null) {
-                    try {
-                        input.close();
-                    } catch (Exception e) {
-                        // we tried
-                    }
-                }
-            }
-            // concatenate all the blocks
-            int totalCount = 0;
-            for (byte[] b : blocks) {
-                totalCount += b.length;
-            }
-            byte[] bytes = new byte[totalCount];
-            int position = 0;
-            for (byte[] b : blocks) {
-                System.arraycopy(b, 0, bytes, position, b.length);
-                position += b.length;
-            }
-            return bytes;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
-    /**
-     * Return the local file URL of a schema, downloading it if not found in the cache.
-     * 
-     * @param location
-     *            the absolute http/https URL of the schema
-     * @return the canonical local file URL of the schema, or null if not found
-     */
-    public String resolveLocation(String location) {
-        String path = AppSchemaResolver.getSimpleHttpResourcePath(location);
-        if (path == null) {
-            return null;
-        }
-        String relativePath = path.substring(1);
-        File file;
-        try {
-            file = new File(getDirectory(), relativePath).getCanonicalFile();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        if (file.exists()) {
-            return DataUtilities.fileToURL(file).toExternalForm();
-        } else if (isDownloadAllowed()) {
-            byte[] bytes = download(location);
-            if (bytes == null) {
-                return null;
-            }
-            store(file, bytes);
-            LOGGER.info("Cached application schema: " + location);
-            return DataUtilities.fileToURL(file).toExternalForm();
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * If automatic configuration is enabled, recursively search parent directories of file url for
-     * a GeoServer data directory or directory containing an existing cache. If found, use it to
-     * create a cache in the "app-schema-cache" subdirectory with downloading enabled.
-     * 
-     * @param url
-     *            a URL for a file in a GeoServer data directory.
-     * @return a cache in the "app-schema-cache" subdirectory or null if not found or automatic
-     *         configuration disabled.
+     * @param url a URL for a file in a GeoServer data directory.
+     * @return a cache in the "app-schema-cache" subdirectory or null if not found or automatic configuration disabled.
      */
     public static AppSchemaCache buildAutomaticallyConfiguredUsingFileUrl(URL url) {
-        if (!automaticConfigurationEnabled) {
-            return null;
+        SchemaCache cache = SchemaCache
+                .buildAutomaticallyConfiguredUsingFileUrl(url);
+        if (cache != null) {
+            return new AppSchemaCache(cache.getDirectory(), true, true);
         }
-        File file = DataUtilities.urlToFile(url);
-        while (true) {
-            if (file == null) {
-                return null;
-            }
-            if (isSuitableDirectoryToContainCache(file)) {
-                return new AppSchemaCache(new File(file, CACHE_DIRECTORY_NAME), true);
-            }
-            file = file.getParentFile();
-        }
+        return null;
     }
-
-    /**
-     * Turn off support for automatic configuration of a cache in GeoServer data directory or
-     * detection of an existing cache. Intended for testing. Automatic configuration is enabled by
-     * default.
-     */
-    public static void disableAutomaticConfiguration() {
-        automaticConfigurationEnabled = false;
-    }
-
-    /**
-     * The opposite of {@link #disableAutomaticConfiguration()}. Automatic configuration is enabled
-     * by default.
-     */
-    public static void enableAutomaticConfiguration() {
-        automaticConfigurationEnabled = true;
-    }
-
-    /**
-     * Is automatic configuration enabled? Automatic configuration is enabled by default.
-     * 
-     * @see #disableAutomaticConfiguration()
-     */
-    public static boolean isAutomaticConfigurationEnabled() {
-        return automaticConfigurationEnabled;
-    }
-
-    /**
-     * Guess whether a file is a GeoServer data directory or contains an existing app-schema-cache
-     * subdirectory.
-     * 
-     * @param directory
-     *            the candidate file
-     * @return true if it has the files and subdirectories expected of a GeoServer data directory,
-     *         or contains an existing app-schema-cache subdirectory
-     */
-    static boolean isSuitableDirectoryToContainCache(File directory) {
-        if (directory.isDirectory() == false) {
-            return false;
-        }
-        if ((new File(directory, CACHE_DIRECTORY_NAME)).isDirectory()) {
-            return true;
-        }
-        for (String filename : GEOSERVER_DATA_DIRECTORY_FILENAMES) {
-            File file = new File(directory, filename);
-            if (!file.isFile()) {
-                return false;
-            }
-        }
-        for (String subdirectory : GEOSERVER_DATA_DIRECTORY_SUBDIRECTORIES) {
-            File dir = new File(directory, subdirectory);
-            if (!dir.isDirectory()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
+    
 }

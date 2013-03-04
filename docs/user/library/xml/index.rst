@@ -35,3 +35,4 @@ you to what is available.
    geometry
    filter
    style
+   resolving

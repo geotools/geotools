@@ -301,11 +301,11 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
         if (info != null) {
             return new Parameter(info.name(), type, new SimpleInternationalString(info.name()),
                     new SimpleInternationalString(info.description()), min > 0, min, max, defaultValue, 
-                    null);
+                    metadata);
         } else {
             return new Parameter("arg" + i, type, new SimpleInternationalString("Argument " + i),
                     new SimpleInternationalString("Input " + type.getName() + " value"), min > 0,
-                    min, max, defaultValue, null);
+                    min, max, defaultValue, metadata);
         }
     }
 

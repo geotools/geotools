@@ -278,6 +278,4 @@ public class CQLComparisonPredicateTest {
         Assert.assertNotNull("expects filter not null", actual);
         Assert.assertEquals("this is not the filter expected", expected, actual);
     }
-    
-
 }

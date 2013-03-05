@@ -16,6 +16,12 @@
  */
 package org.geotools.filter.text.ecql;
 
+import static java.util.Calendar.FEBRUARY;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
+
 import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.Language;
 import org.geotools.filter.text.cql2.CQLComparisonPredicateTest;
@@ -23,6 +29,9 @@ import org.geotools.filter.text.cql2.CQLException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.filter.Filter;
+import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.PropertyName;
 
 
 /**
@@ -140,7 +149,83 @@ public class ECQLComparisonPredicateTest extends CQLComparisonPredicateTest {
         // area( the_geom ) < abs(10)
         testComparison(FilterECQLSample.FUNC_AREA_LESS_FUNC_ABS);
     }
-    
+
+    @Test
+    public void dateLiteral() throws Exception {
+        Filter f = CompilerUtil.parseFilter(this.language, "X = 2012-02-01");
+        testPropertyIsEqualDate(f, date(2012, FEBRUARY, 1, 0, 0, 0, 0, TimeZone.getDefault()));
+    }
+
+   @Test
+    public void dateLiteralTimeZoneUTC() throws Exception {
+       Filter f = CompilerUtil.parseFilter(this.language, "X = 2012-02-01Z");
+       testPropertyIsEqualDate(f, date(2012, FEBRUARY, 1, 0, 0, 0, 0, TimeZone.getTimeZone("GMT")));
+    }
+
+    @Test
+    public void dateLiteralTimeZonePlusMinus() throws Exception {
+        Filter f = CompilerUtil.parseFilter(this.language, "X = 2012-02-01-0800");
+        testPropertyIsEqualDate(f,date(2012, FEBRUARY, 1, 0, 0, 0, 0, TimeZone.getTimeZone("GMT-8:00")));
+
+        f = CompilerUtil.parseFilter(this.language, "X = 2012-02-01+08:00");
+        testPropertyIsEqualDate(f,date(2012, FEBRUARY, 1, 0, 0, 0, 0, TimeZone.getTimeZone("GMT+8:00")));
+    }
+
+    @Test
+    public void dateTimeLiteral() throws Exception {
+        Filter f = CompilerUtil.parseFilter(this.language, "X = 2012-02-01T12:10:13");
+        testPropertyIsEqualDate(f, date(2012, FEBRUARY, 1, 12, 10, 13, 0, TimeZone.getDefault()));
+    }
+
+    @Test
+    public void dateTimeLiteralMilliseconds() throws Exception {
+        Filter f = CompilerUtil.parseFilter(this.language, "X = 2012-02-01T12:10:13.123");
+        testPropertyIsEqualDate(f, date(2012, FEBRUARY, 1, 12, 10, 13, 123, TimeZone.getDefault()));
+    }
+
+   @Test
+    public void dateTimeLiteralTimeZoneUTC() throws Exception {
+       Filter f = CompilerUtil.parseFilter(this.language, "X = 2012-02-01T12:10:13.123Z");
+       testPropertyIsEqualDate(f, date(2012, FEBRUARY, 1, 12, 10, 13, 123, TimeZone.getTimeZone("GMT")));
+    }
+
+    @Test
+    public void dateTimeLiteralTimeZonePlusMinus() throws Exception {
+        Filter f = CompilerUtil.parseFilter(this.language, "X = 2012-02-01T12:10:13.123-0800");
+        testPropertyIsEqualDate(f,date(2012, FEBRUARY, 1, 12, 10, 13, 123, TimeZone.getTimeZone("GMT-8:00")));
+
+        f = CompilerUtil.parseFilter(this.language, "X = 2012-02-01T12:10:13+08:00");
+        testPropertyIsEqualDate(f,date(2012, FEBRUARY, 1, 12, 10, 13, 0, TimeZone.getTimeZone("GMT+8:00")));
+    }
+
+    private Date date(int year, int month, int dayOfMonth, int hourOfDay, int minute, int second, 
+        int milliscond, TimeZone tz) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, month);
+        c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        c.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        c.set(Calendar.MINUTE, minute);
+        c.set(Calendar.SECOND, second);
+        c.set(Calendar.MILLISECOND, milliscond);
+        c.setTimeZone(tz);
+        return c.getTime();
+    }
+
+    private void testPropertyIsEqualDate(Filter f, Date expected) {
+        Assert.assertTrue(f instanceof PropertyIsEqualTo);
+
+        PropertyIsEqualTo eq = (PropertyIsEqualTo) f;
+        Assert.assertTrue(eq.getExpression1() instanceof PropertyName);
+        Assert.assertTrue(eq.getExpression2() instanceof Literal);
+        
+        Object o = eq.getExpression2().evaluate(null);
+        Assert.assertTrue(o instanceof Date);
+        
+        Date d = (Date) o;
+        Assert.assertEquals(expected, d);
+    }
+
     /**
      * Asserts that the filter returned is the specified by the predicate 
      * 

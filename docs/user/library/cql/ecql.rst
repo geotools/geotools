@@ -195,3 +195,7 @@ Examples
         
         List<Filter> list = ECQL.toFilterList("X=1; Y<4");
 
+* Filter with date literals::
+    
+         Filter filter = ECQL.toFilter("foo = 1981-06-20");
+         Filter filter = ECQL.toFilter("foo <= 1981-06-20T12:30:01Z");

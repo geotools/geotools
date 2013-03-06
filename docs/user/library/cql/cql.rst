@@ -115,6 +115,10 @@ Examples
 
 * Filter by Comparing Time values
   
+  Equal to a date::
+
+    Filter result = CQL.toFilter( "ATTR1 TEQUALS 2006-11-30T01:30:00Z" );  
+
   Before a date:
 
   .. literalinclude:: /../src/main/java/org/geotools/cql/CQLExamples.java

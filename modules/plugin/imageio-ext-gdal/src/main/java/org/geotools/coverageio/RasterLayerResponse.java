@@ -25,6 +25,8 @@ import java.awt.image.SampleModel;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -255,13 +257,20 @@ class RasterLayerResponse {
         final ColorModel cm=image.getColorModel();
 		final int numBands = sm.getNumBands();
 		final GridSampleDimension[] bands = new GridSampleDimension[numBands];
-		// setting bands names.
-		for (int i = 0; i < numBands; i++) {
-		        final ColorInterpretation colorInterpretation=TypeMap.getColorInterpretation(cm, i);
-		        if(colorInterpretation==null)
-		               throw new IOException("Unrecognized sample dimension type");
-			bands[i] = new GridSampleDimension(colorInterpretation.name()).geophysics(true);
-		}
+        // setting bands names.
+		Set<String> bandNames = new HashSet<String>();
+        for (int i = 0; i < numBands; i++) {
+            final ColorInterpretation colorInterpretation = TypeMap.getColorInterpretation(cm, i);
+            // make sure we create no duplicate band names
+            String bandName;
+            if(colorInterpretation == null || colorInterpretation == ColorInterpretation.UNDEFINED 
+                    || bandNames.contains(colorInterpretation.name())) {
+                bandName = "Band" + (i + 1);
+            }  else {
+                bandName = colorInterpretation.name();
+            }
+            bands[i] = new GridSampleDimension(bandName).geophysics(true);
+        }
 
         // creating coverage
         if (raster2Model != null) {

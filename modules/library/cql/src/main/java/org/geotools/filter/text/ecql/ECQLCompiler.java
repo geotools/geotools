@@ -344,6 +344,10 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
                 // ----------------------------------------
                 // temporal predicate actions
                 // ----------------------------------------
+            case JJTDATE_NODE:
+                return this.builder
+                        .buildDateExpression(getTokenInPosition(0));
+
             case JJTDATETIME_NODE:
                 return this.builder
                         .buildDateTimeExpression(getTokenInPosition(0));
@@ -360,6 +364,9 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
 
             case JJTPERIOD_WITH_DURATION_DATE_NODE:
                 return this.builder.buildPeriodDurationAndDate();
+
+            case JJTTPTEQUALS_DATETIME_NODE:
+                return this.builder.buildTEquals();
 
             case JJTTPBEFORE_DATETIME_NODE:
                 return buildBefore();

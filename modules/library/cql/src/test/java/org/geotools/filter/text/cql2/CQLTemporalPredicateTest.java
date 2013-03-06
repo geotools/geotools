@@ -245,16 +245,21 @@ public class CQLTemporalPredicateTest {
 			Literal literalDate = (Literal) expr2;
 			Date actualDate = (Date) literalDate.getValue();
 
-			Date expectedDate = dateFormatter.parse("2008-09-09 17:00:00 " +  offset);
+			Date expectedDate = dateFormatter.parse("2008-09-09 17:00:00" +  offset);
 
 			Assert.assertEquals(expectedDate, actualDate);
 
 		}
 
 		{
+		    //JD: there was a bug in this test case with the date format, litte "z" has to 
+		    // specified as a named timezone, not an offset, so it was just being ignored
+		    // plus the offset was wrong
 			// test offset GMT-01:00
-	        final DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssz");
-			final String offset = "GMT+01:00";
+	        //final DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssz");
+		//    final String offset = "GMT+01:00";
+                final DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			final String offset = "GMT-01:00";
 	        TimeZone tz = TimeZone.getTimeZone(offset);
 	        dateFormatter.setTimeZone(tz);
 
@@ -267,7 +272,8 @@ public class CQLTemporalPredicateTest {
 			Literal literalDate = (Literal) expr2;
 			Date actualDate = (Date) literalDate.getValue();
         
-			Date expectedDate = dateFormatter.parse("2008-09-09 17:00:00 " +  offset);
+			//Date expectedDate = dateFormatter.parse("2008-09-09 17:00:00 " +  offset);
+			Date expectedDate = dateFormatter.parse("2008-09-09 17:00:00");
 
 			Assert.assertEquals(expectedDate, actualDate);
 		}
@@ -615,6 +621,17 @@ public class CQLTemporalPredicateTest {
         }
     }
     
-    
-    
+    @Test
+    public void equal() throws Exception {
+        //-------------------------------------------------------------
+        // <attribute_name> TEQUALS <date-time expression>
+        // -------------------------------------------------------------
+        // ATTR1 = 2006-12-31T01:30:00Z
+        Filter resultFilter = CompilerUtil.parseFilter(this.language, FilterCQLSample.FILTER_EQUAL_DATETIME);
+        Assert.assertNotNull("not null expected", resultFilter);
+
+        Filter expected = FilterCQLSample.getSample(FilterCQLSample.FILTER_EQUAL_DATETIME);
+        Assert.assertEquals(expected, resultFilter);
+
+    }
 }

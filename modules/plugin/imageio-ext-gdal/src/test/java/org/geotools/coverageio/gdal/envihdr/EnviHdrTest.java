@@ -23,11 +23,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Iterator;
 
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 
+import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -108,7 +110,7 @@ public class EnviHdrTest extends GDALTestCase {
         // /////////////////////////////////////////////////////////////////////
         GridCoverage2D gc = (GridCoverage2D) reader.read(null);
         forceDataLoading(gc);
-
+        
         // /////////////////////////////////////////////////////////////////////
         //
         // read again with subsampling and crop
@@ -169,6 +171,51 @@ public class EnviHdrTest extends GDALTestCase {
         Assert.assertTrue("EnviHdrFormatFactory not registered", found);
         Assert.assertTrue("EnviHdrFormatFactory not available", fac.isAvailable());
         Assert.assertNotNull(new EnviHdrFormatFactory().createFormat());
+    }
+    
+    @Test
+    public void testDimensionNames() throws Exception {
+        if (!testingEnabled()) {
+            return;
+        }
+        String fileName = "multiband.bsq";
+        File file = null;
+        try {
+            file = TestData.file(this, fileName);
+        } catch (FileNotFoundException fnfe) {
+            LOGGER.warning("test-data not found: " + fileName + "\nTests are skipped");
+            return;
+        } catch (IOException ioe) {
+            LOGGER.warning("test-data not found: " + fileName + "\nTests are skipped");
+            return;
+        }
+        // Preparing an useful layout in case the image is striped.
+        final ImageLayout l = new ImageLayout();
+        l.setTileGridXOffset(0).setTileGridYOffset(0).setTileHeight(512).setTileWidth(512);
+
+        Hints hints = new Hints();
+        hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, l));
+
+        // get a reader
+        final URL url = file.toURI().toURL();
+        final Object source = url;
+        final BaseGDALGridCoverage2DReader reader = new EnviHdrReader(source, hints);
+        // Testing the getSource method
+        Assert.assertEquals(reader.getSource(), source);
+
+        // /////////////////////////////////////////////////////////////////////
+        //
+        // read once
+        //
+        // /////////////////////////////////////////////////////////////////////
+        GridCoverage2D gc = (GridCoverage2D) reader.read(null);
+        forceDataLoading(gc);
+        
+        GridSampleDimension[] sampleDimensions = gc.getSampleDimensions();
+        Assert.assertEquals(9, sampleDimensions.length);
+        for (int i = 0; i < sampleDimensions.length; i++) {
+            Assert.assertEquals("Band" + (i + 1), sampleDimensions[i].getDescription().toString());
+        }
     }
 
     

@@ -20,6 +20,7 @@ package org.geotools.coverageio.gdal.dted;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.io.File;
+import java.util.Arrays;
 import java.util.Iterator;
 
 import javax.media.jai.ImageLayout;
@@ -88,6 +89,9 @@ public final class DTEDTest extends GDALTestCase {
         // /////////////////////////////////////////////////////////////////////
         GridCoverage2D gc = (GridCoverage2D) reader.read(null);
         forceDataLoading(gc);
+        
+        // check band names (check they are not all UNKNOWN)
+        System.out.println(Arrays.toString(gc.getSampleDimensions()));
 
         // /////////////////////////////////////////////////////////////////////
         //

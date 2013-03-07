@@ -65,6 +65,9 @@ import org.opengis.parameter.ParameterValue;
  */
 public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
 	
+    final String tempFolderName1 = "waterTempPG";
+    final String tempFolderName2 = "waterTempPG2";
+    
 	/**
 	 * Simple Class for better testing raster manager
 	 * @author Simone Giannecchini, GeoSolutions SAS
@@ -122,16 +125,16 @@ public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void testPostgisIndexing() throws Exception{
-    	final File workDir=new File(TestData.file(this, "."),"watertemp4");
+    	final File workDir=new File(TestData.file(this, "."),tempFolderName1);
     	assertTrue(workDir.mkdir());
     	FileUtils.copyFile(TestData.file(this, "watertemp.zip"), new File(workDir,"watertemp.zip"));
-    	TestData.unzipFile(this, "watertemp4/watertemp.zip");
-	    final URL timeElevURL = TestData.url(this, "watertemp4");
+    	TestData.unzipFile(this, tempFolderName1 + "/watertemp.zip");
+	    final URL timeElevURL = TestData.url(this, tempFolderName1);
 	    
 	    //place datastore.properties file in the dir for the indexing
 	    FileWriter out=null;
 	    try{
-	    	out = new FileWriter(new File(TestData.file(this, "."),"/watertemp4/datastore.properties"));
+	    	out = new FileWriter(new File(TestData.file(this, "."), tempFolderName1 + "/datastore.properties"));
 	    	
 	    	final Set<Object> keyset = fixture.keySet();
 	    	for(Object key:keyset){
@@ -224,16 +227,16 @@ public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
 	 */
 	@Test
 	public void testSortingAndLimiting() throws Exception{
-    	final File workDir=new File(TestData.file(this, "."),"watertemp4");
+    	final File workDir=new File(TestData.file(this, "."), tempFolderName2);
     	assertTrue(workDir.mkdir());
     	FileUtils.copyFile(TestData.file(this, "watertemp.zip"), new File(workDir,"watertemp.zip"));
-    	TestData.unzipFile(this, "watertemp4/watertemp.zip");
-	    final URL timeElevURL = TestData.url(this, "watertemp4");
+    	TestData.unzipFile(this, tempFolderName2 + "/watertemp.zip");
+	    final URL timeElevURL = TestData.url(this, tempFolderName2);
 	    
 	    //place datastore.properties file in the dir for the indexing
 	    FileWriter out=null;
 	    try{
-	    	out = new FileWriter(new File(TestData.file(this, "."),"/watertemp4/datastore.properties"));
+	    	out = new FileWriter(new File(TestData.file(this, "."),tempFolderName2 + "/datastore.properties"));
 	    	
 	    	final Set<Object> keyset = fixture.keySet();
 	    	for(Object key:keyset){
@@ -340,7 +343,8 @@ public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
 		
         // clean up disk
         if (!ImageMosaicReaderTest.INTERACTIVE){        	
-        	FileUtils.deleteDirectory( TestData.file(this, "watertemp4"));
+        	FileUtils.deleteDirectory( TestData.file(this, tempFolderName1));
+        	FileUtils.deleteDirectory( TestData.file(this, tempFolderName2));
         }		
         
         // delete tables
@@ -348,7 +352,8 @@ public class ImageMosaicPostgisIndexTest extends OnlineTestCase {
         Connection connection = DriverManager.getConnection(
            "jdbc:postgresql://"+fixture.getProperty("host")+":"+fixture.getProperty("port")+"/"+fixture.getProperty("database"),fixture.getProperty("user"), fixture.getProperty("passwd"));
         Statement st = connection.createStatement();
-        st.execute("DROP TABLE IF EXISTS watertemp4");
+        st.execute("DROP TABLE IF EXISTS " + tempFolderName1);
+        st.execute("DROP TABLE IF EXISTS " + tempFolderName2);
         st.close();
         connection.close();
         

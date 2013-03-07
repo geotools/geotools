@@ -18,6 +18,7 @@ package org.geotools.gce.imagemosaic;
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
@@ -57,8 +58,13 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
+import javax.media.jai.BorderExtender;
 import javax.media.jai.Histogram;
+import javax.media.jai.ImageLayout;
+import javax.media.jai.JAI;
 import javax.media.jai.RasterFactory;
+import javax.media.jai.TileCache;
+import javax.media.jai.TileScheduler;
 import javax.media.jai.remote.SerializableRenderedImage;
 
 import net.sf.ehcache.Cache;
@@ -74,6 +80,7 @@ import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.factory.Hints;
+import org.geotools.filter.visitor.DefaultFilterVisitor;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilder;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilder.ExceptionEvent;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilder.ProcessingEvent;
@@ -83,8 +90,9 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Converters;
+import org.geotools.util.Range;
 import org.geotools.util.Utilities;
-import org.opengis.filter.sort.SortOrder;
+import org.opengis.filter.spatial.BBOX;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -100,12 +108,13 @@ import com.vividsolutions.jts.geom.Geometry;
  * @source $URL$
  */
 public class Utils {
+    
+    public static final String RANGE_SPLITTER_CHAR = ";";
 
     public final static String INDEXER_PROPERTIES = "indexer.properties";
     
     /** EHCache instance to cache histograms */ 
     private static Cache ehcache;    
-    
     
     /** RGB to GRAY coefficients (for Luminance computation) */
     public final static double RGB_TO_GRAY_MATRIX [][]= {{ 0.114, 0.587, 0.299, 0 }};
@@ -150,6 +159,34 @@ public class Utils {
         public static final String RESOLUTION_LEVELS = "ResolutionLevels";
         public static final String PROPERTY_COLLECTORS = "PropertyCollectors";
         public final static String CACHING= "Caching";        
+    }
+        /**
+     * Extracts a bbox from a filter in case there is at least one.
+     * 
+     * I am simply looking for the BBOX filter but I am sure we could
+     * use other filters as well. I will leave this as a todo for the moment.
+     * 
+     * @author Simone Giannecchini, GeoSolutions SAS.
+     * @todo TODO use other spatial filters as well
+     */
+    public static class BBOXFilterExtractor extends DefaultFilterVisitor{
+    
+    	public ReferencedEnvelope getBBox() {
+    		return bbox;
+    	}
+    	private ReferencedEnvelope bbox;
+    	@Override
+    	public Object visit(BBOX filter, Object data) {
+    		final ReferencedEnvelope bbox= ReferencedEnvelope.reference(filter.getBounds());
+    		if(this.bbox!=null){
+    		    this.bbox=(ReferencedEnvelope) this.bbox.intersection(bbox);
+    		}
+    		else{
+    		    this.bbox=bbox;
+    		}
+    		return super.visit(filter, data);
+    	}
+    	
     }
         /**
 	 * Logger.
@@ -736,13 +773,7 @@ public class Utils {
 			// create a datastore as instructed
 			final DataStoreFactorySpi spi = (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
 			return createDataStoreParamsFromPropertiesFile(properties, spi);
-		} catch (ClassNotFoundException e) {
-			final IOException ioe = new IOException();
-			throw (IOException) ioe.initCause(e);
-		} catch (InstantiationException e) {
-			final IOException ioe = new IOException();
-			throw (IOException) ioe.initCause(e);
-		} catch (IllegalAccessException e) {
+		} catch (Exception e) {
 			final IOException ioe = new IOException();
 			throw (IOException) ioe.initCause(e);
 		}
@@ -881,8 +912,9 @@ public class Utils {
 		final Param[] paramsInfo = spi.getParametersInfo();
 		for (Param p : paramsInfo) {
 			// search for this param and set the value if found
-			if (properties.containsKey(p.key))
-				params.put(p.key, (Serializable) Converters.convert(properties.getProperty(p.key), p.type));
+			if (properties.containsKey(p.key)){
+			    params.put(p.key, (Serializable) Converters.convert(properties.getProperty(p.key), p.type));
+			}
 			else if (p.required && p.sample == null)
 				throw new IOException("Required parameter missing: "+ p.toString());
 		}
@@ -1315,4 +1347,64 @@ public class Utils {
 	    // turn it into a rectangle
 	    return new Rectangle2D.Double(minx, miny, maxx - minx, maxy - miny).getBounds();
 	}
+
+    public static ImageLayout getImageLayoutHint(RenderingHints renderHints) {
+        if (renderHints == null||!renderHints.containsKey(JAI.KEY_IMAGE_LAYOUT)) {
+            return null;
+        } else {
+            return (ImageLayout) renderHints.get(JAI.KEY_IMAGE_LAYOUT);
+        }
+    }
+
+    public static TileCache getTileCacheHint(RenderingHints renderHints) {
+        if (renderHints == null||!renderHints.containsKey(JAI.KEY_TILE_CACHE)) {
+            return null;
+        } else {
+            return (TileCache) renderHints.get(JAI.KEY_TILE_CACHE);
+        }
+    }
+
+    public static BorderExtender getBorderExtenderHint(RenderingHints renderHints) {
+        if (renderHints == null||!renderHints.containsKey(JAI.KEY_BORDER_EXTENDER)) {
+            return null;
+        } else {
+            return (BorderExtender) renderHints.get(JAI.KEY_BORDER_EXTENDER);
+        }
+    }
+    
+    public static TileScheduler getTileSchedulerHint(RenderingHints renderHints) {
+        if (renderHints == null||!renderHints.containsKey(JAI.KEY_TILE_SCHEDULER)) {
+            return null;
+        } else {
+            return (TileScheduler) renderHints.get(JAI.KEY_TILE_SCHEDULER);
+        }
+    }
+    
+    /**
+     * Create a Range of numbers from a couple of values.
+     * @param firstValue
+     * @param secondValue
+     * @return
+     */
+    public static Range<? extends Number> createRange(Object firstValue, Object secondValue) {
+        Class<? extends Object> targetClass = firstValue.getClass();
+        Class<? extends Object> target2Class = secondValue.getClass();
+        if (targetClass != target2Class) {
+            throw new IllegalArgumentException("The 2 values need to belong to the same class:\n"
+                    + "firstClass = " + targetClass.toString() + "; secondClass = " + targetClass.toString()); 
+        }
+        if (targetClass == Byte.class) {
+            return new Range<Byte>(Byte.class, (Byte) firstValue, (Byte) secondValue);
+        } else if (targetClass == Short.class) {
+            return new Range<Short>(Short.class, (Short) firstValue, (Short) secondValue);
+        } else if (targetClass == Integer.class) {
+            return new Range<Integer>(Integer.class, (Integer) firstValue, (Integer) secondValue);
+        } else if (targetClass == Long.class) {
+            return new Range<Long>(Long.class, (Long) firstValue, (Long) secondValue);
+        } else if (targetClass == Float.class) {
+            return new Range<Float>(Float.class, (Float) firstValue, (Float) secondValue);
+        } else if (targetClass == Double.class) {
+            return new Range<Double>(Double.class, (Double) firstValue, (Double) secondValue);
+        } else return null;
+    }
 }

@@ -57,7 +57,6 @@ import org.geotools.factory.GeoTools;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.collection.AbstractFeatureVisitor;
 import org.geotools.feature.visitor.FeatureCalc;
-import org.geotools.filter.visitor.DefaultFilterVisitor;
 import org.geotools.gce.imagemosaic.GranuleDescriptor;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.gce.imagemosaic.PathType;
@@ -72,7 +71,6 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.spatial.BBOX;
 import org.opengis.geometry.BoundingBox;
 
 /**
@@ -97,40 +95,6 @@ class GTDataStoreGranuleCatalog extends AbstractGranuleCatalog {
 	final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GTDataStoreGranuleCatalog.class);
     
 	final static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints() );
-	
-	/**
-	 * Extracts a bbox from a filter in case there is at least one.
-	 * 
-	 * I am simply looking for the BBOX filter but I am sure we could
-	 * use other filters as well. I will leave this as a todo for the moment.
-	 * 
-	 * @author Simone Giannecchini, GeoSolutions SAS.
-	 * @todo TODO use other spatial filters as well
-	 */
-	@SuppressWarnings("deprecation")
-	static class BBOXFilterExtractor extends DefaultFilterVisitor{
-
-		public ReferencedEnvelope getBBox() {
-			return bbox;
-		}
-		private ReferencedEnvelope bbox;
-		@Override
-		public Object visit(BBOX filter, Object data) {
-			final ReferencedEnvelope bbox= new ReferencedEnvelope(
-					filter.getMinX(),
-					filter.getMaxX(),
-					filter.getMinY(),
-					filter.getMaxY(),
-					null);
-			if(this.bbox!=null)
-				this.bbox=(ReferencedEnvelope) this.bbox.intersection(bbox);
-			else
-				this.bbox=bbox;
-			return super.visit(filter, data);
-		}
-		
-	}
-	
 	
 	private DataStore tileIndexStore;
 
@@ -201,8 +165,9 @@ class GTDataStoreGranuleCatalog extends AbstractGranuleCatalog {
 			}
 
 			// is this a new store? If so we do not set any properties
-			if(create)
-				return;
+			if(create){
+			    return;
+			}
 				
 			// if this is not a new store let's extract basic properties from it
 			if(params.containsKey("TypeName")){
@@ -465,9 +430,10 @@ class GTDataStoreGranuleCatalog extends AbstractGranuleCatalog {
 			// reused
 			//
 			final SimpleFeatureSource featureSource = tileIndexStore.getFeatureSource(this.typeName);
-			if (featureSource == null) 
+			if (featureSource == null){
 				throw new NullPointerException(
-						"The provided SimpleFeatureSource is null, it's impossible to create an index!");			
+						"The provided SimpleFeatureSource is null, it's impossible to create an index!");	
+			}
 			final SimpleFeatureCollection features = featureSource.getFeatures( q );
 			if (features == null) 
 				throw new NullPointerException(
@@ -663,7 +629,9 @@ class GTDataStoreGranuleCatalog extends AbstractGranuleCatalog {
 		try{
 			lock.lock();
 			checkStore();
-			
+			if(typeName==null){
+			    return null;
+			}
 			return tileIndexStore.getSchema(typeName);
 		}finally{
 			lock.unlock();

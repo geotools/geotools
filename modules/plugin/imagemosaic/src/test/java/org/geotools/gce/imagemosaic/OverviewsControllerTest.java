@@ -35,7 +35,6 @@ import junit.textui.TestRunner;
 
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.geotools.coverage.grid.GridEnvelope2D;
-import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.DecimationPolicy;
 import org.geotools.coverage.grid.io.GridFormatFinder;
@@ -46,7 +45,6 @@ import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.test.TestData;
@@ -57,7 +55,6 @@ import org.junit.Test;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.TransformException;
@@ -69,28 +66,28 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  * @author Daniele Romagnoli, GeoSolutions SAS
  * 
- *
- *
+ * 
+ * 
  * @source $URL$
  */
-public class OverviewsControllerTest extends Assert{
+public class OverviewsControllerTest extends Assert {
 
     static double THRESHOLD = 0.000001;
-    
+
     static class TestSet {
-        
+
         public TestSet(OverviewConfig[] ot) {
             super();
             this.ot = ot;
         }
 
         double resolution;
-        
+
         OverviewConfig[] ot;
     }
-    
+
     static class GranuleParams {
-        
+
         public GranuleParams(int imageIndex, int ssx, int ssy) {
             super();
             this.imageIndex = imageIndex;
@@ -99,14 +96,14 @@ public class OverviewsControllerTest extends Assert{
         }
 
         int imageIndex;
-        
+
         int ssx;
-        
+
         int ssy;
     }
-    
+
     static class OverviewConfig {
-        
+
         public OverviewConfig(OverviewPolicy ovPolicy, GranuleParams g1, GranuleParams g2) {
             super();
             this.ovPolicy = ovPolicy;
@@ -115,22 +112,13 @@ public class OverviewsControllerTest extends Assert{
         }
 
         OverviewPolicy ovPolicy;
-        
+
         GranuleParams g1;
-        
+
         GranuleParams g2;
-        
+
     }
-    
-    private static CoordinateReferenceSystem WGS84;
-    static{
-        try{
-            WGS84 = CRS.decode("EPSG:4326",true);
-        } catch (FactoryException fe){
-            WGS84 = DefaultGeographicCRS.WGS84;
-        }
-    }
-    
+
     private final static TestSet at1 = new TestSet(new OverviewConfig[]{
             new OverviewConfig(OverviewPolicy.QUALITY, new GranuleParams(3, 1, 1), new GranuleParams(2, 1, 2)),
             new OverviewConfig(OverviewPolicy.SPEED, new GranuleParams(4, 1, 1), new GranuleParams(2, 1, 2)),
@@ -141,23 +129,15 @@ public class OverviewsControllerTest extends Assert{
             new OverviewConfig(OverviewPolicy.SPEED, new GranuleParams(4, 1, 1), new GranuleParams(2, 1, 2)),
             new OverviewConfig(OverviewPolicy.NEAREST, new GranuleParams(3, 1, 1), new GranuleParams(2, 1, 2)),
             new OverviewConfig(OverviewPolicy.IGNORE, new GranuleParams(0, 9, 9), new GranuleParams(0, 5, 5))});
-    
-    
-    
+
     private final static Logger LOGGER = Logger.getLogger(OverviewsControllerTest.class.toString());
-    
+
     public static junit.framework.Test suite() {
         return new JUnit4TestAdapter(OverviewsControllerTest.class);
     }
 
-    private static final ReferencedEnvelope TEST_BBOX_A = new ReferencedEnvelope(-180,0,-90,90,WGS84);
-    private static final ReferencedEnvelope TEST_BBOX_B = new ReferencedEnvelope(0,180,0,90,WGS84);
-    
-    
-
     private static final ImageReaderSpi spi = new TIFFImageReaderSpi();
     
-    private URL heterogeneousGranulesURL;
 	
     /**
      * Tests the {@link OverviewsController} with support for different
@@ -175,17 +155,28 @@ public class OverviewsControllerTest extends Assert{
     public void testHeterogeneousGranules() throws IOException,
             MismatchedDimensionException, FactoryException, TransformException {
 
+        final CoordinateReferenceSystem WGS84 = CRS.decode("EPSG:4326", true);
+        final ReferencedEnvelope TEST_BBOX_A = new ReferencedEnvelope(-180, 0, -90, 90, WGS84);
+        final ReferencedEnvelope TEST_BBOX_B = new ReferencedEnvelope(0, 180, 0, 90, WGS84);
+
+        URL heterogeneousGranulesURL = TestData.url(this, "heterogeneous");
         // //
         //
         // Initialize mosaic variables
         //
         // //
-        final AbstractGridFormat format = getFormat(heterogeneousGranulesURL);
-        final ImageMosaicReader reader = getReader(heterogeneousGranulesURL, format);
+        final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, WGS84);
+        final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(heterogeneousGranulesURL, hints);
+        Assert.assertNotNull(format);
+        Assert.assertFalse("UknownFormat", format instanceof UnknownFormat);
+
+        final ImageMosaicReader reader = (ImageMosaicReader) format.getReader(heterogeneousGranulesURL, hints);
+        Assert.assertNotNull(reader);
+
         final int nOv = reader.getNumberOfOvervies();
         final double[] hRes = reader.getHighestRes();
         final RasterManager rasterManager = new RasterManager(reader);
-        
+
         // //
         //
         // Initialize granules related variables 
@@ -197,15 +188,15 @@ public class OverviewsControllerTest extends Assert{
         final ImageReadParam readParamsG2 = new ImageReadParam();
         int imageIndexG1 = 0;
         int imageIndexG2 = 0;
-        
+
         final GranuleDescriptor granuleDescriptor1 = new GranuleDescriptor(g1File.getAbsolutePath(), TEST_BBOX_A, spi, (Geometry) null, true);
         final GranuleDescriptor granuleDescriptor2 = new GranuleDescriptor(g2File.getAbsolutePath(), TEST_BBOX_B, spi, (Geometry) null, true);
         assertNotNull(granuleDescriptor1.toString());
         assertNotNull(granuleDescriptor2.toString());
-        
+
         final OverviewsController ovControllerG1 = granuleDescriptor1.overviewsController;
         final OverviewsController ovControllerG2 = granuleDescriptor2.overviewsController;
-        
+
         // //
         //
         // Initializing read request
@@ -219,16 +210,15 @@ public class OverviewsControllerTest extends Assert{
         geMapper.setPixelAnchor(PixelInCell.CELL_CENTER);
         final AffineTransform gridToWorld = geMapper.createAffineTransform();
         final double requestedResolution[] = new double[]{XAffineTransform.getScaleX0(gridToWorld), XAffineTransform.getScaleY0(gridToWorld)}; 
-        
+
         TestSet at = null;
         if (nOv == 4 && Math.abs(hRes[0] - 0.833333333333) <= THRESHOLD) {
             at = at1;
-        } else if (nOv == 2 && Math.abs(hRes[0] - 1.40625) <= THRESHOLD) { 
+        } else if (nOv == 2 && Math.abs(hRes[0] - 1.40625) <= THRESHOLD) {
             at = at2;
         } else {
             return;
         }
-
         
         // //
         //
@@ -247,67 +237,21 @@ public class OverviewsControllerTest extends Assert{
             assertSame(at.ot[i].g1.ssy, readParamsG1.getSourceYSubsampling());
             assertSame(at.ot[i].g2.ssx, readParamsG2.getSourceXSubsampling());
             assertSame(at.ot[i].g2.ssy, readParamsG2.getSourceYSubsampling());
-
         }
     }
 
-    /**
-     * returns an {@link AbstractGridCoverage2DReader} for the provided
-     * {@link URL} and for the providede {@link AbstractGridFormat}.
-     * 
-     * @param testURL
-     *            points to a valid object to create an
-     *            {@link AbstractGridCoverage2DReader} for.
-     * @param format
-     *            to use for instantiating such a reader.
-     * @return a suitable {@link ImageMosaicReader}.
-     * @throws FactoryException
-     * @throws NoSuchAuthorityCodeException
-     */
-    private ImageMosaicReader getReader(URL testURL, final AbstractGridFormat format)
-            throws NoSuchAuthorityCodeException, FactoryException {
-
-        final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, WGS84);
-        final ImageMosaicReader reader = (ImageMosaicReader) format.getReader(testURL, hints);
-        Assert.assertNotNull(reader);
-        return reader;
-    }
-
-    /**
-     * Tries to get an {@link AbstractGridFormat} for the provided URL.
-     * 
-     * @param testURL
-     *            points to a shapefile that is the index of a certain mosaic.
-     * @return a suitable {@link AbstractGridFormat}.
-     * @throws FactoryException
-     * @throws NoSuchAuthorityCodeException
-     */
-    private AbstractGridFormat getFormat(URL testURL) throws NoSuchAuthorityCodeException, FactoryException {
-
-        final Hints hints = new Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, WGS84);
-
-        // Get format
-        final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(testURL, hints);
-        Assert.assertNotNull(format);
-        Assert.assertFalse("UknownFormat", format instanceof UnknownFormat);
-        return format;
-    }
 
     /**
      * @param args
      */
     public static void main(String[] args) {
         TestRunner.run(OverviewsControllerTest.suite());
-
     }
 
     @Before
     public void setUp() throws Exception {
         // remove generated file
-
         cleanUp();
-
-        heterogeneousGranulesURL = TestData.url(this, "heterogeneous");
     }
 
     /**
@@ -334,5 +278,4 @@ public class OverviewsControllerTest extends Assert{
     public void tearDown() throws FileNotFoundException, IOException {
         cleanUp();
     }
-
 }

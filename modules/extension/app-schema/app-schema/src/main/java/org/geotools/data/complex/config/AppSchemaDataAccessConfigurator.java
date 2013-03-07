@@ -63,6 +63,8 @@ import org.geotools.filter.FilterFactoryImplReportInvalidProperty;
 import org.geotools.filter.expression.FeaturePropertyAccessorFactory;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
+import org.geotools.jdbc.JDBCFeatureSource;
+import org.geotools.jdbc.JDBCFeatureStore;
 import org.geotools.xml.resolver.SchemaCache;
 import org.geotools.xml.resolver.SchemaCatalog;
 import org.geotools.xml.resolver.SchemaResolver;
@@ -264,9 +266,12 @@ public class AppSchemaDataAccessConfigurator {
 
                 // set original schema locations for encoding
                 target.getType().getUserData().put("schemaURI", schemaURIs);
+                
+                boolean isDatabaseBackend = featureSource instanceof JDBCFeatureSource
+                        || featureSource instanceof JDBCFeatureStore;
 
                 List attMappings = getAttributeMappings(target, dto.getAttributeMappings(), dto
-                        .getItemXpath(), crs);
+                        .getItemXpath(), crs, isDatabaseBackend);
 
                 FeatureTypeMapping mapping;
 
@@ -311,7 +316,7 @@ public class AppSchemaDataAccessConfigurator {
      * @return
      */
     private List getAttributeMappings(final AttributeDescriptor root, final List attDtos,
-            String itemXpath, CoordinateReferenceSystem crs) throws IOException {
+            String itemXpath, CoordinateReferenceSystem crs, boolean isJDBC) throws IOException {
         List attMappings = new LinkedList();
 
         for (Iterator it = attDtos.iterator(); it.hasNext();) {
@@ -390,7 +395,7 @@ public class AppSchemaDataAccessConfigurator {
                     sourceFieldSteps = XPath.steps(root, sourceField, namespaces);
                 }
                 // a nested feature
-                if (isJoining()) {
+                if (isJoining() && isJDBC) {
                     attMapping = new JoiningNestedAttributeMapping(idExpression, sourceExpression,
                             targetXPathSteps, isMultiValued, clientProperties, elementExpr,
                             sourceFieldSteps, namespaces);

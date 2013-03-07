@@ -122,7 +122,7 @@ public class AppSchemaDataAccessConfigurator {
      */
     public static boolean isJoining() {
         String s=AppSchemaDataAccessRegistry.getAppSchemaProperties().getProperty(PROPERTY_JOINING);
-        return s!=null && s.equalsIgnoreCase("true");
+        return s==null || s.equalsIgnoreCase("true");
     }
 
     /**

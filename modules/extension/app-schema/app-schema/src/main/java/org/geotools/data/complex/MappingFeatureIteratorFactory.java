@@ -144,6 +144,19 @@ public class MappingFeatureIteratorFactory {
             }
             // END OF HACK
             FeatureSource mappedSource = mapping.getSource();
+            
+            if (isJoining && !(mappedSource instanceof JDBCFeatureSource
+                    || mappedSource instanceof JDBCFeatureStore)) {
+            	// check if joining is explicitly set for non database backends
+            	if (AppSchemaDataAccessConfigurator.isJoiningSet()) {
+            		throw new IllegalArgumentException(
+                            "Joining queries are only supported on JDBC data stores");	
+            	} else {
+            		// override default behaviour
+            		// this is not intended
+            		isJoining = false;
+            	}
+            }
             if (isJoining || mappedSource instanceof JDBCFeatureSource
                     || mappedSource instanceof JDBCFeatureStore) {
                 // has database as data source, we can use the data source filter capabilities

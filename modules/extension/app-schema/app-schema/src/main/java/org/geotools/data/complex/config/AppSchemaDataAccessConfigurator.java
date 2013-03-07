@@ -124,6 +124,11 @@ public class AppSchemaDataAccessConfigurator {
         String s=AppSchemaDataAccessRegistry.getAppSchemaProperties().getProperty(PROPERTY_JOINING);
         return s==null || s.equalsIgnoreCase("true");
     }
+    
+    public static boolean isJoiningSet() {
+        String s=AppSchemaDataAccessRegistry.getAppSchemaProperties().getProperty(PROPERTY_JOINING);
+        return s!=null;
+    }
 
     /**
      * Creates a new ComplexDataStoreConfigurator object.

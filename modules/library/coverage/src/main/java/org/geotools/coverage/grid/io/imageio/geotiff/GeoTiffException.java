@@ -183,13 +183,15 @@ public final class GeoTiffException extends IOException {
 		}
 
 		// do all the GeoKeys
-    int i = 1;
-    for( GeoKeyEntry geokey : metadata.getGeoKeys() ) {
-      message.print("GeoKey #" + i + ": ");
-      message.println("Key = " + geokey.getKeyID() + ", Value = "
-          + metadata.getGeoKey(geokey.getKeyID()));
-      i++;
-    }
+		if(metadata != null) {
+            int i = 1;
+            for( GeoKeyEntry geokey : metadata.getGeoKeys() ) {
+              message.print("GeoKey #" + i + ": ");
+              message.println("Key = " + geokey.getKeyID() + ", Value = "
+                  + metadata.getGeoKey(geokey.getKeyID()));
+              i++;
+            }
+		}
 
 		// print out the localized message
 		Throwable t = getCause();

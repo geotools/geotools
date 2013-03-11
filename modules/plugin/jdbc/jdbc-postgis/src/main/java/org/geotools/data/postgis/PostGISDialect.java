@@ -86,6 +86,7 @@ public class PostGISDialect extends BasicSQLDialect {
             put("GEOMETRYCOLLECTION", GeometryCollection.class);
             put("GEOMETRYCOLLECTIONM", GeometryCollection.class);
             put("BYTEA", byte[].class);
+            put("UUID", UUID.class);
         }
     };
 
@@ -100,6 +101,7 @@ public class PostGISDialect extends BasicSQLDialect {
             put(MultiPolygon.class, "MULTIPOLYGON");
             put(GeometryCollection.class, "GEOMETRYCOLLECTION");
             put(byte[].class, "BYTEA");
+            put(UUID.class, "UUID");
         }
     };
     
@@ -594,6 +596,7 @@ public class PostGISDialect extends BasicSQLDialect {
 
         // jdbc metadata for geom columns reports DATA_TYPE=1111=Types.OTHER
         mappings.put(Geometry.class, Types.OTHER);
+        mappings.put(UUID.class, Types.OTHER);
     }
 
     @Override
@@ -616,6 +619,7 @@ public class PostGISDialect extends BasicSQLDialect {
         mappings.put("timetz", Time.class);
         mappings.put("timestamp", Timestamp.class);
         mappings.put("timestamptz", Timestamp.class);
+        mappings.put("uuid", UUID.class);        
     }
     
     @Override

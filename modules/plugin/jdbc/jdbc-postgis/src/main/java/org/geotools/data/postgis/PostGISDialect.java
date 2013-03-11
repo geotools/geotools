@@ -67,6 +67,7 @@ import com.vividsolutions.jts.io.WKTReader;
  */
 public class PostGISDialect extends BasicSQLDialect {
 
+	//geometry type to class map
     final static Map<String, Class> TYPE_TO_CLASS_MAP = new HashMap<String, Class>() {
         {
             put("GEOMETRY", Geometry.class);
@@ -86,10 +87,10 @@ public class PostGISDialect extends BasicSQLDialect {
             put("GEOMETRYCOLLECTION", GeometryCollection.class);
             put("GEOMETRYCOLLECTIONM", GeometryCollection.class);
             put("BYTEA", byte[].class);
-            put("UUID", UUID.class);
         }
     };
 
+    //geometry class to type map
     final static Map<Class, String> CLASS_TO_TYPE_MAP = new HashMap<Class, String>() {
         {
             put(Geometry.class, "GEOMETRY");
@@ -101,7 +102,6 @@ public class PostGISDialect extends BasicSQLDialect {
             put(MultiPolygon.class, "MULTIPOLYGON");
             put(GeometryCollection.class, "GEOMETRYCOLLECTION");
             put(byte[].class, "BYTEA");
-            put(UUID.class, "UUID");
         }
     };
     

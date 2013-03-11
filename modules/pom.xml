@@ -52,28 +52,6 @@
   </dependencies>
 
 
-  <!-- =========================================================== -->
-  <!--     Build Configuration                                     -->
-  <!--         copies all JARs in a single directory.              -->
-  <!-- =========================================================== -->
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.geotools.maven</groupId>
-        <artifactId>jar-collector</artifactId>
-        <version>${project.version}</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>collect</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
-  
-
   <reporting>
     <plugins>
       <!-- ======================================================= -->
@@ -278,4 +256,29 @@
   </modules>
 
 
+  <!-- =========================================================== -->
+  <!--     Build Configuration                                     -->
+  <!--         copies all JARs in a single directory.              -->
+  <!-- =========================================================== -->
+  <profiles>
+    <profile>
+      <id>collect</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.geotools.maven</groupId>
+            <artifactId>jar-collector</artifactId>
+            <version>${project.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>collect</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

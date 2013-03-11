@@ -125,7 +125,7 @@ popd > /dev/null
 # build the release
 if [ -z $SKIP_BUILD ]; then
   echo "building release"
-  mvn $MAVEN_FLAGS -DskipTests -Dall clean install
+  mvn $MAVEN_FLAGS -DskipTests -Dall clean -Pcollect install
   mvn $MAVEN_FLAGS -DskipTests assembly:assembly
 fi
 

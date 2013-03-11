@@ -114,6 +114,7 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.MathTransformFactory;
 
+import com.sun.imageio.plugins.jpeg.JPEGImageWriterSpi;
 import com.sun.imageio.plugins.png.PNGImageWriter;
 import com.sun.media.imageioimpl.common.BogusColorSpace;
 import com.sun.media.imageioimpl.common.PackageUtil;
@@ -142,6 +143,15 @@ import com.sun.media.jai.util.ImageUtil;
  */
 public class ImageWorker {
     
+    /** CODEC_LIB_AVAILABLE */
+    private static final boolean CODEC_LIB_AVAILABLE = PackageUtil.isCodecLibAvailable();
+
+    /** JDK_JPEG_IMAGE_WRITER_SPI */
+    private static final JPEGImageWriterSpi JDK_JPEG_IMAGE_WRITER_SPI = new JPEGImageWriterSpi();
+
+    /** IMAGEIO_JPEG_IMAGE_WRITER_SPI */
+    private static final CLibJPEGImageWriterSpi IMAGEIO_JPEG_IMAGE_WRITER_SPI = new CLibJPEGImageWriterSpi();
+
     /** CS_PYCC */
     private static final ColorSpace CS_PYCC = ColorSpace.getInstance(ColorSpace.CS_PYCC);
 
@@ -2711,8 +2721,9 @@ public class ImageWorker {
             throws IOException
     {
         // Reformatting this image for jpeg.
-        if(LOGGER.isLoggable(Level.FINER))
-        	LOGGER.finer("Encoding input image to write out as JPEG.");
+        if(LOGGER.isLoggable(Level.FINE)){
+            LOGGER.fine("Encoding input image to write out as JPEG.");
+        }
 
         // go to component color model if needed
         ColorModel cm = image.getColorModel();        
@@ -2732,30 +2743,40 @@ public class ImageWorker {
         
 
         // Getting a writer.
-        if(LOGGER.isLoggable(Level.FINER))
-        	LOGGER.finer("Getting a JPEG writer and configuring it.");
-        final Iterator<ImageWriter> it = ImageIO.getImageWritersByFormatName("JPEG");
-        if (!it.hasNext()) {
-            throw new IllegalStateException(Errors.format(ErrorKeys.NO_IMAGE_WRITER));
+        if(LOGGER.isLoggable(Level.FINE)){
+            LOGGER.fine("Getting a JPEG writer and configuring it.");
         }
-        ImageWriter writer = it.next();
-        if (!nativeAcc && writer.getClass().getName().equals(
-                "com.sun.media.imageioimpl.plugins.jpeg.CLibJPEGImageWriter"))
-        {
-            writer = it.next();
-        }     
-        if((!PackageUtil.isCodecLibAvailable()||!(writer.getOriginatingProvider() instanceof CLibJPEGImageWriterSpi))
+        ImageWriter writer=null;
+        if (nativeAcc&&CODEC_LIB_AVAILABLE){
+            try{
+                writer = IMAGEIO_JPEG_IMAGE_WRITER_SPI.createWriterInstance();
+            }catch (Exception e) {
+                if(LOGGER.isLoggable(Level.INFO)){
+                    LOGGER.log(Level.INFO,"Unable to instantiate CLIB JPEG ImageWriter",e);
+                }
+                writer=null;
+            }
+        } 
+        // in case we want the JDK one or in case the native one is not at hand we use the JDK one
+        if(writer==null){
+            writer = JDK_JPEG_IMAGE_WRITER_SPI.createWriterInstance();
+        }
+        
+        // only imageio IO does JPEG-LS compression
+        if((!CODEC_LIB_AVAILABLE||!(writer.getOriginatingProvider() instanceof CLibJPEGImageWriterSpi))
         		&&
         		compression.equals("JPEG-LS")
-        	)
-        		throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2,"compression","JPEG-LS"));
+        	){
+            throw new IOException(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2,"compression","JPEG-LS"));
+        }
         
 
         // Compression is available on both lib
         final ImageWriteParam iwp = writer.getDefaultWriteParam();
         final ImageOutputStream outStream = ImageIOExt.createImageOutputStream(image, destination);
-        if(outStream==null)
-        	throw new IIOException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1,"stream"));
+        if(outStream==null){
+            throw new IIOException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1,"stream"));
+        }
          
         iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
         iwp.setCompressionType(compression);        // Lossy compression.
@@ -2766,13 +2787,13 @@ public class ImageWorker {
             try {
                 param.setProgressiveMode(JPEGImageWriteParam.MODE_DEFAULT);
             } catch (UnsupportedOperationException e) {
-                throw (IOException) new IOException().initCause(e);
-                // TODO: inline cause when we will be allowed to target Java 6.
+                throw new IOException(e);
             }
         }
 
-        if(LOGGER.isLoggable(Level.FINER))
-        	LOGGER.finer("Writing out...");
+        if(LOGGER.isLoggable(Level.FINE)){
+            LOGGER.fine("Writing out...");
+        }
         
         try{
 
@@ -2803,7 +2824,9 @@ public class ImageWorker {
         		if(LOGGER.isLoggable(Level.FINEST))
 					LOGGER.log(Level.FINEST,e.getLocalizedMessage(),e);
 			}        	
-            
+                if(LOGGER.isLoggable(Level.FINE)){
+                    LOGGER.fine("Writing out... Done!");
+                }
             
         }
        

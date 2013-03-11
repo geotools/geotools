@@ -479,7 +479,8 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                     sql.append(" FROM ");
                     getDataStore().encodeTableName(lastTableName, sql, query.getHints());                                        
                     sql.append(" ").append(toSQL.encodeToString(filter));
-                    sql.append(" ) " + TEMP_FILTER_ALIAS);
+                    sql.append(" ) ");
+                    getDataStore().dialect.encodeTableName(TEMP_FILTER_ALIAS, sql);
                     sql.append(" ON ( ");
                     for (int i=0; i < lastSortBy.length; i++) {
                         encodeColumnName2(lastSortBy[i].getPropertyName().getPropertyName(), lastTableAlias , sql, null);            

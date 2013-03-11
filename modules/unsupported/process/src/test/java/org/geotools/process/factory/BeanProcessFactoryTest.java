@@ -2,6 +2,7 @@ package org.geotools.process.factory;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -189,6 +190,19 @@ public class BeanProcessFactoryTest {
         assertEquals(Short.MAX_VALUE, results.get("short"));
         assertEquals(DefaultsProcess.GREET_DEFAULT, results.get("greet"));
         assertEquals(DEFAULT_RECTANGLE, results.get("rect"));
+    }
+    
+    @Test
+    public void testMinMaxAcceptedValues() throws Exception {
+        //test that the annotation is correctly generating the parameter metadata
+        Map<String, Parameter<?>> params = factory.getParameterInfo(new NameImpl("bean", "Defaults"));        
+        assertEquals(2.0,((Parameter)params.get("int")).metadata.get(Parameter.MAX));
+        assertEquals(-1.0,((Parameter)params.get("int")).metadata.get(Parameter.MIN));
+        assertEquals(2.5, ((Parameter)params.get("double")).metadata.get(Parameter.MAX));
+        assertEquals(-1.5, ((Parameter)params.get("double")).metadata.get(Parameter.MIN));
+        //check the null values with a  parameter that does not have that annotation parameter filled
+        assertNull(((Parameter)params.get("short")).metadata.get(Parameter.MAX));
+        assertNull(((Parameter)params.get("short")).metadata.get(Parameter.MIN));        
     }
 
 

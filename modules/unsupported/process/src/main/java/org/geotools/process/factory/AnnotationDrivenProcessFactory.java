@@ -265,6 +265,19 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
             throw new IllegalArgumentException("Optional values cannot be primitives, " +
             		"use the associated object wrapper instead: " + info.name() + " in process " + process.getName());
         }
+        
+        HashMap<String, Object> metadata = new HashMap<String, Object>();
+        if (info != null){
+        	double minValue = info.minValue();
+        	if (minValue != Double.NEGATIVE_INFINITY){
+        		metadata.put(Parameter.MIN, Double.valueOf(minValue));
+        	}
+        	double maxValue = info.maxValue();
+        	if (maxValue != Double.POSITIVE_INFINITY){
+        		metadata.put(Parameter.MAX, Double.valueOf(maxValue));
+        	}
+        }
+    
         Object defaultValue = null;
         if(info != null && !DescribeParameter.DEFAULT_NULL.equals(info.defaultValue())) {
             String strDefault = info.defaultValue();
@@ -283,15 +296,16 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
         }
         
         
+        
         // finally build the parameter
         if (info != null) {
             return new Parameter(info.name(), type, new SimpleInternationalString(info.name()),
                     new SimpleInternationalString(info.description()), min > 0, min, max, defaultValue, 
-                    null);
+                    metadata);
         } else {
             return new Parameter("arg" + i, type, new SimpleInternationalString("Argument " + i),
                     new SimpleInternationalString("Input " + type.getName() + " value"), min > 0,
-                    min, max, defaultValue, null);
+                    min, max, defaultValue, metadata);
         }
     }
 

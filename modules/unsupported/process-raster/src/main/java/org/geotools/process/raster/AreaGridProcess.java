@@ -60,8 +60,8 @@ public class AreaGridProcess implements RasterProcess {
     @DescribeResult(name = "result", description = "Output raster")
     public GridCoverage2D execute(
             @DescribeParameter(name = "envelope", description = "Bounding box for the computed raster, in WGS84 geographic coordinates.") ReferencedEnvelope bounds,
-            @DescribeParameter(name = "width", description = "Width of the output raster in pixels") int width,
-            @DescribeParameter(name = "height", description = "Height of the output raster in pixels") int height)
+            @DescribeParameter(name = "width", description = "Width of the output raster in pixels", minValue = 1) int width,
+            @DescribeParameter(name = "height", description = "Height of the output raster in pixels", minValue = 1) int height)
             throws ProcessException {
 
         // basic checks

@@ -183,8 +183,8 @@ public class VectorToRasterProcess implements VectorProcess {
     @DescribeResult(name = "result", description = "Rasterized grid")
     public GridCoverage2D execute(
         @DescribeParameter(name = "features", description = "Features to process", min = 1, max = 1) SimpleFeatureCollection features,
-        @DescribeParameter(name = "rasterWidth", description = "Width of the output grid in pixels", min = 1, max = 1) Integer rasterWidth,
-        @DescribeParameter(name = "rasterHeight", description = "Height of the output grid in pixels", min = 1, max = 1) Integer rasterHeight,
+        @DescribeParameter(name = "rasterWidth", description = "Width of the output grid in pixels", min = 1, max = 1, minValue = 1) Integer rasterWidth,
+        @DescribeParameter(name = "rasterHeight", description = "Height of the output grid in pixels", min = 1, max = 1, minValue = 1) Integer rasterHeight,
         @DescribeParameter(name = "title", description = "Title to use for the output grid", min = 0, max = 1, defaultValue = "raster" ) String title,
         @DescribeParameter(name = "attribute", description = "Attribute name to use for the raster cell values", min = 1, max = 1) String attribute,
         @DescribeParameter(name = "bounds", description = "Bounding box of the area to rasterize", min = 0, max = 1) Envelope bounds,

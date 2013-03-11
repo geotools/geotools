@@ -26,8 +26,8 @@ public class DefaultsProcess {
             // default converters usage
             @DescribeParameter(name = "string", defaultValue = "default string") String string,
             @DescribeParameter(name = "geometry", defaultValue = "POINT(0 0)") Geometry geometry,
-            @DescribeParameter(name = "int", defaultValue = "1") int i,
-            @DescribeParameter(name = "double", defaultValue = "0.65e-10") double d,
+            @DescribeParameter(name = "int", defaultValue = "1", minValue = -1d, maxValue = 2d) int i,
+            @DescribeParameter(name = "double", defaultValue = "0.65e-10", minValue = -1.5, maxValue = 2.5) double d,
             // checking out enum conversion
             @DescribeParameter(name = "axisOrder", defaultValue = "EAST_NORTH") AxisOrder axisOrder,
             // reference to a constant in the target type

@@ -93,4 +93,19 @@ public @interface DescribeParameter {
      * @return
      */
     String defaultValue() default DEFAULT_NULL;
+    
+    /**
+     * The minimum possible value acceptable for this parameter, in case it is a numeric value
+     * 
+     * @return
+     */
+    double minValue() default Double.NEGATIVE_INFINITY;
+    
+    /**
+     * The maximum possible value acceptable for this parameter, in case it is a numeric value
+     * 
+     * @return
+     */
+    double maxValue() default Double.POSITIVE_INFINITY;
+
 }

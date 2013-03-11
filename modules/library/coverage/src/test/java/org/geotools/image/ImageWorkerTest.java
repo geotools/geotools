@@ -329,6 +329,13 @@ public final class ImageWorkerTest {
 	        worker.writeJPEG(outFile, "JPEG-LS", 0.75f, true);
 	        readWorker = new ImageWorker(ImageIO.read(outFile));
 	        show(readWorker, "Native JPEG LS");
+        } else {
+            try{
+                worker.writeJPEG(outFile, "JPEG-LS", 0.75f, true);
+                assertFalse(true);
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
         }
 
         // /////////////////////////////////////////////////////////////////////

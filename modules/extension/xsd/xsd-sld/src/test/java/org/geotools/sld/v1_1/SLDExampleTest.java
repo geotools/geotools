@@ -121,17 +121,17 @@ public class SLDExampleTest extends TestCase {
         // this SLD file references as external entity a file on the local filesystem
         String file = "../example-textsymbolizer-externalentities.xml";
         
-        SLDConfiguration sld = new SLDConfiguration();
+        Parser parser = new Parser(new SLDConfiguration());
         
         try {
             InputStream location = getClass().getResourceAsStream(file);
-            new Parser(sld).parse(location);
+            parser.parse(location);
             fail("parsing should fail with a FileNotFoundException because the parser try to access a file that doesn't exist");
         } catch (FileNotFoundException e) {
         }
         
         // set an entity resolver to prevent access to the local file system 
-        sld = new SLDConfiguration(new EntityResolver() {
+        parser.setEntityResolver(new EntityResolver() {
             @Override
             public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
                 return new InputSource();
@@ -140,7 +140,7 @@ public class SLDExampleTest extends TestCase {
         
         try {
             InputStream location = getClass().getResourceAsStream(file);
-            new Parser(sld).parse(location);
+            parser.parse(location);
             fail("parsing should fail with a MalformedURLException because the EntityResolver blocked entity resolution");
         } catch (MalformedURLException e) {
         }        

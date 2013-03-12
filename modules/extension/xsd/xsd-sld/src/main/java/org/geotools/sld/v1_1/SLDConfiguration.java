@@ -24,9 +24,7 @@ import org.geotools.sld.v1_1.bindings.StyledLayerDescriptorBinding;
 import org.geotools.sld.v1_1.bindings.UserLayerBinding;
 import org.geotools.sld.v1_1.bindings.UserStyleBinding;
 import org.geotools.xml.Configuration;
-import org.geotools.xml.Parser;
 import org.picocontainer.MutablePicoContainer;
-import org.xml.sax.EntityResolver;
 
 /**
  * Parser configuration for the http://www.opengis.net/sld schema.
@@ -38,27 +36,17 @@ import org.xml.sax.EntityResolver;
  */
 public class SLDConfiguration extends Configuration {
 
-    private EntityResolver entityResolver;
-
-    /**
-     * Creates a new configuration.
-     */     
-    public SLDConfiguration() {
-        this(null);
-    }
-    
     /**
      * Creates a new configuration.
      * 
      * @generated
      */     
-    public SLDConfiguration(EntityResolver entityResolver) {
+    public SLDConfiguration() {
        super(SLD.getInstance());
        
        addDependency(new SEConfiguration());
-       
-       this.entityResolver = entityResolver;
     }
+
     
     /**
      * Registers the bindings for the configuration.
@@ -74,9 +62,4 @@ public class SLDConfiguration extends Configuration {
         container.registerComponentImplementation(SLD.UserLayer,UserLayerBinding.class);
         container.registerComponentImplementation(SLD.UserStyle,UserStyleBinding.class);
     }
-    
-    @Override
-    protected void configureParser(Parser parser) {
-        parser.setEntityResolver(entityResolver);
-    }    
 } 

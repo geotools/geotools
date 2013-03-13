@@ -33,8 +33,7 @@ Informal participants can contribute small modifications to the project code by 
 
   #. Rebase the branch from master so you get a nice clean set of changes::
 
-       git fetch
-       git rebase master
+       git pull --rebase master
 
   #. Do a full maven build (with tests) to make sure your fix compiles cleanly::
 

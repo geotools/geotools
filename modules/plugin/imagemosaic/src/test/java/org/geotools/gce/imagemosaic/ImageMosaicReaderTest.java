@@ -709,7 +709,6 @@ public class ImageMosaicReaderTest extends Assert{
      * @throws ParseException +
      */
     @Test
-     //@Ignore
     @SuppressWarnings("rawtypes")
     public void timeAdditionalDimRanges() throws Exception {
     
@@ -721,9 +720,9 @@ public class ImageMosaicReaderTest extends Assert{
         assertNotNull(metadataNames);
         assertEquals(metadataNames.length, 14);
         assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
-        assertEquals("2008-10-31T00:00:00.000Z/2008-11-04T00:00:00.000Z/PT1S",reader.getMetadataValue("TIME_DOMAIN"));
+        assertEquals("2008-10-31T00:00:00.000Z/2008-11-04T00:00:00.000Z/PT1S,2008-11-05T00:00:00.000Z/2008-11-07T00:00:00.000Z/PT1S",reader.getMetadataValue("TIME_DOMAIN"));
         assertEquals("2008-10-31T00:00:00.000Z", reader.getMetadataValue("TIME_DOMAIN_MINIMUM"));
-        assertEquals("2008-11-04T00:00:00.000Z", reader.getMetadataValue("TIME_DOMAIN_MAXIMUM"));
+        assertEquals("2008-11-07T00:00:00.000Z", reader.getMetadataValue("TIME_DOMAIN_MAXIMUM"));
         
         assertEquals("true", reader.getMetadataValue("HAS_ELEVATION_DOMAIN"));
         assertEquals("20/99,100/150",reader.getMetadataValue("ELEVATION_DOMAIN"));
@@ -732,7 +731,7 @@ public class ImageMosaicReaderTest extends Assert{
         
         
         assertEquals("true", reader.getMetadataValue("HAS_DATE_DOMAIN"));
-        assertEquals("20081031T000000,20081101T000000",reader.getMetadataValue("DATE_DOMAIN"));
+        assertEquals("20081031T000000,20081101T000000,20081105T000000",reader.getMetadataValue("DATE_DOMAIN"));
 
         assertEquals("true", reader.getMetadataValue("HAS_WAVELENGTH_DOMAIN"));
         assertEquals("12/24,25/80", reader.getMetadataValue("WAVELENGTH_DOMAIN"));
@@ -797,6 +796,12 @@ public class ImageMosaicReaderTest extends Assert{
         final String baseName = FilenameUtils.getBaseName(fileSource);
         assertEquals(baseName, "temp_020_099_20081031T000000_20081103T000000_12_24");
         TestUtils.testCoverage(reader, values, "domain test", coverage, null);
+    }
+    
+    @Test
+    public void testAdditionalDimRangesNoTimestamp() throws Exception {
+        System.setProperty("org.geotools.shapefile.datetime", "false");
+        timeAdditionalDimRanges();
     }
 
     /**
@@ -1210,8 +1215,8 @@ public class ImageMosaicReaderTest extends Assert{
 
 	}
 	
-	@BeforeClass
-	public static void init(){
+	@Before
+	public void init(){
 		
 		//make sure CRS ordering is correct
 		System.setProperty("org.geotools.referencing.forceXY", "true");

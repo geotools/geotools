@@ -166,7 +166,7 @@ class RangeVisitor implements FeatureCalc {
     }
 
     public void visit(SimpleFeature feature) {
-        visit(feature);
+        visit((Feature) feature);
     }
 
     public void visit(Feature feature) {

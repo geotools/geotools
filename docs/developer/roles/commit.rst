@@ -54,7 +54,9 @@ Process
 3. Welcome letter
 
    This is an example offer letter that should be sent to the volunteer after 3 positive votes
-   have been received::
+   have been received:
+
+       **Subject:** Welcome to GeoTools
 
        Dear Contributor,
 
@@ -66,40 +68,32 @@ Process
        And send your user id to myself or any other member of GeoTools.
 
        GeoTools is a member of the Open Source Geospatial Foundation and
-       make use of their code contribution agreements:
+       make use of their Contributor Licenses:
 
           http://www.osgeo.org/content/foundation/legal/licenses.html
 
-       We have attached a copy of the code contribution agreements to this email. Your contribution
-       agreement can be printed, signed, scanned and emailed to info@osgeo.org.
+       We have attached a copy of the contributor license(s) to this email. Please print, sign, scan
+       and email the appropriate document to info@osgeo.org.
 
        We all hope that you accept this invitation, welcome to the project!
 
        GeoTools Project Management Committee
 
-   Attachment:
+       **Attachment:**
 
-   * :download:`individual_contributor.txt </artifacts/individual_contributor.txt>`
-   * :download:`corporate_contributor.txt </artifacts/corporate_contributor.txt>`
+       * :download:`individual_contributor.txt </artifacts/individual_contributor.txt>`
+       * :download:`corporate_contributor.txt </artifacts/corporate_contributor.txt>`
 
 
 4. Getting write access to the repository
 
    Once we have confirmation that you have sent in the document any GeoTools committer can grant
-   you access to the project:
+   you access to the project.
 
-   * Create an osgeo login id using this page:
+   Send an email with your *github* id to the mailing list (or any GeoTools committer you know) and
+   they can add you using the following link:
 
-     http://www.osgeo.org/osgeo_userid/
-
-   * Send an email with your id to the mailing list (or any GeoTools committer you know) and they
-     can add you using the following link:
-
-     https://www.osgeo.org/cgi-bin/auth/ldap_group.py?group=geotools
-
-   For more information on the OSGeo SVN Repository facilities:
-
-   * http://wiki.osgeo.org/wiki/Subversion
+     https://github.com/organizations/geotools/teams
 
 5. Lapses due to Inactivity
 

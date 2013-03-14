@@ -44,6 +44,7 @@ import org.eclipse.xsd.XSDSchema;
 import org.geotools.xml.impl.ParserHandler;
 import org.geotools.xs.XS;
 import org.w3c.dom.Document;
+import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.NamespaceSupport;
@@ -92,6 +93,7 @@ public class Parser {
         }
 
         handler = new ParserHandler(configuration);
+                
         configuration.setupParser(this);
     }
 
@@ -350,6 +352,24 @@ public class Parser {
     public boolean isForceParserDelegate() {
         return handler.isForceParserDelegate();
     }
+    
+    /**
+     * Set EntityResolver
+     * 
+     * @param entityResolver
+     */
+    public void setEntityResolver(EntityResolver entityResolver) {
+        handler.setEntityResolver(entityResolver);
+    }
+    
+    /**
+     * Get EntityResolver
+     * 
+     * @return entityResolver
+     */
+    public EntityResolver getEntityResolver() {
+        return handler.getEntityResolver();
+    }    
     
     /**
      * Informs the parser of the type of the root element to be used in cases where it can not be

@@ -50,6 +50,8 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.xml.sax.Attributes;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -130,6 +132,9 @@ public class ParserHandler extends DefaultHandler {
     /** uri handlers for handling uri references during parsing */
     List<URIHandler> uriHandlers = new ArrayList<URIHandler>();
 
+    /** entity resolver */
+    EntityResolver entityResolver;
+    
     public ParserHandler(Configuration config) {
         this.config = config;
         namespaces = new NamespaceSupport();
@@ -234,6 +239,22 @@ public class ParserHandler extends DefaultHandler {
         return uriHandlers;
     }
 
+    public void setEntityResolver(EntityResolver entityResolver) {
+        this.entityResolver = entityResolver;
+    }
+    
+    public EntityResolver getEntityResolver() {
+        return entityResolver;
+    }
+    
+    public InputSource resolveEntity(String publicId, String systemId) throws IOException, SAXException {
+        if (entityResolver != null) {
+            return entityResolver.resolveEntity(publicId, systemId);
+        } else {
+            return super.resolveEntity(publicId, systemId);
+        }
+    }    
+    
     public void startPrefixMapping(String prefix, String uri)
         throws SAXException {
         namespaces.declarePrefix(prefix, uri);
@@ -242,7 +263,7 @@ public class ParserHandler extends DefaultHandler {
             h.startPrefixMapping(prefix, uri);    
         }
     }
-
+    
     public void startDocument() throws SAXException {
         //perform teh configuration
         configure(config);

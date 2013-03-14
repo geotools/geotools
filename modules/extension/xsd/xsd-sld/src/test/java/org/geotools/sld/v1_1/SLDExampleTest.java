@@ -16,7 +16,10 @@
  */
 package org.geotools.sld.v1_1;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URI;
 
 import junit.framework.TestCase;
@@ -30,6 +33,9 @@ import org.geotools.styling.Style;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.xml.Parser;
 import org.opengis.style.ExternalGraphic;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * 
@@ -109,5 +115,34 @@ public class SLDExampleTest extends TestCase {
         SLDConfiguration sld = new SLDConfiguration();
         InputStream location = getClass().getResourceAsStream(filename);
         return new Parser(sld).parse(location);
+    }
+    
+    public void testParseSldWithExternalEntities() throws Exception {
+        // this SLD file references as external entity a file on the local filesystem
+        String file = "../example-textsymbolizer-externalentities.xml";
+        
+        Parser parser = new Parser(new SLDConfiguration());
+        
+        try {
+            InputStream location = getClass().getResourceAsStream(file);
+            parser.parse(location);
+            fail("parsing should fail with a FileNotFoundException because the parser try to access a file that doesn't exist");
+        } catch (FileNotFoundException e) {
+        }
+        
+        // set an entity resolver to prevent access to the local file system 
+        parser.setEntityResolver(new EntityResolver() {
+            @Override
+            public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
+                return new InputSource();
+            }      
+        });
+        
+        try {
+            InputStream location = getClass().getResourceAsStream(file);
+            parser.parse(location);
+            fail("parsing should fail with a MalformedURLException because the EntityResolver blocked entity resolution");
+        } catch (MalformedURLException e) {
+        }        
     }
 }

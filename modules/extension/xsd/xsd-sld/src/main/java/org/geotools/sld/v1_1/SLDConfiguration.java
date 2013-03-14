@@ -46,6 +46,7 @@ public class SLDConfiguration extends Configuration {
        
        addDependency(new SEConfiguration());
     }
+
     
     /**
      * Registers the bindings for the configuration.

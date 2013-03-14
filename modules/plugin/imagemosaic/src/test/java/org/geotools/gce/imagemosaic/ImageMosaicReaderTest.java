@@ -68,8 +68,6 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -744,9 +742,7 @@ public class ImageMosaicReaderTest extends Assert{
     
         // specify time
         final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
-        final SimpleDateFormat formatD = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        formatD.setTimeZone(TimeZone.getTimeZone("GMT"));
-        final Date timeD = formatD.parse("2008-11-01T00:00:00.000Z");
+        final Date timeD = parseTimeStamp("2008-11-01T00:00:00.000Z");
         time.setValue(new ArrayList() {
             {
                 add(timeD);
@@ -803,7 +799,107 @@ public class ImageMosaicReaderTest extends Assert{
         System.setProperty("org.geotools.shapefile.datetime", "false");
         timeAdditionalDimRanges();
     }
+    
+    /**
+     * Tests that selection by range works properly 
+     * @throws IOException
+     * @throws FactoryException 
+     * @throws NoSuchAuthorityCodeException 
+     * @throws ParseException +
+     */
+    @Test
+    @SuppressWarnings("rawtypes")
+    public void timeTimeRangeSelection() throws Exception {
+        final AbstractGridFormat format = TestUtils
+                .getFormat(timeAdditionalDomainsRangeURL);
+        ImageMosaicReader reader = TestUtils.getReader(timeAdditionalDomainsRangeURL, format);
+    
+        // specify a range that's below the available data 
+        GridCoverage2D coverage = readCoverageInDateRange(reader, "2008-10-20T00:00:00.000Z", "2008-10-25T12:00:00.000Z");
+        assertNull(coverage);
+        
+        // specify a range that's above the available data
+        coverage = readCoverageInDateRange(reader, "2008-11-20T00:00:00.000Z", "2008-11-25T12:00:00.000Z");
+        assertNull(coverage);
+        
+        // specify a range that's in a hole where no data is available
+        coverage = readCoverageInDateRange(reader, "2008-11-04T12:00:00.000Z", "2008-11-04T18:00:00.000Z");
+        assertNull(coverage);
+        
+        // specify a range that covers it all
+        coverage = readCoverageInDateRange(reader, "2008-10-20T00:00:00.000Z", "2008-11-20T00:00:00.000Z");
+        assertNotNull(coverage);
+        
+        // specify a range that overlaps with the first range on the low side
+        coverage = readCoverageInDateRange(reader, "2008-10-28T00:00:00.000Z", "2008-10-31T18:00:00.000Z");
+        assertNotNull(coverage);
+        String fileSource = (String) coverage.getProperty(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY);
+        assertEquals("temp_020_099_20081031T000000_20081103T000000_12_24", FilenameUtils.getBaseName(fileSource));
+        
+        // specify a range that overlaps in the middle with the second range
+        coverage = readCoverageInDateRange(reader, "2008-11-03T12:00:00.000Z", "2008-11-04T00:00:00.000Z");
+        assertNotNull(coverage);
+        fileSource = (String) coverage.getProperty(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY);
+        assertEquals("temp_020_099_20081101T000000_20081104T000000_12_24", FilenameUtils.getBaseName(fileSource));
+        
+        // specify a range matching an exact start of a range
+        coverage = readCoverageInDateRange(reader, "2008-10-31T00:00:00.000Z", "2008-10-31T00:00:00.000Z");
+        assertNotNull(coverage);
+        fileSource = (String) coverage.getProperty(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY);
+        assertEquals("temp_020_099_20081031T000000_20081103T000000_12_24", FilenameUtils.getBaseName(fileSource));
+        
+        // specify a range matching an exact end of a range
+        coverage = readCoverageInDateRange(reader, "2008-11-04T00:00:00.000Z", "2008-11-04T00:00:00.000Z");
+        assertNotNull(coverage);
+        fileSource = (String) coverage.getProperty(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY);
+        assertEquals("temp_020_099_20081101T000000_20081104T000000_12_24", FilenameUtils.getBaseName(fileSource));
+    }
+    
+    private GridCoverage2D readCoverageInDateRange(ImageMosaicReader reader, String start, String end) throws Exception {
+        final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
+        Date s = parseTimeStamp(start);
+        Date e = parseTimeStamp(end);
+        DateRange range = new DateRange(s, e); 
+        time.setValue(Arrays.asList(range));
 
+        // use imageio with defined tiles
+        final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD .createValue();
+        useJai.setValue(false);
+        
+        final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
+        elevation.setValue(new ArrayList() {
+            {
+                add(34); // Elevation
+            }
+        });
+        
+        // specify additional Dimensions
+        Set<ParameterDescriptor<List>> params = reader.getDynamicParameters();
+        ParameterValue<List<String>> waveLength = null;
+        final String selectedWaveLength = "20";
+        for (ParameterDescriptor param : params) {
+            if (param.getName().getCode().equalsIgnoreCase("WAVELENGTH")) {
+                waveLength = param.createValue();
+                waveLength.setValue(new ArrayList<String>() {
+                    {
+                        add(selectedWaveLength);
+                    }
+                });
+            }
+        }
+        assertNotNull(waveLength);
+
+        GeneralParameterValue[] values = new GeneralParameterValue[] { useJai, time, waveLength, elevation };
+        return TestUtils.getCoverage(reader, values, false);
+    }
+
+    
+    private Date parseTimeStamp(String timeStamp) throws ParseException {
+        final SimpleDateFormat formatD = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        formatD.setTimeZone(TimeZone.getTimeZone("GMT"));
+        return formatD.parse(timeStamp);
+    }
+    
     /**
      * Simple test method accessing time and 2 custom dimensions for the sample
      * dataset

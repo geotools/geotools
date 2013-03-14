@@ -71,6 +71,7 @@ import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortOrder;
 import org.opengis.geometry.BoundingBox;
@@ -380,6 +381,7 @@ class RasterManager {
             // loop values and AND them
             final int size = values.size();
             final List<Filter> filters = new ArrayList<Filter>();
+            FilterFactory2 ff = FeatureUtilities.DEFAULT_FILTER_FACTORY;
             for (int i = 0; i < size; i++) {
                 // checks
                 Object value = values.get(i);
@@ -395,20 +397,20 @@ class RasterManager {
                         // RANGE                        
                         final Range range= (Range)value;
                         filters.add( 
-                                FeatureUtilities.DEFAULT_FILTER_FACTORY.and(
-                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.lessOrEqual(
-                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.property(propertyName), 
-                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(range.getMaxValue())),
-                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.greaterOrEqual(
-                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.property(propertyName), 
-                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(range.getMinValue()))
+                                ff.and(
+                                        ff.lessOrEqual(
+                                                ff.property(propertyName), 
+                                                ff.literal(range.getMaxValue())),
+                                        ff.greaterOrEqual(
+                                                ff.property(propertyName), 
+                                                ff.literal(range.getMinValue()))
                                 ));
                     }  else {
                         // SINGLE value
                         filters.add( 
-                                FeatureUtilities.DEFAULT_FILTER_FACTORY.equal(
-                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.property(propertyName),
-                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(value),true)
+                                ff.equal(
+                                        ff.property(propertyName),
+                                        ff.literal(value),true)
                                     );
                     }
                 } else { //domainType == DomainType.RANGE
@@ -419,52 +421,32 @@ class RasterManager {
                         final Comparable maxValue = range.getMaxValue();
                         final Comparable minValue = range.getMinValue();
                         if(maxValue.compareTo(minValue)!=0){
-                            // real period more conditions
+                            // logic comes from Range.intersectsNC(Range)
+                            // in summary, requestedMax > min && requestedMin < max
+                            Filter maxCondition = ff.greaterOrEqual(
+                                                        ff.literal(maxValue), 
+                                                        ff.property(propertyName));
+                            Filter minCondition = ff.lessOrEqual(
+                                                        ff.literal(minValue), 
+                                                        ff.property(additionalPropertyName));
                             
-                            // provided range max falls within range
-                            Filter condition1=FeatureUtilities.DEFAULT_FILTER_FACTORY.and(
-                                    FeatureUtilities.DEFAULT_FILTER_FACTORY.greaterOrEqual(
-                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.property(additionalPropertyName), 
-                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(maxValue)),
-                                    FeatureUtilities.DEFAULT_FILTER_FACTORY.lessOrEqual(
-                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.property(propertyName), 
-                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(maxValue)));
-                            
-                            // provided range min falls within range
-                            Filter condition2=FeatureUtilities.DEFAULT_FILTER_FACTORY.and(
-                                    FeatureUtilities.DEFAULT_FILTER_FACTORY.lessOrEqual(
-                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.property(additionalPropertyName), 
-                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(minValue)),
-                                    FeatureUtilities.DEFAULT_FILTER_FACTORY.greaterOrEqual(
-                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.property(propertyName), 
-                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(minValue)));  
-
-                            // now wither provided range contains granule range or disjunct
-                            Filter condition3=FeatureUtilities.DEFAULT_FILTER_FACTORY.and(
-                                    FeatureUtilities.DEFAULT_FILTER_FACTORY.lessOrEqual(
-                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.property(additionalPropertyName), 
-                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(maxValue)),
-                                    FeatureUtilities.DEFAULT_FILTER_FACTORY.greaterOrEqual(
-                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.property(propertyName), 
-                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(minValue)));                            
-                            
-                            filters.add(FeatureUtilities.DEFAULT_FILTER_FACTORY.or(Arrays.asList(condition1,condition2,condition3)));
+                            filters.add(ff.and(Arrays.asList(maxCondition,minCondition)));
                             continue;
                         } else {
                             value=maxValue;
                         }
                     }
                     filters.add( 
-                            FeatureUtilities.DEFAULT_FILTER_FACTORY.and(
-                                    FeatureUtilities.DEFAULT_FILTER_FACTORY.lessOrEqual(
-                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.property(propertyName), 
-                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(value)),
-                                    FeatureUtilities.DEFAULT_FILTER_FACTORY.greaterOrEqual(
-                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.property(additionalPropertyName), 
-                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(value))));
+                            ff.and(
+                                    ff.lessOrEqual(
+                                            ff.property(propertyName), 
+                                            ff.literal(value)),
+                                    ff.greaterOrEqual(
+                                            ff.property(additionalPropertyName), 
+                                            ff.literal(value))));
                 }
             }
-            return FeatureUtilities.DEFAULT_FILTER_FACTORY.or(filters);
+            return ff.or(filters);
         }
     }
 

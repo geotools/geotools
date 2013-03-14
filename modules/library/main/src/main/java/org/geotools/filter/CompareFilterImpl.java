@@ -18,9 +18,11 @@ package org.geotools.filter;
 
 
 // Geotools dependencies
+import java.util.Date;
 import java.util.logging.Logger;
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.util.Converters;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterVisitor;
 
@@ -189,8 +191,22 @@ public abstract class CompareFilterImpl extends BinaryComparisonAbstract
     		//check for case of one number one string
     		if (!(leftObj.getClass() == rightObj.getClass()))  
     	    {
-        		//differnt classes, if numbers lets try and match them up
-    	    	if ( leftObj instanceof Number && (rightObj.getClass() == String.class) )
+    		    // special handling for dates, as we can do meaningful comparisons among
+    		    // the class hierarchy 
+    		    if(leftObj instanceof Date || rightObj instanceof Date) {
+    		        // they do compare fine if they are both dates, otherwise we need to convert
+    		        if(!(leftObj instanceof Date)) {
+    		            leftObj = Converters.convert(leftObj, Date.class);
+    		        }
+                    if(!(rightObj instanceof Date)) {
+                        rightObj = Converters.convert(rightObj, Date.class);
+                    }
+                    // if conversion failed fall back on string comparison
+                    if(leftObj == null || rightObj == null) {
+                        leftObj = leftObj.toString();
+                        rightObj = rightObj.toString();
+                    }
+   		        } else if ( leftObj instanceof Number && (rightObj.getClass() == String.class) )
     	    	{
     	    		try{
     	    			rightObj = new Double( Double.parseDouble( (String) rightObj ));

@@ -487,10 +487,30 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                     // data type polymorphism mapping
                     return setPolymorphicValues((Name) mappingName, target, id, nestedMapping, source,
                             xpath, clientPropsMappings);
-                } else if (mappingName instanceof String) {
-                    // referential polymorphism mapping
-                    return setPolymorphicReference((String) mappingName, clientPropsMappings, target,
-                            xpath, targetNodeType);
+				} else if (mappingName instanceof String) {
+					// referential polymorphism mapping
+					if (attMapping instanceof JoiningNestedAttributeMapping) {
+						// GEOT-4417: update skipped ids when skipping with
+						// toXlinkHref
+						if (values == null && source != null) {
+							values = getValues(attMapping.isMultiValued(),
+									sourceExpression, source);
+						}
+						if (values != null) {
+							List<Object> idValues = getIdValues(source);
+							if (values instanceof Collection) {
+								for (Object singleVal : (Collection) values) {
+									((JoiningNestedAttributeMapping) attMapping)
+											.skip(this, singleVal, idValues);
+								}
+							} else {
+								((JoiningNestedAttributeMapping) attMapping)
+										.skip(this, values, idValues);
+							}
+						}
+					}
+					return setPolymorphicReference((String) mappingName,
+							clientPropsMappings, target, xpath, targetNodeType);
                 }
             } else {
                 // polymorphism could result in null, to skip the attribute
@@ -545,7 +565,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             }
             if (isHRefLink) {
                 // only need to set the href link value, not the nested feature properties
-                setXlinkReference(target, clientPropsMappings, values, xpath, targetNodeType);
+            	setXlinkReference(target, clientPropsMappings, values, xpath, targetNodeType);
                 return null;
             }
         }
@@ -704,6 +724,9 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
      *            Attribute xPath where the client properties are to be set
      * @param targetNodeType
      *            Target node type
+     * @param attMapping 
+     * @param list 
+     * @throws IOException 
      */
     protected void setXlinkReference(Attribute target, Map<Name, Expression> clientPropsMappings,
             Object value, StepList xpath, AttributeType targetNodeType) {

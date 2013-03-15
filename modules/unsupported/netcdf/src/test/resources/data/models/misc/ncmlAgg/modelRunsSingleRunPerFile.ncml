@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- our layer generator will write this document. -->
+<!-- per the NOe WMS design doc, we will aggregate netcdf files with the same model, aoi, params and dims into a single ncml file -->
+<!-- we want this file to contain all info we need to respond to getCap request w/o having to access the aggregated nc filesv-->
+<!--   - currently that is analysis time (runtime), time, elevation(depth) -->
+<!-- for coordinate values that are the same across the aggregated files, specify in doc section (example: depth).  -->
+<!-- for coordinate values that vary across files, specify within each file's element (example here: time). -->
+
+<netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" >
+  <dimension name="latitude" length="3" />
+  <dimension name="longitude" length="3" />
+  <dimension name="depth" length="5" />  
+  <dimension name="time" length="5" />
+
+  <variable name="depth" shape="depth" type="double">
+    <attribute name="long_name" value="Depth" />
+    <attribute name="units" value="meter" />
+    <attribute name="NAVO_code" type="int" value="5" />
+    <attribute name="positive" value="down" />
+    <values>0.0 50.0 100.0 250.0 500.0</values>
+  </variable>
+  
+  <!-- specify the variable for the new dimension, esp. so we can specify the coordinate values. -->
+  <variable name="runtime" type="String" >
+    <attribute name="long_name" value="Run time for model" />
+    <attribute name="standard_name" value="forecast_reference_time" />
+    <attribute name="_CoordinateAxisType" value="RunTime" />
+    <values>2000-01-03T00:00:00.000Z 2000-01-04T00:00:00.000Z</values>
+  </variable>  
+
+  <!--list each nc file we are aggregating, and any file specific info for each.-->
+  <aggregation dimName="runtime" type="joinNew">
+    <!-- existing variables to aggregate on -->
+    <variableAgg name="temp"/>
+    <variableAgg name="time"/>
+    <variableAgg name="tau"/>
+    <!-- aggregation file 1 -->
+    <!-- runtime value currently specified by first value in the runtime variable above -->
+    <!-- alternately could be specified in coordValue attribute here, not sure which is better yet, wait and see -->
+    <netcdf location="modelRun1agg.nc" >
+      <variable name="time" shape="time" type="double">
+        <attribute name="long_name" value="Valid Time" />
+        <attribute name="units" value="hour since 2000-01-01 00:00:00" />
+        <attribute name="NAVO_code" type="int" value="13" />
+        <attribute name="time_origin" value="2000-01-01 00:00:00" />
+        <values>48.0 60.0 72.0 84.0 96.0</values>
+      </variable>
+    </netcdf>
+    <!-- aggregation file 2 -->
+    <netcdf location="modelRun2agg.nc" >
+      <variable name="time" shape="time" type="double">
+        <attribute name="long_name" value="Valid Time" />
+        <attribute name="units" value="hour since 2000-01-01 00:00:00" />
+        <attribute name="NAVO_code" type="int" value="13" />
+        <attribute name="time_origin" value="2000-01-01 00:00:00" />
+        <values>72.0 84.0 96.0 108.0 120.0</values>
+      </variable>  
+    </netcdf>
+  </aggregation>
+</netcdf>

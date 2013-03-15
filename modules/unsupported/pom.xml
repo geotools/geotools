@@ -171,6 +171,15 @@
        </modules>
      </profile>
      <profile>
+       <id>netcdf</id>
+       <activation>
+         <property><name>all</name></property>
+       </activation>
+       <modules>
+         <module>netcdf</module>
+       </modules>
+     </profile>
+     <profile>
        <id>unsupported</id>
        <activation>
          <property><name>all</name></property>

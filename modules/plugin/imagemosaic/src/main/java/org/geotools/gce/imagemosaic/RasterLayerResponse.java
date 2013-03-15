@@ -246,7 +246,7 @@ class RasterLayerResponse{
      * @author Simone Giannecchini, GeoSolutions SAS
      *
      */
-    class MosaicElement {
+    private class MosaicElement {
 
         private MosaicElement(PlanarImage alphaChannel, ROI roi, RenderedImage source) {
             this.alphaChannel = alphaChannel;
@@ -277,7 +277,7 @@ class RasterLayerResponse{
      * @author Simone Giannecchini, GeoSolutions SAS
      *
      */
-    class MosaicInputs {
+    private class MosaicInputs {
         private MosaicInputs(boolean doInputTransparency, boolean hasAlpha,
                 List<MosaicElement> sources, double[][] sourceThreshold) {
             this.doInputTransparency = doInputTransparency;
@@ -297,8 +297,14 @@ class RasterLayerResponse{
      * @author Simone Giannecchini, GeoSolutions SAS
      *
      */
-    class GranuleCollector {
+    private class GranuleCollector {
 
+        /**
+         * Constructor.
+         * 
+         * @param granuleFilter the {@link Filter} we are supposed to use to select granules for this {@link GranuleCollector}.
+         * @param dryRun whether we need to make 
+         */
         private GranuleCollector(Filter granuleFilter, boolean dryRun) {
             this.granuleFilter = granuleFilter;
             this.dryRun = dryRun;
@@ -357,6 +363,7 @@ class RasterLayerResponse{
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("We added the granule " + granuleDescriptor.toString());
                 }
+                
                 // we added it
                 granulesNumber++;
                 return true;
@@ -386,6 +393,7 @@ class RasterLayerResponse{
            // execute them all
            final StringBuilder paths = new StringBuilder();
            final List<MosaicElement> returnValues= new ArrayList<RasterLayerResponse.MosaicElement>();
+           
            // collect sources for the current dimension and then process them
            for (Future<GranuleLoadingResult> future :granulesFutures) {
                      
@@ -446,15 +454,15 @@ class RasterLayerResponse{
                    
                    // add to the mosaic collection, with preprocessing
                    // TODO pluggable mechanism for processing (artifacts,etc...)
-                   MosaicElement input = processGranuleRaster(
+                   MosaicElement input = preProcessGranuleRaster(
                                            loadedImage,
                                            result,
                                            canonicalPath);  
                    returnValues.add(input);
                    
                 } catch (Exception e) {
-                    if (LOGGER.isLoggable(Level.FINE)){
-                        LOGGER.fine("Adding to mosaic failed, original request was " + request);
+                    if (LOGGER.isLoggable(Level.INFO)){
+                        LOGGER.info("Adding to mosaic failed, original request was " + request);
                     }
                     continue;
                 }               
@@ -464,14 +472,14 @@ class RasterLayerResponse{
                 granulesPaths = paths.length() > 1 ? paths.substring(0, paths.length() - 1) : "";
            }
            if (returnValues == null || returnValues.isEmpty()) {
-               if (LOGGER.isLoggable(Level.FINE)){
-                   LOGGER.fine("The MosaicElement list is null or empty");
+               if (LOGGER.isLoggable(Level.INFO)){
+                   LOGGER.info("The MosaicElement list is null or empty");
                }
            }
            return new MosaicInputs(doInputTransparency, hasAlpha, returnValues, sourceThreshold);
         }
 
-        private MosaicElement processGranuleRaster(
+        private MosaicElement preProcessGranuleRaster(
             	RenderedImage granule,  
             	final GranuleLoadingResult result, 
             	String canonicalPath) {
@@ -586,7 +594,7 @@ class RasterLayerResponse{
      * @author Simone Giannecchini, GeoSolutions SAS
      *
      */
-    class Mosaicker {
+    private class Mosaicker {
         private final List<MosaicElement> inputs;
         private final double[][] sourceThreshold;
         private final boolean doInputTransparency;
@@ -646,7 +654,7 @@ class RasterLayerResponse{
          * 
          * @return A {@link MosaicElement}}.
          */
-        MosaicElement createMosaic() throws IOException  {
+        private MosaicElement createMosaic() throws IOException  {
             
             // anything to do?
             final int size = inputs.size();
@@ -735,9 +743,9 @@ class RasterLayerResponse{
                     overallROI = new ROIGeometry(((ROIGeometry) mosaicElement.roi).getAsGeometry());
                 } else {
                     if (mosaicElement.roi != null) {
-                        overallROI.add(mosaicElement.roi);
+                        overallROI=overallROI.add(mosaicElement.roi);
                     }
-                }
+                }                
             }
 
             // execute mosaic
@@ -754,13 +762,18 @@ class RasterLayerResponse{
             if (setRoiProperty) {
                 // Adding globalRoi to the output
                 RenderedOp rop = (RenderedOp) mosaic;
+                
                 assert overallROI!=null;
                 rop.setProperty("ROI", overallROI);
             }
     
             // prepare for next step
-            return new MosaicElement((hasAlpha || doInputTransparency) ? new ImageWorker(mosaic)
-                    .retainLastBand().getPlanarImage() : null, overallROI, mosaic);
+            if(hasAlpha || doInputTransparency){
+                return new MosaicElement(new ImageWorker(mosaic).retainLastBand().getPlanarImage(), overallROI, mosaic);
+             } else {
+                return new MosaicElement(null, overallROI, mosaic);
+             }            
+            
         }
     }
 
@@ -770,7 +783,7 @@ class RasterLayerResponse{
      * @author Simone Giannecchini, GeoSolutions SAS
      * 
      */
-    class MosaicProducer implements GranuleCatalogVisitor {
+    private class MosaicProducer implements GranuleCatalogVisitor {
 
         /** The number of granules actually dispatched to the internal collectors.*/
         private int granulesNumber;
@@ -784,7 +797,7 @@ class RasterLayerResponse{
         /**
          * Default {@link Constructor}
          */
-        public MosaicProducer() {
+        private MosaicProducer() {
             this(false);
         }
 
@@ -798,7 +811,7 @@ class RasterLayerResponse{
          * 
          * @param dryRun <code>true</code> for a dry run, <code>false</code> otherwise.
          */
-        public MosaicProducer(final boolean dryRun) {
+        private MosaicProducer(final boolean dryRun) {
 
             // get merge behavior as per request
             mergeBehavior = request.getMergeBehavior();
@@ -825,7 +838,8 @@ class RasterLayerResponse{
                 }
             }
 
-            // we don't stack them
+            // we don't stack them, either because we are not asked to or because we don't need to although
+            // we were asked
             // let's use a default marker
             if (granuleCollectors.isEmpty()) {
                 granuleCollectors.add(new GranuleCollector(Filter.INCLUDE, dryRun));
@@ -860,6 +874,7 @@ class RasterLayerResponse{
                         break;
                     }
                 }
+                
                 // did we find a place for it?
                 if (!found) {
                     throw new IllegalStateException("Unable to locate a filter for this granule:\n" + granuleDescriptor.toString()); 
@@ -884,10 +899,10 @@ class RasterLayerResponse{
          * @return
          * @throws IOException
          */
-        public RenderedImage produce() throws IOException{
+        private RenderedImage produce() throws IOException{
             // checks
             if (granulesNumber == 0) {
-                LOGGER.log(Level.FINE, "Unable to load any granuleDescriptor ");     
+                LOGGER.log(Level.FINE, "Unable to load any granuleDescriptor");     
                 return null;
             }
             
@@ -895,8 +910,11 @@ class RasterLayerResponse{
             LOGGER.fine("Producing the final mosaic, step 1, loop through granule collectors");   
             final List<MosaicElement> mosaicInputs = new ArrayList<RasterLayerResponse.MosaicElement>();
             GranuleCollector first = null; // we take this apart to steal some val
+            final int size=granuleCollectors.size();
             for (GranuleCollector collector : granuleCollectors) {
-                LOGGER.fine("Using collector with filter:" + collector.granuleFilter.toString());
+                if(LOGGER.isLoggable(Level.FINE)){
+                    LOGGER.fine("Using collector with filter:" + collector.granuleFilter.toString());
+                }
                 final MosaicElement preparedMosaic = new Mosaicker(collector.collectGranules(), MergeBehavior.FLAT).createMosaic();
                 mosaicInputs.add(preparedMosaic);
                 if (first == null) {
@@ -904,7 +922,17 @@ class RasterLayerResponse{
                 }
             }
             LOGGER.fine("Producing the final mosaic, step 2, final mosaicking"); 
-            return new Mosaicker(new MosaicInputs(first.doInputTransparency, first.hasAlpha, mosaicInputs, first.sourceThreshold),mergeBehavior).createMosaic().source;
+            if(size==1){
+                // we don't need to mosaick again
+                return mosaicInputs.get(0).source;
+            }
+            return new Mosaicker(
+                    new MosaicInputs(
+                            first.doInputTransparency, 
+                            first.hasAlpha, 
+                            mosaicInputs, 
+                            first.sourceThreshold),
+                            mergeBehavior).createMosaic().source;
         }
     }
 
@@ -1128,13 +1156,6 @@ class RasterLayerResponse{
         try {
             //=== select overview
             chooseOverview();	
-            assert imageChoice>=0;
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine(new StringBuilder("Loading level ").append(imageChoice)
-                        .append(" with subsampling factors ")
-                        .append(baseReadParameters.getSourceXSubsampling()).append(" ")
-                        .append(baseReadParameters.getSourceYSubsampling()).toString());
-            }
 
             // === extract bbox
             initBBOX();
@@ -1157,7 +1178,6 @@ class RasterLayerResponse{
             // === collect granules
             final MosaicProducer visitor = new MosaicProducer();
             rasterManager.getGranules(query, visitor);            
-
             // get those granules and create the final mosaic
             RenderedImage returnValue = visitor.produce();
 
@@ -1285,10 +1305,12 @@ class RasterLayerResponse{
     }
 
     /**
-     * @throws IOException
-     * @throws TransformException
+     * This method encloses the standard behavior for the selection of the
+     * proper overview level.
+     * 
+     * See {@link ReadParamsController}
      */
-    private void chooseOverview() throws IOException, TransformException {
+    private void chooseOverview(){
         //
         // prepare the params for executing a mosaic operation.
         //
@@ -1314,6 +1336,14 @@ class RasterLayerResponse{
                     request.rasterManager.overviewsController); // use general overviews controller
         } else {
             imageChoice = 0;
+        }
+        
+        assert imageChoice>=0;
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine(new StringBuilder("Loading level ").append(imageChoice)
+                    .append(" with subsampling factors ")
+                    .append(baseReadParameters.getSourceXSubsampling()).append(" ")
+                    .append(baseReadParameters.getSourceYSubsampling()).toString());
         }
     }
 
@@ -1452,7 +1482,7 @@ class RasterLayerResponse{
      * This method is responsible for creating a blank image as a reponse to the query as it seems
      * we got a no data area.
      * 
-     * @return a blank {@link RenderedImage}
+     * @return a blank {@link RenderedImage} initialized using the background values
      */
     private RenderedImage createBlankResponse() {
         // if we get here that means that we do not have anything to load

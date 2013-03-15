@@ -152,8 +152,7 @@ public class ReadParamsController {
                     DecimationPolicy decimationPolicy,
                     final ImageReadParam readParams,
                     final RasterManager rasterManager,
-                    final OverviewsController overviewController)
-                    throws IOException, TransformException {
+                    final OverviewsController overviewController){
         
             Utilities.ensureNonNull("readParams", readParams);
             Utilities.ensureNonNull("RasterManager", rasterManager);

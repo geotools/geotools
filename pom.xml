@@ -92,7 +92,7 @@
     <test.maxHeapSize>512M</test.maxHeapSize>
     <test.forkMode>once</test.forkMode>
     <src.output>${basedir}/target</src.output>
-    <imageio.ext.version>1.1.6</imageio.ext.version>
+    <imageio.ext.version>1.1.7</imageio.ext.version>
     <jt.version>1.3.0</jt.version>
     <jvm.opts></jvm.opts>
     <maven.build.timestamp.format>dd-MMM-yyyy HH:mm</maven.build.timestamp.format>

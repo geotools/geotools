@@ -18,6 +18,7 @@ package org.geotools.data.postgis;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.UUID;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -55,6 +56,7 @@ public class PostgisUDTTest extends JDBCUDTTest {
         assertEquals(Time.class, type.getDescriptor(aname("ut10")).getType().getBinding());
         assertEquals(Timestamp.class, type.getDescriptor(aname("ut11")).getType().getBinding());
         assertEquals(Timestamp.class, type.getDescriptor(aname("ut12")).getType().getBinding());
+        assertEquals(UUID.class, type.getDescriptor(aname("ut13")).getType().getBinding());
     }
     
     public void testRead() throws Exception {
@@ -76,6 +78,9 @@ public class PostgisUDTTest extends JDBCUDTTest {
             assertEquals("2", item.getAttribute(aname("ut8")).toString());
             assertEquals("14:30:00", item.getAttribute(aname("ut9")).toString());
             assertEquals("2004-10-31 16:30:00.0", item.getAttribute(aname("ut11")).toString());
+            assertEquals("2004-10-30 17:30:00.0", item.getAttribute(aname("ut12")).toString());
+            assertEquals("00000000-0000-0000-0000-000000000000", item.getAttribute(aname("ut13")).toString());
+
             assertFalse(fi.hasNext());
         } finally { 
             fi.close();

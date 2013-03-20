@@ -322,10 +322,11 @@ public final class StyledShapePainter {
      *            The shape to draw.
      * @param legend
      *            The legend to apply.
-     * @param scale
-     *            The scale denominator for the current zoom level
+     * @param symbolScale
+     *            The scale of the symbol, if the legend graphic has to be rescaled               
      */
-    public void paint(final Graphics2D graphics, final LiteShape2 shape, final GraphicLegend legend, final double scale, boolean isLabelObstacle) {
+    public void paint(final Graphics2D graphics, final LiteShape2 shape, final GraphicLegend legend, 
+            final double symbolScale, boolean isLabelObstacle) {
         if (legend == null) {
             // TODO: what's going on? Should not be reached...
             throw new NullPointerException("ShapePainter has been asked to paint a null legend!!");
@@ -349,14 +350,25 @@ public final class StyledShapePainter {
                 while (!(iter.isDone())) {
                     iter.currentSegment(coords);
                     try {
-                            renderImage(graphics, coords[0], coords[1],
-                                    // Doesn't seem to work with SVGs
-                                    // Looking at the SLDStyleFactory, they get the icon from an
-                                    // ExternalGraphicFactory. 
-                                    ImageIO.read(graphic.getOnlineResource().getLinkage().toURL()), 
-                                    rotation, 
-                                    opacity,
-                                    isLabelObstacle);
+                        BufferedImage image = ImageIO.read(graphic.getOnlineResource().getLinkage().toURL());
+                        if (symbolScale > 1.0){
+                            int w = (int) (image.getWidth() / symbolScale);
+                            int h = (int) (image.getHeight() / symbolScale);
+                            BufferedImage rescaled = new BufferedImage(w, h, image.getType());
+                            Graphics2D g = rescaled.createGraphics();
+                            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                            g.drawImage(image, 0, 0, w, h, 0, 0, image.getWidth(), image.getHeight(), null);
+                            g.dispose();
+                            image = rescaled;
+                        }
+                        renderImage(graphics, coords[0], coords[1],
+                                // Doesn't seem to work with SVGs
+                                // Looking at the SLDStyleFactory, they get the icon from an
+                                // ExternalGraphicFactory. 
+                                image, 
+                                rotation, 
+                                opacity,
+                                isLabelObstacle);
                     } catch (IOException ex) {
                             Logger.getLogger(StyledShapePainter.class.getName()).log(Level.SEVERE, null, ex);
                     }

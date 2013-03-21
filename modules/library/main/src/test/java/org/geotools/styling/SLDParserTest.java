@@ -19,11 +19,16 @@ package org.geotools.styling;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.StringBufferInputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import junit.framework.Assert;
 
@@ -109,6 +114,20 @@ public class SLDParserTest {
             "        </FeatureTypeStyle>\n" + 
             "    </UserStyle>\n" + 
             "</StyledLayerDescriptor>";
+    
+    static String color = "00AA00";
+    
+    static String formattedCssStrokeParameter = "<Stroke>" +
+    		"\n\t<CssParameter name=\"stroke\">#" +
+    		"\n\t\t<ogc:Function name=\"env\">" +
+		"\n\t\t\t<ogc:Literal>stroke_color</ogc:Literal>" +
+		"\n\t\t\t<ogc:Literal>" +
+		color +
+		"</ogc:Literal>" +
+		"\n\t\t</ogc:Function>" +
+		"\n\t</CssParameter>" +
+		"</Stroke>";
+		
 
     static StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
     
@@ -181,6 +200,17 @@ public class SLDParserTest {
         assertEquals(1, graphicalSymbols.size());
         ExternalGraphic graphic = (ExternalGraphic) graphicalSymbols.get(0);
         assertEquals(getClass().getResource("test-data/blob.gif"), graphic.getLocation());
+    }
+    
+    @Test
+    public void testStrokeColorWithEnv() throws Exception {
+        DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        org.w3c.dom.Document node = builder.parse(new StringBufferInputStream(
+                formattedCssStrokeParameter));
+        SLDParser parser = new SLDParser(styleFactory);
+        Stroke stroke = parser.parseStroke(node.getDocumentElement());
+        // <strConcat([#], [env([stroke_color], [" + color + "])])>";
+        Assert.assertEquals("#"+color,stroke.getColor().evaluate(Color.decode("#"+color)));
     }
     
     void assertStyles(Style[] styles) {

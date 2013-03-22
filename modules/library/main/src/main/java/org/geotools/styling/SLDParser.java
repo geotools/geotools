@@ -1876,7 +1876,7 @@ public class SLDParser {
                 // process the css entry
                 //
                 if (res.equalsIgnoreCase(strokeString)) {
-                    Expression color = parseCssParameter(child, false);
+                    Expression color = parseCssParameter(child, true);
                     stroke.setColor(color);
                 } else if (res.equalsIgnoreCase("width") || res.equalsIgnoreCase("stroke-width")) {
                     Expression width = parseCssParameter(child, false);

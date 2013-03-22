@@ -8,6 +8,7 @@ import org.geotools.gml3.Circle;
 import org.geotools.gml3.GML;
 import org.geotools.xml.*;
 
+import com.vividsolutions.jts.algorithm.CGAlgorithms;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -163,22 +164,7 @@ public class ArcStringTypeBinding extends AbstractComplexBinding {
      * @return true if input coordinates are laid out clockwise on their corresponding circle. false otherwise.
      */
     protected boolean laidOutClockwise(Coordinate c1, Coordinate c2, Coordinate c3) {
-        double x1 = c1.x;
-        double y1 = c1.y;
-        double x2 = c2.x;
-        double y2 = c2.y;
-        double x3 = c3.x;
-        double y3 = c3.y;
-        
-        double midY = y1 - (y1 - y3) / 2;
-        
-        return  (x1 < x3 && midY < y2) ||
-                (x1 > x3 && midY > y2) ||
-                (Double.compare(x1, x3) == 0 && (
-                    (y1 < y3 && x1 > x2) || // x1 == x3 == midX in this case and the case below
-                    (y1 > y3 && x1 < x2)
-                    // Double.compare(y1, y3) == 0 degenerate case omitted
-                ));
+        return CGAlgorithms.computeOrientation(c1, c2, c3) == CGAlgorithms.CLOCKWISE;
     }
 
 }

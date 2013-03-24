@@ -40,7 +40,10 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
     
     /** parameter for using integrated security, only works on windows, ignores the user and password parameters, the current windows user account is used for login*/
     public static final Param INTSEC = new Param("Integrated Security", Boolean.class, "Login as current windows user account. Works only in windows. Ignores user and password settings.", false, new Boolean(false)); 
-    
+
+	/** parameter for using Native Paging */
+	public static final Param NATIVE_PAGING = new Param("Use Native Paging", Boolean.class, "Use native paging for sql queries. For some sets of data, native paging can have a performance impact.", false, Boolean.TRUE);	
+		
     /** Metadata table providing information about primary keys **/
     public static final Param GEOMETRY_METADATA_TABLE = new Param("Geometry metadata table", String.class,
             "The optional table containing geometry metadata (geometry type and srid). Can be expressed as 'schema.name' or just 'name'", false);
@@ -76,6 +79,7 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
         super.setupParameters(parameters);
         parameters.put(DBTYPE.key, DBTYPE);
         parameters.put(INTSEC.key, INTSEC);
+        parameters.put(NATIVE_PAGING.key, NATIVE_PAGING);
         parameters.put(GEOMETRY_METADATA_TABLE.key, GEOMETRY_METADATA_TABLE);
     }
     
@@ -107,6 +111,10 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
     	// check the geometry metadata table
         String metadataTable = (String) GEOMETRY_METADATA_TABLE.lookUp(params);
         dialect.setGeometryMetadataTable(metadataTable);
+
+    	// check native paging
+        Boolean useNativePaging = (Boolean) NATIVE_PAGING.lookUp(params);
+        dialect.setUseOffSetLimit(useNativePaging == null || Boolean.TRUE.equals(useNativePaging));
         
         return dataStore;
     }

@@ -76,6 +76,9 @@ public class SQLServerDialect extends BasicSQLDialect {
      * @param dataStore
      */
     private String geometryMetadataTable;
+	
+	
+	private Boolean useOffsetLimit = false;
     
     final static Map<String, Class> TYPE_TO_CLASS_MAP = new HashMap<String, Class>() {
         {
@@ -556,7 +559,7 @@ public class SQLServerDialect extends BasicSQLDialect {
     
     @Override
     public boolean isLimitOffsetSupported() {
-        return true;
+        return useOffsetLimit;
     }
     
     @Override
@@ -626,4 +629,12 @@ public class SQLServerDialect extends BasicSQLDialect {
         this.geometryMetadataTable = geometryMetadataTable;
     }
     
+    /**
+     * Sets whether to use offset limit or not
+     * @param useOffsetLimit
+     */
+    public void setUseOffSetLimit(Boolean useOffsetLimit) {
+        this.useOffsetLimit = useOffsetLimit;
+    }
+	
 }

@@ -228,18 +228,7 @@ public class ShapefileReader implements FileReader {
      */
     public ShapefileReader(ShpFiles shapefileFiles, boolean strict,
             boolean useMemoryMapped, GeometryFactory gf) throws IOException, ShapefileException {
-        this.channel = shapefileFiles.getReadChannel(ShpFileType.SHP, this);
-        this.useMemoryMappedBuffer = useMemoryMapped;
-        streamLogger.open();
-        randomAccessEnabled = channel instanceof FileChannel;
-        try {
-            shxReader = new IndexFile(shapefileFiles, this.useMemoryMappedBuffer);
-        } catch(Exception e) {
-            LOGGER.log(Level.WARNING, "Could not open the .shx file, continuing " +
-            		"assuming the .shp file is not sparse", e);
-            currentShape = UNKNOWN;
-        }
-        init(strict, gf);
+        this(shapefileFiles, strict, useMemoryMapped, gf, false);
     }
     
     /**
@@ -430,15 +419,16 @@ public class ShapefileReader implements FileReader {
         if(currentShape > UNKNOWN && currentShape > shxReader.getRecordCount() - 1)
             return false;
         
-        // mark current position
-        int position = buffer.position();
-
         // ensure the proper position, regardless of read or handler behavior
-        buffer.position(getNextOffset());
+        positionBufferForOffset(buffer, getNextOffset());
 
         // no more data left
-        if (buffer.remaining() < 8)
+        if (buffer.remaining() < 8) {
             return false;
+        }
+
+        // mark current position
+        int position = buffer.position();
 
         // looks good
         boolean hasNext = true;
@@ -457,9 +447,9 @@ public class ShapefileReader implements FileReader {
     
     private int getNextOffset() throws IOException {
         if(currentShape >= 0) {
-            return this.toBufferOffset(shxReader.getOffsetInBytes(currentShape));
+            return shxReader.getOffsetInBytes(currentShape);
         } else {
-            return this.toBufferOffset(record.end);
+            return record.end;
         }
     }
     
@@ -515,6 +505,29 @@ public class ShapefileReader implements FileReader {
         return len;
     }
 
+    private void positionBufferForOffset(ByteBuffer buffer, int offset) throws IOException {
+        if (useMemoryMappedBuffer) {
+            buffer.position(offset);
+            return;
+        }
+
+        // Check to see if requested offset is already loaded; ensure that record header is in the buffer
+        if (currentOffset <= offset && currentOffset + buffer.limit() >= offset + 8) {
+            buffer.position(toBufferOffset(offset));
+        } else {
+            if (!randomAccessEnabled) {
+                throw new UnsupportedOperationException("Random Access not enabled");
+            }
+            FileChannel fc = (FileChannel) this.channel;
+            fc.position(offset);
+            currentOffset = offset;
+            buffer.position(0);
+            buffer.limit(buffer.capacity());
+            fill(buffer, fc);
+            buffer.flip();
+        }
+    }
+
     /**
      * Fetch the next record information.
      * 
@@ -524,7 +537,7 @@ public class ShapefileReader implements FileReader {
     public Record nextRecord() throws IOException {
 
         // need to update position
-        buffer.position(getNextOffset());
+        positionBufferForOffset(buffer, getNextOffset());
         if(currentShape != UNKNOWN)
             currentShape++;
 
@@ -623,26 +636,7 @@ public class ShapefileReader implements FileReader {
             UnsupportedOperationException {
         disableShxUsage();
         if (randomAccessEnabled) {
-            if (this.useMemoryMappedBuffer) {
-                buffer.position(offset);
-            } else {
-                /*
-                 * Check to see if requested offset is already loaded; ensure
-                 * that record header is in the buffer
-                 */
-                if (this.currentOffset <= offset
-                        && this.currentOffset + buffer.limit() >= offset + 8) {
-                    buffer.position(this.toBufferOffset(offset));
-                } else {
-                    FileChannel fc = (FileChannel) this.channel;
-                    fc.position(offset);
-                    this.currentOffset = offset;
-                    buffer.position(0);
-                    buffer.limit(buffer.capacity());
-                    fill(buffer, fc);
-                    buffer.position(0);
-                }
-            }
+            positionBufferForOffset(buffer, offset);
 
             int oldRecordOffset = record.end;
             record.end = offset;

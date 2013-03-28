@@ -34,7 +34,6 @@ import org.eclipse.emf.ecore.util.EDataTypeEList;
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.geotools.emf.ViewParamsElist;
 
 /**
  * <!-- begin-user-doc -->
@@ -682,11 +681,11 @@ public class GetFeatureTypeImpl extends BaseRequestTypeImpl implements GetFeatur
     /**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated NOT
+	 * @generated
 	 */
 	public EList<Map> getViewParams() {
 		if (viewParams == null) {
-            viewParams = (EList) new ViewParamsElist(Map.class, this, Wfs20Package.GET_FEATURE_TYPE__VIEW_PARAMS);
+            viewParams = (EList) new EDataTypeEList(Map.class, this, Wfs20Package.GET_FEATURE_TYPE__VIEW_PARAMS);
 		}
 		return viewParams;
 	}

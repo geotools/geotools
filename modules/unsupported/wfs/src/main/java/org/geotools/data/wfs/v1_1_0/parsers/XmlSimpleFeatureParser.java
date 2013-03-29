@@ -96,14 +96,17 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
 
     private int numberOfFeatures = -1;
 
+    private final boolean invertXY;
+    
     public XmlSimpleFeatureParser(final InputStream getFeatureResponseStream,
-            final SimpleFeatureType targetType, QName featureDescriptorName) throws IOException {
+            final SimpleFeatureType targetType, QName featureDescriptorName, boolean invertXY) throws IOException {
         this.inputStream = getFeatureResponseStream;
         this.featureNamespace = featureDescriptorName.getNamespaceURI();
         this.featureName = featureDescriptorName.getLocalPart();
         this.targetType = targetType;
         this.builder = new SimpleFeatureBuilder(targetType);
-
+        this.invertXY = invertXY;
+        
         try {
             // parse root element
             parser = new MXParser();
@@ -244,7 +247,7 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
         final QName startingGeometryTagName = new QName(parser.getNamespace(), parser.getName());
         int dimension = crsDimension(2);
         CoordinateReferenceSystem crs = crs(DefaultGeographicCRS.WGS84);
-
+        
         Geometry geom;
         if (GML.Point.equals(startingGeometryTagName)) {
             geom = parsePoint(dimension, crs);
@@ -606,7 +609,7 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
         if (srsName == null) {
             return defaultValue;
         }
-        CoordinateReferenceSystem crs = CRS.decode(srsName);
+        CoordinateReferenceSystem crs = CRS.decode(srsName);                
         return crs;
     }
 
@@ -637,6 +640,7 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
             throw new IllegalArgumentException("Number of ordinates (" + ordinatesLength
                     + ") does not match crs dimension: " + dimension);
         }
+                
         final int nCoords = ordinatesLength / dimension;
         Coordinate[] coords = new Coordinate[nCoords];
         Coordinate coord;
@@ -647,9 +651,18 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
             y = Double.valueOf(split[i + 1]);
             if (dimension > 2) {
                 z = Double.valueOf(split[i + 2]);
-                coord = new Coordinate(x, y, z);
+                
+                if (invertXY) {
+                    coord = new Coordinate(y, x, z);                    
+                } else {
+                    coord = new Coordinate(x, y, z);                    
+                }
             } else {
-                coord = new Coordinate(x, y);
+                if (invertXY) {
+                    coord = new Coordinate(y, x);                    
+                } else {
+                    coord = new Coordinate(x, y);                    
+                }
             }
             coords[currCoordIdx] = coord;
             currCoordIdx++;

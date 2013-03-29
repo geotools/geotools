@@ -142,6 +142,8 @@ public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataSto
 
     private String namespaceOverride;
 
+    private boolean invertXY;
+    
     /**
      * Construct <code>WFSDataStore</code>.
      * 
@@ -1156,4 +1158,14 @@ public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataSto
     public void setNamespaceOverride(String namespaceOverride) {
         this.namespaceOverride = namespaceOverride;
     }
+    
+    @Override
+    public void setXYInversionEnabled(Boolean xyInversionEnabled) {
+        this.invertXY = xyInversionEnabled == null ? false : xyInversionEnabled.booleanValue();
+    }
+
+    @Override
+    public boolean isXYInversionEnabled() {
+        return invertXY;
+    }      
 }

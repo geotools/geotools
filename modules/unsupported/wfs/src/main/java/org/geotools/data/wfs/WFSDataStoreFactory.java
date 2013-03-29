@@ -370,6 +370,17 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
                 description, null);
     }
 
+    /**
+     * Optional {@code Boolean} DataStore parameter indicating whether to invert X and Y.
+     */
+    public static final WFSFactoryParam<Boolean> INVERTXY;
+    static {
+        String name = "WFSDataStoreFactory:INVERTXY";
+        String description = "Indicates that datastore should invert X and Y coordinates. It applies only to WFS version 1.1. " +
+        		"Default is false";
+        parametersInfo[8] = INVERTXY = new WFSFactoryParam<Boolean>(name, Boolean.class, 
+                description, false);
+    }
     
     /**
      * Requests the WFS Capabilities document from the {@link WFSDataStoreFactory#URL url} parameter
@@ -400,6 +411,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
         final String wfsStrategy = (String) WFS_STRATEGY.lookUp(params);
         final Integer filterCompliance = (Integer) FILTER_COMPLIANCE.lookUp(params);
         final String namespaceOverride = (String) NAMESPACE.lookUp(params);
+        final Boolean invertXY = (Boolean) INVERTXY.lookUp(params);
         
         if (((user == null) && (pass != null)) || ((pass == null) && (user != null))) {
             throw new IOException(
@@ -448,7 +460,8 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
             dataStore.setPreferPostOverGet(protocol);
         }
         dataStore.setNamespaceOverride(namespaceOverride);
-
+        dataStore.setXYInversionEnabled(invertXY);
+        
         return dataStore;
     }
 

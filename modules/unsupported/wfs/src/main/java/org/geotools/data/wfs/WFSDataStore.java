@@ -102,5 +102,9 @@ public interface WFSDataStore extends DataStore {
 
     public boolean isPreferPostOverGet();
     
+    public void setXYInversionEnabled(Boolean xyInversionEnabled);
+    
+    public boolean isXYInversionEnabled();
+    
     public void setNamespaceOverride(String namespaceOverride);
 }

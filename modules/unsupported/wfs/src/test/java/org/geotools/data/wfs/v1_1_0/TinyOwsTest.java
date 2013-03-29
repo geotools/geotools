@@ -1,5 +1,7 @@
 package org.geotools.data.wfs.v1_1_0;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,6 +34,8 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.FeatureId;
 import org.xml.sax.SAXException;
+
+import com.vividsolutions.jts.geom.Geometry;
 
 
 public class TinyOwsTest {
@@ -154,6 +158,32 @@ public class TinyOwsTest {
         iterate(source.getFeatures(query), 1, true);
     }    
 
+    @Test
+    public void testGetFeatureByIdFlippingAxis() throws Exception {        
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        Set<FeatureId> fids = new HashSet<FeatureId>();
+        fids.add(new FeatureIdImpl("comuni11.2671"));
+        Query query = new Query(typeName, ff.id(fids));
+
+        WFSDataStore wfs = getWFSDataStore(new TinyOwsMockHttpClient());
+        SimpleFeatureSource source = wfs.getFeatureSource(typeName);
+        SimpleFeature feature = iterate(source.getFeatures(query), 1, true);
+        Geometry geometry = (Geometry) feature.getDefaultGeometry();
+        double x = geometry.getCoordinate().x;
+        double y = geometry.getCoordinate().y;
+        
+        wfs.setXYInversionEnabled(Boolean.TRUE);
+        
+        source = wfs.getFeatureSource(typeName);
+        feature = iterate(source.getFeatures(query), 1, true);
+        geometry = (Geometry) feature.getDefaultGeometry();
+        double flippedX = geometry.getCoordinate().x;
+        double flippedY = geometry.getCoordinate().y;
+
+        assertEquals(x, flippedY, 0);
+        assertEquals(y, flippedX, 0);
+    }    
+    
     @Test
     public void testGetFeaturesByBBox() throws Exception {
         final String[] queryTokens = { "<ogc:BBOX>", 

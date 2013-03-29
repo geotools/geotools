@@ -118,6 +118,8 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
 
     private String namespaceOverride;
 
+    private boolean invertXY = false;
+    
     /**
      * The WFS capabilities document.
      * 
@@ -168,6 +170,16 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
                 .booleanValue();
     }
 
+    @Override
+    public void setXYInversionEnabled(Boolean xyInversionEnabled) {
+        this.invertXY = xyInversionEnabled == null ? false : xyInversionEnabled.booleanValue();
+    }
+
+    @Override
+    public boolean isXYInversionEnabled() {
+        return invertXY;
+    }    
+    
     /**
      * @see WFSDataStore#getInfo()
      */

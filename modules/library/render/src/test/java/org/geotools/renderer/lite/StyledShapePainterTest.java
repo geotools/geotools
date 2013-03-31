@@ -19,7 +19,10 @@ package org.geotools.renderer.lite;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.net.URL;
+
+import javax.imageio.ImageIO;
 
 import junit.framework.TestCase;
 
@@ -88,6 +91,23 @@ public class StyledShapePainterTest extends TestCase {
         assertEquals(0, image.getRaster().getSample(90, 30, 0));
         assertEquals(0, image.getRaster().getSample(90, 30, 1));
         assertEquals(0, image.getRaster().getSample(90, 30, 2));
+        
+        //check with a scaling factor
+        image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+        g2 = (Graphics2D) image.getGraphics();
+        painter.paint(g2, pointShape, legend, 2, false);
+        assertEquals(255, image.getRaster().getSample(0, 0, 0));
+        assertEquals(255, image.getRaster().getSample(0, 0, 1));
+        assertEquals(192, image.getRaster().getSample(0, 0, 2));
+
+        assertEquals(0, image.getRaster().getSample(30, 30, 0));
+        assertEquals(0, image.getRaster().getSample(30, 30, 1));
+        assertEquals(0, image.getRaster().getSample(30, 30, 2));
+
+        assertEquals(0, image.getRaster().getSample(90, 30, 0));
+        assertEquals(0, image.getRaster().getSample(90, 30, 1));
+        assertEquals(0, image.getRaster().getSample(90, 30, 2));
+
 
     }
 

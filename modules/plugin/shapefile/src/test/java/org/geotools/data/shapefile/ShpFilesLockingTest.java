@@ -16,16 +16,17 @@
  */
 package org.geotools.data.shapefile;
 
-import static org.geotools.data.shapefile.ShpFileType.DBF;
-import static org.geotools.data.shapefile.ShpFileType.SHP;
-import static org.geotools.data.shapefile.ShpFileType.SHX;
+import static org.geotools.data.shapefile.files.ShpFileType.*;
 
 import java.io.File;
 import java.net.URL;
 
 import junit.framework.TestCase;
 
-import org.geotools.data.shapefile.ShpFiles.State;
+import org.geotools.data.shapefile.files.FileWriter;
+import org.geotools.data.shapefile.files.Result;
+import org.geotools.data.shapefile.files.ShpFiles;
+import org.geotools.data.shapefile.files.ShpFiles.State;
 
 /**
  * 
@@ -67,7 +68,7 @@ public class ShpFilesLockingTest extends TestCase implements FileWriter {
         assertEquals(1, shpFiles.numberOfLocks());
         
         shpFiles.unlockRead(file, this);
-        shpFiles.finalize();
+        shpFiles.dispose();
     }
     public void testAcquireWriteFile() throws Throwable {
         ShpFiles shpFiles = new ShpFiles("http://somefile.com/shp.shp");
@@ -89,7 +90,7 @@ public class ShpFilesLockingTest extends TestCase implements FileWriter {
         
         shpFiles.unlockWrite(file, this);
         assertEquals(0, shpFiles.numberOfLocks());
-        shpFiles.finalize();
+        shpFiles.dispose();
     }
 
     public void testAcquireRead1() throws Throwable {
@@ -121,7 +122,7 @@ public class ShpFilesLockingTest extends TestCase implements FileWriter {
         shpFiles.unlockRead(result2.value, this);
         shpFiles.unlockRead(result1.value, testWriter);
         shpFiles.unlockRead(url, this);
-        shpFiles.finalize();
+        shpFiles.dispose();
     }
 
     public void testUnlockReadAssertion() throws Throwable {
@@ -156,7 +157,7 @@ public class ShpFilesLockingTest extends TestCase implements FileWriter {
 
         shpFiles.unlockRead(result1.value, testWriter);
         shpFiles.unlockRead(url, this);
-        shpFiles.finalize();
+        shpFiles.dispose();
     }
 
     public void testUnlockWriteAssertion() throws Throwable {
@@ -191,7 +192,7 @@ public class ShpFilesLockingTest extends TestCase implements FileWriter {
 
         shpFiles.unlockWrite(url, this);
         shpFiles.unlockWrite(result1.value, testWriter);
-        shpFiles.finalize();
+        shpFiles.dispose();
     }
 
     public String id() {

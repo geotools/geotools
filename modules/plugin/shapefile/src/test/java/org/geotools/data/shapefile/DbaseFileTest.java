@@ -25,9 +25,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.TestData;
+import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.dbf.DbaseFileHeader;
 import org.geotools.data.shapefile.dbf.DbaseFileReader;
 import org.geotools.data.shapefile.dbf.DbaseFileWriter;
+import org.geotools.data.shapefile.files.ShpFiles;
 
 /**
  * 

@@ -37,7 +37,7 @@
   </scm>
 
   <description>
-    DataStore supporting the ESRI shapefile format.
+    DataStore supporting the ESRI shapefile format. NG version
   </description>
 
   <licenses>
@@ -143,26 +143,19 @@
       <artifactId>gt-data</artifactId>
       <version>${project.version}</version>
     </dependency>
+
+    <dependency>
+      <groupId>jdom</groupId>
+      <artifactId>jdom</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-sample-data</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
-    <!-- because main and sample-data depend on referencing we need a tie breaker -->
-    <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-referencing</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>jdom</groupId>
-      <artifactId>jdom</artifactId>
-      <!-- The version number is specified in the parent POM. -->
-    </dependency>
     
-    <!-- We need this to make the referencing module useful -->
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-epsg-hsql</artifactId>
@@ -170,18 +163,5 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-
-  <!-- =========================================================== -->
-  <!--     Build Configuration                                     -->
-  <!-- =========================================================== -->
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </build>
 
 </project>

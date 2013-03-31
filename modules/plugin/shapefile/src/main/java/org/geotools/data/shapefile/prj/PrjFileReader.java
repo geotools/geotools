@@ -20,19 +20,19 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.CharBuffer;
-import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 
-import org.geotools.data.shapefile.FileReader;
-import org.geotools.data.shapefile.ShpFileType;
-import org.geotools.data.shapefile.ShpFiles;
-import org.geotools.data.shapefile.StreamLogging;
+import org.geotools.data.shapefile.files.FileReader;
+import org.geotools.data.shapefile.files.ShpFileType;
+import org.geotools.data.shapefile.files.ShpFiles;
+import org.geotools.data.shapefile.files.StreamLogging;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.resources.NIOUtilities;
 import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * 
@@ -48,8 +48,8 @@ public class PrjFileReader implements FileReader {
     CharsetDecoder decoder;
     StreamLogging streamLogger = new StreamLogging("PRJ reader");
 
-    org.opengis.referencing.crs.CoordinateReferenceSystem cs;
-    private boolean memoryMapped=true;
+    CoordinateReferenceSystem crs;
+    boolean memoryMapped=true;
 
     // private int[] content;
 
@@ -76,15 +76,15 @@ public class PrjFileReader implements FileReader {
         String wkt = charBuffer.toString();
 
         try {
-            cs = ReferencingFactoryFinder.getCRSFactory(null)
+            crs = ReferencingFactoryFinder.getCRSFactory(null)
                     .createFromWKT(wkt);
         } catch (FactoryException e) {
-            cs = null;
+            crs = null;
         }
     }
 
     public org.opengis.referencing.crs.CoordinateReferenceSystem getCoodinateSystem() {
-        return cs;
+        return crs;
     }
 
     private int fill(ByteBuffer buffer, ReadableByteChannel channel)

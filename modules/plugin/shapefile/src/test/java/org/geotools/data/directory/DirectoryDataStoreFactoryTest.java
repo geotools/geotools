@@ -1,13 +1,15 @@
 package org.geotools.data.directory;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.geotools.data.DataStore;
-import org.geotools.data.shapefile.ShapefileDataStore;
+import org.geotools.data.DataStoreFinder;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.data.shapefile.ShapefileDirectoryFactory;
 import org.junit.Before;
@@ -26,6 +28,17 @@ public class DirectoryDataStoreFactoryTest extends DirectoryTestSupport {
         File f = copyShapefiles("shapes/bugsites.shp", DESTDIR);
         copyShapefiles("shapes/archsites.shp", DESTDIR);
         tempDir = f.getParentFile();
+    }
+    
+    @Test
+    public void testSpi() throws Exception {
+        Map params = new HashMap();
+        params.put(ShapefileDataStoreFactory.URLP.key, tempDir.toURI().toURL());
+        params.put(ShapefileDataStoreFactory.NAMESPACEP.key, "http://www.geotools.org");
+        DataStore store = DataStoreFinder.getDataStore(params);
+        assertNotNull(store);
+        assertEquals(2, store.getNames().size());
+        store.dispose();
     }
     
     @Test

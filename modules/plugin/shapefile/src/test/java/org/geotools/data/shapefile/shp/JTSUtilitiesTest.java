@@ -3,6 +3,7 @@ package org.geotools.data.shapefile.shp;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.geotools.data.shapefile.shp.JTSUtilities;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

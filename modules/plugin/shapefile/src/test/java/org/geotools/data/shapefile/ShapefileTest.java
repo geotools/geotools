@@ -17,7 +17,6 @@
 package org.geotools.data.shapefile;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
@@ -31,6 +30,9 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
+import org.geotools.data.shapefile.ShapefileDataStore;
+import org.geotools.data.shapefile.ShapefileDataStoreFactory;
+import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.shapefile.shp.IndexFile;
 import org.geotools.data.shapefile.shp.ShapefileReader;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -152,11 +154,10 @@ public class ShapefileTest extends TestCaseSupport {
         tmpFile.delete();
 
         // write features
-        ShapefileDataStoreFactory make = new ShapefileDataStoreFactory();
-        DataStore s = make.createDataStore(tmpFile.toURI().toURL());
+        DataStore s = new ShapefileDataStore(tmpFile.toURI().toURL());
         s.createSchema(type);
         String typeName = type.getTypeName();
-        SimpleFeatureStore store = (SimpleFeatureStore) s.getFeatureSource(typeName);
+        SimpleFeatureStore store = (SimpleFeatureStore) s.getFeatureSource(s.getTypeNames()[0]);
 
         store.addFeatures(features);
         s.dispose();
@@ -240,8 +241,7 @@ public class ShapefileTest extends TestCaseSupport {
 		tb.add("the_geom", Point.class);
 		ds.createSchema(tb.buildFeatureType());
 		Transaction transaction = Transaction.AUTO_COMMIT;
-		FeatureWriter<SimpleFeatureType, SimpleFeature> writer = ds
-				.getFeatureWriter(transaction);
+		FeatureWriter<SimpleFeatureType, SimpleFeature> writer = ds.getFeatureWriter(ds.getTypeNames()[0], Transaction.AUTO_COMMIT);
 		SimpleFeature feature = writer.next();
 		feature.setAttribute(0, null);
 		writer.close();
@@ -260,21 +260,6 @@ public class ShapefileTest extends TestCaseSupport {
 		}
 	}
 
-    public void testReadingSparse() throws IOException {
-        File file = TestData.file(TestCaseSupport.class, "sparse/sparse.shp");
-        ShapefileReader reader = new ShapefileReader(new ShpFiles(file), false, false, new GeometryFactory());
-        int cnt = 0;
-        try {
-            while (reader.hasNext()) {
-                reader.nextRecord().shape();
-                cnt++;
-            }
-        } finally {
-            reader.close();
-        }
-        assertEquals("Did not read all Geometries from sparse file.", 31, cnt);
-    }
-
     protected void loadShapes(String resource, int expected) throws Exception {
         final URL url = TestData.url(resource);
         ShapefileReader reader = new ShapefileReader(new ShpFiles(url), false,
@@ -290,6 +275,21 @@ public class ShapefileTest extends TestCaseSupport {
         }
         assertEquals("Number of Geometries loaded incorect for : " + resource,
                 expected, cnt);
+    }
+
+    public void testReadingSparse() throws IOException {
+        File file = TestData.file(TestCaseSupport.class, "sparse/sparse.shp");
+        ShapefileReader reader = new ShapefileReader(new ShpFiles(file), false, false, new GeometryFactory());
+        int cnt = 0;
+        try {
+            while (reader.hasNext()) {
+                reader.nextRecord().shape();
+                cnt++;
+            }
+        } finally {
+            reader.close();
+        }
+        assertEquals("Did not read all Geometries from sparse file.", 31, cnt);
     }
 
     protected void loadMemoryMapped(String resource, int expected)

@@ -16,8 +16,7 @@
  */
 package org.geotools.data.shapefile;
 
-import static org.geotools.data.shapefile.ShpFileType.PRJ;
-import static org.geotools.data.shapefile.ShpFileType.SHP;
+import static org.geotools.data.shapefile.files.ShpFileType.*;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -28,6 +27,11 @@ import java.util.Arrays;
 import java.util.Map;
 
 import junit.framework.TestCase;
+
+import org.geotools.data.shapefile.files.FileReader;
+import org.geotools.data.shapefile.files.ShpFileType;
+import org.geotools.data.shapefile.files.ShpFiles;
+import org.geotools.data.shapefile.files.StorageFile;
 
 /**
  * 

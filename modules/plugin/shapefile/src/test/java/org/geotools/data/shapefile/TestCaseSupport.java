@@ -29,10 +29,10 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.geotools.TestData;
+import org.geotools.data.shapefile.index.CloseableIterator;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.index.CloseableIterator;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory2;
 
@@ -56,6 +56,7 @@ import com.vividsolutions.jts.io.WKTReader;
  * @author Martin Desruisseaux
  */
 public class TestCaseSupport extends TestCase {
+    
 
     /** References a known test file provided by sample data. */
     final static String STATE_POP = "shapes/statepop.shp";
@@ -74,7 +75,7 @@ public class TestCaseSupport extends TestCase {
 
     /** References a known test file provided by sample data. */
     final static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-
+    
     /**
      * Set to {@code true} if {@code println} are wanted during normal
      * execution. It doesn't apply to message displayed in case of errors.

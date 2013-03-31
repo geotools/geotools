@@ -29,6 +29,8 @@ import java.util.Map;
 import junit.framework.AssertionFailedError;
 
 import org.geotools.TestData;
+import org.geotools.data.shapefile.ShapefileDataStore;
+import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -159,11 +161,9 @@ public class ShapefileReadWriteTest extends TestCaseSupport {
 
     private void test(String f, Charset charset) throws Exception {
         copyShapefiles(f); // Work on File rather than URL from JAR.
-        ShapefileDataStore s = null;
-        if(charset == null) {
-            s = new ShapefileDataStore(TestData.url(TestCaseSupport.class, f));
-        } else {
-            s = new ShapefileDataStore(TestData.url(TestCaseSupport.class, f), false, charset);
+        ShapefileDataStore s = new ShapefileDataStore(TestData.url(TestCaseSupport.class, f));
+        if(charset != null) {
+            s.setCharset(charset);
         }
         String typeName = s.getTypeNames()[0];
         SimpleFeatureSource source = s.getFeatureSource(typeName);
@@ -191,33 +191,30 @@ public class ShapefileReadWriteTest extends TestCaseSupport {
         params.put(ShapefileDataStoreFactory.MEMORY_MAPPED.key, memorymapped);
         shapefile = (ShapefileDataStore) maker.createDataStore(params);
         if(charset != null)
-            shapefile.setStringCharset(charset);
+            shapefile.setCharset(charset);
 
         shapefile.createSchema(type);
 
-        SimpleFeatureStore store = (SimpleFeatureStore) shapefile.getFeatureSource(type
-                .getTypeName());
+        SimpleFeatureStore store = (SimpleFeatureStore) shapefile.getFeatureSource();
 
         store.addFeatures(original);
 
         SimpleFeatureCollection copy = store.getFeatures();
         compare(original, copy);
 
-        if (true) {
-            // review open
-            ShapefileDataStore review;
-            if(charset == null) 
-                review = new ShapefileDataStore(tmp.toURI().toURL(), tmp.toURI(), memorymapped);
-            else
-                review = new ShapefileDataStore(tmp.toURI().toURL(), tmp.toURI(), memorymapped, charset);
-            typeName = review.getTypeNames()[0];
-            SimpleFeatureSource featureSource = review.getFeatureSource(typeName);
-            SimpleFeatureCollection again = featureSource.getFeatures();
-
-            compare(copy, again);
-            compare(original, again);
-            review.dispose();
+        ShapefileDataStore review = new ShapefileDataStore(tmp.toURI().toURL());
+        review.setMemoryMapped(memorymapped);
+        if(charset != null) {
+            review.setCharset(charset);
         }
+        typeName = review.getTypeNames()[0];
+        SimpleFeatureSource featureSource = review.getFeatureSource(typeName);
+        SimpleFeatureCollection again = featureSource.getFeatures();
+
+        compare(copy, again);
+        compare(original, again);
+        review.dispose();
+        
         shapefile.dispose();
     }
 

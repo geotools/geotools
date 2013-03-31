@@ -35,7 +35,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import org.geotools.data.shapefile.StreamLogging;
+import org.geotools.data.shapefile.files.StreamLogging;
 import org.geotools.resources.NIOUtilities;
 
 /**

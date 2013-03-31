@@ -7,9 +7,8 @@ import java.util.Collections;
 
 import org.geotools.TestData;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.Query;
-import org.geotools.data.shapefile.indexed.IndexedShapefileDataStore;
+import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -21,7 +20,7 @@ import org.opengis.filter.identity.FeatureId;
 
 /**
  * 
- *
+ * 
  * @source $URL$
  */
 public class DuplicateColumnNameReaderTest extends TestCaseSupport {
@@ -64,8 +63,7 @@ public class DuplicateColumnNameReaderTest extends TestCaseSupport {
 
         // open the test shapefile
         // creates both indexed and regular shapefile data store
-        IndexedShapefileDataStore indexedstore = new IndexedShapefileDataStore(shpFile.toURI()
-                .toURL());
+        ShapefileDataStore indexedstore = new ShapefileDataStore(shpFile.toURI().toURL());
 
         // get a random feature id from one of the stores
         SimpleFeatureIterator it = indexedstore.getFeatureSource().getFeatures().features();
@@ -75,7 +73,7 @@ public class DuplicateColumnNameReaderTest extends TestCaseSupport {
         // query the datastore
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Filter idFilter = ff.id(Collections.singleton(fid));
-        final Query query = new DefaultQuery(indexedstore.getSchema().getName().getLocalPart(),
+        final Query query = new Query(indexedstore.getSchema().getName().getLocalPart(),
                 idFilter, new String[] { testColumn });
         final SimpleFeatureCollection indexedfeatures = indexedstore.getFeatureSource()
                 .getFeatures(query);

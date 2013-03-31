@@ -16,8 +16,7 @@
  */
 package org.geotools.data.shapefile;
 
-import static org.geotools.data.shapefile.ShpFileType.PRJ;
-import static org.geotools.data.shapefile.ShpFileType.SHP;
+import static org.geotools.data.shapefile.files.ShpFileType.*;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -37,6 +36,9 @@ import java.util.Map.Entry;
 import junit.framework.TestCase;
 
 import org.geotools.TestData;
+import org.geotools.data.shapefile.files.ShpFileType;
+import org.geotools.data.shapefile.files.ShpFiles;
+import org.geotools.data.shapefile.files.StorageFile;
 
 /**
  * 
@@ -44,7 +46,7 @@ import org.geotools.TestData;
  * @source $URL$
  */
 public class ShpFilesTestStream extends TestCase implements
-        org.geotools.data.shapefile.FileWriter {
+        org.geotools.data.shapefile.files.FileWriter {
 
     private String typeName;
     private Map<ShpFileType, File> map;
@@ -180,7 +182,8 @@ public class ShpFilesTestStream extends TestCase implements
     }
 
     public void testGetReadChannelURL() throws IOException {
-        ShpFiles files = new ShpFiles(TestData.url("shapes/statepop.shp"));
+        URL url = TestData.url("shapes/statepop.shp");
+        ShpFiles files = new ShpFiles(url);
         
         assertFalse(files.isLocal());
         

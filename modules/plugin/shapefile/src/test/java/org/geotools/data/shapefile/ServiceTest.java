@@ -24,6 +24,7 @@ import org.geotools.TestData;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataStoreFinder;
+import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 
 /**
  * 

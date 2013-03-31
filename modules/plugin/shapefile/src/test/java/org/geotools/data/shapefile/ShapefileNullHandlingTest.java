@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureStore;
+import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;

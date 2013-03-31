@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.geotools.data.shapefile.TestCaseSupport;
+import org.geotools.data.shapefile.shp.PolygonHandler;
+import org.geotools.data.shapefile.shp.ShapeType;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;

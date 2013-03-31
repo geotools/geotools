@@ -22,6 +22,8 @@ import java.net.URL;
 
 import junit.framework.TestCase;
 
+import org.geotools.data.shapefile.files.ShpFileType;
+
 /**
  * 
  *

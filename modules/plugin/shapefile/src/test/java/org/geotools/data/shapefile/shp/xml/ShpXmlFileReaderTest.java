@@ -21,8 +21,11 @@ import java.net.URL;
 import junit.framework.TestCase;
 
 import org.geotools.TestData;
-import org.geotools.data.shapefile.ShpFiles;
 import org.geotools.data.shapefile.TestCaseSupport;
+import org.geotools.data.shapefile.files.ShpFiles;
+import org.geotools.data.shapefile.shp.xml.IdInfo;
+import org.geotools.data.shapefile.shp.xml.Metadata;
+import org.geotools.data.shapefile.shp.xml.ShpXmlFileReader;
 
 import com.vividsolutions.jts.geom.Envelope;
 

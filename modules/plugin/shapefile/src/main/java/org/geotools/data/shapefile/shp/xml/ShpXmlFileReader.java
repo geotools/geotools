@@ -19,9 +19,9 @@ package org.geotools.data.shapefile.shp.xml;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.geotools.data.shapefile.FileReader;
-import org.geotools.data.shapefile.ShpFileType;
-import org.geotools.data.shapefile.ShpFiles;
+import org.geotools.data.shapefile.files.FileReader;
+import org.geotools.data.shapefile.files.ShpFileType;
+import org.geotools.data.shapefile.files.ShpFiles;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -31,7 +31,7 @@ import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * 
- *
+ * 
  * @source $URL$
  */
 public class ShpXmlFileReader implements FileReader {
@@ -48,12 +48,10 @@ public class ShpXmlFileReader implements FileReader {
      * @throws JDOMException
      * @throws IOException
      */
-    public ShpXmlFileReader(ShpFiles shapefileFiles) throws JDOMException,
-            IOException {
+    public ShpXmlFileReader(ShpFiles shapefileFiles) throws JDOMException, IOException {
         SAXBuilder builder = new SAXBuilder(false);
 
-        InputStream inputStream = shapefileFiles.getInputStream(
-                ShpFileType.SHP_XML, this);
+        InputStream inputStream = shapefileFiles.getInputStream(ShpFileType.SHP_XML, this);
         try {
             dom = builder.build(inputStream);
         } finally {

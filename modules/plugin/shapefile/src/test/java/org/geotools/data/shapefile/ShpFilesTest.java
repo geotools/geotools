@@ -16,10 +16,7 @@
  */
 package org.geotools.data.shapefile;
 
-import static org.geotools.data.shapefile.ShpFileType.DBF;
-import static org.geotools.data.shapefile.ShpFileType.PRJ;
-import static org.geotools.data.shapefile.ShpFileType.SHP;
-import static org.geotools.data.shapefile.ShpFileType.SHX;
+import static org.geotools.data.shapefile.files.ShpFileType.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,10 +24,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import junit.framework.TestCase;
+
+import org.geotools.data.shapefile.files.BasicShpFileWriter;
+import org.geotools.data.shapefile.files.ShpFileType;
+import org.geotools.data.shapefile.files.ShpFiles;
 
 /**
  * 

@@ -354,7 +354,8 @@ public final class StyledShapePainter {
                         if (symbolScale != 1.0){
                             int w = (int) (image.getWidth() / symbolScale);
                             int h = (int) (image.getHeight() / symbolScale);
-                            BufferedImage rescaled = new BufferedImage(w, h, image.getType());
+                            int imageType = image.getType() == 0 ? BufferedImage.TYPE_4BYTE_ABGR : image.getType();
+                            BufferedImage rescaled = new BufferedImage(w, h, imageType);
                             Graphics2D g = rescaled.createGraphics();
                             g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
                             g.drawImage(image, 0, 0, w, h, 0, 0, image.getWidth(), image.getHeight(), null);

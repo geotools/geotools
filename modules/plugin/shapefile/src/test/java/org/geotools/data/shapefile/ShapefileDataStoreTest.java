@@ -163,6 +163,16 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     public void testLoad() throws Exception {
         loadFeatures(STATE_POP, Query.ALL);
     }
+    
+    public void testNullReproject() throws Exception {
+        // try to reproject to the target CRS, used to fail due to a missing check in 
+        // ContentFeatureSource
+        CoordinateReferenceSystem targetCRS = loadFeatures(STATE_POP, Query.ALL).getSchema().getCoordinateReferenceSystem();
+        Query q = new Query(Query.ALL);
+        q.setCoordinateSystemReproject(targetCRS);
+        // used to get an exception here
+        loadFeatures(STATE_POP, q);
+    }
 
     public void testLoadDanishChars() throws Exception {
         SimpleFeatureCollection fc = loadFeatures(DANISH, Query.ALL);

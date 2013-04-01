@@ -273,14 +273,15 @@ class FootprintUtils {
         if (footprintsLocationGeometryMap.isEmpty())
         	return;
         
-        final String[] typeNames = store.getTypeNames();
-        if (typeNames.length <= 0) {
-            throw new IllegalArgumentException("Problems when opening the shapefile, no typenames for the schema are defined");
-        }
-        final String typeName = typeNames[0];
         FileWriter footprintWriter = null;
         FeatureIterator<SimpleFeature> it=null;        
         try {
+            final String[] typeNames = store.getTypeNames();
+            if (typeNames.length <= 0) {
+                throw new IllegalArgumentException("Problems when opening the shapefile, no typenames for the schema are defined");
+            }
+            final String typeName = typeNames[0];
+            
             final FeatureSource<SimpleFeatureType, SimpleFeature> featureSource = store.getFeatureSource(typeName);
             final FeatureCollection<SimpleFeatureType, SimpleFeature> features = featureSource.getFeatures();
 

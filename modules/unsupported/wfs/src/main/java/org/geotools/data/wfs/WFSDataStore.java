@@ -51,6 +51,9 @@ public interface WFSDataStore extends DataStore {
      */
     public static final ClassKey WFS_VENDOR_PARAMETERS = new ClassKey(Map.class);
 
+    public static final String AXIS_ORDER_EAST_NORTH = "East / North";
+    public static final String AXIS_ORDER_NORTH_EAST = "North / East";
+    public static final String AXIS_ORDER_COMPLIANT = "Compliant";
     
     /**
      * Overrides {@link DataAccess#getInfo()} so it type narrows to a {@link WFSServiceInfo}
@@ -102,9 +105,9 @@ public interface WFSDataStore extends DataStore {
 
     public boolean isPreferPostOverGet();
     
-    public void setXYInversionEnabled(Boolean xyInversionEnabled);
+    public void setAxisOrder(String axisOrder);
     
-    public boolean isXYInversionEnabled();
+    public String getAxisOrder();
     
     public void setNamespaceOverride(String namespaceOverride);
 }

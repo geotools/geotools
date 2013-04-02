@@ -142,7 +142,7 @@ public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataSto
 
     private String namespaceOverride;
 
-    private boolean invertXY;
+    private String axisOrder;
     
     /**
      * Construct <code>WFSDataStore</code>.
@@ -1160,12 +1160,12 @@ public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataSto
     }
     
     @Override
-    public void setXYInversionEnabled(Boolean xyInversionEnabled) {
-        this.invertXY = xyInversionEnabled == null ? false : xyInversionEnabled.booleanValue();
+    public void setAxisOrder(String axisOrder) {
+        this.axisOrder = axisOrder;
     }
 
     @Override
-    public boolean isXYInversionEnabled() {
-        return invertXY;
+    public String getAxisOrder() {
+        return axisOrder;
     }      
 }

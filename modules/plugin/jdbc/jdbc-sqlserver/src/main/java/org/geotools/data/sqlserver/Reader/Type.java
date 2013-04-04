@@ -1,4 +1,4 @@
-package org.geotools.data.sqlserver.Reader;
+package org.geotools.data.sqlserver.reader;
 
 /**
  * @author Anders Bakkevold, Bouvet
@@ -19,7 +19,6 @@ public enum Type {
     CURVEPOLYGON(10),
     FULLGLOBE(11);
 
-
     private int value;
 
     private Type(int value) {
@@ -34,6 +33,4 @@ public enum Type {
         }
         throw new IllegalArgumentException();
     }
-
-
 }

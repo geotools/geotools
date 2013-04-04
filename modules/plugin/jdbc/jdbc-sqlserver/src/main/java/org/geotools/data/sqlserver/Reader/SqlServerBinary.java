@@ -1,4 +1,4 @@
-package org.geotools.data.sqlserver.Reader;
+package org.geotools.data.sqlserver.reader;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateSequence;

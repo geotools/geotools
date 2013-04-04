@@ -19,7 +19,6 @@ package org.geotools.data.sqlserver;
 import java.io.IOException;
 import java.util.Map;
 
-import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;
@@ -49,8 +48,8 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
             "The optional table containing geometry metadata (geometry type and srid). Can be expressed as 'schema.name' or just 'name'", false);
 
     /** parameter for using WKB or Sql server binary directly. Setting to true will use WKB */
-    public static final Param WKB_SERIALIZATION = new Param("Use WKB serialization", Boolean.class,
-            "Use WKB serialization, or use SQL Server binary format directly.", false, Boolean.TRUE);
+    public static final Param NATIVE_SERIALIZATION = new Param("Use native serialization", Boolean.class,
+            "Use native SQL Server serialization, or WKB serialization.", false, Boolean.FALSE);
     
     @Override
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
@@ -83,8 +82,8 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(DBTYPE.key, DBTYPE);
         parameters.put(INTSEC.key, INTSEC);
         parameters.put(NATIVE_PAGING.key, NATIVE_PAGING);
+        parameters.put(NATIVE_SERIALIZATION.key, NATIVE_SERIALIZATION);
         parameters.put(GEOMETRY_METADATA_TABLE.key, GEOMETRY_METADATA_TABLE);
-        parameters.put(WKB_SERIALIZATION.key, WKB_SERIALIZATION);
     }
     
     /**
@@ -121,8 +120,10 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
         dialect.setUseOffSetLimit(useNativePaging == null || Boolean.TRUE.equals(useNativePaging));
 
         // check serialization format
-        Boolean useWkbSerialization = (Boolean) WKB_SERIALIZATION.lookUp(params);
-        dialect.setUseWkbSerialization(useWkbSerialization == null || Boolean.TRUE.equals(useWkbSerialization));
+        Boolean useNativeSerialization = (Boolean) NATIVE_SERIALIZATION.lookUp(params);
+        if (useNativeSerialization != null) {
+            dialect.setUseNativeSerialization(useNativeSerialization);
+        }
 
         return dataStore;
     }

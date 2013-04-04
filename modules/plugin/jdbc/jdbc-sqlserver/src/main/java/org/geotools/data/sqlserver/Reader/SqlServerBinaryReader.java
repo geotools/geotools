@@ -1,4 +1,4 @@
-package org.geotools.data.sqlserver.Reader;
+package org.geotools.data.sqlserver.reader;
 
 import com.vividsolutions.jts.geom.*;
 import com.vividsolutions.jts.io.ByteArrayInStream;

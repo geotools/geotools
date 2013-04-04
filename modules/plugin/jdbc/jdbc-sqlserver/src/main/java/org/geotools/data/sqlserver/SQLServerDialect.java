@@ -21,7 +21,7 @@ import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKBReader;
 import com.vividsolutions.jts.io.WKTReader;
 import org.geotools.data.jdbc.FilterToSQL;
-import org.geotools.data.sqlserver.Reader.SqlServerBinaryReader;
+import org.geotools.data.sqlserver.reader.SqlServerBinaryReader;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.BasicSQLDialect;
@@ -64,7 +64,7 @@ public class SQLServerDialect extends BasicSQLDialect {
 	
 	private Boolean useOffsetLimit = false;
 
-    private Boolean useWkbSerialization = true;
+    private Boolean useNativeSerialization = false;
     
     final static Map<String, Class> TYPE_TO_CLASS_MAP = new HashMap<String, Class>() {
         {
@@ -400,7 +400,7 @@ public class SQLServerDialect extends BasicSQLDialect {
     public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix,
             int srid, Hints hints, StringBuffer sql) {
         encodeColumnName( prefix, gatt.getLocalName(), sql );
-        if (useWkbSerialization) {
+        if (!useNativeSerialization) {
             sql.append( ".STAsBinary()");
         }
     }
@@ -425,19 +425,19 @@ public class SQLServerDialect extends BasicSQLDialect {
        if(bytes == null) {
            return null;
        }
-       if (useWkbSerialization) {
-           try {
-               return new WKBReader(factory).read(bytes);
-           } catch ( ParseException e ) {
-               throw (IOException) new IOException().initCause( e );
-           }
-       } else {
-           try {
-               return new SqlServerBinaryReader(factory).read(bytes);
-           } catch ( IOException e ) {
-               throw (IOException) new IOException().initCause( e );
-           }
-       }
+        if (useNativeSerialization) {
+            try {
+                return new SqlServerBinaryReader(factory).read(bytes);
+            } catch ( IOException e ) {
+                throw (IOException) new IOException().initCause( e );
+            }
+        } else {
+            try {
+                return new WKBReader(factory).read(bytes);
+            } catch ( ParseException e ) {
+                throw (IOException) new IOException().initCause( e );
+            }
+        }
     }
     
     Geometry decodeGeometry( String s, GeometryFactory factory ) throws IOException {
@@ -634,11 +634,11 @@ public class SQLServerDialect extends BasicSQLDialect {
     }
 
     /**
-     * Sets whether to use WKB serialization or SQL Server binary serialization
-     * @param useWkbSerialization
+     * Sets whether to use native SQL Server binary serialization or WKB serialization
+     * @param useNativeSerialization
      */
-    public void setUseWkbSerialization(Boolean useWkbSerialization) {
-        this.useWkbSerialization = useWkbSerialization;
+    public void setUseNativeSerialization(Boolean useNativeSerialization) {
+        this.useNativeSerialization = useNativeSerialization;
     }
 	
 }

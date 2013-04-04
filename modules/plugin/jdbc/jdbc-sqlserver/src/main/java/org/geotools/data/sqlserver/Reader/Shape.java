@@ -1,4 +1,4 @@
-package org.geotools.data.sqlserver.Reader;
+package org.geotools.data.sqlserver.reader;
 
 /**
  * @author Anders Bakkevold, Bouvet

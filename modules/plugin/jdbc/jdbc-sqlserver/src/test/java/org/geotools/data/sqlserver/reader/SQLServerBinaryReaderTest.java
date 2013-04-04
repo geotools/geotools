@@ -5,11 +5,8 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.PrecisionModel;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKBReader;
-import com.vividsolutions.jts.io.WKBWriter;
 import com.vividsolutions.jts.io.WKTReader;
-import com.vividsolutions.jts.util.Stopwatch;
 import junit.framework.TestCase;
-import org.geotools.data.sqlserver.Reader.SqlServerBinaryReader;
 
 import java.io.IOException;
 

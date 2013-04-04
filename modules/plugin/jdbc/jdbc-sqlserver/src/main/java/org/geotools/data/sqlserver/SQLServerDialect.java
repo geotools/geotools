@@ -18,6 +18,7 @@ package org.geotools.data.sqlserver;
 
 import com.vividsolutions.jts.geom.*;
 import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKBReader;
 import com.vividsolutions.jts.io.WKTReader;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.sqlserver.Reader.SqlServerBinaryReader;
@@ -61,8 +62,9 @@ public class SQLServerDialect extends BasicSQLDialect {
      */
     private String geometryMetadataTable;
 	
-	
 	private Boolean useOffsetLimit = false;
+
+    private Boolean useWkbSerialization = true;
     
     final static Map<String, Class> TYPE_TO_CLASS_MAP = new HashMap<String, Class>() {
         {
@@ -398,6 +400,9 @@ public class SQLServerDialect extends BasicSQLDialect {
     public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix,
             int srid, Hints hints, StringBuffer sql) {
         encodeColumnName( prefix, gatt.getLocalName(), sql );
+        if (useWkbSerialization) {
+            sql.append( ".STAsBinary()");
+        }
     }
 
     @Override
@@ -420,10 +425,18 @@ public class SQLServerDialect extends BasicSQLDialect {
        if(bytes == null) {
            return null;
        }
-       try {
-           return new SqlServerBinaryReader(factory).read(bytes);
-       } catch ( IOException e ) {
-           throw (IOException) new IOException().initCause( e );
+       if (useWkbSerialization) {
+           try {
+               return new WKBReader(factory).read(bytes);
+           } catch ( ParseException e ) {
+               throw (IOException) new IOException().initCause( e );
+           }
+       } else {
+           try {
+               return new SqlServerBinaryReader(factory).read(bytes);
+           } catch ( IOException e ) {
+               throw (IOException) new IOException().initCause( e );
+           }
        }
     }
     
@@ -618,6 +631,14 @@ public class SQLServerDialect extends BasicSQLDialect {
      */
     public void setUseOffSetLimit(Boolean useOffsetLimit) {
         this.useOffsetLimit = useOffsetLimit;
+    }
+
+    /**
+     * Sets whether to use WKB serialization or SQL Server binary serialization
+     * @param useWkbSerialization
+     */
+    public void setUseWkbSerialization(Boolean useWkbSerialization) {
+        this.useWkbSerialization = useWkbSerialization;
     }
 	
 }

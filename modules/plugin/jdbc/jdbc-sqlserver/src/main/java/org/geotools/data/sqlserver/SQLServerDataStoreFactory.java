@@ -47,7 +47,10 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
     /** Metadata table providing information about primary keys **/
     public static final Param GEOMETRY_METADATA_TABLE = new Param("Geometry metadata table", String.class,
             "The optional table containing geometry metadata (geometry type and srid). Can be expressed as 'schema.name' or just 'name'", false);
-    
+
+    /** parameter for using WKB or Sql server binary directly. Setting to true will use WKB */
+    public static final Param WKB_SERIALIZATION = new Param("Use WKB serialization", Boolean.class,
+            "Use WKB serialization, or use SQL Server binary format directly.", false, Boolean.TRUE);
     
     @Override
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
@@ -81,6 +84,7 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(INTSEC.key, INTSEC);
         parameters.put(NATIVE_PAGING.key, NATIVE_PAGING);
         parameters.put(GEOMETRY_METADATA_TABLE.key, GEOMETRY_METADATA_TABLE);
+        parameters.put(WKB_SERIALIZATION.key, WKB_SERIALIZATION);
     }
     
     /**
@@ -115,7 +119,11 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
     	// check native paging
         Boolean useNativePaging = (Boolean) NATIVE_PAGING.lookUp(params);
         dialect.setUseOffSetLimit(useNativePaging == null || Boolean.TRUE.equals(useNativePaging));
-        
+
+        // check serialization format
+        Boolean useWkbSerialization = (Boolean) WKB_SERIALIZATION.lookUp(params);
+        dialect.setUseWkbSerialization(useWkbSerialization == null || Boolean.TRUE.equals(useWkbSerialization));
+
         return dataStore;
     }
     

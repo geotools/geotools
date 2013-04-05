@@ -260,7 +260,12 @@ public class TransverseMercator extends MapProjection {
             return 1.0;
         } else if (abs(longitude - centralMeridian) > 0.17) {  // 10 degrees
             return 0.5;
+        } else if(abs(latitude - latitudeOfOrigin) < 0.00001) {
+        	// Strangely, very near the latitude of origin the cos() becomes lossy
+        	// and errors are in excess of a millimeter.
+        	return 0.01;
         }
+        
         // a normal tolerance
         return 1E-6;
     }

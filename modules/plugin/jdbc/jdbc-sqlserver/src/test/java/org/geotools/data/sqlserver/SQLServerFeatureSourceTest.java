@@ -20,7 +20,7 @@ import org.geotools.jdbc.JDBCFeatureSourceTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
 /**
- * 
+ *
  *
  * @source $URL$
  */
@@ -28,7 +28,7 @@ public class SQLServerFeatureSourceTest extends JDBCFeatureSourceTest {
 
     @Override
     protected JDBCTestSetup createTestSetup() {
-        return new SQLServerTestSetup();
+        return new SqlServerNativeSerializationTestSetup();
     }
 
 }

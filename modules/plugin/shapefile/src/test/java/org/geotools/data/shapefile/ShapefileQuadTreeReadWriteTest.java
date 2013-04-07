@@ -16,6 +16,8 @@
  */
 package org.geotools.data.shapefile;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -28,12 +30,7 @@ import junit.framework.AssertionFailedError;
 
 import org.geotools.TestData;
 import org.geotools.data.DataStore;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.Query;
-import org.geotools.data.shapefile.ShapefileDataStore;
-import org.geotools.data.shapefile.ShapefileDataStoreFactory;
-import org.geotools.data.shapefile.index.CloseableIterator;
-import org.geotools.data.shapefile.index.Data;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -41,6 +38,7 @@ import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
@@ -65,13 +63,7 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
 
     Exception exception = null;
 
-    /**
-     * Creates a new instance of ShapefileReadWriteTest
-     */
-    public ShapefileQuadTreeReadWriteTest(String name) throws IOException {
-        super(name);
-    }
-
+    @Test
     public void testAll() throws Throwable {
         for (int i = 0, ii = files.length; i < ii; i++) {
             test(files[i]);
@@ -85,6 +77,7 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
         throw fail;
     }
 
+    @Test
     public void testReadOutside() throws Exception {
         File f = copyShapefiles("shapes/statepop.shp");
         ShapefileDataStoreFactory fac = new ShapefileDataStoreFactory();
@@ -96,6 +89,7 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
         ds.dispose();
     }
 
+    @Test
     public void testWriteTwice() throws Exception {
         copyShapefiles("shapes/stream.shp");
         ShapefileDataStoreFactory fac = new ShapefileDataStoreFactory();
@@ -225,6 +219,7 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
      * 
      * @throws Exception
      */
+    @Test
     public void testGetBoundsQuery() throws Exception {
         File file = copyShapefiles("shapes/streams.shp");
 
@@ -253,7 +248,7 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
         FeatureId id = featureId;
         filter = ff.id(Collections.singleton(id));
 
-        Query query = new DefaultQuery(ds.getTypeNames()[0], filter);
+        Query query = new Query(ds.getTypeNames()[0], filter);
 
         Envelope result = ds.getFeatureSource().getBounds(query);
 

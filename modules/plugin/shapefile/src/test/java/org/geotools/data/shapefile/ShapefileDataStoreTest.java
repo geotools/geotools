@@ -16,6 +16,14 @@
  */
 package org.geotools.data.shapefile;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -46,7 +54,6 @@ import java.util.UUID;
 import org.geotools.TestData;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
@@ -67,6 +74,7 @@ import org.geotools.feature.type.BasicFeatureTypes;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.junit.After;
 import org.junit.Test;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
@@ -114,12 +122,8 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
             .getFilterFactory2(null);
 	private ShapefileDataStore store;
 
-    public ShapefileDataStoreTest(String testName) throws IOException {
-        super(testName);
-    }
-    
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
     	if(store != null) {
     		store.dispose();
     	}
@@ -149,7 +153,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     protected SimpleFeatureCollection loadFeatures(String resource, Charset charset,
             Query q) throws Exception {
         if (q == null)
-            q = new DefaultQuery();
+            q = new Query();
         URL url = TestData.url(resource);
         store = new ShapefileDataStore(url);
         store.setCharset(charset);
@@ -1171,7 +1175,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         ShapefileDataStore s = new ShapefileDataStore(url);
 
         // attributes other than geometry can be ignored here
-        Query query = new DefaultQuery(s.getSchema().getTypeName(),
+        Query query = new Query(s.getSchema().getTypeName(),
                 Filter.INCLUDE, new String[] { "the_geom" });
          FeatureReader<SimpleFeatureType, SimpleFeature> reader = s.getFeatureReader(query, Transaction.AUTO_COMMIT);
         assertEquals(1, reader.getFeatureType().getAttributeCount());
@@ -1190,7 +1194,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
                 .getEnvelopeInternal(), null);
         Filter gf = ff.bbox(ff.property("the_geom"), bounds);
 
-        query = new DefaultQuery(s.getSchema().getTypeName(), gf,
+        query = new Query(s.getSchema().getTypeName(), gf,
                 new String[] { "the_geom" });
 
         reader.close();
@@ -1205,7 +1209,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         // file please
         Filter cf = ff
                 .equals(ff.property("STATE_NAME"), ff.literal("Illinois"));
-        query = new DefaultQuery(s.getSchema().getTypeName(), cf,
+        query = new Query(s.getSchema().getTypeName(), cf,
                 new String[] { "the_geom" });
         reader = s.getFeatureReader(query, Transaction.AUTO_COMMIT);
         assertEquals(1, reader.getFeatureType().getAttributeCount());
@@ -1437,12 +1441,12 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         String typeName = store.getSchema().getTypeName();
         Id id = ff.id(Collections.singleton(ff.featureId(fid)));
         
-        assertEquals(-1, store.getCount(new DefaultQuery(typeName, id)));
+        assertEquals(-1, store.getCount(new Query(typeName, id)));
         assertEquals(1, count(ds, typeName, id, t));
         
         store.removeFeatures(id);
         
-        assertEquals(-1, store.getCount(new DefaultQuery(store.getSchema().getTypeName(), id)));
+        assertEquals(-1, store.getCount(new Query(store.getSchema().getTypeName(), id)));
         assertEquals(initialCount - 1, count(ds, typeName, Filter.INCLUDE, t));
         assertEquals(0, count(ds, typeName, id, t));
         ds.dispose();
@@ -1454,7 +1458,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     
     private int count(DataStore ds, String typeName, Filter filter, Transaction t) throws Exception {
         FeatureReader<SimpleFeatureType, SimpleFeature> reader;
-        reader = ds.getFeatureReader(new DefaultQuery(typeName, filter), t);
+        reader = ds.getFeatureReader(new Query(typeName, filter), t);
         int count = 0;
         try {
             while (reader.hasNext()) {

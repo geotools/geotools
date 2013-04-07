@@ -16,6 +16,8 @@
  */
 package org.geotools.data.shapefile.fid;
 
+import static junit.framework.Assert.*;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
@@ -26,13 +28,14 @@ import java.util.Map;
 
 import org.geotools.data.Query;
 import org.geotools.data.shapefile.ShapefileDataStore;
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
-import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -49,9 +52,6 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * @source $URL$
  */
 public class FidQueryTest extends FIDTestCase {
-    public FidQueryTest() throws IOException {
-        super("FidQueryTest");
-    }
 
     private ShapefileDataStore ds;
 
@@ -63,10 +63,8 @@ public class FidQueryTest extends FIDTestCase {
 
     private int numFeatures;
 
-    protected void setUp() throws Exception {
-
-        super.setUp();
-
+    @Before
+    public void setUpFixQueryTest() throws Exception {
         URL url = backshp.toURI().toURL();
         ds = new ShapefileDataStore(url);
         numFeatures = 0;
@@ -88,16 +86,17 @@ public class FidQueryTest extends FIDTestCase {
 
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void dispose() throws Exception {
         ds.dispose();
-        super.tearDown();
     }
 
+    @Test
     public void testGetByFID() throws Exception {
         assertFidsMatch();
     }
 
+    @Test
     public void testAddFeature() throws Exception {
         SimpleFeature feature = fids.values().iterator().next();
         SimpleFeatureType schema = ds.getSchema();
@@ -137,6 +136,7 @@ public class FidQueryTest extends FIDTestCase {
         }
     }
 
+    @Test
     public void testModifyFeature() throws Exception {
         SimpleFeature feature = this.fids.values().iterator().next();
         int newId = 237594123;
@@ -161,6 +161,7 @@ public class FidQueryTest extends FIDTestCase {
         this.assertFidsMatch();
     }
 
+    @Test
     public void testDeleteFeature() throws Exception {
         SimpleFeatureIterator features = featureStore.getFeatures().features();
         SimpleFeature feature;

@@ -16,15 +16,14 @@
  */
 package org.geotools.data.shapefile.fid;
 
-import java.io.IOException;
+import static junit.framework.Assert.assertEquals;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.shapefile.ShapefileDataStore;
-import org.geotools.data.shapefile.fid.FidIndexer;
-import org.geotools.data.shapefile.fid.IndexedFidReader;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.junit.Test;
 
 /**
  * 
@@ -32,17 +31,11 @@ import org.geotools.data.simple.SimpleFeatureSource;
  * @source $URL$
  */
 public class FidIndexerTest extends FIDTestCase {
-    public  FidIndexerTest( ) throws IOException {
-        super("FidIndexerTest");
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
 
     /*
      * Test method for 'org.geotools.index.fid.FidIndexer.generate(URL)'
      */
+    @Test
     public void testGenerate() throws Exception {
         ShpFiles shpFiles = new ShpFiles(backshp.toURI().toURL());
         FidIndexer.generate(shpFiles);

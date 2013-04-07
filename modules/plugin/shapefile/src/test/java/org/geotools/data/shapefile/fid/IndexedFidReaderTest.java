@@ -16,6 +16,11 @@
  */
 package org.geotools.data.shapefile.fid;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -23,13 +28,13 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.geotools.data.shapefile.ShapefileDataStore;
-import org.geotools.data.shapefile.fid.FidIndexer;
-import org.geotools.data.shapefile.fid.IndexedFidReader;
-import org.geotools.data.shapefile.fid.IndexedFidWriter;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.shapefile.shp.IndexFile;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**
@@ -38,9 +43,6 @@ import org.opengis.feature.simple.SimpleFeature;
  * @source $URL$
  */
 public class IndexedFidReaderTest extends FIDTestCase {
-    public IndexedFidReaderTest() throws IOException {
-        super("IndexedFidReaderTest");
-    }
 
     private IndexedFidReader reader;
 
@@ -48,9 +50,8 @@ public class IndexedFidReaderTest extends FIDTestCase {
 
     private ShpFiles shpFiles;
 
-    protected void setUp() throws Exception {
-        super.setUp();
-
+    @Before
+    public void setUpIndexedFidReaderTest() throws Exception {
         shpFiles = new ShpFiles(backshp.toURI().toURL());
         FidIndexer.generate(shpFiles);
 
@@ -58,7 +59,8 @@ public class IndexedFidReaderTest extends FIDTestCase {
         reader = new IndexedFidReader(shpFiles);
     }
 
-    protected void tearDown() throws Exception {
+    @After
+    public void closeFiles() throws Exception {
         reader.close();
         indexFile.close();
         shpFiles.dispose();
@@ -69,6 +71,7 @@ public class IndexedFidReaderTest extends FIDTestCase {
     /*
      * Test method for 'org.geotools.index.fid.IndexedFidReader.findFid(String)'
      */
+    @Test
     public void testFindFid() throws Exception {
         long offset = reader.findFid(TYPE_NAME + ".4");
         assertEquals(3, offset);
@@ -92,6 +95,7 @@ public class IndexedFidReaderTest extends FIDTestCase {
         assertEquals(-1, offset);
     }
 
+    @Test
     public void testFindAllFids() throws Exception {
         int expectedCount = 0;
         Set<String> expectedFids = new LinkedHashSet<String>();
@@ -117,6 +121,7 @@ public class IndexedFidReaderTest extends FIDTestCase {
         }
     }
 
+    @Test
     public void testFindAllFidsReverseOrder() throws Exception {
         int expectedCount = 0;
         Set<String> expectedFids = new TreeSet<String>(Collections.reverseOrder());
@@ -148,6 +153,7 @@ public class IndexedFidReaderTest extends FIDTestCase {
     }
 
     // test if FID no longer exists.
+    @Test
     public void testFindDeletedFID() throws Exception {
         reader.close();
 
@@ -179,6 +185,7 @@ public class IndexedFidReaderTest extends FIDTestCase {
 
     }
 
+    @Test
     public void testHardToFindFid() throws Exception {
         long offset = reader.search(5, 3, 7, 5);
         assertEquals(4, offset);
@@ -187,6 +194,7 @@ public class IndexedFidReaderTest extends FIDTestCase {
     /*
      * Test method for 'org.geotools.index.fid.IndexedFidReader.goTo(int)'
      */
+    @Test
     public void testGoTo() throws IOException {
         reader.goTo(10);
         assertEquals(shpFiles.getTypeName() + ".11", reader.next());

@@ -16,16 +16,15 @@
  */
 package org.geotools.data.shapefile.shp.xml;
 
-import java.net.URL;
+import static org.junit.Assert.*;
 
-import junit.framework.TestCase;
+import java.net.URL;
 
 import org.geotools.TestData;
 import org.geotools.data.shapefile.TestCaseSupport;
 import org.geotools.data.shapefile.files.ShpFiles;
-import org.geotools.data.shapefile.shp.xml.IdInfo;
-import org.geotools.data.shapefile.shp.xml.Metadata;
-import org.geotools.data.shapefile.shp.xml.ShpXmlFileReader;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.vividsolutions.jts.geom.Envelope;
 
@@ -34,17 +33,18 @@ import com.vividsolutions.jts.geom.Envelope;
  *
  * @source $URL$
  */
-public class ShpXmlFileReaderTest extends TestCase {
+public class ShpXmlFileReaderTest {
     ShpXmlFileReader reader;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         URL example = TestData.url(TestCaseSupport.class, "example.shp.xml");
         ShpFiles shpFiles = new ShpFiles(example);
 
         reader = new ShpXmlFileReader(shpFiles);
     }
 
+    @Test
     public void testBBox() {
         Metadata meta = reader.parse();
         assertNotNull("meta", meta);

@@ -1,5 +1,7 @@
 package org.geotools.data.shapefile;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -8,11 +10,11 @@ import java.util.Collections;
 import org.geotools.TestData;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
-import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
@@ -33,10 +35,7 @@ public class DuplicateColumnNameReaderTest extends TestCaseSupport {
 
     public final Integer expectedValue = new Integer(20);
 
-    public DuplicateColumnNameReaderTest(String name) throws IOException {
-        super(name);
-    }
-
+    @Test
     public void testAttributeReader() throws IOException {
         URL u = TestData.url(TestCaseSupport.class, SHPFILE);
         File shpFile = DataUtilities.urlToFile(u);
@@ -57,6 +56,7 @@ public class DuplicateColumnNameReaderTest extends TestCaseSupport {
         store.dispose();
     }
 
+    @Test
     public void testAttributeReaderIndexed() throws IOException {
         URL u = TestData.url(TestCaseSupport.class, SHPFILE);
         File shpFile = DataUtilities.urlToFile(u);

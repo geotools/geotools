@@ -1,11 +1,12 @@
 package org.geotools.data.shapefile;
 
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
-import java.io.IOException;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureStore;
-import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -30,13 +31,8 @@ public class ShapefileNullHandlingTest extends TestCaseSupport {
 	SimpleFeatureCollection collection;
 	private SimpleFeature[] features;
 	
-	public ShapefileNullHandlingTest(String name) throws IOException {
-		super(name);
-	}
-
-
 	@Before
-	protected void setUp() throws Exception {
+	public void setUp() throws Exception {
 		SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
 		tb.add("geom", Point.class, 4326);
 		tb.add("name", String.class);

@@ -17,10 +17,10 @@
 package org.geotools.data.shapefile.fid;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.geotools.data.shapefile.TestCaseSupport;
 import org.geotools.data.shapefile.files.ShpFiles;
+import org.junit.Before;
 
 /**
  * 
@@ -28,9 +28,6 @@ import org.geotools.data.shapefile.files.ShpFiles;
  * @source $URL$
  */
 public abstract class FIDTestCase extends TestCaseSupport {
-    protected FIDTestCase( String name ) throws IOException {
-        super(name);
-    }
 
     protected final String TYPE_NAME = "archsites";
 
@@ -44,9 +41,8 @@ public abstract class FIDTestCase extends TestCaseSupport {
 
     protected ShpFiles shpFiles;
 
-    protected void setUp() throws Exception {
-        super.setUp();
-        
+    @Before
+    public void setUpArchsites() throws Exception {
         backshp = copyShapefiles("shapes/" + TYPE_NAME + ".shp");
 
         backdbf = sibling(backshp, "dbf");
@@ -58,18 +54,5 @@ public abstract class FIDTestCase extends TestCaseSupport {
 
         shpFiles = new ShpFiles(backshx);
     }
-    
-    @Override
-    protected void tearDown() throws Exception {
-    	super.tearDown();
-    }
-
-	private void cleanup(File file) {
-		if(file.exists()) {
-			assertTrue(file.delete());
-		}
-	}
-    
-    
 
 }

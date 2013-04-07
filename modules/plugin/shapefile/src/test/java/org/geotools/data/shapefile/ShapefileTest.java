@@ -16,6 +16,10 @@
  */
 package org.geotools.data.shapefile;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -30,16 +34,15 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
-import org.geotools.data.shapefile.ShapefileDataStore;
-import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.shapefile.shp.IndexFile;
 import org.geotools.data.shapefile.shp.ShapefileReader;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
-import org.geotools.feature.FeatureCollections;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -66,25 +69,25 @@ public class ShapefileTest extends TestCaseSupport {
     public final String HOLETOUCHEDGE = "shapes/holeTouchEdge.shp";
     public final String EXTRAATEND = "shapes/extraAtEnd.shp";
 
-    public ShapefileTest(String testName) throws IOException {
-        super(testName);
-    }
-
+    @Test
     public void testLoadingStatePop() throws Exception {
         loadShapes(STATEPOP, 49);
         loadMemoryMapped(STATEPOP, 49);
     }
 
+    @Test
     public void testLoadingSamplePointFile() throws Exception {
         loadShapes(POINTTEST, 10);
         loadMemoryMapped(POINTTEST, 10);
     }
 
+    @Test
     public void testLoadingSamplePolygonFile() throws Exception {
         loadShapes(POLYGONTEST, 2);
         loadMemoryMapped(POLYGONTEST, 2);
     }
 
+    @Test
     public void testLoadingTwice() throws Exception {
         loadShapes(POINTTEST, 10);
         loadShapes(POINTTEST, 10);
@@ -98,6 +101,7 @@ public class ShapefileTest extends TestCaseSupport {
      * It is posible for a point in a hole to touch the edge of its containing
      * shell This test checks that such polygons can be loaded ok.
      */
+    @Test
     public void testPolygonHoleTouchAtEdge() throws Exception {
         loadShapes(HOLETOUCHEDGE, 1);
         loadMemoryMapped(HOLETOUCHEDGE, 1);
@@ -108,11 +112,13 @@ public class ShapefileTest extends TestCaseSupport {
      * the normal feature area, this tests checks that this situation is delt
      * with ok.
      */
+    @Test
     public void testExtraAtEnd() throws Exception {
         loadShapes(EXTRAATEND, 3);
         loadMemoryMapped(EXTRAATEND, 3);
     }
 
+    @Test
     public void testIndexFile() throws Exception {
         copyShapefiles(STATEPOP);
         copyShapefiles(STATEPOP_IDX);
@@ -145,10 +151,11 @@ public class ShapefileTest extends TestCaseSupport {
         }
     }
 
+    @Test
     public void testHolyPolygons() throws Exception {
         SimpleFeatureType type = DataUtilities.createType("junk",
                 "a:MultiPolygon");
-        SimpleFeatureCollection features = FeatureCollections.newCollection();
+        SimpleFeatureCollection features = new DefaultFeatureCollection();
 
         File tmpFile = getTempFile();
         tmpFile.delete();
@@ -172,6 +179,7 @@ public class ShapefileTest extends TestCaseSupport {
         s.dispose();
     }
 
+    @Test
     public void testSkippingRecords() throws Exception {
         final URL url = TestData.url(STATEPOP);
         final ShapefileReader r = new ShapefileReader(new ShpFiles(url), false,
@@ -188,6 +196,7 @@ public class ShapefileTest extends TestCaseSupport {
         }
     }
 
+    @Test
     public void testDuplicateColumnNames() throws Exception {
         File file = TestData.file(TestCaseSupport.class, "bad/state.shp");
         ShapefileDataStore dataStore = new ShapefileDataStore(file.toURI().toURL());
@@ -198,6 +207,7 @@ public class ShapefileTest extends TestCaseSupport {
         dataStore.dispose();
     }
 
+    @Test
     public void testShapefileReaderRecord() throws Exception {
         final URL c1 = TestData.url(STATEPOP);
         ShapefileReader reader = new ShapefileReader(new ShpFiles(c1), false,
@@ -225,7 +235,8 @@ public class ShapefileTest extends TestCaseSupport {
         }
     }
     
-	public void testNullGeometries() throws Exception {
+	@Test
+    public void testNullGeometries() throws Exception {
 		// Write a point shapefile with one null geometry
 		Map<String, Serializable> params = new HashMap<String, Serializable>();
 		File tmp = File.createTempFile("test", ".dbf");
@@ -277,6 +288,7 @@ public class ShapefileTest extends TestCaseSupport {
                 expected, cnt);
     }
 
+    @Test
     public void testReadingSparse() throws IOException {
         File file = TestData.file(TestCaseSupport.class, "sparse/sparse.shp");
         ShapefileReader reader = new ShapefileReader(new ShpFiles(file), false, false, new GeometryFactory());

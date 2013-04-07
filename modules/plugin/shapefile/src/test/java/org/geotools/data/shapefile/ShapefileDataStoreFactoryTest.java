@@ -19,9 +19,9 @@ package org.geotools.data.shapefile;
 import static org.geotools.data.shapefile.ShapefileDataStoreFactory.ENABLE_SPATIAL_INDEX;
 import static org.geotools.data.shapefile.ShapefileDataStoreFactory.FSTYPE;
 import static org.geotools.data.shapefile.ShapefileDataStoreFactory.URLP;
+import static org.junit.Assert.*;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
@@ -32,6 +32,7 @@ import org.geotools.data.DataStore;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.util.KVP;
+import org.junit.After;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
@@ -49,11 +50,8 @@ public class ShapefileDataStoreFactoryTest extends TestCaseSupport {
     private ShapefileDataStore store = null;
     private ShapefileDataStoreFactory factory = new ShapefileDataStoreFactory();
     
-    public ShapefileDataStoreFactoryTest(String testName) throws IOException {
-        super(testName);
-    }
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         if(store != null) {
                 store.dispose();
         }

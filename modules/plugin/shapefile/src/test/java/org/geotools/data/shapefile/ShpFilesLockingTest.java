@@ -16,39 +16,41 @@
  */
 package org.geotools.data.shapefile;
 
-import static org.geotools.data.shapefile.files.ShpFileType.*;
+import static org.geotools.data.shapefile.files.ShpFileType.DBF;
+import static org.geotools.data.shapefile.files.ShpFileType.SHP;
+import static org.geotools.data.shapefile.files.ShpFileType.SHX;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.net.URL;
-
-import junit.framework.TestCase;
 
 import org.geotools.data.shapefile.files.FileWriter;
 import org.geotools.data.shapefile.files.Result;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.shapefile.files.ShpFiles.State;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * 
  *
  * @source $URL$
  */
-public class ShpFilesLockingTest extends TestCase implements FileWriter {
+public class ShpFilesLockingTest implements FileWriter {
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         getClass().getClassLoader().setDefaultAssertionStatus(true);
         
     }
     
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-
+    @After
+    public void tearDown() throws Exception {
         Runtime.getRuntime().runFinalization();
     }
 
+    @Test
     public void testAcquireReadFile() throws Throwable {
         ShpFiles shpFiles = new ShpFiles("http://somefile.com/shp.shp");
 
@@ -70,6 +72,7 @@ public class ShpFilesLockingTest extends TestCase implements FileWriter {
         shpFiles.unlockRead(file, this);
         shpFiles.dispose();
     }
+    @Test
     public void testAcquireWriteFile() throws Throwable {
         ShpFiles shpFiles = new ShpFiles("http://somefile.com/shp.shp");
 
@@ -93,6 +96,7 @@ public class ShpFilesLockingTest extends TestCase implements FileWriter {
         shpFiles.dispose();
     }
 
+    @Test
     public void testAcquireRead1() throws Throwable {
         ShpFiles shpFiles = new ShpFiles("http://somefile.com/shp.shp");
 
@@ -125,6 +129,7 @@ public class ShpFilesLockingTest extends TestCase implements FileWriter {
         shpFiles.dispose();
     }
 
+    @Test
     public void testUnlockReadAssertion() throws Throwable {
         ShpFiles shpFiles = new ShpFiles("http://somefile.com/shp.shp");
 
@@ -160,6 +165,7 @@ public class ShpFilesLockingTest extends TestCase implements FileWriter {
         shpFiles.dispose();
     }
 
+    @Test
     public void testUnlockWriteAssertion() throws Throwable {
         ShpFiles shpFiles = new ShpFiles("http://somefile.com/shp.shp");
 

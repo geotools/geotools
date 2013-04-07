@@ -16,6 +16,8 @@
  */
 package org.geotools.data.shapefile;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -29,12 +31,11 @@ import java.util.Map;
 import junit.framework.AssertionFailedError;
 
 import org.geotools.TestData;
-import org.geotools.data.shapefile.ShapefileDataStore;
-import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -58,35 +59,37 @@ public class ShapefileReadWriteTest extends TestCaseSupport {
     Exception exception = null;
 
 
-    /** Creates a new instance of ShapefileReadWriteTest */
-    public ShapefileReadWriteTest(String name) throws IOException {
-        super(name);
-    }
-    
+    @Test
     public void testReadWriteStatePop() throws Exception {
         test("shapes/statepop.shp");
     }
     
+    @Test
     public void testReadWritePolygonTest() throws Exception {
         test("shapes/polygontest.shp");
     }
     
+    @Test
     public void testReadWritePointTest() throws Exception {
         test("shapes/pointtest.shp");
     }
     
+    @Test
     public void testReadWriteHoleTouchEdge() throws Exception {
         test("shapes/holeTouchEdge.shp");
     }
     
+    @Test
     public void testReadWriteChinese() throws Exception {
         test("shapes/chinese_poly.shp", Charset.forName("GB18030"));
     }
     
+    @Test
     public void testReadWriteDanishPoint() throws Exception {
         test("shapes/danish_point.shp");
     }
 
+    @Test
     public void testConcurrentReadWrite() throws Exception {
         System.gc();
         System.runFinalization(); // If some streams are still open, it may

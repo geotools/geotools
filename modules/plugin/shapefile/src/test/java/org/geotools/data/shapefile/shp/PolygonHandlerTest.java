@@ -16,12 +16,12 @@
  */
 package org.geotools.data.shapefile.shp;
 
-import java.io.IOException;
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 
 import org.geotools.data.shapefile.TestCaseSupport;
-import org.geotools.data.shapefile.shp.PolygonHandler;
-import org.geotools.data.shapefile.shp.ShapeType;
+import org.junit.Test;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
@@ -39,14 +39,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  */
 public class PolygonHandlerTest extends TestCaseSupport {
 
-    public PolygonHandlerTest(String testName) throws IOException {
-        super(testName);
-    }
-
-    public static void main(java.lang.String[] args) {
-        junit.textui.TestRunner.run(suite(PolygonHandlerTest.class));
-    }
-
+    @Test
     public void testPolygonHandler() {
         Coordinate[] c = new Coordinate[3];
         c[0] = new Coordinate(0, 0, 0);
@@ -59,6 +52,7 @@ public class PolygonHandlerTest extends TestCaseSupport {
         }
     }
 
+    @Test
     public void testHoleAssignment() {
         java.awt.Dimension ps = new java.awt.Dimension(500, 500);
         PrecisionModel precision = new PrecisionModel();

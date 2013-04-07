@@ -16,13 +16,15 @@
  */
 package org.geotools.data.shapefile.fid;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 
-import org.geotools.data.shapefile.fid.FidIndexer;
-import org.geotools.data.shapefile.fid.IndexedFidReader;
-import org.geotools.data.shapefile.fid.IndexedFidWriter;
 import org.geotools.data.shapefile.shp.IndexFile;
+import org.junit.After;
+import org.junit.Test;
 
 /**
  * 
@@ -33,26 +35,15 @@ public class IndexedFidWriterTest extends FIDTestCase {
     private IndexFile indexFile;
     private IndexedFidWriter writer;
 
-    public IndexedFidWriterTest() throws IOException {
-        super("IndexedFidWriterTest");
-    }
     
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
     private void initWriter() throws IOException, MalformedURLException {
         close();
         indexFile = new IndexFile(shpFiles, false);
         writer = new IndexedFidWriter(shpFiles);
     }
 
-    protected void tearDown() throws Exception {
-        close();
-        super.tearDown();
-    }
-
-    private void close() throws IOException {
+    @After
+    public void close() throws IOException {
         if ((writer != null) && !writer.isClosed()) {
             writer.close();
         }
@@ -69,6 +60,7 @@ public class IndexedFidWriterTest extends FIDTestCase {
     /*
      * Test method for 'org.geotools.index.fid.IndexedFidWriter.hasNext()'
      */
+    @Test
     public void testHasNext() throws MalformedURLException, IOException {
         FidIndexer.generate(backshp.toURI().toURL());
         initWriter();
@@ -82,6 +74,7 @@ public class IndexedFidWriterTest extends FIDTestCase {
     /*
      * Test method for 'org.geotools.index.fid.IndexedFidWriter.remove()'
      */
+    @Test
     public void testRemove() throws MalformedURLException, IOException {
         FidIndexer.generate(backshp.toURI().toURL());
         initWriter();
@@ -104,6 +97,7 @@ public class IndexedFidWriterTest extends FIDTestCase {
         }
     }
 
+    @Test
     public void testRemoveCounting() throws Exception {
         FidIndexer.generate(backshp.toURI().toURL());
         initWriter();
@@ -158,6 +152,7 @@ public class IndexedFidWriterTest extends FIDTestCase {
     /*
      * Test method for 'org.geotools.index.fid.IndexedFidWriter.write()'
      */
+    @Test
     public void testWrite() throws IOException {
         initWriter();
 
@@ -166,10 +161,8 @@ public class IndexedFidWriterTest extends FIDTestCase {
             writer.write();
         }
 
-        close();
         initWriter();
-
-        for( int i = 1; i < 5; i++ ) {
+        for( int i = 1; i <= 5; i++ ) {
             assertTrue(writer.hasNext());
             assertEquals((long) i, writer.next());
         }

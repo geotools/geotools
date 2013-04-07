@@ -16,7 +16,7 @@
  */
 package org.geotools.data.shapefile;
 
-import static org.geotools.data.shapefile.files.ShpFileType.*;
+import static org.geotools.data.shapefile.files.ShpFileType.SHP;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -36,6 +36,7 @@ import org.geotools.data.EmptyFeatureReader;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.FilteringFeatureReader;
+import org.geotools.data.PrjFileReader;
 import org.geotools.data.Query;
 import org.geotools.data.ReTypeFeatureReader;
 import org.geotools.data.shapefile.dbf.DbaseFileHeader;
@@ -46,7 +47,6 @@ import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.shapefile.index.CloseableIterator;
 import org.geotools.data.shapefile.index.Data;
 import org.geotools.data.shapefile.index.TreeException;
-import org.geotools.data.shapefile.prj.PrjFileReader;
 import org.geotools.data.shapefile.shp.IndexFile;
 import org.geotools.data.shapefile.shp.JTSUtilities;
 import org.geotools.data.shapefile.shp.ShapefileHeader;

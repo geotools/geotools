@@ -1,15 +1,18 @@
 package org.geotools.data.shapefile;
 
-import static org.geotools.data.shapefile.files.ShpFileType.*;
+import static org.geotools.data.shapefile.files.ShpFileType.DBF;
+import static org.geotools.data.shapefile.files.ShpFileType.PRJ;
+import static org.geotools.data.shapefile.files.ShpFileType.SHX;
 
 import java.io.IOException;
 
 import org.geotools.data.DataSourceException;
+import org.geotools.data.PrjFileReader;
 import org.geotools.data.shapefile.dbf.DbaseFileReader;
 import org.geotools.data.shapefile.dbf.IndexedDbaseFileReader;
+import org.geotools.data.shapefile.files.FileReader;
 import org.geotools.data.shapefile.files.ShpFileType;
 import org.geotools.data.shapefile.files.ShpFiles;
-import org.geotools.data.shapefile.prj.PrjFileReader;
 import org.geotools.data.shapefile.shp.IndexFile;
 import org.geotools.data.shapefile.shp.ShapefileException;
 import org.geotools.data.shapefile.shp.ShapefileReader;
@@ -23,7 +26,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * @author Andrea Aime - GeoSolutions
  * 
  */
-class ShapefileSetManager {
+class ShapefileSetManager implements FileReader {
 
     ShpFiles shpFiles;
 
@@ -100,7 +103,7 @@ class ShapefileSetManager {
         }
 
         try {
-            return new PrjFileReader(shpFiles);
+            return new PrjFileReader(shpFiles.getReadChannel(PRJ, this));
         } catch (IOException e) {
             // could happen if prj file does not exist remotely
             return null;
@@ -129,5 +132,10 @@ class ShapefileSetManager {
             // could happen if shx file does not exist remotely
             return null;
         }
+    }
+
+    @Override
+    public String id() {
+        return getClass().getName();
     }
 }

@@ -168,6 +168,16 @@ class IndexManager {
 
         return true;
     }
+    
+    /**
+     * Returns true if the index file is available
+     * 
+     * @param indexType
+     * @return
+     */
+    boolean isSpatialIndexAvailable() {
+        return shpFiles.isLocal() && shpFiles.exists(QIX);
+    }
 
     /**
      * Returns true if the specified index file is outdated compared to the shapefile .shp and .shx

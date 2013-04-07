@@ -33,7 +33,6 @@ import java.util.logging.Logger;
 import org.geotools.data.AbstractDataStoreFactory;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFactorySpi;
 import org.geotools.data.directory.DirectoryDataStore;
@@ -133,6 +132,13 @@ public class ShapefileDataStoreFactory extends AbstractDataStoreFactory implemen
             return ((TimeZone) value).getID();
         }
     };
+    
+    /**
+     * Optional - enable spatial index for local files
+     */
+    public static final Param ENABLE_SPATIAL_INDEX = new Param("enable spatial index",
+            Boolean.class, "enable/disable the use of spatial index for local shapefiles", false,
+            true, new KVP(Param.LEVEL, "advanced"));
 
     public String getDisplayName() {
         return "Shapefile";
@@ -143,7 +149,7 @@ public class ShapefileDataStoreFactory extends AbstractDataStoreFactory implemen
     }
 
     public Param[] getParametersInfo() {
-        return new Param[] { URLP, NAMESPACEP, CREATE_SPATIAL_INDEX, DBFCHARSET, DBFTIMEZONE,
+        return new Param[] { URLP, NAMESPACEP, ENABLE_SPATIAL_INDEX, CREATE_SPATIAL_INDEX, DBFCHARSET, DBFTIMEZONE,
                 MEMORY_MAPPED, CACHE_MEMORY_MAPS, FILE_TYPE, FSTYPE };
     }
 
@@ -163,7 +169,12 @@ public class ShapefileDataStoreFactory extends AbstractDataStoreFactory implemen
         Charset dbfCharset = lookup(DBFCHARSET, params, Charset.class);
         TimeZone dbfTimeZone = lookup(DBFTIMEZONE, params, TimeZone.class);
         Boolean isCreateSpatialIndex = lookup(CREATE_SPATIAL_INDEX, params, Boolean.class);
-
+        Boolean isEnableSpatialIndex = (Boolean) ENABLE_SPATIAL_INDEX.lookUp(params);
+        if (isEnableSpatialIndex == null) {
+            // should not be needed as default is TRUE
+            isEnableSpatialIndex = Boolean.TRUE;
+        }
+        
         // are we creating a directory of shapefiles store, or a single one?
         File dir = DataUtilities.urlToFile(url);
         if (dir != null && dir.isDirectory()) {
@@ -174,7 +185,8 @@ public class ShapefileDataStoreFactory extends AbstractDataStoreFactory implemen
 
             boolean isLocal = shpFiles.isLocal();
             boolean useMemoryMappedBuffer = isLocal && isMemoryMapped.booleanValue();
-            boolean createIndex = isCreateSpatialIndex.booleanValue() && isLocal;
+            boolean enableIndex = isEnableSpatialIndex.booleanValue() && isLocal;
+            boolean createIndex = isCreateSpatialIndex.booleanValue() && enableIndex;
 
             // build the store
             ShapefileDataStore store = new ShapefileDataStore(url);
@@ -185,7 +197,8 @@ public class ShapefileDataStoreFactory extends AbstractDataStoreFactory implemen
             store.setBufferCachingEnabled(cacheMemoryMaps);
             store.setCharset(dbfCharset);
             store.setTimeZone(dbfTimeZone);
-            store.setIndexed(createIndex);
+            store.setIndexed(enableIndex);
+            store.setIndexCreationEnabled(createIndex);
             return store;
         }
     }

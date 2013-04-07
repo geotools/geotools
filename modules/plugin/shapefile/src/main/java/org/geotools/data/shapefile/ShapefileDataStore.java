@@ -105,6 +105,8 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
     boolean bufferCachingEnabled = true;
 
     boolean indexed = true;
+    
+    boolean indexCreationEnabled = true;
 
     boolean fidIndexed = true;
 
@@ -181,6 +183,11 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
         return indexed;
     }
 
+    /**
+     * When set to true, will use the spatial index if available (but will not create it if missing,
+     * unless also indexCreationEnabled is true) 
+     * @param indexed
+     */
     public void setIndexed(boolean indexed) {
         this.indexed = indexed;
     }
@@ -440,6 +447,18 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
     public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(
             Transaction transaction) throws IOException {
         return getFeatureWriterAppend(getTypeName().getLocalPart(), transaction);
+    }
+
+    public boolean isIndexCreationEnabled() {
+        return indexCreationEnabled;
+    }
+
+    /**
+     * If true (default) the index file will be created on demand if missing
+     * @param indexCreationEnabled
+     */
+    public void setIndexCreationEnabled(boolean indexCreationEnabled) {
+        this.indexCreationEnabled = indexCreationEnabled;
     }
     
     

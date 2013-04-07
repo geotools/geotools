@@ -237,7 +237,9 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         } else if (getDataStore().isIndexed() && !bbox.isNull()
                 && !Double.isInfinite(bbox.getWidth()) && !Double.isInfinite(bbox.getHeight())) {
             try {
-                goodRecs = indexManager.querySpatialIndex(bbox);
+                if(indexManager.isSpatialIndexAvailable() || getDataStore().isIndexCreationEnabled()) {
+                    goodRecs = indexManager.querySpatialIndex(bbox);
+                }
             } catch (TreeException e) {
                 throw new IOException("Error querying index: " + e.getMessage());
             }

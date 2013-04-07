@@ -41,6 +41,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.TreeSet;
+import java.util.UUID;
 
 import org.geotools.TestData;
 import org.geotools.data.DataStore;
@@ -882,6 +883,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
             GregorianCalendar calendar = new GregorianCalendar();
             calendar.setTimeInMillis(i);
             build.add(calendar);
+            build.add(UUID.randomUUID());
 
             SimpleFeature feature = build.buildFeature(null);
             features.add(feature);
@@ -905,6 +907,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         build.add("k", BigDecimal.class);
         build.add("l", BigInteger.class);
         build.add("m", Calendar.class);
+        build.add("n", UUID.class);
 
         return build.buildFeatureType();
     }

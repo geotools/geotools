@@ -39,7 +39,7 @@ public class PostgisUDTTestSetup extends JDBCUDTTestSetup {
 
     @Override
     protected void createUdtTable() throws Exception {
-        if (getDelegate().isPgsqlVersionGreaterThanEqualTo(PostGISDialect.PGSQL_V_9_0)) {
+        if (getDelegate().isPgsqlVersionGreaterThanEqualTo(PostGISDialect.PGSQL_V_9_1)) {
             run("CREATE DOMAIN foo AS text CHECK (VALUE ~ '\\d{2}\\D{2}');");
         }
         else {

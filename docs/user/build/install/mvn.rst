@@ -7,7 +7,7 @@ configuration. Actual build instructions will happen later.
 Reference:
 
 * http://maven.apache.org/
-* http://maven.apache.org/start/install.html
+* http://maven.apache.org/download.html
 
 Download and Install Maven
 ^^^^^^^^^^^^^^^^^^^^^^^^^^

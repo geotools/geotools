@@ -614,14 +614,32 @@ public abstract class MapProjection extends AbstractMathTransform
      * Returns the orthodromic distance between the two specified points using a spherical
      * approximation. This is used for assertions only.
      */
-    private double orthodromicDistance(final Point2D source, final Point2D target) {
-        final double y1 = toRadians(source.getY());
-        final double y2 = toRadians(target.getY());
-        final double dx = toRadians(abs(target.getX() - source.getX()) % 360);
-        double rho = sin(y1)*sin(y2) + cos(y1)*cos(y2)*cos(dx);
-        if (rho > +1) {assert rho <= +(1+EPSILON) : rho; rho = +1;}
-        if (rho < -1) {assert rho >= -(1+EPSILON) : rho; rho = -1;}
-        return acos(rho) * semiMajor;
+    protected double orthodromicDistance(final Point2D source, final Point2D target) {
+        // The orthodromic distance calculation here does not work well over short 
+        // distances, so we only use it if we believe the distance is significant.
+        if (source.distanceSq(target) > 1.0) {
+            final double y1 = toRadians(source.getY());
+            final double y2 = toRadians(target.getY());
+            final double dx = toRadians(abs(target.getX() - source.getX()) % 360);
+            double rho = sin(y1)*sin(y2) + cos(y1)*cos(y2)*cos(dx);
+            if (rho > +1) {assert rho <= +(1+EPSILON) : rho; rho = +1;}
+            if (rho < -1) {assert rho >= -(1+EPSILON) : rho; rho = -1;}
+            return acos(rho) * semiMajor;
+        } else {
+            // Otherwise we approximate using alternate means. This is based
+            // on the Haversine formula to compute the arc angle between the
+            // point (derived from S2LatLng.getDistance()) which is stable for
+            // small distances.
+            double lat1 = toRadians(source.getY());
+            double lat2 = toRadians(target.getY());
+            double lng1 = toRadians(source.getX());
+            double lng2 = toRadians(target.getX());
+            double dlat = Math.sin(0.5 * (lat2 - lat1));
+            double dlng = Math.sin(0.5 * (lng2 - lng1));
+            double x = dlat * dlat + dlng * dlng * Math.cos(lat1) * Math.cos(lat2);
+            double arcRadians = 2 * Math.atan2(Math.sqrt(x), Math.sqrt(Math.max(0.0, 1.0 - x)));
+            return arcRadians * semiMajor;
+        }
     }
 
     /**
@@ -647,7 +665,7 @@ public abstract class MapProjection extends AbstractMathTransform
      * @param inverse {@code true} for an inverse transform instead of a direct one.
      * @return {@code true} if the two points are close enough.
      */
-    private boolean checkReciprocal(Point2D point, final Point2D target, final boolean inverse)
+    protected boolean checkReciprocal(Point2D point, final Point2D target, final boolean inverse)
             throws ProjectionException
     {
         if (!(point instanceof CheckPoint)) try {
@@ -1183,7 +1201,7 @@ public abstract class MapProjection extends AbstractMathTransform
             return 1;
         }
         // Be less strict when the point is near an edge.
-        return (abs(longitude) > 179) || (abs(latitude) > 89) ? 1E-1 : 1E-5;
+        return (abs(longitude) > 179) || (abs(latitude) > 89) ? 1E-1 : 3E-3;
     }
 
     /**

@@ -264,6 +264,19 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         }
     }
     
-    
+    /**
+     * Tries to simplify the filter if it's not already a simple one 
+     * @param filter
+     * @return
+     */
+    public static Filter simplify(Filter filter) {
+        // if already as simple as possible, or cannot be simplified anyways
+        if(filter == Filter.INCLUDE || filter == Filter.EXCLUDE || filter == null) {
+            return filter;
+        }
+        // other filters might involve non volatile functions, so we need to look into them
+        SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
+        return (Filter) filter.accept(visitor, null);
+    }
     
 }

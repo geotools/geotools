@@ -17,6 +17,7 @@
 package org.geotools.data.shapefile;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
@@ -258,6 +259,21 @@ public class ShapefileTest extends TestCaseSupport {
 			reader.close();
 		}
 	}
+
+    public void testReadingSparse() throws IOException {
+        File file = TestData.file(TestCaseSupport.class, "sparse/sparse.shp");
+        ShapefileReader reader = new ShapefileReader(new ShpFiles(file), false, false, new GeometryFactory());
+        int cnt = 0;
+        try {
+            while (reader.hasNext()) {
+                reader.nextRecord().shape();
+                cnt++;
+            }
+        } finally {
+            reader.close();
+        }
+        assertEquals("Did not read all Geometries from sparse file.", 31, cnt);
+    }
 
     protected void loadShapes(String resource, int expected) throws Exception {
         final URL url = TestData.url(resource);

@@ -110,6 +110,8 @@ public class PostGISDialect extends BasicSQLDialect {
     static final Version V_2_0_0 = new Version("2.0.0");
 
     static final Version PGSQL_V_9_0 = new Version("9.0");
+    
+    static final Version PGSQL_V_9_1 = new Version("9.1");
 
     public PostGISDialect(JDBCDataStore dataStore) {
         super(dataStore);
@@ -836,7 +838,7 @@ public class PostGISDialect extends BasicSQLDialect {
         if(byte[].class.equals(type)) {
             byte[] input = (byte[]) value;
             //check postgres version, if > 9 default encoding is hex
-            if (pgsqlVersion.compareTo(PGSQL_V_9_0) >= 0) {
+            if (pgsqlVersion.compareTo(PGSQL_V_9_1) >= 0) {
                 encodeByteArrayAsHex(input, sql);
             }
             else {

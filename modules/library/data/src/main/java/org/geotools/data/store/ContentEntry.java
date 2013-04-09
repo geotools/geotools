@@ -174,6 +174,16 @@ public final class ContentEntry {
         }
     }
     
+    /**
+     * Removes a closed transaction from the state cache.
+     * @param transaction
+     */
+    public void clearTransaction(Transaction transaction) {
+        if (state.containsKey(transaction)) {
+            state.remove(transaction);
+        }
+    }
+    
     public String toString() {
         return getTypeName();
     }

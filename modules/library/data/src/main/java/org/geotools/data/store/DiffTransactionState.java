@@ -71,6 +71,10 @@ public class DiffTransactionState implements Transaction.State {
      * the transaction is correct.
      */
     public synchronized void setTransaction(Transaction transaction) {
+        if (this.transaction != null && transaction == null) {
+            // clear ContentEntry transaction to fix GEOT-3315
+            state.getEntry().clearTransaction(this.transaction);
+        }
         this.transaction = transaction;
     }
 

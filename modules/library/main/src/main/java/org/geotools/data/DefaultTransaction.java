@@ -88,6 +88,9 @@ public class DefaultTransaction implements Transaction {
      *      org.geotools.data.Transaction.State)
      */
     public void putState(Object key, State state) {
+        if (stateLookup == null) {
+            return;
+        }
         if (stateLookup.containsKey(key)) {
             State current = (State) stateLookup.get(key);
 

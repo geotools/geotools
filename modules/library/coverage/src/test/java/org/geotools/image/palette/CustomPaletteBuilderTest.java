@@ -27,6 +27,7 @@ import javax.media.jai.JAI;
 import javax.media.jai.OperationDescriptor;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.PlanarImage;
+import javax.media.jai.TiledImage;
 
 import junit.framework.Assert;
 

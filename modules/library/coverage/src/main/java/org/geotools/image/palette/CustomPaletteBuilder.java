@@ -180,16 +180,19 @@ public final class CustomPaletteBuilder {
 				// get the source raster
 				final Raster r = src.getTile(tx, ty);
 
-				int minx = r.getMinX();
-				int miny = r.getMinY();
-				
-				minx = minx < minx_ ? minx_ : minx;
-				miny = miny < miny_ ? miny_ : miny;
-				int maxx = minx + tileW;
-				int maxy = miny + tileH;
-
-				maxx = maxx > maxx_ ? maxx_  : maxx ;
-				maxy = maxy > maxy_ ? maxy_  : maxy ;
+                                int minx = r.getMinX();
+                                int miny = r.getMinY(); 
+                                int maxx = minx + r.getWidth();
+                                int maxy = miny + r.getHeight();
+                                if(LOGGER.isLoggable(Level.FINE)){
+                                        LOGGER.fine("minx:"+minx+" miny:"+miny);
+                                        LOGGER.fine("maxx:"+maxx+" maxy:"+maxy);
+                                }                                       
+                                
+                                minx = minx < minx_ ? minx_ : minx;
+                                miny = miny < miny_ ? miny_ : miny;
+                                maxx = maxx > maxx_ ?  maxx_:maxx;
+                                maxy = maxy > maxy_ ? maxy_:maxy;
 				
 				actualWidth = maxx - minx;
 				actualHeight = maxy - miny;
@@ -419,8 +422,6 @@ public final class CustomPaletteBuilder {
 		final int maxy_ = miny_ + srcH_;
 		final int minTileX = src.getMinTileX();
 		final int minTileY = src.getMinTileY();
-		final int tileW = src.getTileWidth();
-		final int tileH = src.getTileHeight();
 		final int maxTileX = minTileX + src.getNumXTiles();
 		final int maxTileY = minTileY + src.getNumYTiles();
 		for (int ty = minTileY; ty < maxTileY; ty++) {
@@ -429,19 +430,20 @@ public final class CustomPaletteBuilder {
 				final Raster r = src.getTile(tx, ty);
 				
 				if(LOGGER.isLoggable(Level.FINER)){
-					LOGGER.finer("Working on tile tx:"+tx+"ty:"+ty);
+					LOGGER.fine("Working on tile tx:"+tx+"ty:"+ty);
 				}	
 
 				int minx = r.getMinX();
 				int miny = r.getMinY();	
+                                int maxx = minx + r.getWidth();
+                                int maxy = miny + r.getHeight();
 				if(LOGGER.isLoggable(Level.FINER)){
 					LOGGER.finer("minx:"+minx+" miny:"+miny);
+                                        LOGGER.finer("maxx:"+maxx+" maxy:"+maxy);
 				}					
 				
 				minx = minx < minx_ ? minx_ : minx;
 				miny = miny < miny_ ? miny_ : miny;
-				int maxx = minx + tileW;
-				int maxy = miny + tileH;
 				maxx = maxx > maxx_ ?  maxx_:maxx;
 				maxy = maxy > maxy_ ? maxy_:maxy;
 				

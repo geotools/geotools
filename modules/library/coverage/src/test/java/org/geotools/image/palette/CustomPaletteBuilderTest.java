@@ -16,16 +16,11 @@
  */
 package org.geotools.image.palette;
 
-import it.geosolutions.imageio.utilities.ImageIOUtilities;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
-import java.awt.image.SampleModel;
-import java.awt.image.WritableRaster;
 
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
@@ -35,12 +30,9 @@ import javax.media.jai.PlanarImage;
 import javax.media.jai.TiledImage;
 
 import junit.framework.Assert;
-import junit.framework.TestCase;
 
 import org.geotools.image.ImageWorker;
 import org.junit.Test;
-
-import com.sun.media.jai.codecimpl.util.RasterFactory;
 
 /**
  * Testing custom code for color reduction.
@@ -106,9 +98,9 @@ public class CustomPaletteBuilderTest extends Assert {
 	}
 	
 	@Test
-    public void testTranslatedImage() {
-	    BufferedImage image = new BufferedImage(256, 256, BufferedImage.TYPE_BYTE_GRAY);
-        Graphics g = image.createGraphics();
+    public void testTranslatedImageTileGrid() {
+	BufferedImage image_ = new BufferedImage(256, 256, BufferedImage.TYPE_BYTE_GRAY);
+        Graphics g = image_.createGraphics();
         g.setColor(Color.WHITE);
         g.fillRect(236, 236, 20, 20);
         g.setColor(new Color(80, 80, 80)); // A dark gray
@@ -116,7 +108,19 @@ public class CustomPaletteBuilderTest extends Assert {
         g.setColor(new Color(200, 200, 200)); // A light gray
         g.fillRect(216, 236, 20, 20);
         g.dispose();
-        image=image.getSubimage(128, 128, 128, 128);
+        
+        
+        TiledImage image=new TiledImage(
+                0, 
+                0, 
+                256, 
+                256, 
+                128, 
+                128, 
+                image_.getColorModel().createCompatibleSampleModel(256, 256), 
+                image_.getColorModel());
+        image.set(image_);
+        
         CustomPaletteBuilder builder = new CustomPaletteBuilder(image, 256, 1, 1, 1);
         RenderedImage indexed =  builder.buildPalette().getIndexedImage();
         assertTrue(indexed.getColorModel() instanceof IndexColorModel);
@@ -133,6 +137,36 @@ public class CustomPaletteBuilderTest extends Assert {
         }
         assertTrue(result);
         
+    }
+	
+    @Test
+    public void testTranslatedImage() {
+        BufferedImage image = new BufferedImage(256, 256, BufferedImage.TYPE_BYTE_GRAY);
+        Graphics g = image.createGraphics();
+        g.setColor(Color.WHITE);
+        g.fillRect(236, 236, 20, 20);
+        g.setColor(new Color(80, 80, 80)); // A dark gray
+        g.fillRect(216, 216, 20, 20);
+        g.setColor(new Color(200, 200, 200)); // A light gray
+        g.fillRect(216, 236, 20, 20);
+        g.dispose();
+        image = image.getSubimage(128, 128, 128, 128);
+        CustomPaletteBuilder builder = new CustomPaletteBuilder(image, 256, 1, 1, 1);
+        RenderedImage indexed = builder.buildPalette().getIndexedImage();
+        assertTrue(indexed.getColorModel() instanceof IndexColorModel);
+        IndexColorModel icm = (IndexColorModel) indexed.getColorModel();
+        assertEquals(4, icm.getMapSize()); // Black background, white fill, light gray fill, dark gray fill = 4 colors
+
+        // check image not black
+        ImageWorker iw = new ImageWorker(indexed).forceComponentColorModel().intensity();
+        double[] mins = iw.getMinimums();
+        double[] maxs = iw.getMaximums();
+        boolean result = true;
+        for (int i = 0; i < mins.length; i++) {
+            result = mins[i] == maxs[i] ? false : result;
+        }
+        assertTrue(result);
+
     }
 	
     

@@ -16,6 +16,8 @@
  */
 package org.geotools.data.shapefile;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -33,6 +35,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -56,35 +59,37 @@ public class ShapefileReadWriteTest extends TestCaseSupport {
     Exception exception = null;
 
 
-    /** Creates a new instance of ShapefileReadWriteTest */
-    public ShapefileReadWriteTest(String name) throws IOException {
-        super(name);
-    }
-    
+    @Test
     public void testReadWriteStatePop() throws Exception {
         test("shapes/statepop.shp");
     }
     
+    @Test
     public void testReadWritePolygonTest() throws Exception {
         test("shapes/polygontest.shp");
     }
     
+    @Test
     public void testReadWritePointTest() throws Exception {
         test("shapes/pointtest.shp");
     }
     
+    @Test
     public void testReadWriteHoleTouchEdge() throws Exception {
         test("shapes/holeTouchEdge.shp");
     }
     
+    @Test
     public void testReadWriteChinese() throws Exception {
         test("shapes/chinese_poly.shp", Charset.forName("GB18030"));
     }
     
+    @Test
     public void testReadWriteDanishPoint() throws Exception {
         test("shapes/danish_point.shp");
     }
 
+    @Test
     public void testConcurrentReadWrite() throws Exception {
         System.gc();
         System.runFinalization(); // If some streams are still open, it may
@@ -159,11 +164,9 @@ public class ShapefileReadWriteTest extends TestCaseSupport {
 
     private void test(String f, Charset charset) throws Exception {
         copyShapefiles(f); // Work on File rather than URL from JAR.
-        ShapefileDataStore s = null;
-        if(charset == null) {
-            s = new ShapefileDataStore(TestData.url(TestCaseSupport.class, f));
-        } else {
-            s = new ShapefileDataStore(TestData.url(TestCaseSupport.class, f), false, charset);
+        ShapefileDataStore s = new ShapefileDataStore(TestData.url(TestCaseSupport.class, f));
+        if(charset != null) {
+            s.setCharset(charset);
         }
         String typeName = s.getTypeNames()[0];
         SimpleFeatureSource source = s.getFeatureSource(typeName);
@@ -191,33 +194,30 @@ public class ShapefileReadWriteTest extends TestCaseSupport {
         params.put(ShapefileDataStoreFactory.MEMORY_MAPPED.key, memorymapped);
         shapefile = (ShapefileDataStore) maker.createDataStore(params);
         if(charset != null)
-            shapefile.setStringCharset(charset);
+            shapefile.setCharset(charset);
 
         shapefile.createSchema(type);
 
-        SimpleFeatureStore store = (SimpleFeatureStore) shapefile.getFeatureSource(type
-                .getTypeName());
+        SimpleFeatureStore store = (SimpleFeatureStore) shapefile.getFeatureSource();
 
         store.addFeatures(original);
 
         SimpleFeatureCollection copy = store.getFeatures();
         compare(original, copy);
 
-        if (true) {
-            // review open
-            ShapefileDataStore review;
-            if(charset == null) 
-                review = new ShapefileDataStore(tmp.toURI().toURL(), tmp.toURI(), memorymapped);
-            else
-                review = new ShapefileDataStore(tmp.toURI().toURL(), tmp.toURI(), memorymapped, charset);
-            typeName = review.getTypeNames()[0];
-            SimpleFeatureSource featureSource = review.getFeatureSource(typeName);
-            SimpleFeatureCollection again = featureSource.getFeatures();
-
-            compare(copy, again);
-            compare(original, again);
-            review.dispose();
+        ShapefileDataStore review = new ShapefileDataStore(tmp.toURI().toURL());
+        review.setMemoryMapped(memorymapped);
+        if(charset != null) {
+            review.setCharset(charset);
         }
+        typeName = review.getTypeNames()[0];
+        SimpleFeatureSource featureSource = review.getFeatureSource(typeName);
+        SimpleFeatureCollection again = featureSource.getFeatures();
+
+        compare(copy, again);
+        compare(original, again);
+        review.dispose();
+        
         shapefile.dispose();
     }
 

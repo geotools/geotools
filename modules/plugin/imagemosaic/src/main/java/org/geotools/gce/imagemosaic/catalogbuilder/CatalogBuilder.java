@@ -499,9 +499,9 @@ public class CatalogBuilder implements Runnable {
 						final SimpleFeatureTypeBuilder featureBuilder = new SimpleFeatureTypeBuilder();
 						featureBuilder.setName(runConfiguration.getIndexName());
 						featureBuilder.setNamespaceURI("http://www.geo-solutions.it/");
-						featureBuilder.add(runConfiguration.getLocationAttribute().trim(), String.class);
 						featureBuilder.add("the_geom", Polygon.class,actualCRS);
 						featureBuilder.setDefaultGeometry("the_geom");
+						featureBuilder.add(runConfiguration.getLocationAttribute().trim(), String.class);
 						String timeAttribute = runConfiguration.getTimeAttribute();
 						addAttributes(timeAttribute, featureBuilder, Date.class);
 						indexSchema = featureBuilder.buildFeatureType();

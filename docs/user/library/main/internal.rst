@@ -28,7 +28,7 @@ And a couple that are no longer used:
 AbstractDataStore
 ^^^^^^^^^^^^^^^^^
 
-The **AbstractDataStore** is the super class for ShapefileDataStore and the legacy JDBC DataStores.
+The **AbstractDataStore** is an old base class for DataStore implementations, currently used only by MemoryDataStore and PropertyDataStore. All new stores use **ContentDataStore** instead.
 
 .. image:: /images/AbstractDataStore.PNG
 

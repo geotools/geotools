@@ -16,7 +16,6 @@
  */
 package org.geotools.data.shapefile.shp;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -26,10 +25,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.data.DataSourceException;
-import org.geotools.data.shapefile.FileReader;
-import org.geotools.data.shapefile.ShpFileType;
-import org.geotools.data.shapefile.ShpFiles;
-import org.geotools.data.shapefile.StreamLogging;
+import org.geotools.data.shapefile.files.FileReader;
+import org.geotools.data.shapefile.files.ShpFileType;
+import org.geotools.data.shapefile.files.ShpFiles;
+import org.geotools.data.shapefile.files.StreamLogging;
 import org.geotools.renderer.ScreenMap;
 import org.geotools.resources.NIOUtilities;
 import org.geotools.util.logging.Logging;
@@ -214,14 +213,6 @@ public class ShapefileReader implements FileReader {
 
     private boolean flatGeometry;
     
-    /**
-     * @deprecated Use {@link #ShapefileReader(ShpFiles, boolean, boolean, GeometryFactory)} instead
-     */
-    public ShapefileReader(ShpFiles shapefileFiles, boolean strict,
-            boolean useMemoryMapped) throws IOException, ShapefileException {
-        this(shapefileFiles, strict, useMemoryMapped, new GeometryFactory());
-    }
-
     /**
      * Creates a new instance of ShapeFile.
      * 
@@ -427,7 +418,7 @@ public class ShapefileReader implements FileReader {
         // represents the current position)
         if(currentShape > UNKNOWN && currentShape > shxReader.getRecordCount() - 1)
             return false;
-
+        
         // ensure the proper position, regardless of read or handler behavior
         positionBufferForOffset(buffer, getNextOffset());
 
@@ -453,7 +444,7 @@ public class ShapefileReader implements FileReader {
 
         return hasNext;
     }
-
+    
     private int getNextOffset() throws IOException {
         if(currentShape >= 0) {
             return shxReader.getOffsetInBytes(currentShape);

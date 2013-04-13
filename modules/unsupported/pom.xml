@@ -128,15 +128,6 @@
        </modules>
      </profile>
      <profile>
-       <id>shapefile-renderer</id>
-       <activation>
-         <property><name>all</name></property>
-       </activation>
-       <modules>
-         <module>shapefile-renderer</module>
-       </modules>
-     </profile>
-     <profile>
        <id>swt</id>
        <modules>
          <module>swt</module>
@@ -186,7 +177,7 @@
          <module>feature-aggregate</module>
          <module>mongodb</module>
          <module>property-ng</module>
-         <module>shapefile-ng</module>
+         <module>shapefile-old</module>
        </modules>
      </profile>
   </profiles>

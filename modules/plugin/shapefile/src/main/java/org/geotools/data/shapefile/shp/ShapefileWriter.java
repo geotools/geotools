@@ -19,10 +19,9 @@ package org.geotools.data.shapefile.shp;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
-import org.geotools.data.shapefile.StreamLogging;
+import org.geotools.data.shapefile.files.StreamLogging;
 import org.geotools.resources.NIOUtilities;
 
 import com.vividsolutions.jts.geom.Envelope;

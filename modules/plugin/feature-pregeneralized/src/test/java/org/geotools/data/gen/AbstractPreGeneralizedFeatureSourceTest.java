@@ -582,12 +582,12 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
 
     }
 
-    protected void testQueryCapabilities(String configName) {
+    protected void testQueryCapabilities(String configName, boolean pureShapefile) {
         try {
             PreGeneralizedDataStore ds = getDataStore(configName);
 
             SimpleFeatureSource fs = ds.getFeatureSource("GenStreams");
-            assertFalse(fs.getQueryCapabilities().isOffsetSupported());
+            assertEquals(pureShapefile, fs.getQueryCapabilities().isOffsetSupported());
             assertTrue(fs.getQueryCapabilities().isReliableFIDSupported());
 
             PropertyName propertyName = new PropertyName() {
@@ -614,7 +614,7 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
             };
 
             SortOrder so = SortOrder.valueOf("CAT_ID");
-            assertFalse(fs.getQueryCapabilities().supportsSorting(
+            assertEquals(pureShapefile, fs.getQueryCapabilities().supportsSorting(
                     new SortBy[] { new SortByImpl(propertyName, so) }));
 
             ds.dispose();

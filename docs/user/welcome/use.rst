@@ -129,8 +129,7 @@ Bad practice with direct dependency on ShapeFileDataStoreFactory::
    ShapeFileDataStore = factory.createDataStore( file );
 
 This code example would have been fine for GeoTools 2.1, however for GeoTools 2.2 an "indexed"
-shapefile datastore was created with far better performance. The factory would be smart enough
-to create an IndexedShapeFileDataStore if an index file was available.
+shapefile datastore was created with far better performance. 
 
 Here is a replacement that allows GeoTools to return an indexed datastore if one is available::
    
@@ -365,7 +364,7 @@ Sometimes you just need to go ahead and code it like you mean it. The GeoTools p
 
 You can just use a specific factory that is known to you::
   
-  DataStoreFactorySpi factory = new IndexedShapefileDataStoreFactory();
+  DataStoreFactorySpi factory = new ShapefileDataStoreFactory();
   
   File file = new File("example.shp");
   Map map = Collections.singletonMap( "url", file.toURL() );
@@ -394,11 +393,12 @@ You can skip the whole Factory madness and just do normal Java coding::
   
   File file = new File("example.shp");
   URI namespace = new URI("refractions");
-  boolean useMemoryMapped = true;
-  ShapefileDataStore shapefile = new ShapefileDataStore( example.toURL(), namespace, useMemoryMapped );
+  ShapefileDataStore shapefile = new ShapefileDataStore( example.toURL());
+  shapefile.setNamespace(namespace);
+  shapefile.setMemoryMapped(true);
 
 You are depending on a exact class here, violating the plug-in system and so on. Chances are that GeoTools should not let you do this (by making the constructor package visible and forcing you to use the associated DataStoreFactory instead).
 
-This option is fine for quick hacks, you may find that the ShapefileDataStore has additional methods (to handle such things as forcing the "prj" file to be rewritten.::
+This option is fine for quick hacks, you may find that the ShapefileDataStore has additional methods (to handle such things as forcing the "prj" file to be rewritten)::
   
   shapefile.forceSchemaCRS( CRS.decode( "EPSG:4326" ) );

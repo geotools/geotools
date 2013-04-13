@@ -16,9 +16,7 @@
  */
 package org.geotools.data.shapefile;
 
-import static org.geotools.data.shapefile.ShpFileType.DBF;
-import static org.geotools.data.shapefile.ShpFileType.SHP;
-import static org.geotools.data.shapefile.ShpFileType.SHX;
+import static org.geotools.data.shapefile.files.ShpFileType.*;
 
 import java.io.IOException;
 import java.nio.channels.FileChannel;
@@ -27,18 +25,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
-import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.shapefile.dbf.DbaseFileHeader;
 import org.geotools.data.shapefile.dbf.DbaseFileWriter;
+import org.geotools.data.shapefile.files.ShpFileType;
+import org.geotools.data.shapefile.files.ShpFiles;
+import org.geotools.data.shapefile.files.StorageFile;
 import org.geotools.data.shapefile.shp.JTSUtilities;
 import org.geotools.data.shapefile.shp.ShapeHandler;
 import org.geotools.data.shapefile.shp.ShapeType;
 import org.geotools.data.shapefile.shp.ShapefileException;
 import org.geotools.data.shapefile.shp.ShapefileWriter;
-import org.geotools.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
@@ -48,25 +46,21 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
- * A FeatureWriter for ShapefileDataStore. Uses a write and annotate technique
- * to avoid buffering attributes and geometries. Because the shapefile and dbf
- * require header information which can only be obtained by reading the entire
- * series of Features, the headers are updated after the initial write
- * completes.
+ * A FeatureWriter for ShapefileDataStore. Uses a write and annotate technique to avoid buffering
+ * attributes and geometries. Because the shapefile and dbf require header information which can
+ * only be obtained by reading the entire series of Features, the headers are updated after the
+ * initial write completes.
  * 
  * @author Jesse Eichar
- *
- *
- *
+ * 
+ * 
+ * 
  * @source $URL$
  */
-public class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
+class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
 
-    // the  FeatureReader<SimpleFeatureType, SimpleFeature> to obtain the current Feature from
-    protected  FeatureReader<SimpleFeatureType, SimpleFeature> featureReader;
-
-    // the AttributeReader
-    protected ShapefileAttributeReader attReader;
+    // the FeatureReader<SimpleFeatureType, SimpleFeature> to obtain the current Feature from
+    protected ShapefileFeatureReader featureReader;
 
     // the current Feature
     protected SimpleFeature currentFeature;
@@ -79,7 +73,9 @@ public class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, 
 
     // an array for reuse in writing to dbf.
     protected Object[] transferCache;
+
     protected ShapeType shapeType;
+
     protected ShapeHandler handler;
 
     // keep track of shapefile length during write, starts at 100 bytes for
@@ -91,8 +87,11 @@ public class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, 
 
     // hold 1 if dbf should write the attribute at the index, 0 if not
     protected byte[] writeFlags;
+
     protected ShapefileWriter shpWriter;
+
     protected DbaseFileWriter dbfWriter;
+
     private DbaseFileHeader dbfHeader;
 
     protected Map<ShpFileType, StorageFile> storageFiles = new HashMap<ShpFileType, StorageFile>();
@@ -105,20 +104,19 @@ public class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, 
     private FileChannel dbfChannel;
 
     private Charset dbfCharset;
-    
+
     private TimeZone dbfTimeZone;
-    
+
     private GeometryFactory gf = new GeometryFactory();
 
-    public ShapefileFeatureWriter(String typeName, ShpFiles shpFiles,
-            ShapefileAttributeReader attsReader,  FeatureReader<SimpleFeatureType, SimpleFeature> featureReader,
-            Charset charset, TimeZone timezone)
-            throws IOException {
+    private boolean guessShapeType;
+
+    public ShapefileFeatureWriter(ShpFiles shpFiles, ShapefileFeatureReader featureReader,
+            Charset charset, TimeZone timezone) throws IOException {
         this.shpFiles = shpFiles;
         this.dbfCharset = charset;
         this.dbfTimeZone = timezone;
         // set up reader
-        this.attReader = attsReader;
         this.featureReader = featureReader;
 
         storageFiles.put(SHP, shpFiles.getStorageFile(SHP));
@@ -153,30 +151,25 @@ public class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, 
         dbfChannel = storageFiles.get(DBF).getWriteChannel();
         dbfWriter = new DbaseFileWriter(dbfHeader, dbfChannel, dbfCharset, dbfTimeZone);
 
-        if(attReader != null) {
-            // don't try to read a shx file we're writing to in parallel
-            attReader.shp.disableShxUsage();
-            if(attReader.hasNext()) {
-                shapeType = attReader.shp.getHeader().getShapeType();
-                handler = shapeType.getShapeHandler(new GeometryFactory());
-                shpWriter.writeHeaders(bounds, shapeType, records, shapefileLength);
-            }
-        }
+        // don't try to read a shx file we're writing to in parallel
+        featureReader.disableShxUsage();
+        guessShapeType = !featureReader.hasNext();
+        shapeType = featureReader.getShapeType();
+        handler = shapeType.getShapeHandler(new GeometryFactory());
+        shpWriter.writeHeaders(bounds, shapeType, records, shapefileLength);
     }
 
     /**
      * Go back and update the headers with the required info.
      * 
-     * @throws IOException
-     *                 DOCUMENT ME!
+     * @throws IOException DOCUMENT ME!
      */
     protected void flush() throws IOException {
         // not sure the check for records <=0 is necessary,
         // but if records > 0 and shapeType is null there's probably
         // another problem.
         if ((records <= 0) && (shapeType == null)) {
-            GeometryDescriptor geometryDescriptor = featureType
-                    .getGeometryDescriptor();
+            GeometryDescriptor geometryDescriptor = featureType.getGeometryDescriptor();
 
             shapeType = JTSUtilities.getShapeType(geometryDescriptor);
         }
@@ -191,8 +184,7 @@ public class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, 
     /**
      * In case someone doesn't close me.
      * 
-     * @throws Throwable
-     *                 DOCUMENT ME!
+     * @throws Throwable DOCUMENT ME!
      */
     protected void finalize() throws Throwable {
         if (featureReader != null) {
@@ -207,19 +199,16 @@ public class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, 
     /**
      * Clean up our temporary write if there was one
      * 
-     * @throws IOException
-     *                 DOCUMENT ME!
+     * @throws IOException DOCUMENT ME!
      */
     protected void clean() throws IOException {
-        StorageFile.replaceOriginals(storageFiles.values().toArray(
-                new StorageFile[0]));
+        StorageFile.replaceOriginals(storageFiles.values().toArray(new StorageFile[0]));
     }
 
     /**
      * Release resources and flush the header information.
      * 
-     * @throws IOException
-     *                 DOCUMENT ME!
+     * @throws IOException DOCUMENT ME!
      */
     public void close() throws IOException {
         if (featureReader == null) {
@@ -230,16 +219,20 @@ public class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, 
         if (currentFeature != null) {
             write();
         }
+        // make sure we also write whatever feature the reader might still have around
+        if(featureReader.nextFeature != null) {
+            currentFeature = featureReader.nextFeature ;
+            write();
+        }
 
         // if the attribute reader is here, that means we may have some
         // additional tail-end file flushing to do if the Writer was closed
         // before the end of the file
-        if (attReader != null && attReader.internalReadersHaveNext()) {
-            shapeType = attReader.shp.getHeader().getShapeType();
+        if (featureReader != null) {
             handler = shapeType.getShapeHandler(gf);
 
             // handle the case where zero records have been written, but the
-            // stream is closed and the headers
+            // stream is closed and the headers are not there
             if (records == 0) {
                 shpWriter.writeHeaders(bounds, shapeType, 0, 0);
             }
@@ -247,17 +240,16 @@ public class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, 
             // copy array for bounds
             double[] env = new double[4];
 
-            while (attReader.internalReadersHaveNext()) {
+            while (featureReader.filesHaveMore()) {
                 // transfer bytes from shapefile
-                shapefileLength += attReader.shp.transferTo(shpWriter,
-                        ++records, env);
+                shapefileLength += featureReader.shp.transferTo(shpWriter, ++records, env);
 
                 // bounds update
                 bounds.expandToInclude(env[0], env[1]);
                 bounds.expandToInclude(env[2], env[3]);
 
                 // transfer dbf bytes
-                attReader.dbf.transferTo(dbfWriter);
+                featureReader.dbf.transferTo(dbfWriter);
             }
         }
 
@@ -308,22 +300,13 @@ public class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, 
 
         // is there another? If so, return it
         if (featureReader.hasNext()) {
-            try {
-                return currentFeature = featureReader.next();
-            } catch (IllegalAttributeException iae) {
-                throw new DataSourceException("Error in reading", iae);
-            }
+            return currentFeature = featureReader.next();
         }
 
         // reader has no more (no were are adding to the file)
         // so return an empty feature
-        try {
-            String featureID = getFeatureType().getTypeName()+"."+(records+1);
-            return currentFeature = DataUtilities.template(getFeatureType(), featureID,
-                    emptyAtts);
-        } catch (IllegalAttributeException iae) {
-            throw new DataSourceException("Error creating empty Feature", iae);
-        }
+        String featureID = getFeatureType().getTypeName() + "." + (records + 1);
+        return currentFeature = DataUtilities.template(getFeatureType(), featureID, emptyAtts);
     }
 
     /**
@@ -332,7 +315,7 @@ public class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, 
      * @return a fid for the new feature
      */
     protected String nextFeatureId() {
-        return getFeatureType().getTypeName()+"."+(records+1);
+        return getFeatureType().getTypeName() + "." + (records + 1);
     }
 
     public void remove() throws IOException {
@@ -362,18 +345,20 @@ public class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, 
         Geometry g = (Geometry) currentFeature.getDefaultGeometry();
 
         // if this is the first Geometry, find the shapeType and handler
-        if (shapeType == null) {
+        if (guessShapeType) {
             try {
-                if(g != null) {
+                if (g != null) {
                     int dims = JTSUtilities.guessCoorinateDims(g.getCoordinates());
                     shapeType = JTSUtilities.getShapeType(g, dims);
                 } else {
-                    shapeType = JTSUtilities.getShapeType(currentFeature.getType().getGeometryDescriptor());
+                    shapeType = JTSUtilities.getShapeType(currentFeature.getType()
+                            .getGeometryDescriptor());
                 }
 
                 // we must go back and annotate this after writing
                 shpWriter.writeHeaders(new Envelope(), shapeType, 0, 0);
                 handler = shapeType.getShapeHandler(gf);
+                guessShapeType = false;
             } catch (ShapefileException se) {
                 throw new RuntimeException("Unexpected Error", se);
             }
@@ -383,19 +368,19 @@ public class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, 
         g = JTSUtilities.convertToCollection(g, shapeType);
 
         // bounds calculations
-        if(g != null) {
-	        Envelope b = g.getEnvelopeInternal();
-	
-	        if (!b.isNull()) {
-	            bounds.expandToInclude(b);
-	        }
+        if (g != null) {
+            Envelope b = g.getEnvelopeInternal();
+
+            if (!b.isNull()) {
+                bounds.expandToInclude(b);
+            }
         }
 
         // file length update
-        if(g != null)
-        	shapefileLength += (handler.getLength(g) + 8);
+        if (g != null)
+            shapefileLength += (handler.getLength(g) + 8);
         else
-        	shapefileLength += (4 + 8);
+            shapefileLength += (4 + 8);
 
         // write it
         shpWriter.writeGeometry(g);

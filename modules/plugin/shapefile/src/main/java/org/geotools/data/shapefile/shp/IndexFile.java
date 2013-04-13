@@ -20,15 +20,14 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
-import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.util.logging.Logger;
 
-import org.geotools.data.shapefile.FileReader;
-import org.geotools.data.shapefile.ShpFileType;
-import org.geotools.data.shapefile.ShpFiles;
-import org.geotools.data.shapefile.StreamLogging;
+import org.geotools.data.shapefile.files.FileReader;
+import org.geotools.data.shapefile.files.ShpFileType;
+import org.geotools.data.shapefile.files.ShpFiles;
+import org.geotools.data.shapefile.files.StreamLogging;
 import org.geotools.resources.NIOUtilities;
 
 /**

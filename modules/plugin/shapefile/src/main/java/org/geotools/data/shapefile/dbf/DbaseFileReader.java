@@ -33,10 +33,10 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import org.geotools.data.shapefile.FileReader;
-import org.geotools.data.shapefile.ShpFileType;
-import org.geotools.data.shapefile.ShpFiles;
-import org.geotools.data.shapefile.StreamLogging;
+import org.geotools.data.shapefile.files.FileReader;
+import org.geotools.data.shapefile.files.ShpFileType;
+import org.geotools.data.shapefile.files.ShpFiles;
+import org.geotools.data.shapefile.files.StreamLogging;
 import org.geotools.resources.NIOUtilities;
 
 /**

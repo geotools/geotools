@@ -16,9 +16,13 @@
  */
 package org.geotools.data.shapefile;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.TimeZone;
 import java.util.logging.Level;
@@ -28,6 +32,10 @@ import org.geotools.TestData;
 import org.geotools.data.shapefile.dbf.DbaseFileHeader;
 import org.geotools.data.shapefile.dbf.DbaseFileReader;
 import org.geotools.data.shapefile.dbf.DbaseFileWriter;
+import org.geotools.data.shapefile.files.ShpFiles;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * 
@@ -49,36 +57,31 @@ public class DbaseFileTest extends TestCaseSupport {
 
     private ShpFiles shpFiles;
 
-    public DbaseFileTest(String testName) throws IOException {
-        super(testName);
-    }
-
-    public static void main(String[] args) {
-        // verbose = true;
-        junit.textui.TestRunner.run(suite(DbaseFileTest.class));
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         shpFiles = new ShpFiles(TestData.url(TEST_FILE));
         dbf = new DbaseFileReader(shpFiles, false,
                 ShapefileDataStore.DEFAULT_STRING_CHARSET);
     }
 
+    @Test
     public void testNumberofColsLoaded() {
         assertEquals("Number of attributes found incorect", 252, dbf
                 .getHeader().getNumFields());
     }
 
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         dbf.close();
         super.tearDown();
     }
 
+    @Test
     public void testNumberofRowsLoaded() {
         assertEquals("Number of rows", 49, dbf.getHeader().getNumRecords());
     }
 
+    @Test
     public void testDataLoaded() throws Exception {
         Object[] attrs = new Object[dbf.getHeader().getNumFields()];
         dbf.readEntry(attrs);
@@ -87,6 +90,7 @@ public class DbaseFileTest extends TestCaseSupport {
                 ((Double) attrs[4]).doubleValue(), 0.001);
     }
 
+    @Test
     public void testRowVsEntry() throws Exception {
         Object[] attrs = new Object[dbf.getHeader().getNumFields()];
         DbaseFileReader dbf2 = new DbaseFileReader(shpFiles, false,
@@ -103,6 +107,7 @@ public class DbaseFileTest extends TestCaseSupport {
         dbf2.close();
     }
 
+    @Test
     public void testHeader() throws Exception {
         DbaseFileHeader header = new DbaseFileHeader();
 
@@ -128,6 +133,7 @@ public class DbaseFileTest extends TestCaseSupport {
         }
     }
 
+    @Test
     public void testAddColumn() throws Exception {
         DbaseFileHeader header = new DbaseFileHeader();
 
@@ -147,6 +153,7 @@ public class DbaseFileTest extends TestCaseSupport {
         }
     }
 
+    @Test
     public void testEmptyFields() throws Exception {
         DbaseFileHeader header = new DbaseFileHeader();
         header.addColumn("emptyString", 'C', 20, 0);
@@ -179,6 +186,7 @@ public class DbaseFileTest extends TestCaseSupport {
         f.delete();
     }
 
+    @Test
     public void testFieldFormatter() throws Exception {
         DbaseFileWriter.FieldFormatter formatter = new DbaseFileWriter.FieldFormatter(Charset.defaultCharset(), TimeZone.getDefault());
 

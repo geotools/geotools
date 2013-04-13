@@ -16,19 +16,23 @@
  */
 package org.geotools.data.shapefile;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import junit.framework.TestCase;
+import org.geotools.data.shapefile.files.ShpFileType;
+import org.junit.Test;
 
 /**
  * 
  *
  * @source $URL$
  */
-public class ShpFileTypesTest extends TestCase {
+public class ShpFileTypesTest  {
 
+    @Test
     public void testToFileBase() {
 
         ShpFileType[] values = ShpFileType.values();
@@ -38,6 +42,7 @@ public class ShpFileTypesTest extends TestCase {
 
     }
 
+    @Test
     public void testToURLBase() throws MalformedURLException {
 
         ShpFileType[] values = ShpFileType.values();
@@ -74,26 +79,31 @@ public class ShpFileTypesTest extends TestCase {
         }
     }
 
+    @Test
     public void testNoExtension() throws Exception {
         File noExtension = new File("name.");
         assertNull(ShpFileType.DBF.toBase(noExtension));
     }
 
+    @Test
     public void testNoBaseName() throws Exception {
         File noBase = new File(".dbf");
         assertNull(ShpFileType.DBF.toBase(noBase));
     }
 
+    @Test
     public void testNoBaseNameMixedCase() throws Exception {
         File noBase = new File(".dbF");
         assertNull(ShpFileType.DBF.toBase(noBase));
     }
 
+    @Test
     public void testUppercase() throws Exception {
         File file = new File("BLOOB.DBF");
         assertEquals("BLOOB", ShpFileType.DBF.toBase(file));
     }
 
+    @Test
     public void testMixedcase() throws Exception {
         File file = new File("Beebop.dBf");
         assertEquals("Beebop", ShpFileType.DBF.toBase(file));

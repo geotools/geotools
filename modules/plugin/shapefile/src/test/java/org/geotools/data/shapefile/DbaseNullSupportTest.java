@@ -1,5 +1,7 @@
 package org.geotools.data.shapefile;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -12,11 +14,10 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-
 import org.geotools.data.shapefile.dbf.DbaseFileHeader;
 import org.geotools.data.shapefile.dbf.DbaseFileReader;
 import org.geotools.data.shapefile.dbf.DbaseFileWriter;
+import org.junit.Test;
 
 /**
  * Verifies that null String, Date, Boolean, Integer, Long, Float, and Double
@@ -29,7 +30,7 @@ import org.geotools.data.shapefile.dbf.DbaseFileWriter;
  *
  * @source $URL$
  */
-public class DbaseNullSupportTest extends TestCase {
+public class DbaseNullSupportTest  {
     /** declare a specific charset for test portability */
     private static final Charset cs;
     private static final TimeZone tz;
@@ -60,6 +61,7 @@ public class DbaseNullSupportTest extends TestCase {
     public static void main(String[] args) throws IOException {
         new DbaseNullSupportTest().testNulls();
     }
+    @Test
     public void testNulls() throws IOException {
         File tmp = File.createTempFile("test", ".dbf");
         if (!tmp.delete()) {

@@ -64,7 +64,7 @@ public class VerticalPreGeneralizedFeatureSourceTest extends
     }
 
     public void testQueryCapabilities() {
-        testQueryCapabilities(ConfigName);
+        testQueryCapabilities(ConfigName, false);
     }
 
     public void testGetSchema() {

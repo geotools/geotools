@@ -16,6 +16,8 @@
  */
 package org.geotools.data.shapefile;
 
+import static junit.framework.Assert.*;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,14 +27,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.geotools.TestData;
+import org.geotools.data.shapefile.index.CloseableIterator;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.index.CloseableIterator;
+import org.junit.After;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory2;
 
@@ -55,7 +57,8 @@ import com.vividsolutions.jts.io.WKTReader;
  * @author Ian Schneider
  * @author Martin Desruisseaux
  */
-public class TestCaseSupport extends TestCase {
+public class TestCaseSupport {
+    
 
     /** References a known test file provided by sample data. */
     final static String STATE_POP = "shapes/statepop.shp";
@@ -74,7 +77,7 @@ public class TestCaseSupport extends TestCase {
 
     /** References a known test file provided by sample data. */
     final static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-
+    
     /**
      * Set to {@code true} if {@code println} are wanted during normal
      * execution. It doesn't apply to message displayed in case of errors.
@@ -86,17 +89,11 @@ public class TestCaseSupport extends TestCase {
     private final List<File> tmpFiles = new ArrayList<File>();
 
     /**
-     * Creates a new instance of {@code TestCaseSupport} with the given name.
-     */
-    protected TestCaseSupport(final String name) throws IOException {
-        super(name);
-    }
-
-    /**
      * Deletes all temporary files created by {@link #getTempFile}. This method
      * is automatically run after each test.
      */
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         
         Runtime.getRuntime().runFinalization();
         // it seems that not all files marked as temp will get erased, perhaps
@@ -120,7 +117,6 @@ public class TestCaseSupport extends TestCase {
 
             f.remove();
         }
-        super.tearDown();
     }
 
     private void dieDieDIE(File file) {

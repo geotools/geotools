@@ -142,8 +142,26 @@ public class ImageWorker {
     /** IMAGEIO_JPEG_IMAGE_WRITER_SPI */
     private static final CLibJPEGImageWriterSpi IMAGEIO_JPEG_IMAGE_WRITER_SPI = new CLibJPEGImageWriterSpi();
 
+    /**
+     * The logger to use for this class.
+     */
+    private final static Logger LOGGER = Logging.getLogger("org.geotools.image");
+
     /** CS_PYCC */
-    private static final ColorSpace CS_PYCC = ColorSpace.getInstance(ColorSpace.CS_PYCC);
+    private static final ColorSpace CS_PYCC;
+    static{
+        ColorSpace cs=null;
+        try{
+            cs = ColorSpace.getInstance(ColorSpace.CS_PYCC);
+        } catch (Throwable t) {
+            if(LOGGER.isLoggable(Level.FINE)){
+                LOGGER.log(Level.FINE,t.getLocalizedMessage(),t);
+            }
+        }
+        
+        // assign, either null or the real CS
+       CS_PYCC=cs;
+    }
     
     /**
      * Raster space epsilon
@@ -174,12 +192,6 @@ public class ImageWorker {
             this.locale = Locale.getDefault();
         }
     }
-    
-
-    /**
-     * The logger to use for this class.
-     */
-    private final static Logger LOGGER = Logging.getLogger("org.geotools.image");
 
     /**
      * If {@link Boolean#FALSE FALSE}, image operators are not allowed to
@@ -786,6 +798,9 @@ public class ImageWorker {
      * @see #forceColorSpaceYCbCr()
      */
     public final boolean isColorSpaceYCbCr() {
+        if(CS_PYCC==null){
+            throw new IllegalStateException("YCbCr ColorSpace is not available. Check your JDK Installation.");
+        }
         final ColorModel cm = image.getColorModel();
         if(cm==null){
             return false;

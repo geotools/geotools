@@ -17,6 +17,7 @@
 package org.geotools.styling.visitor;
 
 import java.awt.Color;
+import java.util.Map;
 
 import javax.measure.quantity.Length;
 import javax.measure.unit.NonSI;
@@ -223,6 +224,8 @@ public class UomRescaleStyleVisitorTest extends TestCase
             double expectedRescaledDisplacementXSize = computeExpectedRescaleSize(displacementX, scaleMetersToPixel, uom);
             double expectedRescaledDisplacementYSize = computeExpectedRescaleSize(displacementY, scaleMetersToPixel, uom);
             int expectedMaxDisplacement = (int) computeExpectedRescaleSize(maxDisplacement, scaleMetersToPixel, uom);
+            int expectedGraphicMargin1 = (int) computeExpectedRescaleSize(maxDisplacement, scaleMetersToPixel, uom);
+            int expectedGraphicMargin2 = (int) computeExpectedRescaleSize(maxDisplacement * 2, scaleMetersToPixel, uom);
             
             StyleBuilder styleBuilder = new StyleBuilder();
 
@@ -237,6 +240,7 @@ public class UomRescaleStyleVisitorTest extends TestCase
             
             // check we can rescale properly also vendor options
             textSymb.addToOptions("maxDisplacement", String.valueOf(maxDisplacement));
+            textSymb.addToOptions(TextSymbolizer.GRAPHIC_MARGIN_KEY, maxDisplacement + " " + maxDisplacement * 2);
 
             visitor = new UomRescaleStyleVisitor(scaleMetersToPixel);
 
@@ -253,8 +257,15 @@ public class UomRescaleStyleVisitorTest extends TestCase
             Assert.assertEquals(Math.round(expectedRescaledDisplacementYSize), Math.round(rescaledDisplacementYSize));
             Assert.assertNotSame(rescaledTextSymb, textSymb);
             
-            int rescaledMaxDisplacement = Converters.convert(rescaledTextSymb.getOptions().get("maxDisplacement"), Integer.class).intValue();
+            Map<String, String> options = rescaledTextSymb.getOptions();
+            int rescaledMaxDisplacement = Converters.convert(options.get("maxDisplacement"), Integer.class).intValue();
             assertEquals(rescaledMaxDisplacement, expectedMaxDisplacement);
+            
+            String[] splitted = options.get(TextSymbolizer.GRAPHIC_MARGIN_KEY).split("\\s+");
+            int rescaledGraphicMargin1 = Converters.convert(splitted[0], Integer.class).intValue();
+            int rescaledGraphicMargin2 = Converters.convert(splitted[1], Integer.class).intValue();
+            assertEquals(expectedGraphicMargin1, rescaledGraphicMargin1);
+            assertEquals(expectedGraphicMargin2, rescaledGraphicMargin2);
         }
         catch (Exception e2)
         {

@@ -151,10 +151,7 @@ public class ImageWorker {
 
     /** IMAGEIO_JPEG_IMAGE_WRITER_SPI */
     private static final CLibJPEGImageWriterSpi IMAGEIO_JPEG_IMAGE_WRITER_SPI = new CLibJPEGImageWriterSpi();
-
-    /** CS_PYCC */
-    private static final ColorSpace CS_PYCC = ColorSpace.getInstance(ColorSpace.CS_PYCC);
-
+    
     /**
      * Raster space epsilon
      */
@@ -164,6 +161,7 @@ public class ImageWorker {
      * Controls the warp-affine reduction
      */
     public static final String WARP_REDUCTION_ENABLED_KEY = "org.geotools.image.reduceWarpAffine";
+    
     static boolean WARP_REDUCTION_ENABLED = Boolean.parseBoolean(System.getProperty(WARP_REDUCTION_ENABLED_KEY, "TRUE"));
 
     
@@ -196,6 +194,22 @@ public class ImageWorker {
      * The logger to use for this class.
      */
     private final static Logger LOGGER = Logging.getLogger("org.geotools.image");
+    
+    /** CS_PYCC */
+    static final ColorSpace CS_PYCC;
+    static{
+        ColorSpace cs=null;
+        try{
+            cs = ColorSpace.getInstance(ColorSpace.CS_PYCC);
+        } catch (Throwable t) {
+            if(LOGGER.isLoggable(Level.FINE)){
+                LOGGER.log(Level.FINE,t.getLocalizedMessage(),t);
+            }
+        }
+        
+        // assign, either null or the real CS
+       CS_PYCC=cs;
+    }
 
     /**
      * If {@link Boolean#FALSE FALSE}, image operators are not allowed to
@@ -807,6 +821,10 @@ public class ImageWorker {
      * @see #forceColorSpaceYCbCr()
      */
     public final boolean isColorSpaceYCbCr() {
+        if (CS_PYCC == null) {
+            throw new IllegalStateException(
+                    "YCbCr ColorSpace is not available. Check your JDK Installation.");
+        }
         final ColorModel cm = image.getColorModel();
         if(cm==null){
             return false;

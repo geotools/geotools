@@ -148,7 +148,7 @@ public class ImageWorker {
     private final static Logger LOGGER = Logging.getLogger("org.geotools.image");
 
     /** CS_PYCC */
-    private static final ColorSpace CS_PYCC;
+    static final ColorSpace CS_PYCC;
     static{
         ColorSpace cs=null;
         try{

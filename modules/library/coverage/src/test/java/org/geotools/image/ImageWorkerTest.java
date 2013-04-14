@@ -800,6 +800,11 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     @Test
     public void testYCbCr() {
         assertTrue("Assertions should be enabled.", ImageWorker.class.desiredAssertionStatus());
+        // check the presence of the PYCC.pf file that contains the profile for the YCbCr color space
+        if(ImageWorker.CS_PYCC==null){
+            System.out.println("testYCbCr disabled since we are unable to locate the YCbCr color profile");
+            return;
+        }
         
         // RGB component color model
         ImageWorker worker = new ImageWorker(getSyntheticRGB(false));

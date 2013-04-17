@@ -41,7 +41,14 @@ import com.vividsolutions.jts.geom.Geometry;
  * the geometry type and native srid (as in most databases those informations are not available on.
  * 
  * The sql query can contain named parameters. Each parameter has a name, a default value and a way
- * to validate its contents to prevent sql injection
+ * to validate its contents to prevent sql injection.
+ * 
+ * As well as passing validation, parameters are also passed through a function to escape double 
+ * quotes, single quotes and strip backslashes to guard against the cases where quotes are desired
+ * in the parameters or backslashes have been allowed by an overly lax regular expression.  
+ * 
+ * Escaping is enabled by default and can be controlled by a constructor argument or via the 
+ * setEscapeSql() method. 
  * 
  * @author Andrea Aime - OpenGeo
  * 
@@ -64,6 +71,8 @@ public class VirtualTable implements Serializable {
 
     Map<String, VirtualTableParameter> parameters = new ConcurrentHashMap<String, VirtualTableParameter>();
 
+    boolean escapeSql = true;
+    
     /**
      * Builds a new virtual table stating its name and the query to be executed to work on it
      * 
@@ -73,6 +82,19 @@ public class VirtualTable implements Serializable {
     public VirtualTable(String name, String sql) {
         this.name = name;
         this.sql = sql;
+    }
+    
+    /**
+     * Builds a new virtual table stating its name, the query to be executed to work on it
+     * and a flag to indicate if SQL special characters should be escaped.
+     * 
+     * @param name
+     * @param sql
+     * @param escapeSql
+     */
+    public VirtualTable(String name, String sql, boolean escapeSql) {
+        this(name,sql);
+        this.escapeSql = escapeSql;
     }
     
     /**
@@ -87,6 +109,7 @@ public class VirtualTable implements Serializable {
         this.nativeSrids = new ConcurrentHashMap<String, Integer>(other.nativeSrids);
         this.parameters = new ConcurrentHashMap<String, VirtualTableParameter>(other.parameters);
         this.primaryKeyColumns = new ArrayList<String>(other.primaryKeyColumns);
+        this.escapeSql = other.escapeSql;
     }
     
     /**
@@ -101,6 +124,7 @@ public class VirtualTable implements Serializable {
         this.nativeSrids = new ConcurrentHashMap<String, Integer>(other.nativeSrids);
         this.parameters = new ConcurrentHashMap<String, VirtualTableParameter>(other.parameters);
         this.primaryKeyColumns = new ArrayList<String>(other.primaryKeyColumns);
+        this.escapeSql = other.escapeSql;
     }
 
     /**
@@ -170,6 +194,12 @@ public class VirtualTable implements Serializable {
                 if(param.getValidator() != null) {
                     try {
                         param.getValidator().validate(value);
+                        
+                        // Parameter value has passed validation, perform sql escaping
+                        // if enabled
+                        if (escapeSql) {
+                            value = EscapeSql.escapeSql(value);
+                        }
                     } catch(IllegalArgumentException e) {
                         // fully log the exception, but only rethrow a more generic description as
                         // the message could be exposed to attackers
@@ -264,7 +294,13 @@ public class VirtualTable implements Serializable {
         return srid;
     }
 
-    
+    public boolean isEscapeSql() {
+        return escapeSql;
+    }
+
+    public void setEscapeSql(boolean escapeSql) {
+        this.escapeSql = escapeSql;
+    }
 
     @Override
     public int hashCode() {
@@ -276,6 +312,7 @@ public class VirtualTable implements Serializable {
         result = prime * result + ((parameters == null) ? 0 : parameters.hashCode());
         result = prime * result + ((primaryKeyColumns == null) ? 0 : primaryKeyColumns.hashCode());
         result = prime * result + ((sql == null) ? 0 : sql.hashCode());
+        result = prime * result + ((escapeSql) ? 1: 0);
         return result;
     }
 
@@ -318,6 +355,9 @@ public class VirtualTable implements Serializable {
                 return false;
         } else if (!sql.equals(other.sql))
             return false;
+        if (escapeSql != other.escapeSql) {
+            return false;
+        }
         return true;
     }
 

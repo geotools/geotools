@@ -28,7 +28,6 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
-import org.apache.commons.lang.StringUtils;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -71,7 +70,7 @@ import org.opengis.filter.sort.SortOrder;
  */
 public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
  
-    private static final Logger LOGGER = Logging.getLogger(JoiningJDBCFeatureSource.class);
+    private static final Logger LOGGER = Logging.getLogger("org.geotools.jdbc.JoiningJDBCFeatureSource");
     
     private static final String TEMP_FILTER_ALIAS = "temp_alias_used_for_filter"; 
     public static final String FOREIGN_ID = "FOREIGN_ID" ;
@@ -134,45 +133,63 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
      * @param tableName
      * @param sort
      * @param orderByFields
+     * @param sql 
      * @throws IOException
      * @throws SQLException
      */
-    protected void sort(String tableName, SortBy[] sort , Set<String> orderByFields, boolean alias) throws IOException, SQLException {        
+    protected void sort(String tableName, SortBy[] sort , Set<String> orderByFields, boolean alias, StringBuffer sql) throws IOException, SQLException {        
         for (int i = 0; i < sort.length; i++) {
             if(SortBy.NATURAL_ORDER.equals(sort[i])|| SortBy.REVERSE_ORDER.equals(sort[i])) {
                 throw new IOException("Cannot do natural order in joining queries");                    
             } else {
-                StringBuffer sql = new StringBuffer();
+                StringBuffer mySql = new StringBuffer();
                 if (alias) {
-                   encodeColumnName2(sort[i].getPropertyName().getPropertyName(), tableName, sql, null);
+                   encodeColumnName2(sort[i].getPropertyName().getPropertyName(), tableName, mySql, null);
                 } else {
-                   encodeColumnName(sort[i].getPropertyName().getPropertyName(), tableName, sql, null);
+                   encodeColumnName(sort[i].getPropertyName().getPropertyName(), tableName, mySql, null);
                 }
-                if (sort[i].getSortOrder() == SortOrder.DESCENDING) {
-                    sql.append(" DESC");
-                } else {
-                    sql.append(" ASC");
-                }
-                if (!sql.toString().isEmpty()) {
-                    orderByFields.add(sql.toString());
+                if (!mySql.toString().isEmpty() && orderByFields.add(mySql.toString())) {
+                	// if it's not already in ORDER BY (because you can't have duplicate column names in order by)
+                	// add it to the query buffer
+                	if (orderByFields.size() > 1) {
+                		sql.append(", ");                		
+                	}
+                	sql.append(mySql);
+
+                    if (sort[i].getSortOrder() == SortOrder.DESCENDING) {
+                        sql.append(" DESC");
+                    } else {
+                        sql.append(" ASC");
+                    }                	
                 }
             }
         }
     }
     
     protected void addMultiValuedSort(String tableName, Set<String> orderByFields,
-            JoiningQuery.QueryJoin join) throws IOException,
-            FilterToSQLException, SQLException {
-        StringBuffer orderString = new StringBuffer(" CASE WHEN ");
+            JoiningQuery.QueryJoin join, StringBuffer sql) throws IOException,
+            FilterToSQLException, SQLException {        
+        
         FilterToSQL toSQL1 = createFilterToSQL(getDataStore().getSchema(tableName));
         toSQL1.setFieldEncoder(new JoiningFieldEncoder(tableName));  
         FilterToSQL toSQL2 = createFilterToSQL(getDataStore().getSchema(join.getJoiningTypeName()));
-        toSQL2.setFieldEncoder(new JoiningFieldEncoder(join.getJoiningTypeName()));
-        orderString.append(toSQL2.encodeToString(join.getForeignKeyName()));
-        orderString.append(" = ");
-        orderString.append(toSQL1.encodeToString(join.getJoiningKeyName()));
-        orderString.append(" THEN 0 ELSE 1 END ASC");
-        orderByFields.add(orderString.toString());
+        toSQL2.setFieldEncoder(new JoiningFieldEncoder(join.getJoiningTypeName()));        
+        String field2 = toSQL2.encodeToString(join.getForeignKeyName());        
+        String field1 = toSQL1.encodeToString(join.getJoiningKeyName());
+        
+        boolean isFirst = orderByFields.isEmpty();
+        
+        if (orderByFields.add(field1) && orderByFields.add(field2)) {
+        	// check that they don't already exists in ORDER BY because duplicate column names aren't allowed
+        	if (!isFirst) {
+        		sql.append(", ");     
+        	}
+            sql.append(" CASE WHEN ");
+            sql.append(field2);
+            sql.append(" = ");
+            sql.append(field1);
+            sql.append(" THEN 0 ELSE 1 END ASC");
+        }
     }
     
     /**
@@ -197,24 +214,34 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                     sql.append(" ORDER BY ");
                 }    
                 if (j < 0) {
-                    sort(query.getTypeName(), sort, orderByFields, false);
+                    sort(query.getTypeName(), sort, orderByFields, false, sql);
                     if (query.getQueryJoins() != null && query.getQueryJoins().size() > 0) {
-                        addMultiValuedSort(query.getTypeName(), orderByFields, query.getQueryJoins().get(0));
+                        addMultiValuedSort(query.getTypeName(), orderByFields, query.getQueryJoins().get(0), sql);
                     }
                     if (!pkColumnNames.isEmpty()) {
                         for (String pk : pkColumnNames) {
-                            orderByFields.add(query.getTypeName() + "." + pk);
+                            
+                            StringBuffer pkSql = new StringBuffer();                            
+                            encodeColumnName(pk, query.getTypeName(), pkSql, null);
+                            
+                            if (!pkSql.toString().isEmpty() && orderByFields.add(pkSql.toString())) {
+                            	
+                            	if (orderByFields.size() > 1) {
+                            		sql.append(", ");                		
+                            	}
+                                sql.append(pkSql);
+                            }
                         }
                     }
                 } else {
                     if (aliases != null && aliases[j] != null) {
-                        sort(aliases[j], sort, orderByFields, true);
+                        sort(aliases[j], sort, orderByFields, true, sql);
                     } else {
-                        sort(join.getJoiningTypeName(), sort, orderByFields, false);
+                        sort(join.getJoiningTypeName(), sort, orderByFields, false, sql);
                     }
                     if (query.getQueryJoins().size() > j + 1) {
                         addMultiValuedSort(join.getJoiningTypeName(), orderByFields, query
-                                .getQueryJoins().get(j + 1));
+                                .getQueryJoins().get(j + 1), sql);
                     }
                     try {
                         // sort by primary key to cater for multi valued rows
@@ -229,9 +256,6 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                     }
                 }
             }
-        }
-        if (orderby) {
-            sql.append(StringUtils.join(orderByFields.toArray(), ", "));
         }
     }
     

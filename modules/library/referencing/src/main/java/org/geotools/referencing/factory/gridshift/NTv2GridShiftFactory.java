@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.factory.gridshift;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -153,7 +154,7 @@ public class NTv2GridShiftFactory extends ReferencingFactory implements Buffered
                 // will throw an exception if not a valid file
                 new GridShiftFile().loadGridShiftFile(raf);
             } else {
-                InputStream in = url.openConnection().getInputStream();
+                InputStream in = new BufferedInputStream(url.openConnection().getInputStream()); 
 
                 // will throw an exception if not a valid file
                 new GridShiftFile().loadGridShiftFile(in, false);
@@ -196,7 +197,7 @@ public class NTv2GridShiftFactory extends ReferencingFactory implements Buffered
         InputStream in = null;
         try {
             GridShiftFile grid = new GridShiftFile();
-            in = location.openStream();
+            in = new BufferedInputStream(location.openStream());
             grid.loadGridShiftFile(in, false); // Load full grid in memory
             in.close();
             return grid;

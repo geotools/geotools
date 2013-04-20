@@ -71,7 +71,7 @@ public class VirtualTable implements Serializable {
 
     Map<String, VirtualTableParameter> parameters = new ConcurrentHashMap<String, VirtualTableParameter>();
 
-    boolean escapeSql = true;
+    boolean escapeSql = false;
     
     /**
      * Builds a new virtual table stating its name and the query to be executed to work on it

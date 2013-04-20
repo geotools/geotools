@@ -208,7 +208,8 @@ public final class ExpressionDOMParser {
                     return null;
                 }
 
-                if (kid.getNodeValue().trim().length() == 0) {
+                // CDATA shouldn't be interpretted
+                if (kid.getNodeType() != Node.CDATA_SECTION_NODE && kid.getNodeValue().trim().length() == 0) {
                     LOGGER.finest("empty text element");
 
                     continue;

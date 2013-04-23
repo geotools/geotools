@@ -35,11 +35,14 @@ import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
+import org.geotools.filter.FilterAttributeExtractor;
+import org.geotools.filter.SortByImpl;
 import org.geotools.jdbc.JoiningJDBCFeatureSource;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.sort.SortOrder;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.helpers.NamespaceSupport;
 
@@ -75,6 +78,8 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         public List<Skip> skipped = new ArrayList<Skip>();
 
         public Query baseTableQuery;
+        
+        public FeatureTypeMapping mapping;
     }
 
     /**
@@ -147,10 +152,16 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         join.setForeignKeyName(sourceExpression);
         join.setJoiningKeyName(nestedSourceExpression);
         join.setJoiningTypeName(instance.baseTableQuery.getTypeName());
-        join.setSortBy(instance.baseTableQuery.getSortBy()); // incorporate order
+        join.setSortBy(instance.baseTableQuery.getSortBy()); // incorporate order      
+        FilterAttributeExtractor extractor = new FilterAttributeExtractor();
+        instance.mapping.getFeatureIdExpression().accept(extractor, null);
+        for (String pn : extractor.getAttributeNameSet()) {
+            join.addId(pn);
+        }    
+        
         joins.add(0, join);
         query.setQueryJoins(joins);
-
+        
         if (selectedProperties != null) {
             selectedProperties = new ArrayList<PropertyName>(selectedProperties);
             selectedProperties.add(filterFac.property(this.nestedTargetXPath.toString()));
@@ -191,7 +202,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
 
         List<Expression> foreignIds = new ArrayList<Expression>();
         for (int i = 0; i < query.getQueryJoins().size(); i++) {
-            for (int j = 0; j < query.getQueryJoins().get(i).getSortBy().length; j++) {
+            for (int j = 0; j < join.getIds().size(); j++) {
                 foreignIds.add(filterFac.property(JoiningJDBCFeatureSource.FOREIGN_ID + "_" + i
                         + "_" + j));
             }
@@ -221,13 +232,14 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
      * @param baseTableQuery
      * @throws IOException
      */
-    public void open(Object caller, Query baseTableQuery) throws IOException {
+    public void open(Object caller, Query baseTableQuery, FeatureTypeMapping mapping) throws IOException {
         if (instances.get(caller) != null) {
             throw new IllegalArgumentException(
                     "Trying to open Joining Nested Attribute Mapping that is already open!");
         } else {
             Instance instance = new Instance();
             instance.baseTableQuery = baseTableQuery;
+            instance.mapping = mapping;
 
             instances.put(caller, instance);
         }

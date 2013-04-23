@@ -444,13 +444,12 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         
         if (query.getQueryJoins() != null && query.getQueryJoins().size() > 0) {
             for (int i = 0; i < query.getQueryJoins().size(); i++) {
-                for (int j = 0; j < query.getQueryJoins().get(i).getSortBy().length; j++) {
+                for (int j = 0; j < query.getQueryJoins().get(i).getIds().size(); j++) {
                     if (aliases[i] != null) {
                         getDataStore().dialect.encodeColumnName(aliases[i], query.getQueryJoins()
-                                .get(i).getSortBy()[j].getPropertyName().getPropertyName(), sql);
+                                .get(i).getIds().get(j), sql);
                     } else {
-                        encodeColumnName(query.getQueryJoins().get(i).getSortBy()[j]
-                                .getPropertyName().getPropertyName(), query.getQueryJoins().get(i)
+                        encodeColumnName(query.getQueryJoins().get(i).getIds().get(j), query.getQueryJoins().get(i)
                                 .getJoiningTypeName(), sql, query.getHints());
                         
                     }
@@ -597,7 +596,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         AttributeTypeBuilder ab = new AttributeTypeBuilder();
         
         for (int i=0; i<query.getQueryJoins().size(); i++) {
-            for (int j=0; j<query.getQueryJoins().get(i).getSortBy().length; j++) {
+            for (int j=0; j<query.getQueryJoins().get(i).getIds().size(); j++) {
                 ab.setBinding(String.class);
                 builder.add(ab.buildDescriptor(new NameImpl(FOREIGN_ID) + "_" + i + "_" + j, ab.buildType() ) );
             }

@@ -142,6 +142,38 @@ public class GMLParserTest extends TestCase {
         }
     }
     
+    public void testPatternSchema(){
+        try {
+            SAXParserFactory spf = SAXParserFactory.newInstance();
+            spf.setNamespaceAware(true);
+            spf.setValidating(false);
+
+            SAXParser parser = spf.newSAXParser();
+
+            String path = "xml/patternfacet/states.xml";
+            File f = TestData.copy(this,path);
+            TestData.copy(this,"xml/patternfacet/states.xsd");
+            URI u = f.toURI();
+
+            XMLSAXHandler xmlContentHandler = new XMLSAXHandler(u,null);
+            XMLSAXHandler.setLogLevel(Level.WARNING);
+            XSISAXHandler.setLogLevel(Level.WARNING);
+            XMLElementHandler.setLogLevel(Level.WARNING);
+            XSIElementHandler.setLogLevel(Level.WARNING);
+
+            parser.parse(f, xmlContentHandler);
+
+            Object doc = xmlContentHandler.getDocument();
+            assertNotNull("Document missing", doc);
+            
+            checkFeatureCollection((SimpleFeatureCollection)doc);
+            
+        } catch (Throwable e) {
+            e.printStackTrace();
+            fail(e.toString());
+        }
+    }
+    
     public void testFMERoadsFeatures() {
         try {
             SAXParserFactory spf = SAXParserFactory.newInstance();

@@ -90,7 +90,7 @@ public class XSUnsignedLongBinding implements SimpleBinding {
      */
     public Object parse(InstanceComponent instance, Object value)
         throws Exception {
-        return new BigDecimal((String) value);
+        return new BigDecimal(((Number)value).longValue());
     }
 
     /**

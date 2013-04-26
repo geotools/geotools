@@ -10,7 +10,11 @@
   <xsd:element name="date" type="xsd:date" />
   <xsd:element name="time" type="xsd:time" />
   <xsd:element name="dateTime" type="xsd:dateTime" />
-
+  <xsd:element name="unsignedByte" type="xsd:unsignedByte"/>
+  <xsd:element name="unsignedShort" type="xsd:unsignedShort"/>
+  <xsd:element name="unsignedInt" type="xsd:unsignedInt"/>
+  <xsd:element name="unsignedLong" type="xsd:unsignedLong"/>
+  
   <xsd:complexType name="stuffType">
     <xsd:sequence>
       <xsd:element name="thing" type="xsd:string" />

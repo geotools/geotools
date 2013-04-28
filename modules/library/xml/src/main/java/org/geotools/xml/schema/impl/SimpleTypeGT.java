@@ -414,7 +414,7 @@ public class SimpleTypeGT implements SimpleType {
 
             case Facet.PATTERN:
 
-                if (val.split(constraints[i].getValue()).length != 1) {
+                if (val.split(constraints[i].getValue()).length != 0) {
                     throw new SAXException("Does not match pattern");
                 }
 

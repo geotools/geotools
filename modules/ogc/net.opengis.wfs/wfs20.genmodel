@@ -2,7 +2,7 @@
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/net.opengis.wfs/src" modelPluginID="net.opengis.wfs"
     modelName="Wfs20" importerID="org.eclipse.emf.importer.java" complianceLevel="5.0"
-    copyrightFields="false" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/XMLType.genmodel#//type platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore ../net.opengis.ows/ows10.genmodel#//ows10 platform:/plugin/org.eclipse.emf.ecore/model/XMLNamespace.genmodel#//namespace ../net.opengis.ows/ows11.genmodel#//ows11 ../net.opengis.fes/fes20.genmodel#//fes20 ../org.w3.xlink/xlink.genmodel#//xlink">
+    copyrightFields="false" runtimeVersion="2.6" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/XMLType.genmodel#//type platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore ../net.opengis.ows/ows10.genmodel#//ows10 platform:/plugin/org.eclipse.emf.ecore/model/XMLNamespace.genmodel#//namespace ../net.opengis.ows/ows11.genmodel#//ows11 ../net.opengis.fes/fes20.genmodel#//fes20 ../org.w3.xlink/xlink.genmodel#//xlink">
   <foreignModel>@model</foreignModel>
   <genPackages prefix="Wfs20" basePackage="net.opengis" disposableProviderFactory="true"
       ecorePackage="wfs20.ecore#/">
@@ -215,8 +215,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetCapabilitiesType/service"/>
     </genClasses>
     <genClasses ecoreClass="wfs20.ecore#//GetFeatureType">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetFeatureType/abstractQueryExpressionGroup"/>
-      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wfs20.ecore#//GetFeatureType/abstractQueryExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetFeatureType/count"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetFeatureType/outputFormat"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetFeatureType/resolve"/>
@@ -226,6 +224,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetFeatureType/startIndex"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetFeatureType/metadata"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetFeatureType/formatOptions"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetFeatureType/viewParams"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetFeatureType/abstractQueryExpressionGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wfs20.ecore#//GetFeatureType/abstractQueryExpression"/>
     </genClasses>
     <genClasses ecoreClass="wfs20.ecore#//GetFeatureWithLockType">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs20.ecore#//GetFeatureWithLockType/expiry"/>

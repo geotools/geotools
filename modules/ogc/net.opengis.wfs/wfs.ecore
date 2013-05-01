@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ecore:EPackage xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="wfs"
-    nsURI="http://www.opengis.net/wfs" nsPrefix="wfs">
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="wfs" nsURI="http://www.opengis.net/wfs" nsPrefix="wfs">
   <eClassifiers xsi:type="ecore:EClass" name="ActionType">
     <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
       <details key="name" value="ActionType"/>
@@ -763,6 +761,13 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="formatOptions" eType="#//Map"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="metadata" eType="#//Map"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="startIndex" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBigInteger"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="viewParams" unique="false"
+        upperBound="-1" eType="#//Map">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GetFeatureWithLockType" eSuperTypes="#//GetFeatureType">
     <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">

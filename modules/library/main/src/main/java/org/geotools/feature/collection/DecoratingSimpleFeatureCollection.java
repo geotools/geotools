@@ -57,7 +57,7 @@ public class DecoratingSimpleFeatureCollection implements SimpleFeatureCollectio
 
     public void accepts(org.opengis.feature.FeatureVisitor visitor,
             org.opengis.util.ProgressListener progress) throws IOException {
-        DataUtilities.visit(this, visitor, progress);
+        delegate.accepts(visitor, progress);
     }
     
 

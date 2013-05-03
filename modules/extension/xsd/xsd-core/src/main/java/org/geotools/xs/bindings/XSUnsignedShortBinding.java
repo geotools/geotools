@@ -85,7 +85,7 @@ public class XSUnsignedShortBinding implements SimpleBinding {
      */
     public Object parse(InstanceComponent instance, Object value)
         throws Exception {
-        return new Integer((String) value);
+        return new Integer(((Number)value).intValue());
     }
 
     /**

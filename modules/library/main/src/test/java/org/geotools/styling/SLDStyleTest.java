@@ -272,6 +272,25 @@ public class SLDStyleTest extends TestCase {
 
          assertEquals("literal_1\nliteral_2", labelValue);
     }
+
+    public void testSLDParserWithFuncConcatenateCDATASpaces() throws Exception {
+        java.net.URL surl = TestData.getResource(this, "funcConcatenateWithCDATASpaces.xml");
+         SLDParser stylereader = new SLDParser(sf, surl);
+         StyledLayerDescriptor sld = stylereader.parseSLD();
+         
+         Symbolizer[] symbolizers = ((NamedLayer) sld.getStyledLayers()[0]).getStyles()[0]
+                .getFeatureTypeStyles()[0].getRules()[0].getSymbolizers();
+
+         TextSymbolizer text = (TextSymbolizer) symbolizers[0];
+         
+         Expression label = text.getLabel();
+         
+         String labelValue = (String) label.evaluate(null, String.class);
+         
+         // System.out.println(labelValue);
+
+         assertEquals("literal_1\n literal_2", labelValue);
+    }
     
     public void testStrokeCssParameter() throws Exception {
         java.net.URL surl = TestData.getResource(this, "strokeParam.sld");

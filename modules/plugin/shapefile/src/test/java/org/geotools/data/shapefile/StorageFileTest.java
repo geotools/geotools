@@ -16,8 +16,10 @@
  */
 package org.geotools.data.shapefile;
 
-import static org.geotools.data.shapefile.ShpFileType.PRJ;
-import static org.geotools.data.shapefile.ShpFileType.SHP;
+import static org.geotools.data.shapefile.files.ShpFileType.PRJ;
+import static org.geotools.data.shapefile.files.ShpFileType.SHP;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -27,21 +29,25 @@ import java.nio.channels.ReadableByteChannel;
 import java.util.Arrays;
 import java.util.Map;
 
-import junit.framework.TestCase;
+import org.geotools.data.shapefile.files.FileReader;
+import org.geotools.data.shapefile.files.ShpFileType;
+import org.geotools.data.shapefile.files.ShpFiles;
+import org.geotools.data.shapefile.files.StorageFile;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * 
  *
  * @source $URL$
  */
-public class StorageFileTest extends TestCase implements FileReader {
+public class StorageFileTest implements FileReader {
 
     private ShpFiles shpFiles1;
     private ShpFiles shpFiles2;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         Map<ShpFileType, File> files1 = ShpFilesTest.createFiles("Files1",
                 ShpFileType.values(), false);
         Map<ShpFileType, File> files2 = ShpFilesTest.createFiles("Files2",
@@ -51,6 +57,7 @@ public class StorageFileTest extends TestCase implements FileReader {
         shpFiles2 = new ShpFiles(files2.get(SHP));
     }
 
+    @Test
     public void testReplaceOriginal() throws Exception {
         ShpFiles files1 = shpFiles1;
         ShpFileType type = PRJ;
@@ -98,6 +105,7 @@ public class StorageFileTest extends TestCase implements FileReader {
         }
     }
 
+    @Test
     public void testReplaceOriginals() throws Exception {
 
         StorageFile storagePRJ1 = shpFiles1.getStorageFile(PRJ);
@@ -134,12 +142,14 @@ public class StorageFileTest extends TestCase implements FileReader {
         }
     }
 
+    @Test
     public void testReplaceOriginalsEmptyArgs() throws Exception {
 
         StorageFile.replaceOriginals(new StorageFile[0]);
 
     }
 
+    @Test
     public void testCompareTo() throws IOException {
         StorageFile storagePRJ1 = shpFiles1.getStorageFile(PRJ);
         StorageFile storageSHP1 = shpFiles1.getStorageFile(SHP);

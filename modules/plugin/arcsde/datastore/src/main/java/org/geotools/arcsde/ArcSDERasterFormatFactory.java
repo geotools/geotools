@@ -58,7 +58,7 @@ public class ArcSDERasterFormatFactory implements GridFormatFactorySpi {
             LOGGER.fine(SeConnection.class.getName() + " is in place.");
             LOGGER.fine(PeCoordinateSystem.class.getName() + " is in place.");
         } catch (Throwable t) {
-            LOGGER.log(Level.WARNING, "ArcSDE Java API seems to not be on your classpath. Please"
+            LOGGER.log(Level.FINE, "ArcSDE Java API seems to not be on your classpath. Please"
                     + " verify that all needed jars are. ArcSDE data stores"
                     + " will not be available.", t);
             return false;

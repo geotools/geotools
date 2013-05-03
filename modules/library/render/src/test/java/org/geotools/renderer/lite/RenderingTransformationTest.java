@@ -166,7 +166,7 @@ public class RenderingTransformationTest {
         
         // prepare a bbox in UTM-32N
         ReferencedEnvelope reWgs84 = new ReferencedEnvelope(0, 12, 0, 12, CRS.decode("EPSG:4326"));
-        ReferencedEnvelope reUTM32N = reWgs84.transform(CRS.decode("EPSG:32632"), true);
+        ReferencedEnvelope reUTM32N = reWgs84.transform(CRS.decode("EPSG:3857"), true);
 
         // render it
         MapContent mc = new MapContent();

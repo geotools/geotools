@@ -16,6 +16,7 @@
  */
 package org.geotools.data.joining;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.geotools.data.Query;
@@ -38,6 +39,7 @@ public class JoiningQuery extends Query {
         protected Expression foreignKeyName;    
         protected Expression joiningKeyName;
         protected SortBy[] sortBy;
+        protected List<String> ids = new ArrayList<String>(); 
                 
         public String getJoiningTypeName() {
             return joiningTypeName;
@@ -69,6 +71,14 @@ public class JoiningQuery extends Query {
         
         public void setSortBy(SortBy[] sortBy){
             this.sortBy = sortBy;
+        }
+        
+        public void addId(String pn) {
+            this.ids.add(pn);
+        }
+        
+        public List<String> getIds() {
+            return ids;
         }
     }
     

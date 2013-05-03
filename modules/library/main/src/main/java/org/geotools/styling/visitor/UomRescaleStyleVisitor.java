@@ -190,8 +190,13 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
         super.visit(ps);
         PointSymbolizer copy = (PointSymbolizer) pages.peek();
 
+        Unit<Length> uom = copy.getUnitOfMeasure();
+        if(uom == null || uom.equals(NonSI.PIXEL)) {
+            return;
+        }
+        
         Graphic copyGraphic = copy.getGraphic();
-        rescale(copyGraphic, mapScale, copy.getUnitOfMeasure());
+        rescale(copyGraphic, mapScale, uom);
         copy.setUnitOfMeasure(NonSI.PIXEL);
     }
 
@@ -223,9 +228,13 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
     public void visit(LineSymbolizer line) {
         super.visit(line);
         LineSymbolizer copy = (LineSymbolizer) pages.peek();
+        Unit<Length> uom = copy.getUnitOfMeasure();        
+        if(uom == null || uom.equals(NonSI.PIXEL)) {
+            return;
+        }
 
         Stroke copyStroke = copy.getStroke();
-        rescaleStroke(copyStroke, mapScale, copy.getUnitOfMeasure());
+        rescaleStroke(copyStroke, mapScale, uom);
         copy.setUnitOfMeasure(NonSI.PIXEL);
     }
 
@@ -234,8 +243,12 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
         super.visit(poly);
         PolygonSymbolizer copy = (PolygonSymbolizer) pages.peek();
 
-        rescaleStroke(copy.getStroke(), mapScale, copy.getUnitOfMeasure());
-        rescaleFill(copy.getFill(), mapScale, copy.getUnitOfMeasure());
+        Unit<Length> uom = copy.getUnitOfMeasure();
+        if(uom == null || uom.equals(NonSI.PIXEL)) {
+            return;
+        }
+        rescaleStroke(copy.getStroke(), mapScale, uom);
+        rescaleFill(copy.getFill(), mapScale, uom);
         copy.setUnitOfMeasure(NonSI.PIXEL);
     }
 
@@ -253,6 +266,9 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
         TextSymbolizer copy = (TextSymbolizer) pages.peek();
 
         Unit<Length> uom = copy.getUnitOfMeasure();
+        if(uom == null || uom.equals(NonSI.PIXEL)) {
+            return;
+        }
 
         // rescales fonts
         Font[] fonts = copy.getFonts();
@@ -298,7 +314,8 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
         scaleIntOption(options, TextSymbolizer.SPACE_AROUND_KEY, uom);
         scaleIntOption(options, TextSymbolizer.MIN_GROUP_DISTANCE_KEY, uom);
         scaleIntOption(options, TextSymbolizer.LABEL_REPEAT_KEY, uom);
-        scaleIntOption(options, TextSymbolizer.GRAPHIC_MARGIN_KEY, uom);
+        scaleIntOption(options, TextSymbolizer.AUTO_WRAP_KEY, uom);
+        scaleIntArrayOption(options, TextSymbolizer.GRAPHIC_MARGIN_KEY, uom);
         
         copy.setUnitOfMeasure(NonSI.PIXEL);
     }
@@ -310,6 +327,21 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
             double v = rescale(Double.parseDouble(options.get(optionName)), mapScale, uom);
             
             options.put(optionName, Integer.toString((int) v));
+        }
+    }
+    
+    private void scaleIntArrayOption(Map<String, String> options, String optionName,
+            Unit<Length> uom) {
+        if (options.containsKey(optionName)) {
+            String strValue = options.get(optionName);
+            String[] splitted = strValue.split("\\s+");
+            StringBuilder sb = new StringBuilder();
+            for (String value : splitted) {
+                double rescaled = rescale(Double.parseDouble(value), mapScale, uom);
+                sb.append((int) rescaled).append(" ");
+            }
+            sb.setLength(sb.length() - 1);
+            options.put(optionName, sb.toString());
         }
     }
 }

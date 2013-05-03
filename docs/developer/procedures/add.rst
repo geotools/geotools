@@ -102,11 +102,14 @@ Assuming the jar you want is not already hosted on one of these sites you need t
 Deploying to Open Source Geospatial Foundation Maven 2 Repository:
    
 1. This is the GeoTools repository used for stable releases; as such it is the best place to host
-   extra 3rd party dependencies. You can use your OSGeo ID login credentials when deploying;
-   provided you are a signed up contributor to the GeoTools project.
+   extra 3rd party dependencies. Use your OSGeo ID login credentials:
    
    * http://download.osgeo.org/webdav/geotools/
    
+   Your OSGeo ID must be on this list to enable WebDAV access. Anyone on the list can add you:
+   
+   * https://www2.osgeo.org/cgi-bin/auth/ldap_group.py?group=geotools
+
 3. Create or update your ~/.m2/settings.xml file as below (~ is your home directory)::
      
      <?xml version="1.0" encoding="ISO-8859-1"?>

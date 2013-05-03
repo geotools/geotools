@@ -70,7 +70,7 @@ public class ShapeFilePreGeneralizedFeatureSourceTest extends
     }
 
     public void testQueryCapabilities() {
-        testQueryCapabilities(ConfigName);
+        testQueryCapabilities(ConfigName, true);
     }
 
     public void testGetSchema() {

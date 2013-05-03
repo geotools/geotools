@@ -384,7 +384,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         for (AttributeMapping attMapping : selectedMapping) {
 
             if (attMapping instanceof JoiningNestedAttributeMapping) {
-                ((JoiningNestedAttributeMapping) attMapping).open(this, query);
+                ((JoiningNestedAttributeMapping) attMapping).open(this, query, mapping);
 
             }
 

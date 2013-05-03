@@ -25,11 +25,11 @@
         maven artifacts so they can be used in offline GeoTools testing.
         This module should not be part of the standard build.
         Modules below have no parent, by design.
-        
+
         Once artifacts are built with "mvn clean install", selected
         artifacts can be deployed to the osgeo GeoTools maven repository.
         See the developer manual:
-        http://docs.codehaus.org/display/GEOT/How+to+add+a+3rd+party+jar
+        http://docs.geotools.org/latest/developer/procedures/add.html
 
         Please be sure to deploy with the provided pom.xml, so that
         dependency information is preserved.
@@ -44,7 +44,18 @@
                     -DpomFile=$groupId/pom.xml \
                     -Dfile=`find $groupId -name "*.jar"`
             done
-        
+
+        If you have trouble building a single child module with Maven 3
+        failing to honour local dependencies that were downloaded from
+        the osgeo repo, Google for "_maven.repositories", curse the new
+        Maven 3 behaviour, and delete every _maven.repositories file in
+        ~/.m2/repository/org/geotools/schemas with, for example:
+
+            find ~/.m2/repository/org/geotools/schemas \
+                -name _maven.repositories \
+                -exec rm -f {} \;
+
+        Then "mvn clean install" should work for a single child module.
     </description>
 
     <developers>
@@ -79,6 +90,7 @@
         <module>ows-1.1</module>
         <module>sampling-1.0</module>
         <module>sampling-2.0</module>
+        <module>samplingSpecimen-2.0</module>
         <module>sensorML-1.0</module>
         <module>sweCommon-1.0</module>
         <module>sweCommon-1.0-gml32</module>

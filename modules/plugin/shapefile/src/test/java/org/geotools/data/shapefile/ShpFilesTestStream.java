@@ -16,8 +16,9 @@
  */
 package org.geotools.data.shapefile;
 
-import static org.geotools.data.shapefile.ShpFileType.PRJ;
-import static org.geotools.data.shapefile.ShpFileType.SHP;
+import static org.geotools.data.shapefile.files.ShpFileType.PRJ;
+import static org.geotools.data.shapefile.files.ShpFileType.SHP;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -31,27 +32,30 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
-
-import junit.framework.TestCase;
+import java.util.Set;
 
 import org.geotools.TestData;
+import org.geotools.data.shapefile.files.ShpFileType;
+import org.geotools.data.shapefile.files.ShpFiles;
+import org.geotools.data.shapefile.files.StorageFile;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * 
  *
  * @source $URL$
  */
-public class ShpFilesTestStream extends TestCase implements
-        org.geotools.data.shapefile.FileWriter {
+public class ShpFilesTestStream implements
+        org.geotools.data.shapefile.files.FileWriter {
 
     private String typeName;
     private Map<ShpFileType, File> map;
     private ShpFiles files;
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         map = ShpFilesTest.createFiles("shpFiles", ShpFileType.values(), false);
 
         typeName = map.get(SHP).getName();
@@ -72,15 +76,18 @@ public class ShpFilesTestStream extends TestCase implements
         }
     }
 
+    @Test
     public void testIsLocalURL() throws IOException {
         ShpFiles files = new ShpFiles("http://someurl.com/file.shp");
         assertFalse(files.isLocal());
     }
 
+    @Test
     public void testIsLocalFiles() throws IOException {
         assertTrue(files.isLocal());
     }
 
+    @Test
     public void testDelete() throws IOException {
 
         assertTrue(files.delete());
@@ -90,6 +97,7 @@ public class ShpFilesTestStream extends TestCase implements
         }
     }
 
+    @Test
     public void testExceptionGetInputStream() throws Exception {
         ShpFiles shpFiles = new ShpFiles(new URL("http://blah/blah.shp"));
         try{
@@ -100,6 +108,7 @@ public class ShpFilesTestStream extends TestCase implements
         }
     }
 
+    @Test
     public void testExceptionGetOutputStream() throws Exception {
         ShpFiles shpFiles = new ShpFiles(new URL("http://blah/blah.shp"));
         try{
@@ -110,6 +119,7 @@ public class ShpFilesTestStream extends TestCase implements
         }
     }
 
+    @Test
     public void testExceptionGetWriteChannel() throws Exception {
         ShpFiles shpFiles = new ShpFiles(new URL("http://blah/blah.shp"));
         try{
@@ -120,6 +130,7 @@ public class ShpFilesTestStream extends TestCase implements
         }
     }
 
+    @Test
     public void testExceptionGetReadChannel() throws Exception {
         ShpFiles shpFiles = new ShpFiles(new URL("http://blah/blah.shp"));
         try{
@@ -130,6 +141,7 @@ public class ShpFilesTestStream extends TestCase implements
         }
     }
     
+    @Test
     public void testGetInputStream() throws IOException {
         writeDataToFiles();
 
@@ -154,6 +166,7 @@ public class ShpFilesTestStream extends TestCase implements
         }
     }
 
+    @Test
     public void testGetWriteStream() throws IOException {
 
         ShpFileType[] types = ShpFileType.values();
@@ -170,6 +183,7 @@ public class ShpFilesTestStream extends TestCase implements
         }
     }
 
+    @Test
     public void testGetReadChannelFileChannel() throws IOException {
         writeDataToFiles();
 
@@ -179,8 +193,10 @@ public class ShpFilesTestStream extends TestCase implements
         }
     }
 
+    @Test
     public void testGetReadChannelURL() throws IOException {
-        ShpFiles files = new ShpFiles(TestData.url("shapes/statepop.shp"));
+        URL url = TestData.url("shapes/statepop.shp");
+        ShpFiles files = new ShpFiles(url);
         
         assertFalse(files.isLocal());
         
@@ -235,6 +251,7 @@ public class ShpFilesTestStream extends TestCase implements
         assertEquals(0, files.numberOfLocks());
     }
 
+    @Test
     public void testGetWriteChannel() throws IOException {
 
         ShpFileType[] types = ShpFileType.values();
@@ -244,12 +261,14 @@ public class ShpFilesTestStream extends TestCase implements
         }
     }
 
+    @Test
     public void testGetStorageFile() throws Exception {
         StorageFile prj = files.getStorageFile(PRJ);
         assertTrue(prj.getFile().getName().startsWith(typeName));
         assertTrue(prj.getFile().getName().endsWith(".prj"));
     }
 
+    @Test
     public void testGetTypeName() throws Exception {
         assertEquals(typeName, files.getTypeName());
     }

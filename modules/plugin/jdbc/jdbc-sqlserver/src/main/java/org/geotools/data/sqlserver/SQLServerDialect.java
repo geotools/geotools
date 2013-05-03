@@ -16,20 +16,12 @@
  */
 package org.geotools.data.sqlserver;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Time;
-import java.sql.Types;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import java.util.logging.Level;
-
+import com.vividsolutions.jts.geom.*;
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKBReader;
+import com.vividsolutions.jts.io.WKTReader;
 import org.geotools.data.jdbc.FilterToSQL;
+import org.geotools.data.sqlserver.reader.SqlServerBinaryReader;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.BasicSQLDialect;
@@ -42,19 +34,12 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.CoordinateSystem;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKBReader;
-import com.vividsolutions.jts.io.WKTReader;
+import java.io.IOException;
+import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.logging.Level;
 
 /**
  * Dialect implementation for Microsoft SQL Server.
@@ -76,6 +61,10 @@ public class SQLServerDialect extends BasicSQLDialect {
      * @param dataStore
      */
     private String geometryMetadataTable;
+	
+	private Boolean useOffsetLimit = false;
+
+    private Boolean useNativeSerialization = false;
     
     final static Map<String, Class> TYPE_TO_CLASS_MAP = new HashMap<String, Class>() {
         {
@@ -411,7 +400,9 @@ public class SQLServerDialect extends BasicSQLDialect {
     public void encodeGeometryColumn(GeometryDescriptor gatt, String prefix,
             int srid, Hints hints, StringBuffer sql) {
         encodeColumnName( prefix, gatt.getLocalName(), sql );
-        sql.append( ".STAsBinary()");
+        if (!useNativeSerialization) {
+            sql.append( ".STAsBinary()");
+        }
     }
 
     @Override
@@ -434,11 +425,19 @@ public class SQLServerDialect extends BasicSQLDialect {
        if(bytes == null) {
            return null;
        }
-       try {
-           return new WKBReader(factory).read(bytes);
-       } catch ( ParseException e ) {
-           throw (IOException) new IOException().initCause( e );
-       }
+        if (useNativeSerialization) {
+            try {
+                return new SqlServerBinaryReader(factory).read(bytes);
+            } catch ( IOException e ) {
+                throw (IOException) new IOException().initCause( e );
+            }
+        } else {
+            try {
+                return new WKBReader(factory).read(bytes);
+            } catch ( ParseException e ) {
+                throw (IOException) new IOException().initCause( e );
+            }
+        }
     }
     
     Geometry decodeGeometry( String s, GeometryFactory factory ) throws IOException {
@@ -556,7 +555,7 @@ public class SQLServerDialect extends BasicSQLDialect {
     
     @Override
     public boolean isLimitOffsetSupported() {
-        return true;
+        return useOffsetLimit;
     }
     
     @Override
@@ -626,4 +625,20 @@ public class SQLServerDialect extends BasicSQLDialect {
         this.geometryMetadataTable = geometryMetadataTable;
     }
     
+    /**
+     * Sets whether to use offset limit or not
+     * @param useOffsetLimit
+     */
+    public void setUseOffSetLimit(Boolean useOffsetLimit) {
+        this.useOffsetLimit = useOffsetLimit;
+    }
+
+    /**
+     * Sets whether to use native SQL Server binary serialization or WKB serialization
+     * @param useNativeSerialization
+     */
+    public void setUseNativeSerialization(Boolean useNativeSerialization) {
+        this.useNativeSerialization = useNativeSerialization;
+    }
+	
 }

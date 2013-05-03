@@ -18,8 +18,6 @@ package org.geotools.styling.visitor;
 
 import java.awt.Color;
 
-import javax.measure.unit.SI;
-
 import junit.framework.TestCase;
 
 import org.geotools.factory.CommonFactoryFinder;
@@ -140,10 +138,21 @@ public class RescaleStyleVisitorTest extends TestCase {
     public void testTextSymbolizer() throws Exception {
         TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, (Font) null, "label");
         ts.getOptions().put(TextSymbolizer.MAX_DISPLACEMENT_KEY, "10");
+        ts.getOptions().put(TextSymbolizer.GRAPHIC_MARGIN_KEY, "10 20");
         
         ts.accept(visitor);
         TextSymbolizer clone = (TextSymbolizer) visitor.getCopy();
         assertEquals("20", clone.getOptions().get(TextSymbolizer.MAX_DISPLACEMENT_KEY));
+        assertEquals("20 40", clone.getOptions().get(TextSymbolizer.GRAPHIC_MARGIN_KEY));
+    }
+    
+    public void testTextSymbolizerArraySingleValue() throws Exception {
+        TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, (Font) null, "label");
+        ts.getOptions().put(TextSymbolizer.GRAPHIC_MARGIN_KEY, "10");
+        
+        ts.accept(visitor);
+        TextSymbolizer clone = (TextSymbolizer) visitor.getCopy();
+        assertEquals("20", clone.getOptions().get(TextSymbolizer.GRAPHIC_MARGIN_KEY));
     }
     
     public void testRescaleGraphicFillStrokes() {

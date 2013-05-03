@@ -63,7 +63,7 @@ public class MixedPreGeneralizedFeatureSourceTest extends AbstractPreGeneralized
     }
 
     public void testQueryCapabilities() {
-        testQueryCapabilities(ConfigName);
+        testQueryCapabilities(ConfigName, false);
     }
 
     public void testGetSchema() {

@@ -89,20 +89,10 @@ These examples bring up a couple of questions:
   
   We are using a FactoryFinder (rather than just saying new
   ShapefileDataStore ) so GeoTools can have a look at your specific
-  fiel choose the right implementation for the job.
-  
-  Currently GeoTools has two implementations:
-  
-  * ShapefileDataStore
-    
-    Provided by **ShapefileDataStoreFactory** for direct access to a
-    shapefile, suitable for shapefiles located on network shares and web
-    services
-  
-  * IndexedShapefileDataStore
-    
-    Provided by **IndexedShapefileDataStoreFactory** to makes use of
-    (or create) a spatial index for fast access
+  configuration and choose the right implementation for the job.
+  Store implementation might change in time, accessing the stores via the
+  factory ensures your client code does not need to be changed when this happens.
+
 
 * Q: What do we put it the Map?
   
@@ -110,7 +100,6 @@ These examples bring up a couple of questions:
    
    * :doc: `shape` (user guide)
    * `ShapefileDataStoreFactory <http://docs.geotools.org/stable/javadocs/org/geotools/data/shapefile/ShapefileDataStoreFactory.html>`_ (javadocs)
-   * `IndexedShapefileDataStoreFactory <http://docs.geotools.org/stable/javadocs/org/geotools/data/shapefile/indexed/IndexedShapefileDataStoreFactory.html>`_ (javadocs)
    
    This information is also available at runtime via the
    **DataStoreFactorySpi,getParameterInfo()** method. You can use this
@@ -170,12 +159,12 @@ You can also dodge the FactoryFinder and make use of the following quick hacks.
 
 This is not wise (as the implementation may change over time) but here is how it is done.
 
-* Use new ShapefileDataStore::
+* Use ShapefileDataStore::
     
     File file = new File("example.shp");
-    URI namespace = new URI("refractions");
-    boolean useMemoryMapped = true;
-    DataStore shapefile = new ShapefileDataStore( example.toURL(), namespace, useMemoryMapped );
+    DataStore shapefile = new ShapefileDataStore( example.toURL());
+    shapefile.setNamespace(new URI("refractions"));
+    shapefile.setMemoryMapped(true  ;
     
     String typeName = shapefile.getTypeName(); // should be "example"
     FeatureType schema = shapefile.getSchema( typeName ); // should be "refractions.example"
@@ -188,26 +177,9 @@ This is not wise (as the implementation may change over time) but here is how it
   application can we ask you to use the DataStoreFactoryFinder. It will
   let the library sort out what implementation is appropriate.
 
-* Use new IndexedShapefileDataStore::
+* Use ShapefileDataStoreFactory::
     
-    File file = new File("example.shp");
-    URI namespace = new URI("refractions");
-    boolean memoryMapped = true;
-    boolean createIndex = true;
-    byte treeType = IndexedShapefileDataStore.TREE_QIX;
-    
-    DataStore shapefile = new IndexedShapefileDataStore( example.toURL(), namespace, memoryMapped, createIndex, treeType );
-    
-    String typeName = shapefile.getTypeName(); // should be "example"
-    ...
-  
-  This hack may be fine for a quick code example, but in a real
-  application can we ask you to use the DataStoreFactoryFinder. It will
-  let the library sort out what implementation is appropriate.
-
-* Use IndexedShapefileDataStoreFactory::
-    
-    FileDataStoreFactorySpi factory = new IndexedShapefileDataStoreFactory();
+    FileDataStoreFactorySpi factory = new ShapefileDataStoreFactory();
     
     File file = new File("example.shp");
     Map map = Collections.singletonMap( "url", file.toURL() );

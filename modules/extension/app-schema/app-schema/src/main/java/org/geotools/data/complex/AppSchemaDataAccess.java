@@ -326,23 +326,42 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
             newQuery.setHandle(query.getHandle());
             newQuery.setMaxFeatures(query.getMaxFeatures());
             
+            List<SortBy> sort = new ArrayList<SortBy>();
+            if (query.getSortBy() != null) {
+                for (SortBy sortBy : query.getSortBy()) {
+                    for (Expression expr : unrollProperty(sortBy.getPropertyName(), mapping)) {
+                        if (expr != null) {
+                            FilterAttributeExtractor extractor = new FilterAttributeExtractor();
+                            expr.accept(extractor, null);
+        
+                            for (String att : extractor.getAttributeNameSet()) {
+                                sort.add(new SortByImpl(filterFac.property(att), sortBy.getSortOrder()));
+                            }
+                        }
+                    }
+                }
+            }
+
             if (query instanceof JoiningQuery) {
                 FilterAttributeExtractor extractor = new FilterAttributeExtractor();
                 mapping.getFeatureIdExpression().accept(extractor, null);
-                List<SortBy> sort = new ArrayList<SortBy>();
+
                 for (String att : extractor.getAttributeNameSet()) {
-                    sort.add(new SortByImpl(filterFac.property(att), SortOrder.ASCENDING ));
+                    sort.add(new SortByImpl(filterFac.property(att), SortOrder.ASCENDING));
                 }
-                newQuery.setSortBy( sort.toArray(new SortBy[sort.size()])  );
-            
-               JoiningQuery jQuery = new JoiningQuery(newQuery);
-               jQuery.setQueryJoins(((JoiningQuery)query).getQueryJoins()); 
-               jQuery.setSubset(((JoiningQuery) query).isSubset());
-               unrolledQuery = jQuery;
-            } else {                
+
+                JoiningQuery jQuery = new JoiningQuery(newQuery);
+                jQuery.setQueryJoins(((JoiningQuery) query).getQueryJoins());
+                jQuery.setSubset(((JoiningQuery) query).isSubset());
+                unrolledQuery = jQuery;
+            } else {
                 unrolledQuery = newQuery;
             }
+
+            unrolledQuery.setSortBy(sort.toArray(new SortBy[sort.size()]));
+
         }
+
         return unrolledQuery;
     }
     
@@ -494,6 +513,40 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
             propNames = new ArrayList<PropertyName>(requestedSurrogateProperties);
         }
         return propNames;
+    }
+    
+    private List<Expression> unrollProperty (PropertyName property, final FeatureTypeMapping mapping) {
+        
+        final AttributeDescriptor targetDescriptor = mapping.getTargetFeature();
+        StepList propertySteps = XPath.steps(targetDescriptor, property.getPropertyName(), mapping.getNamespaces());
+        
+        // add all surrogate attributes involved in mapping of the requested
+        // target schema attributes
+        //List<AttributeMapping> attMappings = mapping.getAttributeMappings();
+        
+        return mapping.findMappingsFor(propertySteps);
+        
+        /*for (final AttributeMapping entry : attMappings) {
+            final StepList targetSteps = entry.getTargetXPath();
+           
+            if (propertySteps.size() >= targetSteps.size()) {
+                int i = 0;
+                boolean match = true;
+                for (; i < targetSteps.size(); i++) {
+                    if (!propertySteps.get(i).equals(targetSteps.get(i))) {
+                        match = false;
+                        break;
+                    }
+                }
+                
+                if (match && i == propertySteps.size()) {
+                    return entry.getSourceExpression();            
+                }
+                
+            }
+        }
+        
+        return null;*/
     }
 
     /**

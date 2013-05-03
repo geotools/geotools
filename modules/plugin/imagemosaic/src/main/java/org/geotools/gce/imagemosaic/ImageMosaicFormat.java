@@ -362,7 +362,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
             	    }
                     
             	    ShapefileDataStore store = new ShapefileDataStore(sourceURL);
-            	    store.setDbftimeZone(Utils.UTC_TIME_ZONE);
+            	    store.setTimeZone(Utils.UTC_TIME_ZONE);
             	    tileIndexStore = store;
             	}
    

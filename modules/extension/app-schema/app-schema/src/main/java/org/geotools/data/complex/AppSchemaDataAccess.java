@@ -460,6 +460,13 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
                     FilterAttributeExtractor extractor = new FilterAttributeExtractor();
                     sourceExpression.accept(extractor, null);
                     idExpression.accept(extractor, null);
+
+                    // RA - include function parameters in linkField
+                    if (entry instanceof NestedAttributeMapping) {
+                        final Expression linkFieldExpression = ((NestedAttributeMapping) entry).nestedFeatureType;
+                        linkFieldExpression.accept(extractor, null);
+                    }
+
                     Iterator<Expression> it = clientProperties.iterator();
                     while (it.hasNext()) {
                         it.next().accept(extractor, null);

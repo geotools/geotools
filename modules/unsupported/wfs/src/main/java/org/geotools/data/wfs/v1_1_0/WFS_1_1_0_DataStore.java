@@ -118,6 +118,8 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
 
     private String namespaceOverride;
 
+    private String axisOrder = AXIS_ORDER_COMPLIANT;
+    
     /**
      * The WFS capabilities document.
      * 
@@ -168,6 +170,16 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
                 .booleanValue();
     }
 
+    @Override
+    public void setAxisOrder(String axisOrder) {
+        this.axisOrder = axisOrder;
+    }
+
+    @Override
+    public String getAxisOrder() {
+        return axisOrder;
+    }    
+    
     /**
      * @see WFSDataStore#getInfo()
      */

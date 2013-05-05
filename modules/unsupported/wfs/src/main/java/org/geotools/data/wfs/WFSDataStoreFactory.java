@@ -176,7 +176,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
     }
 
     /** Access with {@link WFSDataStoreFactory#getParametersInfo() */
-    private static final WFSFactoryParam<?>[] parametersInfo = new WFSFactoryParam[13];
+    private static final WFSFactoryParam<?>[] parametersInfo = new WFSFactoryParam[14];
 
     /**
      * Mandatory DataStore parameter indicating the URL for the WFS GetCapabilities document.
@@ -370,6 +370,20 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
                 description, null);
     }
 
+    /**
+     * Optional {@code String} DataStore parameter indicating axis order used by the remote WFS server.
+     */
+    public static final WFSFactoryParam<String> AXIS_ORDER;
+    static {
+        String name = "WFSDataStoreFactory:AXIS_ORDER";
+        String description = "Indicates axis order used by the remote WFS server. It applies only to WFS 1.1.0 servers. " +
+        		"Default is " + WFSDataStore.AXIS_ORDER_COMPLIANT;
+        List<String> options = Arrays.asList(new String[] { WFSDataStore.AXIS_ORDER_COMPLIANT,
+                WFSDataStore.AXIS_ORDER_EAST_NORTH, WFSDataStore.AXIS_ORDER_NORTH_EAST });        
+        parametersInfo[13] = AXIS_ORDER = new WFSFactoryParam<String>(name, String.class, 
+                description, null, Parameter.OPTIONS, options);
+    }
+    
     
     /**
      * Requests the WFS Capabilities document from the {@link WFSDataStoreFactory#URL url} parameter
@@ -400,6 +414,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
         final String wfsStrategy = (String) WFS_STRATEGY.lookUp(params);
         final Integer filterCompliance = (Integer) FILTER_COMPLIANCE.lookUp(params);
         final String namespaceOverride = (String) NAMESPACE.lookUp(params);
+        final String axisOrder = (String) AXIS_ORDER.lookUp(params);
         
         if (((user == null) && (pass != null)) || ((pass == null) && (user != null))) {
             throw new IOException(
@@ -448,7 +463,8 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
             dataStore.setPreferPostOverGet(protocol);
         }
         dataStore.setNamespaceOverride(namespaceOverride);
-
+        dataStore.setAxisOrder(axisOrder);
+        
         return dataStore;
     }
 

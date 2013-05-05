@@ -1,5 +1,7 @@
 package org.geotools.data.wfs.v1_1_0;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,6 +34,8 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.FeatureId;
 import org.xml.sax.SAXException;
+
+import com.vividsolutions.jts.geom.Geometry;
 
 
 public class TinyOwsTest {
@@ -154,6 +158,68 @@ public class TinyOwsTest {
         iterate(source.getFeatures(query), 1, true);
     }    
 
+    @Test
+    public void testGetFeatureWithNorthEastAxisOrder() throws Exception {
+        WFSDataStore wfs = getWFSDataStore(new TinyOwsMockHttpClient("tinyows/GetCapabilities.xml", "tinyows/CountFeatureById.xml", "tinyows/GetFeatureById4326.xml"));
+        // axis order used will be NORTH / EAST
+        wfs.setAxisOrder(WFSDataStore.AXIS_ORDER_COMPLIANT);
+        
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        Set<FeatureId> fids = new HashSet<FeatureId>();
+        fids.add(new FeatureIdImpl("comuni11.2671"));
+        Query query = new Query(typeName, ff.id(fids));
+
+        SimpleFeatureSource source = wfs.getFeatureSource(typeName);
+        SimpleFeature feature = iterate(source.getFeatures(query), 1, true);
+        Geometry geometry = (Geometry) feature.getDefaultGeometry();
+        double x = geometry.getCoordinate().x;
+        double y = geometry.getCoordinate().y;
+        assertEquals(7.344559874483752, x, 0);
+        assertEquals(41.587164718505285, y, 0);
+        
+        // specify axis order: results should be the same
+        wfs.setAxisOrder(WFSDataStore.AXIS_ORDER_NORTH_EAST);
+
+        source = wfs.getFeatureSource(typeName);
+        feature = iterate(source.getFeatures(query), 1, true);
+        geometry = (Geometry) feature.getDefaultGeometry();
+        x = geometry.getCoordinate().x;
+        y = geometry.getCoordinate().y;
+        assertEquals(7.344559874483752, x, 0);
+        assertEquals(41.587164718505285, y, 0);
+    }
+    
+    @Test
+    public void testGetFeatureWithEastNorthAxisOrder() throws Exception {        
+        WFSDataStore wfs = getWFSDataStore(new TinyOwsMockHttpClient());
+        // axis order used will be EAST / NORTH
+        wfs.setAxisOrder(WFSDataStore.AXIS_ORDER_COMPLIANT);
+        
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        Set<FeatureId> fids = new HashSet<FeatureId>();
+        fids.add(new FeatureIdImpl("comuni11.2671"));
+        Query query = new Query(typeName, ff.id(fids));
+
+        SimpleFeatureSource source = wfs.getFeatureSource(typeName);
+        SimpleFeature feature = iterate(source.getFeatures(query), 1, true);
+        Geometry geometry = (Geometry) feature.getDefaultGeometry();
+        double x = geometry.getCoordinate().x;
+        double y = geometry.getCoordinate().y;
+        assertEquals(4629462, x, 0);
+        assertEquals(819841, y, 0);
+        
+        // specify axis order: results should be the same
+        wfs.setAxisOrder(WFSDataStore.AXIS_ORDER_EAST_NORTH);
+
+        source = wfs.getFeatureSource(typeName);
+        feature = iterate(source.getFeatures(query), 1, true);
+        geometry = (Geometry) feature.getDefaultGeometry();
+        x = geometry.getCoordinate().x;
+        y = geometry.getCoordinate().y;
+        assertEquals(4629462, x, 0);
+        assertEquals(819841, y, 0);
+    }    
+    
     @Test
     public void testGetFeaturesByBBox() throws Exception {
         final String[] queryTokens = { "<ogc:BBOX>", 
@@ -367,10 +433,25 @@ public class TinyOwsTest {
     }
     
     class TinyOwsMockHttpClient extends MockHttpClient {
+        
+        private final String getCapabilities;
+        private final String countFeatureById;
+        private final String getFeatureById;
+        
+        public TinyOwsMockHttpClient() {
+            this("tinyows/GetCapabilities.xml", "tinyows/CountFeatureById.xml", "tinyows/GetFeatureById.xml");
+        }
+        
+        public TinyOwsMockHttpClient(String getCapabilities, String countFeatureById, String getFeatureById) {
+            this.getCapabilities = getCapabilities;
+            this.countFeatureById = countFeatureById;
+            this.getFeatureById = getFeatureById;
+        }
+        
         @Override
         public HTTPResponse get(URL url) throws IOException {
             if (url.getQuery().contains("REQUEST=GetCapabilities")) {
-                return new MockHttpResponse(TestData.getResource(this, "tinyows/GetCapabilities.xml"), "text/xml");
+                return new MockHttpResponse(TestData.getResource(this, getCapabilities), "text/xml");
             } else {
                 return super.get(url);
             }
@@ -383,12 +464,12 @@ public class TinyOwsTest {
             if (isHitsRequest(request, query)) 
             {
                 assertXMLEqual("tinyows/CountFeatureByIdRequest.xml", request);
-                return new MockHttpResponse(TestData.getResource(this, "tinyows/CountFeatureById.xml"), "text/xml");
+                return new MockHttpResponse(TestData.getResource(this, countFeatureById), "text/xml");
             } 
             else if (isResultsRequest(request, query)) 
             {
                 assertXMLEqual("tinyows/GetFeatureByIdRequest.xml", request);
-                return new MockHttpResponse(TestData.getResource(this, "tinyows/GetFeatureById.xml"), "text/xml");
+                return new MockHttpResponse(TestData.getResource(this, getFeatureById), "text/xml");
             } 
             else 
             {
